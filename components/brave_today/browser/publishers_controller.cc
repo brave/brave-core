@@ -221,6 +221,12 @@ void PublishersController::EnsurePublishersIsUpdating() {
 }
 
 void PublishersController::UpdateDefaultLocale() {
+  if (!base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsV2Feature)) {
+    default_locale_ = brave_today::GetV1RegionUrlPart();
+    return;
+  }
+
   base::flat_set<std::string> available_locales;
   for (const auto& it : publishers_) {
     for (const auto& locale : it.second->locales)

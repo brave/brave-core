@@ -12,6 +12,7 @@
 #include <list>
 #include <map>
 #include <random>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -285,9 +286,10 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed,
-               PrefService* prefs) {
+               PrefService* prefs,
+               const std::string& locale) {
   Channels channels = ChannelsController::GetChannelsFromPublishers(
-      brave_today::GetRegionUrlPart(), *publishers, prefs);
+      locale, *publishers, prefs);
 
   std::list<mojom::ArticlePtr> articles;
   std::list<mojom::PromotedArticlePtr> promoted_articles;
