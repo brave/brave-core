@@ -26,6 +26,7 @@ struct BLINK_COMMON_EXPORT WebPreferences : public WebPreferences_ChromiumImpl {
   WebPreferences& operator=(WebPreferences&& other);
 
   bool force_cosmetic_filtering = false;
+  std::vector<GURL> urls_to_hide_media_src_api;
 };
 
 }  // namespace web_pref

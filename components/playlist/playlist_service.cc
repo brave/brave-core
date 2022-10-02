@@ -87,13 +87,19 @@ void PlaylistService::Shutdown() {
 void PlaylistService::RequestDownloadMediaFilesFromContents(
     const std::string& playlist_id,
     content::WebContents* contents) {
+  DCHECK(contents);
+  if (!contents->GetPrimaryMainFrame())
+    return;
+
   VLOG(2) << __func__
           << " download media from WebContents to playlist: " << playlist_id;
 
-  DCHECK(contents);
-
   PlaylistDownloadRequestManager::Request request;
-  request.url_or_contents = contents->GetWeakPtr();
+  if (ShouldDownloadOnBackground(contents))
+    request.url_or_contents = contents->GetVisibleURL().spec();
+  else
+    request.url_or_contents = contents->GetWeakPtr();
+
   request.callback =
       base::BindOnce(&PlaylistService::RequestDownloadMediaFilesFromItems,
                      base::Unretained(this),
@@ -219,10 +225,10 @@ base::FilePath PlaylistService::GetPlaylistItemDirPath(
   return base_dir_.AppendASCII(id);
 }
 
-void PlaylistService::ConfigureWebPrefsforBackgroundWebContents(
+void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
     content::WebContents* web_contents,
     blink::web_pref::WebPreferences* web_prefs) {
-  download_request_manager_->ConfigureWebPrefsforBackgroundWebContents(
+  download_request_manager_->ConfigureWebPrefsForBackgroundWebContents(
       web_contents, web_prefs);
 }
 
@@ -256,6 +262,12 @@ void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
       base::BindOnce(&base::CreateDirectory, GetPlaylistItemDirPath(params.id)),
       base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated,
                      weak_factory_.GetWeakPtr(), params));
+}
+
+bool PlaylistService::ShouldDownloadOnBackground(
+    content::WebContents* contents) const {
+  return download_request_manager_->media_detector_component_manager()
+      ->ShouldHideMediaSrcAPI(contents->GetVisibleURL());
 }
 
 void PlaylistService::OnPlaylistItemDirCreated(const PlaylistItemInfo& info,

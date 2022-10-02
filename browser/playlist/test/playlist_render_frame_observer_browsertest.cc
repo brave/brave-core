@@ -4,7 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/features.h"
+#include "brave/components/playlist/playlist_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -51,10 +54,30 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
 
     ASSERT_TRUE(url.is_valid());
 
+    // We shouldn't hide Media src API from tabs' web contents. It has many
+    // downsides.
     auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
     ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));
+    EXPECT_TRUE(
+        EvalJs(active_web_contents, "!!window.MediaSource").ExtractBool());
+
+    auto* playlist_service =
+        playlist::PlaylistServiceFactory::GetForBrowserContext(
+            chrome_test_utils::GetProfile(this));
+
+    // Instead, we should download contents on backgrounds when we should hide
+    // the API.
+    EXPECT_EQ(
+        visibility == APIVisibility::kHidden,
+        playlist_service->ShouldDownloadOnBackground(active_web_contents));
+
+    // Then, the WebContents used for background download hides the API if it's
+    // listed.
+    auto* background_web_contents = playlist_service->download_request_manager_
+                                        ->GetBackgroundWebContentsForTesting();
+    ASSERT_TRUE(content::NavigateToURL(background_web_contents, url));
     EXPECT_EQ(visibility == APIVisibility::kVisible,
-              EvalJs(active_web_contents, "!!window.MediaSource"));
+              EvalJs(background_web_contents, "!!window.MediaSource"));
   }
 
  protected:
@@ -117,4 +140,5 @@ IN_PROC_BROWSER_TEST_F(PlaylistRenderFrameObserverBrowserTest,
 #endif
 IN_PROC_BROWSER_TEST_F(PlaylistRenderFrameObserverBrowserTest, CheckYoutube) {
   CheckMediaSourceAPI(GURL("https://www.youtube.com/"), APIVisibility::kHidden);
+  CheckMediaSourceAPI(GURL("https://youtube.com/"), APIVisibility::kHidden);
 }

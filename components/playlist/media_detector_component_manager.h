@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PLAYLIST_MEDIA_DETECTOR_COMPONENT_MANAGER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -18,6 +19,8 @@ class FilePath;
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
+
+class GURL;
 
 namespace playlist {
 
@@ -47,6 +50,13 @@ class MediaDetectorComponentManager {
 
   void SetUseLocalScriptForTesting();
 
+  bool ShouldHideMediaSrcAPI(const GURL& url) const;
+  void SetUseLocalListToHideMediaSrcAPIForTesting();
+
+  std::vector<GURL> urls_to_hide_media_src_api() const {
+    return urls_to_hide_media_src_api_;
+  }
+
  private:
   void OnComponentReady(const base::FilePath& install_path);
   void OnGetScript(const std::string& script);
@@ -55,6 +65,8 @@ class MediaDetectorComponentManager {
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
 
   std::string script_;
+
+  std::vector<GURL> urls_to_hide_media_src_api_;
 
   base::ObserverList<Observer> observer_list_;
   base::WeakPtrFactory<MediaDetectorComponentManager> weak_factory_{this};

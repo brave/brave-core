@@ -22,9 +22,9 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
                                                                         out)) {
     return false;
   }
-
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
-  return true;
+
+  return data.ReadUrlsToHideMediaSrcApi(&out->urls_to_hide_media_src_api);
 }
 
 }  // namespace mojo

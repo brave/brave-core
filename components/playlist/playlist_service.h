@@ -34,8 +34,9 @@ class BrowserContext;
 class WebContents;
 }  // namespace content
 
-class PrefService;
 class CosmeticFilteringPlaylistFlagEnabledTest;
+class PlaylistRenderFrameObserverBrowserTest;
+class PrefService;
 
 namespace playlist {
 
@@ -125,12 +126,14 @@ class PlaylistService : public KeyedService,
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
 
   // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsforBackgroundWebContents(
+  void ConfigureWebPrefsForBackgroundWebContents(
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* web_prefs);
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
+  friend class ::PlaylistRenderFrameObserverBrowserTest;
+
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ApiFunctions);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylistItem);
@@ -152,6 +155,8 @@ class PlaylistService : public KeyedService,
   // Called when thumbnail image file is downloaded.
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;
+
+  bool ShouldDownloadOnBackground(content::WebContents* contents) const;
 
   void OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
                                 bool directory_ready);

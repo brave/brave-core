@@ -7,10 +7,10 @@
 
 #include <vector>
 
-#include "base/feature_list.h"
-#include "base/no_destructor.h"
 #include "brave/components/playlist/features.h"
 #include "content/public/renderer/render_frame.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 
@@ -24,17 +24,14 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  // TODO(sko) This list should be dynamically updated from browser process.
-  // For now, we hardcode the list of domains that we want to run scripts at.
-  static const base::NoDestructor<std::vector<blink::WebSecurityOrigin>>
-      origins{
-          {blink::WebSecurityOrigin::Create(GURL("https://www.youtube.com"))}};
-
   const auto current_origin =
       render_frame()->GetWebFrame()->GetSecurityOrigin();
-  if (base::ranges::any_of(*origins, [&current_origin](const auto& origin) {
-        return origin.IsSameOriginWith(current_origin);
-      })) {
+  if (base::ranges::any_of(
+          render_frame()->GetBlinkPreferences().urls_to_hide_media_src_api,
+          [&current_origin](const auto& url) {
+            return blink::WebSecurityOrigin::Create(url).IsSameOriginWith(
+                current_origin);
+          })) {
     HideMediaSourceAPI();
   }
 }

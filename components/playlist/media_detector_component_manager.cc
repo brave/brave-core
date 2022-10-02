@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/media_detector_component_installer.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
@@ -30,7 +31,11 @@ std::string ReadScript(const base::FilePath& path) {
 
 MediaDetectorComponentManager::MediaDetectorComponentManager(
     component_updater::ComponentUpdateService* component_update_service)
-    : component_update_service_(component_update_service) {}
+    : component_update_service_(component_update_service) {
+  // TODO(sko) This list should be dynamically updated from the playlist.
+  // Once it's done, remove this line.
+  SetUseLocalListToHideMediaSrcAPIForTesting();
+}
 
 MediaDetectorComponentManager::~MediaDetectorComponentManager() = default;
 
@@ -239,6 +244,22 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
   )-";
 
   OnGetScript(kScript);
+}
+
+bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
+    const GURL& url) const {
+  return base::ranges::any_of(urls_to_hide_media_src_api_,
+                              [&url](const auto& url_to_hide) {
+                                return url_to_hide.host() == url.host();
+                              });
+}
+
+void MediaDetectorComponentManager::
+    SetUseLocalListToHideMediaSrcAPIForTesting() {
+  urls_to_hide_media_src_api_ = {GURL("https://www.youtube.com"),
+                                 GURL("http://www.youtube.com"),
+                                 GURL("https://youtube.com"),
+                                 GURL("http://youtube.com")};
 }
 
 }  // namespace playlist

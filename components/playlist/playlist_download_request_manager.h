@@ -71,11 +71,15 @@ class PlaylistDownloadRequestManager
   void GetMediaFilesFromPage(Request request);
 
   // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsforBackgroundWebContents(
+  void ConfigureWebPrefsForBackgroundWebContents(
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* web_prefs);
 
   content::WebContents* GetBackgroundWebContentsForTesting();
+
+  MediaDetectorComponentManager* media_detector_component_manager() {
+    return media_detector_component_manager_;
+  }
 
  private:
   // Calling this will trigger loading |url| on a web contents,
@@ -111,7 +115,7 @@ class PlaylistDownloadRequestManager
   std::list<Request> pending_requests_;
 
   // Used to inject js script to get playlist item metadata to download
-  // its media files/thumbnail images and get titile.
+  // its media files/thumbnail images and get title.
   std::unique_ptr<content::WebContents> web_contents_;
 
   // The number of requested data fetching.

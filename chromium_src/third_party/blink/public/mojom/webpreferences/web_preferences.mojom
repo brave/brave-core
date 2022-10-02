@@ -5,7 +5,10 @@
 
 module blink.mojom;
 
+import "url/mojom/url.mojom";
+
 [BraveExtend]
 struct WebPreferences {
   bool force_cosmetic_filtering;
+  array<url.mojom.Url> urls_to_hide_media_src_api;
 };
