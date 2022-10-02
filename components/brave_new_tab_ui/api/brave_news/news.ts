@@ -47,7 +47,11 @@ class BraveNewsApi {
 
         let publishers = Object.values(this.lastPublishers)
 
-        publishers = publishers.filter(p => p.locales.includes(locale))
+        publishers = publishers.filter(p =>
+            // Direct sources are not tied to any locale, and should be shown for all.
+            p.type === PublisherType.DIRECT_SOURCE
+            // Otherwise, include the source if it is available in the desired locale.
+            || p.locales.includes(locale))
         if (channelId) { publishers = publishers.filter(p => p.channels.includes(channelId)) }
         if (subscribed !== undefined) { publishers = publishers.filter(p => this.isPublisherEnabled(p.publisherId) === subscribed) }
         return publishers
@@ -289,6 +293,11 @@ export const useDirectFeedResults = (query: string) => {
     const [directResults, setDirectResults] = useState<FeedSearchResultItem[]>([])
     const [loading, setLoading] = useState(false)
 
+    const publishers = usePublishers()
+
+    // Filter out any direct results we already have a publisher for.
+    const filteredDirectResults = useMemo(() => directResults.filter(r => !publishers.some(p => p.feedSource.url === r.feedUrl.url)), [directResults, publishers])
+
     useEffect(() => {
         setDirectResults([])
 
@@ -301,6 +310,7 @@ export const useDirectFeedResults = (query: string) => {
 
         api.controller.findFeeds({ url: url.toString() }).then(({ results }) => {
             if (cancelled) return
+
             setLoading(false)
             setDirectResults(results)
         })
@@ -311,6 +321,6 @@ export const useDirectFeedResults = (query: string) => {
 
     return {
         loading,
-        directResults: directResults
+        directResults: filteredDirectResults
     }
 }
