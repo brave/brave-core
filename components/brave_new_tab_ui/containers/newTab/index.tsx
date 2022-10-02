@@ -55,6 +55,7 @@ import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import { BraveNewsContextProvider } from '../../components/braveNews/Context'
 import BraveNewsModal from '../../components/braveNews/Modal'
 import GridWidget from './gridWidget'
+import BraveTodayHint from '../../components/default/braveToday/hint'
 
 interface Props {
   newTabData: NewTab.State
