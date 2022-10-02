@@ -6,6 +6,12 @@ type PublisherListener = (newValue: Publisher, oldValue: Publisher) => void
 type PublishersListener = (publishers: Publishers, oldValue: Publishers) => void
 type ChannelsListener = (newValue: Channels, oldValue: Channels) => void
 
+interface PublisherFilter {
+    subscribed?: boolean
+    channelId?: string
+    locale?: string
+}
+
 class BraveNewsApi {
     controller: BraveNewsControllerRemote
 
@@ -16,20 +22,32 @@ class BraveNewsApi {
     channelsListeners: ChannelsListener[] = []
     lastChannels: Channels = {}
 
+    #locale: string
+
     constructor() {
         this.controller = getBraveNewsController()
-        this.updatePublishers()
         this.updateChannels()
 
-        window['api'] = this;
+        this.controller.getLocale().then(({ locale }) => {
+            this.#locale = locale
+            this.updatePublishers()
+        })
+
+        window['api'] = this
     }
 
     getPublisher(publisherId: string) {
         return this.lastPublishers[publisherId]
     }
 
-    getPublishers(subscribed?: boolean, channelId?: string) {
+    getPublishers(filter?: PublisherFilter) {
+        const locale = filter?.locale ?? this.#locale
+        const channelId = filter?.channelId
+        const subscribed = filter?.subscribed
+
         let publishers = Object.values(this.lastPublishers)
+
+        publishers = publishers.filter(p => p.locales.includes(locale))
         if (channelId) { publishers = publishers.filter(p => p.channels.includes(channelId)) }
         if (subscribed !== undefined) { publishers = publishers.filter(p => this.isPublisherEnabled(p.publisherId) === subscribed) }
         return publishers
@@ -208,17 +226,17 @@ export const useChannelSubscribed = (channelId: string) => {
     }
 }
 
-export const usePublishers = (options?: { subscribed?: boolean, channelId?: string }) => {
+export const usePublishers = (options?: PublisherFilter) => {
     const [publishers, setPublishers] = useState<Publisher[]>([])
     useEffect(() => {
-        const handler = () => setPublishers(api.getPublishers(options?.subscribed, options?.channelId))
+        const handler = () => setPublishers(api.getPublishers(options))
         handler()
 
         api.addPublishersListener(handler)
         return () => {
             api.removePublishersListener(handler)
         }
-    }, [options?.subscribed, options?.channelId])
+    }, [options?.subscribed, options?.channelId, options?.locale])
 
     const sorted = useMemo(() => publishers.sort((a, b) => a.publisherName.localeCompare(b.publisherName)), [publishers])
     return sorted

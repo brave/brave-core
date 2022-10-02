@@ -73,6 +73,25 @@ bool ParseCombinedPublisherList(const std::string& json,
     }
     publisher->site_url = site_url;
 
+    auto* favicon_url_raw = publisher_raw.GetDict().FindString("favicon_url");
+    if (favicon_url_raw) {
+      if (GURL favicon_url(*favicon_url_raw); favicon_url.is_valid()) {
+        publisher->favicon_url = favicon_url;
+      }
+    }
+
+    auto* cover_url_raw = publisher_raw.GetDict().FindString("cover_url");
+    if (cover_url_raw) {
+      if (GURL cover_url(*cover_url_raw); cover_url.is_valid()) {
+        publisher->cover_url = cover_url;
+      }
+    }
+
+    auto* background_color = publisher_raw.GetDict().FindString("background_color");
+    if (background_color) {
+      publisher->background_color = *background_color;
+    }
+
     // TODO(petemill): Validate
     publishers->insert_or_assign(publisher->publisher_id, std::move(publisher));
   }

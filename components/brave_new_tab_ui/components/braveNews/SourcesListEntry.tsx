@@ -52,6 +52,7 @@ const ChannelEntryButton = styled.button`
 
 function FavIcon (props: { src?: string }) {
     const url = useGetUnpaddedImage(props.src ?? '', true)
+    console.log(props.src, url)
     const [error, setError] = React.useState(false)
     return <FavIconContainer>
         {url && !error && <img src={url} onError={() => setError(true)} />}
