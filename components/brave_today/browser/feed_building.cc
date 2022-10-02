@@ -288,8 +288,8 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                mojom::Feed* feed,
                PrefService* prefs,
                const std::string& locale) {
-  Channels channels = ChannelsController::GetChannelsFromPublishers(
-      locale, *publishers, prefs);
+  Channels channels =
+      ChannelsController::GetChannelsFromPublishers(locale, *publishers, prefs);
 
   std::list<mojom::ArticlePtr> articles;
   std::list<mojom::PromotedArticlePtr> promoted_articles;
