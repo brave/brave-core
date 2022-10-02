@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "ui/views/controls/button/md_text_button.h"
+
 #include <tuple>
 
 #include "base/containers/flat_map.h"
@@ -196,6 +197,7 @@ bool MdTextButton::GetLoading() const {
 
 void MdTextButton::SetLoading(bool loading) {
   loading_ = loading;
+  UpdateColors();
 }
 
 void MdTextButton::UpdateOldColorsForBrave() {
@@ -271,7 +273,7 @@ void MdTextButton::UpdateColorsForBrave() {
                  << (color_scheme == ColorScheme::kDark ? "dark" : "light")
                  << ", ButtonState: " << state;
   }
-  auto style = it->second;
+  const auto& style = it->second;
 
   SetTextColor(GetVisualState(), AddOpacity(style.text_color, opacity));
 
