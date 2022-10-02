@@ -144,7 +144,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
   std::string region_part = brave_today::GetRegionUrlPart();
   GURL sources_url("https://" + brave_today::GetHostname() + "/sources." +
                    region_part + "json");
-  LOG(ERROR) << "Sources url: " << sources_url;
+
   auto onRequest = base::BindOnce(
       [](PublishersController* controller,
          api_request_helper::APIRequestResult api_request_result) {

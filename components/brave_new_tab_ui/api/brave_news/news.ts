@@ -90,6 +90,10 @@ class BraveNewsApi {
     isPublisherEnabled(publisherId: string) {
         const publisher = this.lastPublishers[publisherId]
         if (!publisher) return false
+
+        // Direct Sources are enabled if they're available.
+        if (publisher.type === PublisherType.DIRECT_SOURCE) return true
+
         return publisher.isEnabled &&
             publisher.userEnabledStatus === UserEnabled.NOT_MODIFIED ||
             publisher.userEnabledStatus === UserEnabled.ENABLED
