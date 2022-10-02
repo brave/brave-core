@@ -54,8 +54,8 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
 
     border_rect.set_height(kHorizontalBorderWidth);
 
-    canvas->FillRect(border_rect, color_provider->GetColor(
-                                      kColorSidebarItemDragIndicatorColor));
+    canvas->FillRect(border_rect,
+                     color_provider->GetColor(kColorSidebarItemDragIndicator));
   }
 }
 

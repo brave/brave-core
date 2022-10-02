@@ -17,15 +17,16 @@ class ColorProvider;
 SkColor GetLocationBarBackground(bool dark, bool priv, bool hover);
 SkColor GetOmniboxResultBackground(int id, bool dark, bool priv);
 
+// Handling normal profile's dark or light theme.
 void AddBraveThemeColorMixer(ui::ColorProvider* provider,
                              const ui::ColorProviderManager::Key& key);
 void AddBravifiedChromeThemeColorMixer(
     ui::ColorProvider* provider,
     const ui::ColorProviderManager::Key& key);
-void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
-                                    const ui::ColorProviderManager::Key& key);
-void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
-                                const ui::ColorProviderManager::Key& key);
+void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
+                               const ui::ColorProviderManager::Key& key);
+void AddTorThemeColorMixer(ui::ColorProvider* provider,
+                           const ui::ColorProviderManager::Key& key);
 void AddBraveOmniboxLightThemeColorMixer(
     ui::ColorProvider* provider,
     const ui::ColorProviderManager::Key& key);

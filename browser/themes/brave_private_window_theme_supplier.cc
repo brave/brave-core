@@ -18,8 +18,8 @@ BravePrivateWindowThemeSupplier::~BravePrivateWindowThemeSupplier() = default;
 void BravePrivateWindowThemeSupplier::AddColorMixers(
     ui::ColorProvider* provider,
     const ui::ColorProviderManager::Key& key) const {
-  for_private_window_ ? AddBravePrivateThemeColorMixer(provider, key)
-                      : AddBraveTorThemeColorMixer(provider, key);
+  for_private_window_ ? AddPrivateThemeColorMixer(provider, key)
+                      : AddTorThemeColorMixer(provider, key);
   // Private/Tor uses same omnibox colors.
   AddBraveOmniboxPrivateThemeColorMixer(provider, key);
 }

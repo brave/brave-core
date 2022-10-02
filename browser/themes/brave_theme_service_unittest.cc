@@ -4,8 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-
-#include "brave/browser/themes/theme_properties.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(BraveThemeServiceTest, GetBraveThemeListTest) {
@@ -16,9 +14,4 @@ TEST(BraveThemeServiceTest, GetBraveThemeListTest) {
   dark_mode::SetUseSystemDarkModeEnabledForTest(false);
   list = dark_mode::GetBraveDarkModeTypeList();
   EXPECT_EQ(2UL, list.size());
-}
-
-TEST(BraveThemePropertiesTest, LastBraveThemeIDTest) {
-  EXPECT_EQ(BraveThemeProperties::COLOR_ICON_BASE,
-            BraveThemeProperties::BRAVE_THEME_PROPERTIES_LAST);
 }
