@@ -76,7 +76,7 @@ export function LockPanel ({
       <Title>{getLocale('braveWalletLockScreenTitle')}</Title>
       <Column>
         <PasswordInput
-          placeholder={getLocale('braveWalletCreatePasswordInput')}
+          placeholder={getLocale('braveWalletEnterYourPassword')}
           onChange={handlePasswordChanged}
           onKeyDown={handleKeyDown}
           error={getLocale('braveWalletLockScreenError')}

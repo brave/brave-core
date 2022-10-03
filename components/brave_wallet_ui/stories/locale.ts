@@ -72,6 +72,7 @@ provideStrings({
 
   // Actions
   braveWalletClickToSwitch: 'Click to switch',
+  braveWalletEnterYourPassword: 'Enter your password',
 
   // BuySendSwap
   braveWalletBuy: 'Buy',
@@ -207,7 +208,7 @@ provideStrings({
   braveWalletArticleLinkWhatsARecoveryPhrase: 'What’s a recovery phrase?',
 
   // Lock Screen
-  braveWalletEnterYourPassword: 'Enter your Brave Wallet password',
+  braveWalletEnterYourBraveWalletPassword: 'Enter your Brave Wallet password',
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',
   braveWalletLockScreenButton: 'Unlock',
   braveWalletLockScreenError: 'Incorrect password',

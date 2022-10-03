@@ -18,10 +18,12 @@ export const _BackupWallet = () => {
   }
 
   return (
-    <WalletPageStory pageStateOverride={{ mnemonic: mockedMnemonic }}>
+    <WalletPageStory
+      pageStateOverride={{ mnemonic: mockedMnemonic }}
+    >
       <BackupWallet
         onCancel={complete}
-        isOnboarding={true}
+        isOnboarding={false}
       />
     </WalletPageStory>
   )

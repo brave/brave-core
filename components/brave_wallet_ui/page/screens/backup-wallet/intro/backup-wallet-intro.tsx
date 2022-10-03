@@ -128,9 +128,9 @@ export const BackupWalletIntroStep = ({
 
       {!isOnboarding &&
         <PasswordColumn>
-          <InputLabelText>{getLocale('braveWalletEnterYourPassword')}</InputLabelText>
+          <InputLabelText>{getLocale('braveWalletEnterYourBraveWalletPassword')}</InputLabelText>
           <PasswordInput
-            placeholder={getLocale('braveWalletCreatePasswordInput')}
+            placeholder={getLocale('braveWalletEnterYourPassword')}
             onChange={onPasswordChange}
             error={getLocale('braveWalletLockScreenError')}
             hasError={!!password && !isCorrectPassword}
