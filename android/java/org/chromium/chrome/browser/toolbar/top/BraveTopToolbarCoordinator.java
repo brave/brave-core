@@ -66,8 +66,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader, boolean initializeWithIncognitoColors,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
-            boolean isStartSurfaceRefactorEnabled,
-            ObservableSupplier<Integer> constraintsSupplier) {
+            boolean isStartSurfaceRefactorEnabled, ObservableSupplier<Integer> constraintsSupplier,
+            boolean shouldCreateLogoInStartToolbar) {
         super(controlContainer, toolbarStub, fullscreenToolbarStub, toolbarLayout,
                 toolbarDataProvider, tabController, userEducationHelper, buttonDataProviders,
                 layoutStateProviderSupplier, normalThemeColorProvider, overviewThemeColorProvider,
@@ -79,8 +79,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
-                startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled,
-                constraintsSupplier);
+                startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled, constraintsSupplier,
+                shouldCreateLogoInStartToolbar);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
