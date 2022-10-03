@@ -27,6 +27,8 @@ import BackgroundChooser from './backgroundChooser'
 import { images, defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsForBackground, defaultGradientColor } from '../../../data/backgrounds'
 import SponsoredImageToggle from './sponsoredImagesToggle'
 
+import { RANDOM_SOLID_COLOR_VALUE, RANDOM_GRADIENT_COLOR_VALUE, MAX_CUSTOM_IMAGE_BACKGROUNDS } from 'gen/brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.m.js'
+
 interface Props {
   newTabData: NewTab.State
   toggleBrandedWallpaperOptIn: () => void
@@ -213,7 +215,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             backgrounds={solidColorsForBackground}
             currentValue={selectedBackgroundColor}
             usingRandomColor={usingSolidColorBackground && usingRandomColor}
-            onToggleRandomColor={on => this.props.setColorBackground(on ? 'solid' : (selectedBackgroundColor ?? defaultSolidBackgroundColor), on)}
+            onToggleRandomColor={on => this.props.setColorBackground(on ? RANDOM_SOLID_COLOR_VALUE : (selectedBackgroundColor ?? defaultSolidBackgroundColor), on)}
             onSelectValue={this.props.setColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
@@ -224,7 +226,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             backgrounds={gradientColorsForBackground}
             currentValue={selectedBackgroundColor}
             usingRandomColor={usingGradientBackground && usingRandomColor}
-            onToggleRandomColor={on => this.props.setColorBackground(on ? 'gradient' : (selectedBackgroundColor ?? defaultGradientColor), on)}
+            onToggleRandomColor={on => this.props.setColorBackground(on ? RANDOM_GRADIENT_COLOR_VALUE : (selectedBackgroundColor ?? defaultGradientColor), on)}
             onSelectValue={this.props.setColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
@@ -238,7 +240,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             onToggleRandomColor={on => this.props.setCustomImageBackground(on ? '' : this.props.newTabData.customImageBackgrounds[0].wallpaperImageUrl)}
             onSelectValue={this.props.setCustomImageBackground}
             onBack={() => this.setLocation(Location.LIST)}
-            renderExtraButton={ this.props.newTabData.customImageBackgrounds?.length < 24
+            renderExtraButton={ this.props.newTabData.customImageBackgrounds?.length < MAX_CUSTOM_IMAGE_BACKGROUNDS
                 ? () => this.renderUploadButton(this.props.chooseNewCustomImageBackground, /* checked= */false, /* showTitle= */ false)
                 : undefined}
             onRemoveValue={this.props.removeCustomImageBackground}

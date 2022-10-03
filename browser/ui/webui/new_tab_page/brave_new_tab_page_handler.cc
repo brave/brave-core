@@ -80,6 +80,7 @@ BraveNewTabPageHandler::BraveNewTabPageHandler(
       page_(std::move(pending_page)),
       profile_(profile),
       web_contents_(web_contents),
+      file_manager_(std::make_unique<CustomBackgroundFileManager>(profile_)),
       weak_factory_(this) {
   InitForSearchPromotion();
 }
@@ -262,6 +263,16 @@ void BraveNewTabPageHandler::OnSavedCustomImage(const base::FilePath& path) {
     return;
   }
 
+  if (brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
+          NTPBackgroundPrefs(profile_->GetPrefs())
+              .GetCustomImageList()
+              .size() <=
+      0) {
+    // We can't save more images.
+    file_manager_->RemoveImage(path, base::DoNothing());
+    return;
+  }
+
   auto file_name =
       CustomBackgroundFileManager::Converter(path).To<std::string>();
   DCHECK(!file_name.empty());
@@ -387,9 +398,6 @@ void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
                                           int index,
                                           void* params) {
   profile_->set_last_selected_directory(path.DirName());
-
-  if (!file_manager_)
-    file_manager_ = std::make_unique<CustomBackgroundFileManager>(profile_);
 
   file_manager_->SaveImage(
       path, base::BindOnce(&BraveNewTabPageHandler::OnSavedCustomImage,
