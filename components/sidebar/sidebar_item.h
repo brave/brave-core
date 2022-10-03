@@ -42,6 +42,10 @@ struct SidebarItem {
                             bool open_in_panel);
 
   SidebarItem();
+  SidebarItem(const SidebarItem&);
+  SidebarItem& operator=(const SidebarItem&);
+  SidebarItem(SidebarItem&&);
+  SidebarItem& operator=(SidebarItem&&);
   ~SidebarItem();
 
   bool operator==(const SidebarItem& item) const;

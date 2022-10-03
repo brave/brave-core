@@ -32,6 +32,10 @@ SidebarItem SidebarItem::Create(const GURL& url,
 }
 
 SidebarItem::SidebarItem() = default;
+SidebarItem::SidebarItem(const SidebarItem&) = default;
+SidebarItem& SidebarItem::operator=(const SidebarItem&) = default;
+SidebarItem::SidebarItem(SidebarItem&&) = default;
+SidebarItem& SidebarItem::operator=(SidebarItem&&) = default;
 
 SidebarItem::~SidebarItem() = default;
 

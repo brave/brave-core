@@ -545,7 +545,7 @@ std::vector<SidebarItem> SidebarService::GetDefaultSidebarItems() const {
   for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
     if (auto item = GetBuiltInItemForType(item_type);
         item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
-      items.push_back(item);
+      items.push_back(std::move(item));
     }
   }
   return items;
