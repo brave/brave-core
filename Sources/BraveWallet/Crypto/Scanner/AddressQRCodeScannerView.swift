@@ -7,8 +7,10 @@ import SwiftUI
 import AVFoundation
 import SnapKit
 import Strings
+import BraveCore
 
 struct AddressQRCodeScannerView: View {
+  var coin: BraveWallet.CoinType
   @Binding var address: String
   @State private var isErrorPresented: Bool = false
   @State private var permissionDenied: Bool = false
@@ -41,6 +43,7 @@ struct AddressQRCodeScannerView: View {
       .ignoresSafeArea()
       #else
       _AddressQRCodeScannerView(
+        coin: coin,
         address: $address,
         isErrorPresented: $isErrorPresented,
         isPermissionDenied: $permissionDenied,
@@ -93,6 +96,7 @@ struct AddressQRCodeScannerView: View {
 
 private struct _AddressQRCodeScannerView: UIViewControllerRepresentable {
   typealias UIViewControllerType = AddressQRCodeScannerViewController
+  var coin: BraveWallet.CoinType
   @Binding var address: String
   @Binding var isErrorPresented: Bool
   @Binding var isPermissionDenied: Bool
@@ -100,6 +104,7 @@ private struct _AddressQRCodeScannerView: UIViewControllerRepresentable {
 
   func makeUIViewController(context: Context) -> UIViewControllerType {
     AddressQRCodeScannerViewController(
+      coin: coin,
       address: _address,
       isErrorPresented: _isErrorPresented,
       isPermissionDenied: _isPermissionDenied,
@@ -112,6 +117,7 @@ private struct _AddressQRCodeScannerView: UIViewControllerRepresentable {
 }
 
 private class AddressQRCodeScannerViewController: UIViewController {
+  var coin: BraveWallet.CoinType
   @Binding private var address: String
   @Binding private var isErrorPresented: Bool
   @Binding private var isPermissionDenied: Bool
@@ -127,11 +133,13 @@ private class AddressQRCodeScannerViewController: UIViewController {
   var dismiss: () -> Void
 
   init(
+    coin: BraveWallet.CoinType,
     address: Binding<String>,
     isErrorPresented: Binding<Bool>,
     isPermissionDenied: Binding<Bool>,
     dismiss: @escaping () -> Void
   ) {
+    self.coin = coin
     self._address = address
     self._isErrorPresented = isErrorPresented
     self._isPermissionDenied = isPermissionDenied
@@ -221,15 +229,29 @@ private class AddressQRCodeScannerViewController: UIViewController {
     previewLayer = videoPreviewLayer
     captureSession.startRunning()
   }
+  
+  private func foundAddress(_ address: String) {
+    self.address = address
+    dismiss()
+  }
 }
 
 extension AddressQRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-    if let stringValue = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue, stringValue.isETHAddress {
-      address = stringValue
-      dismiss()
-    } else {
-      isErrorPresented = true
+    guard let stringValue = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue else {
+      return
+    }
+    switch coin {
+    case .eth:
+      if stringValue.isETHAddress {
+        foundAddress(stringValue)
+      } else if stringValue.strippedETHAddress.isETHAddress {
+        foundAddress(stringValue.strippedETHAddress)
+      } else {
+        isErrorPresented = true
+      }
+    default:
+      foundAddress(stringValue)
     }
     isFinishScanning = true
   }
