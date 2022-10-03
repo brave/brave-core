@@ -185,7 +185,10 @@ struct SendTokenView: View {
         )
       }
       .sheet(isPresented: $isShowingScanner) {
-        AddressQRCodeScannerView(address: $sendTokenStore.sendAddress)
+        AddressQRCodeScannerView(
+          coin: sendTokenStore.selectedSendToken?.coin ?? .eth,
+          address: $sendTokenStore.sendAddress
+        )
       }
       .navigationTitle(Strings.Wallet.send)
       .navigationBarTitleDisplayMode(.inline)
