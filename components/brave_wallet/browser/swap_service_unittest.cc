@@ -428,18 +428,12 @@ TEST_F(SwapServiceUnitTest, GetSwapConfigurationOtherNet) {
 }
 
 TEST_F(SwapServiceUnitTest, IsSwapSupported) {
-  const std::vector<std::string> supported_chain_ids({
-      mojom::kMainnetChainId,
-      mojom::kGoerliChainId,
-      mojom::kPolygonMainnetChainId,
-      mojom::kPolygonMainnetChainId,
-      mojom::kBinanceSmartChainMainnetChainId,
-      mojom::kAvalancheMainnetChainId,
-      mojom::kFantomMainnetChainId,
-      mojom::kCeloMainnetChainId,
-      mojom::kOptimismMainnetChainId,
-      mojom::kArbitrumMainnetChainId,
-  });
+  const std::vector<std::string> supported_chain_ids(
+      {mojom::kMainnetChainId, mojom::kGoerliChainId,
+       mojom::kPolygonMainnetChainId, mojom::kPolygonMainnetChainId,
+       mojom::kBinanceSmartChainMainnetChainId, mojom::kAvalancheMainnetChainId,
+       mojom::kFantomMainnetChainId, mojom::kCeloMainnetChainId,
+       mojom::kOptimismMainnetChainId});
 
   for (auto& chain_id : supported_chain_ids) {
     EXPECT_TRUE(IsSwapSupported(chain_id));
