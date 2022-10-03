@@ -12,6 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_today/browser/feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -23,8 +24,11 @@ namespace brave_news {
 
 ChannelsController::ChannelsController(
     PrefService* prefs,
-    PublishersController* publishers_controller)
-    : prefs_(prefs), publishers_controller_(publishers_controller) {}
+    PublishersController* publishers_controller,
+    FeedController* feed_controller)
+    : prefs_(prefs),
+      publishers_controller_(publishers_controller),
+      feed_controller_(feed_controller) {}
 
 ChannelsController::~ChannelsController() = default;
 
@@ -74,6 +78,9 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
   auto result = mojom::Channel::New();
   result->channel_name = channel_id;
   result->subscribed = subscribed;
+
+  feed_controller_->EnsureFeedIsUpdating();
+
   return result;
 }
 

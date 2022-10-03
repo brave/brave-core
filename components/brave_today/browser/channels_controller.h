@@ -11,6 +11,8 @@
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/components/brave_today/browser/feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "components/prefs/pref_service.h"
@@ -24,7 +26,8 @@ constexpr char kTopSourcesChannel[] = "Top Sources";
 class ChannelsController {
  public:
   explicit ChannelsController(PrefService* prefs,
-                              PublishersController* publishers_controller);
+                              PublishersController* publishers_controller,
+                              FeedController* feed_controller);
   ~ChannelsController();
   ChannelsController(const ChannelsController&) = delete;
   ChannelsController& operator=(const ChannelsController&) = delete;
@@ -42,6 +45,7 @@ class ChannelsController {
  private:
   raw_ptr<PrefService> prefs_;
   raw_ptr<PublishersController> publishers_controller_;
+  raw_ptr<FeedController> feed_controller_;
 };
 }  // namespace brave_news
 
