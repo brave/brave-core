@@ -35,7 +35,7 @@ function LockScreen (props: Props) {
       <Title>{getLocale('braveWalletLockScreenTitle')}</Title>
       <InputColumn>
         <PasswordInput
-          placeholder={getLocale('braveWalletCreatePasswordInput')}
+          placeholder={getLocale('braveWalletEnterYourPassword')}
           onChange={onPasswordChanged}
           onKeyDown={handleKeyDown}
           error={getLocale('braveWalletLockScreenError')}

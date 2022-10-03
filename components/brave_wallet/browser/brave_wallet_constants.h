@@ -74,6 +74,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNonAsciiCharactersInMessageWarning",
      IDS_BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING},
     {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
+    {"braveWalletEnterYourBraveWalletPassword",
+     IDS_BRAVE_WALLET_ENTER_YOUR_BRAVE_WALLET_PASSWORD},
     {"braveWalletClickToSwitch", IDS_BRAVE_WALLET_CLICK_TO_SWITCH},
     {"braveWalletUnlockNeededToCreateAccount",
      IDS_BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT},
