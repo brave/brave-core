@@ -19,9 +19,9 @@
 
 namespace ads::ml {
 
-class BatAdsNormalizationTest : public UnitTestBase {};
+class BatAdsNormalizationTransformationTest : public UnitTestBase {};
 
-TEST_F(BatAdsNormalizationTest, NormalizationTest) {
+TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
   // Arrange
   const double kTolerance = 1e-7;
 
@@ -55,7 +55,7 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
   EXPECT_TRUE(std::fabs(s - 1.0) < kTolerance);
 }
 
-TEST_F(BatAdsNormalizationTest, ChainingTest) {
+TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
   // Arrange
   const int kDefaultBucketCount = 10'000;
   const size_t kExpectedElementCount = 10;

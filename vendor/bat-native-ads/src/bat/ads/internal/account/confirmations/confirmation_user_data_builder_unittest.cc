@@ -32,9 +32,10 @@ constexpr char kAdvertiserPublicKey[] =
 
 }  // namespace
 
-class BatAdsConfirmationUserDataTest : public UnitTestBase {};
+class BatAdsConfirmationUserDataBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
+TEST_F(BatAdsConfirmationUserDataBuilderTest,
+       BuildForNonConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
@@ -66,7 +67,8 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   });
 }
 
-TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
+TEST_F(BatAdsConfirmationUserDataBuilderTest,
+       BuildForConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);

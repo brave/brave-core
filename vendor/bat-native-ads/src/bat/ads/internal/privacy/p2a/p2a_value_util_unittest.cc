@@ -19,7 +19,7 @@ constexpr char kNoQuestionsAsJson[] = "[]";
 
 }  // namespace
 
-TEST(BatAdsP2AValuesUtilTest, QuestionsToValue) {
+TEST(BatAdsP2AValueUtilTest, QuestionsToValue) {
   // Arrange
 
   // Act
@@ -33,7 +33,7 @@ TEST(BatAdsP2AValuesUtilTest, QuestionsToValue) {
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsP2AValuesUtilTest, NoQuestionsToValue) {
+TEST(BatAdsP2AValueUtilTest, NoQuestionsToValue) {
   // Arrange
 
   // Act

@@ -11,7 +11,7 @@
 
 namespace ads {
 
-TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromEmptyContent) {
+TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
   const std::string content;
 
@@ -24,7 +24,7 @@ TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromWhitespace) {
+TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
@@ -37,7 +37,7 @@ TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromWhitespace) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest, StripNonAlphaCharacters) {
+TEST(BatAdsStringStripUtilTest, StripNonAlphaCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "
@@ -64,7 +64,8 @@ TEST(BatAdsStringUtilTest, StripNonAlphaCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromEmptyContent) {
+TEST(BatAdsStringStripUtilTest,
+     StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
   const std::string content;
 
@@ -77,7 +78,7 @@ TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromEmptyContent) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
+TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
@@ -90,7 +91,7 @@ TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharacters) {
+TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "

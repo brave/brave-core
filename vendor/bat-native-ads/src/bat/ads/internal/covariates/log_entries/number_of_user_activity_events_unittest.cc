@@ -14,10 +14,9 @@
 
 namespace ads {
 
-class BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest
-    : public UnitTestBase {};
+class BatAdsNumberOfUserActivityEventsTest : public UnitTestBase {};
 
-TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetDataType) {
+TEST_F(BatAdsNumberOfUserActivityEventsTest, GetDataType) {
   // Arrange
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<NumberOfUserActivityEvents>(
@@ -31,8 +30,7 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetDataType) {
   EXPECT_EQ(brave_federated::mojom::DataType::kInt, data_type);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest,
-       GetValueWithoutUserActivity) {
+TEST_F(BatAdsNumberOfUserActivityEventsTest, GetValueWithoutUserActivity) {
   // Arrange
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<NumberOfUserActivityEvents>(
@@ -46,7 +44,7 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest,
   EXPECT_EQ("0", value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetValue) {
+TEST_F(BatAdsNumberOfUserActivityEventsTest, GetValue) {
   // Arrange
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<NumberOfUserActivityEvents>(

@@ -11,7 +11,7 @@
 
 namespace ads {
 
-TEST(BatAdsStringUtilTest, TrueBoolToString) {
+TEST(BatAdsStringConversionsUtilTest, TrueBoolToString) {
   // Arrange
 
   // Act
@@ -21,7 +21,7 @@ TEST(BatAdsStringUtilTest, TrueBoolToString) {
   EXPECT_EQ("true", value);
 }
 
-TEST(BatAdsStringUtilTest, FalseBoolToString) {
+TEST(BatAdsStringConversionsUtilTest, FalseBoolToString) {
   // Arrange
 
   // Act

@@ -20,7 +20,7 @@ constexpr char kNoSegmentsAsJson[] = "[]";
 
 }  // namespace
 
-TEST(BatAdsSegmentValuesUtilTest, SegmentsToValue) {
+TEST(BatAdsSegmentValueUtilTest, SegmentsToValue) {
   // Arrange
 
   // Act
@@ -36,7 +36,7 @@ TEST(BatAdsSegmentValuesUtilTest, SegmentsToValue) {
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsSegmentValuesUtilTest, NoSegmentsToValue) {
+TEST(BatAdsSegmentValueUtilTest, NoSegmentsToValue) {
   // Arrange
 
   // Act
@@ -50,7 +50,7 @@ TEST(BatAdsSegmentValuesUtilTest, NoSegmentsToValue) {
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsSegmentValuesUtilTest, SegmentsFromValue) {
+TEST(BatAdsSegmentValueUtilTest, SegmentsFromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kSegmentsAsJson);
   const base::Value::List* list = value.GetIfList();
@@ -66,7 +66,7 @@ TEST(BatAdsSegmentValuesUtilTest, SegmentsFromValue) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsSegmentValuesUtilTest, NoSegmentsFromValue) {
+TEST(BatAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kNoSegmentsAsJson);
   const base::Value::List* list = value.GetIfList();

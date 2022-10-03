@@ -15,9 +15,9 @@
 
 namespace ads {
 
-class BatAdsStringHtmlUtilTest : public UnitTestBase {};
+class BatAdsStringHtmlParserUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
+TEST_F(BatAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
   // Arrange
   const std::string meta_html_tag =
       R"(<meta property="og:title" content="this is info ">)";

@@ -14,9 +14,9 @@
 
 namespace ads::ml {
 
-class BatAdsLowercaseTest : public UnitTestBase {};
+class BatAdsLowercaseTransformationTest : public UnitTestBase {};
 
-TEST_F(BatAdsLowercaseTest, LowercaseTest) {
+TEST_F(BatAdsLowercaseTransformationTest, LowercaseTest) {
   // Arrange
   const std::string kUppercaseStr = "LOWER CASE";
   const std::string kLowercaseStr = "lower case";

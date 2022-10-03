@@ -24,9 +24,9 @@ constexpr char kSimpleResourceFile[] =
 
 }  // namespace
 
-class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {};
+class BatAdsEmbeddingProcessingTest : public UnitTestBase {};
 
-TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedText) {
+TEST_F(BatAdsEmbeddingProcessingTest, EmbedText) {
   // Arrange
   CopyFileFromTestPathToTempPath(kSimpleResourceFile, kResourceFile);
 

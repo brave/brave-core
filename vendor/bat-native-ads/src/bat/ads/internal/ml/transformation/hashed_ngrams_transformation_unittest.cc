@@ -13,9 +13,9 @@
 
 namespace ads::ml {
 
-class BatAdsHashedNGramsTest : public UnitTestBase {};
+class BatAdsHashedNGramsTransformationTest : public UnitTestBase {};
 
-TEST_F(BatAdsHashedNGramsTest, HashingTest) {
+TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
   // Arrange
   const int kDefaultBucketCount = 10'000;
   const size_t kExpectedElementCount = 10;
@@ -42,7 +42,7 @@ TEST_F(BatAdsHashedNGramsTest, HashingTest) {
             hashed_vector_data->GetValuesForTesting().size());
 }
 
-TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
+TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
   // Arrange
   const int kHashBucketCount = 3;
   const std::string kTestString = "tiny";

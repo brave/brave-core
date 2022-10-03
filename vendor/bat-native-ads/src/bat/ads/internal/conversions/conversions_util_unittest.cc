@@ -31,7 +31,7 @@ constexpr char kInvalidMessage[] = "smart brown foxes 16";
 
 }  // namespace
 
-TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithShortMessage) {
+TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kShortMessage;
@@ -45,7 +45,7 @@ TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithShortMessage) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithLongMessage) {
+TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kLongMessage;
@@ -59,7 +59,7 @@ TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithLongMessage) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithInvalidMessage) {
+TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kInvalidMessage;
@@ -73,8 +73,7 @@ TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithInvalidMessage) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest,
-     DoNotSealEnvelopeWithInvalidPublicKey) {
+TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kValidMessage;
@@ -88,7 +87,7 @@ TEST(BatAdsSecurityConversionsUtilsTest,
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest, SealEnvelope) {
+TEST(BatAdsConversionsUtilTest, SealEnvelope) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kValidMessage;

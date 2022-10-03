@@ -63,9 +63,11 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
 
 }  // namespace
 
-class BatAdsRedeemUnblindedPaymentTokensRequestTest : public UnitTestBase {};
+class BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest
+    : public UnitTestBase {};
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
+TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
+       BuildUrlForRPill) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -111,7 +113,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
   // Assert
 }
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
+TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
+       BuildUrlForBPill) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

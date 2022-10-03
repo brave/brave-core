@@ -41,7 +41,7 @@ constexpr char kCatalogWithMultipleCampaigns[] =
 
 }  // namespace
 
-class BatAdsCatalogTest : public UnitTestBase {
+class BatAdsCatalogJsonReaderTest : public UnitTestBase {
  protected:
   CatalogCampaignInfo BuildCatalogCampaign1() {
     // Segments
@@ -450,7 +450,7 @@ class BatAdsCatalogTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsCatalogTest, ParseCatalogWithSingleCampaign) {
+TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
@@ -470,7 +470,7 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithSingleCampaign) {
   EXPECT_EQ(expected_catalog, *catalog);
 }
 
-TEST_F(BatAdsCatalogTest, ParseCatalogWithMultipleCampaigns) {
+TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
@@ -491,7 +491,7 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithMultipleCampaigns) {
   EXPECT_EQ(expected_catalog, *catalog);
 }
 
-TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
+TEST_F(BatAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
@@ -510,7 +510,7 @@ TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
   EXPECT_EQ(expected_catalog, *catalog);
 }
 
-TEST_F(BatAdsCatalogTest, InvalidCatalog) {
+TEST_F(BatAdsCatalogJsonReaderTest, InvalidCatalog) {
   // Arrange
 
   // Act
