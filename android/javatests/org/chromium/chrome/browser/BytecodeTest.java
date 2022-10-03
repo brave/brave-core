@@ -289,6 +289,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/IntentHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/CachedFlag"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/BraveCachedFlag"));
     }
 
     @Test
@@ -679,6 +681,8 @@ public class BytecodeTest {
                 IntentHandler.IntentHandlerDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/AppHooksImpl",
                 "org/chromium/chrome/browser/BraveAppHooks"));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
+                "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
     }
 
     @Test

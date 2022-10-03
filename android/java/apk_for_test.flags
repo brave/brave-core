@@ -606,3 +606,11 @@
 -keep class org.chromium.chrome.browser.BraveAppHooks {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.flags.CachedFlag {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.flags.BraveCachedFlag {
+    <init>(...);
+}
