@@ -47,7 +47,7 @@
 "AlwaysSendButtonTitle" = "一律傳送";
 
 /* Setting preference to always show the browser tabs bar. */
-"AlwaysShow" = "一律顯示";
+"AlwaysShow" = "開啟";
 
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID 和密碼";
@@ -117,6 +117,9 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "封鎖監控";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "封鎖「切換至應用程式」通知";
 
 /* Brave panel individual toggle title */
 "BlockPhishing" = "封鎖網路釣魚";
@@ -475,6 +478,12 @@
 /* No comment provided by engineer. */
 "Confirm" = "確認";
 
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "內容過濾";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容";
+
 /* Cookie settings option title */
 "CookieControl" = "Cookie 控制項";
 
@@ -631,8 +640,14 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "不要傳送";
 
+/* A label representing the state of a filter list that is downloaded */
+"Downloaded" = "已下載";
+
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "下載的檔案";
+
+/* A label representing the state of a filter list that is currently being downloaded */
+"Downloading" = "下載中";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "下載";
@@ -750,6 +765,12 @@
 
 /* No comment provided by engineer. */
 "Features" = "功能";
+
+/* A title on the content filtering screen that allows you to enable/disable filter lists */
+"FilterLists" = "篩選清單";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "其他熱門社群清單。請注意，啟用太多過濾器可能會導致瀏覽速度變慢。";
 
 /* Share action title */
 "FindInPage" = "在頁面中尋找";
@@ -965,7 +986,7 @@
 "Name" = "名稱";
 
 /* Setting preference to always hide the browser tabs bar. */
-"NeverShow" = "從不顯示";
+"NeverShow" = "關閉";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "新建書籤";
@@ -1006,6 +1027,9 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "找不到相符的搜尋結果。";
 
+/* A label representing the state of a filter list that is not downloaded */
+"NotDownloaded" = "未下載";
+
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "請輸入所有詞語並重試。";
 
@@ -1030,6 +1054,9 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "隱藏贊助圖片";
 
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "「贊助」是您可透過啟用 Brave Rewards 獲得的額外品牌背景。";
+
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
 
@@ -1040,16 +1067,16 @@
 "ntp.settingsAutoOpenKeyboard" = "自動開啟鍵盤";
 
 /* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "顯示背景圖片";
+"ntp.settingsBackgroundImages" = "背景圖片";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "背景圖片";
+"ntp.settingsBackgroundImageSubMenu" = "圖片類型";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
-"ntp.settingsDefaultImagesOnly" = "僅顯示預設圖片";
+"ntp.settingsDefaultImagesOnly" = "預設圖片";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "贊助圖片";
+"ntp.settingsSponsoredImagesSelection" = "贊助";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "新增分頁";
@@ -1231,6 +1258,9 @@
 /* The description indicating the device is active last time yesterday */
 "opentabs.activePeriodDeviceYesterdayTitle" = "上次使用時間：昨天";
 
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "啟用同步分頁以檢視您其他裝置中的分頁。";
+
 /* The description of the view showing no devices inside sync chain */
 "opentabs.noDevicesSyncChainPlaceholderViewDescription" = "要檢視您的裝置和啟用的同步類型，請加入同步鏈結";
 
@@ -1243,32 +1273,41 @@
 /* The additional description of the view describing tab syncing should be enabled. */
 "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "在「設定」中管理 Brave 要同步的項目。 ";
 
-/* The description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewDescription" = "啟用同步分頁以檢視您其他裝置中的分頁。";
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "您的其他裝置上沒有可顯示的進行中工作階段。";
 
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "此空間顯示在其他裝置中開啟的 Brave 分頁。";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
-"opentabs.openTabsItemLastSyncedFullTitle" = "上次同步時間：%@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "上週 %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
-"opentabs.openTabsItemLastSyncedLastWeekTitle" = "上次同步時間：上週 %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "今天 %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
-"opentabs.openTabsItemLastSyncedTodayTitle" = "上次同步時間：今天 %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "昨天 %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
-"opentabs.openTabsItemLastSyncedYesterdayTitle" = "上次同步時間：昨天 %@";
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "裝置";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "傳送至您的裝置";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "已傳送！";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "正在傳送…";
 
 /* The title displayed on send-webpage screen */
 "openTabs.sendWebpageScreenTitle" = "傳送網頁";
 
 /* Share action title for sending e url to another device */
 "opentabs.sendWebsiteShareActionTitle" = "傳送至您的裝置";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "顯示同步設定";
 
 /* The button which navigates to screen starting a new sync chain */
 "opentabs.startASyncChainButtonTitle" = "開始一個同步鏈結";
@@ -1277,7 +1316,7 @@
 "opentabs.tabSyncEnableButtonTitle" = "啟用分頁同步";
 
 /* The placeholder written in seach bar while tab-tray is showing open tabs. */
-"opentabs.tabTrayOpenSearchBarTitle" = "從其他裝置搜尋分頁";
+"opentabs.tabTrayOpenSearchBarTitle" = "其他裝置的搜尋分頁";
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "開啟的分頁";
@@ -1783,6 +1822,9 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "要清除所有防護資料？";
 
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "隱藏隱私中心小工具";
+
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "上週";
 
@@ -1812,6 +1854,9 @@
 
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "開啟隱私中心";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "開啟隱私中心";
 
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "隱私中心資料會儲存在本機，不會傳送至其他地方。";
@@ -2551,6 +2596,15 @@
 /* Title for settings menu item */
 "SettingsMenuItem" = "設定";
 
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "底部列";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "頂端列";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "分頁";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "分享連結";
 
@@ -2765,7 +2819,7 @@
 "showHistoryTitle" = "顯示記錄";
 
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
-"ShowInLandscapeOnly" = "僅於橫向顯示";
+"ShowInLandscapeOnly" = "僅限橫向";
 
 /* Context menu item for showing link previews */
 "ShowLinkPreviewsActionTitle" = "顯示連結預覽";
@@ -2774,7 +2828,7 @@
 "ShowTabs" = "顯示分頁";
 
 /* Setting to show/hide the tabs bar */
-"ShowTabsBar" = "顯示分頁列";
+"ShowTabsBar" = "分頁列";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "感謝您讓 Brave 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
@@ -3618,6 +3672,9 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "隱私統計資料";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "小工具";
 
 /* Word count title */
 "WordCount" = "字數：%i";

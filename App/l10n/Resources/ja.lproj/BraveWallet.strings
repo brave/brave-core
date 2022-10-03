@@ -19,9 +19,6 @@
 /* The title of a confirmation dialog when attempting to remove an account */
 "wallet.accountRemoveAlertConfirmation" = "このアカウントを削除しますか？";
 
-/* The message of a confirmation dialog when attempting to remove an account */
-"wallet.accountRemoveAlertConfirmationMessage" = "本当によろしいですか？";
-
 /* A button title to trigger deleting a secondary account */
 "wallet.accountRemoveButtonTitle" = "アカウントを削除する";
 
@@ -334,6 +331,27 @@
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
 "wallet.dappsConnectionNotificationTitle" = "このページがBraveウォレットとの接続を求めています";
 
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Braveウォレットを接続するDAppsがここに表示されます";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "接続済みのDApps";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "全般";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "%@の設定";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "この操作により、%1$d%2$@ですべてのWalletの接続許可が削除されます";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "ウェブサイト";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "ウェブサイト";
+
 /* Describes what range of data to show on the graph (all data available) */
 "wallet.dateIntervalAll" = "全て";
 
@@ -457,8 +475,14 @@
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionDisconnect" = "接続を切断する";
 
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "取り消し";
+
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "切り替える";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "信頼";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
 "wallet.editSiteConnectionAccountPlural" = "アカウント";
@@ -616,11 +640,11 @@
 /* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "この操作により、このウェブサイトですべてのWalletの接続許可が削除されます。";
 
-/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsDetailHeader" = "接続済みのイーサリアムアカウント";
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "接続済みの%@アカウント";
 
 /* The filter in the search bar for the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsFilterPlaceholder" = "フィルター";
+"wallet.manageSiteConnectionsFilterPlaceholder" = "接続済みのDAppsをフィルター";
 
 /* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
 "wallet.manageSiteConnectionsRemoveAll" = "すべてを削除";
@@ -1117,11 +1141,17 @@
 /* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
 "wallet.walletFullScreenAccessibilityTitle" = "ウォレットを全画面で開く";
 
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "ブロック済み";
+
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
 "wallet.walletPanelConnect" = "接続";
 
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
-"wallet.walletPanelConnected" = "接続を見る";
+"wallet.walletPanelConnected" = "接続済み";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "切断されました";
 
 /* The description for wallet panel when users haven't set up a wallet yet. */
 "wallet.walletPanelSetupWalletDescription" = "このパネルを使用して、Web3とすべての暗号資産に安全にアクセスできます";
@@ -1132,8 +1162,14 @@
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
 "wallet.walletTypeNone" = "なし";
 
-/* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
-"wallet.web3PreferencesAllowSiteToRequestAccounts" = "サイトにアカウントのリクエストを許可する";
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "本当によろしいですか？";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "サイトのEthereumプロバイダーAPIへのアクセスを許可";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "サイトのSolanaプロバイダーAPIへのアクセスを許可";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "デフォルトのイーサリアムウォレット";

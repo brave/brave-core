@@ -47,7 +47,7 @@
 "AlwaysSendButtonTitle" = "Надсилати завжди";
 
 /* Setting preference to always show the browser tabs bar. */
-"AlwaysShow" = "Завжди показувати";
+"AlwaysShow" = "Увімк.";
 
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID і код доступу";
@@ -117,6 +117,9 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Блокування програм відстеження";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Блокувати сповіщення «Перемкнути програму»";
 
 /* Brave panel individual toggle title */
 "BlockPhishing" = "Блокування фішингу";
@@ -475,6 +478,12 @@
 /* No comment provided by engineer. */
 "Confirm" = "Підтвердити";
 
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Фільтрація вмісту";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Увімкніть користувацькі фільтри, які блокують трекери й дратівні елементи, специфічні для регіону чи мови";
+
 /* Cookie settings option title */
 "CookieControl" = "Керування файлами cookie";
 
@@ -631,8 +640,14 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Не надсилати";
 
+/* A label representing the state of a filter list that is downloaded */
+"Downloaded" = "Завантажено";
+
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "Завантажені файли";
+
+/* A label representing the state of a filter list that is currently being downloaded */
+"Downloading" = "Завантаження";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Завантаження";
@@ -750,6 +765,12 @@
 
 /* No comment provided by engineer. */
 "Features" = "Функції";
+
+/* A title on the content filtering screen that allows you to enable/disable filter lists */
+"FilterLists" = "Фільтрувати списки";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Додаткові популярні списки спільноти. Зауважте, що через увімкнення надто багатьох фільтрів може зменшитися швидкість завантаження даних.";
 
 /* Share action title */
 "FindInPage" = "Знайти на сторінці";
@@ -965,7 +986,7 @@
 "Name" = "Назва";
 
 /* Setting preference to always hide the browser tabs bar. */
-"NeverShow" = "Ніколи не показувати";
+"NeverShow" = "Вимк.";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "Нова закладка";
@@ -1006,6 +1027,9 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Пошук не дав результатів.";
 
+/* A label representing the state of a filter list that is not downloaded */
+"NotDownloaded" = "Не завантажено";
+
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Введіть усі слова і спробуйте знову.";
 
@@ -1030,6 +1054,9 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Приховати рекламні зображення";
 
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "«Спонсорські» — це додаткові брендові фони, на яких ви можете заробляти, увімкнувши Brave Rewards.";
+
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Докладніше про Brave Rewards";
 
@@ -1040,16 +1067,16 @@
 "ntp.settingsAutoOpenKeyboard" = "Автоматично відкривати клавіатуру";
 
 /* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Показувати фонові зображення";
+"ntp.settingsBackgroundImages" = "Фонові зображення";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Фонові зображення";
+"ntp.settingsBackgroundImageSubMenu" = "Тип зображення";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
-"ntp.settingsDefaultImagesOnly" = "Тільки стандартні зображення";
+"ntp.settingsDefaultImagesOnly" = "Стандартні зображення";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Рекламні зображення";
+"ntp.settingsSponsoredImagesSelection" = "Спонсорські";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Сторінка нової вкладки";
@@ -1231,6 +1258,9 @@
 /* The description indicating the device is active last time yesterday */
 "opentabs.activePeriodDeviceYesterdayTitle" = "У мережі вчора";
 
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Увімкніть синхронізацію вкладок, щоб мати змогу переглядати вкладки з інших пристроїв.";
+
 /* The description of the view showing no devices inside sync chain */
 "opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Щоб переглянути ваші пристрої та активні типи синхронізації, слід приєднатися до ланцюжка синхронізації";
 
@@ -1243,32 +1273,41 @@
 /* The additional description of the view describing tab syncing should be enabled. */
 "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Виберіть у налаштуваннях дані, які Brave буде синхронізувати.";
 
-/* The description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewDescription" = "Увімкніть синхронізацію вкладок, щоб мати змогу переглядати вкладки з інших пристроїв.";
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Немає активних сеансів для відображення з інших ваших пристроїв.";
 
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Тут показані вкладки Brave, відкриті на інших пристроях";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
-"opentabs.openTabsItemLastSyncedFullTitle" = "Остання синхронізація: %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Минулого тижня, %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
-"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Остання синхронізація минулий тиждень %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Сьогодні, %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
-"opentabs.openTabsItemLastSyncedTodayTitle" = "Остання синхронізація: сьогодні %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Учора, %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
-"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Остання синхронізація: вчора %@";
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Пристрої";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Надіслати на пристрій";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Надіслано.";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Надсилання…";
 
 /* The title displayed on send-webpage screen */
 "openTabs.sendWebpageScreenTitle" = "Надіслати вебсторінку";
 
 /* Share action title for sending e url to another device */
 "opentabs.sendWebsiteShareActionTitle" = "Надіслати на пристрої";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Показати налаштування синхронізації";
 
 /* The button which navigates to screen starting a new sync chain */
 "opentabs.startASyncChainButtonTitle" = "Почати ланцюжок синхронізації";
@@ -1783,6 +1822,9 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Очистити всі дані Shields?";
 
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Приховати віджет Центру конфіденційності";
+
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Останній  тиждень";
 
@@ -1812,6 +1854,9 @@
 
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Відкрити центр конфіденційності";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Відкрити центр конфіденційності";
 
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Дані центру конфіденційності зберігаються локально й нікуди не надсилаються.";
@@ -2551,6 +2596,15 @@
 /* Title for settings menu item */
 "SettingsMenuItem" = "Налаштування";
 
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Нижня панель";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Верхня панель";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Вкладки";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Поділитися посиланням";
 
@@ -2765,7 +2819,7 @@
 "showHistoryTitle" = "Показати журнал";
 
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
-"ShowInLandscapeOnly" = "Показувати лише в альбомному режимі";
+"ShowInLandscapeOnly" = "Лише альбомна";
 
 /* Context menu item for showing link previews */
 "ShowLinkPreviewsActionTitle" = "Показувати попередній перегляд посилань";
@@ -2774,7 +2828,7 @@
 "ShowTabs" = "Показати вкладки";
 
 /* Setting to show/hide the tabs bar */
-"ShowTabsBar" = "Показати панель вкладок";
+"ShowTabsBar" = "Панель вкладок";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Дякуємо, що повідомили розробникам Brave про проблему з вебсайтом. Ми спробуємо вирішити її якнайшвидше!";
@@ -3618,6 +3672,9 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Звіт про конфіденційність";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Віджети";
 
 /* Word count title */
 "WordCount" = "Кількість слів: %i";

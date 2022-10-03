@@ -47,7 +47,7 @@
 "AlwaysSendButtonTitle" = "Отправлять всегда";
 
 /* Setting preference to always show the browser tabs bar. */
-"AlwaysShow" = "Показывать всегда";
+"AlwaysShow" = "Включить";
 
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID и код доступа";
@@ -117,6 +117,9 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = " Статистика блокировок";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Блокировать всплывающие окна и не переходить в приложения";
 
 /* Brave panel individual toggle title */
 "BlockPhishing" = "Блокировать фишинг";
@@ -475,6 +478,12 @@
 /* No comment provided by engineer. */
 "Confirm" = "Подтвердить";
 
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Фильтры контента";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Настройте фильтры, чтобы блокировать навязчивую рекламу, а также трекеры, отслеживающие пользователей по региону и языку.";
+
 /* Cookie settings option title */
 "CookieControl" = "Управление файлами cookie";
 
@@ -631,8 +640,14 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Не отправлять";
 
+/* A label representing the state of a filter list that is downloaded */
+"Downloaded" = "Сохранено";
+
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "Скачанные файлы";
+
+/* A label representing the state of a filter list that is currently being downloaded */
+"Downloading" = "Скачивается";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Скачанные файлы";
@@ -750,6 +765,12 @@
 
 /* No comment provided by engineer. */
 "Features" = "Функции";
+
+/* A title on the content filtering screen that allows you to enable/disable filter lists */
+"FilterLists" = "Списки фильтров";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Дополнительные популярные списки сообщества. Если включить слишком много фильтров, браузер будет работать медленнее.";
 
 /* Share action title */
 "FindInPage" = "Поиск на странице";
@@ -965,7 +986,7 @@
 "Name" = "Название";
 
 /* Setting preference to always hide the browser tabs bar. */
-"NeverShow" = "Никогда не показывать";
+"NeverShow" = "Отключить";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "Новая закладка";
@@ -1006,6 +1027,9 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Нет результатов";
 
+/* A label representing the state of a filter list that is not downloaded */
+"NotDownloaded" = "Не скачано";
+
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Введите все слова и повторите попытку.";
 
@@ -1030,6 +1054,9 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Не показывать спонсорские изображения";
 
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "За просмотр спонсируемых фоновых изображений вы можете получать токены, включив Brave Награды.";
+
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Подробнее о Brave Rewards…";
 
@@ -1040,16 +1067,16 @@
 "ntp.settingsAutoOpenKeyboard" = "Автоматически открывать клавиатуру";
 
 /* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Показывать фоновые изображения";
+"ntp.settingsBackgroundImages" = "Фоновые изображения";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Фоновые изображения";
+"ntp.settingsBackgroundImageSubMenu" = "Тип изображения";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
-"ntp.settingsDefaultImagesOnly" = "Только изображения по умолчанию";
+"ntp.settingsDefaultImagesOnly" = "Изображения по умолчанию";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Спонсорские изображения";
+"ntp.settingsSponsoredImagesSelection" = "Спонсируемые изображения";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Новая вкладка";
@@ -1231,6 +1258,9 @@
 /* The description indicating the device is active last time yesterday */
 "opentabs.activePeriodDeviceYesterdayTitle" = "Последнее действие: вчера";
 
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Синхронизируйте вкладки, и они станут доступны на других ваших устройствах.";
+
 /* The description of the view showing no devices inside sync chain */
 "opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Чтобы видеть свои устройства и включенные типы синхронизации, подключитесь к цепочке синхронизации.";
 
@@ -1243,32 +1273,41 @@
 /* The additional description of the view describing tab syncing should be enabled. */
 "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Управляйте синхронизацией Brave в настройках.";
 
-/* The description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewDescription" = "Синхронизируйте вкладки, и они станут доступны на других ваших устройствах.";
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "На ваших устройствах нет других активных сеансов.";
 
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Здесь вы будете видеть вкладки Brave, открытые на других устройствах";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
-"opentabs.openTabsItemLastSyncedFullTitle" = "Последняя синхронизация: %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "На прошлой неделе (%@)";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
-"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Последняя синхронизация: на прошлой неделе, %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Сегодня в %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
-"opentabs.openTabsItemLastSyncedTodayTitle" = "Последняя синхронизация: сегодня в %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Вчера в %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
-"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Последняя синхронизация: вчера в %@";
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Устройства";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Отправить на другое устройство";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Готово!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Отправка…";
 
 /* The title displayed on send-webpage screen */
 "openTabs.sendWebpageScreenTitle" = "Отправить страницу";
 
 /* Share action title for sending e url to another device */
 "opentabs.sendWebsiteShareActionTitle" = "Отправить на другие устройства";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Открыть настройки синхронизации";
 
 /* The button which navigates to screen starting a new sync chain */
 "opentabs.startASyncChainButtonTitle" = "Создать цепочку синхронизации";
@@ -1783,6 +1822,9 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Удалить все данные Щита?";
 
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Скрыть виджет центра конфиденциальности";
+
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "За неделю";
 
@@ -1812,6 +1854,9 @@
 
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Открыть центр конфиденциальности";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Открыть центр конфиденциальности";
 
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Данные центра конфиденциальности хранятся на вашем устройстве и никуда не передаются.";
@@ -2551,6 +2596,15 @@
 /* Title for settings menu item */
 "SettingsMenuItem" = "Настройки";
 
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Строка внизу";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Строка вверху";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Вкладки";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Поделиться ссылкой";
 
@@ -2765,7 +2819,7 @@
 "showHistoryTitle" = "Показать историю";
 
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
-"ShowInLandscapeOnly" = "Показывать только в горизонтальном режиме";
+"ShowInLandscapeOnly" = "Только в альбомном режиме";
 
 /* Context menu item for showing link previews */
 "ShowLinkPreviewsActionTitle" = "Показать предварительный просмотр ссылок";
@@ -2774,7 +2828,7 @@
 "ShowTabs" = "Показать вкладки";
 
 /* Setting to show/hide the tabs bar */
-"ShowTabsBar" = "Показать панель вкладок";
+"ShowTabsBar" = "Панель вкладок";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Спасибо за предоставленную информацию. Мы постараемся как можно скорее исправить проблему, обещаем.";
@@ -3618,6 +3672,9 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Конфиденциальность";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Виджеты";
 
 /* Word count title */
 "WordCount" = "Количество слов: %i";
