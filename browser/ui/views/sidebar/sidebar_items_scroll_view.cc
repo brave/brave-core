@@ -485,5 +485,9 @@ void SidebarItemsScrollView::Update() {
   contents_view_->Update();
 }
 
+void SidebarItemsScrollView::SetSidebarOnLeft(bool sidebar_on_left) {
+  contents_view_->SetSidebarOnLeft(sidebar_on_left);
+}
+
 BEGIN_METADATA(SidebarItemsScrollView, views::View)
 END_METADATA

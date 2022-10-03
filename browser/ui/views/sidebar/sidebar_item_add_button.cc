@@ -64,8 +64,7 @@ void SidebarItemAddButton::OnWidgetDestroying(views::Widget* widget) {
 }
 
 void SidebarItemAddButton::ShowBubble() {
-  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
-      new SidebarAddItemBubbleDelegateView(browser_, this));
+  auto* bubble = SidebarAddItemBubbleDelegateView::Create(browser_, this);
   observation_.Observe(bubble);
   bubble->Show();
 }

@@ -93,6 +93,7 @@ class SidebarItemsScrollView : public views::View,
   bool IsItemReorderingInProgress() const;
   bool IsBubbleVisible() const;
   void Update();
+  void SetSidebarOnLeft(bool sidebar_on_left);
 
  private:
   friend class sidebar::SidebarBrowserTest;

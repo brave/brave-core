@@ -20,6 +20,9 @@ class SidebarItemView : public SidebarButtonView {
   SidebarItemView operator=(const SidebarItemView&) = delete;
 
   void set_draw_highlight(bool draw) { draw_highlight_ = draw; }
+  void set_draw_highlight_on_left(bool draw_on_left) {
+    draw_highlight_on_left_ = draw_on_left;
+  }
 
   void set_paint_background_on_hovered(bool paint) {
     paint_background_on_hovered_ = paint;
@@ -35,6 +38,7 @@ class SidebarItemView : public SidebarButtonView {
 
  private:
   bool draw_highlight_ = false;
+  bool draw_highlight_on_left_ = false;
   bool paint_background_on_hovered_ = false;
   bool draw_horizontal_border_ = false;
   bool draw_horizontal_border_top_ = false;

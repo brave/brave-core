@@ -58,6 +58,7 @@ class SidebarContainerView
   SidebarContainerView& operator=(const SidebarContainerView&) = delete;
 
   void Init();
+  void SetSidebarOnLeft(bool sidebar_on_left);
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
@@ -137,6 +138,7 @@ class SidebarContainerView
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
   bool is_side_panel_event_ = false;
+  bool sidebar_on_left_ = true;
   base::OneShotTimer sidebar_hide_timer_;
   std::unique_ptr<BrowserWindowEventObserver> browser_window_event_observer_;
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;

@@ -30,14 +30,17 @@ BraveSidePanel::~BraveSidePanel() {
   RemoveObserver(this);
 }
 
-void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {}
+void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {
+  horizontal_alighment_ = alignment;
+  UpdateBorder();
+}
 
 BraveSidePanel::HorizontalAlignment BraveSidePanel::GetHorizontalAlignment() {
-  return kAlignLeft;
+  return horizontal_alighment_;
 }
 
 bool BraveSidePanel::IsRightAligned() {
-  return false;
+  return horizontal_alighment_ == kAlignRight;
 }
 
 void BraveSidePanel::UpdateVisibility() {
@@ -51,7 +54,8 @@ void BraveSidePanel::UpdateBorder() {
     constexpr int kBorderThickness = 1;
     // Negative top border so panel is flush with main tab content
     SetBorder(views::CreateSolidSidedBorder(
-        gfx::Insets::TLBR(-1, 0, 0, kBorderThickness),
+        gfx::Insets::TLBR(-1, IsRightAligned() ? kBorderThickness : 0, 0,
+                          IsRightAligned() ? 0 : kBorderThickness),
         color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }

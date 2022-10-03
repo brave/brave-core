@@ -47,6 +47,7 @@
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED" file="brave/sidebar_crypto_wallet_focused.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_HISTORY_FOCUSED" file="brave/sidebar_history_focused.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT" file="brave/sidebar_item_highlight.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT" file="brave/sidebar_item_highlight_right.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_ADD_FOCUSED" file="brave/sidebar_item_add_focused.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_SETTINGS_FOCUSED" file="brave/sidebar_settings_focused.png" />
       </if>

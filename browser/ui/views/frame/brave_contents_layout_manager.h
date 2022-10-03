@@ -20,12 +20,17 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
       delete;
   ~BraveContentsLayoutManager() override;
 
+  void set_sidebar_on_left(bool sidebar_on_left) {
+    sidebar_on_left_ = sidebar_on_left;
+  }
+
   // ContentsLayoutManager overrides:
   void Layout(views::View* contents_container) override;
 
  private:
   raw_ptr<views::View> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> vertical_tabs_container_ = nullptr;
+  bool sidebar_on_left_ = true;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_
