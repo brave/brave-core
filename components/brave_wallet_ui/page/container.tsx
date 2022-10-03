@@ -4,21 +4,29 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
+
+// utils
+import { getLocale } from '$web-common/locale'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 
+// selectors
+import { WalletSelectors } from '../common/selectors'
+import { PageSelectors } from './selectors'
+
 // types
 import {
   BuySendSwapTypes,
-  PageState,
   WalletAccountType,
-  WalletRoutes,
-  WalletState
+  WalletRoutes
 } from '../constants/types'
+
+// hooks
+import { useSafePageSelector, useSafeWalletSelector } from '../common/hooks/use-safe-selector'
 
 // style
 import 'emptykit.css'
@@ -41,7 +49,6 @@ import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
-import { getLocale } from '$web-common/locale'
 
 const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
 
@@ -52,15 +59,19 @@ export const Container = () => {
 
   // redux
   const dispatch = useDispatch()
-  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
-  const isWalletLocked = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletLocked)
-  const isWalletBackedUp = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletBackedUp)
-  const hasIncorrectPassword = useSelector(({ wallet }: { wallet: WalletState }) => wallet.hasIncorrectPassword)
-  const hasInitialized = useSelector(({ wallet }: { wallet: WalletState }) => wallet.hasInitialized)
-  const defaultEthereumWallet = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultEthereumWallet)
-  const defaultSolanaWallet = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultSolanaWallet)
-  const isMetaMaskInstalled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isMetaMaskInstalled)
-  const setupStillInProgress = useSelector(({ page }: { page: PageState }) => page.setupStillInProgress)
+
+  // wallet selectors (safe)
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isWalletBackedUp = useSafeWalletSelector(WalletSelectors.isWalletBackedUp)
+  const hasIncorrectPassword = useSafeWalletSelector(WalletSelectors.hasIncorrectPassword)
+  const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
+  const defaultEthereumWallet = useSafeWalletSelector(WalletSelectors.defaultEthereumWallet)
+  const defaultSolanaWallet = useSafeWalletSelector(WalletSelectors.defaultSolanaWallet)
+  const isMetaMaskInstalled = useSafeWalletSelector(WalletSelectors.isMetaMaskInstalled)
+
+  // page selectors (safe)
+  const setupStillInProgress = useSafePageSelector(PageSelectors.setupStillInProgress)
 
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
