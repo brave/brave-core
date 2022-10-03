@@ -166,7 +166,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         braveStatsSubSectionText = layout.findViewById(R.id.brave_stats_sub_section_text);
         statsNotificationView = view.findViewById(R.id.brave_stats_notification_permission);
 
-
         RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
         statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -216,17 +215,17 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     private void updateNotificationView(View view) {
         ImageView btnDismiss = view.findViewById(R.id.button_dismiss);
-        btnDismiss.setOnClickListener(v -> {
-            statsNotificationView.setVisibility(View.GONE);
-        });
+        btnDismiss.setOnClickListener(v -> { statsNotificationView.setVisibility(View.GONE); });
         View notificationOnButton = view.findViewById(R.id.notification_on_button);
         notificationOnButton.setOnClickListener(v -> {
-            if (getActivity().shouldShowRequestPermissionRationale(PermissionConstants.NOTIFICATION_PERMISSION)) {
+            if (getActivity().shouldShowRequestPermissionRationale(
+                        PermissionConstants.NOTIFICATION_PERMISSION)) {
                 // Last time don't allow selected in permission dialog, then enable through setting
                 redirectToSettingPage();
             } else {
-                //1st time request permission
-                ActivityCompat.requestPermissions(getActivity(), new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+                // 1st time request permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
             }
         });
     }
