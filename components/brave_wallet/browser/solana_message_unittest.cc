@@ -306,8 +306,28 @@ TEST(SolanaMessageUnitTest, FromToValue) {
               "is_writable": true
             }
            ],
-           "data": "AgAAAICWmAAAAAAA"
-          }
+           "data": "AgAAAICWmAAAAAAA",
+           "decoded_data": {
+             "account_params": [
+               {
+                 "name": "from_account",
+                 "localized_name": "From Account"
+               },
+               {
+                 "name": "to_account",
+                 "localized_name": "To Account"
+               }
+             ],
+             "params": [
+               {
+                 "name": "lamports",
+                 "localized_name": "Lamports",
+                 "value": "10000000"
+               }
+             ],
+             "sys_ins_type": "2"
+           }
+        }
       ]
     }
   )");

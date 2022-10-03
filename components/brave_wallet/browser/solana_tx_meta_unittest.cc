@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -87,8 +88,18 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   std::vector<mojom::SolanaAccountMetaPtr> account_metas;
   account_metas.push_back(std::move(solana_account_meta1));
   account_metas.push_back(std::move(solana_account_meta2));
+  auto mojom_param =
+      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000");
+  std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
+  mojom_params.emplace_back(std::move(mojom_param));
+  auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
+      static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
+      solana_ins_data_decoder::GetMojomAccountParamsForTesting(
+          mojom::SolanaSystemInstruction::kTransfer, absl::nullopt),
+      std::move(mojom_params));
   auto mojom_instruction = mojom::SolanaInstruction::New(
-      kSolanaSystemProgramId, std::move(account_metas), data);
+      mojom::kSolanaSystemProgramId, std::move(account_metas), data,
+      std::move(mojom_decoded_data));
 
   std::vector<mojom::SolanaInstructionPtr> instructions;
   instructions.push_back(std::move(mojom_instruction));
@@ -172,7 +183,27 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
                   "is_writable": true
                 }
               ],
-              "data": "AgAAAICWmAAAAAAA"
+              "data": "AgAAAICWmAAAAAAA",
+              "decoded_data": {
+                "account_params": [
+                  {
+                    "name": "from_account",
+                    "localized_name": "From Account"
+                  },
+                  {
+                    "name": "to_account",
+                    "localized_name": "To Account"
+                  }
+                ],
+                "params": [
+                  {
+                    "name": "lamports",
+                    "localized_name": "Lamports",
+                    "value": "10000000"
+                  }
+                ],
+                "sys_ins_type": "2"
+              }
             }
           ]
         },

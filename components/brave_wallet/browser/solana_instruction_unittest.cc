@@ -11,6 +11,7 @@
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -122,7 +123,27 @@ TEST(SolanaInstructionUnitTest, FromToValue) {
           "is_writable": true
         }
       ],
-      "data": "AgAAAICWmAAAAAAA"
+      "data": "AgAAAICWmAAAAAAA",
+      "decoded_data": {
+        "account_params": [
+          {
+            "name": "from_account",
+            "localized_name": "From Account",
+          },
+          {
+            "name": "to_account",
+            "localized_name": "To Account"
+          }
+        ],
+        "params": [
+          {
+            "name": "lamports",
+            "localized_name": "Lamports",
+            "value": "10000000"
+          }
+        ],
+        "sys_ins_type": "2"
+      }
     }
   )");
   EXPECT_EQ(value, expect_instruction_value.GetDict());
@@ -157,14 +178,24 @@ TEST(SolanaInstructionUnitTest, FromMojomSolanaInstructions) {
   mojom_account_metas2.push_back(mojom_account_meta2.Clone());
   mojom_account_metas2.push_back(mojom_account_meta1.Clone());
 
+  std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
+  mojom_params.emplace_back(
+      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000"));
+  auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
+      static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
+      solana_ins_data_decoder::GetMojomAccountParamsForTesting(
+          mojom::SolanaSystemInstruction::kTransfer, absl::nullopt),
+      std::move(mojom_params));
+
   const std::string config_program =
       "Config1111111111111111111111111111111111111";
   mojom::SolanaInstructionPtr mojom_instruction1 =
-      mojom::SolanaInstruction::New(kSolanaSystemProgramId,
-                                    std::move(mojom_account_metas1), data);
+      mojom::SolanaInstruction::New(mojom::kSolanaSystemProgramId,
+                                    std::move(mojom_account_metas1), data,
+                                    std::move(mojom_decoded_data));
   mojom::SolanaInstructionPtr mojom_instruction2 =
-      mojom::SolanaInstruction::New(config_program,
-                                    std::move(mojom_account_metas2), data);
+      mojom::SolanaInstruction::New(
+          config_program, std::move(mojom_account_metas2), data, nullptr);
   std::vector<mojom::SolanaInstructionPtr> mojom_instructions;
   mojom_instructions.push_back(std::move(mojom_instruction1));
   mojom_instructions.push_back(std::move(mojom_instruction2));
@@ -180,7 +211,7 @@ TEST(SolanaInstructionUnitTest, FromMojomSolanaInstructions) {
                  SolanaInstruction(config_program,
                                    {SolanaAccountMeta(pubkey2, false, true),
                                     SolanaAccountMeta(pubkey1, true, false)},
-                                   data)}),
+                                   data, absl::nullopt)}),
             instructions);
 }
 
@@ -203,6 +234,16 @@ TEST(SolanaInstructionUnitTest, ToMojomSolanaInstruction) {
   EXPECT_EQ(mojom_instruction->account_metas[1],
             mojom::SolanaAccountMeta::New(pubkey2, false, true));
   EXPECT_EQ(mojom_instruction->data, data);
+  std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
+  mojom_params.emplace_back(
+      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000"));
+  EXPECT_EQ(
+      mojom_instruction->decoded_data,
+      mojom::DecodedSolanaInstructionData::New(
+          static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
+          solana_ins_data_decoder::GetMojomAccountParamsForTesting(
+              mojom::SolanaSystemInstruction::kTransfer, absl::nullopt),
+          std::move(mojom_params)));
 }
 
 }  // namespace brave_wallet
