@@ -52,6 +52,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/solana_account_meta_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_block_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_instruction_builder_unittest.cc",
+    "//brave/components/brave_wallet/browser/solana_instruction_data_decoder_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_instruction_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_message_unittest.cc",
