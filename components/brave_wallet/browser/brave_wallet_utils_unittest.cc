@@ -714,9 +714,15 @@ TEST(BraveWalletUtilsUnitTest, KnownChainExists) {
   EXPECT_EQ(known_chains.size(), 11u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(KnownChainExists(known_chain->chain_id, mojom::CoinType::ETH));
+    // Test that uppercase chain ID works too
+    EXPECT_TRUE(KnownChainExists(base::ToUpperASCII(known_chain->chain_id),
+                                 mojom::CoinType::ETH));
   }
 
   EXPECT_TRUE(CustomChainExists(&prefs, chain.chain_id, mojom::CoinType::ETH));
+  // Test that uppercase chain ID works too
+  EXPECT_TRUE(CustomChainExists(&prefs, base::ToUpperASCII(chain.chain_id),
+                                mojom::CoinType::ETH));
   EXPECT_FALSE(KnownChainExists(chain.chain_id, mojom::CoinType::ETH));
 
   EXPECT_TRUE(KnownChainExists(mojom::kFilecoinMainnet, mojom::CoinType::FIL));
@@ -944,6 +950,12 @@ TEST(BraveWalletUtilsUnitTest, GetCustomChain) {
   UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
   auto network = GetCustomChain(&prefs, chain.chain_id, mojom::CoinType::ETH);
+  ASSERT_TRUE(network);
+  EXPECT_EQ(*network, chain);
+
+  // Test that uppercase chain ID works too
+  network = GetCustomChain(&prefs, base::ToUpperASCII(chain.chain_id),
+                           mojom::CoinType::ETH);
   ASSERT_TRUE(network);
   EXPECT_EQ(*network, chain);
 }
