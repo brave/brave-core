@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
@@ -27,7 +28,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -110,7 +111,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},

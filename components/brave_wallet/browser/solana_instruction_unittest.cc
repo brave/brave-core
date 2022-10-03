@@ -24,7 +24,7 @@ TEST(SolanaInstructionUnitTest, SerializeDeserialize) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -33,7 +33,7 @@ TEST(SolanaInstructionUnitTest, SerializeDeserialize) {
 
   std::vector<SolanaAccountMeta> account_metas = {
       SolanaAccountMeta(from_account, true, true),
-      SolanaAccountMeta(kSolanaSystemProgramId, false, false)};
+      SolanaAccountMeta(mojom::kSolanaSystemProgramId, false, false)};
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(instruction.Serialize(account_metas, &bytes));
   std::vector<uint8_t> expected_bytes = {
@@ -64,8 +64,8 @@ TEST(SolanaInstructionUnitTest, SerializeDeserialize) {
 
   // Account not found.
   EXPECT_FALSE(instruction.Serialize(
-      {SolanaAccountMeta(kSolanaSystemProgramId, false, false),
-       SolanaAccountMeta(kSolanaSystemProgramId, false, false)},
+      {SolanaAccountMeta(mojom::kSolanaSystemProgramId, false, false),
+       SolanaAccountMeta(mojom::kSolanaSystemProgramId, false, false)},
       &bytes));
 
   // Input account meta length > uint8_t max.
@@ -82,7 +82,7 @@ TEST(SolanaInstructionUnitTest, SerializeDeserialize) {
   // Instruction account size > uint8_t max.
   SolanaInstruction invalid_instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       std::move(oversize_account_metas),
       // Data
@@ -100,7 +100,7 @@ TEST(SolanaInstructionUnitTest, FromToValue) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -173,7 +173,7 @@ TEST(SolanaInstructionUnitTest, FromMojomSolanaInstructions) {
   SolanaInstruction::FromMojomSolanaInstructions(mojom_instructions,
                                                  &instructions);
   EXPECT_EQ(std::vector<SolanaInstruction>(
-                {SolanaInstruction(kSolanaSystemProgramId,
+                {SolanaInstruction(mojom::kSolanaSystemProgramId,
                                    {SolanaAccountMeta(pubkey1, true, false),
                                     SolanaAccountMeta(pubkey2, false, true)},
                                    data),
@@ -189,14 +189,14 @@ TEST(SolanaInstructionUnitTest, ToMojomSolanaInstruction) {
   const std::string pubkey2 = "83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri";
   std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
 
-  SolanaInstruction instruction(kSolanaSystemProgramId,
+  SolanaInstruction instruction(mojom::kSolanaSystemProgramId,
                                 {SolanaAccountMeta(pubkey1, true, false),
                                  SolanaAccountMeta(pubkey2, false, true)},
                                 data);
 
   auto mojom_instruction = instruction.ToMojomSolanaInstruction();
   ASSERT_TRUE(mojom_instruction);
-  EXPECT_EQ(mojom_instruction->program_id, kSolanaSystemProgramId);
+  EXPECT_EQ(mojom_instruction->program_id, mojom::kSolanaSystemProgramId);
   EXPECT_EQ(mojom_instruction->account_metas.size(), 2u);
   EXPECT_EQ(mojom_instruction->account_metas[0],
             mojom::SolanaAccountMeta::New(pubkey1, true, false));

@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -422,7 +423,7 @@ void SolanaTxManager::OnGetAccountInfo(
 
   bool create_associated_token_account = false;
   std::vector<SolanaInstruction> instructions;
-  if (!account_info || account_info->owner != kSolanaTokenProgramId) {
+  if (!account_info || account_info->owner != mojom::kSolanaTokenProgramId) {
     absl::optional<SolanaInstruction> create_associated_token_instruction =
         solana::spl_associated_token_account_program::
             CreateAssociatedTokenAccount(from_wallet_address, to_wallet_address,
@@ -440,7 +441,7 @@ void SolanaTxManager::OnGetAccountInfo(
 
   absl::optional<SolanaInstruction> transfer_instruction =
       solana::spl_token_program::Transfer(
-          kSolanaTokenProgramId, from_associated_token_account,
+          mojom::kSolanaTokenProgramId, from_associated_token_account,
           to_associated_token_account, from_wallet_address,
           std::vector<std::string>(), amount);
   if (!transfer_instruction) {

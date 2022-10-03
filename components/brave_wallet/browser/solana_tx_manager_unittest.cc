@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -673,12 +674,12 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       mojom::SolanaAccountMeta::New(to_wallet_address, false, false);
   auto solana_account_meta7 =
       mojom::SolanaAccountMeta::New(spl_token_mint_address, false, false);
-  auto solana_account_meta8 =
-      mojom::SolanaAccountMeta::New(kSolanaSystemProgramId, false, false);
+  auto solana_account_meta8 = mojom::SolanaAccountMeta::New(
+      mojom::kSolanaSystemProgramId, false, false);
   auto solana_account_meta9 =
-      mojom::SolanaAccountMeta::New(kSolanaTokenProgramId, false, false);
-  auto solana_account_meta10 =
-      mojom::SolanaAccountMeta::New(kSolanaSysvarRentProgramId, false, false);
+      mojom::SolanaAccountMeta::New(mojom::kSolanaTokenProgramId, false, false);
+  auto solana_account_meta10 = mojom::SolanaAccountMeta::New(
+      mojom::kSolanaSysvarRentProgramId, false, false);
   account_metas.push_back(std::move(solana_account_meta4));
   account_metas.push_back(std::move(solana_account_meta5));
   account_metas.push_back(std::move(solana_account_meta6));
@@ -689,7 +690,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
 
   instructions.clear();
   auto mojom_create_associated_account_instruction =
-      mojom::SolanaInstruction::New(kSolanaAssociatedTokenProgramId,
+      mojom::SolanaInstruction::New(mojom::kSolanaAssociatedTokenProgramId,
                                     std::move(account_metas),
                                     std::vector<uint8_t>());
   instructions.push_back(
@@ -777,7 +778,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTxDataFromBase64EncodedTransaction) {
   account_metas.push_back(std::move(solana_account_meta2));
   auto mojom_instruction = mojom::SolanaInstruction::New(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       std::move(account_metas),
       // Data

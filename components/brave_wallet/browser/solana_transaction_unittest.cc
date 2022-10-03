@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -112,7 +113,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kToAccount, false, true)},
@@ -167,12 +168,12 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   // order is different and use one as the encoded_serialized_message to check
   // if we sign the exact encoded_serialized_message and also respect their
   // signer/signature order in the passed in message.
-  instruction = SolanaInstruction(kSolanaSystemProgramId,
+  instruction = SolanaInstruction(mojom::kSolanaSystemProgramId,
                                   {SolanaAccountMeta(kFromAccount, true, true),
                                    SolanaAccountMeta(kToAccount, true, true),
                                    SolanaAccountMeta(kTestAccount, true, true)},
                                   {});
-  SolanaInstruction instruction2(kSolanaSystemProgramId,
+  SolanaInstruction instruction2(mojom::kSolanaSystemProgramId,
                                  {SolanaAccountMeta(kFromAccount, true, true),
                                   SolanaAccountMeta(kTestAccount, true, true),
                                   SolanaAccountMeta(kToAccount, true, true)},
@@ -244,7 +245,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   std::vector<uint8_t> oversized_data(1232, 1);
   instruction = SolanaInstruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kToAccount, false, true)},
@@ -325,7 +326,7 @@ TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
   uint64_t last_valid_block_height = 0;
   auto instruction = SolanaInstruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, true, true)},
@@ -359,7 +360,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -400,7 +401,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
   EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
-            kSolanaSystemProgramId);
+            mojom::kSolanaSystemProgramId);
   EXPECT_EQ(solana_tx_data->instructions[0]->data, data);
 
   ASSERT_EQ(solana_tx_data->instructions[0]->account_metas.size(), 2u);
@@ -428,7 +429,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -562,7 +563,7 @@ TEST_F(SolanaTransactionUnitTest, GetBase64EncodedMessage) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -590,12 +591,12 @@ TEST_F(SolanaTransactionUnitTest, GetBase64EncodedMessage) {
 }
 
 TEST_F(SolanaTransactionUnitTest, GetSerializedMessage) {
-  SolanaInstruction ins1(kSolanaSystemProgramId,
+  SolanaInstruction ins1(mojom::kSolanaSystemProgramId,
                          {SolanaAccountMeta(kFromAccount, true, true),
                           SolanaAccountMeta(kToAccount, true, true),
                           SolanaAccountMeta(kTestAccount, true, true)},
                          {});
-  SolanaInstruction ins2(kSolanaSystemProgramId,
+  SolanaInstruction ins2(mojom::kSolanaSystemProgramId,
                          {SolanaAccountMeta(kFromAccount, true, true),
                           SolanaAccountMeta(kTestAccount, true, true),
                           SolanaAccountMeta(kToAccount, true, true)},
@@ -640,7 +641,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
 
   // Valid
   SolanaInstruction instruction_one_signer(
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       {SolanaAccountMeta("3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw", true,
                          true),
        SolanaAccountMeta("3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD", false,

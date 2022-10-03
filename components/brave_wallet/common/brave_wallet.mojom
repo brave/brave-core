@@ -757,6 +757,11 @@ struct TxData1559 {
   GasEstimation1559? gas_estimation;
 };
 
+const string kSolanaSystemProgramId = "11111111111111111111111111111111";
+const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
+
 const string kMainnetChainId = "0x1";
 const string kGoerliChainId = "0x5";
 const string kSepoliaChainId = "0xaa36a7";

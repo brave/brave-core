@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -23,7 +24,7 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSOL) {
   auto ins = Transfer("pubkey1", "pubkey2", 10000000);
   EXPECT_TRUE(ins);
   EXPECT_EQ(ins.value(),
-            SolanaInstruction(kSolanaSystemProgramId,
+            SolanaInstruction(mojom::kSolanaSystemProgramId,
                               {SolanaAccountMeta("pubkey1", true, true),
                                SolanaAccountMeta("pubkey2", false, true)},
                               {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
@@ -85,14 +86,14 @@ TEST(SolanaInstructionBuilderUnitTest, CreateAssociatedTokenAccount) {
   EXPECT_EQ(
       ins.value(),
       SolanaInstruction(
-          kSolanaAssociatedTokenProgramId,
+          mojom::kSolanaAssociatedTokenProgramId,
           {SolanaAccountMeta("funding_address", true, true),
            SolanaAccountMeta("associated_token_account_address", false, true),
            SolanaAccountMeta("wallet_address", false, false),
            SolanaAccountMeta("spl_token_mint_address", false, false),
-           SolanaAccountMeta(kSolanaSystemProgramId, false, false),
-           SolanaAccountMeta(kSolanaTokenProgramId, false, false),
-           SolanaAccountMeta(kSolanaSysvarRentProgramId, false, false)},
+           SolanaAccountMeta(mojom::kSolanaSystemProgramId, false, false),
+           SolanaAccountMeta(mojom::kSolanaTokenProgramId, false, false),
+           SolanaAccountMeta(mojom::kSolanaSysvarRentProgramId, false, false)},
           std::vector<uint8_t>()));
 
   EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",

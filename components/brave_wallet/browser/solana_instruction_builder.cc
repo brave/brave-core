@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "build/build_config.h"
@@ -68,7 +69,7 @@ absl::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
   instruction_data.insert(instruction_data.end(), lamport_bytes.begin(),
                           lamport_bytes.end());
 
-  return SolanaInstruction(kSolanaSystemProgramId,
+  return SolanaInstruction(mojom::kSolanaSystemProgramId,
                            std::vector<SolanaAccountMeta>(
                                {SolanaAccountMeta(from_pubkey, true, true),
                                 SolanaAccountMeta(to_pubkey, false, true)}),
@@ -161,10 +162,10 @@ absl::optional<SolanaInstruction> CreateAssociatedTokenAccount(
       SolanaAccountMeta(associated_token_account_address, false, true),
       SolanaAccountMeta(wallet_address, false, false),
       SolanaAccountMeta(spl_token_mint_address, false, false),
-      SolanaAccountMeta(kSolanaSystemProgramId, false, false),
-      SolanaAccountMeta(kSolanaTokenProgramId, false, false),
-      SolanaAccountMeta(kSolanaSysvarRentProgramId, false, false)};
-  return SolanaInstruction(kSolanaAssociatedTokenProgramId,
+      SolanaAccountMeta(mojom::kSolanaSystemProgramId, false, false),
+      SolanaAccountMeta(mojom::kSolanaTokenProgramId, false, false),
+      SolanaAccountMeta(mojom::kSolanaSysvarRentProgramId, false, false)};
+  return SolanaInstruction(mojom::kSolanaAssociatedTokenProgramId,
                            std::move(account_metas), std::vector<uint8_t>());
 }
 

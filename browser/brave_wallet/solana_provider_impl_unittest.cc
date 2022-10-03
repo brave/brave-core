@@ -838,7 +838,7 @@ TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
   const std::string address = GetAddressByIndex(0);
   EXPECT_FALSE(provider_->GetDeserializedMessage("", address));
 
-  SolanaInstruction instruction(kSolanaSystemProgramId,
+  SolanaInstruction instruction(mojom::kSolanaSystemProgramId,
                                 {SolanaAccountMeta(address, true, true),
                                  SolanaAccountMeta(address, false, true)},
                                 {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
@@ -911,7 +911,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs_Hardware) {
   ASSERT_TRUE(IsConnected());
 
   SolanaInstruction instruction(
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       {SolanaAccountMeta(kHardwareAccountAddr, true, true),
        SolanaAccountMeta(kHardwareAccountAddr, false, true)},
       {});
