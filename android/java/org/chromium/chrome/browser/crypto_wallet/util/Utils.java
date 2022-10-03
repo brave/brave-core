@@ -345,14 +345,8 @@ public class Utils {
 
     public static String getBuyUrlForTestChain(String chainId) {
         switch (chainId) {
-            case BraveWalletConstants.RINKEBY_CHAIN_ID:
-                return "https://www.rinkeby.io/#stats";
-            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
-                return "https://faucet.ropsten.be/";
             case BraveWalletConstants.GOERLI_CHAIN_ID:
                 return "https://goerli-faucet.slock.it/";
-            case BraveWalletConstants.KOVAN_CHAIN_ID:
-                return "https://github.com/kovan-testnet/faucet";
             default:
                 // Unavailable for MAINNET_CHAIN_ID and LOCALHOST_CHAIN_ID
                 return "";
@@ -1644,10 +1638,7 @@ public class Utils {
     public static boolean allowBuyAndSwap(String chainId) {
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
-            case BraveWalletConstants.RINKEBY_CHAIN_ID:
-            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
             case BraveWalletConstants.GOERLI_CHAIN_ID:
-            case BraveWalletConstants.KOVAN_CHAIN_ID:
                 return true;
             default:
                 break;

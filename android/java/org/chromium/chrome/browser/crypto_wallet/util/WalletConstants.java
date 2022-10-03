@@ -42,10 +42,8 @@ public final class WalletConstants {
     public static final String[] BRAVE_WALLET_PREFS = {PREF_SHOW_BRIDGE_INFO_DIALOG};
 
     public static List<String> BUY_SUPPORTED_NETWORKS = Arrays.asList(
-            BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.RINKEBY_CHAIN_ID,
-            BraveWalletConstants.ROPSTEN_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID,
-            BraveWalletConstants.KOVAN_CHAIN_ID, BraveWalletConstants.LOCALHOST_CHAIN_ID,
-            BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID,
+            BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID,
+            BraveWalletConstants.LOCALHOST_CHAIN_ID, BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID,
             BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
             BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID,
             BraveWalletConstants.CELO_MAINNET_CHAIN_ID,
