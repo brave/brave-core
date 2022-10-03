@@ -13,7 +13,6 @@
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "third_party/blink/renderer/platform/network/blink_schemeful_site.h"
 
 namespace playlist {
 
@@ -30,8 +29,7 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   if (base::ranges::any_of(
           render_frame()->GetBlinkPreferences().sites_to_hide_media_src_api,
           [&current_origin](const auto& site) {
-            return blink::BlinkSchemefulSite(site) ==
-                   blink::BlinkSchemefulSite(current_origin);
+            return site == net::SchemefulSite(current_origin);
           })) {
     HideMediaSourceAPI();
   }
