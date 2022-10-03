@@ -28,6 +28,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_news {
 
@@ -51,8 +52,10 @@ FeedController::FeedController(
     PublishersController* publishers_controller,
     DirectFeedController* direct_feed_controller,
     history::HistoryService* history_service,
-    api_request_helper::APIRequestHelper* api_request_helper)
-    : publishers_controller_(publishers_controller),
+    api_request_helper::APIRequestHelper* api_request_helper,
+    PrefService* prefs)
+    : prefs_(prefs),
+      publishers_controller_(publishers_controller),
       direct_feed_controller_(direct_feed_controller),
       history_service_(history_service),
       api_request_helper_(api_request_helper),
@@ -148,22 +151,36 @@ void FeedController::EnsureFeedIsUpdating() {
               auto onHistory = base::BindOnce(
                   [](FeedController* controller, FeedItems all_feed_items,
                      Publishers publishers, history::QueryResults results) {
-                    std::unordered_set<std::string> history_hosts;
-                    for (const auto& item : results) {
-                      auto host = item.url().host();
-                      history_hosts.insert(host);
-                    }
-                    VLOG(1) << "history hosts # " << history_hosts.size();
-                    // Parse directly to in-memory property
-                    controller->ResetFeed();
-                    std::vector<mojom::FeedItemPtr> feed_items;
-                    if (BuildFeed(all_feed_items, history_hosts, &publishers,
-                                  &controller->current_feed_)) {
-                    } else {
-                      VLOG(1) << "ParseFeed reported failure.";
-                    }
-                    // Let any callbacks know that the data is ready or errored.
-                    controller->NotifyUpdateDone();
+                    controller->publishers_controller_->GetLocale(
+                        base::BindOnce(
+                            [](FeedController* controller,
+                               FeedItems all_feed_items, Publishers publishers,
+                               history::QueryResults results,
+                               const std::string& locale) {
+                              std::unordered_set<std::string> history_hosts;
+                              for (const auto& item : results) {
+                                auto host = item.url().host();
+                                history_hosts.insert(host);
+                              }
+                              VLOG(1)
+                                  << "history hosts # " << history_hosts.size();
+                              // Parse directly to in-memory property
+                              controller->ResetFeed();
+                              std::vector<mojom::FeedItemPtr> feed_items;
+                              if (BuildFeed(all_feed_items, history_hosts,
+                                            &publishers,
+                                            &controller->current_feed_,
+                                            controller->prefs_, locale)) {
+                              } else {
+                                VLOG(1) << "ParseFeed reported failure.";
+                              }
+                              // Let any callbacks know that the data is ready
+                              // or errored.
+                              controller->NotifyUpdateDone();
+                            },
+                            base::Unretained(controller),
+                            std::move(all_feed_items), std::move(publishers),
+                            std::move(results)));
                   },
                   base::Unretained(controller), std::move(all_feed_items),
                   std::move(publishers));

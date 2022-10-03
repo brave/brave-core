@@ -11,20 +11,25 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_news {
 
 bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
-               mojom::Feed* feed);
+               mojom::Feed* feed,
+               PrefService* prefs,
+               const std::string& locale);
 
 // Exposed for testing
 bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
-                           const Publishers* publishers);
+                           const Publishers* publishers,
+                           const Channels& channels);
 
 }  // namespace brave_news
 

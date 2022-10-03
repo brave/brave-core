@@ -18,6 +18,7 @@
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/prefs/pref_service.h"
 
 namespace history {
 class HistoryService;
@@ -34,7 +35,8 @@ class FeedController : public PublishersController::Observer {
   FeedController(PublishersController* publishers_controller,
                  DirectFeedController* direct_feed_controller,
                  history::HistoryService* history_service,
-                 api_request_helper::APIRequestHelper* api_request_helper);
+                 api_request_helper::APIRequestHelper* api_request_helper,
+                 PrefService* prefs);
   ~FeedController() override;
   FeedController(const FeedController&) = delete;
   FeedController& operator=(const FeedController&) = delete;
@@ -69,6 +71,7 @@ class FeedController : public PublishersController::Observer {
   void ResetFeed();
   void NotifyUpdateDone();
 
+  raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<PublishersController> publishers_controller_ = nullptr;
   raw_ptr<DirectFeedController> direct_feed_controller_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;

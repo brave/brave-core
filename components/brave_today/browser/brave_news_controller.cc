@@ -24,9 +24,11 @@
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "brave/components/brave_today/browser/brave_news_p3a.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
+#include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -66,6 +68,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                 brave_news_enabled_default);
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
   registry->RegisterDictionaryPref(prefs::kBraveTodaySources);
+  registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
   registry->RegisterDictionaryPref(prefs::kBraveTodayDirectFeeds);
 
   p3a::RegisterProfilePrefs(registry);
@@ -81,22 +84,24 @@ BraveNewsController::BraveNewsController(
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
-      direct_feed_controller_(prefs, url_loader_factory),
-      unsupported_publisher_migrator_(prefs,
+      direct_feed_controller_(prefs_, url_loader_factory),
+      unsupported_publisher_migrator_(prefs_,
                                       &direct_feed_controller_,
                                       &api_request_helper_),
-      publishers_controller_(prefs,
+      publishers_controller_(prefs_,
                              &direct_feed_controller_,
                              &unsupported_publisher_migrator_,
                              &api_request_helper_),
       feed_controller_(&publishers_controller_,
                        &direct_feed_controller_,
                        history_service,
-                       &api_request_helper_),
+                       &api_request_helper_,
+                       prefs_),
+      channels_controller_(prefs_, &publishers_controller_),
       weak_ptr_factory_(this) {
-  DCHECK(prefs);
+  DCHECK(prefs_);
   // Set up preference listeners
-  pref_change_registrar_.Init(prefs);
+  pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kNewTabPageShowToday,
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
@@ -106,7 +111,17 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
 
-  p3a::RecordAtInit(prefs);
+  auto* channels = prefs_->GetDictionary(prefs::kBraveNewsChannels);
+  if (channels->DictEmpty()) {
+    publishers_controller_.GetLocale(base::BindOnce(
+        [](ChannelsController* channels_controller, const std::string& locale) {
+          channels_controller->SetChannelSubscribed(locale, kTopSourcesChannel,
+                                                    true);
+        },
+        base::Unretained(&channels_controller_)));
+  }
+
+  p3a::RecordAtInit(prefs_);
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
   ConditionallyStartOrStopTimer();
@@ -147,6 +162,31 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
                                     FindFeedsCallback callback) {
   direct_feed_controller_.FindFeeds(possible_feed_or_site_url,
                                     std::move(callback));
+}
+
+void BraveNewsController::GetChannels(GetChannelsCallback callback) {
+  publishers_controller_.GetLocale(base::BindOnce(
+      [](ChannelsController* channels_controller, GetChannelsCallback callback,
+         const std::string& locale) {
+        channels_controller->GetAllChannels(locale, std::move(callback));
+      },
+      base::Unretained(&channels_controller_), std::move(callback)));
+}
+
+void BraveNewsController::SetChannelSubscribed(
+    const std::string& channel_id,
+    bool subscribed,
+    SetChannelSubscribedCallback callback) {
+  publishers_controller_.GetLocale(base::BindOnce(
+      [](ChannelsController* channels_controller, const std::string& channel_id,
+         bool subscribed, SetChannelSubscribedCallback callback,
+         const std::string& locale) {
+        auto result = channels_controller->SetChannelSubscribed(
+            locale, channel_id, subscribed);
+        std::move(callback).Run(std::move(result));
+      },
+      base::Unretained(&channels_controller_), channel_id, subscribed,
+      std::move(callback)));
 }
 
 void BraveNewsController::SubscribeToNewDirectFeed(

@@ -11,6 +11,7 @@ namespace prefs {
 
 constexpr char kNewTabPageShowToday[] = "brave.new_tab_page.show_brave_today";
 constexpr char kBraveTodaySources[] = "brave.today.sources";
+constexpr char kBraveNewsChannels[] = "brave.news.channels";
 constexpr char kBraveTodayDirectFeeds[] = "brave.today.userfeeds";
 constexpr char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
 constexpr char kBraveTodayOptedIn[] = "brave.today.opted_in";

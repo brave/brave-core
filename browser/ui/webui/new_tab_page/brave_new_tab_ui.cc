@@ -66,6 +66,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
                      base::FeatureList::IsEnabled(
                          brave_today::features::kBraveNewsCardPeekFeature));
   source->AddBoolean(
+      "featureFlagBraveNewsV2Enabled",
+      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsV2Feature));
+  source->AddBoolean(
       "featureFlagBraveNewsSubscribeButtonEnabled",
       base::FeatureList::IsEnabled(
           brave_today::features::kBraveNewsSubscribeButtonFeature));
