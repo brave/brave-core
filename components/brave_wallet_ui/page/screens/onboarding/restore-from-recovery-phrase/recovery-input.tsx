@@ -10,7 +10,7 @@ import { getLocale } from '../../../../../common/locale'
 import { clearClipboard } from '../../../../utils/copy-to-clipboard'
 
 // style
-import { RecoveryTextDiv, RecoveryTextInput } from './restore-from-recovery-phrase.style'
+import { RecoveryTextArea, RecoveryTextInput } from './restore-from-recovery-phrase.style'
 import { PhraseCardBody, PhraseCardBottomRow, PhraseCardTopRow } from '../onboarding.style'
 import { ToggleVisibilityButton, WalletLink } from '../../../../components/shared/style'
 
@@ -25,27 +25,6 @@ interface State {
   isPhraseShown: boolean
 }
 
-function replaceCaret (el: HTMLElement) {
-  // Place the caret at the end of the element
-  const target = document.createTextNode('')
-  el.appendChild(target)
-  // do not move caret if element was not focused
-  const isTargetFocused = document.activeElement === el
-  if (target !== null && target.nodeValue !== null && isTargetFocused) {
-    const sel = window.getSelection()
-    if (sel !== null) {
-      const range = document.createRange()
-      range.setStart(target, target.nodeValue.length)
-      range.collapse(true)
-      sel.removeAllRanges()
-      sel.addRange(range)
-    }
-    if (el instanceof HTMLElement) {
-      el.focus()
-    }
-  }
-}
-
 // Forked from: https://github.com/lovasoa/react-contenteditable
 // Using a class component due to this issue: https://github.com/lovasoa/react-contenteditable/issues/161
 export class RecoveryInput extends React.Component<Props, State> {
@@ -54,17 +33,10 @@ export class RecoveryInput extends React.Component<Props, State> {
     value: ''
   }
 
-  el: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>()
-
-  componentDidUpdate = () => {
-    if (!this.el.current) return
-    replaceCaret(this.el.current)
-  }
-
   handleChange = (event: React.ChangeEvent<
-    HTMLInputElement | HTMLDivElement
+    HTMLInputElement | HTMLTextAreaElement
   >) => {
-    const inputValue = (event.target as HTMLInputElement)?.value
+    const inputValue = event.target?.value
     const divValue = event.target.innerText
 
     const value = inputValue || divValue
@@ -80,8 +52,7 @@ export class RecoveryInput extends React.Component<Props, State> {
     const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
 
     // max length
-    // the editable-content div input value is handled differently than the password input value for some reason
-    const maxLength = this.state.isPhraseShown ? 24 : 25
+    const maxLength = 24
 
     // This prevents an extra space at the end of a 24 word phrase.
     const needsCleaning = removedDoubleSpaces.split(' ').length === maxLength
@@ -109,9 +80,6 @@ export class RecoveryInput extends React.Component<Props, State> {
 
     // update local state
     this.setState({ value: cleanedInput })
-    if (this.el.current) {
-      this.el.current.innerText = cleanedInput
-    }
   }
 
   toggleShowPhrase = () => {
@@ -149,15 +117,13 @@ export class RecoveryInput extends React.Component<Props, State> {
 
       <PhraseCardBody>
         {isPhraseShown
-          ? <RecoveryTextDiv
-              ref={this.el}
-              onInput={this.handleChange}
+          ? <RecoveryTextArea
+              onChange={this.handleChange}
               onPaste={clearClipboard}
               onKeyDown={onKeyDown}
-              contentEditable
-            >
-              {value}
-            </RecoveryTextDiv>
+              value={value}
+              autoComplete='off'
+            />
           : <RecoveryTextInput
               type='password'
               value={value}
