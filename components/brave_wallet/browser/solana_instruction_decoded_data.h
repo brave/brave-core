@@ -36,6 +36,15 @@ struct SolanaInstructionDecodedData {
 
   bool operator==(const SolanaInstructionDecodedData&) const;
 
+  static absl::optional<SolanaInstructionDecodedData> FromMojom(
+      const std::string& program_id,
+      const mojom::DecodedSolanaInstructionDataPtr& mojom_decoded_data);
+  mojom::DecodedSolanaInstructionDataPtr ToMojom() const;
+
+  static absl::optional<SolanaInstructionDecodedData> FromValue(
+      const base::Value::Dict& value);
+  absl::optional<base::Value::Dict> ToValue() const;
+
   // There should be only one type that has value.
   bool IsValid() const { return !sys_ins_type != !token_ins_type; }
 

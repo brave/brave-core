@@ -27,7 +27,8 @@ SolanaMessage::SolanaMessage(const std::string& recent_blockhash,
       fee_payer_(fee_payer),
       instructions_(std::move(instructions)) {}
 
-SolanaMessage::SolanaMessage(const SolanaMessage&) = default;
+SolanaMessage::SolanaMessage(SolanaMessage&&) = default;
+SolanaMessage& SolanaMessage::operator=(SolanaMessage&&) = default;
 
 SolanaMessage::~SolanaMessage() = default;
 
@@ -255,7 +256,7 @@ absl::optional<SolanaMessage> SolanaMessage::Deserialize(
         SolanaInstruction::Deserialize(accounts, bytes, &bytes_index);
     if (!instruction)
       return absl::nullopt;
-    instructions.push_back(*instruction);
+    instructions.emplace_back(std::move(instruction.value()));
   }
 
   // Byte array needs to be exact without any left over bytes.
@@ -325,7 +326,7 @@ absl::optional<SolanaMessage> SolanaMessage::FromValue(
         SolanaInstruction::FromValue(instruction_value.GetDict());
     if (!instruction)
       return absl::nullopt;
-    instructions.push_back(*instruction);
+    instructions.emplace_back(std::move(instruction.value()));
   }
 
   return SolanaMessage(*recent_blockhash, last_valid_block_height, *fee_payer,

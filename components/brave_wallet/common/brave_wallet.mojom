@@ -1377,10 +1377,33 @@ enum SolanaTokenInstruction {
   kInitializeMint2 = 20,
 };
 
+struct SolanaInstructionParam {
+  string name;
+  string localized_name;  // For UI display.
+  string value;
+};
+
+struct SolanaInstructionAccountParam {
+  string name;
+  string localized_name;  // For UI display.
+};
+
+struct DecodedSolanaInstructionData {
+  uint32 instruction_type;  // Should be converted to either
+                            // SolanaSystmeInstruction or SolanaTokenInstruction
+                            // based on program ID.
+
+  // Parameter names of the account meta array.
+  array<SolanaInstructionAccountParam> account_params;
+  // Parameters encoded in the instruction data array.
+  array<SolanaInstructionParam> params;
+};
+
 struct SolanaInstruction {
   string program_id;
   array<SolanaAccountMeta> account_metas;
   array<uint8> data;
+  DecodedSolanaInstructionData? decoded_data;
 };
 
 struct SolanaTxData {

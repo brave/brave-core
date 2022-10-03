@@ -7,9 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_INSTRUCTION_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_decoded_data.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -29,9 +32,16 @@ class SolanaInstruction {
   SolanaInstruction(const std::string& program_id,
                     std::vector<SolanaAccountMeta>&& accounts,
                     const std::vector<uint8_t>& data);
+  SolanaInstruction(const std::string& program_id,
+                    std::vector<SolanaAccountMeta>&& accounts,
+                    const std::vector<uint8_t>& data,
+                    absl::optional<SolanaInstructionDecodedData> decoded_data);
   ~SolanaInstruction();
 
   SolanaInstruction(const SolanaInstruction&);
+  SolanaInstruction(SolanaInstruction&&);
+  SolanaInstruction& operator=(const SolanaInstruction&);
+  SolanaInstruction& operator=(SolanaInstruction&&);
   bool operator==(const SolanaInstruction&) const;
 
   bool Serialize(const std::vector<SolanaAccountMeta>& message_account_metas,
@@ -59,6 +69,8 @@ class SolanaInstruction {
   std::string program_id_;
   std::vector<SolanaAccountMeta> accounts_;
   std::vector<uint8_t> data_;
+
+  absl::optional<SolanaInstructionDecodedData> decoded_data_;
 };
 
 }  // namespace brave_wallet

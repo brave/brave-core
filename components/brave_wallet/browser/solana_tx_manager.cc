@@ -323,9 +323,11 @@ void SolanaTxManager::MakeSystemProgramTransferTxData(
     return;
   }
 
+  std::vector<SolanaInstruction> vec;
+  vec.emplace_back(std::move(instruction.value()));
   // recent_blockhash will be updated when we are going to send out the tx.
   SolanaTransaction transaction("" /* recent_blockhash*/, 0, from,
-                                {*instruction});
+                                std::move(vec));
   transaction.set_to_wallet_address(to);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
   transaction.set_lamports(lamports);
