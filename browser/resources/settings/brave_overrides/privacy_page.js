@@ -78,7 +78,7 @@ RegisterPolymerTemplateModifications({
         <template is="dom-if" route-path="/content/braveShields" no-search>
         <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
         <category-setting-exceptions
-        category="[[contentSettingsTypesEnum_.SHIELDS]]"
+        category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]"
         block-header="${I18nBehavior.i18n('siteSettingsShieldsDown')}"
         allow-header="${I18nBehavior.i18n('siteSettingsShieldsUp')}">
         </category-setting-exceptions>

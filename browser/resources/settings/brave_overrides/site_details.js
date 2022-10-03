@@ -54,7 +54,7 @@ RegisterPolymerTemplateModifications({
           </div>
           <div class="list-frame">
             <site-details-permission
-                category="[[contentSettingsTypesEnum_.SHIELDS]]"
+                category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]"
                 icon="brave_settings:shields" label="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
             </site-details-permission>
             <site-details-permission
