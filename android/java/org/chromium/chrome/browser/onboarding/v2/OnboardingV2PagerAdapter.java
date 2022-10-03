@@ -25,9 +25,6 @@ public class OnboardingV2PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        // if (isFromStats)
-        //     position = 3;
-
         OnboardingV2Fragment onboardingV2Fragment = new OnboardingV2Fragment();
         onboardingV2Fragment.setPosition(position);
         onboardingV2Fragment.setHighlightListener(highlightDialogListener);
