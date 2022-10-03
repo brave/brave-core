@@ -95,8 +95,11 @@ public class BraveDappPermissionPromptDialog
         }
     }
 
-    // TODO: It is much more efficient to retrieve resources by identifier (e.g. R.foo.bar) than by
-    // name (e.g. getIdentifier("bar", "foo", null)).
+    // @SuppressLint("DiscouragedApi") is required to suppress "getIdentifier" usage
+    // The "container" view group is part of a dialog created by PropertyModel.Builder chromium API,
+    // to which we don't have any direct access so there is no direct way to access the positive
+    // button (as per my R&D) of the dialog created by PropertyModel.Builder. "getIdentifier" is the
+    // only option to get the exact positive button's identifier value to change its state.
     @SuppressLint("DiscouragedApi")
     @CalledByNative
     void show() {

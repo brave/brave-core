@@ -16,6 +16,9 @@ public final class WalletConstants {
             "https://doc.aurora.dev/bridge/bridge-overview/";
     public static final String URL_RAINBOW_BRIDGE_RISKS = "https://rainbowbridge.app/approvals";
 
+    // Regex
+    public static final String REGX_ANY_ETH_ADDRESS = ".*(0x[a-fA-F0-9]{40}).*";
+
     // Aurora
     public static final String URL_RAINBOW_AURORA = "https://rainbowbridge.app";
 

@@ -78,6 +78,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.Validations;
@@ -1134,17 +1135,18 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (barcode == null) {
             return;
         }
-        final String barcodeValue = barcode.displayValue;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (null != mCameraSourcePreview) {
-                    mCameraSourcePreview.stop();
-                }
-                RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
-                relativeLayout.setVisibility(View.GONE);
-                mSendToAddrText.setText(barcodeValue);
+        String barcodeValue = barcode.displayValue;
+        if (mSelectedNetwork.coin == CoinType.ETH) {
+            barcodeValue = AddressUtils.sanitizeEthAddress(barcodeValue);
+        }
+        final String finalBarcodeValue = barcodeValue;
+        runOnUiThread(() -> {
+            if (null != mCameraSourcePreview) {
+                mCameraSourcePreview.stop();
             }
+            RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
+            relativeLayout.setVisibility(View.GONE);
+            mSendToAddrText.setText(finalBarcodeValue);
         });
     }
 
