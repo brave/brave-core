@@ -35,6 +35,8 @@ enum UserScriptType: Hashable {
         return .bravePlaylistFolderSharingHelper
       case .braveSkus:
         return .braveSkus
+      case .youtubeAdblock:
+        return .youtubeAdblock
       }
     case .nacl:
       return .nacl
