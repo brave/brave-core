@@ -1061,7 +1061,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
     }
   }
 
-  if (response_body && loader->ResponseInfo() &&
+  if (response_body && !response_body->empty() && loader->ResponseInfo() &&
       base::Contains(loader->ResponseInfo()->mime_type, "json")) {
     return data_decoder::JsonSanitizer::Sanitize(
         *response_body,
