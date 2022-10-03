@@ -137,6 +137,45 @@ pub extern "C" fn rewriter_set_theme(
     rewriter.set_theme(the_theme);
 }
 
+#[no_mangle]
+pub extern "C" fn rewriter_set_font_family(
+    rewriter: *mut CRewriter,
+    font: *const c_char,
+) {
+    let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
+    let the_font = unsafe {
+        let c_s = font;
+        str::from_utf8_unchecked(slice::from_raw_parts(c_s as *const u8, strlen(c_s)))
+    };
+    rewriter.set_font_family(the_font);
+}
+
+#[no_mangle]
+pub extern "C" fn rewriter_set_font_size(
+    rewriter: *mut CRewriter,
+    size: *const c_char,
+) {
+    let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
+    let the_size = unsafe {
+        let c_s = size;
+        str::from_utf8_unchecked(slice::from_raw_parts(c_s as *const u8, strlen(c_s)))
+    };
+    rewriter.set_font_size(the_size);
+}
+
+#[no_mangle]
+pub extern "C" fn rewriter_set_content_style(
+    rewriter: *mut CRewriter,
+    style: *const c_char,
+) {
+    let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
+    let the_style = unsafe {
+        let c_s = style;
+        str::from_utf8_unchecked(slice::from_raw_parts(c_s as *const u8, strlen(c_s)))
+    };
+    rewriter.set_content_style(the_style);
+}
+
 /// Write a new chunk of data (byte array) to the rewriter instance.
 #[no_mangle]
 pub extern "C" fn rewriter_write(

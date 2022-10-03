@@ -17,6 +17,9 @@ class PrefRegistrySimple;
 class PrefService;
 
 namespace speedreader {
+using mojom::ContentStyle;
+using mojom::FontFamily;
+using mojom::FontSize;
 using mojom::Theme;
 
 class SpeedreaderService : public KeyedService {
@@ -35,6 +38,18 @@ class SpeedreaderService : public KeyedService {
   void SetTheme(Theme theme_name);
   Theme GetTheme() const;
   std::string GetThemeName() const;
+
+  void SetFontSize(FontSize size);
+  FontSize GetFontSize() const;
+  std::string GetFontSizeName() const;
+
+  void SetFontFamily(FontFamily font);
+  FontFamily GetFontFamily() const;
+  std::string GetFontFamilyName() const;
+
+  void SetContentStyle(ContentStyle style);
+  ContentStyle GetContentStyle() const;
+  std::string GetContentStyleName() const;
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;

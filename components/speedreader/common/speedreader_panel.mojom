@@ -18,6 +18,15 @@ interface PanelHandler {
 interface PanelDataHandler {
   GetTheme() => (Theme theme);
   SetTheme(Theme theme);
+
+  GetFontFamily() => (FontFamily font);
+  SetFontFamily(FontFamily font);
+
+  GetFontSize() => (FontSize size);
+  SetFontSize(FontSize size);
+
+  GetContentStyle() => (ContentStyle style);
+  SetContentStyle(ContentStyle style);
 };
 
 // Enum is used in prefs. Be careful when changing or extending.
@@ -26,4 +35,34 @@ enum Theme {
   kLight = 1,
   kSepia = 2,
   kDark = 3,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+// Font size in percents.
+enum FontSize {
+  k50 = 50,
+  k60 = 60,
+  k70 = 70,
+  k80 = 80,
+  k90 = 90,
+  k100 = 100,
+  k110 = 110,
+  k120 = 120,
+  k130 = 130,
+  k140 = 140,
+  k150 = 150,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum FontFamily {
+  kSans = 0,
+  kSerif = 1,
+  kMono = 2,
+  kDyslexic = 3,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum ContentStyle {
+  kDefault = 0,
+  kTextOnly = 1,
 };

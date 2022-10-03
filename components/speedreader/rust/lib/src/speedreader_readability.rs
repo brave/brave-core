@@ -17,6 +17,9 @@ where
 {
     min_out_length: Option<i32>,
     theme: Option<String>,
+    font_family: Option<String>,
+    font_size: Option<String>,
+    content_style: Option<String>,
     parser: Option<Parser<Sink>>,
     url: Url,
     output_sink: O,
@@ -29,6 +32,18 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
 
     fn set_theme(&mut self, theme: &str) {
         self.theme = Some(String::from(theme));
+    }
+
+    fn set_font_family(&mut self, font: &str) {
+        self.font_family = Some(String::from(font));
+    }
+
+    fn set_font_size(&mut self, size: &str) {
+        self.font_size = Some(String::from(size));
+    }
+
+    fn set_content_style(&mut self, style: &str) {
+        self.content_style = Some(String::from(style));
     }
 
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError> {
@@ -52,7 +67,16 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
             let mut dom: Sink = parser.finish();
             if let Some(features) = statistics::collect_statistics(&dom) {
                 if features.moz_score > 20.0 {
-                    let extracted = extractor::extract_dom(&mut dom, &self.url, self.min_out_length, self.theme.clone(), &HashMap::new())?;
+                    let extracted = extractor::extract_dom(
+                        &mut dom,
+                        &self.url,
+                        self.min_out_length,
+                        self.theme.clone(),
+                        self.font_family.clone(),
+                        self.font_size.clone(),
+                        self.content_style.clone(),
+                        &HashMap::new(),
+                    )?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
                     Ok(())
                 } else {
@@ -83,6 +107,9 @@ impl<O: OutputSink> SpeedReaderReadability<O> {
             Ok(SpeedReaderReadability {
                 min_out_length: None,
                 theme: None,
+                font_family: None,
+                font_size: None,
+                content_style: None,                
                 parser: Some(parser),
                 url,
                 output_sink,
