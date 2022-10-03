@@ -138,7 +138,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
-    chainId: '0x3'
+    chainId: '0x5'
   },
   {
     contractAddress: '4',

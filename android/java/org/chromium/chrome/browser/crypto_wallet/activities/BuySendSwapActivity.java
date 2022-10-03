@@ -1422,7 +1422,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mCurrentSwapToBlockchainToken = blockchainToken;
 
         BlockchainToken token = buySend ? mCurrentBlockchainToken : mCurrentSwapToBlockchainToken;
-        // Replace USDC and DAI contract addresses for Ropsten network
+        // Replace USDC and DAI contract addresses for Goerli network
         token.contractAddress = Utils.getContractAddress(
                 mSelectedNetwork.chainId, token.symbol, token.contractAddress);
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
