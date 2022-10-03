@@ -301,10 +301,15 @@ void BraveNewTabPageHandler::OnRemoveCustomImageBackground(
   background_pref.RemoveCustomImageFromList(file_name);
   if (background_pref.GetType() == NTPBackgroundPrefs::Type::kCustomImage &&
       absl::get<std::string>(background_pref.GetSelectedValue()) == file_name) {
-    // Reset to default
-    background_pref.SetType(NTPBackgroundPrefs::Type::kBrave);
-    background_pref.SetSelectedValue({});
-    background_pref.SetShouldUseRandomValue(true);
+    if (auto custom_images = background_pref.GetCustomImageList();
+        !custom_images.empty()) {
+      background_pref.SetSelectedValue(custom_images.front());
+    } else {
+      // Reset to default
+      background_pref.SetType(NTPBackgroundPrefs::Type::kBrave);
+      background_pref.SetSelectedValue({});
+      background_pref.SetShouldUseRandomValue(true);
+    }
     OnBackgroundUpdated();
   }
 

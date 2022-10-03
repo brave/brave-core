@@ -126,8 +126,8 @@ class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
       const GURL& url) const override {
     return base::FilePath();
   }
-  GURL GetCustomBackgroundImageURL() const override { 
-    return GURL(std::string(kCustomWallpaperURL) + "foo.jpg"); 
+  GURL GetCustomBackgroundImageURL() const override {
+    return GURL(std::string(kCustomWallpaperURL) + "foo.jpg");
   }
 
   bool IsColorBackgroundEnabled() const override { return color_enabled_; }
@@ -416,7 +416,8 @@ TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentWallpaperTest) {
   delegate_->image_enabled_ = true;
   background = view_counter_->GetCurrentWallpaper();
   bg_url = background->FindString(kWallpaperImageURLKey);
-  EXPECT_TRUE(base::StartsWith(*bg_url, kCustomWallpaperURL)) << "actual url " << *bg_url;
+  EXPECT_TRUE(base::StartsWith(*bg_url, kCustomWallpaperURL))
+      << "actual url " << *bg_url;
 
   // Disable custom image background.
   delegate_->image_enabled_ = false;
