@@ -53,7 +53,7 @@ class CustomBackgroundFileManager final {
   //     (value)
   //       ||
   //  [PrefService] - std::string. The value is a file name. Encoding is
-  //       ||         usually UTF8, but on some platform it might not be
+  //       ||         usually UTF8, but on some platforms it might not be
   //     (value)      specified.
   //       ||
   //   (file name)
@@ -79,7 +79,7 @@ class CustomBackgroundFileManager final {
       if constexpr (std::is_same_v<FromT, std::string>) {
         DCHECK(!base::StartsWith(value,
                                  ntp_background_images::kCustomWallpaperURL))
-            << "Make sure that you don't pass a URL to this method";
+            << "URLs should be passed in as a GURL";
         value_ = value;
       } else if constexpr (std::is_same_v<FromT, GURL>) {
         // GURL(webui data url) -> std::string(prefs value)
@@ -92,12 +92,12 @@ class CustomBackgroundFileManager final {
         // remove leading slash
         const auto path = value.path().substr(1);
         DCHECK(!path.empty()) << "URL path is empty " << value;
-        url::RawCanonOutputT<char16_t> pref_value;
+        url::RawCanonOutputT<char16_t> decoded_value;
         url::DecodeURLEscapeSequences(path.data(), path.length(),
                                       url::DecodeURLMode::kUTF8OrIsomorphic,
-                                      &pref_value);
+                                      &decoded_value);
         value_ = base::UTF16ToUTF8(
-            std::u16string(pref_value.data(), pref_value.length()));
+            std::u16string(decoded_value.data(), decoded_value.length()));
       } else {
         // FilePath(local file path) -> std::string(prefs value)
         static_assert(std::is_same_v<FromT, base::FilePath>,

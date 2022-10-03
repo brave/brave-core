@@ -6,7 +6,6 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/bind.h"
 #include "base/containers/span.h"
@@ -126,7 +125,7 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   file_types.extension_description_overrides.push_back(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_UPLOAD_IMAGE_FORMAT));
   select_file_dialog_->SelectFile(
-      ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(),
+      ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE, std::u16string(),
       profile_->last_selected_directory(), &file_types, 0,
       base::FilePath::StringType(), web_contents_->GetTopLevelNativeWindow(),
       nullptr);
@@ -397,6 +396,22 @@ void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
                            weak_factory_.GetWeakPtr()));
 
   select_file_dialog_ = nullptr;
+}
+
+void BraveNewTabPageHandler::MultiFilesSelected(
+    const std::vector<base::FilePath>& files,
+    void* params) {
+  NTPBackgroundPrefs prefs(profile_->GetPrefs());
+  auto available_image_count =
+      brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
+      prefs.GetCustomImageList().size();
+  for (const auto& path : files) {
+    if (available_image_count == 0)
+      break;
+
+    FileSelected(path, 0, params);
+    available_image_count--;
+  }
 }
 
 void BraveNewTabPageHandler::FileSelectionCanceled(void* params) {

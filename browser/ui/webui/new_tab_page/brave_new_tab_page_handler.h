@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -75,6 +76,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void FileSelected(const base::FilePath& path,
                     int index,
                     void* params) override;
+  void MultiFilesSelected(const std::vector<base::FilePath>& files,
+                          void* params) override;
   void FileSelectionCanceled(void* params) override;
 
   // TemplateURLServiceObserver overrides:

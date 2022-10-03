@@ -10,6 +10,8 @@ import "url/mojom/url.mojom";
 const string kRandomSolidColorValue = "solid";
 const string kRandomGradientColorValue = "gradient";
 
+const int8 kMaxCustomImageBackgrounds = 24;
+
 struct BraveBackground {
   string name;
   string author;
@@ -48,7 +50,7 @@ interface PageHandlerFactory {
 interface PageHandler {
   // Choose custom background from local file system.
   ChooseLocalCustomBackground();
-  // When |seleteceBackground| is empty, should use random background.
+  // When |selectedBackground| is empty, should use random background.
   UseCustomImageBackground(string selectedBackground);
   GetCustomImageBackgrounds() => (array<CustomBackground> backgrounds);
   RemoveCustomImageBackground(string selectedBackground);

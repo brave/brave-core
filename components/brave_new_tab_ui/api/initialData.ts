@@ -103,10 +103,10 @@ export async function getInitialData (): Promise<InitialData> {
       }),
       getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled),
       getNTPBrowserAPI().pageHandler.getBraveBackgrounds().then(({ backgrounds }) => {
-        return backgrounds.map(background => { return { type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url } })
+        return backgrounds.map(background => ({ type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url }))
       }),
       getNTPBrowserAPI().pageHandler.getCustomImageBackgrounds().then(({ backgrounds }) => {
-        return backgrounds.map(background => { return { type: 'image', wallpaperImageUrl: background.url.url } })
+        return backgrounds.map(background => ({ type: 'image', wallpaperImageUrl: background.url.url }))
       })
     ])
     console.timeStamp('Got all initial data.')

@@ -52,7 +52,7 @@ function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, current
                       onSelectValue={() => onSelectValue(value, /* useRandomColor= */false)}
                       onRemoveValue={onRemoveValue ? () => { onRemoveValue(value) } : undefined} />
           })}
-          { renderExtraButton && renderExtraButton() }
+          { renderExtraButton?.() }
         </StyledCustomBackgroundSettings>
       </div>
   )
