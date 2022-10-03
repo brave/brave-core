@@ -40,10 +40,8 @@ views::View* GetAnchorView(Browser* browser) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   DCHECK(browser_view);
   auto* location_bar_view = browser_view->GetLocationBarView();
-  if (location_bar_view) {
-    return location_bar_view;
-  }
-  return browser_view;
+  DCHECK(location_bar_view);
+  return location_bar_view;
 }
 
 bool ShouldEventuallyShowBubble() {
@@ -85,6 +83,27 @@ void ShowBubbleOnSessionRestore(base::WeakPtr<Browser> browser, Profile*, int) {
   bubble_host->ShowBubble();
 }
 
+class BubbleManager : public WebUIBubbleManagerT<CookieListOptInUI> {
+ public:
+  BubbleManager(views::View* anchor_view, Profile* profile)
+      : WebUIBubbleManagerT<CookieListOptInUI>(anchor_view,
+                                               profile,
+                                               GURL(kCookieListOptInURL),
+                                               IDS_BRAVE_SHIELDS) {}
+
+  ~BubbleManager() override = default;
+
+  // WebUIBubbleManagerT<CookieListOptInUI>:
+  base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
+      const absl::optional<gfx::Rect>& anchor) override {
+    auto dialog_view =
+        WebUIBubbleManagerT<CookieListOptInUI>::CreateWebUIBubbleDialog(anchor);
+    DCHECK(dialog_view);
+    dialog_view->set_close_on_deactivate(false);
+    return dialog_view;
+  }
+};
+
 }  // namespace
 
 CookieListOptInBubbleHost::CookieListOptInBubbleHost(Browser* browser)
@@ -95,7 +114,7 @@ CookieListOptInBubbleHost::CookieListOptInBubbleHost(Browser* browser)
 CookieListOptInBubbleHost::~CookieListOptInBubbleHost() = default;
 
 void CookieListOptInBubbleHost::MaybeCreateForBrowser(Browser* browser) {
-  if (ShouldEventuallyShowBubble()) {
+  if (browser->type() == Browser::TYPE_NORMAL && ShouldEventuallyShowBubble()) {
     CreateForBrowser(browser);
   }
 }
@@ -137,9 +156,8 @@ void CookieListOptInBubbleHost::ShowBubble() {
       prefs::kAdBlockCookieListOptInShown, true);
 
   if (!bubble_manager_) {
-    bubble_manager_ = std::make_unique<WebUIBubbleManagerT<CookieListOptInUI>>(
-        GetAnchorView(&GetBrowser()), GetBrowser().profile(),
-        GURL(kCookieListOptInURL), IDS_BRAVE_SHIELDS);
+    bubble_manager_ = std::make_unique<BubbleManager>(
+        GetAnchorView(&GetBrowser()), GetBrowser().profile());
   }
 
   if (!bubble_manager_->GetBubbleWidget()) {
