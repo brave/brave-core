@@ -46,6 +46,7 @@ class BraveBrowser : public Browser {
   bool TryToCloseWindow(
       bool skip_beforeunload,
       const base::RepeatingCallback<void(bool)>& on_close_confirmed) override;
+  void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
   void ResetTryToCloseWindow() override;
 
   void TabStripEmpty() override;
