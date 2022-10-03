@@ -11,6 +11,7 @@
 #include "base/notreached.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/base/models/image_model.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/geometry/rect_f.h"
@@ -290,8 +291,9 @@ void MdTextButton::UpdateColorsForBrave() {
 
 void MdTextButton::UpdateIconForBrave() {
   if (icon_) {
-    SetImage(ButtonState::STATE_NORMAL,
-             gfx::CreateVectorIcon(*icon_, GetCurrentTextColor()));
+    SetImageModel(
+        ButtonState::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor()));
   }
 }
 

@@ -24,11 +24,11 @@
 #include "ui/views/view_class_properties.h"
 
 namespace {
-SkColor kBackgroundColorLight = SK_ColorWHITE;
-SkColor kBackgroundColorDark = SkColorSetRGB(36, 37, 45);
+constexpr SkColor kBackgroundColorLight = SK_ColorWHITE;
+constexpr SkColor kBackgroundColorDark = SkColorSetRGB(36, 37, 45);
 
-SkColor kBorderColorLight = SkColorSetRGB(233, 233, 244);
-SkColor kBorderColorDark = SkColorSetRGB(59, 62, 79);
+constexpr SkColor kBorderColorLight = SkColorSetRGB(233, 233, 244);
+constexpr SkColor kBorderColorDark = SkColorSetRGB(59, 62, 79);
 }  // namespace
 
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
