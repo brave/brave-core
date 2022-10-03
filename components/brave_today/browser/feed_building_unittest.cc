@@ -150,7 +150,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   mojom::Feed feed;
 
   ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
-                        profile_.GetPrefs()));
+                        profile_.GetPrefs(), "en_US"));
   ASSERT_EQ(feed.pages.size(), 1u);
   // Validate featured article is top news
   ASSERT_TRUE(feed.featured_item->is_article());
@@ -300,23 +300,23 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
           publisher->publisher_id, "Source", 10, "a minute ago")));
 
   // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
-  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
   // Publisher: NOT_MODIFIED, Channel: Not subscribed, Should not display.
   channel->subscribed = false;
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+  EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
   // Publisher: ENABLED, Channel: Not subscribed, Should display.
   publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
-  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
   // Publisher: Disabled, Channel: Not subscribed, Should not display.
   publisher->user_enabled_status = mojom::UserEnabled::DISABLED;
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+  EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
   // Publisher: DISABLED, Channel: Subscribed, Should not display.
   channel->subscribed = true;
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+  EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
 }  // namespace brave_news
