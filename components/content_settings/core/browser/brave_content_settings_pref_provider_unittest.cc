@@ -14,9 +14,12 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/content_settings_default_provider.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -240,10 +243,59 @@ class ShieldsFingerprintingSetting : public ShieldsSetting {
 
 class ShieldsHTTPSESetting : public ShieldsSetting {
  public:
-  explicit ShieldsHTTPSESetting(BravePrefProvider* provider)
+  explicit ShieldsHTTPSESetting(BravePrefProvider* provider,
+                                DefaultProvider* default_provider)
       : ShieldsSetting(
             provider,
-            {{GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES}}) {}
+            {{GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES}}),
+        default_provider_(default_provider) {}
+
+  void SetPreMigrationDefaultSetting(ContentSetting setting) {
+    GURL allowed_url("https://allowed.com");
+    GURL blocked_url("https://blocked.com");
+    GURL default_url("https://default.com");
+
+    SetPreMigrationSettings(ContentSettingsPattern::FromURL(allowed_url),
+                            CONTENT_SETTING_ALLOW);
+    CheckSettingsWouldAllow(allowed_url);
+    SetPreMigrationSettings(ContentSettingsPattern::FromURL(blocked_url),
+                            CONTENT_SETTING_BLOCK);
+    CheckSettingsWouldBlock(blocked_url);
+
+    provider_->GetPref(ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)
+        ->SetWebsiteSetting(ContentSettingsPattern::Wildcard(),
+                            ContentSettingsPattern::Wildcard(),
+                            base::Time::Now(), ContentSettingToValue(setting),
+                            {});
+    EXPECT_EQ(GetDefaultProviderValue(), CONTENT_SETTING_BLOCK);
+  }
+
+  ContentSetting GetDefaultProviderValue() {
+    auto rule_iterator = default_provider_->GetRuleIterator(
+        ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, false);
+    const auto& wildcard = ContentSettingsPattern::Wildcard();
+    while (rule_iterator && rule_iterator->HasNext()) {
+      auto old_rule = rule_iterator->Next();
+      if (old_rule.primary_pattern == wildcard &&
+          old_rule.secondary_pattern == wildcard) {
+        return ValueToContentSetting(old_rule.value);
+      }
+    }
+    return ContentSetting::CONTENT_SETTING_DEFAULT;
+  }
+  void CheckPostMigrationDefaultValue(ContentSetting value) {
+    GURL allowed_url("https://allowed.com");
+    GURL blocked_url("https://blocked.com");
+    GURL default_url("https://default.com");
+
+    EXPECT_EQ(GetDefaultProviderValue(), value);
+    CheckSettingsWouldAllow(allowed_url);
+    CheckSettingsWouldBlock(blocked_url);
+    CheckSettingsAreDefault(default_url);
+  }
+
+ private:
+  DefaultProvider* default_provider_ = nullptr;
 };
 
 class ShieldsAdsSetting : public ShieldsSetting {
@@ -312,7 +364,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   ShieldsCookieSetting cookie_settings(&provider,
                                        testing_profile()->GetPrefs());
   ShieldsFingerprintingSetting fp_settings(&provider);
-  ShieldsHTTPSESetting httpse_settings(&provider);
+  ShieldsHTTPSESetting httpse_settings(&provider, nullptr);
   ShieldsAdsSetting ads_settings(&provider);
   ShieldsEnabledSetting enabled_settings(&provider);
   ShieldsScriptSetting script_settings(&provider);
@@ -735,58 +787,40 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
 }
 
 TEST_F(BravePrefProviderTest, TestShieldsHttpsMigration) {
-  BravePrefProvider provider(
-      testing_profile()->GetPrefs(), false /* incognito */,
-      true /* store_last_modified */, false /* restore_session */);
+  {
+    BravePrefProvider pref_provider(
+        testing_profile()->GetPrefs(), false /* incognito */,
+        true /* store_last_modified */, false /* restore_session */);
+    DefaultProvider default_provider(testing_profile()->GetPrefs(), false);
 
-  auto* prefs = testing_profile()->GetPrefs();
-  std::string old_content_setting_path =
-      "profile.content_settings.exceptions.httpUpgradableResources";
-  std::string default_content_setting_path =
-      "profile.default_content_setting_values.httpUpgradableResources";
-  {
-    prefs->Set(old_content_setting_path, *base::JSONReader::Read(R"({
-      "*,*": {
-        "expiration": "0",
-        "last_modified": "12312",
-        "model": 0,
-        "setting": 2
-      }
-    })"));
-    provider.MigrateShieldsSettings(/*incognito*/ false);
-    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
-    EXPECT_FALSE(prefs->HasPrefPath(default_content_setting_path));
-  }
-  prefs->ClearPref(old_content_setting_path);
-  {
-    prefs->Set(old_content_setting_path, *base::JSONReader::Read(R"({
-      "*,*": {
-        "expiration": "0",
-        "last_modified": "12312",
-        "model": 0,
-        "setting": 1
-      }
-    })"));
-    provider.MigrateShieldsSettings(/*incognito*/ false);
-    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
-    EXPECT_EQ(*prefs->Get(default_content_setting_path), base::Value(1));
-  }
-  prefs->ClearPref(old_content_setting_path);
-  prefs->ClearPref(default_content_setting_path);
-  {
-    prefs->Set(old_content_setting_path, *base::JSONReader::Read(R"({})"));
-    provider.MigrateShieldsSettings(/*incognito*/ false);
-    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
-    EXPECT_FALSE(prefs->HasPrefPath(default_content_setting_path));
-  }
-  prefs->ClearPref(old_content_setting_path);
-  {
-    provider.MigrateShieldsSettings(/*incognito*/ false);
-    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
-    EXPECT_FALSE(prefs->HasPrefPath(default_content_setting_path));
-  }
+    ShieldsHTTPSESetting shields_https_settings(&pref_provider,
+                                                &default_provider);
 
-  provider.ShutdownOnUIThread();
+    shields_https_settings.SetPreMigrationDefaultSetting(
+        ContentSetting::CONTENT_SETTING_BLOCK);
+    pref_provider.MigrateShieldsSettings(/*incognito*/ false);
+    shields_https_settings.CheckPostMigrationDefaultValue(
+        ContentSetting::CONTENT_SETTING_BLOCK);
+    pref_provider.ShutdownOnUIThread();
+    default_provider.ShutdownOnUIThread();
+  }
+  {
+    BravePrefProvider pref_provider(
+        testing_profile()->GetPrefs(), false /* incognito */,
+        true /* store_last_modified */, false /* restore_session */);
+    DefaultProvider default_provider(testing_profile()->GetPrefs(), false);
+
+    ShieldsHTTPSESetting shields_https_settings(&pref_provider,
+                                                &default_provider);
+
+    shields_https_settings.SetPreMigrationDefaultSetting(
+        ContentSetting::CONTENT_SETTING_ALLOW);
+    pref_provider.MigrateShieldsSettings(/*incognito*/ false);
+    shields_https_settings.CheckPostMigrationDefaultValue(
+        ContentSetting::CONTENT_SETTING_ALLOW);
+    pref_provider.ShutdownOnUIThread();
+    default_provider.ShutdownOnUIThread();
+  }
 }
 
 }  //  namespace content_settings

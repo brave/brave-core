@@ -44,8 +44,6 @@ namespace content_settings {
 namespace {
 constexpr char kDefaultHttpsPreferencePath[] =
     "profile.default_content_setting_values.httpUpgradableResources";
-constexpr char kObsoleteDefaultHttpsSetting[] =
-    "profile.content_settings.exceptions.httpUpgradableResources";
 constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
 constexpr char kBraveShieldsFPSettingsMigration[] =
@@ -346,17 +344,47 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
 }
 
 void BravePrefProvider::MigrateDefaultHttpsContentSetting() {
-  auto* obsolete_pref = prefs_->Get(kObsoleteDefaultHttpsSetting);
-  if (!obsolete_pref || !obsolete_pref->is_dict())
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+      /*off_the_record*/ false);
+
+  using OldRule = std::pair<ContentSettingsPattern, ContentSettingsPattern>;
+  std::vector<OldRule> old_rules;
+  const ContentSettingsPattern& wildcard = ContentSettingsPattern::Wildcard();
+  std::vector<Rule> new_rules;
+  base::Value default_value;
+  // Find rules that can be migrated and create replacement rules for them.
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto old_rule = rule_iterator->Next();
+    if (old_rule.primary_pattern == wildcard &&
+        old_rule.secondary_pattern == wildcard) {
+      default_value = old_rule.value.Clone();
+      continue;
+    }
+
+    Rule new_rule;
+    new_rule.expiration = old_rule.expiration;
+    new_rule.session_model = old_rule.session_model;
+    new_rule.value = std::move(old_rule.value);
+    new_rule.secondary_pattern = old_rule.secondary_pattern;
+    new_rule.primary_pattern = old_rule.primary_pattern;
+    new_rules.push_back(std::move(new_rule));
+  }
+  if (default_value.is_none())
     return;
-  auto* obsolete_default_key = obsolete_pref->FindDictKey("*,*");
-  if (!obsolete_default_key || !obsolete_default_key->is_dict())
-    return;
-  auto value = obsolete_default_key->GetDict().FindInt("setting");
-  if (value.has_value() && value.value() == 1) {
+  rule_iterator.reset();
+  ClearAllContentSettingsRules(
+      ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES);
+  for (auto&& rule : new_rules) {
+    SetWebsiteSettingInternal(
+        rule.primary_pattern, rule.secondary_pattern,
+        ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+        std::move(rule.value), {rule.expiration, rule.session_model});
+  }
+
+  if (default_value == 1) {
     prefs_->Set(kDefaultHttpsPreferencePath, base::Value(1));
   }
-  prefs_->ClearPref(kObsoleteDefaultHttpsSetting);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
