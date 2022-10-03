@@ -1214,7 +1214,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
     header.snp.remakeConstraints { make in
       if self.isUsingBottomBar {
-        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0 {
+        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0, presentedViewController == nil {
           var offset = -keyboardHeight
           if !topToolbar.inOverlayMode {
             // Showing collapsed URL bar while the keyboard is up
