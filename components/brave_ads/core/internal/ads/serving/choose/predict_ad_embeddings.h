@@ -12,6 +12,7 @@
 #include "bat/ads/internal/ads/serving/choose/eligible_ads_predictor_util.h"
 #include "bat/ads/internal/ads/serving/choose/sample_ads.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing.h"
+#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
@@ -30,13 +31,32 @@ void PredictAdEmbeddings(
     const std::vector<T> paced_creative_ads = PaceCreativeAds(creative_ads);
 
     GetTextEmbeddingHtmlEventsFromDatabase(
-      [](const bool success,
+      [=](const bool success,
          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         if (!success) return;
 
         const int text_embedding_html_event_count =
             text_embedding_html_events.size();
         std::cerr << "** Text Embedding Events Count: " << text_embedding_html_event_count;
+
+        // std::vector<int> votes_registry;
+        // votes_registry.assign(creative_ads.size(), 0);
+        // for (const auto& text_embedding : text_embedding_html_events) {
+        //     int max_idx = 0;
+        //     float max_similarity = 0;
+        //     for (const auto creative_ad : paced_creative_ads) {
+        //         // ml::VectorData ad_embedding = VectorData(creative_ad.embedding);
+        //         // ml::VectorData page_text_embedding = VectorData(text_embedding.embedding);
+        //         // float similarity_score = ad_embedding.ComputeSimilarity(page_text_embedding);
+        //         float similarity_score = 0;
+
+        //         if (similarity_score > max_similarity) {
+        //             max_idx = std::find(paced_creative_ads.begin(), paced_creative_ads.end(), creative_ad) - paced_creative_ads.begin();
+        //             max_similarity = similarity_score;
+        //         }
+        //     }
+        //     votes_registry[max_idx] += 1;
+        // }
 
         // Do Scoring and Matching here (placeholder below for now)
         CreativeAdPredictorMap<T> creative_ad_predictors;

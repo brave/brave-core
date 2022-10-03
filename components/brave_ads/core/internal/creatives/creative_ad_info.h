@@ -46,6 +46,7 @@ struct CreativeAdInfo {
   int total_max = 0;
   double value = 0.0;
   std::string segment;
+  std::string embedding;
   std::string split_test_group;
   CreativeDaypartList dayparts;
   base::flat_set<std::string> geo_targets;

@@ -35,8 +35,9 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
          per_week == other.per_week && per_month == other.per_month &&
          total_max == other.total_max && DoubleEquals(value, other.value) &&
          split_test_group == other.split_test_group &&
-         segment == other.segment && geo_targets == other.geo_targets &&
-         target_url == other.target_url && dayparts == other.dayparts;
+         segment == other.segment && embedding == other.embedding &&
+         geo_targets == other.geo_targets && target_url == other.target_url && 
+         dayparts == other.dayparts;
 }
 
 bool CreativeAdInfo::operator!=(const CreativeAdInfo& other) const {

@@ -42,6 +42,7 @@ struct CatalogCreativeSetInfo final {
   unsigned int total_max = 0;
   double value = 0.0;
   std::string split_test_group;
+  std::string embedding;
   CatalogSegmentList segments;
   CatalogOsList oses;
   CatalogCreativeNotificationAdList creative_notification_ads;

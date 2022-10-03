@@ -104,6 +104,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         info.title = creative.payload.title;
         info.body = creative.payload.body;
+        info.embedding = creative_set.embedding;
 
         // Segments
         for (const auto& segment : creative_set.segments) {

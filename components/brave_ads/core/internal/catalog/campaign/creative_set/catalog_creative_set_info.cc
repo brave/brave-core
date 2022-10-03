@@ -33,6 +33,7 @@ bool CatalogCreativeSetInfo::operator==(
          per_week == other.per_week && per_month == other.per_month &&
          total_max == other.total_max && DoubleEquals(value, other.value) &&
          split_test_group == other.split_test_group &&
+         embedding == other.embedding &&
          segments == other.segments && oses == other.oses &&
          creative_notification_ads == other.creative_notification_ads &&
          creative_inline_content_ads == other.creative_inline_content_ads &&
