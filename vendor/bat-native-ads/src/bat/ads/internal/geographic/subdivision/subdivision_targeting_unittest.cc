@@ -46,6 +46,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   // Assert
   EXPECT_TRUE(subdivision_targeting_->ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
+  EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 
   EXPECT_EQ("US-AL", AdsClientHelper::GetInstance()->GetStringPref(
                          prefs::kAutoDetectedSubdivisionTargetingCode));
@@ -64,6 +65,24 @@ TEST_F(BatAdsSubdivisionTargetingTest, AutoDetectSubdivisionTargetingNoRegion) {
   // Assert
   EXPECT_TRUE(subdivision_targeting_->ShouldAllow());
   EXPECT_TRUE(subdivision_targeting_->IsDisabled());
+  EXPECT_FALSE(subdivision_targeting_->ShouldAutoDetect());
+}
+
+TEST_F(BatAdsSubdivisionTargetingTest,
+       AutoDetectSubdivisionTargetingWrongRegion) {
+  // Arrange
+  const URLResponseMap url_responses = {
+      {R"(/v1/getstate)",
+       {{net::HTTP_OK, R"({"country":"ES", "region":"AN"})"}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  // Act
+  subdivision_targeting_->MaybeFetch();
+
+  // Assert
+  EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
+  EXPECT_FALSE(subdivision_targeting_->IsDisabled());
+  EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
 TEST_F(BatAdsSubdivisionTargetingTest,
@@ -77,10 +96,11 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   // Assert
   EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
+  EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
 TEST_F(BatAdsSubdivisionTargetingTest,
-       MaybeALLOWSubdivisionTargetingNotSupportedLocale) {
+       MaybeAllowSubdivisionTargetingNotSupportedLocale) {
   // Arrange
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
@@ -90,6 +110,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   // Assert
   EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
+  EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
 TEST_F(BatAdsSubdivisionTargetingTest,
@@ -102,8 +123,9 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeAllow();
 
   // Assert
-  EXPECT_TRUE(subdivision_targeting_->ShouldAllow());
-  EXPECT_TRUE(subdivision_targeting_->IsDisabled());
+  EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
+  EXPECT_FALSE(subdivision_targeting_->IsDisabled());
+  EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
 class BatAdsSubdivisionTargetingRetryOnInvalidResponseTest
