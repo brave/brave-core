@@ -115,7 +115,7 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
             kTestImageName);
     if (i > 0) {
       expected_path = expected_path.InsertBeforeExtensionASCII(
-          base::StringPrintf("(%d)", i));
+          base::StringPrintf("-%d", i));
     }
 
     auto check_res =
