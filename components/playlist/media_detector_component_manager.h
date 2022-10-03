@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "net/base/schemeful_site.h"
 
 namespace base {
 class FilePath;
@@ -19,8 +20,6 @@ class FilePath;
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
-
-class GURL;
 
 namespace playlist {
 
@@ -51,10 +50,10 @@ class MediaDetectorComponentManager {
   void SetUseLocalScriptForTesting();
 
   bool ShouldHideMediaSrcAPI(const GURL& url) const;
-  void SetUseLocalListToHideMediaSrcAPIForTesting();
+  void SetUseLocalListToHideMediaSrcAPI();
 
-  std::vector<GURL> urls_to_hide_media_src_api() const {
-    return urls_to_hide_media_src_api_;
+  const std::vector<net::SchemefulSite>& sites_to_hide_media_src_api() const {
+    return sites_to_hide_media_src_api_;
   }
 
  private:
@@ -66,7 +65,7 @@ class MediaDetectorComponentManager {
 
   std::string script_;
 
-  std::vector<GURL> urls_to_hide_media_src_api_;
+  std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
 
   base::ObserverList<Observer> observer_list_;
   base::WeakPtrFactory<MediaDetectorComponentManager> weak_factory_{this};

@@ -77,7 +77,8 @@ class PlaylistDownloadRequestManager
 
   content::WebContents* GetBackgroundWebContentsForTesting();
 
-  MediaDetectorComponentManager* media_detector_component_manager() {
+  const MediaDetectorComponentManager* media_detector_component_manager()
+      const {
     return media_detector_component_manager_;
   }
 

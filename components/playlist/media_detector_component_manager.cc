@@ -34,7 +34,7 @@ MediaDetectorComponentManager::MediaDetectorComponentManager(
     : component_update_service_(component_update_service) {
   // TODO(sko) This list should be dynamically updated from the playlist.
   // Once it's done, remove this line.
-  SetUseLocalListToHideMediaSrcAPIForTesting();
+  SetUseLocalListToHideMediaSrcAPI();
 }
 
 MediaDetectorComponentManager::~MediaDetectorComponentManager() = default;
@@ -248,18 +248,15 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
 
 bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
     const GURL& url) const {
-  return base::ranges::any_of(urls_to_hide_media_src_api_,
-                              [&url](const auto& url_to_hide) {
-                                return url_to_hide.host() == url.host();
+  return base::ranges::any_of(sites_to_hide_media_src_api_,
+                              [&url](const auto& site_to_hide) {
+                                return site_to_hide == net::SchemefulSite(url);
                               });
 }
 
-void MediaDetectorComponentManager::
-    SetUseLocalListToHideMediaSrcAPIForTesting() {
-  urls_to_hide_media_src_api_ = {GURL("https://www.youtube.com"),
-                                 GURL("http://www.youtube.com"),
-                                 GURL("https://youtube.com"),
-                                 GURL("http://youtube.com")};
+void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {
+  sites_to_hide_media_src_api_ = {
+      {net::SchemefulSite(GURL("https://youtube.com"))}};
 }
 
 }  // namespace playlist
