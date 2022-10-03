@@ -175,8 +175,7 @@ bool IPFSTabHelper::IsDNSLinkCheckEnabled() const {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
 
-  return (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL ||
-          resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+  return (resolve_method != ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
 }
 
 void IPFSTabHelper::UpdateDnsLinkButtonState() {
@@ -208,14 +207,10 @@ bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
 }
 
 // For x-ipfs-path header we are making urls like
-// <gateway>/<x-ipfs-path>
+// ipfs://<x-ipfs-path>
 GURL IPFSTabHelper::ResolveXIPFSPathUrl(
     const std::string& x_ipfs_path_header_value) {
-  GURL gateway =
-      ipfs::GetConfiguredBaseGateway(pref_service_, chrome::GetChannel());
-  GURL::Replacements replacements;
-  replacements.SetPathStr(x_ipfs_path_header_value);
-  return gateway.ReplaceComponents(replacements);
+  return TranslateXIPFSPath(x_ipfs_path_header_value).value_or(GURL());
 }
 
 // For _dnslink we just translate url to ipns:// scheme

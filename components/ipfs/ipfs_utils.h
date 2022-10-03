@@ -9,6 +9,7 @@
 #include <string>
 
 #include "components/version_info/channel.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -53,6 +54,7 @@ bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       const GURL& gateway_url,
                       bool use_subdomain);
+absl::optional<GURL> TranslateXIPFSPath(const std::string& x_ipfs_path_header);
 bool IsValidNodeFilename(const std::string& filename);
 
 bool ParsePeerConnectionString(const std::string& value,
