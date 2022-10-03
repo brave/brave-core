@@ -584,16 +584,13 @@ void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->CompleteReset(
-        base::BindOnce(&BraveRewardsNativeWorker::OnResetTheWholeState,
-                       weak_factory_.GetWeakPtr()));
-  } else {
-    JNIEnv* env = base::android::AttachCurrentThread();
-
-    Java_BraveRewardsNativeWorker_OnResetTheWholeState(env,
-            weak_java_brave_rewards_native_worker_.get(env), false);
+  if (!brave_rewards_service_) {
+    OnResetTheWholeState(false);
+    return;
   }
+  brave_rewards_service_->CompleteReset(
+      base::BindOnce(&BraveRewardsNativeWorker::OnResetTheWholeState,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void BraveRewardsNativeWorker::OnResetTheWholeState(const bool success) {
