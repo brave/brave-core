@@ -10,7 +10,7 @@
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/brave_stats_bg_color"
+    android:background="@drawable/stats_bottomsheet_background"
     android:maxWidth="400dp">
 
     <LinearLayout
@@ -28,6 +28,11 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/brave_stats_text_color"/>
+
+        <include
+            android:id="@+id/brave_stats_notification_permission"
+            android:visibility="gone"
+            layout="@layout/brave_stats_notification_permission"/>
 
         <RadioGroup
             android:id="@+id/duration_radio_group"

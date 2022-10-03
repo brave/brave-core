@@ -7,15 +7,17 @@ package org.chromium.chrome.browser.brave_stats;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Pair;
@@ -31,6 +33,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
@@ -54,6 +61,7 @@ import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.permissions.PermissionConstants;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -85,6 +93,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     private RadioButton monthRadioButton;
     private RadioButton monthsRadioButton;
+    private View statsNotificationView;
 
     private int selectedType = WEBSITES;
     private int selectedDuration = DAYS_7;
@@ -99,6 +108,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @SuppressLint("SourceLockedOrientationActivity")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
         mContext = ContextUtils.getApplicationContext();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -154,6 +164,8 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         websitesLayout = layout.findViewById(R.id.wesites_layout);
         trackersLayout = layout.findViewById(R.id.trackers_layout);
         braveStatsSubSectionText = layout.findViewById(R.id.brave_stats_sub_section_text);
+        statsNotificationView = view.findViewById(R.id.brave_stats_notification_permission);
+
 
         RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
         statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -177,11 +189,69 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
         updateBraveStatsLayoutAsync();
+        updateNotificationView(view);
 
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
         ((View)parent).getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
 
+    }
+
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            statsNotificationView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!hasPermission(getActivity(), PermissionConstants.NOTIFICATION_PERMISSION)) {
+            statsNotificationView.setVisibility(View.VISIBLE);
+        } else {
+            statsNotificationView.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateNotificationView(View view) {
+        ImageView btnDismiss = view.findViewById(R.id.button_dismiss);
+        btnDismiss.setOnClickListener(v -> {
+            statsNotificationView.setVisibility(View.GONE);
+        });
+        View notificationOnButton = view.findViewById(R.id.notification_on_button);
+        notificationOnButton.setOnClickListener(v -> {
+            if (getActivity().shouldShowRequestPermissionRationale(PermissionConstants.NOTIFICATION_PERMISSION)) {
+                // Last time don't allow selected in permission dialog, then enable through setting
+                redirectToSettingPage();
+            } else {
+                //1st time request permission
+                ActivityCompat.requestPermissions(getActivity(), new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+            }
+        });
+    }
+
+    private void redirectToSettingPage() {
+        Intent intent = new Intent();
+        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // for Android 5-7
+        intent.putExtra("app_package", getActivity().getPackageName());
+        intent.putExtra("app_uid", getActivity().getApplicationInfo().uid);
+
+        // for Android 8 and above
+        intent.putExtra("android.provider.extra.APP_PACKAGE", getActivity().getPackageName());
+
+        startActivity(intent);
+    }
+
+    private Boolean hasPermission(Context context, String permission) {
+        if (ContextCompat.checkSelfPermission(context, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        return true;
     }
 
     @Override

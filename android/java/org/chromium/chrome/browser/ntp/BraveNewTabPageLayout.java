@@ -230,7 +230,7 @@ public class BraveNewTabPageLayout
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            ((BraveActivity)mActivity).showOnboardingV2(true);
+            ((BraveActivity) mActivity).showOnboardingV2(false);
         }
     }
 

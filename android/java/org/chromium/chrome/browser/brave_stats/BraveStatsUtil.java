@@ -56,6 +56,7 @@ public class BraveStatsUtil {
     public static final int SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM = 3867;
     public static final int SHARE_STATS_REQUEST_CODE = 4367;
     public static final String TAG = "BraveStatsUtil";
+    public static final String STATS_FRAGMENT_TAG = "brave_stats_bottom_sheet_dialog_fragment";
     private static String shareStatsFile = "";
     /*
      * Gets string view of specific time in seconds for Brave stats
@@ -117,7 +118,7 @@ public class BraveStatsUtil {
                     BraveStatsBottomSheetDialogFragment.newInstance();
             braveStatsBottomSheetDialogFragment.show(
                     BraveActivity.getBraveActivity().getSupportFragmentManager(),
-                    "brave_stats_bottom_sheet_dialog_fragment");
+                    STATS_FRAGMENT_TAG);
         }
     }
 
