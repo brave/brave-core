@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/browser/ad_block_pref_service.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -14,6 +16,7 @@
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/proxy_config/pref_proxy_config_tracker.h"
 
 namespace brave_shields {
 
@@ -60,6 +63,43 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
 
 AdBlockPrefService::~AdBlockPrefService() = default;
 
+void AdBlockPrefService::StartProxyTracker(
+    std::unique_ptr<PrefProxyConfigTracker> pref_proxy_config_tracker,
+    std::unique_ptr<net::ProxyConfigService> proxy_config_service) {
+  DCHECK(!pref_proxy_config_tracker_ && pref_proxy_config_tracker);
+  DCHECK(!proxy_config_service_ && proxy_config_service);
+
+  pref_proxy_config_tracker_ = std::move(pref_proxy_config_tracker);
+  proxy_config_service_ = std::move(proxy_config_service);
+
+  last_proxy_config_availability_ =
+      proxy_config_service_->GetLatestProxyConfig(&last_proxy_config_);
+  proxy_config_service_->AddObserver(this);
+}
+
+net::ProxyConfigService::ConfigAvailability
+AdBlockPrefService::GetLatestProxyConfig(
+    net::ProxyConfigWithAnnotation* config) const {
+  DCHECK(pref_proxy_config_tracker_ && proxy_config_service_);
+
+  *config = last_proxy_config_;
+  return last_proxy_config_availability_;
+}
+
+void AdBlockPrefService::Shutdown() {
+  pref_change_registrar_.reset();
+
+  if (proxy_config_service_) {
+    proxy_config_service_->RemoveObserver(this);
+    proxy_config_service_.reset();
+  }
+
+  if (pref_proxy_config_tracker_) {
+    pref_proxy_config_tracker_->DetachFromPrefService();
+    pref_proxy_config_tracker_.reset();
+  }
+}
+
 void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
   std::string tag = GetTagFromPrefName(pref_name);
   if (tag.length() == 0) {
@@ -70,6 +110,13 @@ void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
   ad_block_service_->regional_service_manager()->EnableTag(tag, enabled);
   ad_block_service_->custom_filters_service()->EnableTag(tag, enabled);
   ad_block_service_->subscription_service_manager()->EnableTag(tag, enabled);
+}
+
+void AdBlockPrefService::OnProxyConfigChanged(
+    const net::ProxyConfigWithAnnotation& config,
+    net::ProxyConfigService::ConfigAvailability availability) {
+  last_proxy_config_availability_ = availability;
+  last_proxy_config_ = config;
 }
 
 }  // namespace brave_shields
