@@ -726,6 +726,7 @@ export const SupportedCoinTypes = [
 export const SupportedOnRampNetworks = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.MAINNET_CHAIN_ID, // ETH
+  BraveWallet.FILECOIN_MAINNET,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
@@ -733,7 +734,6 @@ export const SupportedOnRampNetworks = [
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID
-
 ]
 
 export const SupportedTestNetworks = [
