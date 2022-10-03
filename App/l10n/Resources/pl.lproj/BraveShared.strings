@@ -47,7 +47,7 @@
 "AlwaysSendButtonTitle" = "Zawsze wysyłaj";
 
 /* Setting preference to always show the browser tabs bar. */
-"AlwaysShow" = "Zawsze pokazuj";
+"AlwaysShow" = "Wł.";
 
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID i kod dostępu";
@@ -117,6 +117,9 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor blokowania";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Zablokuj powiadomienia „Przełącz na aplikację”";
 
 /* Brave panel individual toggle title */
 "BlockPhishing" = "Blokuj phishing";
@@ -475,6 +478,12 @@
 /* No comment provided by engineer. */
 "Confirm" = "Potwierdź";
 
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtrowanie treści";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Włącz filtry niestandardowe, które blokują oprogramowanie śledzące i przeszkadzające, konkretne dla danego regionu oraz języka";
+
 /* Cookie settings option title */
 "CookieControl" = "Kontrola plików cookie";
 
@@ -631,8 +640,14 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Nie wysyłaj";
 
+/* A label representing the state of a filter list that is downloaded */
+"Downloaded" = "Pobrane";
+
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "Pobierane pliki";
+
+/* A label representing the state of a filter list that is currently being downloaded */
+"Downloading" = "Pobieranie";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Pobrane";
@@ -750,6 +765,12 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funkcje";
+
+/* A title on the content filtering screen that allows you to enable/disable filter lists */
+"FilterLists" = "Listy filtrów";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Dodatkowe, popularne listy społeczności. Pamiętaj, że włącznie zbyt dużej liczby filtrów spowolni prędkość przeglądania.";
 
 /* Share action title */
 "FindInPage" = "Znajdź na stronie";
@@ -965,7 +986,7 @@
 "Name" = "Nazwa";
 
 /* Setting preference to always hide the browser tabs bar. */
-"NeverShow" = "Nigdy nie pokazuj";
+"NeverShow" = "Wył.";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "Nowa zakładka";
@@ -1006,6 +1027,9 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Brak wyników wyszukiwania.";
 
+/* A label representing the state of a filter list that is not downloaded */
+"NotDownloaded" = "Nie pobrano";
+
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Wprowadź wszystkie słowa i spróbuj ponownie";
 
@@ -1030,6 +1054,9 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ukryj sponsorowane obrazy";
 
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "„Sponsorowane” to dodatkowe tła z odpowiednią marką, dzięki którym możesz zarobić z Brave Rewards, jeśli są włączone.";
+
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Dowiedz się więcej o Brave Rewards";
 
@@ -1040,16 +1067,16 @@
 "ntp.settingsAutoOpenKeyboard" = "Automatyczne otwieranie klawiatury";
 
 /* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Wyświetl obrazy tła";
+"ntp.settingsBackgroundImages" = "Obrazy tła";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Obrazy tła";
+"ntp.settingsBackgroundImageSubMenu" = "Typ obrazu";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
-"ntp.settingsDefaultImagesOnly" = "Tylko obrazy domyślne";
+"ntp.settingsDefaultImagesOnly" = "Obrazy domyślne";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Obrazy sponsorowane";
+"ntp.settingsSponsoredImagesSelection" = "Sponsorowane";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Strona nowej karty";
@@ -1231,6 +1258,9 @@
 /* The description indicating the device is active last time yesterday */
 "opentabs.activePeriodDeviceYesterdayTitle" = "Aktywność: wczoraj";
 
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Włącz synchronizację kart, aby zobaczyć karty z innych swoich urządzeń.";
+
 /* The description of the view showing no devices inside sync chain */
 "opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Aby widzieć swoje urządzenia i włączone typy synchronizacji dołącz do łańcucha synchronizacji";
 
@@ -1243,32 +1273,41 @@
 /* The additional description of the view describing tab syncing should be enabled. */
 "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "W Ustawieniach możesz zarządzać z czym synchronizuje się Brave.";
 
-/* The description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewDescription" = "Włącz synchronizację kart, aby zobaczyć karty z innych swoich urządzeń.";
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Brak aktywnych sesji z innych urządzeń do wyświetlenia.";
 
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Ten obszar pokazuje karty Brave otwarte w innych urządzeniach";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
-"opentabs.openTabsItemLastSyncedFullTitle" = "Ostatnia synchronizacja: %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "W zeszłym tygodniu o %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
-"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Ostatnia synchronizacja: w zeszłym tygodniu %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Dzisiaj o %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
-"opentabs.openTabsItemLastSyncedTodayTitle" = "Ostatnia synchronizacja: dzisiaj %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Wczoraj o %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
-"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Ostatnia synchronizacja: wczoraj %@";
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Urządzenia";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Wyślij na swoje urządzenie";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Wysłano!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Wysyłanie…";
 
 /* The title displayed on send-webpage screen */
 "openTabs.sendWebpageScreenTitle" = "Wyślij stronę";
 
 /* Share action title for sending e url to another device */
 "opentabs.sendWebsiteShareActionTitle" = "Wyślij na swoje urządzenia";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Pokaż ustawienia synchronizacji";
 
 /* The button which navigates to screen starting a new sync chain */
 "opentabs.startASyncChainButtonTitle" = "Rozpocznij łańcuch synchronizacji";
@@ -1783,6 +1822,9 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Wyczyścić wszystkie dane Shields?";
 
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Ukryj widżet hubu prywatności";
+
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "W zeszłym tygodniu";
 
@@ -1812,6 +1854,9 @@
 
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Otwórz centrum prywatności";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Otwórz centrum prywatności";
 
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Dane centrum prywatności są przechowywane lokalnie i nigdy nie są nigdzie wysyłane.";
@@ -2551,6 +2596,15 @@
 /* Title for settings menu item */
 "SettingsMenuItem" = "Ustawienia";
 
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Pasek dolny";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Pasek górny";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Karty";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Udostępnij łącze";
 
@@ -2765,7 +2819,7 @@
 "showHistoryTitle" = "Pokaż historię";
 
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
-"ShowInLandscapeOnly" = "Pokaż tylko w orientacji poziomej";
+"ShowInLandscapeOnly" = "Tylko w orientacji poziomej";
 
 /* Context menu item for showing link previews */
 "ShowLinkPreviewsActionTitle" = "Pokaż podglądy linków";
@@ -2774,7 +2828,7 @@
 "ShowTabs" = "Pokaż karty";
 
 /* Setting to show/hide the tabs bar */
-"ShowTabsBar" = "Pokaż pasek kart";
+"ShowTabsBar" = "Pasek kart";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Dziękujemy za powiadomienie programistów Brave o tym, że coś jest nie tak z tą stroną. Zrobimy, co w naszej mocy, by to naprawić!";
@@ -3618,6 +3672,9 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Statystyka ochrony prywatności";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Widżety";
 
 /* Word count title */
 "WordCount" = "Liczba słów: %i";

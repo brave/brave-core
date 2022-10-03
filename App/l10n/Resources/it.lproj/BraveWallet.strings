@@ -19,9 +19,6 @@
 /* The title of a confirmation dialog when attempting to remove an account */
 "wallet.accountRemoveAlertConfirmation" = "Rimuovere questo account?";
 
-/* The message of a confirmation dialog when attempting to remove an account */
-"wallet.accountRemoveAlertConfirmationMessage" = "Confermi?";
-
 /* A button title to trigger deleting a secondary account */
 "wallet.accountRemoveButtonTitle" = "Rimuovi account";
 
@@ -334,6 +331,27 @@
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
 "wallet.dappsConnectionNotificationTitle" = "Questa pagina vuole interagire con il Portafoglio di Brave";
 
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Le DApp connesse al Portafoglio Brave compaiono qui";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "DApp connesse";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "Generale";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "Impostazioni %@";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "Tutte le autorizzazioni relative alla connessione al portafoglio saranno cancellate per %1$d %2$@";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "siti web";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "sito web";
+
 /* Describes what range of data to show on the graph (all data available) */
 "wallet.dateIntervalAll" = "Tutti";
 
@@ -457,8 +475,14 @@
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionDisconnect" = "Disconnetti";
 
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "Revoca";
+
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "Cambia";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "Mi fido";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
 "wallet.editSiteConnectionAccountPlural" = "account";
@@ -616,11 +640,11 @@
 /* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Tutte le autorizzazioni relative alla connessione al portafoglio saranno cancellate per questo sito.";
 
-/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsDetailHeader" = "Account Ethereum connessi";
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "Account %@ connessi";
 
 /* The filter in the search bar for the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsFilterPlaceholder" = "Filtra";
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Filtra DApp connesse";
 
 /* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
 "wallet.manageSiteConnectionsRemoveAll" = "Rimuovi tutto";
@@ -1117,11 +1141,17 @@
 /* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
 "wallet.walletFullScreenAccessibilityTitle" = "Apri il portafoglio a schermo intero";
 
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "Bloccato";
+
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
 "wallet.walletPanelConnect" = "Connetti";
 
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
-"wallet.walletPanelConnected" = "Connesso…";
+"wallet.walletPanelConnected" = "Connessa";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "Disconnesso";
 
 /* The description for wallet panel when users haven't set up a wallet yet. */
 "wallet.walletPanelSetupWalletDescription" = "Usa questo pannello per accedere a web3 e ai tuoi asset di criptovalute in tutta sicurezza.";
@@ -1132,8 +1162,14 @@
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
 "wallet.walletTypeNone" = "Niente";
 
-/* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
-"wallet.web3PreferencesAllowSiteToRequestAccounts" = "Permetti ai siti di inviare richieste agli account";
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "Confermi?";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "Consenti ai siti di accedere all’API del provider Ethereum";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "Consenti ai siti di accedere all’API del provider Solana";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Wallet Ethereum predefinito";

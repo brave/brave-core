@@ -47,7 +47,7 @@
 "AlwaysSendButtonTitle" = "Sentiasa Hantar";
 
 /* Setting preference to always show the browser tabs bar. */
-"AlwaysShow" = "Sentiasa Tunjuk";
+"AlwaysShow" = "Dihidupkan";
 
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "ID Muka & Kod Laluan";
@@ -117,6 +117,9 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Pemantau Penyekatan";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Sekat Notis 'Tukar kepada Aplikasi'";
 
 /* Brave panel individual toggle title */
 "BlockPhishing" = "Sekat Pemalsuan";
@@ -475,6 +478,12 @@
 /* No comment provided by engineer. */
 "Confirm" = "Sahkan";
 
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Penapisan Kandungan";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Dayakan penapis tersuai yang menyekat penjejak khusus rantau dan Gangguan.";
+
 /* Cookie settings option title */
 "CookieControl" = "Kawalan Kuki";
 
@@ -631,8 +640,14 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Jangan Hantar";
 
+/* A label representing the state of a filter list that is downloaded */
+"Downloaded" = "Sudah dimuat turun";
+
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "Fail-fail yang dimuat turun";
+
+/* A label representing the state of a filter list that is currently being downloaded */
+"Downloading" = "Memuat turun";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Muat Turun";
@@ -750,6 +765,12 @@
 
 /* No comment provided by engineer. */
 "Features" = "Ciri";
+
+/* A title on the content filtering screen that allows you to enable/disable filter lists */
+"FilterLists" = "Senarai Penapis";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Senarai komuniti terkenal tambahan. Ambil perhatian bahawa tindakan mendayakan terlalu banyak penapis akan mengurangkan kelajuan penyemakan imbas.";
 
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
@@ -965,7 +986,7 @@
 "Name" = "Nama";
 
 /* Setting preference to always hide the browser tabs bar. */
-"NeverShow" = "Jangan Sekali-kali Tunjuk";
+"NeverShow" = "Dimatikan";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "Penanda Buku Baharu";
@@ -1006,6 +1027,9 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Hasil carian tidak ditemukan.";
 
+/* A label representing the state of a filter list that is not downloaded */
+"NotDownloaded" = "Tidak dimuat turun";
+
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Sila masukkan semua perkataan dan cuba lagi.";
 
@@ -1030,6 +1054,9 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Sembunyikan imej tajaan";
 
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "'Tajaan' ialah latar belakang jenama tambahan yang boleh anda dapat dengan mendayakan Brave Rewards.";
+
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Ketahui lebih lanjut tentang Brave Rewards";
 
@@ -1040,16 +1067,16 @@
 "ntp.settingsAutoOpenKeyboard" = "Papan Kekunci Buka Secara Automatik";
 
 /* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Tunjukkan Imej Latar Belakang";
+"ntp.settingsBackgroundImages" = "Imej Latar belakang";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Imej Latar belakang";
+"ntp.settingsBackgroundImageSubMenu" = "Jenis Imej";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
-"ntp.settingsDefaultImagesOnly" = "Imej Gagal Sahaja";
+"ntp.settingsDefaultImagesOnly" = "Imej Lalai";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Tajaan Imej";
+"ntp.settingsSponsoredImagesSelection" = "Tajaan";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Halaman Tab Baru";
@@ -1231,6 +1258,9 @@
 /* The description indicating the device is active last time yesterday */
 "opentabs.activePeriodDeviceYesterdayTitle" = "Aktif Semalam";
 
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Dayakan penyegerakan tab untuk melihat tab daripada peranti lain anda.";
+
 /* The description of the view showing no devices inside sync chain */
 "opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Untuk melihat peranti anda dan jenis penyegerakan yang didayakan, sertai rantaian penyegerakan";
 
@@ -1243,32 +1273,41 @@
 /* The additional description of the view describing tab syncing should be enabled. */
 "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Urus perkara yang Brave segerakkan dalam Tetapan.";
 
-/* The description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewDescription" = "Dayakan penyegerakan tab untuk melihat tab daripada peranti lain anda.";
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Tiada sesi aktif untuk ditunjukkan daripada peranti anda yang lain.";
 
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Ruang ini menunjukkan tab Brave yang dibuka dalam peranti lain";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
-"opentabs.openTabsItemLastSyncedFullTitle" = "Kali terakhir disegerakkan: %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "%@ Minggu Lalu";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
-"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Kali terakhir disegerakkan: Minggu Lepas %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "%@ Hari Ini";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
-"opentabs.openTabsItemLastSyncedTodayTitle" = "Kali terakhir disegerakkan: Hari ini %@";
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = " %@ Semalam";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
-"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Kali terakhir disegerakkan: Semalam %@";
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Peranti";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Hantar Ke Peranti Anda";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Dihantar!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Sedang menghantar...";
 
 /* The title displayed on send-webpage screen */
 "openTabs.sendWebpageScreenTitle" = "Hantar Halaman Web";
 
 /* Share action title for sending e url to another device */
 "opentabs.sendWebsiteShareActionTitle" = "Hantar ke Peranti Anda";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Tunjukkan Tetapan Segerak";
 
 /* The button which navigates to screen starting a new sync chain */
 "opentabs.startASyncChainButtonTitle" = "Mulakan rantaian penyegerakan";
@@ -1783,6 +1822,9 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Kosongkan semua data Shields?";
 
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Sembunyikan Widget Hab Privasi";
+
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Minggu lepas";
 
@@ -1812,6 +1854,9 @@
 
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Buka Hab Privasi";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Buka Hab Privasi";
 
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Data Hab Privasi disimpan secara setempat dan tidak akan dihantar ke mana-mana.";
@@ -2551,6 +2596,15 @@
 /* Title for settings menu item */
 "SettingsMenuItem" = "Tetapan";
 
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Bar Bawah";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Bar Atas";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Tab";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Kongsi Pautan";
 
@@ -2765,7 +2819,7 @@
 "showHistoryTitle" = "Tunjukkan Sejarah";
 
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
-"ShowInLandscapeOnly" = "Tunjuk dalam mod Landskap Sahaja";
+"ShowInLandscapeOnly" = "Landskap Sahaja";
 
 /* Context menu item for showing link previews */
 "ShowLinkPreviewsActionTitle" = "Tunjukkan Pratonton Pautan";
@@ -2774,7 +2828,7 @@
 "ShowTabs" = "Tunjuk Tab";
 
 /* Setting to show/hide the tabs bar */
-"ShowTabsBar" = "Tunjuk Bar Tab";
+"ShowTabsBar" = "Bar Tab";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Terima kasih kerana memberitahu pembangun Brave bahawa ada sesuatu yang tidak kena dengan tapak ini. Kami akan melakukan yang terbaik untuk memperbaikinya!";
@@ -3618,6 +3672,9 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Statistik Privasi";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Widget";
 
 /* Word count title */
 "WordCount" = "Bilangan perkataan: %i";
