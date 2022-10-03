@@ -137,11 +137,8 @@ struct AddCustomAssetView: View {
 struct AddCustomAssetView_Previews: PreviewProvider {
   static var previews: some View {
     AddCustomAssetView(
-      userAssetStore: UserAssetsStore(
-        walletService: MockBraveWalletService(),
-        blockchainRegistry: MockBlockchainRegistry(),
-        rpcService: MockJsonRpcService(),
-        assetRatioService: MockAssetRatioService()))
+      userAssetStore: .previewStore
+    )
   }
 }
 #endif

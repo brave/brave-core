@@ -58,6 +58,7 @@ public class PortfolioStore: ObservableObject {
     walletService: self.walletService,
     blockchainRegistry: self.blockchainRegistry,
     rpcService: self.rpcService,
+    keyringService: self.keyringService,
     assetRatioService: self.assetRatioService
   )
   
