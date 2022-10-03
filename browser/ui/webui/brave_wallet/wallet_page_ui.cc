@@ -58,11 +58,13 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
       IDR_WALLET_PAGE_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
+  source->AddString("braveWalletImageBridgeUrl", kUntrustedImageURL);
+
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
           kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedMarketURL + ";");
+          kUntrustedMarketURL + " " + kUntrustedImageURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);

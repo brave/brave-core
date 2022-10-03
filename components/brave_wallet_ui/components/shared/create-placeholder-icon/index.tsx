@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { background } from 'ethereum-blockies'
 
@@ -18,6 +23,7 @@ import { IconWrapper, PlaceholderText } from './style'
 
 // Options
 import { getNetworkLogo } from '../../../options/asset-options'
+import { UntrustedImage } from '../untrusted-image/untrusted-image'
 
 interface Config {
   size: 'big' | 'small'
@@ -97,6 +103,23 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       )
     }
 
+    if (isRemoteURL) {
+      return (
+        <IconWrapper
+          isPlaceholder={false}
+          size={size}
+          marginLeft={marginLeft ?? 0}
+          marginRight={marginRight ?? 0}
+        >
+          <UntrustedImage
+            src={remoteImage}
+            width={size === 'big' ? '40px' : '24px'}
+            height={size === 'big' ? '40px' : '24px'}
+          />
+        </IconWrapper>
+      )
+    }
+
     return (
       <IconWrapper
         isPlaceholder={false}
@@ -108,7 +131,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
           icon={
             isNativeAsset && networkLogo
               ? networkLogo
-              : isRemoteURL ? remoteImage : asset.logo
+              : asset.logo
           }
         />
       </IconWrapper>

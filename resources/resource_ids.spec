@@ -217,5 +217,10 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_speedreader_panel/brave_speedreader_panel.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [59820]
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-image_display/image_display.grd": {
+    "META": {"sizes": {"includes": [250]}},
+    "includes": [60070]
   }
 }

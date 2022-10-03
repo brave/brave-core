@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/ui/webui/brave_wallet/image/image_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
@@ -43,6 +44,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<nft::UntrustedNftUIConfig>());
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<image::UntrustedImageUIConfig>());
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(

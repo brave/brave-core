@@ -66,6 +66,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
+  source->AddString("braveWalletImageBridgeUrl", kUntrustedImageURL);
 
   if (ShouldDisableCSPForTesting()) {
     source->DisableContentSecurityPolicy();
