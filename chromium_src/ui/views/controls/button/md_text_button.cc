@@ -8,6 +8,7 @@
 #include <tuple>
 
 #include "base/containers/flat_map.h"
+#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
@@ -66,57 +67,62 @@ struct MdTextButtonStyleKey {
 constexpr float kDisabledOpacity = 0.5f;
 constexpr float kLoadingOpacity = 0.8f;
 
-const base::flat_map<MdTextButtonStyleKey, ButtonStyle> g_button_themes = {
-    {{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-     {.background_color = kBravePrimaryColor,
-      .border_color = absl::nullopt,
-      .text_color = SK_ColorWHITE}},
-    {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-     {.background_color = kBravePrimaryColor,
-      .border_color = absl::nullopt,
-      .text_color = SK_ColorWHITE}},
-    {{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-     {.background_color = SkColorSetRGB(24, 56, 172),
-      .border_color = absl::nullopt,
-      .text_color = SK_ColorWHITE}},
-    {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-     {.background_color = SkColorSetRGB(77, 92, 253),
-      .border_color = absl::nullopt,
-      .text_color = SK_ColorWHITE}},
+const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
+  static base::NoDestructor<base::flat_map<MdTextButtonStyleKey, ButtonStyle>>
+      button_themes(
+          {{{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
+            {.background_color = kBravePrimaryColor,
+             .border_color = absl::nullopt,
+             .text_color = SK_ColorWHITE}},
+           {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
+            {.background_color = kBravePrimaryColor,
+             .border_color = absl::nullopt,
+             .text_color = SK_ColorWHITE}},
+           {{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
+            {.background_color = SkColorSetRGB(24, 56, 172),
+             .border_color = absl::nullopt,
+             .text_color = SK_ColorWHITE}},
+           {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
+            {.background_color = SkColorSetRGB(77, 92, 253),
+             .border_color = absl::nullopt,
+             .text_color = SK_ColorWHITE}},
 
-    {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-     {.background_color = absl::nullopt,
-      .border_color = SK_ColorBLACK,
-      .text_color = SK_ColorBLACK}},
-    {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-     {.background_color = absl::nullopt,
-      .border_color = SK_ColorWHITE,
-      .text_color = SK_ColorWHITE}},
-    {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-     {.background_color = absl::nullopt,
-      .border_color = kBravePrimaryColor,
-      .text_color = kBravePrimaryColor}},
-    {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-     {.background_color = absl::nullopt,
-      .border_color = kBravePrimaryColor,
-      .text_color = kBravePrimaryColor}},
+           {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
+            {.background_color = absl::nullopt,
+             .border_color = SK_ColorBLACK,
+             .text_color = SK_ColorBLACK}},
+           {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
+            {.background_color = absl::nullopt,
+             .border_color = SK_ColorWHITE,
+             .text_color = SK_ColorWHITE}},
+           {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
+            {.background_color = absl::nullopt,
+             .border_color = kBravePrimaryColor,
+             .text_color = kBravePrimaryColor}},
+           {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
+            {.background_color = absl::nullopt,
+             .border_color = kBravePrimaryColor,
+             .text_color = kBravePrimaryColor}},
 
-    {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-     {.background_color = absl::nullopt,
-      .border_color = absl::nullopt,
-      .text_color = SkColorSetRGB(32, 74, 227)}},
-    {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-     {.background_color = absl::nullopt,
-      .border_color = absl::nullopt,
-      .text_color = SkColorSetRGB(153, 173, 243)}},
-    {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-     {.background_color = absl::nullopt,
-      .border_color = absl::nullopt,
-      .text_color = SkColorSetRGB(24, 56, 172)}},
-    {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-     {.background_color = absl::nullopt,
-      .border_color = absl::nullopt,
-      .text_color = SkColorSetRGB(186, 199, 247)}}};
+           {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(32, 74, 227)}},
+           {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(153, 173, 243)}},
+           {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(24, 56, 172)}},
+           {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(186, 199, 247)}}});
+
+  return *button_themes;
+}
 
 class BraveTextButtonHighlightPathGenerator
     : public views::HighlightPathGenerator {
@@ -267,8 +273,8 @@ void MdTextButton::UpdateColorsForBrave() {
   }
 
   MdTextButtonStyleKey style_lookup{GetKind(), color_scheme, state};
-  auto it = g_button_themes.find(style_lookup);
-  if (it == g_button_themes.end()) {
+  auto it = GetButtonThemes().find(style_lookup);
+  if (it == GetButtonThemes().end()) {
     NOTREACHED() << "No style found for ButtonKind: " << kind_
                  << ", ColorScheme: "
                  << (color_scheme == ColorScheme::kDark ? "dark" : "light")
