@@ -117,6 +117,10 @@ class ScriptFactory {
         }
         cachedDomainScriptsSources[domainType] = script
         return script
+        
+      case .youtubeAdblock:
+        // No modifications needed
+        break
       }
     }
     

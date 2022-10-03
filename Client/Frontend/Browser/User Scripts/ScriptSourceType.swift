@@ -21,6 +21,7 @@ enum ScriptSourceType {
   case braveTalkHelper
   case braveSkus
   case bravePlaylistFolderSharingHelper
+  case youtubeAdblock
 
   var fileName: String {
     switch self {
@@ -31,6 +32,7 @@ enum ScriptSourceType {
     case .braveTalkHelper: return "BraveTalkScript"
     case .bravePlaylistFolderSharingHelper: return "PlaylistFolderSharingScript"
     case .braveSkus: return "BraveSkusScript"
+    case .youtubeAdblock: return "YoutubeAdblock"
     }
   }
 
