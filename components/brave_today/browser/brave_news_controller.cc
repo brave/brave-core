@@ -84,11 +84,11 @@ BraveNewsController::BraveNewsController(
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
-      direct_feed_controller_(prefs, url_loader_factory),
-      unsupported_publisher_migrator_(prefs,
+      direct_feed_controller_(prefs_, url_loader_factory),
+      unsupported_publisher_migrator_(prefs_,
                                       &direct_feed_controller_,
                                       &api_request_helper_),
-      publishers_controller_(prefs,
+      publishers_controller_(prefs_,
                              &direct_feed_controller_,
                              &unsupported_publisher_migrator_,
                              &api_request_helper_),
@@ -96,12 +96,12 @@ BraveNewsController::BraveNewsController(
                        &direct_feed_controller_,
                        history_service,
                        &api_request_helper_,
-                       prefs),
-      channels_controller_(prefs, &publishers_controller_),
+                       prefs_),
+      channels_controller_(prefs_, &publishers_controller_),
       weak_ptr_factory_(this) {
-  DCHECK(prefs);
+  DCHECK(prefs_);
   // Set up preference listeners
-  pref_change_registrar_.Init(prefs);
+  pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kNewTabPageShowToday,
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
@@ -121,7 +121,7 @@ BraveNewsController::BraveNewsController(
         base::Unretained(&channels_controller_)));
   }
 
-  p3a::RecordAtInit(prefs);
+  p3a::RecordAtInit(prefs_);
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
   ConditionallyStartOrStopTimer();

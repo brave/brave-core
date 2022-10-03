@@ -21,8 +21,6 @@
 
 namespace brave_news {
 
-namespace {}
-
 ChannelsController::ChannelsController(
     PrefService* prefs,
     PublishersController* publishers_controller)
