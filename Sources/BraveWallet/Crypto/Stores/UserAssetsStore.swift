@@ -55,6 +55,7 @@ public class UserAssetsStore: ObservableObject {
   private let walletService: BraveWalletBraveWalletService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
+  private let keyringService: BraveWalletKeyringService
   private let assetRatioService: BraveWalletAssetRatioService
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var timer: Timer?
@@ -63,13 +64,16 @@ public class UserAssetsStore: ObservableObject {
     walletService: BraveWalletBraveWalletService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     rpcService: BraveWalletJsonRpcService,
+    keyringService: BraveWalletKeyringService,
     assetRatioService: BraveWalletAssetRatioService
   ) {
     self.walletService = walletService
     self.blockchainRegistry = blockchainRegistry
     self.rpcService = rpcService
+    self.keyringService = keyringService
     self.assetRatioService = assetRatioService
     self.rpcService.add(self)
+    self.keyringService.add(self)
 
     fetchVisibleAssets()
   }
@@ -187,5 +191,35 @@ extension UserAssetsStore: BraveWalletJsonRpcServiceObserver {
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
   }
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
+  }
+}
+
+extension UserAssetsStore: BraveWalletKeyringServiceObserver {
+  public func keyringCreated(_ keyringId: String) {
+    fetchVisibleAssets()
+  }
+  
+  public func keyringRestored(_ keyringId: String) {
+  }
+  
+  public func keyringReset() {
+  }
+  
+  public func locked() {
+  }
+  
+  public func unlocked() {
+  }
+  
+  public func backedUp() {
+  }
+  
+  public func accountsChanged() {
+  }
+  
+  public func autoLockMinutesChanged() {
+  }
+  
+  public func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
   }
 }

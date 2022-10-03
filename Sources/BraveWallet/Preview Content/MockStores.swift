@@ -147,6 +147,7 @@ extension UserAssetsStore {
       walletService: MockBraveWalletService(),
       blockchainRegistry: MockBlockchainRegistry(),
       rpcService: MockJsonRpcService(),
+      keyringService: MockKeyringService(),
       assetRatioService: MockAssetRatioService()
     )
   }
