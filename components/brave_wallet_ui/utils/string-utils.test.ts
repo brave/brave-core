@@ -9,7 +9,8 @@ import {
   formatAsDouble,
   hasUnicode,
   padWithLeadingZeros,
-  unicodeCharEscape
+  unicodeCharEscape,
+  removeDoubleSpaces
 } from './string-utils'
 
 describe('Checking URL is remote image or not', () => {
@@ -95,5 +96,14 @@ describe('unicodeCharEscape', () => {
     expect(unicodeCharEscape(300)).toBe('\\u012c')
     expect(unicodeCharEscape(550)).toBe('\\u0226')
     expect(unicodeCharEscape(1550)).toBe('\\u060e')
+  })
+})
+
+describe('removeDoubleSpaces', () => {
+  it('should remove all instances of multiple spaces " " from a string', () => {
+    expect(removeDoubleSpaces('word  word word')).toBe('word word word')
+    expect(removeDoubleSpaces('word  word  word')).toBe('word word word')
+    expect(removeDoubleSpaces('word  word')).toBe('word word')
+    expect(removeDoubleSpaces('word')).toBe('word')
   })
 })
