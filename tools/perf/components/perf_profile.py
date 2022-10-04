@@ -9,7 +9,7 @@ import hashlib
 import uuid
 import shutil
 
-from zipfile import ZipFile
+from lib.util import extract_zip
 
 from components import path_util
 
@@ -33,7 +33,7 @@ def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
 
 
 def GetProfileHash(profile: str, binary: str) -> str:
-  binary_path_hash = hashlib.sha1(binary.encode("utf-8")).hexdigest()[:6]
+  binary_path_hash = hashlib.sha256(binary.encode("utf-8")).hexdigest()[:6]
   return profile + '-' + binary_path_hash
 
 
@@ -77,8 +77,8 @@ def GetProfilePath(profile: str, work_directory: str) -> str:
       os.makedirs(profile_dir)
       logging.info('Create temp profile dir %s for profile %s', profile_dir,
                    profile)
-      zipfile = ZipFile(zip_path)
-      zipfile.extractall(profile_dir)
+
+      extract_zip(zip_path, profile_dir)
 
   logging.info('Use temp profile dir %s for profile %s', profile_dir, profile)
   return profile_dir
