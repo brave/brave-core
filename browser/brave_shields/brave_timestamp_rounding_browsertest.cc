@@ -3,7 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <math.h>
 #include <string>
+
+// Prevent a -Wimplicit-const-int-float-conversion warning:
+#define fmod(A, B) fmod(A, static_cast<double>(kMaxULL) + 1.0)
+#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
+#undef fmod
 
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -12,8 +18,13 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/test/render_view_test.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.h"
 
-using blink::features::kBraveRoundTimeStamps;
+namespace blink {
+
+namespace {
+
+using features::kBraveRoundTimeStamps;
 
 class BraveTimeStampRoundingRenderViewTest : public content::RenderViewTest {
  public:
@@ -38,7 +49,20 @@ class BraveTimeStampRoundingRenderViewTest : public content::RenderViewTest {
     task_environment_.RunUntilIdle();
   }
 
+  void checkVideoFrameCallback(bool expect_rounded) {
+    double videoCallbackTime =
+        VideoFrameCallbackRequesterImpl::Test_GetCoarseClampedTimeInSeconds(
+            base::Microseconds(3333));
+    if (expect_rounded) {
+      // Should be rounded to the nearest millisecond
+      EXPECT_EQ(videoCallbackTime, 0.003);
+    } else {
+      EXPECT_NE(videoCallbackTime, 0.003);
+    }
+  }
+
   void RunRoundingTests(bool expect_rounded) {
+    // Check rounding of web APIs
     LoadHTML("<html><body>hi</body></html>");
     Advance100Microseconds();
     CheckRounded(u"performance.now()", expect_rounded);
@@ -48,6 +72,7 @@ class BraveTimeStampRoundingRenderViewTest : public content::RenderViewTest {
     if (expect_rounded) {
       CheckRounded(u"performance.timeOrigin", true);
     }
+    checkVideoFrameCallback(expect_rounded);
   }
 
  protected:
@@ -80,3 +105,7 @@ TEST_F(BraveTimeStampRoundingRenderViewTest_Disable,
        SynchronousApisRounded_Disable) {
   RunRoundingTests(false);
 }
+
+}  // namespace
+
+}  // namespace blink
