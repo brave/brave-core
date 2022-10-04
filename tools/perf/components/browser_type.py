@@ -16,8 +16,9 @@ from typing import List
 
 from urllib.request import urlopen
 from io import BytesIO
-from zipfile import ZipFile
 from distutils.dir_util import copy_tree
+
+from lib.util import extract_zip
 
 from components import path_util
 from components.perf_test_utils import GetProcessOutput
@@ -26,8 +27,8 @@ from components.perf_test_utils import GetProcessOutput
 def _DownloadArchiveAndUnpack(output_directory: str, url: str) -> str:
   logging.info('Downloading archive %s', url)
   resp = urlopen(url)
-  zipfile = ZipFile(BytesIO(resp.read()))
-  zipfile.extractall(output_directory)
+  extract_zip(resp, profile_dir)
+
   return os.path.join(output_directory,
                       path_util.GetBinaryPath(output_directory))
 
