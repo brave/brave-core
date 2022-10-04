@@ -122,7 +122,7 @@ TEST_F(GetPublisherTest, EmptyWalletAddress) {
   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   ASSERT_TRUE(info);
   EXPECT_EQ(info->publisher_key, "brave.com");
-  EXPECT_EQ(info->status, mojom::PublisherStatus::CONNECTED);
+  EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
   EXPECT_EQ(info->address, "");
 }
 

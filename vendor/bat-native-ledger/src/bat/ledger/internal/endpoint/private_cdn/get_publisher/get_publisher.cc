@@ -61,7 +61,7 @@ void GetPublisherStatusFromMessage(
     const publishers_pb::ChannelResponse& response,
     ledger::mojom::ServerPublisherInfo* info) {
   DCHECK(info);
-  info->status = ledger::mojom::PublisherStatus::CONNECTED;
+  info->status = ledger::mojom::PublisherStatus::NOT_VERIFIED;
   for (const auto& wallet : response.wallets()) {
     if (wallet.has_uphold_wallet()) {
       auto& uphold = wallet.uphold_wallet();
