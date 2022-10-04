@@ -27,7 +27,7 @@
                     bugprone-misplaced-widening-cast,
                     bugprone-move-forwarding-reference,
                     bugprone-multiple-statement-macro,
-                    # bugprone-narrowing-conversions,
+                    bugprone-narrowing-conversions,
                     bugprone-no-escape,
                     bugprone-not-null-terminated-result,
                     bugprone-parent-virtual-call,

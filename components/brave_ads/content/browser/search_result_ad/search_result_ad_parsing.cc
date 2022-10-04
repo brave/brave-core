@@ -84,7 +84,8 @@ bool GetIntValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  *out_value = ad_property->values->get_long_values().front();
+  *out_value =
+      static_cast<int32_t>(ad_property->values->get_long_values().front());
 
   return true;
 }
