@@ -154,8 +154,7 @@ final public class PlaylistFolder: NSManagedObject, CRUD, Identifiable {
     DataController.perform(context: .new(inMemory: false), save: true) { context in
       do {
         guard let folder = try context.existingObject(with: folderID) as? PlaylistFolder else {
-          update(.failure("No Existing Object in CoreData"))
-          return
+          fatalError("folder ID \(folderID) is not a PlaylistFolder")
         }
 
         update(.success(folder))

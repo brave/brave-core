@@ -708,6 +708,9 @@ extension PlaylistViewController: VideoViewDelegate {
             log.error(err)
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
             self.displayLoadingResourceError()
+          case .cannotLoadMedia:
+            self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
+            self.displayLoadingResourceError()
           case .expired:
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: true)
             self.displayExpiredResourceError(item: item)
@@ -775,6 +778,9 @@ extension PlaylistViewController: VideoViewDelegate {
           switch error {
           case .other(let err):
             log.error(err)
+            self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
+            self.displayLoadingResourceError()
+          case .cannotLoadMedia:
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
             self.displayLoadingResourceError()
           case .expired:
@@ -932,21 +938,17 @@ extension PlaylistViewController: VideoViewDelegate {
                 resolver(.failure(.cancelled))
               case .other(let err):
                 resolver(.failure(.other(err)))
+              case .cannotLoadAsset(status: let status):
+                resolver(.failure(.other(error)))
               }
             case .finished:
               break
             }
           },
           receiveValue: { [weak self] isNewItem in
-            guard let self = self else {
+            guard let self = self, let item = self.player.currentItem else {
               log.debug("User Cancelled Playback")
               resolver(.failure(.cancelled))
-              return
-            }
-
-            guard let item = self.player.currentItem else {
-              log.debug("User Cancelled Playback")
-              resolver(.failure(.other("Couldn't load playlist item")))
               return
             }
 
@@ -1013,6 +1015,8 @@ extension PlaylistViewController: VideoViewDelegate {
                   completion?(.cancelled)
                 case .other(let err):
                   completion?(.other(err))
+                case .cannotLoadAsset(_):
+                  completion?(.other(error))
                 }
 
               case .finished:
@@ -1098,6 +1102,8 @@ extension PlaylistViewController: VideoViewDelegate {
                     completion?(.cancelled)
                   case .other(let err):
                     completion?(.other(err))
+                  case .cannotLoadAsset(_):
+                    completion?(.other(error))
                   }
                 case .finished:
                   break

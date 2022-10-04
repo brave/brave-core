@@ -6,6 +6,20 @@
 import Foundation
 import BraveCore
 
+enum AdblockServiceError: LocalizedError {
+  case serviceNotAvailable
+  case uuidNotFound(String)
+  
+  var errorDescription: String? {
+    switch self {
+    case .serviceNotAvailable:
+      return "AdblockService not available"
+    case .uuidNotFound(let uuid):
+      return "`AdblockFilterList` for uuid `\(uuid)` not found"
+    }
+  }
+}
+
 class AdblockServicePublisher {
   /// Ad block service used for getting certain components
   private weak var adBlockService: AdblockService?
@@ -51,7 +65,7 @@ class AdblockServicePublisher {
   private func getAdblockService() throws -> AdblockService {
     guard let adBlockService = adBlockService else {
       // Set an error so we have a result..otherwise nothing happens
-      throw "AdblockService not available"
+      throw AdblockServiceError.serviceNotAvailable
     }
     
     return adBlockService
@@ -59,7 +73,7 @@ class AdblockServicePublisher {
   
   private func filterList(forUUID uuid: String) throws -> AdblockFilterList {
     guard let filterList = adBlockService?.regionalFilterLists?.first(where: { $0.uuid == uuid }) else {
-      throw "`AdblockFilterList` for uuid `\(uuid)` not found"
+      throw AdblockServiceError.uuidNotFound(uuid)
     }
     
     return filterList

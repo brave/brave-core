@@ -74,6 +74,10 @@ public class PlaylistThumbnailRenderer {
     assetGenerator = nil
     favIconGenerator = nil
   }
+  
+  private enum BindError: Error {
+    case failedToLoadImage
+  }
 
   private func bind(_ block: @escaping (URL, @escaping (UIImage?) -> Void) -> Void, url: URL) -> Future<UIImage, Error> {
     Future { promise in
@@ -81,7 +85,7 @@ public class PlaylistThumbnailRenderer {
         if let image = image {
           promise(.success(image))
         } else {
-          promise(.failure("Image could not be loaded"))
+          promise(.failure(BindError.failedToLoadImage))
         }
       })
     }
@@ -156,10 +160,10 @@ private class HLSThumbnailGenerator {
   private var videoOutput: AVPlayerItemVideoOutput?
   private var observer: NSKeyValueObservation?
   private var state: State = .loading
-  private let completion: (UIImage?, Error?) -> Void
+  private let completion: (UIImage?, HLSThumbnailGeneratorError?) -> Void
   private let queue = DispatchQueue(label: "com.brave.hls-thumbnail-generator")
 
-  init(url: URL, time: TimeInterval, completion: @escaping (UIImage?, Error?) -> Void) {
+  init(url: URL, time: TimeInterval, completion: @escaping (UIImage?, HLSThumbnailGeneratorError?) -> Void) {
     self.asset = AVAsset(url: url)
     self.sourceURL = url
     self.completion = completion
@@ -183,7 +187,7 @@ private class HLSThumbnailGenerator {
       } else if item.status == .failed {
         self.state = .failed
         DispatchQueue.main.async {
-          self.completion(nil, "Failed to load item")
+          self.completion(nil, .cannotLoadItem(url: url))
         }
       }
     }
@@ -224,13 +228,13 @@ private class HLSThumbnailGenerator {
               self.snapshotPixelBuffer(buffer, atTime: time.seconds)
             } else {
               DispatchQueue.main.async {
-                self.completion(nil, "Cannot copy pixel-buffer (PBO)")
+                self.completion(nil, .cannotCopyPixelBuffer)
               }
             }
           }
         } else {
           DispatchQueue.main.async {
-            self.completion(nil, "Failed to seek to specified time")
+            self.completion(nil, .cannotSeekToSpecifiedTimeInterval(interval: time))
           }
         }
       }
@@ -252,9 +256,16 @@ private class HLSThumbnailGenerator {
       }
     } else {
       DispatchQueue.main.async {
-        self.completion(nil, "Failed to create image from pixel-buffer frame.")
+        self.completion(nil, .invalidPixelBuffer)
       }
     }
   }
 
+}
+
+public enum HLSThumbnailGeneratorError: Error {
+  case cannotLoadItem(url: URL)
+  case cannotCopyPixelBuffer
+  case cannotSeekToSpecifiedTimeInterval(interval: CMTime)
+  case invalidPixelBuffer
 }

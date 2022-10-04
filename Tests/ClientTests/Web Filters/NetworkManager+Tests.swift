@@ -8,12 +8,14 @@ import BraveCore
 @testable import Brave
 
 extension NetworkManager {
+  private struct ResourceNotFoundError: Error {}
   static func makeNetworkManager(for resources: [ResourceDownloader.Resource], statusCode: Int = 200, etag: String? = nil) -> NetworkManager {
     let session = BaseMockNetworkSession { url in
       guard let resource = resources.first(where: { resource in
         url.absoluteURL == resource.externalURL
       }) else {
-        throw "Resource not found"
+        // Resource not found
+        throw ResourceNotFoundError()
       }
       
       let data = try await self.mockData(for: resource)

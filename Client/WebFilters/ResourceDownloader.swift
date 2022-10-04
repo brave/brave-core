@@ -195,8 +195,8 @@ actor ResourceDownloader: Sendable {
       }
       
       return .downloaded(networkResource, Date())
-    } catch let error as String {
-      if error == "File not modified", let fileURL = Self.downloadedFileURL(for: resource) {
+    } catch let error as NetworkManagerError {
+      if error == .fileNotModified, let fileURL = Self.downloadedFileURL(for: resource) {
         return .notModified(fileURL, Date())
       } else {
         throw error

@@ -15,6 +15,12 @@ protocol NTPDownloaderDelegate: AnyObject {
   func preloadCustomTheme(theme: CustomTheme?)
 }
 
+public enum NTPDownloaderError: Error {
+  case cancelled
+  case unknownSaveLocation
+  case invalidResponseCode(Int)
+}
+
 public class NTPDownloader {
   public enum ResourceType {
     /// Downloaded only when users installs the app via special referral code.
@@ -151,7 +157,7 @@ public class NTPDownloader {
         return completion(nil)
       }
 
-      if let error = error?.underlyingError() {
+      if let error = error {
         logger.error(error)
         return completion(self.loadNTPResource(for: type))
       }
@@ -170,7 +176,7 @@ public class NTPDownloader {
       // to somewhere more permanent where we'll load the images from..
 
       do {
-        guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
+        guard let saveLocation = type.saveLocation else { throw NTPDownloaderError.unknownSaveLocation }
 
         try FileManager.default.createDirectory(at: saveLocation, withIntermediateDirectories: true, attributes: nil)
 
@@ -278,14 +284,14 @@ public class NTPDownloader {
 
   private func loadNTPResource(for type: ResourceType) -> NTPThemeable? {
     do {
-      let metadataFileURL = try self.ntpMetadataFileURL(type: type)
-      if !FileManager.default.fileExists(atPath: metadataFileURL.path) {
+      guard let metadataFileURL = self.ntpMetadataFileURL(type: type),
+            FileManager.default.fileExists(atPath: metadataFileURL.path) else {
         return nil
       }
 
       let metadata = try Data(contentsOf: metadataFileURL)
 
-      guard let downloadsFolderURL = type.saveLocation else { throw "Can't find location to save" }
+      guard let downloadsFolderURL = type.saveLocation else { throw NTPDownloaderError.unknownSaveLocation }
 
       switch type {
       case .sponsor:
@@ -360,12 +366,12 @@ public class NTPDownloader {
 
   private func getETag(type: ResourceType) -> String? {
     do {
-      let etagFileURL = try self.ntpETagFileURL(type: type)
-      if !FileManager.default.fileExists(atPath: etagFileURL.path) {
+      guard let etagFileURL = self.ntpETagFileURL(type: type),
+            FileManager.default.fileExists(atPath: etagFileURL.path) else {
         return nil
       }
 
-      return try? String(contentsOfFile: etagFileURL.path, encoding: .utf8)
+      return try String(contentsOfFile: etagFileURL.path, encoding: .utf8)
     } catch {
       logger.error(error)
       return nil
@@ -374,7 +380,7 @@ public class NTPDownloader {
 
   private func setETag(_ etag: String, type: ResourceType) {
     do {
-      let etagFileURL = try self.ntpETagFileURL(type: type)
+      guard let etagFileURL = self.ntpETagFileURL(type: type) else { return }
       try etag.write(to: etagFileURL, atomically: true, encoding: .utf8)
     } catch {
       logger.error(error)
@@ -382,7 +388,7 @@ public class NTPDownloader {
   }
 
   private func removeETag(type: ResourceType) throws {
-    let etagFileURL = try self.ntpETagFileURL(type: type)
+    guard let etagFileURL = self.ntpETagFileURL(type: type) else { return }
     if FileManager.default.fileExists(atPath: etagFileURL.path) {
       try FileManager.default.removeItem(at: etagFileURL)
     }
@@ -390,7 +396,7 @@ public class NTPDownloader {
 
   func removeCampaign(type: ResourceType) throws {
     try self.removeETag(type: type)
-    guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
+    guard let saveLocation = type.saveLocation else { throw NTPDownloaderError.unknownSaveLocation }
 
     switch type {
     case .superReferral(let code):
@@ -413,12 +419,12 @@ public class NTPDownloader {
   private func downloadMetadata(type: ResourceType, _ completion: @escaping (URL?, CacheResponse?, NTPError?) -> Void) {
     self.download(type: type, path: type.resourceName, etag: self.getETag(type: type)) { [weak self] data, cacheInfo, error in
       guard let self = self else {
-        completion(nil, nil, .loadingError("NTP Downloader Deallocated"))
+        completion(nil, nil, .loadingError(NTPDownloaderError.cancelled))
         return
       }
 
       if let error = error {
-        completion(nil, nil, .metadataError(error))
+        completion(nil, nil, .metadataError(error.localizedDescription))
         return
       }
 
@@ -488,12 +494,12 @@ public class NTPDownloader {
       switch result {
       case .success(let (data, response)):
         guard let response = response as? HTTPURLResponse else {
-          completion(nil, nil, "Response is not an HTTP Response")
+          completion(nil, nil, URLError(.badServerResponse))
           return
         }
         
         if response.statusCode != 304 && (response.statusCode < 200 || response.statusCode > 299) {
-          completion(nil, nil, "Invalid Response Status Code: \(response.statusCode)")
+          completion(nil, nil, NTPDownloaderError.invalidResponseCode(response.statusCode))
           return
         }
 
@@ -514,7 +520,7 @@ public class NTPDownloader {
     let directory = tempDirectory.appendingPathComponent(type.saveTopFolderName)
 
     do {
-      var error: Error?
+      var error: NTPError?
       let group = DispatchGroup()
 
       try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
@@ -565,12 +571,12 @@ public class NTPDownloader {
           defer { group.leave() }
           
           if let err = err {
-            error = err
+            error = .unpackError(err.localizedDescription)
             return
           }
 
           guard let data = data else {
-            error = "No Data Available for NTP-Download: \(itemURL)"
+            error = NTPError.unpackError("No Data Available for NTP-Download: \(itemURL)")
             return
           }
 
@@ -578,7 +584,7 @@ public class NTPDownloader {
             let file = directory.appendingPathComponent(itemURL)
             try data.write(to: file, options: .atomicWrite)
           } catch let err {
-            error = err
+            error = .unpackError(err.localizedDescription)
           }
         }
       }
@@ -589,7 +595,7 @@ public class NTPDownloader {
           let saveLocation =
             FileManager.default.getOrCreateFolder(name: NTPDownloader.faviconOverridesDirectory)
         else {
-          throw "Failed to create directory for favicon overrides"
+          throw NTPError.unpackError("Failed to create directory for favicon overrides")
         }
 
         for topSite in topSites {
@@ -599,12 +605,12 @@ public class NTPDownloader {
             defer { group.leave() }
             
             if let err = err {
-              error = err
+              error = NTPError.unpackError(err.localizedDescription)
               return
             }
 
             guard let data = data else {
-              error = "No Data Available for top site: \(topSite.destinationUrl)"
+              error = NTPError.unpackError("No Data Available for top site: \(topSite.destinationUrl)")
               return
             }
 
@@ -622,7 +628,7 @@ public class NTPDownloader {
                 to: topSiteBackgroundColorURL,
                 atomically: true, encoding: .utf8)
             } catch let err {
-              error = err
+              error = .unpackError(err.localizedDescription)
             }
           }
         }
@@ -630,24 +636,32 @@ public class NTPDownloader {
 
       group.notify(queue: .main) {
         if let error = error {
-          completion(nil, .unpackError(error))
+          completion(nil, error)
           return
         }
 
         completion(directory, nil)
       }
+    } catch let error as NTPError {
+      completion(nil, error)
     } catch {
-      completion(nil, .unpackError(error))
+      completion(nil, .unpackError(error.localizedDescription))
     }
   }
 
-  private func ntpETagFileURL(type: ResourceType) throws -> URL {
-    guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
+  private func ntpETagFileURL(type: ResourceType) -> URL? {
+    guard let saveLocation = type.saveLocation else {
+      logger.error("Can't find location to save")
+      return nil
+    }
     return saveLocation.appendingPathComponent(NTPDownloader.etagFile)
   }
 
-  private func ntpMetadataFileURL(type: ResourceType) throws -> URL {
-    guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
+  private func ntpMetadataFileURL(type: ResourceType) -> URL? {
+    guard let saveLocation = type.saveLocation else {
+      logger.error("Can't find location to save")
+      return nil
+    }
     return saveLocation.appendingPathComponent(type.resourceName)
   }
 
@@ -691,20 +705,8 @@ public class NTPDownloader {
 
   private enum NTPError: Error {
     case campaignEnded
-    case metadataError(Error)
-    case unpackError(Error)
+    case metadataError(String)
+    case unpackError(String)
     case loadingError(Error)
-
-    func underlyingError() -> Error? {
-      switch self {
-      case .campaignEnded:
-        return nil
-
-      case .metadataError(let error),
-        .unpackError(let error),
-        .loadingError(let error):
-        return error
-      }
-    }
   }
 }

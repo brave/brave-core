@@ -334,6 +334,11 @@ class PlaylistListViewController: UIViewController {
             at: indexPath,
             isExpired: false)
           delegate.displayLoadingResourceError()
+        case .cannotLoadMedia:
+          self.commitPlayerItemTransaction(
+            at: indexPath,
+            isExpired: false)
+          delegate.displayLoadingResourceError()
         case .expired:
           self.commitPlayerItemTransaction(
             at: indexPath,

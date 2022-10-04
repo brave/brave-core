@@ -136,7 +136,7 @@ class BraveSearchManager: NSObject {
         guard let response = output.response as? HTTPURLResponse,
           response.statusCode >= 200 && response.statusCode < 300
         else {
-          throw "Invalid response"
+          throw URLError(.badServerResponse)
         }
 
         self?.callbackLog?.backupQuery = String(data: output.data, encoding: .utf8)
@@ -214,13 +214,13 @@ class BraveSearchManager: NSObject {
         guard let response = output.response as? HTTPURLResponse,
           response.statusCode >= 200 && response.statusCode < 300
         else {
-          throw "Invalid response"
+          throw URLError(.badServerResponse)
         }
 
         guard let stringFromData = String(data: output.data, encoding: .utf8),
           let escapedString = stringFromData.javaScriptEscapedString
         else {
-          throw "Failed to decode string from data"
+          throw DecodingError.typeMismatch(String.self, .init(codingPath: [], debugDescription: "Failed to decode string from data"))
         }
 
         self?.callbackLog?.fallbackData = output.data

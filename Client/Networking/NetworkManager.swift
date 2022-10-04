@@ -9,6 +9,11 @@ import Dispatch
 
 private let log = Logger.browserLogger
 
+enum NetworkManagerError: Error {
+  /// The eTag in the response headers matched one on file
+  case fileNotModified
+}
+
 final class NetworkManager: Sendable {
   private let session: NetworkSession
 
@@ -161,7 +166,7 @@ extension NetworkManager {
     let etagHeader = "Etag"
     
     guard let response = response as? HTTPURLResponse else {
-      throw "Invalid Response Type (Not HTTPURLResponse)"
+      throw URLError(.badServerResponse)
     }
 
     switch response.statusCode {
@@ -170,10 +175,11 @@ extension NetworkManager {
         Failed to download, status code: \(response.statusCode),\
         URL:\(String(describing: response.url))
         """
-      throw error
+      log.error(error)
+      throw URLError(.badServerResponse)
 
     case fileNotModifiedStatusCode:
-      throw "File not modified"
+      throw NetworkManagerError.fileNotModified
 
     default:
       let responseEtag = resourceType.isCached() ? response.allHeaderFields[etagHeader] as? String : nil

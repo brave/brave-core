@@ -371,6 +371,9 @@ extension PlaylistListViewController: UITableViewDelegate {
           log.error(err)
           self.commitPlayerItemTransaction(at: indexPath, isExpired: false)
           self.delegate?.displayLoadingResourceError()
+        case .cannotLoadMedia:
+          self.commitPlayerItemTransaction(at: indexPath, isExpired: false)
+          self.delegate?.displayLoadingResourceError()
         case .expired:
           self.commitPlayerItemTransaction(at: indexPath, isExpired: true)
           self.delegate?.displayExpiredResourceError(item: item)
