@@ -8,10 +8,14 @@
 
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 
+class ChromeBrowserState;
+class PrefService;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BraveP3AUtils (Private)
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState;
+- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState
+                          localState:(PrefService*)localState;
 @end
 
 NS_ASSUME_NONNULL_END

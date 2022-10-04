@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface BraveP3AUtils : NSObject
+@property(nonatomic) bool isP3AEnabled;
+@property(nonatomic) bool isNoticeAcknowledged;
 - (BraveHistogramsController*)histogramsController;
 - (instancetype)init NS_UNAVAILABLE;
 @end
