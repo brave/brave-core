@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import '../brave_privacy_page/brave_personalization_options.m.js'
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
+
+import '../brave_privacy_page/brave_personalization_options.js'
 
 RegisterPolymerTemplateModifications({
   'settings-personalization-options': (templateContent) => {

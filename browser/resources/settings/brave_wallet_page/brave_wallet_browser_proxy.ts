@@ -1,26 +1,27 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-/** @interface */
-export class BraveWalletBrowserProxy {
-  setBraveWalletEnabled (value) {}
-  getWeb3ProviderList () {}
-  getSolanaProviderList () {}
-  isNativeWalletEnabled () {}
-  getAutoLockMinutes () {}
-  getNetworksList (coin) {}
-  getPrepopulatedNetworksList () {}
-  removeChain (chainId, coin) {}
-  resetChain (chainId, coin) {}
-  addChain (value) {}
-  addHiddenNetwork (chainId, coin) {}
-  removeHiddenNetwork (chainId, coin) {}
-  setActiveNetwork (chainId, coin) {}
-  resetTransactionInfo () {}
+import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
+
+export interface BraveWalletBrowserProxy {
+  setBraveWalletEnabled (value: boolean)
+  getWeb3ProviderList () // TODO(petemill): Define the expected type
+  getSolanaProviderList () // TODO(petemill): Define the expected type
+  isNativeWalletEnabled () // TODO(petemill): Define the expected type
+  getAutoLockMinutes () // TODO(petemill): Define the expected type
+  getNetworksList (coin) // TODO(petemill): Define the expected type
+  getPrepopulatedNetworksList () // TODO(petemill): Define the expected type
+  removeChain (chainId, coin) // TODO(petemill): Define the expected type
+  resetChain (chainId, coin) // TODO(petemill): Define the expected type
+  addChain (value) // TODO(petemill): Define the expected type
+  addHiddenNetwork (chainId, coin) // TODO(petemill): Define the expected type
+  removeHiddenNetwork (chainId, coin) // TODO(petemill): Define the expected type
+  setActiveNetwork (chainId, coin) // TODO(petemill): Define the expected type
+  resetTransactionInfo ()
 }
 
 /**
@@ -99,6 +100,10 @@ export class BraveWalletBrowserProxyImpl {
   getSolanaProviderOptions() {
     return sendWithPromise('getSolanaProviderOptions')
   }
+
+  static getInstance() {
+    return instance || (instance = new BraveWalletBrowserProxyImpl())
+  }
 }
 
-addSingletonGetter(BraveWalletBrowserProxyImpl)
+let instance: BraveWalletBrowserProxy|null = null

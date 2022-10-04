@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/history/history.ts b/chrome/browser/resources/history/history.ts
-index c0b28c68e9a75af46aea79e4388355a4df26e879..d29e20bf08cb1c34577555bf6eb0b14723011ab5 100644
+index c0b28c68e9a75af46aea79e4388355a4df26e879..a1b67fcffd029135bf5de80658f6e6b7bf2ce334 100644
 --- a/chrome/browser/resources/history/history.ts
 +++ b/chrome/browser/resources/history/history.ts
 @@ -2,6 +2,8 @@
  // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
  
-+import 'chrome://brave-resources/polymer_overriding.js'
++import 'chrome://resources/polymer_overriding.js'
 +import './brave_overrides/index.js';
  import './app.js';
  

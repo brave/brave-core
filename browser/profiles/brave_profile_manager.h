@@ -8,14 +8,9 @@
 
 #include <string>
 
-#include "base/scoped_multi_source_observation.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profile_manager_observer.h"
-#include "chrome/browser/profiles/profile_observer.h"
 
-class BraveProfileManager : public ProfileManager,
-                            public ProfileManagerObserver,
-                            public ProfileObserver {
+class BraveProfileManager : public ProfileManager {
  public:
   explicit BraveProfileManager(const base::FilePath& user_data_dir);
   BraveProfileManager(const BraveProfileManager&) = delete;
@@ -29,21 +24,12 @@ class BraveProfileManager : public ProfileManager,
                          bool incognito,
                          ProfileLoadedCallback callback) override;
 
-  // ProfileManagerObserver:
-  void OnProfileAdded(Profile* profile) override;
-
-  // ProfileObserver:
-  void OnOffTheRecordProfileCreated(Profile* off_the_record) override;
-  void OnProfileWillBeDestroyed(Profile* profile) override;
-
  protected:
   void DoFinalInitForServices(Profile* profile,
                               bool go_off_the_record) override;
 
  private:
   void MigrateProfileNames();
-  base::ScopedMultiSourceObservation<Profile, ProfileObserver>
-      observed_profiles_{this};
 };
 
 class BraveProfileManagerWithoutInit : public BraveProfileManager {

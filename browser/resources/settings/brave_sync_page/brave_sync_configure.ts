@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 /**
  * @fileoverview
  * 'settings-brave-sync-configure' is the set of controls which fetches, displays
@@ -11,17 +13,18 @@
 
 import './brave_sync_code_dialog.js';
 
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
 import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
 
 import {Router} from '../router.js';
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {getTemplate} from './brave_sync_configure.html.js'
 
 Polymer({
   is: 'settings-brave-sync-configure',
 
-  _template: html`{__html_template__}`,
+  _template: getTemplate(),
 
   behaviors: [
     I18nBehavior,

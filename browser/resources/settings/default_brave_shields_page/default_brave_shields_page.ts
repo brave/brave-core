@@ -3,16 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 import './brave_adblock_subpage.js';
-import { html, PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import '//resources/cr_elements/md_select_css.m.js';
-import { DefaultBraveShieldsBrowserProxyImpl } from './default_brave_shields_browser_proxy.m.js';
-'use strict';
+import { PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import '//resources/cr_elements/md_select.css.js';
+import { DefaultBraveShieldsBrowserProxyImpl } from './default_brave_shields_browser_proxy.js';
 import {Router, RouteObserverMixin} from '../router.js';
 
 import {loadTimeData} from '../i18n_setup.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
+import {getTemplate} from './default_brave_shields_page.html.js'
 
 const BraveShieldsPageBase = I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement)))
 
@@ -26,7 +28,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   static get template () {
-    return html`{__html_template__}`
+    return getTemplate()
   }
 
   static get properties () {
@@ -100,7 +102,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           this.adControlType_ = 'allow'
       }
     })
-    
+
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value
     })

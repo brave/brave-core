@@ -3,10 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {RegisterStyleOverride, RegisterPolymerComponentBehaviors} from 'chrome://brave-resources/polymer_overriding.js'
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-// TODO: move throttle utility to a chrome://brave-resources module
+import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {RegisterStyleOverride, RegisterPolymerComponentBehaviors} from 'chrome://resources/polymer_overriding.js'
+
+// TODO: move throttle utility to a chrome://resources module
 function throttle (callback, maxWaitTime = 30) {
   // Call on first invocation
   let shouldWait = false;

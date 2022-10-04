@@ -1,17 +1,3 @@
-<link rel="import" href="chrome://resources/html/cr.html">
-<link rel="import" href="chrome://resources/html/polymer.html">
-
-<link rel="import" href="chrome://resources/cr_elements/i18n_behavior.html">
-<link rel="import" href="chrome://resources/cr_elements/web_ui_listener_behavior.html">
-<link rel="import" href="add_ipfs_peer_dialog.html.js">
-<script type="module" src="../brave_ipfs_browser_proxy.js"></script>
-<script type="module" src="../../settings_page/settings_section.js"></script>
-<script type="module" src="../../settings_shared.css.js"></script>
-<script type="module" src="../../settings_vars.css.js"></script>
-<script type="module" src="chrome://resources/cr_elements/cr_link_row/cr_link_row.js"></script>
-
-<dom-module id="settings-ipfs-peers-subpage">
-<template>
 <style include="cr-shared-style settings-shared iron-flex">
   .settings-row:not(:first-child) {
     border-top: var(--cr-separator-line);
@@ -85,7 +71,3 @@
   <add-ipfs-peer-dialog peers="[[peers]]" on-close="onAddPeerDialogClosed_">
   </add-ipfs-peer-dialog>
 </template>
-
-</template>
-<script src="ipfs_peers_subpage.js"></script>
-</dom-module>

@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 /**
  * @fileoverview
  * 'brave-sync-setup' is the UI for starting or joining a sync chain
@@ -10,15 +12,16 @@
  */
 import './brave_sync_code_dialog.js';
 
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
 
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {getTemplate} from './brave_sync_setup.html.js'
 
 Polymer({
   is: 'settings-brave-sync-setup',
 
-  _template: html`{__html_template__}`,
+  _template: getTemplate(),
 
   behaviors: [
     I18nBehavior,

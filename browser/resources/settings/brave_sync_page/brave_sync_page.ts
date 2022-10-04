@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 /**
  * 'settings-brave-sync-page' is the settings page containing brave's
  * custom sync.
  */
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/icons.m.js';
+import 'chrome://resources/cr_elements/icons.html.js';
 import '../settings_page/settings_animated_pages.js';
 import '../settings_page/settings_subpage.js';
 import '../settings_shared.css.js';
@@ -17,16 +19,17 @@ import './brave_sync_subpage.js';
 
 import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
 import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {Router} from '../router.js';
 import {SyncBrowserProxyImpl} from '../people_page/sync_browser_proxy.js';
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {getTemplate} from './brave_sync_page.html.js'
 
 Polymer({
   is: 'settings-brave-sync-page',
 
-  _template: html`{__html_template__}`,
+  _template: getTemplate(),
 
   behaviors: [
     I18nBehavior,

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 7c80c698a09d669494b89e3280a4960d7e59fbaa..8f3581877d6862b78976029da230f02c2db8b216 100644
+index 7c80c698a09d669494b89e3280a4960d7e59fbaa..29e2bbd38e1f677051c9715f35bb7d9ff678eea6 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -484,4 +484,5 @@ build_webui("build") {
        "lazy_load.rollup.js|lazy_load.js",
      ]
    }
-+  extra_build_ts_in_files = brave_deps_chrome_browser_resources_settings_in_files extra_build_ts_extra_deps = brave_deps_chrome_browser_resources_settings_extra_deps extra_build_grd_deps = [ "//brave/browser/resources/settings:resources" ]
++  import("//brave/browser/resources/settings/sources.gni") web_component_files += brave_settings_web_component_files non_web_component_files += brave_settings_non_web_component_files icons_html_files += brave_settings_icons_html_files exclude_preprocess_files = brave_settings_exclude_preprocess_files preprocess_deps = brave_settings_preprocess_deps ts_extra_deps = brave_settings_ts_extra_deps ts_definitions += brave_settings_ts_definitions if (optimize_webui) { extra_grdp_deps += [ "//brave/browser/resources/settings:resources" ] }
  }

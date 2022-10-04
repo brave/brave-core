@@ -23,7 +23,6 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
-#include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -50,25 +49,9 @@
 
 using content::BrowserThread;
 
-namespace {
-
-void AddBraveSharedResourcesDataSourceToProfile(Profile* profile) {
-  const auto& app_locale = g_browser_process->GetApplicationLocale();
-  content::URLDataSource::Add(
-      profile, std::make_unique<brave_content::BraveSharedResourcesDataSource>(
-                   false, app_locale));
-  content::URLDataSource::Add(
-      profile, std::make_unique<brave_content::BraveSharedResourcesDataSource>(
-                   true, app_locale));
-}
-
-}  // namespace
-
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
   MigrateProfileNames();
-
-  AddObserver(this);
 }
 
 BraveProfileManager::~BraveProfileManager() {
@@ -80,7 +63,6 @@ BraveProfileManager::~BraveProfileManager() {
                                 false, false);
     }
   }
-  RemoveObserver(this);
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
@@ -196,24 +178,6 @@ void BraveProfileManager::MigrateProfileNames() {
     }
   }
 #endif
-}
-
-void BraveProfileManager::OnProfileAdded(Profile* profile) {
-  // Observe new profiles for creation of OTR profiles so that we can add our
-  // shared resources to them.
-  observed_profiles_.AddObservation(profile);
-  AddBraveSharedResourcesDataSourceToProfile(profile);
-}
-
-void BraveProfileManager::OnOffTheRecordProfileCreated(
-    Profile* off_the_record) {
-  AddBraveSharedResourcesDataSourceToProfile(off_the_record);
-}
-
-void BraveProfileManager::OnProfileWillBeDestroyed(Profile* profile) {
-  if (!profile->IsOffTheRecord()) {
-    observed_profiles_.RemoveObservation(profile);
-  }
 }
 
 BraveProfileManagerWithoutInit::BraveProfileManagerWithoutInit(

@@ -2,15 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 import './wallet_networks_subpage.js';
 
-import {BraveWalletBrowserProxy,  BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
+import {BraveWalletBrowserProxy,  BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
-import {PolymerElement, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {Router, RouteObserverMixin} from '../router.js';
 import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
+import {getTemplate} from './brave_wallet_page.html.js'
 
 const SettingsBraveWalletPageBase = WebUIListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
 
@@ -24,7 +27,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   }
 
   static get template() {
-    return html`{__html_template__}`
+    return getTemplate()
   }
 
   static get properties() {

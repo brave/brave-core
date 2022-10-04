@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index f5e6bf9f2651a089c917a88b41a20a29c4ea96ff..78067f502d54fd167d3216b2c34618712cddfa22 100644
+index f5e6bf9f2651a089c917a88b41a20a29c4ea96ff..68a623caa878551dd2405e4bb0ee89004de05b81 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
 @@ -105,4 +105,5 @@ build_webui("build") {
      optimize_webui_resource_paths_rewrites =
          [ "extensions.rollup.js|extensions.js" ]
    }
-+  extra_build_grd_deps = [ "//brave/browser/resources/extensions:resources" ] extra_build_ts_in_files = brave_deps_chrome_browser_resources_extensions_in_files extra_build_ts_extra_deps = brave_deps_chrome_browser_resources_extensions_extra_deps
++  import("//brave/browser/resources/extensions/sources.gni") web_component_files += brave_extensions_web_component_files non_web_component_files += brave_extensions_non_web_component_files exclude_preprocess_files = brave_extensions_local_files preprocess_deps = brave_extensions_preprocess_extra_deps
  }

@@ -3,18 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
+
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
-import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
+import {getTemplate} from './add_ipfs_peer_dialog.html.js'
 
 Polymer({
   is: 'add-ipfs-peer-dialog',
 
-  _template: html`{__html_template__}`,
+  _template: getTemplate(),
 
   behaviors: [
     I18nBehavior
@@ -22,7 +25,7 @@ Polymer({
 
   properties: {
     validValue_: Boolean,
-    
+
     peers: {
       type: Array,
       value() {
@@ -35,7 +38,7 @@ Polymer({
       value: false,
     }
   },
-  
+
   browserProxy_: null,
 
   /** @override */

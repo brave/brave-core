@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerComponentToIgnore} from 'chrome://brave-resources/polymer_overriding.js'
+import {RegisterPolymerComponentToIgnore} from 'chrome://resources/polymer_overriding.js'
 
 // Replacing chromium polymer components with subclasses of them is a
 // 2-step process:
@@ -15,3 +15,4 @@ import {RegisterPolymerComponentToIgnore} from 'chrome://brave-resources/polymer
 // is imported).
 
 RegisterPolymerComponentToIgnore('settings-site-settings-page')
+RegisterPolymerComponentToIgnore('settings-clear-browsing-data-dialog')

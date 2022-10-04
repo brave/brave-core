@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {RegisterStyleOverride, RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
+import {RegisterStyleOverride, RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
 
 RegisterStyleOverride(
   'settings-people-page',

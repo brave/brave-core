@@ -3,17 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
-import {PolymerElement, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {BaseMixin} from '../base_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import 'chrome://resources/cr_elements/icons.m.js';
+import 'chrome://resources/cr_elements/icons.html.js';
 import './components/brave_adblock_subscribe_dropdown.js';
 import './components/brave_adblock_editor.js';
 import { BraveAdblockBrowserProxyImpl } from './brave_adblock_browser_proxy.js'
- 
+import {getTemplate} from './brave_adblock_subpage.html.js'
+
 const AdBlockSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 class AdBlockSubpage extends AdBlockSubpageBase {
@@ -22,7 +25,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   }
 
   static get template() {
-    return html`{__html_template__}`
+    return getTemplate()
   }
 
   static get properties() {
@@ -125,7 +128,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   getStatus_(last_update_attempt, last_successful_update_attempt, last_updated_pretty_text) {
     /* "Last updated" column can have four distinct states:
     * No update ever attempted: fine to show blank
-    * Update attempted and failed, and never succeeded previously: show 
+    * Update attempted and failed, and never succeeded previously: show
     * "Download failure"
     * Update attempted and failed, but succeeded previously: show
     * "Download failure since + last updated time"
