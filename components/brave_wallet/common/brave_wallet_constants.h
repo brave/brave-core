@@ -16,13 +16,6 @@ constexpr int kSolanaBlockhashSize = 32;
 // 1232 = 1280(IPv6 minimum MTU) - 40(size of the IPv6 header) - 8(size of the
 // fragment header)
 constexpr size_t kSolanaMaxTxSize = 1232;
-constexpr char kSolanaSystemProgramId[] = "11111111111111111111111111111111";
-constexpr char kSolanaTokenProgramId[] =
-    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
-constexpr char kSolanaAssociatedTokenProgramId[] =
-    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
-constexpr char kSolanaSysvarRentProgramId[] =
-    "SysvarRent111111111111111111111111111111111";
 
 }  // namespace brave_wallet
 

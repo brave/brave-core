@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/test/gtest_util.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -85,7 +86,7 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
   std::vector<uint8_t> program_bytes;
   std::vector<uint8_t> recent_blockhash_bytes;
   std::string account = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
-  std::string program = kSolanaSystemProgramId;
+  std::string program = mojom::kSolanaSystemProgramId;
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
 
   EXPECT_TRUE(Base58Decode(account, &account_bytes, kSolanaPubkeySize));
@@ -125,7 +126,7 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
 TEST(SolanaUtilsUnitTest, IsBase58EncodedSolanaPubkey) {
   EXPECT_TRUE(IsBase58EncodedSolanaPubkey(
       "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"));
-  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(kSolanaSystemProgramId));
+  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(mojom::kSolanaSystemProgramId));
   EXPECT_TRUE(IsBase58EncodedSolanaPubkey(
       Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize, 0))));
 
