@@ -382,8 +382,8 @@ void BravePrefProvider::MigrateDefaultHttpsContentSetting() {
         std::move(rule.value), {rule.expiration, rule.session_model});
   }
 
-  if (default_value == 1) {
-    prefs_->Set(kDefaultHttpsPreferencePath, base::Value(1));
+  if (default_value == ContentSetting::CONTENT_SETTING_ALLOW) {
+    prefs_->Set(kDefaultHttpsPreferencePath, default_value);
   }
 }
 

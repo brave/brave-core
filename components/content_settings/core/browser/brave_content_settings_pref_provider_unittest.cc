@@ -250,26 +250,6 @@ class ShieldsHTTPSESetting : public ShieldsSetting {
             {{GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES}}),
         default_provider_(default_provider) {}
 
-  void SetPreMigrationDefaultSetting(ContentSetting setting) {
-    GURL allowed_url("https://allowed.com");
-    GURL blocked_url("https://blocked.com");
-    GURL default_url("https://default.com");
-
-    SetPreMigrationSettings(ContentSettingsPattern::FromURL(allowed_url),
-                            CONTENT_SETTING_ALLOW);
-    CheckSettingsWouldAllow(allowed_url);
-    SetPreMigrationSettings(ContentSettingsPattern::FromURL(blocked_url),
-                            CONTENT_SETTING_BLOCK);
-    CheckSettingsWouldBlock(blocked_url);
-
-    provider_->GetPref(ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)
-        ->SetWebsiteSetting(ContentSettingsPattern::Wildcard(),
-                            ContentSettingsPattern::Wildcard(),
-                            base::Time::Now(), ContentSettingToValue(setting),
-                            {});
-    EXPECT_EQ(GetDefaultProviderValue(), CONTENT_SETTING_BLOCK);
-  }
-
   ContentSetting GetDefaultProviderValue() {
     auto rule_iterator = default_provider_->GetRuleIterator(
         ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, false);
@@ -282,16 +262,6 @@ class ShieldsHTTPSESetting : public ShieldsSetting {
       }
     }
     return ContentSetting::CONTENT_SETTING_DEFAULT;
-  }
-  void CheckPostMigrationDefaultValue(ContentSetting value) {
-    GURL allowed_url("https://allowed.com");
-    GURL blocked_url("https://blocked.com");
-    GURL default_url("https://default.com");
-
-    EXPECT_EQ(GetDefaultProviderValue(), value);
-    CheckSettingsWouldAllow(allowed_url);
-    CheckSettingsWouldBlock(blocked_url);
-    CheckSettingsAreDefault(default_url);
   }
 
  private:
@@ -787,6 +757,10 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
 }
 
 TEST_F(BravePrefProviderTest, TestShieldsHttpsMigration) {
+  GURL allowed_url("https://allowed.com");
+  GURL blocked_url("https://blocked.com");
+  GURL default_url("https://default.com");
+
   {
     BravePrefProvider pref_provider(
         testing_profile()->GetPrefs(), false /* incognito */,
@@ -796,11 +770,27 @@ TEST_F(BravePrefProviderTest, TestShieldsHttpsMigration) {
     ShieldsHTTPSESetting shields_https_settings(&pref_provider,
                                                 &default_provider);
 
-    shields_https_settings.SetPreMigrationDefaultSetting(
-        ContentSetting::CONTENT_SETTING_BLOCK);
+    shields_https_settings.SetPreMigrationSettings(
+        ContentSettingsPattern::FromURL(allowed_url), CONTENT_SETTING_ALLOW);
+    shields_https_settings.CheckSettingsWouldAllow(allowed_url);
+    shields_https_settings.SetPreMigrationSettings(
+        ContentSettingsPattern::FromURL(blocked_url), CONTENT_SETTING_BLOCK);
+    shields_https_settings.CheckSettingsWouldBlock(blocked_url);
+
+    pref_provider.GetPref(ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)
+        ->SetWebsiteSetting(
+            ContentSettingsPattern::Wildcard(),
+            ContentSettingsPattern::Wildcard(), base::Time::Now(),
+            ContentSettingToValue(ContentSetting::CONTENT_SETTING_BLOCK), {});
+    EXPECT_EQ(shields_https_settings.GetDefaultProviderValue(),
+              CONTENT_SETTING_BLOCK);
+
     pref_provider.MigrateShieldsSettings(/*incognito*/ false);
-    shields_https_settings.CheckPostMigrationDefaultValue(
-        ContentSetting::CONTENT_SETTING_BLOCK);
+    EXPECT_EQ(shields_https_settings.GetDefaultProviderValue(),
+              ContentSetting::CONTENT_SETTING_BLOCK);
+    shields_https_settings.CheckSettingsWouldAllow(allowed_url);
+    shields_https_settings.CheckSettingsWouldBlock(blocked_url);
+    shields_https_settings.CheckSettingsAreDefault(default_url);
     pref_provider.ShutdownOnUIThread();
     default_provider.ShutdownOnUIThread();
   }
@@ -813,11 +803,26 @@ TEST_F(BravePrefProviderTest, TestShieldsHttpsMigration) {
     ShieldsHTTPSESetting shields_https_settings(&pref_provider,
                                                 &default_provider);
 
-    shields_https_settings.SetPreMigrationDefaultSetting(
-        ContentSetting::CONTENT_SETTING_ALLOW);
+    shields_https_settings.SetPreMigrationSettings(
+        ContentSettingsPattern::FromURL(allowed_url), CONTENT_SETTING_ALLOW);
+    shields_https_settings.CheckSettingsWouldAllow(allowed_url);
+    shields_https_settings.SetPreMigrationSettings(
+        ContentSettingsPattern::FromURL(blocked_url), CONTENT_SETTING_BLOCK);
+    shields_https_settings.CheckSettingsWouldBlock(blocked_url);
+
+    pref_provider.GetPref(ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)
+        ->SetWebsiteSetting(
+            ContentSettingsPattern::Wildcard(),
+            ContentSettingsPattern::Wildcard(), base::Time::Now(),
+            ContentSettingToValue(ContentSetting::CONTENT_SETTING_ALLOW), {});
+    EXPECT_EQ(shields_https_settings.GetDefaultProviderValue(),
+              CONTENT_SETTING_BLOCK);
     pref_provider.MigrateShieldsSettings(/*incognito*/ false);
-    shields_https_settings.CheckPostMigrationDefaultValue(
-        ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(shields_https_settings.GetDefaultProviderValue(),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    shields_https_settings.CheckSettingsWouldAllow(allowed_url);
+    shields_https_settings.CheckSettingsWouldBlock(blocked_url);
+    shields_https_settings.CheckSettingsAreDefault(default_url);
     pref_provider.ShutdownOnUIThread();
     default_provider.ShutdownOnUIThread();
   }
