@@ -38,12 +38,10 @@ class EligibleAdsV3 final : public EligibleAdsBase {
 
  private:
   void GetBrowsingHistory(
-      const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       GetEligibleAdsCallback<CreativeNotificationAdList> callback);
 
   void GetEligibleAds(
-      const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       GetEligibleAdsCallback<CreativeNotificationAdList> callback,
       const BrowsingHistoryList& browsing_history);
@@ -57,4 +55,4 @@ class EligibleAdsV3 final : public EligibleAdsBase {
 }  // namespace notification_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_V2_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_V3_H_

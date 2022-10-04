@@ -23,8 +23,7 @@ TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
   text_embedding_html_event.locale = text_embedding.locale;
   text_embedding_html_event.hashed_text_base64 =
       text_embedding.hashed_text_base64;
-  text_embedding_html_event.embedding =
-      text_embedding.embedding.GetVectorAsString();
+  text_embedding_html_event.embedding = text_embedding.embedding;
 
   return text_embedding_html_event;
 }

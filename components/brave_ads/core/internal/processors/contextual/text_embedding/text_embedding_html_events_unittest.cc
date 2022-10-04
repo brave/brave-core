@@ -29,8 +29,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   EXPECT_EQ(text_embedding.locale, text_embedding_html_event.locale);
   EXPECT_EQ(text_embedding.hashed_text_base64,
             text_embedding_html_event.hashed_text_base64);
-  EXPECT_EQ(text_embedding.embedding.GetVectorAsString(),
-            text_embedding_html_event.embedding);
+  EXPECT_EQ(text_embedding.embedding, text_embedding_html_event.embedding);
 }
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {

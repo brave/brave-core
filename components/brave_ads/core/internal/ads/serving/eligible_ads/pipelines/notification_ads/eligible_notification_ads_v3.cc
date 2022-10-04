@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -28,7 +28,7 @@ EligibleAdsV3::EligibleAdsV3(
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 void EligibleAdsV3::GetForUserModel(
-    const targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& /*user_model*/,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
@@ -42,14 +42,13 @@ void EligibleAdsV3::GetForUserModel(
           return;
         }
 
-        GetBrowsingHistory(user_model, ad_events, callback);
+        GetBrowsingHistory(ad_events, callback);
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void EligibleAdsV3::GetBrowsingHistory(
-    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   const int max_count = features::GetBrowsingHistoryMaxCount();
@@ -57,11 +56,10 @@ void EligibleAdsV3::GetBrowsingHistory(
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       max_count, days_ago,
       base::BindOnce(&EligibleAdsV3::GetEligibleAds, base::Unretained(this),
-                     user_model, ad_events, callback));
+                     ad_events, callback));
 }
 
 void EligibleAdsV3::GetEligibleAds(
-    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
@@ -88,7 +86,8 @@ void EligibleAdsV3::GetEligibleAds(
       return;
     }
 
-    PredictAdEmbeddings<CreativeNotificationAdInfo>(user_model, ad_events, eligible_creative_ads,
+    PredictAdEmbeddings<CreativeNotificationAdInfo>(
+        eligible_creative_ads,
         [=](const absl::optional<CreativeNotificationAdInfo> creative_ad) {
           if (!creative_ad) {
             BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
@@ -97,10 +96,11 @@ void EligibleAdsV3::GetEligibleAds(
           }
 
           BLOG(1, eligible_creative_ads.size()
-                      << " eligible ads out of " << creative_ads.size() << " ads");
+                      << " eligible ads out of " << creative_ads.size()
+                      << " ads");
 
           callback(/*had_opportunity*/ false, {*creative_ad});
-      });
+        });
   });
 }
 

@@ -10,6 +10,7 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -42,6 +43,19 @@ namespace {
 constexpr char kTableName[] = "creative_ad_notifications";
 
 constexpr int kDefaultBatchSize = 50;
+
+std::vector<float> ConvertStringToVector(std::string string) {
+  const std::vector<std::string> vector_string = base::SplitString(
+      string, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  std::vector<float> vector;
+  for (const std::string& element_string : vector_string) {
+    double element;
+    base::StringToDouble(element_string, &element);
+    vector.push_back(element);
+  }
+
+  return vector;
+}
 
 int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeNotificationAdList& creative_ads) {
@@ -84,7 +98,7 @@ CreativeNotificationAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.value = ColumnDouble(record, 13);
   creative_ad.split_test_group = ColumnString(record, 14);
   creative_ad.segment = ColumnString(record, 15);
-  creative_ad.embedding = ColumnString(record, 16);
+  creative_ad.embedding = ConvertStringToVector(ColumnString(record, 16));
   creative_ad.geo_targets.insert(ColumnString(record, 17));
   creative_ad.target_url = GURL(ColumnString(record, 18));
   creative_ad.title = ColumnString(record, 19);
@@ -286,6 +300,7 @@ void CreativeNotificationAds::GetForSegments(
       "ca.value, "
       "ca.split_test_group, "
       "s.segment, "
+      "e.embedding, "
       "gt.geo_target, "
       "ca.target_url, "
       "can.title, "
@@ -299,6 +314,8 @@ void CreativeNotificationAds::GetForSegments(
       "ON cam.campaign_id = can.campaign_id "
       "INNER JOIN segments AS s "
       "ON s.creative_set_id = can.creative_set_id "
+      "INNER JOIN embeddings AS e "
+      "ON e.creative_set_id = can.creative_set_id "
       "INNER JOIN creative_ads AS ca "
       "ON ca.creative_instance_id = can.creative_instance_id "
       "INNER JOIN geo_targets AS gt "
@@ -339,6 +356,7 @@ void CreativeNotificationAds::GetForSegments(
       mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // embedding
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
@@ -392,7 +410,7 @@ void CreativeNotificationAds::GetAll(
       "ON cam.campaign_id = can.campaign_id "
       "INNER JOIN segments AS s "
       "ON s.creative_set_id = can.creative_set_id "
-      "INNER JOIN embeddings AS e"
+      "INNER JOIN embeddings AS e "
       "ON e.creative_set_id = can.creative_set_id "
       "INNER JOIN creative_ads AS ca "
       "ON ca.creative_instance_id = can.creative_instance_id "

@@ -22,7 +22,6 @@ struct CreativeNotificationAdInfo final : CreativeAdInfo {
 
   std::string title;
   std::string body;
-  std::string embedding;
 };
 
 using CreativeNotificationAdList = std::vector<CreativeNotificationAdInfo>;

@@ -8,10 +8,10 @@
 #include <limits>
 #include <numeric>
 #include <utility>
+#include <vector>
 
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 
 namespace brave_ads::ml {
@@ -92,20 +92,6 @@ VectorData::VectorData(int dimension_count,
   }
   storage_ = std::make_unique<VectorDataStorage>(
       dimension_count, std::move(points), std::move(values));
-}
-
-VectorData::VectorData(std::string& string) : Data(DataType::kVector) {
-  std::vector<std::string> vector_string = base::SplitString(
-      string, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  std::vector<float> vector;
-  for (const std::string& element_string : vector_string) {
-    double element;
-    base::StringToDouble(element_string, &element);
-    vector.push_back(element);
-  }
-
-  storage_ = std::make_unique<VectorDataStorage>(
-      vector.size(), std::vector<uint32_t>(), std::move(vector));
 }
 
 VectorData::~VectorData() = default;
@@ -194,12 +180,16 @@ void VectorData::DivideByScalar(const float scalar) {
   }
 }
 
+float VectorData::GetMagnitude() const {
+  return sqrt(std::accumulate(storage_->values().cbegin(),
+                              storage_->values().cend(), 0.0,
+                              [](const double& lhs, float v) -> double {
+                                return lhs + double{v} * v;
+                              }));
+}
+
 void VectorData::Normalize() {
-  const auto vector_length = sqrt(
-      std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
-                      0.0, [](const double& lhs, float v) -> double {
-                        return lhs + double{v} * v;
-                      }));
+  const auto vector_length = GetMagnitude();
   if (vector_length > kMinimumVectorLength) {
     for (float& entry : storage_->values()) {
       entry /= vector_length;
@@ -207,8 +197,8 @@ void VectorData::Normalize() {
   }
 }
 
-float VectorData::ComputeSimilarity(const VectorData& v_sim) const {
-  return 0.5;
+float VectorData::ComputeSimilarity(const VectorData& v_other) const {
+  return (*this * v_other) / (GetMagnitude() * v_other.GetMagnitude());
 }
 
 int VectorData::GetDimensionCount() const {
@@ -232,6 +222,10 @@ int VectorData::GetNonZeroElementCount() const {
 }
 
 const std::vector<float>& VectorData::GetValuesForTesting() const {
+  return storage_->values();
+}
+
+std::vector<float> VectorData::GetAsFloatVector() const {
   return storage_->values();
 }
 

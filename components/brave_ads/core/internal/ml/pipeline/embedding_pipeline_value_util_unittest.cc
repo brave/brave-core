@@ -36,10 +36,13 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   const base::Value::Dict* const dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
-  const std::vector<std::tuple<std::string, VectorData>> samples = {
-      {"quick", VectorData({0.7481F, 0.0493F, -0.5572F})},
-      {"brown", VectorData({-0.0647F, 0.4511F, -0.7326F})},
-      {"fox", VectorData({-0.9328F, -0.2578F, 0.0032F})},
+  const std::vector<float> quick_data = {0.7481F, 0.0493F, -0.5572F};
+  const std::vector<float> quick_brown = {-0.0647F, 0.4511F, -0.7326F};
+  const std::vector<float> quick_fox = {-0.9328F, -0.2578F, 0.0032F};
+  const std::vector<std::tuple<std::string, VectorData>> kSamples = {
+      {"quick", VectorData(quick_data)},
+      {"brown", VectorData(quick_brown)},
+      {"fox", VectorData(quick_fox)},
   };
 
   // Act

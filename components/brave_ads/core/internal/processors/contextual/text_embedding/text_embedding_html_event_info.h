@@ -29,7 +29,7 @@ struct TextEmbeddingHtmlEventInfo final {
   base::Time created_at;
   std::string locale;
   std::string hashed_text_base64;
-  std::string embedding;
+  std::vector<float> embedding;
 };
 
 using TextEmbeddingHtmlEventList = std::vector<TextEmbeddingHtmlEventInfo>;

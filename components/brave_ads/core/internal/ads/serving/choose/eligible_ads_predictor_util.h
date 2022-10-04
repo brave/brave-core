@@ -14,6 +14,8 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -157,6 +159,36 @@ CreativeAdPredictorMap<T> ComputePredictorFeaturesAndScores(
   }
 
   return creative_ad_predictors_with_features;
+}
+
+template <typename T>
+std::vector<int> ComputeVoteRegistry(
+    const std::vector<T>& creative_ads,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+  std::vector<int> vote_registry;
+  vote_registry.assign(creative_ads.size(), 0);
+
+  for (const auto& text_embedding : text_embedding_html_events) {
+    int max_index = 0;
+    float max_similarity = 0.0;
+    for (const auto& creative_ad : creative_ads) {
+      ml::VectorData ad_embedding = ml::VectorData(creative_ad.embedding);
+      const ml::VectorData page_text_embedding =
+          ml::VectorData(text_embedding.embedding);
+      const float similarity_score =
+          ad_embedding.ComputeSimilarity(page_text_embedding);
+
+      if (similarity_score > max_similarity) {
+        max_index =
+            std::find(creative_ads.cbegin(), creative_ads.cend(), creative_ad) -
+            creative_ads.begin();
+        max_similarity = similarity_score;
+      }
+    }
+    vote_registry[max_index]++;
+  }
+
+  return vote_registry;
 }
 
 }  // namespace brave_ads

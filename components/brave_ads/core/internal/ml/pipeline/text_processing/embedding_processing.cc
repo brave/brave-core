@@ -73,8 +73,10 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
   const std::vector<float> embedding_zeroed(embedding_pipeline_.dimension,
                                             0.0F);
   TextEmbeddingInfo text_embedding;
-  text_embedding.embedding = VectorData(embedding_zeroed);
+  text_embedding.embedding = embedding_zeroed;
   text_embedding.locale = embedding_pipeline_.locale;
+
+  VectorData embedding_accumulator(embedding_zeroed);
 
   const std::vector<std::string> tokens = base::SplitString(
       text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
@@ -90,7 +92,7 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
 
     BLOG(9, token << " - text embedding token found in resource vocabulary");
     const VectorData& token_embedding_vector_data = iter->second;
-    text_embedding.embedding.AddElementWise(token_embedding_vector_data);
+    embedding_accumulator.AddElementWise(token_embedding_vector_data);
     in_vocab_tokens.push_back(token);
   }
 
@@ -103,7 +105,9 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
   text_embedding.hashed_text_base64 = base::Base64Encode(in_vocab_sha256);
 
   const auto scalar = static_cast<float>(in_vocab_tokens.size());
-  text_embedding.embedding.DivideByScalar(scalar);
+  embedding_accumulator.DivideByScalar(scalar);
+
+  text_embedding.embedding = embedding_accumulator.GetAsFloatVector();
   return text_embedding;
 }
 

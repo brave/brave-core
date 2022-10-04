@@ -28,9 +28,6 @@ class VectorData final : public Data {
   // double is used for backward compatibility with the current code.
   VectorData(int dimension_count, const std::map<uint32_t, double>& data);
 
-  // Make a DataVector using a string representation.
-  VectorData(std::string& vector_string);
-
   // Explicit copy assignment && move operators is required because the class
   // inherits const member type_ that cannot be copied by default
   VectorData(const VectorData& vector_data);
@@ -45,15 +42,18 @@ class VectorData final : public Data {
 
   // Mathematical vector operations
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
+  float ComputeSimilarity(const VectorData& v_other) const;
+
   void AddElementWise(const VectorData& v_add);
   void DivideByScalar(float scalar);
-  float ComputeSimilarity(const VectorData& v_sim) const;
   void Normalize();
 
   int GetDimensionCount() const;
   int GetNonZeroElementCount() const;
+  float GetMagnitude() const;
 
   const std::vector<float>& GetValuesForTesting() const;
+  std::vector<float> GetAsFloatVector() const;
   std::string GetVectorAsString() const;
 
  private:

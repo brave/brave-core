@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
@@ -26,7 +27,7 @@ struct TextEmbeddingInfo final {
   std::string text;
   std::string hashed_text_base64;
   std::string locale;
-  VectorData embedding;
+  std::vector<float> embedding;
 };
 
 }  // namespace brave_ads::ml::pipeline

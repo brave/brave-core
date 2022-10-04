@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/check.h"
@@ -23,6 +24,16 @@ namespace {
 
 constexpr char kTableName[] = "embeddings";
 
+std::string ConvertVectorToString(std::vector<float> vector) {
+  size_t v_index = 0;
+  std::vector<std::string> vector_as_string;
+  while (v_index < vector.size()) {
+    vector_as_string.push_back(base::NumberToString(vector.at(v_index)));
+    ++v_index;
+  }
+  return base::JoinString(vector_as_string, " ");
+}
+
 int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeAdList& creative_ads) {
   DCHECK(command);
@@ -32,7 +43,9 @@ int BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_set_id);
-    BindString(command, index++, base::ToLowerASCII(creative_ad.embedding));
+    BindString(
+        command, index++,
+        base::ToLowerASCII(ConvertVectorToString(creative_ad.embedding)));
 
     count++;
   }
@@ -106,8 +119,6 @@ std::string Embeddings::BuildInsertOrUpdateQuery(
 
 void Embeddings::MigrateToV26(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
-
-  DropTable(transaction, "embeddings");
 
   const std::string query =
       "CREATE TABLE IF NOT EXISTS embeddings"

@@ -16,7 +16,7 @@ CreativeNotificationAdInfo::CreativeNotificationAdInfo(
 bool CreativeNotificationAdInfo::operator==(
     const CreativeNotificationAdInfo& other) const {
   return CreativeAdInfo::operator==(other) && title == other.title &&
-         body == other.body;
+         body == other.body && embedding == other.embedding;
 }
 
 bool CreativeNotificationAdInfo::operator!=(
