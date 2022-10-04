@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 using ::testing::Return;
 

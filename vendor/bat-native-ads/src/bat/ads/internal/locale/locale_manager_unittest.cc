@@ -7,7 +7,6 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
