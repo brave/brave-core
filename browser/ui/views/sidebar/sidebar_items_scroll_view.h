@@ -57,6 +57,7 @@ class SidebarItemsScrollView : public views::View,
   bool GetDropFormats(int* formats,
                       std::set<ui::ClipboardFormatType>* format_types) override;
   bool CanDrop(const OSExchangeData& data) override;
+  void OnDragExited() override;
   int OnDragUpdated(const ui::DropTargetEvent& event) override;
   views::View::DropCallback GetDropCallback(
       const ui::DropTargetEvent& event) override;
@@ -117,6 +118,7 @@ class SidebarItemsScrollView : public views::View,
 
   // Returns true if |position| is in visible contents area.
   bool IsInVisibleContentsViewBounds(const gfx::Point& position) const;
+  void ClearDragIndicator();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<views::ImageButton> up_arrow_ = nullptr;
