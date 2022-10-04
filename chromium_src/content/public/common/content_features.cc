@@ -19,6 +19,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kNavigationRequestPreconnect, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSignedExchangeReportingForDistributors,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedHTTPExchange, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSubresourceWebBundles, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)
