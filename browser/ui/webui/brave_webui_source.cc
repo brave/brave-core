@@ -207,21 +207,21 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "ad", IDS_BRAVE_TODAY_DISPLAY_AD_LABEL },
 
         { "braveNewsBackToDashboard", IDS_BRAVE_NEWS_BACK_TO_DASHBOARD },
-        { "braveNewsDisabledPlaceholderHeader", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER },
-        { "braveNewsDisabledPlaceholderSubtitle", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE },
-        { "braveNewsDisabledPlaceholderEnableButton", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON },
-        { "braveNewsSearchPlaceholderLabel", IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},
-        { "braveNewsBrowseByCategoryHeader", IDS_BRAVE_NEWS_BROWSE_BY_CATEGORY_HEADER},
-        { "braveNewsLoadMoreCategoriesButton", IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON },
+        { "braveNewsDisabledPlaceholderHeader", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER },   // NOLINT
+        { "braveNewsDisabledPlaceholderSubtitle", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE },  // NOLINT
+        { "braveNewsDisabledPlaceholderEnableButton", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON },  // NOLINT
+        { "braveNewsSearchPlaceholderLabel", IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},  // NOLINT
+        { "braveNewsBrowseByCategoryHeader", IDS_BRAVE_NEWS_BROWSE_BY_CATEGORY_HEADER},  // NOLINT
+        { "braveNewsLoadMoreCategoriesButton", IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON },  // NOLINT
         { "braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
         { "braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
         { "braveNewsSourceCount", IDS_BRAVE_NEWS_SOURCE_COUNT},
-        { "braveNewsFollowButtonFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},
-        { "braveNewsFollowButtonNotFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING},
-        { "braveNewsSearchResultsLoading", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOADING},
-        { "braveNewsSearchResultsNoResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_NO_RESULTS},
-        { "braveNewsSearchResultsLocalResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOCAL_RESULTS},
-        { "braveNewsSearchResultsDirectResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_DIRECT_RESULTS},
+        { "braveNewsFollowButtonFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},  // NOLINT
+        { "braveNewsFollowButtonNotFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING},  // NOLINT
+        { "braveNewsSearchResultsLoading", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOADING},  // NOLINT
+        { "braveNewsSearchResultsNoResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_NO_RESULTS},  // NOLINT
+        { "braveNewsSearchResultsLocalResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOCAL_RESULTS},  // NOLINT
+        { "braveNewsSearchResultsDirectResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_DIRECT_RESULTS},  // NOLINT
 
         { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },

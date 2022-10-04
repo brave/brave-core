@@ -276,9 +276,6 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
     }
   }
 
-  LOG(ERROR) << "Including feed item: " << data->title << " from "
-             << data->publisher_name << " in category " << data->category_name;
-
   // None of the filters match, we can display
   VLOG(2) << "None of the filters matched, will display item for publisher "
           << data->publisher_id;

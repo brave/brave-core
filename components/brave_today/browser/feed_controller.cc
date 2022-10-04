@@ -167,7 +167,8 @@ void FeedController::EnsureFeedIsUpdating() {
                               // Parse directly to in-memory property
                               controller->ResetFeed();
                               std::vector<mojom::FeedItemPtr> feed_items;
-                              LOG(ERROR) << "Feed items: " << all_feed_items.size(); 
+                              LOG(ERROR)
+                                  << "Feed items: " << all_feed_items.size();
                               if (BuildFeed(all_feed_items, history_hosts,
                                             &publishers,
                                             &controller->current_feed_,

@@ -117,7 +117,7 @@ export default class Settings extends React.PureComponent<Props, State> {
   allTabTypes: TabType[]
   allTabTypesWithoutBackground: TabType[]
 
-  constructor(props: Props) {
+  constructor (props: Props) {
     super(props)
     // Cache allowed tabs array on instance.
     // Feature flags won't change during page lifecycle, so we don't need to
@@ -148,16 +148,16 @@ export default class Settings extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     document.addEventListener('mousedown', this.handleClickOutside)
     document.addEventListener('keydown', this.onKeyPressSettings)
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     document.removeEventListener('mousedown', this.handleClickOutside)
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate (prevProps: Props) {
     if (prevProps.setActiveTab !== this.props.setActiveTab && this.props.setActiveTab) {
       this.setActiveTab(this.props.setActiveTab)
     }
@@ -173,7 +173,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     }
   }
 
-  getInitialTab() {
+  getInitialTab () {
     let tab = this.props.allowSponsoredWallpaperUI
       ? TabType.BackgroundImage
       : TabType.BraveStats
@@ -197,7 +197,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.props.setColorBackground(color, useRandomColor)
   }
 
-  setActiveTab(activeTab: TabType) {
+  setActiveTab (activeTab: TabType) {
     if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveToday) {
       this.context.setPage('news')
       this.props.onClose()
@@ -207,7 +207,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.setState({ activeTab })
   }
 
-  getActiveTabTypes(): TabType[] {
+  getActiveTabTypes (): TabType[] {
     // TODO(petemill): We're not allowing
     // any background image changes when user is not
     // in a sponsored image region, which is weird.
@@ -222,7 +222,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     }
   }
 
-  getTabIcon(tab: TabType, isActiveTab: boolean) {
+  getTabIcon (tab: TabType, isActiveTab: boolean) {
     let srcUrl
     switch (tab) {
       case TabType.BackgroundImage:
@@ -269,7 +269,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render () {
     const {
       textDirection,
       showSettingsMenu,

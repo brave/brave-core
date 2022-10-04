@@ -9,12 +9,12 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/optional.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -87,7 +87,8 @@ bool ParseCombinedPublisherList(const std::string& json,
       }
     }
 
-    auto* background_color = publisher_raw.GetDict().FindString("background_color");
+    auto* background_color =
+        publisher_raw.GetDict().FindString("background_color");
     if (background_color) {
       publisher->background_color = *background_color;
     }
