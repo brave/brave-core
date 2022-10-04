@@ -165,6 +165,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   mojom::SolanaSignTransactionParamPtr GetSignTransactionParam(
       v8::Local<v8::Value> transaction);
 
+  bool LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate);
+
   // use @solana/web3.js and create publicKey from base58 string
   v8::Local<v8::Value> CreatePublicKey(v8::Local<v8::Context> context,
                                        const std::string& base58_str);
@@ -174,6 +176,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       v8::Local<v8::Context> context,
       const std::vector<uint8_t> serialized_tx);
 
+  v8::Global<v8::Value> solana_web3_module_;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
