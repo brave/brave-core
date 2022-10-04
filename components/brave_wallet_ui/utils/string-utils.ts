@@ -87,3 +87,6 @@ export function unicodeEscape (string: string) {
     })
     .join('')
 }
+
+/** This prevents there from being more than one space between words. */
+export const removeDoubleSpaces = (val: string) => val.replace(/ +(?= )/g, '')
