@@ -1,25 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
+// @ts-nocheck TODO(petemill): Define types
 
-/** @interface */
-export class BraveIPFSBrowserProxy {
-  /**
-   * @param {boolean} value name.
-   */
-  setIPFSCompanionEnabled (value) {}
-  getIPFSResolveMethodList () {}
-  getIPFSEnabled () {}
-  setIPFSStorageMax (value) {}
-  importIpnsKey () {}
-  exportIPNSKey (value) {}
-}
-
-/**
- * @implements {settings.BraveIPFSBrowserProxy}
- */
 export class BraveIPFSBrowserProxyImpl {
   setIPFSCompanionEnabled (value) {
     chrome.send('setIPFSCompanionEnabled', [value])
@@ -29,17 +14,18 @@ export class BraveIPFSBrowserProxyImpl {
     chrome.send('setIPFSStorageMax', [value])
   }
 
-  importIpnsKey (value) {
-    chrome.send('importIpnsKey', [value])
+  importIpnsKey (keyName) {
+    chrome.send('importIpnsKey', [keyName])
   }
 
-  exportIPNSKey (value) {
-    chrome.send('exportIPNSKey', [value])
+  exportIPNSKey (keyName) {
+    chrome.send('exportIPNSKey', [keyName])
   }
 
   notifyIpfsNodeStatus () {
     chrome.send('notifyIpfsNodeStatus', [])
   }
+
   launchIPFSService () {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -60,7 +46,6 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  /** @override */
   getIPFSResolveMethodList () {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -71,7 +56,6 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  /** @override */
   removeIpfsPeer (id, address) {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -81,7 +65,7 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.removeIpfsPeer(id, address, resolve)
     })
   }
-  /** @override */
+
   getIpfsPeersList () {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -92,7 +76,6 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  /** @override */
   addIpfsPeer (value) {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -103,7 +86,6 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  /** @override */
   getIpnsKeysList () {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -113,7 +95,7 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.getIpnsKeysList(resolve)
     })
   }
-  /** @override */
+
   rotateKey (name) {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -123,7 +105,7 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.rotateKey(name, resolve)
     })
   }
-  /** @override */
+
   addIpnsKey (name) {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -134,7 +116,6 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  /** @override */
   removeIpnsKey (name) {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -145,7 +126,6 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  /** @override */
   getIPFSEnabled () {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -155,7 +135,7 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.getIPFSEnabled(resolve)
     })
   }
-  /** @override */
+
   validateGatewayUrl (url) {
     return new Promise(resolve => {
       if (!chrome.ipfs) {
@@ -165,6 +145,10 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.validateGatewayUrl(url, resolve)
     })
   }
+
+  static getInstance(): BraveIPFSBrowserProxyImpl {
+    return instance || (instance = new BraveIPFSBrowserProxyImpl())
+  }
 }
 
-cr.addSingletonGetter(BraveIPFSBrowserProxyImpl)
+let instance: BraveIPFSBrowserProxyImpl|null = null

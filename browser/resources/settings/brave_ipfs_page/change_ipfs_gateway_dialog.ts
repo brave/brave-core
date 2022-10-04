@@ -9,14 +9,17 @@
  * IPFS gateway address.
  */
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.js';
-import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import '../settings_shared.css.js';
-import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
+import {getTemplate} from './change_ipfs_gateway_dialog.html.js'
 
 const ChangeIpfsGatewayDialogBase = I18nMixin(PrefsMixin(PolymerElement))
 
@@ -26,7 +29,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
   }
 
   static get template() {
-    return html`{__html_template__}`
+    return getTemplate()
   }
 
   static get properties() {
@@ -53,7 +56,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
   browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance()
   invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
 
-  ready() {
+  override ready() {
     super.ready()
     this.$.url.value = this.getPref('brave.ipfs.public_gateway_address').value;
   }
@@ -71,8 +74,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
     })
   }
 
-  /** @private **/
-  urlChanged_() {
+  private urlChanged_() {
     const url_ = this.$.url.value
     // Disable the submit button if input url is empty but don't show the URL
     // invalid error message.

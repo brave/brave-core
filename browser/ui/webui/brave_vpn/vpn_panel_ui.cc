@@ -54,11 +54,11 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src chrome-untrusted://resources "
-                  "chrome-untrusted://brave-resources 'unsafe-inline';"));
+                  "'unsafe-inline';"));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
-      std::string("font-src chrome-untrusted://brave-resources "
+      std::string("font-src "
                   "chrome-untrusted://resources;"));
 
   content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/settings_routes.ts b/chrome/browser/resources/settings/settings_routes.ts
-index 300701df3fd7d06fc41f2cc068577e894a30fecd..ea2243a86729a2c5ea9faa756a7367d312fcf9a3 100644
+index 300701df3fd7d06fc41f2cc068577e894a30fecd..4f3fa6b7c0daf60c9eeea160af16ccce78db2dd1 100644
 --- a/chrome/browser/resources/settings/settings_routes.ts
 +++ b/chrome/browser/resources/settings/settings_routes.ts
 @@ -91,4 +91,5 @@ export interface SettingsRoutes {
    SYNC_ADVANCED: Route;
    SYSTEM: Route;
    TRIGGERED_RESET_DIALOG: Route;
-+  GET_STARTED: Route;
++  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; REWARDS: Route; EXTENSIONS: Route; BRAVE_SYNC: Route; BRAVE_IPFS: Route; BRAVE_WALLET: Route; BRAVE_HELP_TIPS: Route; BRAVE_NEW_TAB: Route; THEMES: Route;
  }

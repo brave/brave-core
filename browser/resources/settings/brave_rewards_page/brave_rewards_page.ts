@@ -2,16 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 'use strict';
 
 import {loadTimeData} from '../i18n_setup.js';
 
 import '//resources/js/cr.m.js';
-import {html, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
-import {BraveRewardsBrowserProxyImpl} from './brave_rewards_browser_proxy.m.js';
+import {BraveRewardsBrowserProxyImpl} from './brave_rewards_browser_proxy.js';
+import {getTemplate} from './brave_rewards_page.html.js'
 
 const SettingsBraveRewardsPageBase = I18nMixin(PrefsMixin(PolymerElement))
 
@@ -25,7 +28,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
   }
 
   static get template() {
-    return html`{__html_template__}`
+    return getTemplate()
   }
 
   static get properties() {

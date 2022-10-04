@@ -1,67 +1,44 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// clang-format off
-// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
-// clang-format on
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-cr.define('settings', function() {
-  /** @interface */
-  /* #export */ class BravePrivacyBrowserProxy {
-    /**
-     * @return {!Promise<string>}
-     */
-    getP3AEnabled() {}
-    /**
-     * @param {boolean} enabled (true/false).
-     */
-    setP3AEnabled(value) {}
-    /**
-     * @return {!Promise<string>}
-     */
-    getStatsUsagePingEnabled() {}
-    /**
-     * @param {boolean} enabled (true/false).
-     */
-    setStatsUsagePingEnabled(value) {}
-    /**
-     * @return {boolean}
-     */
-    wasPushMessagingEnabledAtStartup() {}
+import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
+
+export interface BravePrivacyBrowserProxy {
+  getP3AEnabled(): Promise<string>
+  setP3AEnabled(value: boolean)
+  getStatsUsagePingEnabled(): Promise<string>
+  setStatsUsagePingEnabled(value: boolean)
+  wasPushMessagingEnabledAtStartup(): boolean
+}
+
+export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
+  getP3AEnabled() {
+    return sendWithPromise('getP3AEnabled');
   }
 
-  /**
-   * @implements {settings.BravePrivacyBrowserProxy}
-   */
-  /* #export */ class BravePrivacyBrowserProxyImpl {
-    /** @overrides */
-    getP3AEnabled() {
-      return cr.sendWithPromise('getP3AEnabled');
-    }
-
-    setP3AEnabled(value) {
-      chrome.send('setP3AEnabled', [value])
-    }
-
-    getStatsUsagePingEnabled() {
-      return cr.sendWithPromise('getStatsUsagePingEnabled');
-    }
-
-    setStatsUsagePingEnabled(value) {
-      chrome.send('setStatsUsagePingEnabled', [value])
-    }
-
-    wasPushMessagingEnabledAtStartup() {
-      return loadTimeData.getBoolean('pushMessagingEnabledAtStartup');
-    }
+  setP3AEnabled(value) {
+    chrome.send('setP3AEnabled', [value])
   }
 
-  cr.addSingletonGetter(BravePrivacyBrowserProxyImpl);
+  getStatsUsagePingEnabled() {
+    return sendWithPromise('getStatsUsagePingEnabled');
+  }
 
-  // #cr_define_end
-  return {
-    BravePrivacyBrowserProxy: BravePrivacyBrowserProxy,
-    BravePrivacyBrowserProxyImpl: BravePrivacyBrowserProxyImpl,
-  };
-});
+  setStatsUsagePingEnabled(value) {
+    chrome.send('setStatsUsagePingEnabled', [value])
+  }
+
+  wasPushMessagingEnabledAtStartup() {
+    return loadTimeData.getBoolean('pushMessagingEnabledAtStartup');
+  }
+
+  static getInstance(): BravePrivacyBrowserProxyImpl {
+    return instance || (instance = new BravePrivacyBrowserProxyImpl())
+  }
+}
+
+let instance: BravePrivacyBrowserProxy|null = null

@@ -3,10 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {OverrideIronIcons} from 'chrome://brave-resources/polymer_overriding.js'
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
+import {OverrideIronIcons} from 'chrome://resources/polymer_overriding.js'
 
 import '../icons.html.js'
-import '../brave_icons.m.js'
+import '../brave_icons.html.js'
 
 OverrideIronIcons('settings', 'brave_settings', {
   palette: 'appearance',

@@ -1,0 +1,36 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=vars
+ * #scheme=relative
+ * #css_wrapper_metadata_end */
+
+/* Use 'custom-style' to inject style (mainly override css vars)
+    in most chromium polymer modules.
+    This will only work for properties which cascade through
+    shadow DOM.
+    See https://polymer-library.polymer-project.org/1.0/docs/devguide/styling
+*/
+html {
+  --interactive-color: var(--cr-link-color) !important;
+  --brave-focus-outline: auto 3px var(--flat-focus-shadow-color);
+  --disabled-color: rgb(241, 243, 244);
+  --cr-link-color: rgb(255, 69, 48) !important;
+  --cr-link-color-rgb: 255, 69, 48;
+  --flat-focus-shadow-color: rgba(255, 69, 48, .4) !important;
+  --cr-selectable-focus_-_outline: var(--brave-focus-outline) !important;
+  --cr-primary-text-color: #343546 !important;
+  --cr-primary-text_-_font-weight: 600 !important;
+  --cr-secondary-text_-_color: #A0A1B2 !important;
+  --cr-card-elevation_-_box-shadow: 0 !important;
+  --cr-card-border-radius: 4px !important;
+}
+@media (prefers-color-scheme: dark) {
+  html {
+    --cr-primary-text-color: #F4F4F4 !important;
+    --cr-secondary-text_-_color: #AEB1C2 !important;
+  }
+}

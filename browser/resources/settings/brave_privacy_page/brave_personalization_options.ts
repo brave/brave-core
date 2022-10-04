@@ -2,10 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-(function() {
-'use strict';
+import { Polymer } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
+import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
 
 Polymer({
   is: 'settings-brave-personalization-options',
@@ -47,12 +48,12 @@ Polymer({
     },
   },
 
-  /** @private {?settings.BravePrivacyBrowserProxy} */
+  /** @private {?BravePrivacyBrowserProxy} */
   browserProxy_: null,
 
   /** @override */
   created: function() {
-    this.browserProxy_ = settings.BravePrivacyBrowserProxyImpl.getInstance();
+    this.browserProxy_ = BravePrivacyBrowserProxyImpl.getInstance();
   },
 
   /** @override */
@@ -106,4 +107,3 @@ Polymer({
   },
 
 });
-})();

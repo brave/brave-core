@@ -3,14 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
 import {Router, RouteObserverMixin} from '../router.js';
-import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
-import './p2p_keys_subpage.m.js';
-import './ipfs_peers_subpage.m.js';
-import './change_ipfs_gateway_dialog.html.js';
+import './p2p_keys_subpage.js';
+import './ipfs_peers_subpage.js';
+import './change_ipfs_gateway_dialog.js';
+import {getTemplate} from './brave_ipfs_page.html.js'
 
 /**
  * Keep it same as in IPFSResolveMethodTypes
@@ -34,7 +37,7 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
   }
 
   static get template() {
-    return html`{__html_template__}`
+    return getTemplate()
   }
 
   static get properties() {

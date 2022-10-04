@@ -1,5 +1,0 @@
-group("chromium_deps") {
-  deps = [
-    "//brave/ui/webui/resources",
-  ]
-}

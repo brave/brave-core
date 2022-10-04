@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
 
-import '../brave_search_engines_page/brave_search_engines_page.html.js'
+import '../brave_search_engines_page/brave_search_engines_page.js'
 
 RegisterPolymerTemplateModifications({
   'settings-search-page': (templateContent) => {

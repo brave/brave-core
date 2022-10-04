@@ -3,10 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { RegisterStyleOverride, RegisterPolymerTemplateModifications } from 'chrome://brave-resources/polymer_overriding.js'
+import { RegisterStyleOverride, RegisterPolymerTemplateModifications } from 'chrome://resources/polymer_overriding.js'
 import { loadTimeData } from '../i18n_setup.js'
-import '../brave_icons.m.js'
+import '../brave_icons.html.js'
 
 function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')

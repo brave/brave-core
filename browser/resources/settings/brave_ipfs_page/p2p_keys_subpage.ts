@@ -2,22 +2,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
+
+import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js'
+import '../settings_page/settings_section.js'
+import '../settings_shared.css.js'
+import '../settings_vars.css.js'
+import './rotate_p2p_key_dialog.js'
+import './add_p2p_key_dialog.js'
+
+import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
 import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
-
-import {Router} from '../router.js';
-import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
-import {assert} from 'chrome://resources/js/assert.m.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
+import {getTemplate} from './p2p_keys_subpage.html.js'
 
 (function() {
   'use strict';
-  
+
 /**
 * @fileoverview
 * 'settings-sync-subpage' is the settings page content
 */
 Polymer({
   is: 'settings-p2p-keys-subpage',
+
+  _template: getTemplate(),
 
   behaviors: [
     I18nBehavior,
@@ -144,7 +154,7 @@ Polymer({
   getIconForKey: function(name) {
     return name == 'self' ? 'icon-button-self' : 'icon-button'
   },
-  
+
 
   onAddKeyTap_: function(item) {
     this.showAddp2pKeyDialog_ = true
@@ -195,14 +205,14 @@ Polymer({
     });
     this.actionItemName = ""
   },
-  
+
   onExportTap_: function(event) {
     let name_to_export = this.actionItemName
     this.$$('cr-action-menu').close();
     this.browserProxy_.exportIPNSKey(name_to_export);
     this.actionItemName = ""
   },
-  
+
   onKeyMenuTapped_: function(event) {
     this.actionItemName = event.model.item.name
     const actionMenu =

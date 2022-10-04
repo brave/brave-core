@@ -2,38 +2,45 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
+import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
 /** @interface */
-export class BraveAppearanceBrowserProxy {
+export interface BraveAppearanceBrowserProxy {
   /**
-   * @return {!Promise<Array>}
+   * Returns JSON string with shape `chrome.braveTheme.ThemeItem[]`
    */
-  getBraveThemeList() {}
+  getBraveThemeList(): Promise<string>
   /**
-   * @return {!Promise<Number>}
+   * Index of current ThemeItem
    */
-  getBraveThemeType() {}
+  getBraveThemeType(): Promise<number>
   /**
-   * @param {Number} type
+   * 
+   * @param value index of ThemeItem
    */
-  setBraveThemeType(value) {}
+  setBraveThemeType(value: number): void
 }
 
 /**
  * @implements {BraveAppearanceBrowserProxy}
  */
-export class BraveAppearanceBrowserProxyImpl {
-  /** @override */
+export class BraveAppearanceBrowserProxyImpl implements
+    BraveAppearanceBrowserProxy {
   getBraveThemeList() {
-    return new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
+    return new Promise<string>(resolve => chrome.braveTheme.getBraveThemeList(resolve))
   }
+
   getBraveThemeType() {
     return sendWithPromise('getBraveThemeType');
   }
-  setBraveThemeType(value) {
+
+  setBraveThemeType(value: number) {
     chrome.send('setBraveThemeType', [value]);
+  }
+
+  static getInstance(): BraveAppearanceBrowserProxyImpl {
+    return instance || (instance = new BraveAppearanceBrowserProxyImpl())
   }
 }
 
-addSingletonGetter(BraveAppearanceBrowserProxyImpl);
+let instance: BraveAppearanceBrowserProxy|null = null

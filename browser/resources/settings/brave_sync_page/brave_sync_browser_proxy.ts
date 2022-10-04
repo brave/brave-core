@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
+import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
 export class BraveSyncBrowserProxy {
   getSyncCode() {
@@ -27,6 +29,9 @@ export class BraveSyncBrowserProxy {
   deleteDevice(deviceId) {
     return sendWithPromise('SyncDeleteDevice', deviceId);
   }
+  static getInstance() {
+    return instance || (instance = new BraveSyncBrowserProxy())
+  }
 }
 
-addSingletonGetter(BraveSyncBrowserProxy);
+let instance: BraveSyncBrowserProxy|null = null

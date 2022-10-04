@@ -3,18 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import 'chrome://resources/cr_elements/shared_vars_css.m.js';
+// @ts-nocheck
+
+import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {loadTimeData} from '../i18n_setup.js';
 import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import '../controls/settings_checkbox.js';
-
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
+import {getTemplate} from './brave_clear_browsing_data_on_exit_page.html.js'
 
 Polymer({
   is: 'settings-brave-clear-browsing-data-on-exit-page',
 
-  _template: html`{__html_template__}`,
+  _template: getTemplate(),
 
   properties: {
     prefs: {
@@ -46,12 +47,12 @@ Polymer({
 
   listeners: {'settings-boolean-control-change': 'updateModified_'},
 
-  setCounter: function (counter, text) {
+  setCounter: function (counter: string, text: string) {
     this.set('counters.' + counter, text);
   },
 
   getChangedSettings: function () {
-    let changed = [];
+    let changed: {key: string, value: boolean}[] = [];
     const boxes = this.$.checkboxes.querySelectorAll('settings-checkbox');
     boxes.forEach((checkbox) => {
       if (checkbox.checked != this.get(checkbox.pref.key, this.prefs).value) {
@@ -61,7 +62,7 @@ Polymer({
     return changed;
   },
 
-  updateModified_: function (checkbox) {
+  updateModified_: function () {
     let modified = false;
     const boxes = this.$.checkboxes.querySelectorAll('settings-checkbox');
     for (let checkbox of boxes) {

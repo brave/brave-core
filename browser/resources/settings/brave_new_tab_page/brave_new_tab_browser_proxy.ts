@@ -2,44 +2,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// clang-format off
-// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
-// clang-format on
+import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
-cr.define('settings', function() {
-  /** @interface */
-  /* #export */ class BraveNewTabBrowserProxy {
-    /**
-     * @return {!Promise<Array>}
-     */
-    getNewTabShowsOptionsList() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    shouldShowNewTabDashboardSettings() {}
+export type NewTabOption = {
+  name: string
+  value: number // corresponds to NewTabPageShowsOptions enum
+}
+export interface BraveNewTabBrowserProxy {
+    getNewTabShowsOptionsList(): Promise<NewTabOption[]>
+    shouldShowNewTabDashboardSettings(): Promise<boolean>
   }
 
-  /**
-   * @implements {settings.BraveNewTabBrowserProxy}
-   */
-  /* #export */ class BraveNewTabBrowserProxyImpl {
-    /** @override */
-    getNewTabShowsOptionsList() {
-      return cr.sendWithPromise('getNewTabShowsOptionsList')
-    }
-
-    /** @override */
-    shouldShowNewTabDashboardSettings() {
-      return cr.sendWithPromise('shouldShowNewTabDashboardSettings')
-    }
+export class BraveNewTabBrowserProxyImpl implements BraveNewTabBrowserProxy {
+  getNewTabShowsOptionsList() {
+    return sendWithPromise('getNewTabShowsOptionsList')
   }
 
-  cr.addSingletonGetter(BraveNewTabBrowserProxyImpl);
+  shouldShowNewTabDashboardSettings() {
+    return sendWithPromise('shouldShowNewTabDashboardSettings')
+  }
 
-  // #cr_define_end
-  return {
-    BraveNewTabBrowserProxy,
-    BraveNewTabBrowserProxyImpl
-  };
-});
+  static getInstance(): BraveNewTabBrowserProxyImpl {
+    return instance || (instance = new BraveNewTabBrowserProxyImpl())
+  }
+}
+
+let instance: BraveNewTabBrowserProxyImpl|null = null
+

@@ -3,14 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import 'chrome://resources/js/util.m.js';
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
-import 'chrome://resources/cr_elements/icons.m.js';
+import 'chrome://resources/cr_elements/icons.html.js';
 import 'chrome://resources/cr_elements/cr_shared_style.css.js';
-import 'chrome://resources/cr_elements/shared_vars_css.m.js';
+import 'chrome://resources/cr_elements/cr_shared_vars.css.js';
 import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import '../people_page/sync_controls.js';
@@ -18,11 +19,12 @@ import './brave_sync_configure.js';
 import './brave_sync_setup.js';
 
 import { assert } from 'chrome://resources/js/assert.m.js';
-import { html, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { I18nMixin } from 'chrome://resources/js/i18n_mixin.js';
 
 import { Route, RouteObserverMixin, Router } from '../router.js';
 import { SyncBrowserProxyImpl, StatusAction } from '../people_page/sync_browser_proxy.js';
+import {getTemplate} from './brave_sync_subpage.html.js'
 
 const SettingBraveSyncSubpageBase = I18nMixin(RouteObserverMixin(PolymerElement))
 
@@ -32,7 +34,7 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
   }
 
   static get template() {
-    return html`{__html_template__}`
+    return getTemplate()
   }
 
   static get properties() {

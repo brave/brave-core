@@ -3,10 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import '../settings_shared.css.js';
-import '../settings_vars.css.js';
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/js/i18n_mixin.js'
+import {PrefsMixin, PrefsMixinInterface} from '../prefs/prefs_mixin.js'
+import '../settings_shared.css.js'
+import '../settings_vars.css.js'
+import {getTemplate} from './sidebar.html.js'
+
+const SettingsBraveAppearanceSidebarElementBase = PrefsMixin(I18nMixin(PolymerElement)) as {
+  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
+}
 
 /**
  * 'settings-brave-appearance-sidebar' is the settings page area containing
@@ -14,47 +20,43 @@ import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js'
  * This is separated from 'settings-brave-appearance-toolbar' because sidebar
  * option is located below the home button option.
  */
-Polymer({
-  is: 'settings-brave-appearance-sidebar',
+export class SettingsBraveAppearanceSidebarElement extends SettingsBraveAppearanceSidebarElementBase {
+  static get is() {
+    return 'settings-brave-appearance-sidebar'
+  }
 
-  _template: html`{__html_template__}`,
+  static get template() {
+    return getTemplate()
+  }
 
-  behaviors: [I18nBehavior],
 
-  properties: {
-    sidebarShowOptions_: {
-      readOnly: true,
-      type: Array,
-      value() {
-        return [
-          {value: 0, name: this.i18n('appearanceSettingsShowOptionAlways')},
-          {value: 1, name: this.i18n('appearanceSettingsShowOptionMouseOver')},
-          {value: 3, name: this.i18n('appearanceSettingsShowOptionNever')},
-        ];
+  static get properties() {
+    return {
+      sidebarShowEnabledLabel_: {
+        readOnly: false,
+        type: String,
       },
-    },
+    }
+  }
 
-    sidebarShowEnabledLabel_: {
-      readOnly: false,
-      type: String,
-    },
-  },
+  static get observers(){
+    return [
+      'onShowOptionChanged_(prefs.brave.sidebar.sidebar_show_option.value)',
+    ]
+  }
 
-  observers: [
-    'onShowOptionChanged_(prefs.brave.sidebar.sidebar_show_option.value)',
-  ],
+  private sidebarShowOptions_ = [
+    {value: 0, name: this.i18n('appearanceSettingsShowOptionAlways')},
+    {value: 1, name: this.i18n('appearanceSettingsShowOptionMouseOver')},
+    {value: 3, name: this.i18n('appearanceSettingsShowOptionNever')},
+  ]
+  private sidebarShowEnabledLabel_: string
 
-  computeSidebarShowOptionSubLabel_(option) {
-    return option === 3 ? this.i18n('appearanceSettingsSidebarDisabledDesc')
-                        : this.i18n('appearanceSettingsSidebarEnabledDesc');
-  },
+  private onShowOptionChanged_() {
+    this.sidebarShowEnabledLabel_ = (this.get('prefs.brave.sidebar.sidebar_show_option.value') === 3)
+        ? this.i18n('appearanceSettingsSidebarDisabledDesc')
+        : this.i18n('appearanceSettingsSidebarEnabledDesc')
+  }
+}
 
-  onShowOptionChanged_() {
-    this.sidebarShowEnabledLabel_ =
-      this.computeSidebarShowOptionSubLabel_(this.getCurrentSidebarOption_());
-  },
-
-  getCurrentSidebarOption_() {
-    return this.get('prefs.brave.sidebar.sidebar_show_option.value');
-  },
-});
+customElements.define(SettingsBraveAppearanceSidebarElement.is, SettingsBraveAppearanceSidebarElement)

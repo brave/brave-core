@@ -3,28 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
 import { sendWithPromise, addWebUIListener } from 'chrome://resources/js/cr.m.js';
 
-/** @interface */
-export class BraveAdblockBrowserProxy {
-  getInstance() { }
-  getRegionalLists() { }
-  enableFilterList() { }
-  getListSubscriptions() { }
-  getCustomFilters() { }
-  setSubscriptionEnabled() { }
-  addSubscription() { }
-  addWebUIListener() { }
-  updateSubscription() { }
-  deleteSubscription() { }
-  viewSubscription() { }
+export interface BraveAdblockBrowserProxy {
+  getRegionalLists(): Promise<any[]> // TODO(petemill): Define the expected type
+  enableFilterList(uuid: string, enabled: boolean)
+  getListSubscriptions(): Promise<any> // TODO(petemill): Define the expected type
+  getCustomFilters(): Promise<any> // TODO(petemill): Define the expected type
+  setSubscriptionEnabled(url: string, enabled: boolean)
+  addSubscription(url: string)
+  addWebUIListener(eventName: string, callback: Function)
+  updateSubscription(url: string)
+  deleteSubscription(url: string)
+  viewSubscription(url: string)
 }
 
-/**
-* @implements {BraveAdblockBrowserProxy}
-*/
-export class BraveAdblockBrowserProxyImpl {
-  /** @instance */
+export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
   static getInstance() {
     return instance || (instance = new BraveAdblockBrowserProxyImpl());
   }
@@ -77,5 +73,4 @@ export class BraveAdblockBrowserProxyImpl {
   }
 }
 
-/** @type {BraveAdblockBrowserProxyImpl} */
-let instance
+let instance: BraveAdblockBrowserProxy|null = null

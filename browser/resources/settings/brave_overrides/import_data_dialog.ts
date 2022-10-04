@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {html, RegisterPolymerTemplateModifications, RegisterPolymerComponentBehaviors} from 'chrome://brave-resources/polymer_overriding.js'
+// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+
+import {html, RegisterPolymerTemplateModifications, RegisterPolymerComponentBehaviors} from 'chrome://resources/polymer_overriding.js'
 import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js'
 
 RegisterPolymerTemplateModifications({

@@ -1,22 +1,30 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
+
+import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js'
+import '../settings_page/settings_section.js'
+import '../settings_shared.css.js'
+import '../settings_vars.css.js'
+import './add_ipfs_peer_dialog.js'
+
+import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
 import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
+import {getTemplate} from './ipfs_peers_subpage.html.js'
 
-import {Router} from '../router.js';
-import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
-
-(function() {
-  'use strict';
-  
 /**
 * @fileoverview
 * 'settings-sync-subpage' is the settings page content
 */
 Polymer({
   is: 'settings-ipfs-peers-subpage',
+
+  _template: getTemplate(),
 
   behaviors: [
     I18nBehavior,
@@ -139,5 +147,4 @@ Polymer({
       }
     });
   }
-});
-})();
+})
