@@ -46,6 +46,7 @@ class VerticalTabStripRegionView : public views::View {
 
   // Contains TabStripRegion.
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
+  raw_ptr<views::View> scroll_contents_view_ = nullptr;
   raw_ptr<views::View> scroll_view_header_ = nullptr;
 
   // New tab button created for vertical tabs

@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -124,8 +125,8 @@ class ScrollContentsView : public views::View {
  public:
   METADATA_HEADER(ScrollContentsView);
 
-  explicit ScrollContentsView(VerticalTabStripRegionView* container)
-      : container_(container) {}
+  ScrollContentsView(VerticalTabStripRegionView* container, TabStrip* tab_strip)
+      : container_(container), tab_strip_(tab_strip) {}
   ~ScrollContentsView() override = default;
 
   // views::View:
@@ -137,8 +138,16 @@ class ScrollContentsView : public views::View {
     container_->Layout();
   }
 
+  void OnPaintBackground(gfx::Canvas* canvas) override {
+    canvas->DrawColor(GetColorProvider()->GetColor(
+        tab_strip_->ShouldPaintAsActiveFrame()
+            ? kColorNewTabButtonBackgroundFrameActive
+            : kColorNewTabButtonBackgroundFrameInactive));
+  }
+
  private:
   raw_ptr<VerticalTabStripRegionView> container_ = nullptr;
+  raw_ptr<TabStrip> tab_strip_ = nullptr;
 };
 
 BEGIN_METADATA(ScrollContentsView, views::View)
@@ -165,9 +174,10 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
               this),
           region_view_->tab_strip_));
 
-  auto* scroll_contents =
-      scroll_view_->SetContents(std::make_unique<ScrollContentsView>(this));
-  scroll_contents->SetLayoutManager(std::make_unique<views::FillLayout>());
+  scroll_contents_view_ = scroll_view_->SetContents(
+      std::make_unique<ScrollContentsView>(this, region_view_->tab_strip_));
+  scroll_contents_view_->SetLayoutManager(
+      std::make_unique<views::FillLayout>());
   scroll_view_->SetVerticalScrollBarMode(
       views::ScrollView::ScrollBarMode::kHiddenButEnabled);
 

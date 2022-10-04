@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -34,16 +35,21 @@
     continue;                                                                 \
   }
 
-#define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS        \
-  if (tabs::features::ShouldShowVerticalTabs()) {       \
-    std::vector<gfx::Rect> bounds;                      \
-    int y = 0;                                          \
-    for (const TabSlotView* view : views) {             \
-      const int height = view->height();                \
-      bounds.emplace_back(0, y, view->width(), height); \
-      y += height;                                      \
-    }                                                   \
-    return bounds;                                      \
+#define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS                           \
+  if (tabs::features::ShouldShowVerticalTabs()) {                          \
+    std::vector<gfx::Rect> bounds;                                         \
+    int y = 0;                                                             \
+    for (const TabSlotView* view : views) {                                \
+      int x = 0;                                                           \
+      if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&     \
+          view->group().has_value()) {                                     \
+        x = BraveTabGroupHeader::GetLeftPaddingForVerticalTabs();          \
+      }                                                                    \
+      const int height = view->height();                                   \
+      bounds.emplace_back(x, y, TabStyle::GetStandardWidth() - x, height); \
+      y += height;                                                         \
+    }                                                                      \
+    return bounds;                                                         \
   }
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip.cc"

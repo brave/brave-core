@@ -29,9 +29,9 @@ BraveTabContainer::~BraveTabContainer() = default;
 
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   if (tabs::features::ShouldShowVerticalTabs()) {
+    auto slots_bounds = layout_helper_->CalculateIdealBounds({});
     return gfx::Size(TabStyle::GetStandardWidth(),
-                     GetLayoutConstant(TAB_HEIGHT) *
-                         (tabs_view_model_.view_size() + group_views_.size()));
+                     slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
   }
 
   return TabContainerImpl::CalculatePreferredSize();
@@ -58,6 +58,24 @@ gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
           ? tabs_view_model_.ideal_bounds(former_model_index - 1).bottom()
           : 0);
   return target_bounds;
+}
+
+void BraveTabContainer::EnterTabClosingMode(absl::optional<int> override_width,
+                                            CloseTabSource source) {
+  // Don't shrink vertical tab strip's width
+  if (tabs::features::ShouldShowVerticalTabs()) {
+    return;
+  }
+
+  TabContainerImpl::EnterTabClosingMode(override_width, source);
+}
+
+bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
+  // We don't have to clip tabs out of bounds. Scroll view will handle it.
+  if (tabs::features::ShouldShowVerticalTabs())
+    return true;
+
+  return TabContainerImpl::ShouldTabBeVisible(tab);
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)

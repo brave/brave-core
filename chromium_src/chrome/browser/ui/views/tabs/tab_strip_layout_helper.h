@@ -11,6 +11,7 @@
   void set_use_vertical_tabs(bool vertical) { use_vertical_tabs_ = vertical; } \
                                                                                \
  private:                                                                      \
+  friend class BraveTabContainer;                                              \
   bool use_vertical_tabs_ = false;                                             \
                                                                                \
  public:                                                                       \

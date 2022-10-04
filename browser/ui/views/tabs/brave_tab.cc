@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
@@ -47,4 +48,12 @@ void BraveTab::ActiveStateChanged() {
   // see comment on UpdateEnabledForMuteToggle();
   // https://github.com/brave/brave-browser/issues/23476/
   alert_indicator_button_->UpdateEnabledForMuteToggle();
+}
+
+absl::optional<SkColor> BraveTab::GetGroupColor() const {
+  if (tabs::features::ShouldShowVerticalTabs())
+    return {};
+
+  // Hide tab border with group color as it doesn't go well with vertical tabs.
+  return Tab::GetGroupColor();
 }
