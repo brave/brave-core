@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
@@ -12,12 +13,20 @@ void BraveRegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   brave_sync::Prefs::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefs(registry);
+  brave_wallet::RegisterProfilePrefsForMigration(registry);
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefs(registry);
 }
 
+void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
+  brave_wallet::MigrateObsoleteProfilePrefs(prefs);
+}
+
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS BraveRegisterBrowserStatePrefs(registry);
 #define BRAVE_REGISTER_LOCAL_STATE_PREFS BraveRegisterLocalStatePrefs(registry);
+#define BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS \
+  BraveMigrateObsoleteBrowserStatePrefs(prefs);
 #include "src/ios/chrome/browser/prefs/browser_prefs.mm"
