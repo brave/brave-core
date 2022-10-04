@@ -400,6 +400,15 @@ bool SidebarItemsScrollView::CanDrop(const OSExchangeData& data) {
       ui::ClipboardFormatType::GetType(kSidebarItemDragType));
 }
 
+void SidebarItemsScrollView::OnDragExited() {
+  ClearDragIndicator();
+}
+
+void SidebarItemsScrollView::ClearDragIndicator() {
+  contents_view_->ClearDragIndicator();
+  drag_context_->set_drag_indicator_index(absl::nullopt);
+}
+
 int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
   auto ret = ui::DragDropTypes::DRAG_NONE;
 
@@ -414,8 +423,7 @@ int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
     drag_context_->set_drag_indicator_index(target_index);
     ret = ui::DragDropTypes::DRAG_MOVE;
   } else {
-    contents_view_->ClearDragIndicator();
-    drag_context_->set_drag_indicator_index(absl::nullopt);
+    ClearDragIndicator();
   }
 
   return ret;
