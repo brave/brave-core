@@ -5,6 +5,11 @@
 
 #include "brave/components/brave_rewards/common/rewards_util.h"
 
+#include <string>
+
+#include "base/no_destructor.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/ofac_sanction_util.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 
@@ -40,10 +45,49 @@ bool IsDisabledByFeature() {
   return false;
 }
 
+bool IsOFACSanctionedRegion(const std::string& country_code) {
+  return brave_l10n::IsISOCountryCodeOFACSanctioned(country_code) ||
+         brave_l10n::IsUNM49CodeOFACSanctioned(country_code);
+}
+
+std::string CountryCodeFromCountryId(int country_id) {
+  std::string country_code = "  ";
+  country_code[1] = country_id & 0xFF;
+  country_code[0] = (country_id >> 8) & 0xFF;
+  return country_code;
+}
+
+std::string& MutableCountryCodeStringForTesting() {
+  static base::NoDestructor<std::string> country_code;
+  return *country_code;
+}
+
+const std::string& CountryCodeStringForTesting() {
+  return MutableCountryCodeStringForTesting();
+}
+
+const std::string GetCountryCode() {
+  return CountryCodeStringForTesting().empty()
+             ? brave_l10n::GetDefaultISOCountryCodeString()
+             : CountryCodeStringForTesting();
+}
+
 }  // namespace
 
-bool IsSupported(PrefService* prefs) {
-  return !IsDisabledByPolicy(prefs) && !IsDisabledByFeature();
+bool IsSupported(PrefService* prefs, IsSupportedOptions options) {
+  bool is_supported = !IsDisabledByPolicy(prefs) && !IsDisabledByFeature();
+  if (is_supported && options != IsSupportedOptions::kSkipRegionCheck) {
+    return !IsUnsupportedRegion();
+  }
+  return is_supported;
+}
+
+bool IsUnsupportedRegion() {
+  return IsOFACSanctionedRegion(GetCountryCode());
+}
+
+void SetCountryCodeForOFACTesting(int country_id) {
+  MutableCountryCodeStringForTesting() = CountryCodeFromCountryId(country_id);
 }
 
 }  // namespace brave_rewards

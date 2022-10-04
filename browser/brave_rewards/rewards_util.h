@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_UTIL_H_
 #define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_UTIL_H_
 
+#include "brave/components/brave_rewards/common/rewards_util.h"
+
 class Profile;
 
 namespace brave_rewards {
 
-bool IsSupportedForProfile(Profile* profile);
+bool IsSupportedForProfile(
+    Profile* profile,
+    IsSupportedOptions options = IsSupportedOptions::kNone);
 
 }  // namespace brave_rewards
 
