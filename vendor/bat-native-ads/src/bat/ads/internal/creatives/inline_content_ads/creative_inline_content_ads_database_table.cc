@@ -315,7 +315,7 @@ void CreativeInlineContentAds::Delete(ResultCallback callback) const {
 
 void CreativeInlineContentAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    GetCreativeInlineContentAdCallback callback) {
+    GetCreativeInlineContentAdCallback callback) const {
   if (creative_instance_id.empty()) {
     callback(/*success*/ false, creative_instance_id, {});
     return;
@@ -411,7 +411,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
 void CreativeInlineContentAds::GetForSegmentsAndDimensions(
     const SegmentList& segments,
     const std::string& dimensions,
-    GetCreativeInlineContentAdsCallback callback) {
+    GetCreativeInlineContentAdsCallback callback) const {
   if (segments.empty() || dimensions.empty()) {
     callback(/*success*/ true, segments, {});
     return;
@@ -516,7 +516,7 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
 
 void CreativeInlineContentAds::GetForDimensions(
     const std::string& dimensions,
-    GetCreativeInlineContentAdsForDimensionsCallback callback) {
+    GetCreativeInlineContentAdsForDimensionsCallback callback) const {
   if (dimensions.empty()) {
     callback(/*success*/ true, {});
     return;
@@ -611,7 +611,7 @@ void CreativeInlineContentAds::GetForDimensions(
 }
 
 void CreativeInlineContentAds::GetAll(
-    GetCreativeInlineContentAdsCallback callback) {
+    GetCreativeInlineContentAdsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "cbna.creative_instance_id, "

@@ -125,7 +125,7 @@ void Transactions::Save(const TransactionList& transactions,
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void Transactions::GetAll(GetTransactionsCallback callback) {
+void Transactions::GetAll(GetTransactionsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "id, "
@@ -163,7 +163,7 @@ void Transactions::GetAll(GetTransactionsCallback callback) {
 
 void Transactions::GetForDateRange(const base::Time from_time,
                                    const base::Time to_time,
-                                   GetTransactionsCallback callback) {
+                                   GetTransactionsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "id, "

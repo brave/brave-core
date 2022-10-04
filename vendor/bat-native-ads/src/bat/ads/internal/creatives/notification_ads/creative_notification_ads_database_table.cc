@@ -262,7 +262,7 @@ void CreativeNotificationAds::Delete(ResultCallback callback) const {
 
 void CreativeNotificationAds::GetForSegments(
     const SegmentList& segments,
-    GetCreativeNotificationAdsCallback callback) {
+    GetCreativeNotificationAdsCallback callback) const {
   if (segments.empty()) {
     callback(/*success*/ true, segments, {});
     return;
@@ -359,7 +359,7 @@ void CreativeNotificationAds::GetForSegments(
 }
 
 void CreativeNotificationAds::GetAll(
-    GetCreativeNotificationAdsCallback callback) {
+    GetCreativeNotificationAdsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "can.creative_instance_id, "

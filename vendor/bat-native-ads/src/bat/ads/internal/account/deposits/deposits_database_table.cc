@@ -147,7 +147,7 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 }
 
 void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                        GetDepositsCallback callback) {
+                                        GetDepositsCallback callback) const {
   if (creative_instance_id.empty()) {
     callback(/*success*/ false, absl::nullopt);
     return;

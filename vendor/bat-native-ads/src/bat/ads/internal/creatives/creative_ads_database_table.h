@@ -29,7 +29,7 @@ class CreativeAds final : public TableInterface {
   void Delete(ResultCallback callback) const;
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeAdCallback callback);
+                                GetCreativeAdCallback callback) const;
 
   std::string GetTableName() const override;
 

@@ -50,7 +50,7 @@ void PurgeStaleTextEmbeddingHtmlEvents(
 
 void GetTextEmbeddingHtmlEventsFromDatabase(
     const database::table::GetTextEmbeddingHtmlEventsCallback& callback) {
-  database::table::TextEmbeddingHtmlEvents database_table;
+  const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(
       [=](const bool success,
           const TextEmbeddingHtmlEventList& text_embedding_html_events) {

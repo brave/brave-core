@@ -35,7 +35,7 @@ void EligibleAdsV1::GetForUserModel(
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads:");
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNotificationAd,
       [=](const bool success, const AdEventList& ad_events) {
@@ -87,7 +87,7 @@ void EligibleAdsV1::GetForChildSegments(
     BLOG(1, "  " << segment);
   }
 
-  database::table::CreativeNotificationAds database_table;
+  const database::table::CreativeNotificationAds database_table;
   database_table.GetForSegments(
       segments, [=](const bool success, const SegmentList& /*segments*/,
                     const CreativeNotificationAdList& creative_ads) {
@@ -131,7 +131,7 @@ void EligibleAdsV1::GetForParentSegments(
     BLOG(1, "  " << segment);
   }
 
-  database::table::CreativeNotificationAds database_table;
+  const database::table::CreativeNotificationAds database_table;
   database_table.GetForSegments(
       segments, [=](const bool success, const SegmentList& /*segments*/,
                     const CreativeNotificationAdList& creative_ads) {
@@ -164,7 +164,7 @@ void EligibleAdsV1::GetForUntargeted(
     const GetEligibleAdsCallback<CreativeNotificationAdList>& callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
-  database::table::CreativeNotificationAds database_table;
+  const database::table::CreativeNotificationAds database_table;
   database_table.GetForSegments(
       {kUntargeted}, [=](const bool success, const SegmentList& /*segments*/,
                          const CreativeNotificationAdList& creative_ads) {

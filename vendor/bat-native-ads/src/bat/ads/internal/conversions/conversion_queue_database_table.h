@@ -38,13 +38,13 @@ class ConversionQueue final : public TableInterface {
   void Update(const ConversionQueueItemInfo& conversion_queue_item,
               ResultCallback callback) const;
 
-  void GetAll(GetConversionQueueCallback callback);
+  void GetAll(GetConversionQueueCallback callback) const;
 
-  void GetUnprocessed(GetConversionQueueCallback callback);
+  void GetUnprocessed(GetConversionQueueCallback callback) const;
 
   void GetForCreativeInstanceId(
       const std::string& creative_instance_id,
-      GetConversionQueueForCreativeInstanceIdCallback callback);
+      GetConversionQueueForCreativeInstanceIdCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);

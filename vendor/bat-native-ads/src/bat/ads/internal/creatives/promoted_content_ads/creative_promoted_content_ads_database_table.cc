@@ -287,7 +287,7 @@ void CreativePromotedContentAds::Delete(ResultCallback callback) const {
 
 void CreativePromotedContentAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    GetCreativePromotedContentAdCallback callback) {
+    GetCreativePromotedContentAdCallback callback) const {
   if (creative_instance_id.empty()) {
     callback(/*success*/ false, creative_instance_id, {});
     return;
@@ -374,7 +374,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
 
 void CreativePromotedContentAds::GetForSegments(
     const SegmentList& segments,
-    GetCreativePromotedContentAdsCallback callback) {
+    GetCreativePromotedContentAdsCallback callback) const {
   if (segments.empty()) {
     callback(/*success*/ true, segments, {});
     return;
@@ -469,7 +469,7 @@ void CreativePromotedContentAds::GetForSegments(
 }
 
 void CreativePromotedContentAds::GetAll(
-    GetCreativePromotedContentAdsCallback callback) {
+    GetCreativePromotedContentAdsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "cpca.creative_instance_id, "

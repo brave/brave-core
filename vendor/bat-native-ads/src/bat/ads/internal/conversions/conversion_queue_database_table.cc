@@ -299,7 +299,7 @@ void ConversionQueue::Update(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
+void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "cq.ad_type, "
@@ -340,7 +340,8 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
       std::move(transaction), base::BindOnce(&OnGetAll, callback));
 }
 
-void ConversionQueue::GetUnprocessed(GetConversionQueueCallback callback) {
+void ConversionQueue::GetUnprocessed(
+    GetConversionQueueCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "cq.ad_type, "
@@ -384,7 +385,7 @@ void ConversionQueue::GetUnprocessed(GetConversionQueueCallback callback) {
 
 void ConversionQueue::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    GetConversionQueueForCreativeInstanceIdCallback callback) {
+    GetConversionQueueForCreativeInstanceIdCallback callback) const {
   if (creative_instance_id.empty()) {
     callback(/*success*/ false, creative_instance_id, {});
     return;

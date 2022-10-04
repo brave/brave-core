@@ -57,13 +57,14 @@ class CreativePromotedContentAds final : public TableInterface {
 
   void Delete(ResultCallback callback) const;
 
-  void GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativePromotedContentAdCallback callback);
+  void GetForCreativeInstanceId(
+      const std::string& creative_instance_id,
+      GetCreativePromotedContentAdCallback callback) const;
 
   void GetForSegments(const SegmentList& segments,
-                      GetCreativePromotedContentAdsCallback callback);
+                      GetCreativePromotedContentAdsCallback callback) const;
 
-  void GetAll(GetCreativePromotedContentAdsCallback callback);
+  void GetAll(GetCreativePromotedContentAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);

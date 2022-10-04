@@ -136,7 +136,7 @@ void TextEmbeddingHtmlEvents::LogEvent(
 }
 
 void TextEmbeddingHtmlEvents::GetAll(
-    GetTextEmbeddingHtmlEventsCallback callback) {
+    GetTextEmbeddingHtmlEventsCallback callback) const {
   const std::string& query = base::StringPrintf(
       "SELECT "
       "tehe.created_at, "

@@ -59,19 +59,20 @@ class CreativeInlineContentAds final : public TableInterface {
 
   void Delete(ResultCallback callback) const;
 
-  void GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeInlineContentAdCallback callback);
+  void GetForCreativeInstanceId(
+      const std::string& creative_instance_id,
+      GetCreativeInlineContentAdCallback callback) const;
 
   void GetForSegmentsAndDimensions(
       const SegmentList& segments,
       const std::string& dimensions,
-      GetCreativeInlineContentAdsCallback callback);
+      GetCreativeInlineContentAdsCallback callback) const;
 
   void GetForDimensions(
       const std::string& dimensions,
-      GetCreativeInlineContentAdsForDimensionsCallback callback);
+      GetCreativeInlineContentAdsForDimensionsCallback callback) const;
 
-  void GetAll(GetCreativeInlineContentAdsCallback callback);
+  void GetAll(GetCreativeInlineContentAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);

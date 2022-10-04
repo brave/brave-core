@@ -75,7 +75,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [0, 0, 0, 0] => value: 0.0
 
   // Act
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   processor::EpsilonGreedyBandit::Process(
       {segment, mojom::NotificationAdEventType::kDismissed});
   processor::EpsilonGreedyBandit::Process(
@@ -106,7 +106,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [1, 0, 1, 0] => value: 0.5
 
   // Act
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   processor::EpsilonGreedyBandit::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
   processor::EpsilonGreedyBandit::Process(
@@ -137,7 +137,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [1, 1, 1, 1] => value: 1.0
 
   // Act
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   processor::EpsilonGreedyBandit::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
   processor::EpsilonGreedyBandit::Process(
@@ -167,7 +167,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   const std::string segment = "foobar";
 
   // Act
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   processor::EpsilonGreedyBandit::Process(
       {segment, mojom::NotificationAdEventType::kTimedOut});
 
@@ -184,7 +184,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   const std::string parent_segment = "travel";
 
   // Act
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   processor::EpsilonGreedyBandit::Process(
       {segment, mojom::NotificationAdEventType::kTimedOut});
 

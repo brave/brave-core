@@ -24,7 +24,7 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
   void LogEvent(const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
                 ResultCallback callback);
 
-  void GetAll(GetTextEmbeddingHtmlEventsCallback callback);
+  void GetAll(GetTextEmbeddingHtmlEventsCallback callback) const;
 
   void PurgeStale(ResultCallback callback) const;
 

@@ -246,7 +246,7 @@ void Conversions::MaybeConvert(
 }
 
 void Conversions::Process() {
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(
       [=](const bool success,
           const ConversionQueueItemList& conversion_queue_items) {
@@ -275,7 +275,7 @@ void Conversions::CheckRedirectChain(
     const ConversionIdPatternMap& conversion_id_patterns) {
   BLOG(1, "Checking URL for conversions");
 
-  database::table::AdEvents ad_events_database_table;
+  const database::table::AdEvents ad_events_database_table;
   ad_events_database_table.GetAll([=](const bool success,
                                       const AdEventList& ad_events) {
     if (!success) {
@@ -283,7 +283,7 @@ void Conversions::CheckRedirectChain(
       return;
     }
 
-    database::table::Conversions conversions_database_table;
+    const database::table::Conversions conversions_database_table;
     conversions_database_table.GetAll([=](const bool success,
                                           const ConversionList& conversions) {
       if (!success) {
@@ -450,7 +450,7 @@ void Conversions::ConvertedQueueItem(
 }
 
 void Conversions::ProcessQueue() {
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(
       [=](const bool success,
           const ConversionQueueItemList& conversion_queue_items) {

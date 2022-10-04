@@ -122,7 +122,7 @@ void Conversions::Save(const ConversionList& conversions,
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void Conversions::GetAll(GetConversionsCallback callback) {
+void Conversions::GetAll(GetConversionsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ac.creative_set_id, "

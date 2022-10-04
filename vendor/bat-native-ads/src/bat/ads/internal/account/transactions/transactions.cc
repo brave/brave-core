@@ -53,7 +53,7 @@ TransactionInfo Add(const std::string& creative_instance_id,
 void GetForDateRange(const base::Time from_time,
                      const base::Time to_time,
                      const GetCallback& callback) {
-  database::table::Transactions database_table;
+  const database::table::Transactions database_table;
   database_table.GetForDateRange(
       from_time, to_time,
       [callback](const bool success, const TransactionList& transactions) {

@@ -57,12 +57,12 @@ class CreativeNewTabPageAds final : public TableInterface {
   void Delete(ResultCallback callback) const;
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeNewTabPageAdCallback callback);
+                                GetCreativeNewTabPageAdCallback callback) const;
 
   void GetForSegments(const SegmentList& segments,
-                      GetCreativeNewTabPageAdsCallback callback);
+                      GetCreativeNewTabPageAdsCallback callback) const;
 
-  void GetAll(GetCreativeNewTabPageAdsCallback callback);
+  void GetAll(GetCreativeNewTabPageAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);

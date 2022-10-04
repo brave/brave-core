@@ -101,7 +101,7 @@ bool GetDoubleValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  std::string value = ad_property->values->get_string_values().front();
+  const std::string& value = ad_property->values->get_string_values().front();
   return base::StringToDouble(value, out_value);
 }
 
@@ -116,8 +116,8 @@ bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  std::string value = ad_property->values->get_string_values().front();
-  GURL url(value);
+  const std::string& value = ad_property->values->get_string_values().front();
+  const GURL url(value);
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
     return false;
   }

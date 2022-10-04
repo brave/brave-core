@@ -166,7 +166,7 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
 
   BLOG(3, "Successfully saved conversions state");
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
       [=](const bool success, const AdEventList& ad_events) {
@@ -198,7 +198,7 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
 void EventHandler::FireClickedEvent(
     const SearchResultAdInfo& ad,
     const FireAdEventHandlerCallback& callback) const {
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
       [=](const bool success, const AdEventList& ad_events) {

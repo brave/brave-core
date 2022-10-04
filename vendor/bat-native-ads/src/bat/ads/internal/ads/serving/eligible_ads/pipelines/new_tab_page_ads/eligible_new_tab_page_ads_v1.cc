@@ -35,7 +35,7 @@ void EligibleAdsV1::GetForUserModel(
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads:");
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
       [=](const bool success, const AdEventList& ad_events) {
@@ -87,7 +87,7 @@ void EligibleAdsV1::GetForChildSegments(
     BLOG(1, "  " << segment);
   }
 
-  database::table::CreativeNewTabPageAds database_table;
+  const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
       segments, [=](const bool success, const SegmentList& /*segments*/,
                     const CreativeNewTabPageAdList& creative_ads) {
@@ -131,7 +131,7 @@ void EligibleAdsV1::GetForParentSegments(
     BLOG(1, "  " << segment);
   }
 
-  database::table::CreativeNewTabPageAds database_table;
+  const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
       segments, [=](const bool success, const SegmentList& /*segments*/,
                     const CreativeNewTabPageAdList& creative_ads) {
@@ -164,7 +164,7 @@ void EligibleAdsV1::GetForUntargeted(
     const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
-  database::table::CreativeNewTabPageAds database_table;
+  const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
       {kUntargeted}, [=](const bool success, const SegmentList& /*segments*/,
                          const CreativeNewTabPageAdList& creative_ads) {

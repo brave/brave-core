@@ -85,7 +85,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
     return;
   }
 
-  database::table::CreativeNewTabPageAds database_table;
+  const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [=](const bool success, const std::string& creative_instance_id,
@@ -114,7 +114,7 @@ void EventHandler::FireEvent(const NewTabPageAdInfo& ad,
                              const mojom::NewTabPageAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
       [=](const bool success, const AdEventList& ad_events) {

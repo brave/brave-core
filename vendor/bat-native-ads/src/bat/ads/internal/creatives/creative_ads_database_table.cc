@@ -198,7 +198,7 @@ void CreativeAds::Delete(ResultCallback callback) const {
 
 void CreativeAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    GetCreativeAdCallback callback) {
+    GetCreativeAdCallback callback) const {
   const CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {

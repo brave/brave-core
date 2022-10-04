@@ -32,7 +32,7 @@ class Deposits final : public TableInterface {
                       const DepositInfo& deposit);
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetDepositsCallback callback);
+                                GetDepositsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 

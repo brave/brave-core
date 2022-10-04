@@ -38,7 +38,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
   // Assert
   const std::vector<std::string> segments = {"technology & computing"};
 
-  database::table::CreativeNotificationAds creative_ads;
+  const database::table::CreativeNotificationAds creative_ads;
   creative_ads.GetForSegments(
       segments, [](const bool success, const SegmentList& /*segments*/,
                    const CreativeNotificationAdList& creative_ads) {

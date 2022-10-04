@@ -303,7 +303,7 @@ void CreativeNewTabPageAds::Delete(ResultCallback callback) const {
 
 void CreativeNewTabPageAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    GetCreativeNewTabPageAdCallback callback) {
+    GetCreativeNewTabPageAdCallback callback) const {
   if (creative_instance_id.empty()) {
     callback(/*success*/ false, creative_instance_id, {});
     return;
@@ -404,7 +404,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
 
 void CreativeNewTabPageAds::GetForSegments(
     const SegmentList& segments,
-    GetCreativeNewTabPageAdsCallback callback) {
+    GetCreativeNewTabPageAdsCallback callback) const {
   if (segments.empty()) {
     callback(/*success*/ true, segments, {});
     return;
@@ -512,7 +512,8 @@ void CreativeNewTabPageAds::GetForSegments(
       base::BindOnce(&OnGetForSegments, segments, callback));
 }
 
-void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
+void CreativeNewTabPageAds::GetAll(
+    GetCreativeNewTabPageAdsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "cntpa.creative_instance_id, "

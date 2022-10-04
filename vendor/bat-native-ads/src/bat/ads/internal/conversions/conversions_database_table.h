@@ -23,7 +23,7 @@ class Conversions final : public TableInterface {
  public:
   void Save(const ConversionList& conversions, ResultCallback callback);
 
-  void GetAll(GetConversionsCallback callback);
+  void GetAll(GetConversionsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 

@@ -52,9 +52,9 @@ class CreativeNotificationAds final : public TableInterface {
   void Delete(ResultCallback callback) const;
 
   void GetForSegments(const SegmentList& segments,
-                      GetCreativeNotificationAdsCallback callback);
+                      GetCreativeNotificationAdsCallback callback) const;
 
-  void GetAll(GetCreativeNotificationAdsCallback callback);
+  void GetAll(GetCreativeNotificationAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);

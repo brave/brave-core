@@ -37,7 +37,7 @@ void EligibleAdsV1::GetForUserModel(
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads:");
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
       [=](const bool success, const AdEventList& ad_events) {
@@ -94,7 +94,7 @@ void EligibleAdsV1::GetForChildSegments(
     BLOG(1, "  " << segment);
   }
 
-  database::table::CreativeInlineContentAds database_table;
+  const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
       [=](const bool success, const SegmentList& /*segments*/,
@@ -140,7 +140,7 @@ void EligibleAdsV1::GetForParentSegments(
     BLOG(1, "  " << segment);
   }
 
-  database::table::CreativeInlineContentAds database_table;
+  const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
       [=](const bool success, const SegmentList& /*segments*/,
@@ -175,7 +175,7 @@ void EligibleAdsV1::GetForUntargeted(
     const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
-  database::table::CreativeInlineContentAds database_table;
+  const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       {kUntargeted}, dimensions,
       [=](const bool success, const SegmentList& /*segments*/,

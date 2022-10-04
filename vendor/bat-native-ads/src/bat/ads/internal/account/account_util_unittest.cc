@@ -68,7 +68,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   ResetRewards([](const bool success) {
     ASSERT_TRUE(success);
 
-    database::table::Transactions database_table;
+    const database::table::Transactions database_table;
     database_table.GetAll(
         [](const bool success, const TransactionList& transactions) {
           ASSERT_TRUE(success);
@@ -94,7 +94,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
   ResetRewards([](const bool success) {
     ASSERT_TRUE(success);
 
-    database::table::Transactions database_table;
+    const database::table::Transactions database_table;
     database_table.GetAll(
         [](const bool success, const TransactionList& transactions) {
           ASSERT_TRUE(success);

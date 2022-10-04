@@ -84,7 +84,7 @@ void EventHandler::FireEvent(
     return;
   }
 
-  database::table::CreativePromotedContentAds database_table;
+  const database::table::CreativePromotedContentAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [=](const bool success, const std::string& creative_instance_id,
@@ -114,7 +114,7 @@ void EventHandler::FireEvent(
     const mojom::PromotedContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kPromotedContentAd,
       [=](const bool success, const AdEventList& ad_events) {

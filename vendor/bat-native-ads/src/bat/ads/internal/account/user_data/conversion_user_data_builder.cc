@@ -35,7 +35,7 @@ void BuildConversion(const std::string& creative_instance_id,
                      const BuildConversionCallback& callback) {
   DCHECK(!creative_instance_id.empty());
 
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [callback](const bool success,

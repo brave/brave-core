@@ -62,7 +62,7 @@ TEST_F(AdsStatusHeaderThrottleTest, AdsEnabledForAllowedHost) {
 }
 
 TEST_F(AdsStatusHeaderThrottleTest, AdsDisabledForAllowedHost) {
-  network::ResourceRequest request = BuildRequest();
+  const network::ResourceRequest request = BuildRequest();
   MockAdsService ads_service;
   EXPECT_CALL(ads_service, IsEnabled()).WillOnce(Return(false));
   auto throttle =
@@ -71,7 +71,7 @@ TEST_F(AdsStatusHeaderThrottleTest, AdsDisabledForAllowedHost) {
 }
 
 TEST_F(AdsStatusHeaderThrottleTest, IncognitoModeForAllowedHost) {
-  network::ResourceRequest request = BuildRequest();
+  const network::ResourceRequest request = BuildRequest();
   auto throttle =
       AdsStatusHeaderThrottle::MaybeCreateThrottle(nullptr, request);
   EXPECT_FALSE(throttle);
