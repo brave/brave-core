@@ -261,7 +261,9 @@ class NewTabPage extends React.Component<Props, State> {
 
     if (openSettings) {
       let activeSettingsTab: SettingsTabType | null = null
-      const activeSettingsTabRaw = this.props.newTabData.forceSettingsTab || null
+      const activeSettingsTabRaw = typeof openSettings === 'string'
+        ? openSettings
+        : this.props.newTabData.forceSettingsTab || null
       if (activeSettingsTabRaw) {
         const allSettingsTabTypes = [...Object.keys(SettingsTabType)]
         if (allSettingsTabTypes.includes(activeSettingsTabRaw)) {

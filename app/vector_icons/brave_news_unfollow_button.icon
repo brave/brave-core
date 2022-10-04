@@ -1,0 +1,28 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+CANVAS_DIMENSIONS, 14,
+MOVE_TO, 11.76f, 7.73f,
+LINE_TO, 7.35f, 12.11f,
+CUBIC_TO, 7.16f, 12.3f, 6.85f, 12.3f, 6.66f, 12.11f,
+LINE_TO, 2.21f, 7.69f,
+CUBIC_TO, 1.87f, 7.36f, 1.6f, 6.96f, 1.42f, 6.52f,
+CUBIC_TO, 1.24f, 6.08f, 1.16f, 5.6f, 1.17f, 5.12f,
+CUBIC_TO, 1.18f, 4.64f, 1.29f, 4.17f, 1.49f, 3.74f,
+CUBIC_TO, 1.7f, 3.31f, 1.99f, 2.92f, 2.35f, 2.61f,
+CUBIC_TO, 2.71f, 2.29f, 3.13f, 2.06f, 3.58f, 1.91f,
+CUBIC_TO, 4.04f, 1.77f, 4.52f, 1.72f, 4.99f, 1.77f,
+CUBIC_TO, 5.46f, 1.82f, 5.92f, 1.97f, 6.34f, 2.21f,
+CUBIC_TO, 6.58f, 2.34f, 6.81f, 2.51f, 7.01f, 2.7f,
+CUBIC_TO, 7.21f, 2.51f, 7.43f, 2.35f, 7.67f, 2.21f,
+CUBIC_TO, 8.09f, 1.98f, 8.55f, 1.83f, 9.02f, 1.78f,
+CUBIC_TO, 9.49f, 1.73f, 9.97f, 1.78f, 10.42f, 1.93f,
+CUBIC_TO, 10.88f, 2.07f, 11.3f, 2.31f, 11.65f, 2.62f,
+CUBIC_TO, 12.01f, 2.94f, 12.3f, 3.32f, 12.5f, 3.75f,
+CUBIC_TO, 12.71f, 4.18f, 12.82f, 4.65f, 12.83f, 5.13f,
+CUBIC_TO, 12.85f, 5.6f, 12.76f, 6.08f, 12.58f, 6.52f,
+CUBIC_TO, 12.41f, 6.96f, 12.14f, 7.36f, 11.8f, 7.7f,
+CUBIC_TO, 11.79f, 7.71f, 11.78f, 7.72f, 11.76f, 7.73f,
+CLOSE

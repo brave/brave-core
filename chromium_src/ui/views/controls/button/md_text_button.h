@@ -6,6 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/gfx/vector_icon_types.h"
+
 // Rename MdTextButton to MdTextButtonBase
 #define MdTextButton MdTextButtonBase
 
@@ -14,9 +17,13 @@
 // overriding it in our version of the MdTextButton class because there are some
 // subclasses that define their own UpdateColors() method (OmniboxChipButton)
 // now, which would not work with the virtual + override approach.
-#define UpdateColors \
-  UpdateColors();    \
-  void UpdateColorsForBrave
+#define UpdateColors                       \
+  UpdateColors_Unused();                   \
+                                           \
+ protected:                                \
+  virtual void UpdateColorsForBrave() = 0; \
+  virtual void UpdateIconForBrave() = 0;   \
+  void UpdateColors
 
 #include "src/ui/views/controls/button/md_text_button.h"
 
@@ -32,6 +39,8 @@ namespace views {
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  public:
+  enum Kind { kOld, kPrimary, kSecondary, kTertiary };
+
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),
                         int button_context = style::CONTEXT_BUTTON_MD);
@@ -41,9 +50,30 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   SkPath GetHighlightPath() const;
 
+  Kind GetKind() const;
+  void SetKind(Kind kind);
+
+  void SetIcon(const gfx::VectorIcon* icon);
+
+  bool GetLoading() const;
+  void SetLoading(bool loading);
+
+  // Until we decide to update the whole UI to use the new Leo colors, we
+  // need to keep this logic around. Currently the new colors are opt-in only.
+  void UpdateOldColorsForBrave();
+
+  // MdTextButtonBase:
+  void UpdateColorsForBrave() override;
+  void UpdateIconForBrave() override;
+
  protected:
   // views::Views
   void OnPaintBackground(gfx::Canvas* canvas) override;
+
+ private:
+  Kind kind_ = kOld;
+  bool loading_ = false;
+  raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };
 
 }  // namespace views

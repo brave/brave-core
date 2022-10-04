@@ -303,13 +303,19 @@
         Manage Subscriptions
       </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE" desc="The text on the button for subscribing to a feed">
-        Subscribe
+        Follow
       </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE" desc="The text on the button for unsubscribing from a feed">
-        Unsubscribe
+        Unfollow
       </message>
-      <message name="IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER" desc="The text on the button hidding the Brave News bubble, and not showing it again">
-        Hide and don't show this again
+      <message name="IDS_BRAVE_NEWS_BUBBLE_TITLE" desc="The title for the Brave News bubble">
+        Follow this source in 1-click.
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_SUBTITLE" desc="The subtitle for the Brave News bubble">
+        Get all the latest stories in Brave News.
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS" desc="The text on the button for opening the Brave News configuration page">
+        Manage Feeds
       </message>
       <message name="IDS_BRAVE_TODAY_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
         No thanks

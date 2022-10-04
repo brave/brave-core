@@ -11,6 +11,7 @@
 #include "base/callback_forward.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,11 +25,13 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/theme_provider.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/text_constants.h"
+#include "ui/gfx/vector_icon_types.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/animation/ink_drop_host_view.h"
 #include "ui/views/background.h"
@@ -40,8 +43,9 @@
 #include "ui/views/widget/widget.h"
 
 namespace {
-constexpr SkColor selectedColor = SkColorSetRGB(30, 33, 82);
-}
+constexpr SkColor kSubscribedLightColor = SkColorSetRGB(76, 84, 210);
+constexpr SkColor kSubscribedDarkColor = SkColorSetRGB(115, 122, 222);
+}  // namespace
 
 BraveNewsActionView::BraveNewsActionView(Profile* profile,
                                          TabStripModel* tab_strip)
@@ -117,18 +121,10 @@ void BraveNewsActionView::Update() {
     has_feeds = !tab_helper->GetAvailableFeeds().empty();
   }
 
-  auto background =
-      subscribed ? views::CreateRoundedRectBackground(
-                       selectedColor,
-                       ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-                           views::Emphasis::kMaximum, GetPreferredSize()))
-                 : nullptr;
-  auto image =
-      gfx::CreateVectorIcon(kBraveTodaySubscribeIcon, 16,
-                            color_utils::DeriveDefaultIconColor(
-                                subscribed ? SK_ColorWHITE : SK_ColorBLACK));
+  auto image = gfx::CreateVectorIcon(
+      subscribed ? kBraveTodaySubscribedIcon : kBraveTodaySubscribeIcon, 16,
+      color_utils::DeriveDefaultIconColor(GetIconColor(subscribed)));
   SetImage(ButtonState::STATE_NORMAL, image);
-  SetBackground(std::move(background));
   SetVisible(has_feeds);
 }
 
@@ -177,6 +173,11 @@ void BraveNewsActionView::OnAvailableFeedsChanged(
   Update();
 }
 
+void BraveNewsActionView::OnThemeChanged() {
+  views::LabelButton::OnThemeChanged();
+  Update();
+}
+
 void BraveNewsActionView::ButtonPressed() {
   // If the bubble is already open, do nothing.
   if (bubble_widget_) {
@@ -185,4 +186,14 @@ void BraveNewsActionView::ButtonPressed() {
 
   bubble_widget_ =
       BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());
+}
+
+SkColor BraveNewsActionView::GetIconColor(bool subscribed) const {
+  if (!subscribed)
+    return GetCurrentTextColor();
+
+  return dark_mode::GetActiveBraveDarkModeType() ==
+                 dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK
+             ? kSubscribedDarkColor
+             : kSubscribedLightColor;
 }
