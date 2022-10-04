@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_TIMING_TIME_CLAMPER_H_
-
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_TIMING_TIME_CLAMPER_H_
 
 #include "base/time/time.h"
@@ -19,7 +18,6 @@
   static int FineResolutionMicroseconds();                           \
   static double MaybeRoundMilliseconds(double value);                \
   static base::TimeDelta MaybeRoundTimeDelta(base::TimeDelta value); \
-  static bool ShouldRound();                                         \
   int dummy
 
 #include "src/third_party/blink/renderer/core/timing/time_clamper.h"

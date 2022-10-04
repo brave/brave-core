@@ -54,15 +54,15 @@ const base::Feature kPartitionBlinkMemoryCache{
 const base::Feature kRestrictWebSocketsPool{"RestrictWebSocketsPool",
                                             base::FEATURE_ENABLED_BY_DEFAULT};
 
-// Disable protection against fingerprinting on screen dimensions by default.
+// Enables protection against fingerprinting on screen dimensions.
 const base::Feature kBraveBlockScreenFingerprinting{
     "BraveBlockScreenFingerprinting", base::FEATURE_DISABLED_BY_DEFAULT};
 
-// Enable HTTPS-Only Mode in Private Windows with Tor by default.
+// Enables HTTPS-Only Mode in Private Windows with Tor by default.
 const base::Feature kBraveTorWindowsHttpsOnly{"BraveTorWindowsHttpsOnly",
                                               base::FEATURE_ENABLED_BY_DEFAULT};
 
-// Disable protection against fingerprinting via high-resolution time stamps.
+// Enables protection against fingerprinting via high-resolution time stamps.
 const base::Feature kBraveRoundTimeStamps{"BraveRoundTimeStamps",
                                           base::FEATURE_ENABLED_BY_DEFAULT};
 }  // namespace features

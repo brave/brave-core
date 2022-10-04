@@ -5,12 +5,16 @@
 
 #include "third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.h"
 
-#define FloorToMutiple(X) \
-  FloorToMultiple(TimeClamper::CoarseResolutionMicroseconds())
+#define kCoarseResolution kCoarseResolution [[maybe_unused]]
+
+#define FloorToMultiple(X) \
+  FloorToMultiple(         \
+      base::Microseconds(TimeClamper::CoarseResolutionMicroseconds()))
 
 #define static_assert(...) static_assert(true)
 
 #include "src/third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.cc"
 
+#undef kCoarseResolution
 #undef FloorToMultiple
 #undef static_assert

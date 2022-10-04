@@ -21,14 +21,13 @@ namespace blink {
 
 namespace {
 
-constexpr static double kBraveTimerResolutionMicroseconds = 1000;
+constexpr int kBraveTimerResolutionMicroseconds = 1000;
+
+bool ShouldRound() {
+  return base::FeatureList::IsEnabled(features::kBraveRoundTimeStamps);
+}
 
 }  // namespace
-
-// static
-bool TimeClamper::ShouldRound() {
-  return base::FeatureList::IsEnabled(blink::features::kBraveRoundTimeStamps);
-}
 
 // static
 double TimeClamper::MaybeRoundMilliseconds(double value) {
@@ -37,21 +36,21 @@ double TimeClamper::MaybeRoundMilliseconds(double value) {
 
 // static
 base::TimeDelta TimeClamper::MaybeRoundTimeDelta(base::TimeDelta value) {
-  return ShouldRound() ? value.RoundToMultiple(base::Microseconds(1000))
+  return ShouldRound() ? value.RoundToMultiple(base::Microseconds(
+                             kBraveTimerResolutionMicroseconds))
                        : value;
 }
 
 // static
 int TimeClamper::FineResolutionMicroseconds() {
-  return TimeClamper::ShouldRound() ? kBraveTimerResolutionMicroseconds
-                                    : kFineResolutionMicroseconds_ChromiumImpl;
+  return ShouldRound() ? kBraveTimerResolutionMicroseconds
+                       : kFineResolutionMicroseconds_ChromiumImpl;
 }
 
 // static
 int TimeClamper::CoarseResolutionMicroseconds() {
-  return TimeClamper::ShouldRound()
-             ? kBraveTimerResolutionMicroseconds
-             : kCoarseResolutionMicroseconds_ChromiumImpl;
+  return ShouldRound() ? kBraveTimerResolutionMicroseconds
+                       : kCoarseResolutionMicroseconds_ChromiumImpl;
 }
 
 }  // namespace blink
