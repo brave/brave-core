@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/locale/subdivision_code_util.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
@@ -140,10 +141,21 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
   }
 
   const std::string country_code = brave_l10n::GetCountryCode(locale);
+  const std::string& subdivision_code = GetSubdivisionCode();
+
+  std::string subdivision_country_code;
+  if (!subdivision_code.empty()) {
+    subdivision_country_code = ::ads::locale::GetCountryCode(subdivision_code);
+  }
+  if (country_code != subdivision_country_code) {
+    MaybeResetSubdivisionCodeToAutoDetect();
+    AdsClientHelper::GetInstance()->SetBooleanPref(
+        prefs::kShouldAllowSubdivisionTargeting, false);
+    return;
+  }
+
   const SupportedSubdivisionCodesSet& subdivision_codes =
       kSupportedSubdivisionCodes.at(country_code);
-
-  const std::string& subdivision_code = GetSubdivisionCode();
   if (subdivision_codes.find(subdivision_code) == subdivision_codes.cend()) {
     BLOG(1, "Unknown subdivision code " << subdivision_code << " for " << locale
                                         << " locale ");
@@ -152,6 +164,16 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
 
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kShouldAllowSubdivisionTargeting, true);
+}
+
+void SubdivisionTargeting::MaybeResetSubdivisionCodeToAutoDetect() {
+  if (ShouldAutoDetect()) {
+    return;
+  }
+
+  subdivision_code_ = kAuto;
+  AdsClientHelper::GetInstance()->SetStringPref(
+      prefs::kSubdivisionTargetingCode, *subdivision_code_);
 }
 
 void SubdivisionTargeting::MaybeResetSubdivisionCodeToDisabled() {
