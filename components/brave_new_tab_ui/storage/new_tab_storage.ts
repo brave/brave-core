@@ -145,7 +145,8 @@ export const defaultState: NewTab.State = {
   },
   ftxState: {
     optedIntoMarkets: false
-  }
+  },
+  customImageBackgrounds: []
 }
 
 if (chrome.extension.inIncognitoContext) {

@@ -15,6 +15,7 @@ declare namespace NewTab {
   export type ImageBackground = {
     type: 'image'
     wallpaperImageUrl: string
+    random?: boolean
   }
 
   export type BraveBackground = Omit<ImageBackground, 'type'> & {
@@ -157,7 +158,6 @@ declare namespace NewTab {
     torInitProgress: string,
     isTor: boolean
     isQwant: boolean
-    backgroundWallpaper?: BackgroundWallpaper
     gridLayoutSize?: 'small'
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
@@ -167,6 +167,8 @@ declare namespace NewTab {
     stats: Stats,
     braveTalkPromptAllowed: boolean
     brandedWallpaper?: BrandedWallpaper
+    backgroundWallpaper?: BackgroundWallpaper
+    customImageBackgrounds: ImageBackground[]
   }
 
   export interface RewardsWidgetState {

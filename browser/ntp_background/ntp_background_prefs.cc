@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/constants/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -133,6 +134,13 @@ absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
 void NTPBackgroundPrefs::AddCustomImageToList(const std::string& file_name) {
   ListPrefUpdate update(service_, NTPBackgroundPrefs::kCustomImageListPrefName);
   update->GetList().Append(file_name);
+}
+
+void NTPBackgroundPrefs::RemoveCustomImageFromList(
+    const std::string& file_name) {
+  ListPrefUpdate update(service_, NTPBackgroundPrefs::kCustomImageListPrefName);
+  auto& list = update->GetList();
+  list.erase(base::ranges::remove(update->GetList(), file_name), list.end());
 }
 
 std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {

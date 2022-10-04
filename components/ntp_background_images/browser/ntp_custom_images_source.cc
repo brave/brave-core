@@ -48,7 +48,7 @@ void NTPCustomImagesSource::StartDataRequest(
     const content::WebContents::Getter& wc_getter,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  GetImageFile(service_->GetImageFilePath(), std::move(callback));
+  GetImageFile(service_->GetImageFilePath(url), std::move(callback));
 }
 
 std::string NTPCustomImagesSource::GetMimeType(const GURL& url) {

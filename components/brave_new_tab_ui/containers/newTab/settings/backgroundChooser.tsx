@@ -21,12 +21,14 @@ interface Props {
   backgrounds: NewTab.BackgroundWallpaper[]
   currentValue?: string
   usingRandomColor: boolean
+  renderExtraButton?: () => JSX.Element
   onSelectValue: (background: string, useRandomColor: boolean) => void
   onBack: () => void
   onToggleRandomColor: (on: boolean) => void
+  onRemoveValue?: (background: string) => void
 }
 
-function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, currentValue, usingRandomColor, onToggleRandomColor }: Props) {
+function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, currentValue, usingRandomColor, onToggleRandomColor, renderExtraButton, onRemoveValue }: Props) {
   const containerEl = React.useRef<HTMLDivElement>(null)
   React.useEffect(() => {
     containerEl.current?.scrollIntoView(true)
@@ -45,8 +47,12 @@ function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, current
         <StyledCustomBackgroundSettings>
           {backgrounds.map((background) => {
             const value = background.type === 'color' ? background.wallpaperColor : background.wallpaperImageUrl
-            return <BackgroundOption key={value} background={background} onSelectValue={color => onSelectValue(value, /* useRandomColor= */false)} selected={!usingRandomColor && currentValue === value} />
+            return <BackgroundOption key={value} background={background}
+                      selected={!usingRandomColor && currentValue === value}
+                      onSelectValue={() => onSelectValue(value, /* useRandomColor= */false)}
+                      onRemoveValue={onRemoveValue ? () => { onRemoveValue(value) } : undefined} />
           })}
+          { renderExtraButton?.() }
         </StyledCustomBackgroundSettings>
       </div>
   )

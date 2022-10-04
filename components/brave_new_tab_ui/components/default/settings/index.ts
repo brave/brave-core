@@ -120,7 +120,7 @@ export const SettingsSidebarSVGContent = styled('div')<SettingsSidebarSVGContent
   /* Active version (hidden until item is active).
     This is a separate element so that we can:
     1. fade it in (no transition for background gradient) */
-  &:after {
+  &::after {
     position: absolute;
     display: block;
     content: '';
@@ -169,7 +169,7 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
      1. fade it in (no transition for background gradient)
      2. still show ellipsis for overflowing text (which doesn't show for
      background-clip: text) */
-  &:after {
+  &::after {
     content: attr(data-text);
     position: absolute;
     opacity: var(--active-opacity, 0);
@@ -600,6 +600,7 @@ export const StyledCustomBackgroundOption = styled('button')<{}>`
 
 interface SelectionProps {
   selected: boolean
+  removable?: boolean
 }
 
 interface ColoredBackgroundProps {
@@ -620,15 +621,18 @@ export const StyledSelectionBorder = styled('div')<SelectionProps>`
         : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
     padding: 2px;
     border-radius: 10px;
-    &:after {
+    &::after {
       content: url(${CheckedCircle});
       position:absolute;
       top: 10px;
       right: 10px;
     }
   `}
-`
 
+  ${p => p.removable && css`
+    &:hover::after { display: none; }
+  `}
+`
 export const StyledUploadIconContainer = styled('div')<SelectionProps>`
   display: flex;
   flex-direction: column;
@@ -657,7 +661,7 @@ export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & 
   ${p => p.selected
     ? css`border-radius: 8px;`
     : css`border-radius: 10px;`}
-  background-image: url(${p => p.image});
+  background-image: url("${p => p.image}");
 `
 
 export const StyledCustomBackgroundOptionColor = styled('div')<SelectionProps & ColoredBackgroundProps>`

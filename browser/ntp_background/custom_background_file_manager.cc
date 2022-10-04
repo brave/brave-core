@@ -103,6 +103,14 @@ void CustomBackgroundFileManager::MoveImage(
   MakeSureDirExists(std::move(on_check_dir));
 }
 
+void CustomBackgroundFileManager::RemoveImage(
+    const base::FilePath& file_path,
+    base::OnceCallback<void(bool /*result*/)> callback) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(base::DeleteFile, file_path), std::move(callback));
+}
+
 base::FilePath CustomBackgroundFileManager::GetCustomBackgroundDirectory()
     const {
   return profile_->GetPath().AppendASCII(
@@ -191,7 +199,7 @@ void CustomBackgroundFileManager::SaveImageAsPNG(
         base::FilePath modified_path = target_path;
         for (int i = 1; base::PathExists(modified_path); ++i) {
           modified_path = target_path.InsertBeforeExtensionASCII(
-              base::StringPrintf("(%d)", i));
+              base::StringPrintf("-%d", i));
         }
 
         if (!base::WriteFile(

@@ -75,7 +75,9 @@ interface Props {
   saveShowFTX: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
-  useCustomBackgroundImage: () => void
+  chooseNewCustomBackgroundImage: () => void
+  setCustomImageBackground: (selectedBackground: string) => void
+  removeCustomImageBackground: (background: string) => void
   setBraveBackground: (selectedBackground: string) => void
   setColorBackground: (color: string, useRandomColor: boolean) => void
 }
@@ -1307,7 +1309,9 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
-          useCustomBackgroundImage={this.props.useCustomBackgroundImage}
+          chooseNewCustomImageBackground={this.props.chooseNewCustomBackgroundImage}
+          setCustomImageBackground={this.props.setCustomImageBackground}
+          removeCustomImageBackground={this.props.removeCustomImageBackground}
           setBraveBackground={this.props.setBraveBackground}
           setColorBackground={this.props.setColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}

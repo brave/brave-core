@@ -12,7 +12,7 @@ import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
 import { NewTabAdsData } from '../api/newTabAdsData'
 import { InitialData } from '../api/initialData'
-import { Background } from '../api/background'
+import { Background, CustomBackground } from '../api/background'
 
 export const statsUpdated = (stats: Stats) =>
   action(types.NEW_TAB_STATS_UPDATED, {
@@ -53,6 +53,9 @@ export const customizeClicked = () => action(types.CUSTOMIZE_CLICKED, {})
 
 export const customBackgroundUpdated = (background: Background) =>
   action(types.BACKGROUND_UPDATED, { background })
+
+export const customImageBackgroundsUpdated = (backgrounds: CustomBackground[]) =>
+  action(types.CUSTOM_IMAGE_BACKGROUNDS_UPDATED, backgrounds)
 
 export const searchPromotionDisabled = () =>
   action(types.SEARCH_PROMOTION_DISABLED, {})

@@ -321,7 +321,7 @@ function getPageBackground (p: HasImageProps) {
               rgba(0, 0, 0, 0) 35%,
               rgba(0, 0, 0, 0) 80%,
               rgba(0, 0, 0, 0.6) 100%
-            ), url(${p.imageSrc});
+            ), url("${p.imageSrc}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
