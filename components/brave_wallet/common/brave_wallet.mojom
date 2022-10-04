@@ -753,6 +753,11 @@ struct TxData1559 {
   GasEstimation1559? gas_estimation;
 };
 
+const string kSolanaSystemProgramId = "11111111111111111111111111111111";
+const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
+
 const string kMainnetChainId = "0x1";
 const string kRinkebyChainId = "0x4";
 const string kRopstenChainId = "0x3";
@@ -1323,10 +1328,75 @@ struct SolanaAccountMeta {
   bool is_writable;
 };
 
+// https://docs.rs/solana-program/latest/solana_program/system_instruction/enum.SystemInstruction.html
+enum SolanaSystemInstruction {
+  kCreateAccount = 0,
+  kAssign = 1,
+  kTransfer = 2,
+  kCreateAccountWithSeed = 3,
+  kAdvanceNonceAccount = 4,
+  kWithdrawNonceAccount = 5,
+  kInitializeNonceAccount = 6,
+  kAuthorizeNonceAccount = 7,
+  kAllocate = 8,
+  kAllocateWithSeed = 9,
+  kAssignWithSeed = 10,
+  kTransferWithSeed = 11,
+  kUpgradeNonceAccount = 12,
+};
+
+// https://docs.rs/spl-token/latest/spl_token/instruction/enum.TokenInstruction.html
+enum SolanaTokenInstruction {
+  kInitializeMint = 0,
+  kInitializeAccount = 1,
+  kInitializeMultisig = 2,
+  kTransfer = 3,
+  kApprove = 4,
+  kRevoke = 5,
+  kSetAuthority = 6,
+  kMintTo = 7,
+  kBurn = 8,
+  kCloseAccount = 9,
+  kFreezeAccount = 10,
+  kThawAccount = 11,
+  kTransferChecked = 12,
+  kApproveChecked = 13,
+  kMintToChecked = 14,
+  kBurnChecked = 15,
+  kInitializeAccount2 = 16,
+  kSyncNative = 17,
+  kInitializeAccount3 = 18,
+  kInitializeMultisig2 = 19,
+  kInitializeMint2 = 20,
+};
+
+struct SolanaInstructionParam {
+  string name;
+  string localized_name;  // For UI display.
+  string value;
+};
+
+struct SolanaInstructionAccountParam {
+  string name;
+  string localized_name;  // For UI display.
+};
+
+struct DecodedSolanaInstructionData {
+  uint32 instruction_type;  // Should be converted to either
+                            // SolanaSystmeInstruction or SolanaTokenInstruction
+                            // based on program ID.
+
+  // Parameter names of the account meta array.
+  array<SolanaInstructionAccountParam> account_params;
+  // Parameters encoded in the instruction data array.
+  array<SolanaInstructionParam> params;
+};
+
 struct SolanaInstruction {
   string program_id;
   array<SolanaAccountMeta> account_metas;
   array<uint8> data;
+  DecodedSolanaInstructionData? decoded_data;
 };
 
 struct SolanaTxData {

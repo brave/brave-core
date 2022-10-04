@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -67,7 +68,7 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
 
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},

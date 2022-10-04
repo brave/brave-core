@@ -12,7 +12,9 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
@@ -39,15 +41,32 @@ absl::optional<uint8_t> GetAccountIndex(
 SolanaInstruction::SolanaInstruction(const std::string& program_id,
                                      std::vector<SolanaAccountMeta>&& accounts,
                                      const std::vector<uint8_t>& data)
-    : program_id_(program_id), accounts_(std::move(accounts)), data_(data) {}
+    : program_id_(program_id),
+      accounts_(std::move(accounts)),
+      data_(data),
+      decoded_data_(solana_ins_data_decoder::Decode(data, program_id)) {}
+
+SolanaInstruction::SolanaInstruction(
+    const std::string& program_id,
+    std::vector<SolanaAccountMeta>&& accounts,
+    const std::vector<uint8_t>& data,
+    absl::optional<SolanaInstructionDecodedData> decoded_data)
+    : program_id_(program_id),
+      accounts_(std::move(accounts)),
+      data_(data),
+      decoded_data_(std::move(decoded_data)) {}
 
 SolanaInstruction::SolanaInstruction(const SolanaInstruction&) = default;
+SolanaInstruction& SolanaInstruction::operator=(const SolanaInstruction&) =
+    default;
+SolanaInstruction::SolanaInstruction(SolanaInstruction&&) = default;
+SolanaInstruction& SolanaInstruction::operator=(SolanaInstruction&&) = default;
 
 SolanaInstruction::~SolanaInstruction() = default;
 
 bool SolanaInstruction::operator==(const SolanaInstruction& ins) const {
   return program_id_ == ins.program_id_ && accounts_ == ins.accounts_ &&
-         data_ == ins.data_;
+         data_ == ins.data_ && decoded_data_ == ins.decoded_data_;
 }
 
 // An instruction contains a program id index, followed by a compact-array of
@@ -136,8 +155,13 @@ mojom::SolanaInstructionPtr SolanaInstruction::ToMojomSolanaInstruction()
   std::vector<mojom::SolanaAccountMetaPtr> mojom_account_metas;
   for (const auto& account : accounts_)
     mojom_account_metas.push_back(account.ToMojomSolanaAccountMeta());
+  mojom::DecodedSolanaInstructionDataPtr mojom_decoded_data = nullptr;
+  if (decoded_data_)
+    mojom_decoded_data = decoded_data_->ToMojom();
+
   return mojom::SolanaInstruction::New(program_id_,
-                                       std::move(mojom_account_metas), data_);
+                                       std::move(mojom_account_metas), data_,
+                                       std::move(mojom_decoded_data));
 }
 
 base::Value::Dict SolanaInstruction::ToValue() const {
@@ -149,6 +173,12 @@ base::Value::Dict SolanaInstruction::ToValue() const {
     account_list.Append(account.ToValue());
   dict.Set("accounts", std::move(account_list));
   dict.Set("data", base::Base64Encode(data_));
+
+  if (decoded_data_) {
+    auto decoded_data_dict = decoded_data_->ToValue();
+    if (decoded_data_dict)
+      dict.Set("decoded_data", std::move(*decoded_data_dict));
+  }
 
   return dict;
 }
@@ -182,7 +212,14 @@ absl::optional<SolanaInstruction> SolanaInstruction::FromValue(
     return absl::nullopt;
   std::vector<uint8_t> data(data_decoded.begin(), data_decoded.end());
 
-  return SolanaInstruction(*program_id, std::move(accounts), data);
+  absl::optional<SolanaInstructionDecodedData> decoded_data = absl::nullopt;
+  const base::Value::Dict* decoded_data_dict = value.FindDict("decoded_data");
+  if (decoded_data_dict) {
+    decoded_data = SolanaInstructionDecodedData::FromValue(*decoded_data_dict);
+  }
+
+  return SolanaInstruction(*program_id, std::move(accounts), data,
+                           std::move(decoded_data));
 }
 
 // static
@@ -196,9 +233,11 @@ void SolanaInstruction::FromMojomSolanaInstructions(
     std::vector<SolanaAccountMeta> account_metas;
     SolanaAccountMeta::FromMojomSolanaAccountMetas(
         mojom_instruction->account_metas, &account_metas);
-    instructions->push_back(SolanaInstruction(mojom_instruction->program_id,
-                                              std::move(account_metas),
-                                              mojom_instruction->data));
+    instructions->emplace_back(SolanaInstruction(
+        mojom_instruction->program_id, std::move(account_metas),
+        mojom_instruction->data,
+        SolanaInstructionDecodedData::FromMojom(
+            mojom_instruction->program_id, mojom_instruction->decoded_data)));
   }
 }
 

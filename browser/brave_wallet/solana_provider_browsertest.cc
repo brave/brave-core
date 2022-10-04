@@ -57,7 +57,7 @@ constexpr char kSecondAccount[] =
 // First byte = 0 is the length of signatures.
 // Rest bytes are from the serialized message below.
 // SolanaInstruction instruction(
-//     kSolanaSystemProgramId,
+//     mojom::kSolanaSystemProgramId,
 //     {SolanaAccountMeta(kFirstAccount, true, true),
 //      SolanaAccountMeta(kFirstAccount, false, true)},
 //     {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
@@ -93,7 +93,7 @@ constexpr char kEncodedSignature[] =
 // First byte = 0 is the length of signatures.
 // Rest bytes are from the serialized message below.
 // SolanaInstruction instruction(
-//     kSolanaSystemProgramId,
+//     mojom::kSolanaSystemProgramId,
 //     {SolanaAccountMeta(kFirstAccount, true, true),
 //      SolanaAccountMeta(kSecondAccount, true, true)},
 //     {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
