@@ -25,8 +25,10 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
                                        public gfx::AnimationDelegate {
  public:
   METADATA_HEADER(SidebarItemAddedFeedbackBubble);
-  SidebarItemAddedFeedbackBubble(views::View* anchor_view,
-                                 views::View* items_contents_view);
+
+  static views::Widget* Create(views::View* anchor_view,
+                               views::View* items_contents_view);
+
   ~SidebarItemAddedFeedbackBubble() override;
 
   SidebarItemAddedFeedbackBubble(const SidebarItemAddedFeedbackBubble&) =
@@ -37,8 +39,6 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
   // views::BubbleDialogDelegateView overrides:
   void OnWidgetVisibilityChanged(views::Widget* widget, bool visible) override;
   void OnWidgetDestroying(views::Widget* widget) override;
-  std::unique_ptr<views::NonClientFrameView> CreateNonClientFrameView(
-      views::Widget* widget) override;
 
   // AnimationDelegate implementations:
   void AnimationProgressed(const gfx::Animation* animation) override;
@@ -48,6 +48,9 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
   void OnViewBoundsChanged(View* observed_view) override;
 
  private:
+  SidebarItemAddedFeedbackBubble(views::View* anchor_view,
+                                 views::View* items_contents_view);
+
   void AddChildViews();
 
   // If this timer is fired, this will start to fade.

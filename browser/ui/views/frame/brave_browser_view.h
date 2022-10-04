@@ -33,6 +33,10 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
+
 class BraveBrowser;
 class ContentsLayoutManager;
 class SidebarContainerView;
@@ -74,6 +78,7 @@ class BraveBrowserView : public BrowserView {
  private:
   class TabCyclingEventHandler;
   friend class WindowClosingConfirmBrowserTest;
+  friend class sidebar::SidebarBrowserTest;
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -97,6 +102,7 @@ class BraveBrowserView : public BrowserView {
   BraveBrowser* GetBraveBrowser() const;
 
   sidebar::Sidebar* InitSidebar() override;
+  void UpdateSideBarHorizontalAlignment();
 
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;

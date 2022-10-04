@@ -174,9 +174,8 @@ void SidebarItemsContentsView::LaunchEditItemDialog() {
   auto index = GetIndexOf(view_for_context_menu_);
   const auto& items = sidebar_model_->GetAllSidebarItems();
 
-  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
-      new SidebarEditItemBubbleDelegateView(browser_, items[*index],
-                                            view_for_context_menu_));
+  auto* bubble = SidebarEditItemBubbleDelegateView::Create(
+      browser_, items[*index], view_for_context_menu_);
   observation_.Observe(bubble);
   bubble->Show();
 }
@@ -325,8 +324,7 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   DCHECK_EQ(browser_, BrowserList::GetInstance()->GetLastActive());
   DCHECK(!observation_.IsObserving());
 
-  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
-      new SidebarItemAddedFeedbackBubble(anchor_view, this));
+  auto* bubble = SidebarItemAddedFeedbackBubble::Create(anchor_view, this);
   observation_.Observe(bubble);
   bubble->Show();
 }
@@ -421,8 +419,10 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
-  if (item.open_in_panel)
+  if (item.open_in_panel) {
     item_view->set_draw_highlight(active);
+    item_view->set_draw_highlight_on_left(sidebar_on_left_);
+  }
 
   if (sidebar::IsBuiltInType(item)) {
     item_view->SetImage(
@@ -517,6 +517,11 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
     return true;
 
   return false;
+}
+
+void SidebarItemsContentsView::SetSidebarOnLeft(bool sidebar_on_left) {
+  sidebar_on_left_ = sidebar_on_left;
+  UpdateAllBuiltInItemsViewState();
 }
 
 BEGIN_METADATA(SidebarItemsContentsView, views::View)

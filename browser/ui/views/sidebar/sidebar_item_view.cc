@@ -40,8 +40,12 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
   // Draw item highlight
   if (draw_highlight_) {
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
-    canvas->DrawImageInt(*bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_HIGHLIGHT),
-                         0, 0);
+
+    auto* image = bundle.GetImageSkiaNamed(
+        draw_highlight_on_left_ ? IDR_SIDEBAR_ITEM_HIGHLIGHT
+                                : IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT);
+    canvas->DrawImageInt(
+        *image, draw_highlight_on_left_ ? 0 : width() - image->width(), 0);
   }
 
   const ui::ColorProvider* color_provider = GetColorProvider();

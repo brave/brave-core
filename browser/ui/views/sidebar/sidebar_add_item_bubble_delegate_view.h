@@ -22,8 +22,9 @@ class SidebarAddItemBubbleDelegateView
     : public views::BubbleDialogDelegateView {
  public:
   METADATA_HEADER(SidebarAddItemBubbleDelegateView);
-  SidebarAddItemBubbleDelegateView(BraveBrowser* browser,
-                                   views::View* anchor_view);
+
+  static views::Widget* Create(BraveBrowser* browser, views::View* anchor_view);
+
   ~SidebarAddItemBubbleDelegateView() override;
 
   SidebarAddItemBubbleDelegateView(const SidebarAddItemBubbleDelegateView&) =
@@ -31,11 +32,10 @@ class SidebarAddItemBubbleDelegateView
   SidebarAddItemBubbleDelegateView& operator=(
       const SidebarAddItemBubbleDelegateView&) = delete;
 
-  // views::BubbleDialogDelegateView overrides:
-  std::unique_ptr<views::NonClientFrameView> CreateNonClientFrameView(
-      views::Widget* widget) override;
-
  private:
+  SidebarAddItemBubbleDelegateView(BraveBrowser* browser,
+                                   views::View* anchor_view);
+
   void AddChildViews();
 
   // Passed |item| will be added to sidebar.

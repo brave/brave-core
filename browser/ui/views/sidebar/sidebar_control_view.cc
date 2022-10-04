@@ -120,7 +120,8 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
     SetBorder(views::CreateSolidSidedBorder(
-        gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
+        gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : kBorderThickness, 0,
+                          sidebar_on_left_ ? kBorderThickness : 0),
         color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }
@@ -258,6 +259,12 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
     return true;
 
   return false;
+}
+
+void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
+  sidebar_on_left_ = sidebar_on_left;
+  sidebar_items_view_->SetSidebarOnLeft(sidebar_on_left);
+  UpdateBackgroundAndBorder();
 }
 
 BEGIN_METADATA(SidebarControlView, views::View)

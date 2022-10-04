@@ -14,11 +14,14 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -46,18 +49,23 @@ class SidebarBrowserTest : public InProcessBrowserTest {
         SidebarService::ShowSidebarOption::kShowAlways);
   }
 
-  BraveBrowser* brave_browser() {
+  BraveBrowser* brave_browser() const {
     return static_cast<BraveBrowser*>(browser());
   }
 
-  SidebarModel* model() { return controller()->model(); }
-  TabStripModel* tab_model() { return browser()->tab_strip_model(); }
+  SidebarModel* model() const { return controller()->model(); }
+  TabStripModel* tab_model() const { return browser()->tab_strip_model(); }
 
-  SidebarController* controller() {
+  SidebarController* controller() const {
     return brave_browser()->sidebar_controller();
   }
 
-  void SimulateSidebarItemClickAt(int index) {
+  views::View* GetVerticalTabsContainer() const {
+    auto* view = BrowserView::GetBrowserViewForBrowser(browser());
+    return static_cast<BraveBrowserView*>(view)->vertical_tabs_container_;
+  }
+
+  void SimulateSidebarItemClickAt(int index) const {
     auto* sidebar_container_view =
         static_cast<SidebarContainerView*>(controller()->sidebar());
     auto sidebar_control_view = sidebar_container_view->sidebar_control_view_;
@@ -72,6 +80,12 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     ui::MouseEvent event(ui::ET_MOUSE_PRESSED, origin, origin,
                          ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
     sidebar_items_contents_view->OnItemPressed(item, event);
+  }
+
+  bool IsSidebarUIOnLeft() const {
+    auto* sidebar_container_view =
+        static_cast<SidebarContainerView*>(controller()->sidebar());
+    return sidebar_container_view->sidebar_on_left_;
   }
 };
 
@@ -205,6 +219,49 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click wallet item and then first wallet tab(index 0) is activated.
   SimulateSidebarItemClickAt(1);
   EXPECT_EQ(0, tab_model()->active_index());
+}
+
+class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithVerticalTabs() {
+    feature_list_.InitAndEnableFeature(tabs::features::kBraveVerticalTabs);
+  }
+  ~SidebarBrowserTestWithVerticalTabs() override = default;
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
+                       SidebarRightSideTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+
+  auto* vertical_tabs_container = GetVerticalTabsContainer();
+  auto* sidebar_container =
+      static_cast<SidebarContainerView*>(controller()->sidebar());
+
+  // Sidebar is on left.
+  EXPECT_TRUE(IsSidebarUIOnLeft());
+
+  // Check vertical tabs is located right after sidebar.
+  EXPECT_EQ(sidebar_container->bounds().right(), vertical_tabs_container->x());
+
+  // Changed to sidebar on right side.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  EXPECT_FALSE(IsSidebarUIOnLeft());
+
+  // Check vertical tabs is located at first.
+  EXPECT_EQ(0, vertical_tabs_container->x());
+
+  // Check sidebar is located on the right side.
+  EXPECT_EQ(sidebar_container->bounds().right(), browser_view->width());
+
+  // Changed to sidebar on left side again.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  EXPECT_TRUE(IsSidebarUIOnLeft());
+
+  // Check vertical tabs is located right after sidebar.
+  EXPECT_EQ(sidebar_container->bounds().right(), vertical_tabs_container->x());
 }
 
 }  // namespace sidebar

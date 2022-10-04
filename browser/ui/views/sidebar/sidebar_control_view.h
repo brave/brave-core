@@ -76,6 +76,7 @@ class SidebarControlView : public views::View,
 
   bool IsItemReorderingInProgress() const;
   bool IsBubbleWidgetVisible() const;
+  void SetSidebarOnLeft(bool sidebar_on_left);
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -89,6 +90,7 @@ class SidebarControlView : public views::View,
   void UpdateSettingsButtonState();
   void UpdateBackgroundAndBorder();
 
+  bool sidebar_on_left_ = true;
   raw_ptr<Delegate> delegate_ = nullptr;
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidebarItemsScrollView> sidebar_items_view_ = nullptr;

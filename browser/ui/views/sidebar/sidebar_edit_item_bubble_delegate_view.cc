@@ -12,11 +12,10 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/browser/ui/views/sidebar/bubble_border_with_arrow.h"
-#include "brave/browser/ui/views/sidebar/sidebar_bubble_background.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
@@ -37,11 +36,33 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 }
 }  // namespace
 
+// static
+views::Widget* SidebarEditItemBubbleDelegateView::Create(
+    BraveBrowser* browser,
+    const sidebar::SidebarItem& item,
+    views::View* anchor_view) {
+  auto* delegate =
+      new SidebarEditItemBubbleDelegateView(browser, item, anchor_view);
+  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
+  auto* frame_view = delegate->GetBubbleFrameView();
+  frame_view->bubble_border()->set_md_shadow_elevation(
+      ChromeLayoutProvider::Get()->GetShadowElevationMetric(
+          views::Emphasis::kHigh));
+  frame_view->SetDisplayVisibleArrow(true);
+  delegate->set_adjust_if_offscreen(true);
+  delegate->SizeToContents();
+  frame_view->SetCornerRadius(4);
+
+  return bubble;
+}
+
 SidebarEditItemBubbleDelegateView::SidebarEditItemBubbleDelegateView(
     BraveBrowser* browser,
     const sidebar::SidebarItem& item,
     views::View* anchor_view)
-    : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::LEFT_TOP),
+    : BubbleDialogDelegateView(anchor_view,
+                               views::BubbleBorder::LEFT_TOP,
+                               views::BubbleBorder::STANDARD_SHADOW),
       target_item_(item),
       browser_(browser) {
   SetAcceptCallback(base::BindOnce(
@@ -50,22 +71,6 @@ SidebarEditItemBubbleDelegateView::SidebarEditItemBubbleDelegateView(
 
 SidebarEditItemBubbleDelegateView::~SidebarEditItemBubbleDelegateView() =
     default;
-
-std::unique_ptr<views::NonClientFrameView>
-SidebarEditItemBubbleDelegateView::CreateNonClientFrameView(
-    views::Widget* widget) {
-  std::unique_ptr<views::BubbleFrameView> frame(
-      new views::BubbleFrameView(gfx::Insets(), gfx::Insets()));
-  std::unique_ptr<BubbleBorderWithArrow> border =
-      std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
-  constexpr int kRadius = 4;
-  border->SetCornerRadius(kRadius);
-  auto* border_ptr = border.get();
-  frame->SetBubbleBorder(std::move(border));
-  // Replace frame's background to draw arrow.
-  frame->SetBackground(std::make_unique<SidebarBubbleBackground>(border_ptr));
-  return frame;
-}
 
 void SidebarEditItemBubbleDelegateView::AddChildViews() {
   SetLayoutManager(std::make_unique<views::BoxLayout>(

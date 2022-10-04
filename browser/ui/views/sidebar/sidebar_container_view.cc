@@ -127,6 +127,18 @@ void SidebarContainerView::Init() {
   UpdateToolbarButtonVisibility();
 }
 
+void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
+  sidebar_on_left_ = sidebar_on_left;
+  if (sidebar_control_view_) {
+    sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
+  }
+
+  DCHECK(side_panel_);
+  side_panel_->SetHorizontalAlignment(sidebar_on_left
+                                          ? BraveSidePanel::kAlignLeft
+                                          : BraveSidePanel::kAlignRight);
+}
+
 void SidebarContainerView::SetSidebarShowOption(
     sidebar::SidebarService::ShowSidebarOption show_option) {
   UpdateSidebarVisibility(show_option);
@@ -175,6 +187,7 @@ void SidebarContainerView::AddChildViews() {
   // we want the controls first.
   sidebar_control_view_ =
       AddChildViewAt(std::make_unique<SidebarControlView>(this, browser_), 0);
+  sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
 }
 
 void SidebarContainerView::Layout() {
@@ -183,10 +196,18 @@ void SidebarContainerView::Layout() {
 
   const int control_view_preferred_width =
       sidebar_control_view_->GetPreferredSize().width();
-  sidebar_control_view_->SetBounds(0, 0, control_view_preferred_width,
-                                   height());
+
+  int control_view_x = 0;
+  int side_panel_x = control_view_x + control_view_preferred_width;
+  if (!sidebar_on_left_) {
+    control_view_x = width() - control_view_preferred_width;
+    side_panel_x = 0;
+  }
+
+  sidebar_control_view_->SetBounds(control_view_x, 0,
+                                   control_view_preferred_width, height());
   if (side_panel_->GetVisible()) {
-    side_panel_->SetBounds(control_view_preferred_width, 0,
+    side_panel_->SetBounds(side_panel_x, 0,
                            side_panel_->GetPreferredSize().width(), height());
   }
 }

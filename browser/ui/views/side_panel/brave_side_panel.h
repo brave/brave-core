@@ -53,6 +53,8 @@ class BraveSidePanel : public views::View,
   // views::ViewObserver:
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
+
+  HorizontalAlignment horizontal_alighment_ = kAlignLeft;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_

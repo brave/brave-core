@@ -25,9 +25,11 @@ class SidebarEditItemBubbleDelegateView
       public views::TextfieldController {
  public:
   METADATA_HEADER(SidebarEditItemBubbleDelegateView);
-  SidebarEditItemBubbleDelegateView(BraveBrowser* browser,
-                                    const sidebar::SidebarItem& item,
-                                    views::View* anchor_view);
+
+  static views::Widget* Create(BraveBrowser* browser,
+                               const sidebar::SidebarItem& item,
+                               views::View* anchor_view);
+
   ~SidebarEditItemBubbleDelegateView() override;
   SidebarEditItemBubbleDelegateView(const SidebarEditItemBubbleDelegateView&) =
       delete;
@@ -35,8 +37,6 @@ class SidebarEditItemBubbleDelegateView
       const SidebarEditItemBubbleDelegateView&) = delete;
 
   // views::BubbleDialogDelegateView overrides:
-  std::unique_ptr<views::NonClientFrameView> CreateNonClientFrameView(
-      views::Widget* widget) override;
   views::View* GetInitiallyFocusedView() override;
   void AddedToWidget() override;
 
@@ -45,6 +45,10 @@ class SidebarEditItemBubbleDelegateView
                        const std::u16string& new_contents) override;
 
  private:
+  SidebarEditItemBubbleDelegateView(BraveBrowser* browser,
+                                    const sidebar::SidebarItem& item,
+                                    views::View* anchor_view);
+
   void AddChildViews();
   void UpdateItem();
   void UpdateOKButtonEnabledState();
