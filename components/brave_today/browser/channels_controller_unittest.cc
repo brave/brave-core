@@ -18,6 +18,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
+#include "brave/components/brave_today/browser/feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
@@ -79,7 +80,14 @@ class ChannelsControllerTest : public testing::Test {
                                &direct_feed_controller_,
                                &unsupported_publisher_migrator_,
                                &api_request_helper_),
-        channels_controller_(profile_.GetPrefs(), &publishers_controller_) {}
+        feed_controller_(&publishers_controller_,
+                         &direct_feed_controller_,
+                         nullptr,
+                         &api_request_helper_,
+                         profile_.GetPrefs()),
+        channels_controller_(profile_.GetPrefs(),
+                             &publishers_controller_,
+                             &feed_controller_) {}
 
   std::string GetPublishersURL() {
     return "https://" + brave_today::GetHostname() + "/sources." +
@@ -121,6 +129,7 @@ class ChannelsControllerTest : public testing::Test {
   DirectFeedController direct_feed_controller_;
   UnsupportedPublisherMigrator unsupported_publisher_migrator_;
   PublishersController publishers_controller_;
+  FeedController feed_controller_;
   ChannelsController channels_controller_;
 };
 
