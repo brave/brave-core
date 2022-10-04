@@ -28,7 +28,7 @@ class BaseMockNetworkSession: NetworkSession, @unchecked Sendable {
   
   func dataRequest(with urlRequest: URLRequest, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void) {
     guard let url = urlRequest.url else {
-      completion(.failure("Missing url"))
+      completion(.failure(URLError(.badURL)))
       return
     }
     
@@ -60,7 +60,7 @@ class BaseMockNetworkSession: NetworkSession, @unchecked Sendable {
   func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse {
     try await Task.detached(priority: .userInitiated) {
       guard let url = urlRequest.url else {
-        throw "Missing url"
+        throw URLError(.badURL)
       }
       
       return try await self.dataRequest(with: url)
@@ -81,7 +81,7 @@ class NetworkSessionMock: BaseMockNetworkSession {
     
     super.completion = { [weak self] _ in
       guard let self = self else {
-        throw "Deallocated"
+        return (.init(), .init())
       }
 
       if let error = self.error {

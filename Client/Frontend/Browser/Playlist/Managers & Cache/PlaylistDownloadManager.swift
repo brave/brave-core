@@ -27,6 +27,10 @@ struct MediaDownloadTask {
   let asset: AVURLAsset
 }
 
+public enum PlaylistDownloadError: Error {
+  case uniquePathNotCreated
+}
+
 public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
   private let hlsSession: AVAssetDownloadURLSession
   private let fileSession: URLSession
@@ -399,7 +403,8 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
     } else {
       do {
         guard let path = try PlaylistDownloadManager.uniqueDownloadPathForFilename(assetUrl.lastPathComponent) else {
-          throw "Failed to create unique path for playlist item."
+          log.error("Failed to create unique path for playlist item.")
+          throw PlaylistDownloadError.uniquePathNotCreated
         }
 
         try FileManager.default.moveItem(at: assetUrl, to: path)
@@ -606,7 +611,8 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
 
       do {
         guard let path = try PlaylistDownloadManager.uniqueDownloadPathForFilename(asset.name + ".\(fileExtension)") else {
-          throw "Failed to create unique path for playlist item."
+          log.error("Failed to create unique path for playlist item.")
+          throw PlaylistDownloadError.uniquePathNotCreated
         }
 
         try FileManager.default.moveItem(at: location, to: path)
@@ -626,14 +632,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
         cleanupAndFailDownload(location: location, error: error)
       }
     } else {
-      var error = "UnknownError"
-      if let response = downloadTask.response as? HTTPURLResponse {
-        error = "Invalid Status Code: \(response.statusCode)"
-      } else if let response = downloadTask.response {
-        error = "Invalid Response: \(response)"
-      }
-
-      cleanupAndFailDownload(location: nil, error: error)
+      cleanupAndFailDownload(location: nil, error: URLError(.badServerResponse))
     }
   }
 }

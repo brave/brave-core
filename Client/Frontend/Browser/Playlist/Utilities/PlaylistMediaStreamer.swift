@@ -23,6 +23,7 @@ class PlaylistMediaStreamer {
     case none
     case cancelled
     case expired
+    case cannotLoadMedia
     case other(Error)
   }
 
@@ -70,7 +71,7 @@ class PlaylistMediaStreamer {
 
       return Future { [weak self] resolver in
         guard let self = self else {
-          resolver(.failure(.other("Streaming Cancelled")))
+          resolver(.failure(.cancelled))
           return
         }
 
@@ -102,7 +103,7 @@ class PlaylistMediaStreamer {
         if let url = URL(string: item.pageSrc) {
           self.webLoader?.load(url: url)
         } else {
-          resolver(.failure(.other("Cannot Load Media")))
+          resolver(.failure(.cannotLoadMedia))
         }
       }.handleEvents(receiveCancel: { [weak self] in
         cancelled = true

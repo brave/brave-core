@@ -166,10 +166,24 @@ public extension BraveCertificateUtils {
   }
 }
 
+public enum BraveCertificateUtilError: LocalizedError {
+  case noCertificatesProvided
+  case cannotCreateServerTrust
+  
+  public var errorDescription: String? {
+    switch self {
+    case .noCertificatesProvided:
+      return "Cannot Create Server Trust - No Certificates Provided"
+    case .cannotCreateServerTrust:
+      return "Cannot Create Server Trust"
+    }
+  }
+}
+
 public extension BraveCertificateUtils {
   static func createServerTrust(_ certificates: [SecCertificate], for host: String?) throws -> SecTrust {
     if certificates.isEmpty {
-      throw "Cannot Create Server Trust - No Certificates Provided"
+      throw BraveCertificateUtilError.noCertificatesProvided
     }
     
     var serverTrust: SecTrust?
@@ -182,7 +196,7 @@ public extension BraveCertificateUtils {
                                                 policies as AnyObject,
                                                 &serverTrust)
     guard status == errSecSuccess else {
-      throw "Cannot Create Server Trust"
+      throw BraveCertificateUtilError.cannotCreateServerTrust
     }
     return serverTrust!
   }

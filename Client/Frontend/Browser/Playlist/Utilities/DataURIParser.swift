@@ -5,6 +5,10 @@
 
 import Foundation
 
+enum URIParserError: Error {
+  case invalidInputData
+}
+
 class DataURIParser {
   let mediaType: String
   let headers: [String]
@@ -19,11 +23,11 @@ class DataURIParser {
     }
 
     if !uri.lowercased().hasPrefix("data:") {
-      throw "Invalid Data-URI"
+      throw URIParserError.invalidInputData
     }
 
     guard let infoSegment = uri.firstIndex(of: ",") else {
-      throw "Invalid Data-URI"
+      throw URIParserError.invalidInputData
     }
 
     let startSegment = uri.index(uri.startIndex, offsetBy: "data:".count)

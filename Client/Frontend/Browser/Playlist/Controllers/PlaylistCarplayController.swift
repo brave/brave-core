@@ -20,6 +20,12 @@ private enum PlaylistCarPlayTemplateID: String {
   case settings
 }
 
+enum PlaylistCarplayError: Error {
+  case cancelled
+  case invalidItem(id: String?)
+  case itemExpired(id: String)
+}
+
 class PlaylistCarplayController: NSObject {
   private let player: MediaPlayer
   private let mediaStreamer: PlaylistMediaStreamer
@@ -577,7 +583,7 @@ extension PlaylistCarplayController {
       let item = PlaylistManager.shared.itemAtIndex(index)
     else {
       displayLoadingResourceError()
-      completionHandler("Invalid Item")
+      completionHandler(PlaylistCarplayError.invalidItem(id: itemId))
       return
     }
 
@@ -618,16 +624,19 @@ extension PlaylistCarplayController {
         log.error(error)
         self.displayLoadingResourceError()
         completionHandler(error)
+      case .cannotLoadMedia:
+        self.displayLoadingResourceError()
+        completionHandler(PlaylistCarplayError.cancelled)
       case .expired:
         self.displayExpiredResourceError(item: item)
-        completionHandler("Item Expired")
+        completionHandler(PlaylistCarplayError.itemExpired(id: itemId))
       case .none:
         PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
         PlaylistCarplayManager.shared.currentPlaylistItem = item
         completionHandler(nil)
       case .cancelled:
         log.debug("User Cancelled Playlist playback")
-        completionHandler("User Cancelled")
+        completionHandler(PlaylistCarplayError.cancelled)
       }
 
       // Workaround to see carplay NowPlaying on the simulator
@@ -658,6 +667,8 @@ extension PlaylistCarplayController {
         switch error {
         case .other(let err):
           log.error(err)
+          fallthrough
+        case .cannotLoadMedia:
           self.displayLoadingResourceError()
         case .expired:
           self.displayExpiredResourceError(item: item)
@@ -707,6 +718,8 @@ extension PlaylistCarplayController {
         switch error {
         case .other(let err):
           log.error(err)
+          fallthrough
+        case .cannotLoadMedia:
           self.displayLoadingResourceError()
         case .expired:
           if isUserInitiated || self.player.repeatState == .repeatOne || assetCount <= 1 {
@@ -777,7 +790,7 @@ extension PlaylistCarplayController {
 
     return Future { [weak self] resolver in
       guard let self = self else {
-        resolver(.failure("User Cancelled Playback"))
+        resolver(.failure(PlaylistCarplayError.cancelled))
         return
       }
 
@@ -794,12 +807,12 @@ extension PlaylistCarplayController {
           },
           receiveValue: { [weak self] isNewItem in
             guard let self = self else {
-              resolver(.failure("User Cancelled Playback"))
+              resolver(.failure(PlaylistCarplayError.cancelled))
               return
             }
 
             guard self.player.currentItem != nil else {
-              resolver(.failure("Couldn't load playlist item"))
+              resolver(.failure(PlaylistCarplayError.invalidItem(id: nil)))
               return
             }
 

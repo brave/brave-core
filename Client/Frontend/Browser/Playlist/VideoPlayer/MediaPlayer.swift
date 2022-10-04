@@ -14,6 +14,7 @@ private let log = Logger.browserLogger
 
 enum MediaPlaybackError: Error {
   case cancelled
+  case cannotLoadAsset(status: AVKeyValueStatus)
   case other(Error)
 }
 
@@ -132,7 +133,7 @@ class MediaPlayer: NSObject {
   func load(asset: AVURLAsset) -> Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
     return Deferred { [weak self] in
       guard let self = self else {
-        return Fail<Bool, MediaPlaybackError>(error: .other("MediaPlayer Deallocated"))
+        return Fail<Bool, MediaPlaybackError>(error: .cancelled)
           .eraseToAnyPublisher()
       }
 
@@ -165,7 +166,7 @@ class MediaPlayer: NSObject {
                 resolver(.success(false))
                 return
               } else if status != .loaded {
-                resolver(.failure(.other("Cannot Load Asset Status: \(status)")))
+                resolver(.failure(.cannotLoadAsset(status: status)))
                 return
               }
             }
