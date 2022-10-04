@@ -857,7 +857,7 @@ interface JsonRpcService {
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id, CoinType coin) => (bool success);
-  GetNetwork(CoinType coin) => (NetworkInfo network);
+  GetNetwork(CoinType coin) => (NetworkInfo? network);
   GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
   GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
   GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
