@@ -29,6 +29,8 @@ interface StyledButtonProps {
 const StyledButtonCssMixin = (p: StyledButtonProps) => {
   return css<StyledButtonProps>`
     ${walletButtonFocusMixin}
+    font-family: Poppins;
+    font-style: normal;
     min-width: ${(p) => p?.minWidth || 'unset'};
     max-height: ${(p) => p?.maxHeight || 'unset'};
     display: flex;

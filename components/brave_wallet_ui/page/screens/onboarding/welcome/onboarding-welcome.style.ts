@@ -59,6 +59,8 @@ export const VerticalRule = styled.div`
 `
 
 export const BlockQuoteTextContainer = styled(Column)`
+  font-family: Poppins;
+  font-style: normal;
   color: ${(p) => p.theme.color.text02};
   text-align: left;
   align-items: flex-start;
