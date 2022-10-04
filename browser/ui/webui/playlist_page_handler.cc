@@ -35,7 +35,24 @@ PlaylistPageHandler::PlaylistPageHandler(
   observation_.Observe(GetPlaylistService(profile_));
 }
 
+PlaylistPageHandler::PlaylistPageHandler(Profile* profile) : profile_(profile) {
+  DCHECK(profile_);
+  observation_.Observe(GetPlaylistService(profile_));
+}
+
 PlaylistPageHandler::~PlaylistPageHandler() = default;
+
+mojo::PendingRemote<playlist::mojom::PageHandler>
+PlaylistPageHandler::MakeRemote() {
+  mojo::PendingRemote<playlist::mojom::PageHandler> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
+void PlaylistPageHandler::Bind(
+    mojo::PendingReceiver<playlist::mojom::PageHandler> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
 
 void PlaylistPageHandler::GetAllPlaylists(
     PlaylistPageHandler::GetAllPlaylistsCallback callback) {

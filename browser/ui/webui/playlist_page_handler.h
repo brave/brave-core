@@ -9,24 +9,35 @@
 #include <string>
 
 #include "base/scoped_observation.h"
+#include "brave/components/playlist/mojom/playlist.mojom-forward.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/playlist_service_observer.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class Profile;
 
-class PlaylistPageHandler : public playlist::mojom::PageHandler,
+class PlaylistPageHandler : public KeyedService,
+                            public playlist::mojom::PageHandler,
                             public playlist::PlaylistServiceObserver {
  public:
+#if !BUILDFLAG(IS_ANDROID)
   PlaylistPageHandler(
       Profile* profile,
       content::WebContents* contents,
       mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler,
       mojo::PendingRemote<playlist::mojom::Page> pending_page);
+#else
+  PlaylistPageHandler(Profile* profile);
+  mojo::PendingRemote<playlist::mojom::PageHandler> MakeRemote();
+  void Bind(mojo::PendingReceiver<playlist::mojom::PageHandler> receiver);
+#endif
   ~PlaylistPageHandler() override;
 
   // playlist::mojom::PageHandler:
@@ -55,11 +66,14 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
 
  private:
   raw_ptr<Profile> profile_ = nullptr;
+#if !BUILDFLAG(IS_ANDROID)
   raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   mojo::Remote<playlist::mojom::Page> page_;
   mojo::Receiver<playlist::mojom::PageHandler> handler_;
-
+#else
+  mojo::ReceiverSet<playlist::mojom::PageHandler> receivers_;
+#endif
   base::ScopedObservation<playlist::PlaylistService,
                           playlist::PlaylistServiceObserver>
       observation_{this};
