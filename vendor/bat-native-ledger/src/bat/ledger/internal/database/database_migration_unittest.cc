@@ -808,4 +808,15 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_35) {
   EXPECT_FALSE(GetDB()->DoesTableExist("server_publisher_amounts"));
 }
 
+TEST_F(LedgerDatabaseMigrationTest, Migration_36) {
+  DatabaseMigration::SetTargetVersionForTesting(36);
+  InitializeDatabaseAtVersion(35);
+  InitializeLedger();
+  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+      SELECT status FROM server_publisher_info
+  )sql"));
+  EXPECT_TRUE(sql.Step());
+  EXPECT_EQ(sql.ColumnInt64(0), 0);
+}
+
 }  // namespace ledger
