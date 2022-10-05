@@ -12,6 +12,7 @@
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,7 +33,7 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
   // Test serializing a message for transfering SOL.
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kToAccount, false, true)},
@@ -101,7 +102,7 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
 }
 
 TEST(SolanaMessageUnitTest, GetSignerAccountsFromSerializedMessage) {
-  SolanaInstruction ins(kSolanaSystemProgramId,
+  SolanaInstruction ins(mojom::kSolanaSystemProgramId,
                         {SolanaAccountMeta(kFromAccount, true, true),
                          SolanaAccountMeta(kToAccount, true, true),
                          SolanaAccountMeta(kTestAccount, false, true)},
@@ -128,7 +129,7 @@ TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
     accounts_exceed_signer_account_max.push_back(meta);
   }
 
-  SolanaInstruction instruction(kSolanaSystemProgramId,
+  SolanaInstruction instruction(mojom::kSolanaSystemProgramId,
                                 std::move(accounts_exceed_signer_account_max),
                                 {});
   SolanaMessage message(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
@@ -141,8 +142,8 @@ TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
     accounts_exceed_writable_account_max.push_back(meta);
   }
   SolanaInstruction instruction2(
-      kSolanaSystemProgramId, std::move(accounts_exceed_writable_account_max),
-      {});
+      mojom::kSolanaSystemProgramId,
+      std::move(accounts_exceed_writable_account_max), {});
   SolanaMessage message2(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
                          {instruction});
   EXPECT_FALSE(message.Serialize(nullptr));
@@ -153,8 +154,8 @@ TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
     accounts_exceed_readonly_account_max.push_back(meta);
   }
   SolanaInstruction instruction3(
-      kSolanaSystemProgramId, std::move(accounts_exceed_readonly_account_max),
-      {});
+      mojom::kSolanaSystemProgramId,
+      std::move(accounts_exceed_readonly_account_max), {});
   SolanaMessage message3(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
                          {instruction});
   EXPECT_FALSE(message.Serialize(nullptr));
@@ -163,7 +164,7 @@ TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
 TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
   std::vector<SolanaAccountMeta> unique_account_metas;
 
-  std::string program1 = kSolanaSystemProgramId;
+  std::string program1 = mojom::kSolanaSystemProgramId;
   std::string program2 = "Config1111111111111111111111111111111111111";
   std::string account1 = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
   std::string account2 = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";
@@ -242,7 +243,7 @@ TEST(SolanaMessageUnitTest, ToSolanaTxData) {
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kToAccount, false, true)},
@@ -258,7 +259,7 @@ TEST(SolanaMessageUnitTest, ToSolanaTxData) {
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
   EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
-            kSolanaSystemProgramId);
+            mojom::kSolanaSystemProgramId);
   EXPECT_EQ(solana_tx_data->instructions[0]->data, data);
 
   ASSERT_EQ(solana_tx_data->instructions[0]->account_metas.size(), 2u);
@@ -276,7 +277,7 @@ TEST(SolanaMessageUnitTest, FromToValue) {
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
   SolanaInstruction instruction(
       // Program ID
-      kSolanaSystemProgramId,
+      mojom::kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kToAccount, false, true)},
@@ -305,8 +306,28 @@ TEST(SolanaMessageUnitTest, FromToValue) {
               "is_writable": true
             }
            ],
-           "data": "AgAAAICWmAAAAAAA"
-          }
+           "data": "AgAAAICWmAAAAAAA",
+           "decoded_data": {
+             "account_params": [
+               {
+                 "name": "from_account",
+                 "localized_name": "From Account"
+               },
+               {
+                 "name": "to_account",
+                 "localized_name": "To Account"
+               }
+             ],
+             "params": [
+               {
+                 "name": "lamports",
+                 "localized_name": "Lamports",
+                 "value": "10000000"
+               }
+             ],
+             "sys_ins_type": "2"
+           }
+        }
       ]
     }
   )");

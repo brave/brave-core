@@ -516,6 +516,53 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNTS" desc="Name of Solana instruction 'accounts' param">Accounts:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_DATA" desc="Name of Solana instruction 'data' param">Data:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID" desc="Name of Solana instruction 'programID' param">Program ID:</message>
+
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_LAMPORTS" desc="Name of Solana instruction 'lamports' param">Lamports</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SPACE" desc="Name of Solana instruction 'space' param">Space</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER_PROGRAM" desc="Name of Solana instruction 'owner_program' param">Owner Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_BASE" desc="Name of Solana instruction 'base' param">Base</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SEED" desc="Name of Solana instruction 'seed' param">Seed</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AUTHORITY" desc="Name of Solana instruction 'authority' param">Authority</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_NEW_AUTHORITY" desc="Name of Solana instruction 'new_authority' param">New Authority</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_FROM_SEED" desc="Name of Solana instruction 'from_seed' param">From Seed</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_FROM_OWNER_PROGRAM" desc="Name of Solana instruction 'from_owner_program' param">From Owner Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_DECIMALS" desc="Name of Solana instruction 'decimals' param">Decimals</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_MINT_AUTHORITY" desc="Name of Solana instruction mint_authority' param">Mint Authority</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_FREEZE_AUTHORITY" desc="Name of Solana instruction 'freeze_authority' param">Freeze Authority</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AUTHORITY_TYPE" desc="Name of Solana instruction 'authority_type' param">Authority Type</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_NUM_OF_SIGNERS" desc="Name of Solana instruction 'num_of_signers' param">Number of Signers</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER" desc="Name of Solana instruction 'owner' param">Owner</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT" desc="Name of Solana instruction 'amount' param">Amount</message>
+
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROM_ACCOUNT" desc="Name of Solana instruction 'from_account' account param">From Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT" desc="Name of Solana instruction 'to_account' account param">To Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NEW_ACCOUNT" desc="Name of Solana instruction 'new_account' account param">New Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ASSIGNED_ACCOUNT" desc="Name of Solana instruction 'assigned_account' account param">Assigned Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_CREATED_ACCOUNT" desc="Name of Solana instruction 'created_account' account param">Created Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_BASE_ACCOUNT" desc="Name of Solana instruction 'base_account' account param">Base Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_ACCOUNT" desc="Name of Solana instruction 'nonce_account' account param">Nonce Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_AUTHORITY" desc="Name of Solana instruction 'nonce_authority' account param">Nonce Authority</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ALLOCATED_ACCOUNT" desc="Name of Solana instruction 'allocated_account' account param">Allocated Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_RENT_SYSVAR" desc="Name of Solana instruction 'rent_sysvar' account param">Rent sysvar</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_RECENTBLOCKHASHES_SYSVAR" desc="Name of Solana instruction 'recentBlockhashes_sysvar' account param">RecentBlockhashes sysvar</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ACCOUNT" desc="Name of Solana instruction 'account' account param">Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_INITIALIZED_MINT" desc="Name of Solana instruction 'initialized_mint' account param">Initialized Mint</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_INITIALIZED_ACCOUNT" desc="Name of Solana instruction 'initialized_account' account param">Initialized Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_INITIALIZED_MULTISIG_ACCOUNT" desc="Name of Solana instruction 'initialized_multisig_account' account param">Initialized Multisig Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_BURNED_ACCOUNT" desc="Name of Solana instruction 'burned_account' account param">Burned Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_CLOSED_ACCOUNT" desc="Name of Solana instruction 'closed_account' account param">Closed Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROZEN_ACCOUNT" desc="Name of Solana instruction 'frozen_account' account param">Frozen Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NATIVE_TOKEN_ACCOUNT" desc="Name of Solana instruction 'native_token_account' account param">Native Token Account</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TOKEN_MINT" desc="Name of Solana instruction 'token_mint' account param">Token Mint</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_MINT" desc="Name of Solana instruction 'mint' account param">Mint</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER" desc="Name of Solana instruction 'owner' account param">Owner</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS" desc="Name of Solana instruction 'signers' account param">Signers</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_DELEGATE" desc="Name of Solana instruction 'delegate' account param">Delegate</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_AUTHORITY" desc="Name of Solana instruction 'authority' account param">Authority</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER_DELEGATE" desc="Name of Solana instruction 'owner_delegate' account param">Owner/Delegate</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ACCOUNT_OWNER_DELEGATE" desc="Account Owner/Delegate' account param">Account Owner/Delegate</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_CHANGED_MINT_OR_ACCOUNT" desc="Name of Solana instruction 'changed mint_or_account' account param">Changed Mint or Account</message>
+
   <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">Max Retries:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">Preflight Commitment:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>

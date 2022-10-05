@@ -8,6 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -212,9 +213,11 @@ TEST(SolanaKeyringUnitTest, FindProgramDerivedAddress) {
   for (size_t i = 0; i < 1000; ++i) {
     uint8_t bump_seed = 0;
     auto addr1 = SolanaKeyring::FindProgramDerivedAddress(
-        {lil_bytes, bits_bytes}, kSolanaAssociatedTokenProgramId, &bump_seed);
+        {lil_bytes, bits_bytes}, mojom::kSolanaAssociatedTokenProgramId,
+        &bump_seed);
     auto addr2 = SolanaKeyring::CreateProgramDerivedAddress(
-        {lil_bytes, bits_bytes, {bump_seed}}, kSolanaAssociatedTokenProgramId);
+        {lil_bytes, bits_bytes, {bump_seed}},
+        mojom::kSolanaAssociatedTokenProgramId);
     ASSERT_TRUE(addr1 && addr2);
     EXPECT_EQ(*addr1, *addr2);
   }

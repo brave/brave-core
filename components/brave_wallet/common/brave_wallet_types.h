@@ -78,47 +78,6 @@ enum class ImportError {
   kInternalError
 };
 
-// https://docs.rs/solana-program/latest/solana_program/system_instruction/enum.SystemInstruction.html
-enum class SolanaSystemInstruction {
-  kCreateAccount = 0,
-  kAssign,
-  kTransfer,
-  kCreateAccountWithSeed,
-  kAdvanceNonceAccount,
-  kWithdrawNonceAccount,
-  kInitializeNonceAccount,
-  kAuthorizeNonceAccount,
-  kAllocate,
-  kAllocateWithSeed,
-  kAssignWithSeed,
-  kTransferWithSeed
-};
-
-// https://docs.rs/spl-token/latest/spl_token/instruction/enum.TokenInstruction.html
-enum class SolanaTokenInstruction {
-  kInitializeMint = 0,
-  kInitializeAccount,
-  kInitializeMultisig,
-  kTransfer,
-  kApprove,
-  kRevoke,
-  kSetAuthority,
-  kMintTo,
-  kBurn,
-  kCloseAccount,
-  kFreezeAccount,
-  kThawAccount,
-  kTransferChecked,
-  kApproveChecked,
-  kMintToChecked,
-  kBurnChecked,
-  kInitializeAccount2,
-  kSyncNative,
-  kInitializeAccount3,
-  kInitializeMultisig2,
-  kInitializeMint2
-};
-
 struct SolanaSignatureStatus {
   SolanaSignatureStatus() = default;
   SolanaSignatureStatus(uint64_t slot,

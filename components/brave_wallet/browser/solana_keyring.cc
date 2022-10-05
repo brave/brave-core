@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/rust/lib.rs.h"
@@ -149,7 +150,7 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
   std::vector<uint8_t> spl_token_mint_address_bytes;
 
   if (!Base58Decode(wallet_address, &wallet_address_bytes, kSolanaPubkeySize) ||
-      !Base58Decode(kSolanaTokenProgramId, &token_program_id_bytes,
+      !Base58Decode(mojom::kSolanaTokenProgramId, &token_program_id_bytes,
                     kSolanaPubkeySize) ||
       !Base58Decode(spl_token_mint_address, &spl_token_mint_address_bytes,
                     kSolanaPubkeySize)) {
@@ -160,7 +161,8 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
   seeds.push_back(std::move(token_program_id_bytes));
   seeds.push_back(std::move(spl_token_mint_address_bytes));
 
-  return FindProgramDerivedAddress(seeds, kSolanaAssociatedTokenProgramId);
+  return FindProgramDerivedAddress(seeds,
+                                   mojom::kSolanaAssociatedTokenProgramId);
 }
 
 }  // namespace brave_wallet
