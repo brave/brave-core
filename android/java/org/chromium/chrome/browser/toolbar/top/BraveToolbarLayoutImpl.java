@@ -647,7 +647,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                         .arrowColor(ContextCompat.getColor(
                                                 getContext(), R.color.cookie_consent_tooltip_color))
                                         .gravity(Gravity.BOTTOM)
-                                        .dismissOnOutsideTouch(true)
+                                        .dismissOnOutsideTouch(false)
                                         .dismissOnInsideTouch(false)
                                         .backgroundDimDisabled(false)
                                         .padding(padding)
