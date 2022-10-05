@@ -1,9 +1,7 @@
-import("buildflags.gni")
 import("//build/buildflag_header.gni")
+import("buildflags.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "ENABLE_BRAVE_REFERRALS=$enable_brave_referrals",
-  ]
+  flags = [ "ENABLE_BRAVE_REFERRALS=$enable_brave_referrals" ]
 }
