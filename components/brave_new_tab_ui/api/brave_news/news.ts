@@ -1,5 +1,5 @@
 import getBraveNewsController, { Channels, Publishers } from '.'
-import { BraveNewsControllerRemote, Publisher, PublisherType, UserEnabled } from '../../../../../out/Component/gen/brave/components/brave_today/common/brave_news.mojom.m'
+import { BraveNewsControllerRemote, Publisher, PublisherType, UserEnabled } from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
 
 type PublishersListener = (publishers: Publishers, oldValue: Publishers) => void
 type ChannelsListener = (newValue: Channels, oldValue: Channels) => void
