@@ -409,9 +409,14 @@ Config.prototype.buildArgs = function () {
       args.use_system_xcode = false
   }
 
-  if (this.getTargetOS() === 'linux' && this.targetArch === 'x64') {
-    // Include vaapi support
-    args.use_vaapi = true
+  if (this.getTargetOS() === 'linux') {
+    if (this.targetArch === 'x64') {
+      // Include vaapi support
+      args.use_vaapi = true
+    } else if (this.targetArch === 'arm64') {
+      // We don't yet support Widevine on Arm64 Linux.
+      args.enable_widevine = false
+    }
   }
 
   // Enable Page Graph only in desktop builds.
