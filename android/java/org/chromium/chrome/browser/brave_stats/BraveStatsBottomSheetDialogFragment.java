@@ -206,10 +206,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @Override
     public void onResume() {
         super.onResume();
-        if (!hasPermission(getActivity(), PermissionConstants.NOTIFICATION_PERMISSION)) {
-            statsNotificationView.setVisibility(View.VISIBLE);
-        } else {
+        if (hasPermission(getActivity(), PermissionConstants.NOTIFICATION_PERMISSION)) {
             statsNotificationView.setVisibility(View.GONE);
+        } else {
+            statsNotificationView.setVisibility(View.VISIBLE);
         }
     }
 
