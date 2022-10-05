@@ -995,6 +995,10 @@ const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 bool HasJupiterFeesForTokenMint(const std::string& mint);
 
+const std::vector<std::string> asset_discovery_supported_chains = {
+    mojom::kMainnetChainId, mojom::kPolygonMainnetChainId,
+    mojom::kOptimismMainnetChainId};
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

@@ -722,8 +722,7 @@ void KeyringService::CreateWallet(const std::string& password,
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
-      json_rpc_service_->DiscoverAssets(
-          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
+      json_rpc_service_->DiscoverAssetsOnAllSupportedChains({address.value()});
     }
   }
 
@@ -760,8 +759,7 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
-      json_rpc_service_->DiscoverAssets(
-          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
+      json_rpc_service_->DiscoverAssetsOnAllSupportedChains({address.value()});
     }
   }
 
@@ -903,8 +901,7 @@ void KeyringService::AddAccount(const std::string& account_name,
   if (address) {
     SetSelectedAccountForCoinSilently(coin, address.value());
     SetSelectedCoin(prefs_, coin);
-    json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                      mojom::CoinType::ETH, {address.value()});
+    json_rpc_service_->DiscoverAssetsOnAllSupportedChains({address.value()});
   }
 
   NotifyAccountsChanged();
@@ -1343,8 +1340,7 @@ absl::optional<std::string> KeyringService::ImportAccountForKeyring(
   SetSelectedAccountForCoinSilently(GetCoinForKeyring(keyring_id), address);
   SetSelectedCoin(prefs_, GetCoinForKeyring(keyring_id));
 
-  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                    mojom::CoinType::ETH, {address});
+  json_rpc_service_->DiscoverAssetsOnAllSupportedChains({address});
   NotifyAccountsChanged();
 
   return address;
@@ -1466,8 +1462,7 @@ void KeyringService::AddHardwareAccounts(
     }
   }
 
-  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                    mojom::CoinType::ETH, addresses);
+  json_rpc_service_->DiscoverAssetsOnAllSupportedChains(addresses);
   NotifyAccountsChanged();
 }
 

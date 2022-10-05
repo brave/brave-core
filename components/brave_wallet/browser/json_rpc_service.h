@@ -312,6 +312,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::vector<mojom::BlockchainTokenPtr> discovered_assets,
       mojom::ProviderError error,
       const std::string& error_message)>;
+  void DiscoverAssetsOnAllSupportedChains(
+      const std::vector<std::string>& account_addresses);
   void DiscoverAssets(const std::string& chain_id,
                       mojom::CoinType coin,
                       const std::vector<std::string>& account_addresses);

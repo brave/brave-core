@@ -3344,7 +3344,7 @@ TEST_F(JsonRpcServiceUnitTest, DiscoverAssets) {
 
   // Unsupported chainId is not supported
   TestDiscoverAssetsInternal(
-      mojom::kPolygonMainnetChainId, mojom::CoinType::ETH,
+      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH,
       {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}, {},
       mojom::ProviderError::kMethodNotSupported,
       l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
@@ -3532,6 +3532,96 @@ TEST_F(JsonRpcServiceUnitTest, DiscoverAssets) {
       {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}, {},
       mojom::ProviderError::kMethodNotSupported,
       l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
+
+  // Discover assets should be supported on Polygon
+  token_list_json = R"(
+    {
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+        "name": "Dai Stablecoin",
+        "logo": "dai.svg",
+        "erc20": true,
+        "symbol": "DAI",
+        "chainId": "0x89",
+        "decimals": 18
+      }
+  })";
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  response = R"({
+    "jsonrpc":"2.0",
+    "id":1,
+    "result":[
+      {
+        "address":"0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
+        "blockNumber":"0xd6464c",
+        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
+        "logIndex":"0x159",
+        "removed":false,
+        "topics":[
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
+          "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961"
+        ],
+        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
+        "transactionIndex":"0x9f"
+      }
+    ]
+  })";
+  expected_network =
+      GetNetwork(mojom::kPolygonMainnetChainId, mojom::CoinType::ETH);
+  SetInterceptor(expected_network, "eth_getLogs", "", response);
+  TestDiscoverAssetsInternal(mojom::kPolygonMainnetChainId,
+                             mojom::CoinType::ETH,
+                             {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
+                             {"0x6B175474E89094C44Da98b954EedeAC495271d0F"},
+                             mojom::ProviderError::kSuccess, "");
+
+  // Discover assets should be supported on Optimism
+  token_list_json = R"(
+    {
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+        "name": "Dai Stablecoin",
+        "logo": "dai.svg",
+        "erc20": true,
+        "symbol": "DAI",
+        "chainId": "0xa",
+        "decimals": 18
+      }
+  })";
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  response = R"({
+    "jsonrpc":"2.0",
+    "id":1,
+    "result":[
+      {
+        "address":"0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
+        "blockNumber":"0xd6464c",
+        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
+        "logIndex":"0x159",
+        "removed":false,
+        "topics":[
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
+          "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961"
+        ],
+        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
+        "transactionIndex":"0x9f"
+      }
+    ]
+  })";
+  expected_network =
+      GetNetwork(mojom::kOptimismMainnetChainId, mojom::CoinType::ETH);
+  SetInterceptor(expected_network, "eth_getLogs", "", response);
+  TestDiscoverAssetsInternal(mojom::kOptimismMainnetChainId,
+                             mojom::CoinType::ETH,
+                             {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
+                             {"0x6B175474E89094C44Da98b954EedeAC495271d0F"},
+                             mojom::ProviderError::kSuccess, "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, Reset) {

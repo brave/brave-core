@@ -2119,6 +2119,13 @@ void JsonRpcService::GetERC1155TokenBalance(
       network_url, std::move(internal_callback));
 }
 
+void JsonRpcService::DiscoverAssetsOnAllSupportedChains(
+    const std::vector<std::string>& account_addresses) {
+  for (const auto& chain_id : asset_discovery_supported_chains) {
+    DiscoverAssets(chain_id, mojom::CoinType::ETH, account_addresses);
+  }
+}
+
 // Called by KeyringService::CreateWallet, KeyringService::RestoreWallet,
 // KeyringService::AddAccount, KeyringService::ImportAccountForKeyring,
 // and KeyringService::AddHardwareAccounts
@@ -2147,7 +2154,9 @@ void JsonRpcService::DiscoverAssetsInternal(
     mojom::CoinType coin,
     const std::vector<std::string>& account_addresses,
     DiscoverAssetsCallback callback) {
-  if (coin != mojom::CoinType::ETH || chain_id != mojom::kMainnetChainId) {
+  // Asset discovery only supported on select EVM chains
+  if (coin != mojom::CoinType::ETH ||
+      !base::Contains(asset_discovery_supported_chains, chain_id)) {
     std::move(callback).Run(
         std::vector<mojom::BlockchainTokenPtr>(),
         mojom::ProviderError::kMethodNotSupported,
