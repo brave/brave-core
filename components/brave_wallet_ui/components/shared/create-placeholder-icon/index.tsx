@@ -5,7 +5,13 @@ import { background } from 'ethereum-blockies'
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension, httpifyIpfsUrl } from '../../../utils/string-utils'
+import {
+  stripERC20TokenImageURL,
+  isRemoteImageURL,
+  isValidIconExtension,
+  httpifyIpfsUrl,
+  isIpfs
+} from '../../../utils/string-utils'
 
 // Styled components
 import { IconWrapper, PlaceholderText } from './style'
@@ -52,7 +58,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     const isValidIcon = React.useMemo(() => {
       if (isRemoteURL || isDataURL) {
-        return tokenImageURL?.includes('data:image/') ? true : isValidIconExtension(new URL(asset.logo).pathname)
+        return tokenImageURL?.includes('data:image/') || isIpfs(tokenImageURL) ? true : isValidIconExtension(new URL(asset.logo).pathname)
       }
       if (isStorybook) {
         return true
