@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/playlist_page_handler.h"
+#include "brave/browser/ui/playlist/playlist_page_handler.h"
 
 #include <string>
 #include <utility>
@@ -12,7 +12,9 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
+#endif
 #include "chrome/browser/ui/browser_finder.h"
 
 using PlaylistId = playlist::PlaylistService::PlaylistId;
@@ -22,6 +24,7 @@ playlist::PlaylistService* GetPlaylistService(Profile* profile) {
   return playlist::PlaylistServiceFactory::GetForBrowserContext(profile);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 PlaylistPageHandler::PlaylistPageHandler(
     Profile* profile,
     content::WebContents* contents,
@@ -34,11 +37,12 @@ PlaylistPageHandler::PlaylistPageHandler(
   DCHECK(profile_);
   observation_.Observe(GetPlaylistService(profile_));
 }
-
+#else
 PlaylistPageHandler::PlaylistPageHandler(Profile* profile) : profile_(profile) {
   DCHECK(profile_);
   observation_.Observe(GetPlaylistService(profile_));
 }
+#endif
 
 PlaylistPageHandler::~PlaylistPageHandler() = default;
 
@@ -96,6 +100,7 @@ void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
                                                                   url.spec());
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
     const std::string& playlist_id) {
   auto* browser = chrome::FindLastActive();
@@ -113,6 +118,7 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
     }
   }
 }
+#endif
 
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
                                                  const std::string& item_id) {
@@ -149,6 +155,8 @@ void PlaylistPageHandler::RemovePlaylist(const std::string& playlist_id) {
 
 void PlaylistPageHandler::OnPlaylistStatusChanged(
     const playlist::PlaylistChangeParams& params) {
+#if !BUILDFLAG(IS_ANDROID)
   // TODO(sko) Send proper events based on |params|
   page_->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
+#endif
 }

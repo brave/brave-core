@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_FACTORY_H_
 
 #include "base/memory/singleton.h"
-#include "brave/browser/ui/webui/playlist_page_handler.h"
+#include "brave/browser/ui/playlist/playlist_page_handler.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
