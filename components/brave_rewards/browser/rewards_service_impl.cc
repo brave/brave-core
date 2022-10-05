@@ -467,15 +467,17 @@ void RewardsServiceImpl::CheckPreferences() {
 
   if (prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
       prefs->GetBoolean(ads::prefs::kEnabled)) {
-    // If the user has enabled Ads or AC, then start the background Rewards
-    // utility process.
-    StartLedgerProcessIfNecessary();
-
     // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
     // the "enabled" pref to true.
     if (!prefs->GetUserPrefValue(prefs::kEnabled)) {
       prefs->SetBoolean(prefs::kEnabled, true);
     }
+  }
+
+  if (prefs->GetUserPrefValue(prefs::kEnabled)) {
+    // If the "enabled" pref is set, then start the background Rewards
+    // utility process.
+    StartLedgerProcessIfNecessary();
   }
 }
 
@@ -605,7 +607,9 @@ void RewardsServiceImpl::CreateRewardsWallet(
         base::BindOnce(on_created, self, std::move(callback)));
   };
 
-  StartProcess(base::BindOnce(on_start, AsWeakPtr(), std::move(callback)));
+  ready_->Post(FROM_HERE,
+               base::BindOnce(on_start, AsWeakPtr(), std::move(callback)));
+  StartLedgerProcessIfNecessary();
 }
 
 void RewardsServiceImpl::GetActivityInfoList(
@@ -1861,24 +1865,11 @@ void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
-    if (!profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
-      return DeferCallback(FROM_HERE, std::move(callback),
-                           ledger::mojom::Result::LEDGER_ERROR, nullptr);
-    }
-
-    StartProcess(
-        base::BindOnce(&RewardsServiceImpl::OnStartProcessForGetPublisherInfo,
-                       AsWeakPtr(), publisher_key, std::move(callback)));
-    return;
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         ledger::mojom::Result::LEDGER_ERROR, nullptr);
   }
 
   bat_ledger_->GetPublisherInfo(publisher_key, std::move(callback));
-}
-
-void RewardsServiceImpl::OnStartProcessForGetPublisherInfo(
-    const std::string& publisher_key,
-    GetPublisherInfoCallback callback) {
-  GetPublisherInfo(publisher_key, std::move(callback));
 }
 
 void RewardsServiceImpl::GetPublisherPanelInfo(
@@ -1897,26 +1888,12 @@ void RewardsServiceImpl::SavePublisherInfo(
     ledger::mojom::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
-    if (!profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
-      return DeferCallback(FROM_HERE, std::move(callback),
-                           ledger::mojom::Result::LEDGER_ERROR);
-    }
-
-    StartProcess(base::BindOnce(
-        &RewardsServiceImpl::OnStartProcessForSavePublisherInfo, AsWeakPtr(),
-        window_id, std::move(publisher_info), std::move(callback)));
-    return;
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         ledger::mojom::Result::LEDGER_ERROR);
   }
 
   bat_ledger_->SavePublisherInfo(window_id, std::move(publisher_info),
                                  std::move(callback));
-}
-
-void RewardsServiceImpl::OnStartProcessForSavePublisherInfo(
-    uint64_t window_id,
-    ledger::mojom::PublisherInfoPtr publisher_info,
-    SavePublisherInfoCallback callback) {
-  SavePublisherInfo(window_id, std::move(publisher_info), std::move(callback));
 }
 
 void RewardsServiceImpl::GetRecurringTips(
@@ -2250,6 +2227,11 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
 
 bool RewardsServiceImpl::Connected() const {
   return bat_ledger_.is_bound();
+}
+
+void RewardsServiceImpl::StartProcessForTesting(base::OnceClosure callback) {
+  ready_->Post(FROM_HERE, std::move(callback));
+  StartLedgerProcessIfNecessary();
 }
 
 void RewardsServiceImpl::SetLedgerEnvForTesting() {
@@ -2894,14 +2876,6 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
     const bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   resetting_rewards_ = false;
-  StartProcess(
-      base::BindOnce(&RewardsServiceImpl::OnStartProcessForCompleteReset,
-                     AsWeakPtr(), std::move(callback), success));
-}
-
-void RewardsServiceImpl::OnStartProcessForCompleteReset(
-    SuccessCallback callback,
-    bool success) {
   for (auto& observer : observers_) {
     observer.OnCompleteReset(success);
   }
@@ -2959,11 +2933,6 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   }
 
   bat_ledger_->GetRewardsWallet(std::move(callback));
-}
-
-void RewardsServiceImpl::StartProcess(base::OnceClosure callback) {
-  ready_->Post(FROM_HERE, std::move(callback));
-  StartLedgerProcessIfNecessary();
 }
 
 void RewardsServiceImpl::GetRewardsWalletPassphrase(

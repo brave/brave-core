@@ -407,25 +407,12 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
 
   AddRef();
 
-  rewards_service->StartProcess(
-      base::BindOnce(&BraveRewardsTipUserFunction::OnProcessStarted, this,
-                     params->publisher_key));
-
-  return RespondNow(NoArguments());
-}
-
-void BraveRewardsTipUserFunction::OnProcessStarted(
-    const std::string& publisher_key) {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    Release();
-    return;
-  }
   rewards_service->GetPublisherInfo(
-      publisher_key,
+      params->publisher_key,
       base::BindOnce(&BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
                      this));
+
+  return RespondNow(NoArguments());
 }
 
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(

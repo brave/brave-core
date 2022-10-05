@@ -483,19 +483,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void StartProcess() {
-        synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().startProcess(mNativeBraveRewardsNativeWorker);
-        }
-    }
-
-    @CalledByNative
-    public void OnStartProcess() {
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnStartProcess();
-        }
-    }
-
     @CalledByNative
     public void OnRefreshPublisher(int status, String publisherKey) {
         for (BraveRewardsObserver observer : mObservers) {
@@ -739,7 +726,6 @@ public class BraveRewardsNativeWorker {
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
         void setAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
         void getAutoContributionAmount(long nativeBraveRewardsNativeWorker);
-        void startProcess(long nativeBraveRewardsNativeWorker);
         void getAdsAccountStatement(long nativeBraveRewardsNativeWorker);
     }
 }

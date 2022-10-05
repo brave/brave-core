@@ -155,6 +155,8 @@ class RewardsBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
+  rewards_browsertest_util::SetOnboardingBypassed(browser(), true);
+  rewards_browsertest_util::StartProcess(rewards_service_);
   context_helper_->LoadRewardsPage();
 
   rewards_browsertest_util::WaitForElementThenClick(

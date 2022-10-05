@@ -24,7 +24,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
@@ -87,34 +86,6 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 }  // namespace
 
-class TestRewardsServiceObserver
-    : public brave_rewards::RewardsServiceObserver {
- public:
-  TestRewardsServiceObserver() = default;
-  ~TestRewardsServiceObserver() override = default;
-
-  void WaitForRewardsInitialization() {
-    if (rewards_initialized_) {
-      return;
-    }
-
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
-  }
-
-  // RewardsServiceObserver:
-  void OnRewardsInitialized(brave_rewards::RewardsService* service) override {
-    rewards_initialized_ = true;
-    if (run_loop_) {
-      run_loop_->Quit();
-    }
-  }
-
- private:
-  std::unique_ptr<base::RunLoop> run_loop_;
-  bool rewards_initialized_ = false;
-};
-
 class BraveAdsBrowserTest : public InProcessBrowserTest,
                             public base::SupportsWeakPtr<BraveAdsBrowserTest> {
  public:
@@ -149,24 +120,17 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(browser_profile));
-    rewards_service_->AddObserver(&rewards_service_observer_);
 
     rewards_service_->ForTestingSetTestResponseCallback(base::BindRepeating(
         &BraveAdsBrowserTest::GetTestResponse, base::Unretained(this)));
 
     rewards_service_->SetLedgerEnvForTesting();
 
+    rewards_browsertest_util::StartProcess(rewards_service_);
+
     ads_service_ = static_cast<brave_ads::AdsService*>(
         brave_ads::AdsServiceFactory::GetForProfile(browser_profile));
     ASSERT_NE(nullptr, ads_service_);
-  }
-
-  void TearDownOnMainThread() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-    rewards_service_->RemoveObserver(&rewards_service_observer_);
-
-    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -378,8 +342,6 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
 
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
-
-  TestRewardsServiceObserver rewards_service_observer_;
 
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   const std::string newly_supported_locale_ = "en_830";
@@ -1061,23 +1023,6 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
         true, /*rewards_enabled*/
         false /*ads_enabled*/
     }};
-
-IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, PRE_UpgradePath) {
-  // Handled in |MaybeMockLocaleHelperForBraveAdsUpgradePath|
-
-  const ::testing::TestInfo* const test_info =
-      ::testing::UnitTest::GetInstance()->current_test_info();
-  ASSERT_NE(nullptr, test_info);
-  const std::string test_name = test_info->name();
-
-  // Wait for Brave Rewards to be initialized before proceeding with
-  // tests that rely on Rewards
-  if ((test_name.find("WithRewardsEnabled_") != std::string::npos ||
-       test_name.find("WithRewardsAndAdsEnabled_") != std::string::npos) &&
-      !rewards_service_->IsInitialized()) {
-    rewards_service_observer_.WaitForRewardsInitialization();
-  }
-}
 
 IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, UpgradePath) {
   BraveAdsUpgradePathParamInfo param(GetParam());

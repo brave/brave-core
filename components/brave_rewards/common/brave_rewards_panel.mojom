@@ -38,9 +38,6 @@ interface PanelHandler {
   // Notify the browser that the panel should be closed.
   CloseUI();
 
-  // Starts the Rewards services if necessary.
-  StartRewards() => ();
-
   // Returns the `RewardsPanelArgs` for the most recent panel request.
   GetRewardsPanelArgs() => (RewardsPanelArgs args);
 };

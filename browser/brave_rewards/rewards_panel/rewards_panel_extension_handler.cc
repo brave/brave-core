@@ -59,8 +59,6 @@ void RewardsPanelExtensionHandler::OnRewardsPanelRequested(
     return;
   }
 
-  rewards_service_->StartProcess(base::DoNothing());
-
   auto* profile = browser_->profile();
 
   // Load the rewards extension if it is not already loaded.

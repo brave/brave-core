@@ -41,7 +41,6 @@ class RewardsPanelHandler
   // brave_rewards::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
-  void StartRewards(StartRewardsCallback callback) override;
   void GetRewardsPanelArgs(GetRewardsPanelArgsCallback callback) override;
 
   // brave_rewards::RewardsPanelCoordinator::Observer:

@@ -346,8 +346,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
 
-  virtual void StartProcess(base::OnceClosure callback) = 0;
-
   virtual void GetRewardsWalletPassphrase(
       GetRewardsWalletPassphraseCallback callback) = 0;
 

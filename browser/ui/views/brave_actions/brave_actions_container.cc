@@ -394,10 +394,6 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
     extensions::ComponentLoader* loader = service->component_loader();
     static_cast<extensions::BraveComponentLoader*>(loader)
         ->AddRewardsExtension();
-
-    if (rewards_service_) {
-      rewards_service_->StartProcess(base::DoNothing());
-    }
   }
 }
 // end BraveRewardsActionStubView::Delegate members

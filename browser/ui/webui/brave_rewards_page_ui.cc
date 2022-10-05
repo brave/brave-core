@@ -527,8 +527,6 @@ void RewardsDOMHandler::Init() {
 
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  rewards_service_->StartProcess(base::DoNothing());
-
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
 
   // Configure a pref change registrar to update brave://rewards when settings
@@ -649,22 +647,25 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   }
 
   base::Value::Dict data;
+  double rate = 0.0, auto_contribute_choice = 0.0;
+  base::Value::List auto_contribute_choices;
+  base::Value::Dict payout_status;
   if (parameters) {
-    base::Value::List auto_contribute_choices;
+    rate = parameters->rate;
+    auto_contribute_choice = parameters->auto_contribute_choice;
     for (double const& item : parameters->auto_contribute_choices) {
       auto_contribute_choices.Append(item);
     }
-
-    base::Value::Dict payout_status;
     for (const auto& [key, value] : parameters->payout_status) {
       payout_status.Set(key, value);
     }
-
-    data.Set("rate", parameters->rate);
-    data.Set("autoContributeChoice", parameters->auto_contribute_choice);
-    data.Set("autoContributeChoices", std::move(auto_contribute_choices));
-    data.Set("payoutStatus", std::move(payout_status));
   }
+
+  data.Set("rate", rate);
+  data.Set("autoContributeChoice", auto_contribute_choice);
+  data.Set("autoContributeChoices", std::move(auto_contribute_choices));
+  data.Set("payoutStatus", std::move(payout_status));
+
   CallJavascriptFunction("brave_rewards.rewardsParameters",
                          base::Value(std::move(data)));
 }
