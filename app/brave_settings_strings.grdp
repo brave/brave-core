@@ -238,13 +238,13 @@
 
   <!-- Settings / Shields / ContentFilters -->
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_LABEL" desc="Label for Content Filtering">
-    Content Filtering
+    Content filtering
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTER_LABEL_DESCRIPTION" desc="Long description describing what Content Filtering does">
     Enable custom filters that block regional and language-specific trackers and Annoyances.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_DESC" desc="Long description describing what Content Filtering does">
-    Enable custom filters that block regional and language-specific trackers and 
+    Enable custom filters that block regional and language-specific trackers and
     <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Annoyances<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL" desc="Label for custom filters lists section">
@@ -257,7 +257,7 @@
     Only subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_LABEL" desc="Label for custom filters section">
-    Create Custom filters
+    Create custom filters
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_DESC" desc="Description for custom filters section">
     Add custom filters you've created, one per line, in the field below. Be sure to use the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Adblock filter syntax<ph name="END_LINK">&lt;/a&gt;</ph>.
@@ -303,6 +303,12 @@
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to ask the user to enter a URL">
     Enter filter list URL
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERS" desc="A button label that navigates to Content Filters page">
+    Content Filters
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to allow the user to filter from a list of content filters">
+    Filter lists
   </message>
 
   <!-- Settings / Brave Rewards -->

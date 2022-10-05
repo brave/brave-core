@@ -113,7 +113,7 @@
 </div>
 <settings-animated-pages id="filters" section="shields">
   <div route-path="default">
-    <cr-link-row 
+    <cr-link-row
       id="contentFiltersRow"
       class="hr"
       label="$i18n{adblockContentFilteringLabel}"
@@ -122,7 +122,7 @@
     ></cr-link-row>
   </div>
   <template is="dom-if" route-path="/shields/filters">
-    <settings-subpage page-title="Content filters">
+    <settings-subpage page-title="$i18n{adblockContentFiltersLabel}">
       <adblock-subpage></adblock-subpage>
     </settings-subpage>
   </template>
