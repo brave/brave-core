@@ -50,6 +50,7 @@ import com.wireguard.crypto.KeyPair;
 import org.json.JSONException;
 
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.CollectionUtil;
 import org.chromium.base.CommandLine;
@@ -111,6 +112,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
@@ -814,6 +816,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         //set bg ads to off for existing and new installations
         setBgBraveAdsDefaultOff();
+        migrateBgPlaybackToFeature();
 
         Context app = ContextUtils.getApplicationContext();
         if (null != app
@@ -957,6 +960,28 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                 >= 7)) {
             showAdFreeCalloutDialog();
         }
+    }
+
+    private void migrateBgPlaybackToFeature() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        if (sharedPreferences.getBoolean(
+                    BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
+                    false)) {
+            if (BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()
+                    && ChromeFeatureList.isEnabled(
+                            BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
+                BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled(false);
+            }
+            return;
+        }
+        if (BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()) {
+            BraveFeatureUtil.enableFeature(
+                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, true, true);
+        }
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(
+                BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE, true);
+        sharedPreferencesEditor.apply();
     }
 
     private void showSearchBoxTooltip() {

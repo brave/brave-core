@@ -44,22 +44,21 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
+#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
+#include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
+#include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_user_settings.h"
 #include "content/public/browser/web_contents.h"
+#else
+#include "brave/browser/android/preferences/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/browser_process.h"
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
-#include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
-#include "chrome/browser/sync/sync_service_factory.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_user_settings.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
@@ -181,7 +180,9 @@ void BraveBrowserMainParts::PostProfileInit(Profile* profile,
   ChromeBrowserMainParts::PostProfileInit(profile, is_initial_profile);
 
 #if BUILDFLAG(IS_ANDROID)
-  if (profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+  if (base::FeatureList::IsEnabled(
+          preferences::features::kBraveBackgroundVideoPlayback) ||
+      profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);

@@ -47,4 +47,6 @@ public final class BravePreferenceKeys {
     public static final String SHOULD_SHOW_COOKIE_CONSENT_NOTICE =
             "should_show_cookie_consent_notice";
     public static final String LOADED_SITE_COUNT = "loaded_site_count";
+    public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE =
+            "brave_background_video_playback_converted_to_feature";
 }

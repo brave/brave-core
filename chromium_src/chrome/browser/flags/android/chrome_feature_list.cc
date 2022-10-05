@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
+#include "brave/browser/android/preferences/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_today/common/features.h"
@@ -16,7 +17,8 @@
     &brave_search_conversion::features::kOmniboxBanner,      \
     &brave_today::features::kBraveNewsFeature,               \
     &brave_wallet::features::kNativeBraveWalletFeature,      \
-    &brave_wallet::features::kBraveWalletSolanaFeature
+    &brave_wallet::features::kBraveWalletSolanaFeature,      \
+    &preferences::features::kBraveBackgroundVideoPlayback
 // clang-format on
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"

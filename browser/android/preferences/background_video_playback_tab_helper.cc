@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/android/preferences/features.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -47,7 +48,10 @@ bool IsYouTubeDomain(const GURL& url) {
 bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   PrefService* prefs =
       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
-  if (!prefs->GetBoolean(kBackgroundVideoPlaybackEnabled))
+
+  if (!base::FeatureList::IsEnabled(
+          ::preferences::features::kBraveBackgroundVideoPlayback) &&
+      !prefs->GetBoolean(kBackgroundVideoPlaybackEnabled))
     return false;
 
   content::RenderFrameHost::AllowInjectingJavaScript();
