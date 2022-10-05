@@ -82,8 +82,8 @@ private struct StatsView: View {
                 Text(verbatim: placeholderOrPrivacyRedaction ? "-" : data.value)
                   .font(.system(size: 32.0))
                   .foregroundColor(Color(data.color))
-                  .multilineTextAlignment(.center)
                   .minimumScaleFactor(0.5)
+                  .lineLimit(1)
                   .unredacted()
                 Text(verbatim: data.name)
                   .font(.system(size: 10, weight: .semibold))
@@ -113,8 +113,17 @@ struct StatsWidget_Previews: PreviewProvider {
     let kinds: [StatKind] = [.adsBlocked, .dataSaved, .timeSaved]
     return kinds.map { StatData(name: $0.name, value: $0.displayString, color: $0.valueColor) }
   }
+  
+  static var fullStats: [StatData] {
+    let ads = StatData(name: StatKind.adsBlocked.name, value: "113K", color: StatKind.adsBlocked.valueColor)
+    let data = StatData(name: StatKind.dataSaved.name, value: "3,47GB", color: StatKind.dataSaved.valueColor)
+    let time = StatData(name: StatKind.timeSaved.name, value: "1h", color: StatKind.timeSaved.valueColor)
+    return [ads, data, time]
+  }
 
   static var previews: some View {
+    StatsView(entry: StatsEntry(date: Date(), statData: fullStats))
+      .previewContext(WidgetPreviewContext(family: .systemMedium))
     StatsView(entry: StatsEntry(date: Date(), statData: stats))
       .previewContext(WidgetPreviewContext(family: .systemMedium))
     StatsView(entry: StatsEntry(date: Date(), statData: stats))
