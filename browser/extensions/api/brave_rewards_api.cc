@@ -112,7 +112,8 @@ BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ::brave_rewards::IsSupportedForProfile(profile);
+  bool is_supported = ::brave_rewards::IsSupportedForProfile(
+      profile, ::brave_rewards::IsSupportedOptions::kSkipRegionCheck);
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
