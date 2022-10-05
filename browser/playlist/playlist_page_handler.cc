@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/playlist_page_handler.h"
+#include "brave/browser/playlist/playlist_page_handler.h"
 
 #include <string>
 #include <utility>
@@ -12,8 +12,11 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
 #include "chrome/browser/profiles/profile.h"
+
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#endif
 
 playlist::PlaylistService* GetPlaylistService(Profile* profile) {
   return playlist::PlaylistServiceFactory::GetForBrowserContext(profile);
@@ -78,6 +81,9 @@ void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
 
 void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
     const std::string& playlist_id) {
+#if defined(OS_ANDROID)
+  NOTIMPLEMENTED();
+#else
   auto* browser = chrome::FindLastActive();
   if (!browser) {
     LOG(ERROR) << "No active browser";
@@ -92,6 +98,7 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
           playlist_id, contents);
     }
   }
+#endif  // defined(OS_ANDROID)
 }
 
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
