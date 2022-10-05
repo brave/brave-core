@@ -47,7 +47,6 @@ interface PageHandler {
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
   
   // Store all media files from tabs in this window.
-  [EnableIfNot=is_android]
   AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);

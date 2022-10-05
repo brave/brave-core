@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
 
 #include <string>
 
@@ -47,10 +47,8 @@ class PlaylistPageHandler : public KeyedService,
                    PlaylistPageHandler::GetPlaylistCallback callback) override;
   void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
                                        const GURL& url) override;
-#if !BUILDFLAG(IS_ANDROID)
   void AddMediaFilesFromOpenTabsToPlaylist(
       const std::string& playlist_id) override;
-#endif
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id) override;
   void MoveItem(const std::string& from_playlist_id,
@@ -81,4 +79,4 @@ class PlaylistPageHandler : public KeyedService,
       observation_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
