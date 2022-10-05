@@ -71,13 +71,12 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
         visibility == APIVisibility::kHidden,
         playlist_service->ShouldDownloadOnBackground(active_web_contents));
 
-    // Then, the WebContents used for background download hides the API if it's
-    // listed.
+    // Then, the WebContents used for background download always hides the API.
     auto* background_web_contents = playlist_service->download_request_manager_
                                         ->GetBackgroundWebContentsForTesting();
     ASSERT_TRUE(content::NavigateToURL(background_web_contents, url));
-    EXPECT_EQ(visibility == APIVisibility::kVisible,
-              EvalJs(background_web_contents, "!!window.MediaSource"));
+    EXPECT_FALSE(
+        EvalJs(background_web_contents, "!!window.MediaSource").ExtractBool());
   }
 
  protected:

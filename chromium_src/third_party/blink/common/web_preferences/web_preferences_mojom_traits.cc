@@ -23,8 +23,8 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
     return false;
   }
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
-
-  return data.ReadUrlsToHideMediaSrcApi(&out->sites_to_hide_media_src_api);
+  out->force_to_hide_media_src_api = data.force_to_hide_media_src_api();
+  return true;
 }
 
 }  // namespace mojo

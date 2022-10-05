@@ -5,10 +5,8 @@
 
 module blink.mojom;
 
-import "services/network/public/mojom/schemeful_site.mojom";
-
 [BraveExtend]
 struct WebPreferences {
   bool force_cosmetic_filtering;
-  array<network.mojom.SchemefulSite> urls_to_hide_media_src_api;
+  bool force_to_hide_media_src_api;
 };

@@ -15,8 +15,6 @@
 
 #undef WebPreferences
 
-#include "net/base/schemeful_site.h"
-
 namespace mojo {
 
 template <>
@@ -29,9 +27,9 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
     return r.force_cosmetic_filtering;
   }
 
-  static std::vector<net::SchemefulSite> urls_to_hide_media_src_api(
+  static bool force_to_hide_media_src_api(
       const blink::web_pref::WebPreferences& r) {
-    return r.sites_to_hide_media_src_api;
+    return r.force_to_hide_media_src_api;
   }
 
   static bool Read(blink::mojom::WebPreferencesDataView r,

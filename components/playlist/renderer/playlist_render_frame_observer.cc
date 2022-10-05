@@ -24,15 +24,10 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  const auto current_origin =
-      render_frame()->GetWebFrame()->GetSecurityOrigin();
-  if (base::ranges::any_of(
-          render_frame()->GetBlinkPreferences().sites_to_hide_media_src_api,
-          [&current_origin](const auto& site) {
-            return site == net::SchemefulSite(current_origin);
-          })) {
-    HideMediaSourceAPI();
-  }
+  if (!render_frame()->GetBlinkPreferences().force_to_hide_media_src_api)
+    return;
+
+  HideMediaSourceAPI();
 }
 
 void PlaylistRenderFrameObserver::OnDestruct() {

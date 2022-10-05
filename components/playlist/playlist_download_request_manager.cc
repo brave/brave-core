@@ -261,8 +261,7 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
     blink::web_pref::WebPreferences* web_prefs) {
   if (web_contents_ && web_contents_.get() == web_contents) {
     web_prefs->force_cosmetic_filtering = true;
-    web_prefs->sites_to_hide_media_src_api =
-        media_detector_component_manager_->sites_to_hide_media_src_api();
+    web_prefs->force_to_hide_media_src_api = true;
   }
 }
 
