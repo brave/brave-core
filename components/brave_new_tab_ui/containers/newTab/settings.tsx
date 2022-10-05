@@ -142,7 +142,11 @@ export default class Settings extends React.PureComponent<Props, State> {
     if (
       this.settingsMenuRef &&
       this.settingsMenuRef.current &&
-      !this.settingsMenuRef.current.contains(event.target)
+      !this.settingsMenuRef.current.contains(event.target) &&
+      // Don't close the settings dialog for a click outside if we're in the
+      // Brave News modal - the user expects closing that one to bring them back
+      // to this one.
+      !this.context.page
     ) {
       this.props.onClose()
     }
@@ -200,7 +204,6 @@ export default class Settings extends React.PureComponent<Props, State> {
   setActiveTab (activeTab: TabType) {
     if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveToday) {
       this.context.setPage('news')
-      this.props.onClose()
       return
     }
 

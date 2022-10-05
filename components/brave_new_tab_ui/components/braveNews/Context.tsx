@@ -23,7 +23,7 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
 })
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
-    const [page, setPage] = useState<NewsPage>('news')
+    const [page, setPage] = useState<NewsPage>(null)
     const [channels, setChannels] = useState<Channels>({})
     const [publishers, setPublishers] = useState<Publishers>({})
 
