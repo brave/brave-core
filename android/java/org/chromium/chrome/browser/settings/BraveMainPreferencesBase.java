@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
@@ -154,6 +156,18 @@ public class BraveMainPreferencesBase
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M 
             || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
+        }
+        setBgPlaybackPreference();
+    }
+
+    private void setBgPlaybackPreference() {
+        Preference preference = findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
+        if (preference instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) preference)
+                    .setChecked(ChromeFeatureList.isEnabled(
+                                        BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
+                            || BravePrefServiceBridge.getInstance()
+                                       .getBackgroundVideoPlaybackEnabled());
         }
     }
 
@@ -313,7 +327,9 @@ public class BraveMainPreferencesBase
     private void updateSummaries() {
         updateSummary(PREF_USE_CUSTOM_TABS, BraveCustomTabsPreference.getPreferenceSummary());
         updateSummary(PREF_BRAVE_STATS, BraveStatsPreferences.getPreferenceSummary());
-        if (BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()) {
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
+                || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()) {
             updateSummary(
                     PREF_BACKGROUND_VIDEO_PLAYBACK, R.string.prefs_background_video_playback_on);
         }
@@ -362,8 +378,9 @@ public class BraveMainPreferencesBase
         }
 
         if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
-            BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled(
-                    (boolean) newValue);
+            BraveFeatureUtil.enableFeature(
+                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
+                    true);
             if ((boolean) newValue) {
                 updateSummary(PREF_BACKGROUND_VIDEO_PLAYBACK,
                         R.string.prefs_background_video_playback_on);

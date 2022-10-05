@@ -56,6 +56,10 @@
 #include "brave/browser/ui/views/tabs/features.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/android/preferences/features.h"
+#endif
+
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
@@ -76,6 +80,10 @@ using debounce::features::kBraveDebounce;
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
+
+#if BUILDFLAG(IS_ANDROID)
+using preferences::features::kBraveBackgroundVideoPlayback;
+#endif
 
 namespace flag_descriptions {
 
@@ -390,6 +398,15 @@ constexpr char kBraveVerticalTabsDescription[] =
     "Move tab strip to be a vertical panel on the side of the window instead "
     "of horizontal at the top of the window.";
 #endif
+
+#if BUILDFLAG(IS_ANDROID)
+constexpr char kBraveBackgroundVideoPlaybackName[] =
+    "Background video playback";
+constexpr char kBraveBackgroundVideoPlaybackDescription[] =
+    "Enables play audio from video in background when tab is not active or "
+    "device screen is turned off. Try to switch to desktop mode if this "
+    "feature is not working.";
+#endif
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -551,6 +568,17 @@ constexpr char kBraveVerticalTabsDescription[] =
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
 #endif  // defined(TOOLKIT_VIEWS)
 
+#if BUILDFLAG(IS_ANDROID)
+#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                   \
+    {"brave-background-video-playback",                           \
+     flag_descriptions::kBraveBackgroundVideoPlaybackName,        \
+     flag_descriptions::kBraveBackgroundVideoPlaybackDescription, \
+     kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(kBraveBackgroundVideoPlayback)},
+#else
+#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
+#endif  // BUILDFLAG(IS_ANDROID)
+
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
      flag_descriptions::kUseDevUpdaterUrlName,                              \
@@ -710,4 +738,5 @@ constexpr char kBraveVerticalTabsDescription[] =
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
     BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
     PLAYLIST_FEATURE_ENTRIES                                                \
-    BRAVE_VERTICAL_TABS_FEATURE_ENTRY
+    BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                       \
+    BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
