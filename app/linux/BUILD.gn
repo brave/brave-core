@@ -83,14 +83,17 @@ action("strip_and_dump_symbols") {
   # on the PATH that supports Arm64 binaries:
   if (current_cpu == "arm64") {
     strip_arm64 = "//brave/app/linux:strip_arm64"
-    deps += [strip_arm64]
+    deps += [ strip_arm64 ]
 
     strip_dir = get_label_info(strip_arm64, "root_out_dir")
     strip_path = rebase_path(strip_dir, root_build_dir)
     old_script_path = rebase_path(script, root_build_dir)
 
     script = "//brave/app/linux/prepend_to_path.py"
-    args = [ strip_path , old_script_path ]
+    args = [
+      strip_path,
+      old_script_path,
+    ]
   } else {
     args = []
   }

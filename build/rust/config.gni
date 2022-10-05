@@ -47,7 +47,8 @@ if (use_lld) {
 
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
 # Supposedly this bug was fixed, but it's still happening for us.
-too_many_personality_profiles_workaround = is_apple && use_lld && !is_component_build
+too_many_personality_profiles_workaround =
+    is_apple && use_lld && !is_component_build
 
 enable_rust_lto = too_many_personality_profiles_workaround
 
