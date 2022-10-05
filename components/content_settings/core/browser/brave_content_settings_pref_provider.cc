@@ -357,7 +357,7 @@ void BravePrefProvider::MigrateDefaultHttpsContentSetting() {
   // We’re clearing them all instead of just deleting the wildcard because
   // in previous versions we used *.* rule in exceptions list for the default
   // value. Exceptions rules cannot be dropped by setting them to
-  // CONTENT_DEFAULT_VALUE and and have to remove it manualy here.
+  // CONTENT_DEFAULT_VALUE and we have to remove it manualy here.
   // If user had any customized rules for domains we keep them as is.
   while (rule_iterator && rule_iterator->HasNext()) {
     auto old_rule = rule_iterator->Next();

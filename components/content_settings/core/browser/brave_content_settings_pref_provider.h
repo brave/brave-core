@@ -58,6 +58,10 @@ class BravePrefProvider : public PrefProvider,
   friend class BravePrefProviderTest;
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsHttpsMigrationDefaultBlocked);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsHttpsMigrationDefaultAllowed);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationV2toV4);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationVersion);
