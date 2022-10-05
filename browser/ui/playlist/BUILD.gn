@@ -1,0 +1,29 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/playlist/buildflags/buildflags.gni")
+
+if (enable_playlist) {
+  source_set("playlist") {
+    assert(enable_playlist)
+    sources = [
+      "playlist_page_handler.cc",
+      "playlist_page_handler.h",
+    ]
+
+    deps = [
+      "//brave/browser/playlist",
+      "//brave/browser/playlist:playlist",
+      "//brave/components/playlist",
+      "//brave/components/playlist/buildflags",
+      "//brave/components/playlist/mojom",
+      "//chrome/browser/profiles:profile",
+      "//components/keyed_service/core",
+      "//mojo/public/cpp/bindings:bindings",
+      "//skia",
+      "//third_party/abseil-cpp:absl",
+    ]
+  }
+}
