@@ -143,7 +143,6 @@ public class BrowserViewController: UIViewController {
 
   let downloadQueue = DownloadQueue()
 
-  fileprivate var contentBlockListCompiled: Bool = false
   private var cancellables: Set<AnyCancellable> = []
 
   let rewards: BraveRewards
@@ -507,6 +506,8 @@ public class BrowserViewController: UIViewController {
     updateWidgetFavoritesData()
     
     Task { @MainActor in
+      self.setupTabs()
+      
       await ContentBlockerManager.shared.loadBundledResources()
       await ContentBlockerManager.shared.loadCachedCompileResults()
       
@@ -515,15 +516,12 @@ public class BrowserViewController: UIViewController {
       async let filterListCache: Void = await FilterListResourceDownloader.shared.loadCachedData()
       async let adblockResourceCache: Void = await AdblockResourceDownloader.shared.loadCachedData()
       _ = await (filterListCache, adblockResourceCache)
-      
+
       // Compile some ad-block data
       async let compiledResourcesCompile: Void = await AdBlockEngineManager.shared.compileResources()
       async let pendingResourcesCompile: Void = await ContentBlockerManager.shared.compilePendingResources()
       _ = await (compiledResourcesCompile, pendingResourcesCompile)
-      
-      self.contentBlockListCompiled = true
-      self.setupTabs()
-      
+  
       FilterListResourceDownloader.shared.start(with: self.braveCore.adblockService)
       await AdblockResourceDownloader.shared.startFetching()
       ContentBlockerManager.shared.startTimer()
@@ -961,7 +959,6 @@ public class BrowserViewController: UIViewController {
   }
 
   private func setupTabs() {
-    assert(contentBlockListCompiled, "Tabs should not be set up until after blocker lists are compiled")
     let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
     let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
     
@@ -1057,9 +1054,7 @@ public class BrowserViewController: UIViewController {
     if crashedLastSession {
       showRestoreTabsAlert()
     } else {
-      if self.contentBlockListCompiled {
-        setupTabs()
-      }
+      setupTabs()
     }
     return {}
   }()
@@ -1071,9 +1066,7 @@ public class BrowserViewController: UIViewController {
     }
     let alert = UIAlertController.restoreTabsAlert(
       okayCallback: { _ in
-        if self.contentBlockListCompiled {
-          self.setupTabs()
-        }
+        self.setupTabs()
       },
       noCallback: { _ in
         TabMO.deleteAll()
