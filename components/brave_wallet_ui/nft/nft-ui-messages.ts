@@ -11,6 +11,7 @@ const nftDisplayOrigin = loadTimeData.getString('braveWalletNftBridgeUrl')
 export const braveNftDisplayOrigin = nftDisplayOrigin.endsWith('/') ? nftDisplayOrigin.slice(0, -1) : nftDisplayOrigin
 
 export const braveWalletOrigin = 'chrome://wallet'
+export const braveWalletPanelOrigin = 'chrome://wallet-panel.top-chrome'
 
 export const enum NftUiCommand {
   UpdateLoading = 'update-loading',

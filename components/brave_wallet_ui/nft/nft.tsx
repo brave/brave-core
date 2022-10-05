@@ -22,9 +22,11 @@ import walletLightTheme from '../theme/wallet-light'
 // utils
 import {
   braveWalletOrigin,
+  braveWalletPanelOrigin,
   CommandMessage,
   NftUiCommand,
-  UpdateLoadingMessage, UpdateNftImageUrl,
+  UpdateLoadingMessage,
+  UpdateNftImageUrl,
   UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage
@@ -45,38 +47,43 @@ const App = () => {
   // each message has a payload parameter containing the event data
   const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
     // validate message origin
-    if (event.origin !== braveWalletOrigin) return
+    if (event.origin === braveWalletOrigin || event.origin === braveWalletPanelOrigin) {
+      const message = event.data
+      switch (message.command) {
+        case NftUiCommand.UpdateLoading:
+        {
+          const { payload } = message as UpdateLoadingMessage
+          setLoadingNftMetadata(payload)
+          break
+        }
 
-    const message = event.data
-    switch (message.command) {
-      case NftUiCommand.UpdateLoading: {
-        const { payload } = message as UpdateLoadingMessage
-        setLoadingNftMetadata(payload)
-        break
-      }
+        case NftUiCommand.UpdateSelectedAsset:
+        {
+          const { payload } = message as UpdateSelectedAssetMessage
+          setSelectedAsset(payload)
+          break
+        }
 
-      case NftUiCommand.UpdateSelectedAsset: {
-        const { payload } = message as UpdateSelectedAssetMessage
-        setSelectedAsset(payload)
-        break
-      }
+        case NftUiCommand.UpdateNFTMetadata:
+        {
+          const { payload } = message as UpdateNFtMetadataMessage
+          setNftMetadata(payload)
+          break
+        }
 
-      case NftUiCommand.UpdateNFTMetadata: {
-        const { payload } = message as UpdateNFtMetadataMessage
-        setNftMetadata(payload)
-        break
-      }
+        case NftUiCommand.UpdateTokenNetwork:
+        {
+          const { payload } = message as UpdateTokenNetworkMessage
+          setTokenNetwork(payload)
+          break
+        }
 
-      case NftUiCommand.UpdateTokenNetwork: {
-        const { payload } = message as UpdateTokenNetworkMessage
-        setTokenNetwork(payload)
-        break
-      }
-
-      case NftUiCommand.UpdateNFTImageUrl: {
-        const { payload } = message as UpdateNftImageUrl
-        setImageUrl(payload)
-        break
+        case NftUiCommand.UpdateNFTImageUrl:
+        {
+          const { payload } = message as UpdateNftImageUrl
+          setImageUrl(payload)
+          break
+        }
       }
     }
   }, [])
