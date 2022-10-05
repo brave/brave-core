@@ -504,4 +504,21 @@
     <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.
   </message>
 
+  <!-- Rewards unsupported region notice -->
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER" desc="">
+    Sorry, Brave Rewards is not available
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER" desc="">
+    Unfortunately, it looks like you’re in a region where Brave Rewards is not available.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE" desc="">
+    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1" desc="">
+    Don’t worry.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2" desc="">
+    You can still browse privately!
+  </message>
+
 </grit-part>

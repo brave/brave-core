@@ -403,10 +403,6 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
 
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
     const base::Value::List& args) {
-  if (!ads_service_) {
-    return;
-  }
-
   AllowJavascript();
 
   base::Value data = GetAdsDataDictionary();

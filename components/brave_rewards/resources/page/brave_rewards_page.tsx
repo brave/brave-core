@@ -264,6 +264,10 @@ function onPrefChanged (key: string) {
   actions.onPrefChanged(key)
 }
 
+function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
+  actions.onIsUnsupportedRegion(isUnsupportedRegion)
+}
+
 // Expose functions to Page Handlers.
 Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
@@ -314,7 +318,8 @@ Object.defineProperty(window, 'brave_rewards', {
     onboardingStatus,
     enabledInlineTippingPlatforms,
     externalWalletLogin,
-    onPrefChanged
+    onPrefChanged,
+    onIsUnsupportedRegion
   }
 })
 

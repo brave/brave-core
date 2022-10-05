@@ -43,6 +43,7 @@ declare namespace Rewards {
       reddit: boolean
       github: boolean
     }
+    isUnsupportedRegion: boolean
     excludedList: ExcludedPublisher[]
     externalWalletProviderList: string[]
     monthlyReport: MonthlyReport
