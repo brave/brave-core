@@ -10,34 +10,25 @@ import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
-  Clock,
-  RewardsWidget as Rewards,
-  BraveTalkWidget as BraveTalk,
-  BinanceWidget as Binance,
-  GeminiWidget as Gemini,
-  CryptoDotComWidget as CryptoDotCom,
-  EditTopSite,
-  SearchPromotion,
-  EditCards,
-  OverrideReadabilityColor
+  BinanceWidget as Binance, BraveTalkWidget as BraveTalk, Clock, CryptoDotComWidget as CryptoDotCom, EditCards, EditTopSite, GeminiWidget as Gemini, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
 import FooterInfo from '../../components/default/footer/footer'
+import * as Page from '../../components/default/page'
 import { SponsoredImageTooltip } from '../../components/default/rewards'
+import { FTXWidget as FTX } from '../../widgets/ftx/components'
 import TopSitesGrid from './gridSites'
 import SiteRemovalNotification from './notification'
 import Stats from './stats'
-import { FTXWidget as FTX } from '../../widgets/ftx/components'
-import * as Page from '../../components/default/page'
 
 // Helpers
 import {
   fetchCryptoDotComCharts, fetchCryptoDotComLosersGainers, fetchCryptoDotComSupportedPairs, fetchCryptoDotComTickerPrices
 } from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
-import VisibilityTimer from '../../helpers/visibilityTimer'
 import isReadableOnBackground from '../../helpers/colorUtil'
+import VisibilityTimer from '../../helpers/visibilityTimer'
 
 // Types
 import { getLocale } from '../../../common/locale'
@@ -49,13 +40,12 @@ import { BraveTodayState } from '../../reducers/today'
 import { FTXState } from '../../widgets/ftx/ftx_state'
 
 // NTP features
-import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
+import Settings, { TabType as SettingsTabType } from './settings'
 
 import { BraveNewsContextProvider } from '../../components/braveNews/Context'
-import BraveNewsModal from '../../components/braveNews/Modal'
-import GridWidget from './gridWidget'
 import BraveTodayHint from '../../components/default/braveToday/hint'
+import GridWidget from './gridWidget'
 
 interface Props {
   newTabData: NewTab.State
@@ -1346,7 +1336,6 @@ class NewTabPage extends React.Component<Props, State> {
           newTabData={this.props.newTabData}
           onEnableRewards={this.startRewards}
         />
-        <BraveNewsModal />
         {
           showEditTopSite
             ? <EditTopSite

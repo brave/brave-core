@@ -30,7 +30,7 @@ interface Props {
     channelId: string
 }
 
-export default function ChannelCard({ channelId }: Props) {
+export default function ChannelCard ({ channelId }: Props) {
     const { subscribed, setSubscribed } = useChannelSubscribed(channelId)
     return <Container
         direction='column'

@@ -23,11 +23,9 @@ export default function BraveNewsModal () {
     // Note: There's no attribute for open modal, so we need
     // to do this instead.
     React.useEffect(() => {
-        // TODO(jharris): Update ReactDOM types, so I don't need the
-        // [] for property access.
         if (dialogRef.current?.open && !page) { dialogRef.current?.close?.() }
         if (!dialogRef.current?.open && page) { dialogRef.current?.showModal?.() }
-    })
+    }, [page])
     return <Dialog ref={dialogRef as any}>
         <Configure />
     </Dialog>

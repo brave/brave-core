@@ -49,7 +49,7 @@ export default function Discover (props: {}) {
 
     return <Flex direction='column'>
         <Header>Discover</Header>
-        <SearchInput type="search" placeholder={getLocale('braveNewsSearchPlaceholderLabel')} value={query} onInput={e => setQuery(e.currentTarget.value)} />
+        <SearchInput type="search" placeholder={getLocale('braveNewsSearchPlaceholderLabel')} value={query} onChange={e => setQuery(e.currentTarget.value)} />
         <DirectFeedResults query={query} />
         <DiscoverSection name={getLocale('braveNewsBrowseByCategoryHeader')}>
             {filteredChannels

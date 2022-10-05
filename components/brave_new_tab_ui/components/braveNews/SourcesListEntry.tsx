@@ -39,7 +39,7 @@ const Text = styled.span`
     font-weight: 500;
 `
 
-function FavIcon(props: { src?: string }) {
+function FavIcon (props: { src?: string }) {
     const url = useGetUnpaddedImage(props.src ?? '', true)
     console.log(props.src, url)
     const [error, setError] = React.useState(false)
@@ -48,7 +48,7 @@ function FavIcon(props: { src?: string }) {
     </FavIconContainer>
 }
 
-export function FeedListEntry(props: Props) {
+export function FeedListEntry (props: Props) {
     const publisher = usePublisher(props.publisherId)
     const { subscribed, setSubscribed } = usePublisherSubscribed(props.publisherId)
 
@@ -63,7 +63,7 @@ export function FeedListEntry(props: Props) {
     </Container>
 }
 
-export function ChannelListEntry(props: { channelId: string }) {
+export function ChannelListEntry (props: { channelId: string }) {
     const { subscribed, setSubscribed } = useChannelSubscribed(props.channelId)
 
     return <Container direction="row" justify='space-between' align='center' onClick={() => setSubscribed(!subscribed)}>

@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import * as React from 'react'
+import Modal from './Modal'
 
+// Leave possibility for more pages open.
 type NewsPage = null
     | 'news'
 
@@ -22,6 +24,7 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     }), [page])
     return <BraveNewsContext.Provider value={context}>
         {props.children}
+        <Modal/>
     </BraveNewsContext.Provider>
 }
 
