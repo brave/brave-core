@@ -353,7 +353,12 @@ void BravePrefProvider::MigrateDefaultHttpsContentSetting() {
   const ContentSettingsPattern& wildcard = ContentSettingsPattern::Wildcard();
   std::vector<Rule> new_rules;
   base::Value default_value;
-  // Find rules that can be migrated and create replacement rules for them.
+  // Migrating default wildcard content settings to the default pref value.
+  // We’re clearing them all instead of just deleting the wildcard because
+  // in previous versions we used *.* rule in exceptions list for the default
+  // value. Exceptions rules cannot be dropped by setting them to
+  // CONTENT_DEFAULT_VALUE and and have to remove it manualy here.
+  // If user had any customized rules for domains we keep them as is.
   while (rule_iterator && rule_iterator->HasNext()) {
     auto old_rule = rule_iterator->Next();
     if (old_rule.primary_pattern == wildcard &&
