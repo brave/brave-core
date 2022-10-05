@@ -14,6 +14,7 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
@@ -878,6 +879,8 @@ test("brave_browser_tests") {
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
     "//brave/components/ntp_background_images/buildflags",
+    "//brave/components/playlist/browser",
+    "//brave/components/playlist/common",
     "//brave/components/resources:strings_grit",
     "//brave/components/skus/common",
     "//brave/components/speedreader/common/buildflags",
@@ -1099,6 +1102,14 @@ test("brave_browser_tests") {
       "//brave/browser/ui/whats_new:browser_test",
       "//chrome/browser/apps/app_service:app_service",
       "//chrome/browser/apps/app_service:constants",
+    ]
+  }
+
+  if (enable_request_otr) {
+    sources += [ "//brave/browser/request_otr/request_otr_browsertest.cc" ]
+    deps += [
+      "//brave/components/request_otr/browser",
+      "//brave/components/request_otr/common",
     ]
   }
 

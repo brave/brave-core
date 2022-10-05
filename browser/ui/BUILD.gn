@@ -11,6 +11,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -476,6 +477,8 @@ source_set("ui") {
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/playlist/common/buildflags",
+    "//brave/components/request_otr/browser",
+    "//brave/components/request_otr/common",
     "//brave/components/resources:static_resources",
     "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
@@ -629,6 +632,10 @@ source_set("ui") {
       "views/speedreader/speedreader_mode_bubble.cc",
       "views/speedreader/speedreader_mode_bubble.h",
     ]
+  }
+
+  if (enable_request_otr) {
+    deps += [ "//brave/components/request_otr/common/buildflags" ]
   }
 
   if (toolkit_views) {

@@ -63,6 +63,32 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return {};
         },
       },
+      isGoogleSignInFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+        }
+      },
+      isRequestOTRFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isRequestOTRFeatureEnabled')
+        }
+      },
+      requestOTRActions_: {
+        readOnly: true,
+        type: Array,
+        value: function () {
+          return [
+            { value: 0, name: loadTimeData.getString('requestOTRDefault') },
+            { value: 1, name: loadTimeData.getString('requestOTRAlways') },
+            { value: 2, name: loadTimeData.getString('requestOTRNever') },
+          ]
+        },
+      },
+      requestOTRAction_: String,
     };
   }
 
@@ -70,6 +96,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   private webRTCPolicy_: String;
   private p3aEnabledPref_: Object;
   private statsUsagePingEnabledPref_: Object;
+  private requestOTRActions_: Object[];
+  private requestOTRAction_: String;
 
   browserProxy_: BravePrivacyBrowserProxy = BravePrivacyBrowserProxyImpl.getInstance();
 

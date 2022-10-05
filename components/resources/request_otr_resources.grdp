@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_REQUEST_OTR_INTERSTITIAL_HTML" file="../request_otr/resources/request_otr_interstitial.html" flattenhtml="true" type="BINDATA" />
+  <include name="IDR_REQUEST_OTR_INTERSTITIAL_JS" file="../request_otr/resources/request_otr_interstitial.js" type="BINDATA" />
+  <include name="IDR_REQUEST_OTR_INTERSTITIAL_CSS" file="../request_otr/resources/request_otr_interstitial.css" type="BINDATA" />
+  <include name="IDR_REQUEST_OTR_INTERSTITIAL_ICON" file="../request_otr/resources/shield-star.svg" type="BINDATA" />
+</grit-part>

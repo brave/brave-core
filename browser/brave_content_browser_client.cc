@@ -67,6 +67,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -114,6 +115,12 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/browser/request_otr/request_otr_service_factory.h"
+#include "brave/components/request_otr/browser/request_otr_navigation_throttle.h"
+#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#endif
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -598,6 +605,20 @@ bool BraveContentBrowserClient::CanCreateWindow(
       container_type, target_url, referrer, frame_name, disposition, features,
       user_gesture, opener_suppressed, no_javascript_access);
 
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  // If the user has requested going off-the-record in this tab, don't allow
+  // opening new windows via script
+  if (content::WebContents* web_contents =
+          content::WebContents::FromRenderFrameHost(opener)) {
+    if (request_otr::RequestOTRTabStorage* request_otr_tab_storage =
+            request_otr::RequestOTRTabStorage::FromWebContents(web_contents)) {
+      if (request_otr_tab_storage->RequestedOTR()) {
+        *no_javascript_access = true;
+      }
+    }
+  }
+#endif
+
   return can_create_window && google_sign_in_permission::CanCreateWindow(
                                   opener, opener_url, target_url);
 }
@@ -1008,6 +1029,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
 
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
+
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
       NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
@@ -1020,9 +1044,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   throttles.push_back(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
-
-  content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
 
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
@@ -1088,6 +1109,20 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                           context))) {
     throttles.push_back(std::move(debounce_throttle));
   }
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  // Request Off-The-Record
+  if (auto request_otr_throttle =
+          request_otr::RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
+              handle,
+              request_otr::RequestOTRServiceFactory::GetForBrowserContext(
+                  context),
+              EphemeralStorageServiceFactory::GetForContext(context),
+              user_prefs::UserPrefs::Get(context),
+              g_browser_process->GetApplicationLocale())) {
+    throttles.push_back(std::move(request_otr_throttle));
+  }
+#endif
 
   return throttles;
 }
