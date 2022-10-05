@@ -65,7 +65,6 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.PlaylistPageHandlerFactory;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
@@ -129,9 +128,6 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.playlist.mojom.PageHandler;
-import org.chromium.playlist.mojom.Playlist;
-import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
@@ -204,7 +200,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
-    private PageHandler mPlaylistPageHandler;
 
     private enum BIGTECH_COMPANY { Google, Facebook, Amazon }
 
@@ -219,9 +214,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.close();
-        }
-        if (mPlaylistPageHandler != null) {
-            mPlaylistPageHandler.close();
         }
         super.destroy();
         if (mBraveRewardsNativeWorker != null) {
@@ -363,9 +355,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onConnectionError(MojoException e) {
         mCookieListOptInPageAndroidHandler = null;
-        mPlaylistPageHandler = null;
         initCookieListOptInPageAndroidHandler();
-        initPlaylistPageHandler();
     }
 
     private void initCookieListOptInPageAndroidHandler() {
@@ -378,20 +368,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         this);
     }
 
-    private void initPlaylistPageHandler() {
-        if (mPlaylistPageHandler != null) {
-            return;
-        }
-
-        mPlaylistPageHandler =
-                PlaylistPageHandlerFactory.getInstance().getPlaylistPageHandler(this);
-    }
-
     @Override
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
         initCookieListOptInPageAndroidHandler();
-        initPlaylistPageHandler();
         mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
@@ -477,31 +457,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                         BravePreferenceKeys.LOADED_SITE_COUNT, 0)
                                         + 1);
                         maybeShowCookieConsentTooltip();
-                    }
-                    if (!url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
-                            && !UrlUtilities.isNTPUrl(url.getSpec())
-                            && mPlaylistPageHandler != null) {
-                        Log.e("NTP", "mPlaylistPageHandler 1");
-                        Playlist playlist = new Playlist();
-                        playlist.name = "first";
-                        mPlaylistPageHandler.createPlaylist(playlist);
-                        Log.e("NTP", "mPlaylistPageHandler 2");
-                        mPlaylistPageHandler.getAllPlaylists(playlists -> {
-                            Log.e("NTP", "mPlaylistPageHandler 3");
-                            org.chromium.url.mojom.Url contentUrl =
-                                    new org.chromium.url.mojom.Url();
-                            contentUrl.url = "https://www.youtube.com/watch?v=3peLyPOKEwE";
-                            mPlaylistPageHandler.addMediaFilesFromPageToPlaylist(
-                                    playlists[0].id, contentUrl);
-                            mPlaylistPageHandler.getPlaylist(playlists[0].id, pl -> {
-                                Log.e("NTP", "mPlaylistPageHandler ");
-                                PlaylistItem playlistItem = pl.items[0];
-                                Log.e("NTP",
-                                        playlistItem.name + " : " + playlistItem.pageSource.url
-                                                + " : " + playlistItem.mediaPath.url + " : "
-                                                + playlistItem.thumbnailPath.url);
-                            });
-                        });
                     }
                 }
 

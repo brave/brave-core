@@ -720,6 +720,8 @@ source_set("ui") {
 
   if (enable_playlist_webui) {
     sources += [
+      "webui/playlist_page_handler.cc",
+      "webui/playlist_page_handler.h",
       "webui/playlist_ui.cc",
       "webui/playlist_ui.h",
     ]

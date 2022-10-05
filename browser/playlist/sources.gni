@@ -32,6 +32,7 @@ if (enable_playlist) {
     ]
 
     brave_browser_playlist_deps += [
+      "//brave/browser/ui",
       "//brave/build/android:jni_headers",
       "//brave/components/playlist/mojom",
       "//mojo/public/cpp/bindings",
