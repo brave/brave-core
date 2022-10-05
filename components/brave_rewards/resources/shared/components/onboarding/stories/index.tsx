@@ -90,9 +90,12 @@ export function OptInModal () {
   return (
     <StoryWrapper>
       <RewardsOptInModal
+        initialView='declare-country'
+        availableCountries={['US']}
+        result={'success'}
         onEnable={actionLogger('onEnable')}
-        onClose={actionLogger('onClose')}
         onTakeTour={actionLogger('onTakeTour')}
+        onHideResult={actionLogger('onHideResult')}
       />
     </StoryWrapper>
   )

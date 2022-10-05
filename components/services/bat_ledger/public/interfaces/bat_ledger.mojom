@@ -26,7 +26,10 @@ interface BatLedgerService {
 
 interface BatLedger {
   Initialize(bool execute_create_script) => (ledger.mojom.Result result);
-  CreateRewardsWallet() => (ledger.mojom.Result result);
+
+  CreateRewardsWallet(string country) =>
+      (ledger.mojom.CreateRewardsWalletResult result);
+
   GetRewardsParameters() => (ledger.mojom.RewardsParameters properties);
 
   GetAutoContributeProperties() => (ledger.mojom.AutoContributeProperties props);

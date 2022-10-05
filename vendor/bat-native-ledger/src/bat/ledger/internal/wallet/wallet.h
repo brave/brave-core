@@ -17,6 +17,7 @@
 #include "bat/ledger/internal/wallet/wallet_create.h"
 #include "bat/ledger/internal/wallet/wallet_recover.h"
 #include "bat/ledger/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -28,7 +29,8 @@ class Wallet {
   explicit Wallet(LedgerImpl* ledger);
   ~Wallet();
 
-  void CreateWalletIfNecessary(ledger::ResultCallback callback);
+  void CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
+                               CreateRewardsWalletCallback callback);
 
   void RecoverWallet(const std::string& pass_phrase,
                      ledger::LegacyResultCallback callback);
@@ -56,18 +58,8 @@ class Wallet {
                          ledger::PostSuggestionsClaimCallback callback);
 
  private:
-  void AuthorizeWallet(const std::string& wallet_type,
-                       const base::flat_map<std::string, std::string>& args,
-                       ledger::ExternalWalletAuthorizationCallback callback);
-
   void OnClaimWallet(ledger::PostSuggestionsClaimCallback callback,
                      mojom::Result result);
-
-  void OnCreateWalletIfNecessary(
-      ledger::ExternalWalletAuthorizationCallback callback,
-      const std::string& wallet_type,
-      const base::flat_map<std::string, std::string>& args,
-      mojom::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;

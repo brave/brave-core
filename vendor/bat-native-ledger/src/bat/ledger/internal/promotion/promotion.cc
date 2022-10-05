@@ -285,22 +285,8 @@ void Promotion::OnClaimPromotion(ledger::ClaimPromotionCallback callback,
   }
 
   const auto wallet = ledger_->wallet()->GetWallet();
-  if (wallet) {
-    attestation_->Start(payload, std::move(callback));
-    return;
-  }
-
-  ledger_->wallet()->CreateWalletIfNecessary(
-      base::BindOnce(&Promotion::OnCreateWalletIfNecessary,
-                     base::Unretained(this), std::move(callback), payload));
-}
-
-void Promotion::OnCreateWalletIfNecessary(
-    ledger::ClaimPromotionCallback callback,
-    const std::string& payload,
-    mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Wallet couldn't be created");
+  if (!wallet) {
+    BLOG(0, "Rewards wallet does not exist");
     std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
     return;
   }

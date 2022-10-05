@@ -25,6 +25,7 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -76,6 +77,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/icu/source/common/unicode/locid.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
@@ -280,6 +282,15 @@ bool IsAdsOrAutoContributeEnabled(Profile* profile) {
 
 std::string GetPrefPath(const std::string& name) {
   return base::StringPrintf("%s.%s", pref_prefix, name.c_str());
+}
+
+std::vector<std::string> GetISOCountries() {
+  std::vector<std::string> countries;
+  for (const char* const* country_pointer = icu::Locale::getISOCountries();
+       *country_pointer; ++country_pointer) {
+    countries.emplace_back(*country_pointer);
+  }
+  return countries;
 }
 
 template <typename Callback, typename... Args>
@@ -554,30 +565,37 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
 }
 
 void RewardsServiceImpl::CreateRewardsWallet(
+    const std::string& country,
     CreateRewardsWalletCallback callback) {
+  using ledger::mojom::CreateRewardsWalletResult;
+
   auto on_start = [](base::WeakPtr<RewardsServiceImpl> self,
+                     std::string country,
                      CreateRewardsWalletCallback callback) {
     if (!self) {
-      std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR);
+      std::move(callback).Run(CreateRewardsWalletResult::kUnexpected);
       return;
     }
 
     auto on_created = [](base::WeakPtr<RewardsServiceImpl> self,
+                         std::string country,
                          CreateRewardsWalletCallback callback,
-                         ledger::mojom::Result result) {
+                         CreateRewardsWalletResult result) {
       if (!self) {
-        std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR);
+        std::move(callback).Run(CreateRewardsWalletResult::kUnexpected);
         return;
       }
 
-      if (result != ledger::mojom::Result::LEDGER_OK) {
+      if (result != CreateRewardsWalletResult::kSuccess) {
         std::move(callback).Run(result);
         return;
       }
 
+      auto* prefs = self->profile_->GetPrefs();
+      prefs->SetString(prefs::kDeclaredGeo, country);
+
       // After successfully creating a Rewards wallet for the first time,
       // automatically enable Ads and AC.
-      auto* prefs = self->profile_->GetPrefs();
       if (!prefs->GetBoolean(prefs::kEnabled)) {
         prefs->SetBoolean(prefs::kEnabled, true);
         prefs->SetBoolean(ads::prefs::kEnabled, true);
@@ -600,16 +618,80 @@ void RewardsServiceImpl::CreateRewardsWallet(
         observer.OnRewardsWalletUpdated();
       }
 
-      std::move(callback).Run(ledger::mojom::Result::LEDGER_OK);
+      std::move(callback).Run(result);
     };
 
     self->bat_ledger_->CreateRewardsWallet(
-        base::BindOnce(on_created, self, std::move(callback)));
+        country,
+        base::BindOnce(on_created, self, country, std::move(callback)));
   };
 
-  ready_->Post(FROM_HERE,
-               base::BindOnce(on_start, AsWeakPtr(), std::move(callback)));
+  ready_->Post(FROM_HERE, base::BindOnce(on_start, AsWeakPtr(), country,
+                                         std::move(callback)));
   StartLedgerProcessIfNecessary();
+}
+
+std::string RewardsServiceImpl::GetCountryCode() const {
+  auto* prefs = profile_->GetPrefs();
+  std::string country = prefs->GetString(prefs::kDeclaredGeo);
+  if (!country.empty()) {
+    return country;
+  }
+
+  int32_t country_id = country_id_;
+  if (!country_id) {
+    country_id = country_codes::GetCountryIDFromPrefs(prefs);
+  }
+  if (country_id < 0) {
+    return "";
+  }
+  return {base::ToUpperASCII(static_cast<char>(country_id >> 8)),
+          base::ToUpperASCII(static_cast<char>(0xFF & country_id))};
+}
+
+void RewardsServiceImpl::GetAvailableCountries(
+    GetAvailableCountriesCallback callback) const {
+  static const std::vector<std::string> kISOCountries = GetISOCountries();
+
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), kISOCountries);
+  }
+
+  auto on_external_wallet = [](GetAvailableCountriesCallback callback,
+                               ledger::mojom::Result result,
+                               ledger::mojom::ExternalWalletPtr wallet) {
+    // If the user is not currently linked to any wallet provider, then all ISO
+    // country codes are available.
+    if (!wallet ||
+        wallet->status == ledger::mojom::WalletStatus::NOT_CONNECTED) {
+      return std::move(callback).Run(kISOCountries);
+    }
+
+    // If the user is currently linked to a bitFlyer wallet, then the only
+    // available countries are |kBitflyerCountries|.
+    if (wallet->type == ledger::constant::kWalletBitflyer) {
+      return std::move(callback).Run(std::vector<std::string>(
+          kBitflyerCountries.begin(), kBitflyerCountries.end()));
+    }
+
+    // If the user is currently linked to any other external wallet provider,
+    // then remove |kBitflyerCountries| from the list of ISO countries.
+    static const std::vector<std::string> kNonBitflyerCountries = []() {
+      auto countries = kISOCountries;
+      auto removed =
+          base::ranges::remove_if(countries, [](const std::string& country) {
+            return base::Contains(kBitflyerCountries, country);
+          });
+      countries.erase(removed, countries.end());
+      return countries;
+    }();
+
+    return std::move(callback).Run(kNonBitflyerCountries);
+  };
+
+  bat_ledger_->GetExternalWallet(
+      GetExternalWalletType(),
+      base::BindOnce(on_external_wallet, std::move(callback)));
 }
 
 void RewardsServiceImpl::GetActivityInfoList(
@@ -2945,23 +3027,7 @@ void RewardsServiceImpl::GetRewardsWalletPassphrase(
 }
 
 bool RewardsServiceImpl::IsBitFlyerRegion() const {
-  int32_t current_country = country_id_;
-
-  if (!current_country) {
-    current_country =
-        country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
-  }
-
-  for (const auto& country : kBitflyerCountries) {
-    if (country.length() == 2) {
-      const int id =
-          country_codes::CountryCharsToCountryID(country.at(0), country.at(1));
-
-      if (id == current_country)
-        return true;
-    }
-  }
-  return false;
+  return base::Contains(kBitflyerCountries, GetCountryCode());
 }
 
 bool RewardsServiceImpl::IsValidWalletType(

@@ -39,7 +39,7 @@ function createHost (): Host {
     openTime: Date.now(),
     loading: false,
     requestedView: null,
-    rewardsEnabled: false,
+    rewardsEnabled: true,
     settings: {
       adsPerHour: 3,
       autoContributeEnabled: true,
@@ -62,6 +62,10 @@ function createHost (): Host {
         amount: 10,
         type: 'ads'
       }
+    },
+    adaptiveCaptchaInfo: {
+      url: '',
+      status: 'pending'
     },
     externalWalletProviders: ['uphold', 'gemini'],
     balance: 10.2,
@@ -109,10 +113,8 @@ function createHost (): Host {
         timeStamp: Date.now() - 100
       }
     ],
-    adaptiveCaptchaInfo: {
-      url: '',
-      status: 'pending'
-    }
+    availableCountries: ['US'],
+    declaredCountry: ''
   })
 
   return {
@@ -128,8 +130,10 @@ function createHost (): Host {
 
     enableRewards () {
       stateManager.update({
-        rewardsEnabled: true
+        rewardsEnabled: true,
+        declaredCountry: 'US'
       })
+      return Promise.resolve('success')
     },
 
     setAutoContributeAmount (amount) {

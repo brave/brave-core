@@ -109,11 +109,7 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     // turn on Ads and AC.
     browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
                                                  false);
-
-    base::RunLoop run_loop;
-    rewards_service_->CreateRewardsWallet(base::BindLambdaForTesting(
-        [&run_loop](ledger::mojom::Result) { run_loop.Quit(); }));
-    run_loop.Run();
+    rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   }
 
   content::WebContents* contents() {

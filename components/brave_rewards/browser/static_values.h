@@ -9,8 +9,8 @@
 #include <stdint.h>
 
 #include <map>
+#include <set>
 #include <string>
-#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ledger/option_keys.h"
@@ -18,7 +18,7 @@
 
 namespace brave_rewards {
 
-const std::vector<std::string> kBitflyerCountries = {
+const std::set<std::string> kBitflyerCountries = {
     "JP"  // ID: 19024
 };
 

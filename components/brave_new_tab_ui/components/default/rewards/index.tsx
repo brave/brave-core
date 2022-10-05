@@ -36,6 +36,7 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 
 export interface RewardsProps {
   rewardsEnabled: boolean
+  declaredCountry: string
   enabledAds: boolean
   needsBrowserUpgradeToServeAds: boolean
   balance: NewTab.RewardsBalance
@@ -49,8 +50,6 @@ export interface RewardsProps {
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
-  onEnableRewards: () => void
-  onEnableAds: () => void
   onDismissNotification: (id: string) => void
 }
 
@@ -96,9 +95,18 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     }
   }
 
+  const openRewardsPanel = () => {
+    chrome.braveRewards.openRewardsPanel()
+  }
+
+  const enableAds = () => {
+    chrome.braveRewards.enableAds()
+  }
+
   return (
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
+      declaredCountry={props.declaredCountry}
       adsEnabled={props.enabledAds}
       adsSupported={Boolean(props.adsSupported)}
       needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
@@ -112,8 +120,9 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       earningsThisMonth={adsInfo ? adsInfo.earningsThisMonth : 0}
       earningsLastMonth={adsInfo ? adsInfo.earningsLastMonth : 0}
       contributionsThisMonth={props.totalContribution}
-      onEnableRewards={props.onEnableRewards}
-      onEnableAds={props.onEnableAds}
+      onEnableRewards={openRewardsPanel}
+      onEnableAds={enableAds}
+      onSelectCountry={openRewardsPanel}
       onClaimGrant={onClaimGrant}
     />
   )

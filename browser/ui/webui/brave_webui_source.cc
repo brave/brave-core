@@ -262,6 +262,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsBraveRewards", IDS_REWARDS_WIDGET_BRAVE_REWARDS },
         { "rewardsClaimRewards", IDS_REWARDS_WIDGET_CLAIM_REWARDS },
         { "rewardsClaimTokens", IDS_REWARDS_WIDGET_CLAIM_TOKENS },
+        { "rewardsContinue", IDS_REWARDS_WIDGET_CONTINUE},
         { "rewardsEarning", IDS_REWARDS_WIDGET_EARNING },
         { "rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT },
         { "rewardsExchangeValueNote", IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE },
@@ -277,6 +278,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsPaymentPending", IDS_REWARDS_PAYMENT_PENDING },
         { "rewardsPaymentProcessing", IDS_REWARDS_PAYMENT_PROCESSING },
         { "rewardsProgress", IDS_REWARDS_WIDGET_PROGRESS },
+        { "rewardsSelectCountryHeader", IDS_REWARDS_WIDGET_SELECT_COUNTRY_HEADER},  // NOLINT
+        { "rewardsSelectCountryText", IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT},
         { "rewardsSettings", IDS_REWARDS_WIDGET_SETTINGS },
         { "rewardsSponsoredImageEarningText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT },  // NOLINT
         { "rewardsSponsoredImageOptInText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_OPT_IN_TEXT },  // NOLINT

@@ -32,6 +32,9 @@ using PublisherBannerCallback = std::function<void(mojom::PublisherBannerPtr)>;
 using GetRewardsParametersCallback =
     base::OnceCallback<void(mojom::RewardsParametersPtr)>;
 
+using CreateRewardsWalletCallback =
+    base::OnceCallback<void(mojom::CreateRewardsWalletResult)>;
+
 using OnRefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
 
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
@@ -132,7 +135,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 
-  virtual void CreateRewardsWallet(ResultCallback callback) = 0;
+  virtual void CreateRewardsWallet(const std::string& country,
+                                   CreateRewardsWalletCallback callback) = 0;
 
   virtual void OneTimeTip(const std::string& publisher_key,
                           double amount,

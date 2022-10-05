@@ -191,20 +191,29 @@ class BraveRewardsCreateRewardsWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void CreateRewardsWalletCallback(ledger::mojom::Result result);
+  void CreateRewardsWalletCallback(
+      ledger::mojom::CreateRewardsWalletResult result);
 };
 
-class BraveRewardsGetRewardsWalletFunction : public ExtensionFunction {
+class BraveRewardsGetAvailableCountriesFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsWallet", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAvailableCountries", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetRewardsWalletFunction() override;
-
-  ResponseAction Run() override;
+  ~BraveRewardsGetAvailableCountriesFunction() override;
 
  private:
-  void GetRewardsWalletCallback(ledger::mojom::RewardsWalletPtr rewards_wallet);
+  void GetAvailableCountriesCallback(std::vector<std::string> countries);
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetDeclaredCountryFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getDeclaredCountry", UNKNOWN)
+ protected:
+  ~BraveRewardsGetDeclaredCountryFunction() override;
+  ResponseAction Run() override;
 };
 
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {

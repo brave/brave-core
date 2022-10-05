@@ -15,6 +15,7 @@ extern const char kDisabledByPolicy[];
 extern const char kHideButton[];  // DEPRECATED
 extern const char kShowButton[];
 extern const char kEnabled[];  // DEPRECATED
+extern const char kDeclaredGeo[];
 extern const char kAdsEnabledTimeDelta[];
 extern const char kAdsEnabledTimestamp[];
 extern const char kNotifications[];

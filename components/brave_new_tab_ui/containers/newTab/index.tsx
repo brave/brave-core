@@ -956,8 +956,6 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowRewards}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
-        onEnableRewards={this.startRewards}
-        onEnableAds={this.startRewards}
         onDismissNotification={this.dismissNotification}
       />
     )

@@ -302,9 +302,7 @@ export function createHost (): Host {
     })
 
     // Update user settings and other data after rewards has been enabled.
-    apiAdapter.onRewardsEnabled(() => {
-      stateManager.update({ rewardsEnabled: true })
-
+    chrome.braveRewards.onRewardsWalletUpdated.addListener(() => {
       loadPanelData().catch(console.error)
     })
 
@@ -332,6 +330,12 @@ export function createHost (): Host {
       }),
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
+      }),
+      apiAdapter.getDeclaredCountry().then((declaredCountry) => {
+        stateManager.update({ declaredCountry })
+      }),
+      apiAdapter.getAvailableCountries().then((availableCountries) => {
+        stateManager.update({ availableCountries })
       }),
       apiAdapter.getRewardsBalance().then((balance) => {
         stateManager.update({ balance })
@@ -396,12 +400,8 @@ export function createHost (): Host {
 
     getString,
 
-    enableRewards () {
-      chrome.braveRewards.createRewardsWallet((errorCode) => {
-        if (!errorCode) {
-          stateManager.update({ rewardsEnabled: true })
-        }
-      })
+    enableRewards (country: string) {
+      return apiAdapter.createRewardsWallet(country)
     },
 
     openAdaptiveCaptchaSupport () {
