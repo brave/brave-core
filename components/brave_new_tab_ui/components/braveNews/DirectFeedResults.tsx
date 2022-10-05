@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { getLocale } from '../../../common/locale'
-import { useDirectFeedResults } from '../../api/brave_news/news'
+import { useDirectFeedResults } from './Context'
 import DiscoverSection from './DiscoverSection'
 import { DirectFeedCard } from './FeedCard'
 

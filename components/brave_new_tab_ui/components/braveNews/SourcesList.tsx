@@ -2,7 +2,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '../../../common/locale'
-import { useChannels, usePublishers } from '../../api/brave_news/news'
+import { useChannels, usePublishers } from './Context'
 import Flex from '../Flex'
 import { formatMessage } from '../../../brave_rewards/resources/shared/lib/locale_context'
 

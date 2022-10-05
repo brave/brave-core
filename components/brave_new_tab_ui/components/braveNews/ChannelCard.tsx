@@ -3,7 +3,7 @@ import * as React from 'react'
 import Flex from '../Flex'
 import { getCardColor } from './colors'
 import FollowButton from './FollowButton'
-import { useChannelSubscribed } from '../../api/brave_news/news'
+import { useChannelSubscribed } from './Context'
 
 const Container = styled(Flex) <{ backgroundColor: string }>`
     height: 80px;

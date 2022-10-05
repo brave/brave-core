@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { useChannelSubscribed, usePublisher, usePublisherSubscribed } from '../../api/brave_news/news'
+import { useChannelSubscribed, usePublisher, usePublisherSubscribed } from './Context'
 import { useGetUnpaddedImage } from '../default/braveToday/cards/CardImage'
 import Flex from '../Flex'
 import { Heart, HeartOutline } from './Icons'
