@@ -1068,7 +1068,7 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   if (auto* playlist_service =
           playlist::PlaylistServiceFactory::GetForBrowserContext(
               web_contents->GetBrowserContext())) {
-    playlist_service->ConfigureWebPrefsforBackgroundWebContents(web_contents,
+    playlist_service->ConfigureWebPrefsForBackgroundWebContents(web_contents,
                                                                 web_prefs);
   }
 #endif

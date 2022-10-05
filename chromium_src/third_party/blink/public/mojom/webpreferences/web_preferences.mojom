@@ -7,5 +7,13 @@ module blink.mojom;
 
 [BraveExtend]
 struct WebPreferences {
+  // If |force_cosmetic_filters| is true, cosmetic filters will be applied to
+  // regardless of contents settings. This is used for Playlist so that it can
+  // remove ads from the page.
   bool force_cosmetic_filtering;
+
+  // If |hide_media_src_api| is true, PlaylistRenderFrameObserver will hide
+  // the media source API from the page. This is used by Playlist so that
+  // it can get downloadable media urls instead of blob url.
+  bool hide_media_src_api;
 };

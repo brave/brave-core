@@ -22,8 +22,8 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
                                                                         out)) {
     return false;
   }
-
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
+  out->hide_media_src_api = data.hide_media_src_api();
   return true;
 }
 
