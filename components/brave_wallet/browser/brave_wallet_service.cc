@@ -879,9 +879,8 @@ void BraveWalletService::OnOnboardingShown() {
   RecordWalletUsage(false);
 }
 
-void BraveWalletService::ReportEthereumProviderForP3A(
-    mojom::EthereumProviderType provider_type) {
-  brave_wallet_p3a_.ReportEthereumProvider(provider_type);
+BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
+  return &brave_wallet_p3a_;
 }
 
 void BraveWalletService::RecordWalletUsage(bool unlocked) {

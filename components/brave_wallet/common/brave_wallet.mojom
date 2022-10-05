@@ -1310,9 +1310,12 @@ interface BraveWalletService {
 
   // Called when onboarding is shown (for analytics)
   OnOnboardingShown();
+};
 
+// For reporting wallet related P3A metrics.
+interface BraveWalletP3A {
   // Called when the ethereum provider type is evaluated after page load.
-  ReportEthereumProviderForP3A(EthereumProviderType provider_type);
+  ReportEthereumProvider(EthereumProviderType provider_type);
 };
 
 enum EthereumProviderType {

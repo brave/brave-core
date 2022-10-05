@@ -223,8 +223,7 @@ class BraveWalletService : public KeyedService,
 
   void OnOnboardingShown() override;
 
-  void ReportEthereumProviderForP3A(
-      mojom::EthereumProviderType provider_type) override;
+  BraveWalletP3A* GetBraveWalletP3A();
 
  private:
   friend class EthereumProviderImplUnitTest;
