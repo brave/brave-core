@@ -12,6 +12,7 @@
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -30,7 +31,6 @@
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "components/permissions/request_type.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/controls/button/checkbox.h"
