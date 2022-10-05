@@ -47,7 +47,7 @@ export default function useTokenInfo (
       }).catch(e => console.log(e))
     }
     setFoundTokenInfoByContractAddress(undefined)
-  }, [tokenContractAddress, visibleTokens, fullTokenList])
+  }, [tokenContractAddress, visibleTokens, fullTokenList, selectedNetwork])
   return {
     onFindTokenInfoByContractAddress: setTokenContractAddress,
     foundTokenInfoByContractAddress
