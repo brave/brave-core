@@ -129,8 +129,6 @@ void PublishersController::GetLocale(
   GetOrFetchPublishers(base::BindOnce(
       [](PublishersController* controller,
          mojom::BraveNewsController::GetLocaleCallback callback, Publishers _) {
-        LOG(ERROR) << "Locale: " << controller->default_locale_;
-
         std::move(callback).Run(controller->default_locale_);
       },
       base::Unretained(this), std::move(callback)));

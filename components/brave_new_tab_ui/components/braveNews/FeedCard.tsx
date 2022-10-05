@@ -15,7 +15,7 @@ const Card = styled('div') <{ backgroundColor?: string }>`
     position: relative;
     height: 80px;
     background-color: ${p => p.backgroundColor};
-    border-radius: 16px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0px 0px 16px 0px #63696E2E;
 `

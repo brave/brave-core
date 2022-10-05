@@ -1,10 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { useChannelSubscribed, usePublisher, usePublisherSubscribed } from '../../api/brave_news/news'
+import { useGetUnpaddedImage } from '../default/braveToday/cards/CardImage'
 import Flex from '../Flex'
 import { Heart, HeartOutline } from './Icons'
-import { useChannelSubscribed, usePublisher, usePublisherSubscribed } from '../../api/brave_news/news'
-import { useBraveNews } from './Context'
-import { useGetUnpaddedImage } from '../default/braveToday/cards/CardImage'
 
 interface Props {
     publisherId: string
@@ -40,17 +39,7 @@ const Text = styled.span`
     font-weight: 500;
 `
 
-const ChannelEntryButton = styled.button`
-    all: unset;
-
-    font-size: 14px;
-    font-weight: 600;
-    &:hover {
-        text-decoration: underline;
-    }
-`
-
-function FavIcon (props: { src?: string }) {
+function FavIcon(props: { src?: string }) {
     const url = useGetUnpaddedImage(props.src ?? '', true)
     console.log(props.src, url)
     const [error, setError] = React.useState(false)
@@ -59,7 +48,7 @@ function FavIcon (props: { src?: string }) {
     </FavIconContainer>
 }
 
-export function FeedListEntry (props: Props) {
+export function FeedListEntry(props: Props) {
     const publisher = usePublisher(props.publisherId)
     const { subscribed, setSubscribed } = usePublisherSubscribed(props.publisherId)
 
@@ -74,17 +63,11 @@ export function FeedListEntry (props: Props) {
     </Container>
 }
 
-export function ChannelListEntry (props: { channelId: string }) {
-    const { setPage } = useBraveNews()
+export function ChannelListEntry(props: { channelId: string }) {
     const { subscribed, setSubscribed } = useChannelSubscribed(props.channelId)
 
-    return <Container direction="row" justify='space-between' align='center' onClick={e => setSubscribed(!subscribed)}>
-        <ChannelEntryButton onClick={e => {
-            e.stopPropagation()
-            setPage(`channel/${props.channelId}`)
-        }}>
-            {props.channelId}
-        </ChannelEntryButton>
+    return <Container direction="row" justify='space-between' align='center' onClick={() => setSubscribed(!subscribed)}>
+        {props.channelId}
         <ToggleButton>
             {subscribed ? Heart : HeartOutline}
         </ToggleButton>

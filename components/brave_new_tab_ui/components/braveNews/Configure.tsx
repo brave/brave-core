@@ -7,9 +7,8 @@ import Button from '$web-components/button'
 import Toggle from '$web-components/toggle'
 import SourcesList from './SourcesList'
 import DisabledPlaceholder from './DisabledPlaceholder'
-import BrowseChannel from './BrowseChannel'
 import { useNewTabPref } from '../../hooks/usePref'
-import { useBraveNews, useCurrentCategory } from './Context'
+import { useBraveNews } from './Context'
 import { getLocale } from '../../../common/locale'
 import { formatMessage } from '../../../brave_rewards/resources/shared/lib/locale_context'
 
@@ -99,13 +98,10 @@ const Content = styled.div`
 export default function Configure () {
   const [enabled, setEnabled] = useNewTabPref('isBraveTodayOptedIn')
   const { setPage } = useBraveNews()
-  const categoryId = useCurrentCategory()
 
   let content: JSX.Element
   if (!enabled) {
     content = <DisabledPlaceholder enableBraveNews={() => setEnabled(true)} />
-  } else if (categoryId) {
-    content = <BrowseChannel channelId={categoryId} />
   } else {
     content = <Discover />
   }

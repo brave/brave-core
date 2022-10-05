@@ -59,7 +59,7 @@ export default function Discover (props: {}) {
                     ? undefined
                     : DEFAULT_NUM_CATEGORIES)
                 .filter(t => t.channelName.toLowerCase().includes(query.toLowerCase()))
-                .map(c => <ChannelCard key={c.channelName} channel={c} />)}
+                .map(c => <ChannelCard key={c.channelName} channelId={c.channelName} />)}
             {!showingAllCategories && !query &&
                 <LoadMoreButton onClick={() => setShowingAllCategories(true)}>
                     {getLocale('braveNewsLoadMoreCategoriesButton')}

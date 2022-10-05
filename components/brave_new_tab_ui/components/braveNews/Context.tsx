@@ -3,7 +3,6 @@ import * as React from 'react'
 
 type NewsPage = null
     | 'news'
-    | `${typeof channelPrefix}${string}`
 
 interface BraveNewsContext {
     page: NewsPage
@@ -28,12 +27,4 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
 export const useBraveNews = () => {
     return React.useContext(BraveNewsContext)
-}
-
-const channelPrefix = 'channel/'
-export const useCurrentCategory = () => {
-    const { page } = useBraveNews()
-    if (!page?.startsWith(channelPrefix)) { return null }
-
-    return page.substring(channelPrefix.length)
 }
