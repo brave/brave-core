@@ -24,7 +24,7 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  if (!render_frame()->GetBlinkPreferences().force_to_hide_media_src_api)
+  if (!render_frame()->GetBlinkPreferences().hide_media_src_api)
     return;
 
   HideMediaSourceAPI();

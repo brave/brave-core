@@ -248,9 +248,10 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
 
 bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
     const GURL& url) const {
+  net::SchemefulSite schemeful_site(url);
   return base::ranges::any_of(sites_to_hide_media_src_api_,
-                              [&url](const auto& site_to_hide) {
-                                return site_to_hide == net::SchemefulSite(url);
+                              [&schemeful_site](const auto& site_to_hide) {
+                                return site_to_hide == schemeful_site;
                               });
 }
 
