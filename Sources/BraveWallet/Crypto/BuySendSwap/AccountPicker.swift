@@ -86,6 +86,7 @@ struct AccountPicker: View {
         }) {
           accountView
         }
+        .buttonStyle(.plain)
         // Context Menus are not supported inside `List`/`Form` section headers/footers so we must replace
         // this with a long press gesture + action sheet on iOS 14
         .simultaneousGesture(
@@ -113,6 +114,7 @@ struct AccountPicker: View {
       keyringStore: keyringStore,
       networkStore: networkStore
     )
+    .buttonStyle(.plain)
   }
 }
 

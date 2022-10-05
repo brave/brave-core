@@ -225,7 +225,6 @@ struct SwapCryptoView: View {
 
   @ViewBuilder var swapFormSections: some View {
     Section(
-      header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoFromTitle))
     ) {
       NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: networkStore.selectedChain)) {
         HStack {
@@ -463,16 +462,13 @@ struct SwapCryptoView: View {
   var body: some View {
     NavigationView {
       Form {
-        Section(
-          header: AccountPicker(
+        Section {
+          AccountPicker(
             keyringStore: keyringStore,
             networkStore: networkStore
           )
           .listRowBackground(Color.clear)
           .resetListHeaderStyle()
-          .padding(.top)
-          .padding(.bottom, -16)  // Get it a bit closer
-        ) {
         }
         if networkStore.isSwapSupported {
           swapFormSections
@@ -480,6 +476,8 @@ struct SwapCryptoView: View {
           unsupportedSwapChainSection
         }
       }
+      .environment(\.defaultMinListHeaderHeight, 0)
+      .environment(\.defaultMinListRowHeight, 0)
       .navigationTitle(Strings.Wallet.swap)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

@@ -41,16 +41,13 @@ struct SendTokenView: View {
   var body: some View {
     NavigationView {
       Form {
-        Section(
-          header: AccountPicker(
+        Section {
+          AccountPicker(
             keyringStore: keyringStore,
             networkStore: networkStore
           )
           .listRowBackground(Color.clear)
           .resetListHeaderStyle()
-          .padding(.top)
-          .padding(.bottom, -16)  // Get it a bit closer
-        ) {
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoFromTitle))
@@ -177,6 +174,8 @@ struct SendTokenView: View {
         ) {
         }
       }
+      .environment(\.defaultMinListHeaderHeight, 0)
+      .environment(\.defaultMinListRowHeight, 0)
       .alert(isPresented: $isShowingError) {
         Alert(
           title: Text(""),

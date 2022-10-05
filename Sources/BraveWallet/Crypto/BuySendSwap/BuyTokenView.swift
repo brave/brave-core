@@ -26,16 +26,13 @@ struct BuyTokenView: View {
   var body: some View {
     NavigationView {
       Form {
-        Section(
-          header: AccountPicker(
+        Section {
+          AccountPicker(
             keyringStore: keyringStore,
             networkStore: networkStore
           )
           .listRowBackground(Color.clear)
           .resetListHeaderStyle()
-          .padding(.top)
-          .padding(.bottom, -16)  // Get it a bit closer
-        ) {
         }
         if isBuySupported {
           Section(
@@ -89,6 +86,8 @@ struct BuyTokenView: View {
           }
         }
       }
+      .environment(\.defaultMinListHeaderHeight, 0)
+      .environment(\.defaultMinListRowHeight, 0)
       .navigationTitle(Strings.Wallet.buy)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
