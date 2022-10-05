@@ -39,9 +39,13 @@ const Text = styled.span`
     font-weight: 500;
 `
 
+const ChannelNameText = styled.span`
+    font-size: 14px;
+    font-weight: 600;
+`
+
 function FavIcon (props: { src?: string }) {
-    const url = useGetUnpaddedImage(props.src ?? '', true)
-    console.log(props.src, url)
+    const url = useGetUnpaddedImage(props.src)
     const [error, setError] = React.useState(false)
     return <FavIconContainer>
         {url && !error && <img src={url} onError={() => setError(true)} />}
@@ -67,7 +71,7 @@ export function ChannelListEntry (props: { channelId: string }) {
     const { subscribed, setSubscribed } = useChannelSubscribed(props.channelId)
 
     return <Container direction="row" justify='space-between' align='center' onClick={() => setSubscribed(!subscribed)}>
-        {props.channelId}
+        <ChannelNameText>{props.channelId}</ChannelNameText>
         <ToggleButton>
             {subscribed ? Heart : HeartOutline}
         </ToggleButton>

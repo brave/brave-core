@@ -91,7 +91,7 @@ export default function FeedCard (props: {
     }, [subscribed])
 
     const backgroundColor = publisher.backgroundColor || getCardColor(publisher.feedSource?.url || publisher.publisherId)
-    const coverUrl = useGetUnpaddedImage(publisher.coverUrl?.url ?? '', false)
+    const coverUrl = useGetUnpaddedImage(publisher.coverUrl?.url)
     return <Container direction="column" gap={8}>
         <Card backgroundColor={backgroundColor}>
             {coverUrl && <CoverImage backgroundImage={coverUrl} />}

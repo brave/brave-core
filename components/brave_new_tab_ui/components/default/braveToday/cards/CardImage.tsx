@@ -8,25 +8,25 @@ import * as Card from '../cardSizes'
 import getBraveNewsController, * as BraveNews from '../../../../api/brave_news'
 
 type Props = {
-  imageUrl: string
+  imageUrl?: string
   list?: boolean
-  isUnpadded?: boolean
   isPromoted?: boolean
   onLoaded?: () => any
 }
 
 const cache: { [url: string]: string } = {}
 
-export function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?: () => any) {
+export function useGetUnpaddedImage (paddedUrl: string | undefined, onLoaded?: () => any) {
   const [unpaddedUrl, setUnpaddedUrl] = React.useState('')
-  const onReceiveUnpaddedUrl = (result: string) => {
-    cache[paddedUrl] = result
-    setUnpaddedUrl(result)
-
-    if (onLoaded) window.requestAnimationFrame(() => onLoaded())
-  }
 
   React.useEffect(() => {
+    const onReceiveUnpaddedUrl = (result: string) => {
+      cache[paddedUrl!] = result
+      setUnpaddedUrl(result)
+
+      if (onLoaded) window.requestAnimationFrame(() => onLoaded())
+    }
+
     // Storybook method
     // @ts-expect-error
     if (window.braveStorybookUnpadUrl) {
@@ -35,6 +35,8 @@ export function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onL
         .then(onReceiveUnpaddedUrl)
       return
     }
+
+    if (!paddedUrl) return
 
     if (cache[paddedUrl]) {
       onReceiveUnpaddedUrl(cache[paddedUrl])
@@ -54,12 +56,12 @@ export function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onL
       .catch(err => {
         console.error(`Error getting image for ${paddedUrl}.`, err)
       })
-  }, [paddedUrl, isUnpadded])
+  }, [paddedUrl])
   return unpaddedUrl
 }
 
 export default function CardImage (props: Props) {
-  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, !!props.isUnpadded, props.onLoaded)
+  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, props.onLoaded)
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
   React.useEffect(() => {
     if (unpaddedUrl) {
