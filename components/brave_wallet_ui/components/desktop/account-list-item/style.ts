@@ -76,6 +76,7 @@ export const OvalButton = styled(WalletButton)`
   padding: 3px 10px;
   border: 1px solid ${(p) => p.theme.color.interactive08};
   margin-right: 6px;
+  pointer-events: auto;
 `
 
 export const OvalButtonText = styled.span`

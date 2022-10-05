@@ -632,6 +632,7 @@ provideStrings({
   braveWalletMarketData24HrColumn: '24Hr',
   braveWalletMarketDataMarketCapColumn: 'Mkt. Cap',
   braveWalletMarketDataVolumeColumn: 'Volume',
+  braveWalletMarketDataBuyDepositColumn: 'Buy/Deposit',
 
   // Market Coin Detail Screen
   braveWalletInformation: 'Information',

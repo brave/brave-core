@@ -97,8 +97,8 @@ export const useMultiChainBuyAssets = () => {
       ...selectedAsset,
       symbol:
         buyOption === BraveWallet.OnRampProvider.kRamp ? getRampAssetSymbol(selectedAsset)
-        : buyOption === BraveWallet.OnRampProvider.kWyre ? getWyreAssetSymbol(selectedAsset)
-        : selectedAsset.symbol
+          : buyOption === BraveWallet.OnRampProvider.kWyre ? getWyreAssetSymbol(selectedAsset)
+            : selectedAsset.symbol
     }
 
     getBuyAssetUrl({

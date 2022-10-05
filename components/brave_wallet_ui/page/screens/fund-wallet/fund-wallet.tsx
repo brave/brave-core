@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -60,6 +60,7 @@ import { SelectCurrency } from '../../../components/buy-send-swap/select-currenc
 export const FundWalletScreen = () => {
   // routing
   const history = useHistory()
+  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
   const dispatch = useDispatch()
@@ -173,6 +174,24 @@ export const FundWalletScreen = () => {
     setSelectedAsset(undefined)
   }, [])
 
+  const checkIsBuyAssetSelected = React.useCallback((asset: BraveWallet.BlockchainToken) => {
+    if (selectedAsset) {
+      return selectedAsset.contractAddress.toLowerCase() === asset.contractAddress.toLowerCase() &&
+        selectedAsset.symbol.toLowerCase() === asset.symbol.toLowerCase()
+    }
+    return false
+  }, [selectedAsset])
+
+  const scrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
+    if (checkIsBuyAssetSelected(asset)) {
+      ref?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center'
+      })
+    }
+  }, [checkIsBuyAssetSelected])
+
   // effects
   React.useEffect(() => {
     if (assetsForFilteredNetwork.length === 0) {
@@ -181,8 +200,8 @@ export const FundWalletScreen = () => {
   }, [assetsForFilteredNetwork.length])
 
   React.useEffect(() => {
-    // unselect asset on chain filter changed
-    if (selectedNetworkFilter) {
+    // unselect asset if  AllNetworksOption is not selected
+    if (selectedNetworkFilter.chainId !== AllNetworksOption.chainId) {
       setSelectedAsset(undefined)
     }
   }, [selectedNetworkFilter])
@@ -203,6 +222,15 @@ export const FundWalletScreen = () => {
     accountsForSelectedAssetNetwork,
     selectedAccount
   ])
+
+  React.useEffect(() => {
+    if (tokenId !== undefined) {
+      const foundBuyAsset = allBuyAssetOptions.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
+      if (foundBuyAsset) {
+        setSelectedAsset(foundBuyAsset)
+      }
+    }
+  }, [tokenId, allBuyAssetOptions])
 
   // render
   return (
@@ -252,32 +280,32 @@ export const FundWalletScreen = () => {
 
                 {assetsForFilteredNetwork.length
                   ? <TokenLists
-                      enableScroll
-                      maxListHeight='38vh'
-                      userAssetList={assetsForFilteredNetwork}
-                      networks={networksFilterOptions}
-                      hideAddButton
-                      hideAssetFilter
-                      hideAccountFilter
-                      estimatedItemSize={100}
-                      renderToken={({ item: { asset } }) => {
-                        return <BuyAssetOptionItem
-                          isSelected={asset === selectedAsset}
-                          key={asset.isErc721
-                            ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
-                            : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
-                          token={asset}
-                          tokenNetwork={getTokensNetwork(buyAssetNetworks, asset)}
-                          onClick={setSelectedAsset}
-                        />
-                      }}
-                    />
+                    enableScroll
+                    maxListHeight='38vh'
+                    userAssetList={assetsForFilteredNetwork}
+                    networks={networksFilterOptions}
+                    hideAddButton
+                    hideAssetFilter
+                    hideAccountFilter
+                    estimatedItemSize={100}
+                    renderToken={({
+                      item: { asset }
+                    }) => <BuyAssetOptionItem
+                        isSelected={checkIsBuyAssetSelected(asset)}
+                        key={asset.isErc721
+                          ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
+                          : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
+                        token={asset}
+                        tokenNetwork={getTokensNetwork(buyAssetNetworks, asset)}
+                        onClick={setSelectedAsset}
+                        ref={(ref) => scrollIntoView(asset, ref)} />}
+                  />
                   : <Column>
-                      <LoadingIcon
-                        opacity={1}
-                        size='100px'
-                        color='interactive05'
-                      />
+                    <LoadingIcon
+                      opacity={1}
+                      size='100px'
+                      color='interactive05'
+                    />
                   </Column>
                 }
 
