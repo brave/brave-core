@@ -31,7 +31,6 @@ extension TabBarVisibility: RepresentableOptionType {
 protocol SettingsDelegate: AnyObject {
   func settingsOpenURLInNewTab(_ url: URL)
   func settingsOpenURLs(_ urls: [URL])
-  func settingsDidFinish(_ settingsViewController: SettingsViewController)
 }
 
 class SettingsViewController: TableViewController {

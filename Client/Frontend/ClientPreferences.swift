@@ -89,10 +89,6 @@ extension Preferences {
     /// Controls whether or not to show the last visited bookmarks folder
     static let showLastVisitedBookmarksFolder = Option<Bool>(key: "general.bookmarks-show-last-visited-bookmarks-folder", default: true)
 
-    /// Whether or not to show the clipboard bar when the user has a URL in their pasteboard on launch
-    ///
-    /// Currently unused.
-    static let showClipboardBar = Option<Bool>(key: "general.show-clipboard-bar", default: false)
     /// Whether or not new user onboarding has completed.
     /// User skipping(tapping on skip) onboarding does NOT count as completed.
     /// If user kills the app before completing onboarding, it should be treated as unfinished.

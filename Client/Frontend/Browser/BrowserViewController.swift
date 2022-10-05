@@ -3,18 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import Photos
 import UIKit
 import WebKit
 import Shared
 import Storage
 import SnapKit
 import XCGLogger
-import MobileCoreServices
 import SwiftyJSON
 import Data
 import BraveShared
-import SwiftKeychainWrapper
 import BraveCore
 import CoreData
 import StoreKit
@@ -41,22 +38,10 @@ private let KVOs: [KVOConstants] = [
   .serverTrust,
 ]
 
-private struct BrowserViewControllerUX {
-  fileprivate static let showHeaderTapAreaHeight: CGFloat = 32
-  fileprivate static let showFooterTapAreaHeight: CGFloat = 44
-  fileprivate static let bookmarkStarAnimationDuration: Double = 0.5
-  fileprivate static let bookmarkStarAnimationOffset: CGFloat = 80
-}
-
-protocol BrowserViewControllerDelegate: AnyObject {
-  func openInNewTab(_ url: URL, isPrivate: Bool)
-}
-
-public class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
+public class BrowserViewController: UIViewController {
   var webViewContainer: UIView!
   var topToolbar: TopToolbarView!
   var tabsBar: TabsBarViewController!
-  var clipboardBarDisplayHandler: ClipboardBarDisplayHandler?
   var readerModeBar: ReaderModeBarView?
   var readerModeCache: ReaderModeCache
   var statusBarOverlay: UIView!
@@ -64,7 +49,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   var searchController: SearchViewController?
   var favoritesController: FavoritesViewController?
   var screenshotHelper: ScreenshotHelper!
-  fileprivate var homePanelIsInline = false
   var searchLoader: SearchLoader?
   let alertStackView = UIStackView()  // All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
   var findInPageBar: FindInPageBar?
@@ -140,9 +124,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine If AddToListActivity should be added
   var openInPlaylistActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine if OpenInPlaylistActivity should be shown
 
-  // Tracking navigation items to record history types.
-  // TODO: weak references?
-  var ignoredNavigation = Set<WKNavigation>()
   var typedNavigation = [URL: VisitType]()
   var navigationToolbar: ToolbarProtocol {
     return toolbar ?? topToolbar
@@ -671,14 +652,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       })
   }
 
-  override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-      // Reload UI
-    }
-  }
-
   func dismissVisibleMenus() {
     displayedPopoverController?.dismiss(animated: true)
   }
@@ -836,9 +809,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     view.addSubview(statusBarOverlay)
     alertStackView.axis = .vertical
     alertStackView.alignment = .center
-
-    clipboardBarDisplayHandler = ClipboardBarDisplayHandler(tabManager: tabManager)
-    clipboardBarDisplayHandler?.delegate = self
     
     view.addLayoutGuide(toolbarLayoutGuide)
     toolbarLayoutGuide.snp.makeConstraints {
@@ -1032,12 +1002,12 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
     topTouchArea.snp.makeConstraints { make in
       make.top.left.right.equalTo(self.view)
-      make.height.equalTo(BrowserViewControllerUX.showHeaderTapAreaHeight)
+      make.height.equalTo(32)
     }
 
     bottomTouchArea.snp.makeConstraints { make in
       make.bottom.left.right.equalTo(self.view)
-      make.height.equalTo(BrowserViewControllerUX.showFooterTapAreaHeight)
+      make.height.equalTo(44)
     }
   }
 
@@ -1077,7 +1047,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     checkCrashRestoration()
 
     updateToolbarUsingTabManager(tabManager)
-    clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
 
     if let tabId = tabManager.selectedTab?.rewardsId, rewards.ledger?.selectedTabId == 0 {
       rewards.ledger?.selectedTabId = tabId
@@ -1164,21 +1133,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     super.viewWillDisappear(animated)
 
     rewards.ledger?.selectedTabId = 0
-  }
-
-  override public func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-  }
-
-  func resetBrowserChrome() {
-    // animate and reset transform for tab chrome
-    topToolbar.updateAlphaForSubviews(1)
-    footer.alpha = 1
-
-    [header, footer, readerModeBar].forEach { view in
-      view?.transform = .identity
-    }
-    statusBarOverlay.isHidden = false
   }
 
   /// A layout guide defining where the favorites and NTP overlay are placed
@@ -1585,14 +1539,8 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
         topToolbar.hideProgressBar()
       }
     case .loading:
-      guard let loading = change?[.newKey] as? Bool else { break }
-
       if tab === tabManager.selectedTab {
         topToolbar.locationView.loading = tab.loading
-      }
-
-      if !loading {
-        runScriptsOnWebView(webView)
       }
     case .URL:
       guard let tab = tabManager[webView] else { break }
@@ -1731,17 +1679,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
           }
         }
       }
-    default:
-      assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
-    }
-  }
-
-  fileprivate func runScriptsOnWebView(_ webView: WKWebView) {
-    guard let url = webView.url, url.isWebPage(), !url.isLocal else {
-      return
-    }
-    if NoImageModeScriptHandler.isActivated {
-      NoImageModeScriptHandler.executeScript(for: webView)
     }
   }
 
@@ -2195,9 +2132,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
         // ignore the result because we are being called back asynchronous when the readermode status changes.
         webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).checkReadability", contentWorld: ReaderModeScriptHandler.scriptSandbox)
 
-        // Re-run additional scripts in webView to extract updated favicons and metadata.
-        runScriptsOnWebView(webView)
-
         // Only add history of a url which is not a localhost url
         if !tab.isPrivate, !url.isReaderModeURL {
           // The visitType is checked If it is "typed" or not to determine the History object we are adding
@@ -2272,10 +2206,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       self.present(alert, animated: true, completion: nil)
     }
   }
-
-  private func focusLocationField() {
-    topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
-  }
   
   private func handleToolbarVisibilityStateChange(
     _ state: ToolbarVisibilityViewModel.ToolbarState,
@@ -2347,12 +2277,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   }
 }
 
-extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
-  func shouldDisplay(clipboardBar bar: ButtonToast) {
-    show(toast: bar, duration: ClipboardBarToastUX.toastDelay)
-  }
-}
-
 extension BrowserViewController: QRCodeViewControllerDelegate {
   func didScanQRCodeWithURL(_ url: URL) {
     popToBVC()
@@ -2382,10 +2306,6 @@ extension BrowserViewController: SettingsDelegate {
   func settingsOpenURLs(_ urls: [URL]) {
     let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
     self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
-  }
-
-  func settingsDidFinish(_ settingsViewController: SettingsViewController) {
-    settingsViewController.dismiss(animated: true)
   }
 }
 
@@ -2440,7 +2360,6 @@ extension BrowserViewController: TabDelegate {
       ErrorPageHelper(certStore: profile.certStore),
       SessionRestoreScriptHandler(tab: tab),
       FindInPageScriptHandler(tab: tab),
-      NoImageModeScriptHandler(tab: tab),
       PrintScriptHandler(browserController: self, tab: tab),
       CustomSearchScriptHandler(tab: tab),
       NightModeScriptHandler(tab: tab),
@@ -2494,14 +2413,6 @@ extension BrowserViewController: TabDelegate {
     webView.uiDelegate = nil
     webView.scrollView.delegate = nil
     webView.removeFromSuperview()
-  }
-
-  fileprivate func findSnackbar(_ barToFind: SnackBar) -> Int? {
-    let bars = alertStackView.arrangedSubviews
-    for (index, bar) in bars.enumerated() where bar === barToFind {
-      return index
-    }
-    return nil
   }
 
   func showBar(_ bar: SnackBar, animated: Bool) {
@@ -3534,7 +3445,7 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func focusURLBar() {
-    focusLocationField()
+    topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
   }
 
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState) {

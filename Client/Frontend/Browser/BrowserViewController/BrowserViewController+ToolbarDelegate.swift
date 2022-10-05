@@ -246,9 +246,6 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
-    if let toast = clipboardBarDisplayHandler?.clipboardToast {
-      toast.removeFromSuperview()
-    }
     updateTabsBarVisibility()
     displayFavoritesController()
   }
