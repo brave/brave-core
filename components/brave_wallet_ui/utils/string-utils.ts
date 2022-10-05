@@ -23,6 +23,8 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
   return trimmedUrl.startsWith('ipfs://') ? trimmedUrl.replace('ipfs://', 'https://ipfs.io/ipfs/') : trimmedUrl
 }
 
+export const isIpfs = (url?: string) => url?.startsWith('ipfs://')
+
 /**
  * Wyre currently supports the following chains:
  *  bitcoin, ethereum, avalanche(X & C), stellar, algorand, matic, flow
