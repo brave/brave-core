@@ -31,42 +31,43 @@ const LoadMoreButton = styled(Button)`
 // The default number of category cards to show.
 const DEFAULT_NUM_CATEGORIES = 3
 
-export default function Discover (props: {}) {
+export default function Discover () {
     const channels = useChannels()
     const [showingAllCategories, setShowingAllCategories] = React.useState(false)
     const [query, setQuery] = useState('')
     const publishers = usePublishers()
 
-    const { filteredChannels, filteredPublishers } = React.useMemo(() => {
-        const lowerQuery = query.toLowerCase()
-        return {
-            filteredChannels: channels.filter(c => c.channelName.toLowerCase().includes(lowerQuery)),
-            filteredPublishers: publishers.filter(p => p.publisherName.toLowerCase().includes(lowerQuery) ||
-                p.categoryName.toLocaleLowerCase().includes(lowerQuery) ||
-                p.feedSource?.url?.toLocaleLowerCase().includes(query))
-        }
-    }, [query, publishers, channels])
+    const lowerQuery = query.toLowerCase()
+    const filteredPublishers = React.useMemo(() => publishers
+        .filter(p => p.publisherName.toLowerCase().includes(lowerQuery) ||
+            p.categoryName.toLocaleLowerCase().includes(lowerQuery) ||
+            p.feedSource?.url?.toLocaleLowerCase().includes(query))
+        .map(p => <FeedCard key={p.publisherId} publisherId={p.publisherId} />),
+        [lowerQuery, publishers])
+
+    const filteredChannels = React.useMemo(() => channels
+        .filter(c => c.channelName.toLowerCase().includes(lowerQuery))
+        // If we're showing all channels, there's no end to the slice.
+        // Otherwise, just show the default number.
+        .slice(0, showingAllCategories || query
+            ? undefined
+            : DEFAULT_NUM_CATEGORIES)
+        .map(c => <ChannelCard key={c.channelName} channelId={c.channelName} />),
+        [lowerQuery, channels, showingAllCategories])
 
     return <Flex direction='column'>
         <Header>Discover</Header>
         <SearchInput type="search" placeholder={getLocale('braveNewsSearchPlaceholderLabel')} value={query} onChange={e => setQuery(e.currentTarget.value)} />
         <DirectFeedResults query={query} />
         <DiscoverSection name={getLocale('braveNewsBrowseByCategoryHeader')}>
-            {filteredChannels
-                // If we're showing all channels, there's no end to the slice.
-                // Otherwise, just show the default number.
-                .slice(0, showingAllCategories || query
-                    ? undefined
-                    : DEFAULT_NUM_CATEGORIES)
-                .filter(t => t.channelName.toLowerCase().includes(query.toLowerCase()))
-                .map(c => <ChannelCard key={c.channelName} channelId={c.channelName} />)}
+            {filteredChannels}
             {!showingAllCategories && !query &&
                 <LoadMoreButton onClick={() => setShowingAllCategories(true)}>
                     {getLocale('braveNewsLoadMoreCategoriesButton')}
                 </LoadMoreButton>}
         </DiscoverSection>
         <DiscoverSection name={getLocale('braveNewsAllSourcesHeader')}>
-            {filteredPublishers.map(p => <FeedCard key={p.publisherId} publisherId={p.publisherId} />)}
+            {filteredPublishers}
         </DiscoverSection>
     </Flex>
 }
