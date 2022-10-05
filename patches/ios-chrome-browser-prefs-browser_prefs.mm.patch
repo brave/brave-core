@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 4d86ea0dd360ddfa560563d22d0567a579ffe1b0..16cf22c432405b2589eee5ac8c4a33b01caa8c25 100644
+index 4d86ea0dd360ddfa560563d22d0567a579ffe1b0..2f62d05f0e630597b34d9b7a3a37b1bc599b1a6f 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
 @@ -180,6 +180,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -19,3 +19,9 @@ index 4d86ea0dd360ddfa560563d22d0567a579ffe1b0..16cf22c432405b2589eee5ac8c4a33b0
  }
  
  // This method should be periodically pruned of year+ old migrations.
+@@ -339,4 +342,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+ 
+   // Added 06/2022.
+   syncer::MigrateSyncRequestedPrefPostMice(prefs);
++  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
+ }
