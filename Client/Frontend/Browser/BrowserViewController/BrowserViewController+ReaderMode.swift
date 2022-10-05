@@ -154,8 +154,7 @@ extension BrowserViewController {
         if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
           let playlistItem = tab.playlistItem
           try? self.readerModeCache.put(currentURL, readabilityResult)
-          if let nav = webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) {
-            self.ignoreNavigationInTab(tab, navigation: nav)
+          if webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           }
         }
@@ -186,8 +185,7 @@ extension BrowserViewController {
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           } else {
             let playlistItem = tab.playlistItem
-            if let nav = webView.load(URLRequest(url: originalURL)) {
-              ignoreNavigationInTab(tab, navigation: nav)
+            if webView.load(URLRequest(url: originalURL)) != nil {
               PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             }
           }
@@ -209,10 +207,6 @@ extension BrowserViewController {
     self.readerModeStyleViewController(
       ReaderModeStyleViewController(selectedStyle: readerModeStyle),
       didConfigureStyle: readerModeStyle)
-  }
-
-  func ignoreNavigationInTab(_ tab: Tab, navigation: WKNavigation) {
-    ignoredNavigation.insert(navigation)
   }
 
   func recordNavigationInTab(_ url: URL, visitType: VisitType) {

@@ -86,11 +86,6 @@ class MediaImageLoader: TabEventHandler {
   }
 
   fileprivate func loadImage(from url: URL) {
-    let shouldCacheImages = !NoImageModeScriptHandler.isActivated
-    if !shouldCacheImages {
-      return
-    }
-
     WebImageCacheManager.shared.load(from: url)
   }
 
