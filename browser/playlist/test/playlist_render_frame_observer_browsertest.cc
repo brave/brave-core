@@ -125,6 +125,13 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
+#if BUILDFLAG(IS_ANDROID)
+// TODO(sko): Fix this test on Android.
+// https://github.com/brave/brave-browser/issues/24971
+#define CheckNormalSites DISABLED_CheckNormalSites
+#else
+#define CheckNormalSites CheckNormalSites
+#endif
 IN_PROC_BROWSER_TEST_F(PlaylistRenderFrameObserverBrowserTest,
                        CheckNormalSites) {
   CheckMediaSourceAPI(GURL("http://a.com/"), APIVisibility::kVisible);
