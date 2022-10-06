@@ -45,6 +45,10 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
         network::mojom::CSPDirectiveName::MediaSrc,
         std::string("media-src 'self' chrome-untrusted://playlist-data "
                     "https://*.googlevideo.com;"));
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::StyleSrc,
+        std::string("style-src chrome-untrusted://resources "
+                    "chrome-untrusted://brave-resources 'unsafe-inline';"));
 
     auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
     content::WebUIDataSource::Add(browser_context, source);

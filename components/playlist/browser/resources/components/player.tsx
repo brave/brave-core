@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import { Playlist } from 'components/definitions/playlist'
 import * as playlistActions from '../actions/playlist_action_creators'
@@ -24,9 +25,14 @@ const mapStateToProps = (state: Playlist.ApplicationState) => ({
   currentItem: state.playerState?.currentItem
 })
 
+const StyledVideo = styled.video`
+  width: 100vw;
+  height: 100vh;
+`
+
 function Player ({ currentItem }: Props) {
   return (
-    <video style={{ width: '512px', height: '288px' }} autoPlay controls id="player" src={currentItem?.mediaPath.url}/>
+    <StyledVideo autoPlay controls id="player" src={currentItem?.mediaPath.url}/>
   )
 }
 

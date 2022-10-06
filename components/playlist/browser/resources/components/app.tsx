@@ -5,6 +5,7 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import { Playlist } from 'components/definitions/playlist'
 
@@ -32,6 +33,13 @@ interface State {
   playlist?: PlaylistMojo.Playlist
   experimentalUrl: string
 }
+
+const StyledVideoFrame = styled.iframe`
+  // 16:9 aspect ratio
+  width: 100vw;
+  height: 56vw;
+  border: none;
+`
 
 export class PlaylistPage extends React.Component<Props, State> {
   constructor (props: Props) {
@@ -210,7 +218,7 @@ export class PlaylistPage extends React.Component<Props, State> {
           </Table>
         </div>
 
-        <iframe id="player" src="chrome-untrusted://playlist-player" style={{ width: '512px', height: '288px', border: 'none' }} allow="autoplay" scrolling='no'/>
+        <StyledVideoFrame id="player" src="chrome-untrusted://playlist-player" allow="autoplay" scrolling='no' sandbox='allow-scripts allow-same-origin'/>
 
         <div>
           <h1>Experimental</h1>

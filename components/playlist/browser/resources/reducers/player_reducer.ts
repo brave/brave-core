@@ -20,6 +20,7 @@ const playerReducer: Reducer<Playlist.PlayerState|undefined> =
         case types.PLAYLIST_ITEM_SELECTED:
           const playlistItem = action.payload as PlaylistMojo.PlaylistItem
           state = { ...state, currentItem: playlistItem }
+          break
       }
       return state
     }

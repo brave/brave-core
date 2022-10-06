@@ -15,7 +15,7 @@ interface Props {
     onClick: (id: string) => void
 }
 
-const Thumbnail = styled.img<{showDefaultThumbnail: boolean}>`
+const StyledThumbnail = styled.img<{showDefaultThumbnail: boolean}>`
   max-width: 100%;
 
   ${p => p.showDefaultThumbnail && css`
@@ -30,7 +30,7 @@ export default class PlaylistItem extends React.PureComponent<Props, {}> {
         <div>
             <h3>{name}</h3>
             <a href='#' onClick={() => { onClick(id) }}>
-              <Thumbnail showDefaultThumbnail={!thumbnailUrl} data-id={id} src={thumbnailUrl}/>
+              <StyledThumbnail showDefaultThumbnail={!thumbnailUrl} data-id={id} src={thumbnailUrl}/>
             </a>
         </div>
     )

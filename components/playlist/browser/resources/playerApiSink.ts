@@ -10,6 +10,11 @@ import { types } from './constants/playlist_types'
 
 export default function startReceiving () {
   window.onmessage = (e) => {
+      if (e.origin !== 'chrome-untrusted://playlist') {
+        console.error(`Invalid origin: ${e.origin}`)
+        return
+      }
+
       const { actionType, data } = e.data as PlayerMessagePayload
       switch (actionType) {
         case types.PLAYLIST_ITEM_SELECTED:
