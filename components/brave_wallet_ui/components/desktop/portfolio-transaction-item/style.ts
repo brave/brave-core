@@ -2,12 +2,13 @@ import styled from 'styled-components'
 import { MoreVertRIcon, ArrowRightIcon } from 'brave-ui/components/icons'
 import CoinsIconSVG from '../../../assets/svg-icons/coins-icon.svg'
 import { WalletButton } from '../../shared/style'
+import { OrbContainer } from '../../extension/transaction-detail-panel/style'
 
 interface StyleProps {
   orb: string
 }
 
-export const PortfolioTransactionItemWrapper = styled.div`
+export const PortfolioTransactionItemWrapper = styled.div<{ isFocused?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,6 +16,9 @@ export const PortfolioTransactionItemWrapper = styled.div`
   width: 100%;
   margin: 14px 0px;
   position: relative;
+  background-color: ${(p) => p.isFocused ? `${p.theme.color.text01}10` : 'none'};
+  padding: 10px;
+  border-radius: 10px;
 `
 
 export const DetailRow = styled.div`
@@ -202,4 +206,8 @@ export const StatusBalanceAndMoreContainer = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+`
+
+export const OrbWrapper = styled(OrbContainer)`
+  margin-bottom: 0px;
 `
