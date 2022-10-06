@@ -38,6 +38,7 @@ interface Props {
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
   onEnableRewards: () => void
+  braveRewardsSupported: boolean
 }
 
 enum Location {
@@ -87,7 +88,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
       brandedWallpaperOptIn,
       showBackgroundImage,
       featureCustomBackgroundEnabled,
-      onEnableRewards
+      onEnableRewards,
+      braveRewardsSupported
     } = this.props
 
     const usingCustomImageBackground = newTabData.backgroundWallpaper?.type === 'image'
@@ -168,16 +170,18 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
               </StyledCustomBackgroundSettings>
             )}
             <div style={{ height: '16px' }}/>
-            <SettingsRow>
-              <SponsoredImageToggle
-                onChange={toggleBrandedWallpaperOptIn}
-                onEnableRewards={onEnableRewards}
-                checked={showBackgroundImage && brandedWallpaperOptIn}
-                disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
-                rewardsEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
-                adsEnabled={this.props.newTabData.rewardsState.enabledAds}
-                canSupportAds={!!this.props.newTabData.rewardsState.adsSupported}/>
-            </SettingsRow>
+            {braveRewardsSupported && (
+              <SettingsRow>
+                <SponsoredImageToggle
+                  onChange={toggleBrandedWallpaperOptIn}
+                  onEnableRewards={onEnableRewards}
+                  checked={showBackgroundImage && brandedWallpaperOptIn}
+                  disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
+                  rewardsEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
+                  adsEnabled={this.props.newTabData.rewardsState.enabledAds}
+                  canSupportAds={!!this.props.newTabData.rewardsState.adsSupported}/>
+              </SettingsRow>
+            )}
           </div>
         )}
         {this.state.location === Location.BRAVE_BACKGROUNDS &&
