@@ -75,16 +75,14 @@
     margin-top: 20px;
   }
 
-  .aligned-button-width
+  .chain-actions
   {
-    display: table;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    column-gap: 8px;
+    justify-content: start;
   }
-
-  .aligned-single-button
-  {
-    width: 100%;
-  }
-
 </style>
 
 <!-- Device list goes here -->
@@ -147,16 +145,16 @@
   </settings-sync-controls>
 </section>
 
-<div class="aligned-button-width">
+<div class="chain-actions" >
   <section class="cancel">
-    <cr-button class="action-button aligned-single-button"
+    <cr-button class="action-button "
       on-click="onResetSyncChain_">
       $i18n{braveSyncResetButton}
     </cr-button>
   </section>
 
   <section class="cancel">
-    <cr-button class="aligned-single-button"
+    <cr-button
       on-click="onPermanentlyDeleteSyncAccount_">
       $i18n{braveSyncDeleteAccountButtonAndDialogTitle}
     </cr-button>
