@@ -2121,7 +2121,7 @@ void JsonRpcService::GetERC1155TokenBalance(
 
 void JsonRpcService::DiscoverAssetsOnAllSupportedChains(
     const std::vector<std::string>& account_addresses) {
-  for (const auto& chain_id : asset_discovery_supported_chains) {
+  for (const auto& chain_id : GetAssetDiscoverySupportedChains()) {
     DiscoverAssets(chain_id, mojom::CoinType::ETH, account_addresses);
   }
 }
@@ -2156,7 +2156,7 @@ void JsonRpcService::DiscoverAssetsInternal(
     DiscoverAssetsCallback callback) {
   // Asset discovery only supported on select EVM chains
   if (coin != mojom::CoinType::ETH ||
-      !base::Contains(asset_discovery_supported_chains, chain_id)) {
+      !base::Contains(GetAssetDiscoverySupportedChains(), chain_id)) {
     std::move(callback).Run(
         std::vector<mojom::BlockchainTokenPtr>(),
         mojom::ProviderError::kMethodNotSupported,
