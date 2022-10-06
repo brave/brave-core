@@ -146,6 +146,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
         Enable/Disable Brave Shields
       </message>
+      <message name="IDS_STATS_NOTIFICATION_PRIVACY_UPDATES_DESCRIPTION"  desc="Text for Notification on description">
+        Get weekly privacy updates on tracker &amp; ad blocking.
+      </message>
+      <message name="IDS_STATS_NOTIFICATION_ON"  desc="Text for Turn on notifications">
+        Turn on notifications
+      </message>
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
       </message>

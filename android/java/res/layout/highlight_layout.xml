@@ -16,7 +16,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/brave_stats_bg_color">
+        android:background="@drawable/stats_bottomsheet_background">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"

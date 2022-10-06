@@ -93,6 +93,7 @@ import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
+import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
@@ -1531,6 +1532,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        FragmentManager fm = getSupportFragmentManager();
+        BraveStatsBottomSheetDialogFragment fragment =
+                (BraveStatsBottomSheetDialogFragment) fm.findFragmentByTag(
+                        BraveStatsUtil.STATS_FRAGMENT_TAG);
+        if (fragment != null) {
+            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
         if (requestCode == BraveStatsUtil.SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM
                 && grantResults.length != 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
