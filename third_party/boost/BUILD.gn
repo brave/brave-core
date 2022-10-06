@@ -14,9 +14,6 @@ config("boost_config") {
 }
 
 group("boost") {
-  visibility = [
-    "//brave/chromium_src/ios/chrome/browser/prefs:prefs",
-    "//brave/components/brave_wallet/common",
-  ]
+  visibility = [ "//brave/components/brave_wallet/common" ]
   public_configs = [ ":boost_config" ]
 }
