@@ -111,6 +111,9 @@ void PlaylistService::RequestDownloadMediaFilesFromPage(
     const std::string& playlist_id,
     const std::string& url) {
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
+  LOG(ERROR) << "NTP"
+             << " RequestDownloadMediaFilesFromPage : " << playlist_id << " : "
+             << url;
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url;
   request.callback =
@@ -118,6 +121,8 @@ void PlaylistService::RequestDownloadMediaFilesFromPage(
                      base::Unretained(this),
                      playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
+  LOG(ERROR) << "NTP"
+             << " RequestDownloadMediaFilesFromPage : 2";
 }
 
 bool PlaylistService::AddItemsToPlaylist(
@@ -211,6 +216,8 @@ void PlaylistService::RequestDownloadMediaFilesFromItems(
                           [](const auto& item) { return item.id; });
   AddItemsToPlaylist(playlist_id, ids);
 
+  LOG(ERROR) << "NTP" << __func__ << "RequestDownloadMediaFilesFromItems 5";
+
   base::ranges::for_each(
       params, [this](const auto& info) { CreatePlaylistItem(info); });
 }
@@ -233,6 +240,8 @@ bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
 
 void PlaylistService::DownloadMediaFile(const PlaylistItemInfo& info) {
   VLOG(2) << __func__;
+  LOG(ERROR) << "NTP"
+             << "DownloadMediaFile";
   media_file_download_manager_->DownloadMediaFile(info);
 }
 
@@ -268,8 +277,12 @@ void PlaylistService::RemovePlaylistItemValue(const std::string& id) {
 void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
   VLOG(2) << __func__;
 
+  LOG(ERROR) << "NTP" << __func__ << "CreatePlaylistItem 1";
+
   UpdatePlaylistItemValue(params.id,
                           base::Value(GetValueFromPlaylistItemInfo(params)));
+
+  LOG(ERROR) << "NTP" << __func__ << "CreatePlaylistItem 2";
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAdded, params.id});
 
@@ -278,6 +291,7 @@ void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
       base::BindOnce(&base::CreateDirectory, GetPlaylistItemDirPath(params.id)),
       base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated,
                      weak_factory_.GetWeakPtr(), params));
+  LOG(ERROR) << "NTP" << __func__ << "CreatePlaylistItem 3";
 }
 
 bool PlaylistService::ShouldDownloadOnBackground(
@@ -288,11 +302,14 @@ bool PlaylistService::ShouldDownloadOnBackground(
 
 void PlaylistService::OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
                                                bool directory_ready) {
+  LOG(ERROR) << "NTP" << __func__ << "OnPlaylistItemDirCreated 1";
   VLOG(2) << __func__;
   if (!directory_ready) {
     NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAborted, info.id});
     return;
   }
+
+  LOG(ERROR) << "NTP" << __func__ << "OnPlaylistItemDirCreated 2";
 
   DownloadThumbnail(info);
   DownloadMediaFile(info);
@@ -306,9 +323,12 @@ void PlaylistService::DownloadThumbnail(const PlaylistItemInfo& info) {
     return;
   }
 
+  LOG(ERROR) << "NTP" << __func__ << "DownloadThumbnail 1";
+
   thumbnail_downloader_->DownloadThumbnail(
       info.id, GURL(info.thumbnail_src),
       GetPlaylistItemDirPath(info.id).Append(kThumbnailFileName));
+  LOG(ERROR) << "NTP" << __func__ << "DownloadThumbnail 2";
 }
 
 void PlaylistService::OnThumbnailDownloaded(const std::string& id,
@@ -325,6 +345,8 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
   const auto* value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(value);
   if (value) {
+    LOG(ERROR) << "NTP" << __func__ << "OnThumbnailDownloaded 1"
+               << path.AsUTF8Unsafe();
     base::Value::Dict copied_value = value->Clone();
     copied_value.Set(kPlaylistItemThumbnailPathKey, path.AsUTF8Unsafe());
     UpdatePlaylistItemValue(id, base::Value(std::move(copied_value)));
@@ -342,6 +364,8 @@ void PlaylistService::CreatePlaylist(PlaylistInfo& info) {
   playlist.Set(kPlaylistIDKey, info.id);
   playlist.Set(kPlaylistNameKey, info.name);
   playlist.Set(kPlaylistItemsKey, base::Value::List());
+
+  LOG(ERROR) << "CreatePlaylist : " << id << info.name;
 
   prefs::ScopedDictionaryPrefUpdate playlists_update(prefs_, kPlaylistsPref);
   playlists_update.Get()->Set(

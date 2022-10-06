@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/playlist_page_handler.h"
+#include "brave/browser/playlist/playlist_page_handler.h"
 
 #include <string>
 #include <utility>
@@ -12,8 +12,11 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
 #include "chrome/browser/profiles/profile.h"
+
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#endif
 
 using PlaylistId = playlist::PlaylistService::PlaylistId;
 using PlaylistItemId = playlist::PlaylistService::PlaylistItemId;
@@ -22,6 +25,7 @@ playlist::PlaylistService* GetPlaylistService(Profile* profile) {
   return playlist::PlaylistServiceFactory::GetForBrowserContext(profile);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 PlaylistPageHandler::PlaylistPageHandler(
     Profile* profile,
     content::WebContents* contents,
@@ -34,11 +38,12 @@ PlaylistPageHandler::PlaylistPageHandler(
   DCHECK(profile_);
   observation_.Observe(GetPlaylistService(profile_));
 }
-
+#else
 PlaylistPageHandler::PlaylistPageHandler(Profile* profile) : profile_(profile) {
   DCHECK(profile_);
-  observation_.Observe(GetPlaylistService(profile_));
+  // observation_.Observe(GetPlaylistService(profile_));
 }
+#endif
 
 PlaylistPageHandler::~PlaylistPageHandler() = default;
 
@@ -57,15 +62,22 @@ void PlaylistPageHandler::Bind(
 void PlaylistPageHandler::GetAllPlaylists(
     PlaylistPageHandler::GetAllPlaylistsCallback callback) {
   std::vector<mojo::StructPtr<playlist::mojom::Playlist>> playlists;
+  LOG(ERROR) << "NTP"
+             << "GetAllPlaylists : ";
   for (const auto& playlist : GetPlaylistService(profile_)->GetAllPlaylists()) {
     std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
     for (const auto& item : playlist.items) {
+      LOG(ERROR) << "NTP"
+                 << "GetAllPlaylists : " << item.title;
       items.push_back(playlist::mojom::PlaylistItem::New(
           item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
           GURL(item.thumbnail_path), item.media_file_cached));
     }
     playlists.push_back(playlist::mojom::Playlist::New(
         playlist.id, playlist.name, std::move(items)));
+    LOG(ERROR) << "NTP"
+               << "GetAllPlaylists : "
+               << "3";
   }
 
   std::move(callback).Run(std::move(playlists));
@@ -74,20 +86,34 @@ void PlaylistPageHandler::GetAllPlaylists(
 void PlaylistPageHandler::GetPlaylist(
     const std::string& id,
     PlaylistPageHandler::GetPlaylistCallback callback) {
+  LOG(ERROR) << "NTP"
+             << "GetPlaylist : "
+             << "playlist id : " << id;
   const auto& playlist = GetPlaylistService(profile_)->GetPlaylist(id);
+  LOG(ERROR) << "NTP"
+             << "GetPlaylist : "
+             << "2";
   if (!playlist.has_value()) {
     std::move(callback).Run(nullptr);
     return;
   }
-
+  LOG(ERROR) << "NTP"
+             << "GetPlaylist : "
+             << "3";
   std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
   for (const auto& item : playlist->items) {
     items.push_back(playlist::mojom::PlaylistItem::New(
         item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
         GURL(item.thumbnail_path), item.media_file_cached));
   }
+  LOG(ERROR) << "NTP"
+             << "GetPlaylist : "
+             << "4";
   std::move(callback).Run(playlist::mojom::Playlist::New(
       playlist->id, playlist->name, std::move(items)));
+  LOG(ERROR) << "NTP"
+             << "GetPlaylist : "
+             << "5";
 }
 
 void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
@@ -98,6 +124,9 @@ void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
 
 void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
     const std::string& playlist_id) {
+#if defined(OS_ANDROID)
+  NOTIMPLEMENTED();
+#else
   auto* browser = chrome::FindLastActive();
   if (!browser) {
     LOG(ERROR) << "No active browser";
@@ -112,6 +141,7 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
           playlist_id, contents);
     }
   }
+#endif  // defined(OS_ANDROID)
 }
 
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -138,8 +168,14 @@ void PlaylistPageHandler::RemoveLocalDataForItem(const std::string& item_id) {
 
 void PlaylistPageHandler::CreatePlaylist(
     playlist::mojom::PlaylistPtr playlist) {
+  LOG(ERROR) << "NTP"
+             << "CreatePlaylist : "
+             << "1";
   playlist::PlaylistInfo info;
   info.name = playlist->name;
+  LOG(ERROR) << "NTP"
+             << "CreatePlaylist : "
+             << "2";
   GetPlaylistService(profile_)->CreatePlaylist(info);
 }
 
@@ -149,6 +185,8 @@ void PlaylistPageHandler::RemovePlaylist(const std::string& playlist_id) {
 
 void PlaylistPageHandler::OnPlaylistStatusChanged(
     const playlist::PlaylistChangeParams& params) {
-  // TODO(sko) Send proper events based on |params|
+// TODO(sko) Send proper events based on |params|
+#if !BUILDFLAG(IS_ANDROID)
   page_->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
+#endif
 }
