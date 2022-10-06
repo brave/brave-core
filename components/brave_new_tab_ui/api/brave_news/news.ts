@@ -32,6 +32,9 @@ class BraveNewsApi {
     locale: string
 
     constructor () {
+        // Running jest tests we don't have access to mojom.
+        if (typeof jest !== 'undefined') return
+
         this.controller = getBraveNewsController()
         this.updateChannels()
 
