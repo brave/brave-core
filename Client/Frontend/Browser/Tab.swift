@@ -466,10 +466,9 @@ class Tab: NSObject {
   }
 
   var displayTitle: String {
-    if let title = webView?.title, !title.isEmpty {
-      let displayTitle = title.contains("localhost") ? "" : title
-      syncTab?.setTitle(displayTitle)
-      return displayTitle
+    if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
+      syncTab?.setTitle(displayTabTitle)
+      return displayTabTitle
     }
 
     // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
@@ -545,6 +544,24 @@ class Tab: NSObject {
           return url
         }
       }
+    }
+    
+    return nil
+  }
+  
+  func fetchDisplayTitle(using url: URL?, title: String?) -> String? {
+    if let tabTitle = title, !tabTitle.isEmpty {
+      var displayTitle = tabTitle
+      
+      // Checking host is "localhost" || host == "127.0.0.1"
+      // or hostless URL (iOS forwards hostless URLs (e.g., http://:6571) to localhost.)
+      // DisplayURL will retrieve original URL even it is redirected to Error Page
+      if let isLocal = url?.displayURL?.isLocal, isLocal {
+        displayTitle = ""
+      }
+
+      syncTab?.setTitle(displayTitle)
+      return displayTitle
     }
     
     return nil
