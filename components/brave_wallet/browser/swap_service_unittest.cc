@@ -452,14 +452,30 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
   EXPECT_FALSE(IsSwapSupported("invalid chain_id"));
 }
 TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
-  auto url = swap_service_->GetJupiterQuoteURL(GetCannedJupiterQuoteParams(),
-                                               mojom::kSolanaMainnet);
+  auto params = GetCannedJupiterQuoteParams();
+  auto url =
+      swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
+
+  // OK: output mint has Jupiter fees
   ASSERT_EQ(url,
             "https://quote-api.jup.ag/v1/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
             "feeBps=85&"
+            "slippage=0.500000&"
+            "onlyDirectRoutes=true");
+
+  params->output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
+  url =
+      swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
+
+  // OK: output mint does not have Jupiter fees
+  ASSERT_EQ(url,
+            "https://quote-api.jup.ag/v1/quote?"
+            "inputMint=So11111111111111111111111111111111111111112&"
+            "outputMint=SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y&"
+            "amount=10000&"
             "slippage=0.500000&"
             "onlyDirectRoutes=true");
 }

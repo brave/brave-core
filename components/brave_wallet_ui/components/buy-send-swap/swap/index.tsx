@@ -2,13 +2,7 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 
 import { getLocale, splitStringForTag } from '../../../../common/locale'
-import {
-  AmountPresetTypes,
-  BraveWallet,
-  BuySendSwapViewTypes,
-  ToOrFromType,
-  WalletState
-} from '../../../constants/types'
+import { AmountPresetTypes, BraveWallet, BuySendSwapViewTypes, ToOrFromType, WalletState } from '../../../constants/types'
 import SwapInputComponent from '../swap-input-component'
 import { SwapTooltip } from '../../desktop'
 
@@ -29,7 +23,7 @@ import {
 } from './style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { ResetButton } from '../shared-styles'
-import { useSwap } from '../../../common/hooks'
+import { useLib, useSwap } from '../../../common/hooks'
 import { SwapProvider } from '../../../common/hooks/swap'
 
 export interface Props {
@@ -99,6 +93,25 @@ function Swap (props: Props) {
   const {
     selectedNetwork
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
+
+  const [hasFees, setHasFees] = React.useState<boolean>(true)
+  const { hasJupiterFeesForMint } = useLib()
+
+  React.useEffect(() => {
+    (async () => {
+      if (swapProvider === SwapProvider.ZeroEx) {
+        setHasFees(true)
+        return
+      }
+
+      if (!toAsset) {
+        return
+      }
+
+      const result = await hasJupiterFeesForMint(toAsset.contractAddress)
+      setHasFees(result)
+    })()
+  }, [toAsset, swapProvider])
 
   const onShowAssetTo = () => {
     onChangeSwapView('assets', 'to')
@@ -241,7 +254,7 @@ function Swap (props: Props) {
       </ResetButton>
       <SwapFeesNoticeRow>
         <SwapFeesNoticeText>
-          {getLocale('braveWalletSwapFeesNotice')
+          {hasFees && getLocale('braveWalletSwapFeesNotice')
             .replace('$1', swapProvider === SwapProvider.Jupiter
               ? '0.85%'
               : '0.875%')}

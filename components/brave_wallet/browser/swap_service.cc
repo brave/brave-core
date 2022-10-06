@@ -105,8 +105,12 @@ GURL AppendJupiterQuoteParams(
     url = net::AppendQueryParameter(url, "outputMint", params.output_mint);
   if (!params.amount.empty())
     url = net::AppendQueryParameter(url, "amount", params.amount);
-  url = net::AppendQueryParameter(url, "feeBps",
-                                  brave_wallet::SwapService::GetFee(chain_id));
+
+  if (brave_wallet::HasJupiterFeesForTokenMint(params.output_mint)) {
+    url = net::AppendQueryParameter(
+        url, "feeBps", brave_wallet::SwapService::GetFee(chain_id));
+  }
+
   url = net::AppendQueryParameter(
       url, "slippage", base::StringPrintf("%.6f", params.slippage_percentage));
 
@@ -445,6 +449,12 @@ void SwapService::OnGetJupiterSwapTransactions(
   }
 
   std::move(callback).Run(true, std::move(swap_transactions), absl::nullopt);
+}
+
+void SwapService::HasJupiterFeesForTokenMint(
+    const std::string& mint,
+    HasJupiterFeesForTokenMintCallback callback) {
+  std::move(callback).Run(brave_wallet::HasJupiterFeesForTokenMint(mint));
 }
 
 }  // namespace brave_wallet

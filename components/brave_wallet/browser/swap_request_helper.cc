@@ -22,15 +22,24 @@ absl::optional<std::string> EncodeJupiterTransactionParams(
   DCHECK(params);
   base::Value::Dict tx_params;
 
-  // feeAccount is the ATA account for the output mint where the fee will be
-  // sent to.
+  // The code below does the following two things:
+  //   - compute the ATA address that should be used to receive fees
+  //   - verify if output_mint is a valid address
   absl::optional<std::string> associated_token_account =
       SolanaKeyring::GetAssociatedTokenAccount(
           params->output_mint, brave_wallet::kSolanaFeeRecipient);
   if (!associated_token_account)
     return absl::nullopt;
 
-  tx_params.Set("feeAccount", *associated_token_account);
+  // If the if-condition below is false, associated_token_account is unused,
+  // but the originating call to SolanaKeyring::GetAssociatedTokenAccount()
+  // is still done to ensure output_mint is always valid.
+  if (HasJupiterFeesForTokenMint(params->output_mint)) {
+    // feeAccount is the ATA account for the output mint where the fee will be
+    // sent to.
+    tx_params.Set("feeAccount", *associated_token_account);
+  }
+
   tx_params.Set("userPublicKey", params->user_public_key);
 
   base::Value::Dict route;

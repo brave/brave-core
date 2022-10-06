@@ -105,16 +105,60 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
       "userPublicKey": "mockPubKey"
     })");
 
+  // OK: Jupiter transaction params with feeAccount
   auto expected_params_value = base::JSONReader::Read(
       expected_params,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_NE(encoded_params, absl::nullopt);
   ASSERT_EQ(*encoded_params, GetJSON(*expected_params_value));
 
-  // Empty params
+  // OK: Jupiter transaction params WITHOUT feeAccount
+  params.output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";  // SHDW
+  encoded_params = EncodeJupiterTransactionParams(params.Clone());
+  expected_params = R"(
+    {
+      "route": {
+        "inAmount": 10000,
+        "outAmount": 261273,
+        "amount": 10000,
+        "otherAmountThreshold": 258660,
+        "swapMode": "ExactIn",
+        "priceImpactPct": 0.008955716118219659,
+        "marketInfos": [
+          {
+            "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
+            "label": "Orca",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+            "notEnoughLiquidity": false,
+            "inAmount": 10000,
+            "outAmount": 117001203,
+            "priceImpactPct": 1.196568750220778e-7,
+            "lpFee": {
+              "amount": 30,
+              "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "pct": 0.003
+            },
+            "platformFee": {
+              "amount": 0,
+              "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+              "pct": 0.0
+            }
+          }
+        ]
+      },
+      "userPublicKey": "mockPubKey"
+    })";
+  expected_params_value = base::JSONReader::Read(
+      expected_params,
+      base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
+  ASSERT_NE(encoded_params, absl::nullopt);
+  ASSERT_EQ(*encoded_params, GetJSON(*expected_params_value));
+
+  // KO: empty params
   EXPECT_DCHECK_DEATH(EncodeJupiterTransactionParams(nullptr));
 
-  // Invalid output mint
+  // KO: invalid output mint
   params.output_mint = "invalid output mint";
   encoded_params = EncodeJupiterTransactionParams(params.Clone());
   ASSERT_EQ(encoded_params, absl::nullopt);
