@@ -10,6 +10,8 @@ brave_browser_playlist_deps = []
 
 if (enable_playlist) {
   brave_browser_playlist_sources += [
+    "//brave/browser/playlist/playlist_page_handler.cc",
+    "//brave/browser/playlist/playlist_page_handler.h",
     "//brave/browser/playlist/playlist_service_factory.cc",
     "//brave/browser/playlist/playlist_service_factory.h",
   ]
@@ -18,6 +20,7 @@ if (enable_playlist) {
     "//base",
     "//brave/browser/profiles:util",
     "//brave/components/playlist",
+    "//brave/components/playlist/mojom",
     "//chrome/browser:browser_process",
     "//chrome/common",
     "//components/keyed_service/content",
@@ -32,9 +35,7 @@ if (enable_playlist) {
     ]
 
     brave_browser_playlist_deps += [
-      "//brave/browser/ui",
       "//brave/build/android:jni_headers",
-      "//brave/components/playlist/mojom",
       "//mojo/public/cpp/bindings",
     ]
   }

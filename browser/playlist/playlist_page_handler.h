@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
+#define BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
 
 #include <string>
 
 #include "base/scoped_observation.h"
-#include "brave/components/playlist/mojom/playlist.mojom-forward.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/playlist_service_observer.h"
@@ -19,7 +18,6 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
 
 class Profile;
 
@@ -74,9 +72,10 @@ class PlaylistPageHandler : public KeyedService,
 #else
   mojo::ReceiverSet<playlist::mojom::PageHandler> receivers_;
 #endif
+
   base::ScopedObservation<playlist::PlaylistService,
                           playlist::PlaylistServiceObserver>
       observation_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
