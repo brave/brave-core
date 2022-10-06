@@ -395,8 +395,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
     ASSERT_TRUE(ExecJs(web_contents(), "registerAccountChanged()"));
   }
 
-  void CallSolanaConnect(bool is_expect_bubble = true) {
-    ASSERT_TRUE(ExecJs(web_contents(), "solanaConnect()"));
+  void CallSolanaConnect(const content::ToRenderFrameHost& execution_target,
+                         bool is_expect_bubble = true) {
+    ASSERT_TRUE(ExecJs(execution_target, "solanaConnect()"));
     base::RunLoop().RunUntilIdle();
     if (is_expect_bubble) {
       ASSERT_TRUE(
@@ -405,8 +406,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
     }
   }
 
-  void CallSolanaDisconnect() {
-    ASSERT_TRUE(EvalJs(web_contents(), "solanaDisconnect()",
+  void CallSolanaDisconnect(
+      const content::ToRenderFrameHost& execution_target) {
+    ASSERT_TRUE(EvalJs(execution_target, "solanaDisconnect()",
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                     .ExtractBool());
   }
@@ -510,8 +512,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
         .ExtractString();
   }
 
-  bool IsSolanaConnected() {
-    return EvalJs(web_contents(), "isSolanaConnected()",
+  bool IsSolanaConnected(const content::ToRenderFrameHost& execution_target) {
+    return EvalJs(execution_target, "isSolanaConnected()",
                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
         .ExtractBool();
   }
@@ -544,24 +546,24 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  ASSERT_FALSE(IsSolanaConnected());
-  CallSolanaConnect();
+  ASSERT_FALSE(IsSolanaConnected(web_contents()));
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
-  EXPECT_TRUE(IsSolanaConnected());
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Removing solana permission doesn't affect connected status.
   host_content_settings_map()->ClearSettingsForOneType(
       ContentSettingsType::BRAVE_SOLANA);
-  EXPECT_TRUE(IsSolanaConnected());
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Doing connect again and reject it doesn't affect connected status either.
-  CallSolanaConnect();
+  CallSolanaConnect(web_contents());
   UserGrantPermission(false);
-  EXPECT_TRUE(IsSolanaConnected());
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Only disconnect will set connected status to false.
-  CallSolanaDisconnect();
-  EXPECT_FALSE(IsSolanaConnected());
+  CallSolanaDisconnect(web_contents());
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusWithDocumentChanged) {
@@ -572,23 +574,66 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusWithDocumentChanged) {
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  ASSERT_FALSE(IsSolanaConnected());
-  CallSolanaConnect();
+  ASSERT_FALSE(IsSolanaConnected(web_contents()));
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
-  EXPECT_TRUE(IsSolanaConnected());
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Reload will clear connected status.
   ReloadAndWaitForLoadStop(browser());
-  EXPECT_FALSE(IsSolanaConnected());
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
 
   // Connect again and try navigate later.
-  ASSERT_FALSE(IsSolanaConnected());
-  CallSolanaConnect(false);
-  EXPECT_TRUE(IsSolanaConnected());
+  ASSERT_FALSE(IsSolanaConnected(web_contents()));
+  CallSolanaConnect(web_contents(), false);
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Navigate will clear connected status.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_FALSE(IsSolanaConnected());
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
+  RestoreWallet();
+  AddAccount("Account 1");
+  SetSelectedAccount(kFirstAccount);
+  GURL url = https_server_for_files()->GetURL("a.test",
+                                              "/iframe_solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  content::RenderFrameHost* main_frame = web_contents()->GetPrimaryMainFrame();
+
+  ASSERT_FALSE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
+
+  CallSolanaConnect(ChildFrameAt(main_frame, 0), true);
+  permissions::BraveWalletPermissionContext::AcceptOrCancel(
+      std::vector<std::string>{kFirstAccount}, web_contents());
+  // First iframe is now connected.
+  EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
+  // Second iframe is still disconnected
+  EXPECT_FALSE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
+
+  CallSolanaConnect(ChildFrameAt(main_frame, 1), false);
+  // Second iframe is now connected
+  EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
+
+  // Disconnect first iframe won't affect second iframe's connected status
+  CallSolanaDisconnect(ChildFrameAt(main_frame, 0));
+  EXPECT_FALSE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
+  EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
+
+  GURL new_iframe_url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  // navigate first iframe away won't affect second iframe's connected status
+  EXPECT_TRUE(
+      NavigateIframeToURL(web_contents(), "test-iframe-0", new_iframe_url));
+  EXPECT_FALSE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
+  EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
+
+  // navigate second iframe awau will clear its connected status
+  EXPECT_TRUE(
+      NavigateIframeToURL(web_contents(), "test-iframe-1", new_iframe_url));
+  EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
@@ -599,28 +644,28 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  ASSERT_FALSE(IsSolanaConnected());
-  CallSolanaConnect();
+  ASSERT_FALSE(IsSolanaConnected(web_contents()));
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
   // First tab is now connected.
-  EXPECT_TRUE(IsSolanaConnected());
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
   // Add same url at second tab
   ASSERT_TRUE(AddTabAtIndex(1, url, ui::PAGE_TRANSITION_TYPED));
   ASSERT_EQ(browser()->tab_strip_model()->active_index(), 1);
   // Connected status of second tab is separate from first tab.
-  EXPECT_FALSE(IsSolanaConnected());
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
   // Doing successful connect and disconnect shouldn't affect first tab.
   // Since a.test already has the permission so connect would success without
   // asking.
-  CallSolanaConnect(false);
-  EXPECT_TRUE(IsSolanaConnected());
-  CallSolanaDisconnect();
-  EXPECT_FALSE(IsSolanaConnected());
+  CallSolanaConnect(web_contents(), false);
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
+  CallSolanaDisconnect(web_contents());
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
 
   // Swtich back to first tab and it should still be connected,
   browser()->tab_strip_model()->ActivateTabAt(0);
   ASSERT_EQ(browser()->tab_strip_model()->active_index(), 0);
-  EXPECT_TRUE(IsSolanaConnected());
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
@@ -631,9 +676,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  CallSolanaConnect();
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
-  ASSERT_TRUE(IsSolanaConnected());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   size_t request_index = 0;
   CallSolanaSignMessage(kMessage, "utf8");
@@ -678,9 +723,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
                 .ExtractString(),
             "");
 
-  CallSolanaConnect();
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
-  ASSERT_TRUE(IsSolanaConnected());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
@@ -703,9 +748,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  CallSolanaConnect();
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
-  ASSERT_TRUE(IsSolanaConnected());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr);
   observer()->WaitForNewUnapprovedTx();
@@ -847,7 +892,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // connect account 1
-  CallSolanaConnect();
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
 
   RegisterSolAccountChanged();
@@ -881,9 +926,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  CallSolanaConnect();
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
-  ASSERT_TRUE(IsSolanaConnected());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   size_t request_index = 0;
   CallSolanaSignTransaction(kUnsignedTxArrayStr);
@@ -928,9 +973,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  CallSolanaConnect();
+  CallSolanaConnect(web_contents());
   UserGrantPermission(true);
-  ASSERT_TRUE(IsSolanaConnected());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   size_t request_index = 0;
   CallSolanaSignAllTransactions(kUnsignedTxArrayStr, kSignedTxArrayStr);
@@ -985,13 +1030,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
       std::vector<std::string>{kFirstAccount}, web_contents());
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), kFirstAccount);
-  ASSERT_TRUE(IsSolanaConnected());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   // disconnect
   CallSolanaRequest(R"({method: "disconnect"})");
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), "success");
-  ASSERT_FALSE(IsSolanaConnected());
+  ASSERT_FALSE(IsSolanaConnected(web_contents()));
 
   // eagerly connect
   CallSolanaRequest(R"({method: "connect", params: { onlyIfTrusted: true }})");
@@ -1000,7 +1045,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
           ->IsShowingBubble());
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), kFirstAccount);
-  ASSERT_TRUE(IsSolanaConnected());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   // signMessage
   CallSolanaRequest(base::StringPrintf(R"(
