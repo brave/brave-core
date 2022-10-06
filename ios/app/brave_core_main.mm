@@ -8,13 +8,16 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#include "base/base_switches.h"
 #include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
@@ -24,18 +27,17 @@
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
+#include "brave/ios/browser/api/p3a/brave_p3a_utils+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
-#include "components/component_updater/component_updater_switches.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
-#include "components/sync/base/command_line_switches.h"
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/app/startup_tasks.h"
 #include "ios/chrome/browser/application_context.h"
@@ -58,19 +60,11 @@
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 // Chromium logging is global, therefore we cannot link this to the instance in
 // question
 static BraveCoreLogHandler _Nullable _logHandler = nil;
-
-const BraveCoreSwitch BraveCoreSwitchComponentUpdater =
-    base::SysUTF8ToNSString(switches::kComponentUpdater);
-const BraveCoreSwitch BraveCoreSwitchVModule =
-    base::SysUTF8ToNSString(switches::kVModule);
-const BraveCoreSwitch BraveCoreSwitchSyncURL =
-    base::SysUTF8ToNSString(syncer::kSyncServiceURL);
-// There is no exposed switch for rewards
-const BraveCoreSwitch BraveCoreSwitchRewardsFlags = @"rewards";
 
 const BraveCoreLogSeverity BraveCoreLogSeverityFatal = logging::LOGGING_FATAL;
 const BraveCoreLogSeverity BraveCoreLogSeverityError = logging::LOGGING_ERROR;
@@ -87,6 +81,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<Browser> _browser;
   BrowserList* _browserList;
   ChromeBrowserState* _mainBrowserState;
+  scoped_refptr<brave::BraveP3AService> _p3a_service;
+  scoped_refptr<brave::HistogramsBraveizer> _histogram_braveizer;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
@@ -102,12 +98,12 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @implementation BraveCoreMain
 
 - (instancetype)initWithUserAgent:(NSString*)userAgent {
-  return [self initWithUserAgent:userAgent additionalSwitches:@{}];
+  return [self initWithUserAgent:userAgent additionalSwitches:@[]];
 }
 
 - (instancetype)initWithUserAgent:(NSString*)userAgent
-               additionalSwitches:(NSDictionary<BraveCoreSwitch, NSString*>*)
-                                      additionalSwitches {
+               additionalSwitches:
+                   (NSArray<BraveCoreSwitch*>*)additionalSwitches {
   if ((self = [super init])) {
     [[NSNotificationCenter defaultCenter]
         addObserver:self
@@ -138,14 +134,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     NSMutableArray* arguments =
         [[[NSProcessInfo processInfo] arguments] mutableCopy];
     NSMutableArray* switches = [[NSMutableArray alloc] init];
-    for (NSString* key in additionalSwitches) {
-      if (![additionalSwitches[key] isKindOfClass:NSString.class]) {
-        continue;
+    for (BraveCoreSwitch* sv in additionalSwitches) {
+      if (!sv.value) {
+        [switches addObject:[NSString stringWithFormat:@"--%@", sv.key]];
+      } else {
+        [switches
+            addObject:[NSString stringWithFormat:@"--%@=%@", sv.key, sv.value]];
       }
-      [switches
-          addObject:[NSString stringWithFormat:@"--%@=%@", key,
-                                               static_cast<NSString*>(
-                                                   additionalSwitches[key])]];
     }
     [arguments addObjectsFromArray:switches];
     params.argc = [arguments count];
@@ -367,6 +362,22 @@ static bool CustomLogHandler(int severity,
 
 - (BraveStats*)braveStats {
   return [[BraveStats alloc] initWithBrowserState:_mainBrowserState];
+}
+
+- (void)initializeP3AServiceForChannel:(NSString*)channel
+                         weekOfInstall:(NSString*)weekOfInstall {
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  _p3a_service = base::MakeRefCounted<brave::BraveP3AService>(
+      GetApplicationContext()->GetLocalState(),
+      base::SysNSStringToUTF8(channel), base::SysNSStringToUTF8(weekOfInstall));
+  _p3a_service->InitCallbacks();
+  _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());
+  _histogram_braveizer = brave::HistogramsBraveizer::Create();
+#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+}
+
+- (BraveP3AUtils*)p3aUtils {
+  return [[BraveP3AUtils alloc] initWithBrowserState:_mainBrowserState];
 }
 
 @end
