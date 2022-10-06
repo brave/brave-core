@@ -343,10 +343,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNetworkETH", IDS_BRAVE_WALLET_NETWORK_E_T_H},
     {"braveWalletNetworkMain", IDS_BRAVE_WALLET_NETWORK_MAIN},
     {"braveWalletNetworkTest", IDS_BRAVE_WALLET_NETWORK_TEST},
-    {"braveWalletNetworkRopsten", IDS_BRAVE_WALLET_NETWORK_ROPSTEN},
-    {"braveWalletNetworkKovan", IDS_BRAVE_WALLET_NETWORK_KOVAN},
-    {"braveWalletNetworkRinkeby", IDS_BRAVE_WALLET_NETWORK_RINKEBY},
     {"braveWalletNetworkGoerli", IDS_BRAVE_WALLET_NETWORK_GOERLI},
+    {"braveWalletNetworkSepolia", IDS_BRAVE_WALLET_NETWORK_SEPOLIA},
     {"braveWalletNetworkBinance", IDS_BRAVE_WALLET_NETWORK_BINANCE},
     {"braveWalletNetworkBinanceAbbr", IDS_BRAVE_WALLET_NETWORK_BINANCE_ABBR},
     {"braveWalletNetworkLocalhost", IDS_BRAVE_WALLET_NETWORK_LOCALHOST},
@@ -858,9 +856,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
 };
 
 // 0x swap constants
-constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
+constexpr char kGoerliSwapBaseAPIURL[] = "https://goerli.api.0x.org/";
 // As of 22-02-2022, this address is controlled by @onyb.
-constexpr char kRopstenFeeRecipient[] =
+constexpr char kGoerliFeeRecipient[] =
     "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
 constexpr char kPolygonSwapBaseAPIURL[] = "https://polygon.api.0x.org/";
 constexpr char kBinanceSmartChainSwapBaseAPIURL[] = "https://bsc.api.0x.org/";

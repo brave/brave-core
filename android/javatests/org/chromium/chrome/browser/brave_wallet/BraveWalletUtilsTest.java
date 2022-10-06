@@ -135,14 +135,8 @@ public class BraveWalletUtilsTest {
     @Test
     @SmallTest
     public void getBuyUrlForTestChainTest() {
-        assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.RINKEBY_CHAIN_ID),
-                "https://www.rinkeby.io/#stats");
-        assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.ROPSTEN_CHAIN_ID),
-                "https://faucet.ropsten.be/");
         assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.GOERLI_CHAIN_ID),
                 "https://goerli-faucet.slock.it/");
-        assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.KOVAN_CHAIN_ID),
-                "https://github.com/kovan-testnet/faucet");
         assertEquals(Utils.getBuyUrlForTestChain("unknown"), "");
     }
 
@@ -201,29 +195,29 @@ public class BraveWalletUtilsTest {
     @Test
     @SmallTest
     public void getContractAddressTest() {
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.ROPSTEN_CHAIN_ID, "USDC",
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "USDC",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
-                "0x07865c6e87b9f70255377e024ace6630c1eaa37f");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.ROPSTEN_CHAIN_ID, "DAI",
+                "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557");
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "DAI",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
-                "0xad6d458402f60fd3bd25163575031acdce07538d");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.ROPSTEN_CHAIN_ID, "BAT",
+                "0x73967c6a0904aa032c103b4104747e88c566b1a2");
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "BAT",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.RINKEBY_CHAIN_ID, "USDC",
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.SEPOLIA_CHAIN_ID, "USDC",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
     }
 
     @Test
     @SmallTest
-    public void getRopstenContractAddressTest() {
-        assertEquals(Utils.getRopstenContractAddress("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"),
-                "0x07865c6e87b9f70255377e024ace6630c1eaa37f");
-        assertEquals(Utils.getRopstenContractAddress("0x6b175474e89094c44da98b954eedeac495271d0f"),
-                "0xad6d458402f60fd3bd25163575031acdce07538d");
+    public void getGoerliContractAddressTest() {
+        assertEquals(Utils.getGoerliContractAddress("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"),
+                "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557");
+        assertEquals(Utils.getGoerliContractAddress("0x6b175474e89094c44da98b954eedeac495271d0f"),
+                "0x73967c6a0904aa032c103b4104747e88c566b1a2");
         assertEquals(
-                Utils.getRopstenContractAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"), "");
+                Utils.getGoerliContractAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"), "");
     }
 
     private static String getStackTrace(Exception ex) {

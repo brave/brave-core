@@ -688,7 +688,7 @@ TEST(BraveWalletUtilsUnitTest, KnownEthChainExists) {
   UpdateCustomNetworks(&prefs, &values);
 
   auto known_chains = GetAllKnownEthChains(&prefs);
-  EXPECT_EQ(known_chains.size(), 13u);
+  EXPECT_EQ(known_chains.size(), 11u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(KnownEthChainExists(known_chain->chain_id));
   }
@@ -805,10 +805,8 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
       brave_wallet::mojom::kPolygonMainnetChainId,
       brave_wallet::mojom::kOptimismMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId,
-      brave_wallet::mojom::kRinkebyChainId,
-      brave_wallet::mojom::kRopstenChainId,
       brave_wallet::mojom::kGoerliChainId,
-      brave_wallet::mojom::kKovanChainId};
+      brave_wallet::mojom::kSepoliaChainId};
 
   for (const auto& chain : GetAllKnownEthChains(&prefs)) {
     auto network_url =
@@ -931,8 +929,8 @@ TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
       {"mainnet", mojom::kPolygonMainnetChainId,
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
-       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "rinkeby",
-       "ropsten", "goerli", "kovan", "http://localhost:7545/"});
+       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "goerli",
+       "sepolia", "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
@@ -942,10 +940,8 @@ TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kLocalhostChainId),
             "http://localhost:7545/");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kMainnetChainId), "mainnet");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kRinkebyChainId), "rinkeby");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kRopstenChainId), "ropsten");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kGoerliChainId), "goerli");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kKovanChainId), "kovan");
+  EXPECT_EQ(GetKnownEthNetworkId(mojom::kSepoliaChainId), "sepolia");
 }
 
 TEST(BraveWalletUtilsUnitTest, GetKnownSolNetworkId) {

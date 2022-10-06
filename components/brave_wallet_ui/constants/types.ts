@@ -562,10 +562,7 @@ export type AllowSpendReturnPayload = {
 
 export const BuySupportedChains = [
   BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.RINKEBY_CHAIN_ID,
-  BraveWallet.ROPSTEN_CHAIN_ID,
   BraveWallet.GOERLI_CHAIN_ID,
-  BraveWallet.KOVAN_CHAIN_ID,
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
@@ -729,10 +726,8 @@ export const SupportedOnRampNetworks = [
 ]
 
 export const SupportedTestNetworks = [
-  BraveWallet.RINKEBY_CHAIN_ID,
-  BraveWallet.ROPSTEN_CHAIN_ID,
   BraveWallet.GOERLI_CHAIN_ID,
-  BraveWallet.KOVAN_CHAIN_ID,
+  BraveWallet.SEPOLIA_CHAIN_ID,
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,

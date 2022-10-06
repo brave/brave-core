@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -115,6 +116,10 @@ void RegisterProfilePrefsForMigration(
   // Added 06/2022
   registry->RegisterBooleanPref(
       kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
+
+  // Added 10/2022
+  registry->RegisterBooleanPref(
+      kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -145,6 +150,9 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+#if BUILDFLAG(IS_IOS)
+  KeyringService::MigrateObsoleteProfilePrefs(prefs);
+#endif
   // Added 10/2021 for migrating the contract address for eth in user asset
   // list from 'eth' to an empty string.
   BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
@@ -194,6 +202,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     }
     prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }
+
+  // Added 10/2022
+  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 }
 
 }  // namespace brave_wallet

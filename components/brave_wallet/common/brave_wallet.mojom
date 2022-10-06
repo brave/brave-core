@@ -758,10 +758,8 @@ struct TxData1559 {
 };
 
 const string kMainnetChainId = "0x1";
-const string kRinkebyChainId = "0x4";
-const string kRopstenChainId = "0x3";
 const string kGoerliChainId = "0x5";
-const string kKovanChainId = "0x2a";
+const string kSepoliaChainId = "0xaa36a7";
 const string kLocalhostChainId = "0x539";
 const string kPolygonMainnetChainId = "0x89";
 const string kBinanceSmartChainMainnetChainId = "0x38";
