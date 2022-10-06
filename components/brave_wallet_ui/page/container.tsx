@@ -49,6 +49,7 @@ import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
+import { Swap } from './screens/swap/swap'
 
 const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
 
@@ -165,7 +166,8 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.FundWalletPage) ||
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Market) ||
-      walletLocation.includes(WalletRoutes.Nfts)
+      walletLocation.includes(WalletRoutes.Nfts) ||
+      walletLocation.includes(WalletRoutes.Swap)
     ) {
       setSessionRoute(walletLocation)
     }
@@ -177,8 +179,8 @@ export const Container = () => {
   }
 
   return (
-    <WalletPageLayout>
-      <WalletSubViewLayout>
+    <WalletPageLayout maintainWidth={walletLocation === WalletRoutes.Swap}>
+      <WalletSubViewLayout noPadding={walletLocation === WalletRoutes.Swap}>
 
         <Switch>
 
@@ -204,6 +206,10 @@ export const Container = () => {
                 <SimplePageWrapper>
                   <RestoreWallet />
                 </SimplePageWrapper>
+              </Route>
+
+              <Route path={WalletRoutes.Swap} exact={true}>
+                <Swap />
               </Route>
 
               {isWalletLocked &&
@@ -264,7 +270,7 @@ export const Container = () => {
         </WalletWidgetStandIn>
       }
 
-      {!isWalletLocked &&
+      {!isWalletLocked && walletLocation !== WalletRoutes.Swap &&
         <FeatureRequestButton onClick={onClickFeatureRequestButton}>
           <IdeaButtonIcon />
           <ButtonText>{getLocale('braveWalletRequestFeatureButtonText')}</ButtonText>
