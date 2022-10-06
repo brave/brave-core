@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Pair;
@@ -232,7 +233,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     private void redirectToSettingPage() {
         Intent intent = new Intent();
-        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // for Android 5-7
@@ -240,7 +241,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         intent.putExtra("app_uid", getActivity().getApplicationInfo().uid);
 
         // for Android 8 and above
-        intent.putExtra("android.provider.extra.APP_PACKAGE", getActivity().getPackageName());
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
 
         startActivity(intent);
     }
