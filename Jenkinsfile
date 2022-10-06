@@ -77,9 +77,7 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-                                            // FIXME: revert before merging
-                                            // branch('${params.DEVOPS_BRANCH}')
-                                            branch('wknapik-add-ci-run-upstream-tests-label-support')
+                                            branch('${params.DEVOPS_BRANCH}')
                                         }
                                     }
                                     scriptPath("jenkins/jobs/browser/pr-brave-browser-${PLATFORM}.Jenkinsfile")
