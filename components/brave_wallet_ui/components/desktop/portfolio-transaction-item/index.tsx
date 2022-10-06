@@ -47,20 +47,21 @@ import {
   OrbAndTxDescriptionContainer,
   TransactionFeeTooltipBody,
   TransactionFeeTooltipTitle,
-  StatusBalanceAndMoreContainer
+  StatusBalanceAndMoreContainer,
+  OrbWrapper
 } from './style'
 import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
 import { WalletActions } from '../../../common/actions'
-import { OrbContainer } from '../../extension/transaction-detail-panel/style'
 
 export interface Props {
   transaction: BraveWallet.TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
   displayAccountName: boolean
+  isFocused?: boolean
 }
 
 const getLocaleKeyForTxStatus = (status: BraveWallet.TransactionStatus) => {
@@ -76,12 +77,13 @@ const getLocaleKeyForTxStatus = (status: BraveWallet.TransactionStatus) => {
   }
 }
 
-export const PortfolioTransactionItem = ({
+export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(({
   transaction,
   account,
   displayAccountName,
-  accounts
-}: Props) => {
+  accounts,
+  isFocused
+}: Props, forwardedRef) => {
   // routing
   const history = useHistory()
 
@@ -337,12 +339,12 @@ export const PortfolioTransactionItem = ({
 
   // render
   return (
-    <PortfolioTransactionItemWrapper onClick={onHideTransactionPopup}>
+    <PortfolioTransactionItemWrapper ref={forwardedRef} isFocused={isFocused} onClick={onHideTransactionPopup}>
       <OrbAndTxDescriptionContainer>
-        <OrbContainer>
+        <OrbWrapper>
           <FromCircle orb={fromOrb} />
           <ToCircle orb={toOrb} />
-        </OrbContainer>
+        </OrbWrapper>
 
         <DetailColumn>
           <DetailRow>
@@ -424,8 +426,8 @@ export const PortfolioTransactionItem = ({
 
           {wasTxRejected
             ? <MoreButton onClick={onShowTransactionPopup}>
-                <MoreIcon />
-              </MoreButton>
+              <MoreIcon />
+            </MoreButton>
             : <RejectedTransactionSpacer />
           }
 
@@ -475,5 +477,6 @@ export const PortfolioTransactionItem = ({
     </PortfolioTransactionItemWrapper>
   )
 }
+)
 
 export default PortfolioTransactionItem

@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, useParams } from 'react-router'
+import { Redirect, useParams, useLocation } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -66,6 +66,7 @@ export const Account = ({
 }: Props) => {
   // routing
   const { id: accountId } = useParams<{ id: string }>()
+  const { hash: transactionID } = useLocation()
 
   // redux
   const dispatch = useDispatch()
@@ -165,6 +166,27 @@ export const Account = ({
     dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
   }, [onRemoveAccount, dispatch])
 
+  const checkIsTransactionFocused = React.useCallback((id: string): boolean => {
+    if (transactionID !== '') {
+      return transactionID.replace('#', '') === id
+    }
+    return false
+  }, [transactionID])
+
+  // Prevents scrolling into view again if re-render occurs
+  let ignore = false
+
+  const scrollIntoView = React.useCallback((id: string, ref: HTMLDivElement | null) => {
+    if (checkIsTransactionFocused(id) && !ignore) {
+      ref?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center'
+      })
+      ignore = true
+    }
+  }, [checkIsTransactionFocused, ignore])
+
   // redirect (asset not found)
   if (!selectedAccount) {
     return <Redirect to={WalletRoutes.Accounts} />
@@ -241,6 +263,8 @@ export const Account = ({
               account={selectedAccount}
               accounts={accounts}
               displayAccountName={false}
+              ref={(ref) => scrollIntoView(transaction.id, ref)}
+              isFocused={checkIsTransactionFocused(transaction.id)}
             />
           )}
         </>
