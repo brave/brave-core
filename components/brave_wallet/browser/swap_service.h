@@ -76,6 +76,10 @@ class SwapService : public KeyedService, public mojom::SwapService {
       mojom::JupiterSwapParamsPtr params,
       GetJupiterSwapTransactionsCallback callback) override;
 
+  void HasJupiterFeesForTokenMint(
+      const std::string& mint,
+      HasJupiterFeesForTokenMintCallback callback) override;
+
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:
