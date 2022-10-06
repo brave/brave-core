@@ -33,7 +33,11 @@ bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
 
   // Don't need to prompt for conversion if user uses brave as a default
   // provider.
-  auto id = service->GetDefaultSearchProvider()->data().prepopulate_id;
+  auto* template_url = service->GetDefaultSearchProvider();
+  if (!template_url)
+    return false;
+
+  const auto id = template_url->prepopulate_id();
   if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
       id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
     return false;
