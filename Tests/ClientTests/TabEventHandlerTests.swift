@@ -55,6 +55,29 @@ class TabEventHandlerTests: XCTestCase {
 
     handler.unregister(tabObservers)
   }
+  
+  func testOnlyRegisteredForEvents111() {
+    let tab = Tab(configuration: WKWebViewConfiguration(), type: .private)
+    
+    let urlTest1 = URL(string: "https://www.brave.com")
+    let urlTest2 = URL(string: "http://localhost:8080")
+    let urlTest3 = URL(string: "https://127.0.0.1:8080")
+    let urlTest4 = URL(string: "https://locallhost.com")
+    
+    let titleTest1 = "Brave"
+    let wrongTestTitle = "Wrong Title"
+    let localHostTitle = "localhost"
+    
+    let displaytitle1 = tab.fetchDisplayTitle(using: urlTest1, title: titleTest1)
+    let displaytitle2 = tab.fetchDisplayTitle(using: urlTest2, title: wrongTestTitle)
+    let displaytitle3 = tab.fetchDisplayTitle(using: urlTest3, title: wrongTestTitle)
+    let displaytitle4 = tab.fetchDisplayTitle(using: urlTest4, title: localHostTitle)
+
+    XCTAssertEqual(displaytitle1, titleTest1)
+    XCTAssertEqual(displaytitle2, "")
+    XCTAssertEqual(displaytitle3, "")
+    XCTAssertEqual(displaytitle4, localHostTitle)
+  }
 }
 
 class DummyHandler: TabEventHandler {
