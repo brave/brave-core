@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -89,6 +90,7 @@ using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
+using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 AdBlockServiceTest::AdBlockServiceTest() {
   brave_shields::SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
@@ -2445,4 +2447,140 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
     ASSERT_EQ(1UL, lists.size());
     EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
   }
+}
+
+class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
+ public:
+  AdBlockServiceTestJsPerformance() {
+    feature_list_.InitWithFeaturesAndParameters(
+        {{kBraveAdblockCosmeticFilteringChildFrames, {}},
+        {kCosmeticFilteringJsPerformance,
+         {{"subframes_first_query_delay_ms", "1000"},
+          {"switch_to_polling_threshold", "500"},
+          {"fetch_throttling_ms", "500"}}}}, {});
+  }
+
+  void AddDivsWithDynamicClasses(const content::ToRenderFrameHost& target,
+                                 int start_number, int end_number) const {
+    const char kTemplate[] = R"(
+    for (let i = $1; i <= $2; i++) {
+      const e = document.createElement('div');
+      e.className = 'div-class-' + i;
+      document.documentElement.appendChild(e);
+    })";
+    ASSERT_TRUE(content::ExecJs(
+        target, content::JsReplace(kTemplate, start_number, end_number)));
+  }
+
+  void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
+                              const std::string& selector) const {
+    const char kTemplate[] = R"(
+      async function waitCSSSelector() {
+        if (await checkSelector($1, 'display', 'none')) {
+          window.domAutomationController.send(true);
+        } else {
+          console.log('still waiting for css selector', $1);
+          setTimeout(waitCSSSelector, 200);
+        }
+      } waitCSSSelector())";
+
+    ASSERT_TRUE(EvalJs(target, content::JsReplace(kTemplate, selector),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                    .ExtractBool());
+  }
+
+  void NonBlockingDelay(const base::TimeDelta& delay) {
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
+    run_loop.Run();
+  }
+
+ public:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
+                       CosmeticFilteringDynamic) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateAdBlockInstanceWithRules(
+      "##.div-class-100\n##.div-class-500\n##.div-class-1000");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  // This elements will be check by initial DOM lookup (startObserving()).
+  AddDivsWithDynamicClasses(contents, 1, 1);
+  EXPECT_TRUE(
+      EvalJs(contents, "checkSelector('.div-class-1', 'display', 'block')")
+          .ExtractBool());
+
+  // This elements will be check by the mutation observer (without delay).
+  AddDivsWithDynamicClasses(contents, 2, 200);
+  WaitForSelectorBlocked(contents, ".div-class-100");
+
+  // This elements will be check by mutation observer after throttling delay.
+  AddDivsWithDynamicClasses(contents, 201, 500);
+  // Wait fetch_throttling_ms/2 ms and check the selector is still visible to
+  // verify that throttling works correctly.
+  NonBlockingDelay(base::Milliseconds(250));
+  EXPECT_TRUE(
+      EvalJs(contents, "checkSelector('.div-class-500', 'display', 'block')")
+          .ExtractBool());
+
+  // Verify that it will be blocked after the delay is finished.
+  WaitForSelectorBlocked(contents, ".div-class-500");
+
+  // Add more elements to trigger switch to DOM selector polling (see
+  // UseSelectorsPolling()).
+  AddDivsWithDynamicClasses(contents, 501, 1000);
+  WaitForSelectorBlocked(contents, ".div-class-1000");
+  EXPECT_TRUE(
+      EvalJs(contents, "checkSelector('.div-class-999', 'display', 'block')")
+          .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
+                       CosmeticFilteringSubframeDynamic) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateAdBlockInstanceWithRules("##.div-class-500");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  content::NavigateIframeToURL(
+      contents, "iframe",
+      embedded_test_server()->GetURL("frame.com", "/cosmetic_filtering.html"));
+
+  auto* iframe = ChildFrameAt(contents, 0);
+  ASSERT_TRUE(iframe);
+
+  AddDivsWithDynamicClasses(iframe, 1, 500);
+  // Disable the checkSelector() delay.
+  EXPECT_TRUE(content::ExecJs(iframe, "didWait = true"));
+
+  // Verify subframes_first_query_delay_ms delay.
+  // Wait subframes_first_query_delay_ms/4 and check the selector is still
+  // visible.
+  NonBlockingDelay(base::Milliseconds(250));
+
+  EXPECT_TRUE(
+      EvalJs(iframe, "checkSelector('.div-class-500', 'display', 'block')")
+          .ExtractBool());
+
+  // Should be blocked after the delay ended.
+  WaitForSelectorBlocked(iframe, ".div-class-500");
+
+  // Verify that other selectors are visible:
+  EXPECT_TRUE(
+      EvalJs(iframe, "checkSelector('.div-class-499', 'display', 'block')")
+          .ExtractBool());
 }
