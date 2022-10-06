@@ -586,7 +586,11 @@ void RewardsServiceImpl::CreateRewardsWallet(
         return;
       }
 
-      if (result != CreateRewardsWalletResult::kSuccess) {
+      // If the server responds with `kGeoCountryAlreadyDeclared`,
+      // optimistically assume that the user has already declared their
+      // country correctly and save `country` in preferences.
+      if (result != CreateRewardsWalletResult::kSuccess &&
+          result != CreateRewardsWalletResult::kGeoCountryAlreadyDeclared) {
         std::move(callback).Run(result);
         return;
       }
