@@ -64,16 +64,16 @@
 
   <template is="dom-if" if="[[!deleteIsInProgress]]">
   <div slot="button-container" class="button-group">
-    <cr-button class="action-button"
-      on-click="handleDeleteAccount_"
-    >
-      $i18n{braveSyncPermanentlyDeleteAccountButton}
-    </cr-button>
-
     <cr-button
       on-click="handleCancel_"
     >
       $i18n{cancel}
+    </cr-button>
+
+    <cr-button class="action-button"
+      on-click="handleDeleteAccount_"
+    >
+      $i18n{braveSyncPermanentlyDeleteAccountButton}
     </cr-button>
   </div>
   </template>
