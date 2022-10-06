@@ -14,10 +14,6 @@ extension Strings {
 extension Strings {
   public static let settingsGeneralSectionTitle = NSLocalizedString("SettingsGeneralSectionTitle", bundle: .strings, value: "General", comment: "General settings section title")
   public static let settingsSearchDoneButton = NSLocalizedString("SettingsSearchDoneButton", bundle: .strings, value: "Done", comment: "Button displayed at the top of the search settings.")
-  public static let settingsSearchEditButton = NSLocalizedString("SettingsSearchEditButton", bundle: .strings, value: "Edit", comment: "Button displayed at the top of the search settings.")
-  public static let useTouchID = NSLocalizedString("UseTouchID", bundle: .strings, value: "Use Touch ID", comment: "List section title for when to use Touch ID")
-  public static let useFaceID = NSLocalizedString("UseFaceID", bundle: .strings, value: "Use Face ID", comment: "List section title for when to use Face ID")
-
   public static let bookmarksLastVisitedFolderTitle = NSLocalizedString("BookmarksLastVisitedFolderTitle", bundle: .strings, value: "Show Last Visited Bookmarks", comment: "General settings bookmarks last visited folder toggle title")
 }
 
@@ -42,8 +38,6 @@ extension Strings {
   public static let reloadPageTitle = NSLocalizedString("ReloadPageTitle", bundle: .strings, value: "Reload Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let backTitle = NSLocalizedString("BackTitle", bundle: .strings, value: "Back", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let forwardTitle = NSLocalizedString("ForwardTitle", bundle: .strings, value: "Forward", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-
-  public static let findTitle = NSLocalizedString("FindTitle", bundle: .strings, value: "Find", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let selectLocationBarTitle = NSLocalizedString("SelectLocationBarTitle", bundle: .strings, value: "Select Location Bar", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let newTabTitle = NSLocalizedString("NewTabTitle", bundle: .strings, value: "New Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let newPrivateTabTitle = NSLocalizedString("NewPrivateTabTitle", bundle: .strings, value: "New Private Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
@@ -54,69 +48,6 @@ extension Strings {
   public static let showShieldsTitle = NSLocalizedString("showShieldsTitle", bundle: .strings, value: "Open Brave Shields", comment: "Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields")
 }
 
-// Home page.
-extension Strings {
-  public static let setHomePageDialogTitle = NSLocalizedString("SetHomePageDialogTitle", bundle: .strings, value: "Do you want to use this web page as your home page?", comment: "Alert dialog title when the user opens the home page for the first time.")
-  public static let setHomePageDialogMessage = NSLocalizedString("SetHomePageDialogMessage", bundle: .strings, value: "You can change this at any time in Settings", comment: "Alert dialog body when the user opens the home page for the first time.")
-  public static let setHomePageDialogYes = NSLocalizedString("SetHomePageDialogYes", bundle: .strings, value: "Set Homepage", comment: "Button accepting changes setting the home page for the first time.")
-  public static let setHomePageDialogNo = NSLocalizedString("SetHomePageDialogNo", bundle: .strings, value: "Cancel", comment: "Button cancelling changes setting the home page for the first time.")
-}
-
-// New tab choice settings
-extension Strings {
-  public static let settingsNewTabTopSites = NSLocalizedString("SettingsNewTabTopSites", bundle: .strings, value: "Show your Top Sites", comment: "Option in settings to show top sites when you open a new tab")
-  public static let settingsNewTabBlankPage = NSLocalizedString("SettingsNewTabBlankPage", bundle: .strings, value: "Show a Blank Page", comment: "Option in settings to show a blank page when you open a new tab")
-  public static let settingsNewTabHomePage = NSLocalizedString("SettingsNewTabHomePage", bundle: .strings, value: "Show your Homepage", comment: "Option in settings to show your homepage when you open a new tab")
-}
-
-// Custom account settings - These strings did not make it for the v10 l10n deadline so we have turned them into regular strings. These strings will come back localized in a next version.
-
-extension Strings {
-  // Settings.AdvanceAccount.SectionName
-  // Label used as an item in Settings. When touched it will open a dialog to setup advance Brave account settings.
-  public static let settingsAdvanceAccountSectionName = "Account Settings"
-
-  // Settings.AdvanceAccount.SectionFooter
-  // Details for using custom Brave Account service.
-  public static let settingsAdvanceAccountSectionFooter = "To use a custom Brave Account and sync servers, specify the root Url of the Brave Account site. This will download the configuration and setup this device to use the new service. After the new service has been set, you will need to create a new Brave Account or login with an existing one."
-
-  // Settings.AdvanceAccount.SectionName
-  // Title displayed in header of the setting panel.
-  public static let settingsAdvanceAccountTitle = "Advance Account Settings"
-
-  // Settings.AdvanceAccount.UrlPlaceholder
-  // Title displayed in header of the setting panel.
-  public static let settingsAdvanceAccountUrlPlaceholder = "Custom Account Url"
-
-  // Settings.AdvanceAccount.UpdatedAlertMessage
-  // Messaged displayed when sync service has been successfully set.
-  public static let settingsAdvanceAccountUrlUpdatedAlertMessage = "Brave account service updated. To begin using custom server, please log out and re-login."
-
-  // Settings.AdvanceAccount.UpdatedAlertOk
-  // Ok button on custom sync service updated alert
-  public static let settingsAdvanceAccountUrlUpdatedAlertOk = "OK"
-
-  // Settings.AdvanceAccount.ErrorAlertTitle
-  // Error alert message title.
-  public static let settingsAdvanceAccountUrlErrorAlertTitle = "Error"
-
-  // Settings.AdvanceAccount.ErrorAlertMessage
-  // Messaged displayed when sync service has an error setting a custom sync url.
-  public static let settingsAdvanceAccountUrlErrorAlertMessage = "There was an error while attempting to parse the url. Please make sure that it is a valid Brave Account root url."
-
-  // Settings.AdvanceAccount.ErrorAlertOk
-  // Ok button on custom sync service error alert.
-  public static let settingsAdvanceAccountUrlErrorAlertOk = "OK"
-
-  // Settings.AdvanceAccount.UseCustomAccountsServiceTitle
-  // Toggle switch to use custom FxA server
-  public static let settingsAdvanceAccountUseCustomAccountsServiceTitle = "Use Custom Account Service"
-
-  // Settings.AdvanceAccount.UrlEmptyErrorAlertMessage
-  // No custom service set.
-  public static let settingsAdvanceAccountEmptyUrlErrorAlertMessage = "Please enter a custom account url before enabling."
-}
-
 // Tabs Delete All Undo Toast
 extension Strings {
   public static let tabsDeleteAllUndoTitle = NSLocalizedString("TabsDeleteAllUndoTitle", bundle: .strings, value: "%d tab(s) closed", comment: "The label indicating that all the tabs were closed")
@@ -125,7 +56,6 @@ extension Strings {
 
 // Clipboard Toast
 extension Strings {
-  public static let goToCopiedLink = NSLocalizedString("GoToCopiedLink", bundle: .strings, value: "Go to copied link?", comment: "Message displayed when the user has a copied link on the clipboard")
   public static let goButtonTittle = NSLocalizedString("GoButtonTittle", bundle: .strings, value: "Go", comment: "The button to open a new tab with the copied link")
 }
 
@@ -177,7 +107,6 @@ extension Strings {
 extension Strings {
   public static let appMenuViewDesktopSiteTitleString = NSLocalizedString("AppMenuViewDesktopSiteTitleString", bundle: .strings, value: "Request Desktop Site", comment: "Label for the button, displayed in the menu, used to request the desktop version of the current website.")
   public static let appMenuViewMobileSiteTitleString = NSLocalizedString("AppMenuViewMobileSiteTitleString", bundle: .strings, value: "Request Mobile Site", comment: "Label for the button, displayed in the menu, used to request the mobile version of the current website.")
-  public static let appMenuButtonAccessibilityLabel = NSLocalizedString("AppMenuButtonAccessibilityLabel", bundle: .strings, value: "Menu", comment: "Accessibility label for the Menu button.")
   public static let appMenuCopyURLConfirmMessage = NSLocalizedString("AppMenuCopyURLConfirmMessage", bundle: .strings, value: "URL Copied To Clipboard", comment: "Toast displayed to user after copy url pressed.")
 }
 
@@ -202,8 +131,4 @@ extension Strings {
   public static let openNewTabFromTabTrayKeyCodeTitle = NSLocalizedString("OpenNewTabFromTabTrayKeyCodeTitle", bundle: .strings, value: "Open New Tab", comment: "Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
   public static let switchToPBMKeyCodeTitle = NSLocalizedString("SwitchToPBMKeyCodeTitle", bundle: .strings, value: "Private Browsing Mode", comment: "Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
   public static let switchToNonPBMKeyCodeTitle = NSLocalizedString("SwitchToNonPBMKeyCodeTitle", bundle: .strings, value: "Normal Browsing Mode", comment: "Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-}
-
-extension Strings {
-  public static let appAndDeviceNameFormat = NSLocalizedString("AppAndDeviceNameFormat", bundle: .strings, value: "%@ on %@", comment: "A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name.")
 }
