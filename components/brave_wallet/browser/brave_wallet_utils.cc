@@ -209,38 +209,6 @@ const mojom::NetworkInfo* GetAuroraMainnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetRinkebyTestNetwork() {
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kRinkebyChainId,
-       "Rinkeby Test Network",
-       {"https://rinkeby.etherscan.io"},
-       {},
-       0,
-       {},
-       "ETH",
-       "Ethereum",
-       18,
-       brave_wallet::mojom::CoinType::ETH,
-       true});
-  return network_info.get();
-}
-
-const mojom::NetworkInfo* GetRopstenTestNetwork() {
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kRopstenChainId,
-       "Ropsten Test Network",
-       {"https://ropsten.etherscan.io"},
-       {},
-       0,
-       {},
-       "ETH",
-       "Ethereum",
-       18,
-       brave_wallet::mojom::CoinType::ETH,
-       true});
-  return network_info.get();
-}
-
 const mojom::NetworkInfo* GetGoerliTestNetwork() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {brave_wallet::mojom::kGoerliChainId,
@@ -257,11 +225,11 @@ const mojom::NetworkInfo* GetGoerliTestNetwork() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetKovanTestNetwork() {
+const mojom::NetworkInfo* GetSepoliaTestNetwork() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kKovanChainId,
-       "Kovan Test Network",
-       {"https://kovan.etherscan.io"},
+      {brave_wallet::mojom::kSepoliaChainId,
+       "Sepolia Test Network",
+       {"https://sepolia.etherscan.io"},
        {},
        0,
        {},
@@ -301,10 +269,8 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetFantomOperaMainnet(),
       GetOptimismMainnet(),
       GetAuroraMainnet(),
-      GetRinkebyTestNetwork(),
-      GetRopstenTestNetwork(),
       GetGoerliTestNetwork(),
-      GetKovanTestNetwork(),
+      GetSepoliaTestNetwork(),
       GetEthLocalhost(),
       // clang-format on
   });
@@ -449,20 +415,16 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownFilNetworks() {
 
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kMainnetChainId, "mainnet"},
-    {brave_wallet::mojom::kRinkebyChainId, "rinkeby"},
-    {brave_wallet::mojom::kRopstenChainId, "ropsten"},
     {brave_wallet::mojom::kGoerliChainId, "goerli"},
-    {brave_wallet::mojom::kKovanChainId, "kovan"}};
+    {brave_wallet::mojom::kSepoliaChainId, "sepolia"}};
 
 const base::flat_set<std::string> kInfuraChains = {
     brave_wallet::mojom::kMainnetChainId,
     brave_wallet::mojom::kPolygonMainnetChainId,
     brave_wallet::mojom::kOptimismMainnetChainId,
     brave_wallet::mojom::kAuroraMainnetChainId,
-    brave_wallet::mojom::kRinkebyChainId,
-    brave_wallet::mojom::kRopstenChainId,
-    brave_wallet::mojom::kGoerliChainId,
-    brave_wallet::mojom::kKovanChainId};
+    brave_wallet::mojom::kSepoliaChainId,
+    brave_wallet::mojom::kGoerliChainId};
 
 const base::flat_map<std::string, std::string> kSolanaSubdomains = {
     {brave_wallet::mojom::kSolanaMainnet, "mainnet"},

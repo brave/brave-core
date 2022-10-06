@@ -84,7 +84,7 @@ public class TokenUtils {
     }
 
     /*
-     * Wrapper for BlockchainRegistry.getAllTokens with Ropsten contract address midifications.
+     * Wrapper for BlockchainRegistry.getAllTokens with Goerli contract address modifications.
      */
     public static void getAllTokens(BlockchainRegistry blockchainRegistry, String chainId,
             int coinType, Callbacks.Callback1<BlockchainToken[]> callback) {
