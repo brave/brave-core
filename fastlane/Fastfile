@@ -63,6 +63,9 @@ platform :ios do
       scheme: "Debug",
       device: "iPad Pro (9.7-inch)",
       code_coverage: true,
+      skip_testing: [
+        "ClientTests/UserAgentTests"
+      ],
       xcargs: "-testPlan Brave_iPad"
     )
   end
