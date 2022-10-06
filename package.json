@@ -350,6 +350,7 @@
     "@ledgerhq/hw-app-eth": "6.24.1",
     "@ledgerhq/hw-app-solana": "6.27.1",
     "@ledgerhq/hw-transport-webhid": "6.24.1",
+    "@reduxjs/toolkit": "1.8.6",
     "@solana/web3.js": "1.47.1",
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
