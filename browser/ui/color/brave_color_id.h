@@ -47,7 +47,7 @@
     E_CPONLY(kColorSidebarArrowNormal)                        \
     E_CPONLY(kColorSidebarButtonBase)                         \
     E_CPONLY(kColorSidebarItemBackgroundHovered)              \
-    E_CPONLY(kColorSidebarItemDragIndicatorColor)             \
+    E_CPONLY(kColorSidebarItemDragIndicator)                  \
     E_CPONLY(kColorSidebarSeparator)
 #else
 #define BRAVE_SIDEBAR_COLOR_IDS

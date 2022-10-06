@@ -12,8 +12,6 @@ source_set("themes") {
     sources += [
       "brave_dark_mode_utils_internal.cc",
       "brave_dark_mode_utils_internal.h",
-      "theme_properties.cc",
-      "theme_properties.h",
     ]
 
     if (is_linux) {
@@ -29,13 +27,6 @@ source_set("themes") {
     }
 
     deps += [
-      "//brave/components/brave_vpn/buildflags",
-      "//brave/components/sidebar/buildflags",
-      "//brave/components/speedreader/common:buildflags",
-      "//chrome/browser:theme_properties",
-      "//chrome/browser/ui/color:mixers",
-      "//skia:skia",
-      "//ui/gfx:color_utils",
       "//ui/native_theme:native_theme",
       "//ui/native_theme:native_theme_browser",
     ]
