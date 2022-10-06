@@ -420,7 +420,7 @@ extension BrowserViewController: TopToolbarDelegate {
             }
 
             switch searchType {
-            case .text:
+            case .text, .website:
               if let text = recentSearch.text {
                 self.topToolbar.setLocation(text, search: false)
                 self.topToolbar(self.topToolbar, didEnterText: text)
@@ -438,15 +438,6 @@ extension BrowserViewController: TopToolbarDelegate {
                   submitSearch(text)
                 }
               } else if let websiteUrl = recentSearch.websiteUrl {
-                self.topToolbar.setLocation(websiteUrl, search: false)
-                self.topToolbar(self.topToolbar, didEnterText: websiteUrl)
-
-                if shouldSubmitSearch {
-                  submitSearch(websiteUrl)
-                }
-              }
-            case .website:
-              if let websiteUrl = recentSearch.websiteUrl {
                 self.topToolbar.setLocation(websiteUrl, search: false)
                 self.topToolbar(self.topToolbar, didEnterText: websiteUrl)
 
