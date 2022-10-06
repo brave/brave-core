@@ -223,6 +223,8 @@ class BraveWalletService : public KeyedService,
 
   void OnOnboardingShown() override;
 
+  BraveWalletP3A* GetBraveWalletP3A();
+
  private:
   friend class EthereumProviderImplUnitTest;
   friend class SolanaProviderImplUnitTest;

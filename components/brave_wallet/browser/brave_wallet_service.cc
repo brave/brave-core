@@ -879,6 +879,10 @@ void BraveWalletService::OnOnboardingShown() {
   RecordWalletUsage(false);
 }
 
+BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
+  return &brave_wallet_p3a_;
+}
+
 void BraveWalletService::RecordWalletUsage(bool unlocked) {
   VLOG(1) << "Wallet P3A: starting report";
   base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
+#include <utility>
+
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -56,6 +58,16 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
 }
 
 BraveWalletP3A::~BraveWalletP3A() = default;
+
+void BraveWalletP3A::Bind(
+    mojo::PendingReceiver<mojom::BraveWalletP3A> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void BraveWalletP3A::ReportEthereumProvider(
+    mojom::EthereumProviderType provider_type) {
+  UMA_HISTOGRAM_ENUMERATION("Brave.Wallet.EthProvider", provider_type);
+}
 
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
   keyring_service_->GetKeyringInfo(mojom::kDefaultKeyringId,

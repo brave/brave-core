@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -32,14 +33,19 @@ void BraveWalletRenderFrameObserver::DidStartNavigation(
   url_ = url;
 }
 
-bool BraveWalletRenderFrameObserver::CanCreateProvider() {
+bool BraveWalletRenderFrameObserver::IsPageValid() {
   // There could be empty, invalid and "about:blank" URLs,
   // they should fallback to the main frame rules
   if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
-  if (!url_.SchemeIsHTTPOrHTTPS())
+  return url_.SchemeIsHTTPOrHTTPS();
+}
+
+bool BraveWalletRenderFrameObserver::CanCreateProvider() {
+  if (!IsPageValid()) {
     return false;
+  }
 
   // Wallet provider objects should only be created in secure contexts
   if (!render_frame()->GetWebFrame()->GetDocument().IsSecureContext()) {
@@ -74,6 +80,19 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
         is_main_world);
     js_ethereum_provider_->ConnectEvent();
   }
+}
+
+void BraveWalletRenderFrameObserver::DidFinishLoad() {
+#if !BUILDFLAG(IS_ANDROID)
+  // Only record P3A for desktop and valid HTTP/HTTPS pages
+  if (!IsPageValid()) {
+    return;
+  }
+
+  auto dynamic_params = get_dynamic_params_callback_.Run();
+
+  p3a_util_.ReportEthereumProvider(render_frame(), dynamic_params);
+#endif
 }
 
 void BraveWalletRenderFrameObserver::WillReleaseScriptContext(

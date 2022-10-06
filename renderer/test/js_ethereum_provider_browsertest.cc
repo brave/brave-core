@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -57,6 +59,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.ServeFilesFromDirectory(test_data_dir);
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
   ~JSEthereumProviderBrowserTest() override = default;
@@ -106,6 +109,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  std::unique_ptr<base::HistogramTester> histogram_tester_;
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_;
@@ -123,10 +127,16 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
                   .error.find("Cannot read properties of undefined") !=
               std::string::npos);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+
+  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider", 0, 1);
+
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop();
+
+  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider", 2, 1);
+
   auto result = content::EvalJs(primary_main_frame(), command);
   EXPECT_EQ(result.error, "");
   ASSERT_TRUE(result.ExtractBool());
@@ -142,6 +152,8 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   // overwrite successfully
   EXPECT_EQ(content::EvalJs(primary_main_frame(), overwrite).ExtractString(),
             "test");
+
+  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider", 2, 2);
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
@@ -163,6 +175,9 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop();
+
+  histogram_tester_->ExpectTotalCount("Brave.Wallet.EthProvider", 0);
+
   EXPECT_TRUE(content::EvalJs(primary_main_frame(), command,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_TRANSLATE)

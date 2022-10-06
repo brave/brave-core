@@ -52,6 +52,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
@@ -268,6 +270,23 @@ void BindCosmeticFiltersResources(
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
                                 std::move(receiver)));
+}
+
+void MaybeBindWalletP3A(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  if (brave_wallet::IsAllowedForContext(frame_host->GetBrowserContext())) {
+    brave_wallet::BraveWalletService* wallet_service =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
+    DCHECK(wallet_service);
+    wallet_service->GetBraveWalletP3A()->Bind(std::move(receiver));
+  } else {
+    // Dummy API to avoid reporting P3A for OTR contexts
+    mojo::MakeSelfOwnedReceiver(
+        std::make_unique<brave_wallet::BraveWalletP3APrivate>(),
+        std::move(receiver));
+  }
 }
 
 void MaybeBindEthereumProvider(
@@ -553,13 +572,16 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveAdsHost));
   }
 
-  if (brave_wallet::IsNativeWalletEnabled() &&
-      brave_wallet::IsAllowedForContext(
+  map->Add<brave_wallet::mojom::BraveWalletP3A>(
+      base::BindRepeating(&MaybeBindWalletP3A));
+  if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
-    map->Add<brave_wallet::mojom::EthereumProvider>(
-        base::BindRepeating(&MaybeBindEthereumProvider));
-    map->Add<brave_wallet::mojom::SolanaProvider>(
-        base::BindRepeating(&MaybeBindSolanaProvider));
+    if (brave_wallet::IsNativeWalletEnabled()) {
+      map->Add<brave_wallet::mojom::EthereumProvider>(
+          base::BindRepeating(&MaybeBindEthereumProvider));
+      map->Add<brave_wallet::mojom::SolanaProvider>(
+          base::BindRepeating(&MaybeBindSolanaProvider));
+    }
   }
 
   map->Add<skus::mojom::SkusService>(
