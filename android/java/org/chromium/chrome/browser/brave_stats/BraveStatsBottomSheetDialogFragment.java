@@ -49,6 +49,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
+import org.chromium.base.BuildInfo;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -71,6 +72,8 @@ import java.util.List;
 
 public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     final public static String TAG_FRAGMENT = "BRAVESTATS_FRAG";
+    private static final String APP_PACKAGE = "app_package";
+    private static final String APP_UID = "app_uid";
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
     private static final int WEBSITES = 0;
@@ -220,8 +223,11 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         View notificationOnButton = view.findViewById(R.id.notification_on_button);
         notificationOnButton.setOnClickListener(v -> {
             if (getActivity().shouldShowRequestPermissionRationale(
-                        PermissionConstants.NOTIFICATION_PERMISSION)) {
-                // Last time don't allow selected in permission dialog, then enable through setting
+                        PermissionConstants.NOTIFICATION_PERMISSION)
+                    || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+                // other than android 13 redirect to
+                // setting page and for android 13 Last time don't allow selected in permission
+                // dialog, then enable through setting
                 redirectToSettingPage();
             } else {
                 // 1st time request permission
@@ -237,8 +243,8 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // for Android 5-7
-        intent.putExtra("app_package", getActivity().getPackageName());
-        intent.putExtra("app_uid", getActivity().getApplicationInfo().uid);
+        intent.putExtra(APP_PACKAGE, getActivity().getPackageName());
+        intent.putExtra(APP_UID, getActivity().getApplicationInfo().uid);
 
         // for Android 8 and above
         intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
