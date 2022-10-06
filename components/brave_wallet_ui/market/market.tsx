@@ -28,7 +28,11 @@ import {
   MarketCommandMessage,
   MarketUiCommand,
   SelectCoinMarketMessage,
+  SelectBuyMessage,
+  SelectDepositMessage,
   sendMessageToWalletUi,
+  UpdateBuyableAssetsMessage,
+  UpdateDepositableAssetsMessage,
   UpdateCoinMarketMessage,
   UpdateTradableAssetsMessage
 
@@ -54,6 +58,8 @@ const App = () => {
   const [searchTerm, setSearchTerm] = React.useState('')
   const [coinMarkets, setCoinMarkets] = React.useState<BraveWallet.CoinMarket[]>([])
   const [tradableAssets, setTradableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [buyableAssets, setBuyableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [depositableAssets, setDepositableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
 
   // Memos
   const visibleCoinMarkets = React.useMemo(() => {
@@ -61,6 +67,31 @@ const App = () => {
     const filteredCoins = filterCoinMarkets(searchResults, tradableAssets, currentFilter)
     return [...sortCoinMarkets(filteredCoins, sortOrder, sortByColumnId)]
   }, [coinMarkets, sortOrder, sortByColumnId, searchTerm, currentFilter])
+
+  // Methods
+  const isBuySupported = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
+    return buyableAssets.some((asset) => asset.symbol.toLowerCase() === coinMarket.symbol.toLowerCase())
+  }, [buyableAssets])
+
+  const isDepositSupported = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
+    return depositableAssets.some((asset) => asset.symbol.toLowerCase() === coinMarket.symbol.toLowerCase())
+  }, [depositableAssets])
+
+  const onClickBuy = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
+    const message: SelectBuyMessage = {
+      command: MarketUiCommand.SelectBuy,
+      payload: coinMarket
+    }
+    sendMessageToWalletUi(parent, message)
+  }, [])
+
+  const onClickDeposit = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
+    const message: SelectDepositMessage = {
+      command: MarketUiCommand.SelectDeposit,
+      payload: coinMarket
+    }
+    sendMessageToWalletUi(parent, message)
+  }, [])
 
   const onSelectFilter = (value: MarketAssetFilterOption) => {
     setCurrentFilter(value)
@@ -81,6 +112,18 @@ const App = () => {
       case MarketUiCommand.UpdateTradableAssets: {
         const { payload } = message as UpdateTradableAssetsMessage
         setTradableAssets(payload)
+        break
+      }
+
+      case MarketUiCommand.UpdateBuyableAssets: {
+        const { payload } = message as UpdateBuyableAssetsMessage
+        setBuyableAssets(payload)
+        break
+      }
+
+      case MarketUiCommand.UpdateDepositableAssets: {
+        const { payload } = message as UpdateDepositableAssetsMessage
+        setDepositableAssets(payload)
       }
     }
   }, [])
@@ -113,6 +156,7 @@ const App = () => {
     sendMessageToWalletUi(parent, message)
   }, [])
 
+  // Effects
   React.useEffect(() => {
     window.addEventListener('message', onMessageEventListener)
     return () => window.removeEventListener('message', onMessageEventListener)
@@ -145,11 +189,15 @@ const App = () => {
             showEmptyState={searchTerm !== '' || currentFilter !== 'all'}
             onSelectCoinMarket={onSelectCoinMarket}
             onSort={onSort}
+            isBuySupported={isBuySupported}
+            isDepositSupported={isDepositSupported}
+            onClickBuy={onClickBuy}
+            onClickDeposit={onClickDeposit}
           />
         </>
       </BraveCoreThemeProvider>
-  </BrowserRouter>
-)
+    </BrowserRouter>
+  )
 }
 
 function initialize () {

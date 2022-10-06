@@ -903,6 +903,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_MARKET_DATA_MARKETCAP_COLUMN},
     {"braveWalletMarketDataVolumeColumn",
      IDS_BRAVE_WALLET_MARKET_DATA_VOLUME_COLUMN},
+    {"braveWalletMarketDataBuyDepositColumn",
+     IDS_BRAVE_WALLET_MARKET_DATA_BUY_DEPOSIT_COLUMN},
     {"braveWalletMarketDataNoAssetsFound",
      IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND},
     {"braveWalletMarketDataCoinNotSupported",

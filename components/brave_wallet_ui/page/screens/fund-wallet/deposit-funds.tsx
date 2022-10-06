@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -66,6 +66,7 @@ import { getBatTokensFromList } from '../../../utils/asset-utils'
 export const DepositFundsScreen = () => {
   // routing
   const history = useHistory()
+  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
   const dispatch = useDispatch()
@@ -173,6 +174,10 @@ export const DepositFundsScreen = () => {
     return ''
   }, [selectedAsset])
 
+  const nativeAssets: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+    return networkList.map((network) => makeNetworkAsset(network))
+  }, [networkList])
+
   // methods
   const openAccountSearch = React.useCallback(() => setShowAccountSearch(true), [])
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
@@ -226,6 +231,25 @@ export const DepositFundsScreen = () => {
     }
   }, [copyAddressToClipboard])
 
+  const checkIsDepositAssetSelected = React.useCallback((asset: BraveWallet.BlockchainToken) => {
+    if (selectedAsset) {
+      return selectedAsset.contractAddress.toLowerCase() === asset.contractAddress.toLowerCase() &&
+        selectedAsset.symbol.toLowerCase() === asset.symbol.toLowerCase() &&
+        selectedAsset.chainId === asset.chainId
+    }
+    return false
+  }, [selectedAsset])
+
+  const scrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
+    if (checkIsDepositAssetSelected(asset)) {
+      ref?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center'
+      })
+    }
+  }, [checkIsDepositAssetSelected])
+
   // effects
   React.useEffect(() => {
     // fetch selected Account QR Code
@@ -237,8 +261,8 @@ export const DepositFundsScreen = () => {
   }, [selectedAccount, isMounted])
 
   React.useEffect(() => {
-    // unselect asset on chain filter changed
-    if (selectedNetworkFilter) {
+    // unselect asset if  AllNetworksOption is not selected
+    if (selectedNetworkFilter.chainId !== AllNetworksOption.chainId) {
       setSelectedAsset(undefined)
     }
   }, [selectedNetworkFilter])
@@ -266,6 +290,18 @@ export const DepositFundsScreen = () => {
       dispatch(WalletActions.getAllTokensList())
     }
   }, [fullTokenList])
+
+  React.useEffect(() => {
+    if (tokenId !== undefined) {
+      if (nativeAssets.some((asset) => asset.symbol.toLowerCase() === tokenId.toLocaleLowerCase())) {
+        const foundNativeAsset = nativeAssets.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
+        setSelectedAsset(foundNativeAsset)
+        return
+      }
+      const foundDepositableAsset = fullTokenList.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
+      setSelectedAsset(foundDepositableAsset)
+    }
+  }, [tokenId, fullTokenList, nativeAssets])
 
   // render
   return (
@@ -306,16 +342,16 @@ export const DepositFundsScreen = () => {
                     hideAccountFilter
                     estimatedItemSize={100}
                     renderToken={({
-                      index,
                       item: { asset }
                     }) => <BuyAssetOptionItem
-                        isSelected={asset === selectedAsset}
+                        isSelected={checkIsDepositAssetSelected(asset)}
                         key={asset.isErc721
                           ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
                           : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
                         token={asset}
                         tokenNetwork={getTokensNetwork(mainnetsList, asset)}
-                        onClick={setSelectedAsset} />}
+                        onClick={setSelectedAsset}
+                        ref={(ref) => scrollIntoView(asset, ref)} />}
                   />
                   : <Column>
                     <LoadingIcon

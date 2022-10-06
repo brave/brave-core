@@ -51,6 +51,14 @@ export const marketDataTableHeaders: MarketDataHeader[] = [
     customStyle: {
       textAlign: 'right'
     }
+  },
+  {
+    id: 'actions',
+    content: 'Buy/Deposit',
+    sortable: false,
+    customStyle: {
+      textAlign: 'right'
+    }
   }
   // Hiden because price History data is not available
   // {

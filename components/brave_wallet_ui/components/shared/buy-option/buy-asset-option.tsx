@@ -35,13 +35,13 @@ interface Props {
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(MediumAssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
 
-export const BuyAssetOptionItem = ({
+export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
   onClick,
   token,
   tokenNetwork,
   isSelected,
   isPanel
-}: Props) => {
+}: Props, forwardedRef) => {
   // memos
   const networkDescription: string = React.useMemo(() => {
     if (tokenNetwork && !isPanel) {
@@ -65,7 +65,7 @@ export const BuyAssetOptionItem = ({
   }
 
   return (
-    <BuyAssetOptionWrapper isSelected={isSelected} onClick={handleOnClick}>
+    <BuyAssetOptionWrapper ref={forwardedRef} isSelected={isSelected} onClick={handleOnClick}>
       <NameAndIcon>
         <IconsWrapper marginRight='14px'>
           <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
@@ -89,5 +89,6 @@ export const BuyAssetOptionItem = ({
     </BuyAssetOptionWrapper>
   )
 }
+)
 
 export default BuyAssetOptionItem

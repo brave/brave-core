@@ -16,7 +16,8 @@ import {
   StyledTD,
   ArrowDown,
   ArrowUp,
-  ArrowWrapper
+  ArrowWrapper,
+  StyledTR
 } from './style'
 
 import { SortOrder } from '../../../constants/types'
@@ -46,7 +47,7 @@ export interface Props {
   headers?: Header[]
   children?: React.ReactNode
   rows?: Row[]
-  rowTheme?: {[key: string]: string}
+  rowTheme?: { [key: string]: string }
   stickyHeaders?: boolean
   onSort?: (column: string, newSortOrder: SortOrder) => void
 }
@@ -89,10 +90,10 @@ export const Table = (props: Props) => {
                       stickyHeaders={stickyHeaders}
                     >
                       {header.sortable &&
-                          <ArrowWrapper>
-                            {header.sortOrder === 'asc' ? <ArrowUp /> : null}
-                            {header.sortOrder === 'desc' ? <ArrowDown /> : null}
-                          </ArrowWrapper>
+                        <ArrowWrapper>
+                          {header.sortOrder === 'asc' ? <ArrowUp /> : null}
+                          {header.sortOrder === 'desc' ? <ArrowDown /> : null}
+                        </ArrowWrapper>
                       }
                       {header.content}
                     </StyledTH>
@@ -105,23 +106,23 @@ export const Table = (props: Props) => {
             <StyledTBody>
               {
                 rows.map((row: Row, i: number) =>
-                  <tr
+                  <StyledTR
                     id={row.id}
                     key={`tr-${row.id}-${i}`}
                     style={row.customStyle}
-                    onClick={onRowClick(row)}
                   >
                     {
                       row.content.map((cell: Cell, j: number) =>
                         <StyledTD
                           key={`${id}-td-${i}-${j}`}
                           style={cell.customStyle}
+                          onClick={onRowClick(row)}
                         >
                           {cell.content}
                         </StyledTD>
                       )
                     }
-                  </tr>
+                  </StyledTR>
                 )
               }
             </StyledTBody>

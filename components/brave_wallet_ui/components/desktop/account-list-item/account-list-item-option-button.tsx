@@ -20,17 +20,21 @@ import { getLocale } from '../../../../common/locale'
 
 interface Props {
   option: AccountButtonOptionsObjectType
+  hideIcon?: boolean
   onClick: () => void
 }
 
 export const AccountListItemOptionButton = (props: Props) => {
   const {
     onClick,
+    hideIcon,
     option
   } = props
   return (
     <OvalButton onClick={onClick}>
-      <Icon icon={option.icon} />
+      {!hideIcon &&
+        <Icon icon={option.icon} />
+      }
       <OvalButtonText>{getLocale(option.name)}</OvalButtonText>
     </OvalButton>
   )
