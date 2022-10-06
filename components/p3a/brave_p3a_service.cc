@@ -134,6 +134,22 @@ base::Time GetNextRotationTime(MetricLogType log_type,
   NOTREACHED();
 }
 
+inline scoped_refptr<base::SingleThreadTaskRunner> GetUIThreadTaskRunner() {
+#if BUILDFLAG(IS_IOS)
+  return web::GetUIThreadTaskRunner({});
+#else
+  return content::GetUIThreadTaskRunner({});
+#endif
+}
+
+inline void DCheckCurrentlyOnUIThread() {
+#if BUILDFLAG(IS_IOS)
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+#else
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#endif
+}
+
 }  // namespace
 
 BraveP3AService::BraveP3AService(PrefService* local_state,
@@ -186,11 +202,7 @@ void BraveP3AService::RegisterDynamicMetric(const std::string& histogram_name,
                                             MetricLogType log_type,
                                             bool should_be_on_ui_thread) {
   if (should_be_on_ui_thread) {
-#if BUILDFLAG(IS_IOS)
-    DCHECK_CURRENTLY_ON(web::WebThread::UI);
-#else
-    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif
+    DCheckCurrentlyOnUIThread();
   }
   if (dynamic_metric_log_types_.contains(histogram_name)) {
     return;
@@ -207,11 +219,7 @@ void BraveP3AService::RegisterDynamicMetric(const std::string& histogram_name,
 }
 
 void BraveP3AService::RemoveDynamicMetric(const std::string& histogram_name) {
-#if BUILDFLAG(IS_IOS)
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-#else
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif
+  DCheckCurrentlyOnUIThread();
   if (!dynamic_metric_log_types_.contains(histogram_name)) {
     return;
   }
@@ -232,31 +240,19 @@ void BraveP3AService::RemoveDynamicMetric(const std::string& histogram_name) {
 
 bool BraveP3AService::IsDynamicMetricRegistered(
     const std::string& histogram_name) {
-#if BUILDFLAG(IS_IOS)
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-#else
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif
+  DCheckCurrentlyOnUIThread();
   return dynamic_metric_log_types_.contains(histogram_name);
 }
 
 base::CallbackListSubscription BraveP3AService::RegisterRotationCallback(
     base::RepeatingCallback<void(bool is_express)> callback) {
-#if BUILDFLAG(IS_IOS)
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-#else
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif
+  DCheckCurrentlyOnUIThread();
   return rotation_callbacks_.Add(std::move(callback));
 }
 
 base::CallbackListSubscription BraveP3AService::RegisterMetricSentCallback(
     base::RepeatingCallback<void(const std::string&)> callback) {
-#if BUILDFLAG(IS_IOS)
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-#else
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif
+  DCheckCurrentlyOnUIThread();
   return metric_sent_callbacks_.Add(std::move(callback));
 }
 
@@ -490,13 +486,8 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
-#if BUILDFLAG(IS_IOS)
-    web::GetUIThreadTaskRunner({})
-#else
-    content::GetUIThreadTaskRunner({})
-#endif
-        ->PostTask(FROM_HERE,
-                   base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
+    GetUIThreadTaskRunner()->PostTask(
+        FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
                                   this, histogram_name, kSuspendedMetricValue,
                                   kSuspendedMetricBucket));
     return;
@@ -527,13 +518,8 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
     bucket = DirectEncodingProtocol::Perturb(bucket_count, bucket);
   }
 
-#if BUILDFLAG(IS_IOS)
-  web::GetUIThreadTaskRunner({})
-#else
-  content::GetUIThreadTaskRunner({})
-#endif
-      ->PostTask(FROM_HERE,
-                 base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
+  GetUIThreadTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
                                 histogram_name, sample, bucket));
 }
 
