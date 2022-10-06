@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -19,23 +20,22 @@
 #include "components/permissions/features.h"
 #include "components/permissions/permission_prompt.h"
 #include "components/permissions/permission_request.h"
+#include "components/permissions/request_type.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/models/combobox_model.h"
+#include "ui/gfx/text_constants.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/combobox/combobox.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
+#include "ui/views/style/typography.h"
 #include "ui/views/window/dialog_delegate.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_permission_request.h"
-#include "brave/components/constants/webui_url_constants.h"
-#include "components/permissions/request_type.h"
-#include "ui/gfx/text_constants.h"
-#include "ui/views/controls/button/checkbox.h"
-#include "ui/views/controls/label.h"
-#include "ui/views/style/typography.h"
 #endif
 
 namespace {
