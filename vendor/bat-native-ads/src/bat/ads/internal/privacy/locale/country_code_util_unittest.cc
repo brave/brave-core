@@ -11,41 +11,43 @@
 
 namespace ads::privacy::locale {
 
-TEST(BatAdsCountryCodeUtilTest, IsMemberOfAnonymitySet) {
+TEST(BatAdsCountryCodeUtilTest, IsCountryCodeMemberOfAnonymitySet) {
   // Arrange
 
   // Act
-  const bool is_member_of_anonymity_set = IsMemberOfAnonymitySet("en-US");
+  const bool is_member_of_anonymity_set =
+      IsCountryCodeMemberOfAnonymitySet("US");
 
   // Assert
   EXPECT_TRUE(is_member_of_anonymity_set);
 }
 
-TEST(BatAdsCountryCodeUtilTest, IsNotMemberOfAnonymitySet) {
+TEST(BatAdsCountryCodeUtilTest, IsCountryCodeNotMemberOfAnonymitySet) {
   // Arrange
 
   // Act
-  const bool is_member_of_anonymity_set = IsMemberOfAnonymitySet("en-XX");
+  const bool is_member_of_anonymity_set =
+      IsCountryCodeMemberOfAnonymitySet("XX");
 
   // Assert
   EXPECT_FALSE(is_member_of_anonymity_set);
 }
 
-TEST(BatAdsCountryCodeUtilTest, ShouldClassifyAsOther) {
+TEST(BatAdsCountryCodeUtilTest, ShouldClassifyCountryCodeAsOther) {
   // Arrange
 
   // Act
-  const bool is_anonymous = ShouldClassifyAsOther("en-CX");
+  const bool is_anonymous = ShouldClassifyCountryCodeAsOther("CX");
 
   // Assert
   EXPECT_TRUE(is_anonymous);
 }
 
-TEST(BatAdsCountryCodeUtilTest, ShouldNotClassifyAsOther) {
+TEST(BatAdsCountryCodeUtilTest, ShouldNotClassifyCountryCodeAsOther) {
   // Arrange
 
   // Act
-  const bool is_anonymous = ShouldClassifyAsOther("en-XX");
+  const bool is_anonymous = ShouldClassifyCountryCodeAsOther("XX");
 
   // Assert
   EXPECT_FALSE(is_anonymous);

@@ -10,9 +10,13 @@
 
 namespace ads::privacy::locale {
 
-bool IsMemberOfAnonymitySet(const std::string& locale);
+// Return |true| if the given |country_code| is a member of the anonymity set,
+// otherwise returns |false|.
+bool IsCountryCodeMemberOfAnonymitySet(const std::string& country_code);
 
-bool ShouldClassifyAsOther(const std::string& locale);
+// Return |true| if the given |country_code| should be classified as other
+// otherwise returns |false|.
+bool ShouldClassifyCountryCodeAsOther(const std::string& country_code);
 
 }  // namespace ads::privacy::locale
 

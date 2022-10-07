@@ -5,24 +5,20 @@
 
 #include "bat/ads/internal/privacy/locale/country_code_util.h"
 
+#include "base/containers/contains.h"
+#include "base/strings/string_util.h"
 #include "bat/ads/internal/privacy/locale/country_code_anonymity_set.h"
 #include "bat/ads/internal/privacy/locale/other_country_codes.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads::privacy::locale {
 
-bool IsMemberOfAnonymitySet(const std::string& locale) {
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  const auto iter = kCountryCodeAnonymitySet.find(country_code);
-  return iter != kCountryCodeAnonymitySet.cend();
+bool IsCountryCodeMemberOfAnonymitySet(const std::string& country_code) {
+  return base::Contains(kCountryCodeAnonymitySet,
+                        base::ToUpperASCII(country_code));
 }
 
-bool ShouldClassifyAsOther(const std::string& locale) {
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  const auto iter = kOtherCountryCodes.find(country_code);
-  return iter != kOtherCountryCodes.cend();
+bool ShouldClassifyCountryCodeAsOther(const std::string& country_code) {
+  return base::Contains(kOtherCountryCodes, base::ToUpperASCII(country_code));
 }
 
 }  // namespace ads::privacy::locale

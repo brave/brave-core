@@ -30,10 +30,10 @@ base::Value::Dict GetLocale() {
 
   const std::string country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
-  if (privacy::locale::IsMemberOfAnonymitySet(country_code)) {
+  if (privacy::locale::IsCountryCodeMemberOfAnonymitySet(country_code)) {
     user_data.Set(kCountryCodeKey, country_code);
   } else {
-    if (privacy::locale::ShouldClassifyAsOther(country_code)) {
+    if (privacy::locale::ShouldClassifyCountryCodeAsOther(country_code)) {
       user_data.Set(kCountryCodeKey, kOtherCountryCode);
     }
   }
