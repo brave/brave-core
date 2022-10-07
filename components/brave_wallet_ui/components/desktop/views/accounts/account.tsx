@@ -52,6 +52,7 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // Hooks
 import { useBalance } from '../../../../common/hooks/balance'
+import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 
 // Actions
 import { getFilecoinKeyringIdFromNetwork } from '../../../../utils/network-utils'
@@ -77,6 +78,7 @@ export const Account = ({
 
   // custom hooks
   const getBalance = useBalance(networkList)
+  const scrollIntoView = useScrollIntoView()
 
   // memos
   const selectedAccount = React.useMemo(() => {
@@ -173,19 +175,11 @@ export const Account = ({
     return false
   }, [transactionID])
 
-  // Prevents scrolling into view again if re-render occurs
-  let ignore = false
-
-  const scrollIntoView = React.useCallback((id: string, ref: HTMLDivElement | null) => {
-    if (checkIsTransactionFocused(id) && !ignore) {
-      ref?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center'
-      })
-      ignore = true
+  const handleScrollIntoView = React.useCallback((id: string, ref: HTMLDivElement | null) => {
+    if (checkIsTransactionFocused(id)) {
+      scrollIntoView(ref)
     }
-  }, [checkIsTransactionFocused, ignore])
+  }, [checkIsTransactionFocused, scrollIntoView])
 
   // redirect (asset not found)
   if (!selectedAccount) {
@@ -263,7 +257,7 @@ export const Account = ({
               account={selectedAccount}
               accounts={accounts}
               displayAccountName={false}
-              ref={(ref) => scrollIntoView(transaction.id, ref)}
+              ref={(ref) => handleScrollIntoView(transaction.id, ref)}
               isFocused={checkIsTransactionFocused(transaction.id)}
             />
           )}
