@@ -276,7 +276,7 @@ extension LoginListViewController {
   }
 
   override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    if indexPath.section == Section.savedLogins.rawValue, let credentials = credentialList[safe: indexPath.row] {
+    if indexPath.section == Section.savedLogins.rawValue, let credentials = credentialList[safe: indexPath.row], !tableView.isEditing {
       let loginDetailsViewController = LoginInfoViewController(
         passwordAPI: passwordAPI,
         credentials: credentials,
@@ -292,8 +292,12 @@ extension LoginListViewController {
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.section == Section.savedLogins.rawValue {
-      fetchLoginInfo()
       searchController.isActive = false
+      
+      tableView.isEditing = false
+      setEditing(false, animated: false)
+      
+      fetchLoginInfo()
     }
   }
 
