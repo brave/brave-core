@@ -9,6 +9,10 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -21,6 +25,25 @@ namespace {
 bool IsValidHostLabelCharacter(char c, bool is_first_char) {
   return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
          (c >= '0' && c <= '9') || (!is_first_char && c == '-') || c == '_';
+}
+
+absl::optional<std::string> ChainIdToVersion(const std::string chain_id) {
+  static base::NoDestructor<std::map<std::string, std::string>> mapping({
+      {"0x1", "ERC20"},
+      {"0x38", "BEP20"},
+      {"0x63564c40", "HRC20"},
+      {"0x64", "XDAI"},
+      {"0x7a", "FUSE"},
+      {"0x89", "MATIC"},
+      {"0xa", "OP"},
+      {"0xa4b1", "AETH"},
+      {"0xa86a", "AVAX"},
+      {"0xfa", "FANTOM"},
+  });
+  auto it = mapping->find(chain_id);
+  if (it != mapping->end())
+    return it->second;
+  return absl::nullopt;
 }
 
 }  // namespace
@@ -284,29 +307,38 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
   return data;
 }
 
-absl::optional<std::string> Get(const std::string& key,
-                                const std::string& domain) {
-  const std::string function_hash = GetFunctionHash("get(string,uint256)");
-
-  std::string offset_for_key;
-  if (!PadHexEncodedParameter(Uint256ValueToHex(64), &offset_for_key)) {
-    return absl::nullopt;
+std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
+                                              const std::string& chain_id) {
+  std::vector<std::string> lookup_keys;
+  // crypto.<TICKER>.version.<VERSION>.address
+  if (auto version = ChainIdToVersion(chain_id)) {
+    auto key = base::StringPrintf("crypto.%s.version.%s.address",
+                                  base::ToUpperASCII(symbol).c_str(),
+                                  base::ToUpperASCII(*version).c_str());
+    if (key != "crypto.ETH.version.ERC20.address")
+      lookup_keys.push_back(key);
   }
+  // crypto.<TICKER>.address
+  lookup_keys.push_back(base::StringPrintf("crypto.%s.address",
+                                           base::ToUpperASCII(symbol).c_str()));
 
-  std::string tokenID = ToHex(Namehash(domain));
+  // crypto.ETH.address
+  if (symbol != "ETH")
+    lookup_keys.push_back(kCryptoEthAddressKey);
 
-  std::string encoded_key;
-  if (!EncodeString(key, &encoded_key)) {
-    return absl::nullopt;
-  }
+  return lookup_keys;
+}
 
-  std::string data;
-  std::vector<std::string> hex_strings = {function_hash, offset_for_key,
-                                          tokenID, encoded_key};
-  if (!ConcatHexStrings(hex_strings, &data))
-    return absl::nullopt;
+std::vector<uint8_t> GetEthAddr(const std::string& domain,
+                                const std::string& symbol,
+                                const std::string& chain_id) {
+  auto key_list = MakeEthLookupKeyList(symbol, chain_id);
 
-  return data;
+  // getMany(string[],uint256)
+  return eth_abi::TupleEncoder()
+      .AddStringArray(key_list)
+      .AddFixedBytes(Namehash(domain))
+      .EncodeWithSelector(kGetManySelector);
 }
 
 }  // namespace unstoppable_domains

@@ -122,7 +122,7 @@ export default function useSend () {
     // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
-      findUnstoppableDomainAddress(toAddressOrUrl).then((value: GetEthAddrReturnInfo) => {
+      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetEthAddrReturnInfo) => {
         if (value.address && value.error === BraveWallet.ProviderError.kSuccess) {
           setAddressError('')
           setAddressWarning('')
@@ -189,7 +189,7 @@ export default function useSend () {
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [selectedAccount, ensOffchainLookupOptions])
+  }, [selectedAccount, selectedSendAsset, ensOffchainLookupOptions])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     // Do nothing if value is an empty string

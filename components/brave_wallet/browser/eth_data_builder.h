@@ -81,13 +81,19 @@ std::vector<uint8_t> SupportsInterface(eth_abi::Span4 interface);
 
 namespace unstoppable_domains {
 
+// getMany(string[],uint256)
+constexpr uint8_t kGetManySelector[] = {0x1b, 0xd8, 0xcc, 0x1a};
+
 // Get mutiple record values mapped with keys of the target domain.
 absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
                                     const std::string& domain);
 
-// Get the value of the key for the target domain.
-absl::optional<std::string> Get(const std::string& key,
-                                const std::string& domain);
+std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
+                                              const std::string& chain_id);
+
+std::vector<uint8_t> GetEthAddr(const std::string& domain,
+                                const std::string& symbol,
+                                const std::string& chain_id);
 
 }  // namespace unstoppable_domains
 
