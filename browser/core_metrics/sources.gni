@@ -1,0 +1,17 @@
+brave_browser_core_metrics_sources = [
+  "//brave/browser/core_metrics/core_metrics_service_factory.cc",
+  "//brave/browser/core_metrics/core_metrics_service_factory.h",
+  "//brave/browser/core_metrics/core_metrics_tab_helper.cc",
+  "//brave/browser/core_metrics/core_metrics_tab_helper.h",
+]
+
+brave_browser_core_metrics_deps = [
+  "//brave/browser:browser_process",
+  "//brave/browser/profiles:util",
+  "//brave/components/core_metrics",
+  "//chrome/browser:browser_process",
+  "//chrome/browser/profiles:profiles",
+  "//components/keyed_service/content",
+  "//components/keyed_service/core",
+  "//content/public/browser",
+]

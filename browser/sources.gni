@@ -16,6 +16,7 @@ import("//brave/browser/brave_wallet/android/sources.gni")
 import("//brave/browser/brave_wallet/notifications/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/component_updater/sources.gni")
+import("//brave/browser/core_metrics/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/download/sources.gni")
@@ -406,6 +407,7 @@ brave_chrome_browser_sources += brave_browser_brave_shields_sources
 brave_chrome_browser_sources += brave_browser_brave_stats_updater_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_component_updater_sources
+brave_chrome_browser_sources += brave_browser_core_metrics_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_download_sources
@@ -437,6 +439,7 @@ brave_chrome_browser_deps += brave_browser_brave_shields_deps
 brave_chrome_browser_deps += brave_browser_brave_stats_updater_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_component_updater_deps
+brave_chrome_browser_deps += brave_browser_core_metrics_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_download_deps
