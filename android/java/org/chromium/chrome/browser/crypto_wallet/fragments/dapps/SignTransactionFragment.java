@@ -25,9 +25,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
+import org.chromium.brave_wallet.mojom.SolanaAccountMeta;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.chrome.R;
@@ -37,7 +37,6 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActi
 import org.chromium.chrome.browser.crypto_wallet.adapters.FragmentNavigationItemAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
-import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemText;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemFragment;
 import org.chromium.chrome.browser.crypto_wallet.model.SolanaInstructionPresenter;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
@@ -200,38 +199,23 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
     }
 
     private void updateSignDetails() {
-        if (mTxDatas != null && !mTxDatas.isEmpty()) {
-            details.clear();
-            for (SolanaTxData txData : mTxDatas) {
-                for (SolanaInstruction solanaInstruction : txData.instructions) {
-                    details.add(new TwoLineItemText(
-                            TransactionUtils.getSolanaProgramIdName(
-                                    solanaInstruction.programId, requireContext())
-                                    + " - "
-                                    + getString(
-                                            TransactionUtils.getSolType(solanaInstruction.programId,
-                                                    solanaInstruction.decodedData.instructionType)),
-                            null));
-                    SolanaInstructionPresenter solanaInstructionPresenter =
-                            new SolanaInstructionPresenter(solanaInstruction);
-                    if (solanaInstructionPresenter.mIsUnknown) {
-                        details.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemHeader(
-                                getString(R.string.accounts)));
-                    }
-                    details.addAll(solanaInstructionPresenter.accountDataToList());
-                    if (solanaInstructionPresenter.mIsUnknown) {
-                        details.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemHeader(
-                                getString(R.string.brave_wallet_data_text)));
-                    }
-                    details.addAll(solanaInstructionPresenter.accountParamDataToList());
-                    if (mTxDatas.size() > 1 || txData.instructions.length > 1) {
-                        details.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
-                    }
+        if (mTxDatas == null || mTxDatas.isEmpty()) {
+            return;
+        }
+        details.clear();
+
+        for (SolanaTxData txData : mTxDatas) {
+            for (SolanaInstruction solanaInstruction : txData.instructions) {
+                SolanaInstructionPresenter solanaInstructionPresenter =
+                        new SolanaInstructionPresenter(solanaInstruction);
+                details.addAll(solanaInstructionPresenter.toTwoLineList(requireContext()));
+                if (mTxDatas.size() > 1 || txData.instructions.length > 1) {
+                    details.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
                 }
             }
-            for (NavigationItem navigationItem : mTabTitles) {
-                ((TwoLineItemFragment) navigationItem.getFragment()).invalidateData();
-            }
+        }
+        for (NavigationItem navigationItem : mTabTitles) {
+            ((TwoLineItemFragment) navigationItem.getFragment()).invalidateData();
         }
     }
 
@@ -313,14 +297,12 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
     }
 
     private void processRequest(boolean isApproved) {
-        if (isApproved) {
+        if (isApproved && mSignTxStep == SignTx.SIGN_RISK) {
             // Continue clicked, update ui
-            if (mSignTxStep == SignTx.SIGN_RISK) {
-                mSignTxStep = SignTx.SIGN_TX;
-                updateTxPanelPerStep();
-                updateSignDataAndDetails();
-                return;
-            }
+            mSignTxStep = SignTx.SIGN_TX;
+            updateTxPanelPerStep();
+            updateSignDataAndDetails();
+            return;
         }
         switch (mActivityType) {
             case SIGN_TRANSACTION:
@@ -351,8 +333,14 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
     }
 
     private void updateNetwork() {
-        getJsonRpcService().getNetwork(CoinType.ETH,
-                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.getWalletModel().getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
+                    getViewLifecycleOwner(), networkInfo -> {
+                        if (networkInfo == null) return;
+                        mNetworkName.setText(networkInfo.chainName);
+                    });
+        }
     }
 
     private void updateSignDataAndDetails() {
