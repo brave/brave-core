@@ -672,6 +672,9 @@ export enum WalletRoutes {
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
+
+  // swap
+  Swap = '/swap',
 }
 
 export const WalletOrigin = 'chrome://wallet'
