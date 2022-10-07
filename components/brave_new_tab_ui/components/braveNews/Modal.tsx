@@ -26,7 +26,7 @@ export default function BraveNewsModal () {
         if (dialogRef.current?.open && !page) { dialogRef.current?.close?.() }
         if (!dialogRef.current?.open && page) { dialogRef.current?.showModal?.() }
     }, [page])
-    return <Dialog ref={dialogRef as any}>
+    return page && <Dialog ref={dialogRef as any}>
         <Configure />
     </Dialog>
 }
