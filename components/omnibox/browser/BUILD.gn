@@ -25,7 +25,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
-    "//brave/components/l10n/browser",
+    "//brave/components/l10n/common",
     "//brave/components/search_engines",
     "//chrome/test:test_support",
     "//components/bookmarks/browser",

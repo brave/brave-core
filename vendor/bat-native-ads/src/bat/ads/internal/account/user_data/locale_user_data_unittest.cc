@@ -8,6 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -18,7 +19,6 @@ class BatAdsLocaleUserDataTest : public UnitTestBase {};
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kNightly);
-  MockLocaleHelper(locale_helper_mock_, "en-US");
 
   // Act
   const base::Value::Dict user_data = GetLocale();
@@ -33,7 +33,6 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
-  MockLocaleHelper(locale_helper_mock_, "en-US");
 
   // Act
   const base::Value::Dict user_data = GetLocale();
@@ -49,7 +48,9 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
-  MockLocaleHelper(locale_helper_mock_, "en-MC");
+
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_MC"};
 
   // Act
   const base::Value::Dict user_data = GetLocale();
@@ -65,7 +66,9 @@ TEST_F(BatAdsLocaleUserDataTest,
        GetLocaleForCountryNotInAnonymitySetButShouldClassifyAsOther) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
-  MockLocaleHelper(locale_helper_mock_, "en-CX");
+
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_CX"};
 
   // Act
   const base::Value::Dict user_data = GetLocale();

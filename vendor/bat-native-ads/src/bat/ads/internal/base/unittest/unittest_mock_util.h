@@ -14,16 +14,12 @@
 #include "bat/ads/internal/base/platform/platform_helper_mock.h"
 #include "bat/ads/internal/base/unittest/unittest_build_channel_types.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_alias.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
 
 namespace ads {
 
 class Database;
 
 void MockBuildChannel(BuildChannelType type);
-
-void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
-                      const std::string& locale);
 
 void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
                         PlatformType type);

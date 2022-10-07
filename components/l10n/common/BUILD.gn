@@ -1,6 +1,7 @@
 static_library("common") {
   deps = [
     "//base",
+    "//brave/components/l10n/browser",
     "//ui/base",
   ]
 

@@ -1208,7 +1208,6 @@ source_set("ads") {
     "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_rewards/common",
     "//brave/components/challenge_bypass_ristretto",
-    "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//brave/components/version_info",
     "//brave/vendor/bat-native-ledger",

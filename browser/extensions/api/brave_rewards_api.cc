@@ -26,7 +26,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -110,8 +109,8 @@ ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
 BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
-  std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  return RespondNow(OneArgument(base::Value(std::move(locale))));
+  return RespondNow(
+      OneArgument(base::Value(brave_l10n::GetDefaultLocaleString())));
 }
 
 BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
@@ -1272,11 +1271,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
                ads_service->ShouldAllowSubdivisionTargeting());
   ads_data.Set("adsUIEnabled", true);
 
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  ads_data.Set("countryCode", country_code);
+  ads_data.Set("countryCode", brave_l10n::GetDefaultISOCountryCodeString());
 
   return RespondNow(OneArgument(base::Value(std::move(ads_data))));
 }

@@ -12,6 +12,7 @@
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/sys_info.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -38,8 +39,6 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   privacy::SetUnblindedTokens(1);
 
   MockBuildChannel(BuildChannelType::kRelease);
-
-  MockLocaleHelper(locale_helper_mock_, "en-US");
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -72,7 +71,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -105,7 +105,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -138,8 +139,6 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
-
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -171,7 +170,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -204,7 +204,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -237,8 +238,6 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
-
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -270,7 +269,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -303,7 +303,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -336,8 +337,6 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
-
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -369,7 +368,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -402,7 +402,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
+      "en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);

@@ -25,9 +25,10 @@ namespace ads {
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-      locale_helper_mock_(
-          std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>()),
-      platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()) {
+      platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()),
+      scoped_default_locale_(
+          std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>(
+              kDefaultLocale)) {
   CHECK(temp_dir_.CreateUniqueTempDir());
 }
 
@@ -219,8 +220,6 @@ void UnitTestBase::Initialize() {
 
 void UnitTestBase::SetDefaultMocks() {
   MockBuildChannel(BuildChannelType::kRelease);
-
-  MockLocaleHelper(locale_helper_mock_, kDefaultLocale);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

@@ -10,7 +10,7 @@ namespace ads {
 
 constexpr char kDatabaseFilename[] = "database.sqlite";
 
-constexpr char kDefaultLocale[] = "en-US";
+constexpr char kDefaultLocale[] = "en_US";
 
 }  // namespace ads
 

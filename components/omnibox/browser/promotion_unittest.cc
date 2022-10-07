@@ -11,7 +11,7 @@
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
@@ -35,15 +35,6 @@ using brave_search_conversion::RegisterPrefs;
 using ::testing::NiceMock;
 using ::testing::Return;
 
-namespace {
-
-class LocaleHelperMock : public brave_l10n::LocaleHelper {
- public:
-  MOCK_CONST_METHOD0(GetLocale, std::string());
-};
-
-}  // namespace
-
 class OmniboxPromotionTest : public testing::Test {
  public:
   OmniboxPromotionTest() = default;
@@ -56,15 +47,8 @@ class OmniboxPromotionTest : public testing::Test {
     pref_service_.SetBoolean(omnibox::kBraveSuggestedSiteSuggestionsEnabled,
                              false);
 
-    SetMockLocale("en-US");
-  }
-
-  void SetMockLocale(const std::string& locale) {
-    // Set promotion supported locale.
-    locale_helper_mock_ = std::make_unique<NiceMock<LocaleHelperMock>>();
-    brave_l10n::LocaleHelper::GetInstance()->SetForTesting(
-        locale_helper_mock_.get());
-    ON_CALL(*locale_helper_mock_, GetLocale()).WillByDefault(Return(locale));
+    scoped_default_locale_ =
+        std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>("en_US");
   }
 
   void CreateController(bool incognito) {
@@ -112,8 +96,9 @@ class OmniboxPromotionTest : public testing::Test {
   content::BrowserTaskEnvironment browser_task_environment_;
   TestSchemeClassifier classifier_;
   TestingPrefServiceSimple pref_service_;
-  std::unique_ptr<LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<AutocompleteController> controller_;
+  std::unique_ptr<brave_l10n::ScopedDefaultLocaleForTesting>
+      scoped_default_locale_;
 };
 
 // Promotion match should not be added for private profile.

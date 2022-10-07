@@ -14,6 +14,7 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "bat/ads/sys_info.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -36,7 +37,6 @@ class BatAdsConfirmationUserDataTest : public UnitTestBase {};
 TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
-  MockLocaleHelper(locale_helper_mock_, "en-US");
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   SetCatalogId(kCatalogId);
@@ -69,7 +69,6 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
 TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
-  MockLocaleHelper(locale_helper_mock_, "en-US");
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   SetCatalogId(kCatalogId);

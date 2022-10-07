@@ -150,7 +150,6 @@ brave_chrome_browser_deps = [
   "//brave/components/gemini/browser/buildflags",
   "//brave/components/greaselion/browser/buildflags",
   "//brave/components/ipfs/buildflags",
-  "//brave/components/l10n/browser",
   "//brave/components/l10n/common",
   "//brave/components/ntp_background_images/browser",
   "//brave/components/ntp_background_images/buildflags",

@@ -35,7 +35,6 @@
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -58,9 +57,8 @@ bool IsPublisherEnabled(const mojom::Publisher* publisher) {
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   // Only default brave today to be shown for
   // certain languages on browser startup.
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
+  const std::string language_code =
+      brave_l10n::GetDefaultISOLanguageCodeString();
   const bool is_english_language = language_code == "en";
   const bool is_japanese_language = language_code == "ja";
   const bool brave_news_enabled_default =

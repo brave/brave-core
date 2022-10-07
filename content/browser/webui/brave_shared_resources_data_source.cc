@@ -77,8 +77,7 @@ BraveSharedResourcesDataSource::BraveSharedResourcesDataSource(
     bool is_untrusted,
     const std::string& app_locale)
     : is_untrusted_(is_untrusted),
-      app_language_code_(
-          base::ToLowerASCII(brave_l10n::GetLanguageCode(app_locale))) {}
+      app_language_code_(brave_l10n::GetISOLanguageCode(app_locale)) {}
 
 BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() = default;
 

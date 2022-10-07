@@ -14,7 +14,6 @@
 #include "base/feature_list.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/switches.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_today {
@@ -31,10 +30,7 @@ std::string GetHostname() {
 }
 
 std::string GetV1RegionUrlPart() {
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-  if (language_code == "ja") {
+  if (brave_l10n::GetDefaultISOLanguageCodeString() == "ja") {
     return "ja";
   }
   return "";

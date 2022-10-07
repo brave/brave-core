@@ -59,7 +59,6 @@
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
@@ -274,17 +273,13 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
   return command_response;
 }
 
-std::string GetLocale() {
-  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-}
-
 void RegisterResourceComponentsForLocale(const std::string& locale) {
   g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
       locale);
 }
 
-void RegisterResourceComponentsForCurrentLocale() {
-  RegisterResourceComponentsForLocale(GetLocale());
+void RegisterResourceComponentsForDefaultLocale() {
+  RegisterResourceComponentsForLocale(brave_l10n::GetDefaultLocaleString());
 }
 
 void OnURLResponseStarted(
@@ -447,7 +442,8 @@ void AdsServiceImpl::SetBuildChannel() {
 
 void AdsServiceImpl::MaybeStartOrStop(const bool should_restart) {
   if (!IsSupportedLocale()) {
-    VLOG(1) << GetLocale() << " locale does not support ads";
+    VLOG(1) << brave_l10n::GetDefaultLocaleString()
+            << " locale does not support ads";
     Shutdown();
     return;
   }
@@ -561,7 +557,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
 
   CreateBatAdsService(number_of_start);
 
-  RegisterResourceComponentsForCurrentLocale();
+  RegisterResourceComponentsForDefaultLocale();
 
   GetRewardsWallet();
 }
@@ -977,8 +973,7 @@ void AdsServiceImpl::Shutdown() {
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
-  const std::string locale = GetLocale();
-  return ads::IsSupportedLocale(locale);
+  return ads::IsSupportedLocale(brave_l10n::GetDefaultLocaleString());
 }
 
 bool AdsServiceImpl::IsEnabled() const {
@@ -2064,8 +2059,7 @@ void AdsServiceImpl::MigratePrefsVersion1To2() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
   // were always enabled
@@ -2085,8 +2079,7 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   // Disable ads for unsupported legacy country codes due to a bug where ads
   // were enabled even if the users country code was not supported
@@ -2105,8 +2098,7 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion4To5() {
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   // Disable ads for unsupported legacy country codes due to a bug where ads
   // were enabled even if the users country code was not supported
@@ -2155,8 +2147,7 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
   // Disable ads for newly supported country codes due to a bug where ads were
   // enabled even if the users country code was not supported
 
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   const std::vector<std::string> legacy_country_codes = {
       "US",  // United States of America

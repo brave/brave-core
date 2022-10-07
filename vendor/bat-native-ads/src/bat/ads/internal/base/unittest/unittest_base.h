@@ -30,7 +30,7 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
@@ -45,14 +45,13 @@ class Database;
 
 class UnitTestBase : public testing::Test {
  public:
+  UnitTestBase();
+
   UnitTestBase(const UnitTestBase& other) = delete;
   UnitTestBase& operator=(const UnitTestBase& other) = delete;
 
   UnitTestBase(UnitTestBase&& other) noexcept = delete;
   UnitTestBase& operator=(UnitTestBase&& other) noexcept = delete;
-
- protected:
-  UnitTestBase();
 
   ~UnitTestBase() override;
 
@@ -60,6 +59,7 @@ class UnitTestBase : public testing::Test {
   void SetUp() override;
   void TearDown() override;
 
+ protected:
   // Override |SetUp| and call |SetUpForTesting| with |is_integration_test| set
   // to |true| to test functionality and performance under product-like
   // circumstances with data to replicate live settings to simulate what a real
@@ -131,7 +131,6 @@ class UnitTestBase : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 
   std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
 
  private:
@@ -149,6 +148,9 @@ class UnitTestBase : public testing::Test {
 
   bool setup_called_ = false;
   bool teardown_called_ = false;
+
+  std::unique_ptr<brave_l10n::ScopedDefaultLocaleForTesting>
+      scoped_default_locale_;
 
   std::unique_ptr<AdsImpl> ads_;
 
