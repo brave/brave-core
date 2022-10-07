@@ -36,8 +36,8 @@ if (should_generate_breakpad_symbols) {
 
 group("symbol_dist_resources") {
   public_deps = [
-    ":generate_breakpad_symbols",
     ":brave_symbols",
+    ":generate_breakpad_symbols",
   ]
 }
 
