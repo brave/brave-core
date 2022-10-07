@@ -43,7 +43,7 @@ class SendTokenStoreTests: XCTestCase {
 
   func testFetchAssets() {
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._network = { $1(.mockRopsten) }
+    rpcService._network = { $1(.mockGoerli) }
     rpcService._addObserver = { _ in }
     
     let walletService = BraveWallet.TestBraveWalletService()
@@ -110,7 +110,7 @@ class SendTokenStoreTests: XCTestCase {
 
   func testMakeSendETHTransaction() {
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._network = { $1(.mockRopsten) }
+    rpcService._network = { $1(.mockGoerli) }
     rpcService._addObserver = { _ in }
     
     let walletService = BraveWallet.TestBraveWalletService()
@@ -174,7 +174,7 @@ class SendTokenStoreTests: XCTestCase {
 
   func testMakeSendERC20Transaction() {
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._network = { $1(.mockRopsten) }
+    rpcService._network = { $1(.mockGoerli) }
     rpcService._addObserver = { _ in }
     
     let walletService = BraveWallet.TestBraveWalletService()
@@ -210,8 +210,8 @@ class SendTokenStoreTests: XCTestCase {
     let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
     
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._chainId = { $1(BraveWallet.NetworkInfo.mockRopsten.chainId) }
-    rpcService._network = { $1(BraveWallet.NetworkInfo.mockRopsten)}
+    rpcService._chainId = { $1(BraveWallet.NetworkInfo.mockGoerli.chainId) }
+    rpcService._network = { $1(BraveWallet.NetworkInfo.mockGoerli)}
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }

@@ -17,7 +17,7 @@ class NetworkStoreTests: XCTestCase {
     let currentChainId = currentNetwork.chainId
     let currentSelectedCoin: BraveWallet.CoinType = .eth
     let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-      .eth: [.mockMainnet, .mockRinkeby, .mockRopsten, .mockPolygon, .mockCustomNetwork],
+      .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork],
       .sol: [.mockSolana, .mockSolanaTestnet]
     ]
     
@@ -68,7 +68,7 @@ class NetworkStoreTests: XCTestCase {
       swapService: swapService
     )
     
-    let error = await store.setSelectedChain(.mockRopsten)
+    let error = await store.setSelectedChain(.mockGoerli)
     XCTAssertNil(error, "Expected success, accounts exist for ethereum")
   }
   
@@ -114,8 +114,8 @@ class NetworkStoreTests: XCTestCase {
       .mockSolana,
       .mockSolanaTestnet,
       .mockMainnet,
-      .mockRinkeby,
-      .mockRopsten,
+      .mockGoerli,
+      .mockSepolia,
       .mockPolygon,
       .mockCustomNetwork
     ]

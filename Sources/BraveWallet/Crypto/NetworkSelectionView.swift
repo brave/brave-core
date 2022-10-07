@@ -219,7 +219,7 @@ struct NetworkRowView_Previews: PreviewProvider {
       NetworkRowView(
         presentation: .init(
           network: .mockMainnet,
-          subNetworks: [.mockMainnet, .mockRinkeby, .mockRopsten],
+          subNetworks: [.mockMainnet, .mockGoerli, .mockSepolia],
           isPrimaryNetwork: true
         ),
         selectedNetwork: .mockMainnet
@@ -269,7 +269,7 @@ struct NetworkSelectionDetailView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
       NetworkSelectionDetailView(
-        networks: [.mockMainnet, .mockRinkeby, .mockRopsten],
+        networks: [.mockMainnet, .mockGoerli, .mockSepolia],
         selectedNetwork: .mockMainnet,
         selectedNetworkHandler: { _ in }
       )
@@ -311,7 +311,7 @@ struct NetworkSelectionDetailRow_Previews: PreviewProvider {
       )
       NetworkSelectionDetailRow(
         isSelected: false,
-        network: .mockRopsten
+        network: .mockGoerli
       )
     }
     .previewLayout(.sizeThatFits)

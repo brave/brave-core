@@ -13,7 +13,7 @@ import BraveCore
 class MockBraveWalletService: BraveWalletBraveWalletService {
   private var assets: [String: [BraveWallet.BlockchainToken]] = [
     BraveWallet.MainnetChainId: [.previewToken],
-    BraveWallet.RopstenChainId: [.previewToken],
+    BraveWallet.GoerliChainId: [.previewToken],
   ]
   private var defaultCurrency = CurrencyCode.usd
   private var defaultCryptocurrency = "eth"

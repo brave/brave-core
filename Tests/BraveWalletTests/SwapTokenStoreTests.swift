@@ -64,7 +64,7 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-  func testDefaultSellBuyTokensOnRopstenWithoutPrefilledToken() {
+  func testDefaultSellBuyTokensOnEVMWithoutPrefilledToken() {
     let rpcService = MockJsonRpcService()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
@@ -76,17 +76,17 @@ class SwapStoreTests: XCTestCase {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       prefilledToken: nil
     )
-    let ex = expectation(description: "default-sell-buy-token-on-ropsten")
+    let ex = expectation(description: "default-sell-buy-token-on-evm")
     XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
-
-    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
+    
+    rpcService.setNetwork(BraveWallet.PolygonMainnetChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       let testAccountInfo: BraveWallet.AccountInfo = .init()
       store.prepare(with: testAccountInfo) {
         defer { ex.fulfill() }
-        XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), "eth")
-        XCTAssertEqual(store.selectedToToken?.symbol.lowercased(), "dai")
+        XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), "matic")
+        XCTAssertEqual(store.selectedToToken?.symbol.lowercased(), "bat")
       }
     }
     waitForExpectations(timeout: 3) { error in
@@ -94,8 +94,10 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-  func testDefaultSellBuyTokensOnRopstenWithPrefilledToken() {
+
+  func testDefaultSellBuyTokensOnEVMWithPrefilledToken() {
     let daiToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
+    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, symbol: "BAT", decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
     let rpcService = MockJsonRpcService()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
@@ -107,18 +109,18 @@ class SwapStoreTests: XCTestCase {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       prefilledToken: daiToken
     )
-    let ex = expectation(description: "default-sell-buy-token-on-ropsten")
+    let ex = expectation(description: "default-sell-buy-token-on-evm")
     XCTAssertNotNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
 
-    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
+    rpcService.setNetwork(BraveWallet.PolygonMainnetChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       let testAccountInfo: BraveWallet.AccountInfo = .init()
       store.prepare(with: testAccountInfo) {
         defer { ex.fulfill() }
         XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), daiToken.symbol.lowercased())
         XCTAssertNotNil(store.selectedToToken)
-        XCTAssertNotEqual(store.selectedToToken!.symbol.lowercased(), daiToken.symbol.lowercased())
+        XCTAssertEqual(store.selectedToToken!.symbol.lowercased(), batToken.symbol.lowercased())
       }
     }
     waitForExpectations(timeout: 3) { error in
@@ -190,7 +192,7 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest()
     store.state = .lowAllowance("test-spender-address")
 
-    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
+    rpcService.setNetwork(BraveWallet.GoerliChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       store.prepareSwap { _ in }
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -245,7 +247,7 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest()
     store.state = .swap
 
-    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
+    rpcService.setNetwork(BraveWallet.GoerliChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       store.prepareSwap { _ in }
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -265,8 +267,8 @@ class SwapStoreTests: XCTestCase {
     let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
     
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._chainId = { $1(BraveWallet.NetworkInfo.mockRopsten.chainId) }
-    rpcService._network = { $1(BraveWallet.NetworkInfo.mockRopsten)}
+    rpcService._chainId = { $1(BraveWallet.NetworkInfo.mockGoerli.chainId) }
+    rpcService._network = { $1(BraveWallet.NetworkInfo.mockGoerli)}
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }

@@ -14,7 +14,7 @@ import BraveShared
   private var cancellables: Set<AnyCancellable> = .init()
 
   private let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-    .eth: [.mockMainnet, .mockRinkeby, .mockRopsten, .mockPolygon],
+    .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon],
     .sol: [.mockSolana, .mockSolanaTestnet]
   ]
   
@@ -129,7 +129,7 @@ import BraveShared
     
     let expectedPrimaryNetworks: [NetworkSelectionStore.NetworkPresentation] = [
       .init(network: .mockSolana, subNetworks: [.mockSolana, .mockSolanaTestnet], isPrimaryNetwork: true),
-      .init(network: .mockMainnet, subNetworks: [.mockMainnet, .mockRinkeby, .mockRopsten], isPrimaryNetwork: true)
+      .init(network: .mockMainnet, subNetworks: [.mockMainnet, .mockGoerli, .mockSepolia], isPrimaryNetwork: true)
     ]
     let expectedSecondaryNetworks: [NetworkSelectionStore.NetworkPresentation] = [
       .init(network: .mockPolygon, subNetworks: [], isPrimaryNetwork: false)
@@ -149,7 +149,7 @@ import BraveShared
     )
     
     let store = NetworkSelectionStore(networkStore: networkStore)
-    let success = await store.selectNetwork(network: .mockRopsten)
+    let success = await store.selectNetwork(network: .mockGoerli)
     XCTAssertTrue(success, "Expected success for selecting Ropsten because we have ethereum accounts.")
     XCTAssertNil(store.detailNetwork, "Expected to reset detail network to nil to pop detail view")
   }
