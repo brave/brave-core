@@ -1161,7 +1161,9 @@ public class BrowserViewController: UIViewController {
 
     header.snp.remakeConstraints { make in
       if self.isUsingBottomBar {
-        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0, presentedViewController == nil {
+        // Need to check Find In Page Bar is enabled in order to aligh it properly when bottom-bar is enabled
+        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0,
+           (presentedViewController == nil || findInPageBar != nil) {
           var offset = -keyboardHeight
           if !topToolbar.inOverlayMode {
             // Showing collapsed URL bar while the keyboard is up
@@ -2019,43 +2021,6 @@ public class BrowserViewController: UIViewController {
     displayedPopoverController = nil
     updateDisplayedPopoverProperties = nil
   }
-
-  func updateFindInPageVisibility(visible: Bool, tab: Tab? = nil) {
-    if visible {
-      if findInPageBar == nil {
-        let findInPageBar = FindInPageBar()
-        self.findInPageBar = findInPageBar
-        findInPageBar.delegate = self
-        
-        displayPageZoom(visible: false)
-        alertStackView.addArrangedSubview(findInPageBar)
-
-        findInPageBar.snp.makeConstraints { make in
-          make.height.equalTo(UIConstants.toolbarHeight)
-          make.edges.equalTo(alertStackView)
-        }
-
-        updateViewConstraints()
-
-        // We make the find-in-page bar the first responder below, causing the keyboard delegates
-        // to fire. This, in turn, will animate the Find in Page container since we use the same
-        // delegate to slide the bar up and down with the keyboard. We don't want to animate the
-        // constraints added above, however, so force a layout now to prevent these constraints
-        // from being lumped in with the keyboard animation.
-        findInPageBar.layoutIfNeeded()
-      }
-
-      self.findInPageBar?.becomeFirstResponder()
-    } else if let findInPageBar = self.findInPageBar {
-      findInPageBar.endEditing(true)
-      let tab = tab ?? tabManager.selectedTab
-      guard let webView = tab?.webView else { return }
-      webView.evaluateSafeJavaScript(functionName: "__firefox__.findDone", contentWorld: FindInPageScriptHandler.scriptSandbox)
-      findInPageBar.removeFromSuperview()
-      self.findInPageBar = nil
-      updateViewConstraints()
-    }
-  }
   
   func displayPageZoom(visible: Bool) {
     if !visible || pageZoomBar != nil {     
@@ -2082,6 +2047,7 @@ public class BrowserViewController: UIViewController {
     }
     
     if let findInPageBar = findInPageBar {
+      updateFindInPageVisibility(visible: false)
       findInPageBar.endEditing(true)
       findInPageBar.removeFromSuperview()
       self.findInPageBar = nil
@@ -2321,6 +2287,8 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
     if tab == tabManager.selectedTab { return }
     topToolbar.leaveOverlayMode(didCancel: true)
+    updateFindInPageVisibility(visible: false)
+    
     tabManager.selectTab(tab)
   }
 
@@ -3266,55 +3234,6 @@ extension BrowserViewController: TabTrayDelegate {
   }
 }
 
-extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerDelegate {
-  func findInPage(_ findInPage: FindInPageBar, didTextChange text: String) {
-    find(text, function: "find")
-  }
-
-  func findInPage(_ findInPage: FindInPageBar, didFindNextWithText text: String) {
-    findInPageBar?.endEditing(true)
-    find(text, function: "findNext")
-  }
-
-  func findInPage(_ findInPage: FindInPageBar, didFindPreviousWithText text: String) {
-    findInPageBar?.endEditing(true)
-    find(text, function: "findPrevious")
-  }
-
-  func findInPageDidPressClose(_ findInPage: FindInPageBar) {
-    updateFindInPageVisibility(visible: false)
-  }
-
-  fileprivate func find(_ text: String, function: String) {
-    guard let webView = tabManager.selectedTab?.webView else { return }
-
-    if let delegate = webView.findInPageDelegate {
-      let backwards = function == TextSearchDirection.previous.rawValue
-
-      delegate.find(string: text, backwards: backwards) { [weak self] index, total in
-        guard let self = self else { return }
-        self.findInPageBar?.totalResults = Int(total)
-        self.findInPageBar?.currentResult = index
-      }
-    } else {
-      webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], contentWorld: FindInPageScriptHandler.scriptSandbox)
-    }
-  }
-
-  func findInPageHelper(_ findInPageHelper: FindInPageScriptHandler, didUpdateCurrentResult currentResult: Int) {
-    findInPageBar?.currentResult = currentResult
-  }
-
-  func findInPageHelper(_ findInPageHelper: FindInPageScriptHandler, didUpdateTotalResults totalResults: Int) {
-    findInPageBar?.totalResults = totalResults
-  }
-
-  func findTextInPage(_ direction: TextSearchDirection) {
-    guard let seachText = findInPageBar?.text else { return }
-
-    find(seachText, function: direction.rawValue)
-  }
-}
 
 extension BrowserViewController: JSPromptAlertControllerDelegate {
   func promptAlertControllerDidDismiss(_ alertController: JSPromptAlertController) {
