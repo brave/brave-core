@@ -14,7 +14,7 @@ import {
   ExpirationPresetObjectType,
   JupiterErrorResponse,
   OrderTypes,
-  SendTransactionParams,
+  SendEthTransactionParams,
   SlippagePresetObjectType,
   SwapErrorResponse,
   SwapValidationErrorType,
@@ -78,7 +78,8 @@ const hasDecimalsOverflow = (amount: string, asset?: BraveWallet.BlockchainToken
   }
 
   const amountBaseWrapped = new Amount(amount).multiplyByDecimals(asset.decimals)
-  return amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces() > 0
+  const amountBaseWrappedDP = amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces()
+  return amountBaseWrappedDP && amountBaseWrappedDP > 0
 }
 
 export enum SwapProvider {
@@ -442,7 +443,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
           maxFeePerGas = gasEstimates?.fastMaxFeePerGas
         }
 
-        const params: SendTransactionParams = {
+        const params: SendEthTransactionParams = {
           from: accountAddress,
           to,
           value: new Amount(value).toHex(),
@@ -450,7 +451,8 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
           data: hexStrToNumberArray(data),
           maxPriorityFeePerGas,
           maxFeePerGas,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          hasEIP1559Support: isEIP1559
         }
 
         dispatch(WalletActions.sendTransaction(params))

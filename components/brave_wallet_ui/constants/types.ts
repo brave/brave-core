@@ -464,6 +464,7 @@ export interface SolanaSerializedTransactionParams {
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {
   data?: number[]
+  hasEIP1559Support: boolean
 }
 
 export type SendTransactionParams = SendEthTransactionParams | SendFilTransactionParams | SendSolTransactionParams

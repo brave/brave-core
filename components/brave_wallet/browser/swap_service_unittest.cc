@@ -250,7 +250,14 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
       "sources":[],
       "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
       "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1"
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources": [
+        {
+          "name": "Uniswap_V2",
+          "proportion": "1"
+        }
+      ]
     })");
 
   auto expected_swap_response = brave_wallet::mojom::SwapResponse::New();
@@ -271,6 +278,12 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
       "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
   expected_swap_response->sell_token_to_eth_rate = "1900.44962824532464391";
   expected_swap_response->buy_token_to_eth_rate = "1";
+  expected_swap_response->estimated_price_impact = "0.7232";
+
+  auto source = brave_wallet::mojom::ZeroExSource::New();
+  source->name = "Uniswap_V2";
+  source->proportion = "1";
+  expected_swap_response->sources.push_back(source.Clone());
 
   bool callback_run = false;
   swap_service_->GetPriceQuote(
@@ -325,7 +338,14 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
       "sources":[],
       "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
       "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1"
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources": [
+        {
+          "name": "Uniswap_V2",
+          "proportion": "1"
+        }
+      ]
     })");
 
   auto expected_swap_response = brave_wallet::mojom::SwapResponse::New();
@@ -349,6 +369,11 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
       "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
   expected_swap_response->sell_token_to_eth_rate = "1900.44962824532464391";
   expected_swap_response->buy_token_to_eth_rate = "1";
+  expected_swap_response->estimated_price_impact = "0.7232";
+  auto source = brave_wallet::mojom::ZeroExSource::New();
+  source->name = "Uniswap_V2";
+  source->proportion = "1";
+  expected_swap_response->sources.push_back(source.Clone());
 
   bool callback_run = false;
   swap_service_->GetTransactionPayload(

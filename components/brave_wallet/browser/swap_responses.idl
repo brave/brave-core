@@ -4,6 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 namespace swap_responses {
+  dictionary ZeroExSource {
+    DOMString name;
+    DOMString proportion;
+  };
+
   dictionary SwapResponse0x {
     DOMString price;
     DOMString? guaranteedPrice;
@@ -20,10 +25,11 @@ namespace swap_responses {
     DOMString sellTokenAddress;
     DOMString buyAmount;
     DOMString sellAmount;
-    // TODO(bbondy): sources
     DOMString allowanceTarget;
     DOMString sellTokenToEthRate;
     DOMString buyTokenToEthRate;
+    DOMString estimatedPriceImpact;
+    ZeroExSource[] sources;
   };
 
   dictionary JupiterMarketInfoFee {

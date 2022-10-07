@@ -322,6 +322,11 @@ struct SwapParams {
   string gas_price;
 };
 
+struct ZeroExSource {
+  string name;
+  string proportion;
+};
+
 struct SwapResponse {
   string price;
   string guaranteed_price; // Unused for price quote response
@@ -340,7 +345,8 @@ struct SwapResponse {
   string allowance_target;
   string sell_token_to_eth_rate;
   string buy_token_to_eth_rate;
-  // Note we could also expose "sources" later
+  string estimated_price_impact;
+  array<ZeroExSource> sources;
 };
 
 // Structs to model Jupiter (swap) HTTP API interactions
