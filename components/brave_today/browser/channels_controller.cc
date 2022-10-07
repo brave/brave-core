@@ -56,7 +56,7 @@ Channels ChannelsController::GetChannelsFromPublishers(
 
 std::vector<std::string> ChannelsController::GetChannelLocales() {
   std::vector<std::string> result;
-  auto pref = prefs_->GetDictionary(prefs::kBraveNewsChannels);
+  auto* pref = prefs_->GetDictionary(prefs::kBraveNewsChannels);
 
   for (const auto it : pref->DictItems()) {
     if (it.second.DictEmpty()) continue;
