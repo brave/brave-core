@@ -1046,7 +1046,9 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveDarkModeBlock) &&
-      shields_up && fingerprinting_type == ControlType::BLOCK) {
+      shields_up && fingerprinting_type == ControlType::BLOCK &&
+      prefs->preferred_color_scheme !=
+          blink::mojom::PreferredColorScheme::kLight) {
     prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
     return true;
   }
