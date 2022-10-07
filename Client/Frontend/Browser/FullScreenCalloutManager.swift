@@ -10,13 +10,12 @@ import BraveShared
 struct FullScreenCalloutManager {
 
   enum FullScreenCalloutType {
-    case vpn, sync, rewards, defaultBrowser
+    case vpn, rewards, defaultBrowser
 
     /// The number of days passed to show certain type of callout
     var period: Int {
       switch self {
       case .vpn: return 4
-      case .sync: return 6
       case .rewards: return 8
       case .defaultBrowser: return 10
       }
@@ -26,7 +25,6 @@ struct FullScreenCalloutManager {
     var preferenceValue: Preferences.Option<Bool> {
       switch self {
       case .vpn: return Preferences.FullScreenCallout.vpnCalloutCompleted
-      case .sync: return Preferences.FullScreenCallout.syncCalloutCompleted
       case .rewards: return Preferences.FullScreenCallout.rewardsCalloutCompleted
       case .defaultBrowser: return Preferences.DefaultBrowserIntro.completed
       }

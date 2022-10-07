@@ -1095,7 +1095,6 @@ public class BrowserViewController: UIViewController {
       self.presentVPNAlertCallout()
       self.presentDefaultBrowserScreenCallout()
       self.presentBraveRewardsScreenCallout()
-      self.presentSyncAlertCallout()
     }
 
     screenshotHelper.viewIsVisible = true
