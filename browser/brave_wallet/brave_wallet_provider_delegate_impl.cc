@@ -250,10 +250,11 @@ void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {
   web_contents_ = nullptr;
 }
 
+// This is for dapp inside iframe navigates away.
 void BraveWalletProviderDelegateImpl::RenderFrameHostChanged(
     content::RenderFrameHost* old_host,
     content::RenderFrameHost* new_host) {
-  if (!old_host)
+  if (!old_host || old_host != content::RenderFrameHost::FromID(host_id_))
     return;
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
