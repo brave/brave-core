@@ -1,6 +1,7 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.chrome.R;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,10 @@ public final class WalletConstants {
     public static final String URL_RAINBOW_BRIDGE_OVERVIEW =
             "https://doc.aurora.dev/bridge/bridge-overview/";
     public static final String URL_RAINBOW_BRIDGE_RISKS = "https://rainbowbridge.app/approvals";
+
+    // Brave
+    public static final String URL_SIGN_TRANSACTION_REQUEST =
+            "https://support.brave.com/hc/en-us/articles/4409513799693";
 
     // Regex
     public static final String REGX_ANY_ETH_ADDRESS = ".*(0x[a-fA-F0-9]{40}).*";
@@ -61,4 +66,18 @@ public final class WalletConstants {
 
     public static List<String> SWAP_SUPPORTED_NETWORKS = Arrays.asList(
             BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID);
+
+    // Solana
+    public static final String SOL_LAMPORTS = "lamports";
+    public static final String SOL = "SOL";
+
+    // Solana instruction types
+    public static final String SOL_INS_SYSTEM = BraveWalletConstants.SOLANA_SYSTEM_PROGRAM_ID;
+    public static final String SOL_INS_TOKEN = BraveWalletConstants.SOLANA_TOKEN_PROGRAM_ID;
+    public static final String SOL_INS_CONFIG = "Config1111111111111111111111111111111111111";
+    public static final String SOL_INS_STAKE = "Stake11111111111111111111111111111111111111";
+    public static final String SOL_INS_VOTE = "Vote111111111111111111111111111111111111111";
+    public static final String SOL_INS_BPF = "BPFLoaderUpgradeab1e11111111111111111111111";
+    public static final String SOL_INS_SIG_VERIFY = "Ed25519SigVerify111111111111111111111111111";
+    public static final String SOL_INS_SECP = "KeccakSecp256k11111111111111111111111111111";
 }
