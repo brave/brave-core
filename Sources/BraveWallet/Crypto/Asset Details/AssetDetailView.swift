@@ -10,6 +10,7 @@ import BraveCore
 import DesignSystem
 import Strings
 import BraveShared
+import BraveUI
 
 struct AssetDetailView: View {
   @ObservedObject var assetDetailStore: AssetDetailStore
@@ -125,6 +126,7 @@ struct AssetDetailView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(assetDetailStore.token.name)
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {

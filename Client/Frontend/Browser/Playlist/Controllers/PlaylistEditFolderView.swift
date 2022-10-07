@@ -8,6 +8,7 @@ import Data
 import CoreData
 import Shared
 import BraveShared
+import BraveUI
 
 struct PlaylistEditFolderView: View {
   @State private var folderName: String
@@ -35,6 +36,7 @@ struct PlaylistEditFolderView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .listStyle(.insetGrouped)
       .navigationTitle(Strings.PlaylistFolders.playlistEditFolderScreenTitle)
       .navigationBarTitleDisplayMode(.inline)

@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveCore
 import Strings
+import BraveUI
 
 struct TokenList<Content: View>: View {
   var tokens: [BraveWallet.BlockchainToken]
@@ -63,6 +64,7 @@ struct TokenList<Content: View>: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .animation(nil, value: query)
     .filterable(text: $query)
   }

@@ -8,6 +8,7 @@ import BraveCore
 import SwiftUI
 import Strings
 import DesignSystem
+import BraveUI
 
 struct AccountActivityView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -107,6 +108,7 @@ struct AccountActivityView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .background(
       Color.clear
         .sheet(item: $detailsPresentation) {

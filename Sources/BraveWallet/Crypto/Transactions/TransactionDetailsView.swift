@@ -103,6 +103,7 @@ struct TransactionDetailsView: View {
         .listRowInsets(.zero)
       }
       .listStyle(.insetGrouped)
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
       .navigationTitle(Strings.Wallet.transactionDetailsTitle)
       .navigationBarTitleDisplayMode(.inline)

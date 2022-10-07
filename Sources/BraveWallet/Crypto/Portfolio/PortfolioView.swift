@@ -10,6 +10,7 @@ import SnapKit
 import Introspect
 import Strings
 import DesignSystem
+import BraveUI
 
 struct PortfolioView: View {
   var cryptoStore: CryptoStore
@@ -127,6 +128,7 @@ struct PortfolioView: View {
     )
     .animation(.default, value: portfolioStore.userVisibleAssets)
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .introspectTableView { tableView in
       withAnimation(nil) {
         tableInset = -tableView.layoutMargins.left

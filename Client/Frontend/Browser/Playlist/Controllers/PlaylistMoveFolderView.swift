@@ -9,6 +9,7 @@ import Data
 import CoreData
 import Shared
 import BraveShared
+import BraveUI
 
 private struct PlaylistFolderImage: View {
   let item: PlaylistItem
@@ -221,6 +222,7 @@ struct PlaylistMoveFolderView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .listStyle(.insetGrouped)
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.PlaylistFolders.playlistFolderMoveFolderScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .navigationViewStyle(.stack)

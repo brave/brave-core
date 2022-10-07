@@ -8,6 +8,7 @@ import SwiftUI
 import Strings
 import BraveShared
 import BraveCore
+import BraveUI
 
 private struct EditTokenView: View {
   @ObservedObject var assetStore: AssetStore
@@ -128,6 +129,7 @@ struct EditUserAssetsView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .animation(.default, value: tokenStores)
       .navigationTitle(Strings.Wallet.editVisibleAssetsButtonTitle)
       .navigationBarTitleDisplayMode(.inline)

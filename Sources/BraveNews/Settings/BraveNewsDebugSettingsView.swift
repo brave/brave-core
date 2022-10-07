@@ -6,6 +6,7 @@
 import UIKit
 import SwiftUI
 import BraveShared
+import BraveUI
 
 extension FeedDataSource.Environment {
   fileprivate var name: String {
@@ -118,6 +119,7 @@ public struct BraveNewsDebugSettingsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Brave News QA Settings")
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -191,6 +193,7 @@ private struct LanguagePicker: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .onAppear {
       if !FeedDataSource.supportedLanguages.contains(languageCode) {
         // SwiftUI bug needs to be set a bit after

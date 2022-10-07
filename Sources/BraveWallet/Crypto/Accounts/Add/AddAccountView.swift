@@ -78,6 +78,7 @@ struct AddAccountView: View {
       privateKeySection
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
     .navigationBarItems(
@@ -134,6 +135,7 @@ struct AddAccountView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
   }

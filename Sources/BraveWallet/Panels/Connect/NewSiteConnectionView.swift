@@ -8,6 +8,7 @@ import Strings
 import BraveShared
 import DesignSystem
 import BraveCore
+import BraveUI
 
 /// A view to display to a user to allow them to setup a connection to a dApp for the first time.
 public struct NewSiteConnectionView: View {
@@ -153,6 +154,7 @@ public struct NewSiteConnectionView: View {
         }
       }
       .listStyle(InsetGroupedListStyle())
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
       .toolbar {
@@ -228,6 +230,7 @@ public struct NewSiteConnectionView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
     .navigationBarTitleDisplayMode(.inline)
   }

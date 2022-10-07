@@ -7,6 +7,7 @@ import SwiftUI
 import DesignSystem
 import BraveCore
 import Strings
+import BraveUI
 
 struct BuyTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -88,6 +89,7 @@ struct BuyTokenView: View {
       }
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.buy)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

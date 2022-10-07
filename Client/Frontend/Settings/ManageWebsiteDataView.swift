@@ -141,6 +141,7 @@ struct ManageWebsiteDataView: View {
         .listRowBackground(Color(.braveBackground))
       }
       .listStyle(.plain)
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .environment(\.editMode, $editMode)
       .overlay(
         Group {

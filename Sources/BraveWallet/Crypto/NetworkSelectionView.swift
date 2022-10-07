@@ -6,6 +6,7 @@
 import BraveCore
 import DesignSystem
 import SwiftUI
+import BraveUI
 
 struct NetworkSelectionView: View {
   
@@ -53,6 +54,7 @@ struct NetworkSelectionView: View {
       })
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.networkSelectionTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -259,6 +261,7 @@ private struct NetworkSelectionDetailView: View {
       }
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(networks.first?.shortChainName ?? Strings.Wallet.networkSelectionTitle)
     .navigationBarTitleDisplayMode(.inline)
   }

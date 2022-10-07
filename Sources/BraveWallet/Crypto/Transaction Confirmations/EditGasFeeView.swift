@@ -9,6 +9,7 @@ import DesignSystem
 import SwiftUI
 import Strings
 import BigNumber
+import BraveUI
 
 /// Allows the user to edit the gas fee structure of an regular transaction before confirming it
 ///
@@ -108,6 +109,7 @@ struct EditGasFeeView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.editGasTitle)
     .alert(isPresented: $isShowingAlert) {

@@ -6,6 +6,7 @@
 import SwiftUI
 import Shared
 import BraveShared
+import BraveUI
 
 struct WebsiteRedirectsSettingsView: View {
   @ObservedObject private var reddit = Preferences.WebsiteRedirects.reddit
@@ -34,6 +35,7 @@ struct WebsiteRedirectsSettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.urlRedirectsSettings)
   }
 }
