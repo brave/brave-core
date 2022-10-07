@@ -7,6 +7,7 @@ import SwiftUI
 import Strings
 import Data
 import DesignSystem
+import BraveUI
 
 /// A view showing enabled and disabled community filter lists
 struct FilterListsView: View {
@@ -32,7 +33,9 @@ struct FilterListsView: View {
           .textCase(.none)
       }
       
-    }.navigationTitle(Strings.filterLists)
+    }
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .navigationTitle(Strings.filterLists)
   }
 }
 

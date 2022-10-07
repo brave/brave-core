@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveCore
 import Strings
+import BraveUI
 
 struct AddCustomAssetView: View {
   @ObservedObject var userAssetStore: UserAssetsStore
@@ -82,6 +83,7 @@ struct AddCustomAssetView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.customTokenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

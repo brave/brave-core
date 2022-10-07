@@ -8,6 +8,7 @@ import BraveCore
 import DesignSystem
 import Strings
 import BigNumber
+import BraveUI
 
 /// Allows the user to edit the gas fee structure of an EIP-1559 transaction before confirming it
 ///
@@ -255,6 +256,7 @@ struct EditPriorityFeeView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.maxPriorityFeeTitle)
     .alert(isPresented: $isShowingAlert) {

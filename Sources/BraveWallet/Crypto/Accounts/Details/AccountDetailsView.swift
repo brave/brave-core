@@ -12,6 +12,7 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 import Strings
 import BraveShared
+import BraveUI
 
 struct AccountDetailsView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -88,6 +89,7 @@ struct AccountDetailsView: View {
         }
       }
       .listStyle(InsetGroupedListStyle())
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.accountDetailsTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import SwiftUI
+import BraveUI
 
 struct BraveSearchDebugMenu: View {
 
@@ -34,6 +35,7 @@ struct BraveSearchDebugMenu: View {
         }
       }
     }
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
 
   private func formattedDate(_ date: Date) -> String {

@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import SwiftUI
+import BraveUI
 
 /// A small file browser that lets you inspect the contents of the apps sandbox.
 ///
@@ -125,6 +126,7 @@ struct SandboxInspectorView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Sandbox Inspector")
     .navigationBarTitleDisplayMode(.inline)
     .onAppear(perform: getNodes)

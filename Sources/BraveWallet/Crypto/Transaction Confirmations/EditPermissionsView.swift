@@ -7,6 +7,7 @@ import BraveCore
 import DesignSystem
 import Strings
 import SwiftUI
+import BraveUI
 
 struct EditPermissionsView: View {
   
@@ -129,6 +130,7 @@ struct EditPermissionsView: View {
       .listRowBackground(Color(.braveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.editPermissionsTitle)
     .alert(isPresented: $isShowingAlert) {

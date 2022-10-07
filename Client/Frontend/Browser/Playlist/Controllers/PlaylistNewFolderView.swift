@@ -9,6 +9,7 @@ import Data
 import CoreData
 import Shared
 import BraveShared
+import BraveUI
 
 class PlaylistFolderImageLoader: ObservableObject {
   @Published var image: UIImage?
@@ -205,6 +206,7 @@ struct PlaylistNewFolderView: View {
         }
       }
       .listStyle(.insetGrouped)
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.PlaylistFolders.playlistNewFolderScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .navigationViewStyle(.stack)

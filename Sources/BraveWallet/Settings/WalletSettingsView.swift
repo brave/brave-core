@@ -144,6 +144,7 @@ public struct WalletSettingsView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.braveWallet)
     .navigationBarTitleDisplayMode(.inline)
     .background(

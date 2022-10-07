@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveCore
 import struct Shared.Strings
+import BraveUI
 
 struct AccountTransactionListView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -58,6 +59,7 @@ struct AccountTransactionListView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.transactionsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .sheet(

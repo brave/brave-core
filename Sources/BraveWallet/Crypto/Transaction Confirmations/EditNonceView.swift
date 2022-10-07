@@ -7,6 +7,7 @@ import SwiftUI
 import DesignSystem
 import BraveCore
 import Strings
+import BraveUI
 
 struct EditNonceView: View {
   var confirmationStore: TransactionConfirmationStore
@@ -52,6 +53,7 @@ struct EditNonceView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.advancedSettingsTransaction)
     .alert(isPresented: $isShowingAlert) {

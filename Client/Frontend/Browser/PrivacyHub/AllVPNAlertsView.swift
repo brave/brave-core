@@ -6,6 +6,7 @@ import SwiftUI
 import Shared
 import BraveShared
 import Data
+import BraveUI
 
 extension PrivacyReportsView {
   struct AllVPNAlertsView: View {
@@ -115,6 +116,7 @@ extension PrivacyReportsView {
             }
           }
           .listStyle(.insetGrouped)
+          .listBackgroundColor(Color(UIColor.braveGroupedBackground))
           
           Spacer()
         } else {

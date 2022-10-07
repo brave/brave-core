@@ -102,6 +102,7 @@ struct AccountsView: View {
         })
     )
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
 }
 

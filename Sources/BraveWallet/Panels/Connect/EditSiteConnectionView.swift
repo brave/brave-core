@@ -9,6 +9,7 @@ import Strings
 import BraveShared
 import BraveUI
 import Data
+import BraveUI
 
 struct EditSiteConnectionView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -176,6 +177,7 @@ struct EditSiteConnectionView: View {
           .padding(.vertical)
         }
       }
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.editSiteConnectionScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

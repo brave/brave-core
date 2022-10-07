@@ -7,6 +7,7 @@ import SwiftUI
 import BraveShared
 import BraveCore
 import Strings
+import BraveUI
 
 struct CustomNetworkListView: View {
   @ObservedObject var networkStore: NetworkStore
@@ -110,6 +111,7 @@ struct CustomNetworkListView: View {
       }
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .overlay(
       Group {
         if customNetworks.isEmpty {

@@ -7,6 +7,7 @@ import SwiftUI
 import BraveCore
 import Shared
 import Strings
+import BraveUI
 
 struct NetworkInputItem: Identifiable {
   var input: String
@@ -377,6 +378,7 @@ struct CustomNetworkDetailsView: View {
         }
       }
     }
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

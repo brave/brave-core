@@ -6,6 +6,7 @@
 import SwiftUI
 import Shared
 import BraveShared
+import BraveUI
 
 struct PrivacyReportSettingsView: View {
   
@@ -73,6 +74,7 @@ struct PrivacyReportSettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
 }
 

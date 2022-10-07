@@ -6,6 +6,7 @@ import SwiftUI
 import Shared
 import BraveShared
 import Data
+import BraveUI
 
 private struct FaviconImage: View {
   let url: URL?
@@ -146,6 +147,7 @@ struct PrivacyReportAllTimeListsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
   
   private var websitesList: some View {
@@ -169,6 +171,7 @@ struct PrivacyReportAllTimeListsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
   
   var body: some View {

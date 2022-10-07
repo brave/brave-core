@@ -108,6 +108,7 @@ private struct CertificateView: View {
         content
       }
       .listStyle(InsetGroupedListStyle())
+      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     }
   }
 

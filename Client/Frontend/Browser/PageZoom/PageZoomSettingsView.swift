@@ -8,6 +8,7 @@ import Shared
 import BraveShared
 import Data
 import CoreData
+import BraveUI
 
 extension Domain: Identifiable {
   public var id: String {
@@ -111,6 +112,7 @@ struct PageZoomSettingsView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.PageZoom.settingsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .listStyle(.insetGrouped)

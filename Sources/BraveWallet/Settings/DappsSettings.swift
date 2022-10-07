@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveShared
 import BraveCore
+import BraveUI
 
 struct DappsSettings: View {
   var coin: BraveWallet.CoinType
@@ -141,6 +142,7 @@ struct DappsSettings: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(String.localizedStringWithFormat(Strings.Wallet.dappsSettingsNavTitle, coin.localizedTitle))
     .navigationBarTitleDisplayMode(.inline)
     .filterable(text: $filterText, prompt: Strings.Wallet.manageSiteConnectionsFilterPlaceholder)
@@ -294,6 +296,7 @@ private struct SiteConnectionDetailView: View {
       }
     }
     .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle(siteConnection.url)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
