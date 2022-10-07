@@ -361,6 +361,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     showBackgroundImage={showBackgroundImage}
                     featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
                     onEnableRewards={onEnableRewards}
+                    braveRewardsSupported={braveRewardsSupported}
                   />
                 ) : null
               }
