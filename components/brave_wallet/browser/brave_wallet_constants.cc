@@ -312,7 +312,7 @@ bool HasJupiterFeesForTokenMint(const std::string& mint) {
   return base::Contains(mints, mint);
 }
 
-const std::vector<std::string> GetAssetDiscoverySupportedChains() {
+const std::vector<std::string>& GetAssetDiscoverySupportedChains() {
   static base::NoDestructor<std::vector<std::string>>
       asset_discovery_supported_chains({mojom::kMainnetChainId,
                                         mojom::kPolygonMainnetChainId,
