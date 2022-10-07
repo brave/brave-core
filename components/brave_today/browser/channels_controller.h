@@ -32,6 +32,9 @@ class ChannelsController {
   static Channels GetChannelsFromPublishers(const std::string& locale,
                                             const Publishers& publishers,
                                             PrefService* prefs);
+
+  // Get all the Locales the user has subcribed to channels in.
+  std::vector<std::string> GetChannelLocales();
   void GetAllChannels(const std::string& locale, ChannelsCallback callback);
   mojom::ChannelPtr SetChannelSubscribed(const std::string& locale,
                                          const std::string& channel_id,

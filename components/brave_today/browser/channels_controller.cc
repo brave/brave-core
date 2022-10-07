@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/containers/contains.h"
@@ -51,6 +52,18 @@ Channels ChannelsController::GetChannelsFromPublishers(
     }
   }
   return channels;
+}
+
+std::vector<std::string> ChannelsController::GetChannelLocales() {
+  std::vector<std::string> result;
+  auto pref = prefs_->GetDictionary(prefs::kBraveNewsChannels);
+
+  for (const auto it : pref->DictItems()) {
+    if (it.second.DictEmpty()) continue;
+    result.push_back(it.first);
+  }
+
+  return result;
 }
 
 void ChannelsController::GetAllChannels(const std::string& locale,
