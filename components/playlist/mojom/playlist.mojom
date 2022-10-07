@@ -50,6 +50,7 @@ interface PageHandler {
   AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
+  MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
 
   // Try downloading thumbnail and media files again
   RecoverLocalDataForItem(string id);
