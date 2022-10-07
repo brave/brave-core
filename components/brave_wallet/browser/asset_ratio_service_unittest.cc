@@ -163,7 +163,8 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
                   "https://crypto.sardine.ai/"
                   "?address=0xdeadbeef&network=ethereum&asset_type=USDC&fiat_"
                   "amount=55000000&fiat_currency=USD&client_token=74618e17-"
-                  "a537-4f5d-ab4d-9916739560b1",
+                  "a537-4f5d-ab4d-9916739560b1&fixed_asset_type=USDC&fixed_"
+                  "network=ethereum",
                   absl::nullopt);
 
   // Timeout yields error

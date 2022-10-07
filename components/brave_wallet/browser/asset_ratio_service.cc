@@ -143,6 +143,8 @@ GURL AssetRatioService::GetSardineBuyURL(const std::string chain_id,
   url = net::AppendQueryParameter(url, "fiat_amount", amount);
   url = net::AppendQueryParameter(url, "fiat_currency", currency_code);
   url = net::AppendQueryParameter(url, "client_token", auth_token);
+  url = net::AppendQueryParameter(url, "fixed_asset_type", symbol);
+  url = net::AppendQueryParameter(url, "fixed_network", sardine_network_name);
   return url;
 }
 
