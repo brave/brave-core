@@ -8,6 +8,7 @@
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -151,6 +152,8 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
+    case IDC_COPY_CLEAN_LINK:
+      return params_.link_url.is_valid();
     case IDC_CONTENT_CONTEXT_FORCE_PASTE:
       // only enable if there is plain text data to paste - this is what
       // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
@@ -218,6 +221,9 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
+    case IDC_COPY_CLEAN_LINK:
+      brave::CopyCleanLink(GetBrowser(), params_.link_url);
+      break;
     case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
       std::u16string result;
       ui::Clipboard::GetForCurrentThread()->ReadText(
@@ -395,6 +401,14 @@ void BraveRenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 #endif
+  if (!params_.link_url.is_empty()) {
+    absl::optional<size_t> link_index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
+    if (link_index.has_value()) {
+      menu_model_.InsertItemWithStringIdAt(
+          link_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
+    }
+  }
 
 #if BUILDFLAG(ENABLE_IPFS)
   BuildIPFSMenu();

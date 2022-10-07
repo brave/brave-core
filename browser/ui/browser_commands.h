@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
 class Browser;
+class GURL;
 
 namespace brave {
 
@@ -22,7 +23,7 @@ void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 void OpenIpfsFilesWebUI(Browser* browser);
-void CopyCleanLink(Browser* browser);
+void CopyCleanLink(Browser* browser, const GURL& url);
 
 }  // namespace brave
 

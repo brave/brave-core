@@ -185,12 +185,10 @@ void CloseWalletBubble(Browser* browser) {
 #endif
 }
 
-void CopyCleanLink(Browser* browser) {
+void CopyCleanLink(Browser* browser, const GURL& url) {
   GURL sanitized_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
                            browser->profile())
-                           ->SanitizeURL(browser->tab_strip_model()
-                                             ->GetActiveWebContents()
-                                             ->GetVisibleURL());
+                           ->SanitizeURL(url);
 
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
   scw.WriteText(base::UTF8ToUTF16(sanitized_url.spec()));

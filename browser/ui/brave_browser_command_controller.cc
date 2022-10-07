@@ -309,7 +309,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::OpenBraveVPNUrls(browser_, id);
       break;
     case IDC_COPY_CLEAN_LINK:
-      brave::CopyCleanLink(browser_);
+      brave::CopyCleanLink(
+          browser_,
+          browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
       break;
     case IDC_APP_MENU_IPFS_OPEN_FILES:
       brave::OpenIpfsFilesWebUI(browser_);
