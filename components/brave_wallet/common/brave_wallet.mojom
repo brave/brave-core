@@ -762,6 +762,7 @@ const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5D
 const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
 const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
 
+// It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
 const string kGoerliChainId = "0x5";
 const string kSepoliaChainId = "0xaa36a7";
