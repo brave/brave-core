@@ -1376,6 +1376,11 @@ public class BrowserViewController: UIViewController {
   func updateTabsBarVisibility() {
     defer {
       toolbar?.line.isHidden = isUsingBottomBar
+      if isUsingBottomBar {
+        // Ensure NTP relayout occurs
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+      }
     }
     
     header.expandedBarStackView.removeArrangedSubview(tabsBar.view)
