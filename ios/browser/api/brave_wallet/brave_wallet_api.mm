@@ -17,6 +17,7 @@
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
+#include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -26,8 +27,8 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyEthereum =
     @"ethereum_provider.js";
 BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolana =
     @"solana_provider.js";
-BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaInternal =
-    @"solana_provider_internal.js";
+BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaWeb3 =
+    @"solana_web3.js";
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -158,13 +159,11 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaInternal =
             BraveWalletProviderScriptKeyEthereum,
             IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS)};
       case BraveWalletCoinTypeSol:
-        return {
-            std::make_pair(
-                BraveWalletProviderScriptKeySolana,
-                IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS),
-            std::make_pair(
-                BraveWalletProviderScriptKeySolanaInternal,
-                IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS)};
+        return {std::make_pair(
+                    BraveWalletProviderScriptKeySolana,
+                    IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS),
+                std::make_pair(BraveWalletProviderScriptKeySolanaWeb3,
+                               IDR_BRAVE_WALLET_SOLANA_WEB3_JS)};
       case BraveWalletCoinTypeFil:
         // Currently not supported
         return {std::make_pair(@"", 0)};
