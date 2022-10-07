@@ -138,17 +138,6 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
           },
           cellReuseId: "VPNCalloutCell"),
         .boolRow(
-          title: "Sync Callout Shown",
-          detailText: "Flag determining if Sync callout is shown to user.",
-          toggleValue: Preferences.FullScreenCallout.syncCalloutCompleted.value,
-          valueChange: {
-            if $0 {
-              let status = $0
-              Preferences.FullScreenCallout.syncCalloutCompleted.value = status
-            }
-          },
-          cellReuseId: "SyncCalloutCell"),
-        .boolRow(
           title: "Rewards Callout Shown",
           detailText: "Flag determining if Rewards callout is shown to user.",
           toggleValue: Preferences.FullScreenCallout.vpnCalloutCompleted.value,

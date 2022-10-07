@@ -130,10 +130,6 @@ extension Preferences {
     static let vpnCalloutCompleted =
       Option<Bool>(key: "fullScreenCallout.full-screen-vpn-callout-completed", default: false)
 
-    /// Whether the sync callout is shown.
-    static let syncCalloutCompleted =
-      Option<Bool>(key: "fullScreenCallout.full-screen-sync-callout-completed", default: false)
-
     /// Whether the rewards callout is shown.
     static let rewardsCalloutCompleted =
       Option<Bool>(key: "fullScreenCallout.full-screen-rewards-callout-completed", default: false)

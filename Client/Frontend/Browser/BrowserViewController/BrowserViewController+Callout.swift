@@ -115,33 +115,6 @@ extension BrowserViewController {
 
     }
   }
-
-  func presentSyncAlertCallout() {
-    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
-
-    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .sync) {
-      return
-    }
-
-    if !braveCore.syncAPI.isInSyncGroup {
-      var privacyEverywhereView = PrivacyEverywhereView()
-      privacyEverywhereView.dismiss = { [weak self] in
-        self?.dismiss(animated: true)
-      }
-
-      privacyEverywhereView.syncNow = { [weak self] in
-        guard let self = self else { return }
-        self.dismiss(animated: true) {
-          self.openInsideSettingsNavigation(with: SyncWelcomeViewController(syncAPI: self.braveCore.syncAPI, syncProfileServices: self.braveCore.syncProfileService, tabManager: self.tabManager))
-        }
-      }
-
-      let controller = PopupViewController(rootView: privacyEverywhereView)
-      present(controller, animated: true, completion: nil)
-      view.endEditing(true)
-      isOnboardingOrFullScreenCalloutPresented = true
-    }
-  }
   
   func presentTabReceivedCallout(url: URL) {
     // 'Tab Received' indicator will only be shown in normal browsing
