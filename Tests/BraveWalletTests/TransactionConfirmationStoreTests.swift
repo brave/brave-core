@@ -13,7 +13,7 @@ import BraveCore
   private var cancellables: Set<AnyCancellable> = .init()
   
   private func setupStore(
-    network: BraveWallet.NetworkInfo = .mockRopsten,
+    network: BraveWallet.NetworkInfo = .mockGoerli,
     accountInfos: [BraveWallet.AccountInfo] = [],
     allTokens: [BraveWallet.BlockchainToken] = [],
     transactions: [BraveWallet.TransactionInfo] = [],

@@ -15,7 +15,7 @@ import BraveCore
 class MockJsonRpcService: BraveWalletJsonRpcService {
   
   private var chainId: String = BraveWallet.MainnetChainId
-  private var networks: [BraveWallet.NetworkInfo] = [.mockMainnet, .mockRinkeby, .mockRopsten]
+  private var networks: [BraveWallet.NetworkInfo] = [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon]
   private var networkURL: URL?
   private var observers: NSHashTable<BraveWalletJsonRpcServiceObserver> = .weakObjects()
   
@@ -167,10 +167,10 @@ extension BraveWallet.NetworkInfo {
     coin: .eth,
     isEip1559: true
   )
-  static let mockRinkeby: BraveWallet.NetworkInfo = .init(
-    chainId: BraveWallet.RinkebyChainId,
-    chainName: "Rinkeby",
-    blockExplorerUrls: ["https://rinkeby.etherscan.io"],
+  static let mockGoerli: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.GoerliChainId,
+    chainName: "Goerli",
+    blockExplorerUrls: ["https://goerli.etherscan.io"],
     iconUrls: [],
     activeRpcEndpointIndex: 0,
     rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
@@ -180,10 +180,10 @@ extension BraveWallet.NetworkInfo {
     coin: .eth,
     isEip1559: true
   )
-  static let mockRopsten: BraveWallet.NetworkInfo = .init(
-    chainId: BraveWallet.RopstenChainId,
-    chainName: "Ropsten",
-    blockExplorerUrls: ["https://ropsten.etherscan.io"],
+  static let mockSepolia: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.SepoliaChainId,
+    chainName: "Sepolia",
+    blockExplorerUrls: ["https://sepolia.etherscan.io"],
     iconUrls: [],
     activeRpcEndpointIndex: 0,
     rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],

@@ -53,10 +53,8 @@ struct NetworkIcon: View {
     switch network.chainId {
     case BraveWallet.MainnetChainId:
       return ("eth-asset-icon", false)
-    case BraveWallet.RinkebyChainId,
-      BraveWallet.RopstenChainId,
-      BraveWallet.GoerliChainId,
-      BraveWallet.KovanChainId:
+    case BraveWallet.GoerliChainId,
+      BraveWallet.SepoliaChainId:
       return ("eth-asset-icon", true)
     case BraveWallet.SolanaMainnet:
       return ("sol-asset-icon", false)

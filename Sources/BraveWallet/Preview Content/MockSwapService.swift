@@ -33,6 +33,10 @@ class MockSwapService: BraveWalletSwapService {
   func jupiterSwapTransactions(_ params: BraveWallet.JupiterSwapParams, completion: @escaping (Bool, BraveWallet.JupiterSwapTransactions?, String?) -> Void) {
     completion(false, nil, nil)
   }
+  
+  func hasJupiterFees(forTokenMint mint: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }  
 }
 
 #endif
