@@ -33,6 +33,7 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 // hooks
 import { usePrevNetwork } from '../../../common/hooks/previous-network'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
+import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 
 // style
 import { Column, Flex, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -83,6 +84,7 @@ export const FundWalletScreen = () => {
     setBuyAmount,
     setSelectedAsset
   } = useMultiChainBuyAssets()
+  const scrollIntoView = useScrollIntoView()
 
   // state
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
@@ -177,20 +179,17 @@ export const FundWalletScreen = () => {
   const checkIsBuyAssetSelected = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (selectedAsset) {
       return selectedAsset.contractAddress.toLowerCase() === asset.contractAddress.toLowerCase() &&
-        selectedAsset.symbol.toLowerCase() === asset.symbol.toLowerCase()
+        selectedAsset.symbol.toLowerCase() === asset.symbol.toLowerCase() &&
+        selectedAsset.chainId === asset.chainId
     }
     return false
   }, [selectedAsset])
 
-  const scrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
+  const handleScrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
     if (checkIsBuyAssetSelected(asset)) {
-      ref?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center'
-      })
+      scrollIntoView(ref)
     }
-  }, [checkIsBuyAssetSelected])
+  }, [checkIsBuyAssetSelected, scrollIntoView])
 
   // effects
   React.useEffect(() => {
@@ -298,7 +297,7 @@ export const FundWalletScreen = () => {
                         token={asset}
                         tokenNetwork={getTokensNetwork(buyAssetNetworks, asset)}
                         onClick={setSelectedAsset}
-                        ref={(ref) => scrollIntoView(asset, ref)} />}
+                        ref={(ref) => handleScrollIntoView(asset, ref)} />}
                   />
                   : <Column>
                     <LoadingIcon
