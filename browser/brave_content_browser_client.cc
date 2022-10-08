@@ -1055,12 +1055,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   return throttles;
 }
 
-bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
-    WebContents* web_contents,
-    WebPreferences* prefs) {
-  bool changed =
-      ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
-          web_contents, prefs);
+bool PreventDarkModeFingerprinting(WebContents* web_contents,
+                                   WebPreferences* prefs) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   const GURL url = web_contents->GetLastCommittedURL();
@@ -1072,16 +1068,28 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveDarkModeBlock) &&
-      shields_up && fingerprinting_type == ControlType::BLOCK) {
+      shields_up && fingerprinting_type == ControlType::BLOCK &&
+      prefs->preferred_color_scheme !=
+          blink::mojom::PreferredColorScheme::kLight) {
     prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
-    changed = true;
+    return true;
   }
-  return changed;
+  return false;
+}
+
+bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+    WebContents* web_contents,
+    WebPreferences* prefs) {
+  bool changed =
+      ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+          web_contents, prefs);
+  return PreventDarkModeFingerprinting(web_contents, prefs) || changed;
 }
 
 void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
                                                     WebPreferences* web_prefs) {
   ChromeContentBrowserClient::OverrideWebkitPrefs(web_contents, web_prefs);
+  PreventDarkModeFingerprinting(web_contents, web_prefs);
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;
