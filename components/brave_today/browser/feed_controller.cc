@@ -18,9 +18,11 @@
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
+#include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
@@ -51,12 +53,14 @@ GURL GetFeedUrl(const std::string& default_locale) {
 FeedController::FeedController(
     PublishersController* publishers_controller,
     DirectFeedController* direct_feed_controller,
+    ChannelsController* channels_controller,
     history::HistoryService* history_service,
     api_request_helper::APIRequestHelper* api_request_helper,
     PrefService* prefs)
     : prefs_(prefs),
       publishers_controller_(publishers_controller),
       direct_feed_controller_(direct_feed_controller),
+      channels_controller_(channels_controller),
       history_service_(history_service),
       api_request_helper_(api_request_helper),
       on_current_update_complete_(new base::OneShotEvent()),

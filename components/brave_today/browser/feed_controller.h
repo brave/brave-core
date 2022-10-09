@@ -14,6 +14,7 @@
 #include "base/one_shot_event.h"
 #include "base/scoped_observation.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -34,6 +35,7 @@ class FeedController : public PublishersController::Observer {
  public:
   FeedController(PublishersController* publishers_controller,
                  DirectFeedController* direct_feed_controller,
+                 ChannelsController* channels_controller,
                  history::HistoryService* history_service,
                  api_request_helper::APIRequestHelper* api_request_helper,
                  PrefService* prefs);
@@ -74,6 +76,7 @@ class FeedController : public PublishersController::Observer {
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<PublishersController> publishers_controller_ = nullptr;
   raw_ptr<DirectFeedController> direct_feed_controller_ = nullptr;
+  raw_ptr<ChannelsController> channels_controller_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 
