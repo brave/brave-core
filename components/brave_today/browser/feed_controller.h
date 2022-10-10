@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/scoped_observation.h"
@@ -90,7 +91,10 @@ class FeedController : public PublishersController::Observer {
   // Store a copy of the feed in memory so we don't fetch new data from remote
   // every time the UI opens.
   mojom::Feed current_feed_;
-  std::string current_feed_etag_;
+
+  // A map from feed locale to the last known etag for that feed. Used to
+  // determine when we have available updates.
+  base::flat_map<std::string, std::string> locale_feed_etags_;
   bool is_update_in_progress_ = false;
 };
 

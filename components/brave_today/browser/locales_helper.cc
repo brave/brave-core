@@ -9,10 +9,13 @@
 #include "absl/types/optional.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/feature_list.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
 
 namespace brave_news {
 namespace {
@@ -64,6 +67,11 @@ base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers) {
 std::vector<std::string> GetMinimalLocalesSet(
     const base::flat_set<std::string>& channel_locales,
     const Publishers& publishers) {
+  if (!base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsV2Feature)) {
+    return {brave_today::GetV1RegionUrlPart()};
+  }
+
   base::flat_set<std::string> result;
   // All channel locales are part of the minimal set - we need all of them.
   for (const auto& locale : channel_locales)
