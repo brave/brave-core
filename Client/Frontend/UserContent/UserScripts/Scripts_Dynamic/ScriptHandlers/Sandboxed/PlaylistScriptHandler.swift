@@ -126,7 +126,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
             return
           }
 
-          if PlaylistItem.itemExists(uuid: item.tagId) || PlaylistItem.itemExists(pageSrc: item.pageSrc) {
+          if PlaylistItem.itemExists(pageSrc: item.pageSrc) {
             // Item already exists, so just update the database with new token or URL.
             handler.updateItem(item, detected: item.detected)
           } else if item.detected {
