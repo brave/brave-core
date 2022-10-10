@@ -16,12 +16,12 @@ type Props = {
 
 const cache: { [url: string]: string } = {}
 
-export function useGetUnpaddedImage (paddedUrl: string | undefined, onLoaded?: () => any) {
+export function useGetUnpaddedImage (paddedUrl: string | undefined, onLoaded?: () => any, useCache?: boolean) {
   const [unpaddedUrl, setUnpaddedUrl] = React.useState('')
 
   React.useEffect(() => {
     const onReceiveUnpaddedUrl = (result: string) => {
-      cache[paddedUrl!] = result
+      if (useCache) cache[paddedUrl!] = result
       setUnpaddedUrl(result)
 
       if (onLoaded) window.requestAnimationFrame(() => onLoaded())
@@ -56,6 +56,11 @@ export function useGetUnpaddedImage (paddedUrl: string | undefined, onLoaded?: (
       .catch(err => {
         console.error(`Error getting image for ${paddedUrl}.`, err)
       })
+
+      // Only revoke the URL if we aren't using the cache.
+      return () => {
+        if (useCache) URL.revokeObjectURL(blobUrl)
+      }
   }, [paddedUrl])
   return unpaddedUrl
 }

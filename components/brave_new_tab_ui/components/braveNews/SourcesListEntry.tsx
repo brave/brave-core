@@ -45,7 +45,7 @@ const ChannelNameText = styled.span`
 `
 
 function FavIcon (props: { src?: string }) {
-    const url = useGetUnpaddedImage(props.src)
+    const url = useGetUnpaddedImage(props.src, undefined, /* useCache= */true)
     const [error, setError] = React.useState(false)
     return <FavIconContainer>
         {url && !error && <img src={url} onError={() => setError(true)} />}

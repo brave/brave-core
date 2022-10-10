@@ -97,7 +97,7 @@ const Content = styled.div`
 
 export default function Configure () {
   const [enabled, setEnabled] = useNewTabPref('isBraveTodayOptedIn')
-  const { setPage } = useBraveNews()
+  const { setCustomizePage: setPage } = useBraveNews()
 
   let content: JSX.Element
   if (!enabled) {

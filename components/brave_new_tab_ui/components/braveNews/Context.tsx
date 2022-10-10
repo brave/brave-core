@@ -9,21 +9,21 @@ type NewsPage = null
     | 'news'
 
 interface BraveNewsContext {
-    page: NewsPage
-    setPage: (page: NewsPage) => void
+    customizePage: NewsPage
+    setCustomizePage: (page: NewsPage) => void
     channels: Channels
     publishers: Publishers
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
-    page: null,
-    setPage: () => { },
+    customizePage: null,
+    setCustomizePage: () => { },
     publishers: {},
     channels: {}
 })
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
-    const [page, setPage] = useState<NewsPage>(null)
+    const [customizePage, setCustomizePage] = useState<NewsPage>(null)
     const [channels, setChannels] = useState<Channels>({})
     const [publishers, setPublishers] = useState<Publishers>({})
 
@@ -44,11 +44,11 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     }, [])
 
     const context = useMemo(() => ({
-        page,
-        setPage,
+        customizePage,
+        setCustomizePage,
         channels,
         publishers
-    }), [page, channels, publishers])
+    }), [customizePage, channels, publishers])
     return <BraveNewsContext.Provider value={context}>
         {props.children}
         <Modal />

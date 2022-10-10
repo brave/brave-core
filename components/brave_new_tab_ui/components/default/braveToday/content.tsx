@@ -27,7 +27,7 @@ export default function BraveTodayContent (props: Props) {
   const { feed, publishers } = props
 
   const dispatch = useDispatch()
-  const { setPage } = useBraveNews()
+  const { setCustomizePage: setPage } = useBraveNews()
 
   const previousYAxis = React.useRef(0)
   const [showOptions, setShowOptions] = React.useState(false)

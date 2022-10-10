@@ -17,7 +17,7 @@ const Dialog = styled.dialog`
 `
 
 export default function BraveNewsModal () {
-    const { page } = useBraveNews()
+    const { customizePage: page } = useBraveNews()
     const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>()
 
     // Note: There's no attribute for open modal, so we need
