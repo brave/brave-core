@@ -445,6 +445,10 @@ std::string GetRegistryDomainFromIPNS(const GURL& url) {
       cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
+// gateway.io/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy ->
+// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
+// bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy.ipfs.gateway.io ->
+// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
 absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url) {
   if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
     return absl::nullopt;
