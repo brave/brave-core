@@ -24,7 +24,7 @@ import { Toggle } from '../../../components/toggle'
 import { getLocale } from '../../../../common/locale'
 
 import BackgroundChooser from './backgroundChooser'
-import { images, defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsForBackground, defaultGradientColor } from '../../../data/backgrounds'
+import { defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsForBackground, defaultGradientColor } from '../../../data/backgrounds'
 import SponsoredImageToggle from './sponsoredImagesToggle'
 
 import { RANDOM_SOLID_COLOR_VALUE, RANDOM_GRADIENT_COLOR_VALUE, MAX_CUSTOM_IMAGE_BACKGROUNDS } from 'gen/brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.m.js'
@@ -48,7 +48,6 @@ interface Props {
 enum Location {
   LIST,
   CUSTOM_IMAGES,
-  BRAVE_BACKGROUNDS,
   SOLID_COLORS,
   GRADIENT_COLORS
 }
@@ -78,7 +77,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
   }
 
   onClickBraveBackground = () => {
-    this.setState({ location: Location.BRAVE_BACKGROUNDS })
+    this.props.setBraveBackground('')
   }
 
   onClickSolidColorBackground = () => {
@@ -128,8 +127,6 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
     const usingGradientBackground = !!selectedBackgroundColor && !!gradientColorsForBackground.find(element => element.wallpaperColor === selectedBackgroundColor)
 
     const usingRandomColor = newTabData.backgroundWallpaper?.type === 'color' && !!newTabData.backgroundWallpaper?.random
-    const usingRandomBraveBackground = newTabData.backgroundWallpaper?.type === 'brave' && !!newTabData.backgroundWallpaper.random
-    const selectedBraveBackground = newTabData.backgroundWallpaper?.type === 'brave' ? newTabData.backgroundWallpaper.wallpaperImageUrl : undefined
 
     const usingRandomCustomImageBackground = newTabData.backgroundWallpaper?.type === 'image' && !!newTabData.backgroundWallpaper.random
     const selectedCustomImageBackground = newTabData.backgroundWallpaper?.type === 'image' ? newTabData.backgroundWallpaper.wallpaperImageUrl : undefined
@@ -202,17 +199,6 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             )}
           </div>
         )}
-        {this.state.location === Location.BRAVE_BACKGROUNDS &&
-          <BackgroundChooser
-            title={getLocale('braveBackgroundsTitle')}
-            backgrounds={images}
-            currentValue={selectedBraveBackground}
-            usingRandomColor={usingRandomBraveBackground}
-            onToggleRandomColor={on => this.props.setBraveBackground('')}
-            onSelectValue={ value => this.props.setBraveBackground(value)}
-            onBack={() => this.setLocation(Location.LIST)}
-          />
-        }
         {this.state.location === Location.SOLID_COLORS &&
           <BackgroundChooser
             title={getLocale('solidColorTitle')}

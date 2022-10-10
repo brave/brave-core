@@ -14,6 +14,12 @@ export const images: NewTab.BraveBackground[] = [{
 // then you must also update `script/generate_licenses.py`
 
 export const updateImages = (newImages: NewTab.BraveBackground[]) => {
+  if (!newImages) {
+    // This can happen when the component for NTP is not downloaded yet on
+    // a fresh profile.
+    return
+  }
+
   images.splice(0, images.length, ...newImages)
 }
 
