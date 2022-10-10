@@ -72,6 +72,7 @@ import { TransactionStatus } from '../components/extension/post-confirmation'
 import { useSafePanelSelector, useSafeWalletSelector, useUnsafePanelSelector, useUnsafeWalletSelector } from '../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
+import { useMultiChainBuyAssets } from '../common/hooks/use-multi-chain-buy-assets'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -125,11 +126,21 @@ function Container () {
 
   const {
     sendAssetOptions,
-    buyAssetOptions,
     panelUserAssetList
   } = useAssets()
 
-  const [selectedBuyAsset, setSelectedBuyAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
+  const {
+    allAssetOptions: buyAssetOptions,
+    selectedAsset: selectedBuyAsset,
+    selectedAssetBuyOptions,
+    setSelectedAsset: setSelectedBuyAsset,
+    getAllBuyOptionsAllChains,
+    buyAmount,
+    setBuyAmount,
+    isSelectedNetworkSupported,
+    assetsForFilteredNetwork,
+    openBuyAssetLink
+  } = useMultiChainBuyAssets()
 
   // hooks
   useBalanceUpdater()
@@ -391,10 +402,16 @@ function Container () {
   }, [needsAccount])
 
   React.useEffect(() => {
-    if (buyAssetOptions.length > 0) {
-      setSelectedBuyAsset(buyAssetOptions[0])
+    if (buyAssetOptions.length === 0) {
+      getAllBuyOptionsAllChains()
     }
-  }, [buyAssetOptions])
+  }, [buyAssetOptions.length])
+
+  React.useEffect(() => {
+    if (assetsForFilteredNetwork.length > 0) {
+      setSelectedBuyAsset(assetsForFilteredNetwork[0])
+    }
+  }, [assetsForFilteredNetwork])
 
   const filteredAssetOptions = React.useMemo(() => {
     return getUniqueAssets(buyAssetOptions)
@@ -732,9 +749,14 @@ function Container () {
           >
             <SendWrapper>
               <Buy
+                isSelectedNetworkSupported={isSelectedNetworkSupported}
                 onChangeBuyView={onChangeSendView}
-                selectedAsset={selectedBuyAsset}
+                selectedAsset={selectedBuyAsset || assetsForFilteredNetwork[0]}
                 onShowCurrencySelection={onShowCurrencySelection}
+                buyAmount={buyAmount}
+                onChangeBuyAmount={setBuyAmount}
+                buyOptions={selectedAssetBuyOptions}
+                openBuyAssetLink={openBuyAssetLink}
               />
             </SendWrapper>
           </Panel>

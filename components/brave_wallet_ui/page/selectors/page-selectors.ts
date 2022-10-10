@@ -32,7 +32,7 @@ export const nftMetadata = ({ page }: State) => page.nftMetadata
 export const nftMetadataError = ({ page }: State) => page.nftMetadataError
 
 export const portfolioPriceHistory = ({ page }: State) => page.portfolioPriceHistory
-export const selectedAsset = ({ page }: State) => page.selectedAsset
+export const selectedAsset = ({ page }: State) => page?.selectedAsset
 export const selectedAssetCryptoPrice = ({ page }: State) => page.selectedAssetCryptoPrice
 export const selectedAssetFiatPrice = ({ page }: State) => page.selectedAssetFiatPrice
 export const selectedAssetPriceHistory = ({ page }: State) => page.selectedAssetPriceHistory
