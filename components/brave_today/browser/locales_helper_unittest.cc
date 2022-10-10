@@ -239,4 +239,37 @@ TEST_F(LocalesHelperTest, MostCommonPublisherIsPickedFirst) {
   EXPECT_TRUE(base::Contains(locales, "ja_JP"));
 }
 
+TEST_F(LocalesHelperTest, OnlyEnabledPublishersAreConsidered) {
+  Publishers publishers = MakePublishers({
+    {"en_NZ"},
+    {"en_AU"},
+    {"en_UK"},
+    {"en_US"},
+  });
+
+  publishers["2"]->user_enabled_status = mojom::UserEnabled::DISABLED;
+  publishers["4"]->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
+
+  auto locales = GetMinimalLocalesSet({}, publishers);
+  EXPECT_EQ(2u, locales.size());
+  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+  EXPECT_TRUE(base::Contains(locales, "en_UK"));
+}
+
+TEST_F(LocalesHelperTest, NonEnabledPublishersDontAffectInclusions) {
+  Publishers publishers = MakePublishers({
+    {"en_NZ"},
+    {"en_US"},
+    {"en_US"},
+    {"en_US", "en_NZ"},
+  });
+
+  publishers["2"]->user_enabled_status = mojom::UserEnabled::DISABLED;
+  publishers["3"]->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
+
+  auto locales = GetMinimalLocalesSet({}, publishers);
+  EXPECT_EQ(1u, locales.size());
+  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+}
+
 }  // namespace brave_news
