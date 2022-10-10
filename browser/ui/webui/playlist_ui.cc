@@ -82,7 +82,6 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
   auto* source =
       CreateAndAddWebUIDataSource(web_ui, name, kPlaylistGenerated,
                                   kPlaylistGeneratedSize, IDR_PLAYLIST_HTML);
-  source->AddString("bravePlaylistPlayerUrl", kPlaylistURL);
 
   // Allow to load untrusted resources.
   source->OverrideContentSecurityPolicy(
