@@ -6,15 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_WIDTH_CONSTRAINTS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_WIDTH_CONSTRAINTS_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace gfx {
-class Rect;
-}  // namespace gfx
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 
 #define TransformForPinnednessAndOpenness                                  \
   TransformForPinnednessAndOpenness_UnUsed() { return {}; }                \
-  friend std::vector<gfx::Rect> CalculateVerticalTabBounds(                \
+  friend std::vector<gfx::Rect> tabs::CalculateVerticalTabBounds(          \
       const TabLayoutConstants& layout_constants,                          \
       const std::vector<TabWidthConstraints>& tabs,                        \
       absl::optional<int> width);                                          \

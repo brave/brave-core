@@ -6,12 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_LAYOUT_HELPER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_LAYOUT_HELPER_H_
 
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
+
 #define UpdateIdealBounds                                                      \
   UnUsed() { return {}; }                                                      \
   void set_use_vertical_tabs(bool vertical) { use_vertical_tabs_ = vertical; } \
                                                                                \
  private:                                                                      \
   friend class BraveTabContainer;                                              \
+  friend bool tabs::FillGroupInfo(                                             \
+      std::vector<TabWidthConstraints>& tab_widths,                            \
+      TabStripLayoutHelper& helper);                                           \
   bool use_vertical_tabs_ = false;                                             \
                                                                                \
  public:                                                                       \
