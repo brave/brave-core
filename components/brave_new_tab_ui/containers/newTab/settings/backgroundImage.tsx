@@ -24,7 +24,7 @@ import { Toggle } from '../../../components/toggle'
 import { getLocale } from '../../../../common/locale'
 
 import BackgroundChooser from './backgroundChooser'
-import { images, defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsForBackground, defaultGradientColor } from '../../../data/backgrounds'
+import { defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsForBackground, defaultGradientColor } from '../../../data/backgrounds'
 import SponsoredImageToggle from './sponsoredImagesToggle'
 
 interface Props {
@@ -43,7 +43,6 @@ interface Props {
 
 enum Location {
   LIST,
-  BRAVE_BACKGROUNDS,
   SOLID_COLORS,
   GRADIENT_COLORS
 }
@@ -69,7 +68,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
   }
 
   onClickBraveBackground = () => {
-    this.setState({ location: Location.BRAVE_BACKGROUNDS })
+    this.props.setBraveBackground('')
   }
 
   onClickSolidColorBackground = () => {
@@ -99,8 +98,6 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
     const usingGradientBackground = !!selectedBackgroundColor && !!gradientColorsForBackground.find(element => element.wallpaperColor === selectedBackgroundColor)
 
     const usingRandomColor = newTabData.backgroundWallpaper?.type === 'color' && !!newTabData.backgroundWallpaper?.random
-    const usingRandomBraveBackground = newTabData.backgroundWallpaper?.type === 'brave' && !!newTabData.backgroundWallpaper.random
-    const selectedBraveBackground = newTabData.backgroundWallpaper?.type === 'brave' ? newTabData.backgroundWallpaper.wallpaperImageUrl : undefined
 
     return (
       <>
@@ -184,17 +181,6 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             )}
           </div>
         )}
-        {this.state.location === Location.BRAVE_BACKGROUNDS &&
-          <BackgroundChooser
-            title={getLocale('braveBackgroundsTitle')}
-            backgrounds={images}
-            currentValue={selectedBraveBackground}
-            usingRandomColor={usingRandomBraveBackground}
-            onToggleRandomColor={on => this.props.setBraveBackground('')}
-            onSelectValue={ value => this.props.setBraveBackground(value)}
-            onBack={() => this.setLocation(Location.LIST)}
-          />
-        }
         {this.state.location === Location.SOLID_COLORS &&
           <BackgroundChooser
             title={getLocale('solidColorTitle')}
