@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -24,7 +25,6 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/url_util.h"
 
-#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -325,7 +325,7 @@ void BraveVpnService::CreateVPNConnection() {
   GetBraveVPNConnectionAPI()->CreateVPNConnection(GetConnectionInfo());
 }
 
-void BraveVpnService::RemoveVPNConnnection() {
+void BraveVpnService::RemoveVPNConnection() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
   GetBraveVPNConnectionAPI()->RemoveVPNConnection(kBraveVPNEntryName);
@@ -345,10 +345,12 @@ void BraveVpnService::Connect() {
 
   // User can ask connect again when user want to change region.
   if (connection_state_ == ConnectionState::CONNECTED) {
+#if !BUILDFLAG(IS_WIN)
     // Disconnect first and then create again to setup for new region.
     needs_connect_ = true;
     Disconnect();
     return;
+#endif
   }
 
   VLOG(2) << __func__ << " : start connecting!";
@@ -873,6 +875,7 @@ void BraveVpnService::OnCreateSupportTicket(
           << "\nresponse_code=" << api_request_result.response_code();
   std::move(callback).Run(success, api_request_result.body());
 }
+
 void BraveVpnService::OnSuspend() {
   // Set reconnection state in case if computer/laptop is going to sleep.
   // The disconnection event will be fired after waking up and we want to
