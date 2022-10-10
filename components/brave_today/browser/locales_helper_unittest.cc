@@ -1,0 +1,242 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_today/browser/locales_helper.h"
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/containers/contains.h"
+#include "base/strings/string_util.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_today/browser/publishers_parsing.h"
+#include "brave/components/brave_today/browser/urls.h"
+#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_today/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace brave_news {
+namespace {
+constexpr char kPublishersJson[] = R"([
+    {
+        "publisher_id": "111",
+        "publisher_name": "Test Publisher 1",
+        "feed_url": "https://tp1.example.com/feed",
+        "site_url": "https://tp1.example.com",
+        "category": "Tech",
+        "cover_url": "https://tp1.example.com/cover",
+        "cover_url": "https://tp1.example.com/favicon",
+        "background_color": "#FF0000",
+        "channels": ["Tech"],
+        "locales": ["en_US"],
+        "enabled": false
+    },
+    {
+        "publisher_id": "222",
+        "publisher_name": "Test Publisher 2",
+        "feed_url": "https://tp2.example.com/feed",
+        "site_url": "https://tp2.example.com",
+        "cover_url": "https://tp2.example.com/cover",
+        "cover_url": "https://tp2.example.com/favicon",
+        "background_color": "#FF00FF",
+        "category": "Top News",
+        "channels": ["Tech", "Top News"],
+        "locales": ["es_MX", "en_US"],
+        "enabled": true
+    },
+    {
+        "publisher_id": "333",
+        "publisher_name": "Test Publisher 3",
+        "feed_url": "https://tp3.example.com/feed",
+        "site_url": "https://tp3.example.com",
+        "cover_url": "https://tp3.example.com/cover",
+        "cover_url": "https://tp3.example.com/favicon",
+        "background_color": "#FF00FF",
+        "category": "Top News",
+        "channels": ["Top News"],
+        "locales": ["es_MX", "ja_JP"],
+        "enabled": true
+    },
+    {
+        "publisher_id": "444",
+        "publisher_name": "Test Publisher 4",
+        "feed_url": "https://tp4.example.com/feed",
+        "site_url": "https://tp4.example.com",
+        "cover_url": "https://tp4.example.com/cover",
+        "cover_url": "https://tp4.example.com/favicon",
+        "background_color": "#FF00FF",
+        "category": "Top News",
+        "channels": ["Top News"],
+        "locales": ["es_MX"],
+        "enabled": true
+    },
+    {
+        "publisher_id": "555",
+        "publisher_name": "Test Publisher 5",
+        "feed_url": "https://tp5.example.com/feed",
+        "site_url": "https://tp5.example.com",
+        "cover_url": "https://tp5.example.com/cover",
+        "cover_url": "https://tp5.example.com/favicon",
+        "background_color": "#FFFF00",
+        "category": "Design",
+        "channels": ["Design"],
+        "locales": ["ja_JP"],
+        "enabled": true
+    }
+])";
+
+Publishers GetPublishers() {
+  Publishers publishers;
+  ParseCombinedPublisherList(kPublishersJson, &publishers);
+  return publishers;
+}
+
+Publishers MakePublishers(
+    const std::vector<std::vector<std::string>>& publisher_locales) {
+  Publishers result;
+  size_t next_id = 1;
+  for (const auto& locales : publisher_locales) {
+    auto publisher = mojom::Publisher::New();
+    publisher->locales = locales;
+    publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
+    result[std::to_string(next_id++)] = std::move(publisher);
+  }
+  return result;
+}
+
+}  // namespace
+
+class LocalesHelperTest : public testing::Test {
+ public:
+  LocalesHelperTest() {
+    features_.InitAndEnableFeature(
+        {brave_today::features::kBraveNewsV2Feature});
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
+
+TEST_F(LocalesHelperTest, NoDuplicatesInAllLocales) {
+  auto locales = brave_news::GetPublisherLocales(GetPublishers());
+  EXPECT_EQ(3u, locales.size());
+  EXPECT_TRUE(locales.contains("en_US"));
+  EXPECT_TRUE(locales.contains("es_MX"));
+  EXPECT_TRUE(locales.contains("ja_JP"));
+}
+
+TEST_F(LocalesHelperTest, NoV2UsesRegionUrl) {
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(brave_today::features::kBraveNewsV2Feature);
+  auto locales = GetMinimalLocalesSet({"en_US", "ja_JP"}, GetPublishers());
+  ASSERT_EQ(1u, locales.size());
+  EXPECT_EQ(brave_today::GetV1RegionUrlPart(), locales.front());
+}
+
+// Even with no subscribed publishers, we should feeds for all locales we have
+// channels in.
+TEST_F(LocalesHelperTest, GetMinimalLocalesSetUsesChannelLocales) {
+  auto locales = GetMinimalLocalesSet({"en_US", "ja_JP"}, {});
+  EXPECT_EQ(2u, locales.size());
+  EXPECT_TRUE(base::Contains(locales, "en_US"));
+  EXPECT_TRUE(base::Contains(locales, "ja_JP"));
+}
+
+TEST_F(LocalesHelperTest, LocaleIsNotIncludedIfChannelLocalesIncludePublisher) {
+  Publishers publishers = MakePublishers({{"en_US", "en_UK", "en_NZ"},
+                                          {
+                                              "en_US",
+                                              "en_AU",
+                                              "en_NZ",
+                                              "en_UK",
+                                          }});
+  auto locales = GetMinimalLocalesSet({"en_NZ"}, publishers);
+  EXPECT_EQ(1u, locales.size());
+  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+}
+
+TEST_F(LocalesHelperTest, AllRegionsAreCovered) {
+  Publishers publishers = MakePublishers({{
+                                              "en_US",
+                                          },{
+                                              "en_UK",
+                                          },{
+                                              "en_AU",
+                                          },{
+                                              "en_NZ",
+                                          }});
+  auto locales = GetMinimalLocalesSet({}, publishers);
+  EXPECT_EQ(4u, locales.size());
+  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+  EXPECT_TRUE(base::Contains(locales, "en_AU"));
+  EXPECT_TRUE(base::Contains(locales, "en_UK"));
+  EXPECT_TRUE(base::Contains(locales, "en_US"));
+}
+
+TEST_F(LocalesHelperTest, MostCommonPublisherIsPickedFirstSingleGroup) {
+  Publishers publishers = MakePublishers({{
+                                              "en_AU",
+                                              "en_NZ",
+                                              "en_US",
+                                              "en_UK",
+                                          },{
+                                              "en_AU",
+                                              "en_NZ",
+                                              "en_UK",
+                                          },{
+                                              "en_AU",
+                                              "en_NZ",
+                                          },{
+                                              "en_NZ",
+                                          }});
+  auto locales = GetMinimalLocalesSet({}, publishers);
+  EXPECT_EQ(1u, locales.size());
+  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+}
+
+TEST_F(LocalesHelperTest, MostCommonPublisherIsPickedFirst) {
+  Publishers publishers = MakePublishers({{
+                                              "en_AU",
+                                              "en_NZ",
+                                              "en_US",
+                                              "en_UK",
+                                          },{
+                                              "en_AU",
+                                              "en_NZ",
+                                              "en_UK",
+                                          },{
+                                              "en_AU",
+                                              "en_NZ",
+                                          },{
+                                              "en_NZ",
+                                          }, {
+                                            "es_ES",
+                                            "es_MX",
+                                            "es_AR"
+                                          }, {
+                                            "es_MX",
+                                            "es_AR"
+                                          }, {
+                                            "es_AR"
+                                          }, {
+                                            "pt_PT",
+                                            "pt_BR"
+                                          }, {
+                                            "pt_PT"
+                                          }, {
+                                            "ja_JP"
+                                          }});
+  auto locales = GetMinimalLocalesSet({}, publishers);
+  EXPECT_EQ(4u, locales.size());
+  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+  EXPECT_TRUE(base::Contains(locales, "es_AR"));
+  EXPECT_TRUE(base::Contains(locales, "pt_PT"));
+  EXPECT_TRUE(base::Contains(locales, "ja_JP"));
+}
+
+}  // namespace brave_news
