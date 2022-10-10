@@ -49,7 +49,7 @@ class RewardsReportingScriptHandler: TabContentScript {
       return
     }
     
-    if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
+    if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
       return
     }
