@@ -131,12 +131,10 @@ bool PlaylistService::AddItemsToPlaylist(
   }
 
   base::Value::List* ids_list = nullptr;
-  if (!target_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
-                                                           &ids_list)) {
-    NOTREACHED() << __func__ << " Playlist " << playlist_id
-                 << " doesn't have |items| field";
-    return false;
-  }
+  target_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
+                                                      &ids_list);
+  DCHECK(ids_list) << __func__ << " Playlist " << playlist_id
+                   << " doesn't have |items| field";
 
   for (const auto& id : item_ids) {
     DCHECK(!id.empty());
@@ -175,12 +173,10 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
     }
 
     base::Value::List* item_ids = nullptr;
-    if (!target_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
-                                                             &item_ids)) {
-      NOTREACHED() << __func__ << " Playlist " << playlist_id
-                   << " doesn't have |items| field";
-      return false;
-    }
+    target_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
+                                                        &item_ids);
+    DCHECK(item_ids) << __func__ << " Playlist " << playlist_id
+                     << " doesn't have |items| field";
 
     auto it = base::ranges::find_if(*item_ids, [&item_id](const auto& id) {
       return id.GetString() == *item_id;
