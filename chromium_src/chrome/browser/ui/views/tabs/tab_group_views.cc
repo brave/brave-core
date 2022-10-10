@@ -14,7 +14,7 @@
 #define TabGroupHighlight BraveTabGroupHighlight
 
 // TabGroupViews destructor is not virtual, so we can't override the method.
-#define BRAVE_GET_LEADING_TRAILING_GROUP_VIEWS                                 \
+#define BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS                 \
   if (tabs::features::ShouldShowVerticalTabs()) {                              \
     std::vector<views::View*> children_in_same_group;                          \
     base::ranges::copy_if(                                                     \
@@ -36,7 +36,7 @@
 
 #include "src/chrome/browser/ui/views/tabs/tab_group_views.cc"
 
-#undef BRAVE_GET_LEADING_TRAILING_GROUP_VIEWS
+#undef BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS
 #undef TabGroupHighlight
 #undef TabGroupUnderline
 #undef TabGroupHeader
