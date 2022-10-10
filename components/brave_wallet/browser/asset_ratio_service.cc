@@ -250,6 +250,18 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
 
     std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kTransfero) {
+    GURL transfero_url = GURL(kTransferoURL);
+    transfero_url =
+        net::AppendQueryParameter(transfero_url, "walletAddress", address);
+    transfero_url =
+        net::AppendQueryParameter(transfero_url, "baseCurrencyCode", symbol);
+    transfero_url =
+        net::AppendQueryParameter(transfero_url, "baseCurrencyAmount", amount);
+    transfero_url = net::AppendQueryParameter(
+        transfero_url, "baseBlockchain", GetTransferoNetworkName(chain_id));
+
+    std::move(callback).Run(std::move(transfero_url.spec()), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }

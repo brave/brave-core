@@ -40,6 +40,8 @@ constexpr char kSardineClientTokensURL[] =
     "https://api.sardine.ai/v1/auth/client-tokens";
 constexpr char kTransakURL[] = "https://global.transak.com/";
 constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
+constexpr char kTransferoURL[] =
+    "https://app-onramp-development.azurewebsites.net";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletTransactionHasFeeEstimatesError",
@@ -753,16 +755,20 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletBuyWithRamp", IDS_BRAVE_WALLET_BUY_WITH_RAMP},
     {"braveWalletBuyWithSardine", IDS_BRAVE_WALLET_BUY_WITH_SARDINE},
     {"braveWalletBuyWithTransak", IDS_BRAVE_WALLET_BUY_WITH_TRANSAK},
+    {"braveWalletBuyWithTransfero", IDS_BRAVE_WALLET_BUY_WITH_TRANSFERO},
     {"braveWalletBuyRampNetworkName", IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME},
     {"braveWalletBuyWyreName", IDS_BRAVE_WALLET_BUY_WYRE_NAME},
     {"braveWalletBuySardineName", IDS_BRAVE_WALLET_BUY_SARDINE_NAME},
     {"braveWalletBuyTransakName", IDS_BRAVE_WALLET_BUY_TRANSAK_NAME},
+    {"braveWalletBuyTransferoName", IDS_BRAVE_WALLET_BUY_TRANSFERO_NAME},
     {"braveWalletBuyRampDescription", IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION},
     {"braveWalletBuyWyreDescription", IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION},
     {"braveWalletBuySardineDescription",
      IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION},
     {"braveWalletBuyTransakDescription",
      IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION},
+    {"braveWalletBuyTransferoDescription",
+     IDS_BRAVE_WALLET_BUY_TRANSFERO_DESCRIPTION},
     {"braveWalletNetworkFilterAll", IDS_BRAVE_WALLET_NETWORK_FILTER_ALL},
     {"braveWalletAssetFilterLowToHigh",
      IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH},
@@ -1157,7 +1163,9 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
 const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens();
+const std::vector<mojom::BlockchainToken>& GetTransferoBuyTokens();
 const std::string GetSardineNetworkName(const std::string& chain_id);
+const std::string GetTransferoNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 bool HasJupiterFeesForTokenMint(const std::string& mint);
 

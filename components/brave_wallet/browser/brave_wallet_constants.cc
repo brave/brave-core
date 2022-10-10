@@ -508,6 +508,28 @@ const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens() {
   return *tokens;
 }
 
+const std::vector<mojom::BlockchainToken>& GetTransferoBuyTokens() {
+  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
+      {{"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
+        mojom::kMainnetChainId, mojom::CoinType::ETH},
+       {"", "Solana", "", false, false, false, "SOL", 9, true, "", "",
+        mojom::kSolanaMainnet, mojom::CoinType::SOL},
+       {"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "USD Coin", "usdc.png",
+        true, false, false, "USDC", 6, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "USD Coin", "usdc.png",
+        true, false, false, "USDC", 6, true, "", "", mojom::kSolanaMainnet,
+        mojom::CoinType::SOL},
+       {"0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
+        true, false, false, "USDT", 6, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", "Tether", "usdt.png",
+        false, false, false, "USDT", 6, true, "", "", mojom::kSolanaMainnet,
+        mojom::CoinType::SOL}});
+
+  return *tokens;
+}
+
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
   static base::NoDestructor<std::vector<mojom::OnRampCurrency>> currencies({
       {"USD",
@@ -519,6 +541,9 @@ const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
       {"GBP",
        "British Pound Sterling",
        {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
+      {"BRL",
+       "Brazilian Real(Transfero only)",
+       {mojom::OnRampProvider::kTransfero}},
   });
 
   return *currencies;
@@ -539,6 +564,20 @@ const std::string GetSardineNetworkName(const std::string& chain_id) {
     return "";
   } else {
     return sardine_network_pair->second;
+  }
+}
+
+const std::string GetTransferoNetworkName(const std::string& chain_id) {
+  // key = chain_id, value = sardine_network_name
+  static std::map<std::string, std::string> transfero_network_names = {
+      {mojom::kMainnetChainId, "ethereum"}, {mojom::kSolanaMainnet, "solana"}};
+  auto transfero_network_pair = transfero_network_names.find(chain_id.c_str());
+
+  if (transfero_network_pair == transfero_network_names.end()) {
+    // not found
+    return "";
+  } else {
+    return transfero_network_pair->second;
   }
 }
 

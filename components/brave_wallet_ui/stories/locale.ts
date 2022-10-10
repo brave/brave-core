@@ -432,14 +432,17 @@ provideStrings({
   braveWalletBuyWyreName: 'Wyre',
   braveWalletBuySardineName: 'Sardine',
   braveWalletBuyTransakName: 'Transak',
+  braveWalletBuyTransferoName: 'Transfero',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuySardineDescription: 'Instant buy with your bank account. Lower fees.',
   braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
+  braveWalletBuyTransferoDescription: 'Placeholder description to be updated.',
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
+  braveWalletBuyWithTransfero: 'Buy with Transfero',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',

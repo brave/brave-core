@@ -129,6 +129,8 @@ void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
     buy_tokens = &GetSardineBuyTokens();
   else if (provider == mojom::OnRampProvider::kTransak)
     buy_tokens = &GetTransakBuyTokens();
+  else if (provider == mojom::OnRampProvider::kTransfero)
+    buy_tokens = &GetTransferoBuyTokens();
 
   if (buy_tokens == nullptr) {
     std::move(callback).Run(std::move(blockchain_buy_tokens));
