@@ -10,14 +10,11 @@
 
 #define TransformForPinnednessAndOpenness                                  \
   TransformForPinnednessAndOpenness_UnUsed() { return {}; }                \
-  friend std::vector<gfx::Rect> tabs::CalculateVerticalTabBounds(          \
-      const TabLayoutConstants& layout_constants,                          \
-      const std::vector<TabWidthConstraints>& tabs,                        \
-      absl::optional<int> width);                                          \
                                                                            \
  public:                                                                   \
   void set_is_tab_in_group(bool in_group) { is_tab_in_group_ = in_group; } \
   bool is_tab_in_group() const { return is_tab_in_group_; }                \
+  const TabLayoutState& state() const { return state_; }                   \
                                                                            \
  private:                                                                  \
   bool is_tab_in_group_ = false;                                           \

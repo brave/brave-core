@@ -29,9 +29,9 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
                    : 0);
     rect.set_width(width.value_or(tabs.front().GetPreferredWidth()) - rect.x());
     rect.set_height(
-        tab.state_.open() == TabOpen::kOpen ? layout_constants.tab_height : 0);
+        tab.state().open() == TabOpen::kOpen ? layout_constants.tab_height : 0);
     bounds.push_back(rect);
-    if (tab.state_.open() == TabOpen::kOpen)
+    if (tab.state().open() == TabOpen::kOpen)
       rect.set_y(rect.bottom());
   }
   return bounds;
