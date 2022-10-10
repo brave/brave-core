@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -236,9 +237,10 @@ TEST(EthCallDataBuilderTest, GetMany) {
             "697066732e72656469726563745f646f6d61696e2e76616c7565000000000000");
 }
 
-TEST(EthCallDataBuilderTest, GetEthAddr) {
+TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
   {
-    auto call = GetEthAddr("test.crypto", "ETH", mojom::kMainnetChainId);
+    auto call = GetWalletAddr("test.crypto", mojom::CoinType::ETH, "ETH",
+                              mojom::kMainnetChainId);
 
     auto [selector, args] =
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
@@ -253,8 +255,8 @@ TEST(EthCallDataBuilderTest, GetEthAddr) {
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
   {
-    auto call = GetEthAddr("test.crypto", "USDT",
-                           mojom::kBinanceSmartChainMainnetChainId);
+    auto call = GetWalletAddr("test.crypto", mojom::CoinType::ETH, "USDT",
+                              mojom::kBinanceSmartChainMainnetChainId);
 
     auto [selector, args] =
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
@@ -273,7 +275,8 @@ TEST(EthCallDataBuilderTest, GetEthAddr) {
   }
 
   {
-    auto call = GetEthAddr("test.crypto", "QWEQWE", "0x12345");
+    auto call =
+        GetWalletAddr("test.crypto", mojom::CoinType::ETH, "QWEQWE", "0x12345");
 
     auto [selector, args] =
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
@@ -283,6 +286,60 @@ TEST(EthCallDataBuilderTest, GetEthAddr) {
     ASSERT_TRUE(keys_array);
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.QWEQWE.address",
                                                "crypto.ETH.address"}));
+
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    ASSERT_TRUE(name_hash);
+    EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
+  }
+}
+
+TEST(EthCallDataBuilderTest, GetWalletAddr_SOL) {
+  {
+    auto call = GetWalletAddr("test.crypto", mojom::CoinType::SOL, "SOL",
+                              mojom::kSolanaMainnet);
+
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
+    EXPECT_TRUE(base::ranges::equal(selector, kGetManySelector));
+
+    auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
+    ASSERT_TRUE(keys_array);
+    EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.SOL.address"}));
+
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    ASSERT_TRUE(name_hash);
+    EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
+  }
+  {
+    auto call = GetWalletAddr("test.crypto", mojom::CoinType::SOL, "SOL",
+                              mojom::kSolanaTestnet);
+
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
+    EXPECT_TRUE(base::ranges::equal(selector, kGetManySelector));
+
+    auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
+    ASSERT_TRUE(keys_array);
+    EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.SOL.address"}));
+
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    ASSERT_TRUE(name_hash);
+    EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
+  }
+
+  {
+    auto call =
+        GetWalletAddr("test.crypto", mojom::CoinType::SOL, "QWEQWE", "0x12345");
+
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
+    EXPECT_TRUE(base::ranges::equal(selector, kGetManySelector));
+
+    auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
+    ASSERT_TRUE(keys_array);
+    EXPECT_THAT(*keys_array,
+                ElementsAreArray({"crypto.QWEQWE.version.SOLANA.address",
+                                  "crypto.SOL.address"}));
 
     auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
     ASSERT_TRUE(name_hash);

@@ -166,10 +166,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& domain,
       UnstoppableDomainsResolveDnsCallback callback);
 
-  void UnstoppableDomainsGetEthAddr(
+  void UnstoppableDomainsGetWalletAddr(
       const std::string& domain,
       mojom::BlockchainTokenPtr token,
-      UnstoppableDomainsGetEthAddrCallback callback) override;
+      UnstoppableDomainsGetWalletAddrCallback callback) override;
 
   void EnsGetContentHash(const std::string& domain,
                          EnsGetContentHashCallback callback);
@@ -446,7 +446,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnUnstoppableDomainsResolveDns(const std::string& domain,
                                       const std::string& chain_id,
                                       APIRequestResult api_request_result);
-  void OnUnstoppableDomainsGetEthAddr(
+  void OnUnstoppableDomainsGetWalletAddr(
       const unstoppable_domains::WalletAddressKey& key,
       const std::string& chain_id,
       APIRequestResult api_request_result);

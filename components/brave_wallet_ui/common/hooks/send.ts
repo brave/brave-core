@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   BraveWallet,
   GetEthAddrReturnInfo,
+  GetUnstoppableDomainsWalletAddrReturnInfo,
   GetChecksumEthAddressReturnInfo,
   IsBase58EncodedSolanaPubkeyReturnInfo,
   AmountValidationErrorType,
@@ -122,7 +123,7 @@ export default function useSend () {
     // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
-      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetEthAddrReturnInfo) => {
+      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
         if (value.address && value.error === BraveWallet.ProviderError.kSuccess) {
           setAddressError('')
           setAddressWarning('')
@@ -214,6 +215,22 @@ export default function useSend () {
   }, [])
 
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
+    const valueToLowerCase = toAddressOrUrl.toLowerCase()
+
+    // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
+    // If success true, will set toAddress else will return error message.
+    if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
+      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
+        if (value.address && value.error === BraveWallet.ProviderError.kSuccess) {
+          setAddressError('')
+          setAddressWarning('')
+          setToAddress(value.address)
+          return
+        }
+        setNotRegisteredError(valueToLowerCase)
+      }).catch(e => console.log(e))
+      return
+    }
     setToAddress(toAddressOrUrl)
 
     // Do nothing if value is an empty string
@@ -255,7 +272,7 @@ export default function useSend () {
       setAddressWarning('')
       setAddressError('')
     })
-  }, [selectedAccount, fullTokenList])
+  }, [selectedAccount, selectedSendAsset, fullTokenList])
 
   const submitSend = React.useCallback(() => {
     if (!selectedSendAsset) {

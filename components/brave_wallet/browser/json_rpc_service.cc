@@ -1519,10 +1519,10 @@ void JsonRpcService::OnUnstoppableDomainsResolveDns(
   ud_resolve_dns_calls_.SetResult(domain, chain_id, std::move(resolved_url));
 }
 
-void JsonRpcService::UnstoppableDomainsGetEthAddr(
+void JsonRpcService::UnstoppableDomainsGetWalletAddr(
     const std::string& domain,
     mojom::BlockchainTokenPtr token,
-    UnstoppableDomainsGetEthAddrCallback callback) {
+    UnstoppableDomainsGetWalletAddrCallback callback) {
   if (!token || !IsValidUnstoppableDomain(domain)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
@@ -1530,20 +1530,20 @@ void JsonRpcService::UnstoppableDomainsGetEthAddr(
     return;
   }
 
-  unstoppable_domains::WalletAddressKey key = {domain, token->symbol,
-                                               token->chain_id};
+  unstoppable_domains::WalletAddressKey key = {domain, token->coin,
+                                               token->symbol, token->chain_id};
   if (ud_get_eth_addr_calls_.HasCall(key)) {
     ud_get_eth_addr_calls_.AddCallback(key, std::move(callback));
     return;
   }
 
-  auto call_data =
-      unstoppable_domains::GetEthAddr(domain, token->symbol, token->chain_id);
+  auto call_data = unstoppable_domains::GetWalletAddr(
+      domain, token->coin, token->symbol, token->chain_id);
 
   ud_get_eth_addr_calls_.AddCallback(key, std::move(callback));
   for (const auto& chain_id : ud_get_eth_addr_calls_.GetChains()) {
     auto internal_callback =
-        base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetEthAddr,
+        base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetWalletAddr,
                        weak_ptr_factory_.GetWeakPtr(), key, chain_id);
     auto eth_call =
         eth::eth_call(GetUnstoppableDomainsProxyReaderContractAddress(chain_id),
@@ -1554,7 +1554,7 @@ void JsonRpcService::UnstoppableDomainsGetEthAddr(
   }
 }
 
-void JsonRpcService::OnUnstoppableDomainsGetEthAddr(
+void JsonRpcService::OnUnstoppableDomainsGetWalletAddr(
     const unstoppable_domains::WalletAddressKey& key,
     const std::string& chain_id,
     APIRequestResult api_request_result) {

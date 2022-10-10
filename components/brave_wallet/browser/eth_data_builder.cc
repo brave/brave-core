@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
 #include <algorithm>
+#include <map>
 
 #include "base/check.h"
 #include "base/logging.h"
@@ -309,30 +310,53 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
 
 std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
                                               const std::string& chain_id) {
+  auto upper_symbol = base::ToUpperASCII(symbol);
   std::vector<std::string> lookup_keys;
   // crypto.<TICKER>.version.<VERSION>.address
   if (auto version = ChainIdToVersion(chain_id)) {
-    auto key = base::StringPrintf("crypto.%s.version.%s.address",
-                                  base::ToUpperASCII(symbol).c_str(),
-                                  base::ToUpperASCII(*version).c_str());
-    if (key != "crypto.ETH.version.ERC20.address")
-      lookup_keys.push_back(key);
+    if (!(upper_symbol == "ETH" && version == "ERC20")) {
+      // No such key as 'crypto.ETH.version.ERC20.address'. 'crypto.ETH.address'
+      // would be used instead.
+      lookup_keys.push_back(base::StringPrintf("crypto.%s.version.%s.address",
+                                               upper_symbol.c_str(),
+                                               version->c_str()));
+    }
   }
   // crypto.<TICKER>.address
-  lookup_keys.push_back(base::StringPrintf("crypto.%s.address",
-                                           base::ToUpperASCII(symbol).c_str()));
+  if (symbol != "ETH") {
+    lookup_keys.push_back(
+        base::StringPrintf("crypto.%s.address", upper_symbol.c_str()));
+  }
 
   // crypto.ETH.address
-  if (symbol != "ETH")
-    lookup_keys.push_back(kCryptoEthAddressKey);
+  lookup_keys.push_back(kCryptoEthAddressKey);
 
   return lookup_keys;
 }
 
-std::vector<uint8_t> GetEthAddr(const std::string& domain,
-                                const std::string& symbol,
-                                const std::string& chain_id) {
-  auto key_list = MakeEthLookupKeyList(symbol, chain_id);
+std::vector<std::string> MakeSolLookupKeyList(const std::string& symbol) {
+  std::vector<std::string> lookup_keys;
+  // crypto.<TICKER>.version.SOLANA.address
+  if (symbol != "SOL") {
+    lookup_keys.push_back(
+        base::StringPrintf("crypto.%s.version.SOLANA.address",
+                           base::ToUpperASCII(symbol).c_str()));
+  }
+
+  // crypto.SOL.address
+  lookup_keys.push_back(kCryptoSolAddressKey);
+
+  return lookup_keys;
+}
+
+std::vector<uint8_t> GetWalletAddr(const std::string& domain,
+                                   mojom::CoinType coin,
+                                   const std::string& symbol,
+                                   const std::string& chain_id) {
+  DCHECK(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL);
+  auto key_list = coin == mojom::CoinType::ETH
+                      ? MakeEthLookupKeyList(symbol, chain_id)
+                      : MakeSolLookupKeyList(symbol);
 
   // getMany(string[],uint256)
   return eth_abi::TupleEncoder()

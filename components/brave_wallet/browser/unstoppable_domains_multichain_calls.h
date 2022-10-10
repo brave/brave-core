@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_
 
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "base/callback.h"
@@ -16,8 +17,9 @@
 
 namespace brave_wallet::unstoppable_domains {
 
-// (domain, symbol, chain_id)
-using WalletAddressKey = std::tuple<std::string, std::string, std::string>;
+// (domain, coin, symbol, chain_id)
+using WalletAddressKey =
+    std::tuple<std::string, mojom::CoinType, std::string, std::string>;
 
 template <class ResultType>
 class MultichainCall {

@@ -357,6 +357,8 @@ class EthCallHandler {
     return false;
   }
 
+  const EthAddress& to() const { return to_; }
+
   virtual absl::optional<std::string> HandleEthCall(
       eth_abi::Span call_data) = 0;
 
@@ -2317,8 +2319,8 @@ class UDGetManyCallHandler : public EthCallHandler {
 
 class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
  public:
-  using GetEthAddrCallback =
-      mojom::JsonRpcService::UnstoppableDomainsGetEthAddrCallback;
+  using GetWalletAddrCallback =
+      mojom::JsonRpcService::UnstoppableDomainsGetWalletAddrCallback;
   using ResolveDnsCallback =
       JsonRpcService::UnstoppableDomainsResolveDnsCallback;
 
@@ -2396,6 +2398,7 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
 
   mojom::BlockchainTokenPtr MakeToken() {
     auto token = mojom::BlockchainToken::New();
+    token->coin = mojom::CoinType::ETH;
     token->chain_id = mojom::kMainnetChainId;
     token->symbol = "ETH";
     return token;
@@ -2432,15 +2435,15 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   }
 };
 
-TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_PolygonNetworkError) {
-  base::MockCallback<GetEthAddrCallback> callback;
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
+  base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   SetEthTimeoutResponse();
   SetPolygonTimeoutResponse();
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto", MakeToken(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
+                                                     callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -2449,8 +2452,8 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_PolygonNetworkError) {
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   SetEthResponse("brad.crypto", k0x8aaD44Addr);
   SetPolygonTimeoutResponse();
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto", MakeToken(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
+                                                     callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -2459,8 +2462,8 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_PolygonNetworkError) {
                   l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
   SetEthResponse("brad.crypto", k0x8aaD44Addr);
   SetPolygonRawResponse("Not a json");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto", MakeToken(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
+                                                     callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -2468,79 +2471,79 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_PolygonNetworkError) {
               Run("", mojom::ProviderError::kLimitExceeded, "Error!"));
   SetEthResponse("brad.crypto", k0x8aaD44Addr);
   SetPolygonRawResponse(MakeJsonRpcErrorResponse(-32005, "Error!"));
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto", MakeToken(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
+                                                     callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_PolygonResult) {
-  base::MockCallback<GetEthAddrCallback> callback;
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
+  base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("javajobs.crypto", "");
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
-                                                  MakeToken(), callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "javajobs.crypto", MakeToken(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("javajobs.crypto", k0x8aaD44Addr);
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
-                                                  MakeToken(), callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "javajobs.crypto", MakeToken(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("javajobs.crypto", "");
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
-                                                  MakeToken(), callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "javajobs.crypto", MakeToken(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_FallbackToEthMainnet) {
-  base::MockCallback<GetEthAddrCallback> callback;
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnet) {
+  base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback, Run(k0x8aaD44Addr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("brad.crypto", k0x8aaD44Addr);
   SetPolygonResponse("brad.crypto", "");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto", MakeToken(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
+                                                     callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_FallbackToEthMainnetError) {
-  base::MockCallback<GetEthAddrCallback> callback;
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnetError) {
+  base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   SetEthTimeoutResponse();
   SetPolygonResponse("brad.crypto", "");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto", MakeToken(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
+                                                     callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_InvalidDomain) {
-  base::MockCallback<GetEthAddrCallback> callback;
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_InvalidDomain) {
+  base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.test", MakeToken(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.test", MakeToken(),
+                                                     callback.Get());
   EXPECT_EQ(0, url_loader_factory_.NumPending());
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_ManyCalls) {
-  base::MockCallback<GetEthAddrCallback> callback1;
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_ManyCalls) {
+  base::MockCallback<GetWalletAddrCallback> callback1;
   EXPECT_CALL(callback1,
               Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
-  base::MockCallback<GetEthAddrCallback> callback2;
+  base::MockCallback<GetWalletAddrCallback> callback2;
   EXPECT_CALL(callback2,
               Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
-  base::MockCallback<GetEthAddrCallback> callback3;
+  base::MockCallback<GetWalletAddrCallback> callback3;
   EXPECT_CALL(callback3,
               Run(k0x8aaD44Addr, mojom::ProviderError::kSuccess, ""));
 
@@ -2558,37 +2561,38 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_ManyCalls) {
 
   EXPECT_EQ(0, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(0, polygon_getmany_call_handler_->calls_number());
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
-                                                  MakeToken(), callback1.Get());
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
-                                                  MakeToken(), callback2.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "javajobs.crypto", MakeToken(), callback1.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "javajobs.crypto", MakeToken(), callback2.Get());
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(1, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(1, polygon_getmany_call_handler_->calls_number());
   testing::Mock::VerifyAndClearExpectations(&callback1);
   testing::Mock::VerifyAndClearExpectations(&callback2);
 
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("another.crypto", MakeToken(),
-                                                  callback3.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "another.crypto", MakeToken(), callback3.Get());
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(2, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(2, polygon_getmany_call_handler_->calls_number());
   testing::Mock::VerifyAndClearExpectations(&callback3);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_MultipleKeys) {
-  base::MockCallback<GetEthAddrCallback> callback;
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
+  base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback, Run("ethaddr1", mojom::ProviderError::kSuccess, ""));
 
   auto token = mojom::BlockchainToken::New();
   token->chain_id = mojom::kBinanceSmartChainMainnetChainId;
   token->symbol = "USDT";
+  token->coin = mojom::CoinType::ETH;
 
   // Default fallback is always crypto.ETH.address.
   eth_mainnet_getmany_call_handler_->AddItem("test.crypto",
                                              "crypto.ETH.address", "ethaddr1");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("test.crypto", token.Clone(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "test.crypto", token.Clone(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -2596,8 +2600,8 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_MultipleKeys) {
   EXPECT_CALL(callback, Run("ethaddr2", mojom::ProviderError::kSuccess, ""));
   eth_mainnet_getmany_call_handler_->AddItem("test.crypto",
                                              "crypto.USDT.address", "ethaddr2");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("test.crypto", token.Clone(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "test.crypto", token.Clone(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -2605,8 +2609,8 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_MultipleKeys) {
   EXPECT_CALL(callback, Run("ethaddr3", mojom::ProviderError::kSuccess, ""));
   eth_mainnet_getmany_call_handler_->AddItem(
       "test.crypto", "crypto.USDT.version.BEP20.address", "ethaddr3");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("test.crypto", token.Clone(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "test.crypto", token.Clone(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -2614,8 +2618,8 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_MultipleKeys) {
   EXPECT_CALL(callback, Run("polyaddr", mojom::ProviderError::kSuccess, ""));
   polygon_getmany_call_handler_->AddItem("test.crypto", "crypto.USDT.address",
                                          "polyaddr");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("test.crypto", token.Clone(),
-                                                  callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "test.crypto", token.Clone(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -2941,7 +2945,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
 }
 
-TEST_F(JsonRpcServiceUnitTest, GetEthAddrInvalidDomain) {
+TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
   const std::vector<std::string> invalid_domains = {"", ".eth", "-brave.eth",
                                                     "brave-.eth", "b.eth"};
 
@@ -2957,13 +2961,14 @@ TEST_F(JsonRpcServiceUnitTest, GetEthAddrInvalidDomain) {
     }
 
     {
-      base::MockCallback<JsonRpcService::UnstoppableDomainsGetEthAddrCallback>
+      base::MockCallback<
+          JsonRpcService::UnstoppableDomainsGetWalletAddrCallback>
           callback;
       EXPECT_CALL(callback,
                   Run("", mojom::ProviderError::kInvalidParams,
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
 
-      json_rpc_service_->UnstoppableDomainsGetEthAddr(
+      json_rpc_service_->UnstoppableDomainsGetWalletAddr(
           domain, mojom::BlockchainToken::New(), callback.Get());
       base::RunLoop().RunUntilIdle();
     }
@@ -4626,39 +4631,6 @@ TEST_F(JsonRpcServiceUnitTest, SendFilecoinTransaction) {
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
-class EthCallHandler {
- public:
-  EthCallHandler(const EthAddress& to, const eth_abi::Bytes4& selector)
-      : to_(to), selectors_({selector}) {}
-  EthCallHandler(const EthAddress& to,
-                 const std::vector<eth_abi::Bytes4>& selectors)
-      : to_(to), selectors_(selectors) {}
-  virtual ~EthCallHandler() = default;
-
-  bool CallSupported(const EthAddress& to, eth_abi::Span call_data) {
-    if (to != to_)
-      return false;
-
-    auto [selector, _] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
-
-    for (const auto& s : selectors_) {
-      if (base::ranges::equal(s, selector))
-        return true;
-    }
-    return false;
-  }
-
-  const EthAddress& to() const { return to_; }
-
-  virtual absl::optional<std::string> HandleEthCall(
-      eth_abi::Span call_data) = 0;
-
- protected:
-  EthAddress to_;
-  std::vector<eth_abi::Bytes4> selectors_;
-};
-
 class EnsGetResolverHandler : public EthCallHandler {
  public:
   EnsGetResolverHandler(const std::string& host_name,
@@ -5085,7 +5057,7 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 #endif
 };
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
@@ -5093,7 +5065,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Subdomain) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback, Run(offchain_subdomain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
@@ -5102,7 +5074,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Subdomain) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Subdomain_NoEnsip10Support) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain_NoEnsip10Support) {
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
 
@@ -5115,7 +5087,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Subdomain_NoEnsip10Support) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoResolver) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoResolver) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
               Run("", false, mojom::ProviderError::kInternalError,
@@ -5125,7 +5097,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoResolver) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support) {
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
 
@@ -5136,7 +5108,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support_GoOffchain) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support_GoOffchain) {
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
   // addr(bytes32) will go offchain.
@@ -5149,7 +5121,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support_GoOffchain) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Gateway500Error) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Gateway500Error) {
   // Gateway request fails.
   offchain_gateway_handler_->SetRespondWith500();
 
@@ -5161,7 +5133,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Gateway500Error) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_GatewayNoRecord) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_GatewayNoRecord) {
   // No data record in gateway.
   offchain_gateway_handler_->SetRespondWithNoRecord();
 
@@ -5173,7 +5145,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_GatewayNoRecord) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Consent) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
   EXPECT_EQ(
       decentralized_dns::EnsOffchainResolveMethod::kAsk,
       decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -90,10 +91,12 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
 
 std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
                                               const std::string& chain_id);
+std::vector<std::string> MakeSolLookupKeyList(const std::string& symbol);
 
-std::vector<uint8_t> GetEthAddr(const std::string& domain,
-                                const std::string& symbol,
-                                const std::string& chain_id);
+std::vector<uint8_t> GetWalletAddr(const std::string& domain,
+                                   mojom::CoinType coin,
+                                   const std::string& symbol,
+                                   const std::string& chain_id);
 
 }  // namespace unstoppable_domains
 
