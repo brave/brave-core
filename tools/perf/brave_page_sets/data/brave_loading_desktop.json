@@ -1,0 +1,36 @@
+{
+    "archives": {
+        "BraveSearch_cold": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "BraveSearch_warm": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "Economist_cold": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "Economist_warm": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "IGN_cold": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "IGN_warm": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "example.com_cold": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "example.com_warm": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "wikipedia.com_cold": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        },
+        "wikipedia.com_warm": {
+            "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
+        }
+    },
+    "description": "Describes the Web Page Replay archives for a story set. Don't edit by hand! Use record_wpr for updating.",
+    "platform_specific": true
+}

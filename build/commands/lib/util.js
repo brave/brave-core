@@ -19,18 +19,27 @@ async function applyPatches() {
   const coreRepoPath = config.braveCoreDir
   const patchesPath = path.join(coreRepoPath, 'patches')
   const v8PatchesPath = path.join(patchesPath, 'v8')
+  const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
+
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
+  const catapultRepoPath = path.join(chromiumRepoPath, 'third_party', 'catapult')
+
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
+  const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
+  const catapultPatchStatus = await catapultPatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
   v8PatchStatus.forEach(s => s.path = path.join('v8', s.path))
-  const allPatchStatus = chromiumPatchStatus.concat(v8PatchStatus)
+  catapultPatchStatus.forEach(
+    s => s.path = path.join('third_party', 'catapult', s.path))
+  const allPatchStatus =
+    chromiumPatchStatus.concat(v8PatchStatus).concat(catapultPatchStatus)
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)
