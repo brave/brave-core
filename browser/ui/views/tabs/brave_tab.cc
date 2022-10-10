@@ -51,9 +51,9 @@ void BraveTab::ActiveStateChanged() {
 }
 
 absl::optional<SkColor> BraveTab::GetGroupColor() const {
+  // Hide tab border with group color as it doesn't go well with vertical tabs.
   if (tabs::features::ShouldShowVerticalTabs())
     return {};
 
-  // Hide tab border with group color as it doesn't go well with vertical tabs.
   return Tab::GetGroupColor();
 }
