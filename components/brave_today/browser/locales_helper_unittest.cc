@@ -45,6 +45,8 @@ class LocalesHelperTest : public testing::Test {
         {brave_today::features::kBraveNewsV2Feature});
   }
 
+  ~LocalesHelperTest() override = default;
+
  private:
   base::test::ScopedFeatureList features_;
 };
@@ -63,8 +65,8 @@ TEST_F(LocalesHelperTest, NoV2UsesRegionUrl) {
   features.InitAndDisableFeature(brave_today::features::kBraveNewsV2Feature);
   auto locales = GetMinimalLocalesSet({"en_US", "ja_JP"},
                                       MakePublishers({{"en_NZ"}, {"es_MX"}}));
-  ASSERT_EQ(1u, locales.size());
-  EXPECT_EQ(brave_today::GetV1RegionUrlPart(), locales.front());
+  EXPECT_EQ(1u, locales.size());
+  EXPECT_TRUE(locales.contains(brave_today::GetV1RegionUrlPart()));
 }
 
 // Even with no subscribed publishers, we should feeds for all locales we have

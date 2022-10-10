@@ -232,14 +232,15 @@ void FeedController::UpdateIfRemoteChanged() {
       [](FeedController* controller, Publishers publishers) {
         auto locales = GetMinimalLocalesSet(
             controller->channels_controller_->GetChannelLocales(), publishers);
-        VLOG(1) << "Checking for updates to ["
-                << base::JoinString(locales, ", ") << "]";
+        VLOG(1) << "Going to fetch feed items for " << locales.size()
+                << " locales.";
         auto check_completed_callback = base::BarrierCallback<bool>(
             locales.size(),
             base::BindOnce(
                 [](FeedController* controller, std::vector<bool> updates) {
-                  if (std::any_of(updates.begin(), updates.end(),
-                                  [](bool has_update) { return has_update; })) {
+                  if (base::ranges::any_of(updates, [](bool has_update) {
+                        return has_update;
+                      })) {
                     // TODO(fallaciousreasoning): Only fetch the specific feed
                     // which changes.
                     controller->EnsureFeedIsUpdating();
@@ -311,8 +312,8 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
          Publishers publishers) {
         auto locales = GetMinimalLocalesSet(
             controller->channels_controller_->GetChannelLocales(), publishers);
-        VLOG(1) << "Going to fetch feed items for ["
-                << base::JoinString(locales, ", ") << "]";
+        VLOG(1) << "Going to fetch feed items for " << locales.size()
+                << " locales.";
         auto locales_fetched_callback = base::BarrierCallback<FeedItems>(
             locales.size(),
             base::BindOnce(
@@ -325,12 +326,10 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
                   FeedItems all_feed_items;
                   all_feed_items.reserve(total_size);
                   for (auto& collection : feed_items_unflat) {
-                    auto it = collection.begin();
-                    while (it != collection.end()) {
-                      all_feed_items.insert(all_feed_items.end(),
-                                            *std::make_move_iterator(it));
-                      it = collection.erase(it);
-                    }
+                    all_feed_items.insert(
+                        all_feed_items.end(),
+                        std::make_move_iterator(collection.begin()),
+                        std::make_move_iterator(collection.end()));
                   }
                   std::move(callback).Run(std::move(all_feed_items));
                 },

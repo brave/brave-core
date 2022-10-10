@@ -243,4 +243,16 @@ TEST_F(ChannelsControllerTest, SubscribedChannelLocalesIncluded) {
   EXPECT_EQ("ja_JA", locales[1]);
 }
 
+TEST_F(ChannelsControllerTest, LocaleWithNoSubscribedChannelsIsNotIncluded) {
+  channels_controller_.SetChannelSubscribed("en_US", "Test", true);
+
+  auto locales = channels_controller_.GetChannelLocales();
+  EXPECT_EQ(1u, locales.size());
+  EXPECT_EQ("en_US", locales[0]);
+
+  channels_controller_.SetChannelSubscribed("en_US", "Test", false);
+  locales = channels_controller_.GetChannelLocales();
+  EXPECT_EQ(0u, locales.size());
+}
+
 }  // namespace brave_news

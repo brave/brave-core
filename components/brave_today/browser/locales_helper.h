@@ -25,7 +25,7 @@ base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers);
 // As such, it isn't guaranteed to be the absolutely minimum set of locales, but
 // should work well enough for our purposes.
 // Complexity is O(subscribed_publishers * subscribed_locales).
-std::vector<std::string> GetMinimalLocalesSet(
+base::flat_set<std::string> GetMinimalLocalesSet(
     const base::flat_set<std::string>& channel_locales,
     const Publishers& publishers);
 }  // namespace brave_news
