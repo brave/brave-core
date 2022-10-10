@@ -49,11 +49,13 @@ export interface Props {
   isDepositSupported: (coinMarket: BraveWallet.CoinMarket) => boolean
   onClickBuy: (coinMarket: BraveWallet.CoinMarket) => void
   onClickDeposit: (coinMarket: BraveWallet.CoinMarket) => void
+  fiatCurrency: string
 }
 
 const renderCells = (
   coinMarkDataItem: BraveWallet.CoinMarket,
   buttonOptions: AccountButtonOptionsObjectType[],
+  fiatCurrency: string,
   onClickBuy: (coinMarket: BraveWallet.CoinMarket) => void,
   onClickDeposit: (coinMarket: BraveWallet.CoinMarket) => void
 ) => {
@@ -69,10 +71,10 @@ const renderCells = (
     totalVolume
   } = coinMarkDataItem
 
-  const formattedPrice = new Amount(currentPrice).formatAsFiat('USD')
+  const formattedPrice = new Amount(currentPrice).formatAsFiat(fiatCurrency)
   const formattedPercentageChange = new Amount(priceChangePercentage24h).value?.absoluteValue().toFixed(2) + '%'
-  const formattedMarketCap = new Amount(marketCap).abbreviate(1, 'USD', 'billion')
-  const formattedVolume = new Amount(totalVolume).abbreviate(1, 'USD')
+  const formattedMarketCap = new Amount(marketCap).abbreviate(1, fiatCurrency, 'billion')
+  const formattedVolume = new Amount(totalVolume).abbreviate(1, fiatCurrency)
   const isDown = priceChange24h < 0
 
   const cellsContent: React.ReactNode[] = [
@@ -157,6 +159,7 @@ export const MarketDataTable = (props: Props) => {
     headers,
     coinMarketData,
     showEmptyState,
+    fiatCurrency,
     onSort,
     onSelectCoinMarket,
     isBuySupported,
@@ -173,7 +176,7 @@ export const MarketDataTable = (props: Props) => {
       const buttonOptions = buySupported ? [BuyButtonOption, DepositButtonOption] : depositSupported ? [DepositButtonOption] : []
       return {
         id: `coin-row-${coinMarketItem.symbol}-${coinMarketItem.marketCapRank}`,
-        content: renderCells(coinMarketItem, buttonOptions, onClickBuy, onClickDeposit),
+        content: renderCells(coinMarketItem, buttonOptions, fiatCurrency, onClickBuy, onClickDeposit),
         data: coinMarketItem,
         onClick: onSelectCoinMarket
       }
