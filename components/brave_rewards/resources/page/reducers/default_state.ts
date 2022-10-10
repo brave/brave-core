@@ -29,6 +29,7 @@ export function defaultState (): Rewards.State {
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
+      subdivisions: [],
       adsUIEnabled: false,
       adsIsSupported: false,
       needsBrowserUpgradeToServeAds: false,

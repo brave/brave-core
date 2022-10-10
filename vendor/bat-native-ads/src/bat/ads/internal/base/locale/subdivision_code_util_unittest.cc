@@ -31,4 +31,16 @@ TEST(BatAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
   EXPECT_EQ("CA", subdivision_code);
 }
 
+TEST(BatAdsSubdivisionCodeUtilTest,
+     IsSupportedCountryCodeForSubdivisionTargeting) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(locale::IsSupportedCountryCodeForSubdivisionTargeting("US"));
+  EXPECT_TRUE(locale::IsSupportedCountryCodeForSubdivisionTargeting("CA"));
+  EXPECT_FALSE(locale::IsSupportedCountryCodeForSubdivisionTargeting("ES"));
+}
+
 }  // namespace ads
