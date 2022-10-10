@@ -26,11 +26,6 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const std::vector<TabWidthConstraints>& tabs,
     absl::optional<int> width);
 
-// This function's definition is in chromium_src/../tab_strip_layout_helper.cc
-// Please see the comment there for why.
-bool FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths,
-                   TabStripLayoutHelper& helper);
-
 }  // namespace tabs
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_LAYOUT_HELPER_H_

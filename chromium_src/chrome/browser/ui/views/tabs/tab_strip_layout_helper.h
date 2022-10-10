@@ -14,9 +14,7 @@
                                                                                \
  private:                                                                      \
   friend class BraveTabContainer;                                              \
-  friend bool tabs::FillGroupInfo(                                             \
-      std::vector<TabWidthConstraints>& tab_widths,                            \
-      TabStripLayoutHelper& helper);                                           \
+  bool FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths);            \
   bool use_vertical_tabs_ = false;                                             \
                                                                                \
  public:                                                                       \
