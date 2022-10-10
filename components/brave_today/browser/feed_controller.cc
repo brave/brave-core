@@ -279,8 +279,7 @@ void FeedController::UpdateIfRemoteChanged() {
                     }
                     VLOG(1) << "Comparing feed etag - "
                                "Original: "
-                            << current_etag
-                            << " Remote: " << etag;
+                            << current_etag << " Remote: " << etag;
                     // Compare remote etag with last feed fetch.
                     if (current_etag == etag) {
                       // Nothing to do
@@ -340,7 +339,8 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
         for (const auto& locale : locales) {
           // Handle the response
           auto response_handler = base::BindOnce(
-              [](FeedController* controller, std::string locale, GetFeedItemsCallback callback,
+              [](FeedController* controller, std::string locale,
+                 GetFeedItemsCallback callback,
                  api_request_helper::APIRequestResult api_request_result) {
                 std::string etag;
                 if (api_request_result.headers().contains(kEtagHeaderKey)) {

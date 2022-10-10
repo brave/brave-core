@@ -59,7 +59,8 @@ std::vector<std::string> ChannelsController::GetChannelLocales() {
   auto* pref = prefs_->GetDictionary(prefs::kBraveNewsChannels);
 
   for (const auto it : pref->DictItems()) {
-    if (it.second.DictEmpty()) continue;
+    if (it.second.DictEmpty())
+      continue;
     result.push_back(it.first);
   }
 

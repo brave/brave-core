@@ -4,9 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_today/browser/locales_helper.h"
+
 #include <string>
 #include <vector>
-#include "absl/types/optional.h"
+
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_list.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 namespace {
