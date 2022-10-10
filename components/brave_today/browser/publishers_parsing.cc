@@ -33,26 +33,28 @@ bool ParseCombinedPublisherList(const std::string& json,
     return false;
   }
   for (const base::Value& publisher_raw : records_v->GetList()) {
-    auto publisher = brave_news::mojom::Publisher::New();
-    publisher->publisher_id = *publisher_raw.FindStringKey("publisher_id");
-    publisher->type = mojom::PublisherType::COMBINED_SOURCE;
-    publisher->publisher_name = *publisher_raw.FindStringKey("publisher_name");
+    const auto& publisher_dict = publisher_raw.GetDict();
 
-    publisher->category_name = *publisher_raw.FindStringKey("category");
-    auto* channels_raw = publisher_raw.GetDict().FindList("channels");
+    auto publisher = brave_news::mojom::Publisher::New();
+    publisher->publisher_id = *publisher_dict.FindString("publisher_id");
+    publisher->type = mojom::PublisherType::COMBINED_SOURCE;
+    publisher->publisher_name = *publisher_dict.FindString("publisher_name");
+
+    publisher->category_name = *publisher_dict.FindString("category");
+    auto* channels_raw = publisher_dict.FindList("channels");
     if (channels_raw) {
       for (const auto& channel : *channels_raw) {
         publisher->channels.push_back(channel.GetString());
       }
     }
 
-    publisher->is_enabled = publisher_raw.FindBoolKey("enabled").value_or(true);
-    GURL feed_source(*publisher_raw.FindStringKey("feed_url"));
+    publisher->is_enabled = publisher_dict.FindBool("enabled").value_or(true);
+    GURL feed_source(*publisher_dict.FindString("feed_url"));
     if (feed_source.is_valid()) {
       publisher->feed_source = feed_source;
     }
 
-    auto* locales_raw = publisher_raw.GetDict().FindList("locales");
+    auto* locales_raw = publisher_dict.FindList("locales");
     if (locales_raw) {
       for (const auto& locale : *locales_raw) {
         if (!locale.is_string())
@@ -61,7 +63,7 @@ bool ParseCombinedPublisherList(const std::string& json,
       }
     }
 
-    std::string site_url_raw = *publisher_raw.FindStringKey("site_url");
+    std::string site_url_raw = *publisher_dict.FindString("site_url");
     if (!base::StartsWith(site_url_raw, "https://")) {
       site_url_raw = "https://" + site_url_raw;
     }
@@ -73,22 +75,21 @@ bool ParseCombinedPublisherList(const std::string& json,
     }
     publisher->site_url = site_url;
 
-    auto* favicon_url_raw = publisher_raw.GetDict().FindString("favicon_url");
+    auto* favicon_url_raw = publisher_dict.FindString("favicon_url");
     if (favicon_url_raw) {
       if (GURL favicon_url(*favicon_url_raw); favicon_url.is_valid()) {
         publisher->favicon_url = favicon_url;
       }
     }
 
-    auto* cover_url_raw = publisher_raw.GetDict().FindString("cover_url");
+    auto* cover_url_raw = publisher_dict.FindString("cover_url");
     if (cover_url_raw) {
       if (GURL cover_url(*cover_url_raw); cover_url.is_valid()) {
         publisher->cover_url = cover_url;
       }
     }
 
-    auto* background_color =
-        publisher_raw.GetDict().FindString("background_color");
+    auto* background_color = publisher_dict.FindString("background_color");
     if (background_color) {
       publisher->background_color = *background_color;
     }
