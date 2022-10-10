@@ -16,6 +16,7 @@ import Customize from './options/customize'
 import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
 import { useBraveNews } from '../../braveNews/Context'
+import { loadTimeData } from '../../../../common/loadTimeData'
 
 function getFeedHashForCache (feed?: Feed) {
   return feed ? feed.hash : ''
@@ -27,7 +28,7 @@ export default function BraveTodayContent (props: Props) {
   const { feed, publishers } = props
 
   const dispatch = useDispatch()
-  const { setCustomizePage: setPage } = useBraveNews()
+  const { setCustomizePage } = useBraveNews()
 
   const previousYAxis = React.useRef(0)
   const [showOptions, setShowOptions] = React.useState(false)
@@ -220,7 +221,9 @@ export default function BraveTodayContent (props: Props) {
               )
             })
           }
-          <Customize onCustomizeBraveToday={() => setPage('news')} show={showOptions} />
+          <Customize onCustomizeBraveToday={() => loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled')
+            ? setCustomizePage('news')
+            : props.onCustomizeBraveToday()} show={showOptions} />
           <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
           <div
             ref={setScrollTriggerRef}
@@ -228,7 +231,7 @@ export default function BraveTodayContent (props: Props) {
               width: '1px',
               height: '1px',
               position: 'absolute',
-              bottom: '900px'
+              bottom: '0'
             }}
           />
         </>

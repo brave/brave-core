@@ -97,7 +97,7 @@ const Content = styled.div`
 
 export default function Configure () {
   const [enabled, setEnabled] = useNewTabPref('isBraveTodayOptedIn')
-  const { setCustomizePage: setPage } = useBraveNews()
+  const { setCustomizePage } = useBraveNews()
 
   let content: JSX.Element
   if (!enabled) {
@@ -109,7 +109,7 @@ export default function Configure () {
   return (
     <Grid>
       <BackButtonContainer>
-        <BackButton onClick={() => setPage(null)}>
+        <BackButton onClick={() => setCustomizePage(null)}>
           {BackArrow}
           <BackButtonText>
             {formatMessage(getLocale('braveNewsBackToDashboard'), {
@@ -121,7 +121,7 @@ export default function Configure () {
         </BackButton>
       </BackButtonContainer>
       <Header direction="row-reverse" gap={12} align="center" justify="space-between">
-        <CloseButton onClick={() => setPage(null)}>{Cross}</CloseButton>
+        <CloseButton onClick={() => setCustomizePage(null)}>{Cross}</CloseButton>
         {enabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveTodayTitle')}</HeaderText>
           <Toggle isOn={enabled} onChange={setEnabled} />

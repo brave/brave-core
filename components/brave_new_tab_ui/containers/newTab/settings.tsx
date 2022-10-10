@@ -203,7 +203,7 @@ export default class Settings extends React.PureComponent<Props, State> {
 
   setActiveTab (activeTab: TabType) {
     if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveToday) {
-      this.context.setPage('news')
+      this.context.setCustomizePage('news')
       return
     }
 
