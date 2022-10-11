@@ -59,7 +59,7 @@ export function useGetUnpaddedImage (paddedUrl: string | undefined, onLoaded?: (
 
       // Only revoke the URL if we aren't using the cache.
       return () => {
-        if (useCache) URL.revokeObjectURL(blobUrl)
+        if (!useCache) URL.revokeObjectURL(blobUrl)
       }
   }, [paddedUrl])
   return unpaddedUrl

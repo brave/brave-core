@@ -211,7 +211,8 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   // - Preferences
   // - PrivatePage properties
   auto plural_string_handler = std::make_unique<PluralStringHandler>();
-  plural_string_handler->AddLocalizedString("braveNewsSourceCount", IDS_BRAVE_NEWS_SOURCE_COUNT);
+  plural_string_handler->AddLocalizedString("braveNewsSourceCount",
+                                            IDS_BRAVE_NEWS_SOURCE_COUNT);
   web_ui()->AddMessageHandler(std::move(plural_string_handler));
 
   web_ui()->RegisterMessageCallback(

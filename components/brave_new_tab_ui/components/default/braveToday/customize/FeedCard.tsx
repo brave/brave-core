@@ -95,13 +95,13 @@ export default function FeedCard (props: {
       <StyledFollowButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
 
       {/*
-                Use whether or not we're following this element as the key, so
-                React remounts the component when we toggle following and plays
-                the animation.
+        Use whether or not we're following this element as the key, so
+        React remounts the component when we toggle following and plays
+        the animation.
 
-                We don't display the overlay unless we've toggled this publisher
-                so we don't play the pulse animation on first load.
-            */}
+        We don't display the overlay unless we've toggled this publisher
+        so we don't play the pulse animation on first load.
+      */}
       {changeCount > 1 && <HeartOverlay key={changeCount} align="center" justify="center">
         <HeartContainer>
           {subscribed ? Heart : HeartOutline}
