@@ -1,24 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index e061fd281575bd6f60f0f0ec0483251ea17d84b1..b08cf4bb1b68b53c03b3eaa36b84007d8a95b3e3 100644
+index 360a4f9c1a270cf307c3a46e391d828bd6271877..8f97b3e252ceb064a867eca5e42565f3866e4614 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-@@ -187,6 +187,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
-       float linear_value = source[i];
-       double db_mag = audio_utilities::LinearToDecibels(linear_value);
-       destination[i] = static_cast<float>(db_mag);
-+      BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
-     }
-   }
- }
-@@ -229,6 +230,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
-       // from 0 to UCHAR_MAX.
-       double scaled_value =
-           UCHAR_MAX * (db_mag - min_decibels) * range_scale_factor;
-+      BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA
- 
-       // Clip to valid range.
-       if (scaled_value < 0) {
-@@ -287,6 +289,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+@@ -149,6 +149,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
                         kInputBufferSize];
  
        destination[i] = value;
@@ -26,7 +10,7 @@ index e061fd281575bd6f60f0f0ec0483251ea17d84b1..b08cf4bb1b68b53c03b3eaa36b84007d
      }
    }
  }
-@@ -312,6 +315,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
+@@ -174,6 +175,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
        float value =
            input_buffer[(i + write_index - fft_size + kInputBufferSize) %
                         kInputBufferSize];
@@ -34,3 +18,19 @@ index e061fd281575bd6f60f0f0ec0483251ea17d84b1..b08cf4bb1b68b53c03b3eaa36b84007d
  
        // Scale from nominal -1 -> +1 to unsigned byte.
        double scaled_value = 128 * (value + 1);
+@@ -301,6 +303,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
+       // from 0 to UCHAR_MAX.
+       double scaled_value =
+           UCHAR_MAX * (db_mag - min_decibels) * range_scale_factor;
++      BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA
+ 
+       // Clip to valid range.
+       if (scaled_value < 0) {
+@@ -327,6 +330,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
+       float linear_value = source[i];
+       double db_mag = audio_utilities::LinearToDecibels(linear_value);
+       destination[i] = static_cast<float>(db_mag);
++      BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
+     }
+   }
+ }

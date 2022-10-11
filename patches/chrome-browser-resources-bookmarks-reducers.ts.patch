@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/reducers.ts b/chrome/browser/resources/bookmarks/reducers.ts
-index 4a20202914f56bc3073a15b0462411806be12614..c8b3dd6ae17022f093689357f35b7a730387d887 100644
+index b4020001fa4872979f9e536d83a9b6d969cb12dc..61021668416b65e49f3d49e2a6deb52e495d15c7 100644
 --- a/chrome/browser/resources/bookmarks/reducers.ts
 +++ b/chrome/browser/resources/bookmarks/reducers.ts
 @@ -193,6 +193,9 @@ function editBookmark(nodes: NodeMap, action: EditBookmarkAction): NodeMap {

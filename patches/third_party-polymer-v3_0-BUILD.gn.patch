@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index b1f40eeb69edec68fdafafa1cfb6a946ef0f3931..11670aea1c1b3be00f131ea82a4b63f0ad96bb82 100644
+index accdd8fad34dcbdc28ca92fa7d3f2a730d8ffa3a..9ec0e9bc9a1e36f3d854eda4c7574fea765e9d82 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -48,7 +48,7 @@ generate_grd("build_grdp") {

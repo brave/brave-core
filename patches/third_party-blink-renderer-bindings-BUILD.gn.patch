@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/BUILD.gn b/third_party/blink/renderer/bindings/BUILD.gn
-index c468bf2c8fa437e6f8152c2a530cd354b593c20a..312c7620415baf56e8182f30357f7775aeef3d18 100644
+index 1e210f47b49e90d3f17b6057a133b4b8398167e3..eb4f2d45ff4f1affe4a9be2b1f02afaffe6d82d8 100644
 --- a/third_party/blink/renderer/bindings/BUILD.gn
 +++ b/third_party/blink/renderer/bindings/BUILD.gn
 @@ -173,6 +173,7 @@ template("generate_bindings") {

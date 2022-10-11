@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
-index 23b7d12f3c824deaf6734a33bc9ff6a4392d71a1..8f9aea5f58a84ef5e0c8c435844d72d1dc295f4f 100644
+index e8a568bbbdde0dbcca9ba9d929fc0e314e74e53c..437253d9f077d4a5cb69297dcba7c092874b7304 100644
 --- a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
-@@ -90,6 +90,7 @@ ScheduledAction::ScheduledAction(ScriptState* script_state,
+@@ -91,6 +91,7 @@ ScheduledAction::ScheduledAction(ScriptState* script_state,
    } else {
      UseCounter::Count(target, WebFeature::kScheduledActionIgnored);
    }
