@@ -27,7 +27,14 @@ BraveTabContainer::BraveTabContainer(
       tabs::features::ShouldShowVerticalTabs());
 }
 
-BraveTabContainer::~BraveTabContainer() = default;
+BraveTabContainer::~BraveTabContainer() {
+  // When the last tab is closed and tab strip is being destructed, the
+  // animation for the last removed tab could have been scheduled but not
+  // finished yet. In this case, stop the animation before checking if all
+  // closed tabs were cleaned up from OnTabCloseAnimationCompleted().
+  CancelAnimation();
+  DCHECK(closing_tabs_.empty()) << "There are dangling closed tabs.";
+}
 
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   if (!tabs::features::ShouldShowVerticalTabs())
