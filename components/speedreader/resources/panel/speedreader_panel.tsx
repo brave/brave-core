@@ -11,7 +11,7 @@ import { panelHandler } from './api/browser'
 
 import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
-import MainPanel from './components/main-panel'
+import Container from './container'
 
 function App () {
   React.useEffect(() => {
@@ -31,7 +31,7 @@ function App () {
   return (
     <BraveCoreThemeProvider>
       <PanelWrapper>
-        <MainPanel />
+        <Container />
       </PanelWrapper>
     </BraveCoreThemeProvider>
   )
