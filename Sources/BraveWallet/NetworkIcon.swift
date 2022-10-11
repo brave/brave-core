@@ -18,7 +18,7 @@ struct NetworkIcon: View {
         Image(iconName, bundle: .module)
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .grayscale(grayscale ? 1 : 0)
+          .saturation(grayscale ? 0 : 1)
       } else if let urlString = network.iconUrls.first,
                 let url = URL(string: urlString) {
         WebImageReader(url: url) { image, isFinished in
