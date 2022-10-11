@@ -21,21 +21,21 @@ const Subtitle = styled.span`
 `
 
 export default function SourcesList () {
-    const publishers = usePublishers({ subscribed: true })
-    const channels = useChannels({ subscribedOnly: true })
+  const publishers = usePublishers({ subscribed: true })
+  const channels = useChannels({ subscribedOnly: true })
 
-    const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString('braveNewsSourceCount', publishers.length + channels.length), [publishers.length, channels.length])
+  const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString('braveNewsSourceCount', publishers.length + channels.length), [publishers.length, channels.length])
 
-    return <div>
-        <Flex direction="row" justify="space-between" align="center">
-            <Title>{getLocale('braveNewsFeedsHeading')}</Title>
-            <Subtitle>{sourcesCount}</Subtitle>
-        </Flex>
-        <Flex direction="column">
-            {channels.map(c => <ChannelListEntry key={c.channelName} channelId={c.channelName} />)}
-            {publishers.map((p) => (
-                <FeedListEntry key={p.publisherId} publisherId={p.publisherId} />
-            ))}
-        </Flex>
-    </div>
+  return <div>
+    <Flex direction="row" justify="space-between" align="center">
+      <Title>{getLocale('braveNewsFeedsHeading')}</Title>
+      <Subtitle>{sourcesCount}</Subtitle>
+    </Flex>
+    <Flex direction="column">
+      {channels.map(c => <ChannelListEntry key={c.channelName} channelId={c.channelName} />)}
+      {publishers.map((p) => (
+        <FeedListEntry key={p.publisherId} publisherId={p.publisherId} />
+      ))}
+    </Flex>
+  </div>
 }

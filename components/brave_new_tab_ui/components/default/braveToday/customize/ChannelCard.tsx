@@ -6,18 +6,18 @@ import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'
 
 const Container = styled(Flex) <{ backgroundColor: string }>`
-    height: 80px;
-    font-weight: 600;
-    font-size: 14px;
-    border-radius: 8px;
-    background: ${p => p.backgroundColor};
-    padding: 16px 20px;
-    color: white;
-    position: relative;
+  height: 80px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+  background: ${p => p.backgroundColor};
+  padding: 16px 20px;
+  color: white;
+  position: relative;
 
-    :hover {
-        opacity: 0.8;
-    }
+  :hover {
+    opacity: 0.8;
+  }
 `
 
 const SubscribeButton = styled(FollowButton)`
@@ -27,18 +27,18 @@ const SubscribeButton = styled(FollowButton)`
 `
 
 interface Props {
-    channelId: string
+  channelId: string
 }
 
 export default function ChannelCard ({ channelId }: Props) {
-    const { subscribed, setSubscribed } = useChannelSubscribed(channelId)
-    return <Container
-        direction='column'
-        justify='center'
-        align='center'
-        backgroundColor={getCardColor(channelId)}
-    >
-        <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
-        {channelId}
-    </Container>
+  const { subscribed, setSubscribed } = useChannelSubscribed(channelId)
+  return <Container
+    direction='column'
+    justify='center'
+    align='center'
+    backgroundColor={getCardColor(channelId)}
+  >
+    <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
+    {channelId}
+  </Container>
 }
