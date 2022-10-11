@@ -1,9 +1,19 @@
 diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 6ad8be3d1364859899c9a7eafc1a28b62a800cd4..a168b0e763feed9d60d6825a8801714732fe69da 100644
+index 0af3237b415598a695fc033aa55f4f459896f229..4252f82ec495935c0d87b7f9c4e69ee0448b0a8e 100644
 --- a/PRESUBMIT.py
 +++ b/PRESUBMIT.py
-@@ -6168,3 +6168,4 @@ Robolectric tests do not need a @Batch or @DoNotBatch annotations.
+@@ -6304,6 +6304,7 @@ Robolectric tests do not need a @Batch or @DoNotBatch annotations.
  """, extra_annotation_errors))
  
      return results
++<<<<<<< ours
+ 
+ 
+ def CheckMockAnnotation(input_api, output_api):
+@@ -6415,3 +6416,6 @@ Mockito.mock()/spy() cause issues with our Java optimizer. You have 3 options:
+ """, error_locations))
+ 
+     return results
++=======
 +from import_inline import inline_module; inline_module('chromium_presubmit_overrides', globals(), locals())
++>>>>>>> theirs
