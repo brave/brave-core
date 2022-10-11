@@ -16,6 +16,9 @@ where
 {
     min_out_length: Option<i32>,
     theme: Option<String>,
+    font_family: Option<String>,
+    font_size: Option<String>,
+    content_style: Option<String>,
     url: Option<Url>,
     readable: RefCell<Option<bool>>,
     streamer: FeatureExtractorStreamer,
@@ -29,6 +32,18 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderHeuristics<O> {
 
     fn set_theme(&mut self, theme: &str) {
         self.theme = Some(String::from(theme));
+    }
+
+    fn set_font_family(&mut self, font: &str) {
+        self.font_family = Some(String::from(font));
+    }
+
+    fn set_font_size(&mut self, size: &str) {
+        self.font_size = Some(String::from(size));
+    }
+
+    fn set_content_style(&mut self, style: &str) {
+        self.content_style = Some(String::from(style));
     }
 
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError> {
@@ -49,7 +64,15 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderHeuristics<O> {
                     "Not readable with heuristics".to_owned(),
                 ));
             }
-            let (readable, maybe_doc) = process(self.streamer.end(), self.min_out_length, self.theme.clone(), &url);
+            let (readable, maybe_doc) = process(
+                self.streamer.end(),
+                self.min_out_length,
+                self.theme.clone(),
+                self.font_family.clone(),
+                self.font_size.clone(),
+                self.content_style.clone(),
+                &url,
+            );
 
             *self.readable.borrow_mut() = Some(readable);
             if readable {
@@ -85,6 +108,9 @@ impl<O: OutputSink> SpeedReaderHeuristics<O> {
                 Ok(SpeedReaderHeuristics {
                     min_out_length: None,
                     theme: None,
+                    font_family: None,
+                    font_size: None,
+                    content_style: None,
                     url: Some(url_parsed),
                     readable: RefCell::new(None),
                     streamer,
@@ -105,14 +131,24 @@ fn process(
     sink: &mut FeaturisingTreeSink,
     min_out_length: Option<i32>,
     theme: Option<String>,
+    font_family: Option<String>,
+    font_size: Option<String>,
+    content_style: Option<String>,
     url: &Url,
 ) -> (bool, Option<String>) {
     let class = Classifier::from_feature_map(&sink.features).classify();
     if class == 0 {
         (false, None)
-    } else if let Ok(extracted) =
-        extractor::extract_dom(&mut sink.rcdom, url, min_out_length, theme, &sink.features)
-    {
+    } else if let Ok(extracted) = extractor::extract_dom(
+        &mut sink.rcdom,
+        url,
+        min_out_length,
+        theme,
+        font_family,
+        font_size,
+        content_style,
+        &sink.features,
+    ) {
         (true, Some(extracted.content))
     } else {
         (false, None)
