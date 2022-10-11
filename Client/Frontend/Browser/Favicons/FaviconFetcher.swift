@@ -54,7 +54,7 @@ public class FaviconFetcher {
   private var dataTasks: [URLSessionDataTask] = []
   private var imageOps: [SDWebImageOperation] = []
 
-  static let defaultFaviconImage = UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!
+  static let defaultFaviconImage = UIImage(named: "defaultFavicon", in: .module, compatibleWith: nil)!
 
   init(siteURL: URL, kind: Kind, domain: Domain? = nil, persistentCheckOverride: Bool? = nil) {
     self.url = siteURL
@@ -207,7 +207,7 @@ public class FaviconFetcher {
 
   private static let multiRegionDomains = ["craigslist", "google", "amazon"]
   private static let bundledIcons: [String: (color: UIColor, url: String)] = {
-    guard let filePath = Bundle.current.path(forResource: "top_sites", ofType: "json") else {
+    guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
       log.error("Failed to get bundle path for \"top_sites.json\"")
       return [:]
     }
@@ -222,7 +222,7 @@ public class FaviconFetcher {
           return
         }
         path = path.replacingOccurrences(of: ".png", with: "")
-        let filePath = Bundle.current.path(forResource: "TopSites/" + path, ofType: "png")
+        let filePath = Bundle.module.path(forResource: "TopSites/" + path, ofType: "png")
         if let filePath = filePath {
           if color == "#fff" {
             icons[url] = (UIColor.white, filePath)

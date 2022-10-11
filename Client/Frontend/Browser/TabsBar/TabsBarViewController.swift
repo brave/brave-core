@@ -26,7 +26,7 @@ class TabsBarViewController: UIViewController {
 
   private lazy var plusButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(named: "add_tab", in: .current, compatibleWith: nil)!.template, for: .normal)
+    button.setImage(UIImage(named: "add_tab", in: .module, compatibleWith: nil)!.template, for: .normal)
     button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
     button.tintColor = .braveLabel
     button.contentMode = .scaleAspectFit

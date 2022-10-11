@@ -61,7 +61,7 @@ extension TabTrayController {
       $0.titleLabel?.numberOfLines = 0
     }
 
-    let iconImageView = UIImageView(image: UIImage(named: "private_glasses", in: .current, compatibleWith: nil)!.template).then {
+    let iconImageView = UIImageView(image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template).then {
       $0.contentMode = .center
       $0.setContentHuggingPriority(.required, for: .vertical)
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)

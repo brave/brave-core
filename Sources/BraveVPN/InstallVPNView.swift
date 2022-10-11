@@ -20,7 +20,7 @@ extension InstallVPNViewController {
     private let imageView = UIView().then {
       $0.backgroundColor = BraveVPNCommonUI.UX.purpleBackgroundColor
 
-      let image = UIImageView(image: UIImage(named: "install_vpn_image", in: .current, compatibleWith: nil)!).then { img in
+      let image = UIImageView(image: UIImage(named: "install_vpn_image", in: .module, compatibleWith: nil)!).then { img in
         img.contentMode = .scaleAspectFill
         img.setContentHuggingPriority(.required, for: .vertical)
         img.setContentCompressionResistancePriority(UILayoutPriority(1), for: .vertical)

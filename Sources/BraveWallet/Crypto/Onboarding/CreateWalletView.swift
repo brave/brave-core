@@ -102,7 +102,7 @@ private struct CreateWalletView: View {
   var body: some View {
     VStack(spacing: 0) {
       VStack(spacing: 46) {
-        Image("graphic-lock", bundle: .current)
+        Image("graphic-lock", bundle: .module)
           .padding(.bottom)
         VStack {
           Text(Strings.Wallet.createWalletTitle)

@@ -11,12 +11,12 @@ import UIKit
 class LegacyWalletTransferButton: UIControl {
 
   let dismissButton = BraveButton(type: .system).then {
-    $0.setImage(UIImage(named: "close-medium", in: .current, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(named: "close-medium", in: .module, compatibleWith: nil)!.template, for: .normal)
     $0.tintColor = .white
     $0.hitTestSlop = UIEdgeInsets(equalInset: -10)
   }
 
-  private let imageView = UIImageView(image: UIImage(named: "rewards-qr-code", in: .current, compatibleWith: nil)!.template).then {
+  private let imageView = UIImageView(image: UIImage(named: "rewards-qr-code", in: .module, compatibleWith: nil)!.template).then {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.tintColor = .white
   }

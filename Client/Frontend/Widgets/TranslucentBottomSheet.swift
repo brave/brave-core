@@ -13,7 +13,7 @@ class TranslucentBottomSheet: UIViewController {
   var closeHandler: (() -> Void)?
 
   let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "close_translucent_popup", in: .current, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(named: "close_translucent_popup", in: .module, compatibleWith: nil)!.template, for: .normal)
     $0.tintColor = .white
   }
 

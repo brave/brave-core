@@ -145,7 +145,7 @@ private class VideoSliderBar: UIControl {
   private var tracker = UIImageView().then {
     $0.contentMode = .scaleAspectFit
     $0.isUserInteractionEnabled = true
-    $0.image = UIImage(named: "playlist_video_thumb", in: .current, compatibleWith: nil)!
+    $0.image = UIImage(named: "playlist_video_thumb", in: .module, compatibleWith: nil)!
   }
 }
 

@@ -21,7 +21,7 @@ extension PrivacyReportsView {
 
     var body: some View {
       HStack {
-        Image(assetName, bundle: .current)
+        Image(assetName, bundle: .module)
           .padding(.leading)
           .unredacted()
 

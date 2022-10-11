@@ -368,7 +368,7 @@ struct SwapCryptoView: View {
           Text(formatSlippage)
             .foregroundColor(Color(.secondaryBraveLabel))
             .font(.subheadline.weight(.semibold))
-          Image("wallet-dismiss", bundle: .current)
+          Image("wallet-dismiss", bundle: .module)
             .renderingMode(.template)
             .resizable()
             .foregroundColor(Color(.secondaryBraveLabel))

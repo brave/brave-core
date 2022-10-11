@@ -51,7 +51,7 @@ class GenericErrorPageHandler: InterstitialPageHandler {
   }
 
   func response(for model: ErrorPageModel) -> (URLResponse, Data)? {
-    guard let asset = Bundle.current.path(forResource: "GenericError", ofType: "html") else {
+    guard let asset = Bundle.module.path(forResource: "GenericError", ofType: "html") else {
       assert(false)
       return nil
     }

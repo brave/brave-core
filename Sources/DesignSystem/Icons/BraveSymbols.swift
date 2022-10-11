@@ -14,14 +14,14 @@ extension UIImage {
     braveSystemNamed name: String,
     compatibleWith traitCollection: UITraitCollection? = nil
   ) {
-    self.init(named: name, in: .current, compatibleWith: traitCollection)
+    self.init(named: name, in: .module, compatibleWith: traitCollection)
   }
 }
 
 extension Image {
   /// Creates a labeled image from the Design System bundle that you can use as content for controls.
   public init(braveSystemName name: String) {
-    self.init(name, bundle: .current)
+    self.init(name, bundle: .module)
   }
 }
 

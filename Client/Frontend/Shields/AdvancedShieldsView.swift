@@ -169,7 +169,7 @@ final class ChangeGlobalDefaultsView: UIControl {
     $0.alpha = 0.0
     $0.backgroundColor = UIColor.bravePrimary.withAlphaComponent(0.1)
   }
-  private let imageView = UIImageView(image: UIImage(named: "internet-block", in: .current, compatibleWith: nil)!.template).then {
+  private let imageView = UIImageView(image: UIImage(named: "internet-block", in: .module, compatibleWith: nil)!.template).then {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.tintColor = .braveLabel
   }
@@ -179,7 +179,7 @@ final class ChangeGlobalDefaultsView: UIControl {
     $0.textColor = .braveLabel
     $0.text = Strings.Shields.globalChangeButton
   }
-  private let chevron = UIImageView(image: UIImage(named: "chevron", in: .current, compatibleWith: nil)!.template).then {
+  private let chevron = UIImageView(image: UIImage(named: "chevron", in: .module, compatibleWith: nil)!.template).then {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.tintColor = .secondaryBraveLabel
   }

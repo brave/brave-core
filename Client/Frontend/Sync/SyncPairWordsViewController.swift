@@ -25,7 +25,7 @@ class SyncPairWordsViewController: SyncViewController {
 
   lazy var copyPasteButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(named: "copy_paste", in: .current, compatibleWith: nil)?.template, for: .normal)
+    button.setImage(UIImage(named: "copy_paste", in: .module, compatibleWith: nil)?.template, for: .normal)
     button.addTarget(self, action: #selector(SEL_paste), for: .touchUpInside)
     button.tintColor = .braveLabel
     return button

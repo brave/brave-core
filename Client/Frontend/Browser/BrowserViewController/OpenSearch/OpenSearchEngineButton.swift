@@ -25,12 +25,12 @@ class OpenSearchEngineButton: BraveButton {
       switch action {
       case .disabled:
         isLoading = false
-        setImage(UIImage(named: "AddSearch", in: .current, compatibleWith: nil)!.template, for: .normal)
+        setImage(UIImage(named: "AddSearch", in: .module, compatibleWith: nil)!.template, for: .normal)
         tintColor = .braveDisabled
         isUserInteractionEnabled = false
       case .enabled:
         isLoading = false
-        setImage(UIImage(named: "AddSearch", in: .current, compatibleWith: nil)!.template, for: .normal)
+        setImage(UIImage(named: "AddSearch", in: .module, compatibleWith: nil)!.template, for: .normal)
         tintColor = .braveOrange
         isUserInteractionEnabled = true
       case .loading:
@@ -65,7 +65,7 @@ class OpenSearchEngineButton: BraveButton {
   // MARK: Internal
 
   private func setTheme(with title: String?) {
-    setImage(UIImage(named: "AddSearch", in: .current, compatibleWith: nil)!.template, for: [])
+    setImage(UIImage(named: "AddSearch", in: .module, compatibleWith: nil)!.template, for: [])
     titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
 
     if let title = title {

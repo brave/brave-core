@@ -13,7 +13,7 @@ import BraveUI
 
 class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
   static let imageAspectRatio: Float = 1.0
-  static let placeholderImage = UIImage(named: "defaultTopSiteIcon", in: .current, compatibleWith: nil)!
+  static let placeholderImage = UIImage(named: "defaultTopSiteIcon", in: .module, compatibleWith: nil)!
   static let identifier = "FavoriteCell"
 
   private struct UI {

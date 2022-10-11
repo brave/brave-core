@@ -18,21 +18,21 @@ class MenuItemFactory {
     var icon: UIImage {
       switch self {
         case .bookmarks:
-          return UIImage(named: "menu_bookmarks", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "menu_bookmarks", in: .module, compatibleWith: nil)!.template
         case .downloads:
-          return UIImage(named: "menu-downloads", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "menu-downloads", in: .module, compatibleWith: nil)!.template
         case .history:
-          return UIImage(named: "menu-history", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "menu-history", in: .module, compatibleWith: nil)!.template
         case .news:
-          return UIImage(named: "menu_brave_news", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "menu_brave_news", in: .module, compatibleWith: nil)!.template
         case .playlist:
-          return UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "playlist_menu", in: .module, compatibleWith: nil)!.template
         case .settings:
-          return UIImage(named: "menu-settings", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "menu-settings", in: .module, compatibleWith: nil)!.template
         case .talk:
-          return UIImage(named: "menu-brave-talk", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "menu-brave-talk", in: .module, compatibleWith: nil)!.template
         case .wallet(_):
-          return UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template
+          return UIImage(named: "menu-crypto", in: .module, compatibleWith: nil)!.template
       }
     }
     

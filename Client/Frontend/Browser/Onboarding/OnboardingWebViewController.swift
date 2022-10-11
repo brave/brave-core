@@ -245,7 +245,7 @@ extension OnboardingWebViewController {
 
   class Toolbar: UIView {
     let exitButton = UIButton().then {
-      $0.setImage(UIImage(named: "onboarding_exit", in: .current, compatibleWith: nil)!.template, for: .normal)
+      $0.setImage(UIImage(named: "onboarding_exit", in: .module, compatibleWith: nil)!.template, for: .normal)
       $0.contentMode = .scaleAspectFit
       $0.tintColor = UX.buttonEnabledColor
       $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -253,7 +253,7 @@ extension OnboardingWebViewController {
     }
 
     let backButton = UIButton().then {
-      $0.setImage(UIImage(named: "onboarding_back", in: .current, compatibleWith: nil)!.template, for: .normal)
+      $0.setImage(UIImage(named: "onboarding_back", in: .module, compatibleWith: nil)!.template, for: .normal)
       $0.contentMode = .scaleAspectFit
       $0.tintColor = UX.buttonDisabledColor
       $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -262,7 +262,7 @@ extension OnboardingWebViewController {
     }
 
     let secureIcon = UIImageView().then {
-      $0.image = UIImage(named: "onboarding_secure_page_lock", in: .current, compatibleWith: nil)!.template
+      $0.image = UIImage(named: "onboarding_secure_page_lock", in: .module, compatibleWith: nil)!.template
       $0.contentMode = .scaleAspectFit
       $0.tintColor = UX.unknownWebPageColor
       $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -277,7 +277,7 @@ extension OnboardingWebViewController {
     }
 
     let forwardButton = UIButton().then {
-      $0.setImage(UIImage(named: "onboarding_forward", in: .current, compatibleWith: nil)!.template, for: .normal)
+      $0.setImage(UIImage(named: "onboarding_forward", in: .module, compatibleWith: nil)!.template, for: .normal)
       $0.contentMode = .scaleAspectFit
       $0.tintColor = UX.buttonDisabledColor
       $0.setContentHuggingPriority(.required, for: .horizontal)

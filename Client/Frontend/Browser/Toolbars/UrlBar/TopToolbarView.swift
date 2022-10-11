@@ -109,7 +109,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }()
 
   private var qrCodeButton = UIButton().then {
-    $0.setImage(UIImage(named: "recent-search-qrcode", in: .current, compatibleWith: nil)!, for: .normal)
+    $0.setImage(UIImage(named: "recent-search-qrcode", in: .module, compatibleWith: nil)!, for: .normal)
     $0.imageView?.contentMode = .scaleAspectFit
     $0.accessibilityLabel = Strings.quickActionScanQRCode
   }

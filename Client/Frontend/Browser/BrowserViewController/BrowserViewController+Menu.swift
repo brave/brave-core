@@ -237,14 +237,14 @@ extension BrowserViewController {
             }
             .animation(.default, value: playlistItemAdded)
           }
-          MenuItemButton(icon: UIImage(named: "nav-share", in: .current, compatibleWith: nil)!.template, title: Strings.shareWithMenuItem) {
+          MenuItemButton(icon: UIImage(named: "nav-share", in: .module, compatibleWith: nil)!.template, title: Strings.shareWithMenuItem) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
           NightModeMenuButton(dismiss: {
             browserViewController.dismiss(animated: true)
           })
-          MenuItemButton(icon: UIImage(named: "menu-add-bookmark", in: .current, compatibleWith: nil)!.template, title: Strings.addToMenuItem) {
+          MenuItemButton(icon: UIImage(named: "menu-add-bookmark", in: .module, compatibleWith: nil)!.template, title: Strings.addToMenuItem) {
             browserViewController.dismiss(animated: true) {
               browserViewController.openAddBookmark()
             }

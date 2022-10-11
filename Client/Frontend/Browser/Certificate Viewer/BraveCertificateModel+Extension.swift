@@ -24,7 +24,7 @@ extension BraveCertificateModel {
   }
 
   private static func loadCertificateData(name: String) -> CFData? {
-    guard let path = Bundle.current.path(forResource: name, ofType: "cer") else {
+    guard let path = Bundle.module.path(forResource: name, ofType: "cer") else {
       return nil
     }
 

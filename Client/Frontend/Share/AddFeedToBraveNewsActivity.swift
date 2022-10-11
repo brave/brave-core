@@ -19,7 +19,7 @@ class AddFeedToBraveNewsActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "settings-brave-today", in: .current, compatibleWith: nil)!
+    return UIImage(named: "settings-brave-today", in: .module, compatibleWith: nil)!
   }
 
   override func perform() {

@@ -37,7 +37,7 @@ enum ScriptSourceType {
   }
 
   func loadScript() throws -> String {
-    guard let path = Bundle.current.path(forResource: fileName, ofType: "js") else {
+    guard let path = Bundle.module.path(forResource: fileName, ofType: "js") else {
       assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
       throw ScriptLoadFailure.notFound
     }

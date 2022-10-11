@@ -52,7 +52,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       let path = url.lastPathComponent
       let mimeType = allowedInternalResources[url.path]
 
-      if let res = Bundle.current.url(forResource: path, withExtension: nil),
+      if let res = Bundle.module.url(forResource: path, withExtension: nil),
         let data = try? Data(contentsOf: res) {
         urlSchemeTask.didReceive(URLResponse(url: url, mimeType: mimeType, expectedContentLength: -1, textEncodingName: nil))
         urlSchemeTask.didReceive(data)

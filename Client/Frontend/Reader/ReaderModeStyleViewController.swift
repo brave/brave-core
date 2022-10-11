@@ -159,7 +159,7 @@ class ReaderModeStyleViewController: UIViewController {
       make.width.equalTo(UX.brightnessSliderWidth)
     }
 
-    let brightnessMinImageView = UIImageView(image: UIImage(named: "brightnessMin", in: .current, compatibleWith: nil)!.template)
+    let brightnessMinImageView = UIImageView(image: UIImage(named: "brightnessMin", in: .module, compatibleWith: nil)!.template)
     brightnessMinImageView.tintColor = .braveLabel
     brightnessRow.addSubview(brightnessMinImageView)
 
@@ -168,7 +168,7 @@ class ReaderModeStyleViewController: UIViewController {
       make.right.equalTo(slider.snp.left).offset(-UX.brightnessIconOffset)
     }
 
-    let brightnessMaxImageView = UIImageView(image: UIImage(named: "brightnessMax", in: .current, compatibleWith: nil)!.template)
+    let brightnessMaxImageView = UIImageView(image: UIImage(named: "brightnessMax", in: .module, compatibleWith: nil)!.template)
     brightnessMaxImageView.tintColor = .braveLabel
     brightnessRow.addSubview(brightnessMaxImageView)
 

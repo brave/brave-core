@@ -34,7 +34,7 @@ public class DataController {
   /// More info here https://stackoverflow.com/a/51857486.
   /// Note: this might be not needed in Swift 5.1 or newer.
   private static let model: NSManagedObjectModel = {
-    guard let modelURL = Bundle.current.url(forResource: modelName, withExtension: "momd") else {
+    guard let modelURL = Bundle.module.url(forResource: modelName, withExtension: "momd") else {
       fatalError("Error loading model from bundle")
     }
     guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {

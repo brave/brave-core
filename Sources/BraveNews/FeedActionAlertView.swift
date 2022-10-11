@@ -139,7 +139,7 @@ public class FeedActionAlertView: UIView {
 extension FeedActionAlertView {
   public static func feedDisabledAlertView(for item: FeedItem) -> FeedActionAlertView {
     FeedActionAlertView(
-      image: UIImage(named: "disable.feed.source.alert", in: .current, compatibleWith: nil)!,
+      image: UIImage(named: "disable.feed.source.alert", in: .module, compatibleWith: nil)!,
       title: Strings.BraveNews.disabledAlertTitle,
       message: String(format: Strings.BraveNews.disabledAlertBody, item.source.name)
     )

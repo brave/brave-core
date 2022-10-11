@@ -24,7 +24,7 @@ class NTPNotificationView: UIStackView {
   private lazy var titleStackView = UIStackView().then {
     $0.spacing = 10
 
-    let imageView = UIImageView(image: UIImage(named: "brave_rewards_button_enabled", in: .current, compatibleWith: nil)!).then { image in
+    let imageView = UIImageView(image: UIImage(named: "brave_rewards_button_enabled", in: .module, compatibleWith: nil)!).then { image in
       image.snp.makeConstraints { make in
         make.size.equalTo(24)
       }
@@ -68,7 +68,7 @@ class NTPNotificationView: UIStackView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
     $0.setTitleColor(.white, for: .normal)
     if config.primaryButtonConfig?.showCoinIcon == true {
-      $0.setImage(UIImage(named: "turn_rewards_on_money_icon", in: .current, compatibleWith: nil)!, for: .normal)
+      $0.setImage(UIImage(named: "turn_rewards_on_money_icon", in: .module, compatibleWith: nil)!, for: .normal)
       $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
     }
   }

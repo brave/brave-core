@@ -25,7 +25,7 @@ class SuggestionCell: UITableViewCell {
   }
 
   private let openButton = BraveButton().then {
-    $0.setImage(UIImage(named: "recent-search-arrow", in: .current, compatibleWith: nil), for: .normal)
+    $0.setImage(UIImage(named: "recent-search-arrow", in: .module, compatibleWith: nil), for: .normal)
     $0.hitTestSlop = UIEdgeInsets(equalInset: -20)
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)

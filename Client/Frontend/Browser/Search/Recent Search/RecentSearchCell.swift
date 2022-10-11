@@ -24,7 +24,7 @@ class RecentSearchCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private let openButton = UIButton().then {
-    $0.setImage(UIImage(named: "recent-search-arrow", in: .current, compatibleWith: nil)!, for: .normal)
+    $0.setImage(UIImage(named: "recent-search-arrow", in: .module, compatibleWith: nil)!, for: .normal)
     $0.imageView?.contentMode = .scaleAspectFit
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)

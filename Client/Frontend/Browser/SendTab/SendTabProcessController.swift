@@ -26,9 +26,9 @@ class SendTabProcessController: SendTabTransitioningController {
     var processImage: UIImage? {
       switch self {
       case .progress:
-        return UIImage(named: "tab-progress", in: .current, compatibleWith: nil)
+        return UIImage(named: "tab-progress", in: .module, compatibleWith: nil)
       case .completed:
-        return UIImage(named: "tab-completed", in: .current, compatibleWith: nil)
+        return UIImage(named: "tab-completed", in: .module, compatibleWith: nil)
       }
     }
   }

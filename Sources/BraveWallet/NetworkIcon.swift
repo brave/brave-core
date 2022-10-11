@@ -15,7 +15,7 @@ struct NetworkIcon: View {
   var body: some View {
     Group {
       if let (iconName, grayscale) = networkImageInfo {
-        Image(iconName, bundle: .current)
+        Image(iconName, bundle: .module)
           .resizable()
           .aspectRatio(contentMode: .fit)
           .grayscale(grayscale ? 1 : 0)

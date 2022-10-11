@@ -3100,7 +3100,7 @@ extension BrowserViewController: WKUIDelegate {
 
         let openNewPrivateTabAction = UIAction(
           title: Strings.openNewPrivateTabButtonTitle,
-          image: UIImage(named: "private_glasses", in: .current, compatibleWith: nil)!.template
+          image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template
         ) { _ in
           self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
         }

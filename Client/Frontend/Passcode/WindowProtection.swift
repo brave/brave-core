@@ -18,7 +18,7 @@ public class WindowProtection {
 
   private class LockedViewController: UIViewController {
     let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThickMaterial))
-    let lockImageView = UIImageView(image: UIImage(named: "browser-lock-icon", in: .current, compatibleWith: nil)!)
+    let lockImageView = UIImageView(image: UIImage(named: "browser-lock-icon", in: .module, compatibleWith: nil)!)
     let unlockButton = FilledActionButton(type: .system).then {
       $0.setTitle("Unlock", for: .normal)
       $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)

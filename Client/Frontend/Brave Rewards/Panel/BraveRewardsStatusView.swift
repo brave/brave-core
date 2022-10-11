@@ -24,14 +24,14 @@ class BraveRewardsStatusView: UIView {
   }
 
   private let onView = StatusLabelView(
-    image: UIImage(named: "rewards-panel-on", in: .current, compatibleWith: nil)!.template,
+    image: UIImage(named: "rewards-panel-on", in: .module, compatibleWith: nil)!.template,
     text: Strings.Rewards.enabledStatusBody
   ).then {
     $0.isHidden = true
   }
 
   private let offView = StatusLabelView(
-    image: UIImage(named: "rewards-panel-off", in: .current, compatibleWith: nil)!.template,
+    image: UIImage(named: "rewards-panel-off", in: .module, compatibleWith: nil)!.template,
     text: Strings.Rewards.disabledStatusBody
   )
 

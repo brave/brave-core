@@ -25,7 +25,7 @@ extension NTPLearnMoreViewController {
     private lazy var titleStackView = UIStackView().then {
       $0.spacing = 10
 
-      let imageView = UIImageView(image: UIImage(named: "brave_rewards_button_enabled", in: .current, compatibleWith: nil)!).then { image in
+      let imageView = UIImageView(image: UIImage(named: "brave_rewards_button_enabled", in: .module, compatibleWith: nil)!).then { image in
         image.snp.makeConstraints { make in
           make.size.equalTo(24)
         }

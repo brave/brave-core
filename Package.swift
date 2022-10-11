@@ -28,7 +28,6 @@ let package = Package(
     .library(name: "BraveNews", targets: ["BraveNews"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
-    .plugin(name: "CurrentBundleGenPlugin", targets: ["CurrentBundleGenPlugin"]),
   ],
   dependencies: [
     .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.15"),
@@ -183,8 +182,7 @@ let package = Package(
         .copy("WebFilters/ContentBlocker/Lists/upgrade-http.json"),
         .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
         .copy("WebFilters/ShieldStats/Httpse/httpse.leveldb.tgz"),
-      ],
-      plugins: ["CurrentBundleGenPlugin"]
+      ]
     ),
     .target(
       name: "HTTPSE",
@@ -225,8 +223,7 @@ let package = Package(
         .copy("Certificates/ISRGRootCA_X1.cer"),
         .copy("Certificates/ISRGRootCA_X2.cer"),
         .copy("Certificates/SFSRootCAG2.cer"),
-      ],
-      plugins: ["CurrentBundleGenPlugin"]
+      ]
     ),
     .target(
       name: "BraveUI",
@@ -243,13 +240,9 @@ let package = Package(
         "XCGLogger",
         "Static",
         .product(name: "Lottie", package: "lottie-ios")
-      ],
-      plugins: ["CurrentBundleGenPlugin"]
+      ]
     ),
-    .target(
-      name: "DesignSystem",
-      plugins: ["CurrentBundleGenPlugin"]
-    ),
+    .target(name: "DesignSystem"),
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
     .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
     .binaryTarget(name: "sqlcipher", path: "ThirdParty/sqlcipher/sqlcipher.xcframework"),
@@ -261,8 +254,7 @@ let package = Package(
     ),
     .target(
       name: "Data",
-      dependencies: ["BraveShared", "Storage", "Strings"],
-      plugins: ["CurrentBundleGenPlugin"]
+      dependencies: ["BraveShared", "Storage", "Strings"]
     ),
     .target(
       name: "BraveWallet",
@@ -282,8 +274,7 @@ let package = Package(
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
-      ],
-      plugins: ["CurrentBundleGenPlugin"]
+      ]
     ),
     .target(
       name: "BrowserIntentsModels",
@@ -310,8 +301,7 @@ let package = Package(
         "BraveUI",
         .product(name: "Lottie", package: "lottie-ios")
       ],
-      resources: [.copy("vpncheckmark.json")],
-      plugins: ["CurrentBundleGenPlugin"]
+      resources: [.copy("vpncheckmark.json")]
     ),
     .target(
       name: "BraveNews",
@@ -334,8 +324,7 @@ let package = Package(
       ],
       resources: [
         .copy("Lottie Assets/brave-today-welcome-graphic.json"),
-      ],
-      plugins: ["CurrentBundleGenPlugin"]
+      ]
     ),
     .testTarget(name: "BraveNewsTests", dependencies: ["BraveNews"], resources: [
       .copy("opml-test-files/subscriptionList.opml"),
@@ -391,7 +380,6 @@ let package = Package(
     .target(name: "Strings", path: "App/l10n", exclude: ["tools", "Resources/Info.plist", "README.md"]),
     .target(name: "RuntimeWarnings"),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
-    .plugin(name: "CurrentBundleGenPlugin", capability: .buildTool()),
   ],
   cxxLanguageStandard: .cxx17
 )

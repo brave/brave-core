@@ -20,7 +20,7 @@ class RewardsButton: UIButton {
     }
   }
 
-  private let lookAtMeBadge = UIImageView(image: UIImage(named: "rewards-look-at-me", in: .current, compatibleWith: nil)!).then {
+  private let lookAtMeBadge = UIImageView(image: UIImage(named: "rewards-look-at-me", in: .module, compatibleWith: nil)!).then {
     $0.isHidden = true
     $0.isUserInteractionEnabled = false
   }

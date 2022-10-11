@@ -130,7 +130,7 @@ class TabTrayController: LoadingViewController {
   }
   
   let newTabButton = UIButton(type: .system).then {
-    $0.setImage(UIImage(named: "add_tab", in: .current, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(named: "add_tab", in: .module, compatibleWith: nil)!.template, for: .normal)
     $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
     $0.accessibilityIdentifier = "TabTrayController.addTabButton"
     $0.tintColor = .braveLabel

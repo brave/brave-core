@@ -77,7 +77,7 @@ extension TabTrayController {
         let noSyncChainEmptyStateView = EmptyStateOverlayView(
           title: Strings.OpenTabs.noSyncSessionPlaceHolderViewTitle,
           description: Strings.OpenTabs.noSyncChainPlaceHolderViewDescription,
-          icon: UIImage(named: "sync-settings", in: .current, compatibleWith: nil),
+          icon: UIImage(named: "sync-settings", in: .module, compatibleWith: nil),
           buttonText: "\(Strings.OpenTabs.syncChainStartButtonTitle) →",
           action: { [weak self] in
             self?.actionHandler?(.noSyncChain)
@@ -88,7 +88,7 @@ extension TabTrayController {
         let disabledOpenTabsEmptyStateView = EmptyStateOverlayView(
           title: Strings.OpenTabs.noSyncSessionPlaceHolderViewTitle,
           description: Strings.OpenTabs.enableOpenTabsPlaceHolderViewDescription,
-          icon: UIImage(named: "sync-settings", in: .current, compatibleWith: nil),
+          icon: UIImage(named: "sync-settings", in: .module, compatibleWith: nil),
           buttonText: Strings.OpenTabs.tabSyncEnableButtonTitle,
           action: { [weak self] in
             self?.actionHandler?(.openTabsDisabled)
@@ -100,7 +100,7 @@ extension TabTrayController {
         let noSessionsEmptyStateView = EmptyStateOverlayView(
           title: Strings.OpenTabs.noSyncSessionPlaceHolderViewTitle,
           description: Strings.OpenTabs.noSyncSessionPlaceHolderViewDescription,
-          icon: UIImage(named: "sync-settings", in: .current, compatibleWith: nil),
+          icon: UIImage(named: "sync-settings", in: .module, compatibleWith: nil),
           buttonText: Strings.OpenTabs.showSettingsSyncButtonTitle,
           action: { [weak self] in
             self?.actionHandler?(.noSyncedSessions)

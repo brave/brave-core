@@ -70,7 +70,7 @@ struct UnlockWalletView: View {
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 46) {
-        Image("graphic-lock", bundle: .current)
+        Image("graphic-lock", bundle: .module)
           .padding(.bottom)
           .accessibilityHidden(true)
         VStack {

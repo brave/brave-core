@@ -11,7 +11,7 @@ public class AdView: UIView {
   let openSwipeButton = AdSwipeButton(contentType: .text(Strings.Ads.open, textColor: .white)).then {
     $0.backgroundColor = .braveBlurple
   }
-  let dislikeSwipeButton = AdSwipeButton(contentType: .image(UIImage(named: "dislike-ad-icon", in: .current, compatibleWith: nil)!)).then {
+  let dislikeSwipeButton = AdSwipeButton(contentType: .image(UIImage(named: "dislike-ad-icon", in: .module, compatibleWith: nil)!)).then {
     $0.backgroundColor = .braveErrorLabel
   }
 

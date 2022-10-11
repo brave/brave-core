@@ -24,7 +24,7 @@ class MenuButton: ToolbarButton {
 
     static let playlist: Self = .init(
       gradientView: { .gradient02 },
-      icon: UIImage(named: "playlist-menu-badge", in: .current, compatibleWith: nil)?.withTintColor(.white)
+      icon: UIImage(named: "playlist-menu-badge", in: .module, compatibleWith: nil)?.withTintColor(.white)
     )
   }
 

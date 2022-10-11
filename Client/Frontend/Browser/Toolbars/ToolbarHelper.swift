@@ -20,7 +20,7 @@ class ToolbarHelper: NSObject {
     toolbar.backButton.addGestureRecognizer(longPressGestureBackButton)
     toolbar.backButton.addTarget(self, action: #selector(didClickBack), for: .touchUpInside)
 
-    toolbar.shareButton.setImage(UIImage(named: "nav-share", in: .current, compatibleWith: nil)!.template, for: .normal)
+    toolbar.shareButton.setImage(UIImage(named: "nav-share", in: .module, compatibleWith: nil)!.template, for: .normal)
     toolbar.shareButton.accessibilityLabel = Strings.tabToolbarShareButtonAccessibilityLabel
     toolbar.shareButton.addTarget(self, action: #selector(didClickShare), for: UIControl.Event.touchUpInside)
 

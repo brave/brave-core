@@ -20,21 +20,21 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
 
   private lazy var editBookmarksButton: UIBarButtonItem? = UIBarButtonItem().then {
-    $0.image = UIImage(named: "edit", in: .current, compatibleWith: nil)!.template
+    $0.image = UIImage(named: "edit", in: .module, compatibleWith: nil)!.template
     $0.style = .plain
     $0.target = self
     $0.action = #selector(onEditBookmarksButton)
   }
 
   private lazy var addFolderButton: UIBarButtonItem? = UIBarButtonItem().then {
-    $0.image = UIImage(named: "bookmarks_newfolder_icon", in: .current, compatibleWith: nil)!.template
+    $0.image = UIImage(named: "bookmarks_newfolder_icon", in: .module, compatibleWith: nil)!.template
     $0.style = .plain
     $0.target = self
     $0.action = #selector(onAddBookmarksFolderButton)
   }
 
   private lazy var importExportButton: UIBarButtonItem? = UIBarButtonItem().then {
-    $0.image = UIImage(named: "nav-share", in: .current, compatibleWith: nil)!.template
+    $0.image = UIImage(named: "nav-share", in: .module, compatibleWith: nil)!.template
     $0.style = .plain
     $0.target = self
     $0.action = #selector(importExportAction(_:))
@@ -455,7 +455,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
       cell.textLabel?.font = UIFont.systemFont(ofSize: fontSize)
       cell.accessoryType = .none
     } else {
-      configCell(image: UIImage(named: "bookmarks_folder_hollow", in: .current, compatibleWith: nil)!.withTintColor(.braveLabel))
+      configCell(image: UIImage(named: "bookmarks_folder_hollow", in: .module, compatibleWith: nil)!.withTintColor(.braveLabel))
       cell.textLabel?.font = UIFont.boldSystemFont(ofSize: fontSize)
       cell.accessoryType = .disclosureIndicator
       cell.setRightBadge(nil)

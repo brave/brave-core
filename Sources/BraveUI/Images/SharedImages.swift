@@ -14,13 +14,13 @@ extension UIImage {
     sharedNamed name: String,
     compatibleWith traitCollection: UITraitCollection? = nil
   ) {
-    self.init(named: name, in: .current, compatibleWith: traitCollection)
+    self.init(named: name, in: .module, compatibleWith: traitCollection)
   }
 }
 
 extension Image {
   /// Creates a labeled image from BraveUI's shared bundle that you can use as content for controls.
   public init(sharedName name: String) {
-    self.init(name, bundle: .current)
+    self.init(name, bundle: .module)
   }
 }

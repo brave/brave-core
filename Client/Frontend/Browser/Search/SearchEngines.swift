@@ -291,7 +291,7 @@ public class SearchEngines {
   ) -> [OpenSearchEngine] {
     let parser = OpenSearchParser(pluginMode: true)
 
-    guard let pluginDirectory = Bundle.current.resourceURL?.appendingPathComponent("SearchPlugins") else {
+    guard let pluginDirectory = Bundle.module.resourceURL?.appendingPathComponent("SearchPlugins") else {
       assertionFailure("Search plugins not found. Check bundle")
       return []
     }
@@ -397,9 +397,9 @@ public class SearchEngines {
       var searchEngineImage: UIImage {
         switch self {
         case .yahooJapan:
-          return UIImage(named: "faviconYahoo", in: .current, compatibleWith: nil)!
+          return UIImage(named: "faviconYahoo", in: .module, compatibleWith: nil)!
         case .yahoo:
-          return UIImage(named: "faviconYahooJP", in: .current, compatibleWith: nil)!
+          return UIImage(named: "faviconYahooJP", in: .module, compatibleWith: nil)!
         }
       }
     }

@@ -80,7 +80,7 @@ class NTPWallpaper: Codable {
     // Remote resources are downloaded files, so must be loaded differently
     if packaged == true {
       // Load without cache if possible
-      if let path = Bundle.current.path(forResource: imageUrl, ofType: nil) {
+      if let path = Bundle.module.path(forResource: imageUrl, ofType: nil) {
         return UIImage(contentsOfFile: path)
       }
 
