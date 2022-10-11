@@ -28,7 +28,7 @@ source_set("brave_rewards_unit_tests") {
     "//brave/components/l10n/common:test_support",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ledger:publishers_proto",
-    "//brave/vendor/bat-native-rapidjson",
+    "//brave/third_party/rapidjson",
     "//chrome/browser:browser",
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",

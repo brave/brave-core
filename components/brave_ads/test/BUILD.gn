@@ -458,7 +458,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/version_info:version_info",
     "//brave/vendor/bat-native-ads",
     "//brave/vendor/bat-native-ledger",
-    "//brave/vendor/bat-native-rapidjson",
+    "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//chrome/browser:browser",
     "//chrome/browser/profiles:profile",

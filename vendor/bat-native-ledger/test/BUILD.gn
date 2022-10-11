@@ -123,7 +123,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/components/challenge_bypass_ristretto",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ledger:publishers_proto",
-    "//brave/vendor/bat-native-rapidjson",
+    "//brave/third_party/rapidjson",
     "//net:net",
     "//sql:sql",
     "//url:url",
