@@ -19,7 +19,7 @@
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -152,7 +152,7 @@ TEST_F(BraveSearchDefaultHostTest, DisallowsAfterMaxTimesAsked) {
 TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   base::test::ScopedFeatureList feature_list;
 
-  brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"en_US"};
+  brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
 
   auto host = GetAPIHost("search.test.com");
   // Add a search provider for the host

@@ -10,7 +10,7 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -85,8 +85,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
 TEST_F(BatAdsSubdivisionTargetingTest,
        MaybeFetchSubdivisionTargetingNotSupportedLocale) {
   // Arrange
-  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
-      "en_KY"};
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   // Act
   subdivision_targeting_->MaybeFetch();
@@ -100,8 +99,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
 TEST_F(BatAdsSubdivisionTargetingTest,
        MaybeAllowSubdivisionTargetingNotSupportedLocale) {
   // Arrange
-  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
-      "en_KY"};
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   // Act
   subdivision_targeting_->MaybeAllow();

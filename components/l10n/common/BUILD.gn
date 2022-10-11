@@ -1,5 +1,8 @@
 static_library("common") {
-  friend = [ ":unit_tests" ]
+  friend = [
+    ":test_support",
+    ":unit_tests",
+  ]
 
   public = [
     "locale_util.h",
@@ -9,6 +12,8 @@ static_library("common") {
   ]
 
   sources = [
+    "default_locale.cc",
+    "default_locale.h",
     "locale_subtag_info.cc",
     "locale_subtag_info.h",
     "locale_subtag_parser_util.cc",
@@ -33,6 +38,20 @@ static_library("common") {
   ]
 }
 
+static_library("test_support") {
+  testonly = true
+
+  sources = [
+    "test/scoped_default_locale.cc",
+    "test/scoped_default_locale.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/l10n/common",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -47,6 +66,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/components/l10n/common",
+    "//brave/components/l10n/common:test_support",
     "//brave/components/resources:strings_grit",
     "//testing/gmock",
     "//testing/gtest",

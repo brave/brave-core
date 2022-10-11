@@ -8,7 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -49,8 +49,7 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
-  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
-      "en_MC"};
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_MC"};
 
   // Act
   const base::Value::Dict user_data = GetLocale();
@@ -67,8 +66,7 @@ TEST_F(BatAdsLocaleUserDataTest,
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
-  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
-      "en_CX"};
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_CX"};
 
   // Act
   const base::Value::Dict user_data = GetLocale();

@@ -17,6 +17,7 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 using ::testing::NiceMock;
 
@@ -27,7 +28,7 @@ UnitTestBase::UnitTestBase()
       ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
       platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()),
       scoped_default_locale_(
-          std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>(
+          std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
               kDefaultLocale)) {
   CHECK(temp_dir_.CreateUniqueTempDir());
 }

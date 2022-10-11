@@ -26,7 +26,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -201,7 +201,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     }
 
     scoped_default_locale_ =
-        std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>(it->second);
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(it->second);
   }
 
   void MaybeMockLocaleForBraveAdsUpgradePath() {
@@ -239,7 +239,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     }
 
     scoped_default_locale_ =
-        std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>(locale);
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(locale);
   }
 
   void MaybeMockUserProfilePreferencesForBraveAdsUpgradePath() {
@@ -343,8 +343,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
   std::string wallet_;
   std::string parameters_;
 
-  std::unique_ptr<brave_l10n::ScopedDefaultLocaleForTesting>
-      scoped_default_locale_;
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsSupported) {

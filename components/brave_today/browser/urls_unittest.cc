@@ -8,7 +8,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_today/common/features.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
@@ -22,14 +22,14 @@ TEST_F(BraveNewsUrlsTest, BraveNewsV2IsDisabled) {
 
 TEST_F(BraveNewsUrlsTest, BraveNewsUsesV1ByDefault) {
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"en_US"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
     std::string region = brave_today::GetRegionUrlPart();
     EXPECT_EQ(brave_today::GetV1RegionUrlPart(), region);
     EXPECT_EQ("", region);
   }
 
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"ja_JP"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"ja_JP"};
     std::string region = brave_today::GetRegionUrlPart();
     EXPECT_EQ(brave_today::GetV1RegionUrlPart(), region);
     EXPECT_EQ("ja", region);
@@ -37,7 +37,7 @@ TEST_F(BraveNewsUrlsTest, BraveNewsUsesV1ByDefault) {
 
   // Unknown/unsupported locale.
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"na_NA"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"na_NA"};
     std::string region = brave_today::GetRegionUrlPart();
     EXPECT_EQ(brave_today::GetV1RegionUrlPart(), region);
     EXPECT_EQ("", region);
@@ -49,17 +49,17 @@ TEST_F(BraveNewsUrlsTest, BraveNewsV2FlagUsesGlobalFeeds) {
   features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
 
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"en_US"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
     EXPECT_EQ("global.", brave_today::GetRegionUrlPart());
   }
 
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"ja_JP"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"ja_JP"};
     EXPECT_EQ("global.", brave_today::GetRegionUrlPart());
   }
 
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"na_NA"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"na_NA"};
     EXPECT_EQ("global.", brave_today::GetRegionUrlPart());
   }
 }
@@ -69,17 +69,17 @@ TEST_F(BraveNewsUrlsTest, BraveNewsV2FlagDoesNotAffectV1Region) {
   features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
 
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"en_US"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
     EXPECT_EQ("", brave_today::GetV1RegionUrlPart());
   }
 
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"ja-JP"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"ja-JP"};
     EXPECT_EQ("ja", brave_today::GetV1RegionUrlPart());
   }
 
   {
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"na-NA"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"na-NA"};
     EXPECT_EQ("", brave_today::GetV1RegionUrlPart());
   }
 }

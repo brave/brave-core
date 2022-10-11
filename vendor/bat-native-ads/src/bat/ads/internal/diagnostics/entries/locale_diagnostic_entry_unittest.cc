@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
@@ -17,8 +17,7 @@ class BatAdsLocaleDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsLocaleDiagnosticEntryTest, GetValue) {
   // Arrange
-  const brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{
-      "en_KY"};
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   const LocaleDiagnosticEntry diagnostic_entry;
 

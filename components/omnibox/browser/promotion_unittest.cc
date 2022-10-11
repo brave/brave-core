@@ -11,7 +11,7 @@
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
@@ -48,7 +48,7 @@ class OmniboxPromotionTest : public testing::Test {
                              false);
 
     scoped_default_locale_ =
-        std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>("en_US");
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>("en_US");
   }
 
   void CreateController(bool incognito) {
@@ -97,8 +97,7 @@ class OmniboxPromotionTest : public testing::Test {
   TestSchemeClassifier classifier_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<AutocompleteController> controller_;
-  std::unique_ptr<brave_l10n::ScopedDefaultLocaleForTesting>
-      scoped_default_locale_;
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 };
 
 // Promotion match should not be added for private profile.

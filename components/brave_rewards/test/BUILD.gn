@@ -25,7 +25,7 @@ source_set("brave_rewards_unit_tests") {
     "//brave/components/brave_rewards/resources:static_resources_grit",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/greaselion/browser/buildflags:buildflags",
-    "//brave/components/l10n/common",
+    "//brave/components/l10n/common:test_support",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ledger:publishers_proto",
     "//brave/vendor/bat-native-rapidjson",

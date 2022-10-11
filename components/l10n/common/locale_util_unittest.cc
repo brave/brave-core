@@ -5,6 +5,7 @@
 
 #include "brave/components/l10n/common/locale_util.h"
 
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -12,12 +13,12 @@
 
 namespace brave_l10n {
 
-TEST(LocaleUtilTest, ScopedDefaultLocaleForTesting) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale_us("en_KY");
+TEST(LocaleUtilTest, ScopedDefaultLocale) {
+  const test::ScopedDefaultLocale scoped_default_locale_us("en_KY");
   ASSERT_EQ("en_KY", GetDefaultLocaleString());
 
   {
-    const ScopedDefaultLocaleForTesting scoped_default_locale_gb("en_GB");
+    const test::ScopedDefaultLocale scoped_default_locale_gb("en_GB");
     ASSERT_EQ("en_GB", GetDefaultLocaleString());
   }
 
@@ -25,37 +26,37 @@ TEST(LocaleUtilTest, ScopedDefaultLocaleForTesting) {
 }
 
 TEST(LocaleUtilTest, GetDefaultLocaleString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("en_Latn_US.UTF-8");
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
   EXPECT_EQ("en_Latn_US.UTF-8", GetDefaultLocaleString());
 }
 
 TEST(LocaleUtilTest, GetDefaultISOLanguageCodeString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("en_Latn_US.UTF-8");
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
   EXPECT_EQ("en", GetDefaultISOLanguageCodeString());
 }
 
 TEST(LocaleUtilTest, GetFallbackDefaultISOLanguageCodeString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale({});
+  const test::ScopedDefaultLocale scoped_default_locale({});
   EXPECT_EQ("en", GetDefaultISOLanguageCodeString());
 }
 
 TEST(LocaleUtilTest, GetISOLanguageCodeForLocale) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("ja_JP");
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
   EXPECT_EQ("en", GetISOLanguageCode("en_Latn_US.UTF-8@currency=USD"));
 }
 
 TEST(LocaleUtilTest, GetDefaultISOScriptCodeString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("en_Latn_US.UTF-8");
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
   EXPECT_EQ("Latn", GetDefaultISOScriptCodeString());
 }
 
 TEST(LocaleUtilTest, GetUnspecifiedDefaultISOScriptCodeString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale({});
+  const test::ScopedDefaultLocale scoped_default_locale({});
   EXPECT_FALSE(GetDefaultISOScriptCodeString());
 }
 
 TEST(LocaleUtilTest, GetISOScriptCodeForLocale) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("ja_JP");
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
   EXPECT_EQ("Latn", GetISOScriptCode("en_Latn_US.UTF-8@currency=USD"));
 }
 
@@ -64,42 +65,42 @@ TEST(LocaleUtilTest, GetUnspecifiedISOScriptCodeForLocale) {
 }
 
 TEST(LocaleUtilTest, GetDefaultISOCountryCodeString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("en_Latn_US.UTF-8");
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
   EXPECT_EQ("US", GetDefaultISOCountryCodeString());
 }
 
 TEST(LocaleUtilTest, GetFallbackDefaultISOCountryCodeString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale({});
+  const test::ScopedDefaultLocale scoped_default_locale({});
   EXPECT_EQ("US", GetDefaultISOCountryCodeString());
 }
 
 TEST(LocaleUtilTest, GetISOCountryCodeForLocale) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("ja_JP");
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
   EXPECT_EQ("US", GetISOCountryCode("en_Latn_US.UTF-8@currency=USD"));
 }
 
 TEST(LocaleUtilTest, GetDefaultUNM49CodeString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("en_001");
+  const test::ScopedDefaultLocale scoped_default_locale("en_001");
   EXPECT_EQ("001", GetDefaultISOCountryCodeString());
 }
 
 TEST(LocaleUtilTest, GetUNM49CodeForLocaleString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("ja_JP");
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
   EXPECT_EQ("001", GetISOCountryCode("en_001"));
 }
 
 TEST(LocaleUtilTest, GetDefaultCharSetString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("en_Latn_US.UTF-8");
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
   EXPECT_EQ("UTF-8", GetDefaultCharSetString());
 }
 
 TEST(LocaleUtilTest, GetUnspecifiedDefaultCharSetString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale({});
+  const test::ScopedDefaultLocale scoped_default_locale({});
   EXPECT_FALSE(GetDefaultCharSetString());
 }
 
 TEST(LocaleUtilTest, GetCharSetForLocale) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("ja_JP");
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
   EXPECT_EQ("UTF-8", GetCharSet("en_Latn_US.UTF-8@currency=USD"));
 }
 
@@ -108,18 +109,18 @@ TEST(LocaleUtilTest, GetUnspecifiedCharSetForLocale) {
 }
 
 TEST(LocaleUtilTest, GetDefaultVariantString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale(
+  const test::ScopedDefaultLocale scoped_default_locale(
       "en_Latn_US.UTF-8@currency=USD");
   EXPECT_EQ("currency=USD", GetDefaultVariantString());
 }
 
 TEST(LocaleUtilTest, GetUnspecifiedDefaultVariantString) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale({});
+  const test::ScopedDefaultLocale scoped_default_locale({});
   EXPECT_FALSE(GetDefaultVariantString());
 }
 
 TEST(LocaleUtilTest, GetVariantForLocale) {
-  const ScopedDefaultLocaleForTesting scoped_default_locale("ja_JP");
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
   EXPECT_EQ("currency=USD", GetVariant("en_Latn_US.UTF-8@currency=USD"));
 }
 

@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/pref_service.h"
@@ -74,7 +74,7 @@ class RewardsServiceTest : public testing::Test {
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     scoped_default_locale_ =
-        std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>("en_US");
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>("en_US");
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_.get());
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -124,8 +124,7 @@ class RewardsServiceTest : public testing::Test {
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<MockRewardsServiceObserver> observer_;
   base::ScopedTempDir temp_dir_;
-  std::unique_ptr<brave_l10n::ScopedDefaultLocaleForTesting>
-      scoped_default_locale_;
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 };
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)

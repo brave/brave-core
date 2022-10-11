@@ -30,7 +30,6 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
@@ -38,6 +37,10 @@ namespace base {
 class Time;
 class TimeDelta;
 }  // namespace base
+
+namespace brave_l10n::test {
+class ScopedDefaultLocale;
+}  // namespace brave_l10n::test
 
 namespace ads {
 
@@ -149,8 +152,7 @@ class UnitTestBase : public testing::Test {
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  std::unique_ptr<brave_l10n::ScopedDefaultLocaleForTesting>
-      scoped_default_locale_;
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 
   std::unique_ptr<AdsImpl> ads_;
 

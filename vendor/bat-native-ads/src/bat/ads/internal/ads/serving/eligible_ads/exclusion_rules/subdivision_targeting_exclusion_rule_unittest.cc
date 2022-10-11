@@ -12,7 +12,7 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -41,7 +41,7 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
     UnitTestBase::SetUp();
 
     scoped_default_locale_ =
-        std::make_unique<brave_l10n::ScopedDefaultLocaleForTesting>(
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
             base::StrCat({"en", "_", GetParam().country}));
 
     subdivision_targeting_ =
@@ -81,8 +81,7 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
     return base::StrCat({GetParam().country, "-XX"});
   }
 
-  std::unique_ptr<brave_l10n::ScopedDefaultLocaleForTesting>
-      scoped_default_locale_;
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;

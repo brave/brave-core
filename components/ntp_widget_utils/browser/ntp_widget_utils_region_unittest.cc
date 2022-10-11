@@ -7,7 +7,7 @@
 
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/country_codes/country_codes.h"
@@ -112,20 +112,20 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionUnAllowedDenyList) {
 TEST_F(NTPWidgetUtilsRegionUtilTest, TestFindLocaleInListOne) {
   {
     // Base test with default english locale
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"en_US"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
     EXPECT_EQ(::ntp_widget_utils::FindLocale({"en", "fr", "ja"}, "en"), "en");
   }
 
   {
     // Test that FindLocale returns set locale if it's in the provided list
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"ja_JP"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"ja_JP"};
     EXPECT_EQ(::ntp_widget_utils::FindLocale({"en", "fr", "ja"}, "en"), "ja");
   }
 
   {
     // Test that FindLocale returns the provided default locale if it's not in
     // the provided list
-    brave_l10n::ScopedDefaultLocaleForTesting scoped_default_locale{"ar_DZ"};
+    brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"ar_DZ"};
     EXPECT_EQ(::ntp_widget_utils::FindLocale({"en", "fr", "ja"}, "en"), "en");
   }
 }

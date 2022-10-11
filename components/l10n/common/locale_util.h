@@ -12,24 +12,12 @@
 
 namespace brave_l10n {
 
-// Set the current default locale for testing, restoring the original locale
-// upon destruction.
-class ScopedDefaultLocaleForTesting final {
- public:
-  explicit ScopedDefaultLocaleForTesting(const std::string& locale);
-
-  ~ScopedDefaultLocaleForTesting();
-
- private:
-  absl::optional<std::string> last_locale_;
-};
-
 // IMPORTANT: When the locale should match the application locale or an eligible
 // string pack for localization use the canonicalized
 // l10n_util::GetApplicationLocale.
 
 // Returns the current default locale of the device as a string.
-std::string GetDefaultLocaleString();
+const std::string& GetDefaultLocaleString();
 
 // Returns a lowercase two-letter ISO 639-1 language code for the given locale,
 // falling back to "en" if the locale does not contain a language code. See

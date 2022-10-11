@@ -27,7 +27,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_today/browser",
     "//brave/components/brave_today/common",
     "//brave/components/brave_today/common:mojom",
-    "//brave/components/l10n/common",
+    "//brave/components/l10n/common:test_support",
     "//chrome/browser",
     "//chrome/test:test_support",
     "//content/test:test_support",
