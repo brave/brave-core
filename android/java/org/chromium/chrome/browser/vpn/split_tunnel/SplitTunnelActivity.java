@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.vpn.split_tunnel;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -12,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -71,6 +74,22 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         progressBar.setVisibility(View.VISIBLE);
         appsLayout.setVisibility(View.GONE);
 
+        VideoView videoView = (VideoView) findViewById(R.id.videoView1);
+
+        // Creating MediaController
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoView);
+
+        // specify the location of media file
+        Uri uri = Uri.parse(
+                "file:///data/user/0/com.brave.browser_nightly/app_chrome/Default/playlist/06417E171234276326ABDC9C102360DE/media_file.mp4");
+
+        // Setting MediaController and URI, then starting the videoView
+        videoView.setMediaController(mediaController);
+        videoView.setVideoURI(uri);
+        videoView.requestFocus();
+        videoView.start();
+
         Button showSystemAppsBtn = findViewById(R.id.show_system_app_btn);
         showSystemAppsBtn.setOnClickListener(view -> {
             showSystemAppsBtn.setVisibility(View.GONE);
@@ -92,7 +111,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         viewModel.getApplicationDataMutableLiveData().observe(
                 SplitTunnelActivity.this, applicationDataModels -> {
                     mRecyclerViewAdapterApps.addAll(applicationDataModels);
-                    appsLayout.setVisibility(View.VISIBLE);
+                    // appsLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 });
         viewModel.getSystemApplicationDataMutableLiveData().observe(SplitTunnelActivity.this,

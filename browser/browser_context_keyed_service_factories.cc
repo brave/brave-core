@@ -64,6 +64,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_page_handler_factory.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/features.h"
 #endif
@@ -124,6 +125,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::PlaylistServiceFactory::GetInstance();
+    playlist::PlaylistPageHandlerFactory::GetInstance();
   }
 #endif
 }
