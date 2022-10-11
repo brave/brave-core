@@ -643,6 +643,15 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="is_win">
         </if>
       <if expr="use_titlecase">
@@ -852,6 +861,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_lacros">
         </if>
 
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
       <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
         </if>
 
@@ -1049,6 +1063,12 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DESCRIPTION" desc="Description of a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
          Sign-in data will be stored on this device after you exit Private mode. You'll be able to sign in to this website with your device again later.
       </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         This passkey will only be saved on this device. It will remain on this device after you close all Private windows.
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_WIN_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'. 'Windows Hello' is a feature of the Microsoft Windows operating system (https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0).">
+         This passkey will be saved only in Windows Hello. It will remain on this device after you close all Private windows.
+      </message>
       </if>
 
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
@@ -1103,7 +1123,11 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="not is_android">
       </if>
     <if expr="not is_android">
-      </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+    </if>
     <if expr="not is_android">
       </if>
     </messages>

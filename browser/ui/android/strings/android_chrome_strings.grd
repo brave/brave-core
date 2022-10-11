@@ -1694,14 +1694,6 @@ Your Brave account may have other forms of browsing history like searches and ac
           Discard
         </message>
 
-      <!-- Download later -->
-      <message name="IDS_DOWNLOAD_DATE_TIME_PICKER_NEXT_TEXT" desc="The text for the positive button of the download date time picker dialog.">
-        Next
-      </message>
-      <message name="IDS_DOWNLOAD_LATER_PROMPT_ENABLED_TITLE" desc="A setting text to ask whether to show a dialog about when to download.">
-        Ask when to save files
-      </message>
-
       <!-- Downloads location -->
       <message name="IDS_DOWNLOADS_LOCATION_SELECTOR_TITLE" desc="Title of the preference that allows the user to select which of the folders they would like to make the default location to save their downloads.">
         Download location
@@ -1844,26 +1836,26 @@ Your Brave account may have other forms of browsing history like searches and ac
         Allow all sites
       </message>
 
-      <!-- Parent approval widget. TODO(crbug.com/1330900): enable translations once strings are finalized. -->
-      <message name="IDS_PARENT_WEBSITE_APPROVAL_TITLE" desc="The title text displayed in the bottom sheet asking a parent to allow or not allow a website." translateable="false">
+      <!-- Parent approval widget. -->
+      <message name="IDS_PARENT_WEBSITE_APPROVAL_TITLE" desc="The title text displayed in the bottom sheet asking a parent to allow or not allow a website.">
         <ph name="CHILD_NAME">%1$s<ex>Alice</ex></ph> wants you to approve this website:
       </message>
-      <message name="IDS_PARENT_WEBSITE_APPROVAL_ALL_OF_DOMAIN" desc="The text which tells the parent that all of a particular domain will be allowed if they approve the request." translateable="false">
+      <message name="IDS_PARENT_WEBSITE_APPROVAL_ALL_OF_DOMAIN" desc="The text which tells the parent that all of a particular domain will be allowed if they approve the request.">
         All pages of <ph name="DOMAIN">%1$s<ex>netflix.com</ex></ph>
       </message>
-      <message name="IDS_PARENT_WEBSITE_APPROVAL_APPROVE_BUTTON" desc="The text displayed on the button to approve a website." translateable="false">
+      <message name="IDS_PARENT_WEBSITE_APPROVAL_APPROVE_BUTTON" desc="The text displayed on the button to approve a website.">
         Approve
       </message>
-      <message name="IDS_PARENT_WEBSITE_APPROVAL_DENY_BUTTON" desc="The text displayed on the button to not approve a website." translateable="false">
+      <message name="IDS_PARENT_WEBSITE_APPROVAL_DENY_BUTTON" desc="The text displayed on the button to not approve a website.">
         Don’t approve
       </message>
-      <message name="IDS_PARENT_WEBSITE_APPROVAL_CONTENT_DESCRIPTION" desc="The content description for the bottom sheet allowing a parent to approve or deny a request to view a website." translateable="false">
+      <message name="IDS_PARENT_WEBSITE_APPROVAL_CONTENT_DESCRIPTION" desc="The content description for the bottom sheet allowing a parent to approve or deny a request to view a website.">
         Option to approve or not approve a website
       </message>
-      <message name="IDS_PARENT_WEBSITE_APPROVAL_FULL_HEIGHT" desc="Accessibility string read when the parent website approval bottom sheet is opened at full height." translateable="false">
+      <message name="IDS_PARENT_WEBSITE_APPROVAL_FULL_HEIGHT" desc="Accessibility string read when the parent website approval bottom sheet is opened at full height.">
         Option to approve or not approve a website opened at full height
       </message>
-      <message name="IDS_PARENT_WEBSITE_APPROVAL_CLOSED" desc="Accessibility string read when the parent website approval bottom sheet is closed." translateable="false">
+      <message name="IDS_PARENT_WEBSITE_APPROVAL_CLOSED" desc="Accessibility string read when the parent website approval bottom sheet is closed.">
         Option to approve or not approve a website closed
       </message>
 
@@ -2253,20 +2245,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
           =1 {1 download pending}
           other {# downloads pending}}
       </message>
-      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_SCHEDULED" desc="Download message label describing that one or more downloads are scheduled">
-        {FILE_COUNT, plural,
-          =1 {1 download scheduled}
-          other {# downloads scheduled}}
-      </message>
-      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION_ON_WIFI" desc="Download message text describing that user can find about their download status from notifications.">
-        Download will start when on Wi-Fi
-      </message>
-      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION_ON_DATE" desc="Download message text describing that the download was scheduled to start at a later date.">
-        Download will start on <ph name="date">%1$s<ex>Feb 28 2020</ex></ph>.
-      </message>
-      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION_ON_TIME" desc="Download message text describing that the download was scheduled to start at a later time.">
-        Download will start at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
-      </message>
 
       <message name="IDS_INCOGNITO_DOWNLOAD_MESSAGE_TITLE" desc="Download title displayed in a prompt message when the user downloads a file in Private mode.">
         Download file?
@@ -2425,9 +2403,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CONTEXTMENU_READ_LATER" desc="Context sensitive menu item for marking a link to be read later. We're also labeling it *New* to draw attention to it when first released. [CHAR_LIMIT=30]">
         Add to reading list <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
-      </message>
-      <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target page is fast-loading and responsive. [CHAR_LIMIT=30]">
-        Fast page
       </message>
       <message name="IDS_CONTEXTMENU_SHARE_HIGHLIGHT" desc="This string is shown in the context menu for resharing the link-to-text.">
         Share highlight
@@ -2746,9 +2721,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_MANAGER_JUST_NOW" desc="Text on a label describing that the associated download event happened just now.">
         Just now
       </message>
-      <message name="IDS_DOWNLOAD_MANAGER_SCHEDULED_LATER" desc="Text on a label describing that the associated download is scheduled to start later.">
-        Scheduled for later
-      </message>
       <message name="IDS_DOWNLOAD_MANAGER_OFFLINE_HOME" desc="The title text on download home indicating that we are in offline mode.">
         Offline Home
       </message>
@@ -2982,7 +2954,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Personalized Signin Promos Strings -->
-      <message name="IDS_SIGNIN_PROMO_CONTINUE_AS" desc="Button to sign into Brave with the displayed account and without having to reenter a password. ‘John’ is replaced with the user’s given name, or the user’s full name if the given name is not available. Ensure consistency with related OneBrave sign-in buttons (see e.g. TC ID 5569230012177947065).">
+      <message name="IDS_SYNC_PROMO_CONTINUE_AS" desc="Button to sign into Brave with the displayed account and without having to reenter a password. ‘John’ is replaced with the user’s given name, or the user’s full name if the given name is not available. Ensure consistency with related OneBrave sign-in buttons (see e.g. TC ID 5569230012177947065).">
         Continue as <ph name="USER_FULL_NAME">%1$s<ex>John</ex></ph>
       </message>
       <message name="IDS_SIGNIN_PROMO_CHOOSE_ACCOUNT" desc="Button that the user can press if they are not the profile that Brave found (opposite of 'Continue as Joe Doe').">
@@ -3133,6 +3105,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NTP_MANAGE_FEED" desc="Menu item to manage feed settings from the feed header overflow menu.">
         Manage
       </message>
+      <message name="IDS_CORMORANT_CREATOR_ACTIVITY" desc="Menu item to launch the Cormorant creator activity. This is used only for testing." translateable="false">
+        Creator Profile
+      </message>
       <message name="IDS_FEED_MANAGE_ACTIVITY" desc="Menu item to manage my activity from the feed header overflow menu.">
         Activity
       </message>
@@ -3203,6 +3178,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
         Control your stories and activity here
       </message>
+      <message name="IDS_NTP_NEW" desc="Text in a badge indicating a section is new, thereby drawing attention to a new feature. [CHAR_LIMIT=6]">New</message>
       <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_BUTTON" desc="Content description for the feed header menu button. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Options for Discover
       </message>
@@ -3261,9 +3237,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <!-- Explore sites strings -->
       <message name="IDS_EXPLORE_SITES_TITLE" desc="Title of a section showing different categories, each with a number of popular websites">
         Explore
-      </message>
-      <message name="IDS_NTP_EXPLORE_SITES_MORE" desc="Text on a button leading to a complete view of all categories for all popular websites">
-        More categories
       </message>
       <message name="IDS_EXPLORE_SITES_LOADING_FROM_NET" desc="Caption for an indeterminate loading spinner indicating that we are loading the data from the internet">
         Finding the best from the web…
@@ -3557,6 +3530,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_MENU_GROUP_TABS" desc="Menu item for grouping tabs. [CHAR_LIMIT=27]">
         Group tabs
+      </message>
+      <message name="IDS_MENU_SELECT_TABS" desc="Menu item for bulk editing tabs. [CHAR_LIMIT=27]">
+        Select tabs
       </message>
       <message name="IDS_MENU_TRACK_PRICES" desc="Menu item for tracking prices on tabs. [CHAR_LIMIT=27]">
         Track prices
