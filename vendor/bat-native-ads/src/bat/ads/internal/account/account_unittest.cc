@@ -690,7 +690,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
     expected_statement->earnings_last_month = 0.01;
     expected_statement->earnings_this_month = 0.05;
     expected_statement->next_payment_date =
-        TimeFromString("5 January 2021 23:59:59.999", /*is_local*/ false);
+        TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
