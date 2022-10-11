@@ -69,9 +69,13 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
   delete this;
 }
 
-void BraveRewardsNativeWorker::CreateRewardsWallet(JNIEnv* env) {
+void BraveRewardsNativeWorker::CreateRewardsWallet(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& country_code) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->CreateRewardsWallet("", base::DoNothing());
+    brave_rewards_service_->CreateRewardsWallet(
+        base::android::ConvertJavaStringToUTF8(env, country_code),
+        base::DoNothing());
   }
 }
 

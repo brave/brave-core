@@ -131,8 +131,8 @@ public class BraveRewardsOnboardingFragment extends Fragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+                // BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
+                // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 assert onViewPagerAction != null;
                 if (onViewPagerAction != null)
                     onViewPagerAction.onNext();

@@ -167,9 +167,10 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void CreateRewardsWallet() {
+    public void CreateRewardsWallet(String countryCode) {
         synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().createRewardsWallet(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().createRewardsWallet(
+                    mNativeBraveRewardsNativeWorker, countryCode);
         }
     }
 
@@ -720,7 +721,7 @@ public class BraveRewardsNativeWorker {
         void disconnectWallet(long nativeBraveRewardsNativeWorker);
         void recoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
-        void createRewardsWallet(long nativeBraveRewardsNativeWorker);
+        void createRewardsWallet(long nativeBraveRewardsNativeWorker, String countryCode);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);

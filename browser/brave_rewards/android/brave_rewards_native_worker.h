@@ -40,7 +40,9 @@ class BraveRewardsNativeWorker
 
   void Destroy(JNIEnv* env);
 
-  void CreateRewardsWallet(JNIEnv* env);
+  void CreateRewardsWallet(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& country_code);
 
   void GetRewardsParameters(JNIEnv* env);
 

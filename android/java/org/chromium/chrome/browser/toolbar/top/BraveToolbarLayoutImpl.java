@@ -807,11 +807,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                // BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
+                // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+                // BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 if (BraveActivity.getBraveActivity() != null) {
-                    BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
+                    // BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
                     BraveActivity.getBraveActivity().openRewardsPanel();
                 }
                 dialog.dismiss();

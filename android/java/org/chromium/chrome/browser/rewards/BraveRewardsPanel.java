@@ -861,11 +861,13 @@ public class BraveRewardsPanel
             @Override
             public void onClick(View v) {
                 braveRewardsOnboardingModalView.setVisibility(View.GONE);
-                mBraveRewardsNativeWorker.CreateRewardsWallet();
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-                mBraveRewardsNativeWorker.GetAutoContributeProperties();
-                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
-                showBraveRewardsOnboarding(root, true);
+                // mBraveRewardsNativeWorker.CreateRewardsWallet();
+                // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+                // mBraveRewardsNativeWorker.GetAutoContributeProperties();
+                // BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                // showBraveRewardsOnboarding(root, true);
+
+                // Show declare geo dialog
             }
         }));
     }
