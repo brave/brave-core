@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -157,6 +158,10 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_V2, isShown);
         sharedPreferencesEditor.apply();
+    }
+
+    public boolean isBraveRewardsEnabled() {
+        return mSharedPreferences.getBoolean(BraveRewardsPreferences.PREF_ADS_SWITCH, false);
     }
 
     public boolean isBraveStatsEnabled() {
