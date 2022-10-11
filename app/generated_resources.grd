@@ -2536,6 +2536,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_COOKIE_THEFT" desc="Subpage summary for cookie theft warning.">
         This file contains malware that can compromise your personal or social network accounts
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_COOKIE_THEFT_AND_ACCOUNT" desc="Subpage summary for cookie theft warning with account info.">
+        This file contains malware that can compromise your personal or social network accounts, including <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
+      </message>
 
       <!-- Desktop omnibox PWA install icon -->
       <if expr="not is_android">
@@ -4744,7 +4747,7 @@ are declared in tools/grit/grit_rule.gni.
           Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
         </message>
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
-          Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>"" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>:
+          Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>:
         </message>
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
           Click to allow on <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
@@ -6861,9 +6864,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_TITLE" desc="Title of the Side Panel">
         Side Panel
       </message>
-      <message name="IDS_SIDE_PANEL_COMBO_BOX_GOOGLE_LENS_LABEL" desc="The name of the Google Lens in the side panel combo box">
-        Google Lens
-      </message>
       <message name="IDS_ACCNAME_SIDE_PANEL_RESIZE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side panel resize handle is focused.">
         Side Panel Resize Handle
       </message>
@@ -6894,8 +6894,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READ_ANYTHING_COLORS_COMBOBOX_LABEL" desc="Accessibility label for the colors combobox of the Read Anything feature." translateable="false">
         Theme
       </message>
+      <message name="IDS_READ_ANYTHING_LINE_SPACING_COMBOBOX_LABEL" desc="Accessibility label for the line height combobox of the Read Anything feature." translateable="false">
+        Line height
+      </message>
       <message name="IDS_READ_ANYTHING_LETTER_SPACING_COMBOBOX_LABEL" desc="Accessibility label for the letter spacing combobox of the Read Anything feature." translateable="false">
         Letter spacing
+      </message>
+      <message name="IDS_READ_ANYTHING_SPACING_COMBOBOX_TIGHT" desc="Combobox option for setting letter and line spacing of text in the Read Anything feature. Tight means that letters/lines are spaced closely together." translateable="false">
+        Tight
+      </message>
+      <message name="IDS_READ_ANYTHING_SPACING_COMBOBOX_DEFAULT" desc="Combobox option for setting letter and line spacing of text in the Read Anything feature. Default means that leters/lines are spaced in a standard manner." translateable="false">
+        Default
+      </message>
+      <message name="IDS_READ_ANYTHING_SPACING_COMBOBOX_LOOSE" desc="Combobox option for setting letter and line spacing of text in the Read Anything feature. Loose means that letters/lines are spaced far apart." translateable="false">
+        Loose
+      </message>
+      <message name="IDS_READ_ANYTHING_SPACING_COMBOBOX_VERY_LOOSE" desc="Combobox option for setting letter and line spacing of text in the Read Anything feature. Very loose means that letters/lines are spaced very far apart." translateable="false">
+        Very loose
       </message>
 
       <!-- User note strings -->
@@ -6979,6 +6994,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_MIC_SEARCH" desc="The tooltip for search-by-voice button">
         Search by voice
+      </message>
+      <message name="IDS_TOOLTIP_LENS_SEARCH" desc="The tooltip for search-by-image button">
+        Search by image
       </message>
       <message name="IDS_TOOLTIP_SAVE_CREDIT_CARD" desc="The tooltip for the icon that shows the save credit card bubble">
         Save card
@@ -7270,15 +7288,41 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SHARED_HIGHLIGHTING_PROMO" desc="The title of in-product-help message encouraging users to interact with the highlight">
         To create a highlight like this one, select any text and right-click.
       </message>
-      <message name="IDS_BATTERY_SAVER_MODE_PROMO_TITLE" desc="The title for the battery saver mode in-product promo bubble.">
-        Battery Saver is on
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_BATTERY_SAVER_MODE_PROMO_TITLE" desc="In Title Case: The title for the battery saver mode in-product promo bubble.">
+          Energy Saver Turned On
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_BATTERY_SAVER_MODE_PROMO_TITLE" desc="The title for the battery saver mode in-product promo bubble.">
+          Energy Saver turned on
+        </message>
+      </if>
       <message name="IDS_BATTERY_SAVER_MODE_PROMO_TEXT" desc="The text shown for the battery saver mode in-product promo bubble.">
-        You can control when Battery Saver turns on in settings
+        This extends battery power by limiting background activity and visual effects like smooth scrolling
       </message>
       <message name="IDS_BATTERY_SAVER_MODE_PROMO_ACTION_TEXT" desc="The custom action button text for the battery saver mode in-product promo bubble.">
         Settings
       </message>
+      <message name="IDS_HIGH_EFFICIENCY_INFO_MODE_PROMO_TEXT" desc="The text shown for the high efficiency info mode in-product promo bubble.">
+        While this tab was inactive, Memory Saver freed up memory for other tasks. You can change this anytime in settings.
+      </message>
+      <message name="IDS_HIGH_EFFICIENCY_INFO_MODE_PROMO_ACTION_TEXT" desc="The custom action button text for the high efficiency info mode in-product promo bubble.">
+        Settings
+      </message>
+      <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TEXT" desc="The text shown for the high efficiency mode in-product promo bubble">
+        Memory Saver frees up memory from inactive tabs so it can be used by active tabs and other apps
+      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_ACTION_TEXT" desc="In Title Case: The custom action button text for the high efficiency mode in-product promo bubble">
+          Turn On
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_ACTION_TEXT" desc="The custom action button text for the high efficiency mode in-product promo bubble">
+          Turn on
+        </message>
+      </if>
 
       <!-- User Education Tutorial Strings -->
       <if expr="use_titlecase">
@@ -7530,6 +7574,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_TOOLTIP_MOVE" desc="Text for the 'Manage Passwords' icon's 'move password to account' state">
           Move your password
         </message>
+        <message name="IDS_PASSWORD_MANAGER_TOOLTIP_PROTECT" desc="Text for the 'Manage Passwords' icon's 'protect passwords' state">
+          Protect your passwords
+        </message>
         <message name="IDS_PASSWORD_MANAGER_IMPORT_DIALOG_TITLE" desc="The title of the file selection dialog for importing passwords">
           Import Passwords To Brave
         </message>
@@ -7618,6 +7665,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_PASSWORD_MESSAGE_NEVER_SAVE_MENU_ITEM" desc="Mobile: Label for 'Save Password' prompt cogwheel menu button via which users can tell the password manager to never offer to save passwords for the current site[CHAR_LIMIT=32]">
           Never for this site
+        </message>
+        <message name="IDS_PASSWORD_MESSAGE_EDIT_PASSWORD_MENU_ITEM" desc="Mobile: Label for 'Save Password' prompt cogwheel menu button via which users can tell the password manager to show the password edit dialog.">
+          Edit password
         </message>
       </if>
 
@@ -9124,6 +9174,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         Partitioned
       </message>
 
+      <!-- Page specific site data dialog (redesign of Collected cookies window) -->
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_EMPTY_STATE_LABEL" desc="The text used to explain to users that there are no cookies set and that this is the place where they will be shown. The label is shown in the `Cookies and site data` dialog.">
+        If a site uses cookies, it will appear here
+      </message>
+
       <!-- Accessiblility strings for Infobars in Views -->
       <if expr="toolkit_views">
         <message name="IDS_ACCNAME_INFOBAR_CONTAINER" desc="The accessible name for the infobar container.">
@@ -9552,12 +9607,19 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_SYNC_CONFIRMATION_WELCOME_TITLE_SIGNIN_INTERCEPT" desc="Title of the sync confirmation dialog in the Signin Intercept flow, after the user creates a new profile through this flow.">
         Welcome, <ph name="USERNAME">$1<ex>Bob</ex></ph>
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_SIGNIN_INTERCEPT" desc="Information about sync on the sync confirmation dialog in the Signin Intercept flow">
-        Turn on sync to get your bookmarks, passwords, history, and more on this device and anywhere else you're syncing.
+      <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_SIGNIN_INTERCEPT" desc="Information about sync on the sync confirmation dialog in the Signin Intercept flow. The second string is an exact copy of IDS_SYNC_CONFIRMATION_SYNC_INFO_DESC with a period at the end.">
+        Turn on sync to get your bookmarks, passwords, history, and more on this device and anywhere else you're syncing. Brave may use your history to personalize Search and other Brave services.
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the Signin Intercept flow">
-        Turn on sync
-      </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the Signin Intercept flow">
+          Turn on sync
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="In Title Case: Label of the confirmation button in the sync confirmation dialog of the Signin Intercept flow">
+          Turn On Sync
+        </message>
+      </if>
 
       <!--- Sync Confirmation section of the tab modal signin flow when sync is disabled by policy -->
       <message name="IDS_SYNC_DISABLED_CONFIRMATION_CHROME_SYNC_TITLE" desc="Title of the chrome sync section of the sync confirmation dialog in the tab modal signin flow when sync is disabled by policy">
@@ -11319,6 +11381,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_MANAGED" desc="Text to display when picker choices have been limited by enterprise policies.">
         Options for sharing are managed by your organization. Some items may be hidden.
       </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_RESELECT_SCREEN" desc="Text for a button appearing on the window picker dialog which is displayed when there is a secondary, system-level picker in which the user must select the content to share. Clicking this button will re-open the picker to allow the user to choose a new monitor/desktop/screen to share.">
+        Choose a different screen
+      </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_RESELECT_WINDOW" desc="Text for a button appearing on the window picker dialog which is displayed when there is a secondary, system-level picker in which the user must select the content to share. Clicking this button will re-open the picker to allow the user to choose a new window to share.">
+        Choose a different window
+      </message>
       <if expr="toolkit_views">
         <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_THIS_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the current tab.">
           This Tab
@@ -12303,11 +12371,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_TITLE" desc="Title of the dialog shown when the user tries to sign-in using a phone as a security key.">
         Check your phone
       </message>
+      <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_TITLE_DEVICE" desc="Title of the dialog shown when the user tries to sign-in using a phone as a security key.">
+        Check your device
+      </message>
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_TITLE_ALT" desc="Title of the dialog shown when the user tries to sign-in using a phone as a security key. The word 'unlock' refers to using a PIN, pattern, or biometric to unlock the phone.">
         Unlock your phone
       </message>
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
         A notification was sent to your phone to confirm it's you.
+      </message>
+      <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DEVICE_NAME_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
+        A notification was sent to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph>
       </message>
 
       <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
@@ -12333,6 +12407,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_CABLEV2_ADD_PHONE" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone.">
         Use phone with a QR code
+      </message>
+      <message name="IDS_WEBAUTHN_PASSKEY_DIFFERENT_DEVICE_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone.">
+        A different device
       </message>
 
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
@@ -12478,6 +12555,57 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_MANAGE_DEVICES" desc="The text of a button that appear at the bottom of a dialog that lists options for signing into a website. If that list contains phones then a button with this label appears to let the user manage their list of phones/tablets. Clicking it opens a settings page that lists the known phones and lets the user delete or rename them.">
          Manage devices
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_TITLE" desc="The title of a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Create a passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         This passkey will only be saved on this device
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         This passkey will only be saved on this device. It will remain on this device after you close all Private windows.
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_WIN" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'. 'Windows Hello' is a feature of the Microsoft Windows operating system (https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0).">
+         This passkey will only be saved in Windows Hello
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_WIN_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'. 'Windows Hello' is a feature of the Microsoft Windows operating system (https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0).">
+         This passkey will be saved only in Windows Hello. It will remain on this device after you close all Private windows.
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_CHOOSE_DEVICE_TITLE" desc="The title of a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Create a passkey
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_CHOOSE_DEVICE_BODY" desc="The body of a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Choose how you want to create a passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_USE_PASSKEY_CHOOSE_DEVICE_TITLE" desc="The title of a dialog prompting the user to use a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Use your passkey
+      </message>
+      <message name="IDS_WEBAUTHN_USE_PASSKEY_CHOOSE_DEVICE_BODY" desc="The body of a dialog prompting the user to use a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Choose which device has the passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_USE_PASSKEY_TITLE" desc="The title of a dialog prompting the user to use a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Use your passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_CHOOSE_PASSKEY_TITLE" desc="The title of a dialog prompting the user to choose a passkey from a list to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Choose a passkey
+      </message>
+      <message name="IDS_WEBAUTHN_CHOOSE_PASSKEY_BODY" desc="The body of a dialog prompting the user to choose a passkey from a list to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+        Which passkey do you want to use for <ph name="APP_NAME">$1<ex>example.com</ex></ph>?
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_QR_TITLE" desc="The title of a dialog prompting the user to create a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Create a passkey on another device
+      </message>
+      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_QR_BODY" desc="The body of a dialog prompting the user to create a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Scan this QR code with the device where you want to create a passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_USE_PASSKEY_QR_TITLE" desc="The title of a dialog prompting the user to use a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Use a passkey from another device?
+      </message>
+      <message name="IDS_WEBAUTHN_USE_PASSKEY_QR_BODY" desc="The body of a dialog prompting the user to use a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Scan this QR code with the device that has the passkey you want to use for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_TRY_ANOTHER_WAY" desc="Label on a secondary button on a dialog for creating or using a passkey to sign into a website.">
+         Try another way
       </message>
 
       <!-- Side Search -->
@@ -13285,31 +13413,44 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <!-- Battery Saver Toolbar strings  -->
     <if expr="not is_android">
       <message name="IDS_BATTERY_SAVER_BUTTON_TOOLTIP" desc="The tooltip for the battery saver toolbar button">
-        Battery Saver is on
+        Energy Saver is on
       </message>
       <message name="IDS_BATTERY_SAVER_BUTTON_ACCNAME" desc="The accessibility text for the battery saver toolbar button">
-        Battery Saver is on
+        Energy Saver is on
       </message>
       <message name="IDS_BATTERY_SAVER_BUBBLE_TITLE" desc="The title of the battery saver bubble dialog">
-        Battery Saver is on
+        Energy Saver is on
       </message>
       <message name="IDS_BATTERY_SAVER_BUBBLE_DESCRIPTION" desc="The description text of the battery saver bubble dialog">
         Background activity and some visual effects, like smooth scrolling, may be limited.
       </message>
-      <message name="IDS_BATTERY_SAVER_SESSION_TURN_OFF" desc="The label for the turn off battery saver for current session button in battery saver bubble dialog">
-        Turn off now
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_BATTERY_SAVER_SESSION_TURN_OFF" desc="In Title Case: The label for the turn off battery saver for current session button in battery saver bubble dialog">
+          Turn Off Now
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_BATTERY_SAVER_SESSION_TURN_OFF" desc="The label for the turn off battery saver for current session button in battery saver bubble dialog">
+          Turn off now
+        </message>
+      </if>
     </if>
     <!-- High Efficiency Chip strings -->
     <if expr="not is_android">
       <message name="IDS_HIGH_EFFICIENCY_CHIP_LABEL" desc="Label for a page action chip that highlights that the Memory Saver setting is enabled">
-        Memory Saver is on
+        Tab active again
       </message>
       <message name="IDS_HIGH_EFFICIENCY_CHIP_ACCNAME" desc="Tooltip text for a page action chip that highlights that the Memory Saver setting is enabled">
-        Memory Saver is on
+        Tab active again
       </message>
-      <message name="IDS_HIGH_EFFICIENCY_DIALOG_TITLE" desc="Title text for a dialog describing that the Memory Saver setting is enabled">
-        Memory Saver is on
+      <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY" desc="Body text for a dialog describing that Memory Saver mode will use less memory from inactive tabs and that this is a setting the user can control.">
+        While this tab was inactive, Memory Saver freed up memory for other tasks. You can change this anytime in <ph name="SETTINGS_LINK">$1<ex>Settings</ex></ph>.
+      </message>
+      <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_LINK_TEXT" desc="The link text for the body text for the Memory Saver dialog.">
+        Settings
+      </message>
+      <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_WITH_SAVINGS_AND_LINK" desc="Body text for a dialog describing how much less memory was used due to Memory Saver mode and that this is a setting the user can control.">
+        While this tab was inactive, Memory Saver freed up <ph name="MEMORY_VALUE">$1<ex>175MB</ex></ph> of memory for other tasks. You can change this anytime in <ph name="SETTINGS_LINK">$2<ex>Settings</ex></ph>.
       </message>
     </if>
     <message name="IDS_ACCNAME_SIDEBAR_WEBVIEW_LOCATION_BAR" desc="The accessible name of the sidebar webview's location bar.">
