@@ -36,12 +36,14 @@ const HeaderText = styled.span`
   font-weight: 500;
 `
 
-const CloseButton = styled(Button)`
-  --inner-border-size: 0;
-  --outer-border-size: 0;
-  padding: 12px;
-  width: 32px;
-  height: 32px;
+const CloseButtonContainer = styled.div`
+  &> button {
+    --inner-border-size: 0;
+    --outer-border-size: 0;
+    padding: 12px;
+    width: 32px;
+    height: 32px;
+  }
 `
 
 const BackButtonContainer = styled.div`
@@ -49,11 +51,11 @@ const BackButtonContainer = styled.div`
   align-items: center;
   display: flex;
   padding: 12px;
-`
 
-const BackButton = styled(Button)`
-  --inner-border-size: 0;
-  --outer-border-size: 0;
+  &> button {
+    --inner-border-size: 0;
+    --outer-border-size: 0;
+  }
 `
 
 const BackButtonText = styled.span`
@@ -109,7 +111,7 @@ export default function Configure () {
   return (
     <Grid>
       <BackButtonContainer>
-        <BackButton onClick={() => setCustomizePage(null)}>
+        <Button onClick={() => setCustomizePage(null)}>
           {BackArrow}
           <BackButtonText>
             {formatMessage(getLocale('braveNewsBackToDashboard'), {
@@ -118,10 +120,12 @@ export default function Configure () {
               }
             })}
           </BackButtonText>
-        </BackButton>
+        </Button>
       </BackButtonContainer>
       <Header direction="row-reverse" gap={12} align="center" justify="space-between">
-        <CloseButton onClick={() => setCustomizePage(null)}>{Cross}</CloseButton>
+        <CloseButtonContainer>
+          <Button onClick={() => setCustomizePage(null)}>{Cross}</Button>
+        </CloseButtonContainer>
         {enabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveTodayTitle')}</HeaderText>
           <Toggle isOn={enabled} onChange={setEnabled} />

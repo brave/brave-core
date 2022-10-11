@@ -16,7 +16,6 @@ export interface ButtonProps {
   ariaLabel?: string
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type']
   children?: React.ReactNode | React.ReactNode[]
-  className?: string
   onClick: () => unknown
 }
 
@@ -41,7 +40,7 @@ export function ButtonIconContainer (props: React.PropsWithChildren<{}>) {
 }
 
 export default function Button (props: ButtonProps) {
-  const { scale = 'regular', className } = props
+  const { scale = 'regular' } = props
   return (
     <button
       className={classnames(
@@ -52,8 +51,7 @@ export default function Button (props: ButtonProps) {
           [style.isTertiary]: props.isTertiary && !props.isPrimary,
           [style.isLoading]: props.isLoading,
           [style.isCallToAction]: props.isCallToAction
-        },
-        className
+        }
       )}
       disabled={props.isDisabled}
       aria-label={props.ariaLabel}

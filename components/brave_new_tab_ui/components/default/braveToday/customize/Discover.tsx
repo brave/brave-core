@@ -24,7 +24,10 @@ const SearchInput = styled(TextInput)`
     --focus-border: #737ADE;
 `
 
-const LoadMoreButton = styled(Button)`
+const LoadMoreButtonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     grid-column: 2;
 `
 
@@ -61,10 +64,11 @@ export default function Discover () {
         <DirectFeedResults query={query} />
         <DiscoverSection name={getLocale('braveNewsBrowseByCategoryHeader')}>
             {filteredChannels}
-            {!showingAllCategories && !query &&
-                <LoadMoreButton onClick={() => setShowingAllCategories(true)}>
+            {!showingAllCategories && !query && <LoadMoreButtonContainer>
+                <Button onClick={() => setShowingAllCategories(true)}>
                     {getLocale('braveNewsLoadMoreCategoriesButton')}
-                </LoadMoreButton>}
+                </Button>
+            </LoadMoreButtonContainer>}
         </DiscoverSection>
         <DiscoverSection name={getLocale('braveNewsAllSourcesHeader')}>
             {filteredPublishers}
