@@ -10,9 +10,8 @@ export const isPublisherEnabled = (publisher: Publisher) => {
     // Direct Sources are enabled if they're available.
     if (publisher.type === PublisherType.DIRECT_SOURCE) return true
 
-    return publisher.isEnabled &&
-        publisher.userEnabledStatus === UserEnabled.NOT_MODIFIED ||
-        publisher.userEnabledStatus === UserEnabled.ENABLED
+    // Publishers enabled via channel are not shown in the sidebar.
+    return publisher.userEnabledStatus === UserEnabled.ENABLED
 }
 
 export const isDirectFeed = (publisher: Publisher) => {
