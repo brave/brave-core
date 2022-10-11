@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
+#include <algorithm>
+
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -25,16 +27,39 @@ BraveTabContainer::BraveTabContainer(
       tabs::features::ShouldShowVerticalTabs());
 }
 
-BraveTabContainer::~BraveTabContainer() = default;
+BraveTabContainer::~BraveTabContainer() {
+  // When the last tab is closed and tab strip is being destructed, the
+  // animation for the last removed tab could have been scheduled but not
+  // finished yet. In this case, stop the animation before checking if all
+  // closed tabs were cleaned up from OnTabCloseAnimationCompleted().
+  CancelAnimation();
+  DCHECK(closing_tabs_.empty()) << "There are dangling closed tabs.";
+}
 
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
-  if (tabs::features::ShouldShowVerticalTabs()) {
-    auto slots_bounds = layout_helper_->CalculateIdealBounds({});
-    return gfx::Size(TabStyle::GetStandardWidth(),
-                     slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
+  if (!tabs::features::ShouldShowVerticalTabs())
+    return TabContainerImpl::CalculatePreferredSize();
+
+  const int tab_count = tabs_view_model_.view_size();
+  int height = 0;
+  if (bounds_animator_.IsAnimating() && tab_count) {
+    // When removing a tab in the middle of tabs, the last tab's current bottom
+    // could be greater than ideal bounds bottom.
+    height = tabs_view_model_.view_at(tab_count - 1)->bounds().bottom();
   }
 
-  return TabContainerImpl::CalculatePreferredSize();
+  if (!closing_tabs_.empty()) {
+    // When closing trailing tabs, the last tab's current bottom could be
+    // greater than ideal bounds bottom. Note that closing tabs are not in
+    // tabs_view_model_ so we have to check again here.
+    for (auto* tab : closing_tabs_)
+      height = std::max(height, tab->bounds().bottom());
+  }
+
+  const auto slots_bounds = layout_helper_->CalculateIdealBounds({});
+  height =
+      std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
+  return gfx::Size(TabStyle::GetStandardWidth(), height);
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
@@ -57,6 +82,7 @@ gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
       (former_model_index > 0)
           ? tabs_view_model_.ideal_bounds(former_model_index - 1).bottom()
           : 0);
+  target_bounds.set_height(0);
   return target_bounds;
 }
 
@@ -76,6 +102,41 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
     return true;
 
   return TabContainerImpl::ShouldTabBeVisible(tab);
+}
+
+void BraveTabContainer::StartInsertTabAnimation(int model_index) {
+  if (!tabs::features::ShouldShowVerticalTabs()) {
+    TabContainerImpl::StartInsertTabAnimation(model_index);
+    return;
+  }
+
+  ExitTabClosingMode();
+
+  gfx::Rect bounds = GetTabAtModelIndex(model_index)->bounds();
+  bounds.set_height(GetLayoutConstant(TAB_HEIGHT));
+  bounds.set_width(TabStyle::GetStandardWidth());
+  bounds.set_x(-TabStyle::GetStandardWidth());
+  bounds.set_y((model_index > 0)
+                   ? tabs_view_model_.ideal_bounds(model_index - 1).bottom()
+                   : 0);
+  GetTabAtModelIndex(model_index)->SetBoundsRect(bounds);
+
+  // Animate in to the full width.
+  StartBasicAnimation();
+}
+
+void BraveTabContainer::RemoveTab(int index, bool was_active) {
+  if (tabs::features::ShouldShowVerticalTabs())
+    closing_tabs_.insert(tabs_view_model_.view_at(index));
+
+  TabContainerImpl::RemoveTab(index, was_active);
+}
+
+void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
+  if (tabs::features::ShouldShowVerticalTabs())
+    closing_tabs_.erase(tab);
+
+  TabContainerImpl::OnTabCloseAnimationCompleted(tab);
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)

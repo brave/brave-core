@@ -29,6 +29,12 @@ class BraveTabContainer : public TabContainerImpl {
   void EnterTabClosingMode(absl::optional<int> override_width,
                            CloseTabSource source) override;
   bool ShouldTabBeVisible(const Tab* tab) const override;
+  void StartInsertTabAnimation(int model_index) override;
+  void RemoveTab(int index, bool was_active) override;
+  void OnTabCloseAnimationCompleted(Tab* tab) override;
+
+ private:
+  base::flat_set<Tab*> closing_tabs_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
