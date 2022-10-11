@@ -16,6 +16,7 @@
 #include "base/callback_forward.h"
 #include "base/callback_helpers.h"
 #include "base/containers/flat_set.h"
+#include "base/feature_list.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -32,6 +33,7 @@
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -111,14 +113,18 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
 
-  auto* channels = prefs_->GetDictionary(prefs::kBraveNewsChannels);
-  if (channels->DictEmpty()) {
-    publishers_controller_.GetLocale(base::BindOnce(
-        [](ChannelsController* channels_controller, const std::string& locale) {
-          channels_controller->SetChannelSubscribed(locale, kTopSourcesChannel,
-                                                    true);
-        },
-        base::Unretained(&channels_controller_)));
+  if (base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsV2Feature)) {
+    auto* channels = prefs_->GetDictionary(prefs::kBraveNewsChannels);
+    if (channels->DictEmpty()) {
+      publishers_controller_.GetLocale(base::BindOnce(
+          [](ChannelsController* channels_controller,
+             const std::string& locale) {
+            channels_controller->SetChannelSubscribed(locale,
+                                                      kTopSourcesChannel, true);
+          },
+          base::Unretained(&channels_controller_)));
+    }
   }
 
   p3a::RecordAtInit(prefs_);
