@@ -49,7 +49,8 @@ struct AccountPrivateKeyView: View {
       }
       .padding()
       .onAppear {
-        keyringStore.privateKey(for: account) { key in
+        // TODO: Issue #5881 - Add password protection to view
+        keyringStore.privateKey(for: account, password: "") { key in
           self.key = key ?? ""
         }
       }

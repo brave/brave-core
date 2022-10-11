@@ -10,7 +10,16 @@ import Strings
 
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
+  private var password: String
   @State private var acknowledgedWarning: Bool = false
+  
+  init(
+    password: String,
+    keyringStore: KeyringStore
+  ) {
+    self.password = password
+    self.keyringStore = keyringStore
+  }
 
   var body: some View {
     ScrollView(.vertical) {
@@ -31,7 +40,12 @@ struct BackupWalletView: View {
           .foregroundColor(.secondary)
           .font(.footnote)
         VStack(spacing: 12) {
-          NavigationLink(destination: BackupRecoveryPhraseView(keyringStore: keyringStore)) {
+          NavigationLink(
+            destination: BackupRecoveryPhraseView(
+              password: password,
+              keyringStore: keyringStore
+            )
+          ) {
             Text(Strings.Wallet.continueButtonTitle)
           }
           .buttonStyle(BraveFilledButtonStyle(size: .normal))
@@ -63,7 +77,10 @@ struct BackupWalletView: View {
 struct BackupWalletView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      BackupWalletView(keyringStore: .previewStore)
+      BackupWalletView(
+        password: "",
+        keyringStore: .previewStore
+      )
     }
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()

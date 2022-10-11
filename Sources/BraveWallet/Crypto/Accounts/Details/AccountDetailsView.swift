@@ -25,8 +25,8 @@ struct AccountDetailsView: View {
 
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  private func removeAccount() {
-    keyringStore.removeSecondaryAccount(for: account)
+  private func removeAccount(password: String) {
+    keyringStore.removeSecondaryAccount(for: account, password: password)
   }
 
   private func renameAccountAndDismiss() {
@@ -80,7 +80,10 @@ struct AccountDetailsView: View {
               Alert(
                 title: Text(Strings.Wallet.accountRemoveAlertConfirmation),
                 message: Text(Strings.Wallet.warningAlertConfirmation),
-                primaryButton: .destructive(Text(Strings.yes), action: removeAccount),
+                primaryButton: .destructive(Text(Strings.yes), action: {
+                  // TODO: Issue #5967 - Add password protection to view
+                  removeAccount(password: "")
+                }),
                 secondaryButton: .cancel(Text(Strings.no))
               )
             }

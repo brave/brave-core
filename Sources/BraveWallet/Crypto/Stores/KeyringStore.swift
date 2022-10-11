@@ -215,10 +215,9 @@ public class KeyringStore: ObservableObject {
     }
   }
 
-  func recoveryPhrase(_ completion: @escaping ([RecoveryWord]) -> Void) {
-    keyringService.mnemonic { phrase in
-      let words =
-        phrase
+  func recoveryPhrase(password: String, completion: @escaping ([RecoveryWord]) -> Void) {
+    keyringService.mnemonic(forDefaultKeyring: password) { phrase in
+      let words = phrase
         .split(separator: " ")
         .enumerated()
         .map { RecoveryWord(value: String($0.element), index: $0.offset) }
@@ -289,8 +288,8 @@ public class KeyringStore: ObservableObject {
     }
   }
 
-  func removeSecondaryAccount(for account: BraveWallet.AccountInfo, completion: ((Bool) -> Void)? = nil) {
-    keyringService.removeImportedAccount(account.address, coin: account.coin) { success in
+  func removeSecondaryAccount(for account: BraveWallet.AccountInfo, password: String, completion: ((Bool) -> Void)? = nil) {
+    keyringService.removeImportedAccount(account.address, password: password, coin: account.coin) { success in
       self.updateKeyringInfo()
       completion?(success)
     }
@@ -308,8 +307,8 @@ public class KeyringStore: ObservableObject {
     }
   }
 
-  func privateKey(for account: BraveWallet.AccountInfo, completion: @escaping (String?) -> Void) {
-    keyringService.privateKey(forKeyringAccount: account.address, coin: account.coin) { success, key in
+  func privateKey(for account: BraveWallet.AccountInfo, password: String, completion: @escaping (String?) -> Void) {
+    keyringService.privateKey(forKeyringAccount: account.address, password: password, coin: account.coin) { success, key in
       completion(success ? key : nil)
     }
   }

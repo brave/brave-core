@@ -103,7 +103,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(defaultKeyring.isBackedUp)
   }
 
-  func mnemonic(forDefaultKeyring completion: @escaping (String) -> Void) {
+  func mnemonic(forDefaultKeyring password: String, completion: @escaping (String) -> Void) {
     completion(mnemonic)
   }
 
@@ -204,7 +204,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(false, "")
   }
 
-  func privateKey(forKeyringAccount address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool, String) -> Void) {
+  func privateKey(forKeyringAccount address: String, password: String, coin: BraveWallet.CoinType, completion: @escaping (Bool, String) -> Void) {
     completion(true, "807df4db569fab37cdf475a4bda779897f0f3dd9c5d90a2cb953c88ef762fd96")
   }
 
@@ -216,7 +216,7 @@ class MockKeyringService: BraveWalletKeyringService {
     }
   }
 
-  func removeImportedAccount(_ address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func removeImportedAccount(_ address: String, password: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
     guard let index = defaultKeyring.accountInfos.firstIndex(where: { $0.address == address }) else {
       completion(false)
       return
@@ -341,7 +341,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(true)
   }
 
-  func removeHardwareAccount(_ address: String, coin: BraveWallet.CoinType) {
+  func removeHardwareAccount(_ address: String, password: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
   }
 
   func notifyUserInteraction() {

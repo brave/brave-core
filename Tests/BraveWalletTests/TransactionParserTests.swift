@@ -636,7 +636,8 @@ class TransactionParserTests: XCTestCase {
         .init(
           programId: "",
           accountMetas: [.init(pubkey: "", isSigner: false, isWritable: false)],
-          data: [])
+          data: [],
+          decodedData: nil)
       ],
       send: .init(maxRetries: .init(maxRetries: 1), preflightCommitment: nil, skipPreflight: nil),
       signTransactionParam: nil
@@ -724,7 +725,8 @@ class TransactionParserTests: XCTestCase {
         .init(
           programId: "",
           accountMetas: [.init(pubkey: "", isSigner: false, isWritable: false)],
-          data: [])
+          data: [],
+          decodedData: nil)
       ],
       send: .init(maxRetries: .init(maxRetries: 1), preflightCommitment: nil, skipPreflight: nil),
       signTransactionParam: nil
