@@ -81,7 +81,7 @@ test('getAccounts success', async () => {
   }
   keyring['transport']['addSendCommandResponse']({ payload: getAccountsResponsePayload2 })
 
-  const result = await keyring.getAccounts(-2, 1)
+  const result = await keyring.getAccounts(-2, 1, 'default')
   expect(result).toEqual({
     success: true,
     payload: [
@@ -126,7 +126,7 @@ test('getAccounts ledger error after successful unlock', async () => {
   }
 
   keyring['transport']['addSendCommandResponse']({ payload: getAccountResponseLedgerError })
-  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1)
+  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1, 'ledger-live')
 
   // TODO why is this different from the eth counterpart test
   expect(result).toEqual({

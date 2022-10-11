@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { assert } from 'chrome://resources/js/assert.m.js'
 import { BraveWallet } from '../../../constants/types'
 import { LedgerSolanaKeyring } from '../interfaces'
 import {
   GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult
+  SignHardwareOperationResult,
+  SolDerivationPaths
 } from '../types'
 import {
   LedgerCommand,
@@ -33,7 +35,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     return BraveWallet.CoinType.SOL
   }
 
-  getAccounts = async (from: number, to: number): Promise<GetAccountsHardwareOperationResult> => {
+  getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -43,12 +45,12 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     const addZeroPath = (from > 0 || to < 0)
     if (addZeroPath) {
       // Add zero address to calculate device id.
-      paths.push(this.getPathForIndex(0))
+      paths.push(this.getPathForIndex(0, scheme))
     }
     for (let i = from; i <= to; i++) {
-      paths.push(this.getPathForIndex(i))
+      paths.push(this.getPathForIndex(i, scheme))
     }
-    return this.getAccountsFromDevice(paths, addZeroPath)
+    return this.getAccountsFromDevice(paths, addZeroPath, scheme)
   }
 
   signTransaction = async (path: string, rawTxBytes: Buffer): Promise<SignHardwareOperationResult> => {
@@ -80,9 +82,9 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     return { success: true, payload: responsePayload.signature }
   }
 
-  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean): Promise<GetAccountsHardwareOperationResult> => {
+  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
     let accounts = []
-    const zeroPath = this.getPathForIndex(0)
+    const zeroPath = this.getPathForIndex(0, scheme)
     for (const path of paths) {
       const data = await this.sendCommand<SolGetAccountResponse>({
         command: LedgerCommand.GetAccount,
@@ -125,7 +127,12 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     return { success: true, payload: accounts }
   }
 
-  private readonly getPathForIndex = (index: number): string => {
+  private readonly getPathForIndex = (index: number, scheme: string): string => {
+    if (scheme === SolDerivationPaths.LedgerLive) {
+      return `44'/501'/${index}'`
+    }
+    assert(scheme === SolDerivationPaths.Default)
+
     return `44'/501'/${index}'/0'`
   }
 }

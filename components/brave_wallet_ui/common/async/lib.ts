@@ -83,8 +83,8 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
-    } else if (keyring instanceof SolanaLedgerBridgeKeyring && opts.network) {
-      keyring.getAccounts(opts.startIndex, opts.stopIndex)
+    } else if (keyring instanceof SolanaLedgerBridgeKeyring && opts.network && opts.scheme) {
+      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
         .then(async (result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             const { braveWalletService } = getAPIProxy()
