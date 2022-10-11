@@ -43,7 +43,7 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import Settings, { TabType as SettingsTabType } from './settings'
 
-import { BraveNewsContextProvider } from '../../components/braveNews/Context'
+import { BraveNewsContextProvider } from '../../components/default/braveToday/customize/Context'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import GridWidget from './gridWidget'
 

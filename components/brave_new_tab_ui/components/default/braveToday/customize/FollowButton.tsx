@@ -1,7 +1,7 @@
 import Button, { ButtonProps } from '$web-components/button'
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '$web-common/locale'
 import { Heart, HeartOutline } from './Icons'
 
 interface Props extends Omit<ButtonProps, 'isPrimary'> {

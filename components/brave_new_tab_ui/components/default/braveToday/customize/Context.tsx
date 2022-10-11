@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useCallback, useMemo, useState } from 'react'
-import { Channels, FeedSearchResultItem, Publishers, PublisherType } from '../../api/brave_news'
-import { api, isPublisherEnabled } from '../../api/brave_news/news'
+import { Channels, FeedSearchResultItem, Publishers, PublisherType } from '../../../../api/brave_news'
+import { api, isPublisherEnabled } from '../../../../api/brave_news/news'
 import Modal from './Modal'
 
 // Leave possibility for more pages open.

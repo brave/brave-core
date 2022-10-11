@@ -1,11 +1,10 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '$web-common/locale'
 import { useChannels, usePublishers } from './Context'
-import Flex from '../Flex'
-import { formatMessage } from '../../../brave_rewards/resources/shared/lib/locale_context'
-
+import Flex from '../../../Flex'
+import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 import { FeedListEntry, ChannelListEntry } from './SourcesListEntry'
 
 const Title = styled.span`

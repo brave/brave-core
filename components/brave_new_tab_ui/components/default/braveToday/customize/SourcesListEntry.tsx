@@ -1,8 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherSubscribed } from './Context'
-import { useGetUnpaddedImage } from '../default/braveToday/cards/CardImage'
-import Flex from '../Flex'
+import { useGetUnpaddedImage } from '../cards/CardImage'
+import Flex from '../../../Flex'
 import { Heart, HeartOutline } from './Icons'
 
 interface Props {

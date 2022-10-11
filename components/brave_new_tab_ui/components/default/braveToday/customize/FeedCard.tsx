@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import * as React from 'react'
 import styled, { keyframes } from 'styled-components'
-import Flex from '../Flex'
+import Flex from '../../../Flex'
 import FollowButton from './FollowButton'
 import { Heart, HeartOutline } from './Icons'
 import { usePublisher, usePublisherSubscribed } from './Context'
 import { getCardColor } from './colors'
-import { useGetUnpaddedImage } from '../default/braveToday/cards/CardImage'
-import { api } from '../../api/brave_news/news'
+import { useGetUnpaddedImage } from '../cards/CardImage'
+import { api } from '../../../../api/brave_news/news'
 
 const Container = styled(Flex)`
 `

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import * as React from 'react'
-import Flex from '../Flex'
+import Flex from '../../../Flex'
 import { getCardColor } from './colors'
 import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'

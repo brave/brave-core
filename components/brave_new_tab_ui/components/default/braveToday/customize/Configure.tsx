@@ -1,16 +1,16 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import Flex from '../Flex'
+import Flex from '../../../Flex'
 import Discover from './Discover'
 import { BackArrow, Cross } from './Icons'
 import Button from '$web-components/button'
 import Toggle from '$web-components/toggle'
 import SourcesList from './SourcesList'
 import DisabledPlaceholder from './DisabledPlaceholder'
-import { useNewTabPref } from '../../hooks/usePref'
+import { useNewTabPref } from '../../../../hooks/usePref'
 import { useBraveNews } from './Context'
-import { getLocale } from '../../../common/locale'
-import { formatMessage } from '../../../brave_rewards/resources/shared/lib/locale_context'
+import { getLocale } from '$web-common/locale'
+import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 
 const Grid = styled.div`
   width: 100%;

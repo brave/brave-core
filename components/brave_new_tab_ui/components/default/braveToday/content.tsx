@@ -15,7 +15,7 @@ import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
-import { useBraveNews } from '../../braveNews/Context'
+import { useBraveNews } from './customize/Context'
 import { loadTimeData } from '../../../../common/loadTimeData'
 
 function getFeedHashForCache (feed?: Feed) {
