@@ -75,7 +75,7 @@ js_library("federated_internals") {
   deps = [
     ":federated_internals_browser_proxy",
     "//ui/webui/resources/js:assert",
-    "//ui/webui/resources/js:util.m",
+    "//ui/webui/resources/js:util",
   ]
 }
 
@@ -84,6 +84,6 @@ js_library("federated_internals_browser_proxy") {
     "//brave/browser/ui/webui/brave_federated:mojo_bindings_webui_js",
     "//brave/components/brave_federated/public/interfaces:interfaces_webui_js",
     "//ui/webui/resources/js:assert",
-    "//ui/webui/resources/js:util.m",
+    "//ui/webui/resources/js:util",
   ]
 }
