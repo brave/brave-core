@@ -101,7 +101,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
 
-  std::unique_ptr<ui::SelectFileDialog> select_file_dialog_;
+  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   std::unique_ptr<CustomBackgroundFileManager> file_manager_;
 
   base::WeakPtrFactory<BraveNewTabPageHandler> weak_factory_;
