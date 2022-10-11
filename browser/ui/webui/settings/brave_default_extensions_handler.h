@@ -96,7 +96,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 
   std::string dialog_key_;
   ui::SelectFileDialog::Type dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
-  std::unique_ptr<ui::SelectFileDialog> select_file_dialog_;
+  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
