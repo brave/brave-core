@@ -17,9 +17,9 @@ bool ParseCertificatesFile(base::StringPiece certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   base::StringPiece brave_certs = R"brave_certs(
-# Last updated: Thu Oct  6 01:51:14 UTC 2022
+# Last updated: Tue Oct 11 22:30:18 UTC 2022
 PinsListTimestamp
-1665021074
+1665527418
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
