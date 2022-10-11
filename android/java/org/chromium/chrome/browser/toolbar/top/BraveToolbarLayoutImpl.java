@@ -505,9 +505,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         //         });
                         //     }
 
-                        org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
-                        contentUrl.url = "https://www.youtube.com/watch?v=3peLyPOKEwE";
-                        mPlaylistPageHandler.addMediaFilesFromPageToPlaylist("default", contentUrl);
+                        // org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
+                        // contentUrl.url = "https://www.youtube.com/watch?v=WETz6EaohrM";
+                        // mPlaylistPageHandler.addMediaFilesFromPageToPlaylist("default",
+                        // contentUrl);
 
                         // Log.e("NTP", "mPlaylistPageHandler 3");
                         // org.chromium.url.mojom.Url contentUrl =
@@ -515,14 +516,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         // contentUrl.url = "https://www.youtube.com/watch?v=3peLyPOKEwE";
                         // mPlaylistPageHandler.addMediaFilesFromPageToPlaylist(
                         //         playlists[0].id, contentUrl);
-                        // mPlaylistPageHandler.getPlaylist(playlists[0].id, pl -> {
-                        //     Log.e("NTP", "mPlaylistPageHandler 4");
-                        //     PlaylistItem playlistItem = pl.items[0];
-                        //     Log.e("NTP",
-                        //             playlistItem.name + " : " + playlistItem.pageSource.url
-                        //                     + " : " + playlistItem.mediaPath.url + " : "
-                        //                     + playlistItem.thumbnailPath.url);
-                        // });
+
+                        mPlaylistPageHandler.getPlaylist("default", pl -> {
+                            Log.e("NTP", "mPlaylistPageHandler 4");
+                            PlaylistItem playlistItem = pl.items[0];
+                            Log.e("NTP",
+                                    playlistItem.name + " : " + playlistItem.pageSource.url + " : "
+                                            + playlistItem.mediaPath.url + " : "
+                                            + playlistItem.thumbnailPath.url);
+                        });
+
                         // });
                     }
                 }

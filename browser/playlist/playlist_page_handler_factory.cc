@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -49,13 +50,17 @@ void PlaylistPageHandlerFactory::BindForContext(
 PlaylistPageHandlerFactory::PlaylistPageHandlerFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistPageHandler",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(playlist::PlaylistServiceFactory::GetInstance());
+}
 
 PlaylistPageHandlerFactory::~PlaylistPageHandlerFactory() = default;
 
 KeyedService* PlaylistPageHandlerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
+  playlist::PlaylistServiceFactory::GetInstance()->GetForBrowserContext(
+      context);
   return new PlaylistPageHandler(profile);
 }
 

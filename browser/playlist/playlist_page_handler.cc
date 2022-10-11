@@ -103,8 +103,12 @@ void PlaylistPageHandler::GetPlaylist(
   std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
   for (const auto& item : playlist->items) {
     items.push_back(playlist::mojom::PlaylistItem::New(
-        item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
-        GURL(item.thumbnail_path), item.media_file_cached));
+        item.id, item.title, GURL(item.page_src),
+        GURL("file://" + item.media_file_path),
+        GURL("file://" + item.thumbnail_path), item.media_file_cached));
+    LOG(ERROR) << "NTP"
+               << "GetPlaylist : " << item.media_file_path << " : "
+               << item.thumbnail_path;
   }
   LOG(ERROR) << "NTP"
              << "GetPlaylist : "
