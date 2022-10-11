@@ -16,10 +16,10 @@ namespace ads {
 struct IssuerInfo;
 struct IssuersInfo;
 
-bool IsIssuerValid(const IssuerInfo& issuer);
-
 void SetIssuers(const IssuersInfo& issuers);
 absl::optional<IssuersInfo> GetIssuers();
+
+bool IsIssuersValid(const IssuersInfo& issuers);
 
 bool HasIssuers();
 bool HasIssuersChanged(const IssuersInfo& issuers);
