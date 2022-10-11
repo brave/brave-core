@@ -47,12 +47,11 @@ export const MarketView = () => {
 
   // Redux
   const dispatch = useDispatch()
-  const {
-    isLoadingCoinMarketData,
-    coinMarketData: allCoins,
-    userVisibleTokensInfo: tradableAssets,
-    fullTokenList
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const isLoadingCoinMarketData = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isLoadingCoinMarketData)
+  const allCoins = useSelector(({ wallet }: { wallet: WalletState }) => wallet.coinMarketData)
+  const tradableAssets = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
+  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
 
   // Hooks
   const history = useHistory()
@@ -104,18 +103,21 @@ export const MarketView = () => {
   React.useEffect(() => {
     if (allCoins.length === 0) {
       dispatch(WalletActions.getCoinMarkets({
-        vsAsset: defaultCurrency,
+        vsAsset: defaultCurrencies.fiat || defaultCurrency,
         limit: assetsRequestLimit
       }))
     }
-  }, [allCoins])
+  }, [allCoins, defaultCurrencies])
 
   React.useEffect(() => {
     if (!iframeLoaded || !marketDataIframeRef?.current) return
 
     const updateCoinsMsg: UpdateCoinMarketMessage = {
       command: MarketUiCommand.UpdateCoinMarkets,
-      payload: allCoins
+      payload: {
+        coins: allCoins,
+        defaultCurrencies
+      }
     }
     sendMessageToMarketUiFrame(marketDataIframeRef.current.contentWindow, updateCoinsMsg)
 
@@ -145,7 +147,7 @@ export const MarketView = () => {
       payload: fullTokenList
     }
     sendMessageToMarketUiFrame(marketDataIframeRef.current.contentWindow, updateDepositableAssetsMsg)
-  }, [iframeLoaded, marketDataIframeRef, allCoins, buyAssets, fullTokenList, isMounted, getAllBuyAssets])
+  }, [iframeLoaded, marketDataIframeRef, allCoins, buyAssets, fullTokenList, isMounted, getAllBuyAssets, defaultCurrencies])
 
   React.useEffect(() => {
     window.addEventListener('message', onMessageEventListener)

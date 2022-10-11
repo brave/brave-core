@@ -20,7 +20,13 @@ import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 
 // constants
-import { BraveWallet, MarketAssetFilterOption, MarketDataTableColumnTypes, SortOrder } from '../constants/types'
+import {
+  BraveWallet,
+  DefaultCurrencies,
+  MarketAssetFilterOption,
+  MarketDataTableColumnTypes,
+  SortOrder
+} from '../constants/types'
 
 // utils
 import {
@@ -60,6 +66,7 @@ const App = () => {
   const [tradableAssets, setTradableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [buyableAssets, setBuyableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [depositableAssets, setDepositableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [defaultCurrencies, setDefaultCurrencies] = React.useState<DefaultCurrencies>()
 
   // Memos
   const visibleCoinMarkets = React.useMemo(() => {
@@ -105,7 +112,8 @@ const App = () => {
     switch (message.command) {
       case MarketUiCommand.UpdateCoinMarkets: {
         const { payload } = message as UpdateCoinMarketMessage
-        setCoinMarkets(payload)
+        setCoinMarkets(payload.coins)
+        setDefaultCurrencies(payload.defaultCurrencies)
         break
       }
 
@@ -187,6 +195,7 @@ const App = () => {
             headers={tableHeaders}
             coinMarketData={visibleCoinMarkets}
             showEmptyState={searchTerm !== '' || currentFilter !== 'all'}
+            fiatCurrency={defaultCurrencies?.fiat ?? 'USD'}
             onSelectCoinMarket={onSelectCoinMarket}
             onSort={onSort}
             isBuySupported={isBuySupported}
