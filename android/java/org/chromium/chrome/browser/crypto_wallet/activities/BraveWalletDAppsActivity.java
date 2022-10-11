@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragmen
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.EncryptionKeyFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignTransactionFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
@@ -53,7 +54,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         CONFIRM_TRANSACTION(5),
         DECRYPT_REQUEST(6),
         GET_ENCRYPTION_PUBLIC_KEY_REQUEST(7),
-        FINISH(8);
+        SIGN_TRANSACTION(8),
+        SIGN_ALL_TRANSACTIONS(9),
+        FINISH(10);
 
         private int value;
         private static Map map = new HashMap<>();
@@ -88,7 +91,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             mWalletModel = activity.getWalletModel();
-            mWalletModel.getCryptoModel().mProcessNextDAppsRequest.observe(this, activityType -> {
+            mWalletModel.getDappsModel().mProcessNextDAppsRequest.observe(this, activityType -> {
                 if (activityType == null) return;
                 switch (activityType) {
                     case GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
@@ -214,6 +217,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
                 || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
             mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);
+        } else if (mActivityType == ActivityType.SIGN_TRANSACTION
+                || mActivityType == ActivityType.SIGN_ALL_TRANSACTIONS) {
+            mFragment = SignTransactionFragment.newInstance(mActivityType);
         } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
             mFragment = new ConnectAccountFragment();
         } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST
@@ -239,7 +245,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         // (under-development) and get rid of explicit clear state call
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            activity.getWalletModel().getCryptoModel().clearDappsState();
+            activity.getWalletModel().getDappsModel().clearDappsState();
         }
         if (mPendingTxHelper != null) {
             mPendingTxHelper.destroy();

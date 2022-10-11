@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
-import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemDataSource;
+import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
 
 import java.util.List;
 
@@ -25,14 +25,14 @@ import java.util.List;
  * sub-title.
  */
 public class TwoLineItemFragment extends Fragment {
-    private List<TwoLineItemDataSource> items;
+    private List<TwoLineItem> items;
     private TwoLineItemRecyclerViewAdapter adapter;
 
-    public TwoLineItemFragment(List<TwoLineItemDataSource> items) {
+    public TwoLineItemFragment(List<TwoLineItem> items) {
         this.items = items;
     }
 
-    public static TwoLineItemFragment newInstance(List<TwoLineItemDataSource> items) {
+    public static TwoLineItemFragment newInstance(List<TwoLineItem> items) {
         TwoLineItemFragment fragment = new TwoLineItemFragment(items);
         return fragment;
     }

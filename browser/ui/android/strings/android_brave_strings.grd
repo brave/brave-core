@@ -3015,6 +3015,147 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BLOCK_COOKIE_NOTICES_TEXT" desc="Block cookie consent notices text">
       Brave already blocks third-party cookies. We can block cookie consent notices, too.
     </message>
+    <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">
+      Note that Brave can't verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action, and trust the requesting site.
+    </message>
+    <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">
+      Sign at your own risk
+    </message>
+    <message name="IDS_BRAVE_WALLET_NEXT" desc="Text for next action">
+      Next
+    </message>
+    <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm transaction queue of">
+      <ph name="CURRENT"><ex>1</ex>%1$d</ph> of <ph name="SIZE"><ex>3</ex>%2$d</ph>
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System program">
+      System Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config program">
+      Config Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM" desc="Name of Solana Stake program">
+      Stake Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_VOTE_PROGRAM" desc="Name of Solana Vote program">
+      Vote Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_BP_FLOADER" desc="Name of Solana BPF loader">
+      BPF Loader
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_ED25519_PROGRAM" desc="Name of Solana Ed25519 program">
+      Ed25519 Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_TOKEN_PROGRAM" desc="Name of Solana token program">
+      Token Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM" desc="Name of Solana Secp256k1 program">
+      Secp256k1 Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_DATA_TEXT" desc="Data title text">
+      Data
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_CREATE_ACCOUNT" desc="Transaction subtype of create account">
+     Create account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_ASSIGN" desc="Transaction subtype of assign">
+      Assign
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_TRANSFER" desc="Transaction subtype of transfer">
+      Transfer
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_CREATE_ACCOUNT_WITH_SEED" desc="Transaction subtype of create account with seed">
+      Create account with seed
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_ADVANCE_NONCE_ACCOUNT" desc="Transaction subtype of advance nonce account">
+      Advance nonce account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_WITHDRAW_NONCE_ACCOUNT" desc="Transaction subtype of withdraw nonce account">
+      Withdraw nonce account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_NONCE_ACCOUNT" desc="Transaction subtype of initialize nonce account">
+      Initialize nonce account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_AUTHORIZE_NONCE_ACCOUNT" desc="Transaction subtype of authorize nonce account">
+      Authorize nonce account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_ALLOCATE" desc="Transaction subtype of allocate">
+      Allocate
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_ALLOCATE_WITH_SEED" desc="Transaction subtype of allocate with seed">
+      Allocate with seed
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_ASSIGN_WITH_SEED" desc="Transaction subtype of assign with seed">
+      Assign with seed
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_TRANSFER_WITH_SEED" desc="Transaction subtype of transfer with seed">
+      Transfer with seed
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_UPGRADE_NONCE_ACCOUNT" desc="Transaction subtype of upgrade nonce account">
+      Upgrade nonce account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_MINT" desc="Transaction subtype of initialize mint">
+      Initialize mint
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_ACCOUNT" desc="Transaction subtype of initialize account">
+      Initialize account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_MULTISIG" desc="Transaction subtype of initialize multisig">
+      Initialize multisig
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_APPROVE" desc="Transaction subtype of approve">
+      Approve
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_REVOKE" desc="Transaction subtype of revoke">
+      Revoke
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_SET_AUTHORITY" desc="Transaction subtype of set authority">
+      Set authority
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_MINT_TO" desc="Transaction subtype of mint to">
+      Mint to
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_BURN" desc="Transaction subtype of burn">
+      Burn
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_CLOSE_ACCOUNT" desc="Transaction subtype of close account">
+      Close account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_FREEZE_ACCOUNT" desc="Transaction subtype of freeze account">
+      Freeze account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_THAW_ACCOUNT" desc="Transaction subtype of thaw account">
+      Thaw account
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_TRANSFER_CHECKED" desc="Transaction subtype of transfer checked">
+      Transfer checked
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_APPROVE_CHECKED" desc="Transaction subtype of approve checked">
+      Approve checked
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_MINT_TO_CHECKED" desc="Transaction subtype of mint to checked">
+      Mint to checked
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_BURN_CHECKED" desc="Transaction subtype of burn checked">
+      Burn checked
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_ACCOUNT2" desc="Transaction subtype of initialize account2">
+      Initialize account 2
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_SYNC_NATIVE" desc="Transaction subtype of sync native">
+      Sync native
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_ACCOUNT3" desc="Transaction subtype of initialize account3">
+      Initialize account 3
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_MULTISIG2" desc="Transaction subtype of initialize multisig2">
+      Initialize multisig 2
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_INITIALIZE_MINT2" desc="Transaction subtype of initialize mint2">
+      Initialize mint 2
+    </message>
+    <message name="IDS_BRAVE_WALLET_UNKNOWN" desc="Transaction subtype of Unknown">
+      Unknown
+    </message>
   </messages>
   </release>
 </grit>
