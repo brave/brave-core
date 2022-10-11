@@ -63,6 +63,7 @@ class BraveShieldsDataController
   AdBlockMode GetAdBlockMode();
   FingerprintMode GetFingerprintMode();
   CookieBlockMode GetCookieBlockMode();
+  bool IsShieldsManaged();
   bool GetHTTPSEverywhereEnabled();
   bool GetNoScriptEnabled();
   void SetAdBlockMode(AdBlockMode mode);

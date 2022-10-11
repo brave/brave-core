@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <utility>
 
 #include "base/files/scoped_temp_dir.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
@@ -11,6 +12,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -23,6 +25,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
 #include "net/base/features.h"
@@ -168,6 +171,98 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   setting = map->GetContentSetting(GURL(), GURL(),
                                    ContentSettingsType::BRAVE_SHIELDS);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+
+  GURL blocked("http://blocked.com");
+  GURL allowed("http://allowed.com");
+  // Set allowed as blocked for initial value.
+  brave_shields::SetBraveShieldsEnabled(map, false, allowed);
+  // blocked.com is allowed by default
+  setting = map->GetContentSetting(blocked, GURL(),
+                                   ContentSettingsType::BRAVE_SHIELDS);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+
+  // Set policy to disable shields for specific domain.
+  auto blocked_list = base::Value(base::Value::Type::LIST);
+  blocked_list.Append("[*.]blocked.com");
+  blocked_list.Append("*.*");
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedShieldsBlockedForUrls,
+      base::Value::ToUniquePtrValue(std::move(blocked_list)));
+
+  auto allowed_list = base::Value(base::Value::Type::LIST);
+  allowed_list.Append("[*.]allowed.com");
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedShieldsAllowedForUrls,
+      base::Value::ToUniquePtrValue(std::move(allowed_list)));
+
+  // setting should apply block to origin.
+  setting = map->GetContentSetting(blocked, GURL(),
+                                   ContentSettingsType::BRAVE_SHIELDS);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+  brave_shields::SetBraveShieldsEnabled(map, true, blocked);
+
+  // setting should not be changed.
+  setting = map->GetContentSetting(blocked, GURL(),
+                                   ContentSettingsType::BRAVE_SHIELDS);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+
+  // setting should apply allow to origin.
+  setting = map->GetContentSetting(allowed, GURL(),
+                                   ContentSettingsType::BRAVE_SHIELDS);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  brave_shields::SetBraveShieldsEnabled(map, false, allowed);
+  // setting should not be changed.
+  setting = map->GetContentSetting(allowed, GURL(),
+                                   ContentSettingsType::BRAVE_SHIELDS);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+
+  // setting should not apply to default
+  setting = map->GetContentSetting(GURL(), GURL(),
+                                   ContentSettingsType::BRAVE_SHIELDS);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+}
+
+TEST_F(BraveShieldsUtilTest, IsShieldsManaged) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+  GURL blocked("http://blocked.com");
+  GURL allowed("http://allowed.com");
+  EXPECT_FALSE(brave_shields::IsShieldsManaged(
+      profile()->GetTestingPrefService(), map, blocked));
+
+  auto blocked_list = base::Value(base::Value::Type::LIST);
+  blocked_list.Append("[*.]blocked.com");
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedShieldsBlockedForUrls,
+      base::Value::ToUniquePtrValue(std::move(blocked_list)));
+  // only blocked pref set
+  EXPECT_TRUE(brave_shields::IsShieldsManaged(
+      profile()->GetTestingPrefService(), map, blocked));
+
+  EXPECT_FALSE(brave_shields::IsShieldsManaged(
+      profile()->GetTestingPrefService(), map, GURL("http://allowed.com")));
+
+  auto allowed_list = base::Value(base::Value::Type::LIST);
+  blocked_list.Append("[*.]allowed.com");
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedShieldsAllowedForUrls,
+      base::Value::ToUniquePtrValue(std::move(blocked_list)));
+
+  // both blocked/allowed prefs set
+  EXPECT_TRUE(brave_shields::IsShieldsManaged(
+      profile()->GetTestingPrefService(), map, blocked));
+
+  EXPECT_TRUE(brave_shields::IsShieldsManaged(
+      profile()->GetTestingPrefService(), map, allowed));
+
+  profile()->GetTestingPrefService()->RemoveManagedPref(
+      kManagedShieldsBlockedForUrls);
+
+  // only allowed prefs set
+  EXPECT_FALSE(brave_shields::IsShieldsManaged(
+      profile()->GetTestingPrefService(), map, blocked));
+
+  EXPECT_TRUE(brave_shields::IsShieldsManaged(
+      profile()->GetTestingPrefService(), map, allowed));
 }
 
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_IsNotHttpHttps) {

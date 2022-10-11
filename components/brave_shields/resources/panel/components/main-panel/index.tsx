@@ -135,6 +135,7 @@ function MainPanel () {
               isOn={siteBlockInfo?.isShieldsEnabled}
               onChange={handleToggleChange}
               accessibleLabel={getLocale('braveShieldsEnable')}
+              disabled={siteBlockInfo?.isShieldsManaged}
             />
           </S.StatusToggle>
         </S.ControlBox>

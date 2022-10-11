@@ -87,6 +87,48 @@ def AddBravePolicies(template_file_contents):
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Wallet feature will be disabled.'''),
         },
+        {
+            'name': 'ShieldsBlockedForUrls',
+            'type': 'main',
+            'schema': {
+              'type': 'array',
+              'items': { 'type': 'string' },
+            },
+            'supported_on': ['chrome.*:106-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 4,
+            'caption': '''Blocks Brave Shields for urls.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''Shields blocked.'''),
+        },
+        {
+            'name': 'ShieldsAllowedForUrls',
+            'type': 'main',
+            'schema': {
+              'type': 'array',
+              'items': { 'type': 'string' },
+            },
+            'supported_on': ['chrome.*:106-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 5,
+            'caption': '''Allows Brave Shields for urls.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''Shields allowed.'''),
+        },
     ]
 
     # Our new polices are added with highest id
