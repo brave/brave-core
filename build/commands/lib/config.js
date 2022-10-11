@@ -410,10 +410,11 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.getTargetOS() === 'linux') {
-    if (this.targetArch === 'x64') {
+    if (this.targetArch !== 'x86') {
       // Include vaapi support
       args.use_vaapi = true
-    } else if (this.targetArch === 'arm64') {
+    }
+    if (this.targetArch === 'arm64') {
       // We don't yet support Widevine on Arm64 Linux.
       args.enable_widevine = false
     }
