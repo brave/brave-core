@@ -215,7 +215,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsLoadMoreCategoriesButton", IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON },  // NOLINT
         { "braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
         { "braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
-        { "braveNewsSourceCount", IDS_BRAVE_NEWS_SOURCE_COUNT},
         { "braveNewsFollowButtonFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},  // NOLINT
         { "braveNewsFollowButtonNotFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING},  // NOLINT
         { "braveNewsSearchResultsLoading", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOADING},  // NOLINT

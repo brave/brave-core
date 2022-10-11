@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import { useChannels, usePublishers } from './Context'
 import Flex from '../../../Flex'
-import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 import { FeedListEntry, ChannelListEntry } from './SourcesListEntry'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
+import usePromise from '../../../../hooks/usePromise'
 
 const Title = styled.span`
   font-size: 18px;
@@ -23,10 +24,12 @@ export default function SourcesList () {
     const publishers = usePublishers({ subscribed: true })
     const channels = useChannels({ subscribedOnly: true })
 
+    const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString('braveNewsSourceCount', publishers.length + channels.length), [publishers.length, channels.length])
+
     return <div>
         <Flex direction="row" justify="space-between" align="center">
             <Title>{getLocale('braveNewsFeedsHeading')}</Title>
-            <Subtitle>{formatMessage(getLocale('braveNewsSourceCount'), [publishers.length + channels.length])}</Subtitle>
+            <Subtitle>{sourcesCount}</Subtitle>
         </Flex>
         <Flex direction="column">
             {channels.map(c => <ChannelListEntry key={c.channelName} channelId={c.channelName} />)}

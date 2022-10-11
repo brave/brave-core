@@ -378,8 +378,11 @@
       <message name="IDS_BRAVE_NEWS_FEEDS_HEADING" desc="The heading for the feeds contianer">
         Following
       </message>
-      <message name="IDS_BRAVE_NEWS_SOURCE_COUNT" desc="Label saying how many sources you currently have">
-        <ph name="FEED_COUNT">$1<ex>10</ex></ph> sources
+      <message name="IDS_BRAVE_NEWS_SOURCE_COUNT" desc="Label saying how many sources you currently have. [ICU Syntax]">
+        {FEED_COUNT, plural,
+          =1 {# source}
+          other {# sources}
+        }
       </message>
       <message name="IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING" desc="Label for the follow button to be display when following the feed">
         Following
