@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index b6b9aac136838f18bc00312b6af904d6725c8560..46a9aba15a882624f5cc538fd0eb512a5939184b 100644
+index 57e05170369708cb75a99a96b92386176a09b9fb..3c2c03f13f00615acbaa9f66909a548811914332 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -350,6 +350,7 @@ public class NewTabPageLayout extends LinearLayout implements VrModeObserver {
+@@ -329,6 +329,7 @@ public class NewTabPageLayout extends LinearLayout implements VrModeObserver {
          assert mMvTilesContainerLayout != null;
  
          int maxRows = 2;

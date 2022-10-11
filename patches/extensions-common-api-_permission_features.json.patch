@@ -1,5 +1,5 @@
 diff --git a/extensions/common/api/_permission_features.json b/extensions/common/api/_permission_features.json
-index dd27f97104dd3dc413d46f89b285cd868074789a..0299a2483f339a78da2cce25bcac5e503a92b78f 100644
+index 8ea8fa8b7a675cf04e8444b2a9daff40249cbdd4..cdbb8bd808aeaaa38712c4a4be06e6034baf8325 100644
 --- a/extensions/common/api/_permission_features.json
 +++ b/extensions/common/api/_permission_features.json
 @@ -314,6 +314,7 @@

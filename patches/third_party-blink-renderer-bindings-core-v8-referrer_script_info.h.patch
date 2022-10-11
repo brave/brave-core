@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h
-index a488b931fa0bd9a3e57376781ab5049fbc59d4cd..d595b9938ebe9b39f1a0311352a43f4472745f4f 100644
+index 0119624a028bec3e53e4e402938a98fe6def1483..6c4bac81ffeeeb1f7876451974d97fc48790172c 100644
 --- a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h
 +++ b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h
 @@ -39,7 +39,7 @@ class CORE_EXPORT ReferrerScriptInfo {

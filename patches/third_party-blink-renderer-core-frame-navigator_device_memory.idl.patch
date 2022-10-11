@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_device_memory.idl b/third_party/blink/renderer/core/frame/navigator_device_memory.idl
-index f016ac69fa7cb93dc078f0d49aa92ff8bfef1c0b..8204a381031d17eb2fdac11591859f7c221fffd2 100644
+index e1399af331032bd2d3a37c4ec12e5fe170f03870..a4393d76910a2bf95d8ad263e6b58eaed9db0073 100644
 --- a/third_party/blink/renderer/core/frame/navigator_device_memory.idl
 +++ b/third_party/blink/renderer/core/frame/navigator_device_memory.idl
 @@ -5,6 +5,6 @@
