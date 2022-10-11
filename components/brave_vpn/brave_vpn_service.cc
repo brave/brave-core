@@ -304,7 +304,12 @@ void BraveVpnService::OnDisconnected() {
 
   if (needs_connect_) {
     needs_connect_ = false;
-    Connect();
+
+    base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&BraveVpnService::Connect,
+                       weak_ptr_factory_.GetWeakPtr()),
+        base::Milliseconds(500));
   }
 }
 
