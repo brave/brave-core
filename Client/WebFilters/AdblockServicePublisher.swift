@@ -71,7 +71,7 @@ class AdblockServicePublisher {
     return adBlockService
   }
   
-  private func filterList(forUUID uuid: String) throws -> AdblockFilterList {
+  private func filterList(forUUID uuid: String) throws -> AdblockFilterListCatalogEntry {
     guard let filterList = adBlockService?.regionalFilterLists?.first(where: { $0.uuid == uuid }) else {
       throw AdblockServiceError.uuidNotFound(uuid)
     }

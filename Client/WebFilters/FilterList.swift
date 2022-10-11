@@ -22,7 +22,7 @@ struct FilterList: Decodable, Identifiable {
   
   var id: String { return uuid }
   
-  init(from filterList: AdblockFilterList, isEnabled: Bool) {
+  init(from filterList: AdblockFilterListCatalogEntry, isEnabled: Bool) {
     self.uuid = filterList.uuid
     self.title = filterList.title
     self.description = filterList.desc

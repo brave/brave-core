@@ -487,11 +487,11 @@ class TabManager: NSObject {
 
     if let (provider, js) = makeWalletEthProvider?(tab) {
       let providerJS = """
-      (function() {
+      window.__firefox__.execute(function($, $Object) {
         if (window.isSecureContext) {
           \(js)
         }
-      })();
+      });
       """
       
       tab.walletEthProvider = provider

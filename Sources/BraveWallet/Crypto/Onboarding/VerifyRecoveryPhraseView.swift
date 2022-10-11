@@ -11,11 +11,20 @@ import Strings
 struct VerifyRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
 
-  @State private var recoveryWords: [RecoveryWord] = []
-  @State private var randomizedWords: [RecoveryWord] = []
+  @State private var recoveryWords: [RecoveryWord]
+  @State private var randomizedWords: [RecoveryWord]
   @State private var selectedWords: [RecoveryWord] = []
 
   @Environment(\.modalPresentationMode) @Binding private var modalPresentationMode
+  
+  init(
+    recoveryWords: [RecoveryWord],
+    keyringStore: KeyringStore
+  ) {
+    self.recoveryWords = recoveryWords
+    self.randomizedWords = recoveryWords.shuffled()
+    self.keyringStore = keyringStore
+  }
 
   private var wordsSelectedInCorrectOrder: Bool {
     recoveryWords == selectedWords
@@ -98,12 +107,6 @@ struct VerifyRecoveryPhraseView: View {
         }
       }
       .padding()
-    }
-    .onAppear {
-      keyringStore.recoveryPhrase { words in
-        recoveryWords = words
-        randomizedWords = words.shuffled()
-      }
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
     .navigationTitle(Strings.Wallet.cryptoTitle)
@@ -219,7 +222,14 @@ private struct SelectedWordsBox: View {
 struct VerifyRecoveryPhraseView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      VerifyRecoveryPhraseView(keyringStore: .previewStore)
+      VerifyRecoveryPhraseView(
+        recoveryWords: [
+          .init(value: "First", index: 0),
+          .init(value: "Second", index: 1),
+          .init(value: "Third", index: 2)
+        ],
+        keyringStore: .previewStore
+      )
     }
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()

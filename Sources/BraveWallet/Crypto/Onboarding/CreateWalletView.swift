@@ -147,7 +147,12 @@ private struct CreateWalletView: View {
               navController?.presentedViewController?.present(alert, animated: true)
               return false
             }
-            let controller = UIHostingController(rootView: BackupWalletView(keyringStore: keyringStore))
+            let controller = UIHostingController(
+              rootView: BackupWalletView(
+                password: password,
+                keyringStore: keyringStore
+              )
+            )
             navController?.pushViewController(controller, animated: true)
             return true
           },
@@ -169,7 +174,7 @@ private struct CreateWalletView: View {
       )
       .background(
         NavigationLink(
-          destination: BackupWalletView(keyringStore: keyringStore),
+          destination: BackupWalletView(password: password, keyringStore: keyringStore),
           isActive: $isSkippingBiometricsPrompt
         ) {
           EmptyView()

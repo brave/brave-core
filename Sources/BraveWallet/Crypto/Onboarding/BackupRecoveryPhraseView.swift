@@ -11,8 +11,17 @@ import Strings
 struct BackupRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
 
+  private var password: String?
   @State private var confirmedPhraseBackup: Bool = false
   @State private var recoveryWords: [RecoveryWord] = []
+  
+  init(
+    password: String? = nil,
+    keyringStore: KeyringStore
+  ) {
+    self.password = password
+    self.keyringStore = keyringStore
+  }
 
   private var warningView: some View {
     HStack(alignment: .firstTextBaseline) {
@@ -80,7 +89,12 @@ struct BackupRecoveryPhraseView: View {
           .font(.footnote)
           .padding(.vertical, 30)
           .padding(.horizontal, 20)
-        NavigationLink(destination: VerifyRecoveryPhraseView(keyringStore: keyringStore)) {
+        NavigationLink(
+          destination: VerifyRecoveryPhraseView(
+            recoveryWords: recoveryWords,
+            keyringStore: keyringStore
+          )
+        ) {
           Text(Strings.Wallet.continueButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
@@ -98,8 +112,12 @@ struct BackupRecoveryPhraseView: View {
       .padding()
     }
     .onAppear {
-      keyringStore.recoveryPhrase { words in
-        recoveryWords = words
+      if let password = password {
+        keyringStore.recoveryPhrase(password: password) { words in
+          recoveryWords = words
+        }
+      } else {
+        // TODO: Issue #5882 - Add password protection to view (not in Onboarding flow) 
       }
     }
     .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
