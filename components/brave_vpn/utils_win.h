@@ -30,7 +30,7 @@ bool CreateEntry(const std::wstring& entry_name,
                  const std::wstring& username,
                  const std::wstring& password);
 bool RemoveEntry(const std::wstring& entry_name);
-bool DisconnectEntry(const std::wstring& entry_name, bool notify = true);
+bool DisconnectEntry(const std::wstring& entry_name);
 bool ConnectEntry(const std::wstring& entry_name);
 // Don't cache returned HANDLE. It could be invalidated.
 HANDLE GetEventHandleForConnecting();
@@ -39,8 +39,6 @@ HANDLE GetEventHandleForConnectFailed();
 void CloseEventHandleForConnectFailed();
 HANDLE GetEventHandleForDisconnecting();
 void CloseEventHandleForDisconnecting();
-HANDLE GetEventHandleForDisconnected();
-void CloseEventHandleForDisconnected();
 
 CheckConnectionResult CheckConnection(const std::wstring& entry_name);
 

@@ -23,7 +23,6 @@ namespace {
 HANDLE g_connecting_event_handle = NULL;
 HANDLE g_connect_failed_event_handle = NULL;
 HANDLE g_disconnecting_event_handle = NULL;
-HANDLE g_disconnected_event_handle = NULL;
 
 void WINAPI RasDialFunc(UINT, RASCONNSTATE rasconnstate, DWORD error) {
   if (error) {
@@ -121,19 +120,6 @@ void CloseEventHandleForDisconnecting() {
   }
 }
 
-HANDLE GetEventHandleForDisconnected() {
-  if (!g_disconnected_event_handle)
-    g_disconnected_event_handle = CreateEvent(NULL, false, false, NULL);
-  return g_disconnected_event_handle;
-}
-
-void CloseEventHandleForDisconnected() {
-  if (g_disconnected_event_handle) {
-    CloseHandle(g_disconnected_event_handle);
-    g_disconnected_event_handle = NULL;
-  }
-}
-
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeterrorstringa
 void PrintRasError(DWORD error) {
   constexpr DWORD kBufSize = 512;
@@ -186,7 +172,7 @@ std::wstring GetPhonebookPath() {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
-bool DisconnectEntry(const std::wstring& entry_name, bool notify) {
+bool DisconnectEntry(const std::wstring& entry_name) {
   DWORD dw_cb = 0;
   DWORD dw_ret = ERROR_SUCCESS;
   DWORD dw_connections = 0;
@@ -222,15 +208,12 @@ bool DisconnectEntry(const std::wstring& entry_name, bool notify) {
         VLOG(2) << __func__ << " : " << name << ", " << type;
         if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
           VLOG(2) << __func__ << " : Disconnect... " << entry_name;
-          if (notify)
-            SetEvent(g_disconnecting_event_handle);
+          SetEvent(g_disconnecting_event_handle);
           dw_ret = RasHangUpA(lp_ras_conn[i].hrasconn);
           break;
         }
       }
     }
-    if (dw_ret == ERROR_SUCCESS && notify)
-      SetEvent(g_disconnected_event_handle);
     // Deallocate memory for the connection buffer
     HeapFree(GetProcessHeap(), 0, lp_ras_conn);
     lp_ras_conn = NULL;
@@ -250,8 +233,6 @@ bool DisconnectEntry(const std::wstring& entry_name, bool notify) {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasdiala
 bool ConnectEntry(const std::wstring& entry_name) {
-  DisconnectEntry(entry_name, false);
-
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
   DWORD cb = sizeof(RASDIALPARAMS);
 

@@ -764,11 +764,9 @@ TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   // Handle connect after disconnect current connection.
   connection_state() = ConnectionState::CONNECTED;
   Connect();
-#if !BUILDFLAG(IS_WIN)
   EXPECT_TRUE(needs_connect());
   EXPECT_EQ(ConnectionState::DISCONNECTING, connection_state());
   OnDisconnected();
-#endif
   EXPECT_FALSE(needs_connect());
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
 

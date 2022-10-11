@@ -21,12 +21,10 @@
 using brave_vpn::internal::CheckConnectionResult;
 using brave_vpn::internal::CloseEventHandleForConnectFailed;
 using brave_vpn::internal::CloseEventHandleForConnecting;
-using brave_vpn::internal::CloseEventHandleForDisconnected;
 using brave_vpn::internal::CloseEventHandleForDisconnecting;
 using brave_vpn::internal::CreateEntry;
 using brave_vpn::internal::GetEventHandleForConnectFailed;
 using brave_vpn::internal::GetEventHandleForConnecting;
-using brave_vpn::internal::GetEventHandleForDisconnected;
 using brave_vpn::internal::GetEventHandleForDisconnecting;
 using brave_vpn::internal::GetPhonebookPath;
 using brave_vpn::internal::PrintRasError;
@@ -58,9 +56,9 @@ BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin() {
 
 BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() {
   CloseHandle(event_handle_for_connected_);
+  CloseHandle(event_handle_for_disconnected_);
   CloseEventHandleForConnecting();
   CloseEventHandleForDisconnecting();
-  CloseEventHandleForDisconnected();
   CloseEventHandleForConnectFailed();
 }
 
@@ -123,7 +121,7 @@ void BraveVPNOSConnectionAPIWin::OnObjectSignaled(HANDLE object) {
     result = CheckConnectionResult::DISCONNECTING;
   } else if (object == event_handle_for_connected_) {
     result = CheckConnectionResult::CONNECTED;
-  } else if (object == GetEventHandleForDisconnected()) {
+  } else if (object == event_handle_for_disconnected_) {
     result = CheckConnectionResult::DISCONNECTED;
   } else {
     NOTREACHED();
@@ -180,19 +178,23 @@ void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
 }
 
 void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {
-  DCHECK(!event_handle_for_connected_);
+  DCHECK(!event_handle_for_connected_ && !event_handle_for_disconnected_);
 
   event_handle_for_connected_ = CreateEvent(NULL, false, false, NULL);
+  event_handle_for_disconnected_ = CreateEvent(NULL, false, false, NULL);
 
   // We don't need to check current connection state again if monitor each event
   // separately.
   RasConnectionNotificationW(static_cast<HRASCONN>(INVALID_HANDLE_VALUE),
                              event_handle_for_connected_, RASCN_Connection);
+  RasConnectionNotificationW(static_cast<HRASCONN>(INVALID_HANDLE_VALUE),
+                             event_handle_for_disconnected_,
+                             RASCN_Disconnection);
 
   connected_event_watcher_.StartWatchingMultipleTimes(
       event_handle_for_connected_, this);
   disconnected_event_watcher_.StartWatchingMultipleTimes(
-      GetEventHandleForDisconnected(), this);
+      event_handle_for_disconnected_, this);
   connecting_event_watcher_.StartWatchingMultipleTimes(
       GetEventHandleForConnecting(), this);
   disconnecting_event_watcher_.StartWatchingMultipleTimes(
