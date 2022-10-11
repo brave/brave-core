@@ -121,6 +121,8 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -185,6 +187,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -1221,7 +1224,30 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    private void showNotificationWarningDialog() {
+        BraveNotificationWarningDialog notificationWarningDialog =
+                new BraveNotificationWarningDialog();
+        notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.show(getSupportFragmentManager(), "NotificationWarningDialog");
+    }
+
+    /**
+     * If no notification permission and if any privacy or rewards state is on then return true
+     * */
+    private boolean shouldShowNotificationWarningDialog() {
+        if (!BravePermissionUtils.hasPermission(
+                    this, PermissionConstants.NOTIFICATION_PERMISSION)) {
+            return OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+                    || OnboardingPrefManager.getInstance().isBraveRewardsEnabled();
+        }
+        return false;
+    }
+
     private void checkForNotificationData() {
+        if (shouldShowNotificationWarningDialog()) {
+            showNotificationWarningDialog();
+        }
+
         Intent notifIntent = getIntent();
         if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
             String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
