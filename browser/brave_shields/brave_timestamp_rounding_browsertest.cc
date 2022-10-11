@@ -3,14 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <math.h>
-#include <string>
-
-// Prevent a -Wimplicit-const-int-float-conversion warning:
-#define fmod(A, B) fmod(A, static_cast<double>(kMaxULL) + 1.0)
-#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
-#undef fmod
-
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
@@ -18,16 +10,30 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/test/render_view_test.h"
 #include "third_party/blink/public/common/features.h"
-#include "third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.h"
-
-namespace blink {
 
 namespace {
 
-using features::kBraveRoundTimeStamps;
+using blink::features::kBraveRoundTimeStamps;
 
-class BraveTimeStampRoundingRenderViewTest : public content::RenderViewTest {
+class BraveTimeStampRoundingRenderViewTest
+    : public content::RenderViewTest,
+      public ::testing::WithParamInterface<bool> {
  public:
+  BraveTimeStampRoundingRenderViewTest() {}
+
+  ~BraveTimeStampRoundingRenderViewTest() override = default;
+
+  bool IsBraveRoundTimeStampsEnabled() { return GetParam(); }
+
+  void SetUp() override {
+    if (IsBraveRoundTimeStampsEnabled()) {
+      scoped_feature_list_.InitAndEnableFeature(kBraveRoundTimeStamps);
+    } else {
+      scoped_feature_list_.InitAndDisableFeature(kBraveRoundTimeStamps);
+    }
+    RenderViewTest::SetUp();
+  }
+
   double ExecuteJSAndReturnDouble(const std::u16string& script) {
     double result;
     EXPECT_TRUE(ExecuteJavaScriptAndReturnNumberValue(script, &result));
@@ -37,75 +43,35 @@ class BraveTimeStampRoundingRenderViewTest : public content::RenderViewTest {
   void CheckRounded(const std::u16string& script, bool expect_rounded) {
     double result = ExecuteJSAndReturnDouble(script);
     if (expect_rounded) {
-      EXPECT_EQ(round(result) - result, 0);
+      EXPECT_DOUBLE_EQ(round(result) - result, 0);
     } else {
       EXPECT_NE(round(result) - result, 0);
     }
-    std::cout << script << ": " << result << std::endl;
   }
 
   void Advance100Microseconds() {
-    task_environment_.AdvanceClock(base::Milliseconds(0.1));
-    task_environment_.RunUntilIdle();
-  }
-
-  void checkVideoFrameCallback(bool expect_rounded) {
-    double videoCallbackTime =
-        VideoFrameCallbackRequesterImpl::Test_GetCoarseClampedTimeInSeconds(
-            base::Microseconds(3333));
-    if (expect_rounded) {
-      // Should be rounded to the nearest millisecond
-      EXPECT_EQ(videoCallbackTime, 0.003);
-    } else {
-      EXPECT_NE(videoCallbackTime, 0.003);
-    }
-  }
-
-  void RunRoundingTests(bool expect_rounded) {
-    // Check rounding of web APIs
-    LoadHTML("<html><body>hi</body></html>");
-    Advance100Microseconds();
-    CheckRounded(u"performance.now()", expect_rounded);
-    Advance100Microseconds();
-    CheckRounded(u"performance.mark('test').startTime", expect_rounded);
-    Advance100Microseconds();
-    if (expect_rounded) {
-      CheckRounded(u"performance.timeOrigin", true);
-    }
-    checkVideoFrameCallback(expect_rounded);
+    task_environment_.AdvanceClock(base::Microseconds(100));
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-class BraveTimeStampRoundingRenderViewTest_Enable
-    : public BraveTimeStampRoundingRenderViewTest {
- public:
-  BraveTimeStampRoundingRenderViewTest_Enable() {
-    feature_list_.InitAndEnableFeature(kBraveRoundTimeStamps);
+TEST_P(BraveTimeStampRoundingRenderViewTest, SynchronousApisRounded) {
+  bool expect_rounded = IsBraveRoundTimeStampsEnabled();
+  LoadHTML("<html><body>hi</body></html>");
+  Advance100Microseconds();
+  CheckRounded(u"performance.now()", expect_rounded);
+  Advance100Microseconds();
+  CheckRounded(u"performance.mark('test').startTime", expect_rounded);
+  Advance100Microseconds();
+  if (expect_rounded) {
+    CheckRounded(u"performance.timeOrigin", true);
   }
-  ~BraveTimeStampRoundingRenderViewTest_Enable() override = default;
-};
-
-class BraveTimeStampRoundingRenderViewTest_Disable
-    : public BraveTimeStampRoundingRenderViewTest {
- public:
-  BraveTimeStampRoundingRenderViewTest_Disable() {
-    feature_list_.InitAndDisableFeature(kBraveRoundTimeStamps);
-  }
-  ~BraveTimeStampRoundingRenderViewTest_Disable() override = default;
-};
-
-TEST_F(BraveTimeStampRoundingRenderViewTest_Enable, SynchronousApisRounded) {
-  RunRoundingTests(true);
 }
 
-TEST_F(BraveTimeStampRoundingRenderViewTest_Disable,
-       SynchronousApisRounded_Disable) {
-  RunRoundingTests(false);
-}
+INSTANTIATE_TEST_SUITE_P(BraveTimeStampRoundingRenderViewTest,
+                         BraveTimeStampRoundingRenderViewTest,
+                         ::testing::Bool());
 
 }  // namespace
-
-}  // namespace blink
