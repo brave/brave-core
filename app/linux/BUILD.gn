@@ -54,9 +54,5 @@ extract_symbols("brave_symbols") {
     symbol_file = "$root_out_dir/brave.breakpad.$current_cpu"
   }
 
-  deps = [
-    # TODO(bridiver) - resolve duplicate symbol generation
-    ":generate_breakpad_symbols",
-    "//brave:brave_dist_resources",
-  ]
+  deps = [ "//brave:brave_dist_resources" ]
 }
