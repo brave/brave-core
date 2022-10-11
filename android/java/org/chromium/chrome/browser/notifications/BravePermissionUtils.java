@@ -22,7 +22,8 @@ public class BravePermissionUtils {
     private static final String APP_UID = "app_uid";
 
     public static Boolean hasPermission(Context context, String permission) {
-        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(context, permission)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     public static void notificationSettingPage(Context context) {

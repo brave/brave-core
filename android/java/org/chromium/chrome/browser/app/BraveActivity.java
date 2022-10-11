@@ -1228,7 +1228,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveNotificationWarningDialog notificationWarningDialog =
                 new BraveNotificationWarningDialog();
         notificationWarningDialog.setCancelable(false);
-        notificationWarningDialog.show(getSupportFragmentManager(), "NotificationWarningDialog");
+        notificationWarningDialog.show(getSupportFragmentManager(),
+                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 
     /**

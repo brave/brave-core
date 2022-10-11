@@ -14,33 +14,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-
-import org.chromium.chrome.browser.BraveDialogFragment;
-import org.chromium.chrome.R;
-
-import org.chromium.base.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import org.chromium.ui.permissions.PermissionConstants;
-import org.chromium.base.BuildInfo;
 import androidx.core.app.ActivityCompat;
 
+import org.chromium.base.BuildInfo;
+import org.chromium.base.Log;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveDialogFragment;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
-import android.widget.TextView;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-
-
-
+import org.chromium.ui.permissions.PermissionConstants;
 
 /**
- * This dialog is used to show different messages when notification permission is off and 
- * if rewards or privacy is on OR both on 
+ * This dialog is used to show different messages when notification permission is off and
+ * if rewards or privacy is on OR both on
  * */
 public class BraveNotificationWarningDialog extends BraveDialogFragment {
-
+    public static final String NOTIFICATION_WARNING_DIALOG_TAG = "NotificationWarningDialog";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +43,8 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.brave_notification_warning_dialog, container, false);
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -84,25 +80,23 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
 
         if (isBraveRewardsEnabled() && isPrivacyReportsEnabled()) {
             titleTextView.setText(R.string.notification_os_dialog_header_both_rewards_privacy);
-            descriptionTextView.setText(R.string.notification_os_dialog_description_both_rewards_privacy);
-        } else if(isBraveRewardsEnabled()) {
+            descriptionTextView.setText(
+                    R.string.notification_os_dialog_description_both_rewards_privacy);
+        } else if (isBraveRewardsEnabled()) {
             titleTextView.setText(R.string.notification_os_dialog_header_only_rewards);
             descriptionTextView.setText(R.string.notification_os_dialog_description_only_rewards);
-        } else if(isPrivacyReportsEnabled()) {
+        } else if (isPrivacyReportsEnabled()) {
             titleTextView.setText(R.string.notification_os_dialog_header_only_privacy);
             descriptionTextView.setText(R.string.notification_os_dialog_description_only_privacy);
         }
-
     }
-
 
     private void clickOnPrimaryButton(View view) {
         Button primaryButton = view.findViewById(R.id.notification_warning_primary_button);
-        primaryButton.setOnClickListener (
-            v -> {
-                dismiss();
-                
-                if (getActivity().shouldShowRequestPermissionRationale(
+        primaryButton.setOnClickListener(v -> {
+            dismiss();
+
+            if (getActivity().shouldShowRequestPermissionRationale(
                         PermissionConstants.NOTIFICATION_PERMISSION)
                     || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
                 // other than android 13 redirect to
@@ -114,26 +108,16 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
             }
-            }
-        );
+        });
     }
 
     private void clickOnCloseButton(View view) {
         ImageView btnClose = view.findViewById(R.id.notification_dialog_close);
-        btnClose.setOnClickListener (
-            v -> {
-                dismiss();
-            }
-        );
+        btnClose.setOnClickListener(v -> { dismiss(); });
     }
 
     private void clickOnNotNow(View view) {
         Button notNowButton = view.findViewById(R.id.btn_not_now);
-        notNowButton.setOnClickListener(
-            v -> {
-                dismiss();
-            }
-        );
+        notNowButton.setOnClickListener(v -> { dismiss(); });
     }
-
 }
