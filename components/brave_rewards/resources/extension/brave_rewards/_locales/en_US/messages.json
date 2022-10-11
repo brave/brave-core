@@ -426,18 +426,6 @@
     "message": "Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.",
     "description": ""
   },
-  "onboardingErrorTextAlreadyDeclared": {
-    "message": "It looks like a country has already been set. You can $link_begin$contact support$link_end$ for help.",
-    "description": "",
-    "placeholders": {
-      "link_begin": {
-        "content": "$1"
-      },
-      "link_end": {
-        "content": "$2"
-      }
-    }
-  },
   "onboardingErrorTextDeclareCountry": {
     "message": "Unfortunately, there was an error while trying to set your country. Please try again.",
     "description": ""

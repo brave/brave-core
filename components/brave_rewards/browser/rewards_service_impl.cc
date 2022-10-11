@@ -622,7 +622,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
         observer.OnRewardsWalletUpdated();
       }
 
-      std::move(callback).Run(result);
+      std::move(callback).Run(CreateRewardsWalletResult::kSuccess);
     };
 
     self->bat_ledger_->CreateRewardsWallet(

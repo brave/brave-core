@@ -14,7 +14,7 @@ import { ErrorIcon } from './icons/error_icon'
 import { SuccessIcon } from './icons/success_icon'
 import { GeoPinIcon } from '../icons/geo_pin_icon'
 import { CountrySelect, getCountryName } from './country_select'
-import { privacyPolicyURL, contactSupportURL } from '../../lib/rewards_urls'
+import { privacyPolicyURL } from '../../lib/rewards_urls'
 
 import * as style from './rewards_opt_in_modal.style'
 
@@ -77,18 +77,6 @@ export function RewardsOptInModal (props: Props) {
               >
                 {content}
               </NewTabLink>
-          }
-        })
-      }
-    }
-
-    if (result === 'country-already-declared') {
-      return {
-        header: getString('onboardingErrorHeader'),
-        text: formatMessage(getString('onboardingErrorTextAlreadyDeclared'), {
-          tags: {
-            $1: (content) =>
-              <a key='link' href={contactSupportURL}>{content}</a>
           }
         })
       }
