@@ -25,6 +25,13 @@ class VerticalTabStripRegionView : public views::View {
   VerticalTabStripRegionView(Browser* browser, TabStripRegionView* region_view);
   ~VerticalTabStripRegionView() override;
 
+  State state() const { return state_; }
+
+  const TabStrip* tab_strip() const { return region_view_->tab_strip_; }
+  TabStrip* tab_strip() { return region_view_->tab_strip_; }
+
+  const Browser* browser() const { return browser_; }
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   void Layout() override;
