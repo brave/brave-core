@@ -6,12 +6,14 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
@@ -55,11 +57,22 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
 
 SidePanelToolbarButton::SidePanelToolbarButton(Browser* browser)
     : SidePanelToolbarButton_ChromiumImpl(browser) {
-  SetMenuModel(
-      std::make_unique<SidePanelMenuModel>(browser->profile()->GetPrefs()));
+  auto* prefs = browser->profile()->GetPrefs();
+
+  SetMenuModel(std::make_unique<SidePanelMenuModel>(prefs));
 
   // Visibility is managed by |SideBarContainerView|.
   SetVisible(false);
+  sidebar_alignment_.Init(
+      prefs::kSidePanelHorizontalAlignment, prefs,
+      base::BindRepeating(&SidePanelToolbarButton::UpdateButtonImage,
+                          base::Unretained(this)));
+  UpdateButtonImage();
 }
 
 SidePanelToolbarButton::~SidePanelToolbarButton() = default;
+
+void SidePanelToolbarButton::UpdateButtonImage() {
+  SetVectorIcon(sidebar_alignment_.GetValue() ? kSidebarToolbarButtonRightIcon
+                                              : kSidebarToolbarButtonIcon);
+}
