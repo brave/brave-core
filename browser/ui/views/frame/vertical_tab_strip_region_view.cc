@@ -10,6 +10,7 @@
 
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -161,11 +162,13 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
           base::BindRepeating(
               [](VerticalTabStripRegionView* container,
                  const ui::Event& event) {
-                container->SetState(
+                const bool should_collapse =
                     container->state_ ==
-                            VerticalTabStripRegionView::State::kCollapsed
-                        ? VerticalTabStripRegionView::State::kExpanded
-                        : VerticalTabStripRegionView::State::kCollapsed);
+                    VerticalTabStripRegionView::State::kExpanded;
+                container->collapsed_pref_.SetValue(should_collapse);
+                // Calling SetValue() doesn't trigger OnCollapsedPrefChanged()
+                // for this view. So we need to call it manually.
+                container->OnCollapsedPrefChanged();
               },
               this),
           region_view_->tab_strip_));
@@ -185,6 +188,13 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
   new_tab_button_->SetAccessibleName(
       l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
+
+  collapsed_pref_.Init(
+      brave_tabs::kVerticalTabsCollapsed,
+      browser_->profile()->GetOriginalProfile()->GetPrefs(),
+      base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
+                          base::Unretained(this)));
+  OnCollapsedPrefChanged();
 
   UpdateLayout();
 }
@@ -305,6 +315,10 @@ void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
   const bool is_vertical_tabs = tabs::features::ShouldShowVerticalTabs();
   if (auto* tab_search_button = region_view_->tab_search_button())
     tab_search_button->SetVisible(!is_vertical_tabs);
+}
+
+void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
+  SetState(collapsed_pref_.GetValue() ? State::kCollapsed : State::kExpanded);
 }
 
 BEGIN_METADATA(VerticalTabStripRegionView, views::View)

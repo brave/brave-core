@@ -11,9 +11,11 @@
 namespace brave_tabs {
 
 const char kTabHoverMode[] = "brave.tabs.hover_mode";
+const char kVerticalTabsCollapsed[] = "brave.tabs.vertical_tabs_collapsed";
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
+  registry->RegisterBooleanPref(kVerticalTabsCollapsed, false);
 }
 
 bool AreTooltipsEnabled(PrefService* prefs) {

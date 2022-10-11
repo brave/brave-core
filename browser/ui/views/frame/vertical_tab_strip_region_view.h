@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "components/prefs/pref_member.h"
 
 namespace views {
 class ScrollView;
@@ -39,6 +40,8 @@ class VerticalTabStripRegionView : public views::View {
   void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
 
+  void OnCollapsedPrefChanged();
+
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
@@ -53,6 +56,8 @@ class VerticalTabStripRegionView : public views::View {
   raw_ptr<NewTabButton> new_tab_button_ = nullptr;
 
   State state_ = State::kExpanded;
+
+  BooleanPrefMember collapsed_pref_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
