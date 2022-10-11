@@ -174,6 +174,7 @@ struct SendTokenView: View {
         ) {
         }
       }
+      .listBackgroundColor(Color(.braveGroupedBackground))
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
       .alert(isPresented: $isShowingError) {
