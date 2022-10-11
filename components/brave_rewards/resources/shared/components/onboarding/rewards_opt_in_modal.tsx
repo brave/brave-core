@@ -88,7 +88,9 @@ export function RewardsOptInModal (props: Props) {
         text: formatMessage(getString('onboardingErrorTextAlreadyDeclared'), {
           tags: {
             $1: (content) =>
-              <a key='link' href={contactSupportURL}>{content}</a>
+              <NewTabLink key='link' href={contactSupportURL}>
+                {content}
+              </NewTabLink>
           }
         })
       }
