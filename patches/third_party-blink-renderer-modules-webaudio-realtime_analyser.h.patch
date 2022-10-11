@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.h b/third_party/blink/renderer/modules/webaudio/realtime_analyser.h
-index 554a6e1117679e21f271218de854a4919847c96c..f88701e6e9d515b4b57075792716567fcacd74a4 100644
+index f2df3daffa974bf4f0b21a3008a9cf9ee3c97006..fc0e8566a5409d632bac86c55218110048e790c4 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.h
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.h
 @@ -79,6 +79,7 @@ class RealtimeAnalyser final {
@@ -8,5 +8,5 @@ index 554a6e1117679e21f271218de854a4919847c96c..f88701e6e9d515b4b57075792716567f
  
 +  BRAVE_REALTIMEANALYSER_H
   private:
-   // The audio thread writes the input audio here.
-   AudioFloatArray input_buffer_;
+   unsigned GetWriteIndex() const {
+     return write_index_.load(std::memory_order_acquire);

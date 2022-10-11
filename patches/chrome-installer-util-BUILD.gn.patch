@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index 7782a268825828b437943047cd3cc98b70537d53..979d53fb5595abdcdda955186ba5d851d4d37276 100644
+index df0d6423cefb97fad5d1018c9b2a28a79010a5bd..45733a6977451c2447090933483faba85b5a2432 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
 @@ -206,6 +206,7 @@ static_library("with_no_strings") {
@@ -10,18 +10,15 @@ index 7782a268825828b437943047cd3cc98b70537d53..979d53fb5595abdcdda955186ba5d851
  }
  
  # Use this version of installer_util to link to the generated strings in .rc
-@@ -241,7 +242,18 @@ generate_embedded_i18n("generate_strings") {
- 
+@@ -242,6 +243,16 @@ generate_embedded_i18n("generate_strings") {
    output_file_name_base = "installer_util_strings"
  
--  branding = branding_path_component
+   branding = branding_path_product
 +  brand = "$branding_path_component"
 +  # When brave_strings.grd is modified, outputs should be re-generated.
 +  # This is workaround. Need to change the way of using |brave_strings.grd|
 +  # in |create_string_rc.py|.
-+  sources = [
-+    "//chrome/app/brave_strings.grd"
-+  ]
++  sources = [ "//chrome/app/brave_strings.grd" ]
 +  if (!is_official_build) {
 +    # TODO(shong): Remove this.
 +    brand = brand + "-development"

@@ -1,64 +1,56 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 4dfdb1293613c57ec6c9c6ba59d4fdf7fbdf3cb4..c2ea470b65e73e9bd857fd91758ddd73d60201c8 100644
+index 722a07e9ed076f2dff5ac0ff639de999548a87af..e532306d944c996e678c1ca80de57fc763c4ab30 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -207,6 +207,7 @@ android_resources("chrome_base_module_resources") {
-     "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
-     "java/res_chromium_base/values/channel_constants.xml",
-   ]
-+  sources += brave_base_module_resources
- }
- 
- android_resources("chrome_app_java_resources") {
-@@ -282,6 +283,7 @@ android_resources("chrome_app_java_resources") {
-     "//third_party/androidx:androidx_gridlayout_gridlayout_java",
-     "//third_party/androidx:androidx_preference_preference_java",
-   ]
-+  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
- }
- 
- if (enable_vr) {
-@@ -679,6 +681,7 @@ android_library("chrome_java") {
-   ]
- 
-   deps += feed_deps
-+  deps += brave_chrome_java_deps
- 
-   srcjar_deps = [
-     ":autofill_verification_status_generated_enum",
-@@ -706,6 +709,7 @@ android_library("chrome_java") {
-     "//components/offline_pages/core:offline_page_model_enums_java",
-     "//net:effective_connection_type_java",
-   ]
-+  srcjar_deps += brave_chrome_java_srcjar_deps
- 
-   # From java_sources.gni.
-   sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -845,6 +849,7 @@ java_group("chrome_all_java") {
-       "//chrome/android/features/tab_ui:module_desc_java",
+@@ -234,6 +234,7 @@ if (current_toolchain == default_toolchain) {
+       "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
+       "java/res_chromium_base/values/channel_constants.xml",
      ]
++    sources += brave_base_module_resources
    }
-+  deps += brave_chrome_all_java_deps
- }
  
- # This is a list of all base module jni headers. New features should add their
-@@ -897,6 +902,7 @@ group("jni_headers") {
-     "//components/ukm/android:jni_headers",
-     "//components/webauthn/android:jni_headers",
-   ]
-+  public_deps += ["//brave/build/android:jni_headers"]
- }
+   android_resources("chrome_app_java_resources") {
+@@ -309,6 +310,7 @@ if (current_toolchain == default_toolchain) {
+       "//third_party/androidx:androidx_gridlayout_gridlayout_java",
+       "//third_party/androidx:androidx_preference_preference_java",
+     ]
++    deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
+   }
  
- action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2106,6 +2112,7 @@ android_resources("chrome_public_apk_base_module_resources") {
-     "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
-     "java/res_chromium_base/values/channel_constants.xml",
-   ]
-+  sources += brave_base_module_resources
+   if (enable_vr) {
+@@ -706,6 +708,7 @@ if (current_toolchain == default_toolchain) {
+     ]
  
-   # Dep needed to ensure override works properly.
-   deps = [ ":chrome_base_module_resources" ]
-@@ -2427,6 +2434,7 @@ if (current_toolchain == default_toolchain) {
+     deps += feed_deps
++    deps += brave_chrome_java_deps
+ 
+     srcjar_deps = [
+       ":autofill_verification_status_generated_enum",
+@@ -733,6 +736,7 @@ if (current_toolchain == default_toolchain) {
+       "//components/offline_pages/core:offline_page_model_enums_java",
+       "//net:effective_connection_type_java",
+     ]
++    srcjar_deps += brave_chrome_java_srcjar_deps
+ 
+     # From java_sources.gni.
+     sources = chrome_java_sources + [ app_hooks_impl ]
+@@ -874,6 +878,7 @@ if (current_toolchain == default_toolchain) {
+         "//chrome/android/features/tab_ui:module_desc_java",
+       ]
+     }
++    deps += brave_chrome_all_java_deps
+   }
+ 
+   action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
+@@ -2081,6 +2086,7 @@ if (current_toolchain == default_toolchain) {
+       "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
+       "java/res_chromium_base/values/channel_constants.xml",
+     ]
++    sources += brave_base_module_resources
+ 
+     # Dep needed to ensure override works properly.
+     deps = [ ":chrome_base_module_resources" ]
+@@ -2329,6 +2335,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -66,27 +58,27 @@ index 4dfdb1293613c57ec6c9c6ba59d4fdf7fbdf3cb4..c2ea470b65e73e9bd857fd91758ddd73
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2703,6 +2711,7 @@ template("chrome_public_apk_or_module_tmpl") {
-     load_library_from_apk = chromium_linker_supported
+@@ -2540,6 +2547,7 @@ if (current_toolchain == default_toolchain) {
+       load_library_from_apk = chromium_linker_supported
  
-     version_name = chrome_version_name
-+    deps += brave_public_apk_or_module_tmpl_deps loadable_modules = brave_public_apk_or_module_tmpl_loadable_modules
-   }
- }
- 
-@@ -2846,6 +2855,7 @@ android_library("base_module_java") {
-     "//components/payments/content/android:service_java",
-     "//third_party/androidx:androidx_browser_browser_java",
-   ]
-+  sources += brave_java_base_module_sources deps += brave_java_base_module_deps
- 
-   # More deps for DFMs.
-   if (dfmify_dev_ui) {
-@@ -3002,6 +3012,7 @@ template("monochrome_public_apk_or_module_tmpl") {
-         deps += [ "//weblayer/browser/java:upstream_java" ]
-       }
+       version_name = chrome_version_name
++      deps += brave_public_apk_or_module_tmpl_deps loadable_modules = brave_public_apk_or_module_tmpl_loadable_modules
      }
-+    deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules
    }
- }
+ 
+@@ -2683,6 +2691,7 @@ if (current_toolchain == default_toolchain) {
+       "//components/payments/content/android:service_java",
+       "//third_party/androidx:androidx_browser_browser_java",
+     ]
++    sources += brave_java_base_module_sources deps += brave_java_base_module_deps
+ 
+     # More deps for DFMs.
+     if (dfmify_dev_ui) {
+@@ -2860,6 +2869,7 @@ if (current_toolchain == default_toolchain) {
+           deps += [ "//weblayer/browser/java:upstream_java" ]
+         }
+       }
++      deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules
+     }
+   }
  
