@@ -129,8 +129,11 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
-#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -441,6 +444,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
   RegisterDefaultBraveBrowserPromptPrefs(registry);
+#endif
+
+#if defined(TOOLKIT_VIEWS)
   brave_tabs::RegisterBraveProfilePrefs(registry);
 #endif
 
