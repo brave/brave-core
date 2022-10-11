@@ -107,6 +107,7 @@ struct NetworkPicker: View {
                 networkSelectionStore: networkSelectionStore
               )
             }
+            .accentColor(Color(.braveOrange))
             .navigationViewStyle(.stack)
           }
         }
