@@ -23,9 +23,11 @@
 #include "brave/components/playlist/playlist_service_helper.h"
 #include "brave/components/playlist/playlist_service_observer.h"
 #include "brave/components/playlist/playlist_types.h"
+#include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
@@ -133,6 +135,10 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
   PlaylistService* GetPlaylistService() {
     return PlaylistServiceFactory::GetInstance()->GetForBrowserContext(
         chrome_test_utils::GetProfile(this));
+  }
+
+  PrefService* GetPrefs() {
+    return chrome_test_utils::GetProfile(this)->GetPrefs();
   }
 
   void ResetStatus() {
@@ -462,6 +468,141 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveAndRestoreLocalData) {
     return items.size() &&
            items.front().thumbnail_path != items.front().thumbnail_src;
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
+  auto* service = GetPlaylistService();
+
+  // Precondition - Default playlist exists and its items should be empty.
+  auto* prefs = GetPrefs();
+  auto* playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+  auto* default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+  ASSERT_TRUE(default_playlist);
+  auto* items = default_playlist->FindList(playlist::kPlaylistItemsKey);
+  ASSERT_TRUE(items);
+  ASSERT_TRUE(items->empty());
+
+  // Try adding items and check they're stored well.
+  // Adding duplicate items should affect the list, but considered as success.
+  const base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
+  for (int i = 0; i < 2; i++) {
+    EXPECT_TRUE(service->AddItemsToPlaylist(
+        playlist::kDefaultPlaylistID, {item_ids.begin(), item_ids.end()}));
+    playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+    default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+    EXPECT_TRUE(default_playlist);
+
+    items = default_playlist->FindList(playlist::kPlaylistItemsKey);
+    EXPECT_TRUE(items);
+    base::flat_set<std::string> stored_ids;
+    base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
+                            [](const auto& item) { return item.GetString(); });
+    EXPECT_EQ(item_ids, stored_ids);
+  }
+
+  // Try adding items to a non-existing playlist and it should fail.
+  EXPECT_FALSE(service->AddItemsToPlaylist("non-existing-id", {"id1"}));
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveItemFromList) {
+  using PlaylistId = playlist::PlaylistService::PlaylistId;
+  using PlaylistItemId = playlist::PlaylistService::PlaylistItemId;
+
+  auto* service = GetPlaylistService();
+
+  // Precondition - Default playlist exists and it has some items
+  base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
+  EXPECT_TRUE(service->AddItemsToPlaylist(playlist::kDefaultPlaylistID,
+                                          {item_ids.begin(), item_ids.end()}));
+  auto* prefs = GetPrefs();
+  auto* playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+  auto* default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+  ASSERT_TRUE(default_playlist);
+  auto* items = default_playlist->FindList(playlist::kPlaylistItemsKey);
+  ASSERT_EQ(item_ids.size(), items->size());
+
+  // Test if removing an item works.
+  while (!item_ids.empty()) {
+    auto id = *item_ids.begin();
+    EXPECT_TRUE(service->RemoveItemFromPlaylist(
+        PlaylistId(playlist::kDefaultPlaylistID), PlaylistItemId(id)));
+    item_ids.erase(id);
+  }
+
+  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+  default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+  items = default_playlist->FindList(playlist::kPlaylistItemsKey);
+  EXPECT_TRUE(items->empty());
+
+  // Removing non existing item should be considered as success.
+  EXPECT_TRUE(
+      service->RemoveItemFromPlaylist(PlaylistId(playlist::kDefaultPlaylistID),
+                                      PlaylistItemId("non-existing-id")));
+
+  // Try removing an item from a non-existing playlist and it should fail.
+  EXPECT_FALSE(service->RemoveItemFromPlaylist(PlaylistId("non-existing-id"),
+                                               PlaylistItemId("foo")));
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, MoveItem) {
+  using PlaylistId = playlist::PlaylistService::PlaylistId;
+  using PlaylistItemId = playlist::PlaylistService::PlaylistItemId;
+
+  auto* service = GetPlaylistService();
+
+  // Precondition - Default playlist exists and it has some items. And there's
+  // another playlist which is empty.
+  base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
+  EXPECT_TRUE(service->AddItemsToPlaylist(playlist::kDefaultPlaylistID,
+                                          {item_ids.begin(), item_ids.end()}));
+  auto* prefs = GetPrefs();
+  auto* playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+  auto* playlist_value = playlists->FindDict(playlist::kDefaultPlaylistID);
+  ASSERT_TRUE(playlist_value);
+  auto* items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  ASSERT_EQ(item_ids.size(), items->size());
+
+  playlist::PlaylistInfo another_playlist;
+  service->CreatePlaylist(another_playlist);
+
+  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+  playlist_value = playlists->FindDict(another_playlist.id);
+  ASSERT_TRUE(playlist_value);
+  items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  ASSERT_TRUE(items->empty());
+
+  // Try moving all items from default list to another playlist.
+  for (const auto& id : item_ids) {
+    EXPECT_TRUE(service->MoveItem(PlaylistId(playlist::kDefaultPlaylistID),
+                                  PlaylistId(another_playlist.id),
+                                  PlaylistItemId(id)));
+  }
+  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+  playlist_value = playlists->FindDict(another_playlist.id);
+  EXPECT_TRUE(playlist_value);
+  items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  base::flat_set<std::string> stored_ids;
+  base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
+                          [](const auto& item) { return item.GetString(); });
+  EXPECT_EQ(item_ids, stored_ids);
+  playlist_value = playlists->FindDict(playlist::kDefaultPlaylistID);
+  EXPECT_TRUE(playlist_value->FindList(playlist::kPlaylistItemsKey)->empty());
+
+  // Try moving items to non-existing playlist. Then it should fail and the
+  // original playlist should be unchanged.
+  for (const auto& id : item_ids) {
+    EXPECT_FALSE(service->MoveItem(PlaylistId(another_playlist.id),
+                                   PlaylistId("non-existing-id"),
+                                   PlaylistItemId(id)));
+  }
+  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
+  playlist_value = playlists->FindDict(another_playlist.id);
+  EXPECT_TRUE(playlist_value);
+  items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  stored_ids.clear();
+  base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
+                          [](const auto& item) { return item.GetString(); });
+  EXPECT_EQ(item_ids, stored_ids);
 }
 
 }  // namespace playlist

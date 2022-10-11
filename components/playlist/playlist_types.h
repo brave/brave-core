@@ -20,7 +20,7 @@ struct PlaylistChangeParams {
     kItemThumbnailReady,    // Thumbnail ready to use for playlist
     kItemThumbnailFailed,   // Failed to fetch thumbnail
     kItemCached,            // The item is cached in local storage
-    kItemDeleted,           // A playlist deleted
+    kItemDeleted,           // An item deleted
     kItemAborted,           // Aborted during the creation process
     kItemLocalDataRemoved,  // Local data removed
 

@@ -15,6 +15,9 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 
+using PlaylistId = playlist::PlaylistService::PlaylistId;
+using PlaylistItemId = playlist::PlaylistService::PlaylistItemId;
+
 playlist::PlaylistService* GetPlaylistService(Profile* profile) {
   return playlist::PlaylistServiceFactory::GetForBrowserContext(profile);
 }
@@ -96,7 +99,16 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
 
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
                                                  const std::string& item_id) {
-  GetPlaylistService(profile_)->RemoveItemFromPlaylist(playlist_id, item_id);
+  GetPlaylistService(profile_)->RemoveItemFromPlaylist(PlaylistId(playlist_id),
+                                                       PlaylistItemId(item_id));
+}
+
+void PlaylistPageHandler::MoveItem(const std::string& from_playlist_id,
+                                   const std::string& to_playlist_id,
+                                   const std::string& item_id) {
+  GetPlaylistService(profile_)->MoveItem(PlaylistId(from_playlist_id),
+                                         PlaylistId(to_playlist_id),
+                                         PlaylistItemId(item_id));
 }
 
 void PlaylistPageHandler::RecoverLocalDataForItem(const std::string& item_id) {

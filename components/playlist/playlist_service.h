@@ -71,13 +71,18 @@ class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate {
  public:
+  using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
+  using PlaylistItemId =
+      base::StrongAlias<class PlaylistItemIdTag, std::string>;
+
   PlaylistService(content::BrowserContext* context,
                   MediaDetectorComponentManager* manager);
   ~PlaylistService() override;
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
 
-  void CreatePlaylist(const PlaylistInfo& info);
+  // This function will fill |info|'s id with a new generated id.
+  void CreatePlaylist(PlaylistInfo& info);
   void RemovePlaylist(const std::string& id);
 
   std::vector<PlaylistItemInfo> GetAllPlaylistItems();
@@ -109,8 +114,19 @@ class PlaylistService : public KeyedService,
 
   void RecoverPlaylistItem(const std::string& id);
 
-  void RemoveItemFromPlaylist(const std::string& playlist_id,
-                              const std::string& item_id);
+  // Add |item_ids| to playlist's item list
+  bool AddItemsToPlaylist(const std::string& playlist_id,
+                          const std::vector<std::string>& item_ids);
+
+  // Remove a item from a list. When |remove_item| is true, the item preference
+  // and local data will be removed together.
+  bool RemoveItemFromPlaylist(const PlaylistId& playlist_id,
+                              const PlaylistItemId& item_id,
+                              bool remove_item = true);
+  bool MoveItem(const PlaylistId& from,
+                const PlaylistId& to,
+                const PlaylistItemId& item);
+
   // Removes Item value from prefs and related cached data.
   void DeletePlaylistItemData(const std::string& id);
   // Removes only cached data.
