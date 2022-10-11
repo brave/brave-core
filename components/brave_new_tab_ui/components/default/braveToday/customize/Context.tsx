@@ -128,7 +128,7 @@ export const useDirectFeedResults = (query: string) => {
   const filteredDirectResults = useMemo(() => directResults.filter(r => !publishers.some(p => p.feedSource.url === r.feedUrl.url)), [directResults, publishers])
 
   React.useEffect(() => {
-    setDirectResults([])
+    setDirectResults(oldValue => oldValue.length === 0 ? oldValue : [])
 
     let cancelled = false
     let url: URL | undefined
