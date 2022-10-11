@@ -234,7 +234,7 @@ class PlaylistToast: Toast {
     }
 
     if state == .none {
-      button.setImage(UIImage(named: "quick_action_new_tab", in: .current, compatibleWith: nil)!.template, for: [])
+      button.setImage(UIImage(named: "quick_action_new_tab", in: .module, compatibleWith: nil)!.template, for: [])
       button.setTitle(Strings.PlayList.toastAddToPlaylistTitle, for: [])
     } else {
       assertionFailure("Should Never get here. Others case are handled at the start of this function.")

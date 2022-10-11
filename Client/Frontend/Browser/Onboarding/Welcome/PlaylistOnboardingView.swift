@@ -13,7 +13,7 @@ struct PlaylistOnboardingView: View {
 
   var body: some View {
     HStack(alignment: .top, spacing: 14.0) {
-      Image("welcome-view-playlist-brave-logo", bundle: .current)
+      Image("welcome-view-playlist-brave-logo", bundle: .module)
 
       VStack(alignment: .leading, spacing: 16.0) {
         VStack(alignment: .leading, spacing: 4.0) {
@@ -30,7 +30,7 @@ struct PlaylistOnboardingView: View {
 
         Button(action: { onButtonPressed?() }) {
           HStack {
-            Image("welcome-view-playlist-play-icon", bundle: .current)
+            Image("welcome-view-playlist-play-icon", bundle: .module)
             Text(Strings.Callout.playlistOnboardingViewButtonTitle)
               .font(.title3.weight(.medium))
               .foregroundColor(Color(.braveBlurple))

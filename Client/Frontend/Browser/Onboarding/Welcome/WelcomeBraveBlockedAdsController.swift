@@ -30,7 +30,7 @@ class WelcomeBraveBlockedAdsController: UIViewController, PopoverContentComponen
 
   private let braveIconView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.image = UIImage(named: "welcome-view-ntp-logo", in: .current, compatibleWith: nil)
+    $0.image = UIImage(named: "welcome-view-ntp-logo", in: .module, compatibleWith: nil)
     $0.snp.makeConstraints {
       $0.size.equalTo(40)
     }
@@ -40,7 +40,7 @@ class WelcomeBraveBlockedAdsController: UIViewController, PopoverContentComponen
   
   private let shieldIconView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.image = UIImage(named: "shield-information", in: .current, compatibleWith: nil)
+    $0.image = UIImage(named: "shield-information", in: .module, compatibleWith: nil)
     $0.snp.makeConstraints {
       $0.size.equalTo(80)
     }

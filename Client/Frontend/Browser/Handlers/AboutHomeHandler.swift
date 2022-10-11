@@ -36,7 +36,7 @@ public class AboutLicenseHandler: InternalSchemeResponse {
   public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
-    guard let path = Bundle.current.path(forResource: "Licenses", ofType: "html"), let html = try? String(contentsOfFile: path, encoding: .utf8),
+    guard let path = Bundle.module.path(forResource: "Licenses", ofType: "html"), let html = try? String(contentsOfFile: path, encoding: .utf8),
       let data = html.data(using: .utf8)
     else {
       return nil

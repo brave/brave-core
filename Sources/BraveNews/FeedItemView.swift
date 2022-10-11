@@ -177,7 +177,7 @@ extension FeedItemView {
 
   public class PromotedButton: UIControl {
 
-    private let image = UIImageView(image: UIImage(named: "graph-up", in: .current, compatibleWith: nil)!.template).then {
+    private let image = UIImageView(image: UIImage(named: "graph-up", in: .module, compatibleWith: nil)!.template).then {
       $0.setContentHuggingPriority(.required, for: .horizontal)
       $0.setContentCompressionResistancePriority(.required, for: .horizontal)
       $0.tintColor = UIColor(white: 1.0, alpha: 0.8)

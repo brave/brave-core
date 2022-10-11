@@ -70,7 +70,7 @@ public class EnableVPNSettingHeader: UIView {
   }
 
   private let backgroundImage = UIImageView().then {
-    if let image = UIImage(named: "enable_vpn_settings_banner", in: .current, compatibleWith: nil) {
+    if let image = UIImage(named: "enable_vpn_settings_banner", in: .module, compatibleWith: nil) {
       $0.image = image
     } else {
       assertionFailure("Could not find asset for background image")
@@ -79,7 +79,7 @@ public class EnableVPNSettingHeader: UIView {
   }
 
   private let closeButton = UIButton().then {
-    if let image = UIImage(named: "card_close", in: .current, compatibleWith: nil) {
+    if let image = UIImage(named: "card_close", in: .module, compatibleWith: nil) {
       $0.setImage(image, for: .normal)
     } else {
       assertionFailure("Could not find asset for close button")

@@ -41,14 +41,14 @@ class QRCodePopupView: UIKitPopupView {
     $0.layer.borderWidth = 1
     $0.snp.makeConstraints { $0.height.equalTo(44) }
     $0.tintColor = .braveOrange
-    $0.setImage(UIImage(named: "nav-share", in: .current, compatibleWith: nil)!, for: .normal)
+    $0.setImage(UIImage(named: "nav-share", in: .module, compatibleWith: nil)!, for: .normal)
     $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -18, bottom: 0, right: 0)
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
   }
 
   private let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "close_popup", in: .current, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template, for: .normal)
     $0.tintColor = .braveLabel
   }
 

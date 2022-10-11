@@ -18,7 +18,7 @@ class AddToPlaylistActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!
+    return UIImage(named: "playlist_menu", in: .module, compatibleWith: nil)!
   }
 
   override func perform() {
@@ -43,7 +43,7 @@ class OpenInPlaylistActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!
+    return UIImage(named: "playlist_menu", in: .module, compatibleWith: nil)!
   }
 
   override func perform() {

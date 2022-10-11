@@ -20,7 +20,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     title: Preferences.Privacy.privateBrowsingOnly.value
       ? Strings.History.historyPrivateModeOnlyStateTitle
       : Strings.History.historyEmptyStateTitle,
-    icon: UIImage(named: "emptyHistory", in: .current, compatibleWith: nil)!)
+    icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)!)
 
   private let historyAPI: BraveHistoryAPI
   private let tabManager: TabManager

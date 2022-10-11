@@ -66,7 +66,7 @@ public struct ReaderModeHandlers {
             // screen, which will periodically call page-exists to see if the readerized content has
             // become available.
             ReadabilityService.sharedInstance.process(url, cache: readerModeCache)
-            if let readerViewLoadingPath = Bundle.current.path(forResource: "ReaderViewLoading", ofType: "html") {
+            if let readerViewLoadingPath = Bundle.module.path(forResource: "ReaderViewLoading", ofType: "html") {
               do {
                 var contents = try String(contentsOfFile: readerViewLoadingPath)
                 let mapping = [

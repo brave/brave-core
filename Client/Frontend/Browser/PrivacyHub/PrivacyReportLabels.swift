@@ -11,10 +11,10 @@ extension PrivacyReportsView {
   struct BlockedLabel: View {
     var body: some View {
       Text(Strings.PrivacyHub.blockedLabel.uppercased())
-        .foregroundColor(Color("label_red_foreground", bundle: .current))
+        .foregroundColor(Color("label_red_foreground", bundle: .module))
         .padding(.horizontal, 8)
         .padding(.vertical, 2)
-        .background(Color("label_red_background", bundle: .current))
+        .background(Color("label_red_background", bundle: .module))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .fixedSize(horizontal: false, vertical: true)
     }
@@ -25,10 +25,10 @@ extension PrivacyReportsView {
 
     var body: some View {
       Text(Strings.PrivacyHub.vpnLabel.uppercased())
-        .foregroundColor(Color("label_violet_foreground", bundle: .current))
+        .foregroundColor(Color("label_violet_foreground", bundle: .module))
         .padding(.horizontal, 4)
         .padding(.vertical, 2)
-        .background(Color("label_violet_background", bundle: .current))
+        .background(Color("label_violet_background", bundle: .module))
         .clipShape(
           RoundedRectangle(
             cornerRadius: sizeCategory.isAccessibilityCategory ? 8.0 : 24.0,
@@ -43,10 +43,10 @@ extension PrivacyReportsView {
 
     var body: some View {
       Text(Strings.PrivacyHub.shieldsLabel.uppercased())
-        .foregroundColor(Color("label_orange_foreground", bundle: .current))
+        .foregroundColor(Color("label_orange_foreground", bundle: .module))
         .padding(.horizontal, 4)
         .padding(.vertical, 2)
-        .background(Color("label_orange_background", bundle: .current))
+        .background(Color("label_orange_background", bundle: .module))
         .clipShape(
           RoundedRectangle(
             cornerRadius: sizeCategory.isAccessibilityCategory ? 8.0 : 24.0,

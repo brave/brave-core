@@ -414,7 +414,7 @@ final public class ContentBlockerManager: Sendable {
   /// Get the bundled URL for the given type
   private func loadBundledURL(for type: GeneralBlocklistTypes) async -> URL? {
     return await withCheckedContinuation { continuation in
-      guard let fileURL = Bundle.current.url(forResource: type.rawValue, withExtension: "json") else {
+      guard let fileURL = Bundle.module.url(forResource: type.rawValue, withExtension: "json") else {
         continuation.resume(returning: nil)
         return
       }

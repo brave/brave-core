@@ -74,7 +74,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                       let container = UINavigationController(rootViewController: controller)
                       container.modalPresentationStyle = .formSheet
                       self.present(container, animated: true)
-                    }, image: UIImage(named: "rewards-qr-code", in: .current, compatibleWith: nil)!.template)
+                    }, image: UIImage(named: "rewards-qr-code", in: .module, compatibleWith: nil)!.template)
                 ]
               ), at: 1)
           })
@@ -97,7 +97,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                         let container = UINavigationController(rootViewController: controller)
                         container.modalPresentationStyle = .formSheet
                         self.present(container, animated: true)
-                      }, image: UIImage(named: "rewards-qr-code", in: .current, compatibleWith: nil)!.template)
+                      }, image: UIImage(named: "rewards-qr-code", in: .module, compatibleWith: nil)!.template)
                   ]
                 ), at: 1)
             }

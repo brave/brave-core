@@ -47,7 +47,7 @@ class BraveSearchPromotionCell: UITableViewCell {
   }
   
   private let promotionalImageView = UIImageView(
-    image: UIImage(named: "brave-search-promotion", in: .current, compatibleWith: nil)).then {
+    image: UIImage(named: "brave-search-promotion", in: .module, compatibleWith: nil)).then {
     $0.contentMode = .scaleAspectFill
     $0.isUserInteractionEnabled = false
     $0.clipsToBounds = false

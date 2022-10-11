@@ -113,7 +113,7 @@ struct AddAccountView: View {
               addAccountView
             } label: {
               HStack(spacing: 10) {
-                Image(coin.iconName, bundle: .current)
+                Image(coin.iconName, bundle: .module)
                   .resizable()
                   .aspectRatio(contentMode: .fit)
                   .clipShape(Circle())

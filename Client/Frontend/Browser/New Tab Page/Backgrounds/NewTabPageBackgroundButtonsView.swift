@@ -186,7 +186,7 @@ extension NewTabPageBackgroundButtonsView {
     }
   }
   private class QRCodeButton: SpringButton {
-    let imageView = UIImageView(image: UIImage(named: "qr_code_button", in: .current, compatibleWith: nil)!)
+    let imageView = UIImageView(image: UIImage(named: "qr_code_button", in: .module, compatibleWith: nil)!)
 
     override init(frame: CGRect) {
       super.init(frame: frame)

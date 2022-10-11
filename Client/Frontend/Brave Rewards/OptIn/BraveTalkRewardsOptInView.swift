@@ -26,7 +26,7 @@ extension BraveTalkRewardsOptInViewController {
       $0.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 
-    private let image = UIImageView(image: UIImage(named: "rewards_onboarding_cashback", in: .current, compatibleWith: nil)!).then {
+    private let image = UIImageView(image: UIImage(named: "rewards_onboarding_cashback", in: .module, compatibleWith: nil)!).then {
       $0.contentMode = .scaleAspectFit
 
       $0.layer.shadowColor = UIColor.black.cgColor
@@ -68,7 +68,7 @@ extension BraveTalkRewardsOptInViewController {
       ])
     }
 
-    private let optinBackground = UIImageView(image: UIImage(named: "optin_bg", in: .current, compatibleWith: nil)!).then {
+    private let optinBackground = UIImageView(image: UIImage(named: "optin_bg", in: .module, compatibleWith: nil)!).then {
       $0.contentMode = .scaleAspectFit
     }
 

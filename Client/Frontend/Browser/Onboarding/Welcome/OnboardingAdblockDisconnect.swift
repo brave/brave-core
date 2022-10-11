@@ -19,7 +19,7 @@ struct OnboardingDisconnectList: Codable {
 
   static func loadFromFile() -> OnboardingDisconnectList? {
     do {
-      if let path = Bundle.current.path(forResource: "disconnect-entitylist", ofType: "json"),
+      if let path = Bundle.module.path(forResource: "disconnect-entitylist", ofType: "json"),
         let contents = try String(contentsOfFile: path).data(using: .utf8) {
         return try JSONDecoder().decode(OnboardingDisconnectList.self, from: contents)
       }

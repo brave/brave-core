@@ -19,7 +19,7 @@ class PageZoomActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "settings-page-zoom", in: .current, compatibleWith: nil)
+    return UIImage(named: "settings-page-zoom", in: .module, compatibleWith: nil)
   }
 
   override func perform() {

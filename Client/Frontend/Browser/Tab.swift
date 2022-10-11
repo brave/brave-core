@@ -766,7 +766,7 @@ class Tab: NSObject {
     guard let webView = self.webView else {
       return
     }
-    if let path = Bundle.current.path(forResource: fileName, ofType: type),
+    if let path = Bundle.module.path(forResource: fileName, ofType: type),
       let source = try? String(contentsOfFile: path) {
       let userScript = WKUserScript.create(source: source, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly, in: contentWorld)
       webView.configuration.userContentController.addUserScript(userScript)

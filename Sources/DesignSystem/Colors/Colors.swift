@@ -61,7 +61,7 @@ enum DesignSystemColor: String {
   case gradient05_step1 = "gradient05-step1"
   
   var color: UIColor {
-    return UIColor(named: rawValue, in: .current, compatibleWith: nil)!
+    return UIColor(named: rawValue, in: .module, compatibleWith: nil)!
   }
 }
 

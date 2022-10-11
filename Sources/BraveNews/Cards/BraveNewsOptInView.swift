@@ -26,7 +26,7 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
     $0.spacing = 16
   }
 
-  public let graphicAnimationView = AnimationView(name: "brave-today-welcome-graphic", bundle: .current).then {
+  public let graphicAnimationView = AnimationView(name: "brave-today-welcome-graphic", bundle: .module).then {
     $0.contentMode = .scaleAspectFit
     $0.loopMode = .loop
   }
@@ -34,7 +34,7 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
   public var optInCardActionHandler: ((OptInCardAction) -> Void)?
 
   private let closeButton = UIButton(type: .system).then {
-    $0.setImage(UIImage(named: "card_close", in: .current, compatibleWith: nil)!.withRenderingMode(.alwaysOriginal), for: .normal)
+    $0.setImage(UIImage(named: "card_close", in: .module, compatibleWith: nil)!.withRenderingMode(.alwaysOriginal), for: .normal)
     $0.accessibilityLabel = Strings.close
   }
 

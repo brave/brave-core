@@ -81,21 +81,21 @@ class FindInPageBar: UIView {
     matchCountView.accessibilityIdentifier = "FindInPage.matchCount"
     addSubview(matchCountView)
 
-    previousButton.setImage(UIImage(named: "find_previous", in: .current, compatibleWith: nil)!.template, for: [])
+    previousButton.setImage(UIImage(named: "find_previous", in: .module, compatibleWith: nil)!.template, for: [])
     previousButton.setTitleColor(.braveLabel, for: [])
     previousButton.accessibilityLabel = Strings.findInPagePreviousResultButtonAccessibilityLabel
     previousButton.addTarget(self, action: #selector(didFindPrevious), for: .touchUpInside)
     previousButton.accessibilityIdentifier = "FindInPage.find_previous"
     addSubview(previousButton)
 
-    nextButton.setImage(UIImage(named: "find_next", in: .current, compatibleWith: nil)!.template, for: [])
+    nextButton.setImage(UIImage(named: "find_next", in: .module, compatibleWith: nil)!.template, for: [])
     nextButton.setTitleColor(.braveLabel, for: [])
     nextButton.accessibilityLabel = Strings.findInPageNextResultButtonAccessibilityLabel
     nextButton.addTarget(self, action: #selector(didFindNext), for: .touchUpInside)
     nextButton.accessibilityIdentifier = "FindInPage.find_next"
     addSubview(nextButton)
 
-    closeButton.setImage(UIImage(named: "find_close", in: .current, compatibleWith: nil)!.template, for: [])
+    closeButton.setImage(UIImage(named: "find_close", in: .module, compatibleWith: nil)!.template, for: [])
     closeButton.setTitleColor(.braveLabel, for: [])
     closeButton.accessibilityLabel = Strings.findInPageDoneButtonAccessibilityLabel
     closeButton.addTarget(self, action: #selector(didPressClose), for: .touchUpInside)

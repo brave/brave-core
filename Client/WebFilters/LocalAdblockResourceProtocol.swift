@@ -13,7 +13,7 @@ protocol LocalAdblockResourceProtocol {
 
 extension LocalAdblockResourceProtocol {
   func loadLocalData(name: String, type: String, completion: ((Data) -> Void)) {
-    guard let path = Bundle.current.path(forResource: name, ofType: type) else {
+    guard let path = Bundle.module.path(forResource: name, ofType: type) else {
       log.error("Could not find local file with name: \(name) and type :\(type)")
       return
     }

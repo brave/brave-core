@@ -118,7 +118,7 @@ class BraveShieldStatsView: SpringButton {
   }
   
   private let privacyReportLabel = UILabel().then {
-    let image = UIImage(named: "privacy_reports_shield", in: .current, compatibleWith: nil)!.template
+    let image = UIImage(named: "privacy_reports_shield", in: .module, compatibleWith: nil)!.template
     $0.textColor = .white
     $0.textAlignment = .center
     
@@ -160,7 +160,7 @@ class BraveShieldStatsView: SpringButton {
       }
       
       let settingsButton = BraveButton(type: .system).then {
-        $0.setImage(UIImage(named: "privacy_reports_3dots", in: .current, compatibleWith: nil)!.template, for: .normal)
+        $0.setImage(UIImage(named: "privacy_reports_3dots", in: .module, compatibleWith: nil)!.template, for: .normal)
         $0.tintColor = .white
         $0.hitTestSlop = UIEdgeInsets(equalInset: -25)
       }
@@ -174,7 +174,7 @@ class BraveShieldStatsView: SpringButton {
       
       let showPrivacyHub = UIAction(
         title: Strings.PrivacyHub.openPrivacyHubWidgetActionTitle,
-        image: UIImage(named: "privacy_reports_shield", in: .current, compatibleWith: nil)?.template,
+        image: UIImage(named: "privacy_reports_shield", in: .module, compatibleWith: nil)?.template,
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.openPrivacyHubPressed?()
         })

@@ -85,7 +85,7 @@ struct TransactionConfirmationView: View {
       if let originInfo = confirmationStore.originInfo {
         Group {
           if originInfo.isBraveWalletOrigin {
-            Image("wallet-brave-icon", bundle: .current)
+            Image("wallet-brave-icon", bundle: .module)
               .resizable()
               .aspectRatio(contentMode: .fit)
               .padding(4)

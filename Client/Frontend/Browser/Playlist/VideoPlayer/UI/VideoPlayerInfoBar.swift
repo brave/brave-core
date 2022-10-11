@@ -23,7 +23,7 @@ class VideoPlayerInfoBar: UIView {
   }
 
   let sidePanelButton = UIButton().then {
-    $0.setImage(UIImage(named: "playlist_split_navigation", in: .current, compatibleWith: nil)!, for: .normal)
+    $0.setImage(UIImage(named: "playlist_split_navigation", in: .module, compatibleWith: nil)!, for: .normal)
     $0.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
   }
 
@@ -44,20 +44,20 @@ class VideoPlayerInfoBar: UIView {
 
   let pictureInPictureButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(UIImage(named: "playlist_pip", in: .current, compatibleWith: nil)!, for: .normal)
+    $0.setImage(UIImage(named: "playlist_pip", in: .module, compatibleWith: nil)!, for: .normal)
     $0.isHidden = !AVPictureInPictureController.isPictureInPictureSupported()
     $0.contentEdgeInsets = .init(equalInset: 8)
   }
 
   let fullscreenButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(UIImage(named: "playlist_fullscreen", in: .current, compatibleWith: nil)!, for: .normal)
+    $0.setImage(UIImage(named: "playlist_fullscreen", in: .module, compatibleWith: nil)!, for: .normal)
     $0.contentEdgeInsets = .init(equalInset: 8)
   }
 
   let exitButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(UIImage(named: "playlist_exit", in: .current, compatibleWith: nil)!, for: .normal)
+    $0.setImage(UIImage(named: "playlist_exit", in: .module, compatibleWith: nil)!, for: .normal)
     $0.isHidden = true
     $0.contentEdgeInsets = .init(equalInset: 8)
   }

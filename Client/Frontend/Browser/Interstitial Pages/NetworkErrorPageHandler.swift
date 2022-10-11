@@ -31,7 +31,7 @@ class NetworkErrorPageHandler: InterstitialPageHandler {
   }
 
   func response(for model: ErrorPageModel) -> (URLResponse, Data)? {
-    guard let asset = Bundle.current.path(forResource: "NetworkError", ofType: "html") else {
+    guard let asset = Bundle.module.path(forResource: "NetworkError", ofType: "html") else {
       assert(false)
       return nil
     }

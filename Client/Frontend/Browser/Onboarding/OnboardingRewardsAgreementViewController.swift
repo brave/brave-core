@@ -100,7 +100,7 @@ extension OnboardingRewardsAgreementViewController {
       $0.spacing = OnboardingCommon.UX.negativeSpacing
     }
 
-    private let imageView = AnimationView(name: "onboarding-rewards", bundle: .current).then {
+    private let imageView = AnimationView(name: "onboarding-rewards", bundle: .module).then {
       $0.contentMode = .scaleAspectFit
       $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
       $0.backgroundBehavior = .pauseAndRestore

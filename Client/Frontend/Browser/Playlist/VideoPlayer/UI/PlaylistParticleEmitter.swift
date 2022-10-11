@@ -52,7 +52,7 @@ class PlaylistParticleEmitter: UIView {
     }
 
     let trailingEmitter = CAEmitterCell().then {
-      $0.contents = UIImage(named: "shields-menu-icon", in: .current, compatibleWith: nil)!.cgImage
+      $0.contents = UIImage(named: "shields-menu-icon", in: .module, compatibleWith: nil)!.cgImage
       $0.lifetime = 0.5
       $0.birthRate = 45
       $0.velocity = 80
@@ -68,7 +68,7 @@ class PlaylistParticleEmitter: UIView {
     }
 
     let particleEmitter = CAEmitterCell().then {
-      $0.contents = UIImage(named: "shields-menu-icon", in: .current, compatibleWith: nil)!.cgImage
+      $0.contents = UIImage(named: "shields-menu-icon", in: .module, compatibleWith: nil)!.cgImage
       $0.lifetime = 100
       $0.birthRate = 1000
       $0.velocity = 130

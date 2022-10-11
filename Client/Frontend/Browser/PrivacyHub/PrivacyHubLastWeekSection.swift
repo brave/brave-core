@@ -44,7 +44,7 @@ extension PrivacyReportsView {
           .fixedSize(horizontal: false, vertical: true)
         
         HStack {
-          Image("frequent_tracker", bundle: .current)
+          Image("frequent_tracker", bundle: .module)
             .unredacted()
           VStack(alignment: .leading) {
             Text(Strings.PrivacyHub.mostFrequentTrackerAndAdTitle.uppercased())
@@ -71,7 +71,7 @@ extension PrivacyReportsView {
         .redacted(reason: mostFrequentTrackerLoading ? .placeholder: [])
         
         HStack {
-          Image("creepy_website", bundle: .current)
+          Image("creepy_website", bundle: .module)
             .unredacted()
           VStack(alignment: .leading) {
             Text(Strings.PrivacyHub.riskiestWebsiteTitle.uppercased())

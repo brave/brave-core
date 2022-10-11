@@ -41,7 +41,7 @@ class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegat
 
   private func layoutBarButtons() {
     let exitBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onExit(_:)))
-    let sideListBarButton = UIBarButtonItem(image: UIImage(named: "playlist_split_navigation", in: .current, compatibleWith: nil)!, style: .done, target: self, action: #selector(onDisplayModeChange))
+    let sideListBarButton = UIBarButtonItem(image: UIImage(named: "playlist_split_navigation", in: .module, compatibleWith: nil)!, style: .done, target: self, action: #selector(onDisplayModeChange))
 
     navigationItem.rightBarButtonItem =
       PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left ? exitBarButton : sideListBarButton

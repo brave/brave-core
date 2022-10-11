@@ -10,7 +10,7 @@ import Shared
 
 class RecentSearchClipboardHeaderView: UICollectionReusableView {
   let button = UIButton().then {
-    let image = UIImage(named: "recent-search-link", in: .current, compatibleWith: nil)!
+    let image = UIImage(named: "recent-search-link", in: .module, compatibleWith: nil)!
     let paddingX: CGFloat = 15.0
     let paddingY: CGFloat = 10.0
     $0.setImage(image, for: .normal)
