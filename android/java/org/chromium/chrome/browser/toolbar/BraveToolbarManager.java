@@ -29,7 +29,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
 import org.chromium.chrome.browser.back_press.BackPressManager;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
@@ -102,7 +102,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private ActionModeController mActionModeController;
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
-    private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
+    private ObservableSupplier<BookmarkModel> mBookmarkBridgeSupplier;
     private LayoutManagerImpl mLayoutManager;
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
@@ -141,7 +141,7 @@ public class BraveToolbarManager extends ToolbarManager {
             List<ButtonDataProvider> buttonDataProviders, ActivityTabProvider tabProvider,
             ScrimCoordinator scrimCoordinator, ToolbarActionModeCallback toolbarActionModeCallback,
             FindToolbarManager findToolbarManager, ObservableSupplier<Profile> profileSupplier,
-            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
+            ObservableSupplier<BookmarkModel> bookmarkBridgeSupplier,
             @Nullable Supplier<Boolean> canAnimateNativeBrowserControls,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
@@ -328,7 +328,7 @@ public class BraveToolbarManager extends ToolbarManager {
 
     protected void updateBookmarkButtonStatus() {
         Tab currentTab = mLocationBarModel.getTab();
-        BookmarkBridge bridge = mBookmarkBridgeSupplier.get();
+        BookmarkModel bridge = mBookmarkBridgeSupplier.get();
         boolean isBookmarked =
                 currentTab != null && bridge != null && bridge.hasBookmarkIdForTab(currentTab);
         boolean editingAllowed =
