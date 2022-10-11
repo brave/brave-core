@@ -357,9 +357,6 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT" desc="">
     Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_ALREADY_DECLARED" desc="">
-    It looks like a country has already been set. You can <ph name="LINK_BEGIN">$1</ph>contact support<ph name="LINK_END">$2</ph> for help.
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DECLARE_COUNTRY" desc="">
     Unfortunately, there was an error while trying to set your country. Please try again.
   </message>

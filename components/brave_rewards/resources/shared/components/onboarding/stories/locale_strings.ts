@@ -8,7 +8,6 @@ export const localeStrings = {
   onboardingErrorHeader: 'Something went wrong',
   onboardingErrorHeaderDisabled: 'Brave Rewards not available',
   onboardingErrorText: 'Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.',
-  onboardingErrorTextAlreadyDeclared: 'It looks like a country has already been set. You can $1contact support$2 for help.',
   onboardingErrorTextDeclareCountry: 'Unfortunately, there was an error while trying to set your country. Please try again.',
   onboardingErrorTextDisabled: 'New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. $1Learn more$2',
   onboardingGeoHeader: 'Select your country',
