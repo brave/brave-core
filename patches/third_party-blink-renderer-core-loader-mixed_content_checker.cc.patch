@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/mixed_content_checker.cc b/third_party/blink/renderer/core/loader/mixed_content_checker.cc
+index ba71a1c594d976b225e00aedebba8e5cbc5ee40a..817352b00bf94497534f9a565d26b7d8f52ce64c 100644
+--- a/third_party/blink/renderer/core/loader/mixed_content_checker.cc
++++ b/third_party/blink/renderer/core/loader/mixed_content_checker.cc
+@@ -268,6 +268,7 @@ bool RequestIsSubframeSubresource(Frame* frame) {
+ // static
+ bool MixedContentChecker::IsMixedContent(const SecurityOrigin* security_origin,
+                                          const KURL& url) {
++  BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT
+   return IsMixedContent(security_origin->Protocol(), url);
+ }
+ 

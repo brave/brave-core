@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -34,6 +35,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
+#include "gtest/gtest.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/origin.h"
 
@@ -481,6 +483,40 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
                torrent_extension_url().spec().c_str())
       << "No changes on the real URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
+  // Don't block the mock .onion requests.
+  tor::OnionLocationNavigationThrottle::BlockOnionRequestsOutsideTorForTesting(
+      false);
+
+  const GURL onion_url =
+      embedded_test_server()->GetURL("test.onion", "/simple.html");
+  ASSERT_EQ("http", onion_url.scheme());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  WaitForLoadStop(contents);
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    console_observer.SetPattern(
+        "Mixed Content: The page at 'http://test.onion*/simple.html' was "
+        "loaded over HTTPS, but requested an insecure resource "
+        "'http://example.com/'. This request has been blocked; the content "
+        "must be served over HTTPS.");
+    ASSERT_FALSE(content::ExecJs(contents, "fetch('http://example.com')"));
+    console_observer.Wait();
+  }
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    ASSERT_FALSE(content::ExecJs(contents, "fetch('https://example.com')"));
+    EXPECT_TRUE(console_observer.messages().empty());
+  }
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    ASSERT_FALSE(content::ExecJs(contents, "fetch('https://example.onion')"));
+    EXPECT_TRUE(console_observer.messages().empty());
+  }
 }
 
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
