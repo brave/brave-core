@@ -1,8 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { loadTimeData } from '../../../../../common/loadTimeData'
-import Configure from './Configure'
 import { useBraveNews } from './Context'
+
+const Configure = React.lazy(() => import('./Configure'))
 
 const Dialog = styled.dialog`
   border-radius: 8px;
@@ -17,21 +17,23 @@ const Dialog = styled.dialog`
   color:  ${p => p.theme.color.contextMenuForeground};
 `
 
-const shouldRender = loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled')
 export default function BraveNewsModal () {
-  const { customizePage: page } = useBraveNews()
+  const { customizePage } = useBraveNews()
   const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>()
 
-  // Note: There's no attribute for open modal, so we need
-  // to do this instead.
-  React.useEffect(() => {
-    if (dialogRef.current?.open && !page) { dialogRef.current?.close?.() }
-    if (!dialogRef.current?.open && page) { dialogRef.current?.showModal?.() }
-  }, [page])
+  const shouldRender = !!customizePage
 
-  // Don't render the dialog at all unless Brave News V2 is enabled - no point
-  // adding all the extra elements to the DOM if we aren't going to use them.
+  // Note: There's no attribute for open modal, so we need
+  // to call showModal instead.
+  React.useEffect(() => {
+    dialogRef.current?.showModal?.()
+  }, [customizePage, dialogRef])
+
+  // Only render the dialog if it should be shown, since
+  // it is a complex view.
   return shouldRender ? <Dialog ref={dialogRef as any}>
-    <Configure />
+    <React.Suspense fallback={<span>Loading...</span>}>
+      <Configure />
+    </React.Suspense>
   </Dialog> : null
 }
