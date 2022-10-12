@@ -1,0 +1,68 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_SUGGESTIONS_CONTROLLER_H_
+#define BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_SUGGESTIONS_CONTROLLER_H_
+
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/callback_forward.h"
+#include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
+#include "base/memory/raw_ptr.h"
+#include "base/one_shot_event.h"
+#include "base/task/cancelable_task_tracker.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
+#include "brave/components/brave_today/browser/publishers_controller.h"
+#include "components/history/core/browser/history_service.h"
+
+namespace brave_news {
+class SuggestionsController {
+ public:
+  struct PublisherSimilarity {
+    std::string publisher_id;
+    double score;
+  };
+
+  using PublisherSimilarities =
+      base::flat_map<std::string, std::vector<PublisherSimilarity>>;
+  using SimilarityLookup = base::flat_map<std::string, PublisherSimilarities>;
+  explicit SuggestionsController(
+      PrefService* prefs,
+      ChannelsController* channels_controller,
+      PublishersController* publishers_controller,
+      api_request_helper::APIRequestHelper* api_request_helper,
+      history::HistoryService* history_service);
+  SuggestionsController(const SuggestionsController&) = delete;
+  SuggestionsController& operator=(const SuggestionsController&) = delete;
+  ~SuggestionsController();
+
+  void GetSuggestedPublisherIds(
+      const std::string& locale,
+      mojom::BraveNewsController::GetSuggestedPublisherIdsCallback callback);
+  void EnsureSimilarityMatrixIsUpdating();
+
+ private:
+  void GetOrFetchSimilarityMatrix(base::OnceClosure callback);
+
+  bool is_update_in_progress_ = false;
+  raw_ptr<PrefService> prefs_;
+  // Task tracker for HistoryService callbacks.
+  base::CancelableTaskTracker task_tracker_;
+
+  raw_ptr<ChannelsController> channels_controller_;
+  raw_ptr<PublishersController> publishers_controller_;
+  raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  raw_ptr<history::HistoryService> history_service_;
+  std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
+
+  SimilarityLookup similarity_lookup_;
+};
+}  // namespace brave_news
+
+#endif  // BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_SUGGESTIONS_CONTROLLER_H_

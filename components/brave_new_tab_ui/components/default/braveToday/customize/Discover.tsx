@@ -15,6 +15,7 @@ import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
 import FeedCard, { DirectFeedCard } from './FeedCard'
 import useSearch from './useSearch'
+import Suggestions from './Suggestions'
 
 const Header = styled.span`
   font-size: 24px;
@@ -68,6 +69,7 @@ function Home () {
 
   return (
     <>
+      <Suggestions/>
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
       {visibleChannelIds.map(channelId =>
         <ChannelCard key={channelId} channelName={channelId} />
