@@ -366,14 +366,14 @@
       <message name="IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL" desc="Label that displays in the searchbox when the user hasn't entered anything">
         Search for news, site, topic or RSS feed
       </message>
-      <message name="IDS_BRAVE_NEWS_BROWSE_BY_CATEGORY_HEADER" desc="Header for the browse by category section">
-        Browse by category
+      <message name="IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER" desc="Header for the channel section">
+        Channels
       </message>
-      <message name="IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON" desc="Label for the button to load more categories">
-        Load more
+      <message name="IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON" desc="Label for the button to show more categories">
+        Show more
       </message>
       <message name="IDS_BRAVE_NEWS_ALL_SOURCES_HEADER" desc="Header for the all sources section">
-        All Sources
+        Sources
       </message>
       <message name="IDS_BRAVE_NEWS_FEEDS_HEADING" desc="The heading for the feeds contianer">
         Following
@@ -390,8 +390,11 @@
       <message name="IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING" desc="Label for the follow button when the publisher is not currently followed">
         Follow
       </message>
-      <message name="IDS_BRAVE_NEWS_SEARCH_RESULTS_LOADING" desc="Label displayed while search results are loading">
-        Loading...
+      <message name="IDS_BRAVE_NEWS_DIRECT_SEARCH_BUTTON" desc="Label for the button which will search a Url for a feed">
+        Get feeds from <ph name="URL">$1<ex>https://example.com</ex></ph>
+      </message>
+      <message name="IDS_BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS" desc="Label displayed when there are no direct feed results">
+        No feeds found at <ph name="URL">$1<ex>https://example.com</ex></ph>
       </message>
       <message name="IDS_BRAVE_NEWS_SEARCH_RESULTS_NO_RESULTS" desc="Label displayed when there are no results">
         There's nothing here :'(
@@ -401,6 +404,9 @@
       </message>
       <message name="IDS_BRAVE_NEWS_SEARCH_RESULTS_DIRECT_RESULTS" desc="Label displayed above direct RSS results">
         Direct Results
+      </message>
+      <message name="IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT" desc="Message displayed when there are no results due to search query being too short">
+        Keep typing to search sources
       </message>
 
       <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>
