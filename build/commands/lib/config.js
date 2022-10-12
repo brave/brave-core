@@ -412,7 +412,11 @@ Config.prototype.buildArgs = function () {
   if (this.getTargetOS() === 'linux') {
     if (this.targetArch !== 'x86') {
       // Include vaapi support
+      // TODO: Consider setting use_vaapi_x11 instead of use_vaapi. Also
+      // consider enabling it for x86 builds. See
+      // https://github.com/brave/brave-browser/issues/1024#issuecomment-1175397914
       args.use_vaapi = true
+
     }
     if (this.targetArch === 'arm64') {
       // We don't yet support Widevine on Arm64 Linux.
