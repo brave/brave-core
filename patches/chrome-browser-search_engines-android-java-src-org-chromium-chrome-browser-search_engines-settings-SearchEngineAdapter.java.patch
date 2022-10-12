@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java b/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
+index b3ac445f10a0cf057f2c0316298b49cd8d2dbc62..afb288bcfee6fb2555e9b22f35bb99ff62df2ef2 100644
+--- a/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
++++ b/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
+@@ -90,7 +90,7 @@ public class SearchEngineAdapter extends BaseAdapter
+      * Can be -1 if current search engine is managed and set to something other than the
+      * pre-populated values.
+      */
+-    private int mSelectedSearchEnginePosition = -1;
++public    /*private*/ int mSelectedSearchEnginePosition = -1;
+ 
+     /** The position of the default search engine before user's action. */
+     private int mInitialEnginePosition = -1;
+@@ -105,6 +105,16 @@ public class SearchEngineAdapter extends BaseAdapter
+     @Nullable
+     private SettingsLauncher mSettingsLauncher;
+ 
++    public int i = 10;
++
++    private static TemplateUrlService mTemplateUrlService;
++    public static class TemplateUrlServiceFactory {
++      public static TemplateUrlService get() {
++        Log.e("TAGAB", "i="+i);
++        return mTemplateUrlService;
++      }
++    }
++
+     /**
+      * Construct a SearchEngineAdapter.
+      * @param context The current context.

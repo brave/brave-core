@@ -13,7 +13,7 @@ import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdap
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
-
+                                          import org.chromium.base.Log;
 public class BraveSearchEngineUtils {
     static public void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
         tabModelSelector.addObserver(new SearchEngineTabModelSelectorObserver(tabModelSelector));
@@ -62,14 +62,18 @@ public class BraveSearchEngineUtils {
     }
 
     static public void setDSEPrefs(TemplateUrl templateUrl, boolean isPrivate) {
+Log.e("TAG", "BraveSearchEngineUtils.setDSEPrefs templateUrl.getShortName()="+templateUrl.getShortName());
+Log.e("TAG", "BraveSearchEngineUtils.setDSEPrefs isPrivate="+isPrivate);
         BraveSearchEngineAdapter.setDSEPrefs(templateUrl, isPrivate);
     }
 
     static public void updateActiveDSE(boolean isPrivate) {
+Log.e("TAG", "BraveSearchEngineUtils.updateActiveDSE isPrivate="+isPrivate);
         BraveSearchEngineAdapter.updateActiveDSE(isPrivate);
     }
 
     static public String getDSEShortName(boolean isPrivate) {
+Log.e("TAG", "BraveSearchEngineUtils.getDSEShortName isPrivate="+isPrivate);
         return BraveSearchEngineAdapter.getDSEShortName(isPrivate);
     }
 

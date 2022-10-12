@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarCoordinator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarCoordinator.java
+index 15a4d0a85d86cd4dcc445dfece646c4d39e89cce..9eade9890e5a8eadbbb473b3db2148063b4e8bbb 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarCoordinator.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarCoordinator.java
+@@ -3,7 +3,7 @@
+ // found in the LICENSE file.
+ 
+ package org.chromium.chrome.browser.omnibox;
+-
++  import org.chromium.base.Log;
+ import android.animation.Animator;
+ import android.animation.ObjectAnimator;
+ import android.content.res.Configuration;
+@@ -385,7 +385,9 @@ public class LocationBarCoordinator implements LocationBar, NativeInitObserver,
+ 
+     @Override
+     public void onUrlTextChanged() {
++Log.e("TAG", "LocationBarCoordinator.onUrlTextChanged 000");
+         mLocationBarMediator.onUrlTextChanged();
++Log.e("TAG", "LocationBarCoordinator.onUrlTextChanged EXIT");
+     }
+ 
+     @Override
+@@ -408,6 +410,7 @@ public class LocationBarCoordinator implements LocationBar, NativeInitObserver,
+ 
+     @Override
+     public void loadUrl(String url, int transition, long inputStart) {
++Log.e("TAG", "LocationBarCoordinator.loadUrlForOmniboxMatch 000 url="+url);
+         mLocationBarMediator.loadUrl(url, transition, inputStart);
+     }
+ 

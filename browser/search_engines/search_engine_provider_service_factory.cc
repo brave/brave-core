@@ -10,7 +10,9 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/normal_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
+#if !BUILDFLAG(IS_ANDROID)  
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
+#endif
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,17 +26,20 @@ namespace {
 // Factory owns service object.
 KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   // Set search engine handler for tor or private profile.
+#if !BUILDFLAG(IS_ANDROID)  
   if (profile->IsTor()) {
     return new TorWindowSearchEngineProviderService(profile);
   }
+#endif  
 
   if (profile->IsIncognitoProfile()) {
     return new PrivateWindowSearchEngineProviderService(profile);
   }
-
+#if !BUILDFLAG(IS_ANDROID)  
   if (profile->IsRegularProfile()) {
     return new NormalWindowSearchEngineProviderService(profile);
   }
+#endif    
 
   return nullptr;
 }

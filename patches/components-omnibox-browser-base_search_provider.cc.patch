@@ -1,0 +1,23 @@
+diff --git a/components/omnibox/browser/base_search_provider.cc b/components/omnibox/browser/base_search_provider.cc
+index 37c129c23f3d861d30b0001c12e206377c8d7b17..9ad8bbe7ccf961d0536b35c57ca864b0f14c5948 100644
+--- a/components/omnibox/browser/base_search_provider.cc
++++ b/components/omnibox/browser/base_search_provider.cc
+@@ -392,6 +392,9 @@ AutocompleteMatch BaseSearchProvider::CreateSearchSuggestion(
+     const SearchTermsData& search_terms_data,
+     int accepted_suggestion,
+     bool append_extra_query_params_from_command_line) {
++if (template_url) LOG(ERROR) << "[DSE] " << __func__ << " 000 template_url->short_name()=" << template_url->short_name();
++LOG(ERROR) << "[DSE] " << __func__ << " 000 input.text()=" << input.text();
++
+   AutocompleteMatch match(autocomplete_provider, suggestion.relevance(), false,
+                           suggestion.type());
+ 
+@@ -517,6 +520,8 @@ void BaseSearchProvider::AddMatchToMap(
+     bool mark_as_deletable,
+     bool in_keyword_mode,
+     MatchMap* map) {
++LOG(ERROR) << "[DSE] " << __func__ << " 000";
++
+   AutocompleteMatch match = CreateSearchSuggestion(
+       this, GetInput(result.from_keyword()), in_keyword_mode, result,
+       GetTemplateURL(result.from_keyword()),

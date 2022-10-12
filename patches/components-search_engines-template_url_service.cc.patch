@@ -1,0 +1,21 @@
+diff --git a/components/search_engines/template_url_service.cc b/components/search_engines/template_url_service.cc
+index 4dd88deb1ea8930d6b54f04f18b51cf827551083..3e9e4ddc738d19a556ca1ba617ccfcb58eaca8d5 100644
+--- a/components/search_engines/template_url_service.cc
++++ b/components/search_engines/template_url_service.cc
+@@ -393,6 +393,7 @@ void TemplateURLService::AddMatchingKeywords(
+ 
+ TemplateURL* TemplateURLService::GetTemplateURLForKeyword(
+     const std::u16string& keyword) {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 keyword="<<keyword;
+   return const_cast<TemplateURL*>(
+       static_cast<const TemplateURLService*>(this)->
+           GetTemplateURLForKeyword(keyword));
+@@ -1566,6 +1567,8 @@ SyncDataMap TemplateURLService::CreateGUIDToSyncDataMap(
+ 
+ void TemplateURLService::Init(const Initializer* initializers,
+                               int num_initializers) {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 this="<<this;
++
+   if (client_)
+     client_->SetOwner(this);
+ 

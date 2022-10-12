@@ -1,0 +1,35 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarMediator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarMediator.java
+index ea710e7f76e8cf7f2d00f9038d9ce87e137bad7d..86ce2fa2ec526f7cc8d9594913be009d70b4d1ce 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarMediator.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarMediator.java
+@@ -3,7 +3,7 @@
+ // found in the LICENSE file.
+ 
+ package org.chromium.chrome.browser.omnibox;
+-
++  import org.chromium.base.Log;
+ import android.animation.Animator;
+ import android.animation.AnimatorListenerAdapter;
+ import android.animation.ObjectAnimator;
+@@ -440,6 +440,7 @@ class LocationBarMediator
+     }
+ 
+     /* package */ void onUrlTextChanged() {
++Log.e("TAG", "LocationBarMediator.onUrlTextChanged 000");
+         updateButtonVisibility();
+     }
+ 
+@@ -470,11 +471,13 @@ class LocationBarMediator
+     }
+ 
+     /* package */ void loadUrl(String url, int transition, long inputStart) {
++Log.e("TAG", "LocationBarMediator.loadUrl 000 url="+url);
+         loadUrlWithPostData(url, transition, inputStart, null, null);
+     }
+ 
+     /* package */ void loadUrlWithPostData(
+             String url, int transition, long inputStart, String postDataType, byte[] postData) {
++Log.e("TAG", "LocationBarMediator.loadUrlWithPostData 000 url="+url);
+         assert mLocationBarDataProvider != null;
+         Tab currentTab = mLocationBarDataProvider.getTab();
+ 

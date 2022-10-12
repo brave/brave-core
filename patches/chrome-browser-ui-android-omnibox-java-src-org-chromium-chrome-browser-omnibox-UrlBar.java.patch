@@ -1,0 +1,158 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
+index 037232ac6827d8151c354dd1aea76b5a93fff25e..0a4e0f75fd03f5dccbdc56c76ddea69f24c29558 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
+@@ -201,9 +201,10 @@ public abstract class UrlBar extends AutocompleteEditText {
+         @Nullable
+         String getReplacementCutCopyText(String currentText, int selectionStart, int selectionEnd);
+     }
+-
++//#error 1
+     public UrlBar(Context context, AttributeSet attrs) {
+         super(context, attrs);
++Log.e("TAG", "UrlBar.UrlBar 000");
+         mUrlDirection = LAYOUT_DIRECTION_LOCALE;
+ 
+         // The URL Bar is derived from an text edit class, and as such is focusable by
+@@ -259,6 +260,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+     }
+ 
+     public void destroy() {
++Log.e("TAG", "UrlBar.destroy 000");
+         setAllowFocus(false);
+         mUrlBarDelegate = null;
+         setOnFocusChangeListener(null);
+@@ -271,6 +273,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+      * Initialize the delegate that allows interaction with the Window.
+      */
+     public void setWindowDelegate(WindowDelegate windowDelegate) {
++Log.e("TAG", "UrlBar.setWindowDelegate 000");
+         mKeyboardHideHelper.setWindowDelegate(windowDelegate);
+     }
+ 
+@@ -278,6 +281,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+      * Set the delegate to be used for text context menu actions.
+      */
+     public void setTextContextMenuDelegate(UrlBarTextContextMenuDelegate delegate) {
++Log.e("TAG", "UrlBar.setTextContextMenuDelegate 000");
+         mTextContextMenuDelegate = delegate;
+     }
+ 
+@@ -287,6 +291,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+      */
+     @Override
+     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
++Log.e("TAG", "UrlBar.onKeyPreIme 000");
+         if (KeyEvent.KEYCODE_BACK == keyCode && event.getAction() == KeyEvent.ACTION_UP) {
+             mKeyboardHideHelper.monitorForKeyboardHidden();
+         }
+@@ -301,12 +306,14 @@ public abstract class UrlBar extends AutocompleteEditText {
+      */
+     @Override
+     public void setIgnoreTextChangesForAutocomplete(boolean ignoreAutocomplete) {
++Log.e("TAG", "UrlBar.setIgnoreTextChangesForAutocomplete 000");
+         assert mUrlBarDelegate != null;
+         super.setIgnoreTextChangesForAutocomplete(ignoreAutocomplete);
+     }
+ 
+     @Override
+     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
++Log.e("TAG", "UrlBar.onFocusChanged 000");
+         mFocused = focused;
+         super.onFocusChanged(focused, direction, previouslyFocusedRect);
+ 
+@@ -318,6 +325,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+ 
+     @Override
+     public void onFinishInflate() {
++Log.e("TAG", "UrlBar.onFinishInflate 000");
+         super.onFinishInflate();
+         setPrivateImeOptions(IME_OPTION_RESTRICT_STYLUS_WRITING_AREA);
+     }
+@@ -326,6 +334,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+      * Sets whether this {@link UrlBar} should be focusable.
+      */
+     public void setAllowFocus(boolean allowFocus) {
++Log.e("TAG", "UrlBar.setAllowFocus 000");
+         mAllowFocus = allowFocus;
+         setFocusable(allowFocus);
+         setFocusableInTouchMode(allowFocus);
+@@ -336,6 +345,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+      * TalkBack).
+      */
+     public void requestAccessibilityFocus() {
++Log.e("TAG", "UrlBar.requestAccessibilityFocus 000");
+         sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+     }
+ 
+@@ -362,6 +372,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+ 
+     @Override
+     public void onWindowFocusChanged(boolean hasWindowFocus) {
++Log.e("TAG", "UrlBar.onWindowFocusChanged 000");
+         super.onWindowFocusChanged(hasWindowFocus);
+         if (DEBUG) Log.i(TAG, "onWindowFocusChanged: " + hasWindowFocus);
+         if (hasWindowFocus) {
+@@ -381,6 +392,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+ 
+     @Override
+     public View focusSearch(int direction) {
++Log.e("TAG", "UrlBar.focusSearch 000");
+         if (mUrlBarDelegate != null && direction == View.FOCUS_BACKWARD
+                 && mUrlBarDelegate.getViewForUrlBackFocus() != null) {
+             return mUrlBarDelegate.getViewForUrlBackFocus();
+@@ -391,6 +403,10 @@ public abstract class UrlBar extends AutocompleteEditText {
+ 
+     @Override
+     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
++Log.e("TAG", "UrlBar.onTextChanged 000 text="+text);
++Log.e("[Sync]", "stack="+ Log.getStackTraceString(new Exception()));
++Log.e("[Sync]", "===================");
++
+         super.onTextChanged(text, start, lengthBefore, lengthAfter);
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+             // Due to crbug.com/1103555, Autofill had to be disabled on the UrlBar to work around
+@@ -405,6 +421,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+ 
+     @Override
+     public boolean onTouchEvent(MotionEvent event) {
++Log.e("TAG", "UrlBar.onTouchEvent 000");
+         // This method contains special logic to enable long presses to be handled correctly.
+ 
+         // One piece of the logic is to suppress all ACTION_DOWN events received while the UrlBar is
+@@ -467,6 +484,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+ 
+     @Override
+     public boolean performLongClick() {
++Log.e("TAG", "UrlBar.performLongClick 000");
+         if (!shouldPerformLongClick()) return false;
+ 
+         releaseSuppressedTouchDownEvent();
+@@ -477,6 +495,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+      * @return Whether or not a long click should be performed.
+      */
+     private boolean shouldPerformLongClick() {
++Log.e("TAG", "UrlBar.shouldPerformLongClick 000");
+         getLocationInWindow(mCachedLocation);
+ 
+         // If the view moved between the last down event, block the long-press.
+@@ -570,6 +589,7 @@ public abstract class UrlBar extends AutocompleteEditText {
+      * @param listener The listener to be notified.
+      */
+     public void setUrlTextChangeListener(UrlTextChangeListener listener) {
++Log.e("TAG", "UrlBar.setUrlTextChangeListener 000");
+         mUrlTextChangeListener = listener;
+     }
+ 
+@@ -925,9 +945,11 @@ public abstract class UrlBar extends AutocompleteEditText {
+ 
+     @Override
+     public void onAutocompleteTextStateChanged(boolean updateDisplay) {
++Log.e("TAG", "UrlBar.onAutocompleteTextStateChanged 000 updateDisplay="+updateDisplay);
+         if (DEBUG) {
+             Log.i(TAG, "onAutocompleteTextStateChanged: DIS[%b]", updateDisplay);
+         }
++if (mUrlTextChangeListener == null) { Log.e("TAG", "UrlBar.onAutocompleteTextStateChanged 001 (mUrlTextChangeListener == null)");}
+         if (mUrlTextChangeListener == null) return;
+         if (updateDisplay) limitDisplayableLength();
+         // crbug.com/764749

@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator.java
+index 5a135f51ab4c66fa0828b619c023c46f9e8af280..e4792e85ebe8cae2dc37a62485f005e2509b93d2 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator.java
+@@ -3,7 +3,7 @@
+ // found in the LICENSE file.
+ 
+ package org.chromium.chrome.browser.omnibox.suggestions;
+-
++  import org.chromium.base.Log;
+ import android.content.Context;
+ import android.os.Handler;
+ import android.view.KeyEvent;
+@@ -354,6 +354,8 @@ public class AutocompleteCoordinator implements UrlFocusChangeListener, UrlTextC
+ 
+     @Override
+     public void onTextChanged(String textWithoutAutocomplete, String textWithAutocomplete) {
++Log.e("TAG", "AutocompleteCoordinator.onTextChanged 000 textWithoutAutocomplete="+textWithoutAutocomplete);
++Log.e("TAG", "AutocompleteCoordinator.onTextChanged 000 textWithAutocomplete   ="+textWithAutocomplete);
+         mMediator.onTextChanged(textWithoutAutocomplete, textWithAutocomplete);
+     }
+ 

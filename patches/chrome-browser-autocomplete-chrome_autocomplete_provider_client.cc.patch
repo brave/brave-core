@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc
+index 433a3791ad683b3a0362e08fd583c0c5eee94ef7..8232376315700140a1f8786eb4d929985e949c22 100644
+--- a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc
++++ b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc
+@@ -114,6 +114,8 @@ ChromeAutocompleteProviderClient::ChromeAutocompleteProviderClient(
+       storage_partition_(nullptr),
+       omnibox_triggered_feature_service_(
+           std::make_unique<OmniboxTriggeredFeatureService>()) {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 profile="<<profile;
++LOG(ERROR) << "[DSE] " << __func__ << " 000 profile->IsOffTheRecord()="<<profile->IsOffTheRecord();
+   pedal_provider_ = std::make_unique<OmniboxPedalProvider>(
+       *this, GetPedalImplementations(IsOffTheRecord(), false));
+ }

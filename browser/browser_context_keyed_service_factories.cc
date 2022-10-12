@@ -34,8 +34,9 @@
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
+#if !BUILDFLAG(IS_ANDROID)
+//#include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #else
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
@@ -79,9 +80,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineTrackerFactory::GetInstance();
   ntp_background_images::ViewCounterServiceFactory::GetInstance();
 
+  SearchEngineProviderServiceFactory::GetInstance();//AB
 #if !BUILDFLAG(IS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
-  SearchEngineProviderServiceFactory::GetInstance();
+//  SearchEngineProviderServiceFactory::GetInstance();
 #else
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif

@@ -1,0 +1,23 @@
+diff --git a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrl.java b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrl.java
+index 83ffb83ca48131554ca16fcc133a5a3e1dbae94e..1ae1d6b427f923d10fe129ef0ff717a1bfb3ddca 100644
+--- a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrl.java
++++ b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrl.java
+@@ -32,6 +32,11 @@ public class TemplateUrl {
+         return TemplateUrlJni.get().getShortName(mTemplateUrlPtr);
+     }
+ 
++    public String getGUID() {
++        return TemplateUrlJni.get().getGUID(mTemplateUrlPtr);
++    }
++    //String getGUID(long templateUrlPtr);
++
+     /**
+      * @return The prepopulated id of the search engine. For predefined engines, this field is a
+      *         non-zero, for custom search engines, it will return 0.
+@@ -93,5 +98,6 @@ public class TemplateUrl {
+         long getLastVisitedTime(long templateUrlPtr);
+         int getPrepopulatedId(long templateUrlPtr);
+         String getURL(long templateUrlPtr);
++        String getGUID(long templateUrlPtr);
+     }
+ }

@@ -1,0 +1,25 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java
+index 1d97bcdd5f1bd6afb72031b1a2c0f8cbc052d1dd..92e1e71a40ebaaa8fa424b675b01056a2faadac7 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java
+@@ -473,6 +473,9 @@ public class TabImpl implements Tab, TabObscuringHandler.Observer {
+ 
+     @Override
+     public int loadUrl(LoadUrlParams params) {
++Log.e("TAG", "TabImpl.loadUrl 000 params.getUrl()="+params.getUrl());
++Log.e("[Sync]", "stack="+ Log.getStackTraceString(new Exception()));
++Log.e("[Sync]", "===================");
+         try {
+             TraceEvent.begin("Tab.loadUrl");
+             // TODO(tedchoc): When showing the android NTP, delay the call to
+@@ -1048,6 +1051,10 @@ public class TabImpl implements Tab, TabObscuringHandler.Observer {
+      * @param validatedUrl URL being loaded.
+      */
+     void didStartPageLoad(GURL validatedUrl) {
++Log.e("TAG", "TabImpl.didStartPageLoad 000 validatedUrl.getSpec()="+validatedUrl.getSpec());  
++Log.e("[Sync]", "stack="+ Log.getStackTraceString(new Exception()));
++Log.e("[Sync]", "===================");
++    
+         updateTitle();
+         if (mIsRendererUnresponsive) handleRendererResponsiveStateChanged(true);
+         for (TabObserver observer : mObservers) {

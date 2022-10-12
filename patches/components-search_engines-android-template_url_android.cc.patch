@@ -1,0 +1,19 @@
+diff --git a/components/search_engines/android/template_url_android.cc b/components/search_engines/android/template_url_android.cc
+index e41bc66f6a53a13027b8765478f6ebbc08b91708..b2c0d8d4c7db670d08fa4bd0402971deaa54954a 100644
+--- a/components/search_engines/android/template_url_android.cc
++++ b/components/search_engines/android/template_url_android.cc
+@@ -25,6 +25,14 @@ ScopedJavaLocalRef<jstring> JNI_TemplateUrl_GetShortName(
+                                                  template_url->short_name());
+ }
+ 
++ScopedJavaLocalRef<jstring> JNI_TemplateUrl_GetGUID(
++    JNIEnv* env,
++    jlong template_url_ptr) {
++  TemplateURL* template_url = ToTemplateURL(template_url_ptr);
++  return base::android::ConvertUTF8ToJavaString(env,
++                                                 template_url->sync_guid());
++}
++
+ ScopedJavaLocalRef<jstring> JNI_TemplateUrl_GetKeyword(JNIEnv* env,
+                                                        jlong template_url_ptr) {
+   TemplateURL* template_url = ToTemplateURL(template_url_ptr);

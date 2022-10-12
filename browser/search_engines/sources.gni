@@ -24,6 +24,15 @@ brave_browser_search_engines_deps = [
 if (is_android) {
   brave_browser_search_engines_sources += [
     "//brave/browser/search_engines/brave_search_engine_pref_helper_android.cc",
+    
+    "//brave/browser/search_engines/search_engine_provider_service_factory.cc",
+    "//brave/browser/search_engines/search_engine_provider_service_factory.h",
+    "//brave/browser/search_engines/private_window_search_engine_provider_service.cc",
+    "//brave/browser/search_engines/private_window_search_engine_provider_service.h",
+    "//brave/browser/search_engines/private_window_search_engine_provider_service_base.cc",
+    "//brave/browser/search_engines/private_window_search_engine_provider_service_base.h",
+    
+
   ]
 
   brave_browser_search_engines_deps += [

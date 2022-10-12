@@ -1,0 +1,42 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteController.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteController.java
+index 75442d59e6ae80b48e6d1a1f6d44590fc096d73b..f77115dff019d9883dce37755acaab2793e649d0 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteController.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteController.java
+@@ -3,7 +3,7 @@
+ // found in the LICENSE file.
+ 
+ package org.chromium.chrome.browser.omnibox.suggestions;
+-
++  import org.chromium.base.Log;
+ import android.text.TextUtils;
+ 
+ import androidx.annotation.NonNull;
+@@ -95,12 +95,16 @@ public class AutocompleteController {
+      */
+     void start(@NonNull String url, int pageClassification, @NonNull String text,
+             int cursorPosition, boolean preventInlineAutocomplete) {
++Log.e("TAG", "AutocompleteController.start 000");
+         if (mNativeController == 0) return;
++Log.e("TAG", "AutocompleteController.start 001");
+         assert !TextUtils.isEmpty(url);
+         if (TextUtils.isEmpty(url)) return;
++Log.e("TAG", "AutocompleteController.start 002");
+ 
+         AutocompleteControllerJni.get().start(mNativeController, text, cursorPosition, null, url,
+                 pageClassification, preventInlineAutocomplete, false, false, true);
++Log.e("TAG", "AutocompleteController.start EXIT");
+     }
+ 
+     /**
+@@ -208,6 +212,11 @@ public class AutocompleteController {
+     @CalledByNative
+     private void onSuggestionsReceived(@NonNull AutocompleteResult autocompleteResult,
+             @NonNull String inlineAutocompleteText, boolean isFinal) {
++Log.e("TAG", "AutocompleteController.onSuggestionsReceived 000 inlineAutocompleteText="+inlineAutocompleteText);
++Log.e("TAG", "AutocompleteController.onSuggestionsReceived 000 isFinal="+isFinal);
++
++Log.e("TAG", "AutocompleteController.onSuggestionsReceived 001 mListeners.size()="+mListeners.size());
++
+         mAutocompleteResult = autocompleteResult;
+         // Notify callbacks of suggestions.
+         for (OnSuggestionsReceivedListener listener : mListeners) {

@@ -1,0 +1,34 @@
+diff --git a/components/omnibox/browser/search_provider.cc b/components/omnibox/browser/search_provider.cc
+index 98a614d797a0328f366958cf229479ee9d343214..3cf1675dc734b52c6983ac721ca745054ff3264e 100644
+--- a/components/omnibox/browser/search_provider.cc
++++ b/components/omnibox/browser/search_provider.cc
+@@ -122,7 +122,9 @@ void RecordDBMetrics(const base::TimeTicks db_query_time,
+ // SearchProvider::Providers --------------------------------------------------
+ 
+ SearchProvider::Providers::Providers(TemplateURLService* template_url_service)
+-    : template_url_service_(template_url_service) {}
++    : template_url_service_(template_url_service) {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 CTOR template_url_service_=" << template_url_service_;
++    }
+ 
+ const TemplateURL* SearchProvider::Providers::GetDefaultProviderURL() const {
+   if (default_provider_.empty())
+@@ -161,6 +163,8 @@ SearchProvider::SearchProvider(AutocompleteProviderClient* client,
+   AddListener(listener);
+ 
+   TemplateURLService* template_url_service = client->GetTemplateURLService();
++//chrome/browser/android/omnibox/autocomplete_controller_android.cc
++LOG(ERROR) << "[DSE] " << __func__ << " 000 template_url_service="<<template_url_service;  
+ 
+   // |template_url_service| can be null in tests.
+   if (template_url_service)
+@@ -354,6 +358,9 @@ void SearchProvider::Stop(bool clear_cached_results,
+ }
+ 
+ const TemplateURL* SearchProvider::GetTemplateURL(bool is_keyword) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 is_keyword=" << is_keyword;
++LOG(ERROR) << "[DSE] " << __func__ << " providers_.GetKeywordProviderURL()="<<providers_.GetKeywordProviderURL();
++LOG(ERROR) << "[DSE] " << __func__ << " providers_.GetDefaultProviderURL()="<<providers_.GetDefaultProviderURL();
+   return is_keyword ? providers_.GetKeywordProviderURL()
+                     : providers_.GetDefaultProviderURL();
+ }

@@ -31,10 +31,20 @@ public class BraveSearchEnginePrefHelper {
     public boolean getFetchSEFromNative() {
         return BraveSearchEnginePrefHelperJni.get().getFetchSEFromNative();
     }
+    
+    public void setPrivateSEGuid(String privateSEGuid) {
+        BraveSearchEnginePrefHelperJni.get().setPrivateSEGuid(privateSEGuid);
+    }
+    
+    public String setPrivateSEGuid() {
+        return BraveSearchEnginePrefHelperJni.get().getPrivateSEGuid();
+    }
 
     @NativeMethods
     interface Natives {
         void setFetchSEFromNative(boolean value);
         boolean getFetchSEFromNative();
+        void setPrivateSEGuid(String privateSEGuid);
+        String getPrivateSEGuid();
     }
 }

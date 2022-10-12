@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/android/omnibox/autocomplete_controller_android.cc b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
+index c065d7349f7519617ae06a3ae4efded552ae0222..8e5baec55e4f7012bf3375394fc52296a74b9922 100644
+--- a/chrome/browser/android/omnibox/autocomplete_controller_android.cc
++++ b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
+@@ -130,6 +130,9 @@ AutocompleteControllerAndroid::AutocompleteControllerAndroid(
+       autocomplete_controller_{std::make_unique<AutocompleteController>(
+           std::move(client),
+           AutocompleteClassifier::DefaultOmniboxProviders())} {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 profile="<<profile;
++LOG(ERROR) << "[DSE] " << __func__ << " 000 profile->IsOffTheRecord()="<<profile->IsOffTheRecord();
++  
+   autocomplete_controller_->AddObserver(this);
+ 
+   OmniboxControllerEmitter* emitter =
+@@ -148,6 +151,7 @@ void AutocompleteControllerAndroid::Start(JNIEnv* env,
+                                           bool prefer_keyword,
+                                           bool allow_exact_keyword_match,
+                                           bool want_asynchronous_matches) {
++LOG(ERROR) << "[BraveSync] " << __func__ << " 000";
+   autocomplete_controller_->result().DestroyJavaObject();
+ 
+   std::string desired_tld;
+@@ -167,7 +171,9 @@ void AutocompleteControllerAndroid::Start(JNIEnv* env,
+   input_.set_prefer_keyword(prefer_keyword);
+   input_.set_allow_exact_keyword_match(allow_exact_keyword_match);
+   input_.set_omit_asynchronous_matches(!want_asynchronous_matches);
++LOG(ERROR) << "[BraveSync] " << __func__ << " 001";
+   autocomplete_controller_->Start(input_);
++LOG(ERROR) << "[BraveSync] " << __func__ << " EXIT";
+ }
+ 
+ void AutocompleteControllerAndroid::StartPrefetch(JNIEnv* env) {
+@@ -499,6 +505,7 @@ AutocompleteControllerAndroid::Factory::~Factory() = default;
+ KeyedService* AutocompleteControllerAndroid::Factory::BuildServiceInstanceFor(
+     content::BrowserContext* context) const {
+   auto* profile = static_cast<Profile*>(context);
++LOG(ERROR) << "[DSE] " << __func__ << " 000 profile="<<profile;  
+   return new AutocompleteControllerAndroid(
+       profile, std::make_unique<ChromeAutocompleteProviderClient>(profile));
+ }

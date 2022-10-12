@@ -1,0 +1,247 @@
+diff --git a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+index 78162f3ddf80e9e98a46885c250ec893b6243cd4..451334a76ea28f57891af6053e2d6e8666a3ded8 100644
+--- a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
++++ b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+@@ -17,7 +17,7 @@ import org.chromium.url.GURL;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+-
++                            import org.chromium.base.Log;
+ /**
+  * Android wrapper of the TemplateUrlService which provides access from the Java
+  * layer.
+@@ -48,6 +48,7 @@ public class TemplateUrlService {
+     private long mNativeTemplateUrlServiceAndroid;
+ 
+     private TemplateUrlService(long nativeTemplateUrlServiceAndroid) {
++Log.e("TAG", "TemplateUrlService.TemplateUrlService CTOR 000");
+         // Note that this technically leaks the native object, however, TemplateUrlService
+         // is a singleton that lives forever and there's no clean shutdown of Chrome on Android.
+         mNativeTemplateUrlServiceAndroid = nativeTemplateUrlServiceAndroid;
+@@ -55,6 +56,7 @@ public class TemplateUrlService {
+ 
+     @CalledByNative
+     private static TemplateUrlService create(long nativeTemplateUrlServiceAndroid) {
++Log.e("TAG", "TemplateUrlService.create 000");
+         return new TemplateUrlService(nativeTemplateUrlServiceAndroid);
+     }
+ 
+@@ -85,6 +87,7 @@ public class TemplateUrlService {
+      * @param action The action to be run.
+      */
+     public void runWhenLoaded(final Runnable action) {
++Log.e("TAG", "TemplateUrlService.runWhenLoaded 000");
+         if (isLoaded()) {
+             action.run();
+         } else {
+@@ -103,6 +106,7 @@ public class TemplateUrlService {
+      * Returns a list of the all available search engines.
+      */
+     public List<TemplateUrl> getTemplateUrls() {
++//Log.e("TAG", "TemplateUrlService.getTemplateUrls 000");
+         ThreadUtils.assertOnUiThread();
+         List<TemplateUrl> templateUrls = new ArrayList<>();
+         TemplateUrlServiceJni.get().getTemplateUrls(
+@@ -118,6 +122,7 @@ public class TemplateUrlService {
+     @CalledByNative
+     private static void addTemplateUrlToList(
+             List<TemplateUrl> templateUrls, TemplateUrl templateUrl) {
++//Log.e("TAG", "TemplateUrlService.addTemplateUrlToList 000");
+         templateUrls.add(templateUrl);
+     }
+ 
+@@ -126,6 +131,7 @@ public class TemplateUrlService {
+      */
+     @CalledByNative
+     private void templateUrlServiceLoaded() {
++Log.e("TAG", "TemplateUrlService.templateUrlServiceLoaded 000");
+         ThreadUtils.assertOnUiThread();
+         for (LoadListener listener : mLoadListeners) {
+             listener.onTemplateUrlServiceLoaded();
+@@ -134,6 +140,7 @@ public class TemplateUrlService {
+ 
+     @CalledByNative
+     private void onTemplateURLServiceChanged() {
++Log.e("TAG", "TemplateUrlService.onTemplateURLServiceChanged 000");
+         for (TemplateUrlServiceObserver observer : mObservers) {
+             observer.onTemplateURLServiceChanged();
+         }
+@@ -144,12 +151,21 @@ public class TemplateUrlService {
+      *         be null if DSEs are disabled entirely by administrators.
+      */
+     public @Nullable TemplateUrl getDefaultSearchEngineTemplateUrl() {
++Log.e("TAG", "TemplateUrlService.getDefaultSearchEngineTemplateUrl 000");
+         if (!isLoaded()) return null;
+-        return TemplateUrlServiceJni.get().getDefaultSearchEngine(
+-                mNativeTemplateUrlServiceAndroid, TemplateUrlService.this);
++        // return TemplateUrlServiceJni.get().getDefaultSearchEngine(
++        //         mNativeTemplateUrlServiceAndroid, TemplateUrlService.this);
++        TemplateUrl ret = TemplateUrlServiceJni.get().getDefaultSearchEngine(
++                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this);
++Log.e("TAG", "TemplateUrlService.getDefaultSearchEngineTemplateUrl EXIT ret="+ret.getShortName());
++        return ret;
+     }
+ 
+     public void setSearchEngine(String selectedKeyword) {
++Log.e("TAG", "TemplateUrlService.setSearchEngine 000 selectedKeyword="+selectedKeyword);
++Log.e("[Sync]", "stack="+ Log.getStackTraceString(new Exception()));
++Log.e("[Sync]", "===================");
++
+         ThreadUtils.assertOnUiThread();
+         TemplateUrlServiceJni.get().setUserSelectedDefaultSearchProvider(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this, selectedKeyword);
+@@ -160,6 +176,7 @@ public class TemplateUrlService {
+      *         DSE can not be modified by the user.
+      */
+     public boolean isDefaultSearchManaged() {
++Log.e("TAG", "TemplateUrlService.isDefaultSearchManaged 000");
+         return TemplateUrlServiceJni.get().isDefaultSearchManaged(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this);
+     }
+@@ -168,6 +185,7 @@ public class TemplateUrlService {
+      * @return Whether or not the default search engine has search by image support.
+      */
+     public boolean isSearchByImageAvailable() {
++Log.e("TAG", "TemplateUrlService.isSearchByImageAvailable 000");
+         ThreadUtils.assertOnUiThread();
+         return TemplateUrlServiceJni.get().isSearchByImageAvailable(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this);
+@@ -178,6 +196,7 @@ public class TemplateUrlService {
+      *    on NTP or start surface.
+      */
+     public boolean doesDefaultSearchEngineHaveLogo() {
++Log.e("TAG", "TemplateUrlService.doesDefaultSearchEngineHaveLogo 000");
+         return TemplateUrlServiceJni.get().doesDefaultSearchEngineHaveLogo(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this);
+     }
+@@ -186,6 +205,7 @@ public class TemplateUrlService {
+      * @return Whether the default configured search engine is for a Google property.
+      */
+     public boolean isDefaultSearchEngineGoogle() {
++//Log.e("TAG", "TemplateUrlService.isDefaultSearchEngineGoogle 000");
+         return TemplateUrlServiceJni.get().isDefaultSearchEngineGoogle(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this);
+     }
+@@ -196,6 +216,7 @@ public class TemplateUrlService {
+      * @return Whether the search result page with the given url from the default search provider.
+      */
+     public boolean isSearchResultsPageFromDefaultSearchProvider(GURL url) {
++Log.e("TAG", "TemplateUrlService.isSearchResultsPageFromDefaultSearchProvider 000");
+         ThreadUtils.assertOnUiThread();
+         return TemplateUrlServiceJni.get().isSearchResultsPageFromDefaultSearchProvider(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this, url);
+@@ -206,6 +227,7 @@ public class TemplateUrlService {
+      * TemplateURLService has loaded.
+      */
+     public void registerLoadListener(final LoadListener listener) {
++Log.e("TAG", "TemplateUrlService.registerLoadListener 000");
+         ThreadUtils.assertOnUiThread();
+         boolean added = mLoadListeners.addObserver(listener);
+         assert added;
+@@ -226,6 +248,7 @@ public class TemplateUrlService {
+      * TemplateURLService has loaded.
+      */
+     public void unregisterLoadListener(LoadListener listener) {
++Log.e("TAG", "TemplateUrlService.unregisterLoadListener 000");
+         ThreadUtils.assertOnUiThread();
+         boolean removed = mLoadListeners.removeObserver(listener);
+         assert removed;
+@@ -236,6 +259,9 @@ public class TemplateUrlService {
+      * @param observer The observer to be added.
+      */
+     public void addObserver(TemplateUrlServiceObserver observer) {
++Log.e("TAG", "TemplateUrlService.addObserver 000");
++Log.e("[Sync]", "stack="+ Log.getStackTraceString(new Exception()));
++Log.e("[Sync]", "===================");
+         mObservers.addObserver(observer);
+     }
+ 
+@@ -244,6 +270,7 @@ public class TemplateUrlService {
+      * @param observer The observer to be removed.
+      */
+     public void removeObserver(TemplateUrlServiceObserver observer) {
++Log.e("TAG", "TemplateUrlService.removeObserver 000");
+         mObservers.removeObserver(observer);
+     }
+ 
+@@ -256,6 +283,7 @@ public class TemplateUrlService {
+      *              {@code query} inserted as the search parameter.
+      */
+     public String getUrlForSearchQuery(String query) {
++Log.e("TAG", "TemplateUrlService.getUrlForSearchQuery 000");
+         return getUrlForSearchQuery(query, null);
+     }
+ 
+@@ -269,6 +297,7 @@ public class TemplateUrlService {
+      *              {@code query} inserted as the search parameter.
+      */
+     public String getUrlForSearchQuery(String query, List<String> searchParams) {
++Log.e("TAG", "TemplateUrlService.getUrlForSearchQuery (2) 000");
+         return TemplateUrlServiceJni.get().getUrlForSearchQuery(mNativeTemplateUrlServiceAndroid,
+                 TemplateUrlService.this, query,
+                 searchParams == null ? null : searchParams.toArray(new String[0]));
+@@ -281,6 +310,7 @@ public class TemplateUrlService {
+      */
+     @Deprecated
+     public String getSearchQueryForUrl(String url) {
++Log.e("TAG", "TemplateUrlService.getSearchQueryForUrl 000");
+         return getSearchQueryForUrl(new GURL(url));
+     }
+ 
+@@ -288,6 +318,7 @@ public class TemplateUrlService {
+      * Finds the query in the url, if any. Returns empty if no query is present.
+      */
+     public String getSearchQueryForUrl(GURL url) {
++Log.e("TAG", "TemplateUrlService.getSearchQueryForUrl 000");
+         return TemplateUrlServiceJni.get().getSearchQueryForUrl(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this, url);
+     }
+@@ -301,6 +332,7 @@ public class TemplateUrlService {
+      *              {@code query} inserted as the search parameter and voice input source param set.
+      */
+     public GURL getUrlForVoiceSearchQuery(String query) {
++Log.e("TAG", "TemplateUrlService.getUrlForVoiceSearchQuery 000");
+         return TemplateUrlServiceJni.get().getUrlForVoiceSearchQuery(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this, query);
+     }
+@@ -318,6 +350,7 @@ public class TemplateUrlService {
+      */
+     public GURL getUrlForContextualSearchQuery(
+             String query, String alternateTerm, boolean shouldPrefetch, String protocolVersion) {
++Log.e("TAG", "TemplateUrlService.getUrlForContextualSearchQuery 000");
+         return TemplateUrlServiceJni.get().getUrlForContextualSearchQuery(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this, query, alternateTerm,
+                 shouldPrefetch, protocolVersion);
+@@ -329,6 +362,7 @@ public class TemplateUrlService {
+      * @return      A {@link String} that contains the url of the specified search engine.
+      */
+     public String getSearchEngineUrlFromTemplateUrl(String keyword) {
++Log.e("TAG", "TemplateUrlService.getSearchEngineUrlFromTemplateUrl 000");
+         return TemplateUrlServiceJni.get().getSearchEngineUrlFromTemplateUrl(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this, keyword);
+     }
+@@ -339,6 +373,7 @@ public class TemplateUrlService {
+      * @return      The search engine type of the specified search engine that contains the keyword.
+      */
+     public int getSearchEngineTypeFromTemplateUrl(String keyword) {
++Log.e("TAG", "TemplateUrlService.getSearchEngineTypeFromTemplateUrl 000");
+         return TemplateUrlServiceJni.get().getSearchEngineTypeFromTemplateUrl(
+                 mNativeTemplateUrlServiceAndroid, TemplateUrlService.this, keyword);
+     }
+@@ -356,6 +391,7 @@ public class TemplateUrlService {
+      */
+     public boolean setPlayAPISearchEngine(String name, String keyword, String searchUrl,
+             String suggestUrl, String faviconUrl, boolean setAsDefault) {
++Log.e("TAG", "TemplateUrlService.setPlayAPISearchEngine 000");
+         return TemplateUrlServiceJni.get().setPlayAPISearchEngine(mNativeTemplateUrlServiceAndroid,
+                 TemplateUrlService.this, name, keyword, searchUrl, suggestUrl, faviconUrl,
+                 setAsDefault);
+@@ -364,6 +400,7 @@ public class TemplateUrlService {
+     // removed once clank repo is updated.
+     public boolean setPlayAPISearchEngine(
+             String name, String keyword, String searchUrl, String suggestUrl, String faviconUrl) {
++Log.e("TAG", "TemplateUrlService.setPlayAPISearchEngine 000");
+         return TemplateUrlServiceJni.get().setPlayAPISearchEngine(mNativeTemplateUrlServiceAndroid,
+                 TemplateUrlService.this, name, keyword, searchUrl, suggestUrl, faviconUrl, true);
+     }

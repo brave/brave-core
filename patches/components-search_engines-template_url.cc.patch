@@ -1,0 +1,95 @@
+diff --git a/components/search_engines/template_url.cc b/components/search_engines/template_url.cc
+index 3f576134287dad62201801fed4665dee834d6cbc..5bd7616bf24e3ab940e010958cbe62d744d19160 100644
+--- a/components/search_engines/template_url.cc
++++ b/components/search_engines/template_url.cc
+@@ -7,7 +7,8 @@
+ #include <string>
+ #include <tuple>
+ #include <vector>
+-
++                        #include "base/debug/stack_trace.h"
++                        #include "base/debug/task_trace.h"
+ #include "base/base64.h"
+ #include "base/base64url.h"
+ #include "base/check_op.h"
+@@ -787,6 +788,7 @@ std::string TemplateURLRef::ParseURL(const std::string& url,
+                                      Replacements* replacements,
+                                      PostParams* post_params,
+                                      bool* valid) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000";
+   *valid = false;
+   std::string parsed_url = url;
+   for (size_t last = 0; last != std::string::npos; ) {
+@@ -851,10 +853,12 @@ std::string TemplateURLRef::ParseURL(const std::string& url,
+ 
+ void TemplateURLRef::ParseIfNecessary(
+     const SearchTermsData& search_terms_data) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 parsed_="<<parsed_;
+   if (!parsed_) {
+     InvalidateCachedValues();
+     parsed_ = true;
+     parsed_url_ = ParseURL(GetURL(), &replacements_, &post_params_, &valid_);
++LOG(ERROR) << "[DSE] " << __func__ << " 001 parsed_url_="<<parsed_url_;
+     supports_replacements_ = false;
+     if (valid_) {
+       bool has_only_one_search_term = false;
+@@ -879,6 +883,7 @@ void TemplateURLRef::ParseIfNecessary(
+ }
+ 
+ void TemplateURLRef::ParsePath(const std::string& path) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000";
+   // Wildcard string used when matching URLs.
+   const std::string wildcard_escaped = "%7Bgoogle:pathWildcard%7D";
+ 
+@@ -952,6 +957,8 @@ void TemplateURLRef::HandleReplacement(const std::string& name,
+                                        const std::string& value,
+                                        const Replacement& replacement,
+                                        std::string* url) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000 name="<<name;
++LOG(ERROR) << "[DSE] " << __func__ << " 000 value="<<value;
+   size_t pos = replacement.index;
+   if (replacement.is_post_param) {
+     DCHECK_LT(pos, post_params_.size());
+@@ -960,12 +967,18 @@ void TemplateURLRef::HandleReplacement(const std::string& name,
+   } else {
+     url->insert(pos, name.empty() ? value : (name + "=" + value + "&"));
+   }
++LOG(ERROR) << "[DSE] " << __func__ << " EXIT *url="<<*url;
++LOG(ERROR) << "[BraveSync] " << __func__ << " stack=" << base::debug::StackTrace().ToString();
++LOG(ERROR) << "[BraveSync] " << __func__ << " task=";
++base::debug::TaskTrace().Print();
++
+ }
+ 
+ std::string TemplateURLRef::HandleReplacements(
+     const SearchTermsArgs& search_terms_args,
+     const SearchTermsData& search_terms_data,
+     PostContent* post_content) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000";
+   if (replacements_.empty()) {
+     if (!post_params_.empty())
+       EncodeFormData(post_params_, post_content);
+@@ -1581,6 +1594,7 @@ bool TemplateURL::ExtractSearchTermsFromURL(
+     const GURL& url,
+     const SearchTermsData& search_terms_data,
+     std::u16string* search_terms) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000";
+   return FindSearchTermsInURL(url, search_terms_data, search_terms, nullptr,
+                               nullptr);
+ }
+@@ -1667,6 +1681,7 @@ void TemplateURL::EncodeSearchTerms(
+ 
+ GURL TemplateURL::GenerateSearchURL(
+     const SearchTermsData& search_terms_data) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000";
+   if (!url_ref().IsValid(search_terms_data))
+     return GURL();
+ 
+@@ -1691,6 +1706,7 @@ GURL TemplateURL::GenerateSideSearchURL(
+     const GURL& search_url,
+     const std::string& version,
+     const SearchTermsData& search_terms_data) const {
++LOG(ERROR) << "[DSE] " << __func__ << " 000";
+   DCHECK(IsSideSearchSupported());
+   DCHECK(IsSearchURL(search_url, search_terms_data));
+   return net::AppendQueryParameter(search_url, side_search_param(), version);

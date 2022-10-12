@@ -1,0 +1,177 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
+index bf06843c3885c4ccee3c92ba3c4b2379bf025a61..cabfb5e7031ceb9177b65c550ab452c47926c72f 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
+@@ -3,7 +3,7 @@
+ // found in the LICENSE file.
+ 
+ package org.chromium.chrome.browser.omnibox.suggestions;
+-
++  import org.chromium.base.Log;
+ import android.content.Context;
+ import android.content.res.Resources;
+ import android.os.Handler;
+@@ -646,26 +646,35 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+      * autocomplete suggestions should be updated.
+      */
+     public void onTextChanged(String textWithoutAutocomplete, String textWithAutocomplete) {
++Log.e("TAG", "AutocompleteMediator.onTextChanged 000 textWithoutAutocomplete="+textWithoutAutocomplete);
++Log.e("TAG", "AutocompleteMediator.onTextChanged 000 textWithAutocomplete   ="+textWithAutocomplete);
++
++Log.e("TAG", "AutocompleteMediator.onTextChanged 001 mShouldPreventOmniboxAutocomplete="+mShouldPreventOmniboxAutocomplete);
+         if (mShouldPreventOmniboxAutocomplete) return;
++Log.e("TAG", "AutocompleteMediator.onTextChanged 002 - passed mShouldPreventOmniboxAutocomplete");
+ 
+         mIgnoreOmniboxItemSelection = true;
+         cancelAutocompleteRequests();
+ 
+         if (mEditSessionState == EditSessionState.INACTIVE && mNativeInitialized
+                 && mAutocomplete != null) {
++Log.e("TAG", "AutocompleteMediator.onTextChanged 003 - at EditSessionState.INACTIVE, resetSession()");
+             mAutocomplete.resetSession();
+             mNewOmniboxEditSessionTimestamp = SystemClock.elapsedRealtime();
+             mEditSessionState = EditSessionState.ACTIVATED_BY_USER_INPUT;
+         }
+-
++Log.e("TAG", "AutocompleteMediator.onTextChanged 004");
+         stopAutocomplete(false);
+         if (TextUtils.isEmpty(textWithoutAutocomplete)) {
++Log.e("TAG", "AutocompleteMediator.onTextChanged 005 TextUtils.isEmpty(textWithoutAutocomplete) ");
+             hideSuggestions();
+             postAutocompleteRequest(this::startZeroSuggest, SCHEDULE_FOR_IMMEDIATE_EXECUTION);
+         } else {
++Log.e("TAG", "AutocompleteMediator.onTextChanged 006 false==TextUtils.isEmpty(textWithoutAutocomplete) ");
+             // There may be no tabs when searching form omnibox in overview mode. In that case,
+             // LocationBarDataProvider.getCurrentUrl() returns NTP url.
+             if (mDataProvider.hasTab() || mDataProvider.isInOverviewAndShowingOmnibox()) {
++Log.e("TAG", "AutocompleteMediator.onTextChanged 007");
+                 boolean preventAutocomplete = !mUrlBarEditingTextProvider.shouldAutocomplete();
+                 int cursorPosition = mUrlBarEditingTextProvider.getSelectionStart()
+                                 == mUrlBarEditingTextProvider.getSelectionEnd()
+@@ -674,34 +683,46 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+                 int pageClassification =
+                         mDataProvider.getPageClassification(mDelegate.didFocusUrlFromFakebox());
+                 String currentUrl = mDataProvider.getCurrentUrl();
+-
++Log.e("TAG", "AutocompleteMediator.onTextChanged 008");
+                 postAutocompleteRequest(() -> {
++Log.e("TAG", "AutocompleteMediator.onTextChanged 009");
+                     mAutocomplete.start(currentUrl, pageClassification, textWithoutAutocomplete,
+                             cursorPosition, preventAutocomplete);
+                 }, OMNIBOX_SUGGESTION_START_DELAY_MS);
++Log.e("TAG", "AutocompleteMediator.onTextChanged 010");
+             }
++Log.e("TAG", "AutocompleteMediator.onTextChanged 011");
+         }
+-
++Log.e("TAG", "AutocompleteMediator.onTextChanged 012");
+         mDelegate.onUrlTextChanged();
++Log.e("TAG", "AutocompleteMediator.onTextChanged 013");
+     }
+ 
+     @Override
+     public void onSuggestionsReceived(
+             AutocompleteResult autocompleteResult, String inlineAutocompleteText, boolean isFinal) {
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 000");
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived inlineAutocompleteText="+inlineAutocompleteText);
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived isFinal="+isFinal);
++
+         if (mShouldPreventOmniboxAutocomplete
+                 || getSuggestionVisibilityState() == SuggestionVisibilityState.DISALLOWED) {
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 001 return");
+             return;
+         }
+-
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 002");
+         if (mShouldCacheSuggestions) {
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 003 if (mShouldCacheSuggestions)");
+             CachedZeroSuggestionsManager.saveToCache(autocompleteResult);
+         }
+-
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 004");
+         final List<AutocompleteMatch> newSuggestions = autocompleteResult.getSuggestionsList();
+         String userText = mUrlBarEditingTextProvider.getTextWithoutAutocomplete();
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 005 userText="+userText);
+         mUrlTextAfterSuggestionsReceived = userText + inlineAutocompleteText;
+-
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 006 mUrlTextAfterSuggestionsReceived="+mUrlTextAfterSuggestionsReceived);
+         if (!mAutocompleteResult.equals(autocompleteResult)) {
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 007 if (!mAutocompleteResult.equals(autocompleteResult))");
+             mAutocompleteResult = autocompleteResult;
+             List<DropdownItemViewInfo> viewInfoList =
+                     mDropdownViewInfoListBuilder.buildDropdownViewInfoList(autocompleteResult);
+@@ -712,9 +733,12 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+                     && !newSuggestions.isEmpty()) {
+                 defaultMatchIsSearch = newSuggestions.get(0).isSearchSuggestion();
+             }
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 008");
+             mDelegate.onSuggestionsChanged(inlineAutocompleteText, defaultMatchIsSearch);
+             updateOmniboxSuggestionsVisibility();
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 009");
+         }
++Log.e("TAG", "AutocompleteMediator.onSuggestionsReceived 010");
+ 
+         mListPropertyModel.set(SuggestionListProperties.LIST_IS_FINAL, isFinal);
+     }
+@@ -729,7 +753,9 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+      * @param eventTime The timestamp the load was triggered by the user.
+      */
+     void loadTypedOmniboxText(long eventTime) {
++Log.e("TAG", "AutocompleteMediator.onTextChanged 000");
+         final String urlText = mUrlBarEditingTextProvider.getTextWithAutocomplete();
++Log.e("TAG", "AutocompleteMediator.onTextChanged 001 urlText="+urlText);
+         cancelAutocompleteRequests();
+         if (mNativeInitialized && mAutocomplete != null) {
+             findMatchAndLoadUrl(urlText, eventTime);
+@@ -745,14 +771,18 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+      * @param eventTime The timestamp the load was triggered by the user.
+      */
+     private void findMatchAndLoadUrl(String urlText, long inputStart) {
++Log.e("TAG", "AutocompleteMediator.findMatchAndLoadUrl 000 urlText="+urlText);
+         AutocompleteMatch suggestionMatch;
+         boolean inSuggestionList = true;
+ 
++Log.e("TAG", "AutocompleteMediator.findMatchAndLoadUrl 000 getSuggestionCount()="+getSuggestionCount());
+         if (getSuggestionCount() > 0
+                 && urlText.trim().equals(mUrlTextAfterSuggestionsReceived.trim())) {
++Log.e("TAG", "AutocompleteMediator.findMatchAndLoadUrl 001");
+             // Common case: the user typed something, received suggestions, then pressed enter.
+             // This triggers the Default Match.
+-            suggestionMatch = getSuggestionAt(0);
++            suggestionMatch = getSuggestionAt(0); //here
++Log.e("TAG", "AutocompleteMediator.findMatchAndLoadUrl 002 suggestionMatch.getUrl().getSpec()=" + suggestionMatch.getUrl().getSpec());
+         } else {
+             // Less common case: there are no valid omnibox suggestions. This can happen if the
+             // user tapped the URL bar to dismiss the suggestions, then pressed enter. This can
+@@ -760,13 +790,14 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+             // from the autocomplete controller.
+             if (!mNativeInitialized || mAutocomplete == null) return;
+             suggestionMatch = mAutocomplete.classify(urlText, mDelegate.didFocusUrlFromFakebox());
++Log.e("TAG", "AutocompleteMediator.findMatchAndLoadUrl 003 suggestionMatch.getUrl().getSpec()=" + suggestionMatch.getUrl().getSpec());
+             // Classify matches don't propagate to java, so skip the OOB check.
+             inSuggestionList = false;
+ 
+             // If urlText couldn't be classified, bail.
+             if (suggestionMatch == null) return;
+         }
+-
++Log.e("TAG", "AutocompleteMediator.findMatchAndLoadUrl 004 suggestionMatch.getUrl().getSpec()=" + suggestionMatch.getUrl().getSpec());
+         loadUrlForOmniboxMatch(
+                 0, suggestionMatch, suggestionMatch.getUrl(), inputStart, inSuggestionList);
+     }
+@@ -782,6 +813,7 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+      */
+     private void loadUrlForOmniboxMatch(int matchIndex, @NonNull AutocompleteMatch suggestion,
+             @NonNull GURL url, long inputStart, boolean inVisibleSuggestionList) {
++Log.e("TAG", "AutocompleteMediator.loadUrlForOmniboxMatch 000 url.getSpec()="+url.getSpec());
+         SuggestionsMetrics.recordFocusToOpenTime(System.currentTimeMillis() - mUrlFocusTime);
+ 
+         // Clear the deferred site load action in case it executes. Reclaims a bit of memory.
+@@ -789,6 +821,7 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+ 
+         mOmniboxFocusResultedInNavigation = true;
+         url = updateSuggestionUrlIfNeeded(suggestion, matchIndex, url, !inVisibleSuggestionList);
++Log.e("TAG", "AutocompleteMediator.loadUrlForOmniboxMatch 001 url.getSpec()="+url.getSpec());
+ 
+         // loadUrl modifies AutocompleteController's state clearing the native
+         // AutocompleteResults needed by onSuggestionsSelected. Therefore,
