@@ -9,6 +9,7 @@ declare namespace RewardsInternals {
       isKeyInfoSeedValid: boolean
       walletPaymentId: string
       bootStamp: number
+      declaredGeo: string
     }
     contributions: ContributionInfo[]
     promotions: Promotion[]
