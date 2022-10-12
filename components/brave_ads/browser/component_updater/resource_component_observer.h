@@ -16,9 +16,6 @@ class ResourceComponentObserver : public base::CheckedObserver {
  public:
   // Invoked when the resource for the given |id| has updated.
   virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
-
- protected:
-  ~ResourceComponentObserver() override = default;
 };
 
 }  // namespace brave_ads
