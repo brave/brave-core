@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
