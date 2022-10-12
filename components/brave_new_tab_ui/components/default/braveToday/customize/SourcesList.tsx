@@ -2,7 +2,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
-import { useChannels, usePublishers } from './Context'
+import { useBraveNews, useChannels } from './Context'
 import Flex from '../../../Flex'
 import { FeedListEntry, ChannelListEntry } from './SourcesListEntry'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
@@ -21,10 +21,10 @@ const Subtitle = styled.span`
 `
 
 export default function SourcesList () {
-  const publishers = usePublishers({ subscribed: true })
+  const { subscribedPublisherIds } = useBraveNews()
   const channels = useChannels({ subscribedOnly: true })
 
-  const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString('braveNewsSourceCount', publishers.length + channels.length), [publishers.length, channels.length])
+  const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString('braveNewsSourceCount', subscribedPublisherIds.length + channels.length), [subscribedPublisherIds.length, channels.length])
 
   return <div>
     <Flex direction="row" justify="space-between" align="center">
@@ -33,8 +33,8 @@ export default function SourcesList () {
     </Flex>
     <Flex direction="column">
       {channels.map(c => <ChannelListEntry key={c.channelName} channelId={c.channelName} />)}
-      {publishers.map((p) => (
-        <FeedListEntry key={p.publisherId} publisherId={p.publisherId} />
+      {subscribedPublisherIds.map((p) => (
+        <FeedListEntry key={p} publisherId={p} />
       ))}
     </Flex>
   </div>

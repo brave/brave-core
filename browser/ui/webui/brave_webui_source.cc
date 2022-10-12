@@ -211,16 +211,18 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsDisabledPlaceholderSubtitle", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE },  // NOLINT
         { "braveNewsDisabledPlaceholderEnableButton", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON },  // NOLINT
         { "braveNewsSearchPlaceholderLabel", IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},  // NOLINT
-        { "braveNewsBrowseByCategoryHeader", IDS_BRAVE_NEWS_BROWSE_BY_CATEGORY_HEADER},  // NOLINT
+        { "braveNewsChannelsHeader", IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER},  // NOLINT
         { "braveNewsLoadMoreCategoriesButton", IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON },  // NOLINT
         { "braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
         { "braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
         { "braveNewsFollowButtonFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},  // NOLINT
         { "braveNewsFollowButtonNotFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING},  // NOLINT
-        { "braveNewsSearchResultsLoading", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOADING},  // NOLINT
+        { "braveNewsDirectSearchButton", IDS_BRAVE_NEWS_DIRECT_SEARCH_BUTTON},  // NOLINT
+        { "braveNewsDirectSearchNoResults", IDS_BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS},  // NOLINT
         { "braveNewsSearchResultsNoResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_NO_RESULTS},  // NOLINT
         { "braveNewsSearchResultsLocalResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOCAL_RESULTS},  // NOLINT
         { "braveNewsSearchResultsDirectResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_DIRECT_RESULTS},  // NOLINT
+        { "braveNewsSearchQueryTooShort", IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT},  // NOLINT
 
         { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },

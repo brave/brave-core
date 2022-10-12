@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useCallback, useMemo, useState } from 'react'
-import { Channels, FeedSearchResultItem, Publishers, PublisherType } from '../../../../api/brave_news'
+import { Channels, Publisher, Publishers, PublisherType } from '../../../../api/brave_news'
 import { api, isPublisherEnabled } from '../../../../api/brave_news/news'
 import Modal from './Modal'
 
@@ -12,13 +12,22 @@ interface BraveNewsContext {
   customizePage: NewsPage
   setCustomizePage: (page: NewsPage) => void
   channels: Channels
+  // All global Publishers
   publishers: Publishers
+  sortedPublishers: Publisher[]
+  // Publishers to offer the user (i.e. from current locale)
+  filteredPublisherIds: string[]
+  // Publishers the user is directly subscribed to
+  subscribedPublisherIds: string[]
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
   customizePage: null,
   setCustomizePage: () => { },
   publishers: {},
+  sortedPublishers: [],
+  filteredPublisherIds: [],
+  subscribedPublisherIds: [],
   channels: {}
 })
 
@@ -43,12 +52,31 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     return () => api.removePublishersListener(handler)
   }, [])
 
+  const sortedPublishers = useMemo(() =>
+    Object.values(publishers)
+      .sort((a, b) => a.publisherName.localeCompare(b.publisherName)),
+    [publishers])
+
+  const filteredPublisherIds = useMemo(() =>
+    sortedPublishers
+      .filter(p => p.type === PublisherType.DIRECT_SOURCE || p.locales.includes(api.locale))
+      .map(p => p.publisherId),
+    [sortedPublishers])
+
+  const subscribedPublisherIds = useMemo(() =>
+    sortedPublishers.filter(isPublisherEnabled).map(p => p.publisherId),
+    [sortedPublishers])
+
   const context = useMemo(() => ({
     customizePage,
     setCustomizePage,
     channels,
-    publishers
+    publishers,
+    sortedPublishers,
+    filteredPublisherIds,
+    subscribedPublisherIds
   }), [customizePage, channels, publishers])
+
   return <BraveNewsContext.Provider value={context}>
     {props.children}
     <Modal />
@@ -78,26 +106,6 @@ export const useChannelSubscribed = (channelId: string) => {
   }
 }
 
-interface PublisherFilter {
-  subscribed?: boolean
-  channelId?: string
-  locale?: string
-}
-
-export const usePublishers = (options?: PublisherFilter) => {
-  const { publishers } = useBraveNews()
-
-  const locale = options?.locale ?? api.locale
-  const sorted = useMemo(() => Object.values(publishers)
-    .sort((a, b) => a.publisherName.localeCompare(b.publisherName))
-    .filter(p => p.type === PublisherType.DIRECT_SOURCE || p.locales.includes(locale))
-    .filter(p => options?.channelId === undefined || p.channels.includes(options?.channelId))
-    .filter(p => options?.subscribed === undefined || isPublisherEnabled(p) === options?.subscribed),
-    [options?.channelId, options?.locale, options?.subscribed, publishers])
-
-  return sorted
-}
-
 export const usePublisher = (publisherId: string) => {
   const { publishers } = useBraveNews()
   return useMemo(() => publishers[publisherId], [publishers[publisherId]])
@@ -112,44 +120,5 @@ export const usePublisherSubscribed = (publisherId: string) => {
   return {
     subscribed,
     setSubscribed
-  }
-}
-
-export const useDirectFeedResults = (query: string) => {
-  // We're not interested in casing.
-  query = query.toLocaleLowerCase()
-
-  const [directResults, setDirectResults] = useState<FeedSearchResultItem[]>([])
-  const [loading, setLoading] = useState(false)
-
-  const publishers = usePublishers()
-
-  // Filter out any direct results we already have a publisher for.
-  const filteredDirectResults = useMemo(() => directResults.filter(r => !publishers.some(p => p.feedSource.url === r.feedUrl.url)), [directResults, publishers])
-
-  React.useEffect(() => {
-    setDirectResults(oldValue => oldValue.length === 0 ? oldValue : [])
-
-    let cancelled = false
-    let url: URL | undefined
-    try { url = new URL(query) } catch { }
-    if (!url) return
-
-    setLoading(true)
-
-    api.controller.findFeeds({ url: url.toString() }).then(({ results }) => {
-      if (cancelled) return
-
-      setLoading(false)
-      setDirectResults(results)
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [query])
-
-  return {
-    loading,
-    directResults: filteredDirectResults
   }
 }
