@@ -143,7 +143,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   const base::TimeDelta time_window = ExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Days(2);
+  const base::TimeDelta expected_time_window = base::Hours(0);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -164,7 +164,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   const base::TimeDelta time_window = ExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Days(2);
+  const base::TimeDelta expected_time_window = base::Hours(0);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -206,7 +206,7 @@ TEST(BatAdsUserActivityFeaturesTest,
   const base::TimeDelta time_window = ExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Days(2);
+  const base::TimeDelta expected_time_window = base::Hours(0);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -227,7 +227,7 @@ TEST(BatAdsUserActivityFeaturesTest,
   const base::TimeDelta time_window = ExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Days(2);
+  const base::TimeDelta expected_time_window = base::Hours(0);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
