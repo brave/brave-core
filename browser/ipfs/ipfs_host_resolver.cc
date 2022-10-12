@@ -50,10 +50,11 @@ IPFSHostResolver::IPFSHostResolver(
 }
 IPFSHostResolver::~IPFSHostResolver() = default;
 
-void IPFSHostResolver::Resolve(const net::HostPortPair& host,
-                               const net::NetworkIsolationKey& isolation_key,
-                               net::DnsQueryType dns_query_type,
-                               HostTextResultsCallback callback) {
+void IPFSHostResolver::Resolve(
+    const net::HostPortPair& host,
+    const net::NetworkAnonymizationKey& anonymization_key,
+    net::DnsQueryType dns_query_type,
+    HostTextResultsCallback callback) {
   if (!callback)
     return;
 
@@ -76,7 +77,7 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
 
   network_context_->ResolveHost(
       network::mojom::HostResolverHost::NewHostPortPair(local_host_port),
-      isolation_key, std::move(parameters),
+      anonymization_key, std::move(parameters),
       receiver_.BindNewPipeAndPassRemote());
 }
 

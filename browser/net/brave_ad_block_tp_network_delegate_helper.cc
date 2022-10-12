@@ -92,7 +92,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     cb_ = base::BindOnce(&UseCnameResult, task_runner, std::move(next_callback),
                          ctx, previous_result);
 
-    const auto network_isolation_key = ctx->network_isolation_key;
+    const auto network_anonymization_key = ctx->network_anonymization_key;
 
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
@@ -114,7 +114,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       g_testing_host_resolver->ResolveHost(
           network::mojom::HostResolverHost::NewHostPortPair(
               net::HostPortPair::FromURL(ctx->request_url)),
-          network_isolation_key, std::move(optional_parameters),
+          network_anonymization_key, std::move(optional_parameters),
           receiver_.BindNewPipeAndPassRemote());
     } else {
       auto* web_contents =
@@ -134,7 +134,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       network_context->ResolveHost(
           network::mojom::HostResolverHost::NewHostPortPair(
               net::HostPortPair::FromURL(ctx->request_url)),
-          network_isolation_key, std::move(optional_parameters),
+          network_anonymization_key, std::move(optional_parameters),
           receiver_.BindNewPipeAndPassRemote());
     }
 
