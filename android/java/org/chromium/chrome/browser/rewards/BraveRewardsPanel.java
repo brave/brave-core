@@ -42,6 +42,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -49,6 +50,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -781,6 +783,10 @@ public class BraveRewardsPanel
         braveRewardsOnboardingModalView = root.findViewById(R.id.brave_rewards_onboarding_modal_id);
         braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
 
+        TextView modalTitle = braveRewardsOnboardingModalView.findViewById(R.id.modal_title);
+
+        TextView modalText = braveRewardsOnboardingModalView.findViewById(R.id.modal_text);
+
         int foregroundColor = R.color.rewards_panel_foreground_color;
         mRewardsMainLayout.setForeground(
                 new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
@@ -856,11 +862,27 @@ public class BraveRewardsPanel
                 showBraveRewardsOnboarding(root, false);
             }
         }));
+
+        Spinner countrySpinner = root.findViewById(R.id.country_spinner);
+
+        TextView btnContinue = root.findViewById(R.id.btn_continue);
+        btnContinue.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // braveRewardsOnboardingModalView.setVisibility(View.GONE);
+                // mBraveRewardsNativeWorker.CreateRewardsWallet();
+                // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+                // mBraveRewardsNativeWorker.GetAutoContributeProperties();
+                // BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                // showBraveRewardsOnboarding(root, true);
+            }
+        }));
+
         TextView btnBraveRewards = root.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                braveRewardsOnboardingModalView.setVisibility(View.GONE);
+                // braveRewardsOnboardingModalView.setVisibility(View.GONE);
                 // mBraveRewardsNativeWorker.CreateRewardsWallet();
                 // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 // mBraveRewardsNativeWorker.GetAutoContributeProperties();
@@ -868,6 +890,58 @@ public class BraveRewardsPanel
                 // showBraveRewardsOnboarding(root, true);
 
                 // Show declare geo dialog
+                modalTitle.setText(mActivity.getString(R.string.select_your_country_title));
+                modalTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location, 0, 0, 0);
+                String declareGeoText = String.format(
+                        mActivity.getResources().getString(R.string.select_your_country_text),
+                        mActivity.getResources().getString(R.string.privacy_policy));
+                int privacyPolicyTextIndex = declareGeoText.indexOf(
+                        mActivity.getResources().getString(R.string.privacy_policy));
+                Spanned declareGeoTextSpanned =
+                        BraveRewardsHelper.spannedFromHtmlString(declareGeoText);
+                SpannableString declareGeoTextSS =
+                        new SpannableString(declareGeoTextSpanned.toString());
+
+                ClickableSpan declareGeoClickableSpan = new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View textView) {
+                        CustomTabActivity.showInfoPage(
+                                mActivity, BraveActivity.BRAVE_PRIVACY_POLICY);
+                    }
+                    @Override
+                    public void updateDrawState(@NonNull TextPaint ds) {
+                        super.updateDrawState(ds);
+                        ds.setUnderlineText(false);
+                    }
+                };
+
+                declareGeoTextSS.setSpan(declareGeoClickableSpan, privacyPolicyTextIndex,
+                        privacyPolicyTextIndex
+                                + mActivity.getResources()
+                                          .getString(R.string.privacy_policy)
+                                          .length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                declareGeoTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(
+                                                 R.color.brave_rewards_modal_theme_color)),
+                        privacyPolicyTextIndex,
+                        privacyPolicyTextIndex
+                                + mActivity.getResources()
+                                          .getString(R.string.privacy_policy)
+                                          .length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                modalText.setMovementMethod(LinkMovementMethod.getInstance());
+                modalText.setText(declareGeoTextSS);
+                takeQuickTourButton.setVisibility(View.GONE);
+                btnBraveRewards.setVisibility(View.GONE);
+                btnContinue.setVisibility(View.VISIBLE);
+                countrySpinner.setVisibility(View.VISIBLE);
+
+                String[] bankNames = {"BOI", "SBI", "HDFC", "PNB", "OBC"};
+                ArrayAdapter aa = new ArrayAdapter(
+                        mActivity, android.R.layout.simple_spinner_item, bankNames);
+                aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Setting the ArrayAdapter data on the Spinner
+                countrySpinner.setAdapter(aa);
             }
         }));
     }

@@ -3156,6 +3156,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_UNKNOWN" desc="Transaction subtype of Unknown">
       Unknown
     </message>
+    <message name="IDS_SELECT_YOUR_COUNTRY_TITLE" desc="Declare geo modal title">
+      Select your country
+    </message>
+    <message name="IDS_SELECT_YOUR_COUNTRY_TEXT" desc="Declare geo modal text">
+      Select your country so we can show you the right options and ads for your region. <ph name="PRIVACY_POLICY">%1$s</ph>
+    </message>
   </messages>
   </release>
 </grit>
