@@ -23,7 +23,7 @@ import {
 import { WalletActions } from '../../../common/actions'
 
 export interface Props {
-  onSelectCurrency?: () => void
+  onSelectCurrency?: (currency: BraveWallet.OnRampCurrency) => void
   onBack: () => void
 }
 
@@ -65,7 +65,7 @@ export const SelectCurrency = (props: Props) => {
     dispatch(WalletActions.selectCurrency(currency))
 
     if (onSelectCurrency) {
-      onSelectCurrency()
+      onSelectCurrency(currency)
     }
   }, [onSelectCurrency])
 

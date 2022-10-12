@@ -511,14 +511,23 @@ export function refreshPrices () {
       }
 
       // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
+
       const price = token.balance > 0 && !token.token.isErc721
-        ? await assetRatioService.getPrice([getTokenParam(token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
-        : { values: [{ ...emptyPrice, price: '0' }], success: true }
+        ? await assetRatioService.getPrice(
+            [getTokenParam(token.token)],
+            [defaultFiatCurrency],
+            selectedPortfolioTimeline
+          )
+        : {
+            values: [{ ...emptyPrice, price: '0' }],
+            success: true
+          }
 
       const tokenPrice = {
         ...price.values[0],
         fromAsset: token.token.symbol.toLowerCase()
       }
+
       return price.success ? tokenPrice : emptyPrice
     }))
 

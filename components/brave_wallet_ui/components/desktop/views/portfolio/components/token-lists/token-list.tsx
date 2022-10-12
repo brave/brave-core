@@ -138,15 +138,11 @@ export const TokenLists = ({
       })
     }
     return fungibleTokens
-  }, [fungibleTokens, selectedAssetFilter.id, computeFiatAmount])
-
-  // computed
-  // length of fungible tokens list is first NFT index
-  const firstNftIndex = sortedFungibleTokensList.length || undefined
-
-  const sortedFungibleTokensAndNftsList: UserAssetInfoType[] = React.useMemo(() => {
-    return sortedFungibleTokensList.concat(nonFungibleTokens)
-  }, [sortedFungibleTokensList, nonFungibleTokens])
+  }, [
+    selectedAssetFilter.id,
+    fungibleTokens,
+    computeFiatAmount
+  ])
 
   const listUi = React.useMemo(() => {
     return selectedAssetFilter.id !== 'nfts' ? (
@@ -168,11 +164,10 @@ export const TokenLists = ({
         />
       )
   }, [
-    firstNftIndex,
     selectedAssetFilter.id,
-    sortedFungibleTokensAndNftsList,
-    nonFungibleTokens,
-    renderToken
+    sortedFungibleTokensList,
+    renderToken,
+    nonFungibleTokens
   ])
 
   // effects

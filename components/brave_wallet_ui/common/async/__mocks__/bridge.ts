@@ -139,6 +139,22 @@ export class MockedWalletApiProxy {
     }
   }
 
+  assetRatioService: Partial<InstanceType<typeof BraveWallet.AssetRatioServiceInterface>> = {
+    async getPrice (fromAssets, toAssets, timeframe) {
+        return {
+          success: true,
+          values: [
+            {
+              assetTimeframeChange: '1',
+              fromAsset: fromAssets[0],
+              toAsset: toAssets[0],
+              price: '1234.56'
+            }
+          ]
+        }
+    }
+  }
+
   setMockedQuote (newQuote: typeof this.mockQuote) {
     this.mockQuote = newQuote
   }
