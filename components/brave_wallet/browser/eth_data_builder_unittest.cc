@@ -347,6 +347,58 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_SOL) {
   }
 }
 
+TEST(EthCallDataBuilderTest, GetWalletAddr_FIL) {
+  {
+    auto call = GetWalletAddr("test.crypto", mojom::CoinType::FIL, "FIL",
+                              mojom::kFilecoinMainnet);
+
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
+    EXPECT_TRUE(base::ranges::equal(selector, kGetManySelector));
+
+    auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
+    ASSERT_TRUE(keys_array);
+    EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.FIL.address"}));
+
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    ASSERT_TRUE(name_hash);
+    EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
+  }
+  {
+    auto call = GetWalletAddr("test.crypto", mojom::CoinType::FIL, "FIL",
+                              mojom::kFilecoinTestnet);
+
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
+    EXPECT_TRUE(base::ranges::equal(selector, kGetManySelector));
+
+    auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
+    ASSERT_TRUE(keys_array);
+    EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.FIL.address"}));
+
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    ASSERT_TRUE(name_hash);
+    EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
+  }
+
+  {
+    auto call =
+        GetWalletAddr("test.crypto", mojom::CoinType::FIL, "QWEQWE", "0x12345");
+
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
+    EXPECT_TRUE(base::ranges::equal(selector, kGetManySelector));
+
+    auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
+    ASSERT_TRUE(keys_array);
+    EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.FIL.address"}));
+
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    ASSERT_TRUE(name_hash);
+    EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
+  }
+}
+
 TEST(EthCallDataBuilderTest, MakeEthLookupKeyList) {
   EXPECT_THAT(MakeEthLookupKeyList("ETH", "0x1"),
               ElementsAreArray({"crypto.ETH.address"}));
@@ -355,6 +407,26 @@ TEST(EthCallDataBuilderTest, MakeEthLookupKeyList) {
                                 "crypto.QWE.address", "crypto.ETH.address"}));
   EXPECT_THAT(MakeEthLookupKeyList("zxc", "0x123456"),
               ElementsAreArray({"crypto.ZXC.address", "crypto.ETH.address"}));
+
+  // Only FTM on fantom network has OPERA version.
+  EXPECT_THAT(MakeEthLookupKeyList("FTM", "0xfa"),
+              ElementsAreArray({"crypto.FTM.version.OPERA.address",
+                                "crypto.FTM.address", "crypto.ETH.address"}));
+  EXPECT_THAT(MakeEthLookupKeyList("asd", "0xfa"),
+              ElementsAreArray({"crypto.ASD.version.FANTOM.address",
+                                "crypto.ASD.address", "crypto.ETH.address"}));
+}
+
+TEST(EthCallDataBuilderTest, MakeSolLookupKeyList) {
+  EXPECT_THAT(MakeSolLookupKeyList("SOL"),
+              ElementsAreArray({"crypto.SOL.address"}));
+  EXPECT_THAT(MakeSolLookupKeyList("qwe"),
+              ElementsAreArray(
+                  {"crypto.QWE.version.SOLANA.address", "crypto.SOL.address"}));
+}
+
+TEST(EthCallDataBuilderTest, MakeFilLookupKeyList) {
+  EXPECT_THAT(MakeFilLookupKeyList(), ElementsAreArray({"crypto.FIL.address"}));
 }
 
 }  // namespace unstoppable_domains

@@ -193,6 +193,23 @@ export default function useSend () {
   }, [selectedAccount, selectedSendAsset, ensOffchainLookupOptions])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
+    const valueToLowerCase = toAddressOrUrl.toLowerCase()
+
+    // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
+    // If success true, will set toAddress else will return error message.
+    if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
+      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
+        if (value.address && value.error === BraveWallet.ProviderError.kSuccess) {
+          setAddressError('')
+          setAddressWarning('')
+          setToAddress(value.address)
+          return
+        }
+        setNotRegisteredError(valueToLowerCase)
+      }).catch(e => console.log(e))
+      return
+    }
+
     // Do nothing if value is an empty string
     if (toAddressOrUrl === '') {
       setAddressWarning('')
@@ -201,7 +218,6 @@ export default function useSend () {
       return
     }
 
-    const valueToLowerCase = toAddressOrUrl.toLowerCase()
     setToAddress(valueToLowerCase)
     if (!isValidFilAddress(valueToLowerCase)) {
       setAddressWarning('')
@@ -212,7 +228,7 @@ export default function useSend () {
     // Reset error and warning state back to normal
     setAddressWarning('')
     setAddressError('')
-  }, [])
+  }, [selectedSendAsset])
 
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()

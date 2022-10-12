@@ -92,6 +92,7 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
 std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
                                               const std::string& chain_id);
 std::vector<std::string> MakeSolLookupKeyList(const std::string& symbol);
+std::vector<std::string> MakeFilLookupKeyList();
 
 std::vector<uint8_t> GetWalletAddr(const std::string& domain,
                                    mojom::CoinType coin,

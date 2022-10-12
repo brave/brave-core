@@ -978,6 +978,8 @@ constexpr char kPolygonMainnetEndpoint[] = "https://mainnet-polygon.brave.com/";
 constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 // Unstoppable domains record key for solana address.
 constexpr char kCryptoSolAddressKey[] = "crypto.SOL.address";
+// Unstoppable domains record key for filecoin address.
+constexpr char kCryptoFilAddressKey[] = "crypto.FIL.address";
 
 // ERC-165 identifier for ERC721 interface.
 constexpr char kERC1155InterfaceId[] = "0xd9b67a26";

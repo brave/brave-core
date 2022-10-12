@@ -11,10 +11,12 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -28,7 +30,8 @@ bool IsValidHostLabelCharacter(char c, bool is_first_char) {
          (c >= '0' && c <= '9') || (!is_first_char && c == '-') || c == '_';
 }
 
-absl::optional<std::string> ChainIdToVersion(const std::string chain_id) {
+absl::optional<std::string> ChainIdToVersion(const std::string& symbol,
+                                             const std::string chain_id) {
   static base::NoDestructor<std::map<std::string, std::string>> mapping({
       {"0x1", "ERC20"},
       {"0x38", "BEP20"},
@@ -41,6 +44,12 @@ absl::optional<std::string> ChainIdToVersion(const std::string chain_id) {
       {"0xa86a", "AVAX"},
       {"0xfa", "FANTOM"},
   });
+
+  // Special case for crypto.FTM.version.OPERA.address.
+  if (symbol == "FTM" && chain_id == "0xfa") {
+    return "OPERA";
+  }
+
   auto it = mapping->find(chain_id);
   if (it != mapping->end())
     return it->second;
@@ -313,7 +322,7 @@ std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
   auto upper_symbol = base::ToUpperASCII(symbol);
   std::vector<std::string> lookup_keys;
   // crypto.<TICKER>.version.<VERSION>.address
-  if (auto version = ChainIdToVersion(chain_id)) {
+  if (auto version = ChainIdToVersion(upper_symbol, chain_id)) {
     if (!(upper_symbol == "ETH" && version == "ERC20")) {
       // No such key as 'crypto.ETH.version.ERC20.address'. 'crypto.ETH.address'
       // would be used instead.
@@ -349,14 +358,33 @@ std::vector<std::string> MakeSolLookupKeyList(const std::string& symbol) {
   return lookup_keys;
 }
 
+std::vector<std::string> MakeFilLookupKeyList() {
+  std::vector<std::string> lookup_keys;
+
+  // Only crypto.FIL.address supported.
+  lookup_keys.push_back(kCryptoFilAddressKey);
+
+  return lookup_keys;
+}
+
 std::vector<uint8_t> GetWalletAddr(const std::string& domain,
                                    mojom::CoinType coin,
                                    const std::string& symbol,
                                    const std::string& chain_id) {
-  DCHECK(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL);
-  auto key_list = coin == mojom::CoinType::ETH
-                      ? MakeEthLookupKeyList(symbol, chain_id)
-                      : MakeSolLookupKeyList(symbol);
+  std::vector<std::string> key_list;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      key_list = MakeEthLookupKeyList(symbol, chain_id);
+      break;
+    case mojom::CoinType::SOL:
+      key_list = MakeSolLookupKeyList(symbol);
+      break;
+    case mojom::CoinType::FIL:
+      key_list = MakeFilLookupKeyList();
+      break;
+    default:
+      NOTREACHED();
+  }
 
   // getMany(string[],uint256)
   return eth_abi::TupleEncoder()
