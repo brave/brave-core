@@ -168,6 +168,10 @@ struct ReadabilityResult {
 
   init?(object: AnyObject?) {
     if let dict = object as? NSDictionary {
+      guard JSONSerialization.isValidJSONObject(dict) else {
+        return nil
+      }
+      
       if let uri = dict["uri"] as? NSDictionary {
         if let url = uri["spec"] as? String {
           self.url = url
@@ -298,6 +302,8 @@ class ReaderModeScriptHandler: TabContentScript {
         case .contentParsed:
           if let readabilityResult = ReadabilityResult(object: msg["Value"] as AnyObject?) {
             handleReaderContentParsed(readabilityResult)
+          } else {
+            handleReaderModeStateChange(.unavailable)
           }
         }
       }
