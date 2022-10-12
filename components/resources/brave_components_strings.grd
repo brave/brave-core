@@ -645,6 +645,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key info seed:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_NOTICE" desc="">We show the last [[numberOfLines]] lines of the log. If you want the whole log, you can download it above.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_TITLE" desc="">Rewards internals</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_NOT_SET" desc="Not set">Not set</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID" desc="Wallet persona ID">Persona ID</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS" desc="">Ads</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT" desc="">Amount</message>
@@ -666,6 +667,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION" desc="">Version</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT" desc="Retry count">Retry Count:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_COUNTRY" desc="Rewards	country">Rewards country:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="One-time tip">One-time tip</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring tip</message>

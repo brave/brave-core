@@ -32,6 +32,9 @@ const getInfo = (state: RewardsInternals.State) => {
       <div>
         {getLocale('bootStamp')} {formatDate(state.info.bootStamp * 1000)}
       </div>
+      <div>
+        {getLocale('rewardsCountry')} {state.info.declaredGeo || getLocale('notSet')}
+      </div>
     </>)
 }
 
