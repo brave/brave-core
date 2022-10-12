@@ -31,6 +31,10 @@ const LoadMoreButtonContainer = styled.div`
   grid-column: 2;
 `
 
+const Hidable = styled.div<{ hidden: boolean }>`
+  display: ${p => p.hidden ? 'none' : 'unset'};
+`
+
 // The default number of category cards to show.
 const DEFAULT_NUM_CATEGORIES = 3
 
@@ -41,21 +45,22 @@ export default function Discover () {
   const publishers = usePublishers()
 
   const lowerQuery = query.toLowerCase()
-  const filteredPublishers = React.useMemo(() => publishers
+  const visiblePublisherIds = React.useMemo(() => new Set(publishers
     .filter(p => p.publisherName.toLowerCase().includes(lowerQuery) ||
       p.categoryName.toLocaleLowerCase().includes(lowerQuery) ||
       p.feedSource?.url?.toLocaleLowerCase().includes(query))
-    .map(p => <FeedCard key={p.publisherId} publisherId={p.publisherId} />),
+      .map(p => p.publisherId))
+    ,
     [lowerQuery, publishers])
 
-  const filteredChannels = React.useMemo(() => channels
+  const visibleChannelIds = React.useMemo(() => new Set(channels
     .filter(c => c.channelName.toLowerCase().includes(lowerQuery))
     // If we're showing all channels, there's no end to the slice.
     // Otherwise, just show the default number.
     .slice(0, showingAllCategories || query
       ? undefined
       : DEFAULT_NUM_CATEGORIES)
-    .map(c => <ChannelCard key={c.channelName} channelId={c.channelName} />),
+    .map(c => c.channelName)),
     [lowerQuery, channels, showingAllCategories])
 
   return <Flex direction='column'>
@@ -63,7 +68,9 @@ export default function Discover () {
     <SearchInput type="search" placeholder={getLocale('braveNewsSearchPlaceholderLabel')} value={query} onChange={e => setQuery(e.currentTarget.value)} />
     <DirectFeedResults query={query} />
     <DiscoverSection name={getLocale('braveNewsBrowseByCategoryHeader')}>
-      {filteredChannels}
+      {channels.map(c => <Hidable key={c.channelName} hidden={!visibleChannelIds.has(c.channelName)}>
+        <ChannelCard key={c.channelName} channelId={c.channelName} />
+      </Hidable>)}
       {!showingAllCategories && !query && <LoadMoreButtonContainer>
         <Button onClick={() => setShowingAllCategories(true)}>
           {getLocale('braveNewsLoadMoreCategoriesButton')}
@@ -71,7 +78,9 @@ export default function Discover () {
       </LoadMoreButtonContainer>}
     </DiscoverSection>
     <DiscoverSection name={getLocale('braveNewsAllSourcesHeader')}>
-      {filteredPublishers}
+      {publishers.map(p => <Hidable key={p.publisherId} hidden={!visiblePublisherIds.has(p.publisherId)}>
+        <FeedCard publisherId={p.publisherId} />
+      </Hidable>)}
     </DiscoverSection>
   </Flex>
 }
