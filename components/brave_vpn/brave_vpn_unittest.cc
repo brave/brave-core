@@ -608,7 +608,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   // Treat expired when credential with non active received.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(domain, R"({ "active": false } )");
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   // Treat failed when invalid string received.
   SetPurchasedState(env, PurchasedState::LOADING);
