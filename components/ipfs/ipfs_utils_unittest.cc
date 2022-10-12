@@ -28,6 +28,8 @@ class IpfsUtilsUnitTest : public testing::Test {
   void SetUp() override {
     prefs_.registry()->RegisterStringPref(kIPFSPublicGatewayAddress,
                                           ipfs::kDefaultIPFSGateway);
+    prefs_.registry()->RegisterStringPref(kIPFSPublicNFTGatewayAddress,
+                                          ipfs::kDefaultIPFSNFTGateway);
     prefs_.registry()->RegisterIntegerPref(
         kIPFSResolveMethod,
         static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -241,6 +243,21 @@ TEST_F(IpfsUtilsUnitTest, ResolveIPFSURI) {
                                    &gateway_url));
   ASSERT_EQ(gateway_url, GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgp"
                               "dr4cjr3oz3evfyavhwq.ipfs.localhost:48080"));
+}
+
+TEST_F(IpfsUtilsUnitTest, GetDefaultIPFSNFTGateway) {
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://example.com/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://example.com/"));
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://127.0.0.1:8888/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://localhost:8888/"));
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://127.0.0.1/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://localhost/"));
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://localhost/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://localhost/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, GetDefaultIPFSGateway) {

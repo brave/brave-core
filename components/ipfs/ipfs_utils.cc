@@ -273,6 +273,21 @@ GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
   return AppendLocalPort(GetGatewayPort(channel));
 }
 
+GURL GetDefaultNFTIPFSGateway(PrefService* prefs) {
+  if (!ipfs_default_gateway_for_test.is_empty()) {
+    return GURL(ipfs_default_gateway_for_test);
+  }
+
+  DCHECK(prefs);
+  GURL gateway_url(prefs->GetString(kIPFSPublicNFTGatewayAddress));
+  if (gateway_url.DomainIs(kLocalhostIP)) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(kLocalhostDomain);
+    return gateway_url.ReplaceComponents(replacements);
+  }
+  return gateway_url;
+}
+
 GURL GetDefaultIPFSGateway(PrefService* prefs) {
   if (!ipfs_default_gateway_for_test.is_empty()) {
     return GURL(ipfs_default_gateway_for_test);

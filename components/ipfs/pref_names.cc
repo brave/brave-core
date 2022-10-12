@@ -40,3 +40,7 @@ const char kIPFSLocalNodeUsed[] = "brave.ipfs.local_node_used";
 
 // Stores IPFS public gateway address to be used when translating IPFS URLs.
 const char kIPFSPublicGatewayAddress[] = "brave.ipfs.public_gateway_address";
+
+// Stores IPFS public gateway address to be used when translating IPFS NFT URLs.
+const char kIPFSPublicNFTGatewayAddress[] =
+    "brave.ipfs.public_nft_gateway_address";

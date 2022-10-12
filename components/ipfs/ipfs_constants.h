@@ -20,6 +20,7 @@ extern const char kShutdownPath[];
 extern const char kIPFSScheme[];
 extern const char kIPNSScheme[];
 extern const char kDefaultIPFSGateway[];
+extern const char kDefaultIPFSNFTGateway[];
 extern const char kDefaultIPFSLocalGateway[];
 extern const char kIPFSLearnMorePrivacyURL[];
 extern const char kIPFSLearnMoreURL[];

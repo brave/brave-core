@@ -44,6 +44,7 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
     return {
       ipfsEnabled_: Boolean,
       showChangeIPFSGatewayDialog_: Boolean,
+      showChangeIPFSNFTGatewayDialog_: Boolean,
       isLocalNodeEnabled_: Boolean,
       isLocalNodeLaunched_: {
         type: Boolean,
@@ -161,6 +162,16 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
   /** @private **/
   onChangeIPFSGatewayDialogClosed_() {
     this.showChangeIPFSGatewayDialog_ = false
+  }
+
+  /** @private **/
+  onChangeIPFSNFTGatewayDialogTapped_() {
+    this.showChangeIPFSNFTGatewayDialog_ = true
+  }
+
+  /** @private **/
+  onChangeIPFSNFTGatewayDialogClosed_() {
+    this.showChangeIPFSNFTGatewayDialog_ = false
   }
 }
 

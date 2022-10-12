@@ -46,6 +46,7 @@ bool ResolveIPFSURI(PrefService* prefs,
                     GURL* resolved_url);
 void SetIPFSDefaultGatewayForTest(const GURL& url);
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
+GURL GetDefaultNFTIPFSGateway(PrefService* prefs);
 GURL GetDefaultIPFSGateway(PrefService* prefs);
 GURL GetAPIServer(version_info::Channel channel);
 GURL ResolveWebUIFilesLocation(const std::string& directory,
