@@ -21,8 +21,6 @@ constexpr char kInvalidSeed[] = "y6vCwhJ6NUUWZ7tkHw76f0FIs9w8j-VylGC0rWd6gQ1=";
 
 class BatAdsWalletTest : public UnitTestBase {
  protected:
-  BatAdsWalletTest() = default;
-
   bool SetWallet(const std::string& id, const std::string& seed) {
     return wallet_.Set(id, seed);
   }

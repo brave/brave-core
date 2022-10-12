@@ -21,8 +21,6 @@ constexpr char kID2[] = "5b2f108c-e176-4a3e-8e7c-fe67fb3db518";
 
 class BatAdsAdEventHistoryTest : public UnitTestBase {
  protected:
-  BatAdsAdEventHistoryTest() = default;
-
   void RecordAdEvent(const std::string& id,
                      const AdType& ad_type,
                      const ConfirmationType& confirmation_type) {

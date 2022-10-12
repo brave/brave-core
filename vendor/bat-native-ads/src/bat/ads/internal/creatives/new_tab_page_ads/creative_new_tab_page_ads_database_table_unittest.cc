@@ -16,8 +16,6 @@ namespace ads::database::table {
 
 class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsCreativeNewTabPageAdsDatabaseTableTest() = default;
-
   CreativeNewTabPageAds database_table;
 };
 

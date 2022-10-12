@@ -20,8 +20,6 @@ constexpr char kLocale[] = "en_GB";
 class BatAdsLocaleManagerTest : public LocaleManagerObserver,
                                 public UnitTestBase {
  protected:
-  BatAdsLocaleManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

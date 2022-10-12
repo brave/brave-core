@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsConfirmationsIssuerUtilTest : public UnitTestBase {
- protected:
-  BatAdsConfirmationsIssuerUtilTest() = default;
-
-  ~BatAdsConfirmationsIssuerUtilTest() override = default;
-};
+class BatAdsConfirmationsIssuerUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsConfirmationsIssuerUtilTest, IsValid) {
   // Arrange

@@ -18,8 +18,6 @@ namespace ads::targeting::model {
 
 class BatAdsTextClassificationModelTest : public UnitTestBase {
  protected:
-  BatAdsTextClassificationModelTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

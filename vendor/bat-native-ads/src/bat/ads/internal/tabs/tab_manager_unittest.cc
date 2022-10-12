@@ -13,8 +13,6 @@ namespace ads {
 
 class BatAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
  protected:
-  BatAdsTabManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

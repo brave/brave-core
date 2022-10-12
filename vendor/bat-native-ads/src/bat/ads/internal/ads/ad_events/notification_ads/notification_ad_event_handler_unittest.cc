@@ -28,8 +28,6 @@ constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
 class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
                                              public UnitTestBase {
  protected:
-  BatAdsNotificationAdEventHandlerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

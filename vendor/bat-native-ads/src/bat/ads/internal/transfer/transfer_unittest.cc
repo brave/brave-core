@@ -17,8 +17,6 @@ namespace ads {
 
 class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
  protected:
-  BatAdsTransferTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

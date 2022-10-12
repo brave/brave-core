@@ -14,12 +14,7 @@
 
 namespace ads::processor {
 
-class BatAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {
- protected:
-  BatAdsTextEmbeddingProcessorUtilTest() = default;
-
-  ~BatAdsTextEmbeddingProcessorUtilTest() override = default;
-};
+class BatAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
   // Arrange

@@ -16,12 +16,7 @@ namespace {
 constexpr char kSegment[] = "segment";
 }  // namespace
 
-class BatAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsMarkedToNoLongerReceiveExclusionRuleTest() = default;
-
-  ~BatAdsMarkedToNoLongerReceiveExclusionRuleTest() override = default;
-};
+class BatAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
   // Arrange

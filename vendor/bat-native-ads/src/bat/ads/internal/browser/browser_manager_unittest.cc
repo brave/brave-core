@@ -14,8 +14,6 @@ namespace ads {
 class BatAdsBrowserManagerTest : public BrowserManagerObserver,
                                  public UnitTestBase {
  protected:
-  BatAdsBrowserManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -21,8 +21,6 @@ constexpr char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
 
 class BatAdsHashVectorizerTest : public UnitTestBase {
  protected:
-  BatAdsHashVectorizerTest() = default;
-
   void RunHashingExtractorTestCase(const std::string& test_case_name) {
     // Arrange
     const double kTolerance = 1e-7;

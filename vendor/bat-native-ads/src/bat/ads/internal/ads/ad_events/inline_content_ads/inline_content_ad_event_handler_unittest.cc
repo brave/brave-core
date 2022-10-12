@@ -34,8 +34,6 @@ constexpr char kInvalidCreativeInstanceId[] = "";
 class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
                                               public UnitTestBase {
  protected:
-  BatAdsInlineContentAdEventHandlerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

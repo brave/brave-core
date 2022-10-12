@@ -24,8 +24,6 @@ constexpr char kInvalidJsonFilename[] = "invalid.json";
 
 class BatAdsLegacyConfirmationMigrationTest : public UnitTestBase {
  protected:
-  BatAdsLegacyConfirmationMigrationTest() = default;
-
   void SetUpMocks() override {
     AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kHasMigratedConfirmationState, false);

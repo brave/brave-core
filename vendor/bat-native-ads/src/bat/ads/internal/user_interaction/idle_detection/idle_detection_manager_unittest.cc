@@ -15,8 +15,6 @@ namespace ads {
 class BatAdsIdleDetectionManagerTest : public IdleDetectionManagerObserver,
                                        public UnitTestBase {
  protected:
-  BatAdsIdleDetectionManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

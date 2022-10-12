@@ -35,8 +35,6 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
       public ::testing::WithParamInterface<
           SubdivisionTargetingExclusionRuleTestParam> {
  protected:
-  BatAdsSubdivisionTargetingExclusionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

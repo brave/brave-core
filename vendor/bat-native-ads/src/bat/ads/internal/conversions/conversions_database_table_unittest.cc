@@ -18,8 +18,6 @@ namespace ads::database::table {
 
 class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsConversionsDatabaseTableTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

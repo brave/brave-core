@@ -18,8 +18,6 @@ namespace ads::search_result_ads {
 
 class BatAdsSearchResultAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsSearchResultAdsPerDayPermissionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

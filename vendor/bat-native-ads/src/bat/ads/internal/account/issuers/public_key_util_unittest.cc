@@ -20,12 +20,7 @@ constexpr char kMissingPublicKey[] =
 
 }  // namespace
 
-class BatAdsPublicKeyUtilTest : public UnitTestBase {
- protected:
-  BatAdsPublicKeyUtilTest() = default;
-
-  ~BatAdsPublicKeyUtilTest() override = default;
-};
+class BatAdsPublicKeyUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsPublicKeyUtilTest, PublicKeyExists) {
   // Arrange

@@ -18,8 +18,6 @@ namespace ads {
 
 class BatAdsInlineContentAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsInlineContentAdsPerDayPermissionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

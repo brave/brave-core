@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsStringHtmlUtilTest : public UnitTestBase {
- protected:
-  BatAdsStringHtmlUtilTest() = default;
-
-  ~BatAdsStringHtmlUtilTest() override = default;
-};
+class BatAdsStringHtmlUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
   // Arrange
