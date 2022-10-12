@@ -48,7 +48,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kAdRewardsParameters;
   const char kNextPaymentDayParameter[] = "next_payment_day";
-  kAdRewardsParameters[kNextPaymentDayParameter] = "7";
+  kAdRewardsParameters[kNextPaymentDayParameter] = "5";
   enabled_features.emplace_back(kAdRewards, kAdRewardsParameters);
 
   const std::vector<base::Feature> disabled_features;
@@ -61,7 +61,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
   const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
-  const int expected_next_payment_day = 7;
+  const int expected_next_payment_day = 5;
   EXPECT_EQ(expected_next_payment_day, next_payment_day);
 }
 
@@ -79,7 +79,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
   const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
-  const int expected_next_payment_day = 5;
+  const int expected_next_payment_day = 7;
   EXPECT_EQ(expected_next_payment_day, next_payment_day);
 }
 
@@ -99,7 +99,7 @@ TEST(BatAdsAdRewardsFeaturesTest, DisabledAdRewardsDefaultNextPaymentDay) {
   const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
-  const int expected_next_payment_day = 5;
+  const int expected_next_payment_day = 7;
   EXPECT_EQ(expected_next_payment_day, next_payment_day);
 }
 
