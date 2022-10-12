@@ -297,7 +297,7 @@ class BraveVPNServiceTest : public testing::Test {
   void LoadCachedRegionData() { service_->LoadCachedRegionData(); }
 
   void OnConnected() { service_->OnConnected(); }
-
+  void OnConnectFailed() { service_->OnConnectFailed(); }
   void OnDisconnected() { service_->OnDisconnected(); }
 
   const BraveVPNConnectionInfo& GetConnectionInfo() {
@@ -734,6 +734,14 @@ TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
   // Check cached connection info is cleared when user set new selected region.
   connection_state() = ConnectionState::DISCONNECTED;
   service_->SetSelectedRegion(mojom::Region().Clone());
+  EXPECT_FALSE(GetConnectionInfo().IsValid());
+
+  // Fill connection info again.
+  OnGetProfileCredentials(GetProfileCredentialData(), true);
+  EXPECT_TRUE(GetConnectionInfo().IsValid());
+
+  // Check cached connection info is cleared when connect failed.
+  OnConnectFailed();
   EXPECT_FALSE(GetConnectionInfo().IsValid());
 }
 

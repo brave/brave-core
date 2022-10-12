@@ -289,6 +289,9 @@ void BraveVpnService::OnConnectFailed() {
   VLOG(2) << __func__;
 
   cancel_connecting_ = false;
+
+  // Clear previously used connection info if failed.
+  connection_info_.Reset();
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
