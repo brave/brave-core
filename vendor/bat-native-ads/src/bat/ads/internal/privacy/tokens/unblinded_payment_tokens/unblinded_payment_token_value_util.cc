@@ -32,11 +32,15 @@ base::Value::List UnblindedPaymentTokensToValue(
   for (const auto& unblinded_token : unblinded_tokens) {
     const absl::optional<std::string> unblinded_token_base64 =
         unblinded_token.value.EncodeBase64();
-    DCHECK(unblinded_token_base64);
+    if (!unblinded_token_base64) {
+      continue;
+    }
 
     const absl::optional<std::string> public_key_base64 =
         unblinded_token.public_key.EncodeBase64();
-    DCHECK(public_key_base64);
+    if (!public_key_base64) {
+      continue;
+    }
 
     base::Value::Dict dict;
     dict.Set(kTransactionIdKey, unblinded_token.transaction_id);

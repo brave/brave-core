@@ -76,7 +76,7 @@ DLEQProof DLEQProof::DecodeBase64(const std::string& dleq_proof_base64) {
 }
 
 absl::optional<std::string> DLEQProof::EncodeBase64() const {
-  if (!has_value()) {
+  if (!dleq_proof_ || !has_value()) {
     return absl::nullopt;
   }
 
@@ -91,8 +91,8 @@ absl::optional<std::string> DLEQProof::EncodeBase64() const {
 bool DLEQProof::Verify(const BlindedToken& blinded_token,
                        const SignedToken& signed_token,
                        const PublicKey& public_key) {
-  if (!has_value() || !blinded_token.has_value() || !signed_token.has_value() ||
-      !public_key.has_value()) {
+  if (!dleq_proof_ || !has_value() || !blinded_token.has_value() ||
+      !signed_token.has_value() || !public_key.has_value()) {
     return false;
   }
 

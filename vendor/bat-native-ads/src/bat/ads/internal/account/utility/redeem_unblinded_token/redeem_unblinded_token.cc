@@ -283,9 +283,28 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Verify and unblind tokens
+  if (!confirmation.opted_in) {
+    BLOG(0, "Missing confirmation opted-in");
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
+    return;
+  }
+
+  if (!confirmation.opted_in->token.has_value()) {
+    BLOG(0, "Missing confirmation opted-in token");
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
+    return;
+  }
   const std::vector<privacy::cbr::Token> tokens = {
       confirmation.opted_in->token};
 
+  if (!confirmation.opted_in->blinded_token.has_value()) {
+    BLOG(0, "Missing confirmation opted-in blinded token");
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
+    return;
+  }
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens = {
       confirmation.opted_in->blinded_token};
 

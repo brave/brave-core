@@ -40,7 +40,9 @@ class UnblindedToken {
   bool operator==(const UnblindedToken& other) const;
   bool operator!=(const UnblindedToken& other) const;
 
-  bool has_value() const { return unblinded_token_.has_value(); }
+  bool has_value() const {
+    return unblinded_token_ && unblinded_token_.has_value();
+  }
 
   challenge_bypass_ristretto::UnblindedToken& get() {
     DCHECK(unblinded_token_);

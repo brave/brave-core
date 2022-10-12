@@ -40,9 +40,7 @@ mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {
 
 GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
   std::string credential_base64_url;
-  if (confirmation_.opted_in) {
-    DCHECK(confirmation_.opted_in->credential_base64url);
-
+  if (confirmation_.opted_in && confirmation_.opted_in->credential_base64url) {
     credential_base64_url =
         base::StrCat({"/", *confirmation_.opted_in->credential_base64url});
   }

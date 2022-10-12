@@ -67,7 +67,7 @@ SigningKey SigningKey::DecodeBase64(const std::string& signing_key_base64) {
 }
 
 absl::optional<std::string> SigningKey::EncodeBase64() const {
-  if (!has_value()) {
+  if (!signing_key_ || !has_value()) {
     return absl::nullopt;
   }
 
@@ -81,7 +81,7 @@ absl::optional<std::string> SigningKey::EncodeBase64() const {
 
 absl::optional<SignedToken> SigningKey::Sign(
     const BlindedToken& blinded_token) const {
-  if (!has_value() || !blinded_token.has_value()) {
+  if (!signing_key_ || !has_value() || !blinded_token.has_value()) {
     return absl::nullopt;
   }
 
@@ -96,7 +96,7 @@ absl::optional<SignedToken> SigningKey::Sign(
 
 absl::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
     const TokenPreimage& token_preimage) {
-  if (!has_value() || !token_preimage.has_value()) {
+  if (!signing_key_ || !has_value() || !token_preimage.has_value()) {
     return absl::nullopt;
   }
 
@@ -110,7 +110,7 @@ absl::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
 }
 
 absl::optional<PublicKey> SigningKey::GetPublicKey() {
-  if (!has_value()) {
+  if (!signing_key_ || !has_value()) {
     return absl::nullopt;
   }
 

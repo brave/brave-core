@@ -62,7 +62,7 @@ BlindedToken BlindedToken::DecodeBase64(
 }
 
 absl::optional<std::string> BlindedToken::EncodeBase64() const {
-  if (!has_value()) {
+  if (!blinded_token_ || !has_value()) {
     return absl::nullopt;
   }
 

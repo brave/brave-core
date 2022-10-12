@@ -348,7 +348,9 @@ base::Value::Dict ConfirmationStateManager::GetFailedConfirmationsAsDictionary(
                             confirmation.opted_in->user_data.Clone());
 
       // Credential
-      DCHECK(confirmation.opted_in->credential_base64url);
+      if (!confirmation.opted_in->credential_base64url) {
+        continue;
+      }
       confirmation_dict.Set("credential",
                             *confirmation.opted_in->credential_base64url);
     }

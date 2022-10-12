@@ -150,7 +150,8 @@ bool IsValid(const ConfirmationInfo& confirmation) {
 
   if (!confirmation.opted_in->token.has_value() ||
       !confirmation.opted_in->blinded_token.has_value() ||
-      !IsValid(confirmation.opted_in->unblinded_token)) {
+      !IsValid(confirmation.opted_in->unblinded_token) ||
+      !confirmation.opted_in->credential_base64url) {
     return false;
   }
 

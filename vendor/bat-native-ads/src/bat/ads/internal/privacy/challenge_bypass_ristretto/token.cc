@@ -66,7 +66,7 @@ Token Token::DecodeBase64(const std::string& token_base64) {
 }
 
 absl::optional<std::string> Token::EncodeBase64() const {
-  if (!has_value()) {
+  if (!token_ || !has_value()) {
     return absl::nullopt;
   }
 
@@ -79,7 +79,7 @@ absl::optional<std::string> Token::EncodeBase64() const {
 }
 
 absl::optional<BlindedToken> Token::Blind() {
-  if (!has_value()) {
+  if (!token_ || !has_value()) {
     return absl::nullopt;
   }
 
