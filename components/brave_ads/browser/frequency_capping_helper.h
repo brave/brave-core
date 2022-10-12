@@ -23,6 +23,10 @@ class FrequencyCappingHelper {
   FrequencyCappingHelper(const FrequencyCappingHelper&) = delete;
   FrequencyCappingHelper& operator=(const FrequencyCappingHelper&) = delete;
 
+  FrequencyCappingHelper(FrequencyCappingHelper&& other) noexcept = delete;
+  FrequencyCappingHelper& operator=(FrequencyCappingHelper&& other) noexcept =
+      delete;
+
   static FrequencyCappingHelper* GetInstance();
 
   void RecordAdEventForId(const std::string& id,
@@ -40,6 +44,7 @@ class FrequencyCappingHelper {
   friend struct base::DefaultSingletonTraits<FrequencyCappingHelper>;
 
   FrequencyCappingHelper();
+
   ~FrequencyCappingHelper();
 
   ads::AdEventHistory history_;

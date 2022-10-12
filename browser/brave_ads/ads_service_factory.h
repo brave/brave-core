@@ -25,6 +25,9 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   AdsServiceFactory(const AdsServiceFactory&) = delete;
   AdsServiceFactory& operator=(const AdsServiceFactory&) = delete;
 
+  AdsServiceFactory(AdsServiceFactory&& other) noexcept = delete;
+  AdsServiceFactory& operator=(AdsServiceFactory&& other) noexcept = delete;
+
   static AdsService* GetForProfile(Profile* profile);
 
   static AdsServiceFactory* GetInstance();
@@ -33,6 +36,7 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   friend struct base::DefaultSingletonTraits<AdsServiceFactory>;
 
   AdsServiceFactory();
+
   ~AdsServiceFactory() override;
 
   std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate(

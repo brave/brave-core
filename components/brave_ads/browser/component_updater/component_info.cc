@@ -7,12 +7,8 @@
 
 namespace brave_ads {
 
-ComponentInfo::ComponentInfo() = default;
-
 ComponentInfo::ComponentInfo(const std::string& id,
                              const std::string& public_key)
     : id(id), public_key(public_key) {}
-
-ComponentInfo::~ComponentInfo() = default;
 
 }  // namespace brave_ads

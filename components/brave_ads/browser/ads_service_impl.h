@@ -90,8 +90,13 @@ class AdsServiceImpl : public AdsService,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
       brave_federated::AsyncDataStore* notification_ad_timing_data_store);
+
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
+
+  AdsServiceImpl(AdsServiceImpl&& other) noexcept = delete;
+  AdsServiceImpl& operator=(AdsServiceImpl&& other) noexcept = delete;
+
   ~AdsServiceImpl() override;
 
  private:

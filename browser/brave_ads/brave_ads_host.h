@@ -24,8 +24,13 @@ namespace brave_ads {
 class BraveAdsHost : public brave_ads::mojom::BraveAdsHost {
  public:
   BraveAdsHost(Profile* profile, content::WebContents* web_contents);
+
   BraveAdsHost(const BraveAdsHost&) = delete;
   BraveAdsHost& operator=(const BraveAdsHost&) = delete;
+
+  BraveAdsHost(BraveAdsHost&& other) noexcept = delete;
+  BraveAdsHost& operator=(BraveAdsHost&& other) noexcept = delete;
+
   ~BraveAdsHost() override;
 
   // brave_ads::mojom::BraveAdsHost

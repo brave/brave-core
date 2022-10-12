@@ -25,12 +25,15 @@ class AdsStatusHeaderThrottle : public blink::URLLoaderThrottle {
       const network::ResourceRequest& request);
 
   AdsStatusHeaderThrottle();
-  ~AdsStatusHeaderThrottle() override;
 
   AdsStatusHeaderThrottle(const AdsStatusHeaderThrottle&) = delete;
   AdsStatusHeaderThrottle& operator=(const AdsStatusHeaderThrottle&) = delete;
-  AdsStatusHeaderThrottle(AdsStatusHeaderThrottle&&) = delete;
-  AdsStatusHeaderThrottle& operator=(AdsStatusHeaderThrottle&&) = delete;
+
+  AdsStatusHeaderThrottle(AdsStatusHeaderThrottle&& other) noexcept = delete;
+  AdsStatusHeaderThrottle& operator=(AdsStatusHeaderThrottle&& other) noexcept =
+      delete;
+
+  ~AdsStatusHeaderThrottle() override;
 
   // Implements blink::URLLoaderThrottle:
   void WillStartRequest(network::ResourceRequest* request,

@@ -14,10 +14,13 @@ namespace brave_ads {
 
 class BackgroundHelperMac : public BackgroundHelper {
  public:
-  ~BackgroundHelperMac() override;
-
   BackgroundHelperMac(const BackgroundHelperMac&) = delete;
   BackgroundHelperMac& operator=(const BackgroundHelperMac&) = delete;
+
+  BackgroundHelperMac(BackgroundHelperMac&& other) noexcept = delete;
+  BackgroundHelperMac& operator=(BackgroundHelperMac&& other) noexcept = delete;
+
+  ~BackgroundHelperMac() override;
 
  protected:
   friend class BackgroundHelperHolder;

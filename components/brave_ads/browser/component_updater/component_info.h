@@ -11,9 +11,7 @@
 namespace brave_ads {
 
 struct ComponentInfo {
-  ComponentInfo();
   ComponentInfo(const std::string& id, const std::string& public_key);
-  ~ComponentInfo();
 
   std::string id;
   std::string public_key;

@@ -16,10 +16,13 @@ namespace brave_ads {
 
 class BackgroundHelperWin : public BackgroundHelper {
  public:
-  ~BackgroundHelperWin() override;
-
   BackgroundHelperWin(const BackgroundHelperWin&) = delete;
   BackgroundHelperWin& operator=(const BackgroundHelperWin&) = delete;
+
+  BackgroundHelperWin(BackgroundHelperWin&& other) noexcept = delete;
+  BackgroundHelperWin& operator=(BackgroundHelperWin&& other) noexcept = delete;
+
+  ~BackgroundHelperWin() override;
 
  protected:
   friend class BackgroundHelperHolder;

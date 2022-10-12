@@ -22,6 +22,14 @@ class NotificationAdHeaderView;
 class TextNotificationAdView : public NotificationAdView {
  public:
   explicit TextNotificationAdView(const NotificationAd& notification_ad);
+
+  TextNotificationAdView(const TextNotificationAdView&) = delete;
+  TextNotificationAdView& operator=(const TextNotificationAdView&) = delete;
+
+  TextNotificationAdView(TextNotificationAdView&& other) noexcept = delete;
+  TextNotificationAdView& operator=(TextNotificationAdView&& other) noexcept =
+      delete;
+
   ~TextNotificationAdView() override;
 
   // NotificationAdView:
@@ -41,9 +49,6 @@ class TextNotificationAdView : public NotificationAdView {
   views::View* CreateBodyView(const NotificationAd& notification_ad);
   views::Label* CreateBodyLabel(const NotificationAd& notification_ad);
   void UpdateBodyLabel();
-
-  TextNotificationAdView(const TextNotificationAdView&) = delete;
-  TextNotificationAdView& operator=(const TextNotificationAdView&) = delete;
 };
 
 }  // namespace brave_ads

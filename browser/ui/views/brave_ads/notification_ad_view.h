@@ -22,6 +22,13 @@ class NotificationAdView : public views::View {
   METADATA_HEADER(NotificationAdView);
 
   explicit NotificationAdView(const NotificationAd& notification_ad);
+
+  NotificationAdView(const NotificationAdView&) = delete;
+  NotificationAdView& operator=(const NotificationAdView&) = delete;
+
+  NotificationAdView(NotificationAdView&& other) noexcept = delete;
+  NotificationAdView& operator=(NotificationAdView&& other) noexcept = delete;
+
   ~NotificationAdView() override;
 
   // Update notification contents to |notification_ad|
@@ -50,9 +57,6 @@ class NotificationAdView : public views::View {
 
   std::u16string accessible_name_;
   void MaybeNotifyAccessibilityEvent();
-
-  NotificationAdView(const NotificationAdView&) = delete;
-  NotificationAdView& operator=(const NotificationAdView&) = delete;
 };
 
 }  // namespace brave_ads
