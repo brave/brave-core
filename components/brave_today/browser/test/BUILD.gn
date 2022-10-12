@@ -14,6 +14,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_today/browser/direct_feed_controller_unittest.cc",
     "//brave/components/brave_today/browser/feed_building_unittest.cc",
     "//brave/components/brave_today/browser/html_parsing_unittest.cc",
+    "//brave/components/brave_today/browser/locales_helper_unittest.cc",
     "//brave/components/brave_today/browser/publishers_controller_unittest.cc",
     "//brave/components/brave_today/browser/publishers_parsing_unittest.cc",
     "//brave/components/brave_today/browser/unsupported_publisher_migrator_unittest.cc",

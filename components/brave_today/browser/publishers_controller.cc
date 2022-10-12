@@ -22,6 +22,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
+#include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/browser/urls.h"
@@ -227,11 +228,7 @@ void PublishersController::UpdateDefaultLocale() {
     return;
   }
 
-  base::flat_set<std::string> available_locales;
-  for (const auto& it : publishers_) {
-    for (const auto& locale : it.second->locales)
-      available_locales.insert(locale);
-  }
+  auto available_locales = GetPublisherLocales(publishers_);
 
   // Locale is lang-COUNTRY but Brave News wants the format to be
   // lang_COUNTRY.

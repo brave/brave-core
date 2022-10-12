@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/containers/contains.h"
@@ -53,6 +54,19 @@ Channels ChannelsController::GetChannelsFromPublishers(
   return channels;
 }
 
+std::vector<std::string> ChannelsController::GetChannelLocales() const {
+  std::vector<std::string> result;
+  auto* pref = prefs_->GetDictionary(prefs::kBraveNewsChannels);
+
+  for (const auto [locale, channel] : pref->DictItems()) {
+    if (channel.DictEmpty())
+      continue;
+    result.push_back(locale);
+  }
+
+  return result;
+}
+
 void ChannelsController::GetAllChannels(const std::string& locale,
                                         ChannelsCallback callback) {
   publishers_controller_->GetOrFetchPublishers(base::BindOnce(
@@ -69,7 +83,12 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
     const std::string& channel_id,
     bool subscribed) {
   DictionaryPrefUpdate update(prefs_, prefs::kBraveNewsChannels);
-  update->SetBoolPath(locale + "." + channel_id, subscribed);
+  const auto path = locale + "." + channel_id;
+  if (!subscribed) {
+    update->GetDict().RemoveByDottedPath(path);
+  } else {
+    update->GetDict().SetByDottedPath(path, true);
+  }
 
   auto result = mojom::Channel::New();
   result->channel_name = channel_id;

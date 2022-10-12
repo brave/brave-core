@@ -10,10 +10,12 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/scoped_observation.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -34,6 +36,7 @@ class FeedController : public PublishersController::Observer {
  public:
   FeedController(PublishersController* publishers_controller,
                  DirectFeedController* direct_feed_controller,
+                 ChannelsController* channels_controller,
                  history::HistoryService* history_service,
                  api_request_helper::APIRequestHelper* api_request_helper,
                  PrefService* prefs);
@@ -74,6 +77,7 @@ class FeedController : public PublishersController::Observer {
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<PublishersController> publishers_controller_ = nullptr;
   raw_ptr<DirectFeedController> direct_feed_controller_ = nullptr;
+  raw_ptr<ChannelsController> channels_controller_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 
@@ -87,7 +91,10 @@ class FeedController : public PublishersController::Observer {
   // Store a copy of the feed in memory so we don't fetch new data from remote
   // every time the UI opens.
   mojom::Feed current_feed_;
-  std::string current_feed_etag_;
+
+  // A map from feed locale to the last known etag for that feed. Used to
+  // determine when we have available updates.
+  base::flat_map<std::string, std::string> locale_feed_etags_;
   bool is_update_in_progress_ = false;
 };
 
