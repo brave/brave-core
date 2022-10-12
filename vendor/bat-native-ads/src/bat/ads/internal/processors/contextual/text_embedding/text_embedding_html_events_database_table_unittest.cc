@@ -11,12 +11,7 @@
 
 namespace ads::database::table {
 
-class BatAdsTextEmbeddingHtmlEventsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsTextEmbeddingHtmlEventsDatabaseTableTest() = default;
-
-  ~BatAdsTextEmbeddingHtmlEventsDatabaseTableTest() override = default;
-};
+class BatAdsTextEmbeddingHtmlEventsDatabaseTableTest : public UnitTestBase {};
 
 TEST(BatAdsTextEmbeddingHtmlEventsDatabaseTableTest, TableName) {
   // Arrange

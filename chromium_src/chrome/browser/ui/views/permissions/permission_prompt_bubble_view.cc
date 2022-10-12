@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser_tabstrip.h"

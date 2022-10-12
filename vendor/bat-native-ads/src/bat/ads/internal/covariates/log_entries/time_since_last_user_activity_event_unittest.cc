@@ -15,13 +15,7 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest() = default;
-
-  ~BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest() override =
-      default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest,
        GetDataType) {

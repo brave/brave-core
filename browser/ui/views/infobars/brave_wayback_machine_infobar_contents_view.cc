@@ -14,7 +14,7 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"

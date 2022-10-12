@@ -13,7 +13,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"

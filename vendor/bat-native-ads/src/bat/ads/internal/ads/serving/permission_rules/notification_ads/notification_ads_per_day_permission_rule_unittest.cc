@@ -18,8 +18,6 @@ namespace ads::notification_ads {
 
 class BatAdsAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsAdsPerDayPermissionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -21,8 +21,6 @@ namespace ads {
 
 class BatAdsSearchResultAdIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsSearchResultAdIntegrationTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 

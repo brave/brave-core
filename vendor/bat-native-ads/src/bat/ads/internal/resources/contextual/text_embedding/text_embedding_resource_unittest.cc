@@ -28,12 +28,7 @@ constexpr char kNotExistantResourceFile[] =
 using testing::_;
 using testing::Invoke;
 
-class BatAdsTextEmbeddingResourceTest : public UnitTestBase {
- protected:
-  BatAdsTextEmbeddingResourceTest() = default;
-
-  ~BatAdsTextEmbeddingResourceTest() override = default;
-};
+class BatAdsTextEmbeddingResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextEmbeddingResourceTest, Load) {
   // Arrange

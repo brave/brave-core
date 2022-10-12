@@ -5,7 +5,7 @@
 
 #include "build/build_config.h"
 
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 
 #if !BUILDFLAG(IS_WIN)
 #include "chrome/grit/generated_resources.h"

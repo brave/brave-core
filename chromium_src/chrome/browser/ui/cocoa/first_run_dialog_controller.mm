@@ -11,7 +11,7 @@
 #include "base/mac/scoped_nsobject.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/cocoa/key_equivalent_constants.h"
 #include "chrome/grit/chromium_strings.h"

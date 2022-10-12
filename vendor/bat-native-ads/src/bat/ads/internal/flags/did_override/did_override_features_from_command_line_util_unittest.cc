@@ -151,8 +151,6 @@ class BatAdsDidOverrideFeaturesFromCommandLineUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsDidOverrideFeaturesFromCommandLineUtilTest() = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 

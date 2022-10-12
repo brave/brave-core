@@ -9,7 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/download/download_ui_model.h"
 #include "components/download/public/common/download_item.h"
 #include "components/strings/grit/components_strings.h"

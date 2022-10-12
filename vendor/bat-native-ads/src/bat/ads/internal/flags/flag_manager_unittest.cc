@@ -98,8 +98,6 @@ struct ParamInfo final {
 class BatAdsFlagManagerTest : public UnitTestBase,
                               public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsFlagManagerTest() = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 

@@ -12,7 +12,7 @@
 #include "brave/components/brave_private_new_tab/resources/page/grit/brave_private_new_tab_generated_map.h"
 #include "brave/components/brave_private_new_tab_ui/common/constants.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"

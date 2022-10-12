@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/grit/browser_resources.h"

@@ -65,8 +65,6 @@ constexpr char ScopedLibcTZ::kTZ[];
 class BatAdsTimeUtilTest : public UnitTestBase,
                            public testing::WithParamInterface<bool> {
  protected:
-  BatAdsTimeUtilTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

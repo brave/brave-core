@@ -7,7 +7,7 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "extensions/common/extension.h"
 

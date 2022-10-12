@@ -62,13 +62,11 @@ bool SubdivisionTargeting::IsDisabled() const {
 }
 
 void SubdivisionTargeting::MaybeAllow() {
-  const std::string locale = LocaleManager::GetInstance()->GetLocale();
-  MaybeAllowForLocale(locale);
+  MaybeAllowForLocale(brave_l10n::GetDefaultLocaleString());
 }
 
 void SubdivisionTargeting::MaybeFetch() {
-  const std::string locale = LocaleManager::GetInstance()->GetLocale();
-  MaybeFetchForLocale(locale);
+  MaybeFetchForLocale(brave_l10n::GetDefaultLocaleString());
 }
 
 const std::string& SubdivisionTargeting::GetSubdivisionCode() const {
@@ -121,7 +119,7 @@ const std::string& SubdivisionTargeting::GetLazySubdivisionCode() const {
 }
 
 bool SubdivisionTargeting::IsSupportedLocale(const std::string& locale) const {
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
+  const std::string country_code = brave_l10n::GetISOCountryCode(locale);
 
   const auto iter = kSupportedSubdivisionCodes.find(country_code);
   return iter != kSupportedSubdivisionCodes.cend();
@@ -140,7 +138,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
     return;
   }
 
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
+  const std::string country_code = brave_l10n::GetISOCountryCode(locale);
   const std::string& subdivision_code = GetSubdivisionCode();
 
   std::string subdivision_country_code;
@@ -258,8 +256,7 @@ void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
 
   retry_timer_.Stop();
 
-  const std::string locale = LocaleManager::GetInstance()->GetLocale();
-  MaybeAllowForLocale(locale);
+  MaybeAllowForLocale(brave_l10n::GetDefaultLocaleString());
 
   FetchAfterDelay();
 }

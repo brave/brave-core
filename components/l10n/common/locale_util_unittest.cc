@@ -1,223 +1,131 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/l10n/common/locale_util.h"
 
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=LocaleUtilTest*
 
-namespace ads {
+namespace brave_l10n {
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForEnglish) {
-  // Arrange
-  const std::string locale = "en";
+TEST(LocaleUtilTest, ScopedDefaultLocale) {
+  const test::ScopedDefaultLocale scoped_default_locale_us("en_KY");
+  ASSERT_EQ("en_KY", GetDefaultLocaleString());
 
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
+  {
+    const test::ScopedDefaultLocale scoped_default_locale_gb("en_GB");
+    ASSERT_EQ("en_GB", GetDefaultLocaleString());
+  }
 
-  // Assert
-  const std::string expected_language_code = "en";
-  EXPECT_EQ(expected_language_code, language_code);
+  EXPECT_EQ("en_KY", GetDefaultLocaleString());
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeForEnglish) {
-  // Arrange
-  const std::string locale = "en";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "US";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetDefaultLocaleString) {
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
+  EXPECT_EQ("en_Latn_US.UTF-8", GetDefaultLocaleString());
 }
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeDashCountryCode) {
-  // Arrange
-  const std::string locale = "en-US";
-
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  // Assert
-  const std::string expected_language_code = "en";
-  EXPECT_EQ(expected_language_code, language_code);
+TEST(LocaleUtilTest, GetDefaultISOLanguageCodeString) {
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
+  EXPECT_EQ("en", GetDefaultISOLanguageCodeString());
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeForLanguageCodeDashCountryCode) {
-  // Arrange
-  const std::string locale = "en-US";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "US";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetFallbackDefaultISOLanguageCodeString) {
+  const test::ScopedDefaultLocale scoped_default_locale({});
+  EXPECT_EQ("en", GetDefaultISOLanguageCodeString());
 }
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeDashWorld) {
-  // Arrange
-  const std::string locale = "en-101";
-
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  // Assert
-  const std::string expected_language_code = "en";
-  EXPECT_EQ(expected_language_code, language_code);
+TEST(LocaleUtilTest, GetISOLanguageCodeForLocale) {
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
+  EXPECT_EQ("en", GetISOLanguageCode("en_Latn_US.UTF-8@currency=USD"));
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeForLanguageCodeDashWorld) {
-  // Arrange
-  const std::string locale = "en-101";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "101";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetDefaultISOScriptCodeString) {
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
+  EXPECT_EQ("Latn", GetDefaultISOScriptCodeString());
 }
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeDashCountryCodeCodeDotEncoding) {
-  // Arrange
-  const std::string locale = "en-US.UTF-8";
-
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  // Assert
-  const std::string expected_language_code = "en";
-  EXPECT_EQ(expected_language_code, language_code);
+TEST(LocaleUtilTest, GetUnspecifiedDefaultISOScriptCodeString) {
+  const test::ScopedDefaultLocale scoped_default_locale({});
+  EXPECT_FALSE(GetDefaultISOScriptCodeString());
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeCodeForLanguageCodeDashCountryCodeCodeDotEncoding) {
-  // Arrange
-  const std::string locale = "en-US.UTF-8";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "US";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetISOScriptCodeForLocale) {
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
+  EXPECT_EQ("Latn", GetISOScriptCode("en_Latn_US.UTF-8@currency=USD"));
 }
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeDashScriptDashCountryCodeCode) {
-  // Arrange
-  const std::string locale = "az-Latn-AZ";
-
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  // Assert
-  const std::string expected_language_code = "az";
-  EXPECT_EQ(expected_language_code, language_code);
+TEST(LocaleUtilTest, GetUnspecifiedISOScriptCodeForLocale) {
+  EXPECT_FALSE(GetISOScriptCode("en_US.UTF-8@currency=USD"));
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeCodeForLanguageCodeDashScriptDashCountryCodeCode) {
-  // Arrange
-  const std::string locale = "az-Latn-AZ";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "AZ";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetDefaultISOCountryCodeString) {
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
+  EXPECT_EQ("US", GetDefaultISOCountryCodeString());
 }
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeUnderscoreCountryCodeCode) {
-  // Arrange
-  const std::string locale = "en_US";
-
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  // Assert
-  const std::string expected_language_code = "en";
-  EXPECT_EQ(expected_language_code, language_code);
+TEST(LocaleUtilTest, GetFallbackDefaultISOCountryCodeString) {
+  const test::ScopedDefaultLocale scoped_default_locale({});
+  EXPECT_EQ("US", GetDefaultISOCountryCodeString());
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeCodeForLanguageCodeUnderscoreCountryCodeCode) {
-  // Arrange
-  const std::string locale = "en_US";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "US";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetISOCountryCodeForLocale) {
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
+  EXPECT_EQ("US", GetISOCountryCode("en_Latn_US.UTF-8@currency=USD"));
 }
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeUnderscoreCountryCodeCodeDotEncoding) {
-  // Arrange
-  const std::string locale = "en_US.UTF-8";
-
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  // Assert
-  const std::string expected_language_code = "en";
-  EXPECT_EQ(expected_language_code, language_code);
+TEST(LocaleUtilTest, GetDefaultUNM49CodeString) {
+  const test::ScopedDefaultLocale scoped_default_locale("en_001");
+  EXPECT_EQ("001", GetDefaultISOCountryCodeString());
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeCodeForLanguageCodeUnderscoreCountryCodeCodeDotEncoding) {
-  // Arrange
-  const std::string locale = "en_US.UTF-8";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "US";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetUNM49CodeForLocaleString) {
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
+  EXPECT_EQ("001", GetISOCountryCode("en_001"));
 }
 
-TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeUnderscoreScriptUnderscoreCountryCodeCode) {
-  // Arrange
-  const std::string locale = "az_Latn_AZ";
-
-  // Act
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  // Assert
-  const std::string expected_language_code = "az";
-  EXPECT_EQ(expected_language_code, language_code);
+TEST(LocaleUtilTest, GetDefaultCharSetString) {
+  const test::ScopedDefaultLocale scoped_default_locale("en_Latn_US.UTF-8");
+  EXPECT_EQ("UTF-8", GetDefaultCharSetString());
 }
 
-TEST(BatAdsLocaleTest,
-    CountryCodeCodeForLanguageCodeUnderscoreScriptUnderscoreCountryCodeCode) {
-  // Arrange
-  const std::string locale = "az_Latn_AZ";
-
-  // Act
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  // Assert
-  const std::string expected_country_code = "AZ";
-  EXPECT_EQ(expected_country_code, country_code);
+TEST(LocaleUtilTest, GetUnspecifiedDefaultCharSetString) {
+  const test::ScopedDefaultLocale scoped_default_locale({});
+  EXPECT_FALSE(GetDefaultCharSetString());
 }
 
-}  // namespace ads
+TEST(LocaleUtilTest, GetCharSetForLocale) {
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
+  EXPECT_EQ("UTF-8", GetCharSet("en_Latn_US.UTF-8@currency=USD"));
+}
+
+TEST(LocaleUtilTest, GetUnspecifiedCharSetForLocale) {
+  EXPECT_FALSE(GetCharSet("en_Latn_US@currency=USD"));
+}
+
+TEST(LocaleUtilTest, GetDefaultVariantString) {
+  const test::ScopedDefaultLocale scoped_default_locale(
+      "en_Latn_US.UTF-8@currency=USD");
+  EXPECT_EQ("currency=USD", GetDefaultVariantString());
+}
+
+TEST(LocaleUtilTest, GetUnspecifiedDefaultVariantString) {
+  const test::ScopedDefaultLocale scoped_default_locale({});
+  EXPECT_FALSE(GetDefaultVariantString());
+}
+
+TEST(LocaleUtilTest, GetVariantForLocale) {
+  const test::ScopedDefaultLocale scoped_default_locale("ja_JP");
+  EXPECT_EQ("currency=USD", GetVariant("en_Latn_US.UTF-8@currency=USD"));
+}
+
+TEST(LocaleUtilTest, GetUnspecifiedVariantForLocale) {
+  EXPECT_FALSE(GetVariant("en_Latn_US.UTF-8"));
+}
+
+}  // namespace brave_l10n

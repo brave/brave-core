@@ -21,7 +21,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
 #include "components/bookmarks/browser/bookmark_node.h"

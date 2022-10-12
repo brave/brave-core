@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {
- protected:
-  BatAdsTextEmbeddingHtmlEventsTest() = default;
-
-  ~BatAdsTextEmbeddingHtmlEventsTest() override = default;
-};
+class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   // Arrange

@@ -24,12 +24,7 @@ constexpr char kSimpleResourceFile[] =
 
 }  // namespace
 
-class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
- protected:
-  BatAdsEmbeddingProcessingPipelineTest() = default;
-
-  ~BatAdsEmbeddingProcessingPipelineTest() override = default;
-};
+class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {};
 
 TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedText) {
   // Arrange

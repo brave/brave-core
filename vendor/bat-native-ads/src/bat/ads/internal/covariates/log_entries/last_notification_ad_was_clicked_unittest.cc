@@ -17,13 +17,7 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest() = default;
-
-  ~BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest() override =
-      default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest, GetDataType) {
   std::unique_ptr<CovariateLogEntryInterface> entry =

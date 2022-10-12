@@ -17,8 +17,6 @@ namespace ads {
 
 class BatAdsTextClassificationProcessorTest : public UnitTestBase {
  protected:
-  BatAdsTextClassificationProcessorTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

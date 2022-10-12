@@ -25,8 +25,6 @@ namespace ads::inline_content_ads {
 class BatAdsInlineContentAdServingTest : public ServingObserver,
                                          public UnitTestBase {
  protected:
-  BatAdsInlineContentAdServingTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -114,7 +114,6 @@ You can add multiple responses per request, which will be returned in the specif
 | mock  | type  | default  | example  |
 |---|---|---|---|
 | Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kRelease);`  |
-| Locale  | string  | en-US  | `MockLocaleHelper(locale_helper_mock_, "en-GB");`  |
 | Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);`  |
 | Is network connection available  | boolean  | true  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
 | Is browser active  | boolean  | true  | `MockIsBrowserActive(ads_client_mock_, false);`  |

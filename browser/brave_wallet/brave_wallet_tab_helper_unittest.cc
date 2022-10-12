@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/browser_with_test_window_test.h"

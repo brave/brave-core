@@ -11,7 +11,7 @@
 #include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
-#include "bat/ads/internal/locale/locale_manager.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads::targeting::model {
 
@@ -79,7 +79,7 @@ SegmentList TextClassification::GetSegments() const {
 
   if (probabilities.empty()) {
     BLOG(1, "No text classification probabilities found for "
-                << LocaleManager::GetInstance()->GetLocale() << " locale");
+                << brave_l10n::GetDefaultLocaleString() << " locale");
 
     return {};
   }

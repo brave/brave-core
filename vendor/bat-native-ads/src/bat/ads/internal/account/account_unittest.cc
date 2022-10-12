@@ -46,8 +46,6 @@ constexpr char kInvalidWalletSeed[] =
 
 class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
-  BatAdsAccountTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

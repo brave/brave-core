@@ -22,8 +22,6 @@ constexpr char kIssue25384ConfirmationStateFilename[] =
 
 class BatAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
  protected:
-  BatAdsLegacyRewardsMigrationIssue25384Test() = default;
-
   void SetUpMocks() override {
     CopyFileFromTestPathToTempPath(kIssue25384ConfirmationStateFilename,
                                    kConfirmationStateFilename);

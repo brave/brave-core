@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsPaymentsIssuerUtilTest : public UnitTestBase {
- protected:
-  BatAdsPaymentsIssuerUtilTest() = default;
-
-  ~BatAdsPaymentsIssuerUtilTest() override = default;
-};
+class BatAdsPaymentsIssuerUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsPaymentsIssuerUtilTest, IsValid) {
   // Arrange

@@ -15,8 +15,6 @@ namespace ads {
 
 class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsConversionsDatabaseTableIntegrationTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }

@@ -18,8 +18,6 @@ namespace ads::promoted_content_ads {
 
 class BatAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsPromotedContentAdsPerDayPermissionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

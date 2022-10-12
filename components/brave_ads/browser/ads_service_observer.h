@@ -17,9 +17,6 @@ class AdsServiceObserver : public base::CheckedObserver {
 
   // Invoked when a browser upgrade is required to serve ads.
   virtual void OnNeedsBrowserUpgradeToServeAds() {}
-
- protected:
-  ~AdsServiceObserver() override = default;
 };
 
 }  // namespace brave_ads

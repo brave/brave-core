@@ -23,7 +23,7 @@
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"

@@ -18,7 +18,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"

@@ -8,7 +8,6 @@
 #include <string>
 
 #include "bat/ads/build_channel.h"
-#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/privacy/locale/country_code_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -29,13 +28,12 @@ base::Value::Dict GetLocale() {
     return user_data;
   }
 
-  const std::string locale = LocaleManager::GetInstance()->GetLocale();
+  const std::string country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
-  if (privacy::locale::IsMemberOfAnonymitySet(locale)) {
-    const std::string country_code = brave_l10n::GetCountryCode(locale);
+  if (privacy::locale::IsCountryCodeMemberOfAnonymitySet(country_code)) {
     user_data.Set(kCountryCodeKey, country_code);
   } else {
-    if (privacy::locale::ShouldClassifyAsOther(locale)) {
+    if (privacy::locale::ShouldClassifyCountryCodeAsOther(country_code)) {
       user_data.Set(kCountryCodeKey, kOtherCountryCode);
     }
   }

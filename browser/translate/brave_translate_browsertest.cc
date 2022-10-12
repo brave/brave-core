@@ -13,7 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"

@@ -19,6 +19,7 @@
 #include "base/feature_list.h"
 #include "base/location.h"
 #include "base/one_shot_event.h"
+#include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
@@ -30,7 +31,6 @@
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "url/origin.h"
 
@@ -230,13 +230,11 @@ void PublishersController::UpdateDefaultLocale() {
 
   auto available_locales = GetPublisherLocales(publishers_);
 
-  // Locale is lang-COUNTRY but Brave News wants the format to be
-  // lang_COUNTRY.
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-  const std::string brave_news_locale = language_code + "_" + country_code;
+  // Locale can be "language_Script_COUNTRY.charset@variant" but Brave News
+  // wants the format to be "language_COUNTRY".
+  const std::string brave_news_locale =
+      base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
+                    brave_l10n::GetDefaultISOLanguageCodeString()});
 
   // Fallback to en_US, if we can't match anything else.
   // TODO(fallaciousreasoning): Implement more complicated fallback

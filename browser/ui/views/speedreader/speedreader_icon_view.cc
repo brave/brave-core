@@ -14,7 +14,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"

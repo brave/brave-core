@@ -26,8 +26,6 @@ namespace ads {
 
 class BatAdsConversionsTest : public UnitTestBase {
  protected:
-  BatAdsConversionsTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

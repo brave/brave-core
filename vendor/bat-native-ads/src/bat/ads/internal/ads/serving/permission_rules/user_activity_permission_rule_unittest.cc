@@ -17,8 +17,6 @@ namespace ads {
 
 class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsUserActivityPermissionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

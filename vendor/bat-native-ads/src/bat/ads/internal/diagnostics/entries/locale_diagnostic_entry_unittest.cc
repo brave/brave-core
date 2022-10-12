@@ -6,8 +6,8 @@
 #include "bat/ads/internal/diagnostics/entries/locale_diagnostic_entry.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
@@ -17,7 +17,7 @@ class BatAdsLocaleDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsLocaleDiagnosticEntryTest, GetValue) {
   // Arrange
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   const LocaleDiagnosticEntry diagnostic_entry;
 
@@ -26,7 +26,7 @@ TEST_F(BatAdsLocaleDiagnosticEntryTest, GetValue) {
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kLocale, diagnostic_entry.GetType());
   EXPECT_EQ("Locale", diagnostic_entry.GetName());
-  EXPECT_EQ("en-KY", diagnostic_entry.GetValue());
+  EXPECT_EQ("en_KY", diagnostic_entry.GetValue());
 }
 
 }  // namespace ads
