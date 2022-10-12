@@ -17,6 +17,8 @@ source_set("app") {
   sources = [
     "brave_core_main.h",
     "brave_core_main.mm",
+    "brave_core_switches.h",
+    "brave_core_switches.mm",
     "brave_main_delegate.h",
     "brave_main_delegate.mm",
   ]
@@ -27,6 +29,8 @@ source_set("app") {
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_wallet/browser",
     "//brave/components/constants",
+    "//brave/components/p3a",
+    "//brave/components/p3a:buildflags",
     "//brave/components/skus/browser",
     "//brave/components/update_client:buildflags",
     "//brave/ios/app/resources",
@@ -40,6 +44,7 @@ source_set("app") {
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/ledger",
     "//brave/ios/browser/api/opentabs",
+    "//brave/ios/browser/api/p3a",
     "//brave/ios/browser/api/password",
     "//brave/ios/browser/api/qr_code",
     "//brave/ios/browser/api/skus:skus_mojom_wrappers",
