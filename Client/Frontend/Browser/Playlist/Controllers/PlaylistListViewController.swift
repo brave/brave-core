@@ -176,6 +176,8 @@ class PlaylistListViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
+    highlightActiveItem()
+    
     folderObserver = PlaylistManager.shared.onCurrentFolderDidChange
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
@@ -649,6 +651,15 @@ extension PlaylistListViewController {
 
     playerView.setControlsEnabled(!isExpired)
     activityIndicator.stopAnimating()
+  }
+  
+  func highlightActiveItem() {
+    let activeItemIndex = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
+    
+    tableView.selectRow(
+      at: IndexPath(row: activeItemIndex, section: 0),
+      animated: false,
+      scrollPosition: .none)
   }
 }
 
