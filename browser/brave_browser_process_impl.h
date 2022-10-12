@@ -32,6 +32,7 @@ namespace brave_component_updater {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 class ExtensionWhitelistService;
 #endif
+class HttpsUpgradeExceptionsService;
 class LocalDataFilesService;
 }  // namespace brave_component_updater
 
@@ -96,6 +97,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_component_updater::ExtensionWhitelistService*
   extension_whitelist_service() override;
 #endif
+  brave_component_updater::HttpsUpgradeExceptionsService*
+  https_upgrade_exceptions_service() override;
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
@@ -155,6 +158,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_component_updater::ExtensionWhitelistService>
       extension_whitelist_service_;
 #endif
+  std::unique_ptr<brave_component_updater::HttpsUpgradeExceptionsService>
+      https_upgrade_exceptions_service_;
 #if BUILDFLAG(ENABLE_GREASELION)
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;

@@ -1,11 +1,13 @@
 include_rules = [
   "+brave/components/constants",
+  "+brave/browser",
   "+components/content_settings/core",
   "+content/public/browser",
   "+content/public/common",
   "+services/network/public",
   "+storage/browser/blob",
   "+third_party/abseil-cpp/absl/random",
+  "+third_party/blink/public/common",
   "+third_party/blink/public/mojom",
   "+third_party/leveldatabase",
   "+third_party/re2",

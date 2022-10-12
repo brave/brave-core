@@ -83,6 +83,18 @@
       </template>
     </select>
   </div>
+  <div hidden="[[!isHttpsByDefaultEnabled_]]" class="settings-box">
+    <div class="start">$i18n{httpsUpgradeControlLabel}</div>
+    <select id="httpsUpgradeControlType" class="md-select"
+        on-change="onHttpsUpgradeControlChange_">
+      <template is="dom-repeat" items="[[httpsUpgradeControlTypes_]]">
+        <option value="[[item.value]]"
+            selected="[[controlEqual_(item.value, httpsUpgradeControlType_)]]">
+          [[item.name]]
+        </option>
+      </template>
+    </select>
+  </div>
   <settings-toggle-button id="noScriptControlType"
       class="cr-row"
       pref="{{prefs.brave.no_script_default}}"

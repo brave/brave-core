@@ -388,6 +388,11 @@ constexpr char kAllowCertainClientHintsDescription[] =
     "Allows setting certain request client hints (sec-ch-ua, sec-ch-ua-mobile, "
     "sec-ch-ua-platform)";
 
+constexpr char kHttpsByDefaultName[] = "Use HTTPS by Default";
+constexpr char kHttpsByDefaultDescription[] =
+    "Attempt to connect to all websites using HTTPS before falling back to "
+    "HTTP.";
+
 #if defined(TOOLKIT_VIEWS)
 constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
 constexpr char kBraveVerticalTabsDescription[] =
@@ -728,6 +733,11 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
       flag_descriptions::kBraveRoundTimeStampsDescription,                  \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kBraveRoundTimeStamps)},                         \
+    {"https-by-default",                                                    \
+      flag_descriptions::kHttpsByDefaultName,                               \
+      flag_descriptions::kHttpsByDefaultDescription,                        \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kHttpsByDefault)},                               \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

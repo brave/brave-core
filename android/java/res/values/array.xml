@@ -23,4 +23,10 @@
         <item>@string/block_fingerprinting_option_3</item>
     </string-array>
 
+    <string-array name="httpsUpgradeTexts">
+        <item>@string/https_upgrade_option_1</item>
+        <item>@string/https_upgrade_option_2</item>
+        <item>@string/https_upgrade_option_3</item>
+    </string-array>
+
 </resources>

@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -19,6 +20,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/pref_names.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -98,6 +100,30 @@ void SetDefaultThirdPartyCookieBlockValue(Profile* profile) {
       prefs::kCookieControlsMode,
       base::Value(static_cast<int>(
           content_settings::CookieControlsMode::kBlockThirdParty)));
+}
+
+void MigrateHttpsOnlyPrefToHttpsUpgradeSetting(Profile* profile) {
+  auto* prefs = profile->GetPrefs();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  if (brave_shields::IsHttpsByDefaultFeatureEnabled()) {
+    // In HTTPS by Default, if we previously had HTTPS-Only enabled, then
+    // enable Strict HTTPS Upgrades by default, and disable the HTTPS-Only pref.
+    if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {
+      brave_shields::SetHttpsUpgradeControlType(
+          map, brave_shields::ControlType::BLOCK, GURL());
+      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
+    }
+  } else {
+    // When HTTPS by Default is disabled, check if we had Strict HTTPS Upgrades
+    // enabled before, and if so, enable HTTPS-Only Mode and then changes the
+    // HTTPS Upgrade setting to Standard.
+    if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
+        brave_shields::ControlType::BLOCK) {
+      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+      brave_shields::SetHttpsUpgradeControlType(
+          map, brave_shields::ControlType::BLOCK_THIRD_PARTY, GURL());
+    }
+  }
 }
 
 }  // namespace brave

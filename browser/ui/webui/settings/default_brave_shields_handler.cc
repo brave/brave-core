@@ -61,9 +61,14 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
           &DefaultBraveShieldsHandler::SetFingerprintingControlType,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "setHTTPSEverywhereEnabled",
+      "getHttpsUpgradeControlType",
       base::BindRepeating(
-          &DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled,
+          &DefaultBraveShieldsHandler::GetHttpsUpgradeControlType,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setHttpsUpgradeControlType",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetHttpsUpgradeControlType,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setNoScriptControlType",
@@ -171,15 +176,28 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
       profile_->GetPrefs());
 }
 
-void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
+void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool value = args[0].GetBool();
 
-  brave_shields::SetHTTPSEverywhereEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
-      g_browser_process->local_state());
+  ControlType setting = brave_shields::GetHttpsUpgradeControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0].Clone(),
+                            base::Value(ControlTypeToString(setting)));
+}
+
+void DefaultBraveShieldsHandler::SetHttpsUpgradeControlType(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  std::string value = args[0].GetString();
+
+  brave_shields::SetHttpsUpgradeControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(

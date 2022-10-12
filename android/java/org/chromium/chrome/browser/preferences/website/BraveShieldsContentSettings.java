@@ -19,7 +19,7 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_ADS = "shieldsAds";
     static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
     static public final String RESOURCE_IDENTIFIER_DATA_SAVED = "data_saved";
-    static public final String RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES = "httpUpgradableResources";
+    static public final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "https_upgrade";
     static public final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
     static public final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
     static public final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";
@@ -79,8 +79,6 @@ public class BraveShieldsContentSettings {
         String setting_string = (value ? BLOCK_RESOURCE : ALLOW_RESOURCE);
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             BraveShieldsContentSettingsJni.get().setBraveShieldsEnabled(value, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            BraveShieldsContentSettingsJni.get().setHTTPSEverywhereEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
         }
@@ -90,6 +88,9 @@ public class BraveShieldsContentSettings {
             String settingOption, boolean fromTopShields) {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             BraveShieldsContentSettingsJni.get().setFingerprintingControlType(
+                    settingOption, host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTPS_UPGRADE)) {
+            BraveShieldsContentSettingsJni.get().setHttpsUpgradeControlType(
                     settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
@@ -104,8 +105,6 @@ public class BraveShieldsContentSettings {
         String settings = BLOCK_RESOURCE;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             return BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            return BraveShieldsContentSettingsJni.get().getHTTPSEverywhereEnabled(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         }
@@ -118,6 +117,8 @@ public class BraveShieldsContentSettings {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(
                     host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTPS_UPGRADE)) {
+            return BraveShieldsContentSettingsJni.get().getHttpsUpgradeControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
@@ -160,8 +161,8 @@ public class BraveShieldsContentSettings {
         String getCookieControlType(String url, Profile profile);
         void setFingerprintingControlType(String type, String url, Profile profile);
         String getFingerprintingControlType(String url, Profile profile);
-        void setHTTPSEverywhereEnabled(boolean enabled, String url, Profile profile);
-        boolean getHTTPSEverywhereEnabled(String url, Profile profile);
+        void setHttpsUpgradeControlType(String type, String url, Profile profile);
+        String getHttpsUpgradeControlType(String url, Profile profile);
         void setNoScriptControlType(String type, String url, Profile profile);
         String getNoScriptControlType(String url, Profile profile);
 

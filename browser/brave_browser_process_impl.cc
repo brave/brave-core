@@ -62,6 +62,8 @@
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 #endif
 
+#include "brave/components/brave_component_updater/browser/https_upgrade_exceptions_service.h"
+
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #endif
@@ -255,6 +257,16 @@ BraveBrowserProcessImpl::extension_whitelist_service() {
   return extension_whitelist_service_.get();
 }
 #endif
+
+brave_component_updater::HttpsUpgradeExceptionsService*
+BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
+  if (!https_upgrade_exceptions_service_) {
+    https_upgrade_exceptions_service_ =
+        brave_component_updater::HttpsUpgradeExceptionsServiceFactory(
+            local_data_files_service());
+  }
+  return https_upgrade_exceptions_service_.get();
+}
 
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*

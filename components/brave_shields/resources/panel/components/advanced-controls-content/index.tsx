@@ -8,9 +8,10 @@ import * as S from './style'
 import Toggle from '../../../../../web-components/toggle'
 import Select from '../../../../../web-components/select'
 import { getLocale } from '../../../../../common/locale'
-import getPanelBrowserAPI, { AdBlockMode, CookieBlockMode, FingerprintMode } from '../../api/panel_browser_api'
+import getPanelBrowserAPI, { AdBlockMode, CookieBlockMode, FingerprintMode, HttpsUpgradeMode } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
+import { loadTimeData } from '../../../../../common/loadTimeData'
 
 const adBlockModeOptions = [
   { value: AdBlockMode.AGGRESSIVE, text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
@@ -28,6 +29,12 @@ const fingerprintModeOptions = [
   { value: FingerprintMode.STRICT, text: getLocale('braveShieldsFingerprintingBlockedAgg') },
   { value: FingerprintMode.STANDARD, text: getLocale('braveShieldsFingerprintingBlockedStd') },
   { value: FingerprintMode.ALLOW, text: getLocale('braveShieldsFingerprintingAllowAll') }
+]
+
+const httpsUpgradeModeOptions = [
+  { value: HttpsUpgradeMode.STRICT, text: getLocale('braveShieldsHttpsUpgradeModeStrict') },
+  { value: HttpsUpgradeMode.STANDARD, text: getLocale('braveShieldsHttpsUpgradeModeStandard') },
+  { value: HttpsUpgradeMode.DISABLED, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
 ]
 
 function GlobalSettings () {
@@ -80,19 +87,19 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
+  const handleHttpsUpgradeModeChange = (value: string) => {
+    getPanelBrowserAPI().dataHandler.setHttpsUpgradeMode(parseInt(value))
+    if (getSiteSettings) getSiteSettings()
+  }
+
   const handleIsNoScriptEnabledChange = (isEnabled: boolean) => {
     getPanelBrowserAPI().dataHandler.setIsNoScriptsEnabled(isEnabled)
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleHTTPSEverywhereEnabledChange = (isEnabled: boolean) => {
-    getPanelBrowserAPI().dataHandler.setHTTPSEverywhereEnabled(isEnabled)
-    if (getSiteSettings) getSiteSettings()
-  }
-
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
-  const httpRedirectsListCount = siteBlockInfo?.httpRedirectsList.length ?? 0
   const jsListCount = siteBlockInfo?.jsList.length ?? 0
+  const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
 
   return (
     <section
@@ -126,26 +133,21 @@ function AdvancedControlsContent () {
             <span>{adsListCount > 99 ? '99+' : adsListCount}</span>
           </S.CountButton>
         </S.ControlGroup>
-        <S.ControlGroup>
-          <label>
-            <span>{getLocale('braveShieldsConnectionsUpgraded')}</span>
-            <Toggle
-              onChange={handleHTTPSEverywhereEnabledChange}
-              isOn={siteSettings?.isHttpsEverywhereEnabled}
-              size='sm'
-              accessibleLabel='Enable HTTPS'
-              disabled={siteBlockInfo?.isBraveShieldsManaged}
-            />
-          </label>
-          <S.CountButton
-            title={httpRedirectsListCount.toString()}
-            aria-label={getLocale('braveShieldsConnectionsUpgraded')}
-            onClick={() => setViewType?.(ViewType.HttpsList)}
-            disabled={httpRedirectsListCount <= 0}
-          >
-            {httpRedirectsListCount > 99 ? '99+' : httpRedirectsListCount}
-          </S.CountButton>
-        </S.ControlGroup>
+        {isHttpsByDefaultEnabled && <S.ControlGroup>
+          <div className="col-2">
+            <Select
+              value={siteSettings?.httpsUpgradeMode}
+              ariaLabel={getLocale('braveShieldsHttpsUpgradeModeStandard')}
+              onChange={handleHttpsUpgradeModeChange}
+            >
+            {httpsUpgradeModeOptions.map(entry => {
+                return (
+                  <option key={entry.value} value={entry.value}>{entry.text}</option>
+                )
+              })}
+            </Select>
+          </div>
+        </S.ControlGroup>}
         <S.ControlGroup>
           <label>
             <span>{getLocale('braveShieldsScriptsBlocked')}</span>

@@ -10,11 +10,13 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -124,7 +126,9 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
   if (base::FeatureList::IsEnabled(
           blink::features::kBraveTorWindowsHttpsOnly)) {
-    pref_service->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+    brave_shields::SetHttpsUpgradeControlType(
+        HostContentSettingsMapFactory::GetForProfile(profile),
+        brave_shields::ControlType::BLOCK, GURL());
   }
   // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

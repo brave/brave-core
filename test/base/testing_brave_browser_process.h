@@ -1,7 +1,7 @@
-/* Copyright (c) 2021 The Brave Software Team. Distributed under the MPL2
- * license. This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // An implementation of BraveBrowserProcess for unit tests that fails for most
 // services. By preventing creation of services, we reduce dependencies and
@@ -53,6 +53,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
+  brave_component_updater::HttpsUpgradeExceptionsService*
+  https_upgrade_exceptions_service() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
 #if BUILDFLAG(ENABLE_TOR)

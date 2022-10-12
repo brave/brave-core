@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_UTIL_H_
@@ -103,13 +103,18 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url);
-void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
-                               bool enable,
-                               const GURL& url,
-                               PrefService* local_state = nullptr);
+
+bool IsHttpsByDefaultFeatureEnabled();
+void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
+                                ControlType type,
+                                const GURL& url,
+                                PrefService* local_state = nullptr);
 // reset to the default value
-void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
-bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
+void ResetHttpsUpgradeEnabled(HostContentSettingsMap* map, const GURL& url);
+ControlType GetHttpsUpgradeControlType(HostContentSettingsMap* map,
+                                       const GURL& url);
+bool ShouldUpgradeToHttps(HostContentSettingsMap* map, const GURL& url);
+bool ShouldForceHttps(HostContentSettingsMap* map, const GURL& url);
 
 void SetNoScriptControlType(HostContentSettingsMap* map,
                             ControlType type,

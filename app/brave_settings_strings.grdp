@@ -251,6 +251,18 @@
   <message name="IDS_SETTINGS_STRICT_FINGERPRINTING" desc="Select value">
     Strict, may break sites
   </message>
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_UPGRADE_CONTROL_LABEL" desc="Default Brave https upgrade control setting label">
+    Upgrade connections to HTTPS
+  </message>
+  <message name="IDS_SETTINGS_STANDARD_HTTPS_UPGRADE" desc="Select value">
+    Standard
+  </message>
+  <message name="IDS_SETTINGS_DISABLED_HTTPS_UPGRADE" desc="Select value">
+    Disabled
+  </message>
+  <message name="IDS_SETTINGS_STRICT_HTTPS_UPGRADE" desc="Select value">
+    Strict
+  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
     Block cookies
   </message>

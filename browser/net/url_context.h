@@ -82,7 +82,7 @@ struct BraveRequestInfo {
   // Whether or not Shields "aggressive" mode was enabled where the request was
   // initiated.
   bool aggressive_blocking = false;
-  bool allow_http_upgradable_resource = false;
+  int allow_http_upgradable_resource = 0;
   bool allow_referrers = false;
   bool is_webtorrent_disabled = false;
   int frame_tree_node_id = 0;

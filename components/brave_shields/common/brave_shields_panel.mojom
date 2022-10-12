@@ -40,8 +40,8 @@ interface DataHandler {
   SetAdBlockMode(AdBlockMode mode);
   SetFingerprintMode(FingerprintMode mode);
   SetCookieBlockMode(CookieBlockMode mode);
+  SetHttpsUpgradeMode(HttpsUpgradeMode mode);
   SetIsNoScriptsEnabled(bool is_enabled);
-  SetHTTPSEverywhereEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
   OpenWebCompatWindow();
   UpdateFavicon();
@@ -63,7 +63,7 @@ struct SiteSettings {
   AdBlockMode ad_block_mode;
   FingerprintMode fingerprint_mode;
   CookieBlockMode cookie_block_mode;
-  bool is_https_everywhere_enabled;
+  HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
 };
 
@@ -83,4 +83,10 @@ enum CookieBlockMode {
   CROSS_SITE_BLOCKED,
   BLOCKED,
   ALLOW
+};
+
+enum HttpsUpgradeMode {
+  STRICT,
+  STANDARD,
+  DISABLED
 };

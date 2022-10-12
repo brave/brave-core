@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
@@ -31,6 +32,7 @@ import org.chromium.content_public.browser.test.util.TestThreadUtils;
 
 // Checks if changes have been made to the Chromium privacy settings
 @RunWith(ChromeJUnit4ClassRunner.class)
+@Batch(Batch.UNIT_TESTS)
 public class BravePrivacySettingsTest {
     // Chromium Prefs that are being checked
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
@@ -46,7 +48,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
-    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 23;
+    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 22;
 
     private int mItemsLeft;
 

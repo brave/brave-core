@@ -212,9 +212,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_STATS_NOTIFICATION_ON"  desc="Text for Turn on notifications">
         Turn on notifications
       </message>
-      <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
-        Upgrade connections to HTTPS
-      </message>
       <message name="IDS_NEXT_TIP_DATE"  desc="Text for Next tip date">
         Next tip date
       </message>
@@ -301,9 +298,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_PROBLEM_SENDING_YOUR_TIP_DESCRIPTION" desc="Text for problem sending tip description">
         Please close and reopen the tipping banner to try again.
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
-        Opens some sites using a secure HTTPS connection instead of plain HTTP.
       </message>
       <message name="IDS_DE_AMP_SWITCH" desc="Switch to activate De-AMP feature">
         Auto-redirect AMP pages
@@ -468,6 +462,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BLOCK_TRACKERS_ADS_SUMMARY" desc="Text summary for Block trackers and ads.">
         Prevents trackers &amp; ads from loading and showing in webpages
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_TEXT" desc="Text for shields option.">
+        Ensure the connections to websites are secure.
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_TITLE" desc="Summary for shields option.">
+        Upgrade connections to HTTPS
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_SUMMARY" desc="Summary for shields option.">
+        Ensure the connections to websites are secure.
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_1" desc="Title for shields option.">
+        Require all connections to use HTTPS (strict)
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_2" desc="Title for shields option.">
+        Upgrade to HTTPS whenever possible (default)
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_3" desc="Title for shields option.">
+        Don't upgrade connections to HTTPS (disabled)
       </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions

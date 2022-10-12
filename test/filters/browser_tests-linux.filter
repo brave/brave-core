@@ -15,6 +15,7 @@
 -ExtensionDialogTest.*
 -ExtensionStartupTest.*
 -ExternalProtocolHandlerSandboxBrowserTest.*
+-HttpsOnlyModePrefsBrowserTest.PrefStatesRecorded
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
 -MetricIntegrationTest.FirstInputDelay

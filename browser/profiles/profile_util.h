@@ -46,6 +46,10 @@ void SetDefaultSearchVersion(Profile* profile, bool is_new_profile);
 // instead of 'Block Third Party in Incognito'
 void SetDefaultThirdPartyCookieBlockValue(Profile* profile);
 
+// Checks if the user previously had HTTPS-Only Mode enabled. If so,
+// set the HttpsUpgrade default setting to strict.
+void MigrateHttpsOnlyPrefToHttpsUpgradeSetting(Profile* profile);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_
