@@ -724,6 +724,32 @@ void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
   }
 }
 
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetCountryCode(JNIEnv* env) {
+  std::string country_code;
+  if (brave_rewards_service_) {
+    country_code = brave_rewards_service_->GetCountryCode();
+  }
+
+  return base::android::ConvertUTF8ToJavaString(env, country_code);
+}
+
+void BraveRewardsNativeWorker::GetAvailableCountries(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetAvailableCountries(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetAvailableCountries,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnGetAvailableCountries(
+    std::vector<std::string> countries) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onGetAvailableCountries(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ToJavaArrayOfStrings(env, countries));
+}
+
 void BraveRewardsNativeWorker::GetPublisherBanner(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& publisher_key) {

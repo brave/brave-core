@@ -22,6 +22,7 @@ public interface BraveRewardsObserver {
   default public void OnResetTheWholeState(boolean success) {};
   default public void OnGrantFinish(int result) {};
   default public void OnGetExternalWallet(int error_code, String external_wallet){};
+  default public void onGetAvailableCountries(String[] countries){};
   default public void OnDisconnectWallet(int error_code, String external_wallet){};
   default public void OnClaimPromotion(int error_code) {};
   default public void onUnblindedTokensReady() {}

@@ -141,6 +141,10 @@ class BraveRewardsNativeWorker
 
   void GetExternalWallet(JNIEnv* env);
 
+  base::android::ScopedJavaLocalRef<jstring> GetCountryCode(JNIEnv* env);
+
+  void GetAvailableCountries(JNIEnv* env);
+
   void GetPublisherBanner(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher_key);
@@ -218,6 +222,8 @@ class BraveRewardsNativeWorker
 
   void OnGetExternalWallet(const ledger::mojom::Result result,
                            ledger::mojom::ExternalWalletPtr wallet);
+
+  void OnGetAvailableCountries(std::vector<std::string> countries);
 
   void onPublisherBanner(ledger::mojom::PublisherBannerPtr wallet);
 
