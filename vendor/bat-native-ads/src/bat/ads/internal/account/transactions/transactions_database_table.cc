@@ -168,7 +168,7 @@ void Transactions::Update(
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
     transaction_ids.push_back(unblinded_payment_token.transaction_id);
   }
-  transaction_ids.push_back(rewards::kMigrationUnreconciledTransactionId);
+  transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
   const std::string query = base::StringPrintf(
       "UPDATE %s "
