@@ -154,7 +154,7 @@ std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
 
 std::string LoadOnFileTaskRunner(const base::FilePath& path) {
   std::string data;
-  bool success = base::ReadFileToString(path, &data);
+  const bool success = base::ReadFileToString(path, &data);
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
@@ -232,7 +232,7 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
       VLOG(1) << "Created " << ads_service_base_path.value();
     }
 
-    base::FilePath confirmations_state_path =
+    const base::FilePath confirmations_state_path =
         ads_service_base_path.AppendASCII("confirmations.json");
 
     VLOG(1) << "Migrating " << legacy_confirmations_state_path.value() << " to "
@@ -1405,7 +1405,7 @@ void AdsServiceImpl::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
 
     const GURL url = GURL(kNotificationAdUrlPrefix + ad.placement_id);
 
-    std::unique_ptr<message_center::Notification> notification =
+    const std::unique_ptr<message_center::Notification> notification =
         std::make_unique<message_center::Notification>(
             message_center::NOTIFICATION_TYPE_SIMPLE, ad.placement_id, title,
             body, ui::ImageModel(), std::u16string(), url,
@@ -1503,7 +1503,7 @@ void AdsServiceImpl::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
-  std::u16string search_text;
+  const std::u16string search_text;
   history::QueryOptions options;
   options.SetRecentDayRange(days_ago);
   options.max_count = max_count;
@@ -1838,7 +1838,7 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
   bat_ads_->OnDidUpdateResourceComponent(id);
 }
 
-void AdsServiceImpl::OnCompleteReset(bool success) {
+void AdsServiceImpl::OnCompleteReset(bool /*success*/) {
   WipeState(/* should_shutdown */ true);
 }
 
@@ -1899,7 +1899,7 @@ void AdsServiceImpl::OnURLRequest(
   } else if (!url_loader->ResponseInfo()->headers) {
     VLOG(6) << "Failed to obtain headers from the network stack";
   } else {
-    scoped_refptr<net::HttpResponseHeaders> headers_list =
+    const scoped_refptr<net::HttpResponseHeaders> headers_list =
         url_loader->ResponseInfo()->headers;
     response_code = headers_list->response_code();
 
