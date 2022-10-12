@@ -184,6 +184,10 @@ void BraveVpnService::ScheduleBackgroundRegionDataFetch() {
 
 void BraveVpnService::OnCreated() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!commands_requested_)
+    return;
+
   VLOG(2) << __func__;
   if (cancel_connecting_) {
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
@@ -206,6 +210,7 @@ void BraveVpnService::OnCreateFailed() {
   if (cancel_connecting_)
     cancel_connecting_ = false;
 
+  commands_requested_ = false;
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_NOT_ALLOWED);
 }
 
@@ -263,7 +268,9 @@ void BraveVpnService::OnConnected() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
 
-  if (cancel_connecting_) {
+  commands_requested_ = false;
+
+  if (commands_requested_ && cancel_connecting_) {
     // As connect is done, we don't need more for cancelling.
     // Just start normal Disconenct() process.
     cancel_connecting_ = false;
@@ -288,6 +295,7 @@ void BraveVpnService::OnConnectFailed() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
 
+  commands_requested_ = false;
   cancel_connecting_ = false;
 
   // Clear previously used connection info if failed.
@@ -302,7 +310,7 @@ void BraveVpnService::OnDisconnected() {
                                            ? ConnectionState::CONNECT_FAILED
                                            : ConnectionState::DISCONNECTED);
 
-  if (needs_connect_) {
+  if (commands_requested_ && needs_connect_) {
     needs_connect_ = false;
     Connect();
   }
@@ -316,6 +324,7 @@ void BraveVpnService::OnIsDisconnecting() {
 
 void BraveVpnService::CreateVPNConnection() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
   if (cancel_connecting_) {
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
     cancel_connecting_ = false;
@@ -333,6 +342,8 @@ void BraveVpnService::RemoveVPNConnnection() {
 
 void BraveVpnService::Connect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  commands_requested_ = true;
 
   if (connection_state_ == ConnectionState::DISCONNECTING ||
       connection_state_ == ConnectionState::CONNECTING) {

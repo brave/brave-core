@@ -282,6 +282,11 @@ class BraveVpnService :
 
   SEQUENCE_CHECKER(sequence_checker_);
 
+  // Only get status update and don't issue commands implicitely if false.
+  // TODO(simonhong): This service should be global instead of per-profile
+  // instance because all profiles shares same vpn status and it's stored
+  // in local prefs.
+  bool commands_requested_ = false;
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
