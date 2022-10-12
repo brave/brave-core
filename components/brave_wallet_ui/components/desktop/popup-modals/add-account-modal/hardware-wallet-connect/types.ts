@@ -8,6 +8,7 @@ import { BraveWallet } from '../../../../../constants/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 export { SolDerivationPaths } from '../../../../../common/hardware/types'
 
+// TODO(apaymyshev): strings below need localization.
 export const HardwareWalletDerivationPathLocaleMapping = {
   [LedgerDerivationPaths.LedgerLive]: 'Ledger Live',
   [LedgerDerivationPaths.Legacy]: 'Legacy (MEW/MyCrypto)',
@@ -20,6 +21,7 @@ export const HardwareWalletDerivationPathsMapping = {
   [BraveWallet.TREZOR_HARDWARE_VENDOR]: TrezorDerivationPaths
 }
 
+// TODO(apaymyshev): strings below need localization.
 export const SolHardwareWalletDerivationPathLocaleMapping = {
   [SolDerivationPaths.Default]: 'Default',
   [SolDerivationPaths.LedgerLive]: 'Ledger Live'

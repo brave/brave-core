@@ -35,7 +35,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     return BraveWallet.CoinType.SOL
   }
 
-  getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
+  getAccounts = async (from: number, to: number, scheme: SolDerivationPaths): Promise<GetAccountsHardwareOperationResult> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -82,7 +82,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     return { success: true, payload: responsePayload.signature }
   }
 
-  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
+  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean, scheme: SolDerivationPaths): Promise<GetAccountsHardwareOperationResult> => {
     let accounts = []
     const zeroPath = this.getPathForIndex(0, scheme)
     for (const path of paths) {
@@ -127,7 +127,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     return { success: true, payload: accounts }
   }
 
-  private readonly getPathForIndex = (index: number, scheme: string): string => {
+  private readonly getPathForIndex = (index: number, scheme: SolDerivationPaths): string => {
     if (scheme === SolDerivationPaths.LedgerLive) {
       return `44'/501'/${index}'`
     }

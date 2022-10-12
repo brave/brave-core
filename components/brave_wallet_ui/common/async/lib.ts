@@ -33,7 +33,7 @@ import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqu
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
-import { GetAccountsHardwareOperationResult } from '../hardware/types'
+import { GetAccountsHardwareOperationResult, SolDerivationPaths } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
@@ -84,7 +84,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
         })
         .catch(reject)
     } else if (keyring instanceof SolanaLedgerBridgeKeyring && opts.network && opts.scheme) {
-      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
+      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme as SolDerivationPaths)
         .then(async (result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             const { braveWalletService } = getAPIProxy()
