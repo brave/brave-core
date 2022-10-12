@@ -23,7 +23,7 @@ bool MatchDayOfWeek(const CreativeDaypartInfo& daypart,
 }
 
 bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
-  return !(minutes < daypart.start_minute || minutes > daypart.end_minute);
+  return minutes >= daypart.start_minute && minutes <= daypart.end_minute;
 }
 
 }  // namespace
