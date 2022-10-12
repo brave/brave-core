@@ -31,10 +31,6 @@ const LoadMoreButtonContainer = styled.div`
   grid-column: 2;
 `
 
-const Hidable = styled.div<{ hidden: boolean }>`
-  display: ${p => p.hidden ? 'none' : 'unset'};
-`
-
 // The default number of category cards to show.
 const DEFAULT_NUM_CATEGORIES = 3
 
@@ -54,23 +50,23 @@ export default function Discover () {
 function Home () {
   const [showingAllCategories, setShowingAllCategories] = React.useState(false)
   const channels = useChannels()
-  const { sortedPublishers, filteredPublisherIds } = useBraveNews()
+  const { filteredPublisherIds } = useBraveNews()
 
-  const visibleChannelIds = React.useMemo(() => new Set(channels
+  const visibleChannelIds = React.useMemo(() => channels
     // If we're showing all channels, there's no end to the slice.
     // Otherwise, just show the default number.
     .slice(0, showingAllCategories
       ? undefined
       : DEFAULT_NUM_CATEGORIES)
-    .map(c => c.channelName)),
+    .map(c => c.channelName),
     [channels, showingAllCategories])
 
   return (
     <>
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
-      {channels.map(c => <Hidable key={c.channelName} hidden={!visibleChannelIds.has(c.channelName)}>
-        <ChannelCard key={c.channelName} channelId={c.channelName} />
-      </Hidable>)}
+      {visibleChannelIds.map(channelId =>
+        <ChannelCard key={channelId} channelId={channelId} />
+      )}
       {!showingAllCategories && <LoadMoreButtonContainer>
         <Button onClick={() => setShowingAllCategories(true)}>
             {getLocale('braveNewsLoadMoreCategoriesButton')}
@@ -78,10 +74,9 @@ function Home () {
       </LoadMoreButtonContainer>}
       </DiscoverSection>
       <DiscoverSection name={getLocale('braveNewsAllSourcesHeader')}>
-      {sortedPublishers.map(p =>
-        <Hidable key={p.publisherId} hidden={!filteredPublisherIds.includes(p.publisherId)}>
-          <FeedCard publisherId={p.publisherId} />
-        </Hidable>)}
+      {filteredPublisherIds.map(publisherId =>
+        <FeedCard key={publisherId} publisherId={publisherId} />
+      )}
       </DiscoverSection>
     </>
   )
@@ -91,7 +86,6 @@ interface SearchResultsProps {
   query: string
 }
 function SearchResults (props: SearchResultsProps) {
-  const { sortedPublishers } = useBraveNews()
   const search = useSearch(props.query)
   const isFetchable = (search.feedUrlQuery !== null)
   const showFetchPermissionButton = (isFetchable && (!search.canFetchUrl || search.loading))
@@ -109,10 +103,8 @@ function SearchResults (props: SearchResultsProps) {
       </DiscoverSection>
       }
       <DiscoverSection name={getLocale('braveNewsAllSourcesHeader')}>
-        {sortedPublishers.map(r =>
-          <Hidable key={r.publisherId} hidden={!search.filteredSources.publishers.includes(r.publisherId)}>
-            <FeedCard publisherId={r.publisherId} />
-          </Hidable>
+        {search.filteredSources.publisherIds.map(publisherId =>
+          <FeedCard key={publisherId} publisherId={publisherId} />
         )}
         {showFetchPermissionButton &&
           <div>
