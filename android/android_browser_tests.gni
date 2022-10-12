@@ -115,7 +115,7 @@ android_test_exception_sources = [
 android_test_exception_deps = [
   "//brave/browser/autoplay:browser_tests",
   "//brave/browser/brave_news:browser_tests",
-  "//brave/browser/brave_rewards:browser_tests",
+  "//brave/browser/brave_rewards/test:browser_tests",
   "//brave/browser/browsing_data:browser_tests",
   "//brave/browser/decentralized_dns/test:browser_tests",
   "//brave/browser/extensions",
