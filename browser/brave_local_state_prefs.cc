@@ -59,6 +59,11 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   RegisterWidevineLocalstatePrefsForMigration(registry);
 #endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 10/2022
+  registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
+#endif
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -100,8 +105,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
-
-  registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
 #endif
 
 #if BUILDFLAG(ENABLE_CRASH_DIALOG)
