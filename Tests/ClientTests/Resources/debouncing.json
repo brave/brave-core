@@ -246,6 +246,15 @@
   },
   {
     "include": [
+      "http://*.click.example/bounce?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
       "*://brave-long-regex.example/*"
     ],
     "pref": "brave.de_amp.enabled",

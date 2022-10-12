@@ -110,7 +110,9 @@ class DebouncingResourceDownloaderTests: XCTestCase {
     let redirectChain = downloader.redirectChain(for: startURL)
 
     // Then
-    XCTAssertEqual(redirectChain.last?.url, finalURL)
+    // While we used to go to `finalURL`, we now stop at `intermediateURL`
+    // This changed with the introduction of ticket #6146
+    XCTAssertEqual(redirectChain.last?.url, intermediateURL)
   }
 
   // Test a long redirect chain that bounces through the original URL's domain,
@@ -371,6 +373,36 @@ class DebouncingResourceDownloaderTests: XCTestCase {
     XCTAssertNil(
       redirectChain10.last,
       "This should return nil because it is not a valid eTLD+1"
+    )
+  }
+  
+  /// Test several restrictions to debouncing
+  func testDebounceRestrictions() {
+    // Given
+    // A constructed url
+    let baseURL = URL(string: "http://a.click.example/bounce")!
+    let startURL1 = baseURL.addRedirectParam(URL(string: "http://a.click.example/dest")!)
+    let startURL2 = baseURL.addRedirectParam(URL(string: "http://b.click.example/dest")!)
+    let startURL3 = baseURL.addRedirectParam(URL(string: "ftp://example.com/dest")!)
+
+    // When
+    // A redirect is returned
+    let redirectChain1 = downloader.redirectChain(for: startURL1)
+    let redirectChain2 = downloader.redirectChain(for: startURL2)
+    let redirectChain3 = downloader.redirectChain(for: startURL3)
+
+    // Then
+    XCTAssertNil(
+      redirectChain1.last,
+      "This should be nil because origin matches"
+    )
+    XCTAssertNil(
+      redirectChain2.last,
+      "This should be nil because eTLD+1 matches"
+    )
+    XCTAssertNil(
+      redirectChain3.last,
+      "This should be nil because the scheme is not http or https"
     )
   }
   

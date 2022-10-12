@@ -360,16 +360,18 @@ public class DebouncingResourceDownloader {
     ///
     /// The following conditions must be met to redirect:
     /// 1. Must have a `MatcherRule` that satisifes this url
-    /// 2. Extracted URL  not be the same domain as the base URL
-    /// 3. Extracted URL must be a valid URL (Have valid scheme, have an `eTLD+1` or be an IP address etc.. )
-    /// 4. Extracted URL must have a `http` or `https` scheme
+    /// 2. Extracted URL must not have the same origin as that of the base URL
+    /// 3. Extracted URL must not have the same `eTLD+1` as that of the base URL (#6146)
+    /// 4. Extracted URL must be a valid URL (Have valid scheme, have an `eTLD+1` or be an IP address etc.. )
+    /// 5. Extracted URL must have a `http` or `https` scheme
     private func redirectURLOnce(from url: URL) throws -> (url: URL, rule: RedirectRule)? {
       guard let rule = matchingRedirectRule(for: url) else {
         return nil
       }
       
       guard let extractedURL = try rule.extractRedirectURL(from: url),
-            url.host != extractedURL.host,
+            url.origin != extractedURL.origin,
+            url.baseDomain != extractedURL.baseDomain,
             extractedURL.scheme == "http" || extractedURL.scheme == "https" else {
         return nil
       }
