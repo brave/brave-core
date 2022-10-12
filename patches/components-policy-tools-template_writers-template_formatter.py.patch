@@ -1,0 +1,13 @@
+diff --git a/components/policy/tools/template_writers/template_formatter.py b/components/policy/tools/template_writers/template_formatter.py
+index 9af88164b66cb8a718644a9971937b091d2ada45..1ca78c6c83f7dd249686b1ad531fe0421c2ed666 100755
+--- a/components/policy/tools/template_writers/template_formatter.py
++++ b/components/policy/tools/template_writers/template_formatter.py
+@@ -21,7 +21,7 @@ sys.path.insert(
+ 
+ import six
+ 
+-import writer_configuration
++from components.policy.tools.template_writers import brave_writer_configuration as writer_configuration
+ import policy_template_generator
+ 
+ from writers import adm_writer, adml_writer, admx_writer, \
