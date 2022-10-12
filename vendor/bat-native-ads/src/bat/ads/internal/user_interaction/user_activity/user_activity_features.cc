@@ -16,14 +16,15 @@ namespace {
 constexpr char kFeatureName[] = "UserActivity";
 
 constexpr char kFieldTrialParameterTriggers[] = "triggers";
-constexpr char kDefaultTriggers[] = "01=.5;02=.5;08=1;09=1;0D=1;0E=1";
+constexpr char kDefaultTriggers[] =
+    "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0";
 constexpr char kFieldTrialParameterTimeWindow[] = "time_window";
-constexpr base::TimeDelta kDefaultTimeWindow = base::Hours(1);
+constexpr base::TimeDelta kDefaultTimeWindow = base::Minutes(15);
 constexpr char kFieldTrialParameterThreshold[] = "threshold";
-constexpr double kDefaultTreshold = 2.0;
+constexpr double kDefaultTreshold = 0.0;
 
 constexpr char kFieldTrialParameterIdleTimeThreshold[] = "idle_time_threshold";
-constexpr base::TimeDelta kDefaultIdleTimeThreshold = base::Seconds(15);
+constexpr base::TimeDelta kDefaultIdleTimeThreshold = base::Seconds(5);
 constexpr char kFieldTrialParameterMaximumIdleTime[] = "maximum_idle_time";
 constexpr base::TimeDelta kDefaultMaximumIdleTime = base::Seconds(0);
 
