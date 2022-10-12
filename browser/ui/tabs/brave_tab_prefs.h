@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_PREFS_H_
-#define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_PREFS_H_
+#ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
+#define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
 
 class PrefRegistrySimple;
 class PrefService;
@@ -22,4 +22,4 @@ bool AreTooltipsEnabled(PrefService* prefs);
 bool AreCardPreviewsEnabled(PrefService* prefs);
 }  // namespace brave_tabs
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_PREFS_H_
+#endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
