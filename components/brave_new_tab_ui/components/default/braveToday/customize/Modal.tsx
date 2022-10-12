@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { loadTimeData } from '../../../../../common/loadTimeData'
 import Configure from './Configure'
 import { useBraveNews } from './Context'
 
@@ -16,6 +17,7 @@ const Dialog = styled.dialog`
   color:  ${p => p.theme.color.contextMenuForeground};
 `
 
+const shouldRender = loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled')
 export default function BraveNewsModal () {
   const { customizePage: page } = useBraveNews()
   const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>()
@@ -26,7 +28,10 @@ export default function BraveNewsModal () {
     if (dialogRef.current?.open && !page) { dialogRef.current?.close?.() }
     if (!dialogRef.current?.open && page) { dialogRef.current?.showModal?.() }
   }, [page])
-  return page && <Dialog ref={dialogRef as any}>
+
+  // Don't render the dialog at all unless Brave News V2 is enabled - no point
+  // adding all the extra elements to the DOM if we aren't going to use them.
+  return shouldRender ? <Dialog ref={dialogRef as any}>
     <Configure />
-  </Dialog>
+  </Dialog> : null
 }

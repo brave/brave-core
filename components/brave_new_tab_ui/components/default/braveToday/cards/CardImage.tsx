@@ -49,6 +49,7 @@ export function useGetUnpaddedImage (paddedUrl: string | undefined, onLoaded?: (
         if (!result.imageData) {
           return
         }
+
         const blob = new Blob([new Uint8Array(result.imageData)], { type: 'image/*' })
         blobUrl = URL.createObjectURL(blob)
         onReceiveUnpaddedUrl(blobUrl)
