@@ -9,10 +9,17 @@ import { getCardColor } from './colors'
 import { useGetUnpaddedImage } from '../cards/CardImage'
 import { api } from '../../../../api/brave_news/news'
 
-const Card = styled('div') <{ backgroundColor?: string }>`
+interface CardProps {
+  backgroundColor?: string
+}
+
+const Card = styled('div').attrs<CardProps>(props => ({
+  style: {
+    backgroundColor: props.backgroundColor
+  }
+}))<CardProps>`
   position: relative;
   height: 80px;
-  background-color: ${p => p.backgroundColor};
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 0px 16px 0px #63696E2E;
@@ -48,7 +55,7 @@ const Pulse = keyframes`
   99% {
     pointer-events: auto;
   }
-  100% { 
+  100% {
     pointer-events: none;
     opacity: 0;
   }
