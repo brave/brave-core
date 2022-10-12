@@ -69,14 +69,37 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
   delete this;
 }
 
+std::string BraveRewardsNativeWorker::StringifyResult(
+    ledger::mojom::CreateRewardsWalletResult result) {
+  switch (result) {
+    case ledger::mojom::CreateRewardsWalletResult::kSuccess:
+      return "success";
+    case ledger::mojom::CreateRewardsWalletResult::kWalletGenerationDisabled:
+      return "wallet-generation-disabled";
+    case ledger::mojom::CreateRewardsWalletResult::kGeoCountryAlreadyDeclared:
+      return "country-already-declared";
+    case ledger::mojom::CreateRewardsWalletResult::kUnexpected:
+      return "unexpected-error";
+  }
+}
+
 void BraveRewardsNativeWorker::CreateRewardsWallet(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& country_code) {
   if (brave_rewards_service_) {
     brave_rewards_service_->CreateRewardsWallet(
         base::android::ConvertJavaStringToUTF8(env, country_code),
-        base::DoNothing());
+        base::BindOnce(&BraveRewardsNativeWorker::OnCreateRewardsWallet,
+                       weak_factory_.GetWeakPtr()));
   }
+}
+
+void BraveRewardsNativeWorker::OnCreateRewardsWallet(
+    ledger::mojom::CreateRewardsWalletResult result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onCreateRewardsWallet(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, StringifyResult(result)));
 }
 
 void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {

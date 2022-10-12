@@ -131,6 +131,8 @@ public class BraveRewardsPanel
 
     private static final String PREF_VERIFY_WALLET_ENABLE = "verify_wallet_enable";
 
+    private static final String SUCCESS = "success";
+
     // Balance report codes
     private static final int BALANCE_REPORT_GRANTS = 0;
     private static final int BALANCE_REPORT_EARNING_FROM_ADS = 1;
@@ -975,6 +977,18 @@ public class BraveRewardsPanel
                     // showBraveRewardsOnboarding(root, true);
                 }
             }));
+        }
+    }
+
+    @Override
+    public void onCreateRewardsWallet(String result) {
+        Log.e("NTP", "onCreateRewardsWallet : " + result);
+        if (result.equals(SUCCESS)) {
+            // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+            // mBraveRewardsNativeWorker.GetAutoContributeProperties();
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+            showBraveRewardsOnboarding(mPopupView, true);
+        } else {
         }
     }
 

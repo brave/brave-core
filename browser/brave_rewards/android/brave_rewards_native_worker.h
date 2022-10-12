@@ -40,6 +40,8 @@ class BraveRewardsNativeWorker
 
   void Destroy(JNIEnv* env);
 
+  std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result);
+
   void CreateRewardsWallet(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& country_code);
@@ -157,6 +159,8 @@ class BraveRewardsNativeWorker
   void RefreshPublisher(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher_key);
+
+  void OnCreateRewardsWallet(ledger::mojom::CreateRewardsWalletResult result);
 
   void OnResetTheWholeState(const bool success);
 

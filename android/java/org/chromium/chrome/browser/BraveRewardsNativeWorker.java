@@ -463,6 +463,13 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
+    public void onCreateRewardsWallet(String result) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onCreateRewardsWallet(result);
+        }
+    }
+
+    @CalledByNative
     public void OnRecoverWallet(int errorCode) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnRecoverWallet(errorCode);
