@@ -196,7 +196,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     // Ensure the a static width is given to the main view so we can calculate the height
     // correctly when we force a layout
     let height = visibleView.systemLayoutSizeFitting(
-      CGSize(width: width, height: UIScreen.main.bounds.height),
+      CGSize(width: width, height: 0),
       withHorizontalFittingPriority: .required,
       verticalFittingPriority: .fittingSizeLevel
     ).height
