@@ -41,6 +41,8 @@ std::string GetPlatformIdentifier() {
   return "android-bc";
 #elif BUILDFLAG(IS_LINUX)
   return "linux-bc";
+#elif BUILDFLAG(IS_IOS)
+  return "ios";
 #else
   return std::string();
 #endif
