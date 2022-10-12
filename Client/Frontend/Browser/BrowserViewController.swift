@@ -94,6 +94,7 @@ public class BrowserViewController: UIViewController {
 
   // These views wrap the top and bottom toolbars to provide background effects on them
   let header = HeaderContainerView()
+  private let headerHeightLayoutGuide = UILayoutGuide()
   var footer: UIView!
   fileprivate var topTouchArea: UIButton!
   fileprivate let bottomTouchArea = UIButton()
@@ -756,6 +757,7 @@ public class BrowserViewController: UIViewController {
     UNUserNotificationCenter.current().delegate = self
 
     view.addLayoutGuide(pageOverlayLayoutGuide)
+    view.addLayoutGuide(headerHeightLayoutGuide)
 
     webViewContainerBackdrop = UIView()
     webViewContainerBackdrop.backgroundColor = .braveBackground
@@ -1181,6 +1183,16 @@ public class BrowserViewController: UIViewController {
       }
       make.left.right.equalTo(self.view)
     }
+    
+    headerHeightLayoutGuide.snp.remakeConstraints {
+      if self.isUsingBottomBar {
+        $0.bottom.equalTo(footer.snp.top)
+      } else {
+        $0.top.equalTo(toolbarLayoutGuide)
+      }
+      $0.height.equalTo(header)
+      $0.leading.trailing.equalTo(self.view)
+    }
 
     footer.snp.remakeConstraints { make in
       make.bottom.equalTo(toolbarLayoutGuide)
@@ -1210,7 +1222,7 @@ public class BrowserViewController: UIViewController {
 
       make.left.right.equalTo(self.view)
       if self.isUsingBottomBar {
-        make.bottom.equalTo(self.footer.snp.top).offset(-self.header.bounds.height)
+        make.bottom.equalTo(self.headerHeightLayoutGuide.snp.top)
       } else {
         make.bottom.equalTo(self.footer.snp.top)
       }
@@ -1377,11 +1389,6 @@ public class BrowserViewController: UIViewController {
   func updateTabsBarVisibility() {
     defer {
       toolbar?.line.isHidden = isUsingBottomBar
-      if isUsingBottomBar {
-        // Ensure NTP relayout occurs
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
-      }
     }
     
     header.expandedBarStackView.removeArrangedSubview(tabsBar.view)
