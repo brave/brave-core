@@ -10,7 +10,6 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_handler_impl.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"

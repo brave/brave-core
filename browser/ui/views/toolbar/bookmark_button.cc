@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/view_ids.h"

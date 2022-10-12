@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_throbber.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "ui/views/controls/button/md_text_button.h"

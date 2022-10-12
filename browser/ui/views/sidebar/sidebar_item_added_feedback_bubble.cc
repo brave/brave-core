@@ -8,7 +8,7 @@
 #include "base/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
