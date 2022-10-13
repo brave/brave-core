@@ -141,6 +141,8 @@ class SpeedreaderTabHelper
   // Updates the distill state when the global speedreader state is changed.
   void OnPrefChanged();
 
+  void OnPropertyPrefChanged(const std::string& path);
+
   // Updates UI if the tab is visible.
   void UpdateButtonIfNeeded();
 
