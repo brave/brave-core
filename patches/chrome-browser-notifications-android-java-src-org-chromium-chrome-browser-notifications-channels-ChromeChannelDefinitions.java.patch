@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index 0c35ff5f1afb84f25fece3c5864eca2a303dba75..f43961e55cca40391d0767ca1870faa30920eb73 100644
+index 740cc12e93ab648041a65d1db60bbec4ae0228e2..38d624af6e3ad953e714faa4dd7eaeffcc179fee 100644
 --- a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 +++ b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 @@ -36,6 +36,7 @@ import java.util.Set;

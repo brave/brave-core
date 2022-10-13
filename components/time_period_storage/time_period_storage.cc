@@ -152,7 +152,7 @@ void TimePeriodStorage::FilterToPeriod() {
 
 void TimePeriodStorage::Load() {
   DCHECK(daily_values_.empty());
-  const base::Value::List& list = prefs_->GetValueList(pref_name_);
+  const auto& list = prefs_->GetList(pref_name_);
   for (const auto& it : list) {
     DCHECK(it.is_dict());
     const base::Value::Dict& dict = it.GetDict();

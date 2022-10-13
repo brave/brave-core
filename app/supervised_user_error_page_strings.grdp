@@ -35,6 +35,9 @@
       <message name="IDS_BLOCK_INTERSTITIAL_ASK_IN_PERSON_BUTTON" desc="A button to show a dialog to request access to blocked sites.">
         Ask in profile
       </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_ASK_IN_PERSON_INSTEAD_BUTTON" desc="A button to show a dialog to request access to blocked sites for users who have already asked for permission remotely.">
+        Ask in profile instead
+      </message>
       <message name="IDS_BLOCK_INTERSTITIAL_SEND_MESSAGE_BUTTON" desc="A button to send a message to request access to blocked sites.">
         Send a message
       </message>
@@ -76,6 +79,9 @@
       </message>
       <message name="IDS_BLOCK_INTERSTITIAL_HIDE_DETAILS" desc="The text for the link to hide details about the interstitial.">
         Hide details
+      </message>
+      <message name="IDS_GENERIC_SITE_BLOCK_HEADER" desc="Generic header to be shown with a more specific message about why a site is blocked.">
+        This site is blocked
       </message>
       <message name="IDS_SUPERVISED_USER_BLOCK_HEADER" desc="Header for the message to be shown when a site was blocked.">
         This site is blocked because it may have mature content

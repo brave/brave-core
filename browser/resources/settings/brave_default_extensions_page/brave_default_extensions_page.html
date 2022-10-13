@@ -143,15 +143,15 @@
   </cr-link-row>
 </div>
 <template is="dom-if" if="{{ showRestartToast_ }}">
-<div id="needsRestart">
-    <div class="flex-container">
-      <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
-      <div class="flex">
-        <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
-        $i18n{relaunchButtonLabel}
-        </button>
+  <div id="needsRestart">
+      <div class="flex-container">
+        <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+        <div class="flex">
+          <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
+          $i18n{relaunchButtonLabel}
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>

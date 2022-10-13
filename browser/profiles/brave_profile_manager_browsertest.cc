@@ -20,6 +20,7 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -40,15 +41,6 @@
 #endif
 
 namespace {
-
-// An observer that returns back to test code after a new profile is
-// initialized.
-void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
-                                Profile* profile,
-                                Profile::CreateStatus status) {
-  if (status == Profile::CREATE_STATUS_INITIALIZED)
-    run_loop->Quit();
-}
 
 struct TestProfileData {
   std::u16string profile_name;
@@ -110,11 +102,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                               profile_data[0].force_default_name);
   // Rest are generated
   for (auto& profile : profile_data) {
-    base::RunLoop run_loop;
-    profile_manager->CreateProfileAsync(
-        profile.profile_path,
-        base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop));
-    run_loop.Run();
+    Profile* created_profile = profiles::testing::CreateProfileSync(
+        profile_manager, profile.profile_path);
+    EXPECT_TRUE(created_profile);
     ProfileAttributesEntry* entry =
         storage.GetProfileAttributesWithPath(profile.profile_path);
     ASSERT_NE(entry, nullptr);

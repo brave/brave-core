@@ -10,6 +10,10 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_search/side_search_browser_controller.h"
 
+#define kAlignLeft kHorizontalAlignLeft
+#define kAlignRight kHorizontalAlignRight
 #define SidePanel BraveSidePanel
 #include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator_unittest.cc"
 #undef SidePanel
+#undef kAlignLeft
+#undef kAlignRight

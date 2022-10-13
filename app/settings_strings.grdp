@@ -90,8 +90,11 @@
   <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_COMPLETE" desc="Success message when Live Caption files have completed downloading.">
     Speech files downloaded
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR" desc="Error message when Live Caption files can’t be downloaded.">
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR" desc="Generic error message when Live Caption files can’t be downloaded.">
     Can't download speech files. Try again later.
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR_REBOOT_REQUIRED" desc="Error message shown when a OS reboot is required to install the Live Caption files.">
+    Restart needed to install speech files.
   </message>
   <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_TITLE" desc="Name of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
     Navigate pages with a text cursor
@@ -136,11 +139,17 @@
     </message>
   </if>
   <if expr="is_linux">
-    <message name="IDS_SETTINGS_SYSTEM_THEME" desc="Text of the label describing the system (GTK+) browser theme on Linux">
-      GTK+
+    <message name="IDS_SETTINGS_GTK_THEME" desc="Text of the label describing the system (GTK) browser theme on Linux">
+      GTK
     </message>
-    <message name="IDS_SETTINGS_USE_SYSTEM_THEME" desc="Text of the button that switches the browser theme to the system (GTK+) theme on Linux">
-      Use GTK+
+    <message name="IDS_SETTINGS_USE_GTK_THEME" desc="Text of the button that switches the browser theme to the system (GTK) theme on Linux">
+      Use GTK
+    </message>
+    <message name="IDS_SETTINGS_QT_THEME" desc="Text of the label describing the system (QT) browser theme on Linux">
+      QT
+    </message>
+    <message name="IDS_SETTINGS_USE_QT_THEME" desc="Text of the button that switches the browser theme to the system (QT) theme on Linux">
+      Use QT
     </message>
     <message name="IDS_SETTINGS_CLASSIC_THEME" desc="Text of the label describing the classic browser theme on Linux">
       Classic
@@ -419,9 +428,6 @@
   <message name="IDS_SETTINGS_UPI_ID_EXPIRATION_NEVER" desc="Appears in a different column next to UPI IDs, under the column Expiration Date, when they are listed as stored payment info. It lets the user know that UPI IDs do not expire. UPI is a system for payments in India. A UPI ID is an email-like string.">
     Never
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS" desc="Name for the password section and settings entry used for managing passwords.">
-    Passwords
-  </message>
   <message name="IDS_SETTINGS_PASSWORD_MANAGER" desc="Name for the Password Manager section and settings entry used for managing passwords.">
     Password Manager
   </message>
@@ -656,6 +662,17 @@
   <message name="IDS_SETTINGS_PASSWORDS_NOTE_CHARACTER_COUNT_WARNING" desc="Warning for the password note when the user exceeds or is about to exceed the character limit.">
     Notes can save up to <ph name="CHARACTER_LIMIT">$1<ex>1000</ex></ph> characters.
   </message>
+  <message name="IDS_SETTINGS_PASSWORDS_TIMED_OUT" desc="Title for the dialog which shows when the password manager authentication is expired.">
+    Brave Password Manager timed out
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_TIMED_OUT_DESCRIPTION" desc="Body text for the dialog which shows when the password manager authentication is expired.">
+    {NUM_MINS, plural,
+     =1 {To keep your passwords safe, Brave Password Manager locks after 1 minute of inactivity}
+     other {To keep your passwords safe, Brave Password Manager locks after {NUM_MINS} minutes of inactivity}}
+  </message>
+  <message name="IDS_SETTINGS_GOT_IT" desc="Label for the button to acknowledge the information in a dialog and dismiss it.">
+    Got it
+  </message>
   <message name="IDS_SETTINGS_ADDRESS_NONE" desc="Placeholder that is shown when there are no addresses in the list of saved addresses.">
     Saved addresses will appear here
   </message>
@@ -664,6 +681,9 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_NONE" desc="Placeholder that is shown when there are no passwords in the list of saved passwords.">
     Saved passwords will appear here
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_NONE_WITH_IMPORT" desc="Placeholder that is shown when there are no passwords in the list of saved passwords with an additional link to the import passwords flow.">
+    Saved passwords will appear here. <ph name="BEGIN_LINK">&lt;a href="#" &gt;</ph> Import passwords<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXCEPTIONS_NONE" desc="Placeholder text that is shown when there are no sites in the list of sites for which to never save passwords.">
     Sites which never save passwords will appear here
@@ -757,9 +777,6 @@
   <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL" desc="The label for the link on settings leading to the 'device passwords' page.">
     See and manage passwords saved on this device
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
-    View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
-  </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS_PLAINTEXT" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online.">
     View and manage saved passwords in your Brave sync chain
   </message>
@@ -782,7 +799,7 @@
     Import passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CHOOSE_FILE" desc="A button in the dialog for importing passwords from Brave. Passwords will be imported from the file, which the user will be asked to choose after initiating this action.">
-    Choose file
+    Select file
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_ACCOUNT_STORE_USERS" desc="Text shown to the account store users (who has the option to store passwords localy or in Brave Password manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
     To import passwords, select a CSV file
@@ -807,13 +824,16 @@
     Select where to import your passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_TIP" desc="Message is shown on the dialog for importing passwords, after a successful import. It is an advice for the user, that they should consider deleting the file, which they used for importing passwords from.">
-    Consider deleting <ph name="FILENAME"><ex>file_name.csv</ex>$1</ph>, so others who use this device can't see your passwords.
+    Consider deleting <ph name="FILENAME">&lt;b&gt;&lt;/b&gt;<ex>&lt;b&gt;filename.csv&lt;/b&gt;</ex></ph>, so others who use this device can't see your passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ERROR_UNKNOWN" desc="Message is shown on the dialog for importing passwords if no passwords were imported and we don't know the cause of error. Probably error in the backend or in our systems.">
     Something went wrong and your passwords weren't imported
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ERROR_BAD_FORMAT" desc="Message is shown on the dialog for importing passwords if no passwords were imported because file is not formated correctly">
-    Can't import passwords. Check <ph name="FILENAME"><ex>file_name.csv</ex>$1</ph> and make sure it's formatted correctly.
+    Can't import passwords. Check <ph name="FILENAME">&lt;b&gt;&lt;/b&gt;<ex>&lt;b&gt;filename.csv&lt;/b&gt;</ex></ph> and make sure it's formatted correctly. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_FILE_SIZE_EXCEEDED" desc="Message is shown on the dialog for importing passwords if no passwords were imported because file size exceeds 150 KB.">
+    Can't import passwords. The file size should be less than 150 KB.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ERROR_LIMIT_EXCEEDED" desc="Message is shown on the dialog for importing passwords if no passwords were imported because user tried to import more than `NUMBER` passwords from a single file.">
     Can't import passwords. You can only import up to <ph name="COUNT"><ex>3000</ex>$1</ph> passwords at a time.
@@ -826,6 +846,17 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_INVALID_URL" desc="An error message for a row that wasn't imported, because the URL is in an unacceptable format. It is shown on the dialog for importing passwords if some passwords weren't imported.">
     URL format should be https://www.example.com
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_NON_ASCII_URL" desc="An error message for a row that wasn't imported, because provided URL contains non-ASCII characters. It is shown on the dialog for importing passwords if some passwords weren't imported.">
+    URL can only contain ASCII characters
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_BAD_ROWS_FORMAT" desc="An error message for which summarizes all rows that weren't imported, because we weren't able to read them completely due to incorrect formatting. It is shown on the dialog for importing passwords if some passwords weren't imported.">
+    {NUM_PASSWORDS, plural,
+     =1 {1 other password wasn't imported because it's formatted incorrectly}
+     other {{NUM_PASSWORDS} other passwords weren't imported because they're formatted incorrectly}}
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_LONG_URL" desc="An error message for a row that wasn't imported, because the provided URL exceeds the length limit. It is shown on the dialog for importing passwords if some passwords weren't imported.">
+    URL is more than 2048 characters
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_LONG_USERNAME" desc="An error message for a row that wasn't imported, because the provided username exceeds the length limit. It is shown on the dialog for importing passwords if some passwords weren't imported.">
     Username is more than 1000 characters
@@ -846,7 +877,7 @@
     You're already importing passwords in another tab
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can export their passwords outside of Brave.">
-    Export passwords...
+    Export passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TITLE" desc="The title of a dialog, which offers to the user the ability to export passwords they've saved with Brave.">
     Export passwords
@@ -855,7 +886,7 @@
     Your passwords will be visible to anyone who can see the exported file.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT" desc="A button in the dialog for exporting passwords from Brave. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
-    Export passwords...
+    Export passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TRY_AGAIN" desc="A button in the dialog for exporting passwords from Brave. The action is to attempt to export the passwords again. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
     Try again
@@ -894,7 +925,7 @@
     Your passwords are encrypted on your device before they‘re saved to Brave Password Manager
   </message>
 
-  <if expr="is_win">
+  <if expr="is_win or is_macosx">
     <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_LABEL" desc="The label on a button that a user can click in order to see and delete passkeys saved on their computer. For consistency, the word 'passkey' is in the glossery with translations already suggested.">
       Manage passkeys
     </message>
@@ -924,6 +955,18 @@
   <message name="IDS_SETTINGS_PASSWORD_HIDE_PASSWORD_A11Y" desc="The ARIA (accessibility) message for the 'Hide Password' button, which sits in every row of the password list. For this row does not include a password, only information of the account. Hides password when clicked.">
     Hide password for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
   </message>
+
+  <if expr="is_macosx">
+  <message name="IDS_SETTINGS_PASSWORDS_BIOMETRIC_AUTHENTICATION_FOR_FILLING_TOGGLE_LABEL_MAC" desc="Label for a toggle that allows users to be authenticate using their TouchID when logging into webpages.">
+    Use TouchID when filling passwords
+  </message>
+  </if>
+
+  <if expr="is_win">
+  <message name="IDS_SETTINGS_PASSWORDS_BIOMETRIC_AUTHENTICATION_FOR_FILLING_TOGGLE_LABEL_WIN" desc="Label for a toggle that allows users to be authenticate using their Windows Hello when logging into webpages.">
+    Use Windows Hello when filling passwords
+  </message>
+  </if>
 
   <!-- Default Browser Page -->
   <if expr="not is_chromeos">
@@ -1345,6 +1388,14 @@
   </message>
   <message name="IDS_SETTINGS_URL_TOOL_LONG" desc="Error message asking that the user enter a shorter URL.">
     Please enter a shorter URL
+  </message>
+
+  <!-- Performance Page -->
+  <message name="IDS_SETTINGS_PERFORMANCE_PAGE_TITLE" desc="Title of the performance page">
+    Performance
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_HIGH_EFFICIENCY_MODE_SETTING" desc="High efficiency mode setting label">
+    Memory Saver
   </message>
 
   <!-- Languages Page -->
@@ -1948,6 +1999,26 @@
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their extensions settings.">
     Review extensions
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_PRIMARY_LABEL" translateable="false" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the header of the module in site settings notification page.">
+    Review websites that sent a lot of notifications
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_SECONDARY_LABEL" translateable="false" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the description of the module in site settings notification page.">
+    These sites sent a lot of notifications in the last 2 months. You can stop them from sending future notifications.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_COUNT_LABEL" translateable="false" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label holds the details of the item and shows how many notifications are sent.">
+    {NUM_NOTIFICATION, plural,
+     =1 {About 1 notification a day}
+     other {About {NUM_NOTIFICATION} notifications a day}}
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_DONT_ALLOW_LABEL" translateable="false" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for 'don't allow' action for a website in the module.">
+    Don't allow
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_IGNORE_LABEL" translateable="false" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is to manually set users to allow the website so that the permissions will be never revoked later.">
+    Always allow notifications from this site
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_RESET_LABEL" translateable="false" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for resetings the permission to the 'ask' state.">
+    Don’t allow but ask later
   </message>
   <if expr="is_win and _google_chrome">
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
@@ -2960,6 +3031,12 @@
   <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL_BULLET_THREE" desc="Description for the third bullet of block all cookies radio toggle">
     Features on many sites may not work
   </message>
+  <message name="IDS_SETTINGS_COOKIES_FIRST_PARTY_SETS_TOGGLE_LABEL" desc="Label for the toggle that allows the user to control First Party sets enabled sharing between related sites" translateable="false">
+    Allow related sites to remember you across sites
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FIRST_PARTY_SETS_TOGGLE_SUB_LABEL" desc="Sub-label for the toggle that allows the user to control First Party sets enabled sharing between related sites" translateable="false">
+    Related sites use cookies to help with things like keeping you signed in
+  </message>
   <message name="IDS_SETTINGS_COOKIES_CLEAR_ON_EXIT" desc="Label for the toggle that allows the user to automatically delete their cookies and site data when they close all browser windows.">
     Clear cookies and site data when you close all windows
   </message>
@@ -3286,6 +3363,16 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_LABEL" desc="Label for button to clear displayed site data">
     Clear displayed data
+  </message>  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_MEMBERSHIP_LABEL" translateable="false" desc="Placeholder string for first party sets member count shown on site details and site entry">
+    {MEMBERS, plural,
+        =1 {Allowed for 1 <ph name="FPS_OWNER">$1<ex>google.com</ex></ph> site}
+        other {Allowed for {MEMBERS} <ph name="FPS_OWNER">{FPS_OWNER}<ex>google.com</ex></ph> sites}}
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_SHOW_RELATED_SITES_BUTTON" translateable="false" desc="Placeholder string for first party sets show related sites button">
+    Show related sites
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_SITE_CLEAR_STORAGE_BUTTON" translateable="false" desc="Placeholder string for first party sets clear data and permissions for site button">
+    Clear data and permissions
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by all sites.">
     This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites

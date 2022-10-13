@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/themes/theme_service_factory.cc b/chrome/browser/themes/theme_service_factory.cc
-index 47184cef4deffce0733b5f5251dbf439be2591f5..3aa818b71a160ee8d9a84ea9acadca8a65554dc0 100644
+index e3a7101326eeee5d27ba7edac416fdbb6902d0b5..7452c24ca7ebb734b56f048a9a3ea0d5b1d1d0f6 100644
 --- a/chrome/browser/themes/theme_service_factory.cc
 +++ b/chrome/browser/themes/theme_service_factory.cc
-@@ -83,6 +83,7 @@ ThemeServiceFactory::~ThemeServiceFactory() = default;
+@@ -81,6 +81,7 @@ ThemeServiceFactory::~ThemeServiceFactory() = default;
  
  KeyedService* ThemeServiceFactory::BuildServiceInstanceFor(
      content::BrowserContext* profile) const {
 +  BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
+ #if BUILDFLAG(IS_LINUX)
+   using ThemeService = ThemeServiceAuraLinux;
+ #endif

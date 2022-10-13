@@ -125,15 +125,15 @@ void NTPBackgroundImagesService::Init() {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
     // Flag override for testing or demo purposes
-    base::FilePath forced_local_path(
+    base::FilePath forced_local_path_super_referral(
         base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
             switches::kNTPSuperReferralDataPathForTesting));
-    if (!forced_local_path.empty()) {
+    if (!forced_local_path_super_referral.empty()) {
       test_data_used_ = true;
       DVLOG(2) << __func__ << ": NTP SR test data will be loaded"
                << " from local path at: "
-               << forced_local_path.LossyDisplayName();
-      OnSponsoredComponentReady(false, forced_local_path);
+               << forced_local_path_super_referral.LossyDisplayName();
+      OnSponsoredComponentReady(false, forced_local_path_super_referral);
     } else {
       CheckSuperReferralComponent();
     }
@@ -200,8 +200,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
-  const base::Value::Dict& value = local_pref_->GetValueDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  const auto& value =
+      local_pref_->GetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo);
   // If we have valid cached SR component info, it means this install is valid
   // SR.
   if (IsValidSuperReferralComponentInfo(value)) {
@@ -318,7 +318,7 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
     id = *initial_sr_component_info_->FindString(kComponentIDKey);
     theme_name = *initial_sr_component_info_->FindString(kThemeNameKey);
   } else {
-    const base::Value::Dict& value = local_pref_->GetValueDict(
+    const auto& value = local_pref_->GetDict(
         prefs::kNewTabPageCachedSuperReferralComponentInfo);
     public_key = *value.FindString(kPublicKey);
     id = *value.FindString(kComponentIDKey);
@@ -552,8 +552,8 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
   if (!component_update_service_)
     return;
 
-  const base::Value::Dict& value = local_pref_->GetValueDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  const auto& value =
+      local_pref_->GetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo);
   const std::string sr_component_id = *value.FindString(kComponentIDKey);
   DVLOG(2) << __func__ << ": Unregister NTP SR component";
   component_update_service_->UnregisterComponent(sr_component_id);
@@ -564,8 +564,8 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {
-  const base::Value::Dict& value = local_pref_->GetValueDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  const auto& value =
+      local_pref_->GetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo);
   return base::FeatureList::IsEnabled(
              features::kBraveNTPSuperReferralWallpaper) &&
          IsValidSuperReferralComponentInfo(value);
@@ -573,8 +573,8 @@ bool NTPBackgroundImagesService::IsSuperReferral() const {
 
 std::string NTPBackgroundImagesService::GetSuperReferralThemeName() const {
   std::string theme_name;
-  const base::Value::Dict& value = local_pref_->GetValueDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  const auto& value =
+      local_pref_->GetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo);
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
       IsValidSuperReferralComponentInfo(value)) {
     theme_name = *value.FindString(kThemeNameKey);

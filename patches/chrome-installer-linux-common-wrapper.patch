@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index 63699e047f3acaef9f9452ef9144b073de77f9b9..380a050a33f0e029b94cc9eb8a7155ae49456f34 100755
+index 20c6e8fe2933f3bded5ed5c51087fafc13751c87..b726f53a178cd28688402aebf68a2f0649ab90e8 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
 @@ -45,5 +45,4 @@ exec < /dev/null

@@ -1,5 +1,5 @@
 diff --git a/google_update/BUILD.gn b/google_update/BUILD.gn
-index 55d35df8f2b527c6ba33b01c8dfabda49b1e2c01..8fa7ac971af21d7490219571a784e02f65b645a7 100644
+index 970510fd7c69833934b2eac157200f0265c91547..a874eaff3be772e1e07bf1740bc8b1a9d8dbf1b2 100644
 --- a/google_update/BUILD.gn
 +++ b/google_update/BUILD.gn
 @@ -5,5 +5,5 @@

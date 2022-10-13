@@ -133,6 +133,8 @@ const char kLearnMoreReportingURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
 
+const char kHighEfficiencyModeLearnMoreUrl[] = "https://support.brave.com/";
+
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
 const char kMixedContentDownloadBlockingLearnMoreUrl[] =

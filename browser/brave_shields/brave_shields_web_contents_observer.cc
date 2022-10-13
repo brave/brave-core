@@ -214,22 +214,16 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
   }
 
   navigation_handle->GetWebContents()->ForEachRenderFrameHost(
-      base::BindRepeating(
-          [](BraveShieldsWebContentsObserver* observer,
-             content::RenderFrameHost* rfh) {
-            observer->GetBraveShieldsRemote(rfh)
-                ->SetAllowScriptsFromOriginsOnce(
-                    observer->allowed_script_origins_);
-            if (content::BrowserContext* context = rfh->GetBrowserContext()) {
-              if (PrefService* pref_service =
-                      user_prefs::UserPrefs::Get(context)) {
-                observer->GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
-                    brave_shields::IsReduceLanguageEnabledForProfile(
-                        pref_service));
-              }
-            }
-          },
-          base::Unretained(this)));
+      [this](content::RenderFrameHost* rfh) {
+        GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
+            allowed_script_origins_);
+        if (content::BrowserContext* context = rfh->GetBrowserContext()) {
+          if (PrefService* pref_service = user_prefs::UserPrefs::Get(context)) {
+            GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
+                brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+          }
+        }
+      });
 }
 
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(

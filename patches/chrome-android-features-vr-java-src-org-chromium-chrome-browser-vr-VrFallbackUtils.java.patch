@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java b/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java
-index ef8a7d1f59b21c6c65f41009054f959a90301360..563ef806e93ee94dd39df1705b786c00ae619f46 100644
+index 053f3bd37921bde4010dc6f18da2803c3943c80b..7511089193d1e2f6a8c2d210eece1fc2753a9b5a 100644
 --- a/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java
 +++ b/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java
 @@ -23,6 +23,7 @@ import org.chromium.content_public.browser.UiThreadTaskTraits;

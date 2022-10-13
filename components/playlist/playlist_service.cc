@@ -226,7 +226,7 @@ void PlaylistService::NotifyPlaylistChanged(
 }
 
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
-  const base::Value::Dict& items = prefs_->GetValueDict(kPlaylistItemsPref);
+  const auto& items = prefs_->GetDict(kPlaylistItemsPref);
   const base::Value::Dict* playlist_info = items.FindDict(id);
   return !!playlist_info;
 }
@@ -322,8 +322,7 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
     return;
   }
 
-  const base::Value::Dict* value =
-      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  const auto* value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(value);
   if (value) {
     base::Value::Dict copied_value = value->Clone();
@@ -390,7 +389,7 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 
 std::vector<PlaylistItemInfo> PlaylistService::GetAllPlaylistItems() {
   std::vector<PlaylistItemInfo> items;
-  for (const auto it : prefs_->Get(kPlaylistItemsPref)->GetDict()) {
+  for (const auto it : prefs_->GetDict(kPlaylistItemsPref)) {
     const auto& dict = it.second.GetDict();
     DCHECK(dict.contains(playlist::kPlaylistItemIDKey));
     DCHECK(dict.contains(playlist::kPlaylistItemTitleKey));
@@ -422,7 +421,7 @@ std::vector<PlaylistItemInfo> PlaylistService::GetAllPlaylistItems() {
 
 PlaylistItemInfo PlaylistService::GetPlaylistItem(const std::string& id) {
   DCHECK(!id.empty());
-  auto* item_value = prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(item_value);
   if (!item_value)
     return {};
@@ -455,7 +454,7 @@ PlaylistItemInfo PlaylistService::GetPlaylistItem(const std::string& id) {
 
 absl::optional<PlaylistInfo> PlaylistService::GetPlaylist(
     const std::string& id) {
-  const base::Value::Dict& playlists = prefs_->GetValueDict(kPlaylistsPref);
+  const auto& playlists = prefs_->GetDict(kPlaylistsPref);
   if (!playlists.contains(id)) {
     LOG(ERROR) << __func__ << " playlist with id<" << id << "> not found";
     return {};
@@ -474,7 +473,7 @@ absl::optional<PlaylistInfo> PlaylistService::GetPlaylist(
 
 std::vector<PlaylistInfo> PlaylistService::GetAllPlaylists() {
   std::vector<PlaylistInfo> result;
-  const base::Value::Dict& playlists = prefs_->GetValueDict(kPlaylistsPref);
+  const auto& playlists = prefs_->GetDict(kPlaylistsPref);
   for (const auto [id, playlist_value] : playlists) {
     DCHECK(playlist_value.is_dict());
     const auto& playlist = playlist_value.GetDict();
@@ -502,8 +501,7 @@ void PlaylistService::FindMediaFilesFromContents(
 }
 
 void PlaylistService::RecoverPlaylistItem(const std::string& id) {
-  const base::Value::Dict* playlist_value =
-      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  const auto* playlist_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   if (!playlist_value) {
     LOG(ERROR) << __func__ << ": Invalid playlist id for recovery: " << id;
     return;
@@ -572,8 +570,7 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
 }
 
 void PlaylistService::DeletePlaylistLocalData(const std::string& id) {
-  const base::Value::Dict* item_value_ptr =
-      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  const auto* item_value_ptr = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   base::Value::Dict item = item_value_ptr->Clone();
   item.Set(kPlaylistItemMediaFileCachedKey, false);
 
@@ -621,8 +618,7 @@ void PlaylistService::OnMediaFileReady(const std::string& id,
   VLOG(2) << __func__ << ": " << id << " " << media_file_path;
   DCHECK(IsValidPlaylistItem(id));
 
-  const base::Value::Dict* item_value_ptr =
-      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  const auto* item_value_ptr = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   base::Value::Dict item = item_value_ptr->Clone();
   item.Set(kPlaylistItemMediaFileCachedKey, true);
   item.Set(kPlaylistItemMediaFilePathKey, media_file_path);
@@ -636,8 +632,7 @@ void PlaylistService::OnMediaFileGenerationFailed(const std::string& id) {
 
   DCHECK(IsValidPlaylistItem(id));
 
-  const base::Value::Dict* item_value_ptr =
-      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  const auto* item_value_ptr = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   base::Value::Dict item = item_value_ptr->Clone();
 
   item.Set(kPlaylistItemMediaFileCachedKey, false);
@@ -668,7 +663,7 @@ void PlaylistService::OnGetOrphanedPaths(
 
 void PlaylistService::CleanUpMalformedPlaylistItems() {
   if (base::ranges::none_of(
-          prefs_->Get(kPlaylistItemsPref)->GetDict(),
+          prefs_->GetDict(kPlaylistItemsPref),
           /* has_malformed_data = */ [](const auto& pair) {
             auto* dict = pair.second.GetIfDict();
             DCHECK(dict);

@@ -1,5 +1,5 @@
 diff --git a/services/network/cookie_settings.cc b/services/network/cookie_settings.cc
-index bc8267ddd131cd6c3b0472975970467524f5d64c..26decc18c44056f7dfb0e4cb9797dc7764d7be0c 100644
+index 9e89fa22a72e0acc3ae736ddbc6e2a933e4c3a37..d512c5b59c8c05b9bf4193c7ae9687be48b5cf62 100644
 --- a/services/network/cookie_settings.cc
 +++ b/services/network/cookie_settings.cc
 @@ -260,6 +260,7 @@ CookieSettings::GetCookieSettingWithMetadata(const GURL& url,

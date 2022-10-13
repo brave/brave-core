@@ -63,9 +63,8 @@ void TorProfileServiceFactory::SetTorBridgesConfig(
 tor::BridgesConfig TorProfileServiceFactory::GetTorBridgesConfig() {
   if (!g_browser_process)
     return {};
-  return tor::BridgesConfig::FromValue(
-             g_browser_process->local_state()->GetDictionary(
-                 tor::prefs::kBridgesConfig))
+  return tor::BridgesConfig::FromDict(g_browser_process->local_state()->GetDict(
+                                          tor::prefs::kBridgesConfig))
       .value_or(tor::BridgesConfig());
 }
 

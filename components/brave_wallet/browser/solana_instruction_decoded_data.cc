@@ -132,11 +132,11 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
         param_value.GetDict().FindString("localized_name");
     if (!localized_name)
       return absl::nullopt;
-    const auto* value = param_value.GetDict().FindString("value");
-    if (!value)
+    const auto* value_local = param_value.GetDict().FindString("value");
+    if (!value_local)
       return absl::nullopt;
     decoded_data.params.emplace_back(
-        std::make_tuple(*name, *localized_name, *value));
+        std::make_tuple(*name, *localized_name, *value_local));
   }
 
   const base::Value::List* account_param_list =

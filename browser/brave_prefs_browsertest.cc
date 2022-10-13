@@ -145,8 +145,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #endif
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetDictionary(
-      NTPBackgroundPrefs::kPrefName));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->HasPrefPath(
       NTPBackgroundPrefs::kDeprecatedPrefName));
 #endif

@@ -51,15 +51,15 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static absl::optional<int>& GetPbkdf2IterationsForTesting();
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
-  static bool HasPrefForKeyring(PrefService* prefs,
+  static bool HasPrefForKeyring(const PrefService& prefs,
                                 const std::string& key,
                                 const std::string& id);
-  static const base::Value* GetPrefForKeyring(PrefService* prefs,
+  static const base::Value* GetPrefForKeyring(const PrefService& prefs,
                                               const std::string& key,
                                               const std::string& id);
-  static base::Value* GetPrefForKeyringUpdate(PrefService* prefs,
-                                              const std::string& key,
-                                              const std::string& id);
+  static base::Value::Dict& GetPrefForKeyringUpdate(PrefService* prefs,
+                                                    const std::string& key,
+                                                    const std::string& id);
   static std::vector<std::string> GetAvailableKeyringsFromPrefs(
       PrefService* prefs);
   // If keyring dicionary for id doesn't exist, it will be created.
@@ -68,7 +68,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                 base::Value value,
                                 const std::string& id);
   static absl::optional<std::vector<uint8_t>> GetPrefInBytesForKeyring(
-      PrefService* prefs,
+      const PrefService& prefs,
       const std::string& key,
       const std::string& id);
   static void SetPrefInBytesForKeyring(PrefService* prefs,
@@ -85,11 +85,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& id);
   static absl::optional<std::string> GetKeyringIdForCoinNonFIL(
       mojom::CoinType coin);
-  static std::string GetAccountNameForKeyring(PrefService* prefs,
+  static std::string GetAccountNameForKeyring(const PrefService& prefs,
                                               const std::string& account_path,
                                               const std::string& id);
   static std::string GetAccountAddressForKeyring(
-      PrefService* prefs,
+      const PrefService& prefs,
       const std::string& account_path,
       const std::string& id);
 
@@ -113,7 +113,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                            const ImportedAccountInfo& info,
                                            const std::string& id);
   static std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
-      PrefService* prefs,
+      const PrefService& prefs,
       const std::string& id);
   static void RemoveImportedAccountForKeyring(PrefService* prefs,
                                               const std::string& address,

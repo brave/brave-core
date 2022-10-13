@@ -720,7 +720,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     // This function used when we have scanned the QR code to connect to the chain
     private void seedHexReceived(String seedHex) {
         assert seedHex != null && !seedHex.isEmpty();
-        assert isSeedHexValid(seedHex);
+        boolean seedHexValid = isSeedHexValid(seedHex);
+        assert seedHexValid;
 
         if (null == getActivity()) {
             return;

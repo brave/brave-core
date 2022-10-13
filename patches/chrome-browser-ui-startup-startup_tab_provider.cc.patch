@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
-index 6a74c525dd5187d767799f8f51b3900d57232738..03eee04dd13f0fdd1bf08317dd3d4976e9862e1c 100644
+index 1bd5df5eeebe420e19b5b0133a680986cb9d83e2..238a7c0cb26616b1eedb8940e0e2726bfb308e7b 100644
 --- a/chrome/browser/ui/startup/startup_tab_provider.cc
 +++ b/chrome/browser/ui/startup/startup_tab_provider.cc
 @@ -321,6 +321,7 @@ StartupTabs StartupTabProviderImpl::GetPrivacySandboxTabs(

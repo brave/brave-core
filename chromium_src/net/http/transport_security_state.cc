@@ -6,7 +6,7 @@
 #include "net/http/transport_security_state.h"
 
 #include "build/build_config.h"
-#include "net/base/network_isolation_key.h"
+#include "net/base/network_anonymization_key.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/url_util.h"
@@ -68,17 +68,17 @@ bool IsTopFrameOriginCryptographic(const IsolationInfo& isolation_info) {
 }
 
 std::string GetHSTSPartitionHash(
-    const NetworkIsolationKey& network_isolation_key) {
+    const NetworkAnonymizationKey& network_anonymization_key) {
   DCHECK(base::FeatureList::IsEnabled(features::kBravePartitionHSTS));
   // An empty top frame site cannot be used as a partition key, return an empty
   // hash which will be treated as a non-persistable partition.
-  if (!network_isolation_key.GetTopFrameSite().has_value()) {
+  if (!network_anonymization_key.GetTopFrameSite().has_value()) {
     return std::string();
   }
 
   const std::string partition_domain =
       HSTSPartitionHashHelper::GetPartitionDomain(
-          *network_isolation_key.GetTopFrameSite());
+          *network_anonymization_key.GetTopFrameSite());
   if (partition_domain.empty()) {
     return std::string();
   }
@@ -108,20 +108,20 @@ absl::optional<std::string> GetPartitionHashForAddingHSTS(
   // partition.
   if (IsTopFrameOriginCryptographic(isolation_info) &&
       isolation_info.site_for_cookies().site() !=
-          *isolation_info.network_isolation_key().GetTopFrameSite()) {
+          *isolation_info.network_anonymization_key().GetTopFrameSite()) {
     return std::string();
   }
 
-  return GetHSTSPartitionHash(isolation_info.network_isolation_key());
+  return GetHSTSPartitionHash(isolation_info.network_anonymization_key());
 }
 
 // Use NetworkIsolationKey to create PartitionHash for accessing/storing data.
 absl::optional<std::string> GetPartitionHashForHSTS(
-    const NetworkIsolationKey& network_isolation_key) {
+    const NetworkAnonymizationKey& network_anonymization_key) {
   if (!base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
     return absl::nullopt;
   }
-  return GetHSTSPartitionHash(network_isolation_key);
+  return GetHSTSPartitionHash(network_anonymization_key);
 }
 
 // Use host-bound NetworkIsolationKey in cases when no NetworkIsolationKey is
@@ -133,28 +133,29 @@ absl::optional<std::string> GetHostBoundPartitionHashForHSTS(
     return absl::nullopt;
   }
   SchemefulSite schemeful_site(url::Origin::Create(GURL("https://" + host)));
-  NetworkIsolationKey network_isolation_key(schemeful_site, schemeful_site);
-  return GetHSTSPartitionHash(network_isolation_key);
+  NetworkAnonymizationKey network_anonymization_key(schemeful_site,
+                                                    schemeful_site);
+  return GetHSTSPartitionHash(network_anonymization_key);
 }
 
 }  // namespace
 
 bool TransportSecurityState::ShouldSSLErrorsBeFatal(
-    const NetworkIsolationKey& network_isolation_key,
+    const NetworkAnonymizationKey& network_anonymization_key,
     const std::string& host) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   auto auto_reset_partition_hash = enabled_sts_hosts_.SetScopedPartitionHash(
-      GetPartitionHashForHSTS(network_isolation_key));
+      GetPartitionHashForHSTS(network_anonymization_key));
   return TransportSecurityState_ChromiumImpl::ShouldSSLErrorsBeFatal(host);
 }
 
 bool TransportSecurityState::ShouldUpgradeToSSL(
-    const NetworkIsolationKey& network_isolation_key,
+    const NetworkAnonymizationKey& network_anonymization_key,
     const std::string& host,
     const NetLogWithSource& net_log) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   auto auto_reset_partition_hash = enabled_sts_hosts_.SetScopedPartitionHash(
-      GetPartitionHashForHSTS(network_isolation_key));
+      GetPartitionHashForHSTS(network_anonymization_key));
   return TransportSecurityState_ChromiumImpl::ShouldUpgradeToSSL(host, net_log);
 }
 

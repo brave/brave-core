@@ -18,7 +18,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "crypto/random.h"
-#include "net/base/network_isolation_key.h"
+#include "net/base/network_anonymization_key.h"
 #include "net/base/proxy_string_util.h"
 #include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
@@ -126,7 +126,7 @@ void ProxyConfigServiceTor::UpdateProxyURI(const std::string& uri) {
 }
 
 // static
-std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
+std::string ProxyConfigServiceTor::CircuitAnonymizationKey(const GURL& url) {
   // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
   //
   //    For the purposes of the unlinkability requirements of this
@@ -140,10 +140,11 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   // In particular, we need not isolate by the scheme,
   // username/password, port, path, or query part of the URL.
   const net::SchemefulSite url_site(url);
-  const net::NetworkIsolationKey network_isolation_key(url_site, url_site);
+  const net::NetworkAnonymizationKey network_anonymization_key(url_site,
+                                                               url_site);
 
   const absl::optional<net::SchemefulSite>& schemeful_site =
-      network_isolation_key.GetTopFrameSite();
+      network_anonymization_key.GetTopFrameSite();
   DCHECK(schemeful_site.has_value());
   std::string host = GURL(schemeful_site->Serialize()).host();
   return host;
@@ -152,11 +153,10 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
 void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
   const HostPortPair old_host_port = proxy_server_.host_port_pair();
   const HostPortPair new_host_port(
-      CircuitIsolationKey(url),
+      CircuitAnonymizationKey(url),
       std::to_string(
           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds()),
-      old_host_port.host(),
-      old_host_port.port());
+      old_host_port.host(), old_host_port.port());
   proxy_server_ = ProxyServer(ProxyServer::SCHEME_SOCKS5, new_host_port);
 
   net::ProxyConfigWithAnnotation proxy_config;
@@ -178,7 +178,7 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
 
   // Adding username & password to global sock://127.0.0.1:[port] config
   // without actually modifying it when resolving proxy for each url.
-  const std::string username = CircuitIsolationKey(url);
+  const std::string username = CircuitAnonymizationKey(url);
   const std::string& proxy_uri = net::ProxyServerToProxyUri(
       config.value().proxy_rules().single_proxies.Get());
   HostPortPair host_port_pair =

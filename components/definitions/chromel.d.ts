@@ -318,31 +318,6 @@ declare namespace chrome.braveShields {
   const openFilterManagementPage: () => void
 }
 
-declare namespace chrome.braveWallet {
-  const ready: () => void
-  const shouldPromptForSetup: (callback: (shouldPrompt: boolean) => void) => void
-  const loadUI: (callback: () => void) => void
-  const isNativeWalletEnabled: (callback: (enabled: boolean) => void) => void
-  const notifyWalletUnlock: () => void
-}
-
-declare namespace chrome.ipfs {
-  const resolveIPFSURI: (uri: string, callback: (gatewayUrl: string) => void) => void
-}
-
 declare namespace chrome.test {
   const sendMessage: (message: string) => {}
-}
-
-declare namespace chrome.braveTheme {
-  type ThemeType = 'Light' | 'Dark' | 'System'
-  type ThemeList = Array<{name: ThemeType, index: number}>
-  type ThemeTypeCallback = (themeType: ThemeType) => void
-  type ThemeListCallback = (themeList: ThemeList) => void
-  const getBraveThemeType: (themeType: ThemeTypeCallback) => void
-  const getBraveThemeList: (themeList: ThemeListCallback) => void
-  const setBraveThemeType: (themeType: ThemeType) => void
-  const onBraveThemeTypeChanged: {
-    addListener: (callback: ThemeTypeCallback) => void
-  }
 }

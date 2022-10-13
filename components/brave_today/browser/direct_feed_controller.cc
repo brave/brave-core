@@ -111,15 +111,15 @@ bool DirectFeedController::AddDirectFeedPref(
     const std::string& title,
     const absl::optional<std::string>& id) {
   // Check if feed url already exists
-  auto* existing_feeds = prefs_->GetDictionary(prefs::kBraveTodayDirectFeeds);
-  for (const auto kv : existing_feeds->DictItems()) {
+  const auto& existing_feeds = prefs_->GetDict(prefs::kBraveTodayDirectFeeds);
+  for (const auto&& [key, value] : existing_feeds) {
     // Non dict values will be flagged as an issue elsewhere.
-    if (!kv.second.is_dict())
+    if (!value.is_dict())
       continue;
 
-    auto existing_url =
-        *kv.second.FindStringKey(prefs::kBraveTodayDirectFeedsKeySource);
-    if (GURL(existing_url) == feed_url.spec()) {
+    const auto* existing_url =
+        value.FindStringKey(prefs::kBraveTodayDirectFeedsKeySource);
+    if (GURL(*existing_url) == feed_url.spec()) {
       // It's a duplicate.
       return false;
     }
@@ -151,7 +151,7 @@ void DirectFeedController::RemoveDirectFeedPref(
 
 std::vector<mojom::PublisherPtr> DirectFeedController::ParseDirectFeedsPref() {
   std::vector<mojom::PublisherPtr> result;
-  auto* pref = prefs_->GetDictionary(prefs::kBraveTodayDirectFeeds);
+  const auto& pref = prefs_->GetDict(prefs::kBraveTodayDirectFeeds);
   ParseDirectPublisherList(pref, &result);
   return result;
 }

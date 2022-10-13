@@ -568,16 +568,16 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
       return;
     }
 
-    std::vector<mojom::SolanaSignTransactionParamPtr> params;
+    std::vector<mojom::SolanaSignTransactionParamPtr> sign_params;
     for (const auto& message : *messages) {
       auto param = mojom::SolanaSignTransactionParam::New();
       const std::string* encoded_serialized_msg = message.GetIfString();
       if (encoded_serialized_msg)
         param->encoded_serialized_msg = *encoded_serialized_msg;
-      params.push_back(std::move(param));
+      sign_params.push_back(std::move(param));
     }
     SignAllTransactions(
-        std::move(params),
+        std::move(sign_params),
         base::BindOnce(&SolanaProviderImpl::OnRequestSignAllTransactions,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   } else if (*method == solana::kSignMessage) {

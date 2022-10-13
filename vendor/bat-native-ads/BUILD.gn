@@ -26,6 +26,7 @@ config("internal_config") {
     "//brave/test:*",
   ]
   include_dirs = [ "src" ]
+  cflags = [ "-Wno-shadow" ]
 }
 
 group("bat-native-ads") {

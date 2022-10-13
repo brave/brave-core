@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-index b022b0b6a206efcd5588eb9f1c5303e3d6648bcb..b317d68d6843de555adfacdc89f105e000e6ac54 100644
+index 4a579e19875022ed17ee7d4f0d285730a4451b76..180ece671ad45296d295b5e5046bfcdac49d4c28 100644
 --- a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
 +++ b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-@@ -548,6 +548,7 @@ void ClipboardPromise::RequestPermission(
-   // Currently NTP relies on readText & writeText to be called without any user
-   // gesture.
-   if (allow_without_sanitization &&
+@@ -546,6 +546,7 @@ void ClipboardPromise::RequestPermission(
+   // `will_be_sanitized` is false only when we are trying to read/write
+   // web custom formats.
+   if (!will_be_sanitized &&
 +      BRAVE_CLIPBOARD_PROMISE_REQUEST_PERMISSION
        RuntimeEnabledFeatures::ClipboardCustomFormatsEnabled() &&
        !has_transient_user_activation) {

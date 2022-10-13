@@ -8,7 +8,7 @@
 #include "base/auto_reset.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
-#include "base/stl_util.h"
+#include "base/types/optional_util.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/features.h"
@@ -97,8 +97,8 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
-  const GURL first_party_url = GetFirstPartyURL(
-      site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
+  const GURL first_party_url =
+      GetFirstPartyURL(site_for_cookies, base::OptionalToPtr(top_frame_origin));
 
   if (!first_party_url.is_valid())
     return false;
@@ -188,8 +188,8 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   if (allow && !is_1p_ephemeral_feature_enabled)
     return true;
 
-  const GURL first_party_url = GetFirstPartyURL(
-      site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
+  const GURL first_party_url =
+      GetFirstPartyURL(site_for_cookies, base::OptionalToPtr(top_frame_origin));
 
   // Determine whether a main frame is ephemeral or Shields are down.
   // This is required to properly handle main and nested frames depending on the

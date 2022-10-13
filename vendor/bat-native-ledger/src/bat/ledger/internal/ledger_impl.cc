@@ -231,9 +231,9 @@ void LedgerImpl::OnInitialized(mojom::Result result,
   }
 
   while (!ready_callbacks_.empty()) {
-    auto callback = std::move(ready_callbacks_.front());
+    auto ready_callback = std::move(ready_callbacks_.front());
     ready_callbacks_.pop();
-    callback();
+    ready_callback();
   }
 
   ready_state_ = ReadyState::kReady;

@@ -49,8 +49,8 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
   }
 
   embedding_pipeline.dimension = 1;
-  for (const auto [key, value] : *value) {
-    const auto* list = value.GetIfList();
+  for (const auto [embedding_key, embedding_value] : *value) {
+    const auto* list = embedding_value.GetIfList();
     if (!list) {
       continue;
     }
@@ -60,9 +60,10 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     for (const base::Value& dimension_value : *list) {
       embedding.push_back(dimension_value.GetDouble());
     }
-    embedding_pipeline.embeddings[key] = VectorData(std::move(embedding));
+    embedding_pipeline.embeddings[embedding_key] =
+        VectorData(std::move(embedding));
     embedding_pipeline.dimension =
-        embedding_pipeline.embeddings[key].GetDimensionCount();
+        embedding_pipeline.embeddings[embedding_key].GetDimensionCount();
   }
 
   if (embedding_pipeline.dimension == 1) {

@@ -172,4 +172,4 @@ absl::optional<std::vector<std::string>> PostConnect::Headers(
 std::string PostConnect::ContentType() const {
   return kApplicationJson;
 }
-};  // namespace ledger::endpoints
+}  // namespace ledger::endpoints

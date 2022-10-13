@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/worker_content_settings_client.h b/chrome/renderer/worker_content_settings_client.h
-index 350b4ecd38d99139941d1df309f515ba4c4cf8fd..84e9675ddc7d1d2579b6174e9c02a17957162a42 100644
+index 82021572584809367b972dfd22c464e79ff017e0..29668d5691a87ed18d8122f6af4b4fd0b80aee08 100644
 --- a/chrome/renderer/worker_content_settings_client.h
 +++ b/chrome/renderer/worker_content_settings_client.h
 @@ -41,6 +41,7 @@ class WorkerContentSettingsClient : public blink::WebContentSettingsClient {

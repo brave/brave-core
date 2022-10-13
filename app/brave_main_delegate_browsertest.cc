@@ -104,6 +104,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kSharedStorageAPI,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
+    &commerce::kCommerceAllowOnDemandBookmarkUpdates,
     &commerce::kCommerceDeveloper,
     &commerce::kCommerceMerchantViewer,
     &commerce::kCommercePriceTracking,
@@ -123,13 +124,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kIsolatePrerenders,
+    &features::kKAnonymityService,
     &features::kNavigationRequestPreconnect,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kPrivacyGuide2,
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSCTAuditing,
-    &features::kSignedExchangeSubresourcePrefetch,
+    &features::kSignedExchangeReportingForDistributors,
     &features::kSignedHTTPExchange,
     &features::kSubresourceWebBundles,
 #if !BUILDFLAG(IS_ANDROID)
@@ -152,7 +154,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
-    &password_manager::features::kUnifiedPasswordManagerDesktop,
 #if !BUILDFLAG(IS_ANDROID)
     &permissions::features::kPermissionsPostPromptSurvey,
     &permissions::features::kRecordPermissionExpirationTimestamps,

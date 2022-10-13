@@ -64,17 +64,17 @@ mojom::Result GetBalance::ParseBody(const std::string& body,
   }
 
   for (const auto& item : *inventory) {
-    const auto* value = item.GetIfDict();
-    if (!value) {
+    const auto* dict_value = item.GetIfDict();
+    if (!dict_value) {
       continue;
     }
 
-    const auto* currency_code = value->FindString("currency_code");
+    const auto* currency_code = dict_value->FindString("currency_code");
     if (!currency_code || *currency_code != "BAT") {
       continue;
     }
 
-    const auto available_value = value->FindDouble("available");
+    const auto available_value = dict_value->FindDouble("available");
     if (!available_value) {
       BLOG(0, "Missing available");
       return mojom::Result::LEDGER_ERROR;

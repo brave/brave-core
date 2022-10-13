@@ -24,9 +24,7 @@
   friend class BraveTabStrip;                 \
   friend class BraveTabDragContext;           \
   virtual TabDragContext* GetDragContext
-#define TabContainer BraveTabContainer
 #include "src/chrome/browser/ui/views/tabs/tab_strip.h"
-#undef TabContainer
 #undef GetDragContext
 #undef ShouldDrawStrokes
 #undef UpdateHoverCard

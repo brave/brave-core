@@ -346,8 +346,7 @@ BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
 }
 
 void BraveP3AService::LoadDynamicMetrics() {
-  const base::Value::Dict& dict =
-      local_state_->GetValueDict(kDynamicMetricsDictPref);
+  const auto& dict = local_state_->GetDict(kDynamicMetricsDictPref);
 
   for (const auto [histogram_name, log_type_ordinal] : dict) {
     DCHECK(log_type_ordinal.is_int());

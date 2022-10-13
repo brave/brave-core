@@ -49,8 +49,8 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
     model.RegisterPageView();
 
     // Loading regular-count times.
-    for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper;
-         ++i) {
+    for (int j = 0; j < ViewCounterModel::kRegularCountToBrandedWallpaper;
+         ++j) {
       EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
       model.RegisterPageView();
     }
