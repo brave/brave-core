@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -40,6 +41,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
     protected EthTxManagerProxy mEthTxManagerProxy;
     protected SolanaTxManagerProxy mSolanaTxManagerProxy;
     protected AssetRatioService mAssetRatioService;
+    protected BraveWalletP3a mBraveWalletP3A;
     protected BraveWalletService mBraveWalletService;
     private KeyringServiceObserverImpl mKeyringServiceObserver;
     private TxServiceObserverImpl mTxServiceObserver;
@@ -80,6 +82,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         mEthTxManagerProxy = null;
         mSolanaTxManagerProxy = null;
         mAssetRatioService = null;
+        mBraveWalletP3A = null;
         mBraveWalletService = null;
         InitKeyringService();
         InitBlockchainRegistry();
@@ -88,6 +91,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         InitEthTxManagerProxy();
         InitSolanaTxManagerProxy();
         InitAssetRatioService();
+        InitBraveWalletP3A();
         InitBraveWalletService();
     }
 
@@ -151,6 +155,14 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
+    protected void InitBraveWalletP3A() {
+        if (mBraveWalletP3A != null) {
+            return;
+        }
+
+        mBraveWalletP3A = BraveWalletServiceFactory.getInstance().getBraveWalletP3A(this);
+    }
+
     protected void InitBraveWalletService() {
         if (mBraveWalletService != null) {
             return;
@@ -191,6 +203,10 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         return mBraveWalletService;
     }
 
+    public BraveWalletP3a getBraveWalletP3A() {
+        return mBraveWalletP3A;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -211,6 +227,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         InitEthTxManagerProxy();
         InitSolanaTxManagerProxy();
         InitAssetRatioService();
+        InitBraveWalletP3A();
         InitBraveWalletService();
     }
 
@@ -231,6 +248,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         if (mTxService != null) mTxService.close();
         if (mEthTxManagerProxy != null) mEthTxManagerProxy.close();
         if (mSolanaTxManagerProxy != null) mSolanaTxManagerProxy.close();
+        if (mBraveWalletP3A != null) mBraveWalletP3A.close();
         if (mBraveWalletService != null) mBraveWalletService.close();
         super.onDestroy();
     }

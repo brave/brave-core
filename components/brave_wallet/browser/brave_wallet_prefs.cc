@@ -84,7 +84,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
                                        kBraveWalletP3ALastUnlockTime,
                                        kBraveWalletP3AUsedSecondDay, nullptr);
-  registry->RegisterBooleanPref(kBraveWalletWasOnboardingShown, false);
 }
 
 void RegisterProfilePrefsForMigration(

@@ -31,6 +31,6 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
         setupCryptoButton.setOnClickListener(v -> onNextPage.gotoOnboardingPage());
 
         TextView restoreButton = view.findViewById(R.id.btn_restore);
-        restoreButton.setOnClickListener(v -> onNextPage.gotoRestorePage());
+        restoreButton.setOnClickListener(v -> onNextPage.gotoRestorePage(true));
     }
 }

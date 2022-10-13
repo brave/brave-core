@@ -24,19 +24,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
+    private static final String IS_ONBOARDING = "is_onboarding";
     private EditText recoveryPhraseText;
     private EditText passwordEdittext;
     private EditText retypePasswordEdittext;
     private CheckBox showRecoveryPhraseCheckbox;
     private CheckBox restoreLegacyWalletCheckbox;
     private boolean isLegacyWalletRestoreEnable;
+    private boolean isOnboarding;
+
+    public static RestoreWalletFragment newInstance(boolean isOnboarding) {
+        RestoreWalletFragment fragment = new RestoreWalletFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(IS_ONBOARDING, isOnboarding);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     private KeyringService getKeyringService() {
         Activity activity = getActivity();
@@ -47,9 +59,19 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         return null;
     }
 
+    private BraveWalletP3a getBraveWalletP3A() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletP3A();
+        }
+
+        return null;
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        isOnboarding = getArguments().getBoolean(IS_ONBOARDING);
         return inflater.inflate(R.layout.fragment_restore_wallet, container, false);
     }
 
@@ -130,7 +152,9 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                     getResources().getString(R.string.retype_password_error));
         } else {
             KeyringService keyringService = getKeyringService();
+            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
             assert keyringService != null;
+            assert braveWalletP3A != null;
             keyringService.restoreWallet(recoveryPhraseText.getText().toString().trim(),
                     passwordInput, isLegacyWalletRestoreEnable, result -> {
                         if (result) {
@@ -141,6 +165,12 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                             Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
                             Utils.clearClipboard(passwordInput, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);
+
+                            if (isOnboarding) {
+                                braveWalletP3A.reportOnboardingAction(
+                                        OnboardingAction.RESTORED_WALLET);
+                            }
+
                             cleanUp();
                         } else {
                             Toast.makeText(getActivity(), R.string.account_recovery_failed,

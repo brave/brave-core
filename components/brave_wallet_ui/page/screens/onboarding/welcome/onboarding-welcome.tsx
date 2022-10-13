@@ -11,6 +11,7 @@ import { WalletPageActions } from '../../../actions'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
@@ -21,7 +22,7 @@ import {
 } from '../disclosures/disclosures'
 
 // routes
-import { PageState, WalletRoutes } from '../../../../constants/types'
+import { OnboardingAction, PageState, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import { VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
@@ -55,13 +56,16 @@ export const OnboardingWelcome = () => {
     []
   )
 
+  // custom hooks
+  const { braveWalletP3A } = useApiProxy()
+
   // effects
   React.useEffect(() => {
     // start wallet setup
     if (!setupStillInProgress) {
       dispatch(WalletPageActions.walletSetupComplete(false))
     }
-    dispatch(WalletPageActions.onOnboardingShown())
+    braveWalletP3A.reportOnboardingAction(OnboardingAction.SHOWN)
   }, [setupStillInProgress])
 
   // render
