@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class DismissedExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit DismissedExclusionRule(const AdEventList& ad_events);
+  explicit DismissedExclusionRule(AdEventList ad_events);
 
   DismissedExclusionRule(const DismissedExclusionRule& other) = delete;
   DismissedExclusionRule& operator=(const DismissedExclusionRule& other) =

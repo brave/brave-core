@@ -86,7 +86,7 @@ void TextEmbeddingHtmlEvents::GetAll(
       "ORDER BY created_at DESC",
       GetTableName().c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(query, std::move(callback));
 }
 
 void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {

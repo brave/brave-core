@@ -13,7 +13,7 @@ namespace ads::targeting {
 
 struct PurchaseIntentFunnelKeywordInfo final {
   PurchaseIntentFunnelKeywordInfo();
-  PurchaseIntentFunnelKeywordInfo(const std::string& keywords, uint16_t weight);
+  PurchaseIntentFunnelKeywordInfo(std::string keywords, uint16_t weight);
 
   std::string keywords;
   uint16_t weight = 0;

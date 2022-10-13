@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -12,8 +14,8 @@
 
 namespace ads {
 
-PerDayExclusionRule::PerDayExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+PerDayExclusionRule::PerDayExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 PerDayExclusionRule::~PerDayExclusionRule() = default;
 

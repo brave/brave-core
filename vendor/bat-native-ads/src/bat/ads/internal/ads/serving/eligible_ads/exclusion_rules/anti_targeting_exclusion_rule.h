@@ -24,7 +24,7 @@ class AntiTargetingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   AntiTargetingExclusionRule(resource::AntiTargeting* anti_targeting_resource,
-                             const BrowsingHistoryList& browsing_history);
+                             BrowsingHistoryList browsing_history);
 
   AntiTargetingExclusionRule(const AntiTargetingExclusionRule& other) = delete;
   AntiTargetingExclusionRule& operator=(const AntiTargetingExclusionRule&) =

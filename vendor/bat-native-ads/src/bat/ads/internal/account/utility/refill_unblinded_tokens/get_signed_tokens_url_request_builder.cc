@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
@@ -14,9 +16,9 @@
 namespace ads {
 
 GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
-    const WalletInfo& wallet,
-    const std::string& nonce)
-    : wallet_(wallet), nonce_(nonce) {
+    WalletInfo wallet,
+    std::string nonce)
+    : wallet_(std::move(wallet)), nonce_(std::move(nonce)) {
   DCHECK(wallet_.IsValid());
   DCHECK(!nonce_.empty());
 }

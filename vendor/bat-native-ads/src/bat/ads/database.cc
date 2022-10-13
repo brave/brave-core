@@ -6,6 +6,7 @@
 #include "bat/ads/database.h"
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include "base/bind.h"
@@ -19,7 +20,7 @@
 
 namespace ads {
 
-Database::Database(const base::FilePath& path) : db_path_(path) {
+Database::Database(base::FilePath path) : db_path_(std::move(path)) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
   db_.set_error_callback(

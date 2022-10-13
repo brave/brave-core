@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class DailyCapExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit DailyCapExclusionRule(const AdEventList& ad_events);
+  explicit DailyCapExclusionRule(AdEventList ad_events);
 
   DailyCapExclusionRule(const DailyCapExclusionRule& other) = delete;
   DailyCapExclusionRule& operator=(const DailyCapExclusionRule& other) = delete;

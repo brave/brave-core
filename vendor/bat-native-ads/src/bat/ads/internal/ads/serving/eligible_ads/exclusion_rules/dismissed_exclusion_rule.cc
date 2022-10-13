@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <utility>
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -15,8 +16,8 @@
 
 namespace ads {
 
-DismissedExclusionRule::DismissedExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+DismissedExclusionRule::DismissedExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 DismissedExclusionRule::~DismissedExclusionRule() = default;
 

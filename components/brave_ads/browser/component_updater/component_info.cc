@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/browser/component_updater/component_info.h"
 
+#include <utility>
+
 namespace brave_ads {
 
-ComponentInfo::ComponentInfo(const std::string& id,
-                             const std::string& public_key)
-    : id(id), public_key(public_key) {}
+ComponentInfo::ComponentInfo(std::string id, std::string public_key)
+    : id(std::move(id)), public_key(std::move(public_key)) {}
 
 }  // namespace brave_ads

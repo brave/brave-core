@@ -6,14 +6,15 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {
 
-TotalMaxExclusionRule::TotalMaxExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+TotalMaxExclusionRule::TotalMaxExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 TotalMaxExclusionRule::~TotalMaxExclusionRule() = default;
 

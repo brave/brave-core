@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class PerDayExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit PerDayExclusionRule(const AdEventList& ad_events);
+  explicit PerDayExclusionRule(AdEventList ad_events);
 
   PerDayExclusionRule(const PerDayExclusionRule& other) = delete;
   PerDayExclusionRule& operator=(const PerDayExclusionRule& other) = delete;

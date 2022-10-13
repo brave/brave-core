@@ -213,7 +213,7 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value value) {
     return absl::nullopt;
   }
 
-  return PipelineInfo(*version, *timestamp, *locale,
+  return PipelineInfo(*version, std::move(*timestamp), std::move(*locale),
                       std::move(*transformations), std::move(*linear_model));
 }
 

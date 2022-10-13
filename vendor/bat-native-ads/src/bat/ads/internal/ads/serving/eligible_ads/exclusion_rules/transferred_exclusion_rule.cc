@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
@@ -17,8 +19,8 @@ namespace {
 constexpr int kTransferredCap = 1;
 }  // namespace
 
-TransferredExclusionRule::TransferredExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+TransferredExclusionRule::TransferredExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 TransferredExclusionRule::~TransferredExclusionRule() = default;
 

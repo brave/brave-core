@@ -23,8 +23,8 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
-      const WalletInfo& wallet,
-      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+      WalletInfo wallet,
+      privacy::UnblindedPaymentTokenList unblinded_payment_tokens,
       const base::Value::Dict& user_data);
 
   RedeemUnblindedPaymentTokensUrlRequestBuilder(

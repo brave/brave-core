@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -16,8 +18,8 @@ namespace {
 constexpr int kPerHourCap = 1;
 }  // namespace
 
-PerHourExclusionRule::PerHourExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+PerHourExclusionRule::PerHourExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 PerHourExclusionRule::~PerHourExclusionRule() = default;
 

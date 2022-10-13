@@ -24,11 +24,11 @@ namespace ads {
 
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
-        const WalletInfo& wallet,
-        const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+        WalletInfo wallet,
+        privacy::UnblindedPaymentTokenList unblinded_payment_tokens,
         const base::Value::Dict& user_data)
-    : wallet_(wallet),
-      unblinded_payment_tokens_(unblinded_payment_tokens),
+    : wallet_(std::move(wallet)),
+      unblinded_payment_tokens_(std::move(unblinded_payment_tokens)),
       user_data_(user_data.Clone()) {
   DCHECK(wallet_.IsValid());
   DCHECK(!unblinded_payment_tokens_.empty());

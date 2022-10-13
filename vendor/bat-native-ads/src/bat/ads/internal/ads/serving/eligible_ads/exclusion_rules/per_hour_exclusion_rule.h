@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class PerHourExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit PerHourExclusionRule(const AdEventList& ad_events);
+  explicit PerHourExclusionRule(AdEventList ad_events);
 
   PerHourExclusionRule(const PerHourExclusionRule& other) = delete;
   PerHourExclusionRule& operator=(const PerHourExclusionRule& other) = delete;

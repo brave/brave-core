@@ -20,8 +20,7 @@ namespace ads {
 class CreateConfirmationUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
-  explicit CreateConfirmationUrlRequestBuilder(
-      const ConfirmationInfo& confirmation);
+  explicit CreateConfirmationUrlRequestBuilder(ConfirmationInfo confirmation);
 
   mojom::UrlRequestInfoPtr Build() override;
 

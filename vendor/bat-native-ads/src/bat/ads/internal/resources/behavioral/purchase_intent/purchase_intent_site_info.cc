@@ -5,14 +5,18 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
 
+#include <utility>
+
 namespace ads::targeting {
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo() = default;
 
-PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(const SegmentList& segments,
-                                               const GURL& url_netloc,
+PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(SegmentList segments,
+                                               GURL url_netloc,
                                                const uint16_t weight)
-    : segments(segments), url_netloc(url_netloc), weight(weight) {}
+    : segments(std::move(segments)),
+      url_netloc(std::move(url_netloc)),
+      weight(weight) {}
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
     const PurchaseIntentSiteInfo& other) = default;

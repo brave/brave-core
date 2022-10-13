@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
@@ -18,8 +20,8 @@
 namespace ads {
 
 CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
-    const ConfirmationInfo& confirmation)
-    : confirmation_(confirmation) {
+    ConfirmationInfo confirmation)
+    : confirmation_(std::move(confirmation)) {
   DCHECK(IsValid(confirmation_));
 }
 

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 
 #include <string>
+#include <utility>
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
@@ -17,8 +18,8 @@
 namespace ads {
 
 FetchPaymentTokenUrlRequestBuilder::FetchPaymentTokenUrlRequestBuilder(
-    const ConfirmationInfo& confirmation)
-    : confirmation_(confirmation) {
+    ConfirmationInfo confirmation)
+    : confirmation_(std::move(confirmation)) {
   DCHECK(IsValid(confirmation_));
 }
 

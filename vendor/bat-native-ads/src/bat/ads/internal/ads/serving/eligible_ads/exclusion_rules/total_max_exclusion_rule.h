@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class TotalMaxExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit TotalMaxExclusionRule(const AdEventList& ad_events);
+  explicit TotalMaxExclusionRule(AdEventList ad_events);
 
   TotalMaxExclusionRule(const TotalMaxExclusionRule& other) = delete;
   TotalMaxExclusionRule& operator=(const TotalMaxExclusionRule& other) = delete;

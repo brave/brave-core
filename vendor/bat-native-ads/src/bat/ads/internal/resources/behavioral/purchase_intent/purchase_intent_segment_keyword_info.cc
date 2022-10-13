@@ -5,14 +5,16 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h"
 
+#include <utility>
+
 namespace ads::targeting {
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo() = default;
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
-    const SegmentList& segments,
-    const std::string& keywords)
-    : segments(segments), keywords(keywords) {}
+    SegmentList segments,
+    std::string keywords)
+    : segments(std::move(segments)), keywords(std::move(keywords)) {}
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
     const PurchaseIntentSegmentKeywordInfo& other) = default;

@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class ConversionExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit ConversionExclusionRule(const AdEventList& ad_events);
+  explicit ConversionExclusionRule(AdEventList ad_events);
 
   ConversionExclusionRule(const ConversionExclusionRule& other) = delete;
   ConversionExclusionRule& operator=(const ConversionExclusionRule& other) =

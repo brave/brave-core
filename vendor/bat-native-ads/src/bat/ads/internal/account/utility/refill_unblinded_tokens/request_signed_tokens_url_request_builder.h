@@ -22,8 +22,8 @@ class RequestSignedTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
   RequestSignedTokensUrlRequestBuilder(
-      const WalletInfo& wallet,
-      const std::vector<privacy::cbr::BlindedToken>& tokens);
+      WalletInfo wallet,
+      std::vector<privacy::cbr::BlindedToken> tokens);
 
   RequestSignedTokensUrlRequestBuilder(
       const RequestSignedTokensUrlRequestBuilder& other) = delete;

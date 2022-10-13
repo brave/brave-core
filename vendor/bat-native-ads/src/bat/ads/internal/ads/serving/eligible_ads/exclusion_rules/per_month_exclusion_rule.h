@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class PerMonthExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit PerMonthExclusionRule(const AdEventList& ad_events);
+  explicit PerMonthExclusionRule(AdEventList ad_events);
 
   PerMonthExclusionRule(const PerMonthExclusionRule& other) = delete;
   PerMonthExclusionRule& operator=(const PerMonthExclusionRule& other) = delete;
