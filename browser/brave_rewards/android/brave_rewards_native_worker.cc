@@ -24,6 +24,7 @@
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/url_data_source.h"
@@ -67,6 +68,18 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
     }
   }
   delete this;
+}
+
+bool BraveRewardsNativeWorker::IsSupported(JNIEnv* env) {
+  return brave_rewards::IsSupported(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
+      brave_rewards::IsSupportedOptions::kNone);
+}
+
+bool BraveRewardsNativeWorker::IsSupportedSkipRegionCheck(JNIEnv* env) {
+  return brave_rewards::IsSupported(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
+      brave_rewards::IsSupportedOptions::kSkipRegionCheck);
 }
 
 std::string BraveRewardsNativeWorker::StringifyResult(

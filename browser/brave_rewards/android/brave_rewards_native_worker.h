@@ -40,6 +40,9 @@ class BraveRewardsNativeWorker
 
   void Destroy(JNIEnv* env);
 
+  bool IsSupported(JNIEnv* env);
+  bool IsSupportedSkipRegionCheck(JNIEnv* env);
+
   std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result);
 
   void CreateRewardsWallet(

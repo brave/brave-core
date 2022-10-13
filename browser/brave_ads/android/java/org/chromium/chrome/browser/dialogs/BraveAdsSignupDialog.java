@@ -17,7 +17,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.View;
 import android.widget.ImageView;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.annotations.CalledByNative;
@@ -25,7 +24,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -45,11 +43,12 @@ public class BraveAdsSignupDialog {
     private static final long MOMENT_LATER = 2_500;
 
     public static boolean shouldShowNewUserDialog(Context context) {
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         boolean shouldShow = shouldShowOnboardingDialog() && PackageUtils.isFirstInstall(context)
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
-                && hasElapsed24Hours(context)
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+                && hasElapsed24Hours(context) && braveRewardsNativeWorker != null
+                && braveRewardsNativeWorker.IsSupported();
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
         if (shouldShow) updateViewCount();
@@ -58,10 +57,11 @@ public class BraveAdsSignupDialog {
     }
 
     public static boolean shouldShowNewUserDialogIfRewardsIsSwitchedOff(Context context) {
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         boolean shouldShow = shouldShowOnboardingDialog() && !PackageUtils.isFirstInstall(context)
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+                && braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported();
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
         if (shouldShow) updateViewCount();
@@ -70,11 +70,12 @@ public class BraveAdsSignupDialog {
     }
 
     public static boolean shouldShowExistingUserDialog(Context context) {
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         boolean shouldShow = shouldShowOnboardingDialog() && !PackageUtils.isFirstInstall(context)
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
                 && BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedRegularProfile())
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+                && braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported();
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
         if (shouldShow) updateViewCount();
