@@ -283,15 +283,8 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
     return;
   }
 
-  const base::Value* user_assets =
-      prefs_->GetDictionary(kBraveWalletUserAssets);
-  if (!user_assets) {
-    std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
-    return;
-  }
-
-  const auto* user_assets_dict = user_assets->GetIfDict();
-  const auto* tokens = user_assets_dict->FindListByDottedPath(
+  const auto& user_assets_dict = prefs_->GetDict(kBraveWalletUserAssets);
+  const auto* tokens = user_assets_dict.FindListByDottedPath(
       base::StrCat({GetPrefKeyForCoinType(coin), ".", network_id}));
   if (!tokens) {
     std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
@@ -459,14 +452,8 @@ mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
   if (network_id.empty())
     return nullptr;
 
-  const base::Value* user_assets =
-      prefs_->GetDictionary(kBraveWalletUserAssets);
-  const base::Value::Dict* user_assets_dict =
-      user_assets ? user_assets->GetIfDict() : nullptr;
-  if (!user_assets_dict)
-    return nullptr;
-
-  const auto* user_assets_list = user_assets_dict->FindListByDottedPath(
+  const auto& user_assets_dict = prefs_->GetDict(kBraveWalletUserAssets);
+  const auto* user_assets_list = user_assets_dict.FindListByDottedPath(
       base::StrCat({GetPrefKeyForCoinType(coin), ".", network_id}));
   if (!user_assets_list)
     return nullptr;
@@ -710,8 +697,8 @@ void BraveWalletService::MigrateMultichainUserAssets(PrefService* prefs) {
   if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated))
     return;
 
-  base::Value::Dict eth_user_assets =
-      prefs->GetDictionary(kBraveWalletUserAssetsDeprecated)->GetDict().Clone();
+  auto eth_user_assets =
+      prefs->GetDict(kBraveWalletUserAssetsDeprecated).Clone();
 
   // Update contract_address key to address.
   for (auto user_asset_list : eth_user_assets) {

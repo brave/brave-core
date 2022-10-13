@@ -49,7 +49,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
 
   void OnResetDone(base::Value callback_id);
 
-  base::Value GetSyncDeviceList();
+  base::Value::List GetSyncDeviceList();
   syncer::BraveSyncServiceImpl* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
   syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;

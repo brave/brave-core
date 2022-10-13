@@ -182,9 +182,10 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
     return false;
 
   std::string cumulative_gas_used;
-  if (const auto* cumulative_gas_used =
+  if (const auto* cumulative_gas_used_string =
           result->FindString("cumulativeGasUsed")) {
-    if (!HexValueToUint256(*cumulative_gas_used, &receipt->cumulative_gas_used))
+    if (!HexValueToUint256(*cumulative_gas_used_string,
+                           &receipt->cumulative_gas_used))
       return false;
   } else {
     return false;

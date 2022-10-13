@@ -60,19 +60,18 @@ bool ParseCombinedPublisherList(const std::string& json,
   return true;
 }
 
-void ParseDirectPublisherList(const base::Value* direct_feeds_pref_value,
+void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
                               std::vector<mojom::PublisherPtr>* publishers) {
-  for (auto const kv : direct_feeds_pref_value->DictItems()) {
-    if (!kv.second.is_dict()) {
+  for (const auto&& [key, value] : direct_feeds_pref_dict) {
+    if (!value.is_dict()) {
       // Handle unknown value type
       LOG(ERROR) << "Found unknown dictionary pref value for"
                     "Brave News direct feeds at the pref path: "
-                 << kv.first;
+                 << key;
       // TODO(petemill): delete item from pref dict?
       continue;
     }
-    VLOG(1) << "Found direct feed in prefs: " << kv.first;
-    const auto& value = kv.second;
+    VLOG(1) << "Found direct feed in prefs: " << key;
 
     GURL feed_source(
         *value.FindStringKey(prefs::kBraveTodayDirectFeedsKeySource));
@@ -89,7 +88,7 @@ void ParseDirectPublisherList(const base::Value* direct_feeds_pref_value,
     }
     auto publisher = mojom::Publisher::New();
     publisher->feed_source = feed_source;
-    publisher->publisher_id = kv.first;
+    publisher->publisher_id = key;
     publisher->publisher_name =
         *value.FindStringKey(prefs::kBraveTodayDirectFeedsKeyTitle);
     publisher->type = mojom::PublisherType::DIRECT_SOURCE;

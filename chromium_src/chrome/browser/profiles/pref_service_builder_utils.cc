@@ -19,6 +19,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
+#include "ui/color/system_theme.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_pref_store.h"
@@ -48,7 +49,11 @@ void RegisterProfilePrefs(bool is_signin_profile,
                                 base::Value(false));
 #if BUILDFLAG(IS_LINUX)
   // Use brave theme by default instead of gtk theme.
-  registry->SetDefaultPrefValue(prefs::kUsesSystemTheme, base::Value(false));
+  registry->SetDefaultPrefValue(prefs::kUsesSystemThemeDeprecated,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(
+      prefs::kSystemTheme,
+      base::Value(static_cast<int>(ui::SystemTheme::kDefault)));
 #endif
 }
 
@@ -70,14 +75,15 @@ std::unique_ptr<sync_preferences::PrefServiceSyncable> CreatePrefService(
     Profile* original_profile =
         g_browser_process->profile_manager()->GetProfileByPath(original_path);
     DCHECK(original_profile);
-    PrefStore* extension_pref_store = nullptr;
+    PrefStore* local_extension_pref_store = nullptr;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-    extension_pref_store = new ExtensionPrefStore(
+    local_extension_pref_store = new ExtensionPrefStore(
         ExtensionPrefValueMapFactory::GetForBrowserContext(original_profile),
         true);
 #endif
     return CreateIncognitoPrefServiceSyncable(
-        PrefServiceSyncableFromProfile(original_profile), extension_pref_store);
+        PrefServiceSyncableFromProfile(original_profile),
+        local_extension_pref_store);
   }
 
   return CreatePrefService_ChromiumImpl(

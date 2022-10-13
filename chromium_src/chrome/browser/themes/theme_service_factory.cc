@@ -19,15 +19,12 @@
 #define BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
 #endif
 
-#define GetBrowserContextToUse GetBrowserContextToUse_ChromiumImpl
-
 #include "src/chrome/browser/themes/theme_service_factory.cc"
 #undef BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
-#undef GetBrowserContextToUse
 
 content::BrowserContext* ThemeServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   if (context->IsTor())
     return context;
-  return ThemeServiceFactory::GetBrowserContextToUse_ChromiumImpl(context);
+  return ProfileKeyedServiceFactory::GetBrowserContextToUse(context);
 }

@@ -260,8 +260,7 @@ void VerticalTabStripRegionView::UpdateLayout() {
 void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
-  auto background_color =
-      GetColorProvider()->GetColor(ThemeProperties::COLOR_TOOLBAR);
+  const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
   SetBackground(views::CreateSolidBackground(background_color));
   scroll_view_->SetBackgroundColor(background_color);
 

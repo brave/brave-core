@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
-index db6ca8da0ebccb87399e96fb322334264d4850ff..5cc853277247e3b5120ea91a953460fd73d92ab6 100644
+index 94e967e18b9a0f94872c2efe076086d51cab0612..f270511f89688b58c76cfcbe5c7e2120c7a322af 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
 @@ -20,7 +20,7 @@ import org.chromium.components.version_info.VersionInfo;

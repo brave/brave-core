@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesGridLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesGridLayout.java
-index 5129e177d66dc525e52e1040c1e9f539a4697cc8..424d31efb3b285974f1c7c292fb274ea44ad31ec 100644
+index 2315a2eb71a104050ec56d7a931d66bec220cf59..23973c5acf73dfc8e18bf7a4a2414b791c57602b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesGridLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesGridLayout.java
 @@ -163,7 +163,7 @@ public class MostVisitedTilesGridLayout extends FrameLayout {

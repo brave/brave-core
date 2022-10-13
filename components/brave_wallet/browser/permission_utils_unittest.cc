@@ -186,7 +186,6 @@ TEST(PermissionUtilsUnitTest, ParseRequestingOrigin) {
        "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
        "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"}};
 
-  std::string requesting_origin;
   std::string account;
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     // Invalid requesting_origin format:

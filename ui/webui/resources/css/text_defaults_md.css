@@ -11,8 +11,8 @@
  * anything to take precedence.
  */
 
-@import url(//brave-resources/fonts/muli.css);
-@import url(//brave-resources/fonts/poppins.css);
+@import url(//resources/fonts/muli.css);
+@import url(//resources/fonts/poppins.css);
 
 html {
   /* TODO(dbeam): remove this soon. Prefer dir= in HTML. */

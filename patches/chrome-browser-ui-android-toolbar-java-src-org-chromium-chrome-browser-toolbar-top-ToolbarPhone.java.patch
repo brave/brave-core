@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 5a74100694c6f1744e0e3f06413fad2eebccf273..f7f29959d59d30459639ef8f19e0c3195334f270 100644
+index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..d5afa354c14afb3ffc83440a8bf8ecac35a8d34e 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -373,6 +373,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -377,6 +377,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          if (mOptionalButton != null) {
              mOptionalButton.setBackgroundColorFilter(color);
          }
 +        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
      }
  
-     /**
-@@ -490,6 +491,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+     private void updateModernLocationBarCorners() {
+@@ -538,6 +539,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -18,7 +18,7 @@ index 5a74100694c6f1744e0e3f06413fad2eebccf273..f7f29959d59d30459639ef8f19e0c319
      }
  
      @Override
-@@ -681,6 +683,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -734,6 +736,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * @return The right bounds of the location bar after accounting for any visible right buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -26,7 +26,7 @@ index 5a74100694c6f1744e0e3f06413fad2eebccf273..f7f29959d59d30459639ef8f19e0c319
          if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
  
          int toolbarButtonsContainerWidth = mToolbarButtonsContainer.getMeasuredWidth();
-@@ -930,6 +933,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -983,6 +986,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * New Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -34,11 +34,11 @@ index 5a74100694c6f1744e0e3f06413fad2eebccf273..f7f29959d59d30459639ef8f19e0c319
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (mOptimizationsEnabled && isInTabSwitcherMode()) return;
  
-@@ -1913,6 +1917,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -1973,6 +1977,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
-+        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSetImpl(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
++        if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  

@@ -56,8 +56,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
-            ObservableSupplier<Boolean> identityDiscStateSupplier,
-            Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
+            ButtonDataProvider identityDiscController, Callback<Runnable> invalidatorCallback,
+            Supplier<ButtonData> identityDiscButtonSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
             BooleanSupplier isIncognitoModeEnabledSupplier, boolean isGridTabSwitcherEnabled,
@@ -65,7 +65,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             boolean isStartSurfaceEnabled, boolean isTabGroupsAndroidContinuationEnabled,
             HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader, boolean initializeWithIncognitoColors,
-            ObservableSupplier<Profile> profileSupplier,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
             boolean isStartSurfaceRefactorEnabled,
             ObservableSupplier<Integer> constraintsSupplier) {
@@ -74,13 +73,13 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 layoutStateProviderSupplier, normalThemeColorProvider, overviewThemeColorProvider,
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
-                identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
+                identityDiscController, invalidatorCallback, identityDiscButtonSupplier,
                 resourceManagerSupplier, isProgressBarVisibleSupplier,
                 isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled, isTabletGtsPolishEnabled,
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
-                profileSupplier, startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled,
+                startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled,
                 constraintsSupplier);
 
         mBraveToolbarLayout = toolbarLayout;

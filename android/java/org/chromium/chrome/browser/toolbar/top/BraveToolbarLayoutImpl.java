@@ -422,7 +422,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
 
             @Override
-            public void onDidFinishNavigation(Tab tab, NavigationHandle navigation) {
+            public void onDidFinishNavigationInPrimaryMainFrame(
+                    Tab tab, NavigationHandle navigation) {
                 if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
                         && !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(

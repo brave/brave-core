@@ -497,10 +497,10 @@ void GeminiService::OnURLLoaderComplete(
     auto headers_list = loader->ResponseInfo()->headers;
 
     if (headers_list) {
-      size_t iter = 0;
+      size_t headers_iter = 0;
       std::string key;
       std::string value;
-      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
+      while (headers_list->EnumerateHeaderLines(&headers_iter, &key, &value)) {
         key = base::ToLowerASCII(key);
         headers[key] = value;
       }
@@ -529,10 +529,10 @@ void GeminiService::SetClientSecretForTest(const std::string& client_secret) {
   client_secret_ = client_secret;
 }
 
-void GeminiService::SetOAuthHostForTest(const std::string& oauth_host) {
-  oauth_host_ = oauth_host;
+void GeminiService::SetOAuthHostForTest(const std::string& host) {
+  oauth_host_ = host;
 }
 
-void GeminiService::SetApiHostForTest(const std::string& api_host) {
-  api_host_ = api_host;
+void GeminiService::SetApiHostForTest(const std::string& host) {
+  api_host_ = host;
 }

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/downloads/downloads.html b/chrome/browser/resources/downloads/downloads.html
-index 61d82b65d9315f9ba29c1ad5358b1555669a2d4f..6a53d31b4959da8a8f10ce6ae5a61ffe763afa6d 100644
+index 61d82b65d9315f9ba29c1ad5358b1555669a2d4f..2370273c52b29c054965ce4193d5aa066b508569 100644
 --- a/chrome/browser/resources/downloads/downloads.html
 +++ b/chrome/browser/resources/downloads/downloads.html
 @@ -6,6 +6,7 @@
    <base href="chrome://downloads">
    <title>$i18n{title}</title>
    <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
-+  <link rel="stylesheet" href="chrome://brave-resources/page_specific/downloads/downloads_loading_shim.css">
++  <link rel="stylesheet" href="chrome://resources/brave/page_specific/downloads/downloads_loading_shim.css">
    <style>
      html {
        /* Remove 300ms delay for 'click' event, when using touch interface. */

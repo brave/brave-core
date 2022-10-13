@@ -6,7 +6,7 @@
 #include "net/http/transport_security_state.h"
 
 #define ShouldSSLErrorsBeFatal(host) \
-  ShouldSSLErrorsBeFatal(ssl_config_.network_isolation_key, host)
+  ShouldSSLErrorsBeFatal(ssl_config_.network_anonymization_key, host)
 
 #include "src/net/socket/ssl_client_socket_impl.cc"
 

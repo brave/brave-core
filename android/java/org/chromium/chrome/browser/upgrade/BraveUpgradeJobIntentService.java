@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.upgrade;
 
-import org.chromium.base.annotations.IdentifierNameString;
+import org.chromium.build.annotations.IdentifierNameString;
 import org.chromium.chrome.browser.base.SplitCompatJobIntentService;
 
 public class BraveUpgradeJobIntentService extends SplitCompatJobIntentService {

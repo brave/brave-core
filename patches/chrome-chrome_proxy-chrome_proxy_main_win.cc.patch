@@ -1,5 +1,5 @@
 diff --git a/chrome/chrome_proxy/chrome_proxy_main_win.cc b/chrome/chrome_proxy/chrome_proxy_main_win.cc
-index bdb02d140cf891e387d1f566e6f39692e0ebf35e..2f31a0505f017ba614738a5d9fd7d11b2388af92 100644
+index abc75a5a435ed9afcab38626285a082e45cf6947..8dd08b70afa2471ddc0a92b42cc4fa7cef65a0a9 100644
 --- a/chrome/chrome_proxy/chrome_proxy_main_win.cc
 +++ b/chrome/chrome_proxy/chrome_proxy_main_win.cc
 @@ -13,7 +13,10 @@

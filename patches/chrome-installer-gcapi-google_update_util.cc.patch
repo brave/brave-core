@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/gcapi/google_update_util.cc b/chrome/installer/gcapi/google_update_util.cc
-index e927c346623b3be564778d12d2ef28aa9f450365..1319910bc4eed406cd7dd7eca9ce5395155fbf37 100644
+index d1de653cc87b7db90575728cd0e3d7e753aa6010..b025cd24f6b29aedbbdc44b0126f171de1f3665e 100644
 --- a/chrome/installer/gcapi/google_update_util.cc
 +++ b/chrome/installer/gcapi/google_update_util.cc
 @@ -11,6 +11,17 @@

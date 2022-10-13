@@ -33,7 +33,7 @@ BraveSidePanel::~BraveSidePanel() {
 void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {}
 
 BraveSidePanel::HorizontalAlignment BraveSidePanel::GetHorizontalAlignment() {
-  return kAlignLeft;
+  return kHorizontalAlignLeft;
 }
 
 bool BraveSidePanel::IsRightAligned() {

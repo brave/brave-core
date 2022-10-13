@@ -9,7 +9,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "ios/chrome/browser/application_context.h"
+#include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

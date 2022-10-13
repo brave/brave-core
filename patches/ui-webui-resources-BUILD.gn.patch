@@ -1,0 +1,20 @@
+diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
+index c3a994ae6bf07e1ce86b956bebe086cc3a6ebac2..cd7a35c9f135911bbebac8b9b4e7299d392ea922 100644
+--- a/ui/webui/resources/BUILD.gn
++++ b/ui/webui/resources/BUILD.gn
+@@ -111,6 +111,7 @@ generate_grd("build_grd") {
+       "$root_gen_dir/ui/webui/resources/cr_components/color_change_listener/resources.grdp",
+     ]
+   }
++  import("//brave/ui/webui/resources/sources.gni") grdp_files += brave_resources_extra_grdps public_deps += brave_resources_extra_grdps_deps
+ }
+ 
+ if (is_chromeos_ash) {
+@@ -335,6 +336,7 @@ ts_library("library") {
+     ":generate_definitions",
+     ":preprocess",
+   ]
++  import("//brave/ui/webui/resources/sources.gni") extra_deps += brave_ui_webui_resources_ts_extra_deps in_files += brave_local_files
+ }
+ 
+ generate_grd("build_ts_grdp") {

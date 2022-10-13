@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/page_specific_content_settings_delegate.cc b/chrome/browser/content_settings/page_specific_content_settings_delegate.cc
-index 69fe2883908d1a8ef7672c7c451aeb74a0bcbf06..0d3ed12a0f1bb6f5a6f5621f4bd615b45cde2672 100644
+index 65f3117f7db8fa07c6252807bac25ceb91c4933e..ae00d631945ddaac834acc15beb5d6a1966745e2 100644
 --- a/chrome/browser/content_settings/page_specific_content_settings_delegate.cc
 +++ b/chrome/browser/content_settings/page_specific_content_settings_delegate.cc
 @@ -121,6 +121,7 @@ void GetGuestViewDefaultContentSettingRules(

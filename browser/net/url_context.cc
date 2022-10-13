@@ -98,8 +98,8 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // cross-site top-level navigations. Fortunately for now it is not a problem
     // for shields functionality. We should reconsider this machinery, also
     // given that this is always empty for subresources.
-    ctx->network_isolation_key =
-        request.trusted_params->isolation_info.network_isolation_key();
+    ctx->network_anonymization_key =
+        request.trusted_params->isolation_info.network_anonymization_key();
     ctx->tab_origin = request.trusted_params->isolation_info.top_frame_origin()
                           .value_or(url::Origin())
                           .GetURL();

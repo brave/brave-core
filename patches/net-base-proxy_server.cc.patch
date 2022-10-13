@@ -1,5 +1,5 @@
 diff --git a/net/base/proxy_server.cc b/net/base/proxy_server.cc
-index 3b09f37a48ab37290180053d9cf86af0f28a5433..14d052793f545c8596e45d38626255dac8c03ce9 100644
+index c2a3e48f409585ee555d0860031abffb3dc12718..b07d5c5ac6f699bd0a47c09cf76fae90755f6324 100644
 --- a/net/base/proxy_server.cc
 +++ b/net/base/proxy_server.cc
 @@ -60,6 +60,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,

@@ -56,7 +56,8 @@ class EphemeralSessionStorageNamespace
     : public GarbageCollected<EphemeralSessionStorageNamespace>,
       public Supplement<Page> {
  public:
-  EphemeralSessionStorageNamespace(StorageController* controller,
+  EphemeralSessionStorageNamespace(Page& page,
+                                   StorageController* controller,
                                    const String& session_storage_id);
   virtual ~EphemeralSessionStorageNamespace() = default;
 
@@ -77,11 +78,13 @@ const char EphemeralSessionStorageNamespace::kSupplementName[] =
     "EphemeralSessionStorageNamespace";
 
 EphemeralSessionStorageNamespace::EphemeralSessionStorageNamespace(
+    Page& page,
     StorageController* controller,
     const String& session_storage_id)
-    : Supplement(nullptr),
+    : Supplement(page),
       session_storage_(
-          MakeGarbageCollected<StorageNamespace>(controller,
+          MakeGarbageCollected<StorageNamespace>(*GetSupplementable(),
+                                                 controller,
                                                  session_storage_id)),
       local_storage_(MakeGarbageCollected<StorageNamespace>(controller)) {}
 
@@ -113,7 +116,7 @@ EphemeralSessionStorageNamespace* EphemeralSessionStorageNamespace::From(
       kSessionStorageSuffix);
 
   supplement = MakeGarbageCollected<EphemeralSessionStorageNamespace>(
-      StorageController::GetInstance(), session_storage_id);
+      *page, StorageController::GetInstance(), session_storage_id);
 
   ProvideTo(*page, supplement);
   return supplement;

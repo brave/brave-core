@@ -31,10 +31,10 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
     if (!view || !view->GetVisible())
       continue;
 
-    auto width = view->GetPreferredSize().width();
-    const gfx::Rect bounds(taken_width, 0, width, height);
+    auto preferred_width = view->GetPreferredSize().width();
+    const gfx::Rect bounds(taken_width, 0, preferred_width, height);
     view->SetBoundsRect(host_->GetMirroredRect(bounds));
-    taken_width += width;
+    taken_width += preferred_width;
   }
 
   gfx::Size container_size(width - taken_width, height);

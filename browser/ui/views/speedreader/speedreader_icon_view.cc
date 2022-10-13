@@ -38,7 +38,8 @@ SpeedreaderIconView::SpeedreaderIconView(
     : PageActionIconView(command_updater,
                          IDC_SPEEDREADER_ICON_ONCLICK,
                          icon_label_bubble_delegate,
-                         page_action_icon_delegate) {
+                         page_action_icon_delegate,
+                         "SpeedReader") {
   SetVisible(false);
 }
 

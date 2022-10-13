@@ -49,10 +49,11 @@ IPFSHostResolver::IPFSHostResolver(
 }
 IPFSHostResolver::~IPFSHostResolver() = default;
 
-void IPFSHostResolver::Resolve(const net::HostPortPair& host,
-                               const net::NetworkIsolationKey& isolation_key,
-                               net::DnsQueryType dns_query_type,
-                               HostTextResultsCallback callback) {
+void IPFSHostResolver::Resolve(
+    const net::HostPortPair& host,
+    const net::NetworkAnonymizationKey& anonymization_key,
+    net::DnsQueryType dns_query_type,
+    HostTextResultsCallback callback) {
   if (!callback)
     return;
 
@@ -73,15 +74,18 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
   resolving_host_ = host.host();
   net::HostPortPair local_host_port(prefix_ + resolving_host_, host.port());
 
-  network_context_->ResolveHost(local_host_port, isolation_key,
-                                std::move(parameters),
-                                receiver_.BindNewPipeAndPassRemote());
+  network_context_->ResolveHost(
+      network::mojom::HostResolverHost::NewHostPortPair(local_host_port),
+      anonymization_key, std::move(parameters),
+      receiver_.BindNewPipeAndPassRemote());
 }
 
 void IPFSHostResolver::OnComplete(
     int result,
     const net::ResolveErrorInfo& error_info,
-    const absl::optional<net::AddressList>& list) {
+    const absl::optional<net::AddressList>& list,
+    const absl::optional<net::HostResolverEndpointResults>&
+        endpoint_results_with_metadata) {
   if (result != net::OK) {
     VLOG(1) << "DNS resolving error:" << net::ErrorToString(result)
             << " for host: " << prefix_ + resolving_host_;

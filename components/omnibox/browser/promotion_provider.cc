@@ -29,7 +29,7 @@ void PromotionProvider::Start(const AutocompleteInput& input,
                               bool minimal_changes) {
   matches_.clear();
 
-  if (input.focus_type() != OmniboxFocusType::DEFAULT ||
+  if (input.focus_type() != metrics::OmniboxFocusType::INTERACTION_DEFAULT ||
       input.type() == metrics::OmniboxInputType::EMPTY ||
       input.type() == metrics::OmniboxInputType::URL) {
     return;

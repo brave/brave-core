@@ -105,7 +105,6 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
       base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaProviderFeature) &&
       web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana")) {
-    auto dynamic_params = get_dynamic_params_callback_.Run();
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }

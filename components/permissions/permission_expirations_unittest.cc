@@ -132,11 +132,10 @@ class PermissionExpirationsTest : public testing::Test {
                             base::StringPiece pref_value_template,
                             const std::vector<std::string>& subst = {}) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    const base::Value* expirations =
-        prefs()->GetDictionary(prefs::kPermissionLifetimeExpirations);
-    ASSERT_TRUE(expirations);
-    EXPECT_EQ(*expirations,
-              base::test::ParseJson(base::ReplaceStringPlaceholders(
+    const auto& expirations =
+        prefs()->GetDict(prefs::kPermissionLifetimeExpirations);
+    EXPECT_EQ(expirations,
+              base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
                   pref_value_template, subst, nullptr)));
   }
 

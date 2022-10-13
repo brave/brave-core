@@ -23,7 +23,7 @@ bigdecimal = { version = "0.1", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "0.8", features = ["serde"] }
-challenge-bypass-ristretto = { version = "1.0", features = ["serde_base64"] }
+challenge-bypass-ristretto = { version = "1.0.1", features = ["serde_base64"] }
 futures-retry = { git = "https://github.com/brave-intl/futures-retry", rev = "2aaaafb" }
 urlencoding = "1.1.1"
 hmac = "0.10"

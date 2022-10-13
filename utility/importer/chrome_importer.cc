@@ -408,8 +408,8 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
       if (type && *type == "folder") {
         // Folders are added implicitly on adding children, so we only
         // explicitly add empty folders.
-        const base::Value::List* children = dict->FindList("children");
-        if (children && children->empty()) {
+        const base::Value::List* inner_children = dict->FindList("children");
+        if (inner_children && inner_children->empty()) {
           entry.in_toolbar = is_in_toolbar;
           entry.is_folder = true;
           entry.url = GURL();

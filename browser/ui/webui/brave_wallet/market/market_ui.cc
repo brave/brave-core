@@ -43,8 +43,7 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
 
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src 'self' chrome-untrusted://resources "
-                  "chrome-untrusted://brave-resources;"));
+      std::string("script-src 'self' chrome-untrusted://resources;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'self' 'unsafe-inline';"));

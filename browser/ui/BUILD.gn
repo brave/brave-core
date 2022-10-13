@@ -224,6 +224,8 @@ source_set("ui") {
       "views/side_panel/brave_side_panel.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
+      "views/tabs/brave_compound_tab_container.cc",
+      "views/tabs/brave_compound_tab_container.h",
       "views/tabs/brave_tab.cc",
       "views/tabs/brave_tab.h",
       "views/tabs/brave_tab_container.cc",
@@ -468,8 +470,6 @@ source_set("ui") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_rewards:util",
-      "//brave/browser/resources/bookmarks:resources",
-      "//brave/browser/resources/history:resources",
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/components/brave_adaptive_captcha",
@@ -579,7 +579,6 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/extensions",
-      "//brave/browser/resources/extensions:resources",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
       "//brave/components/decentralized_dns",

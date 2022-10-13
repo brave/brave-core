@@ -280,8 +280,8 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
     const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
-    ui::ImageModel model = ui::ImageModel::FromImageSkia(ipfs_logo);
-    SetIcon(index, model);
+    ui::ImageModel image_model = ui::ImageModel::FromImageSkia(ipfs_logo);
+    SetIcon(index, image_model);
   }
 #endif
 }

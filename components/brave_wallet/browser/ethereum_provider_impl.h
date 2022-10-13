@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "url/origin.h"

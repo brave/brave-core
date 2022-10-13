@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/syncer_proto_util.cc b/components/sync/engine/syncer_proto_util.cc
-index b7f9309e25b97e6ce7ee7ea7884197bef6fc9cc5..21965e0bab0a6830e8d887a992154dc2a77771cf 100644
+index 9ed5f5e4ad1b8dc91fb5af78fe483dd9faff0810..0731e29d6e0a1399f00fd145749e66bb87d65fb8 100644
 --- a/components/sync/engine/syncer_proto_util.cc
 +++ b/components/sync/engine/syncer_proto_util.cc
 @@ -411,6 +411,7 @@ SyncerError SyncerProtoUtil::PostClientToServerMessage(

@@ -62,8 +62,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(
       profile_(profile),
       scheme_classifier_(profile) {
   // Record initial search count p3a value.
-  const base::Value::List& search_p3a =
-      profile_->GetPrefs()->GetValueList(kSearchCountPrefName);
+  const auto& search_p3a = profile_->GetPrefs()->GetList(kSearchCountPrefName);
   if (search_p3a.size() == 0) {
     RecordSearchEventP3A(0);
   }

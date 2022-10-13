@@ -30,7 +30,7 @@ class WaybackClient : public WaybackMachineURLFetcher::Client {
     EXPECT_EQ(lastest_wayback_url, expected_url_);
     if (callback_)
       std::move(callback_).Run();
-  };
+  }
 
  private:
   GURL expected_url_;

@@ -80,13 +80,13 @@ void GetErrorCodeMessage(base::Value formed_response,
     error_message->clear();
     return;
   }
-  const base::Value* code = formed_response.FindKey("code");
+  auto code = formed_response.GetDict().FindInt("code");
   if (code) {
-    *error = static_cast<mojom::ProviderError>(code->GetInt());
+    *error = static_cast<mojom::ProviderError>(*code);
   }
-  const base::Value* message = formed_response.FindKey("message");
+  const std::string* message = formed_response.GetDict().FindString("message");
   if (message) {
-    *error_message = message->GetString();
+    *error_message = *message;
   }
 }
 

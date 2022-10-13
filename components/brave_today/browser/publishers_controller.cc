@@ -129,11 +129,11 @@ void PublishersController::EnsurePublishersIsUpdating() {
         Publishers publisher_list;
         ParseCombinedPublisherList(api_request_result.body(), &publisher_list);
         // Add user enabled statuses
-        const base::Value* publisher_prefs =
-            controller->prefs_->GetDictionary(prefs::kBraveTodaySources);
-        for (auto kv : publisher_prefs->DictItems()) {
-          auto publisher_id = kv.first;
-          auto is_user_enabled = kv.second.GetIfBool();
+        const auto& publisher_prefs =
+            controller->prefs_->GetDict(prefs::kBraveTodaySources);
+        for (const auto&& [key, value] : publisher_prefs) {
+          auto publisher_id = key;
+          auto is_user_enabled = value.GetIfBool();
           if (publisher_list.contains(publisher_id) &&
               is_user_enabled.has_value()) {
             publisher_list[publisher_id]->user_enabled_status =
@@ -149,7 +149,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
         // Add direct feeds
         std::vector<mojom::PublisherPtr> direct_publishers;
         ParseDirectPublisherList(
-            controller->prefs_->GetDictionary(prefs::kBraveTodayDirectFeeds),
+            controller->prefs_->GetDict(prefs::kBraveTodayDirectFeeds),
             &direct_publishers);
         for (auto it = direct_publishers.begin(); it != direct_publishers.end();
              it++) {

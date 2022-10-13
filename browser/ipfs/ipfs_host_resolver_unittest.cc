@@ -41,12 +41,15 @@ class FakeHostResolver : public network::mojom::HostResolver {
   ~FakeHostResolver() override = default;
 
   // network::mojom::HostResolver
-  void ResolveHost(const net::HostPortPair& host,
-                   const net::NetworkIsolationKey& network_isolation_key,
-                   network::mojom::ResolveHostParametersPtr parameters,
-                   mojo::PendingRemote<network::mojom::ResolveHostClient>
-                       pending_response_client) override {
-    EXPECT_EQ(expected_host_, host.host());
+  void ResolveHost(
+      network::mojom::HostResolverHostPtr host,
+      const net::NetworkAnonymizationKey& network_anonymization_key,
+      network::mojom::ResolveHostParametersPtr parameters,
+      mojo::PendingRemote<network::mojom::ResolveHostClient>
+          pending_response_client) override {
+    EXPECT_EQ(expected_host_, host->is_host_port_pair()
+                                  ? host->get_host_port_pair().host()
+                                  : host->get_scheme_host_port().host());
     EXPECT_EQ(parameters->dns_query_type, net::DnsQueryType::TXT);
     mojo::Remote<network::mojom::ResolveHostClient> response_client;
     response_client.Bind(std::move(pending_response_client));
@@ -85,14 +88,16 @@ class FakeHostResolverFail : public FakeHostResolver {
   ~FakeHostResolverFail() override = default;
 
   // network::mojom::HostResolver
-  void ResolveHost(const net::HostPortPair& host,
-                   const net::NetworkIsolationKey& network_isolation_key,
-                   network::mojom::ResolveHostParametersPtr parameters,
-                   mojo::PendingRemote<network::mojom::ResolveHostClient>
-                       pending_response_client) override {
+  void ResolveHost(
+      network::mojom::HostResolverHostPtr host,
+      const net::NetworkAnonymizationKey& network_anonymization_key,
+      network::mojom::ResolveHostParametersPtr parameters,
+      mojo::PendingRemote<network::mojom::ResolveHostClient>
+          pending_response_client) override {
     mojo::Remote<network::mojom::ResolveHostClient> response_client;
     response_client.Bind(std::move(pending_response_client));
-    response_client->OnComplete(-2, net::ResolveErrorInfo(), absl::nullopt);
+    response_client->OnComplete(-2, net::ResolveErrorInfo(), absl::nullopt,
+                                absl::nullopt);
     resolve_host_called_++;
   }
 };
@@ -103,13 +108,14 @@ class FakeNetworkContext : public network::TestNetworkContext {
   ~FakeNetworkContext() override = default;
 
   // network::mojom::HostResolver
-  void ResolveHost(const net::HostPortPair& host,
-                   const net::NetworkIsolationKey& network_isolation_key,
-                   network::mojom::ResolveHostParametersPtr parameters,
-                   mojo::PendingRemote<network::mojom::ResolveHostClient>
-                       pending_response_client) override {
+  void ResolveHost(
+      network::mojom::HostResolverHostPtr host,
+      const net::NetworkAnonymizationKey& network_anonymization_key,
+      network::mojom::ResolveHostParametersPtr parameters,
+      mojo::PendingRemote<network::mojom::ResolveHostClient>
+          pending_response_client) override {
     DCHECK(host_resolver_);
-    host_resolver_->ResolveHost(host, network_isolation_key,
+    host_resolver_->ResolveHost(std::move(host), network_anonymization_key,
                                 std::move(parameters),
                                 std::move(pending_response_client));
   }
@@ -172,7 +178,7 @@ TEST_F(IPFSHostResolverTest, PrefixRunSuccess) {
 
   SetResolvedCallbackCalled(0);
   ipfs_resolver.Resolve(
-      net::HostPortPair(host, 11), net::NetworkIsolationKey(),
+      net::HostPortPair(host, 11), net::NetworkAnonymizationKey(),
       net::DnsQueryType::TXT,
       base::BindOnce(&IPFSHostResolverTest::HostResolvedCallback,
                      weak_ptr_factory_.GetWeakPtr(), run_loop.QuitClosure(),
@@ -201,7 +207,7 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
 
   SetResolvedCallbackCalled(0);
   ipfs_resolver.Resolve(
-      net::HostPortPair(host, 11), net::NetworkIsolationKey(),
+      net::HostPortPair(host, 11), net::NetworkAnonymizationKey(),
       net::DnsQueryType::TXT,
       base::BindOnce(&IPFSHostResolverTest::HostResolvedCallback,
                      weak_ptr_factory_.GetWeakPtr(), run_loop.QuitClosure(),
@@ -214,7 +220,7 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
   EXPECT_EQ(resolved_callback_called(), 1);
 
   ipfs_resolver.Resolve(
-      net::HostPortPair(host, 11), net::NetworkIsolationKey(),
+      net::HostPortPair(host, 11), net::NetworkAnonymizationKey(),
       net::DnsQueryType::TXT,
       base::BindOnce(
           [](const std::string& expected_host, const std::string& host,
@@ -237,7 +243,7 @@ TEST_F(IPFSHostResolverTest, ResolutionFailed) {
   ipfs_resolver.SetCompleteCallbackForTesting(run_loop.QuitClosure());
   SetResolvedCallbackCalled(0);
   ipfs_resolver.Resolve(
-      net::HostPortPair(host, 11), net::NetworkIsolationKey(),
+      net::HostPortPair(host, 11), net::NetworkAnonymizationKey(),
       net::DnsQueryType::TXT,
       base::BindOnce([](const std::string& host, const std::string& dnslink) {
         NOTREACHED();

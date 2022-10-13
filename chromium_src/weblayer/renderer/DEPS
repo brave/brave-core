@@ -1,4 +1,4 @@
 include_rules = [
-  "+media/base/key_system_properties.h",
+  "+media/base/key_system_info.h",
   "+third_party/widevine/cdm/buildflags.h",
 ]

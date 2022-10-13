@@ -2508,11 +2508,11 @@ bool RewardsServiceImpl::IsAutoContributeSupported() const {
 }
 
 std::string RewardsServiceImpl::GetLegacyWallet() {
-  auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
+  const auto& dict = profile_->GetPrefs()->GetDict(prefs::kExternalWallets);
 
   std::string json;
-  for (auto it : dict->DictItems()) {
-    base::JSONWriter::Write(std::move(it.second), &json);
+  for (auto it = dict.begin(); it != dict.end(); ++it) {
+    base::JSONWriter::Write(std::move(it->second), &json);
   }
 
   return json;

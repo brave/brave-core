@@ -6,6 +6,7 @@
 import("//brave/android/features/tab_ui/brave_tab_management_java_sources.gni")
 import("//brave/android/feed/brave_feed_java_sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
+import("//brave/browser/flags/brave_flags_java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/permissions/android/java_sources.gni")
