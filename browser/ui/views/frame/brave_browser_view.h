@@ -50,7 +50,6 @@ class BraveBrowserView : public BrowserView {
   ~BraveBrowserView() override;
 
   void SetStarredState(bool is_starred) override;
-  void ShowUpdateChromeDialog() override;
   ShowTranslateBubbleResult ShowTranslateBubble(
       content::WebContents* web_contents,
       translate::TranslateStep step,
