@@ -16,6 +16,7 @@
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
+#include "brave/browser/wallet_connect/wallet_connect_service_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -115,7 +116,9 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
         filecoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
-        brave_wallet_service_receiver) {
+        brave_wallet_service_receiver,
+    mojo::PendingReceiver<wallet_connect::mojom::WalletConnectService>
+        wallet_connect_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -144,6 +147,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(filecoin_tx_manager_proxy_receiver));
   brave_wallet::BraveWalletServiceFactory::BindForContext(
       profile, std::move(brave_wallet_service_receiver));
+  wallet_connect::WalletConnectServiceFactory::BindForContext(
+      profile, std::move(wallet_connect_service_receiver));
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

@@ -5,11 +5,12 @@
 
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import * as WalletConnect from 'gen/brave/components/wallet_connect/wallet_connect.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
-export { BraveWallet }
+export { BraveWallet, WalletConnect }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }

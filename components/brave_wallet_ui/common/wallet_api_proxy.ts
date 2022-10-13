@@ -6,7 +6,7 @@
 import * as WalletActions from '../common/actions/wallet_actions'
 import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, WalletConnect } from '../constants/types'
 import { objectEquals } from '../utils/object-utils'
 
 export class WalletApiProxy {
@@ -22,6 +22,7 @@ export class WalletApiProxy {
   solanaTxManagerProxy = new BraveWallet.SolanaTxManagerProxyRemote()
   filTxManagerProxy = new BraveWallet.FilTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
+  walletConnectService = new WalletConnect.WalletConnectServiceRemote()
 
   addJsonRpcServiceObserver (store: Store) {
     const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({

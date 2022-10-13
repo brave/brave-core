@@ -688,4 +688,9 @@ handler.on(WalletActions.getOnRampCurrencies.getType(), async (store: Store) => 
   await store.dispatch(WalletActions.setOnRampCurrencies(currencies))
 })
 
+handler.on(WalletActions.performWalletConnect.getType(), async (store: Store, payload: string) => {
+  const walletConnectService = getAPIProxy().walletConnectService
+  await walletConnectService.init(payload)
+})
+
 export default handler.middleware

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/wallet_connect/wallet_connect_client.h"
+#include "brave/components/wallet_connect/wallet_connect_service.h"
 
 #include "base/guid.h"
 #include "base/json/json_reader.h"
@@ -19,9 +19,9 @@
 namespace wallet_connect {
 
 constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
-    net::DefineNetworkTrafficAnnotation("wallet_connect_client", R"(
+    net::DefineNetworkTrafficAnnotation("wallet_connect_service", R"(
         semantics {
-          sender: "Wallet Connect Client"
+          sender: "Wallet Connect Service"
           description:
             "Brave use this web socket connection to communicate to the "
             "Wallet Connect bridge server which is a rendezvous service for "
@@ -47,20 +47,30 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
             " significant user action. No background activity occurs."
         })");
 
-WalletConnectClient::WalletConnectClient()
-    : client_id_(base::GenerateGUID()),
-      websocket_client_(std::make_unique<WebSocketAdapter>(
-          base::BindOnce(&WalletConnectClient::OnTunnelReady,
-                         base::Unretained(this)),
-          base::BindRepeating(&WalletConnectClient::OnTunnelData,
-                              base::Unretained(this)))) {}
+WalletConnectService::WalletConnectService()
+    : client_id_(base::GenerateGUID()) {}
 
-WalletConnectClient::~WalletConnectClient() = default;
+WalletConnectService::~WalletConnectService() = default;
 
-bool WalletConnectClient::Init(const std::string& uri) {
-  auto data = ParseWalletConnectURI(uri);
-  if (!data)
-    return false;
+mojo::PendingRemote<mojom::WalletConnectService>
+WalletConnectService::MakeRemote() {
+  mojo::PendingRemote<mojom::WalletConnectService> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
+void WalletConnectService::Bind(
+    mojo::PendingReceiver<mojom::WalletConnectService> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void WalletConnectService::Init(const std::string& wc_uri,
+                                InitCallback callback) {
+  auto data = ParseWalletConnectURI(wc_uri);
+  if (!data) {
+    std::move(callback).Run(false);
+    return;
+  }
   wallet_connect_uri_data_ = std::move(data);
 
   DCHECK(wallet_connect_uri_data_->params &&
@@ -86,8 +96,16 @@ bool WalletConnectClient::Init(const std::string& uri) {
   context_params->enable_expect_ct_reporting = false;
   context_params->enable_domain_reliability = false;
 
-  content::CreateNetworkContextInNetworkService(
-      network_context_.BindNewPipeAndPassReceiver(), std::move(context_params));
+  if (!network_context_.is_bound())
+    content::CreateNetworkContextInNetworkService(
+        network_context_.BindNewPipeAndPassReceiver(),
+        std::move(context_params));
+
+  websocket_client_ = std::make_unique<WebSocketAdapter>(
+      base::BindOnce(&WalletConnectService::OnTunnelReady,
+                     base::Unretained(this)),
+      base::BindRepeating(&WalletConnectService::OnTunnelData,
+                          base::Unretained(this)));
 
   network_context_->CreateWebSocket(
       url, {}, net::SiteForCookies(), net::IsolationInfo(),
@@ -100,10 +118,10 @@ bool WalletConnectClient::Init(const std::string& uri) {
       /*header_client=*/mojo::NullRemote(),
       /*throttling_profile_id=*/absl::nullopt);
 
-  return true;
+  std::move(callback).Run(true);
 }
 
-void WalletConnectClient::OnTunnelReady(bool success) {
+void WalletConnectService::OnTunnelReady(bool success) {
   if (success) {
     state_ = State::kConnected;
     // subscribe to handshae topic
@@ -126,7 +144,7 @@ void WalletConnectClient::OnTunnelReady(bool success) {
   }
 }
 
-void WalletConnectClient::OnTunnelData(
+void WalletConnectService::OnTunnelData(
     absl::optional<base::span<const uint8_t>> data) {
   if (data) {
     const std::string data_str((const char*)data->data(), data->size());

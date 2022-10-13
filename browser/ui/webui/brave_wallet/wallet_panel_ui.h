@@ -12,6 +12,7 @@
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/wallet_connect/wallet_connect.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -65,7 +66,9 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
           fil_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
-          brave_wallet_service) override;
+          brave_wallet_service,
+      mojo::PendingReceiver<wallet_connect::mojom::WalletConnectService>
+          wallet_connect_service) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

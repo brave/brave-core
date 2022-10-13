@@ -5,6 +5,7 @@
 
 module brave_wallet.mojom;
 
+import "brave/components/wallet_connect/wallet_connect.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
@@ -223,7 +224,8 @@ interface PanelHandlerFactory {
                      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                     pending_receiver<BraveWalletService> brave_wallet_service);
+                     pending_receiver<BraveWalletService> brave_wallet_service,
+                    pending_receiver<wallet_connect.mojom.WalletConnectService> wallet_connect_service);
 };
 
 interface PageHandlerFactory {
@@ -240,7 +242,8 @@ interface PageHandlerFactory {
                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                    pending_receiver<BraveWalletService> brave_wallet_service);
+                    pending_receiver<BraveWalletService> brave_wallet_service,
+                    pending_receiver<wallet_connect.mojom.WalletConnectService> wallet_connect_service);
 
 };
 

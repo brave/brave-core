@@ -29,3 +29,8 @@ struct WalletConnectURIData {
   WalletConnectURIParameters params;
 };
 
+interface WalletConnectService {
+  Init(string wc_uri) => (bool success);
+  // GetPendingSessionRequest
+  // NotifySessionRequestProcessed
+};

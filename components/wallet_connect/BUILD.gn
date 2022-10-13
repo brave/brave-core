@@ -4,8 +4,8 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 
 static_library("wallet_connect") {
   sources = [
-    "wallet_connect_client.cc",
-    "wallet_connect_client.h",
+    "wallet_connect_service.cc",
+    "wallet_connect_service.h",
     "wallet_connect_utils.cc",
     "wallet_connect_utils.h",
     "websocket_adapter.cc",
@@ -17,6 +17,10 @@ static_library("wallet_connect") {
     ":generated_payload_types",
     ":mojom",
     "//base",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//content/public/common",
+    "//services/cert_verifier/public/mojom",
     "//services/network/public/mojom",
     "//url",
   ]
@@ -39,7 +43,10 @@ source_set("encryptor") {
 mojom("mojom") {
   generate_java = true
   sources = [ "wallet_connect.mojom" ]
-  public_deps = [ "//url/mojom:url_mojom_gurl" ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
 }
 
 generated_types("generated_payload_types") {

@@ -1,0 +1,17 @@
+source_set("wallet_connect") {
+  sources = [
+    "wallet_connect_service_factory.cc",
+    "wallet_connect_service_factory.h",
+  ]
+
+  deps = [
+    "//brave/browser/brave_wallet",
+    "//brave/components/wallet_connect",
+    "//brave/components/wallet_connect:mojom",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+}

@@ -109,6 +109,7 @@ mojom("mojom") {
   generate_java = true
   sources = [ "brave_wallet.mojom" ]
   public_deps = [
+    "//brave/components/wallet_connect:mojom",
     "//mojo/public/mojom/base",
     "//url/mojom:url_mojom_gurl",
     "//url/mojom:url_mojom_origin",

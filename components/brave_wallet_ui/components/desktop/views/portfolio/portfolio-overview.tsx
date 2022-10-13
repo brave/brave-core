@@ -187,6 +187,7 @@ export const PortfolioOverview = () => {
   // state
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
+  const [walletConnectUri, setWalletConnectUri] = React.useState<string>('')
 
   // methods
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
@@ -218,6 +219,10 @@ export const PortfolioOverview = () => {
     setHideBalances(prev => !prev)
   }, [])
 
+  const onWalletConnectUriSubmitted = () => {
+    dispatch(WalletActions.performWalletConnect(walletConnectUri))
+  }
+
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
@@ -226,6 +231,10 @@ export const PortfolioOverview = () => {
   // render
   return (
     <StyledWrapper>
+        <label>{'Enter a wallet connect uri:'}</label>
+        <input size={100}
+               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWalletConnectUri(e.target.value)}/>
+        <button onClick={onWalletConnectUriSubmitted}>Connect</button>
       <TopRow>
         <BalanceRow>
           <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
