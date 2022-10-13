@@ -141,7 +141,7 @@
                     modernize-macro-to-enum,
                     modernize-make-shared,
                     modernize-make-unique,
-                    # modernize-pass-by-value,
+                    modernize-pass-by-value,
                     modernize-raw-string-literal,
                     modernize-redundant-void-arg,
                     modernize-replace-auto-ptr,
@@ -187,18 +187,18 @@
                     performance-trivially-destructible,
                     performance-type-promotion-in-math-fn,
                     performance-unnecessary-copy-initialization,
-                    # performance-unnecessary-value-param,
+                    performance-unnecessary-value-param,
                     readability-avoid-const-params-in-decls,
                     readability-braces-around-statements,
                     readability-const-return-type,
                     readability-container-contains,
                     readability-container-data-pointer,
                     readability-container-size-empty,
-                    # readability-convert-member-functions-to-static,
+                    readability-convert-member-functions-to-static,
                     readability-delete-null-pointer,
                     readability-duplicate-include,
                     readability-else-after-return,
-                    # readability-function-cognitive-complexity,
+                    readability-function-cognitive-complexity,
                     readability-function-size,
                     # readability-identifier-length,
                     readability-identifier-naming,
@@ -238,5 +238,11 @@
     - key:          bugprone-string-constructor.StringNames
       value:        ::std::basic_string;::std::basic_string_view;::base::BasicStringPiece
     - key:          modernize-use-default-member-init.UseAssignment
+      value:        1
+    - key:          readability-function-cognitive-complexity.IgnoreMacros
+      value:        1
+    - key:          misc-const-correctness.WarnPointersAsValues
+      value:        1
+    - key:          misc-const-correctness.TransformPointersAsValues
       value:        1
 ...
