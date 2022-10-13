@@ -31,7 +31,7 @@ const char kComponentName[] = "Brave Ads Resources (%s)";
 const base::FilePath::CharType kManifestFile[] =
     FILE_PATH_LITERAL("resources.json");
 
-std::string GetIndex(std::string id, int version) {
+std::string GetIndex(const std::string& id, int version) {
   return id + std::to_string(version);
 }
 
