@@ -50,6 +50,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   EXPECT_EQ(2, GetTransactionCount());
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25997): Reduce cognitive
+// complexity.
 TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   // Arrange
 

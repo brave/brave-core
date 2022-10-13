@@ -11,6 +11,8 @@
 
 namespace brave_ads {
 
+// TODO(https://github.com/brave/brave-browser/issues/25968): Reduce cognitive
+// complexity.
 TEST(SearchResultAdUtilTest, CheckSearchResultAdViewedConfirmationUrl) {
   EXPECT_TRUE(IsSearchResultAdViewedConfirmationUrl(
       GURL("https://search.anonymous.brave.com/v3/confirmation")));
@@ -43,6 +45,8 @@ TEST(SearchResultAdUtilTest, CheckSearchResultAdViewedConfirmationUrl) {
       GURL("https://search.anonymous.bravesoftware.com")));
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25969): Reduce cognitive
+// complexity.
 TEST(SearchResultAdUtilTest, CheckGetViewedSearchResultAdCreativeInstanceId) {
   network::ResourceRequest request;
   request.method = "POST";

@@ -101,6 +101,8 @@ TEST_F(BatAdsTabManagerTest, IsTabOccluded) {
   EXPECT_FALSE(TabManager::GetInstance()->IsVisible(/*id*/ 1));
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, OpenNewTab) {
   // Arrange
 
@@ -149,6 +151,8 @@ TEST_F(BatAdsTabManagerTest, ChangeTabFocus) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, DoNotUpdateIncognitoTab) {
   // Arrange
 
@@ -169,6 +173,8 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateIncognitoTab) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
@@ -198,6 +204,8 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
@@ -227,6 +235,8 @@ TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
@@ -258,6 +268,8 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
@@ -288,6 +300,8 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, CloseTab) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
@@ -310,6 +324,8 @@ TEST_F(BatAdsTabManagerTest, CloseTab) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, PlayMedia) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
@@ -332,6 +348,8 @@ TEST_F(BatAdsTabManagerTest, PlayMedia) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
@@ -355,6 +373,8 @@ TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
   EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25996): Reduce cognitive
+// complexity.
 TEST_F(BatAdsTabManagerTest, StopPlayingMedia) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(

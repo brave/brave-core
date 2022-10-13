@@ -91,6 +91,8 @@ base::Value::Dict ClientInfo::ToValue() const {
   return dict;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/26003): Reduce cognitive
+// complexity.
 bool ClientInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindDict("adPreferences")) {
     ad_preferences.FromValue(*value);

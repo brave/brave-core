@@ -44,6 +44,8 @@ TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
   EXPECT_FALSE(should_reward_user);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25989): Reduce cognitive
+// complexity.
 TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   // Arrange
   TransactionList transactions;
@@ -83,6 +85,8 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   // Assert
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25989): Reduce cognitive
+// complexity.
 TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
   // Arrange
 

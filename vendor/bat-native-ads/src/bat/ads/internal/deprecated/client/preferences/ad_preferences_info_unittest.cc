@@ -42,6 +42,8 @@ class BatAdsAdPreferencesInfoTest : public UnitTestBase {
  public:
   BatAdsAdPreferencesInfoTest() = default;
 
+  // TODO(https://github.com/brave/brave-browser/issues/25994): Reduce cognitive
+  // complexity.
   void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
     // Arrange
     AdPreferencesInfo ad_preferences_info;
@@ -111,6 +113,8 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParseEmptyJson) {
   EXPECT_EQ(0U, ad_preferences_info.flagged_ads.size());
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25994): Reduce cognitive
+// complexity.
 TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
   // Arrange
   AdPreferencesInfo ad_preferences_info;

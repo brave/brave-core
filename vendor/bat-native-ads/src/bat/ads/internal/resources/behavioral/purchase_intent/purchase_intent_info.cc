@@ -17,6 +17,8 @@ PurchaseIntentInfo::PurchaseIntentInfo() = default;
 PurchaseIntentInfo::~PurchaseIntentInfo() = default;
 
 // static
+// TODO(https://github.com/brave/brave-browser/issues/24942): Reduce cognitive
+// complexity.
 std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     base::Value resource_value,
     std::string* error_message) {

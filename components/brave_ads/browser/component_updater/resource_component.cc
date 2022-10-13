@@ -142,6 +142,8 @@ void ResourceComponent::OnComponentReady(const std::string& component_id,
                      weak_factory_.GetWeakPtr(), component_id, install_dir));
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25967): Reduce cognitive
+// complexity.
 void ResourceComponent::OnGetManifest(const std::string& component_id,
                                       const base::FilePath& install_dir,
                                       const std::string& json) {

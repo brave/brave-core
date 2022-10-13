@@ -112,6 +112,8 @@ class TestWebPageConstructor final {
   int attribute_index_to_skip_ = -1;
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/25970): Reduce cognitive
+// complexity.
 TEST(SearchResultAdParsingTest, ValidWebPage) {
   TestWebPageConstructor constructor;
   blink::mojom::WebPagePtr web_page = constructor.GetWebPage();

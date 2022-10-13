@@ -1330,6 +1330,8 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
       });
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25993): Reduce cognitive
+// complexity.
 TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   // Arrange
   resource::Conversions resource;
@@ -1380,6 +1382,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
       });
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25993): Reduce cognitive
+// complexity.
 TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
   resource::Conversions resource;
@@ -1432,6 +1436,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
       });
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25993): Reduce cognitive
+// complexity.
 TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
   resource::Conversions resource;

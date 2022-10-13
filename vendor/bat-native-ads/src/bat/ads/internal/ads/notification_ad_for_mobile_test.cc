@@ -89,6 +89,8 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest,
       0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25992): Reduce cognitive
+// complexity.
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerServedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
@@ -112,6 +114,8 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerServedEvent) {
   ServeNextAd();
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25992): Reduce cognitive
+// complexity.
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
@@ -163,6 +167,8 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   ServeNextAd();
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25992): Reduce cognitive
+// complexity.
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)

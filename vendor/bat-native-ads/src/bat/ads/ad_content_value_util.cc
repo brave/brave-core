@@ -65,6 +65,8 @@ base::Value::Dict AdContentToValue(const AdContentInfo& ad_content) {
   return dict;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/24934): Reduce cognitive
+// complexity.
 AdContentInfo AdContentFromValue(const base::Value::Dict& root) {
   AdContentInfo ad_content;
 

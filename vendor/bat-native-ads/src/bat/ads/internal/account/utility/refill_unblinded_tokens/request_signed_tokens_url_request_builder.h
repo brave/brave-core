@@ -48,8 +48,8 @@ class RequestSignedTokensUrlRequestBuilder final
 
   std::string BuildBody() const;
 
-  WalletInfo wallet_;
-  std::vector<privacy::cbr::BlindedToken> blinded_tokens_;
+  const WalletInfo wallet_;
+  const std::vector<privacy::cbr::BlindedToken> blinded_tokens_;
 };
 
 }  // namespace ads

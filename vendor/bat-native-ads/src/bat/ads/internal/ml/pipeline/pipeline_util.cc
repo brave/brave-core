@@ -23,6 +23,8 @@ namespace ads::ml::pipeline {
 
 namespace {
 
+// TODO(https://github.com/brave/brave-browser/issues/24940): Reduce cognitive
+// complexity.
 absl::optional<TransformationVector> ParsePipelineTransformations(
     base::Value* transformations_value) {
   if (!transformations_value || !transformations_value->is_list()) {
@@ -86,6 +88,8 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
   return transformations;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/24941): Reduce cognitive
+// complexity.
 absl::optional<model::Linear> ParsePipelineClassifier(
     base::Value* classifier_value) {
   if (!classifier_value) {

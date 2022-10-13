@@ -193,6 +193,8 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
   return false;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25971): Reduce cognitive
+// complexity.
 absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
     const schema_org::mojom::EntityPtr& entity) {
   DCHECK(entity);
@@ -279,6 +281,8 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
   return search_result_ads;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25972): Reduce cognitive
+// complexity.
 void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
   if (!VLOG_IS_ON(1)) {
     return;
