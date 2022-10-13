@@ -1067,6 +1067,51 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
   EXPECT_EQ(base::Value(true), loaded.value);
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       TopLevelAutoRedirectsOff_DoNotTranslateToIPFS) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
+                          base::Unretained(this)));
+  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, false);
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  GURL gateway = GetURL("b.com", "/");
+  SetIPFSDefaultGatewayForTest(gateway);
+
+  auto tab_url = GetURL(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs.a.com",
+      "/simple.html?a=b");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL(), tab_url);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    IpfsServiceBrowserTest,
+    TopLevelAutoRedirectsOn_DoNotRedirectFromGatewayLikeUrl_IpfsDisabled) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
+                          base::Unretained(this)));
+  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
+  GURL gateway = GetURL("b.com", "/");
+  SetIPFSDefaultGatewayForTest(gateway);
+
+  auto tab_url = GetURL(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs.a.com",
+      "/simple.html?a=b");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL(), tab_url);
+}
+
 IN_PROC_BROWSER_TEST_F(
     IpfsServiceBrowserTest,
     TopLevelAutoRedirectsOn_Gateway_RedirectFromGatewayLikeUrl_IpfsSubDomain) {
@@ -1093,6 +1138,77 @@ IN_PROC_BROWSER_TEST_F(
           "b.com",
           "/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/"
           "simple.html?a=b"));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    IpfsServiceBrowserTest,
+    TopLevelAutoRedirectsOn_DoNotRedirectFromGatewayLikeUrl_IfGatewayUrl) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
+                          base::Unretained(this)));
+  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  GURL gateway = GetURL("b.com", "/");
+  SetIPFSDefaultGatewayForTest(gateway);
+
+  auto tab_url = GetURL(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs.b.com",
+      "/simple.html?a=b");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL(), tab_url);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    IpfsServiceBrowserTest,
+    TopLevelAutoRedirectsOn_DoNotRedirectFromGatewayLikeUrl_IfLocalhostUrl) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
+                          base::Unretained(this)));
+  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  GURL gateway = GetURL("b.com", "/");
+  SetIPFSDefaultGatewayForTest(gateway);
+
+  auto tab_url = GetURL(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs."
+      "localhost",
+      "/simple.html?a=b");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL(), tab_url);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    IpfsServiceBrowserTest,
+    TopLevelAutoRedirectsOn_DoNotRedirectFromGatewayLikeUrl_NoXIpfsPathHeader) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  GURL gateway = GetURL("b.com", "/");
+  SetIPFSDefaultGatewayForTest(gateway);
+
+  auto tab_url =
+      GetURL("a.com",
+             "/ipfs/"
+             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL(), tab_url);
 }
 
 IN_PROC_BROWSER_TEST_F(

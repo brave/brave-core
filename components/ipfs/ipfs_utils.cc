@@ -462,6 +462,7 @@ absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url) {
     GURL final_url = GURL("ipfs://" + host_parts.at(0) + url.path());
     GURL::Replacements replacements;
     replacements.SetQueryStr(url.query_piece());
+    replacements.SetRefStr(url.ref_piece());
     return final_url.ReplaceComponents(replacements);
   }
 
@@ -480,6 +481,7 @@ absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url) {
     GURL final_url = GURL("ipfs://" + path_parts.at(1) + final_path);
     GURL::Replacements replacements;
     replacements.SetQueryStr(url.query_piece());
+    replacements.SetRefStr(url.ref_piece());
     return final_url.ReplaceComponents(replacements);
   }
 

@@ -13,6 +13,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
+#include "net/base/url_util.h"
 
 namespace ipfs {
 
@@ -109,19 +110,22 @@ int OnHeadersReceived_IPFSRedirectWork(
   if (ctx->ipfs_auto_fallback && !api_gateway && response_headers &&
       response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
       // Make sure we don't infinite redirect
-      !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host())) {
+      !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host()) &&
+      !net::IsLocalhost(ctx->request_url)) {
     auto translated_url = ipfs::TranslateToCurrentGatewayUrl(ctx->request_url);
 
-    if (translated_url) {
-      *override_response_headers =
-          new net::HttpResponseHeaders(response_headers->raw_headers());
-      (*override_response_headers)
-          ->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
-      (*override_response_headers)->RemoveHeader("Location");
-      (*override_response_headers)
-          ->AddHeader("Location", translated_url.value().spec());
-      *allowed_unsafe_redirect_url = translated_url.value();
+    if (!translated_url) {
+      return net::OK;
     }
+
+    *override_response_headers =
+        new net::HttpResponseHeaders(response_headers->raw_headers());
+    (*override_response_headers)
+        ->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
+    (*override_response_headers)->RemoveHeader("Location");
+    (*override_response_headers)
+        ->AddHeader("Location", translated_url.value().spec());
+    *allowed_unsafe_redirect_url = translated_url.value();
   }
 
   return net::OK;
