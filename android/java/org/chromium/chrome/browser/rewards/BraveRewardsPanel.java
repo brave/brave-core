@@ -113,6 +113,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 public class BraveRewardsPanel
         implements BraveRewardsObserver, BraveRewardsHelper.LargeIconReadyCallback {
@@ -930,9 +931,14 @@ public class BraveRewardsPanel
                     .setVisibility(View.GONE);
             btnContinue.setVisibility(View.VISIBLE);
 
+            TreeMap<String, String> sortedCountryMap = new TreeMap<String, String>();
+            for (String countryCode : countries) {
+                sortedCountryMap.put(new Locale("", countryCode).getDisplayCountry(), countryCode);
+            }
+
             ArrayList<String> countryList = new ArrayList<String>();
             countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
-            countryList.addAll(Arrays.asList(countries));
+            countryList.addAll(sortedCountryMap.keySet());
             String[] countryArray = countryList.toArray(new String[countryList.size()]);
 
             Spinner countrySpinner =
@@ -968,8 +974,7 @@ public class BraveRewardsPanel
                     // braveRewardsOnboardingModalView.setVisibility(View.GONE);
                     if (countrySpinner != null) {
                         mBraveRewardsNativeWorker.CreateRewardsWallet(
-                                countrySpinner.getSelectedItem().toString());
-                        mBraveRewardsOnboardingModalView.setVisibility(View.GONE);
+                                sortedMap.get(countrySpinner.getSelectedItem().toString()));
                     }
                     // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                     // mBraveRewardsNativeWorker.GetAutoContributeProperties();
@@ -985,10 +990,12 @@ public class BraveRewardsPanel
         Log.e("NTP", "onCreateRewardsWallet : " + result);
         if (result.equals(SUCCESS)) {
             // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-            // mBraveRewardsNativeWorker.GetAutoContributeProperties();
+            mBraveRewardsOnboardingModalView.setVisibility(View.GONE);
+            mBraveRewardsNativeWorker.GetAutoContributeProperties();
             BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
             showBraveRewardsOnboarding(mPopupView, true);
         } else {
+            // Show error modal
         }
     }
 
