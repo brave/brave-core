@@ -6,8 +6,6 @@ import Foundation
 import Shared
 import WebKit
 
-private let log = Logger.browserLogger
-
 protocol SessionRestoreScriptHandlerDelegate: AnyObject {
   func sessionRestore(_ handler: SessionRestoreScriptHandler, didRestoreSessionForTab tab: Tab)
 }

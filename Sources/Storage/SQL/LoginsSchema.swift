@@ -4,7 +4,7 @@
 
 import Foundation
 import Shared
-import XCGLogger
+import os.log
 
 let TableLoginsMirror = "loginsM"
 let TableLoginsLocal = "loginsL"
@@ -15,8 +15,6 @@ private let AllTables: [String] = [
   TableLoginsMirror,
   TableLoginsLocal,
 ]
-
-private let log = Logger.syncLogger
 
 open class LoginsSchema: Schema {
   public enum SyncStatus: Int {
@@ -41,8 +39,8 @@ open class LoginsSchema: Schema {
     do {
       try db.executeChange(sql, withArgs: args)
     } catch let err as NSError {
-      log.error("Error running SQL in LoginsSchema: \(err.localizedDescription)")
-      log.error("SQL was \(sql)")
+      Logger.module.error("Error running SQL in LoginsSchema: \(err.localizedDescription)")
+      Logger.module.error("SQL was \(sql)")
       return false
     }
 
@@ -111,28 +109,28 @@ open class LoginsSchema: Schema {
   public func update(_ db: SQLiteDBConnection, from: Int) -> Bool {
     let to = self.version
     if from == to {
-      log.debug("Skipping update from \(from) to \(to).")
+      Logger.module.debug("Skipping update from \(from) to \(to).")
       return true
     }
 
     if from == 0 {
       // This is likely an upgrade from before Bug 1160399.
-      log.debug("Updating logins tables from zero. Assuming drop and recreate.")
+      Logger.module.debug("Updating logins tables from zero. Assuming drop and recreate.")
       return drop(db) && create(db)
     }
 
     if from < 3 && to >= 3 {
-      log.debug("Updating logins tables to include version 3 indices")
+      Logger.module.debug("Updating logins tables to include version 3 indices")
       return self.run(db, queries: [indexIsOverriddenHostname, indexIsDeletedHostname])
     }
 
     // TODO: real update!
-    log.debug("Updating logins table from \(from) to \(to).")
+    Logger.module.debug("Updating logins table from \(from) to \(to).")
     return drop(db) && create(db)
   }
 
   public func drop(_ db: SQLiteDBConnection) -> Bool {
-    log.debug("Dropping logins table.")
+    Logger.module.debug("Dropping logins table.")
     do {
       try db.executeChange("DROP TABLE IF EXISTS \(name)")
     } catch {

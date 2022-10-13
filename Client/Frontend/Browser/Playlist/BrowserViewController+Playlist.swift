@@ -9,8 +9,7 @@ import Shared
 import BraveShared
 import BraveUI
 import UIKit
-
-private let log = Logger.browserLogger
+import os.log
 
 extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSharingScriptHandlerDelegate {
 
@@ -168,7 +167,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
             self.addToPlaylist(item: item) { [weak self] didAddItem in
               guard let self = self else { return }
 
-              log.debug("Playlist Item Added")
+              Logger.module.debug("Playlist Item Added")
               self.pendingToast = nil
 
               if didAddItem {

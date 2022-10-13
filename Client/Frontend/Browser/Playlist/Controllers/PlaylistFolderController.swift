@@ -10,8 +10,7 @@ import CoreData
 import Data
 import SwiftUI
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 private enum Section: Int, CaseIterable {
   case savedItems
@@ -143,7 +142,7 @@ extension PlaylistFolderController: UITableViewDataSource {
       do {
         try frc(for: $0)?.performFetch()
       } catch {
-        log.error("Error: \(error)")
+        Logger.module.error("Error: \(error.localizedDescription)")
       }
     })
 
@@ -251,7 +250,7 @@ extension PlaylistFolderController: UITableViewDelegate {
       PlaylistFolder.updateFolder(folderID: folderID) { result in
         switch result {
         case .failure(let error):
-          log.error("Error Saving Folder Title: \(error)")
+          Logger.module.error("Error Saving Folder Title: \(error.localizedDescription)")
 
           DispatchQueue.main.async {
             let alert = UIAlertController(title: Strings.genericErrorTitle, message: Strings.PlaylistFolders.playlistFolderErrorSavingMessage, preferredStyle: .alert)
@@ -516,7 +515,7 @@ extension PlaylistFolderController: UITableViewDragDelegate, UITableViewDropDele
         do {
           try self.frc(for: $0)?.performFetch()
         } catch {
-          log.error("Error Reloading Data: \(error)")
+          Logger.module.error("Error Reloading Data: \(error.localizedDescription)")
         }
       }
     }
@@ -635,7 +634,7 @@ extension PlaylistFolderController: UITableViewDragDelegate, UITableViewDropDele
       do {
         try frc.managedObjectContext.save()
       } catch {
-        log.error("Error Saving ManagedObjectContext: \(error)")
+        Logger.module.error("Error Saving ManagedObjectContext: \(error.localizedDescription)")
       }
     }
   }

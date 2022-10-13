@@ -8,8 +8,7 @@ import Shared
 import BraveShared
 import BraveCore
 import Data
-
-private let log = Logger.browserLogger
+import os.log
 
 class BraveCoreImportExportUtility {
 
@@ -35,7 +34,7 @@ class BraveCoreImportExportUtility {
     precondition(state == .none, "Bookmarks Import - Error Importing while an Import/Export operation is in progress")
 
     guard let path = nativeURLPathFromURL(path) else {
-      log.error("Bookmarks Import - Invalid FileSystem Path")
+      Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
       DispatchQueue.main.async {
         completion(false)
       }
@@ -50,13 +49,13 @@ class BraveCoreImportExportUtility {
         do {
           try self.rethrow(state)
           self.state = .none
-          log.info("Bookmarks Import - Completed Import Successfully")
+          Logger.module.info("Bookmarks Import - Completed Import Successfully")
           DispatchQueue.main.async {
             completion(true)
           }
         } catch {
           self.state = .none
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
           DispatchQueue.main.async {
             completion(false)
           }
@@ -70,7 +69,7 @@ class BraveCoreImportExportUtility {
     precondition(state == .none, "Bookmarks Import - Error Importing while an Import/Export operation is in progress")
 
     guard let path = nativeURLPathFromURL(path) else {
-      log.error("Bookmarks Import - Invalid FileSystem Path")
+      Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
       DispatchQueue.main.async {
         completion(false, [])
       }
@@ -85,13 +84,13 @@ class BraveCoreImportExportUtility {
         do {
           try self.rethrow(state)
           self.state = .none
-          log.info("Bookmarks Import - Completed Import Successfully")
+          Logger.module.info("Bookmarks Import - Completed Import Successfully")
           DispatchQueue.main.async {
             completion(true, bookmarks ?? [])
           }
         } catch {
           self.state = .none
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
           DispatchQueue.main.async {
             completion(false, [])
           }
@@ -105,7 +104,7 @@ class BraveCoreImportExportUtility {
     precondition(state == .none, "Bookmarks Import - Error Exporting while an Import/Export operation is in progress")
 
     guard let path = nativeURLPathFromURL(path) else {
-      log.error("Bookmarks Export - Invalid FileSystem Path")
+      Logger.module.error("Bookmarks Export - Invalid FileSystem Path")
       DispatchQueue.main.async {
         completion(false)
       }
@@ -120,13 +119,13 @@ class BraveCoreImportExportUtility {
         do {
           try self.rethrow(state)
           self.state = .none
-          log.info("Bookmarks Export - Completed Export Successfully")
+          Logger.module.info("Bookmarks Export - Completed Export Successfully")
           DispatchQueue.main.async {
             completion(true)
           }
         } catch {
           self.state = .none
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
           DispatchQueue.main.async {
             completion(false)
           }
@@ -140,7 +139,7 @@ class BraveCoreImportExportUtility {
     precondition(state == .none, "Bookmarks Import - Error Exporting while an Import/Export operation is in progress")
 
     guard let path = nativeURLPathFromURL(path) else {
-      log.error("Bookmarks Export - Invalid FileSystem Path")
+      Logger.module.error("Bookmarks Export - Invalid FileSystem Path")
       DispatchQueue.main.async {
         completion(false)
       }
@@ -156,13 +155,13 @@ class BraveCoreImportExportUtility {
         do {
           try self.rethrow(state)
           self.state = .none
-          log.info("Bookmarks Export - Completed Export Successfully")
+          Logger.module.info("Bookmarks Export - Completed Export Successfully")
           DispatchQueue.main.async {
             completion(true)
           }
         } catch {
           self.state = .none
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
           DispatchQueue.main.async {
             completion(false)
           }

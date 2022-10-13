@@ -16,8 +16,7 @@ import Shared
 import SDWebImage
 import CoreData
 import Data
-
-private let log = Logger.browserLogger
+import os.log
 
 // MARK: PlaylistViewControllerDelegate
 protocol PlaylistViewControllerDelegate: AnyObject {
@@ -256,9 +255,9 @@ class PlaylistViewController: UIViewController {
           }
         } catch {
           if let error = error as? PlaylistSharedFolderNetwork.Status {
-            log.error(error)
+            Logger.module.error("\(error.localizedDescription)")
           } else {
-            log.error("Failed Fetching Playlist Shared Folder: \(error)")
+            Logger.module.error("Failed Fetching Playlist Shared Folder: \(error.localizedDescription)")
           }
         }
       }
@@ -705,7 +704,7 @@ extension PlaylistViewController: VideoViewDelegate {
 
           switch error {
           case .other(let err):
-            log.error(err)
+            Logger.module.error("\(err.localizedDescription)")
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
             self.displayLoadingResourceError()
           case .cannotLoadMedia:
@@ -721,7 +720,7 @@ extension PlaylistViewController: VideoViewDelegate {
             self.updateLastPlayedItem(item: item)
           case .cancelled:
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
-            log.debug("User Cancelled Playlist Playback")
+            Logger.module.debug("User Cancelled Playlist Playback")
           }
         }
       }
@@ -777,7 +776,7 @@ extension PlaylistViewController: VideoViewDelegate {
 
           switch error {
           case .other(let err):
-            log.error(err)
+            Logger.module.error("\(err.localizedDescription)")
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
             self.displayLoadingResourceError()
           case .cannotLoadMedia:
@@ -801,7 +800,7 @@ extension PlaylistViewController: VideoViewDelegate {
             self.updateLastPlayedItem(item: item)
           case .cancelled:
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
-            log.debug("User Cancelled Playlist Playback")
+            Logger.module.debug("User Cancelled Playlist Playback")
           }
         }
       }
@@ -913,7 +912,7 @@ extension PlaylistViewController: VideoViewDelegate {
 
     return Future { [weak self] resolver in
       guard let self = self else {
-        log.debug("User Cancelled Playback")
+        Logger.module.debug("User Cancelled Playback")
         resolver(.failure(.cancelled))
         return
       }
@@ -938,7 +937,7 @@ extension PlaylistViewController: VideoViewDelegate {
           },
           receiveValue: { [weak self] isNewItem in
             guard let self = self, let item = self.player.currentItem else {
-              log.debug("User Cancelled Playback")
+              Logger.module.debug("User Cancelled Playback")
               resolver(.failure(.cancelled))
               return
             }

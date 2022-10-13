@@ -11,8 +11,6 @@ import Shared
 import Combine
 import UIKit
 
-private let log = Logger.braveCoreLogger
-
 class BraveRewardsViewController: UIViewController, PopoverContentComponent {
   enum Action {
     case rewardsTransferTapped

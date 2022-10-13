@@ -3,8 +3,7 @@
 import Foundation
 import Shared
 import SwiftyJSON
-
-private let log = Logger.browserLogger
+import os.log
 
 struct ReferralData {
 
@@ -25,7 +24,7 @@ struct ReferralData {
 
   init?(json: JSON) {
     guard let downloadId = json["download_id"].string, let code = json["referral_code"].string else {
-      log.error("Failed to unwrap json to Referral struct.")
+      Logger.module.error("Failed to unwrap json to Referral struct.")
       UrpLog.log("Failed to unwrap json to Referral struct. \(json)")
       return nil
     }

@@ -5,8 +5,7 @@
 
 import Foundation
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 struct OnboardingDisconnectItem: Codable {
   let properties: [String]
@@ -24,7 +23,7 @@ struct OnboardingDisconnectList: Codable {
         return try JSONDecoder().decode(OnboardingDisconnectList.self, from: contents)
       }
     } catch {
-      log.error("Error Decoding OnboardingDisconectList: \(error)")
+      Logger.module.error("Error Decoding OnboardingDisconectList: \(error.localizedDescription)")
     }
     return nil
   }

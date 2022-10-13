@@ -4,8 +4,7 @@ import Foundation
 import SafariServices
 import Shared
 import SwiftyJSON
-
-private let log = Logger.browserLogger
+import os.log
 
 enum UrpError {
   case networkError, downloadIdNotFound, ipNotFound, endpointError
@@ -57,7 +56,10 @@ struct UrpService {
     sessionManager.urpApiRequest(endPoint: endPoint, params: params) { response in
       switch response {
       case .success(let data):
-        log.debug("Referral code lookup response: \(data)")
+        if let data = data as? Data {
+          Logger.module.debug("Referral code lookup response: \(String(data: data, encoding: .utf8) ?? "nil")")
+        }
+        
         UrpLog.log("Referral code lookup response: \(data)")
 
         let json = JSON(data)
@@ -65,8 +67,8 @@ struct UrpService {
         completion(referral, nil)
 
       case .failure(let error):
-        log.error("Referral code lookup response: \(error)")
-        UrpLog.log("Referral code lookup response: \(error)")
+        Logger.module.error("Referral code lookup response: \(error.localizedDescription)")
+        UrpLog.log("Referral code lookup response: \(error.localizedDescription)")
 
         completion(nil, .endpointError)
       }
@@ -88,12 +90,14 @@ struct UrpService {
     sessionManager.urpApiRequest(endPoint: endPoint, params: params) { response in
       switch response {
       case .success(let data):
-        log.debug("Check if authorized for grant response: \(data)")
+        if let data = data as? Data {
+          Logger.module.debug("Check if authorized for grant response: \(String(data: data, encoding: .utf8) ?? "nil")")
+        }
         let json = JSON(data)
         completion(json["finalized"].boolValue, nil)
 
       case .failure(let error):
-        log.error("Check if authorized for grant response: \(error)")
+        Logger.module.error("Check if authorized for grant response: \(error.localizedDescription)")
         completion(nil, .endpointError)
       }
     }

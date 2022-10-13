@@ -7,8 +7,7 @@ import Foundation
 import BraveCore
 import Shared
 import BraveShared
-
-private let log = Logger.braveCoreLogger
+import os.log
 
 extension BraveLedger {
 
@@ -139,7 +138,7 @@ extension BraveLedger {
     client.generateToken { [weak self] (token, error) in
       guard let self = self else { return }
       if let error = error {
-        log.error("Failed to generate DeviceCheck token: \(error)")
+        Logger.module.error("Failed to generate DeviceCheck token: \(error.localizedDescription)")
         completion()
         return
       }
@@ -149,7 +148,7 @@ extension BraveLedger {
           let registration = try client.generateEnrollment(paymentId: paymentId, token: token)
           try await client.registerDevice(enrollment: registration)
         } catch {
-          log.error("Failed to register device with mobile attestation server: \(error)")
+          Logger.module.error("Failed to register device with mobile attestation server: \(error.localizedDescription)")
         }
         completion()
       }
@@ -168,7 +167,7 @@ extension BraveLedger {
         }
       }
       if !didEnroll {
-        log.error("Cannot solve adaptive captcha as user is not enrolled with the attestation server")
+        Logger.module.error("Cannot solve adaptive captcha as user is not enrolled with the attestation server")
         return false
       }
     }
@@ -213,7 +212,7 @@ extension BraveLedger {
         }
       }
       if !didEnroll {
-        log.error("Cannot solve adaptive captcha as user is not enrolled with the attestation server")
+        Logger.module.error("Cannot solve adaptive captcha as user is not enrolled with the attestation server")
         return
       }
     }

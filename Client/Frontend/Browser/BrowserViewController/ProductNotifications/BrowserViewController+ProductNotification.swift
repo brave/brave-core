@@ -9,8 +9,6 @@ import Shared
 import Data
 import UIKit
 
-private let log = Logger.browserLogger
-
 // MARK: - ProductNotification
 
 extension BrowserViewController {

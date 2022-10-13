@@ -5,8 +5,7 @@ import Shared
 import BraveShared
 import Combine
 import BraveCore
-
-private let log = Logger.browserLogger
+import os.log
 
 struct CosmeticFilterModel: Codable {
   let hideSelectors: [String]

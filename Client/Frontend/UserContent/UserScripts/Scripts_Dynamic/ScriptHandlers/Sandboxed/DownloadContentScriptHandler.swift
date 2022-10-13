@@ -7,8 +7,7 @@ import Foundation
 import Shared
 import WebKit
 import MobileCoreServices
-
-private let log = Logger.browserLogger
+import os.log
 
 private struct BlobDownloadInfo: Codable {
   let url: URL
@@ -77,12 +76,12 @@ class DownloadContentScriptHandler: TabContentScript {
       }
       
       guard let requestedUrl = Self.blobUrlForDownload else {
-        log.error("\(Self.scriptName): no url was requested")
+        Logger.module.error("\(Self.scriptName): no url was requested")
         return
       }
       
       guard requestedUrl == info.url else {
-        log.error("\(Self.scriptName): URL mismatch")
+        Logger.module.error("\(Self.scriptName): URL mismatch")
         return
       }
       
@@ -104,7 +103,7 @@ class DownloadContentScriptHandler: TabContentScript {
 //      let download = Download(filename: filename, mimeType: mimeType, size: size, data: data)
 //      browserViewController?.downloadQueue.enqueue(download)
     } catch {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
   }
 }

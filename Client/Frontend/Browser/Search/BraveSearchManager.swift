@@ -8,8 +8,7 @@ import Combine
 import Shared
 import BraveShared
 import WebKit
-
-private let log = Logger.browserLogger
+import os.log
 
 // A helper class to handle Brave Search fallback needs.
 class BraveSearchManager: NSObject {
@@ -147,7 +146,7 @@ class BraveSearchManager: NSObject {
         receiveCompletion: { status in
           switch status {
           case .failure(let error):
-            log.error("shouldUseFallback error: \(error)")
+            Logger.module.error("shouldUseFallback error: \(error.localizedDescription)")
             // No subsequent call to backup search engine is made in case of error.
             // The pending status has to be cancelled.
             completion(nil)
@@ -231,7 +230,7 @@ class BraveSearchManager: NSObject {
         receiveCompletion: { status in
           switch status {
           case .failure(let error):
-            log.error("Error: \(error)")
+            Logger.module.error("Error: \(error.localizedDescription)")
           case .finished:
             break
           }

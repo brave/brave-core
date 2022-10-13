@@ -6,8 +6,7 @@ import Foundation
 import BraveCore
 import Shared
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 /// A class responsible for downloading some generic ad-block resources
 public actor AdblockResourceDownloader: Sendable {
@@ -64,7 +63,7 @@ public actor AdblockResourceDownloader: Sendable {
         case .success(let downloadResult):
           await self.handle(downloadedFileURL: downloadResult.fileURL, for: resource, date: downloadResult.date)
         case .failure(let error):
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
         }
       }
     }

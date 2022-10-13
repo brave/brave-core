@@ -7,8 +7,7 @@ import Foundation
 import CoreData
 import Shared
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 /// Naming note:
 /// Before sync v2 `Favorite` was named `Bookmark` and contained logic for both bookmarks and favorites.
@@ -71,7 +70,7 @@ extension Favorite {
     if restorationCompleted.value { return }
 
     guard let migrationContainer = DataController.shared.oldDocumentStore else {
-      log.debug("No database found in old location, skipping bookmark restoration")
+      Logger.module.debug("No database found in old location, skipping bookmark restoration")
       restorationCompleted.value = true
       return
     }
@@ -81,17 +80,17 @@ extension Favorite {
     guard let oldBookmarks = Favorite.all(context: context)?.sorted() else {
       // This might be some database problem. Not setting restoreation preference here
       // Trying to re-attempt on next launch.
-      log.warning("Could not get bookmarks from database. Will retry restoration on next app launch.")
+      Logger.module.warning("Could not get bookmarks from database. Will retry restoration on next app launch.")
       return
     }
 
     if oldBookmarks.isEmpty {
-      log.debug("Found database but it contains no records, skipping restoration.")
+      Logger.module.debug("Found database but it contains no records, skipping restoration.")
       restorationCompleted.value = true
       return
     }
 
-    log.debug("Found \(oldBookmarks.count) items to restore.")
+    Logger.module.debug("Found \(oldBookmarks.count) items to restore.")
     restoreLostBookmarksInternal(oldBookmarks) {
       restorationCompleted.value = true
       completion()
@@ -130,14 +129,14 @@ extension Favorite {
     }
 
     DataController.perform { context in
-      log.debug("Attempting to restore \(oldFavoritesData.count) favorites.")
+      Logger.module.debug("Attempting to restore \(oldFavoritesData.count) favorites.")
       Favorite.reinsertBookmarks(
         saveLocation: nil,
         bookmarksToInsertAtGivenLevel: oldFavoritesData,
         allBookmarks: oldFavoritesData,
         context: context)
 
-      log.debug("Attempting to restore \(oldBookmarksData.count) bookmarks.")
+      Logger.module.debug("Attempting to restore \(oldBookmarksData.count) bookmarks.")
       // Entry point is root level bookmarks only.
       // Nested bookmarks are added recursively in `reinsertBookmarks` method
       let bookmarksAtRootLevel = oldBookmarksData.filter { $0.parentId == nil }

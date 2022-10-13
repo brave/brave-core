@@ -3,10 +3,8 @@
 import UIKit
 import CoreData
 import Shared
-import XCGLogger
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 /// A helper structure for `DataController.perform()` method
 /// to decide whether a new or existing context should be used
@@ -158,7 +156,7 @@ public class DataController {
       ]
       try coordinator.migratePersistentStore(oldStore, to: supportStoreURL, options: migrationOptions, withType: NSSQLiteStoreType)
     } catch {
-      throw MigrationError.MigrationFailed("Document -> Support database migration failed: \(error)")
+      throw MigrationError.MigrationFailed("Document -> Support database migration failed: \(error.localizedDescription)")
       // Migration failed somehow, and old store is present. Flag not being updated 😭
     }
 
@@ -179,7 +177,7 @@ public class DataController {
         .filter { $0.lastPathComponent.hasPrefix(DataController.databaseName) }
         .forEach(FileManager.default.removeItem)
     } catch {
-      throw MigrationError.CleanupFailed("Document -> Support database cleanup failed: \(error)")
+      throw MigrationError.CleanupFailed("Document -> Support database cleanup failed: \(error.localizedDescription)")
       // Do not re-point store, as the migration was successful, just the clean up failed
     }
 
@@ -199,7 +197,7 @@ public class DataController {
   private func storeURL(for directory: FileManager.SearchPathDirectory) -> URL {
     let urls = FileManager.default.urls(for: directory, in: .userDomainMask)
     guard let docURL = urls.last else {
-      log.error("Could not load url for: \(directory)")
+      Logger.module.error("Could not load url for: \(directory.rawValue, privacy: .public)")
       fatalError()
     }
 
@@ -239,7 +237,7 @@ public class DataController {
             assert(!Thread.isMainThread)
             try backgroundContext.save()
           } catch {
-            log.error("performTask save error: \(error)")
+            Logger.module.error("performTask save error: \(error.localizedDescription, privacy: .public)")
           }
         }
       })
@@ -289,7 +287,7 @@ public class DataController {
       if let error = error {
         // Do not crash the app if the store already exists.
         if (error as NSError).code != Self.storeExistsErrorCode {
-          fatalError("Load persistent store error: \(error)")
+          fatalError("Load persistent store error: \(error.localizedDescription)")
         }
       }
 

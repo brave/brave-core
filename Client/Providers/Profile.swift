@@ -9,11 +9,9 @@
 // increased startup times which may lead to termination by the OS.
 import Shared
 import Storage
-import XCGLogger
 import SwiftKeychainWrapper
 import Foundation
-
-private let log = Logger.syncLogger
+import os.log
 
 public let ProfileRemoteTabsSyncDelay: TimeInterval = 0.1
 
@@ -31,7 +29,7 @@ class ProfileFileAccessor: FileAccessor {
     if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: sharedContainerIdentifier) {
       rootPath = url.path
     } else {
-      log.error("Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead.")
+      Logger.module.error("Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead.")
       rootPath =
         (NSSearchPathForDirectoriesInDomains(
           .applicationSupportDirectory,
@@ -117,7 +115,7 @@ open class BrowserProfile: Profile {
      * and initialize the logins.db.
      */
   public init(localName: String, clear: Bool = false) {
-    log.debug("Initing profile \(localName) on thread \(Thread.current).")
+    Logger.module.debug("Initing profile \(localName) on thread \(Thread.current).")
     self.name = localName
     self.files = ProfileFileAccessor(localName: localName)
     self.keychain = KeychainWrapper.sharedAppContainerKeychain
@@ -129,7 +127,7 @@ open class BrowserProfile: Profile {
         // …then remove the directory itself.
         try self.files.remove("")
       } catch {
-        log.info("Cannot clear profile: \(error)")
+        Logger.module.info("Cannot clear profile: \(error.localizedDescription)")
       }
     }
 
@@ -141,27 +139,27 @@ open class BrowserProfile: Profile {
     self.loginsDB = BrowserDB(filename: "logins.db", secretKey: BrowserProfile.loginsKey, schema: LoginsSchema(), files: files)
 
     if isNewProfile {
-      log.info("New profile. Removing old account metadata.")
+      Logger.module.info("New profile. Removing old account metadata.")
       prefs.clearAll()
     }
   }
 
   public func reopen() {
-    log.debug("Reopening profile.")
+    Logger.module.debug("Reopening profile.")
     isShutdown = false
 
     loginsDB.reopenIfClosed()
   }
 
   public func shutdown() {
-    log.debug("Shutting down profile.")
+    Logger.module.debug("Shutting down profile.")
     isShutdown = true
 
     loginsDB.forceClose()
   }
 
   deinit {
-    log.debug("Deiniting profile \(self.localName()).")
+    Logger.module.debug("Deiniting profile \(self.localName()).")
   }
 
   public func localName() -> String {

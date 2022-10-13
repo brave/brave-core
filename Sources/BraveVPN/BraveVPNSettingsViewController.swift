@@ -8,8 +8,7 @@ import Static
 import Shared
 import BraveShared
 import BraveUI
-
-private let log = Logger.browserLogger
+import os.log
 
 public class BraveVPNSettingsViewController: TableViewController {
 
@@ -193,10 +192,10 @@ public class BraveVPNSettingsViewController: TableViewController {
       guard let self = self else { return }
       self.vpnReconfigurationPending = true
       self.isLoading = true
-      log.debug("Reconfiguring the vpn")
+      Logger.module.debug("Reconfiguring the vpn")
       
       BraveVPN.reconfigureVPN() { success in
-        log.debug("Reconfiguration suceedeed: \(success)")
+        Logger.module.debug("Reconfiguration suceedeed: \(success)")
         // Small delay before unlocking UI because enabling vpn
         // takes a moment after we call to connect to the vpn.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

@@ -9,6 +9,7 @@ import AVFoundation
 import AVKit
 import CoreData
 import Combine
+import os.log
 
 // Third-Party
 import SDWebImage
@@ -17,8 +18,6 @@ import BraveShared
 import Shared
 import Data
 import SwiftUI
-
-private let log = Logger.browserLogger
 
 // MARK: - PlaylistListViewController
 
@@ -331,7 +330,7 @@ class PlaylistListViewController: UIViewController {
             at: indexPath,
             isExpired: false)
         case .other(let err):
-          log.error(err)
+          Logger.module.error("\(err.localizedDescription)")
           self.commitPlayerItemTransaction(
             at: indexPath,
             isExpired: false)
@@ -842,7 +841,7 @@ extension PlaylistListViewController {
     }
 
     // Some sort of error happened while downloading the playlist item
-    log.error("Error downloading playlist item: \(error)")
+    Logger.module.error("Error downloading playlist item: \(error.localizedDescription)")
 
     guard let item = PlaylistManager.shared.itemAtIndex(index) else {
       return

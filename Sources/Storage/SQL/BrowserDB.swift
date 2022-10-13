@@ -3,10 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import XCGLogger
 import Shared
-
-private let log = Logger.syncLogger
+import os.log
 
 public typealias Args = [Any?]
 
@@ -18,14 +16,14 @@ open class BrowserDB {
   public static let maxVariableNumber = 999
 
   public init(filename: String, secretKey: String? = nil, schema: Schema, files: FileAccessor) {
-    log.debug("Initializing BrowserDB: \(filename).")
+    Logger.module.debug("Initializing BrowserDB: \(filename).")
 
     // Probably will be removed with Storage framework
     // swiftlint:disable:next force_try
     let file = URL(fileURLWithPath: (try! files.getAndEnsureDirectory())).appendingPathComponent(filename).path
 
     if AppConstants.buildChannel == .debug && secretKey != nil {
-      log.debug("Will attempt to use encrypted DB: \(file) with secret = \(secretKey ?? "nil")")
+      Logger.module.debug("Will attempt to use encrypted DB: \(file) with secret = \(secretKey ?? "nil")")
     }
 
     self.db = SwiftData(filename: file, key: secretKey, prevKey: nil, schema: schema, files: files)
@@ -53,7 +51,7 @@ open class BrowserDB {
       try connection.executeChange(sql, withArgs: args)
 
       let modified = connection.numberOfRowsModified
-      log.debug("Modified rows: \(modified).")
+      Logger.module.debug("Modified rows: \(modified).")
       return modified
     }
   }

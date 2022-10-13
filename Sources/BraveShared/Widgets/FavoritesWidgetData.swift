@@ -7,8 +7,7 @@ import Foundation
 import SDWebImage
 import Shared
 import WidgetKit
-
-private let log = Logger.browserLogger
+import os.log
 
 public struct WidgetFavorite: Codable {
   public var url: URL
@@ -40,7 +39,7 @@ public class FavoritesWidgetData {
       let jsonData = try Data(contentsOf: dataPath)
       return try JSONDecoder().decode([WidgetFavorite].self, from: jsonData)
     } catch {
-      log.error("loadWidgetData error: \(error)")
+      Logger.module.error("loadWidgetData error: \(error.localizedDescription)")
       return nil
     }
   }
@@ -53,7 +52,7 @@ public class FavoritesWidgetData {
       try widgetData.write(to: dataPath)
       WidgetCenter.shared.reloadTimelines(ofKind: "FavoritesWidget")
     } catch {
-      log.error("updateWidgetData error: \(error)")
+      Logger.module.error("updateWidgetData error: \(error.localizedDescription)")
     }
   }
 }

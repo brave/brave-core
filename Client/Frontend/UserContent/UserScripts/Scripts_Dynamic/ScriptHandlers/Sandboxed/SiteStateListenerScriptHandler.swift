@@ -6,8 +6,7 @@
 import Foundation
 import WebKit
 import Shared
-
-private let log = Logger.braveCoreLogger
+import os.log
 
 class SiteStateListenerScriptHandler: TabContentScript {
   private struct MessageDTO: Decodable {
@@ -71,7 +70,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
             asFunction: false,
             completion: { _, error in
               guard let error = error else { return }
-              log.error(error)
+              Logger.module.error("\(error.localizedDescription)")
             }
           )
         }
@@ -80,7 +79,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       }
     } catch {
       assertionFailure("Invalid type of message. Fix the `Site.js` script")
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
   }
 }

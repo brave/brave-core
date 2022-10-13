@@ -5,12 +5,8 @@
 import Foundation
 import Shared
 @testable import Storage
-import XCGLogger
 import BraveSharedTestUtils
-
 import XCTest
-
-private let log = XCGLogger.default
 
 class TestSQLiteLogins: XCTestCase {
   var db: BrowserDB!
@@ -35,7 +31,6 @@ class TestSQLiteLogins: XCTestCase {
   }
 
   func testAddLogin() async throws {
-    log.debug("Created \(self.login)")
     try await addLogin(login)
     try await getLoginsFor(login.protectionSpace, expected: [login])()
   }
@@ -77,7 +72,6 @@ class TestSQLiteLogins: XCTestCase {
   }
 
   func testRemoveManyLogins() async throws {
-    log.debug("Remove a large number of logins at once")
     var guids: [GUID] = []
     for i in 0..<2000 {
       let login = Login.createWithHostname("mozilla.org", username: "Fire", password: "fox", formSubmitURL: formSubmitURL)
@@ -182,12 +176,10 @@ class TestSQLiteLogins: XCTestCase {
 
   // Note: These functions are all curried so that we pass arguments, but still chain them below
   func addLogin(_ login: LoginData) async throws {
-    log.debug("Add \(login)")
     return try await logins.addLogin(login)
   }
 
   func updateLogin(_ login: LoginData) async throws {
-    log.debug("Update \(login)")
     return try await logins.updateLoginByGUID(login.guid, new: login, significant: true)
   }
 
@@ -200,7 +192,6 @@ class TestSQLiteLogins: XCTestCase {
 
   func getLoginsFor(_ protectionSpace: URLProtectionSpace, expected: [LoginData]) -> (() async throws -> Void) {
     return {
-      log.debug("Get logins for \(protectionSpace)")
       let results = try await self.logins.getLoginsForProtectionSpace(protectionSpace)
       XCTAssertEqual(expected.count, results.count)
       for (index, login) in expected.enumerated() {
@@ -211,30 +202,11 @@ class TestSQLiteLogins: XCTestCase {
     }
   }
 
-  /*
-    func getLoginDetailsFor(login: LoginData, expected: LoginUsageData) -> (() -> Success) {
-        return {
-            log.debug("Get details for \(login)")
-            let deferred = self.logins.getUsageDataForLogin(login)
-            log.debug("Final result \(deferred)")
-            return deferred >>== { l in
-                log.debug("Got cursor")
-                XCTAssertLessThan(expected.timePasswordChanged - l.timePasswordChanged, 10)
-                XCTAssertLessThan(expected.timeLastUsed - l.timeLastUsed, 10)
-                XCTAssertLessThan(expected.timeCreated - l.timeCreated, 10)
-                return succeed()
-            }
-        }
-    }
-    */
-
   func removeLogin(_ login: LoginData) async throws {
-    log.debug("Remove \(login)")
     return try await logins.removeLoginByGUID(login.guid)
   }
 
   func removeAllLogins() async throws {
-    log.debug("Remove All")
     // Because we don't want to just mark them as deleted.
     try await self.db.run("DELETE FROM loginsM")
     try await self.db.run("DELETE FROM loginsL")
@@ -276,7 +248,6 @@ class TestSQLiteLoginsPerf: XCTestCase {
   }
 
   func removeAllLogins() async throws {
-    log.debug("Remove All")
     // Because we don't want to just mark them as deleted.
     try await self.db.run("DELETE FROM loginsM")
     try await self.db.run("DELETE FROM loginsL")
@@ -303,7 +274,6 @@ class TestSyncableLogins: XCTestCase {
   }
 
   func removeAllLogins() async throws {
-    log.debug("Remove All")
     // Because we don't want to just mark them as deleted.
     try await self.db.run("DELETE FROM loginsM")
     try await self.db.run("DELETE FROM loginsL")

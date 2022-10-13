@@ -30,7 +30,7 @@ class FileAccessorTests: XCTestCase {
       XCTAssertFalse(files.exists("foo"), "Old doesn't exist")
       XCTAssertTrue(files.exists("bar"), "New file exists")
     } catch {
-      XCTFail("Unable to move 'foo' to 'bar' \(error)")
+      XCTFail("Unable to move 'foo' to 'bar' \(error.localizedDescription)")
     }
 
     do {
@@ -38,7 +38,7 @@ class FileAccessorTests: XCTestCase {
       XCTAssertFalse(files.exists("bar"), "Old doesn't exist")
       XCTAssertTrue(files.exists("foo/bar"), "New file exists")
     } catch {
-      XCTFail("Unable to move 'bar' to 'foo/bar' \(error)")
+      XCTFail("Unable to move 'bar' to 'foo/bar' \(error.localizedDescription)")
     }
 
     // Test removal.
@@ -47,7 +47,7 @@ class FileAccessorTests: XCTestCase {
       try files.remove("foo")
       XCTAssertFalse(files.exists("foo"), "File removed")
     } catch {
-      XCTFail("Unable to remove 'foo' \(error)")
+      XCTFail("Unable to remove 'foo' \(error.localizedDescription)")
     }
 
     // Test directory creation and path.
@@ -58,7 +58,7 @@ class FileAccessorTests: XCTestCase {
       FileManager.default.fileExists(atPath: path, isDirectory: &isDirectory)
       XCTAssertTrue(isDirectory.boolValue, "Directory exists")
     } catch {
-      XCTFail("Unable to find directory 'foo' \(error)")
+      XCTFail("Unable to find directory 'foo' \(error.localizedDescription)")
     }
   }
 

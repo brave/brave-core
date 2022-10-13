@@ -6,8 +6,7 @@
 import Foundation
 import Shared
 import WebKit
-
-private let log = Logger.browserLogger
+import os.log
 
 struct ReadyState: Codable {
   let state: State
@@ -34,7 +33,7 @@ struct ReadyState: Codable {
       let data = try JSONSerialization.data(withJSONObject: message.body, options: [])
       return try JSONDecoder().decode(ReadyState.self, from: data)
     } catch {
-      log.error("Error Decoding ReadyState: \(error)")
+      Logger.module.error("Error Decoding ReadyState: \(error.localizedDescription)")
     }
 
     return nil
@@ -79,7 +78,7 @@ class ReadyStateScriptHandler: TabContentScript {
     }
 
     guard let readyState = ReadyState.from(message: message) else {
-      log.error("Invalid Ready State")
+      Logger.module.error("Invalid Ready State")
       return
     }
     

@@ -9,10 +9,11 @@ import Shared
 import BraveShared
 import BraveUI
 import Storage
-import XCGLogger
 import WebKit
+import os.log
 
-private let log = Logger.braveCoreLogger
+// TODO: Move this log to the Rewards/Ads target once we move Rewards/Ads files.
+let adsRewardsLog = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ads-rewards")
 
 extension BrowserViewController {
   func updateRewardsButtonState() {
@@ -138,7 +139,7 @@ extension BrowserViewController {
     Task {
       for promo in promotions {
         let success = await ledger.claimPromotion(promo)
-        log.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
+        adsRewardsLog.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
       }
     }
   }
@@ -205,12 +206,12 @@ extension BrowserViewController {
     do {
       let contents = NSDictionary(contentsOfFile: ledgerStateContainer.path)
       guard let confirmations = contents?["confirmations.json"] as? String else {
-        log.debug("No confirmations found to migrate in ledger's state container")
+        adsRewardsLog.debug("No confirmations found to migrate in ledger's state container")
         return
       }
       try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
     } catch {
-      log.error("Failed to migrate confirmations.json to ads folder: \(error)")
+      adsRewardsLog.error("Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)")
     }
   }
 
@@ -311,7 +312,7 @@ extension Tab {
     group.notify(queue: .main) {
       let faviconURL = URL(string: self.displayFavicon?.url ?? "")
       if faviconURL == nil {
-        log.warning("No favicon found in \(self) to report to rewards panel")
+        adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
       }
       rewards.reportLoadedPage(
         url: url, redirectionURLs: urls.isEmpty ? [url] : urls,
@@ -328,7 +329,7 @@ extension Tab {
 extension BrowserViewController: BraveAdsCaptchaHandler {
   public func handleAdaptiveCaptcha(forPaymentId paymentId: String, captchaId: String) {
     if Preferences.Rewards.adaptiveCaptchaFailureCount.value >= 10 {
-      log.info("Skipping adaptive captcha request as failure count exceeds threshold.")
+      adsRewardsLog.info("Skipping adaptive captcha request as failure count exceeds threshold.")
       return
     }
     Task {
@@ -337,7 +338,7 @@ extension BrowserViewController: BraveAdsCaptchaHandler {
       } catch {
         // Increase failure count, stop attempting attestation altogether passed a specific count
         Preferences.Rewards.adaptiveCaptchaFailureCount.value += 1
-        log.error("Failed to solve adaptive captcha: \(error.localizedDescription)")
+        adsRewardsLog.error("Failed to solve adaptive captcha: \(error.localizedDescription)")
       }
     }
   }

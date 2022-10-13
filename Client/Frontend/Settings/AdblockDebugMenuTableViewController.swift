@@ -10,8 +10,6 @@ import BraveShared
 import Combine
 import BraveUI
 
-private let log = Logger.browserLogger
-
 class AdblockDebugMenuTableViewController: TableViewController {
   private static var fileDateFormatter: DateFormatter {
     return DateFormatter().then {

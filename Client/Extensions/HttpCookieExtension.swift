@@ -5,8 +5,7 @@
 import Foundation
 import WebKit
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 public extension HTTPCookie {
 
@@ -41,7 +40,7 @@ public extension HTTPCookie {
         try data.write(to: baseDir.appendingPathComponent(filename))
         completion?(true)
       } catch {
-        log.error("Failed to write cookies to disk with error: \(error)")
+        Logger.module.error("Failed to write cookies to disk with error: \(error.localizedDescription)")
         completion?(false)
       }
     }
@@ -60,10 +59,10 @@ public extension HTTPCookie {
         }
         return
       } else {
-        log.error("Failed to load cookies from disk with error: Invalid data type")
+        Logger.module.error("Failed to load cookies from disk with error: Invalid data type")
       }
     } catch {
-      log.error("Failed to load cookies from disk with error: \(error)")
+      Logger.module.error("Failed to load cookies from disk with error: \(error.localizedDescription)")
     }
     completion?(false)
   }
@@ -90,7 +89,7 @@ public extension HTTPCookie {
     do {
       try FileManager.default.removeItem(at: url)
     } catch {
-      log.error("Failed to delete local cookie file with error: \(error)")
+      Logger.module.error("Failed to delete local cookie file with error: \(error.localizedDescription)")
     }
   }
 }

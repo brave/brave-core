@@ -4,8 +4,7 @@
 
 import Foundation
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 // Taken from: https://github.com/Brandon-T/Jarvis and modified to simplify
 
@@ -67,7 +66,7 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
           try evaluate(serverTrust, forHost: host)
           return completionHandler(.useCredential, URLCredential(trust: serverTrust))
         } catch {
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
           fatalErrorInDebugModeIfPinningFailed()
           return completionHandler(.cancelAuthenticationChallenge, nil)
         }

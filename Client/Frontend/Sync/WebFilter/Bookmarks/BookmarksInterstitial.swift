@@ -8,8 +8,7 @@ import WebKit
 import Shared
 import GCDWebServers
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 public class BookmarksInterstitialPageHandler {
 
@@ -81,7 +80,7 @@ extension BookmarksInterstitialPageHandler {
 
   private static func buildResponse(asset: String?, variables: [String: String]) -> GCDWebServerResponse? {
     guard let unwrappedAsset = asset else {
-      log.error("Asset is nil")
+      Logger.module.error("Asset is nil")
       return GCDWebServerResponse(statusCode: 404)
     }
 

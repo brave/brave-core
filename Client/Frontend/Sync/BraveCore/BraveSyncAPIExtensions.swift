@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import BraveShared
 import Shared
+import os.log
 
 public struct BraveSyncDevice: Codable {
   let chromeVersion: String
@@ -21,8 +22,6 @@ public struct BraveSyncDevice: Codable {
   let sendTabToSelfReceivingEnabled: Bool
   let type: String
 }
-
-private let log = Logger.browserLogger
 
 extension BraveSyncAPI {
 
@@ -41,7 +40,7 @@ extension BraveSyncAPI {
       let devices = try JSONDecoder().decode([BraveSyncDevice].self, from: data)
       return devices.count > 1
     } catch {
-      log.error("Error occurred while parsing device information: \(error)")
+      Logger.module.error("Error occurred while parsing device information: \(error.localizedDescription)")
       return false
     }
   }

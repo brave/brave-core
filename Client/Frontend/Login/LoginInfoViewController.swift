@@ -11,8 +11,6 @@ import BraveCore
 import UIKit
 import BraveUI
 
-private let log = Logger.browserLogger
-
 class LoginInfoViewController: LoginAuthViewController {
 
   // MARK: UX

@@ -7,9 +7,7 @@ import Shared
 import Storage
 import UIKit
 import WebKit
-import XCGLogger
-
-private let log = Logger.browserLogger
+import os.log
 
 // MARK: - OpenSearch
 
@@ -139,7 +137,7 @@ extension BrowserViewController {
     guard let scheme = tabManager.selectedTab?.webView?.url?.scheme,
       let host = tabManager.selectedTab?.webView?.url?.host
     else {
-      log.error("Selected Tab doesn't have URL")
+      Logger.module.error("Selected Tab doesn't have URL")
       return
     }
 
@@ -212,7 +210,7 @@ extension BrowserViewController {
         self.addSearchEngine(openSearchEngine)
         
       case .failure(let error):
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
     }
   }

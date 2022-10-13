@@ -8,8 +8,7 @@ import BraveShared
 import SwiftKeychainWrapper
 import Data
 import BraveCore
-
-private let log = Logger.browserLogger
+import os.log
 
 public class Migration {
 
@@ -75,7 +74,7 @@ public class Migration {
     do {
       try DataController.shared.migrateToNewPathIfNeeded()
     } catch {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
 
     // Regardless of what happened, we attemtped a migration and document it:
@@ -84,7 +83,7 @@ public class Migration {
 
   @objc private func enableUserSelectedTypesForSync() {
     guard braveCore.syncAPI.isInSyncGroup else {
-      log.info("Sync is not active")
+      Logger.module.info("Sync is not active")
       return
     }
 
@@ -137,22 +136,22 @@ public class Migration {
                 try FileManager.default.moveItem(at: $0, to: destination)
                 try PlaylistItem.updateCache(uuid: itemId, cachedData: destination.bookmarkData())
               } catch {
-                log.error("Moving Playlist Item for \(errorPath) failed: \(error)")
+                Logger.module.error("Moving Playlist Item for \(errorPath) failed: \(error.localizedDescription)")
               }
             }
           })
         } catch {
-          log.error("Moving Playlist Item for \(errorPath) failed: \(error)")
+          Logger.module.error("Moving Playlist Item for \(errorPath) failed: \(error.localizedDescription)")
         }
 
         do {
           try FileManager.default.removeItem(at: url)
         } catch {
-          log.error("Deleting Playlist Item for \(errorPath) failed: \(error)")
+          Logger.module.error("Deleting Playlist Item for \(errorPath) failed: \(error.localizedDescription)")
         }
       }
     } catch {
-      log.error("Moving Playlist Files for \(errorPath) failed: \(error)")
+      Logger.module.error("Moving Playlist Files for \(errorPath) failed: \(error.localizedDescription)")
     }
   }
 
@@ -174,7 +173,7 @@ public class Migration {
         if PlaylistFolder.getFolder(uuid: uuid) != nil {
           migrateItemsToSavedFolder(folderUUID: uuid)
         } else {
-          log.error("Failed Moving Playlist items to Saved Folder - Unknown Error")
+          Logger.module.error("Failed Moving Playlist items to Saved Folder - Unknown Error")
         }
       }
     }
@@ -206,6 +205,12 @@ public class Migration {
     
     if !Preferences.Migration.playlistV2SharedFoldersInitialMigrationCompleted.value {
       playlistFolderSharingIdentifierV2Migration()
+    }
+
+    if !Preferences.Migration.xcgloggerFilesRemovalCompleted.value {
+      LegacyLogsMigration.run()
+      
+      Preferences.Migration.xcgloggerFilesRemovalCompleted.value = true
     }
 
     if Preferences.Migration.coreDataCompleted.value { return }
@@ -252,6 +257,11 @@ fileprivate extension Preferences {
     /// A new preference key will be introduced in 1.44.x, indicates if Wallet Preferences migration has completed
     static let walletProviderAccountRequestCompleted =
     Option<Bool>(key: "migration.wallet-provider-account-request-completed", default: false)
+    
+    // See #5928. We used XCGLogger to handle logs, which used a custom rolling files in the system.
+    // After migrating to Apples OSLog those files have to be removed.
+    static let xcgloggerFilesRemovalCompleted =
+          Option<Bool>(key: "migration.xcglogger-file-removal-completed", default: false)
   }
 
   /// Migrate the users preferences from prior versions of the app (<2.0)
@@ -288,7 +298,7 @@ fileprivate extension Preferences {
       do {
         try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: 0o755 as Int16)], ofItemAtPath: $0)
       } catch {
-        log.error("Failed setting the directory attributes for \($0)")
+        Logger.module.error("Failed setting the directory attributes for \($0)")
       }
     }
 

@@ -55,7 +55,7 @@ public class AdCardView: FeedCardBackgroundButton, FeedCardContent {
 
   public override var accessibilityLabel: String? {
     get { feedView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set { assertionFailure("Accessibility label is inherited from a subview: \(newValue ?? "nil") ignored") }
   }
 
   @objc private func tappedSelf() {

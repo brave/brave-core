@@ -5,8 +5,7 @@
 import Foundation
 import Shared
 import WebKit
-
-private let log = Logger.browserLogger
+import os.log
 
 public class UserReferralProgram {
 
@@ -43,7 +42,7 @@ public class UserReferralProgram {
         for: UserReferralProgram.apiKeyPlistKey)?
         .trimmingCharacters(in: .whitespacesAndNewlines)
     else {
-      log.error("Urp init error, failed to get values from Brave.plist.")
+      Logger.module.error("Urp init error, failed to get values from Brave.plist.")
       return nil
     }
 
@@ -86,7 +85,7 @@ public class UserReferralProgram {
 
       Preferences.URP.referralLookupOutstanding.value = false
       guard let ref = referral else {
-        log.info("No referral code found")
+        Logger.module.info("No referral code found")
         UrpLog.log("No referral code found")
         completion(nil, nil)
         return
@@ -138,20 +137,20 @@ public class UserReferralProgram {
     }
 
     guard let downloadId = Preferences.URP.downloadId.value else {
-      log.info("Could not retrieve download id model from preferences.")
+      Logger.module.info("Could not retrieve download id model from preferences.")
       UrpLog.log("Update ping, no download id found.")
       return
     }
 
     guard let checkDate = Preferences.URP.nextCheckDate.value else {
-      log.error("Could not retrieve check date from preferences.")
+      Logger.module.error("Could not retrieve check date from preferences.")
       return
     }
 
     let todayInSeconds = Date().timeIntervalSince1970
 
     if todayInSeconds <= checkDate {
-      log.debug("Not enough time has passed for referral ping.")
+      Logger.module.debug("Not enough time has passed for referral ping.")
       UrpLog.log("Not enough time has passed for referral ping.")
       return
     }
@@ -159,7 +158,7 @@ public class UserReferralProgram {
     UrpLog.log("Update ping")
     service.checkIfAuthorizedForGrant(with: downloadId) { initialized, error in
       guard let counter = Preferences.URP.retryCountdown.value else {
-        log.error("Could not retrieve retry countdown from preferences.")
+        Logger.module.error("Could not retrieve retry countdown from preferences.")
         return
       }
 

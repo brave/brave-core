@@ -11,8 +11,6 @@ import CoreData
 import Shared
 import UIKit
 
-private let log = Logger.browserLogger
-
 class FavoritesOverflowButton: SpringButton {
   private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
     $0.clipsToBounds = true

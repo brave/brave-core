@@ -3,8 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
-
-private let log = Logger.browserLogger
+import os.log
 
 extension String {
   public func escape() -> String? {
@@ -117,7 +116,7 @@ extension String {
       let encodedString = String(decoding: data, as: UTF8.self)
       return String(encodedString.dropLast().dropFirst())
     } catch {
-      log.error("Failed to escape a string containing javascript: \(error)")
+      Logger.module.error("Failed to escape a string containing javascript: \(error.localizedDescription)")
       return nil
     }
   }

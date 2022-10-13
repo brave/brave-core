@@ -7,8 +7,7 @@ import SDWebImage
 import Data
 import Shared
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 final public class WebImageCache: ImageCacheProtocol {
 
@@ -66,7 +65,7 @@ final public class WebImageCache: ImageCacheProtocol {
       if let image = image {
         let maxSize = CGFloat(FaviconMO.maxSize)
         if image.size.width > maxSize || image.size.height > maxSize {
-          log.warning("Favicon size too big, not storing it in cache.")
+          Logger.module.warning("Favicon size too big, not storing it in cache.")
           return
         }
 

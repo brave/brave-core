@@ -12,8 +12,7 @@ import MessageUI
 import CoreTelephony
 import UIKit
 import BraveUI
-
-private let log = Logger.browserLogger
+import os.log
 
 class BraveVPNContactFormViewController: TableViewController {
 
@@ -223,7 +222,7 @@ class BraveVPNContactFormViewController: TableViewController {
       selection: { [weak self] in
         guard let self = self else { return }
         if !MFMailComposeViewController.canSendMail() {
-          log.error("Can't send email on this device")
+          Logger.module.error("Can't send email on this device")
           let alert = UIAlertController(
             title: Strings.genericErrorTitle,
             message: Strings.VPN.contactFormEmailNotConfiguredBody,
@@ -267,7 +266,7 @@ class BraveVPNContactFormViewController: TableViewController {
     do {
       return try Data(contentsOf: receiptUrl).base64EncodedString()
     } catch {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
       return nil
     }
   }

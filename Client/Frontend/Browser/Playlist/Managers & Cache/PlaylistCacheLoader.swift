@@ -11,8 +11,7 @@ import Data
 import Shared
 import BraveShared
 import Storage
-
-private let log = Logger.browserLogger
+import os.log
 
 // IANA List of Audio types: https://www.iana.org/assignments/media-types/media-types.xhtml#audio
 // IANA List of Video types: https://www.iana.org/assignments/media-types/media-types.xhtml#video
@@ -340,7 +339,7 @@ class PlaylistWebLoader: UIView {
 
   private let playlistDetectorScript = { () -> WKUserScript? in
     guard let path = Bundle.module.path(forResource: "PlaylistDetectorScript", ofType: "js"), let source = try? String(contentsOfFile: path) else {
-      log.error("Failed to load PlaylistDetector.js")
+      Logger.module.error("Failed to load PlaylistDetector.js")
       return nil
     }
 
@@ -554,7 +553,7 @@ class PlaylistWebLoader: UIView {
         let data = try JSONSerialization.data(withJSONObject: message.body, options: [.fragmentsAllowed])
         return try JSONDecoder().decode(PageInfo.self, from: data)
       } catch {
-        log.error("Error Decoding PageInfo: \(error)")
+        Logger.module.error("Error Decoding PageInfo: \(error.localizedDescription)")
       }
 
       return nil

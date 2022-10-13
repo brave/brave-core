@@ -4,9 +4,7 @@
 
 import Foundation
 import Shared
-import XCGLogger
-
-private let log = Logger.syncLogger
+import os.log
 
 open class SQLiteLogins: BrowserLogins {
 
@@ -90,7 +88,7 @@ open class SQLiteLogins: BrowserLogins {
   }
 
   func notifyLoginDidChange() {
-    log.debug("Notifying login did change.")
+    Logger.module.debug("Notifying login did change.")
 
     // For now we don't care about the contents.
     // This posts immediately to the shared notification center.
@@ -118,9 +116,9 @@ open class SQLiteLogins: BrowserLogins {
       protectionSpace.urlString(),
       protectionSpace.host,
     ]
-    if Logger.logPII {
-      log.debug("Looking for login: \(protectionSpace.urlString()) && \(protectionSpace.host)")
-    }
+    
+    Logger.module.debug("Looking for login: \(protectionSpace.urlString()) && \(protectionSpace.host)")
+    
     return try await db.runQuery(sql, args: args, factory: SQLiteLogins.loginDataFactory)
   }
 
@@ -142,10 +140,6 @@ open class SQLiteLogins: BrowserLogins {
         protectionSpace.urlString(), protectionSpace.host,
       ]
       usernameMatch = "username IS NULL"
-    }
-
-    if Logger.logPII {
-      log.debug("Looking for login with username: \(username ?? "nil"), first arg: \(args[0] ?? "nil")")
     }
 
     let sql = """
@@ -247,12 +241,12 @@ open class SQLiteLogins: BrowserLogins {
     if rows.count > 0 {
       return
     }
-    log.debug("No overlay; cloning one for GUID \(guid).")
+    Logger.module.debug("No overlay; cloning one for GUID \(guid).")
     let count = try await self.cloneMirrorToOverlay(guid)
     if count > 0 {
       return
     }
-    log.warning("Failed to create local overlay for GUID \(guid).")
+    Logger.module.warning("Failed to create local overlay for GUID \(guid).")
     throw NoSuchRecordError(guid: guid)
   }
 

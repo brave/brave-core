@@ -9,8 +9,7 @@ import Shared
 import BraveShared
 import BraveUI
 import CoreData
-
-private let log = Logger.browserLogger
+import os.log
 
 private class FavoritesHeaderView: UICollectionReusableView {
   let label = UILabel().then {
@@ -208,7 +207,7 @@ class FavoritesViewController: UIViewController {
       do {
         try recentSearchesFRC.performFetch()
       } catch {
-        log.error("Recent Searches fetch error: \(String(describing: error))")
+        Logger.module.error("Recent Searches fetch error: \(error.localizedDescription))")
       }
     }
   }
@@ -556,7 +555,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     do {
       try favoritesFRC.performFetch()
     } catch {
-      log.error("Favorites fetch error: \(String(describing: error))")
+      Logger.module.error("Favorites fetch error: \(error.localizedDescription))")
     }
 
     fetchRecentSearches()

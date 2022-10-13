@@ -8,8 +8,6 @@ import Shared
 import BraveShared
 import WebKit
 
-private let log = Logger.browserLogger
-
 enum DomainUserScript: CaseIterable {
   case braveSearchHelper
   case braveTalkHelper

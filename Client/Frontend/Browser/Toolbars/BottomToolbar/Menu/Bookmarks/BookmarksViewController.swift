@@ -8,8 +8,7 @@ import Shared
 import Data
 import BraveShared
 import CoreServices
-
-private let log = Logger.browserLogger
+import os.log
 
 class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
 
@@ -293,7 +292,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
       }
       try self.bookmarksFRC?.performFetch()
     } catch let error as NSError {
-      log.error(error.description)
+      Logger.module.error("\(error.description)")
     }
   }
 

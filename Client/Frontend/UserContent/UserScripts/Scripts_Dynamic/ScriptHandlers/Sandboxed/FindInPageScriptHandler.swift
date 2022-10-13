@@ -5,8 +5,7 @@
 import Foundation
 import Shared
 import WebKit
-
-private let log = Logger.browserLogger
+import os.log
 
 protocol FindInPageScriptHandlerDelegate: AnyObject {
   func findInPageHelper(_ findInPageScriptHandler: FindInPageScriptHandler, didUpdateCurrentResult currentResult: Int)
@@ -40,7 +39,10 @@ class FindInPageScriptHandler: TabContentScript {
     }
 
     guard let data = body["data"] as? [String: Int] else {
-      log.error("Could not find a message body or the data did not meet expectations: \(message.body)")
+      if let body = message.body as? String {
+        Logger.module.error("Could not find a message body or the data did not meet expectations: \(body))")
+      }
+      
       return
     }
 

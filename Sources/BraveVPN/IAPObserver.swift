@@ -7,8 +7,7 @@ import Foundation
 import StoreKit
 import Shared
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 public protocol IAPObserverDelegate: AnyObject {
   func purchasedOrRestoredProduct(validateReceipt: Bool)
@@ -38,7 +37,7 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
       .forEach { transaction in
       switch transaction.transactionState {
       case .purchased:
-        log.debug("Received transaction state: purchased")
+        Logger.module.debug("Received transaction state: purchased")
         // This should be always called, no matter if transaction is successful or not.
         SKPaymentQueue.default().finishTransaction(transaction)
         if callPurchaseDelegateOnce {
@@ -46,7 +45,7 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
         }
         callPurchaseDelegateOnce = false
       case .restored:
-        log.debug("Received transaction state: restored")
+        Logger.module.debug("Received transaction state: restored")
         // This should be always called, no matter if transaction is successful or not.
         SKPaymentQueue.default().finishTransaction(transaction)
         
@@ -72,9 +71,9 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
         
         callPurchaseDelegateOnce = false
       case .purchasing, .deferred:
-        log.debug("Received transaction state: purchasing")
+        Logger.module.debug("Received transaction state: purchasing")
       case .failed:
-        log.debug("Received transaction state: failed")
+        Logger.module.debug("Received transaction state: failed")
         SKPaymentQueue.default().finishTransaction(transaction)
         self.delegate?.purchaseFailed(
           error: .transactionError(error: transaction.error as? SKError))
@@ -85,7 +84,7 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
   }
 
   public func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
-    log.debug("Restoring transaction failed")
+    Logger.module.debug("Restoring transaction failed")
     self.delegate?.purchaseFailed(error: .transactionError(error: error as? SKError))
   }
 }

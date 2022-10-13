@@ -5,13 +5,12 @@ import CoreData
 import Foundation
 import Shared
 import Storage
+import os.log
 
 public protocol WebsitePresentable {
   var title: String? { get }
   var url: String? { get }
 }
-
-private let log = Logger.browserLogger
 
 /// Note: This class is named as `Bookmark` in our core data model due to sync v1 legacy..
 public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
@@ -148,7 +147,7 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
     isInteractiveDragReorder: Bool = false
   ) {
     if destinationIndexPath.row == sourceIndexPath.row {
-      log.error("Source and destination bookmarks are the same!")
+      Logger.module.error("Source and destination bookmarks are the same!")
       return
     }
 
@@ -181,7 +180,7 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
           assert(Thread.isMainThread)
           try context.save()
         } catch {
-          log.error("performTask save error: \(error)")
+          Logger.module.error("performTask save error: \(error.localizedDescription)")
         }
       }
     }

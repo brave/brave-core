@@ -6,8 +6,7 @@
 import Foundation
 import WebKit
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   public let name: String
@@ -88,7 +87,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
       let data = try JSONSerialization.data(withJSONObject: message.body, options: [.fragmentsAllowed])
       return try JSONDecoder().decode(PlaylistInfo.self, from: data)
     } catch {
-      log.error("Error Decoding PlaylistInfo: \(error)")
+      Logger.module.error("Error Decoding PlaylistInfo: \(error.localizedDescription)")
     }
 
     return nil

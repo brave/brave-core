@@ -5,8 +5,7 @@
 
 import Foundation
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 public class WebcompatReporter {
   private struct BaseURL {
@@ -37,7 +36,7 @@ public class WebcompatReporter {
       let key = apiKey,
       let endpoint = components.url
     else {
-      log.error("Failed to setup webcompat request")
+      Logger.module.error("Failed to setup webcompat request")
       return false
     }
 
@@ -64,13 +63,13 @@ public class WebcompatReporter {
         let task = session.dataTask(with: request) { data, response, error in
           var success: Bool = true
           if let error = error {
-            log.error("Failed to report webcompat issue: \(error)")
+            Logger.module.error("Failed to report webcompat issue: \(error.localizedDescription)")
             success = false
           }
           if let response = response as? HTTPURLResponse {
             success = response.statusCode >= 200 && response.statusCode < 300
             if !success {
-              log.error("Failed to report webcompat issue: Status Code \(response.statusCode)")
+              Logger.module.error("Failed to report webcompat issue: Status Code \(response.statusCode)")
             }
           }
           continuation.resume(returning: success)
@@ -78,7 +77,7 @@ public class WebcompatReporter {
         task.resume()
       }
     } catch {
-      log.error("Failed to setup webcompat request payload: \(error)")
+      Logger.module.error("Failed to setup webcompat request payload: \(error.localizedDescription)")
       return false
     }
   }

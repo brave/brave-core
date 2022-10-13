@@ -6,8 +6,7 @@ import Foundation
 import WebKit
 import BraveShared
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 extension TabContentScriptLoader {
   static var uniqueID: String {
@@ -21,7 +20,7 @@ extension TabContentScriptLoader {
   static func loadUserScript(named: String) -> String? {
     guard let path = Bundle.module.path(forResource: named, ofType: "js"),
           let source: String = try? String(contentsOfFile: path) else {
-      log.error("Failed to load script: \(named).js")
+      Logger.module.error("Failed to load script: \(named).js")
       assertionFailure("Failed to Load Script: \(named).js")
       return nil
     }
