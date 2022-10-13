@@ -100,6 +100,9 @@ function buildDefaultGClientConfig() {
   if (config.targetOS) {
     out += toGClientConfigItem('target_os', [config.targetOS], false)
   }
+  if (config.targetArch) {
+    out += toGClientConfigItem('target_cpu', [config.targetArch], false)
+  }
 
   fs.writeFileSync(config.defaultGClientFile, out)
 }
