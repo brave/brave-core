@@ -156,9 +156,10 @@ CreativeInlineContentAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeInlineContentAdCallback callback,
-                                mojom::DBCommandResponseInfoPtr response) {
+void OnGetForCreativeInstanceId(
+    const std::string& creative_instance_id,
+    const GetCreativeInlineContentAdCallback& callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ad");
@@ -180,9 +181,10 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
   callback(/*success*/ true, creative_instance_id, creative_ad);
 }
 
-void OnGetForSegmentsAndDimensions(const SegmentList& segments,
-                                   GetCreativeInlineContentAdsCallback callback,
-                                   mojom::DBCommandResponseInfoPtr response) {
+void OnGetForSegmentsAndDimensions(
+    const SegmentList& segments,
+    const GetCreativeInlineContentAdsCallback& callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
@@ -197,7 +199,7 @@ void OnGetForSegmentsAndDimensions(const SegmentList& segments,
 }
 
 void OnGetForDimensions(
-    GetCreativeInlineContentAdsForDimensionsCallback callback,
+    const GetCreativeInlineContentAdsForDimensionsCallback& callback,
     mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -212,7 +214,7 @@ void OnGetForDimensions(
   callback(/*success*/ true, creative_ads);
 }
 
-void OnGetAll(GetCreativeInlineContentAdsCallback callback,
+void OnGetAll(const GetCreativeInlineContentAdsCallback& callback,
               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

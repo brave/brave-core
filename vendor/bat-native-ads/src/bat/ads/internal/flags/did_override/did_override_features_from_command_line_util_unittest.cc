@@ -177,7 +177,8 @@ TEST_P(BatAdsDidOverrideFeaturesFromCommandLineUtilTest,
             DidOverrideFeaturesFromCommandLine());
 }
 
-std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
+std::string TestParamToString(
+    const ::testing::TestParamInfo<ParamInfo>& test_param) {
   const std::string expected_did_override_from_command_line =
       test_param.param.expected_did_override_from_command_line
           ? "DidOverride"

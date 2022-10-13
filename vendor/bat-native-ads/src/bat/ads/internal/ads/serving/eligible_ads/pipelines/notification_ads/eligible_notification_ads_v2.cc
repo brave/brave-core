@@ -63,7 +63,7 @@ void EligibleAdsV2::GetBrowsingHistory(
 void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    const GetEligibleAdsCallback<CreativeNotificationAdList>& callback,
     const BrowsingHistoryList& browsing_history) {
   database::table::CreativeNotificationAds database_table;
   database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,

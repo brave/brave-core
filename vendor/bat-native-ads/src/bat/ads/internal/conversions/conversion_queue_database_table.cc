@@ -71,7 +71,7 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion_queue_item;
 }
 
-void OnGetAll(GetConversionQueueCallback callback,
+void OnGetAll(const GetConversionQueueCallback& callback,
               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -93,7 +93,7 @@ void OnGetAll(GetConversionQueueCallback callback,
 
 void OnGetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    GetConversionQueueForCreativeInstanceIdCallback callback,
+    const GetConversionQueueForCreativeInstanceIdCallback& callback,
     mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

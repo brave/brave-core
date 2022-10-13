@@ -53,7 +53,8 @@ TEST_P(BatAdsDebugCommandLineSwitchParserUtilTest,
   EXPECT_EQ(GetParam().expected_should_debug, ShouldDebug());
 }
 
-std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
+std::string TestParamToString(
+    const ::testing::TestParamInfo<ParamInfo>& test_param) {
   const std::string expected_should_debug =
       test_param.param.expected_should_debug ? "ShouldDebug" : "ShouldNotDebug";
 

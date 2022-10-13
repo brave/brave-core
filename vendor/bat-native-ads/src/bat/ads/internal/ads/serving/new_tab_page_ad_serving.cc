@@ -46,7 +46,7 @@ void Serving::RemoveObserver(ServingObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
+void Serving::MaybeServeAd(const MaybeServeNewTabPageAdCallback& callback) {
   if (!features::IsEnabled()) {
     BLOG(1, "New tab page ad not served: Feature is disabled");
     FailedToServeAd(callback);
@@ -100,7 +100,7 @@ bool Serving::IsSupported() const {
 }
 
 void Serving::ServeAd(const NewTabPageAdInfo& ad,
-                      MaybeServeNewTabPageAdCallback callback) {
+                      const MaybeServeNewTabPageAdCallback& callback) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve new tab page ad");
     FailedToServeAd(callback);
@@ -132,7 +132,7 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
   callback(ad);
 }
 
-void Serving::FailedToServeAd(MaybeServeNewTabPageAdCallback callback) {
+void Serving::FailedToServeAd(const MaybeServeNewTabPageAdCallback& callback) {
   NotifyFailedToServeNewTabPageAd();
 
   callback(/*ads*/ absl::nullopt);

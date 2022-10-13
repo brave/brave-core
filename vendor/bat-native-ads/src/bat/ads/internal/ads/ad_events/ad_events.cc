@@ -43,7 +43,7 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
 
   database::table::AdEvents database_table;
   database_table.LogEvent(
-      ad_event, base::BindOnce([](AdEventCallback callback,
+      ad_event, base::BindOnce([](const AdEventCallback& callback,
                                   const bool success) { callback(success); },
                                callback));
 }
@@ -51,7 +51,7 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
 void PurgeExpiredAdEvents(AdEventCallback callback) {
   const database::table::AdEvents database_table;
   database_table.PurgeExpired(base::BindOnce(
-      [](AdEventCallback callback, const bool success) {
+      [](const AdEventCallback& callback, const bool success) {
         if (success) {
           RebuildAdEventHistoryFromDatabase();
         }
@@ -68,7 +68,7 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(
       ad_type, base::BindOnce(
-                   [](AdEventCallback callback, const bool success) {
+                   [](const AdEventCallback& callback, const bool success) {
                      if (success) {
                        RebuildAdEventHistoryFromDatabase();
                      }

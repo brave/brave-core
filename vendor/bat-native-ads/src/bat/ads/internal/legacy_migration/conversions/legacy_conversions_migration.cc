@@ -34,11 +34,11 @@ bool HasMigrated() {
       prefs::kHasMigratedConversionState);
 }
 
-void FailedToMigrate(InitializeCallback callback) {
+void FailedToMigrate(const InitializeCallback& callback) {
   callback(/*success*/ false);
 }
 
-void SuccessfullyMigrated(InitializeCallback callback) {
+void SuccessfullyMigrated(const InitializeCallback& callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedConversionState, true);
   callback(/*success*/ true);
@@ -140,7 +140,7 @@ void OnMigrate(InitializeCallback callback,
   conversion_queue.Save(
       *conversion_queue_items,
       base::BindOnce(
-          [](InitializeCallback callback, const bool success) {
+          [](const InitializeCallback& callback, const bool success) {
             if (!success) {
               BLOG(0, "Failed to save conversion state");
               FailedToMigrate(callback);

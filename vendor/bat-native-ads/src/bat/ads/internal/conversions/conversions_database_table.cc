@@ -62,7 +62,7 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion;
 }
 
-void OnGetConversions(GetConversionsCallback callback,
+void OnGetConversions(const GetConversionsCallback& callback,
                       mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

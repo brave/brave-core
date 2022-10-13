@@ -34,7 +34,7 @@ void LogTextEmbeddingHtmlEvent(
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(
       text_embedding_html_event,
-      base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
+      base::BindOnce([](const TextEmbeddingHtmlEventCallback& callback,
                         const bool success) { callback(success); },
                      callback));
 }
@@ -43,13 +43,13 @@ void PurgeStaleTextEmbeddingHtmlEvents(
     TextEmbeddingHtmlEventCallback callback) {
   const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.PurgeStale(
-      base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
+      base::BindOnce([](const TextEmbeddingHtmlEventCallback& callback,
                         const bool success) { callback(success); },
                      callback));
 }
 
 void GetTextEmbeddingHtmlEventsFromDatabase(
-    database::table::GetTextEmbeddingHtmlEventsCallback callback) {
+    const database::table::GetTextEmbeddingHtmlEventsCallback& callback) {
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(
       [=](const bool success,

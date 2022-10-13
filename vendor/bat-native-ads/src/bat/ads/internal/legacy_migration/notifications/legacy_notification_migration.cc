@@ -28,11 +28,11 @@ bool HasMigrated() {
       prefs::kHasMigratedNotificationState);
 }
 
-void FailedToMigrate(InitializeCallback callback) {
+void FailedToMigrate(const InitializeCallback& callback) {
   callback(/*success*/ false);
 }
 
-void SuccessfullyMigrated(InitializeCallback callback) {
+void SuccessfullyMigrated(const InitializeCallback& callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedNotificationState, true);
   callback(/*success*/ true);
@@ -51,7 +51,7 @@ void Migrate(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->Load(
       kNotificationStateFilename,
       base::BindOnce(
-          [](InitializeCallback callback, const bool success,
+          [](const InitializeCallback& callback, const bool success,
              const std::string& json) {
             if (!success) {
               // Notification state does not exist

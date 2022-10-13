@@ -25,14 +25,14 @@ constexpr char kEphemeralPublicKeyKey[] = "epk";
 constexpr char kNonceKey[] = "nonce";
 constexpr char kConversionEnvelopeKey[] = "conversionEnvelope";
 
-void ReportConversionDoesNotExist(BuildConversionCallback callback) {
+void ReportConversionDoesNotExist(const BuildConversionCallback& callback) {
   callback(base::Value::Dict());
 }
 
 }  // namespace
 
 void BuildConversion(const std::string& creative_instance_id,
-                     BuildConversionCallback callback) {
+                     const BuildConversionCallback& callback) {
   DCHECK(!creative_instance_id.empty());
 
   database::table::ConversionQueue database_table;

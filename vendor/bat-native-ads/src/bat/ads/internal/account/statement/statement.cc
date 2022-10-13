@@ -16,7 +16,7 @@
 
 namespace ads {
 
-void BuildStatement(BuildStatementCallback callback) {
+void BuildStatement(const BuildStatementCallback& callback) {
   const base::Time from_time = GetTimeInDistantPast();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 

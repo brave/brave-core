@@ -66,7 +66,7 @@ void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
 
 void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                              const mojom::SearchResultAdEventType event_type,
-                             FireAdEventHandlerCallback callback) const {
+                             const FireAdEventHandlerCallback& callback) const {
   DCHECK(ad_mojom);
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
@@ -106,17 +106,18 @@ void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
 
 void EventHandler::FireEvent(const SearchResultAdInfo& ad,
                              const mojom::SearchResultAdEventType event_type,
-                             FireAdEventHandlerCallback callback) const {
+                             const FireAdEventHandlerCallback& callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
-  NotifySearchResultAdEvent(ad, event_type, std::move(callback));
+  NotifySearchResultAdEvent(ad, event_type, callback);
 }
 
-void EventHandler::FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                                   FireAdEventHandlerCallback callback) const {
+void EventHandler::FireViewedEvent(
+    mojom::SearchResultAdInfoPtr ad_mojom,
+    const FireAdEventHandlerCallback& callback) const {
   DCHECK(ad_mojom);
 
   const DepositInfo deposit = BuildDeposit(ad_mojom);
@@ -129,7 +130,7 @@ void EventHandler::FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
 }
 
 void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
-                                  FireAdEventHandlerCallback callback,
+                                  const FireAdEventHandlerCallback& callback,
                                   const bool success) const {
   DCHECK(ad_mojom);
 
@@ -155,7 +156,7 @@ void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
 }
 
 void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
-                                     FireAdEventHandlerCallback callback,
+                                     const FireAdEventHandlerCallback& callback,
                                      const bool success) const {
   if (!success) {
     BLOG(0, "Failed to save conversions state");
@@ -194,8 +195,9 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
       });
 }
 
-void EventHandler::FireClickedEvent(const SearchResultAdInfo& ad,
-                                    FireAdEventHandlerCallback callback) const {
+void EventHandler::FireClickedEvent(
+    const SearchResultAdInfo& ad,
+    const FireAdEventHandlerCallback& callback) const {
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
@@ -224,20 +226,20 @@ void EventHandler::FireClickedEvent(const SearchResultAdInfo& ad,
 void EventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
+    const FireAdEventHandlerCallback& callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   BLOG(1, "Failed to fire search result ad "
               << event_type << " event for placement_id " << ad.placement_id
               << " and creative instance id " << ad.creative_instance_id);
 
-  NotifySearchResultAdEventFailed(ad, event_type, std::move(callback));
+  NotifySearchResultAdEventFailed(ad, event_type, callback);
 }
 
 void EventHandler::NotifySearchResultAdEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
+    const FireAdEventHandlerCallback& callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   switch (event_type) {
@@ -284,7 +286,7 @@ void EventHandler::NotifySearchResultAdClicked(
 void EventHandler::NotifySearchResultAdEventFailed(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
+    const FireAdEventHandlerCallback& callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   for (EventHandlerObserver& observer : observers_) {

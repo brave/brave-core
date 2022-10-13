@@ -162,7 +162,7 @@ CreativeNewTabPageAdList GetCreativeAdsFromResponse(
 }
 
 void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeNewTabPageAdCallback callback,
+                                const GetCreativeNewTabPageAdCallback& callback,
                                 mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -186,7 +186,7 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 }
 
 void OnGetForSegments(const SegmentList& segments,
-                      GetCreativeNewTabPageAdsCallback callback,
+                      const GetCreativeNewTabPageAdsCallback& callback,
                       mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -201,7 +201,7 @@ void OnGetForSegments(const SegmentList& segments,
   callback(/*success*/ true, segments, creative_ads);
 }
 
-void OnGetAll(GetCreativeNewTabPageAdsCallback callback,
+void OnGetAll(const GetCreativeNewTabPageAdsCallback& callback,
               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

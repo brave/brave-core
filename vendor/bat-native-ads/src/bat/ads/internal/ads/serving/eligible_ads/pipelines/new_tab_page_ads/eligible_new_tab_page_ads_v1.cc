@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v1.h"
 
-#include <utility>
-
 #include "base/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
@@ -68,17 +66,16 @@ void EligibleAdsV1::GetBrowsingHistory(
 void EligibleAdsV1::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback,
     const BrowsingHistoryList& browsing_history) {
-  GetForChildSegments(user_model, ad_events, browsing_history,
-                      std::move(callback));
+  GetForChildSegments(user_model, ad_events, browsing_history, callback);
 }
 
 void EligibleAdsV1::GetForChildSegments(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback) {
   const SegmentList segments = targeting::GetTopChildSegments(user_model);
   if (segments.empty()) {
     GetForParentSegments(user_model, ad_events, browsing_history, callback);
@@ -122,7 +119,7 @@ void EligibleAdsV1::GetForParentSegments(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback) {
   const SegmentList segments = targeting::GetTopParentSegments(user_model);
   if (segments.empty()) {
     GetForUntargeted(ad_events, browsing_history, callback);
@@ -164,7 +161,7 @@ void EligibleAdsV1::GetForParentSegments(
 void EligibleAdsV1::GetForUntargeted(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
   database::table::CreativeNewTabPageAds database_table;

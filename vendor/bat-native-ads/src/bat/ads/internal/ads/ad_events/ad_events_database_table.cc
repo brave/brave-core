@@ -64,7 +64,7 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return ad_event;
 }
 
-void OnGetAdEvents(GetAdEventsCallback callback,
+void OnGetAdEvents(const GetAdEventsCallback& callback,
                    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

@@ -26,11 +26,11 @@ bool HasMigrated() {
       prefs::kHasMigratedRewardsState);
 }
 
-void FailedToMigrate(InitializeCallback callback) {
+void FailedToMigrate(const InitializeCallback& callback) {
   callback(/*success*/ false);
 }
 
-void SuccessfullyMigrated(InitializeCallback callback) {
+void SuccessfullyMigrated(const InitializeCallback& callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedRewardsState, true);
   callback(/*success*/ true);
@@ -58,19 +58,20 @@ void OnMigrate(InitializeCallback callback,
   }
 
   database::table::Transactions database_table;
-  database_table.Save(*transactions,
-                      base::BindOnce(
-                          [](InitializeCallback callback, const bool success) {
-                            if (!success) {
-                              BLOG(0, "Failed to save rewards state");
-                              FailedToMigrate(callback);
-                              return;
-                            }
+  database_table.Save(
+      *transactions,
+      base::BindOnce(
+          [](const InitializeCallback& callback, const bool success) {
+            if (!success) {
+              BLOG(0, "Failed to save rewards state");
+              FailedToMigrate(callback);
+              return;
+            }
 
-                            BLOG(3, "Successfully migrated rewards state");
-                            SuccessfullyMigrated(callback);
-                          },
-                          callback));
+            BLOG(3, "Successfully migrated rewards state");
+            SuccessfullyMigrated(callback);
+          },
+          callback));
 }
 
 }  // namespace

@@ -14,7 +14,7 @@ namespace ads {
 
 using BuildStatementCallback = std::function<void(mojom::StatementInfoPtr)>;
 
-void BuildStatement(BuildStatementCallback callback);
+void BuildStatement(const BuildStatementCallback& callback);
 
 }  // namespace ads
 

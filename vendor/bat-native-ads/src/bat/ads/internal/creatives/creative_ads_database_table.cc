@@ -121,7 +121,7 @@ CreativeAdList GetCreativeAdsFromResponse(
 }
 
 void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeAdCallback callback,
+                                const GetCreativeAdCallback& callback,
                                 mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

@@ -148,9 +148,10 @@ CreativePromotedContentAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativePromotedContentAdCallback callback,
-                                mojom::DBCommandResponseInfoPtr response) {
+void OnGetForCreativeInstanceId(
+    const std::string& creative_instance_id,
+    const GetCreativePromotedContentAdCallback& callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative promoted content ad");
@@ -173,7 +174,7 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 }
 
 void OnGetForSegments(const SegmentList& segments,
-                      GetCreativePromotedContentAdsCallback callback,
+                      const GetCreativePromotedContentAdsCallback& callback,
                       mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -188,7 +189,7 @@ void OnGetForSegments(const SegmentList& segments,
   callback(/*success*/ true, segments, creative_ads);
 }
 
-void OnGetAll(GetCreativePromotedContentAdsCallback callback,
+void OnGetAll(const GetCreativePromotedContentAdsCallback& callback,
               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

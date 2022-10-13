@@ -149,7 +149,7 @@ CreativeNotificationAdList GetCreativeAdsFromResponse(
 }
 
 void OnGetForSegments(const SegmentList& segments,
-                      GetCreativeNotificationAdsCallback callback,
+                      const GetCreativeNotificationAdsCallback& callback,
                       mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -164,7 +164,7 @@ void OnGetForSegments(const SegmentList& segments,
   callback(/*success*/ true, segments, creative_ads);
 }
 
-void OnGetAll(GetCreativeNotificationAdsCallback callback,
+void OnGetAll(const GetCreativeNotificationAdsCallback& callback,
               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

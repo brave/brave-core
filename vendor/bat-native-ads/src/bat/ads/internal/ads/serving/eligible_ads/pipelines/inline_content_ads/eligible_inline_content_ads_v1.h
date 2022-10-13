@@ -51,7 +51,7 @@ class EligibleAdsV1 final : public EligibleAdsBase {
       const targeting::UserModelInfo& user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback,
       const BrowsingHistoryList& browsing_history);
 
   void GetForChildSegments(
@@ -59,20 +59,20 @@ class EligibleAdsV1 final : public EligibleAdsBase {
       const std::string& dimensions,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
+      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback);
 
   void GetForParentSegments(
       const targeting::UserModelInfo& user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
+      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback);
 
   void GetForUntargeted(
       const std::string& dimensions,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
+      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback);
 
   CreativeInlineContentAdList FilterCreativeAds(
       const CreativeInlineContentAdList& creative_ads,

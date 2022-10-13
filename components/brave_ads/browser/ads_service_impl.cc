@@ -1620,7 +1620,7 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(
-          [](base::FilePath path,
+          [](const base::FilePath& path,
              scoped_refptr<base::SequencedTaskRunner> file_task_runner) {
             std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file(
                 new base::File(path, base::File::Flags::FLAG_OPEN |
