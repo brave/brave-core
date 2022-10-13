@@ -21,7 +21,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
@@ -34,9 +34,20 @@
 #include "brave/vendor/brave_base/random.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_task_traits.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/metrics_proto/reporting_info.pb.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(IS_IOS)
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#else
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
+#endif  // BUILDFLAG(IS_IOS)
 
 namespace brave {
 
@@ -83,6 +94,14 @@ base::Time NextMonday(base::Time time) {
       (time.LocalMidnight() + base::Days(days_till_monday) + base::Hours(4))
           .LocalMidnight();
   return result;
+}
+
+inline scoped_refptr<base::SingleThreadTaskRunner> GetUIThreadTaskRunner() {
+#if BUILDFLAG(IS_IOS)
+  return web::GetUIThreadTaskRunner({});
+#else
+  return content::GetUIThreadTaskRunner({});
+#endif
 }
 
 }  // namespace
@@ -250,7 +269,9 @@ void BraveP3AService::InitMessageMeta() {
 
   message_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   message_meta_.refcode = local_state_->GetString(kReferralPromoCode);
+#endif
   MaybeStripRefcodeAndCountry(&message_meta_);
 
   UpdateMessageMeta();
@@ -306,7 +327,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
-    content::GetUIThreadTaskRunner({})->PostTask(
+    GetUIThreadTaskRunner()->PostTask(
         FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
                                   this, histogram_name, kSuspendedMetricValue,
                                   kSuspendedMetricBucket));
@@ -338,7 +359,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
     bucket = DirectEncodingProtocol::Perturb(bucket_count, bucket);
   }
 
-  content::GetUIThreadTaskRunner({})->PostTask(
+  GetUIThreadTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
                                 histogram_name, sample, bucket));
 }

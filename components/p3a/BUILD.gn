@@ -1,3 +1,4 @@
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/p3a/buildflags.gni")
 import("//build/buildflag_header.gni")
 
@@ -31,7 +32,7 @@ static_library("p3a") {
 
   deps = [
     "//base",
-    "//brave/components/brave_referrals/common",
+    "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
@@ -39,9 +40,20 @@ static_library("p3a") {
     "//brave/vendor/brave_base",
     "//components/metrics",
     "//components/prefs",
-    "//content/public/browser",
-    "//content/public/common",
     "//services/network/public/cpp",
     "//url",
   ]
+
+  if (enable_brave_referrals) {
+    deps += [ "//brave/components/brave_referrals/common" ]
+  }
+
+  if (is_ios) {
+    deps += [ "//ios/web/public/thread" ]
+  } else {
+    deps += [
+      "//content/public/browser",
+      "//content/public/common",
+    ]
+  }
 }
