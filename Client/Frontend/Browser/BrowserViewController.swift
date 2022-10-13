@@ -2913,15 +2913,13 @@ extension BrowserViewController: TabManagerDelegate {
   }
 }
 
-/// List of schemes that are allowed to be opened in new tabs.
-private let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "about", "whatsapp"]
-
 extension BrowserViewController: WKUIDelegate {
   public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
     guard let parentTab = tabManager[webView] else { return nil }
 
     guard !navigationAction.isInternalUnprivileged,
-      shouldRequestBeOpenedAsPopup(navigationAction.request)
+          let navigationURL = navigationAction.request.url,
+          navigationURL.shouldRequestBeOpenedAsPopup()
     else {
       print("Denying popup from request: \(navigationAction.request)")
       return nil
@@ -2941,19 +2939,6 @@ extension BrowserViewController: WKUIDelegate {
     toolbarVisibilityViewModel.toolbarState = .expanded
 
     return newTab.webView
-  }
-
-  func shouldRequestBeOpenedAsPopup(_ request: URLRequest) -> Bool {
-    // Treat `window.open("")` the same as `window.open("about:blank")`.
-    if request.url?.absoluteString.isEmpty ?? false {
-      return true
-    }
-
-    if let scheme = request.url?.scheme?.lowercased(), schemesAllowedToBeOpenedAsPopups.contains(scheme) {
-      return true
-    }
-
-    return false
   }
 
   fileprivate func shouldDisplayJSAlertForWebView(_ webView: WKWebView) -> Bool {

@@ -51,44 +51,7 @@ class SchemePermissionTests: XCTestCase {
       }
     }
   }
-
-  // MARK: Lifecycle
   
-  static var braveCore: BraveCoreMain!
-
-  override func setUp() {
-    profile = BrowserProfile(localName: "mockProfile")
-
-    imageStore = try! DiskImageStore(files: MockFiles(), namespace: "MockTabManagerScreenshots", quality: 1)
-    
-    if Self.braveCore == nil {
-      Self.braveCore = BraveCoreMain(userAgent: "")
-      Self.braveCore.scheduleLowPriorityStartupTasks()
-    }
-
-    let migration = Migration(braveCore: Self.braveCore)
-
-    subject = BrowserViewController(
-      profile: profile,
-      diskImageStore: imageStore,
-      braveCore: Self.braveCore,
-      migration: migration,
-      crashedLastSession: false)
-  }
-
-  override func tearDown() {
-    subject = nil
-    profile = nil
-
-    Task { @MainActor in
-      await imageStore.clearExcluding(Set())
-      imageStore = nil
-    }
-    tabManager = nil
-
-    super.tearDown()
-  }
-
   // MARK: Internal
 
   func testShouldRequestOpenPopup() {
@@ -99,27 +62,23 @@ class SchemePermissionTests: XCTestCase {
     let urlRequestWhatsApp = urlRequestForScheme(.whatsapp)
 
     // Test Http URL Scheme
-    XCTAssertTrue(subject.shouldRequestBeOpenedAsPopup(urlRequestHttp.request), urlRequestHttp.comment)
+    XCTAssertTrue(urlRequestHttp.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestHttp.comment)
 
     // Test Https URL Scheme
-    XCTAssertTrue(subject.shouldRequestBeOpenedAsPopup(urlRequestHttps.request), urlRequestHttps.comment)
+    XCTAssertTrue(urlRequestHttps.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestHttps.comment)
 
     // Test Javascript URL Scheme
-    XCTAssertTrue(subject.shouldRequestBeOpenedAsPopup(urlRequestJavascript.request), urlRequestJavascript.comment)
+    XCTAssertTrue(urlRequestJavascript.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestJavascript.comment)
 
     // Test About URL Scheme
-    XCTAssertTrue(subject.shouldRequestBeOpenedAsPopup(urlRequestAbout.request), urlRequestAbout.comment)
+    XCTAssertTrue(urlRequestAbout.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestAbout.comment)
 
     // Test Whatapp URL Scheme
-    XCTAssertTrue(subject.shouldRequestBeOpenedAsPopup(urlRequestWhatsApp.request), urlRequestWhatsApp.comment)
+    XCTAssertTrue(urlRequestWhatsApp.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestWhatsApp.comment)
   }
 
   private func urlRequestForScheme(_ type: SchemeTestType) -> (request: URLRequest, comment: String) {
     (request: URLRequest(url: URL(string: type.url)!), comment: type.description)
   }
 
-  private var subject: BrowserViewController!
-  private var profile: Profile!
-  private var tabManager: TabManager!
-  private var imageStore: DiskImageStore!
 }

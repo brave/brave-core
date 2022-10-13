@@ -50,6 +50,22 @@ extension URL {
   public func lastComponentIsPrefixedBy(_ prefix: String) -> Bool {
     return (pathComponents.last?.hasPrefix(prefix) ?? false)
   }
+  
+  public func shouldRequestBeOpenedAsPopup() -> Bool {
+    /// List of schemes that are allowed to be opened in new tabs.
+    let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "about", "whatsapp"]
+    
+    // Treat `window.open("")` the same as `window.open("about:blank")`.
+    if absoluteString.isEmpty {
+      return true
+    }
+
+    if let scheme = scheme?.lowercased(), schemesAllowedToBeOpenedAsPopups.contains(scheme) {
+      return true
+    }
+
+    return false
+  }
 }
 
 // The list of permanent URI schemes has been taken from http://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
