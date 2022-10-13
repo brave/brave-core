@@ -10,8 +10,6 @@ import BraveShared
 import CoreData
 import Shared
 
-private var log = Logger.syncLogger
-
 typealias Credential = (username: String, password: String)
 
 extension PasswordForm {

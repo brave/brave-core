@@ -43,7 +43,7 @@ import Foundation
     do {
       wrappedValue = try container.decode(T.self)
     } catch {
-      print("FailableDecodable failed to decode to type \(T.self): \(error)")
+      print("FailableDecodable failed to decode to type \(T.self): \(error.localizedDescription)")
       wrappedValue = nil
     }
     #else

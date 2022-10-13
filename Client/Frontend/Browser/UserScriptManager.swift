@@ -7,8 +7,7 @@ import Shared
 import Data
 import BraveCore
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 private class ScriptLoader: TabContentScriptLoader { }
 
@@ -197,7 +196,7 @@ class UserScriptManager {
           scriptController.addUserScript(script)
         } catch {
           assertionFailure("Should never happen. The scripts are packed in the project and loading/modifying should always be possible.")
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
         }
       }
     }

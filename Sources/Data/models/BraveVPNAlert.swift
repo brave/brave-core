@@ -8,8 +8,7 @@ import CoreData
 import Shared
 import BraveShared
 import Network
-
-private let log = Logger.browserLogger
+import os.log
 
 /// Stores the alerts data we receive from Brave VPN.
 /// The alert is a resource blocked by the VPN service
@@ -60,7 +59,7 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
   public static func batchInsertIfNotExists(alerts: [BraveVPNAlertJSONModel]) {
     DataController.perform { context in
       guard let entity = entity(in: context) else {
-        log.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
+        Logger.module.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
 
         return
       }
@@ -110,7 +109,7 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
                       .compactMap { $0["host"] as? String }
                       .map { .init(name: $0, count: 1) }))
       } catch {
-        log.error("allByHostCount error: \(error)")
+        Logger.module.error("allByHostCount error: \(error.localizedDescription)")
         completion(.init())
       }
     }
@@ -149,7 +148,7 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
 
         completion((trackerCount, locationPingCount, emailTrackerCount))
       } catch {
-        log.error("alertTotals error: \(error)")
+        Logger.module.error("alertTotals error: \(error.localizedDescription)")
         completion((0, 0, 0))
       }
     }
@@ -181,7 +180,7 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
       let oldItems = all(where: predicate, context: context)
       
       guard let entity = entity(in: context) else {
-        log.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
+        Logger.module.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
         return
       }
       

@@ -9,8 +9,7 @@ import AVKit
 import Combine
 import MediaPlayer
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 enum MediaPlaybackError: Error {
   case cancelled
@@ -97,7 +96,7 @@ class MediaPlayer: NSObject {
       try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
       try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
     } catch {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
   }
 
@@ -114,7 +113,7 @@ class MediaPlayer: NSObject {
       try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .default, options: [])
       try AVAudioSession.sharedInstance().setActive(false)
     } catch {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
 
     // Stop receiving remote commands
@@ -162,7 +161,7 @@ class MediaPlayer: NSObject {
                 resolver(.failure(.other(error)))
                 return
               } else if status == .cancelled {
-                log.error("Asset Duration Fetch Cancelled")
+                Logger.module.error("Asset Duration Fetch Cancelled")
                 resolver(.success(false))
                 return
               } else if status != .loaded {
@@ -510,7 +509,7 @@ extension MediaPlayer {
             self.play()
           } else {
             // An interruption ended. Don't resume playback.
-            log.debug("Interuption ended, but suggests not to resume playback.")
+            Logger.module.debug("Interuption ended, but suggests not to resume playback.")
           }
 
         default:

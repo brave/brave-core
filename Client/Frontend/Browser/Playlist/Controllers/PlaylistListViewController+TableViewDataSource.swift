@@ -12,8 +12,7 @@ import Data
 import Shared
 import BraveUI
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 // MARK: UITableViewDataSource
 
@@ -211,7 +210,7 @@ extension PlaylistListViewController: UITableViewDataSource {
         
         let syncAction = UIAction(title: Strings.PlaylistFolderSharing.syncNowMenuTitle, image: UIImage(braveSystemNamed: "brave.arrow.triangle.2.circlepath")?.template) { _ in
           guard let sharedFolderUrl = folder.sharedFolderUrl else {
-            log.error("Invalid Playlist Shared Folder URL")
+            Logger.module.error("Invalid Playlist Shared Folder URL")
             return
           }
           
@@ -221,9 +220,9 @@ extension PlaylistListViewController: UITableViewDataSource {
               PlaylistManager.shared.currentFolder = PlaylistFolder.getFolder(uuid: folderId)
             } catch {
               if let error = error as? PlaylistSharedFolderNetwork.Status {
-                log.error(error)
+                Logger.module.error("\(error.localizedDescription)")
               } else {
-                log.error("CANNOT SYNC SHARED PLAYLIST: \(error)")
+                Logger.module.error("CANNOT SYNC SHARED PLAYLIST: \(error.localizedDescription)")
               }
             }
           }
@@ -247,7 +246,7 @@ extension PlaylistListViewController: UITableViewDataSource {
               
               switch result {
               case .failure(let error):
-                log.error("Error Saving Folder Title: \(error)")
+                Logger.module.error("Error Saving Folder Title: \(error.localizedDescription)")
 
                 DispatchQueue.main.async {
                   let alert = UIAlertController(title: Strings.genericErrorTitle, message: Strings.PlaylistFolders.playlistFolderErrorSavingMessage, preferredStyle: .alert)

@@ -14,9 +14,8 @@ import Brave
 import BrowserIntentsModels
 import BraveWidgetsModels
 import BraveVPN
+import os.log
 import BraveCore
-
-private let log = Logger.browserLogger
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -28,6 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   static var shouldHandleUrpLookup = false
 
   private var cancellables: Set<AnyCancellable> = []
+  
+  private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "scene-delegate")
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }

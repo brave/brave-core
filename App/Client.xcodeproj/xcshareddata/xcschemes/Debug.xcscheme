@@ -103,11 +103,6 @@
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "OS_ACTIVITY_MODE"
-            value = ""
-            isEnabled = "NO">
-         </EnvironmentVariable>
-         <EnvironmentVariable
             key = "DYLD_PRINT_STATISTICS"
             value = "1"
             isEnabled = "YES">

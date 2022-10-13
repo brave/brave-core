@@ -15,7 +15,7 @@ import os.log
 final public class ContentBlockerManager: Sendable {
   // TODO: Use a proper logger system once implemented and adblock files are moved to their own module(#5928).
   /// Logger to use for debugging.
-  static let log = Logger(subsystem: "com.brave.ios", category: "adblock")
+  static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "adblock")
   
   /// An object representing a rule type and a source type.
   public struct RuleTypeWithSourceType: Hashable {

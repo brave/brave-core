@@ -3,8 +3,7 @@
 import Foundation
 import Shared
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 typealias FavoriteSite = (url: URL, title: String)
 
@@ -67,7 +66,7 @@ struct PreloadedFavorites {
 
     // Locale consists of language and region, region makes more sense when it comes to setting preloaded websites imo.
     let region = Locale.current.regionCode ?? ""  // Empty string will go to the default switch case
-    log.debug("Preloading favorites, current region: \(region)")
+    Logger.module.debug("Preloading favorites, current region: \(region)")
 
     switch region {
     case "PL":

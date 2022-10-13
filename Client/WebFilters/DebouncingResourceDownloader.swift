@@ -7,8 +7,7 @@ import Foundation
 import Shared
 import BraveShared
 import BraveCore
-
-private let log = Logger.browserLogger
+import os.log
 
 /// An helper class that manages the debouncing list and offers convenience methods
 public class DebouncingResourceDownloader {
@@ -299,7 +298,7 @@ public class DebouncingResourceDownloader {
                 otherRules.append(rule)
               }
             default:
-              log.error("Cannot parse pattern `\(pattern)`. Got status `\(parseResult)`")
+              Logger.module.error("Cannot parse pattern `\(pattern)`. Got status `\(parseResult.rawValue)`")
               continue
             }
           }
@@ -315,15 +314,15 @@ public class DebouncingResourceDownloader {
           // an error presented or anything to happen because iOS is not ready to handle this new rule
           // But since it's impossible to discriminate a programmer mistake from a new rule added
           // we at least log this error.
-          log.error("Unsupported rule action used for debouncing: `\(rawRule)`")
+          Logger.module.error("Unsupported rule action used for debouncing: `\(rawRule)`")
         } catch RuleError.unsupportedPreference(let rawRule) {
           // We may add new prefs in the future. If thats the case, this will throw but we don't want
           // an error presented or anything to happen because iOS is not ready to handle this new rule
           // But since it's impossible to discriminate a programmer mistake from a new rule added
           // we at least log this error.
-          log.error("Unsupported rule preference used for debouncing: `\(rawRule)`")
+          Logger.module.error("Unsupported rule preference used for debouncing: `\(rawRule)`")
         } catch {
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
         }
       }
 
@@ -349,7 +348,7 @@ public class DebouncingResourceDownloader {
           result.append(nextElement)
         }
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
 
       return result
@@ -505,7 +504,7 @@ public class DebouncingResourceDownloader {
     let cacheFolderName = self.cacheFolderName
 
     guard let cacheFolderURL = FileManager.default.getOrCreateFolder(name: cacheFolderName) else {
-      log.error("Failed to get folder: \(cacheFolderName)")
+      Logger.module.error("Failed to get folder: \(cacheFolderName)")
       return
     }
 
@@ -518,7 +517,7 @@ public class DebouncingResourceDownloader {
           try setup(withRulesJSON: cachedData)
         }
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
     }
 
@@ -539,7 +538,7 @@ public class DebouncingResourceDownloader {
         etag = try self.stringFromDocument(inFolder: cacheFolderURL, fileName: etagFileName)
       } catch {
         etag = nil
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
 
       Task { [weak self] in
@@ -571,7 +570,7 @@ public class DebouncingResourceDownloader {
 
           try setup(withRulesJSON: resource.data)
         } catch {
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
         }
       }
     }
@@ -629,7 +628,7 @@ extension URL {
     case .success:
       return urlPattern.matchesURL(self)
     default:
-      log.error("Cannot parse pattern `\(pattern)`. Got status `\(parseResult)`")
+      Logger.module.error("Cannot parse pattern `\(pattern)`. Got status `\(parseResult.rawValue)`")
       return false
     }
   }

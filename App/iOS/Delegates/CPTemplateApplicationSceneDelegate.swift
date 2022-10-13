@@ -8,11 +8,11 @@ import UIKit
 import CarPlay
 import Shared
 import Brave
-
-private let log = Logger.browserLogger
+import os.log
 
 class CarplayTemplateApplicationSceneDelegate: NSObject {
   private static let configurationName = "CPTemplateSceneConfiguration"
+  private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "carplay-delegate")
 
   // MARK: UISceneDelegate
 

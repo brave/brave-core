@@ -7,8 +7,7 @@ import AVFoundation
 import SnapKit
 import Shared
 import UIKit
-
-private let log = Logger.browserLogger
+import os.log
 
 private struct QRCodeViewControllerUX {
   static let maskViewBackgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
@@ -222,7 +221,7 @@ class QRCodeViewController: UIViewController {
         navigationItem.leftBarButtonItem?.image = UIImage(named: "qrcode-light", in: .module, compatibleWith: nil)!
         navigationItem.leftBarButtonItem?.tintColor = .bravePrimary
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
     } else {
       do {
@@ -232,7 +231,7 @@ class QRCodeViewController: UIViewController {
         navigationItem.leftBarButtonItem?.image = UIImage(named: "qrcode-isLighting", in: .module, compatibleWith: nil)!
         navigationItem.leftBarButtonItem?.tintColor = .braveOrange
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
     }
     isLightOn = !isLightOn
@@ -248,7 +247,7 @@ class QRCodeViewController: UIViewController {
       let input = try AVCaptureDeviceInput(device: captureDevice)
       captureSession.addInput(input)
     } catch {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
 
     let output = AVCaptureMetadataOutput()
@@ -315,7 +314,7 @@ extension QRCodeViewController: AVCaptureMetadataOutputObjectsDelegate {
         animated: true,
         completion: {
           guard let metaData = metadataObjects.first as? AVMetadataMachineReadableCodeObject, let qrCodeDelegate = self.qrCodeDelegate, let text = metaData.stringValue else {
-            log.debug("Unable to scan QR code")
+            Logger.module.debug("Unable to scan QR code")
             return
           }
 

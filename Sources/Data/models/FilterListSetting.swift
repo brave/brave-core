@@ -6,8 +6,7 @@
 import Foundation
 import CoreData
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 public final class FilterListSetting: NSManagedObject, CRUD {
   /// The directory to which we should store all the dowloaded files into
@@ -72,7 +71,7 @@ public final class FilterListSetting: NSManagedObject, CRUD {
         do {
           try writeContext.save()
         } catch {
-          log.error("FilterListSetting save error: \(error)")
+          Logger.module.error("FilterListSetting save error: \(error.localizedDescription)")
         }
       }
     }

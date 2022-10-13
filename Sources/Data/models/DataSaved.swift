@@ -6,8 +6,7 @@
 import Foundation
 import CoreData
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 public final class DataSaved: NSManagedObject, CRUD {
   @NSManaged public var savedUrl: String
@@ -32,7 +31,7 @@ public final class DataSaved: NSManagedObject, CRUD {
   public class func insert(savedUrl: String, amount: String) {
     DataController.perform { context in
       guard let entity = entity(in: context) else {
-        log.error("Error fetching the entity 'DataSaved' from Managed Object-Model")
+        Logger.module.error("Error fetching the entity 'DataSaved' from Managed Object-Model")
 
         return
       }

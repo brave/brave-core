@@ -9,11 +9,9 @@ import Shared
 import BraveCore
 import BraveShared
 import SwiftyJSON
-import XCGLogger
 import Data
+import os.log
 import BraveWallet
-
-private let log = Logger.browserLogger
 
 protocol TabContentScriptLoader {
   static func loadUserScript(named: String) -> String?
@@ -417,7 +415,7 @@ class Tab: NSObject {
     } else if let request = lastRequest {
       webView.load(request)
     } else {
-      log.warning("creating webview with no lastRequest and no session data: \(String(describing: self.url))")
+      Logger.module.warning("creating webview with no lastRequest and no session data: \(self.url?.absoluteString ?? "nil")")
     }
 
   }
@@ -624,12 +622,12 @@ class Tab: NSObject {
 
     if let _ = webView?.reloadFromOrigin() {
       nightMode = Preferences.General.nightModeEnabled.value
-      log.debug("reloaded zombified tab from origin")
+      Logger.module.debug("reloaded zombified tab from origin")
       return
     }
 
     if let webView = self.webView {
-      log.debug("restoring webView from scratch")
+      Logger.module.debug("restoring webView from scratch")
       restore(webView, restorationData: sessionData?.savedTabData)
     }
   }
@@ -966,16 +964,16 @@ extension Tab {
         result, error in
 
         if let error = error {
-          log.error("onFetchedBackupResults existence check error: \(error)")
+          Logger.module.error("onFetchedBackupResults existence check error: \(error.localizedDescription, privacy: .public)")
         }
 
         guard let methodUndefined = result as? Bool else {
-          log.error("onFetchedBackupResults existence check, failed to unwrap bool result value")
+          Logger.module.error("onFetchedBackupResults existence check, failed to unwrap bool result value")
           return
         }
 
         if methodUndefined {
-          log.info("Search Backup results are ready but the page has not been loaded yet")
+          Logger.module.info("Search Backup results are ready but the page has not been loaded yet")
           return
         }
 

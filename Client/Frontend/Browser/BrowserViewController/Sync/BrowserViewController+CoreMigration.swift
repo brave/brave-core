@@ -8,9 +8,7 @@ import BraveShared
 import Storage
 import UIKit
 import WebKit
-import XCGLogger
-
-private let log = Logger.browserLogger
+import os.log
 
 // MARK: - Core Migration Browser Extension
 
@@ -45,7 +43,7 @@ extension BrowserViewController {
   private func migrateToSyncObjects(_ completion: @escaping ((BraveCoreMigrator.MigrationError?) -> Void)) {
     let showInterstitialPage = { (url: URL?) -> Bool in
       guard let url = url else {
-        log.error("Cannot open bookmarks page in new tab")
+        Logger.module.error("Cannot open bookmarks page in new tab")
         return false
       }
 

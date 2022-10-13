@@ -5,7 +5,6 @@
 import UIKit
 import CoreData
 import Shared
-import XCGLogger
 
 public class InMemoryDataController: DataController {
   override func addPersistentStore(for container: NSPersistentContainer, store: URL) {

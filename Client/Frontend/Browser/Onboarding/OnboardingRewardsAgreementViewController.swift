@@ -9,8 +9,6 @@ import BraveCore
 import Lottie
 import UIKit
 
-private let log = Logger.browserLogger
-
 enum OnboardingRewardsState {
   case skipped
   case complete

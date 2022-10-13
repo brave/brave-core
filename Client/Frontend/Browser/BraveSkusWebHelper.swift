@@ -6,8 +6,7 @@
 import Foundation
 import Shared
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 class BraveSkusWebHelper {
   /// On which hosts the receipt should be allowed to be exposed.
@@ -48,7 +47,7 @@ class BraveSkusWebHelper {
     do {
       return try Data(contentsOf: receiptUrl).base64EncodedString
     } catch {
-      log.error("Failed to encode or get receipt data: \(error)")
+      Logger.module.error("Failed to encode or get receipt data: \(error.localizedDescription)")
       return nil
     }
   }
@@ -78,7 +77,7 @@ class BraveSkusWebHelper {
     do {
       return (key: storageKey, value: try JSONEncoder().encode(json).base64EncodedString)
     } catch {
-      assertionFailure("serialization error: \(error)")
+      assertionFailure("serialization error: \(error.localizedDescription)")
       return nil
     }
   }

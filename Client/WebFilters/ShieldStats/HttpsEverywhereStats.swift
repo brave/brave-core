@@ -5,8 +5,7 @@
 import Shared
 import Foundation
 import HTTPSE
-
-private let log = Logger.browserLogger
+import os.log
 
 public class HttpsEverywhereStats: LocalAdblockResourceProtocol {
   public static let shared = HttpsEverywhereStats()
@@ -28,7 +27,7 @@ public class HttpsEverywhereStats: LocalAdblockResourceProtocol {
 
   func shouldUpgrade(_ url: URL?, _ completion: @escaping (Bool) -> Void) {
     guard let url = url else {
-      log.error("Httpse should block called with empty url")
+      Logger.module.error("Httpse should block called with empty url")
       completion(false)
       return
     }
@@ -39,7 +38,7 @@ public class HttpsEverywhereStats: LocalAdblockResourceProtocol {
   func loadDb(dir: String, name: String) {
     let path = dir + "/" + name
     if !FileManager.default.fileExists(atPath: path) {
-      log.error("Httpse db file doesn't exist")
+      Logger.module.error("Httpse db file doesn't exist")
       return
     }
 
@@ -75,7 +74,7 @@ public class HttpsEverywhereStats: LocalAdblockResourceProtocol {
     if fm.fileExists(atPath: dir + "/" + HttpsEverywhereStats.levelDbFileName) {
       do {
         try FileManager.default.removeItem(atPath: dir + "/" + HttpsEverywhereStats.levelDbFileName)
-      } catch { log.error("failed to remove leveldb file before unzip \(error)") }
+      } catch { Logger.module.error("failed to remove leveldb file before unzip \(error.localizedDescription)") }
     }
     
     self.unzipFile(dir: dir, data: data)
@@ -96,7 +95,7 @@ public class HttpsEverywhereStats: LocalAdblockResourceProtocol {
         progress: { _ in
         })
     } catch {
-      log.error("unzip file error: \(error)")
+      Logger.module.error("unzip file error: \(error.localizedDescription)")
     }
   }
 }

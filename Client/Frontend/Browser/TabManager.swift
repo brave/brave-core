@@ -7,13 +7,10 @@ import WebKit
 import Storage
 import Shared
 import BraveShared
-import XCGLogger
 import Data
 import CoreData
 import BraveCore
-
-private let log = Logger.browserLogger
-private let rewardsLog = Logger.braveCoreLogger
+import os.log
 
 protocol TabManagerDelegate: AnyObject {
   func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?)
@@ -116,7 +113,7 @@ class TabManager: NSObject {
     do {
       try domainFrc.performFetch()
     } catch {
-      log.error("Failed to perform fetch of Domains for observing dapps permission changes: \(error)")
+      Logger.module.error("Failed to perform fetch of Domains for observing dapps permission changes: \(error.localizedDescription, privacy: .public)")
     }
   }
   
@@ -324,7 +321,7 @@ class TabManager: NSObject {
     }
 
     guard tab === selectedTab else {
-      log.error("Expected tab (\(String(describing: tab?.url))) is not selected. Selected index: \(selectedIndex)")
+      Logger.module.error("Expected tab (\(tab?.url?.absoluteString ?? "nil")) is not selected. Selected index: \(self.selectedIndex)")
       return
     }
 
@@ -353,14 +350,14 @@ class TabManager: NSObject {
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
       let previousFaviconURL = URL(string: previousTab.displayFavicon?.url ?? "")
       if previousFaviconURL == nil && !previousTabUrl.isLocal {
-        rewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
+        adsRewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
       }
       rewards?.reportTabUpdated(
         tab: previousTab, url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
         isPrivate: previousTab.isPrivate)
       let faviconURL = URL(string: newSelectedTab.displayFavicon?.url ?? "")
       if faviconURL == nil && !newTabUrl.isLocal {
-        rewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
+        adsRewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
       }
       rewards?.reportTabUpdated(
         tab: newSelectedTab, url: newTabUrl, faviconURL: faviconURL, isSelected: true,
@@ -601,15 +598,9 @@ class TabManager: NSObject {
       let forwardListMap = forwardList.map { $0.url }
       let currentItem = currentItem.url
 
-      log.debug("backList: \(backListMap)")
-      log.debug("forwardList: \(forwardListMap)")
-      log.debug("currentItem: \(currentItem)")
-
       // Business as usual.
       urls = backListMap + [currentItem] + forwardListMap
       currentPage = -forwardList.count
-
-      log.debug("---stack: \(urls)")
     }
     if let id = TabMO.get(fromId: tab.id)?.syncUUID {
       let displayTitle = tab.displayTitle
@@ -634,7 +625,7 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     guard let removalIndex = allTabs.firstIndex(where: { $0 === tab }) else {
-      log.debug("Could not find index of tab to remove")
+      Logger.module.debug("Could not find index of tab to remove")
       return
     }
 
@@ -877,10 +868,10 @@ class TabManager: NSObject {
       return
     }
 
-    log.info("Migrating tabsState.archive from ~/Documents to shared container")
+    Logger.module.info("Migrating tabsState.archive from ~/Documents to shared container")
 
     guard let profilePath = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier)?.appendingPathComponent("profile.profile").path else {
-      log.error("Unable to get profile path in shared container to move tabsState.archive")
+      Logger.module.error("Unable to get profile path in shared container to move tabsState.archive")
       return
     }
 
@@ -890,9 +881,9 @@ class TabManager: NSObject {
       try FileManager.default.createDirectory(atPath: profilePath, withIntermediateDirectories: true, attributes: nil)
       try FileManager.default.moveItem(atPath: oldPath, toPath: newPath)
 
-      log.info("Migrated tabsState.archive to shared container successfully")
+      Logger.module.info("Migrated tabsState.archive to shared container successfully")
     } catch let error as NSError {
-      log.error("Unable to move tabsState.archive to shared container: \(error.localizedDescription)")
+      Logger.module.error("Unable to move tabsState.archive to shared container: \(error.localizedDescription)")
     }
   }
 

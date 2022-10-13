@@ -4,8 +4,7 @@
 
 import UIKit
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 // MARK: - SearchEnginePickerDelegate
 
@@ -329,7 +328,7 @@ class SearchSettingsTableViewController: UITableViewController {
           tableView.reloadData()
           updateTableEditModeVisibility()
         } catch {
-          log.error("Search Engine Error while deleting")
+          Logger.module.error("Search Engine Error while deleting")
         }
       }
 

@@ -77,7 +77,7 @@ struct SandboxInspectorView: View {
           )
         }
       } catch {
-        print("Error: \(error)")
+        print("Error: \(error.localizedDescription)")
         return nil
       }
     }

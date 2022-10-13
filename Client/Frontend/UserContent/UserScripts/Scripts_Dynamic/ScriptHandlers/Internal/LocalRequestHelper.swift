@@ -5,8 +5,7 @@
 import Foundation
 import Shared
 import WebKit
-
-private let log = Logger.browserLogger
+import os.log
 
 class LocalRequestHelper: TabContentScript {
   static let scriptName = "LocalRequestScript"

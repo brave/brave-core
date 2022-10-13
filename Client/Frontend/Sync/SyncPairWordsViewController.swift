@@ -5,8 +5,7 @@ import Shared
 import BraveShared
 import BraveCore
 import Data
-
-private let log = Logger.browserLogger
+import os.log
 
 class SyncPairWordsViewController: SyncViewController {
 
@@ -170,7 +169,7 @@ class SyncPairWordsViewController: SyncViewController {
   }
 
   private func checkCodes() {
-    log.debug("check codes")
+    Logger.module.debug("check codes")
 
     func alert(title: String? = nil, message: String? = nil) {
       if syncAPI.isInSyncGroup {

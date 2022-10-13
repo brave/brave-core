@@ -28,11 +28,11 @@ let package = Package(
     .library(name: "BraveNews", targets: ["BraveNews"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
+    .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"])
   ],
   dependencies: [
     .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.15"),
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
-    .package(url: "https://github.com/DaveWoodCom/XCGLogger", from: "7.0.1"),
     .package(url: "https://github.com/cezheng/Fuzi", from: "3.1.3"),
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.0"),
     .package(url: "https://github.com/airbnb/lottie-ios", from: "3.1.9"),
@@ -72,7 +72,6 @@ let package = Package(
         "Then",
         "SwiftKeychainWrapper",
         "SwiftyJSON",
-        "XCGLogger",
         "BrowserIntentsModels",
         "BraveWidgetsModels",
         "BraveVPN",
@@ -182,7 +181,8 @@ let package = Package(
         .copy("WebFilters/ContentBlocker/Lists/upgrade-http.json"),
         .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
         .copy("WebFilters/ShieldStats/Httpse/httpse.leveldb.tgz"),
-      ]
+      ],
+      plugins: ["LoggerPlugin"]
     ),
     .target(
       name: "HTTPSE",
@@ -203,12 +203,12 @@ let package = Package(
         "SDWebImage",
         "SwiftKeychainWrapper",
         "SwiftyJSON",
-        "XCGLogger"
-      ]
+      ],
+      plugins: ["LoggerPlugin"]
     ),
     .target(
       name: "BraveShared",
-      dependencies: ["SDWebImage", "Shared", "Strings", "SnapKit", "XCGLogger"],
+      dependencies: ["SDWebImage", "Shared", "Strings", "SnapKit"],
       resources: [
         .copy("Certificates/AmazonRootCA1.cer"),
         .copy("Certificates/AmazonRootCA2.cer"),
@@ -223,7 +223,8 @@ let package = Package(
         .copy("Certificates/ISRGRootCA_X1.cer"),
         .copy("Certificates/ISRGRootCA_X2.cer"),
         .copy("Certificates/SFSRootCAG2.cer"),
-      ]
+      ],
+      plugins: ["LoggerPlugin"]
     ),
     .target(
       name: "BraveUI",
@@ -237,10 +238,10 @@ let package = Package(
         "SnapKit",
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
         "Then",
-        "XCGLogger",
         "Static",
         .product(name: "Lottie", package: "lottie-ios")
-      ]
+      ],
+      plugins: ["LoggerPlugin"]
     ),
     .target(name: "DesignSystem"),
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
@@ -249,12 +250,14 @@ let package = Package(
     .binaryTarget(name: "GCDWebServers", path: "ThirdParty/GCDWebServers/GCDWebServers.xcframework"),
     .target(
       name: "Storage",
-      dependencies: ["Shared", "sqlcipher", "SDWebImage", "XCGLogger"],
-      cSettings: [.define("SQLITE_HAS_CODEC")]
+      dependencies: ["Shared", "sqlcipher", "SDWebImage"],
+      cSettings: [.define("SQLITE_HAS_CODEC")],
+      plugins: ["LoggerPlugin"]
     ),
     .target(
       name: "Data",
-      dependencies: ["BraveShared", "Storage", "Strings"]
+      dependencies: ["BraveShared", "Storage", "Strings"],
+      plugins: ["LoggerPlugin"]
     ),
     .target(
       name: "BraveWallet",
@@ -270,11 +273,11 @@ let package = Package(
         "SDWebImage",
         "SnapKit",
         "Then",
-        "XCGLogger",
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
-      ]
+      ],
+      plugins: ["LoggerPlugin"]
     ),
     .target(
       name: "BrowserIntentsModels",
@@ -295,13 +298,13 @@ let package = Package(
         "Strings",
         "SnapKit",
         "Then",
-        "XCGLogger",
         "Data",
         "GuardianConnect",
         "BraveUI",
         .product(name: "Lottie", package: "lottie-ios")
       ],
-      resources: [.copy("vpncheckmark.json")]
+      resources: [.copy("vpncheckmark.json")],
+      plugins: ["LoggerPlugin"]
     ),
     .target(
       name: "BraveNews",
@@ -310,7 +313,6 @@ let package = Package(
         "Strings",
         "SnapKit",
         "Then",
-        "XCGLogger",
         "Data",
         "BraveUI",
         "DesignSystem",
@@ -324,7 +326,8 @@ let package = Package(
       ],
       resources: [
         .copy("Lottie Assets/brave-today-welcome-graphic.json"),
-      ]
+      ],
+      plugins: ["LoggerPlugin"]
     ),
     .testTarget(name: "BraveNewsTests", dependencies: ["BraveNews"], resources: [
       .copy("opml-test-files/subscriptionList.opml"),
@@ -380,6 +383,7 @@ let package = Package(
     .target(name: "Strings", path: "App/l10n", exclude: ["tools", "Resources/Info.plist", "README.md"]),
     .target(name: "RuntimeWarnings"),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
+    .plugin(name: "LoggerPlugin", capability: .buildTool()),
   ],
   cxxLanguageStandard: .cxx17
 )

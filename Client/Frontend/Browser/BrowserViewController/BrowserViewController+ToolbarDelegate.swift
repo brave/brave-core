@@ -10,8 +10,8 @@ import BraveCore
 import Storage
 import Data
 import SwiftUI
-
-private let log = Logger.browserLogger
+import BraveNews
+import os.log
 
 // MARK: - TopToolbarDelegate
 
@@ -48,7 +48,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidPressLockImageView(_ urlBar: TopToolbarView) {
     guard let webView = tabManager.selectedTab?.webView else {
-      log.error("Invalid WebView")
+      Logger.module.error("Invalid WebView")
       return
     }
     
@@ -58,7 +58,7 @@ extension BrowserViewController: TopToolbarDelegate {
           return try ErrorPageHelper.serverTrust(from: url)
         }
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
       
       return nil
@@ -78,7 +78,7 @@ extension BrowserViewController: TopToolbarDelegate {
       let certificate = BraveCertificateModel(certificate: serverCertificate) {
       BraveCertificateUtils.evaluateTrust(trust, for: webView.url?.host) { error in
         if let error = error {
-          log.error(error)
+          Logger.module.error("\(error.localizedDescription)")
         }
         
         // Remove the common-name from the first part of the error message

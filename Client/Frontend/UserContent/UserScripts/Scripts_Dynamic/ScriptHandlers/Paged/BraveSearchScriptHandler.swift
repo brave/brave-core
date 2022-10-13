@@ -8,8 +8,7 @@ import WebKit
 import Shared
 import BraveShared
 import BraveCore
-
-private let log = Logger.browserLogger
+import os.log
 
 class BraveSearchScriptHandler: TabContentScript {
   private weak var tab: Tab?
@@ -75,7 +74,7 @@ class BraveSearchScriptHandler: TabContentScript {
       allowedHosts.contains(requestHost),
       message.frameInfo.isMainFrame
     else {
-      log.error("Backup search request called from disallowed host")
+      Logger.module.error("Backup search request called from disallowed host")
       replyHandler(nil, nil)
       return
     }
@@ -83,7 +82,7 @@ class BraveSearchScriptHandler: TabContentScript {
     guard let data = try? JSONSerialization.data(withJSONObject: message.body, options: []),
       let method = try? JSONDecoder().decode(MethodModel.self, from: data).methodId
     else {
-      log.error("Failed to retrieve method id")
+      Logger.module.error("Failed to retrieve method id")
       replyHandler(nil, nil)
       return
     }
@@ -100,14 +99,14 @@ class BraveSearchScriptHandler: TabContentScript {
 
   private func handleCanSetBraveSearchAsDefault(replyHandler: (Any?, String?) -> Void) {
     if PrivateBrowsingManager.shared.isPrivateBrowsing {
-      log.debug("Private mode detected, skipping setting Brave Search as a default")
+      Logger.module.debug("Private mode detected, skipping setting Brave Search as a default")
       replyHandler(false, nil)
       return
     }
 
     let maximumPromptCount = Preferences.Search.braveSearchDefaultBrowserPromptCount
     if Self.canSetAsDefaultCounter >= maxCountOfDefaultBrowserPromptsPerSession || maximumPromptCount.value >= maxCountOfDefaultBrowserPromptsTotal {
-      log.debug("Maximum number of tries of Brave Search website prompts reached")
+      Logger.module.debug("Maximum number of tries of Brave Search website prompts reached")
       replyHandler(false, nil)
       return
     }

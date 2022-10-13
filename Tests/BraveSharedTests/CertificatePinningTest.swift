@@ -33,7 +33,7 @@ class CertificatePinningTest: XCTestCase {
     do {
       try evaluator.evaluate(trust, forHost: host)
     } catch {
-      XCTFail("Validation failed but should have succeeded: \(error)")
+      XCTFail("Validation failed but should have succeeded: \(error.localizedDescription)")
     }
   }
 
@@ -114,7 +114,7 @@ class CertificatePinningTest: XCTestCase {
     do {
       try evaluator.evaluate(trust, forHost: host)
     } catch {
-      XCTFail("Validation failed but should have succeeded: \(error)")
+      XCTFail("Validation failed but should have succeeded: \(error.localizedDescription)")
     }
   }
 
@@ -130,7 +130,7 @@ class CertificatePinningTest: XCTestCase {
     do {
       try evaluator.evaluate(trust, forHost: host)
     } catch {
-      XCTFail("Validation failed but should have succeeded: \(error)")
+      XCTFail("Validation failed but should have succeeded: \(error.localizedDescription)")
     }
   }
 
@@ -162,7 +162,7 @@ class CertificatePinningTest: XCTestCase {
 
         case .failure(let error as NSError):
           if error.code == NSURLErrorCancelled {
-            XCTFail("Invalid URL/Host for pinning: \(error) for host: \(host)")
+            XCTFail("Invalid URL/Host for pinning: \(error.localizedDescription) for host: \(host)")
           }
         }
 
@@ -199,7 +199,7 @@ class CertificatePinningTest: XCTestCase {
 
       sessionManager.dataTask(with: hostUrl) { data, response, error in
         if let error = error as NSError?, error.code == NSURLErrorCancelled {
-          XCTFail("Invalid URL/Host for pinning: \(error) for host: \(host)")
+          XCTFail("Invalid URL/Host for pinning: \(error.localizedDescription) for host: \(host)")
         }
 
         expectation.fulfill()

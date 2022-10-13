@@ -8,7 +8,6 @@ import WebKit
 import Shared
 import Storage
 import SnapKit
-import XCGLogger
 import SwiftyJSON
 import Data
 import BraveShared
@@ -24,8 +23,7 @@ import class Combine.AnyCancellable
 import BraveWallet
 import BraveVPN
 import BraveNews
-
-private let log = Logger.browserLogger
+import os.log
 
 private let KVOs: [KVOConstants] = [
   .estimatedProgress,
@@ -340,7 +338,7 @@ public class BrowserViewController: UIViewController {
       Preferences.Rewards.migratedLegacyWallet.value = true
       return BraveLedger(stateStoragePath: legacyLedger.path)
     } catch {
-      log.error("Failed to migrate legacy wallet into a new folder: \(error)")
+      adsRewardsLog.error("Failed to migrate legacy wallet into a new folder: \(error.localizedDescription)")
       return nil
     }
   }
@@ -731,6 +729,7 @@ public class BrowserViewController: UIViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
+    
     NotificationCenter.default.do {
       $0.addObserver(
         self, selector: #selector(appWillResignActiveNotification),
@@ -837,7 +836,7 @@ public class BrowserViewController: UIViewController {
     }
 
     LegacyBookmarksHelper.restore_1_12_Bookmarks() {
-      log.info("Bookmarks from old database were successfully restored")
+      Logger.module.info("Bookmarks from old database were successfully restored")
     }
 
     // Adding a small delay before fetching gives more reliability to it,
@@ -912,12 +911,12 @@ public class BrowserViewController: UIViewController {
 
     center.requestAuthorization(options: [.provisional, .alert, .sound, .badge]) { granted, error in
       if let error = error {
-        log.error("Failed to request notifications permissions: \(error)")
+        Logger.module.error("Failed to request notifications permissions: \(error.localizedDescription, privacy: .public)")
         return
       }
 
       if !granted {
-        log.info("Not authorized to schedule a notification")
+        Logger.module.info("Not authorized to schedule a notification")
         return
       }
 
@@ -942,7 +941,7 @@ public class BrowserViewController: UIViewController {
 
         center.add(request) { error in
           if let error = error {
-            log.error("Failed to add notification: \(error)")
+            Logger.module.error("Failed to add notification: \(error.localizedDescription, privacy: .public)")
             return
           }
 
@@ -1479,7 +1478,7 @@ public class BrowserViewController: UIViewController {
           asFunction: false
         ) { _, error in
           if let error = error {
-            log.error(error)
+            Logger.module.error("\(error.localizedDescription, privacy: .public)")
           }
         }
       }
@@ -1517,13 +1516,13 @@ public class BrowserViewController: UIViewController {
   override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 
     guard let webView = object as? WKWebView else {
-      log.error("An object of type: \(String(describing: object)) is being observed instead of a WKWebView")
+      Logger.module.error("An object of type: \(String(describing: object), privacy: .public) is being observed instead of a WKWebView")
       return  // False alarm.. the source MUST be a web view.
     }
 
     // WebView is a zombie and somehow still has an observer attached to it
     guard let tab = tabManager[webView] else {
-      log.error("WebView: \(webView) has been removed from TabManager but still has attached observers")
+      Logger.module.error("WebView has been removed from TabManager but still has attached observers")
       return
     }
 
@@ -1944,7 +1943,7 @@ public class BrowserViewController: UIViewController {
             }
             self.present(pdfActivityController, animated: true)
           } catch {
-            log.error("Failed to write PDF to disk: \(error)")
+            Logger.module.error("Failed to write PDF to disk: \(error.localizedDescription, privacy: .public)")
           }
         }
         activities.append(createPDFActivity)
@@ -3493,7 +3492,7 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Playlist.syncSharedFoldersAutomatically.key:
       syncPlaylistFolders()
     default:
-      log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
+      Logger.module.debug("Received a preference change for an unknown key: \(key, privacy: .public) on \(type(of: self), privacy: .public)")
       break
     }
   }
@@ -3517,7 +3516,7 @@ extension BrowserViewController: UNUserNotificationCenterDelegate {
   public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
     if response.notification.request.identifier == Self.defaultBrowserNotificationId {
       guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-        log.error("Failed to unwrap iOS settings URL")
+        Logger.module.error("Failed to unwrap iOS settings URL")
         return
       }
       UIApplication.shared.open(settingsUrl)

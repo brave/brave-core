@@ -13,8 +13,7 @@ import UIKit
 import BrowserIntentsModels
 import BraveVPN
 import BraveNews
-
-private let log = Logger.browserLogger
+import os.log
 
 /// Shortcut Activity Types and detailed information to create and perform actions
 public enum ActivityType: String {
@@ -216,7 +215,7 @@ public class ActivityShortcutManager: NSObject {
         return
       }
 
-      log.error("Failed to donate shortcut open website, error: \(error)")
+      Logger.module.error("Failed to donate shortcut open website, error: \(error.localizedDescription)")
     }
   }
 }

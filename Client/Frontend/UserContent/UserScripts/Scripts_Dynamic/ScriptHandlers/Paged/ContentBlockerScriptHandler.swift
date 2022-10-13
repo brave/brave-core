@@ -7,8 +7,7 @@ import Shared
 import Data
 import BraveShared
 import BraveCore
-
-private let log = Logger.braveCoreLogger
+import os.log
 
 extension ContentBlockerHelper: TabContentScript {
   private struct ContentBlockerDTO: Decodable {
@@ -118,7 +117,7 @@ extension ContentBlockerHelper: TabContentScript {
         }
       }
     } catch {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
   }
 }

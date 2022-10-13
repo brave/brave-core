@@ -6,8 +6,7 @@
 import Foundation
 import Fuzi
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 /// A set of subscription RSS feed URLs defined through Outline Processor Markup Language
 struct OPML: Equatable {
@@ -35,7 +34,7 @@ class OPMLParser {
     guard let document = try? XMLDocument(data: data),
       let _ = document.firstChild(xpath: "//opml")
     else {
-      log.warning("Failed to parse XML document")
+      Logger.module.warning("Failed to parse XML document")
       return nil
     }
     let title = document.firstChild(xpath: "//head/title")?.stringValue

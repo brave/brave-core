@@ -12,8 +12,7 @@ import class SwiftUI.UIHostingController
 import UIKit
 import BraveUI
 import BraveNews
-
-private let log = Logger.browserLogger
+import os.log
 
 class BraveShieldsAndPrivacySettingsController: TableViewController {
   let profile: Profile
@@ -346,11 +345,11 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
           for try await _ in group { }
         } catch {
           if !secondAttempt {
-            log.error("Private data NOT cleared successfully")
+            Logger.module.error("Private data NOT cleared successfully")
             try? await Task.sleep(nanoseconds: NSEC_PER_MSEC * 500)
             await _clear(clearables, secondAttempt: true)
           } else {
-            log.error("Private data NOT cleared after 2 attempts")
+            Logger.module.error("Private data NOT cleared after 2 attempts")
           }
         }
       }

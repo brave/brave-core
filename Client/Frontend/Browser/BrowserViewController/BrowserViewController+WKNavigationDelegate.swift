@@ -10,9 +10,7 @@ import BraveShared
 import BraveCore
 import BraveUI
 import BraveWallet
-
-private let log = Logger.browserLogger
-private let rewardsLog = Logger.braveCoreLogger
+import os.log
 
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.
@@ -138,7 +136,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     if InternalURL.isValid(url: url) {
       if navigationAction.navigationType != .backForward, navigationAction.isInternalUnprivileged {
-        log.warning("Denying unprivileged request: \(navigationAction.request)")
+        Logger.module.warning("Denying unprivileged request: \(navigationAction.request)")
         decisionHandler(.cancel, preferences)
         return
       }
@@ -295,7 +293,7 @@ extension BrowserViewController: WKNavigationDelegate {
         
         tab?.frameEvaluations[url] = evaluations
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
       }
     }
 

@@ -211,6 +211,6 @@ private class FeedSpringButton: SpringButton {
 
   override var accessibilityLabel: String? {
     get { feedItemView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set { assertionFailure("Accessibility label is inherited from a subview: \(newValue ?? "nil") ignored") }
   }
 }

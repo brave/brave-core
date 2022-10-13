@@ -5,10 +5,8 @@
 import Foundation
 import Shared
 import Storage
-import XCGLogger
 import WebKit
-
-private let log = Logger.browserLogger
+import os.log
 
 class MetadataParserHelper: TabEventHandler {
   private var tabObservers: TabObservers!
@@ -44,7 +42,7 @@ class MetadataParserHelper: TabEventHandler {
       guard let dict = result as? [String: Any],
         let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
       else {
-        log.debug("Page contains no metadata!")
+        Logger.module.debug("Page contains no metadata!")
         //                TabEvent.post(.pageMetadataNotAvailable, for: tab)
         tab.pageMetadata = nil
         return
@@ -55,7 +53,7 @@ class MetadataParserHelper: TabEventHandler {
         tab.pageMetadata = pageMetadata
         TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
       } catch {
-        log.error("Failed to parse metadata: \(error)")
+        Logger.module.error("Failed to parse metadata: \(error.localizedDescription, privacy: .public)")
         // To avoid issues where `pageMetadata` points to the last website to successfully
         // parse metadata, set to nil
         tab.pageMetadata = nil

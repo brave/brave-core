@@ -34,11 +34,10 @@
 
 import UIKit
 import Shared
-import XCGLogger
 import sqlcipher
+import os.log
 
 private let DatabaseBusyTimeout: Int32 = 3 * 1000
-private let log = Logger.syncLogger
 
 public protocol Cancellable: AnyObject {
   func cancel()
@@ -390,7 +389,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
   fileprivate let debug_enabled = false
 
   init?(filename: String, flags: Int32, key: String? = nil, prevKey: String? = nil, schema: Schema, files: FileAccessor) {
-    log.debug("Opening connection to \(filename).")
+    Logger.module.debug("Opening connection to \(filename).")
 
     self.filename = filename
     self.schema = schema
@@ -398,7 +397,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
     func doOpen() -> Bool {
       if let failure = openWithFlags(flags) {
-        log.warning("Opening connection to \(filename) failed: \(failure).")
+        Logger.module.warning("Opening connection to \(filename) failed: \(failure).")
         return false
       }
 
@@ -422,7 +421,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     // If we cannot even open the database file, return `nil` to force SwiftData
     // into using a `FailedSQLiteDBConnection` so we can retry opening again later.
     if !doOpen() {
-      log.error("Cannot open a database connection with filename: \(filename).")
+      Logger.module.error("Cannot open a database connection with filename: \(filename).")
       return nil
     }
 
@@ -436,9 +435,9 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     // database file to a backup location and start over with a brand new one.
     switch self.prepareSchema() {
     case .success:
-      log.debug("Database successfully created or updated.")
+      Logger.module.debug("Database successfully created or updated.")
     case .failure:
-      log.error("Failed to create or update the database schema.")
+      Logger.module.error("Failed to create or update the database schema.")
       return nil
     case .needsRecovery:
       // We need to close this new connection before we can move the database file to
@@ -446,7 +445,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
       // gone really wrong. In that case, bail out and return `nil` to force SwiftData
       // into using a `FailedSQLiteDBConnection` so we can retry again later.
       if let error = self.closeCustomConnection(immediately: true) {
-        log.error("Database schema cannot be created or updated due to an unrecoverable error: \(error.localizedDescription).")
+        Logger.module.error("Database schema cannot be created or updated due to an unrecoverable error: \(error.localizedDescription).")
         return nil
       }
 
@@ -457,7 +456,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
       // `nil` to force SwiftData into using a `FailedSQLiteDBConnection` so we can
       // retry opening again later.
       if !doOpen() {
-        log.error("Cannot re-open a database connection to the new database file to begin recovery.")
+        Logger.module.error("Cannot re-open a database connection to the new database file to begin recovery.")
         return nil
       }
 
@@ -473,7 +472,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
       // to force SwiftData into using a `FailedSQLiteDBConnection` so we can retry
       // again later.
       if self.prepareSchema() != .success {
-        log.error("Cannot re-create the schema in the new database file to complete recovery.")
+        Logger.module.error("Cannot re-create the schema in the new database file to complete recovery.")
         return nil
       }
     }
@@ -484,7 +483,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
   }
 
   deinit {
-    log.debug("deinit: closing connection on thread \(Thread.current).")
+    Logger.module.debug("deinit: closing connection on thread \(Thread.current).")
     self.closeCustomConnection()
   }
 
@@ -515,14 +514,14 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
   }
 
   public func interrupt() {
-    log.debug("Interrupt")
+    Logger.module.debug("Interrupt")
     sqlite3_interrupt(sqliteDB)
   }
 
   fileprivate func pragma<T: Equatable>(_ pragma: String, expected: T?, factory: @escaping (SDRow) -> T, message: String) throws {
     let cursorResult = self.pragma(pragma, factory: factory)
     if cursorResult != expected {
-      log.error("\(message): \(cursorResult.debugDescription), \(expected.debugDescription)")
+      Logger.module.error("\(message): \(cursorResult.debugDescription), \(expected.debugDescription)")
       throw NSError(domain: "mozilla", code: 0, userInfo: [NSLocalizedDescriptionKey: "PRAGMA didn't return expected output: \(message)."])
     }
   }
@@ -546,22 +545,22 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     // Setting the key needs to be the first thing done with the database.
     if let _ = setKey(key) {
       if let err = closeCustomConnection(immediately: true) {
-        log.error("Couldn't close connection: \(err). Failing to open.")
+        Logger.module.error("Couldn't close connection: \(err). Failing to open.")
         throw err
       }
       if let err = openWithFlags(flags) {
-        log.error("Error opening database with flags. \(err.code), \(err)")
+        Logger.module.error("Error opening database with flags. \(err.code), \(err)")
         throw err
       }
       if let err = reKey(prevKey, newKey: key) {
         // Note: Don't log the error here as it may contain sensitive data.
-        log.error("Unable to encrypt database.")
+        Logger.module.error("Unable to encrypt database.")
         throw err
       }
     }
 
     if SwiftData.enableWAL {
-      log.info("Enabling WAL mode.")
+      Logger.module.info("Enabling WAL mode.")
       try pragma(
         "journal_mode=WAL", expected: "wal",
         factory: stringFactory, message: "WAL journal mode set")
@@ -594,18 +593,18 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         "page_size=\(desiredPageSize)", expected: nil,
         factory: intFactory, message: "Page size set")
 
-      log.info("Vacuuming to alter database page size from \(currentPageSize ?? 0) to \(desiredPageSize).")
+      Logger.module.info("Vacuuming to alter database page size from \(currentPageSize ?? 0) to \(desiredPageSize).")
 
       do {
         try vacuum()
-        log.debug("Vacuuming succeeded.")
+        Logger.module.debug("Vacuuming succeeded.")
       } catch let err as NSError {
-        log.error("Vacuuming failed: \(err.localizedDescription).")
+        Logger.module.error("Vacuuming failed: \(err.localizedDescription).")
       }
     }
 
     if SwiftData.enableWAL {
-      log.info("Enabling WAL mode.")
+      Logger.module.info("Enabling WAL mode.")
 
       let desiredPagesPerJournal = 16
       let desiredCheckpointSize = desiredPagesPerJournal * desiredPageSize
@@ -650,17 +649,17 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
   // Creates the database schema in a new database.
   fileprivate func createSchema() -> Bool {
-    log.debug("Trying to create schema \(self.schema.name) at version \(self.schema.version)")
+    Logger.module.debug("Trying to create schema \(self.schema.name) at version \(self.schema.version)")
     if !schema.create(self) {
       // If schema couldn't be created, we'll bail without setting the `PRAGMA user_version`.
-      log.debug("Creation failed.")
+      Logger.module.debug("Creation failed.")
       return false
     }
 
     do {
       try setVersion(schema.version)
     } catch let error as NSError {
-      log.error("Unable to set the schema version; \(error.localizedDescription)")
+      Logger.module.error("Unable to set the schema version; \(error.localizedDescription)")
     }
 
     return true
@@ -668,17 +667,17 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
   // Updates the database schema in an existing database.
   fileprivate func updateSchema() -> Bool {
-    log.debug("Trying to update schema \(self.schema.name) from version \(self.version) to \(self.schema.version)")
+    Logger.module.debug("Trying to update schema \(self.schema.name) from version \(self.version) to \(self.schema.version)")
     if !schema.update(self, from: self.version) {
       // If schema couldn't be updated, we'll bail without setting the `PRAGMA user_version`.
-      log.debug("Updating failed.")
+      Logger.module.debug("Updating failed.")
       return false
     }
 
     do {
       try setVersion(schema.version)
     } catch let error as NSError {
-      log.error("Unable to set the schema version; \(error.localizedDescription)")
+      Logger.module.error("Unable to set the schema version; \(error.localizedDescription)")
     }
 
     return true
@@ -686,17 +685,17 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
   // Drops the database schema from an existing database.
   fileprivate func dropSchema() -> Bool {
-    log.debug("Trying to drop schema \(self.schema.name)")
+    Logger.module.debug("Trying to drop schema \(self.schema.name)")
     if !self.schema.drop(self) {
       // If schema couldn't be dropped, we'll bail without setting the `PRAGMA user_version`.
-      log.debug("Dropping failed.")
+      Logger.module.debug("Dropping failed.")
       return false
     }
 
     do {
       try setVersion(0)
     } catch let error as NSError {
-      log.error("Unable to reset the schema version; \(error.localizedDescription)")
+      Logger.module.error("Unable to reset the schema version; \(error.localizedDescription)")
     }
 
     return true
@@ -714,24 +713,24 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     // NOTE: This assumes that we always use *ONE* `Schema` per database file
     // since SQLite can only track a single value in `PRAGMA user_version`.
     if currentVersion == schema.version {
-      log.debug("Schema \(self.schema.name) already exists at version \(self.schema.version). Skipping additional schema preparation.")
+      Logger.module.debug("Schema \(self.schema.name) already exists at version \(self.schema.version). Skipping additional schema preparation.")
       return .success
     }
 
     // This should not ever happen since the schema version should always be
     // increasing whenever a structural change is made in an app update.
     guard currentVersion <= schema.version else {
-      log.error("\(self.schema.name) cannot be downgraded from version \(currentVersion) to \(self.schema.version).")
+      Logger.module.error("\(self.schema.name) cannot be downgraded from version \(currentVersion) to \(self.schema.version).")
       return .failure
     }
 
-    log.debug("Schema \(self.schema.name) needs created or updated from version \(currentVersion) to \(self.schema.version).")
+    Logger.module.debug("Schema \(self.schema.name) needs created or updated from version \(currentVersion) to \(self.schema.version).")
 
     var success = true
 
     do {
       success = try transaction { connection -> Bool in
-        log.debug("Create or update \(self.schema.name) version \(self.schema.version) on \(Thread.current.description).")
+        Logger.module.debug("Create or update \(self.schema.name) version \(self.schema.version) on \(Thread.current.description).")
 
         // If `PRAGMA user_version` is zero, check if we can safely create the
         // database schema from scratch.
@@ -746,18 +745,18 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
           // If the `tableList` table doesn't exist, we can simply invoke
           // `createSchema()` to create a brand new DB from scratch.
           if !tableListTableExists {
-            log.debug("Schema \(self.schema.name) doesn't exist. Creating.")
+            Logger.module.debug("Schema \(self.schema.name) doesn't exist. Creating.")
             success = self.createSchema()
             return success
           }
         }
 
-        log.debug("Attempting to update schema from \(currentVersion) to \(self.schema.version)")
+        Logger.module.debug("Attempting to update schema from \(currentVersion) to \(self.schema.version)")
 
         // If we can't create a brand new schema from scratch, we must
         // call `updateSchema()` to go through the update process.
         if self.updateSchema() {
-          log.debug("Updated schema \(self.schema.name).")
+          Logger.module.debug("Updated schema \(self.schema.name).")
           success = true
           return success
         }
@@ -765,13 +764,13 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         // If we failed to update the schema, we'll drop everything from the DB
         // and create everything again from scratch. Assuming our schema upgrade
         // code is correct, this *shouldn't* happen.
-        log.error("Update \(self.schema.name) from version \(currentVersion) to \(self.schema.version) failed for schema. Dropping and re-creating.")
+        Logger.module.error("Update \(self.schema.name) from version \(currentVersion) to \(self.schema.version) failed for schema. Dropping and re-creating.")
 
         // If we can't even drop the schema here, something has gone really wrong, so
         // return `false` which should force us into recovery.
         if !self.dropSchema() {
           success = false
-          log.error("Unable to drop schema \(self.schema.name) from version \(currentVersion).")
+          Logger.module.error("Unable to drop schema \(self.schema.name) from version \(currentVersion).")
           return success
         }
 
@@ -784,7 +783,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
       // If we got an error trying to get a transaction, then we either bail out early and return
       // `.failure` if we think we can retry later or return `.needsRecovery` if the error is not
       // recoverable.
-      log.error("Unable to get a transaction: \(error.localizedDescription)")
+      Logger.module.error("Unable to get a transaction: \(error.localizedDescription)")
 
       // Check if the error we got is recoverable (e.g. SQLITE_BUSY, SQLITE_LOCK, SQLITE_FULL).
       // If so, just return `.failure` so we can retry preparing the schema again later.
@@ -812,7 +811,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
     // Attempt to make a backup as long as the database file still exists.
     if files.exists(baseFilename) {
-      log.debug("Couldn't create or update schema. Attempting to move '\(baseFilename)' for schema '\(self.schema.name)' to another location")
+      Logger.module.debug("Couldn't create or update schema. Attempting to move '\(baseFilename)' for schema '\(self.schema.name)' to another location")
 
       // Note that a backup file might already exist! We append a counter to avoid this.
       var bakCounter = 0
@@ -827,23 +826,23 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
         let shm = baseFilename + "-shm"
         let wal = baseFilename + "-wal"
-        log.debug("Moving \(shm) and \(wal)…")
+        Logger.module.debug("Moving \(shm) and \(wal)…")
         if files.exists(shm) {
-          log.debug("\(shm) exists.")
+          Logger.module.debug("\(shm) exists.")
           try files.move(shm, toRelativePath: bak + "-shm")
         }
         if files.exists(wal) {
-          log.debug("\(wal) exists.")
+          Logger.module.debug("\(wal) exists.")
           try files.move(wal, toRelativePath: bak + "-wal")
         }
 
-        log.debug("Finished moving database \(baseFilename) successfully.")
+        Logger.module.debug("Finished moving database \(baseFilename) successfully.")
       } catch {
-        log.error("Unable to move DB file '\(baseFilename)' to another location. \(error.localizedDescription)")
+        Logger.module.error("Unable to move DB file '\(baseFilename)' to another location. \(error.localizedDescription)")
       }
     } else {
       // No backup was attempted since the database file did not exist.
-      log.debug("The DB file '\(baseFilename)' has been deleted while previously in use.")
+      Logger.module.debug("The DB file '\(baseFilename)' has been deleted while previously in use.")
     }
   }
 
@@ -856,13 +855,13 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
      */
   public func checkpoint(_ mode: Int32) {
     guard sqliteDB != nil else {
-      log.warning("Trying to checkpoint a nil DB!")
+      Logger.module.warning("Trying to checkpoint a nil DB!")
       return
     }
 
-    log.debug("Running WAL checkpoint on \(self.filename) on thread \(Thread.current).")
+    Logger.module.debug("Running WAL checkpoint on \(self.filename) on thread \(Thread.current).")
     sqlite3_wal_checkpoint_v2(sqliteDB, nil, mode, nil, nil)
-    log.debug("WAL checkpoint done on \(self.filename).")
+    Logger.module.debug("WAL checkpoint done on \(self.filename).")
   }
 
   public func vacuum() throws -> Void {
@@ -885,14 +884,14 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     var msg = SDError.errorMessageFromCode(status)
 
     if debug_enabled {
-      log.debug("SwiftData.error -> \(description)")
-      log.debug("                -> Code: \(status) - \(msg)")
+      Logger.module.debug("SwiftData.error -> \(description)")
+      Logger.module.debug("                -> Code: \(status) - \(msg)")
     }
 
     if let errMsg = String(validatingUTF8: sqlite3_errmsg(sqliteDB)) {
       msg += " " + errMsg
       if debug_enabled {
-        log.debug("                -> Details: \(errMsg)")
+        Logger.module.debug("                -> Details: \(errMsg)")
       }
     }
 
@@ -913,21 +912,21 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
   /// Closes a connection. This is called via deinit. Do not call this yourself.
   @discardableResult fileprivate func closeCustomConnection(immediately: Bool = false) -> NSError? {
-    log.debug("Closing custom connection for \(self.filename) on \(Thread.current).")
+    Logger.module.debug("Closing custom connection for \(self.filename) on \(Thread.current).")
     // TODO: add a lock here?
     let db = self.sqliteDB
     self.sqliteDB = nil
 
     // Don't bother trying to call sqlite3_close multiple times.
     guard db != nil else {
-      log.warning("Connection was nil.")
+      Logger.module.warning("Connection was nil.")
       return nil
     }
 
     var status = sqlite3_close(db)
 
     if status != SQLITE_OK {
-      log.error("Got error status while attempting to close. SQLite status: \(status)")
+      Logger.module.error("Got error status while attempting to close. SQLite status: \(status)")
 
       if immediately {
         return createErr("During: closing database with flags", status: Int(status))
@@ -938,14 +937,14 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
       status = sqlite3_close_v2(db)
 
       if status != SQLITE_OK {
-        log.error("Got error status while attempting to close_v2. SQLite status: \(status)")
+        Logger.module.error("Got error status while attempting to close_v2. SQLite status: \(status)")
 
         // Based on the above comment regarding sqlite3_close_v2, this shouldn't happen.
         return createErr("During: closing database with flags", status: Int(status))
       }
     }
 
-    log.debug("Closed \(self.filename).")
+    Logger.module.debug("Closed \(self.filename).")
     return nil
   }
 
@@ -979,10 +978,10 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     if let error = error {
       // Special case: Write additional info to the database log in the case of a database corruption.
       if error.code == Int(SQLITE_CORRUPT) {
-        writeCorruptionInfoForDBNamed(filename, toLogger: Logger.corruptLogger)
+        writeCorruptionInfoForDBNamed(filename)
       }
 
-      log.error("SQL Error code: \(error.code), \(error) for SQL \(String(sqlStr.prefix(500))).")
+      Logger.module.error("SQL Error code: \(error.code), \(error.localizedDescription) for SQL \(String(sqlStr.prefix(500))).")
       throw error
     }
 
@@ -1030,9 +1029,9 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     if let error = error {
       // Special case: Write additional info to the database log in the case of a database corruption.
       if error.code == Int(SQLITE_CORRUPT) {
-        writeCorruptionInfoForDBNamed(filename, toLogger: Logger.corruptLogger)
+        writeCorruptionInfoForDBNamed(filename)
       }
-      log.error("SQL Error code: \(error.code), \(error) for SQL \(String(sqlStr.prefix(500))).")
+      Logger.module.error("SQL Error code: \(error.code), \(error.localizedDescription) for SQL \(String(sqlStr.prefix(500))).")
       return Cursor<T>(err: error)
     }
 
@@ -1067,16 +1066,18 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     return result
   }
 
-  func writeCorruptionInfoForDBNamed(_ dbFilename: String, toLogger logger: XCGLogger) {
+  func writeCorruptionInfoForDBNamed(_ dbFilename: String) {
+    Logger.module.fault("DB corrupted for \(dbFilename, privacy: .public)")
+    
     DispatchQueue.global(qos: DispatchQoS.default.qosClass).sync {
       guard !SwiftData.corruptionLogsWritten.contains(dbFilename) else { return }
 
-      logger.error("Corrupt DB detected! DB filename: \(dbFilename)")
+      Logger.module.error("Corrupt DB detected! DB filename: \(dbFilename)")
 
       let dbFileSize = ("file://\(dbFilename)".asURL)?.allocatedFileSize() ?? 0
-      logger.error("DB file size: \(dbFileSize) bytes")
+      Logger.module.error("DB file size: \(dbFileSize) bytes")
 
-      logger.error("Integrity check:")
+      Logger.module.error("Integrity check:")
 
       let args: [Any?]? = nil
       let messages = self.executeQueryUnsafe("PRAGMA integrity_check", factory: stringFactory, withArgs: args)
@@ -1084,27 +1085,27 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
       if messages.status == CursorStatus.success {
         for message in messages {
-          logger.error(message)
+          Logger.module.error("\(message ?? "-")")
         }
-        logger.error("----")
+        Logger.module.error("----")
       } else {
-        logger.error("Couldn't run integrity check: \(messages.statusMessage).")
+        Logger.module.error("Couldn't run integrity check: \(messages.statusMessage).")
       }
 
       // Write call stack.
-      logger.error("Call stack: ")
+      Logger.module.error("Call stack: ")
       for message in Thread.callStackSymbols {
-        logger.error(" >> \(message)")
+        Logger.module.error(" >> \(message)")
       }
-      logger.error("----")
+      Logger.module.error("----")
 
       // Write open file handles.
       let openDescriptors = openFileDescriptors()
-      logger.error("Open file descriptors: ")
+      Logger.module.error("Open file descriptors: ")
       for (k, v) in openDescriptors {
-        logger.error("  \(k): \(v)")
+        Logger.module.error("  \(k): \(v)")
       }
-      logger.error("----")
+      Logger.module.error("----")
 
       SwiftData.corruptionLogsWritten.insert(dbFilename)
     }
@@ -1135,7 +1136,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     do {
       try executeChange("BEGIN EXCLUSIVE")
     } catch let err as NSError {
-      log.error("BEGIN EXCLUSIVE failed: \(err.code), \(err)")
+      Logger.module.error("BEGIN EXCLUSIVE failed: \(err.code), \(err)")
       throw err
     }
 
@@ -1144,29 +1145,29 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     do {
       result = try transactionClosure(self)
     } catch let err as NSError {
-      log.error("Op in transaction threw an error. Rolling back.")
+      Logger.module.error("Op in transaction threw an error. Rolling back.")
 
       do {
         try executeChange("ROLLBACK")
       } catch let err as NSError {
-        log.error("ROLLBACK after errored op in transaction failed: \(err.code), \(err)")
+        Logger.module.error("ROLLBACK after errored op in transaction failed: \(err.code), \(err)")
         throw err
       }
 
       throw err
     }
 
-    log.verbose("Op in transaction succeeded. Committing.")
+    Logger.module.debug("Op in transaction succeeded. Committing.")
 
     do {
       try executeChange("COMMIT")
     } catch let err as NSError {
-      log.error("COMMIT failed, rolling back: \(err.code), \(err)")
+      Logger.module.error("COMMIT failed, rolling back: \(err.code), \(err)")
 
       do {
         try executeChange("ROLLBACK")
       } catch let err as NSError {
-        log.error("ROLLBACK after failed COMMIT failed.: \(err.code), \(err)")
+        Logger.module.error("ROLLBACK after failed COMMIT failed.: \(err.code), \(err)")
         throw err
       }
       throw err
@@ -1226,7 +1227,7 @@ open class SDRow: Sequence {
     case SQLITE_FLOAT:
       ret = Double(sqlite3_column_double(statement.pointer, i))
     default:
-      log.warning("SwiftData.warning -> Column: \(index) is of an unrecognized type, returning nil")
+      Logger.module.warning("SwiftData.warning -> Column: \(index) is of an unrecognized type, returning nil")
     }
 
     return ret

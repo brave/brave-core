@@ -8,8 +8,7 @@ import BraveUI
 import Shared
 import BraveShared
 import DesignSystem
-
-private let log = Logger.browserLogger
+import os.log
 
 extension PrivacyReportsView {
   struct NotificationCalloutView: View {
@@ -22,7 +21,7 @@ extension PrivacyReportsView {
       center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
         
         if let error = error {
-          log.warning("requestAuthorization: \(error)")
+          Logger.module.warning("requestAuthorization: \(error.localizedDescription)")
           return
         }
         

@@ -9,8 +9,7 @@ import Shared
 import BraveShared
 import BraveCore
 import BraveVPN
-
-private let log = Logger.browserLogger
+import os.log
 
 class BraveSkusScriptHandler: TabContentScript {
   typealias ReplyHandler = (Any?, String?) -> Void
@@ -57,14 +56,14 @@ class BraveSkusScriptHandler: TabContentScript {
     guard let requestHost = message.frameInfo.request.url?.host,
           allowedHosts.contains(requestHost),
           message.frameInfo.isMainFrame else {
-      log.error("Brave skus request called from disallowed host")
+      Logger.module.error("Brave skus request called from disallowed host")
       return
     }
     
     guard let response = message.body as? [String: Any],
           let methodId = response["method_id"] as? Int,
           let data = response["data"] as? [String: Any] else {
-      log.error("Failed to retrieve method id")
+      Logger.module.error("Failed to retrieve method id")
       return
     }
     
@@ -95,18 +94,18 @@ class BraveSkusScriptHandler: TabContentScript {
       do {
         guard let data = completion.data(using: .utf8) else { return }
         let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
-        log.debug("skus refreshOrder")
+        Logger.module.debug("skus refreshOrder")
         replyHandler(json, nil)
       } catch {
         replyHandler("", nil)
-        log.error("refrshOrder: Failed to decode json: \(error)")
+        Logger.module.error("refrshOrder: Failed to decode json: \(error.localizedDescription)")
       }
     }
   }
   
   private func handleFetchOrderCredentials(for orderId: String, domain: String, replyHandler: @escaping ReplyHandler) {
     sku?.fetchOrderCredentials(domain, orderId: orderId) { completion in
-      log.debug("skus fetchOrderCredentials")
+      Logger.module.debug("skus fetchOrderCredentials")
       replyHandler(completion, nil)
     }
   }
@@ -114,7 +113,7 @@ class BraveSkusScriptHandler: TabContentScript {
   /// If no reply handler is passed, this function will not send the callback back to the website.
   /// Reason is this method may be called from within another web handler, and the callback can be called only once or it crashes.
   private func handlePrepareCredentialsSummary(for domain: String, path: String, replyHandler: ReplyHandler?) {
-    log.debug("skus prepareCredentialsPresentation")
+    Logger.module.debug("skus prepareCredentialsPresentation")
     sku?.prepareCredentialsPresentation(domain, path: path) { credential in
       if !credential.isEmpty {
         if let vpnCredential = BraveSkusWebHelper.fetchVPNCredential(credential, domain: domain) {
@@ -124,7 +123,7 @@ class BraveSkusScriptHandler: TabContentScript {
           BraveVPN.setCustomVPNCredential(vpnCredential.credential, environment: vpnCredential.environment)
         }
       } else {
-        log.debug("skus empty credential from prepareCredentialsPresentation call")
+        Logger.module.debug("skus empty credential from prepareCredentialsPresentation call")
       }
       
       replyHandler?(credential, nil)
@@ -134,7 +133,7 @@ class BraveSkusScriptHandler: TabContentScript {
   private func handleCredentialsSummary(for domain: String, replyHandler: @escaping ReplyHandler) {
     sku?.credentialSummary(domain) { [weak self] completion in
       do {
-        log.debug("skus credentialSummary")
+        Logger.module.debug("skus credentialSummary")
         
         guard let data = completion.data(using: .utf8) else { return }
         let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
@@ -150,7 +149,7 @@ class BraveSkusScriptHandler: TabContentScript {
         
         self?.handlePrepareCredentialsSummary(for: domain, path: "*", replyHandler: nil)
       } catch {
-        log.error("refrshOrder: Failed to decode json: \(error)")
+        Logger.module.error("refrshOrder: Failed to decode json: \(error.localizedDescription)")
       }
     }
   }

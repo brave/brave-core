@@ -7,8 +7,7 @@ import DeviceCheck
 import BraveCore
 import BraveShared
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 /// A structure used to register a device for Brave's DeviceCheck enrollment
 public struct DeviceCheckRegistration: Codable {
@@ -160,7 +159,7 @@ public class DeviceCheckClient {
   public class func resetDeviceEnrollment() {
     Preferences.Rewards.didEnrollDeviceCheck.value = false
     if let error = Cryptography.delete(id: DeviceCheckClient.privateKeyId) {
-      log.error(error)
+      Logger.module.error("\(error.localizedDescription)")
     }
   }
 

@@ -5,7 +5,6 @@
 import Shared
 import Storage
 import AVFoundation
-import XCGLogger
 import MessageUI
 import SDWebImage
 import SwiftKeychainWrapper
@@ -21,12 +20,7 @@ import Brave
 import BraveVPN
 import RuntimeWarnings
 import BraveNews
-
-#if DEBUG
 import os
-#endif
-
-private let log = Logger.browserLogger
 
 extension AppDelegate {
   // A model that is passed used in every scene
@@ -39,6 +33,8 @@ extension AppDelegate {
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+  private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "app-delegate")
+  
   var window: UIWindow?
   lazy var braveCore: BraveCoreMain = {
     var switches: [BraveCoreSwitch: String] = [:]
@@ -118,24 +114,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
       }
 
-      let level: XCGLogger.Level = {
+      let level: OSLogType = {
         switch severity {
-        case .fatal: return .severe
+        case .fatal: return .fault
         case .error: return .error
-        case .warning: return .warning
+        // No `.warning` level exists for OSLogType. os_Log.warning is an alias for `.error`.
+        case .warning: return .error
         case .info: return .info
         default: return .debug
         }
       }()
-
-      Logger.braveCoreLogger.logln(
-        level,
-        fileName: file,
-        lineNumber: Int(line),
-        // Only print the actual message content, and drop the final character which is
-        // a new line as it will be handled by logln
-        closure: { message }
-      )
+      
+      // Every brave-core log has public visibiity, otherwise nothing will be recorded.
+      let braveCoreLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "brave-core")
+      braveCoreLogger.log(level: level, "\(message)")
       return true
     }
 
@@ -179,11 +171,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     SDImageCodersManager.shared.addCoder(PrivateCDNImageCoder())
 
-    let logDate = Date()
-    // Create a new sync log file on cold app launch. Note that this doesn't roll old logs.
-    Logger.syncLogger.newLogWithDate(logDate)
-    Logger.browserLogger.newLogWithDate(logDate)
-
     // Setup Profile
     let profile = BrowserProfile(localName: "profile")
 
@@ -195,7 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           namespace: "TabManagerScreenshots",
           quality: UIConstants.screenshotQuality)
       } catch {
-        log.error("Failed to create an image store for files: \(profile.files) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
+        log.error("Failed to create an image store for files: \(profile.files.rootPath) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
         assertionFailure()
       }
       return nil
@@ -256,12 +243,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     if Preferences.Rewards.isUsingBAP.value == nil {
       Preferences.Rewards.isUsingBAP.value = Locale.current.regionCode == "JP"
-    }
-
-    // Now roll logs.
-    DispatchQueue.global(qos: DispatchQoS.background.qosClass).async {
-      Logger.syncLogger.deleteOldLogsDownToSizeLimit()
-      Logger.browserLogger.deleteOldLogsDownToSizeLimit()
     }
 
     // If a shortcut was launched, display its information and take the appropriate action

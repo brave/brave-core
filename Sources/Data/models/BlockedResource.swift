@@ -6,8 +6,7 @@
 import Foundation
 import CoreData
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 public enum BlockedResourceType: Int32 {
   case ad = 0
@@ -40,7 +39,7 @@ public final class BlockedResource: NSManagedObject, CRUD {
     
     DataController.perform { context in
       guard let entity = entity(in: context) else {
-        log.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
+        Logger.module.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
         return
       }
       
@@ -89,7 +88,7 @@ public final class BlockedResource: NSManagedObject, CRUD {
         
         completion(mostFrequentTracker.count > 0 ? mostFrequentTracker : nil)
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
         completion(nil)
       }
     }
@@ -122,7 +121,7 @@ public final class BlockedResource: NSManagedObject, CRUD {
         
         completion(allTrackers)
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
         completion(allTrackers)
       }
     }
@@ -159,7 +158,7 @@ public final class BlockedResource: NSManagedObject, CRUD {
         
         completion(mostRiskyWebsite.count > 0 ? mostRiskyWebsite : nil)
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
         completion(nil)
       }
     }
@@ -209,7 +208,7 @@ public final class BlockedResource: NSManagedObject, CRUD {
         
         completion(allWebsites.sorted(by: { $0.count > $1.count }))
       } catch {
-        log.error(error)
+        Logger.module.error("\(error.localizedDescription)")
         completion([])
       }
     }
@@ -235,7 +234,7 @@ public final class BlockedResource: NSManagedObject, CRUD {
       let oldItems = all(where: predicate, context: context)
       
       guard let entity = entity(in: context) else {
-        log.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
+        Logger.module.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
         return
       }
       

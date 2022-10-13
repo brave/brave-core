@@ -6,8 +6,7 @@ import UIKit
 import CoreData
 import Data
 import Shared
-
-private let log = Logger.browserLogger
+import os.log
 
 class AddEditBookmarkTableViewController: UITableViewController {
 
@@ -161,7 +160,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     if let mobileFolderId = bookmarkManager.mobileNode()?.objectID {
       rootFolderId = mobileFolderId
     } else {
-      log.error("Invalid MobileBookmarks Folder Id")
+      Logger.module.error("Invalid MobileBookmarks Folder Id")
     }
     super.init(style: .grouped)
   }
@@ -409,7 +408,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if presentationMode == .folderHierarchy {
       guard let tag = tableView.cellForRow(at: indexPath)?.tag else {
-        log.error("No cell was found for index path: \(indexPath)")
+        Logger.module.error("No cell was found for index path: \(indexPath)")
         return
       }
 

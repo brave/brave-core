@@ -5,9 +5,7 @@
 
 import Foundation
 import SwiftUI
-import struct Shared.Logger
-
-private let log = Logger.browserLogger
+import os.log
 
 public struct UIKitController: View {
   private var makeVC: () -> UIViewController
@@ -40,7 +38,7 @@ public struct UIKitController: View {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
     }
     static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: ()) {
-      log.debug("Dismantled \(uiViewController)")
+      Logger.module.debug("Dismantled \(uiViewController)")
     }
   }
 }

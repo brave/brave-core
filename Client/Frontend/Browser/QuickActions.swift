@@ -6,7 +6,6 @@ import Foundation
 import Storage
 import UIKit
 import Shared
-import XCGLogger
 import BraveUI
 
 enum ShortcutType: String {
@@ -30,8 +29,6 @@ protocol QuickActionHandlerDelegate {
 }
 
 public class QuickActions: NSObject {
-
-  fileprivate let log = Logger.browserLogger
 
   static let quickActionsVersion = "1.0"
   static let quickActionsVersionKey = "dynamicQuickActionsVersion"

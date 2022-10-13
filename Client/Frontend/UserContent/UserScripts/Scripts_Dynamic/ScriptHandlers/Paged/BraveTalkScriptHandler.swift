@@ -8,8 +8,7 @@ import WebKit
 import Shared
 import BraveShared
 import BraveCore
-
-private let log = Logger.browserLogger
+import os.log
 
 class BraveTalkScriptHandler: TabContentScript {
   private weak var tab: Tab?
@@ -57,7 +56,7 @@ class BraveTalkScriptHandler: TabContentScript {
       allowedHosts.contains(requestHost),
       message.frameInfo.isMainFrame
     else {
-      log.error("Backup search request called from disallowed host")
+      Logger.module.error("Backup search request called from disallowed host")
       replyHandler(nil, nil)
       return
     }

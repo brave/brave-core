@@ -10,8 +10,6 @@ import BraveCore
 import BraveShared
 import Data
 
-private let log = Logger.braveCoreLogger
-
 class RequestBlockingContentScriptHandler: TabContentScript {
   private struct RequestBlockingDTO: Decodable {
     struct RequestBlockingDTOData: Decodable, Hashable {

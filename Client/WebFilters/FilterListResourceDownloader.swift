@@ -9,8 +9,7 @@ import Data
 import BraveCore
 import Shared
 import BraveShared
-
-private let log = Logger.browserLogger
+import os.log
 
 /// An object responsible for fetching filer lists resources from multiple sources
 public class FilterListResourceDownloader: ObservableObject {
@@ -403,7 +402,7 @@ public class FilterListResourceDownloader: ObservableObject {
               index: index
             )
           case .failure(let error):
-            log.error(error)
+            Logger.module.error("\(error.localizedDescription)")
           }
         }
       }, onCancel: {

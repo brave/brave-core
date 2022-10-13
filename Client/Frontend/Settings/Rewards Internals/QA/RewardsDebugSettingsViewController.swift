@@ -366,7 +366,7 @@ class RewardsDebugSettingsViewController: TableViewController {
 
       showResetRewardsAlert()
     } catch {
-      print("Failed to migrate legacy wallet into a new folder: \(error)")
+      print("Failed to migrate legacy wallet into a new folder: \(error.localizedDescription)")
     }
   }
 

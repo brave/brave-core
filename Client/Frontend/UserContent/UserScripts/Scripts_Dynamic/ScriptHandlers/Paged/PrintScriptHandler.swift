@@ -5,8 +5,7 @@
 import Foundation
 import Shared
 import WebKit
-
-private let log = Logger.browserLogger
+import os.log
 
 class PrintScriptHandler: TabContentScript {
   private weak var browserController: BrowserViewController?

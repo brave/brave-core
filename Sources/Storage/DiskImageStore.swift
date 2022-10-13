@@ -4,9 +4,7 @@
 
 import Shared
 import UIKit
-import XCGLogger
-
-private var log = XCGLogger.default
+import os.log
 
 private class DiskImageStoreErrorType: Error {
   let description: String
@@ -79,7 +77,7 @@ open class DiskImageStore {
             continuation.resume()
             return
           } catch {
-            log.error("Unable to write image to disk: \(error)")
+            Logger.module.error("Unable to write image to disk: \(error.localizedDescription)")
           }
         }
         
@@ -99,7 +97,7 @@ open class DiskImageStore {
           do {
             try FileManager.default.removeItem(at: url)
           } catch {
-            log.warning("Failed to remove DiskImageStore item at \(url.absoluteString): \(error)")
+            Logger.module.warning("Failed to remove DiskImageStore item at \(url.absoluteString): \(error.localizedDescription)")
           }
         }
         

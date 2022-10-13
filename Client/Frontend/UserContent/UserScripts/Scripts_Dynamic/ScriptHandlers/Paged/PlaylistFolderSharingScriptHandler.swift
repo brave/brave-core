@@ -8,8 +8,7 @@ import WebKit
 import BraveShared
 import Shared
 import Data
-
-private let log = Logger.browserLogger
+import os.log
 
 protocol PlaylistFolderSharingScriptHandlerDelegate: AnyObject {
   func openPlaylistSharingFolder(with pageUrl: String)
@@ -72,7 +71,7 @@ private struct PlaylistFolderSharingInfo: Codable {
       let data = try JSONSerialization.data(withJSONObject: message.body, options: [.fragmentsAllowed])
       return try JSONDecoder().decode(PlaylistFolderSharingInfo.self, from: data)
     } catch {
-      log.error("Error Decoding PlaylistFolderSharingInfo: \(error)")
+      Logger.module.error("Error Decoding PlaylistFolderSharingInfo: \(error.localizedDescription)")
     }
 
     return nil

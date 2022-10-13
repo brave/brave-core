@@ -6,8 +6,6 @@
 import UIKit
 import Shared
 
-private let log = Logger.browserLogger
-
 // MARK: - SearchQuickEnginesViewController
 
 class SearchQuickEnginesViewController: UITableViewController {

@@ -64,7 +64,7 @@ class LoginInfoTableViewCell: UITableViewCell, TableViewReusable {
       }
     }
     set {
-      assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored")
+      assertionFailure("Accessibility label is inherited from a subview: \(newValue ?? "nil") ignored")
     }
   }
 

@@ -6,12 +6,10 @@ import Foundation
 import Shared
 import BraveShared
 import Storage
-import XCGLogger
 import WebKit
 import SwiftyJSON
 import BraveCore
-
-private let log = Logger.browserLogger
+import os.log
 
 class LoginsScriptHandler: TabContentScript {
   private weak var tab: Tab?
@@ -87,7 +85,7 @@ class LoginsScriptHandler: TabContentScript {
 
   func setCredentials(_ login: LoginData) {
     if login.password.isEmpty {
-      log.debug("Empty password")
+      Logger.module.debug("Empty password")
       return
     }
 
@@ -96,7 +94,7 @@ class LoginsScriptHandler: TabContentScript {
         login.protectionSpace,
         withUsername: login.username
       )
-      log.debug("Found \(logins.count) logins.")
+      Logger.module.debug("Found \(logins.count) logins.")
       for saved in logins {
         if let saved = saved {
           if saved.password == login.password {
@@ -193,12 +191,12 @@ class LoginsScriptHandler: TabContentScript {
       let password = scriptCredentials.passwordValue,
       scriptCredentials.passwordElement != nil
     else {
-      log.debug("Missing Credentials from script")
+      Logger.module.debug("Missing Credentials from script")
       return
     }
 
     if password.isEmpty {
-      log.debug("Empty Password")
+      Logger.module.debug("Empty Password")
       return
     }
 
@@ -336,8 +334,8 @@ class LoginsScriptHandler: TabContentScript {
       contentWorld: LoginsScriptHandler.scriptSandbox,
       escapeArgs: false
     ) { (object, error) -> Void in
-      if error != nil {
-        log.error(error)
+      if let error = error {
+        Logger.module.error("\(error.localizedDescription, privacy: .public)")
       }
     }
   }
