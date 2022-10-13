@@ -35,7 +35,6 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
-#include "gtest/gtest.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/origin.h"
 
@@ -491,16 +490,31 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
       false);
 
   const GURL onion_url =
-      embedded_test_server()->GetURL("test.onion", "/simple.html");
+      embedded_test_server()->GetURL("test.onion", "/onion.html");
+  const GURL onion_upgradable_url =
+      embedded_test_server()->GetURL("test.onion", "/onion_upgradable.html");
   ASSERT_EQ("http", onion_url.scheme());
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  WaitForLoadStop(contents);
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_upgradable_url));
+    EXPECT_TRUE(console_observer.messages().empty());
+  }
   {
     content::WebContentsConsoleObserver console_observer(contents);
     console_observer.SetPattern(
-        "Mixed Content: The page at 'http://test.onion*/simple.html' was "
+        "Mixed Content: The page at 'http://test.onion*/onion.html' was "
+        "loaded over HTTPS, but requested an insecure image "
+        "'http://not_upgradable_to_https.com/image.jpg'. This content should "
+        "also be served over HTTPS.");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
+    console_observer.Wait();
+  }
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    console_observer.SetPattern(
+        "Mixed Content: The page at 'http://test.onion*/onion.html' was "
         "loaded over HTTPS, but requested an insecure resource "
         "'http://example.com/'. This request has been blocked; the content "
         "must be served over HTTPS.");
@@ -514,7 +528,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
-    ASSERT_FALSE(content::ExecJs(contents, "fetch('https://example.onion')"));
+    ASSERT_FALSE(content::ExecJs(contents, "fetch('http://example.onion')"));
     EXPECT_TRUE(console_observer.messages().empty());
   }
 }

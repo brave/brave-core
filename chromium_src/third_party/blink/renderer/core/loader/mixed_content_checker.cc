@@ -15,23 +15,32 @@
 
 namespace blink {
 
+namespace {
+
+template <typename T>
+bool IsOnion(const T& obj) {
+  constexpr const char kOnion[] = ".onion";
+  return obj.Host().EndsWith(kOnion) && (obj.Protocol() == url::kHttpsScheme ||
+                                         obj.Protocol() == url::kHttpScheme);
+}
+
+}  // namespace
+
 // static
 absl::optional<bool> MixedContentChecker::IsMixedContentForOnion(
     const SecurityOrigin* security_origin,
     const KURL& resource_url) {
-  constexpr const char kOnion[] = ".onion";
-
-  if (!security_origin->Host().EndsWith(kOnion))
+  if (!IsOnion(*security_origin)) {
     return absl::nullopt;
-
-  if (resource_url.Host().EndsWith(kOnion)) {
+  }
+  if (IsOnion(resource_url)) {
     // onion -> onion: not blocked
     return false;
   }
   // Treat .onions as https://
   // onion -> https: not blocked
   // onion -> http: blocked
-  return IsMixedContent("https", resource_url);
+  return IsMixedContent(url::kHttpsScheme, resource_url);
 }
 
 }  // namespace blink
