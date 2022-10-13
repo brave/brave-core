@@ -83,6 +83,7 @@ class BraveBrowserView : public BrowserView {
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
   // BrowserView overrides:
+  void AddedToWidget() override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
@@ -106,7 +107,7 @@ class BraveBrowserView : public BrowserView {
 
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
-  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
+  raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};
