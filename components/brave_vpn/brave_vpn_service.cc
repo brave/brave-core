@@ -1013,8 +1013,8 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
           base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
                          base::Unretained(this), domain));
     } else {
-      VLOG(1) << __func__ << " : Credential appears to be expired.";
-      SetPurchasedState(env, PurchasedState::EXPIRED);
+      VLOG(1) << __func__ << " : Credential is not active.";
+      SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     }
   } else {
     VLOG(1) << __func__ << " : Got invalid credential summary!";
