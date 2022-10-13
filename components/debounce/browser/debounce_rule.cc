@@ -120,6 +120,14 @@ const std::string DebounceRule::GetETLDForDebounce(const std::string& host) {
 }
 
 // static
+bool DebounceRule::IsSameETLDForDebounce(const GURL& url1, const GURL& url2) {
+  return net::registry_controlled_domains::SameDomainOrHost(
+      url1, url2,
+      net::registry_controlled_domains::PrivateRegistryFilter::
+          EXCLUDE_PRIVATE_REGISTRIES);
+}
+
+// static
 base::expected<std::pair<std::vector<std::unique_ptr<DebounceRule>>,
                          base::flat_set<std::string>>,
                std::string>
@@ -308,7 +316,7 @@ bool DebounceRule::Apply(const GURL& original_url,
     return false;
 
   // Failsafe: never redirect to the same site.
-  if (url::IsSameOriginWith(original_url, new_url))
+  if (IsSameETLDForDebounce(original_url, new_url))
     return false;
 
   *final_url = new_url;
