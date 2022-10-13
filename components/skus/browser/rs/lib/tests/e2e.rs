@@ -12,6 +12,7 @@ use tracing_subscriber::FmtSubscriber;
 
 use skus::{errors::InternalError, Environment, HTTPClient, KVClient, KVStore};
 
+#[derive(Debug)]
 pub struct CLIStore(HashMap<String, String>);
 
 pub struct CLIClient {
@@ -93,7 +94,7 @@ fn skus_e2e_works() {
     task::block_on(async {
         let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
         let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
-        sdk.initialize().await.unwrap();
+        sdk.initialize().await;
 
         let order = sdk.create_order("trial").await.unwrap();
 
@@ -104,5 +105,58 @@ fn skus_e2e_works() {
         sdk.fetch_order_credentials(&order.id).await.unwrap();
 
         sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
+    });
+}
+
+#[test]
+fn skus_tlv2_e2e_works() {
+    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+
+    task::block_on(async {
+        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
+        sdk.initialize().await;
+
+        let order = sdk.create_order("tlv2_e2e").await.unwrap();
+
+        sdk.refresh_order(&order.id).await.unwrap();
+        // Local cache should return response
+        sdk.refresh_order(&order.id).await.unwrap();
+
+        // initialize
+        sdk.submit_order_credentials_to_sign(&order.id);
+
+        // go ahead and see if we attempt to re-initialize, hope not
+        sdk.fetch_order_credentials(&order.id).await.unwrap();
+
+        for _ in 1..=5 {
+            sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
+        }
+        // should all be spent by this point, only 5 per day per that sku
+        match sdk.present_order_credentials(&order.id, &order.location, "/").await {
+            Err(sku_err) => {
+                println!("{}", sku_err);
+            }
+            _ => {
+                assert!(false); // should have been out of credentials
+            }
+        }
+        // get the existing creds we created, and delete 29 of them in the future so
+        // we can test out the reloading
+        sdk.remove_last_n_creds(&order.id, 29);
+        // reload to get updated creds
+        sdk.refresh_order_credentials(&order.id).await.unwrap();
+
+        // fetch again and make sure we have still presented all creds
+        sdk.fetch_order_credentials(&order.id).await.unwrap();
+        match sdk.present_order_credentials(&order.id, &order.location, "/").await {
+            Err(sku_err) => {
+                println!("{}", sku_err);
+            }
+            _ => {
+                assert!(false); // should have been out of credentials
+            }
+        }
     });
 }

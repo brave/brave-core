@@ -38,7 +38,7 @@ where
         base_url: Option<&str>,
         remote_sdk_url: Option<&str>,
     ) -> Self {
-        let base_url = base_url.unwrap_or_else(|| match environment {
+        let base_url = base_url.unwrap_or(match environment {
             Environment::Local => "http://localhost:3333",
             Environment::Testing => "https://payment.rewards.brave.software",
             Environment::Development => "https://payment.rewards.brave.software",
@@ -46,7 +46,7 @@ where
             Environment::Production => "https://payment.rewards.brave.com",
         });
 
-        let remote_sdk_url = remote_sdk_url.unwrap_or_else(|| match environment {
+        let remote_sdk_url = remote_sdk_url.unwrap_or(match environment {
             Environment::Local => "http://localhost:8080",
             Environment::Testing => "https://account.brave.software/skus",
             Environment::Development => "https://account.brave.software/skus",
@@ -64,10 +64,8 @@ where
     }
 
     pub async fn initialize(&self) {
-        if self.environment == Environment::Local {
-            if self.client.clear().await.is_err() {
-                event!(Level::ERROR, "clearing skus storage failed",);
-            }
+        if self.environment == Environment::Local && self.client.clear().await.is_err() {
+            event!(Level::ERROR, "clearing skus storage failed",);
         }
         event!(
             Level::INFO,
