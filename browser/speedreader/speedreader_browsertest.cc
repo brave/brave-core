@@ -403,6 +403,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
+  auto* contents = ActiveWebContents();
+
+  // Open second tab
+  NavigateToPageSynchronously(kTestPageReadable);
 
   auto GetDataAttribute = [](const std::string& attr) {
     constexpr const char kGetDataAttribute[] =
@@ -421,28 +425,35 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   EXPECT_EQ(speedreader::mojom::ContentStyle::kDefault,
             speedreader_service()->GetContentStyle());
 
-  EXPECT_EQ(nullptr,
-            content::EvalJs(ActiveWebContents(), GetDataAttribute("data-theme"),
-                            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                            speedreader::kIsolatedWorldId));
+  EXPECT_EQ(nullptr, content::EvalJs(contents, GetDataAttribute("data-theme"),
+                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                     speedreader::kIsolatedWorldId));
   auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(ActiveWebContents());
+      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   tab_helper->SetTheme(speedreader::mojom::Theme::kDark);
   tab_helper->SetFontFamily(speedreader::mojom::FontFamily::kDyslexic);
   tab_helper->SetFontSize(speedreader::mojom::FontSize::k130);
   tab_helper->SetContentStyle(speedreader::mojom::ContentStyle::kTextOnly);
+  EXPECT_EQ(kTestHost, tab_helper->GetDomain());
+  EXPECT_TRUE(tab_helper->IsEnabledForSite());
 
-  auto EvalAttr = [&](const std::string& attr) {
-    return content::EvalJs(ActiveWebContents(), GetDataAttribute(attr),
+  auto EvalAttr = [&](content::WebContents* contents, const std::string& attr) {
+    return content::EvalJs(contents, GetDataAttribute(attr),
                            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                            speedreader::kIsolatedWorldId)
         .ExtractString();
   };
 
-  EXPECT_EQ("dark", EvalAttr("data-theme"));
-  EXPECT_EQ("dyslexic", EvalAttr("data-font-family"));
-  EXPECT_EQ("130", EvalAttr("data-font-size"));
-  EXPECT_EQ("text-only", EvalAttr("data-content-style"));
+  EXPECT_EQ("dark", EvalAttr(contents, "data-theme"));
+  EXPECT_EQ("dyslexic", EvalAttr(contents, "data-font-family"));
+  EXPECT_EQ("130", EvalAttr(contents, "data-font-size"));
+  EXPECT_EQ("text-only", EvalAttr(contents, "data-content-style"));
+
+  // Same in the second tab
+  EXPECT_EQ("dark", EvalAttr(ActiveWebContents(), "data-theme"));
+  EXPECT_EQ("dyslexic", EvalAttr(ActiveWebContents(), "data-font-family"));
+  EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
+  EXPECT_EQ("text-only", EvalAttr(ActiveWebContents(), "data-content-style"));
 
   EXPECT_EQ(speedreader::mojom::Theme::kDark,
             speedreader_service()->GetTheme());
@@ -455,10 +466,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
 
   // New page
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_EQ("dark", EvalAttr("data-theme"));
-  EXPECT_EQ("dyslexic", EvalAttr("data-font-family"));
-  EXPECT_EQ("130", EvalAttr("data-font-size"));
-  EXPECT_EQ("text-only", EvalAttr("data-content-style"));
+  EXPECT_EQ("dark", EvalAttr(ActiveWebContents(), "data-theme"));
+  EXPECT_EQ("dyslexic", EvalAttr(ActiveWebContents(), "data-font-family"));
+  EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
+  EXPECT_EQ("text-only", EvalAttr(ActiveWebContents(), "data-content-style"));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
