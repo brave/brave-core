@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -524,12 +525,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   {
     content::WebContentsConsoleObserver console_observer(contents);
     ASSERT_FALSE(content::ExecJs(contents, "fetch('https://example.com')"));
-    EXPECT_TRUE(console_observer.messages().empty());
+    EXPECT_TRUE(console_observer.messages().empty() ||
+                console_observer.GetMessageAt(0).find(
+                    "has been blocked by CORS policy") != std::string::npos);
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
     ASSERT_FALSE(content::ExecJs(contents, "fetch('http://example.onion')"));
-    EXPECT_TRUE(console_observer.messages().empty());
+    EXPECT_TRUE(console_observer.messages().empty() ||
+                console_observer.GetMessageAt(0).find(
+                    "has been blocked by CORS policy") != std::string::npos);
   }
 }
 
