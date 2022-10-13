@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { createAction } from 'redux-act'
+import { createAction } from '@reduxjs/toolkit'
 import {
   AccountPayloadType,
   AddSuggestTokenProcessedPayload,
@@ -12,7 +12,7 @@ import {
   DecryptProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainRequestPayload,
-  SignMessagePayload,
+  // SignMessagePayload,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload
@@ -40,7 +40,7 @@ export const expandWalletAddAsset = createAction('expandWalletAddAsset')
 export const navigateTo = createAction<PanelTypes>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
 export const navigateBack = createAction('navigateBack')
-export const signMessage = createAction<SignMessagePayload[]>('signMessage')
+export const signMessage = createAction<BraveWallet.SignMessageRequest[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
 export const signMessageHardware = createAction<BraveWallet.SignMessageRequest>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
