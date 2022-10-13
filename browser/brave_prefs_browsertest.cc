@@ -188,11 +188,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
-#if !BUILDFLAG(IS_ANDROID)
-  EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
-      kDefaultBrowserPromptEnabled));
-#endif
-
 #if BUILDFLAG(ENABLE_CRASH_DIALOG)
   EXPECT_FALSE(
       g_browser_process->local_state()->GetBoolean(kDontAskForCrashReporting));

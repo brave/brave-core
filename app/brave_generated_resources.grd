@@ -485,25 +485,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Brave default browser dialog -->
-      <if expr="not is_android">
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_HEADER_TEXT" desc="The header text for default browser dialog">
-          Set Brave as your default browser
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CONTENTS_TEXT" desc="The contents for default browser dialog">
-          Keep browsing the web faster - up to 6x faster on major news sites.
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_DONT_ASK" desc="The text for disabling default browser dialog checkbox">
-          Don't ask again
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_OK_BUTTON_LABEL" desc="The text for default browser dialog ok button">
-          Set as default
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for default browser dialog cancel button">
-          Not now
-        </message>
-      </if>
-
       <!-- Web Discovery dialog -->
       <if expr="not is_android">
         <message name="IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT" desc="The text for web discovery dialog header">
