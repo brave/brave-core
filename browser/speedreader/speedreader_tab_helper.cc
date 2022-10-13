@@ -377,6 +377,10 @@ ContentStyle SpeedreaderTabHelper::GetContentStyle() {
       ->GetContentStyle();
 }
 
+std::string SpeedreaderTabHelper::GetDomain() {
+  return web_contents()->GetLastCommittedURL().host();
+}
+
 void SpeedreaderTabHelper::ClearPersistedData() {
   if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);

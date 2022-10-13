@@ -109,6 +109,8 @@ class SpeedreaderTabHelper
   void SetContentStyle(ContentStyle style);
   ContentStyle GetContentStyle();
 
+  std::string GetDomain();
+
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);

@@ -57,6 +57,11 @@ class SpeedreaderPanelDataHandlerImpl
   void GetContentStyle(GetContentStyleCallback callback) override;
   void SetContentStyle(ContentStyle style) override;
 
+  void GetDomain(GetDomainCallback callback) override;
+
+  void IsEnabled(IsEnabledCallback callback) override;
+  void SetEnabled(bool on) override;
+
  private:
   mojo::Receiver<speedreader::mojom::PanelDataHandler> receiver_;
   raw_ptr<speedreader::SpeedreaderTabHelper> speedreader_tab_helper_ = nullptr;
