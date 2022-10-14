@@ -160,8 +160,7 @@ extension BrowserViewController {
     }
   }
 
-  private func presentWallet() {
-    guard let tab = tabManager.selectedTab else { return }
+  func presentWallet() {
     guard let walletStore = self.walletStore ?? newWalletStore() else { return }
     let vc = WalletHostingViewController(walletStore: walletStore, faviconRenderer: FavIconImageRenderer())
     vc.delegate = self

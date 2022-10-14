@@ -1794,6 +1794,8 @@ public class BrowserViewController: UIViewController {
         guard freshTab == self.tabManager.selectedTab else { return }
         if let text = searchText {
           self.topToolbar.submitLocation(text)
+        } else {
+          self.focusURLBar()
         }
       }
     }

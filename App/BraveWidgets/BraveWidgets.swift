@@ -13,5 +13,7 @@ struct BraveWidgets: WidgetBundle {
     FavoritesWidget()
     SingleStatWidget()
     StatsWidget()
+    LockScreenShortcutWidget()
+    LockScreenFavoriteWidget()
   }
 }

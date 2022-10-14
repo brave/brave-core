@@ -3765,6 +3765,14 @@ extension Strings {
     public static let singleStatDescription = NSLocalizedString("widgets.singleStatDescription", tableName: "BraveShared", bundle: .strings,
       value: "A summary of how Brave has protected you online.",
       comment: "Description for Brave Shields single stat widget on 'add widget' screen.")
+    
+    public static let searchShortcutTitle = NSLocalizedString("widgets.searchShortcutTitle", tableName: "BraveShared", bundle: .strings,
+                                                              value: "Search",
+                                                              comment: "Description for the search option on the 'shortcuts' widget.")
+    
+    public static let walletShortcutTitle = NSLocalizedString("widgets.walletShortcutTitle", tableName: "BraveShared", bundle: .strings,
+                                                              value: "Brave Wallet",
+                                                              comment: "Description for the Brave Wallet option on the 'shortcuts' widget.")
   }
 }
 

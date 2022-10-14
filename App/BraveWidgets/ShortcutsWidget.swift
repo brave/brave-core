@@ -89,7 +89,7 @@ private struct ShortcutLink<Content: View>: View {
           VStack(spacing: 8) {
             image
               .imageScale(.large)
-              .font(Font.system(.body).bold())
+              .font(.system(size: 20))
               .frame(height: 24)
             Text(verbatim: text)
               .font(.system(size: 13, weight: .medium))
@@ -109,7 +109,7 @@ private struct ShortcutLink<Content: View>: View {
   }
 }
 
-private extension WidgetShortcut {
+extension WidgetShortcut {
   var displayString: String {
     switch self {
     case .unknown:
@@ -130,6 +130,12 @@ private extension WidgetShortcut {
       // We usually use `Brave Playlist` to describe this feature.
       // Here we try to be more concise and use 'Playlist' word only.
       return Strings.Widgets.shortcutsPlaylistButton
+    case .search:
+      return Strings.Widgets.searchShortcutTitle
+    case .wallet:
+      return Strings.Widgets.walletShortcutTitle
+    case .scanQRCode:
+      return Strings.QRCode
     @unknown default:
       assertionFailure()
       return ""
@@ -142,35 +148,27 @@ private extension WidgetShortcut {
       assertionFailure()
       return Image(systemName: "xmark.octagon")
     case .newTab:
-      return shortcutsImage(with: "brave.plus")
+      return Image(braveSystemName: "brave.plus")
     case .newPrivateTab:
-      return shortcutsImage(with: "brave.shades")
+      return Image(braveSystemName: "brave.sunglasses")
     case .bookmarks:
-      return Image(uiImage: UIImage(named: "menu_bookmarks")!.template)
+      return Image(braveSystemName: "brave.book")
     case .history:
-      return Image(uiImage: UIImage(named: "brave.history")!.template)
+      return Image(braveSystemName: "brave.history")
     case .downloads:
-      return Image(uiImage: UIImage(named: "brave.downloads")!.template)
+      return Image(braveSystemName: "brave.arrow.down.to.line")
     case .playlist:
-      return Image(uiImage: UIImage(named: "brave.playlist")!.template)
+      return Image(braveSystemName: "brave.playlist")
+    case .search:
+      return Image(braveSystemName: "brave.magnifyingglass")
+    case .wallet:
+      return Image(braveSystemName: "brave.wallet")
+    case .scanQRCode:
+      return Image(braveSystemName: "brave.qr-code")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")
     }
-  }
-
-  private func shortcutsImage(with name: String) -> Image {
-    let fallbackImage = Image(systemName: "xmark.octagon")
-
-    guard
-      let image = UIImage(braveSystemNamed: name)?
-        .applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 20)))?
-        .template
-    else {
-      return fallbackImage
-    }
-
-    return Image(uiImage: image)
   }
 }
 
@@ -225,7 +223,7 @@ struct ShortcutsWidget_Previews: PreviewProvider {
       .previewContext(WidgetPreviewContext(family: .systemMedium))
     ShortcutsView(slots: [.downloads, .history, .playlist])
       .previewContext(WidgetPreviewContext(family: .systemMedium))
-    ShortcutsView(slots: [.newTab])
+    ShortcutsView(slots: [.wallet, .search, .scanQRCode])
       .previewContext(WidgetPreviewContext(family: .systemMedium))
   }
 }

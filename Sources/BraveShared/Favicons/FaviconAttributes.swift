@@ -7,6 +7,7 @@ import Foundation
 import UIKit
 
 public struct FaviconAttributes: Codable {
+  public var imageData: Data?
   public var image: UIImage?
   public var backgroundColor: UIColor?
   public var contentMode: UIView.ContentMode = .scaleAspectFit
@@ -19,6 +20,7 @@ public struct FaviconAttributes: Codable {
     includePadding: Bool = false
   ) {
     self.image = image
+    self.imageData = image?.sd_imageData()
     self.backgroundColor = backgroundColor
     self.contentMode = contentMode
     self.includePadding = includePadding
@@ -35,7 +37,7 @@ public struct FaviconAttributes: Codable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(image?.sd_imageData(), forKey: .image)
+    try container.encode(imageData, forKey: .image)
     var rgb: Int?
     if let color = backgroundColor {
       var (r, g, b): (CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0)
@@ -49,7 +51,8 @@ public struct FaviconAttributes: Codable {
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    if let imageData = try container.decode(Data?.self, forKey: .image) {
+    imageData = try container.decode(Data?.self, forKey: .image)
+    if let imageData = imageData {
       image = UIImage(data: imageData)
     }
     if let rgb = try container.decode(Int?.self, forKey: .backgroundColor) {
