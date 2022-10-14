@@ -6,10 +6,17 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
 #include <algorithm>
+#include <map>
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
+#include "base/notreached.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -21,6 +28,32 @@ namespace {
 bool IsValidHostLabelCharacter(char c, bool is_first_char) {
   return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
          (c >= '0' && c <= '9') || (!is_first_char && c == '-') || c == '_';
+}
+
+absl::optional<std::string> ChainIdToVersion(const std::string& symbol,
+                                             const std::string chain_id) {
+  static base::NoDestructor<std::map<std::string, std::string>> mapping({
+      {"0x1", "ERC20"},
+      {"0x38", "BEP20"},
+      {"0x63564c40", "HRC20"},
+      {"0x64", "XDAI"},
+      {"0x7a", "FUSE"},
+      {"0x89", "MATIC"},
+      {"0xa", "OP"},
+      {"0xa4b1", "AETH"},
+      {"0xa86a", "AVAX"},
+      {"0xfa", "FANTOM"},
+  });
+
+  // Special case for crypto.FTM.version.OPERA.address.
+  if (symbol == "FTM" && chain_id == "0xfa") {
+    return "OPERA";
+  }
+
+  auto it = mapping->find(chain_id);
+  if (it != mapping->end())
+    return it->second;
+  return absl::nullopt;
 }
 
 }  // namespace
@@ -284,29 +317,80 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
   return data;
 }
 
-absl::optional<std::string> Get(const std::string& key,
-                                const std::string& domain) {
-  const std::string function_hash = GetFunctionHash("get(string,uint256)");
-
-  std::string offset_for_key;
-  if (!PadHexEncodedParameter(Uint256ValueToHex(64), &offset_for_key)) {
-    return absl::nullopt;
+std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
+                                              const std::string& chain_id) {
+  auto upper_symbol = base::ToUpperASCII(symbol);
+  std::vector<std::string> lookup_keys;
+  // crypto.<TICKER>.version.<VERSION>.address
+  if (auto version = ChainIdToVersion(upper_symbol, chain_id)) {
+    if (!(upper_symbol == "ETH" && version == "ERC20")) {
+      // No such key as 'crypto.ETH.version.ERC20.address'. 'crypto.ETH.address'
+      // would be used instead.
+      lookup_keys.push_back(base::StringPrintf("crypto.%s.version.%s.address",
+                                               upper_symbol.c_str(),
+                                               version->c_str()));
+    }
+  }
+  // crypto.<TICKER>.address
+  if (symbol != "ETH") {
+    lookup_keys.push_back(
+        base::StringPrintf("crypto.%s.address", upper_symbol.c_str()));
   }
 
-  std::string tokenID = ToHex(Namehash(domain));
+  // crypto.ETH.address
+  lookup_keys.push_back(kCryptoEthAddressKey);
 
-  std::string encoded_key;
-  if (!EncodeString(key, &encoded_key)) {
-    return absl::nullopt;
+  return lookup_keys;
+}
+
+std::vector<std::string> MakeSolLookupKeyList(const std::string& symbol) {
+  std::vector<std::string> lookup_keys;
+  // crypto.<TICKER>.version.SOLANA.address
+  if (symbol != "SOL") {
+    lookup_keys.push_back(
+        base::StringPrintf("crypto.%s.version.SOLANA.address",
+                           base::ToUpperASCII(symbol).c_str()));
   }
 
-  std::string data;
-  std::vector<std::string> hex_strings = {function_hash, offset_for_key,
-                                          tokenID, encoded_key};
-  if (!ConcatHexStrings(hex_strings, &data))
-    return absl::nullopt;
+  // crypto.SOL.address
+  lookup_keys.push_back(kCryptoSolAddressKey);
 
-  return data;
+  return lookup_keys;
+}
+
+std::vector<std::string> MakeFilLookupKeyList() {
+  std::vector<std::string> lookup_keys;
+
+  // Only crypto.FIL.address supported.
+  lookup_keys.push_back(kCryptoFilAddressKey);
+
+  return lookup_keys;
+}
+
+std::vector<uint8_t> GetWalletAddr(const std::string& domain,
+                                   mojom::CoinType coin,
+                                   const std::string& symbol,
+                                   const std::string& chain_id) {
+  std::vector<std::string> key_list;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      key_list = MakeEthLookupKeyList(symbol, chain_id);
+      break;
+    case mojom::CoinType::SOL:
+      key_list = MakeSolLookupKeyList(symbol);
+      break;
+    case mojom::CoinType::FIL:
+      key_list = MakeFilLookupKeyList();
+      break;
+    default:
+      NOTREACHED();
+  }
+
+  // getMany(string[],uint256)
+  return eth_abi::TupleEncoder()
+      .AddStringArray(key_list)
+      .AddFixedBytes(Namehash(domain))
+      .EncodeWithSelector(kGetManySelector);
 }
 
 }  // namespace unstoppable_domains

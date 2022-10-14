@@ -157,11 +157,6 @@ JsonRpcService::JsonRpcService(
     PrefService* local_state_prefs)
     : api_request_helper_(new APIRequestHelper(GetNetworkTrafficAnnotationTag(),
                                                url_loader_factory)),
-      ud_get_eth_addr_calls_(
-          std::make_unique<
-              unstoppable_domains::MultichainCalls<std::string>>()),
-      ud_resolve_dns_calls_(
-          std::make_unique<unstoppable_domains::MultichainCalls<GURL>>()),
       prefs_(prefs),
       local_state_prefs_(local_state_prefs),
       weak_ptr_factory_(this) {
@@ -1458,8 +1453,8 @@ void JsonRpcService::OnEnsGetEthAddr(EnsGetEthAddrCallback callback,
 void JsonRpcService::UnstoppableDomainsResolveDns(
     const std::string& domain,
     UnstoppableDomainsResolveDnsCallback callback) {
-  if (ud_resolve_dns_calls_->HasCall(domain)) {
-    ud_resolve_dns_calls_->AddCallback(domain, std::move(callback));
+  if (ud_resolve_dns_calls_.HasCall(domain)) {
+    ud_resolve_dns_calls_.AddCallback(domain, std::move(callback));
     return;
   }
 
@@ -1479,8 +1474,8 @@ void JsonRpcService::UnstoppableDomainsResolveDns(
     return;
   }
 
-  ud_resolve_dns_calls_->AddCallback(domain, std::move(callback));
-  for (const auto& chain_id : ud_resolve_dns_calls_->GetChains()) {
+  ud_resolve_dns_calls_.AddCallback(domain, std::move(callback));
+  for (const auto& chain_id : ud_resolve_dns_calls_.GetChains()) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnUnstoppableDomainsResolveDns,
                        weak_ptr_factory_.GetWeakPtr(), domain, chain_id);
@@ -1498,7 +1493,7 @@ void JsonRpcService::OnUnstoppableDomainsResolveDns(
     const std::string& chain_id,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    ud_resolve_dns_calls_->SetError(
+    ud_resolve_dns_calls_.SetError(
         domain, chain_id, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
@@ -1511,85 +1506,91 @@ void JsonRpcService::OnUnstoppableDomainsResolveDns(
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
                                            &error_message);
-    ud_resolve_dns_calls_->SetError(domain, chain_id, error, error_message);
+    ud_resolve_dns_calls_.SetError(domain, chain_id, error, error_message);
     return;
   }
 
   GURL resolved_url = unstoppable_domains::ResolveUrl(*values);
   if (!resolved_url.is_valid()) {
-    ud_resolve_dns_calls_->SetNoResult(domain, chain_id);
+    ud_resolve_dns_calls_.SetNoResult(domain, chain_id);
     return;
   }
 
-  ud_resolve_dns_calls_->SetResult(domain, chain_id, std::move(resolved_url));
+  ud_resolve_dns_calls_.SetResult(domain, chain_id, std::move(resolved_url));
 }
 
-void JsonRpcService::UnstoppableDomainsGetEthAddr(
+void JsonRpcService::UnstoppableDomainsGetWalletAddr(
     const std::string& domain,
-    UnstoppableDomainsGetEthAddrCallback callback) {
-  if (ud_get_eth_addr_calls_->HasCall(domain)) {
-    ud_get_eth_addr_calls_->AddCallback(domain, std::move(callback));
-    return;
-  }
-
-  if (!IsValidUnstoppableDomain(domain)) {
+    mojom::BlockchainTokenPtr token,
+    UnstoppableDomainsGetWalletAddrCallback callback) {
+  if (!token || !IsValidUnstoppableDomain(domain)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
-  auto call_data = unstoppable_domains::Get(kCryptoEthAddressKey, domain);
-  if (!call_data) {
-    std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  unstoppable_domains::WalletAddressKey key = {domain, token->coin,
+                                               token->symbol, token->chain_id};
+  if (ud_get_eth_addr_calls_.HasCall(key)) {
+    ud_get_eth_addr_calls_.AddCallback(key, std::move(callback));
     return;
   }
 
-  ud_get_eth_addr_calls_->AddCallback(domain, std::move(callback));
-  for (const auto& chain_id : ud_get_eth_addr_calls_->GetChains()) {
+  auto call_data = unstoppable_domains::GetWalletAddr(
+      domain, token->coin, token->symbol, token->chain_id);
+
+  ud_get_eth_addr_calls_.AddCallback(key, std::move(callback));
+  for (const auto& chain_id : ud_get_eth_addr_calls_.GetChains()) {
     auto internal_callback =
-        base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetEthAddr,
-                       weak_ptr_factory_.GetWeakPtr(), domain, chain_id);
-    auto eth_call = eth::eth_call(
-        "", GetUnstoppableDomainsProxyReaderContractAddress(chain_id), "", "",
-        "", *call_data, "latest");
+        base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetWalletAddr,
+                       weak_ptr_factory_.GetWeakPtr(), key, chain_id);
+    auto eth_call =
+        eth::eth_call(GetUnstoppableDomainsProxyReaderContractAddress(chain_id),
+                      ToHex(call_data));
     RequestInternal(std::move(eth_call), true,
                     GetUnstoppableDomainsRpcUrl(chain_id),
                     std::move(internal_callback));
   }
 }
 
-void JsonRpcService::OnUnstoppableDomainsGetEthAddr(
-    const std::string& domain,
+void JsonRpcService::OnUnstoppableDomainsGetWalletAddr(
+    const unstoppable_domains::WalletAddressKey& key,
     const std::string& chain_id,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    ud_get_eth_addr_calls_->SetError(
-        domain, chain_id, mojom::ProviderError::kInternalError,
+    ud_get_eth_addr_calls_.SetError(
+        key, chain_id, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto address =
-      eth::ParseUnstoppableDomainsProxyReaderGet(api_request_result.body());
-  if (!address) {
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
+  if (!bytes_result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
                                            &error_message);
-
-    ud_get_eth_addr_calls_->SetError(domain, chain_id, error, error_message);
+    ud_get_eth_addr_calls_.SetError(key, chain_id, error, error_message);
     return;
   }
 
-  if (address->empty()) {
-    ud_get_eth_addr_calls_->SetNoResult(domain, chain_id);
+  auto array_result = eth_abi::ExtractStringArrayFromTuple(*bytes_result, 0);
+  if (!array_result) {
+    ud_get_eth_addr_calls_.SetError(
+        key, chain_id, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  ud_get_eth_addr_calls_->SetResult(domain, chain_id, address.value());
+  for (auto& item : *array_result) {
+    if (!item.empty()) {
+      ud_get_eth_addr_calls_.SetResult(key, chain_id, item);
+      return;
+    }
+  }
+
+  ud_get_eth_addr_calls_.SetNoResult(key, chain_id);
 }
 
 GURL JsonRpcService::GetBlockTrackerUrlFromNetwork(
