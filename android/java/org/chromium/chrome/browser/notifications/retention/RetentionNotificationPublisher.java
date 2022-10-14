@@ -112,11 +112,17 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.DAY_30:
             case RetentionNotificationUtil.DAY_35:
                 // Can't check for rewards code in background
-                if (braveActivity != null
-                        && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                Profile.getLastUsedRegularProfile())
-                        && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
-                    createNotification(context, intent);
+                try {
+                    if (braveActivity != null
+                            && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                    Profile.getLastUsedRegularProfile())
+                            && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+                        createNotification(context, intent);
+                    }
+                } catch (IllegalStateException exc) {
+                    // We can receive 'Browser hasn't finished initialization yet!' if
+                    // Profile.getLastUsedRegularProfile is called to early. Just ignore it,
+                    // that's better comparing to crashing
                 }
                 break;
             case RetentionNotificationUtil.EVERY_SUNDAY:
@@ -184,7 +190,8 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
 
     public static void backgroundNotificationAction(Context context, Intent intent) {
         String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
-        if (ApplicationStatus.hasVisibleActivities()) {
+        if (ApplicationStatus.hasVisibleActivities() || context == null
+                || context.getPackageManager() == null) {
             return;
         }
         Intent launchIntent =
