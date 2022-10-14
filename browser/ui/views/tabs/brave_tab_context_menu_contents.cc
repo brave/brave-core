@@ -6,7 +6,9 @@
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -48,6 +50,14 @@ void BraveTabContextMenuContents::RunMenuAt(
 }
 
 bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
+  if (command_id == BraveTabMenuModel::CommandShowTitleBar) {
+    return controller_->browser()
+        ->profile()
+        ->GetOriginalProfile()
+        ->GetPrefs()
+        ->GetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow);
+  }
+
   return false;
 }
 
@@ -58,6 +68,13 @@ bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
   return controller_->IsCommandEnabledForTab(
       static_cast<TabStripModel::ContextMenuCommand>(command_id),
       tab_);
+}
+
+bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
+  if (command_id == BraveTabMenuModel::CommandShowTitleBar)
+    return tabs::features::ShouldShowVerticalTabs();
+
+  return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 }
 
 bool BraveTabContextMenuContents::GetAcceleratorForCommandId(
@@ -99,6 +116,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
                chrome::CanBookmarkAllTabs(browser_);
       }
       break;
+    case BraveTabMenuModel::CommandShowTitleBar:
+      return true;
     default:
       NOTREACHED();
       break;
@@ -115,6 +134,14 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandBookmarkAllTabs:
       chrome::BookmarkAllTabs(browser_);
       return;
+    case BraveTabMenuModel::CommandShowTitleBar: {
+      auto* browser = controller_->browser();
+      browser->profile()->GetOriginalProfile()->GetPrefs()->SetBoolean(
+          brave_tabs::kVerticalTabsShowTitleOnWindow,
+          !IsCommandIdChecked(command_id));
+      BrowserView::GetBrowserViewForBrowser(browser)->InvalidateLayout();
+      return;
+    }
     default:
       NOTREACHED();
       return;

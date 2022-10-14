@@ -290,6 +290,8 @@ source_set("ui") {
 
     if (is_mac) {
       sources += [
+        "views/frame/brave_browser_frame_mac.h",
+        "views/frame/brave_browser_frame_mac.mm",
         "views/frame/brave_browser_non_client_frame_view_mac.h",
         "views/frame/brave_browser_non_client_frame_view_mac.mm",
       ]

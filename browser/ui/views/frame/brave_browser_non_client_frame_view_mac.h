@@ -24,11 +24,16 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
       const BraveBrowserNonClientFrameViewMac&) = delete;
 
  private:
+  bool ShouldShowWindowTitleForVerticalTabs() const;
+  void UpdateWindowTitleVisibility();
+
   // BrowserNonClientFrameViewMac overrides:
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
+
+  BooleanPrefMember show_title_bar_on_vertical_tabs_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_NON_CLIENT_FRAME_VIEW_MAC_H_

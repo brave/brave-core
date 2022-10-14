@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_glass_browser_frame_view.h"
 
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/gfx/geometry/insets.h"
@@ -35,4 +36,15 @@ void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
     canvas->ClipRect(bounds_to_frame_graphic);
   }
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);
+}
+
+int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
+  if (browser_view()->browser()->is_type_normal() &&
+      tabs::features::ShouldShowVerticalTabs()) {
+    if (!tabs::features::ShouldShowWindowTitleForVerticalTabs(
+            browser_view()->browser()))
+      return 0;
+  }
+
+  return GlassBrowserFrameView::GetTopInset(restored);
 }
