@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index bc95df1e5e6c2b85a651cbb5b2051987e56e9c2b..84c307d609e4d8e93694ccd7dea3ecf7cd0ad99d 100644
+index 4a73f7c9a7b376d48edbdf03552c74b23b30629b..0adf86116f27e2731efdaade72845b2decff12f3 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -493,4 +493,5 @@ build_webui("build") {
+@@ -488,4 +488,5 @@ build_webui("build") {
        "lazy_load.rollup.js|lazy_load.js",
      ]
    }

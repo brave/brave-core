@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index b538c4c745329bae627b8ad7859f14e4b68fd289..3e372e868f73acdfa7b85ffacef791f87278dfa4 100644
+index d1e462da8f11edaefe2f5315b487db660abe4c9e..1e22139b3477c3e63dffb4e0d2c1dbb26f354f9d 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1227,3 +1227,4 @@ chrome_java_sources = [
+@@ -1226,3 +1226,4 @@ chrome_java_sources = [
    "java/src/org/chromium/chrome/browser/webauth/authenticator/CableAuthenticatorUSBActivity.java",
    "java/src/org/chromium/chrome/browser/webshare/ShareServiceImplementationFactory.java",
  ]
