@@ -422,9 +422,10 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void getCountryCode() {
+    public String getCountryCode() {
         synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().getCountryCode(mNativeBraveRewardsNativeWorker);
+            return BraveRewardsNativeWorkerJni.get().getCountryCode(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 

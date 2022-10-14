@@ -3162,6 +3162,21 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SELECT_YOUR_COUNTRY_TEXT" desc="Declare geo modal text">
       Select your country so we can show you the right options and ads for your region. <ph name="PRIVACY_POLICY">%1$s</ph>
     </message>
+    <message name="IDS_DECLARE_GEO_SUCCESS_RESPONSE_TEXT" desc="Declare geo success modal text">
+      Your Brave Rewards region has been set to <ph name="COUNTRY_NAME">%1$s</ph>.
+    </message>
+    <message name="IDS_DECLARE_GEO_FAILED_RESPONSE_TEXT" desc="Declare geo failed modal text">
+      Unfortunately, there was an error while trying to set your country. Please try again.
+    </message>
+    <message name="IDS_SOMETHING_WENT_WRONG_TEXT" desc="Declare geo failed modal title">
+      Something went wrong
+    </message>
+    <message name="IDS_RETRY_TEXT" desc="Declare geo failed modal action text">
+      Retry
+    </message>
+    <message name="IDS_CLOSE_TEXT" desc="Declare geo success modal action text">
+      Close
+    </message>
   </messages>
   </release>
 </grit>

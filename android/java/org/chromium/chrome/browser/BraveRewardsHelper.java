@@ -52,6 +52,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             "show_brave_rewards_onboarding_modal";
     private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE =
             "show_brave_rewards_onboarding_once";
+    private static final String PREF_SHOW_DECLARE_GEO_MODAL = "show_declare_geo_modal";
     private static final String PREF_SHOW_ONBOARDING_MINI_MODAL = "show_onboarding_mini_modal";
     private static final String PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE =
             "next_rewards_onboarding_modal_date";
@@ -178,6 +179,18 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
         sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, enabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean shouldShowDeclareGeoModal() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_SHOW_DECLARE_GEO_MODAL, false);
+    }
+
+    public static void setShowDeclareGeoModal(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_DECLARE_GEO_MODAL, enabled);
         sharedPreferencesEditor.apply();
     }
 
