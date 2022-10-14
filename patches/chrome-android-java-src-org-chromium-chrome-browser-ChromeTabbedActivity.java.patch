@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 2e42a41f1391a761e0bc4a49b3da243ad94e417a..acc0523452757f67f1dada751136182ec898acab 100644
+index 2fb9f904485926772a3cd1be43e5b2ac9b591aee..51c8438cb5c0f13efe6530e9ea63c026d3438000 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -1049,7 +1049,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1047,7 +1047,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                                      this, getModalDialogManager()));
              NotificationPermissionController.attach(
                      getWindowAndroid(), mNotificationPermissionController);
