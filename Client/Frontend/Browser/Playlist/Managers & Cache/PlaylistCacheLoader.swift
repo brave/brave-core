@@ -350,7 +350,7 @@ class PlaylistWebLoader: UIView {
       "$<PlaylistDetector>": "PlaylistDetector_\(token)",
       "$<security_token>": "\(token)",
       "$<sendMessage>": "playlistDetector_sendMessage_\(token)",
-      "$<handler>": "playlistCacheLoader_\(UserScriptManager.securityToken)",
+      "$<handler>": PlaylistWebLoaderContentHelper.messageHandlerName,
       "$<notify>": "notify_\(token)",
       "$<onLongPressActivated>": "onLongPressActivated_\(token)",
       "$<setupLongPress>": "setupLongPress_\(token)",
