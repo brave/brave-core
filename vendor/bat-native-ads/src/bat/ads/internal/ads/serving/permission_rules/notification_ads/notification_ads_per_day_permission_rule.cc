@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/notification_ads/notification_ads_per_day_permission_rule.h"
 
+#include <vector>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"

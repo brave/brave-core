@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
+#include <string>
+
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/notreached.h"

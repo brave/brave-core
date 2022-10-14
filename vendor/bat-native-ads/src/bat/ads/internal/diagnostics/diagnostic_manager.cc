@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 
-#include <string>
 #include <utility>
 
 #include "base/check_op.h"

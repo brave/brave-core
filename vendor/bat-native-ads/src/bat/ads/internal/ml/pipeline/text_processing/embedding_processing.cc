@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
-#include <algorithm>
 #include <cstdint>
 #include <utility>
 #include <vector>

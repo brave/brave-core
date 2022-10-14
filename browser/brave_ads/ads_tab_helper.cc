@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_ads/ads_tab_helper.h"
 
-#include <memory>
 #include <string>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"

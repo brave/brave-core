@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
-#include <vector>
-
 #include "base/time/time.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"

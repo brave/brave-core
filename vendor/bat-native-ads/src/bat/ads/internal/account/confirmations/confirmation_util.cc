@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 
-#include <string>
 #include <vector>
 
 #include "base/base64url.h"

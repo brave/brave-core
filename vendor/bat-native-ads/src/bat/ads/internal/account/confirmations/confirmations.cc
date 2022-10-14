@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 
-#include <vector>
-
 #include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/time/time.h"

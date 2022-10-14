@@ -5,8 +5,6 @@
 
 #include "brave/browser/notifications/ads_notification_handler.h"
 
-#include <memory>
-
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "url/gurl.h"
 

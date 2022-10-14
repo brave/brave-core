@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
-#include <functional>
-#include <string>
 #include <utility>
 
 #include "absl/types/optional.h"

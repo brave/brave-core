@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_ads/brave_ads_host.h"
 
-#include <string>
 #include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"

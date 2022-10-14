@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_URL_REQUEST_BUILDER_H_
 
 #include <string>
-#include <vector>
 
 #include "base/values.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"

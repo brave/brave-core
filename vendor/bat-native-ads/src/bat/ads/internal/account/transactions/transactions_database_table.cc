@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 
-#include <functional>
 #include <utility>
 #include <vector>
 

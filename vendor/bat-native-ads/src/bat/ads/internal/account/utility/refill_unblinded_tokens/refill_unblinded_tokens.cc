@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
-#include <functional>
 #include <utility>
 
 #include "absl/types/optional.h"

@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/privacy/p2a/p2a.h"
 
-#include <functional>
-
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"

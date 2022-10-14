@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
-#include <vector>
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"

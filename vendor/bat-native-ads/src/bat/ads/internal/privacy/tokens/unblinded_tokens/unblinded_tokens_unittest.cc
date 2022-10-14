@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
-#include <string>
-#include <vector>
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 

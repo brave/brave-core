@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 
 #include <cstdint>
-#include <functional>
 #include <utility>
 
 #include "base/time/time.h"

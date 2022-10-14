@@ -19,6 +19,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
@@ -381,6 +382,7 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
+  // TODO(tmancey): Cleanup
   const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
       ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.process_at =

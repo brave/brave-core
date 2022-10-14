@@ -6,8 +6,6 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 #include <cstdint>
-#include <functional>
-#include <memory>
 #include <utility>
 
 #include "base/bind.h"

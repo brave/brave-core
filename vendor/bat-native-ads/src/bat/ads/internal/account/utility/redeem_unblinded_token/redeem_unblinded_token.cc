@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
 
-#include <functional>
 #include <string>
 #include <utility>
 #include <vector>

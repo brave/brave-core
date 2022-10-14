@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
-#include <functional>
-#include <string>
 #include <utility>
 
 #include "absl/types/optional.h"

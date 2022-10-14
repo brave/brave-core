@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/creatives/campaigns_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/bind.h"

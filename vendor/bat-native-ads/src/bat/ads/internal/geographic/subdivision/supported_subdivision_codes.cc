@@ -7,7 +7,6 @@
 
 #include "base/no_destructor.h"
 #include "base/strings/string_piece.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads::geographic {
 

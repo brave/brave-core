@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 
 #include <string>
-#include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
