@@ -233,7 +233,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     private GURL getCurrentHostHttpAddress() {
         ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
-        if (activity != null) {
+        if (activity != null && activity.getActivityTab() != null) {
             return activity.getActivityTab().getUrl().getOrigin();
         }
         return GURL.emptyGURL();
