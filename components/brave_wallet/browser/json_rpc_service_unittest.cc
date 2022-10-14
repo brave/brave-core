@@ -2409,15 +2409,15 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
 
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
-    if (auto response = eth_mainnet_endpoint_handler_->HandleRequest(request)) {
+    absl::optional<std::string> response;
+    if ((response = eth_mainnet_endpoint_handler_->HandleRequest(request))) {
       if (response == "timeout") {
         url_loader_factory_.AddResponse(request.url.spec(), "",
                                         net::HTTP_REQUEST_TIMEOUT);
       } else {
         url_loader_factory_.AddResponse(request.url.spec(), *response);
       }
-    } else if (auto response =
-                   polygon_endpoint_handler_->HandleRequest(request)) {
+    } else if ((response = polygon_endpoint_handler_->HandleRequest(request))) {
       if (response == "timeout") {
         url_loader_factory_.AddResponse(request.url.spec(), "",
                                         net::HTTP_REQUEST_TIMEOUT);
