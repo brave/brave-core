@@ -81,6 +81,7 @@
     *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
     *** mSyncReadingList;
+    *** mSyncAutofill;
     *** mTurnOffSync;
 }
 

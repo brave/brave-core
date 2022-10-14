@@ -1026,6 +1026,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
         Could not join this sync chain. Account was deleted.
       </message>
+      <message name="IDS_BRAVE_SYNC_AUTOFILL" desc="Title for preference which enables sync'ing of autofill. [CHAR_LIMIT=32]">
+        Addresses, payment info, etc.
+      </message>
       <message name="IDS_SYNC_FINAL_WARNING_TITLE" desc="Sync final warning alert dialog title">
         Warning
       </message>

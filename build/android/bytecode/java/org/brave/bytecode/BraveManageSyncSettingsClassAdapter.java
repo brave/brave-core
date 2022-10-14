@@ -33,5 +33,8 @@ public class BraveManageSyncSettingsClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveManageSyncSettingsClassName, "mSyncReadingList");
         makeProtectedField(sManageSyncSettingsClassName, "mSyncReadingList");
+
+        deleteField(sBraveManageSyncSettingsClassName, "mSyncAutofill");
+        makeProtectedField(sManageSyncSettingsClassName, "mSyncAutofill");
     }
 }

@@ -699,6 +699,12 @@
   <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
     Could not join this sync chain. Account was deleted.
   </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing autofill settings between multiple browser instances.">
+    Addresses, payment info, etc.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing apps between multiple browser instances.">
+    Web apps (PWAs)
+  </message>
 
   <!-- Settings / Search engine -->
   <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom search engines">
