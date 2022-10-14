@@ -114,7 +114,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   enabled_features.emplace_back(permission_rules::features::kFeature,
                                 kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

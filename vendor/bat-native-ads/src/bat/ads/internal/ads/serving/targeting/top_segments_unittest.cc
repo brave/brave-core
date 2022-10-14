@@ -160,7 +160,7 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   }
 
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
 
   if (param.epsilon_greedy_bandits_enabled) {
     const char kEpsilonValue[] = "epsilon_value";

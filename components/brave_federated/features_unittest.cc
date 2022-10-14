@@ -31,7 +31,7 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultOperationalPatternsEnabled) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -57,7 +57,7 @@ TEST(BraveFederatedLearningFeaturesTest, OperationalPatternsEnabled) {
   enabled_features.emplace_back(features::kFederatedLearning,
                                 kFederatedLearningParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -77,7 +77,7 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionSlotSizeInSeconds) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -101,7 +101,7 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInSeconds) {
   enabled_features.emplace_back(features::kFederatedLearning,
                                 kFederatedLearningParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -119,7 +119,7 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultMockTaskDuration) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -143,7 +143,7 @@ TEST(BraveFederatedLearningFeaturesTest, MockTaskDuration) {
   enabled_features.emplace_back(features::kFederatedLearning,
                                 kFederatedLearningParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -161,7 +161,7 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionIdLifetimeInSeconds) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -188,7 +188,7 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionIdLifetimeInSeconds) {
   enabled_features.emplace_back(features::kFederatedLearning,
                                 kFederatedLearningParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
