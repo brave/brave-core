@@ -313,7 +313,6 @@ bool CreateEntry(const std::wstring& entry_name,
   entry.dwEncryptionType = ET_Optional;
   entry.dwVpnStrategy = VS_Ikev2Only;
   entry.dwfOptions2 = RASEO2_DontNegotiateMultilink |
-                      RASEO2_ReconnectIfDropped |
                       RASEO2_IPv6RemoteDefaultGateway | RASEO2_CacheCredentials;
   entry.dwRedialCount = 3;
   entry.dwRedialPause = 60;
