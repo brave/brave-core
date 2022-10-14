@@ -195,7 +195,7 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 }
 
 void AdEvents::GetIf(const std::string& condition,
-                     GetAdEventsCallback callback) const {
+                     const GetAdEventsCallback& callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -214,7 +214,7 @@ void AdEvents::GetIf(const std::string& condition,
   RunTransaction(query, std::move(callback));
 }
 
-void AdEvents::GetAll(GetAdEventsCallback callback) const {
+void AdEvents::GetAll(const& GetAdEventsCallback& callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -233,7 +233,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
-                          GetAdEventsCallback callback) const {
+                          const GetAdEventsCallback& callback) const {
   DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
 
   const std::string ad_type_as_string = AdType(ad_type).ToString();

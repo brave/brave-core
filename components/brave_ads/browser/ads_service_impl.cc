@@ -568,7 +568,7 @@ void AdsServiceImpl::GetDeviceId(const uint32_t number_of_start) {
 
 void AdsServiceImpl::OnGetDeviceId(const uint32_t number_of_start,
                                    std::string device_id) {
-  sys_info_.device_id = device_id;
+  sys_info_.device_id = std::move(device_id);
 
   DetectUncertainFuture(number_of_start);
 }
@@ -1625,7 +1625,7 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
             std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file(
                 new base::File(path, base::File::Flags::FLAG_OPEN |
                                          base::File::Flags::FLAG_READ),
-                base::OnTaskRunnerDeleter(file_task_runner));
+                base::OnTaskRunnerDeleter(std::move(file_task_runner)));
             return file;
           },
           std::move(file_path), file_task_runner_),

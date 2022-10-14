@@ -22,11 +22,13 @@ class AdEvents final : public TableInterface {
  public:
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
-  void GetIf(const std::string& condition, GetAdEventsCallback callback) const;
+  void GetIf(const std::string& condition,
+             const GetAdEventsCallback& callback) const;
 
-  void GetAll(GetAdEventsCallback callback) const;
+  void GetAll(const GetAdEventsCallback& callback) const;
 
-  void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;
+  void GetForType(mojom::AdType ad_type,
+                  const GetAdEventsCallback& callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
   void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;

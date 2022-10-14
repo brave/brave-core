@@ -19,7 +19,7 @@ namespace brave_ads {
 namespace {
 
 schema_org::mojom::ValuesPtr CreateVectorValuesPtr(std::string value) {
-  return schema_org::mojom::Values::NewStringValues({value});
+  return schema_org::mojom::Values::NewStringValues({std::move(value)});
 }
 
 schema_org::mojom::ValuesPtr CreateVectorValuesPtr(int64_t value) {
