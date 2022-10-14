@@ -53,7 +53,7 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
         String publisherFavIconURL =
                 mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId_);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-        String url = currentActiveTab.getUrl().getSpec();
+        String url = currentActiveTab != null ? currentActiveTab.getUrl().getSpec() : "";
         String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
         mIconFetcher = new org.chromium.chrome.browser.BraveRewardsHelper(currentActiveTab);
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
