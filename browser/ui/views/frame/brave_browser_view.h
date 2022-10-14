@@ -94,6 +94,7 @@ class BraveBrowserView : public BrowserView {
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
+  bool ShouldShowWindowTitle() const override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();

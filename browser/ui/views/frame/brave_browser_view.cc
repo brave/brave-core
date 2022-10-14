@@ -480,6 +480,16 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
+bool BraveBrowserView::ShouldShowWindowTitle() const {
+  if (BrowserView::ShouldShowWindowTitle())
+    return true;
+
+  if (tabs::features::ShouldShowVerticalTabs() && browser_->is_type_normal())
+    return true;
+
+  return false;
+}
+
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
   return static_cast<BraveBrowser*>(browser_.get());
 }
