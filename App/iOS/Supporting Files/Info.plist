@@ -6,6 +6,8 @@
 	<string>$(BRAVE_API_KEY)</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(APP_IDENTIFIER_PREFIX)</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -73,6 +75,7 @@
 	<string>This lets you save photos.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>LockScreenFavoriteConfigurationIntent</string>
 		<string>OpenBookmarkWebsiteIntent</string>
 		<string>OpenHistoryWebsiteIntent</string>
 		<string>OpenWebsiteIntent</string>
@@ -184,7 +187,5 @@
 		<string>A000000527471117</string>
 		<string>A0000006472F0001</string>
 	</array>
-	<key>CFBundleAllowMixedLocalizations</key>
-	<true/>
 </dict>
 </plist>

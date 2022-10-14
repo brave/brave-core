@@ -130,13 +130,43 @@
 				</dict>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>Playlist</string>
+					<string>Brave Playlist</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>FGO5qW</string>
 					<key>INEnumValueIndex</key>
 					<integer>6</integer>
 					<key>INEnumValueName</key>
 					<string>playlist</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Search</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>Y7TWy8</string>
+					<key>INEnumValueIndex</key>
+					<integer>7</integer>
+					<key>INEnumValueName</key>
+					<string>search</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Brave Wallet</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>jXiFQY</string>
+					<key>INEnumValueIndex</key>
+					<integer>8</integer>
+					<key>INEnumValueName</key>
+					<string>wallet</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Scan QR Code</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>qKrzyX</string>
+					<key>INEnumValueIndex</key>
+					<integer>9</integer>
+					<key>INEnumValueName</key>
+					<string>scanQRCode</string>
 				</dict>
 			</array>
 		</dict>
@@ -146,11 +176,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>21A344</string>
+	<string>21G83</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>13A1030d</string>
+	<string>14A5294g</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>13.1</string>
+	<string>14.0</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -260,7 +290,7 @@
 			<key>INIntentCategory</key>
 			<string>information</string>
 			<key>INIntentDescription</key>
-			<string>Stats Configuration Widget</string>
+			<string>Shortcuts Widget Configuration</string>
 			<key>INIntentDescriptionID</key>
 			<string>ziTvSZ</string>
 			<key>INIntentEligibleForWidgets</key>
@@ -479,8 +509,269 @@
 			<key>INIntentVerb</key>
 			<string>View</string>
 		</dict>
+		<dict>
+			<key>INIntentCategory</key>
+			<string>information</string>
+			<key>INIntentDescription</key>
+			<string>Lock Screen Favorite Widget</string>
+			<key>INIntentDescriptionID</key>
+			<string>8pcZ6L</string>
+			<key>INIntentEligibleForWidgets</key>
+			<true/>
+			<key>INIntentIneligibleForSuggestions</key>
+			<true/>
+			<key>INIntentLastParameterTag</key>
+			<integer>8</integer>
+			<key>INIntentName</key>
+			<string>LockScreenFavoriteConfiguration</string>
+			<key>INIntentParameters</key>
+			<array>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Favorite</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>nXONef</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>1</integer>
+					<key>INIntentParameterName</key>
+					<string>favorite</string>
+					<key>INIntentParameterObjectType</key>
+					<string>FavoriteEntry</string>
+					<key>INIntentParameterObjectTypeNamespace</key>
+					<string>88xZPY</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsDynamicEnumeration</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>8</integer>
+					<key>INIntentParameterType</key>
+					<string>Object</string>
+				</dict>
+			</array>
+			<key>INIntentResponse</key>
+			<dict>
+				<key>INIntentResponseCodes</key>
+				<array>
+					<dict>
+						<key>INIntentResponseCodeName</key>
+						<string>success</string>
+						<key>INIntentResponseCodeSuccess</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>INIntentResponseCodeName</key>
+						<string>failure</string>
+					</dict>
+				</array>
+			</dict>
+			<key>INIntentTitle</key>
+			<string>Lock Screen Favorite Configuration</string>
+			<key>INIntentTitleID</key>
+			<string>7Ds8rk</string>
+			<key>INIntentType</key>
+			<string>Custom</string>
+			<key>INIntentVerb</key>
+			<string>View</string>
+		</dict>
+		<dict>
+			<key>INIntentCategory</key>
+			<string>information</string>
+			<key>INIntentDescription</key>
+			<string>Shortcut Widget Configuration</string>
+			<key>INIntentDescriptionID</key>
+			<string>hssb67</string>
+			<key>INIntentEligibleForWidgets</key>
+			<true/>
+			<key>INIntentIneligibleForSuggestions</key>
+			<true/>
+			<key>INIntentLastParameterTag</key>
+			<integer>9</integer>
+			<key>INIntentName</key>
+			<string>LockScreenShortcutConfiguration</string>
+			<key>INIntentParameters</key>
+			<array>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Shortcut</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>7MuqiB</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>1</integer>
+					<key>INIntentParameterEnumType</key>
+					<string>WidgetShortcut</string>
+					<key>INIntentParameterEnumTypeNamespace</key>
+					<string>88xZPY</string>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataDefaultValue</key>
+						<string>newTab</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>shortcut</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>There are ${count} options matching ‘${shortcut}’.</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>TxuMja</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>DisambiguationIntroduction</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>Just to confirm, you wanted ‘${shortcut}’?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>r2EI05</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Confirmation</string>
+						</dict>
+					</array>
+					<key>INIntentParameterTag</key>
+					<integer>7</integer>
+					<key>INIntentParameterType</key>
+					<string>Integer</string>
+				</dict>
+			</array>
+			<key>INIntentResponse</key>
+			<dict>
+				<key>INIntentResponseCodes</key>
+				<array>
+					<dict>
+						<key>INIntentResponseCodeName</key>
+						<string>success</string>
+						<key>INIntentResponseCodeSuccess</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>INIntentResponseCodeName</key>
+						<string>failure</string>
+					</dict>
+				</array>
+			</dict>
+			<key>INIntentTitle</key>
+			<string>Lock Screen Shortcut Configuration</string>
+			<key>INIntentTitleID</key>
+			<string>XkwBGY</string>
+			<key>INIntentType</key>
+			<string>Custom</string>
+			<key>INIntentVerb</key>
+			<string>View</string>
+		</dict>
 	</array>
 	<key>INTypes</key>
-	<array/>
+	<array>
+		<dict>
+			<key>INTypeDisplayName</key>
+			<string>Favorite Entry</string>
+			<key>INTypeDisplayNameID</key>
+			<string>iB2TOM</string>
+			<key>INTypeLastPropertyTag</key>
+			<integer>108</integer>
+			<key>INTypeName</key>
+			<string>FavoriteEntry</string>
+			<key>INTypeProperties</key>
+			<array>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>1</integer>
+					<key>INTypePropertyName</key>
+					<string>identifier</string>
+					<key>INTypePropertyTag</key>
+					<integer>1</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>2</integer>
+					<key>INTypePropertyName</key>
+					<string>displayString</string>
+					<key>INTypePropertyTag</key>
+					<integer>2</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>3</integer>
+					<key>INTypePropertyName</key>
+					<string>pronunciationHint</string>
+					<key>INTypePropertyTag</key>
+					<integer>3</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>4</integer>
+					<key>INTypePropertyName</key>
+					<string>alternativeSpeakableMatches</string>
+					<key>INTypePropertySupportsMultipleValues</key>
+					<true/>
+					<key>INTypePropertyTag</key>
+					<integer>103</integer>
+					<key>INTypePropertyType</key>
+					<string>Object</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDisplayName</key>
+					<string>URL</string>
+					<key>INTypePropertyDisplayNameID</key>
+					<string>D5r3nt</string>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>5</integer>
+					<key>INTypePropertyName</key>
+					<string>url</string>
+					<key>INTypePropertyTag</key>
+					<integer>108</integer>
+					<key>INTypePropertyType</key>
+					<string>URL</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

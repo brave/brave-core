@@ -106,6 +106,10 @@ class BrowserNavigationHelper {
   func openPlaylist() {
     bvc?.openPlaylist(tab: nil, item: nil, playbackOffset: 0.0)
   }
+  
+  func openWallet() {
+    bvc?.presentWallet()
+  }
 
   @objc private func dismissView() {
     guard let bvc = bvc else { return }

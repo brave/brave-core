@@ -40,18 +40,10 @@ private struct FavoritesProvider: TimelineProvider {
   }
 }
 
-private struct FaviconImage: View {
+struct FaviconImage: View {
   var image: UIImage
   var contentMode: UIView.ContentMode
-
-  var usePadding: Bool {
-    switch contentMode {
-    case .scaleToFill, .scaleAspectFit, .scaleAspectFill:
-      return false
-    default:
-      return true
-    }
-  }
+  var includePadding: Bool
 
   var body: some View {
     Image(uiImage: image)
@@ -59,7 +51,7 @@ private struct FaviconImage: View {
       .aspectRatio(1, contentMode: .fit)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .clipped()
-      .padding(usePadding ? 8 : 0)
+      .padding(includePadding ? 8 : 0)
   }
 }
 
@@ -146,7 +138,14 @@ private struct FavoritesGridView: View {
             label: {
               Group {
                 if let attributes = favorite.favicon, let image = attributes.image {
-                  FaviconImage(image: image, contentMode: attributes.contentMode)
+                  FaviconImage(image: image, contentMode: attributes.contentMode, includePadding: {
+                    switch attributes.contentMode {
+                    case .scaleToFill, .scaleAspectFit, .scaleAspectFill:
+                      return false
+                    default:
+                      return true
+                    }
+                  }())
                     .background(Color(attributes.backgroundColor ?? .clear))
                 } else {
                   Text(verbatim: favorite.url.baseDomain?.first?.uppercased() ?? "")

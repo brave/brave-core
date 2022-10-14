@@ -30,7 +30,7 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
           let fetcher = FaviconFetcher(siteURL: url, kind: .largeIcon, persistentCheckOverride: true)
           widgetFaviconFetchers.append(fetcher)
           fetcher.load { _, attributes in
-            favData[index] = .init(url: url, favicon: attributes)
+            favData[index] = .init(url: url, title: fav.title, favicon: attributes)
             group.leave()
           }
         }

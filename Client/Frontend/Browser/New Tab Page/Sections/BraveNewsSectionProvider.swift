@@ -386,7 +386,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       }
 
       var openInNewPrivateTab: UIAction {
-        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
+        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.sunglasses"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
       }
       let openActions: [UIAction] = [
         openInNewTab,
@@ -434,7 +434,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       }
 
       var openInNewPrivateTab: UIAction {
-        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
+        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.sunglasses"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
       }
 
       var disableSource: UIAction {

@@ -11,10 +11,12 @@ import os.log
 
 public struct WidgetFavorite: Codable {
   public var url: URL
+  public var title: String?
   public var favicon: FaviconAttributes?
 
-  public init(url: URL, favicon: FaviconAttributes) {
+  public init(url: URL, title: String?, favicon: FaviconAttributes) {
     self.url = url
+    self.title = title
     self.favicon = favicon
   }
 }
