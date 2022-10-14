@@ -17,10 +17,7 @@ class BraveSyncStoppedReporter : public SyncStoppedReporter {
   BraveSyncStoppedReporter(
       const GURL& sync_service_url,
       const std::string& user_agent,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      ResultCallback callback);
-  BraveSyncStoppedReporter(const BraveSyncStoppedReporter&) = delete;
-  BraveSyncStoppedReporter& operator=(const BraveSyncStoppedReporter&) = delete;
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveSyncStoppedReporter() override;
 
   void ReportSyncStopped(const std::string& access_token,
