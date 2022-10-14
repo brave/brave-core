@@ -546,6 +546,12 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_DISABLE" desc="The button text that disallows integrating the accessibility labels service of Brave.">
           No thanks
         </message>
+        <message name="IDS_CONTENT_CONTEXT_LIVE_CAPTION_ENABLE" desc="The name of the Live Caption command in the content area context menu to enable Live Caption">
+          &amp;Enable Live Caption
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_LIVE_CAPTION_DISABLE" desc="The name of the Live Caption command in the content area context menu to disable Live Caption">
+          &amp;Disable Live Caption
+        </message>
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_BACK" desc="The name of the Back command in the content area context menu">
             &amp;Back
@@ -857,7 +863,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_VIEWFRAMESOURCE" desc="In Title Case: The name of the View Frame Source command in the content area context menu">
             &amp;View Frame Source
           </message>
-
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
           <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB" desc="In Title Case: The name of the Open Link in New Tab command in the content area context menu">
             Open Link in New &amp;Tab
@@ -4571,6 +4576,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
             Read ChromeOS Flex device and component serial numbers.
           </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_NETWORK_INFORMATION" desc="Permission string for accessing network information.">
+            Read ChromeOS Flex network information.
+          </message>
         </if>
         <if expr="not reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
@@ -4581,6 +4589,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
             Read ChromeOS device and component serial numbers.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_NETWORK_INFORMATION" desc="Permission string for accessing network information.">
+            Read ChromeOS network information.
           </message>
         </if>
       </if>
@@ -6794,6 +6805,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
+      <!-- Bookmarks menu -->
+      <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
+        {NUM_BOOKMARKS, plural, =1 {1 bookmark} other {# bookmarks}}
+      </message>
+
       <!-- Read Later button and menu -->
       <if expr="use_titlecase">
         <message name="IDS_READ_LATER_TITLE" desc="Title of the Read later menu">
@@ -6997,6 +7013,33 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_LENS_SEARCH" desc="The tooltip for search-by-image button">
         Search by image
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_CLOSE_BUTTON_LABEL" desc="Aria label for the button to close the upload dialog.">
+        Close
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_TITLE" desc="Title on dialog to upload an image to Google Lens.">
+        Search any image with Google Lens
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_DRAG_TITLE" desc="Message to user on drop zone where they can drag-and-drop an image to search.">
+        Drag an image here or
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_UPLOAD_FILE_TITLE" desc="Message to user on drop zone where they can drag-and-drop an image to search.">
+        upload a file
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_OR_TEXT" desc="Message to user on drop zone where they can select a file to search.">
+        or
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_TEXT_PLACEHOLDER" desc="Label on the input box for Lens search URL upload.">
+        Paste image link
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_SEARCH_BUTTON_LABEL" desc="Label for button which allows the user to submit URL for upload.">
+        Search
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_DRAG_DROP_TITLE" desc="Message to user when they are dragging an image over the image drop zone.">
+        Drop an image here
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_LOADING_TEXT" desc="Message to user when their is uploading.">
+        Uploading...
       </message>
       <message name="IDS_TOOLTIP_SAVE_CREDIT_CARD" desc="The tooltip for the icon that shows the save credit card bubble">
         Save card
@@ -9175,8 +9218,68 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
 
       <!-- Page specific site data dialog (redesign of Collected cookies window) -->
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_TITLE" desc="The title of `Cookies and site data` dialog (previously 'Cookies in use' dialog). The dialog contains a list of sites that have access to storage or are blocked from accessing it. It also has controls for each site to allow access, block access or allow access for a session only.">
+        Cookies and site data
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_FIRST_PARTY_TITLE" desc="This is a title of a section that displayed a list of sites that have accessed storage and are considered first-party to the site the user is currently visiting. The label is shown in the `Cookies and site data` dialog.">
+        From the site you’re viewing
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_FIRST_PARTY_SUBTITLE" desc="This is a subtitle of a section that displayed a list of sites that have accessed storage and are considered first-party to the site the user is currently visiting. It provides more information about what first party sites means. The label is shown in the `Cookies and site data` dialog.">
+        Including sites from the same domain, for example, google.com and mail.google.com. Sites you’re viewing can save data on your device.
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_THIRD_PARTY_TITLE" desc="This is a title of a section that displayed a list of sites that have accessed storage and are considered third-party to the site the user is currently visiting. The label is shown in the `Cookies and site data` dialog.">
+        From other sites
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_THIRD_PARTY_SUBTITLE" desc="This is a subtitle of a section that displayed a list of sites that have accessed storage and are considered third-party to the site the user is currently visiting. It provides more information about what third party sites means. The label is shown in the `Cookies and site data` dialog.">
+        A site you’re viewing can embed content from other sites, for example images, ads, and text. These embedded sites can save data on your device.
+      </message>
+
       <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_EMPTY_STATE_LABEL" desc="The text used to explain to users that there are no cookies set and that this is the place where they will be shown. The label is shown in the `Cookies and site data` dialog.">
         If a site uses cookies, it will appear here
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_ALLOW_MENU_ITEM" desc="The name of a menu item that allows storage access (creates an allow exception) for a site. The menu item is shown in the `Cookies and site data` dialog.">
+        Allow to save data
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_BLOCK_MENU_ITEM" desc="The name of a menu item that blocks storage access (creates a block exception) for a site. The menu item is shown in the `Cookies and site data` dialog.">
+        Don’t allow to save data
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_SESSION_ONLY_MENU_ITEM" desc="The name of a menu item that allows storage access and clears the storage set after user closes Brave (creates a 'Clear on exit' exception) for a site. The menu item is shown in the `Cookies and site data` dialog.">
+        Delete when you close all windows
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_ALLOWED_STATE_SUBTITLE" desc="The label that is shown under a site's name to indicate the state of storage access for the site: the site is allowed to access storage. It isn't visible by default, only if user has allowed previously blocked site. The label is shown in the `Cookies and site data` dialog.">
+        Allowed to save data to your device
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_BLOCKED_STATE_SUBTITLE" desc="The label that is shown under a site's name to indicate the state of storage access for the site: the site is not allowed to access storage. The label is shown in the `Cookies and site data` dialog.">
+        Not allowed to save data to your device
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_SESSION_ONLY_STATE_SUBTITLE" desc="The label that is shown under a site's name to indicate the state of storage access for the site: the site is allowed to access storage but the accessed storage is cleared when user closes Brave. The label is shown in the `Cookies and site data` dialog.">
+        Delete data when you close all windows
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_PARTITIONED_STATE_SUBTITLE" desc="The label that is shown under a site's name to indicate the state of storage access for the site: the site has only accessed partitioned storage. Partitioned storage set in a context of one site can only be accessed in that site's context and cannot be accessed when embedded on other sites. The label is shown in the `Cookies and site data` dialog.">
+        Data is treated the same as the site you’re viewing
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_PARTITIONED_SESSION_ONLY_STATE_SUBTITLE" desc="The label that is shown under a site's name to indicate the state of storage access for the site: the site has only accessed partitioned storage and the accessed storage is cleared when user closes Brave. Partitioned storage set in a context of one site can only be accessed in that site's context and cannot be accessed when embedded on other sites. The label is shown in the `Cookies and site data` dialog.">
+        Delete data when you close all windows. Data is treated the same as the site you’re viewing
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_CONTEXT_MENU_TOOLTIP" desc="The tooltip that is used for 3-dot menu button that opens a menu with actions to control storage access for the site. The button is shown in the `Cookies and site data` dialog.">
+        More actions for <ph name="SITE_NAME">$1<ex>example.com</ex></ph>
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_DELETE_BUTTON_TOOLTIP" desc="The tooltip that is used for button button that clears storage accessed by the site. The button is shown in the `Cookies and site data` dialog.">
+        Delete saved data for <ph name="SITE_NAME">$1<ex>example.com</ex></ph>
       </message>
 
       <!-- Accessiblility strings for Infobars in Views -->
@@ -13364,6 +13467,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- Automated Password Change on Desktop strings -->
     <if expr="not is_android">
+      <message name="IDS_ACCESSIBLE_AUTOFILL_ASSISTANT_PASSWORD_CHANGE" desc="The text announced by screenreaders once focus in brought to automatic password change side panel UI.">
+        Automatic password change
+      </message>
       <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_TITLE" desc="The title for the Automated Password Change on Desktop onboarding dialog. The onboarding dialog is a modal dialog that is shown if a user has not previously consented to using Assistant features.">
         Let Brave Assistant help you change your password
       </message>
@@ -13376,6 +13482,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_LEARN_MORE" desc="The text displayed on a link on the onboarding dialog that a user can click to navigate to a Brave website with detailed information on how Automated Password Change on Desktop/ Assistant works and what data is collected.">
         Learn more
       </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_LEARN_MORE_ABOUT_AUTOMATIC_PASSWORD_CHANGE" desc="The text displayed on a link on the onboarding dialog that a user can click to navigate to a Brave website with detailed information on how Automated Password Change on Desktop/ Assistant works and what data is collected.">
+        Learn more about automatic password change
+      </message>
       <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_CANCEL_TEXT" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
         Cancel
       </message>
@@ -13385,28 +13494,34 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_STARTING_SCREEN_TITLE" desc="The title shown on the side panel after an Automated Password Change flow has been started. This message is shown until the first response from a script is received that resets the initial state.">
         Opening <ph name="URL">$1<ex>example.com</ex></ph>...
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_CHANGED_PASSWORD_TITLE" desc="The title shown on the side panel after an Automated Password Change flow has been succeeded." translateable="false">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_CHANGED_PASSWORD_TITLE" desc="The title shown on the side panel after an Automated Password Change flow has been succeeded.">
         Successfully changed the compromised password
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_CHANGED_PASSWORD_DESCRIPTION" desc="The description shown on the side panel after an Automated Password Change flow has been succeeded." translateable="false">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_RESET_PASSWORD_TITLE" desc="The title shown on the side panel after an Automated Password Change flow ended in a password reset request.">
+        Check your email to choose a new password
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_CHANGED_PASSWORD_DESCRIPTION" desc="The description shown on the side panel after an Automated Password Change flow has been succeeded.">
         Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>.
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_CHANGED_PASSWORD_CLOSE_SIDE_PANEL" desc="The label of the button shown in the side panel after a sucessfull run. Once a user clicks on it, the side panel will close." translateable="false">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_CHANGED_PASSWORD_CLOSE_SIDE_PANEL" desc="The label of the button shown in the side panel after a sucessful run. Once a user clicks on it, the side panel will close.">
         Done
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ERROR_SCREEN_TITLE" desc="The title shown in the side panel when an error with the script execution occurred." translateable="false">
+       <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_SUCCESSFULLY_RESET_PASSWORD_CLOSE_SIDE_PANEL" desc="The label of the button shown in the side panel after a run that ended in a password reset request. Once a user clicks on it, the side panel will close.">
+        OK
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ERROR_SCREEN_TITLE" desc="The title shown in the side panel when an error with the script execution occurred.">
         Something went wrong.
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ERROR_SCREEN_DESCRIPTION" desc="The description shown in the side panel when an error with the script execution occurred." translateable="false">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ERROR_SCREEN_DESCRIPTION" desc="The description shown in the side panel when an error with the script execution occurred.">
         Check the site and try changing your password.
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_ASSISTANT_STOPPED_BUBBLE_TRY_AGAIN" desc="The reset link label shown in the assistant stopped bubble." translateable="false">
+      <message name="IDS_AUTOFILL_ASSISTANT_ASSISTANT_STOPPED_BUBBLE_TRY_AGAIN" desc="The reset link label shown in the assistant stopped bubble.">
        Try again
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_ASSISTANT_STOPPED_BUBBLE_DESCRIPTION" desc="The description shown in the assistant stopped bubble." translateable="false">
+      <message name="IDS_AUTOFILL_ASSISTANT_ASSISTANT_STOPPED_BUBBLE_DESCRIPTION" desc="The description shown in the assistant stopped bubble.">
         Your password didn't change. To change it, try again and leave this tab and side panel open. <ph name="LINK_TEXT">$1<ex>Try again</ex></ph>
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_ASSISTANT_STOPPED_BUBBLE_TITLE" desc="The title shown in the assistant stopped bubble." translateable="false">
+      <message name="IDS_AUTOFILL_ASSISTANT_ASSISTANT_STOPPED_BUBBLE_TITLE" desc="The title shown in the assistant stopped bubble.">
         Brave Assistant stopped
       </message>
     </if>
@@ -13437,9 +13552,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
     <!-- High Efficiency Chip strings -->
     <if expr="not is_android">
-      <message name="IDS_HIGH_EFFICIENCY_CHIP_LABEL" desc="Label for a page action chip that highlights that the Memory Saver setting is enabled">
-        Tab active again
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_HIGH_EFFICIENCY_CHIP_LABEL" desc="In Title Case: Label for a page action chip that highlights that the Memory Saver setting is enabled">
+          Tab Active Again
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_HIGH_EFFICIENCY_CHIP_LABEL" desc="Label for a page action chip that highlights that the Memory Saver setting is enabled">
+          Tab active again
+        </message>
+      </if>
       <message name="IDS_HIGH_EFFICIENCY_CHIP_ACCNAME" desc="Tooltip text for a page action chip that highlights that the Memory Saver setting is enabled">
         Tab active again
       </message>

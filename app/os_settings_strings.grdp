@@ -745,6 +745,9 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_MANAGE_USER_DICTIONARY" desc="Label on the settings page which if the user clicks on, will bring up the Japaneses dictionary management page. There are multiple dictionary which the user can modify.">
     Manage user dictionaries
   </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_CLEAR_PERSONALIZATION_DATA" desc="The label for the button leading to the page within japanese input settings which can be used to clear personalization data for Japanese input. In Japanese, this should be '入力履歴の消去...'.">
+    Clear personalization data...
+  </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_MANAGE_USER_DICTIONARY_SUBTITLE" desc="Subheading for the label on the settings page which if the user clicks on, will bring up the Japaneses dictionary management page. There are multiple dictionary which the user can modify.">
     Add your own words to the user dictionaries in order to customize the conversion candidates.
   </message>
@@ -2128,20 +2131,11 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is already connected.">
     Connected
   </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED_WITH_BATTERY" desc="In Bluetooth device list, this label is shown below a device which is already connected and has a known battery percentage.">
-    Connected, <ph name="BATTERY_PERCENTAGE">$1<ex>100</ex></ph>% battery
-  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECTING">
     Connecting...
   </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_LIST_PAIRED" desc="Title of the settings subsection listing paired Bluetooth devices.">
-    Paired devices
-  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PRIMARY_USER_CONTROLLED" desc="Settings &gt; Bluetooth &gt; Text to show when Bluetooth configuration is controlled by the primary user.">
     Bluetooth configuration is controlled by <ph name="USER_EMAIL">$1<ex>joe@gmail.com</ex></ph>.
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_LIST_UNPAIRED" desc="Title of the settings subsection listing unpaired Bluetooth devices.">
-    Unpaired devices
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECT" desc="Bluetooth pairing dialog: Text for dropdown meny item to connect to a device.">
     Connect
@@ -2242,15 +2236,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing available Bluetooth devices. Only visible by screen reader software.">
     Show available Bluetooth devices
   </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_NO_DEVICES" desc="Message displayed when there are no paired Bluetooth devices scan.">
-    No paired devices
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_NO_DEVICES_FOUND" desc="Message displayed when no Bluetooth devices are found after a scan.">
-    No Bluetooth devices found
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_NOT_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is not connected.">
-    Not connected
-  </message>
   <message name="IDS_SETTINGS_BLUETOOTH" desc="Name of the settings page which displays Bluetooth device settings.">
     Bluetooth
   </message>
@@ -2287,26 +2272,23 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_CANCEL" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for button that cancels removing the device.">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_REMOVE" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for button that removes the device.">
+  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_REMOVE" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for button that removes the device." meaning="the title and the button are meant to match. “Remove” means to move or take content/data down so that it's no longer visible in the user interface (but it may still exist in the system, as opposed to 'deleting' or 'uninstalling'">
     Remove
   </message>
-  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_LABEL" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for dialog that removes the device.">
+  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_LABEL" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for dialog that removes the device." meaning="question to prompt users if they want to remove [device name] from their [email address]. The user then confirms removing the device name or cancels to not remove the device name">
     Remove <ph name="DEVICE">$1<ex>Beats</ex></ph> from <ph name="PRIMARY_EMAIL">$2<ex>john@google.com</ex></ph>?
   </message>
   <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_CANCEL" desc="Bluetooth device details page &gt; Forget device dialog: Label for button that cancels forgetting the device.">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_FORGET" desc="Bluetooth device details page &gt; Forget device dialog: Label for button that forgets the device.">
+  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_FORGET" desc="Bluetooth device details page &gt; Forget device dialog: Label for button that forgets the device." meaning="The 'forget' buttons means 'forgetting the device,' the 'forget' button is a confirmation for the user to unpair and remove the device from their account">
     Forget
   </message>
   <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_LABEL" desc="Bluetooth device details page &gt; Forget device dialog: Label for dialog that forgets the device.">
     <ph name="DEVICE">$1<ex>Beats</ex></ph> will be removed from this Chromebook and won’t be saved to <ph name="PRIMARY_EMAIL">$2<ex>john@google.com</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_TITLE" desc="Bluetooth device details page &gt; Forget device dialog: Title for dialog that forgets the device.">
-    Forget device
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_PAIR_DEVICE_TITLE" desc="Title of the settings dialog for adding or pairing Bluetooth a device.">
-    Connect to Bluetooth device
+  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_TITLE" desc="Bluetooth device details page &gt; Forget device dialog: Title for dialog that forgets the device." meaning="'Forget this device' means the device will be unpaired and removed from the account">
+    Forget this device?
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_REMOVE" desc="Label for removing (unpairing) a paired Bluetooth device">
     Remove from list
@@ -2633,6 +2615,18 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
     Or specify your printer PPD <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_EDIT_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
+    Or specify your printer PPD
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_VIEW_PPD" desc="Text for the button which allows the user to view the PPD for the active printer.">
+    View PPD
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_VIEW_PPD_ERROR_MESSAGE" desc="The message shown when the request to view a PPD is unsuccessful.">
+    Unable to retrieve PPD.
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_PPD_INTRO" desc="Text used to introduce the PPD for an active printer.">
+    PPD for <ph name="PRINTER_NAME">$1<ex>Acme Printer</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_BUTTON_SELECT_DRIVER_ARIA_LABEL" desc="ARIA label for the file selector button to manually select a PPD file from the user's file system. This text will not be visual on any page. It will only be spoken by screen readers.">
     Browse to specify your printer PPD
@@ -4451,7 +4445,7 @@ Press an assigned switch or key to remove assignment.
     Hide notification content when someone else is detected
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_TITLE" desc="Text on the privacy page that opens up the privacy hub section.">
-    Privacy Hub
+    Privacy controls
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_HARDWARE_TOGGLE_ACTIVE_SUBTEXT" desc="Sub-label on the privacy page that indicates that the hardware camera toggle is active.">
     Internal camera deactivated by hardware switch
