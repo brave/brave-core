@@ -217,6 +217,8 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/frame/brave_browser_view_layout.cc",
       "views/frame/brave_browser_view_layout.h",
+      "views/frame/brave_non_client_hit_test_helper.cc",
+      "views/frame/brave_non_client_hit_test_helper.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
