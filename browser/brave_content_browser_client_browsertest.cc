@@ -494,6 +494,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
       embedded_test_server()->GetURL("test.onion", "/onion.html");
   const GURL onion_upgradable_url =
       embedded_test_server()->GetURL("test.onion", "/onion_upgradable.html");
+
   ASSERT_EQ("http", onion_url.scheme());
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -517,24 +518,29 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     console_observer.SetPattern(
         "Mixed Content: The page at 'http://test.onion*/onion.html' was "
         "loaded over HTTPS, but requested an insecure resource "
-        "'http://example.com/'. This request has been blocked; the content "
+        "'http://example.com*'. This request has been blocked; the content "
         "must be served over HTTPS.");
-    ASSERT_FALSE(content::ExecJs(contents, "fetch('http://example.com')"));
+    const GURL resource_url =
+        embedded_test_server()->GetURL("example.com", "/logo-referrer.png");
+    const std::string kFetchScript = "fetch('" + resource_url.spec() + "')";
+    ASSERT_FALSE(content::ExecJs(contents, kFetchScript));
     console_observer.Wait();
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
+    const GURL resource_url =
+        embedded_test_server()->GetURL("example.com", "/logo.png");
     ASSERT_FALSE(content::ExecJs(contents, "fetch('https://example.com')"));
-    EXPECT_TRUE(console_observer.messages().empty() ||
-                console_observer.GetMessageAt(0).find(
-                    "has been blocked by CORS policy") != std::string::npos);
+    EXPECT_TRUE(console_observer.messages().empty());
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
-    ASSERT_FALSE(content::ExecJs(contents, "fetch('http://example.onion')"));
-    EXPECT_TRUE(console_observer.messages().empty() ||
-                console_observer.GetMessageAt(0).find(
-                    "has been blocked by CORS policy") != std::string::npos);
+    // logo-referrer.png sets "access-control-allow-origin: *"
+    const GURL resource_url =
+        embedded_test_server()->GetURL("example.onion", "/logo-referrer.png");
+    const std::string kFetchScript = "fetch('" + resource_url.spec() + "')";
+    ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
+    EXPECT_TRUE(console_observer.messages().empty());
   }
 }
 
