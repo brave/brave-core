@@ -28,7 +28,7 @@ interface PanelDataHandler {
   GetContentStyle() => (ContentStyle style);
   SetContentStyle(ContentStyle style);
 
-  GetDomain() => (string domain);
+  GetCurrentSiteURL() => (string site_url);
 
   IsEnabled() => (bool on);
   SetEnabled(bool on);

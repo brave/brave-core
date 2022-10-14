@@ -434,7 +434,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   tab_helper->SetFontFamily(speedreader::mojom::FontFamily::kDyslexic);
   tab_helper->SetFontSize(speedreader::mojom::FontSize::k130);
   tab_helper->SetContentStyle(speedreader::mojom::ContentStyle::kTextOnly);
-  EXPECT_EQ(kTestHost, tab_helper->GetDomain());
+  EXPECT_EQ(kTestHost, tab_helper->GetCurrentSiteURL());
   EXPECT_TRUE(tab_helper->IsEnabledForSite());
 
   auto EvalAttr = [&](content::WebContents* contents, const std::string& attr) {

@@ -377,7 +377,7 @@ ContentStyle SpeedreaderTabHelper::GetContentStyle() {
       ->GetContentStyle();
 }
 
-std::string SpeedreaderTabHelper::GetDomain() {
+std::string SpeedreaderTabHelper::GetCurrentSiteURL() {
   return web_contents()->GetLastCommittedURL().host();
 }
 
@@ -447,6 +447,8 @@ void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
   if (!speedreader_service)
+    return;
+  if (!PageStateIsDistilled(distill_state_))
     return;
 
   if (path == kSpeedreaderPrefTheme) {

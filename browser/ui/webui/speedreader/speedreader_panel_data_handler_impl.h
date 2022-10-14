@@ -57,7 +57,7 @@ class SpeedreaderPanelDataHandlerImpl
   void GetContentStyle(GetContentStyleCallback callback) override;
   void SetContentStyle(ContentStyle style) override;
 
-  void GetDomain(GetDomainCallback callback) override;
+  void GetCurrentSiteURL(GetCurrentSiteURLCallback callback) override;
 
   void IsEnabled(IsEnabledCallback callback) override;
   void SetEnabled(bool on) override;
