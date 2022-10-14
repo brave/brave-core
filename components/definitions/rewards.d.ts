@@ -226,12 +226,18 @@ declare namespace Rewards {
     hint: string
   }
 
+  export interface Subdivision {
+    name: string
+    code: string
+  }
+
   export interface AdsData {
     adsEnabled: boolean
     adsPerHour: number
     adsSubdivisionTargeting: string
     automaticallyDetectedAdsSubdivisionTargeting: string
     shouldAllowAdsSubdivisionTargeting: boolean
+    subdivisions: Subdivision[]
     adsUIEnabled: boolean
     adsIsSupported: boolean
     needsBrowserUpgradeToServeAds: boolean

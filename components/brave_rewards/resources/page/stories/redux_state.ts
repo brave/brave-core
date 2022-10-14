@@ -33,6 +33,7 @@ export const reduxState: Rewards.ApplicationState = {
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
+      subdivisions: [],
       adsUIEnabled: true,
       adsIsSupported: true,
       needsBrowserUpgradeToServeAds: false,

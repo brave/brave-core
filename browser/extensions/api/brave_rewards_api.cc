@@ -12,6 +12,7 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/supported_subdivisions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -50,12 +51,6 @@ using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 
 namespace {
-
-const char kShouldAllowAdsSubdivisionTargeting[] =
-    "shouldAllowAdsSubdivisionTargeting";
-const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutoDetectedAdsSubdivisionTargeting[] =
-    "automaticallyDetectedAdsSubdivisionTargeting";
 
 RewardsTabHelper* GetRewardsTabHelperForTabId(
     int tab_id,
@@ -1263,15 +1258,23 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   ads_data.Set(
       "adsPerHour",
       static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
-  ads_data.Set(kAdsSubdivisionTargeting,
+  ads_data.Set("adsSubdivisionTargeting",
                ads_service->GetSubdivisionTargetingCode());
-  ads_data.Set(kAutoDetectedAdsSubdivisionTargeting,
+  ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting",
                ads_service->GetAutoDetectedSubdivisionTargetingCode());
-  ads_data.Set(kShouldAllowAdsSubdivisionTargeting,
+  ads_data.Set("shouldAllowAdsSubdivisionTargeting",
                ads_service->ShouldAllowSubdivisionTargeting());
   ads_data.Set("adsUIEnabled", true);
 
-  ads_data.Set("countryCode", brave_l10n::GetDefaultISOCountryCodeString());
+  base::Value::List subdivisions;
+  const auto subdivision_infos = ads::GetSupportedSubdivisions();
+  for (const auto& info : subdivision_infos) {
+    base::Value::Dict subdivision;
+    subdivision.Set("value", info.first);
+    subdivision.Set("name", info.second);
+    subdivisions.Append(std::move(subdivision));
+  }
+  ads_data.Set("subdivisions", std::move(subdivisions));
 
   return RespondNow(OneArgument(base::Value(std::move(ads_data))));
 }

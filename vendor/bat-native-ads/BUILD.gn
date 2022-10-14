@@ -92,6 +92,7 @@ source_set("headers") {
     "include/bat/ads/pref_names.h",
     "include/bat/ads/promoted_content_ad_info.h",
     "include/bat/ads/promoted_content_ad_value_util.h",
+    "include/bat/ads/supported_subdivisions.h",
     "include/bat/ads/sys_info.h",
   ]
 
@@ -856,6 +857,7 @@ source_set("ads") {
     "src/bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h",
     "src/bat/ads/internal/geographic/subdivision/subdivision_targeting.cc",
     "src/bat/ads/internal/geographic/subdivision/subdivision_targeting.h",
+    "src/bat/ads/internal/geographic/subdivision/supported_subdivision_codes.cc",
     "src/bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h",
     "src/bat/ads/internal/history/ad_content_util.cc",
     "src/bat/ads/internal/history/ad_content_util.h",
@@ -1165,6 +1167,7 @@ source_set("ads") {
     "src/bat/ads/pref_names.cc",
     "src/bat/ads/promoted_content_ad_info.cc",
     "src/bat/ads/promoted_content_ad_value_util.cc",
+    "src/bat/ads/supported_subdivisions.cc",
     "src/bat/ads/sys_info.cc",
   ]
 

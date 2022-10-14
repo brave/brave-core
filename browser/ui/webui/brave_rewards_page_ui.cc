@@ -18,6 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/supported_subdivisions.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -303,14 +304,11 @@ class RewardsDOMHandler
 
 namespace {
 
-const int kDaysOfAdsHistory = 30;
+constexpr int kDaysOfAdsHistory = 30;
 
-const char kShouldAllowAdsSubdivisionTargeting[] =
-    "shouldAllowAdsSubdivisionTargeting";
-const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutoDetectedSubdivisionTargeting[] =
+constexpr char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
+constexpr char kAutoDetectedSubdivisionTargeting[] =
     "automaticallyDetectedAdsSubdivisionTargeting";
-const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
 
 }  // namespace
 
@@ -1196,11 +1194,22 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
                ads_service_->GetSubdivisionTargetingCode());
   ads_data.Set(kAutoDetectedSubdivisionTargeting,
                ads_service_->GetAutoDetectedSubdivisionTargetingCode());
-  ads_data.Set(kShouldAllowAdsSubdivisionTargeting,
+  ads_data.Set("shouldAllowAdsSubdivisionTargeting",
                ads_service_->ShouldAllowSubdivisionTargeting());
   ads_data.Set("adsUIEnabled", true);
-  ads_data.Set(kNeedsBrowserUpgradeToServeAds,
+  ads_data.Set("needsBrowserUpgradeToServeAds",
                ads_service_->NeedsBrowserUpgradeToServeAds());
+
+  base::Value::List subdivisions;
+  const auto supported_subdivisions = ads::GetSupportedSubdivisions();
+  for (const auto& subdivision : supported_subdivisions) {
+    base::Value::Dict subdivision_dict;
+    subdivision_dict.Set("code", subdivision.first);
+    subdivision_dict.Set("name", subdivision.second);
+    subdivisions.Append(std::move(subdivision_dict));
+  }
+
+  ads_data.Set("subdivisions", std::move(subdivisions));
   CallJavascriptFunction("brave_rewards.adsData",
                          base::Value(std::move(ads_data)));
 }

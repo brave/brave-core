@@ -95,6 +95,7 @@ describe('rewards reducer', () => {
           adsSubdivisionTargeting: 'US-CA',
           automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
           shouldAllowAdsSubdivisionTargeting: true,
+          subdivisions: [],
           isAdsSubdivisionTargetingRegion: true,
           adsUIEnabled: false,
           adsIsSupported: false,
@@ -110,6 +111,7 @@ describe('rewards reducer', () => {
           adsSubdivisionTargeting: 'US-CA',
           automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
           shouldAllowAdsSubdivisionTargeting: true,
+          subdivisions: [],
           isAdsSubdivisionTargetingRegion: true,
           adsUIEnabled: true,
           adsIsSupported: true,
@@ -129,6 +131,7 @@ describe('rewards reducer', () => {
               adsSubdivisionTargeting: 'US-CA',
               automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
               shouldAllowAdsSubdivisionTargeting: true,
+              subdivisions: [],
               adsUIEnabled: true,
               adsIsSupported: true
             }
