@@ -1,8 +1,8 @@
 diff --git a/components/history/core/browser/history_types.h b/components/history/core/browser/history_types.h
-index 5e6aab9ae212c684da06468db160ad957f25556d..6d034639920152d0eeebfc8ac621fac6ac0ad624 100644
+index 480b44c70b6b6913eab8b6ce6020672935de5fb9..de1d7b51447c58f1357a5b56a0952bb0168b703b 100644
 --- a/components/history/core/browser/history_types.h
 +++ b/components/history/core/browser/history_types.h
-@@ -51,6 +51,8 @@ enum VisitSource {
+@@ -52,6 +52,8 @@ enum VisitSource {
    SOURCE_FIREFOX_IMPORTED = 3,
    SOURCE_IE_IMPORTED = 4,
    SOURCE_SAFARI_IMPORTED = 5,

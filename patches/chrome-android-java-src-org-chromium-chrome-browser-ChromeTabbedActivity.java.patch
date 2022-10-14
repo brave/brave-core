@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index bcefa9166612c1bfab1647926e569aed24f474a6..98b310f97a542ebd6a8425ea0af1e3644ba14a0a 100644
+index 2e42a41f1391a761e0bc4a49b3da243ad94e417a..acc0523452757f67f1dada751136182ec898acab 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -1049,7 +1049,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
