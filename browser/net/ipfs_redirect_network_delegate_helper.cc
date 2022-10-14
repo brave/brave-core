@@ -96,6 +96,8 @@ int OnHeadersReceived_IPFSRedirectWork(
   if (!ctx->browser_context)
     return net::OK;
 
+  // Auto-redirect gateway-like urls is enabled only for top-level frames
+  // to avoid mixed content corner cases.
   if (ctx->resource_type == blink::mojom::ResourceType::kSubFrame) {
     return net::OK;
   }
