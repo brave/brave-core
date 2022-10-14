@@ -55,7 +55,7 @@ void BraveVPNToggleButton::OnButtonPressed(const ui::Event& event) {
 }
 
 void BraveVPNToggleButton::UpdateState() {
-  const auto state = service_->connection_state();
+  const auto state = service_->GetConnectionState();
   bool is_on = (state == ConnectionState::CONNECTING ||
                 state == ConnectionState::CONNECTED);
   SetIsOn(is_on);
