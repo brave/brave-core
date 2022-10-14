@@ -32,16 +32,16 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   const absl::optional<base::Value> root = base::JSONReader::Read(*json);
   ASSERT_TRUE(root);
 
-  const base::Value* case_params = root->FindDictKey(test_case_name);
+  const base::Value* const case_params = root->FindDictKey(test_case_name);
   ASSERT_TRUE(case_params);
 
-  const std::string* input = case_params->FindStringKey("input");
+  const std::string* const input = case_params->FindStringKey("input");
   ASSERT_TRUE(input);
 
-  const base::Value* idx = case_params->FindListKey("idx");
+  const base::Value* const idx = case_params->FindListKey("idx");
   ASSERT_TRUE(idx);
 
-  const base::Value* count = case_params->FindListKey("count");
+  const base::Value* const count = case_params->FindListKey("count");
   ASSERT_TRUE(count);
 
   const std::string input_value = *input;
@@ -87,10 +87,10 @@ TEST_F(BatAdsHashVectorizerTest, ValidJsonScheme) {
   ASSERT_TRUE(root);
   ASSERT_TRUE(root->is_dict());
 
-  const base::Value* dict = root->FindDictKey("test");
+  const base::Value* const dict = root->FindDictKey("test");
   ASSERT_TRUE(dict);
 
-  const base::Value* list = root->FindListKey("list");
+  const base::Value* const list = root->FindListKey("list");
   EXPECT_TRUE(list);
 }
 

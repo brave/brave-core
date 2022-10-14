@@ -165,7 +165,8 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     return;
   }
 
-  const base::Value* resource_values = manifest->FindListPath(kResourcePath);
+  const base::Value* const resource_values =
+      manifest->FindListPath(kResourcePath);
   if (!resource_values) {
     VLOG(1) << "No resources found";
     return;
@@ -174,7 +175,8 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
   for (const auto& resource_value : resource_values->GetList()) {
     ResourceInfo resource;
 
-    const std::string* id = resource_value.FindStringPath(kResourceIdPath);
+    const std::string* const id =
+        resource_value.FindStringPath(kResourceIdPath);
     if (!id) {
       VLOG(1) << "Resource id is missing";
       continue;
@@ -189,7 +191,7 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     }
     resource.version = *version;
 
-    const std::string* path =
+    const std::string* const path =
         resource_value.FindStringPath(kResourceFilenamePath);
     if (!path) {
       VLOG(1) << *id << " resource path is missing";

@@ -169,12 +169,12 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       targeting::TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability : *probability_list) {
-        const base::Value::Dict* dict = probability.GetIfDict();
+        const base::Value::Dict* const dict = probability.GetIfDict();
         if (!dict) {
           continue;
         }
 
-        const std::string* segment = dict->FindString("segment");
+        const std::string* const segment = dict->FindString("segment");
         if (!segment) {
           continue;
         }

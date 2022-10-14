@@ -56,23 +56,25 @@ absl::optional<OptedInInfo> GetOptedIn(const base::Value::Dict& dict) {
   OptedInInfo opted_in;
 
   // Token
-  if (const std::string* value = dict.FindString("payment_token")) {
+  if (const std::string* const value = dict.FindString("payment_token")) {
     opted_in.token = privacy::cbr::Token(*value);
   } else {
     return absl::nullopt;
   }
 
   // Blinded token
-  if (const std::string* value = dict.FindString("blinded_payment_token")) {
+  if (const std::string* const value =
+          dict.FindString("blinded_payment_token")) {
     opted_in.blinded_token = privacy::cbr::BlindedToken(*value);
   } else {
     return absl::nullopt;
   }
 
   // Unblinded token
-  if (const base::Value::Dict* unblinded_token = dict.FindDict("token_info")) {
+  if (const base::Value::Dict* const unblinded_token =
+          dict.FindDict("token_info")) {
     // Value
-    if (const std::string* value =
+    if (const std::string* const value =
             unblinded_token->FindString("unblinded_token")) {
       opted_in.unblinded_token.value = privacy::cbr::UnblindedToken(*value);
     } else {
@@ -80,7 +82,8 @@ absl::optional<OptedInInfo> GetOptedIn(const base::Value::Dict& dict) {
     }
 
     // Public key
-    if (const std::string* value = unblinded_token->FindString("public_key")) {
+    if (const std::string* const value =
+            unblinded_token->FindString("public_key")) {
       opted_in.unblinded_token.public_key = privacy::cbr::PublicKey(*value);
     } else {
       return absl::nullopt;
@@ -88,14 +91,14 @@ absl::optional<OptedInInfo> GetOptedIn(const base::Value::Dict& dict) {
   }
 
   // User data
-  if (const base::Value::Dict* value = dict.FindDict("user_data")) {
+  if (const base::Value::Dict* const value = dict.FindDict("user_data")) {
     opted_in.user_data = value->Clone();
   } else {
     return absl::nullopt;
   }
 
   // Credential
-  if (const std::string* value = dict.FindString("credential")) {
+  if (const std::string* const value = dict.FindString("credential")) {
     opted_in.credential_base64url = *value;
   } else {
     return absl::nullopt;
@@ -189,7 +192,7 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
   DCHECK(confirmations);
 
   // Confirmations
-  const base::Value::List* failed_confirmations =
+  const base::Value::List* const failed_confirmations =
       dict.FindList("failed_confirmations");
   if (!failed_confirmations) {
     BLOG(0, "Failed confirmations dictionary missing failed confirmations");
@@ -199,7 +202,7 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
   ConfirmationList new_failed_confirmations;
 
   for (const auto& item : *failed_confirmations) {
-    const base::Value::Dict* dict = item.GetIfDict();
+    const base::Value::Dict* const dict = item.GetIfDict();
     if (!dict) {
       BLOG(0, "Confirmation should be a dictionary");
       continue;
@@ -208,7 +211,7 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     ConfirmationInfo confirmation;
 
     // Transaction id
-    if (const std::string* value = dict->FindString("transaction_id")) {
+    if (const std::string* const value = dict->FindString("transaction_id")) {
       confirmation.transaction_id = *value;
     } else {
       // Migrate legacy confirmations
@@ -217,7 +220,8 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     }
 
     // Creative instance id
-    if (const std::string* value = dict->FindString("creative_instance_id")) {
+    if (const std::string* const value =
+            dict->FindString("creative_instance_id")) {
       confirmation.creative_instance_id = *value;
     } else {
       BLOG(0, "Missing confirmation creative instance id");
@@ -225,7 +229,7 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     }
 
     // Type
-    if (const std::string* value = dict->FindString("type")) {
+    if (const std::string* const value = dict->FindString("type")) {
       confirmation.type = ConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
@@ -233,7 +237,7 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     }
 
     // Ad type
-    if (const std::string* value = dict->FindString("ad_type")) {
+    if (const std::string* const value = dict->FindString("ad_type")) {
       confirmation.ad_type = AdType(*value);
     } else {
       // Migrate legacy confirmations, this value is not used right now so safe
@@ -242,7 +246,8 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     }
 
     // Created at
-    if (const std::string* value = dict->FindString("timestamp_in_seconds")) {
+    if (const std::string* const value =
+            dict->FindString("timestamp_in_seconds")) {
       double timestamp_as_double;
       if (!base::StringToDouble(*value, &timestamp_as_double)) {
         continue;
@@ -452,7 +457,7 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
 
 bool ConfirmationStateManager::ParseFailedConfirmationsFromDictionary(
     const base::Value::Dict& dict) {
-  const base::Value::Dict* confirmations = dict.FindDict("confirmations");
+  const base::Value::Dict* const confirmations = dict.FindDict("confirmations");
   if (!confirmations) {
     return false;
   }
@@ -467,7 +472,8 @@ bool ConfirmationStateManager::ParseFailedConfirmationsFromDictionary(
 
 bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
     const base::Value::Dict& dict) {
-  const base::Value::List* unblinded_tokens = dict.FindList("unblinded_tokens");
+  const base::Value::List* const unblinded_tokens =
+      dict.FindList("unblinded_tokens");
   if (!unblinded_tokens) {
     return false;
   }
@@ -480,7 +486,7 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
 
 bool ConfirmationStateManager::ParseUnblindedPaymentTokensFromDictionary(
     const base::Value::Dict& dict) {
-  const base::Value::List* unblinded_tokens =
+  const base::Value::List* const unblinded_tokens =
       dict.FindList("unblinded_payment_tokens");
   if (!unblinded_tokens) {
     return false;

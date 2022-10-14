@@ -181,7 +181,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get id
-  const std::string* id = root->FindStringKey("id");
+  const std::string* const id = root->FindStringKey("id");
   if (!id) {
     BLOG(0, "Response is missing id");
     OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
@@ -200,7 +200,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get payment token
-  const base::Value* payment_token = root->FindDictKey("paymentToken");
+  const base::Value* const payment_token = root->FindDictKey("paymentToken");
   if (!payment_token) {
     BLOG(1, "Response is missing paymentToken");
     OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
@@ -209,7 +209,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get public key
-  const std::string* public_key_base64 =
+  const std::string* const public_key_base64 =
       payment_token->FindStringKey("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing publicKey in paymentToken dictionary");
@@ -238,7 +238,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get batch dleq proof
-  const std::string* batch_dleq_proof_base64 =
+  const std::string* const batch_dleq_proof_base64 =
       payment_token->FindStringKey("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
@@ -257,7 +257,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get signed tokens
-  const base::Value* signed_tokens_list =
+  const base::Value* const signed_tokens_list =
       payment_token->FindListKey("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");

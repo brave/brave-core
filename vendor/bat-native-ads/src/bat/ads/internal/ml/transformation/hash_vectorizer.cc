@@ -16,7 +16,7 @@ constexpr int kMaximumSubLen = 6;
 constexpr int kDefaultBucketCount = 10'000;
 
 uint32_t GetHash(const std::string& text) {
-  const char* u8str = text.c_str();
+  const char* const u8str = text.c_str();
   return crc32(crc32(0L, Z_NULL, 0), reinterpret_cast<const uint8_t*>(u8str),
                strlen(u8str));
 }

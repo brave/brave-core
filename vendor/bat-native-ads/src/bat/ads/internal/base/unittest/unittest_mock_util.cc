@@ -514,7 +514,7 @@ void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock) {
               return absl::nullopt;
             }
 
-            const base::Value::Dict* dict = root->GetIfDict();
+            const base::Value::Dict* const dict = root->GetIfDict();
             CHECK(dict);
             return dict->Clone();
           }));
@@ -543,7 +543,7 @@ void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock) {
               return absl::nullopt;
             }
 
-            const base::Value::List* list = root->GetIfList();
+            const base::Value::List* const list = root->GetIfList();
             CHECK(list);
             return list->Clone();
           }));

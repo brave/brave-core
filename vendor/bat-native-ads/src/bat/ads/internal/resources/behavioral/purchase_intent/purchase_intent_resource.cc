@@ -24,7 +24,7 @@ PurchaseIntent::PurchaseIntent()
 
 PurchaseIntent::~PurchaseIntent() = default;
 
-bool PurchaseIntent::IsInitialized() consgt {
+bool PurchaseIntent::IsInitialized() const {
   return is_initialized_;
 }
 

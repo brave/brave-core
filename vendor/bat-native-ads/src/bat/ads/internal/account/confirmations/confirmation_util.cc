@@ -178,7 +178,8 @@ bool IsValid(const ConfirmationInfo& confirmation) {
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  if (const std::string* value = dict.FindString(kVerificationSignatureKey)) {
+  if (const std::string* const value =
+          dict.FindString(kVerificationSignatureKey)) {
     const privacy::cbr::VerificationSignature verification_signature =
         privacy::cbr::VerificationSignature(*value);
     if (!verification_signature.has_value()) {

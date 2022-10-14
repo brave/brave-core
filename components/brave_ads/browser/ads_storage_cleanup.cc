@@ -21,7 +21,7 @@ constexpr const char* kDeprecatedBundleStateDb = "bundle_state";
 namespace brave_ads {
 
 void RemoveDeprecatedAdsDataFiles(const base::FilePath& path) {
-  for (const char* file : kDeprecatedAdsDataFiles) {
+  for (const char* const file : kDeprecatedAdsDataFiles) {
     base::DeleteFile(path.AppendASCII(file));
   }
 

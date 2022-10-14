@@ -38,7 +38,7 @@ TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
 
   ASSERT_EQ(DataType::kVector, data->GetType());
 
-  const VectorData* norm_data = static_cast<VectorData*>(data.release());
+  const VectorData* const norm_data = static_cast<VectorData*>(data.release());
 
   std::vector<double> components;
   double s = 0.0;
@@ -77,7 +77,7 @@ TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
   }
 
   ASSERT_EQ(DataType::kVector, data->GetType());
-  const VectorData* vector_data = static_cast<VectorData*>(data.get());
+  const VectorData* const vector_data = static_cast<VectorData*>(data.get());
   ASSERT_TRUE(vector_data);
 
   // Assert

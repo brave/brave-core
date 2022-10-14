@@ -76,7 +76,8 @@ PredictionMap TextProcessing::Apply(
 
   if (!transformation_count) {
     DCHECK(input_data->GetType() == DataType::kVector);
-    const VectorData* vector_data = static_cast<VectorData*>(input_data.get());
+    const VectorData* const vector_data =
+        static_cast<VectorData*>(input_data.get());
     return linear_model_.GetTopPredictions(*vector_data);
   }
 
@@ -86,7 +87,8 @@ PredictionMap TextProcessing::Apply(
   }
 
   DCHECK(current_data->GetType() == DataType::kVector);
-  const VectorData* vector_data = static_cast<VectorData*>(current_data.get());
+  const VectorData* const vector_data =
+      static_cast<VectorData*>(current_data.get());
   return linear_model_.GetTopPredictions(*vector_data);
 }
 

@@ -36,7 +36,8 @@ TEST_F(BatAdsEmbeddingProcessingTest, EmbedText) {
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(resource.IsInitialized());
 
-  ml::pipeline::EmbeddingProcessing* embedding_processing = resource.Get();
+  const ml::pipeline::EmbeddingProcessing* const embedding_processing =
+      resource.Get();
   ASSERT_TRUE(embedding_processing);
 
   const std::vector<std::tuple<std::string, ml::VectorData>> kSamples = {

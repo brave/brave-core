@@ -58,7 +58,8 @@ void TextEmbedding::Process(const std::string& html) {
     return;
   }
 
-  ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
+  const ml::pipeline::EmbeddingProcessing* const embedding_proc_pipeline =
+      resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
       embedding_proc_pipeline->EmbedText(text);
   if (text_embedding.embedding.GetNonZeroElementCount() == 0) {

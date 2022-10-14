@@ -33,7 +33,7 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
 
   absl::optional<TransformationVector> transformations = TransformationVector();
   for (const base::Value& transformation : transformations_value->GetList()) {
-    const std::string* transformation_type =
+    const std::string* const transformation_type =
         transformation.FindStringKey("transformation_type");
 
     if (!transformation_type) {
@@ -52,7 +52,7 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
     }
 
     if (parsed_transformation_type == "HASHED_NGRAMS") {
-      const base::Value* transformation_params =
+      const base::Value* const transformation_params =
           transformation.FindKey("params");
 
       if (!transformation_params) {
@@ -66,7 +66,7 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
       }
       const int num_buckets = *nb;
 
-      const base::Value* ngram_sizes =
+      const base::Value* const ngram_sizes =
           transformation_params->FindListKey("ngrams_range");
       if (!ngram_sizes) {
         return absl::nullopt;
@@ -96,7 +96,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     return absl::nullopt;
   }
 
-  std::string* classifier_type =
+  const std::string* const classifier_type =
       classifier_value->FindStringKey("classifier_type");
 
   if (!classifier_type) {
@@ -191,12 +191,12 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value value) {
     return absl::nullopt;
   }
 
-  const std::string* timestamp = value.FindStringKey("timestamp");
+  const std::string* const timestamp = value.FindStringKey("timestamp");
   if (!timestamp) {
     return absl::nullopt;
   }
 
-  const std::string* locale = value.FindStringKey("locale");
+  const std::string* const locale = value.FindStringKey("locale");
   if (!locale) {
     return absl::nullopt;
   }

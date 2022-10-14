@@ -1660,7 +1660,7 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const std::string& captcha_id,
     const bool should_show_tooltip_notification) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  PrefService* pref_service = profile_->GetPrefs();
+  const PrefService* const pref_service = profile_->GetPrefs();
   if (should_show_tooltip_notification) {
     if (pref_service->GetBoolean(
             brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {

@@ -49,7 +49,7 @@ std::unique_ptr<AntiTargetingInfo> AntiTargetingInfo::CreateFromValue(
     anti_targeting->version = *version;
   }
 
-  const base::Value::Dict* site_lists = resource.FindDict("sites");
+  const base::Value::Dict* const site_lists = resource.FindDict("sites");
   if (!site_lists) {
     *error_message = "Failed to load from JSON, sites missing";
     return {};

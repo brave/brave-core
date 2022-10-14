@@ -77,7 +77,7 @@ absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& value) {
 
   PublicKeyMap public_keys;
   for (const auto& item : *list) {
-    const base::Value::Dict* dict = item.GetIfDict();
+    const base::Value::Dict* const dict = item.GetIfDict();
     if (!dict) {
       return absl::nullopt;
     }

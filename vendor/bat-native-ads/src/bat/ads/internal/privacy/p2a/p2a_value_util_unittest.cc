@@ -27,7 +27,7 @@ TEST(BatAdsP2AValueUtilTest, QuestionsToValue) {
 
   // Assert
   const base::Value value = base::test::ParseJson(kQuestionsAsJson);
-  const base::Value::List* expected_list = value.GetIfList();
+  const base::Value::List* const expected_list = value.GetIfList();
   ASSERT_TRUE(expected_list);
 
   EXPECT_EQ(*expected_list, list);
@@ -41,7 +41,7 @@ TEST(BatAdsP2AValueUtilTest, NoQuestionsToValue) {
 
   // Assert
   const base::Value value = base::test::ParseJson(kNoQuestionsAsJson);
-  const base::Value::List* expected_list = value.GetIfList();
+  const base::Value::List* const expected_list = value.GetIfList();
   ASSERT_TRUE(expected_list);
 
   EXPECT_EQ(*expected_list, list);

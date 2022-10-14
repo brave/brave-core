@@ -262,12 +262,12 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  const std::string* country = dict.FindString("country");
+  const std::string* const country = dict.FindString("country");
   if (!country || country->empty()) {
     return false;
   }
 
-  const std::string* region = dict.FindString("region");
+  const std::string* const region = dict.FindString("region");
   if (!region || region->empty()) {
     return false;
   }

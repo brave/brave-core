@@ -30,7 +30,7 @@ TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
 
   ASSERT_EQ(hashed_data->GetType(), DataType::kVector);
 
-  const VectorData* hashed_vector_data =
+  const VectorData* const hashed_vector_data =
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
@@ -57,7 +57,7 @@ TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
 
   ASSERT_EQ(DataType::kVector, hashed_data->GetType());
 
-  const VectorData* hashed_vector_data =
+  const VectorData* const hashed_vector_data =
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert

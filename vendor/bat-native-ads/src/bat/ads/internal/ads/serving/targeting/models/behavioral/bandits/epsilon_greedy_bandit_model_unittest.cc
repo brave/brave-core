@@ -76,7 +76,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       features::kEpsilonGreedyBandit, {{"epsilon_value", "1.0"}});
 
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
 
   const std::string segment_1 = "travel";
   processor::EpsilonGreedyBandit::Process(
@@ -104,7 +104,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   for (const auto& segment : kSegments) {
     processor::EpsilonGreedyBandit::Process(
         {segment, mojom::NotificationAdEventType::kDismissed});
@@ -156,7 +156,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   for (const auto& segment : kSegments) {
     processor::EpsilonGreedyBandit::Process(
         {segment, mojom::NotificationAdEventType::kDismissed});
