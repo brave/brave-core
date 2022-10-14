@@ -471,8 +471,10 @@ public class BraveNewTabPageLayout
                                 if (mCardType.equals("promo") && !mCardType.equals("displayad")) {
                                     if (!mUuid.equals("") && !mCreativeInstanceId.equals("")) {
                                         mVisibleCard.setViewStatSent(true);
-                                        mBraveNewsController.onPromotedItemView(
-                                                mUuid, mCreativeInstanceId);
+                                        if (mBraveNewsController != null) {
+                                            mBraveNewsController.onPromotedItemView(
+                                                    mUuid, mCreativeInstanceId);
+                                        }
                                     }
                                 }
                             }
@@ -494,8 +496,10 @@ public class BraveNewTabPageLayout
                                             feedItems != null && feedItems.size() == 2 ? 2 : 1;
                                 }
                             }
-                            mBraveNewsController.onSessionCardViewsCountChanged(
-                                    (short) mNewsSessionCardViews);
+                            if (mBraveNewsController != null) {
+                                mBraveNewsController.onSessionCardViewsCountChanged(
+                                        (short) mNewsSessionCardViews);
+                            }
                             mPrevVisibleNewsCardPosition = lastVisibleItemPosition;
                         }
                     }
@@ -508,15 +512,17 @@ public class BraveNewTabPageLayout
                         mFeedHash = SharedPreferencesManager.getInstance().readString(
                                 BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, "");
                         //@TODO alex optimize feed availability check
-                        mBraveNewsController.isFeedUpdateAvailable(
-                                mFeedHash, isNewsFeedAvailable -> {
-                                    if (isNewsFeedAvailable) {
-                                        mPrevVisibleNewsCardPosition =
-                                                mPrevVisibleNewsCardPosition + 1;
+                        if (mBraveNewsController != null) {
+                            mBraveNewsController.isFeedUpdateAvailable(
+                                    mFeedHash, isNewsFeedAvailable -> {
+                                        if (isNewsFeedAvailable) {
+                                            mPrevVisibleNewsCardPosition =
+                                                    mPrevVisibleNewsCardPosition + 1;
 
-                                        setNewContentChanges(true);
-                                    }
-                                });
+                                            setNewContentChanges(true);
+                                        }
+                                    });
+                        }
 
                         Rect rvRect = new Rect();
                         mRecyclerView.getGlobalVisibleRect(rvRect);
@@ -593,7 +599,9 @@ public class BraveNewTabPageLayout
                                                                             .isDisplayAdAlreadyAdded(
                                                                                     mUuid)
                                                                     && visiblePercentageFinal
-                                                                            > MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
+                                                                            > MINIMUM_VISIBLE_HEIGHT_THRESHOLD
+                                                                    && mBraveNewsController
+                                                                            != null) {
                                                                 mVisibleCard.setViewStatSent(true);
                                                                 mBraveNewsController.onDisplayAdView(
                                                                         mUuid, mCreativeInstanceId);
