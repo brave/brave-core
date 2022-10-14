@@ -1,9 +1,9 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index ebb57af2788852784de32d6940386721e567dc25..225e7b1d8f5225cbe88506989dda2ffbd2e36d3e 100644
+index a0babb28409c4cbd1dd346cdcc174afa9ca1d7dd..062227d758e2b54b4fe6245c9063835380709609 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
 @@ -343,6 +343,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
-     case permissions::RequestType::kWindowPlacement:
+     case permissions::RequestType::kWindowManagement:
        return "window_placement";
  #endif
 +    BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
