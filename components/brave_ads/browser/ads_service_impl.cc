@@ -1036,8 +1036,8 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
 
 void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
     const int64_t ads_per_hour) {
-  DCHECK(ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
-         ads_per_hour <= ads::kMaximumNotificationAdsPerHour);
+  DCHECK((ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
+          ads_per_hour <= ads::kMaximumNotificationAdsPerHour));
   SetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 

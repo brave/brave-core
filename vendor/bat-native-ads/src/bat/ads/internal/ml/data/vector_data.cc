@@ -36,7 +36,7 @@ class VectorDataStorage {
       : dimension_count_(dimension_count),
         points_(std::move(points)),
         values_(std::move(values)) {
-    DCHECK(points_.size() == values_.size() || points_.empty());
+    DCHECK((points_.size() == values_.size() || points_.empty()));
   }
 
   size_t GetSize() const { return values_.size(); }
