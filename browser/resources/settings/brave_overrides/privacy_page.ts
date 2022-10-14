@@ -76,6 +76,17 @@ RegisterPolymerTemplateModifications({
           </template>
         `)
       }
+      pages.insertAdjacentHTML('beforeend', `
+        <template is="dom-if" route-path="/content/braveShields" no-search>
+        <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
+        <category-setting-exceptions
+        category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]"
+        block-header="${I18nBehavior.i18n('siteSettingsShieldsDown')}"
+        allow-header="${I18nBehavior.i18n('siteSettingsShieldsUp')}">
+        </category-setting-exceptions>
+        </settings-subpage>
+        </template>
+      `)
     }
 
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
