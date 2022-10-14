@@ -95,7 +95,7 @@ base::expected<std::string, std::string> FindCanonicalAmpUrl(
     // Didn't find canonical link, potentially try again
     return base::unexpected("Couldn't find canonical URL in link tag");
   }
-  return canonical_url;
+  return base::ok(std::move(canonical_url));
 }
 
 }  // namespace de_amp
