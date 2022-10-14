@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.sync.settings.ManageSyncSettings;
 import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference;
 
@@ -24,6 +25,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
     private CheckBoxPreference mSyncPaymentsIntegration;
     private CheckBoxPreference mSyncReadingList;
+    private CheckBoxPreference mSyncAutofill;
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
@@ -38,5 +40,6 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
         mSyncPaymentsIntegration.setVisible(false);
         mSyncReadingList.setVisible(false);
+        mSyncAutofill.setTitle(R.string.brave_sync_autofill);
     }
 }
