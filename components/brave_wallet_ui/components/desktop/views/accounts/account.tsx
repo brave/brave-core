@@ -215,6 +215,7 @@ export const Account = ({
       <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
 
       <SubDivider />
+      <Spacer />
 
       {funigbleTokens.map((item) =>
         <PortfolioAssetItem
