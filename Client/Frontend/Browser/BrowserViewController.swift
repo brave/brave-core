@@ -971,7 +971,11 @@ public class BrowserViewController: UIViewController {
       // 2. We are in private browsing mode and need to add a new private tab.
       tabToSelect = isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs
     } else {
-      tabToSelect = self.tabManager.tabsForCurrentMode.last
+      if let selectedTab = tabManager.selectedTab, !selectedTab.isPrivate {
+        tabToSelect = selectedTab
+      } else {
+        tabToSelect = tabManager.tabsForCurrentMode.last
+      }
     }
     self.tabManager.selectTab(tabToSelect)
     
