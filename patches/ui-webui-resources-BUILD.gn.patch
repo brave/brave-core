@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index d1ce03ee4adbf1edc9eea715e97164e629a14bd4..1aacd181627537e2d01f3bf3f581db16a8abf9f9 100644
+index 5eb081df1230d7f76329074b947d310a4f033a37..9ac5cfecc4975f7c60e76bfde71acc4e34ef67ac 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
 @@ -107,6 +107,7 @@ generate_grd("build_grd") {
@@ -10,7 +10,7 @@ index d1ce03ee4adbf1edc9eea715e97164e629a14bd4..1aacd181627537e2d01f3bf3f581db16
  }
  
  if (is_chromeos_ash) {
-@@ -243,6 +244,7 @@ ts_library("library") {
+@@ -247,6 +248,7 @@ ts_library("library") {
      ":generate_definitions",
      ":preprocess",
    ]
