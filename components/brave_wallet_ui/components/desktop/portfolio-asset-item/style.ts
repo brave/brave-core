@@ -1,21 +1,21 @@
 import styled from 'styled-components'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
-interface StyleProps {
-  disabled: boolean
-}
-
-export const StyledWrapper = styled(WalletButton) <Partial<StyleProps>>`
+export const StyledWrapper = styled(WalletButton) <{ disabled: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  margin: 8px 0px;
   cursor: ${(p) => p.disabled ? 'default' : 'pointer'};
   outline: none;
   background: none;
   border: none;
+  padding: 12px;
+  border-radius: 10px;
+  &:hover {
+    background-color: ${(p) => p.theme.color.background01}85;
+  }
 `
 
 export const NameAndIcon = styled.div`
