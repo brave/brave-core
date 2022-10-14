@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index 7cd45d8df99ef629aa2261b4300a4c370b6a94cf..13d72ccc49ac26ef2ee51c1f20ed01e9981b08f1 100644
+index bd0f46ee1edcebd0f37a595a821783390c9880d5..4f85afebe86d6bae6e614b02cc3742fb17bd7f28 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -99,6 +99,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
-   // DevTools::BrowserContext and MediaRouter::Presentation are an
-   // exception to this ban.
-   return *this == PrimaryID() ||
-+         BRAVE_ALLOWS_BROWSER_WINDOWS
-          base::StartsWith(profile_id_, kDevToolsOTRProfileIDPrefix,
-                           base::CompareCase::SENSITIVE) ||
-          base::StartsWith(profile_id_, kMediaRouterOTRProfileIDPrefix,
-@@ -282,7 +283,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
+@@ -103,6 +103,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
+   // DevTools::BrowserContext, MediaRouter::Presentation, and
+   // CaptivePortal::Signin are exceptions to this ban.
+   if (*this == PrimaryID() ||
++      BRAVE_ALLOWS_BROWSER_WINDOWS
+       base::StartsWith(profile_id_, kDevToolsOTRProfileIDPrefix,
+                        base::CompareCase::SENSITIVE) ||
+       base::StartsWith(profile_id_, kMediaRouterOTRProfileIDPrefix,
+@@ -302,7 +303,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
  void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(
        prefs::kSearchSuggestEnabled,
