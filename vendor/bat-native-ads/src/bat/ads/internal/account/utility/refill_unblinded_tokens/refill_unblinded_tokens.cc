@@ -196,8 +196,6 @@ void RefillUnblindedTokens::GetSignedTokens() {
                      base::Unretained(this)));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25984): Reduce cognitive
-// complexity.
 void RefillUnblindedTokens::OnGetSignedTokens(
     const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnGetSignedTokens");

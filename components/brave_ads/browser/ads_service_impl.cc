@@ -212,8 +212,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25966): Reduce cognitive
-// complexity.
 bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
   const base::FilePath rewards_service_base_path =
       path.AppendASCII("rewards_service");

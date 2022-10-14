@@ -19,8 +19,6 @@ namespace {
 
 constexpr char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
 
-// TODO(https://github.com/brave/brave-browser/issues/26004): Reduce cognitive
-// complexity.
 void RunHashingExtractorTestCase(const std::string& test_case_name) {
   // Arrange
   const double kTolerance = 1e-7;

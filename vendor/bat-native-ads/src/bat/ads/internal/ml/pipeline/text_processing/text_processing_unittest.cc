@@ -177,8 +177,6 @@ TEST_F(BatAdsTextProcessingTest, MissingModelTest) {
   EXPECT_FALSE(success);
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25995): Reduce cognitive
-// complexity.
 TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
   // Arrange
   const size_t kMaxPredictionsSize = 100;
@@ -206,8 +204,6 @@ TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
   }
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25995): Reduce cognitive
-// complexity.
 TEST_F(BatAdsTextProcessingTest, TextCMCCrashTest) {
   // Arrange
   const size_t kMinPredictionsSize = 2;

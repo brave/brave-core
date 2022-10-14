@@ -281,8 +281,6 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
   return search_result_ads;
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25972): Reduce cognitive
-// complexity.
 void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
   if (!VLOG_IS_ON(1)) {
     return;

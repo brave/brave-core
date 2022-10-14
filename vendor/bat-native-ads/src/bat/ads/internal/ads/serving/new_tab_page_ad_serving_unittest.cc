@@ -80,8 +80,6 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   });
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25999): Reduce cognitive
-// complexity.
 TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRules();

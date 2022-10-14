@@ -53,8 +53,6 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
       });
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/26006): Reduce cognitive
-// complexity.
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
   for (int i = 0; i < targeting::features::GetTextEmbeddingsHistorySize() + 4;

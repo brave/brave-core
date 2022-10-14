@@ -131,8 +131,6 @@ void RedeemUnblindedToken::FetchPaymentToken(
                      base::Unretained(this), confirmation));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25983): Reduce cognitive
-// complexity.
 void RedeemUnblindedToken::OnFetchPaymentToken(
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {

@@ -92,8 +92,6 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
   bool did_fail_to_fire_event_ = false;
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/25991): Reduce cognitive
-// complexity.
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
@@ -114,8 +112,6 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
       1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25991): Reduce cognitive
-// complexity.
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
@@ -136,8 +132,6 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
       1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25991): Reduce cognitive
-// complexity.
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
@@ -158,8 +152,6 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
       1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25991): Reduce cognitive
-// complexity.
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
@@ -180,8 +172,6 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
                                ConfirmationType::kDismissed));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25991): Reduce cognitive
-// complexity.
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
@@ -200,8 +190,6 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   EXPECT_EQ(ad, ad_);
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/25991): Reduce cognitive
-// complexity.
 TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
   // Arrange
 
