@@ -72,12 +72,54 @@ targeting::EpsilonGreedyBanditArmMap MaybeDeleteArms(
   return updated_arms;
 }
 
+void InitializeArms() {
+  targeting::EpsilonGreedyBanditArmMap arms =
+      targeting::GetEpsilonGreedyBanditArms();
+
+  arms = MaybeAddOrResetArms(arms);
+
+  arms = MaybeDeleteArms(arms);
+
+  targeting::SetEpsilonGreedyBanditArms(arms);
+
+  BLOG(1, "Successfully initialized epsilon greedy bandit arms");
+}
+
+void UpdateArm(const int reward, const std::string& segment) {
+  targeting::EpsilonGreedyBanditArmMap arms =
+      targeting::GetEpsilonGreedyBanditArms();
+  if (arms.empty()) {
+    BLOG(1, "No epsilon greedy bandit arms");
+    return;
+  }
+
+  const auto iter = arms.find(segment);
+  if (iter == arms.cend()) {
+    BLOG(1, "Epsilon greedy bandit arm was not found for " << segment
+                                                           << " segment");
+    return;
+  }
+
+  targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+  arm.pulls++;
+  DCHECK_NE(0, arm.pulls);
+  arm.value =
+      arm.value + (1.0 / arm.pulls * (static_cast<double>(reward) - arm.value));
+  iter->second = arm;
+
+  targeting::SetEpsilonGreedyBanditArms(arms);
+
+  BLOG(1,
+       "Epsilon greedy bandit arm was updated for " << segment << " segment");
+}
+
 }  // namespace
 
 EpsilonGreedyBandit::EpsilonGreedyBandit() {
   InitializeArms();
 }
 
+// static
 void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   DCHECK(!feedback.segment.empty());
 
@@ -106,50 +148,6 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   }
 
   BLOG(1, "Epsilon greedy bandit processed " << feedback.ad_event_type);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void EpsilonGreedyBandit::InitializeArms() const {
-  targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
-
-  arms = MaybeAddOrResetArms(arms);
-
-  arms = MaybeDeleteArms(arms);
-
-  targeting::SetEpsilonGreedyBanditArms(arms);
-
-  BLOG(1, "Successfully initialized epsilon greedy bandit arms");
-}
-
-void EpsilonGreedyBandit::UpdateArm(const int reward,
-                                    const std::string& segment) const {
-  targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
-  if (arms.empty()) {
-    BLOG(1, "No epsilon greedy bandit arms");
-    return;
-  }
-
-  const auto iter = arms.find(segment);
-  if (iter == arms.cend()) {
-    BLOG(1, "Epsilon greedy bandit arm was not found for " << segment
-                                                           << " segment");
-    return;
-  }
-
-  targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
-  arm.pulls++;
-  DCHECK_NE(0, arm.pulls);
-  arm.value =
-      arm.value + (1.0 / arm.pulls * (static_cast<double>(reward) - arm.value));
-  iter->second = arm;
-
-  targeting::SetEpsilonGreedyBanditArms(arms);
-
-  BLOG(1,
-       "Epsilon greedy bandit arm was updated for " << segment << " segment");
 }
 
 }  // namespace ads::processor

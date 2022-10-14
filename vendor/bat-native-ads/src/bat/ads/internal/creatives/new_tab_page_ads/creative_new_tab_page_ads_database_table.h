@@ -82,19 +82,6 @@ class CreativeNewTabPageAds final : public TableInterface {
       mojom::DBCommandInfo* command,
       const CreativeNewTabPageAdList& creative_ads) const;
 
-  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                  GetCreativeNewTabPageAdCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForSegments(const SegmentList& segments,
-                        GetCreativeNewTabPageAdsCallback callback,
-                        mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetAll(GetCreativeNewTabPageAdsCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
-
   int batch_size_;
 
   std::unique_ptr<Campaigns> campaigns_database_table_;

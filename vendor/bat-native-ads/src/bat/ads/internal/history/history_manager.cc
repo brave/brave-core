@@ -60,10 +60,11 @@ void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+// static
 HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
                                     const HistorySortType sort_type,
                                     const base::Time from_time,
-                                    const base::Time to_time) const {
+                                    const base::Time to_time) {
   HistoryItemList history_items =
       ClientStateManager::GetInstance()->GetHistory();
 

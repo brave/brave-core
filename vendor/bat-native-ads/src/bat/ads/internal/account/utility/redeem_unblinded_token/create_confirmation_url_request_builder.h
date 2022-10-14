@@ -27,8 +27,6 @@ class CreateConfirmationUrlRequestBuilder final
  private:
   GURL BuildUrl() const;
 
-  std::vector<std::string> BuildHeaders() const;
-
   std::string BuildBody() const;
 
   ConfirmationInfo confirmation_;

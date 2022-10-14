@@ -84,7 +84,7 @@ void MockBuildChannel(const BuildChannelType type) {
 
 void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
                         const PlatformType type) {
-  PlatformHelper::GetInstance()->SetForTesting(mock.get());
+  PlatformHelper::SetForTesting(mock.get());
 
   bool is_mobile = false;
   std::string name;

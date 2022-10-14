@@ -32,7 +32,7 @@ class EpsilonGreedyBandit final : public CatalogObserver {
 
   void LoadFromCatalog(const CatalogInfo& catalog);
 
-  SegmentList Get() const;
+  static SegmentList Get();
 
  private:
   // CatalogObserver:

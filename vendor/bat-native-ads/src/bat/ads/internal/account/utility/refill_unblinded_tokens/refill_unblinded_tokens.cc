@@ -47,6 +47,14 @@ constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 constexpr int kMinimumUnblindedTokens = 20;
 constexpr int kMaximumUnblindedTokens = 50;
 
+bool ShouldRefillUnblindedTokens() {
+  return privacy::UnblindedTokenCount() < kMinimumUnblindedTokens;
+}
+
+int CalculateAmountOfTokensToRefill() {
+  return kMaximumUnblindedTokens - privacy::UnblindedTokenCount();
+}
+
 }  // namespace
 
 RefillUnblindedTokens::RefillUnblindedTokens(
@@ -394,14 +402,6 @@ void RefillUnblindedTokens::OnRetry() {
   } else {
     GetSignedTokens();
   }
-}
-
-bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  return privacy::UnblindedTokenCount() < kMinimumUnblindedTokens;
-}
-
-int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
-  return kMaximumUnblindedTokens - privacy::UnblindedTokenCount();
 }
 
 }  // namespace ads

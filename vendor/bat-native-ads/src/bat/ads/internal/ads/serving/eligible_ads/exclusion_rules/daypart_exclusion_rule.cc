@@ -26,6 +26,27 @@ bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
   return minutes >= daypart.start_minute && minutes <= daypart.end_minute;
 }
 
+bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+  if (creative_ad.dayparts.empty()) {
+    // Always respect cap if there are no dayparts specified
+    return true;
+  }
+
+  const base::Time now = base::Time::Now();
+
+  const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
+
+  const int day_of_week = GetDayOfWeek(now, /*is_local*/ true);
+  const std::string day_of_week_as_string = base::NumberToString(day_of_week);
+
+  return base::ranges::any_of(
+      creative_ad.dayparts, [day_of_week_as_string, local_time_as_minutes](
+                                const CreativeDaypartInfo& daypart) {
+        return MatchDayOfWeek(daypart, day_of_week_as_string) &&
+               MatchTimeSlot(daypart, local_time_as_minutes);
+      });
+}
+
 }  // namespace
 
 std::string DaypartExclusionRule::GetUuid(
@@ -47,28 +68,6 @@ bool DaypartExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& DaypartExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool DaypartExclusionRule::DoesRespectCap(
-    const CreativeAdInfo& creative_ad) const {
-  if (creative_ad.dayparts.empty()) {
-    // Always respect cap if there are no dayparts specified
-    return true;
-  }
-
-  const base::Time now = base::Time::Now();
-
-  const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
-
-  const int day_of_week = GetDayOfWeek(now, /*is_local*/ true);
-  const std::string day_of_week_as_string = base::NumberToString(day_of_week);
-
-  return base::ranges::any_of(
-      creative_ad.dayparts, [day_of_week_as_string, local_time_as_minutes](
-                                const CreativeDaypartInfo& daypart) {
-        return MatchDayOfWeek(daypart, day_of_week_as_string) &&
-               MatchTimeSlot(daypart, local_time_as_minutes);
-      });
 }
 
 }  // namespace ads

@@ -41,6 +41,25 @@ int BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
+void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  DropTable(transaction, "geo_targets");
+
+  const std::string query =
+      "CREATE TABLE geo_targets "
+      "(campaign_id TEXT NOT NULL, "
+      "geo_target TEXT NOT NULL, "
+      "PRIMARY KEY (campaign_id, geo_target), "
+      "UNIQUE(campaign_id, geo_target) ON CONFLICT REPLACE)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
 }  // namespace
 
 void GeoTargets::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -103,25 +122,6 @@ std::string GeoTargets::BuildInsertOrUpdateQuery(
       "geo_target) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
-}
-
-void GeoTargets::MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  DropTable(transaction, "geo_targets");
-
-  const std::string query =
-      "CREATE TABLE geo_targets "
-      "(campaign_id TEXT NOT NULL, "
-      "geo_target TEXT NOT NULL, "
-      "PRIMARY KEY (campaign_id, geo_target), "
-      "UNIQUE(campaign_id, geo_target) ON CONFLICT REPLACE)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace ads::database::table

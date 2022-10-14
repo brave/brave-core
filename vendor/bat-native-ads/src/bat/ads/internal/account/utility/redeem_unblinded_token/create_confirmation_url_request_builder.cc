@@ -19,6 +19,22 @@
 
 namespace ads {
 
+namespace {
+
+std::vector<std::string> BuildHeaders() {
+  std::vector<std::string> headers;
+
+  const std::string via_header = server::BuildViaHeader();
+  headers.push_back(via_header);
+
+  const std::string accept_header = "accept: application/json";
+  headers.push_back(accept_header);
+
+  return headers;
+}
+
+}  // namespace
+
 CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
     ConfirmationInfo confirmation)
     : confirmation_(std::move(confirmation)) {
@@ -53,19 +69,6 @@ GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
       confirmation_.transaction_id.c_str(), credential_base64_url.c_str());
 
   return GURL(spec);
-}
-
-std::vector<std::string> CreateConfirmationUrlRequestBuilder::BuildHeaders()
-    const {
-  std::vector<std::string> headers;
-
-  const std::string via_header = server::BuildViaHeader();
-  headers.push_back(via_header);
-
-  const std::string accept_header = "accept: application/json";
-  headers.push_back(accept_header);
-
-  return headers;
 }
 
 std::string CreateConfirmationUrlRequestBuilder::BuildBody() const {

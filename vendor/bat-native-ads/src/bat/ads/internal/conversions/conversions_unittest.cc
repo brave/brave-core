@@ -24,6 +24,14 @@
 
 namespace ads {
 
+namespace {
+
+base::Time CalculateExpireAtTime(const int observation_window) {
+  return Now() + base::Days(observation_window);
+}
+
+}  // namespace
+
 class BatAdsConversionsTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -35,10 +43,6 @@ class BatAdsConversionsTest : public UnitTestBase {
         std::make_unique<database::table::ConversionQueue>();
     conversions_database_table_ =
         std::make_unique<database::table::Conversions>();
-  }
-
-  base::Time CalculateExpireAtTime(const int observation_window) {
-    return Now() + base::Days(observation_window);
   }
 
   std::unique_ptr<Conversions> conversions_;

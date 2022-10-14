@@ -14,6 +14,22 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  if (creative_ad.per_week == 0) {
+    // Always respect cap if set to 0
+    return true;
+  }
+
+  return DoesRespectCreativeSetCap(creative_ad, ad_events,
+                                   ConfirmationType::kServed, base::Days(7),
+                                   creative_ad.per_week);
+}
+
+}  // namespace
+
 PerWeekExclusionRule::PerWeekExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
@@ -38,18 +54,6 @@ bool PerWeekExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& PerWeekExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool PerWeekExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                          const CreativeAdInfo& creative_ad) {
-  if (creative_ad.per_week == 0) {
-    // Always respect cap if set to 0
-    return true;
-  }
-
-  return DoesRespectCreativeSetCap(creative_ad, ad_events,
-                                   ConfirmationType::kServed, base::Days(7),
-                                   creative_ad.per_week);
 }
 
 }  // namespace ads

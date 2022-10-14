@@ -64,19 +64,6 @@ class ConversionQueue final : public TableInterface {
       mojom::DBCommandInfo* command,
       const ConversionQueueItemList& conversion_queue_items) const;
 
-  void OnGetAll(GetConversionQueueCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForCreativeInstanceId(
-      const std::string& creative_instance_id,
-      GetConversionQueueForCreativeInstanceIdCallback callback,
-      mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV10(mojom::DBTransactionInfo* transaction);
-  void MigrateToV11(mojom::DBTransactionInfo* transaction);
-  void MigrateToV17(mojom::DBTransactionInfo* transaction);
-  void MigrateToV21(mojom::DBTransactionInfo* transaction);
-
   int batch_size_;
 };
 

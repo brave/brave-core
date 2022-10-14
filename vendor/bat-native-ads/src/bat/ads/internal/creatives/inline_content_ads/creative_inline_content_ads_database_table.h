@@ -91,24 +91,6 @@ class CreativeInlineContentAds final : public TableInterface {
       mojom::DBCommandInfo* command,
       const CreativeInlineContentAdList& creative_ads) const;
 
-  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                  GetCreativeInlineContentAdCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForSegmentsAndDimensions(
-      const SegmentList& segments,
-      GetCreativeInlineContentAdsCallback callback,
-      mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForDimensions(
-      GetCreativeInlineContentAdsForDimensionsCallback callback,
-      mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetAll(GetCreativeInlineContentAdsCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
-
   int batch_size_;
 
   std::unique_ptr<Campaigns> campaigns_database_table_;

@@ -14,6 +14,22 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  if (creative_ad.per_month == 0) {
+    // Always respect cap if set to 0
+    return true;
+  }
+
+  return DoesRespectCreativeSetCap(creative_ad, ad_events,
+                                   ConfirmationType::kServed, base::Days(28),
+                                   creative_ad.per_month);
+}
+
+}  // namespace
+
 PerMonthExclusionRule::PerMonthExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
@@ -38,18 +54,6 @@ bool PerMonthExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& PerMonthExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool PerMonthExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                           const CreativeAdInfo& creative_ad) {
-  if (creative_ad.per_month == 0) {
-    // Always respect cap if set to 0
-    return true;
-  }
-
-  return DoesRespectCreativeSetCap(creative_ad, ad_events,
-                                   ConfirmationType::kServed, base::Days(28),
-                                   creative_ad.per_month);
 }
 
 }  // namespace ads

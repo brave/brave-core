@@ -55,7 +55,7 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  HistoryItemInfo AddHistoryItem() {
+  static HistoryItemInfo AddHistoryItem() {
     const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();
     const NotificationAdInfo ad = BuildNotificationAd(creative_ad);

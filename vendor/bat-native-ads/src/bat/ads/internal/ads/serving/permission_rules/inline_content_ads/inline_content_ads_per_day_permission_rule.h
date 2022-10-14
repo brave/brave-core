@@ -24,8 +24,6 @@ class AdsPerDayPermissionRule final : public PermissionRuleInterface {
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const std::vector<base::Time>& history);
-
   std::string last_message_;
 };
 

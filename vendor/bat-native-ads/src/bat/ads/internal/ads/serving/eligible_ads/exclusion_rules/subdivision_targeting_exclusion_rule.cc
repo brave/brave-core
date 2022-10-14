@@ -78,7 +78,7 @@ const std::string& SubdivisionTargetingExclusionRule::GetLastMessage() const {
 
 bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) {
-  if (!subdivision_targeting_->ShouldAllow()) {
+  if (!geographic::SubdivisionTargeting::ShouldAllow()) {
     return !DoesAdTargetSubdivision(creative_ad);
   }
 

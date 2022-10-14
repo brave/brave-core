@@ -78,8 +78,7 @@ void EventHandler::FireEvent(
     return;
   }
 
-  const PermissionRules permission_rules;
-  if (!permission_rules.HasPermission()) {
+  if (!PermissionRules::HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
     FailedToFireEvent(placement_id, creative_instance_id, event_type);
     return;

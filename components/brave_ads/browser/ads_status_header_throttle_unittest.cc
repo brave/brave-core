@@ -22,6 +22,14 @@ constexpr char kNotAllowedURL[] = "https://brave.com/search";
 constexpr char kTestingHeaderName[] = "TestingHeaderName";
 constexpr char kTestingHeaderValue[] = "TestingHeaderValue";
 
+network::ResourceRequest BuildRequest() {
+  network::ResourceRequest request;
+  request.url = GURL(kAllowedURL);
+  request.is_outermost_main_frame = true;
+  request.headers.SetHeader("TestingHeaderName", "TestingHeaderValue");
+  return request;
+}
+
 }  // namespace
 
 namespace brave_ads {
@@ -33,14 +41,6 @@ class AdsStatusHeaderThrottleTest : public ::testing::Test {
   }
 
   const AdsService* GetAdsService() const { return &mock_ads_service_; }
-
-  network::ResourceRequest BuildRequest() {
-    network::ResourceRequest request;
-    request.url = GURL(kAllowedURL);
-    request.is_outermost_main_frame = true;
-    request.headers.SetHeader("TestingHeaderName", "TestingHeaderValue");
-    return request;
-  }
 
  private:
   MockAdsService mock_ads_service_;

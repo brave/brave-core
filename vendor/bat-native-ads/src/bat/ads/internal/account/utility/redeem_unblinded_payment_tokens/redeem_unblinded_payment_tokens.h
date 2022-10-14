@@ -60,9 +60,6 @@ class RedeemUnblindedPaymentTokens final {
   void Retry();
   void OnRetry();
 
-  base::TimeDelta CalculateTokenRedemptionDelay();
-  base::Time CalculateNextTokenRedemptionDate();
-
   raw_ptr<RedeemUnblindedPaymentTokensDelegate> delegate_ = nullptr;
 
   WalletInfo wallet_;

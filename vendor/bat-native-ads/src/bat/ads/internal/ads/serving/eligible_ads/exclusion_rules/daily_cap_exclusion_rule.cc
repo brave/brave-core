@@ -14,6 +14,17 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  return DoesRespectCampaignCap(creative_ad, ad_events,
+                                ConfirmationType::kServed, base::Days(1),
+                                creative_ad.daily_cap);
+}
+
+}  // namespace
+
 DailyCapExclusionRule::DailyCapExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
@@ -38,13 +49,6 @@ bool DailyCapExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& DailyCapExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool DailyCapExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                           const CreativeAdInfo& creative_ad) {
-  return DoesRespectCampaignCap(creative_ad, ad_events,
-                                ConfirmationType::kServed, base::Days(1),
-                                creative_ad.daily_cap);
 }
 
 }  // namespace ads

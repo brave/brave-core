@@ -36,6 +36,36 @@ constexpr int64_t kNextTokenRedemptionAfterSeconds =
 constexpr int64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
 
+base::TimeDelta CalculateTokenRedemptionDelay() {
+  const base::Time next_token_redemption_at =
+      AdsClientHelper::GetInstance()->GetTimePref(
+          prefs::kNextTokenRedemptionAt);
+
+  const base::Time now = base::Time::Now();
+
+  base::TimeDelta delay;
+  if (now >= next_token_redemption_at) {
+    // Browser was launched after the next token redemption date
+    delay = kExpiredNextTokenRedemptionAfter;
+  } else {
+    delay = next_token_redemption_at - now;
+  }
+
+  return delay;
+}
+
+base::Time CalculateNextTokenRedemptionDate() {
+  const base::Time now = base::Time::Now();
+
+  const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
+                                      : kNextTokenRedemptionAfterSeconds;
+
+  const auto rand_delay =
+      static_cast<int64_t>(brave_base::random::Geometric(delay));
+
+  return now + base::Seconds(rand_delay);
+}
+
 }  // namespace
 
 RedeemUnblindedPaymentTokens::RedeemUnblindedPaymentTokens() = default;
@@ -186,36 +216,6 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
   is_processing_ = false;
 
   Redeem();
-}
-
-base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
-  const base::Time next_token_redemption_at =
-      AdsClientHelper::GetInstance()->GetTimePref(
-          prefs::kNextTokenRedemptionAt);
-
-  const base::Time now = base::Time::Now();
-
-  base::TimeDelta delay;
-  if (now >= next_token_redemption_at) {
-    // Browser was launched after the next token redemption date
-    delay = kExpiredNextTokenRedemptionAfter;
-  } else {
-    delay = next_token_redemption_at - now;
-  }
-
-  return delay;
-}
-
-base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
-  const base::Time now = base::Time::Now();
-
-  const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
-                                      : kNextTokenRedemptionAfterSeconds;
-
-  const auto rand_delay =
-      static_cast<int64_t>(brave_base::random::Geometric(delay));
-
-  return now + base::Seconds(rand_delay);
 }
 
 }  // namespace ads

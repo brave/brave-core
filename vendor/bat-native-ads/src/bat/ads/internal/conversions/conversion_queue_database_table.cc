@@ -71,6 +71,164 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion_queue_item;
 }
 
+void OnGetAll(GetConversionQueueCallback callback,
+              mojom::DBCommandResponseInfoPtr response) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    BLOG(0, "Failed to get conversion queue");
+    callback(/*success*/ false, {});
+    return;
+  }
+
+  ConversionQueueItemList conversion_queue_items;
+
+  for (const auto& record : response->result->get_records()) {
+    const ConversionQueueItemInfo conversion_queue_item =
+        GetFromRecord(record.get());
+    conversion_queue_items.push_back(conversion_queue_item);
+  }
+
+  callback(/*success*/ true, conversion_queue_items);
+}
+
+void OnGetForCreativeInstanceId(
+    const std::string& creative_instance_id,
+    GetConversionQueueForCreativeInstanceIdCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    BLOG(0, "Failed to get conversion queue");
+    callback(/*success*/ false, creative_instance_id, {});
+    return;
+  }
+
+  ConversionQueueItemList conversion_queue_items;
+
+  for (const auto& record : response->result->get_records()) {
+    const ConversionQueueItemInfo conversion_queue_item =
+        GetFromRecord(record.get());
+    conversion_queue_items.push_back(conversion_queue_item);
+  }
+
+  callback(/*success*/ true, creative_instance_id, conversion_queue_items);
+}
+
+void MigrateToV10(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  DropTable(transaction, "conversion_queue");
+
+  // campaign_id and advertiser_id can be NULL for legacy conversions migrated
+  // from |ad_conversions.json| and conversion_id and advertiser_public_key will
+  // be empty for non verifiable conversions
+  const std::string query =
+      "CREATE TABLE conversion_queue "
+      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+      "campaign_id TEXT, "
+      "creative_set_id TEXT NOT NULL, "
+      "creative_instance_id TEXT NOT NULL, "
+      "advertiser_id TEXT, "
+      "conversion_id TEXT, "
+      "timestamp TIMESTAMP NOT NULL)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
+void MigrateToV11(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  const std::string temp_table_name = "conversion_queue_temp";
+
+  // Create a temporary table with new |advertiser_public_key| column
+  const std::string query =
+      "CREATE TABLE conversion_queue_temp "
+      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+      "campaign_id TEXT, "
+      "creative_set_id TEXT NOT NULL, "
+      "creative_instance_id TEXT NOT NULL, "
+      "advertiser_id TEXT, "
+      "conversion_id TEXT, "
+      "advertiser_public_key TEXT, "
+      "timestamp TIMESTAMP NOT NULL)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+
+  // Copy columns to temporary table
+  const std::vector<std::string> columns = {
+      "campaign_id",   "creative_set_id", "creative_instance_id",
+      "advertiser_id", "conversion_id",   "timestamp"};
+
+  CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
+                   /*should_drop*/ true);
+
+  // Rename temporary table
+  RenameTable(transaction, temp_table_name, "conversion_queue");
+}
+
+void MigrateToV17(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  CreateTableIndex(transaction, "conversion_queue", "creative_instance_id");
+}
+
+void MigrateToV21(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  const std::string temp_table_name = "conversion_queue_temp";
+
+  // Create a temporary table with new |ad_type| column
+  const std::string query =
+      "CREATE TABLE conversion_queue_temp "
+      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+      "ad_type TEXT, "
+      "campaign_id TEXT, "
+      "creative_set_id TEXT NOT NULL, "
+      "creative_instance_id TEXT NOT NULL, "
+      "advertiser_id TEXT, "
+      "conversion_id TEXT, "
+      "advertiser_public_key TEXT, "
+      "timestamp TIMESTAMP NOT NULL, "
+      "was_processed INTEGER DEFAULT 0)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+
+  // Copy columns to temporary table
+  const std::vector<std::string> columns = {
+      "campaign_id",   "creative_set_id", "creative_instance_id",
+      "advertiser_id", "conversion_id",   "advertiser_public_key",
+      "timestamp"};
+
+  CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
+                   /*should_drop*/ true);
+
+  // Rename temporary table
+  RenameTable(transaction, temp_table_name, "conversion_queue");
+
+  // Migrate legacy conversions
+  const std::string update_query = base::StringPrintf(
+      "UPDATE conversion_queue "
+      "SET ad_type = 'ad_notification' "
+      "WHERE ad_type IS NULL");
+
+  mojom::DBCommandInfoPtr update_command = mojom::DBCommandInfo::New();
+  update_command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  update_command->command = update_query;
+
+  transaction->commands.push_back(std::move(update_command));
+}
+
 }  // namespace
 
 ConversionQueue::ConversionQueue() : batch_size_(kDefaultBatchSize) {}
@@ -179,8 +337,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&ConversionQueue::OnGetAll,
-                                             base::Unretained(this), callback));
+      std::move(transaction), base::BindOnce(&OnGetAll, callback));
 }
 
 void ConversionQueue::GetUnprocessed(GetConversionQueueCallback callback) {
@@ -222,8 +379,7 @@ void ConversionQueue::GetUnprocessed(GetConversionQueueCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&ConversionQueue::OnGetAll,
-                                             base::Unretained(this), callback));
+      std::move(transaction), base::BindOnce(&OnGetAll, callback));
 }
 
 void ConversionQueue::GetForCreativeInstanceId(
@@ -272,9 +428,8 @@ void ConversionQueue::GetForCreativeInstanceId(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&ConversionQueue::OnGetForCreativeInstanceId,
-                     base::Unretained(this), creative_instance_id, callback));
+      std::move(transaction), base::BindOnce(&OnGetForCreativeInstanceId,
+                                             creative_instance_id, callback));
 }
 
 std::string ConversionQueue::GetTableName() const {
@@ -351,164 +506,6 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
       "was_processed) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(9, count).c_str());
-}
-
-void ConversionQueue::OnGetAll(GetConversionQueueCallback callback,
-                               mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get conversion queue");
-    callback(/*success*/ false, {});
-    return;
-  }
-
-  ConversionQueueItemList conversion_queue_items;
-
-  for (const auto& record : response->result->get_records()) {
-    const ConversionQueueItemInfo conversion_queue_item =
-        GetFromRecord(record.get());
-    conversion_queue_items.push_back(conversion_queue_item);
-  }
-
-  callback(/*success*/ true, conversion_queue_items);
-}
-
-void ConversionQueue::OnGetForCreativeInstanceId(
-    const std::string& creative_instance_id,
-    GetConversionQueueForCreativeInstanceIdCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get conversion queue");
-    callback(/*success*/ false, creative_instance_id, {});
-    return;
-  }
-
-  ConversionQueueItemList conversion_queue_items;
-
-  for (const auto& record : response->result->get_records()) {
-    const ConversionQueueItemInfo conversion_queue_item =
-        GetFromRecord(record.get());
-    conversion_queue_items.push_back(conversion_queue_item);
-  }
-
-  callback(/*success*/ true, creative_instance_id, conversion_queue_items);
-}
-
-void ConversionQueue::MigrateToV10(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  DropTable(transaction, "conversion_queue");
-
-  // campaign_id and advertiser_id can be NULL for legacy conversions migrated
-  // from |ad_conversions.json| and conversion_id and advertiser_public_key will
-  // be empty for non verifiable conversions
-  const std::string query =
-      "CREATE TABLE conversion_queue "
-      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-      "campaign_id TEXT, "
-      "creative_set_id TEXT NOT NULL, "
-      "creative_instance_id TEXT NOT NULL, "
-      "advertiser_id TEXT, "
-      "conversion_id TEXT, "
-      "timestamp TIMESTAMP NOT NULL)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void ConversionQueue::MigrateToV11(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  const std::string temp_table_name = "conversion_queue_temp";
-
-  // Create a temporary table with new |advertiser_public_key| column
-  const std::string query =
-      "CREATE TABLE conversion_queue_temp "
-      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-      "campaign_id TEXT, "
-      "creative_set_id TEXT NOT NULL, "
-      "creative_instance_id TEXT NOT NULL, "
-      "advertiser_id TEXT, "
-      "conversion_id TEXT, "
-      "advertiser_public_key TEXT, "
-      "timestamp TIMESTAMP NOT NULL)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-
-  // Copy columns to temporary table
-  const std::vector<std::string> columns = {
-      "campaign_id",   "creative_set_id", "creative_instance_id",
-      "advertiser_id", "conversion_id",   "timestamp"};
-
-  CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
-                   /*should_drop*/ true);
-
-  // Rename temporary table
-  RenameTable(transaction, temp_table_name, "conversion_queue");
-}
-
-void ConversionQueue::MigrateToV17(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  CreateTableIndex(transaction, "conversion_queue", "creative_instance_id");
-}
-
-void ConversionQueue::MigrateToV21(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  const std::string temp_table_name = "conversion_queue_temp";
-
-  // Create a temporary table with new |ad_type| column
-  const std::string query =
-      "CREATE TABLE conversion_queue_temp "
-      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-      "ad_type TEXT, "
-      "campaign_id TEXT, "
-      "creative_set_id TEXT NOT NULL, "
-      "creative_instance_id TEXT NOT NULL, "
-      "advertiser_id TEXT, "
-      "conversion_id TEXT, "
-      "advertiser_public_key TEXT, "
-      "timestamp TIMESTAMP NOT NULL, "
-      "was_processed INTEGER DEFAULT 0)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-
-  // Copy columns to temporary table
-  const std::vector<std::string> columns = {
-      "campaign_id",   "creative_set_id", "creative_instance_id",
-      "advertiser_id", "conversion_id",   "advertiser_public_key",
-      "timestamp"};
-
-  CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
-                   /*should_drop*/ true);
-
-  // Rename temporary table
-  RenameTable(transaction, temp_table_name, "conversion_queue");
-
-  // Migrate legacy conversions
-  const std::string update_query = base::StringPrintf(
-      "UPDATE conversion_queue "
-      "SET ad_type = 'ad_notification' "
-      "WHERE ad_type IS NULL");
-
-  mojom::DBCommandInfoPtr update_command = mojom::DBCommandInfo::New();
-  update_command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  update_command->command = update_query;
-
-  transaction->commands.push_back(std::move(update_command));
 }
 
 }  // namespace ads::database::table

@@ -15,7 +15,16 @@
 namespace ads {
 
 namespace {
+
 constexpr int kPerHourCap = 1;
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  return DoesRespectCreativeCap(creative_ad, ad_events,
+                                ConfirmationType::kServed, base::Hours(1),
+                                kPerHourCap);
+}
+
 }  // namespace
 
 PerHourExclusionRule::PerHourExclusionRule(AdEventList ad_events)
@@ -42,13 +51,6 @@ bool PerHourExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& PerHourExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool PerHourExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                          const CreativeAdInfo& creative_ad) {
-  return DoesRespectCreativeCap(creative_ad, ad_events,
-                                ConfirmationType::kServed, base::Hours(1),
-                                kPerHourCap);
 }
 
 }  // namespace ads

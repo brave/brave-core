@@ -104,6 +104,173 @@ absl::optional<OptedInInfo> GetOptedIn(const base::Value::Dict& dict) {
   return opted_in;
 }
 
+base::Value::Dict GetFailedConfirmationsAsDictionary(
+    const ConfirmationList& confirmations) {
+  base::Value::Dict dict;
+
+  base::Value::List list;
+  for (const auto& confirmation : confirmations) {
+    DCHECK(IsValid(confirmation));
+
+    base::Value::Dict confirmation_dict;
+
+    confirmation_dict.Set("transaction_id", confirmation.transaction_id);
+
+    confirmation_dict.Set("creative_instance_id",
+                          confirmation.creative_instance_id);
+
+    confirmation_dict.Set("type", confirmation.type.ToString());
+
+    confirmation_dict.Set("ad_type", confirmation.ad_type.ToString());
+
+    confirmation_dict.Set(
+        "timestamp_in_seconds",
+        base::NumberToString(confirmation.created_at.ToDoubleT()));
+
+    confirmation_dict.Set("created", confirmation.was_created);
+
+    if (confirmation.opted_in) {
+      // Token
+      const absl::optional<std::string> token_base64 =
+          confirmation.opted_in->token.EncodeBase64();
+      if (!token_base64) {
+        continue;
+      }
+      confirmation_dict.Set("payment_token", *token_base64);
+
+      // Blinded token
+      const absl::optional<std::string> blinded_token_base64 =
+          confirmation.opted_in->blinded_token.EncodeBase64();
+      if (!blinded_token_base64) {
+        continue;
+      }
+      confirmation_dict.Set("blinded_payment_token", *blinded_token_base64);
+
+      // Unblinded token
+      base::Value::Dict unblinded_token;
+      const absl::optional<std::string> unblinded_token_base64 =
+          confirmation.opted_in->unblinded_token.value.EncodeBase64();
+      if (!unblinded_token_base64) {
+        continue;
+      }
+      unblinded_token.Set("unblinded_token", *unblinded_token_base64);
+
+      const absl::optional<std::string> public_key_base64 =
+          confirmation.opted_in->unblinded_token.public_key.EncodeBase64();
+      if (!public_key_base64) {
+        continue;
+      }
+      unblinded_token.Set("public_key", *public_key_base64);
+
+      confirmation_dict.Set("token_info", std::move(unblinded_token));
+
+      // User data
+      confirmation_dict.Set("user_data",
+                            confirmation.opted_in->user_data.Clone());
+
+      // Credential
+      if (!confirmation.opted_in->credential_base64url) {
+        continue;
+      }
+      confirmation_dict.Set("credential",
+                            *confirmation.opted_in->credential_base64url);
+    }
+
+    list.Append(std::move(confirmation_dict));
+  }
+
+  dict.Set("failed_confirmations", std::move(list));
+
+  return dict;
+}
+
+bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
+                                          ConfirmationList* confirmations) {
+  DCHECK(confirmations);
+
+  // Confirmations
+  const base::Value::List* failed_confirmations =
+      dict.FindList("failed_confirmations");
+  if (!failed_confirmations) {
+    BLOG(0, "Failed confirmations dictionary missing failed confirmations");
+    return false;
+  }
+
+  ConfirmationList new_failed_confirmations;
+
+  for (const auto& item : *failed_confirmations) {
+    const base::Value::Dict* dict = item.GetIfDict();
+    if (!dict) {
+      BLOG(0, "Confirmation should be a dictionary");
+      continue;
+    }
+
+    ConfirmationInfo confirmation;
+
+    // Transaction id
+    if (const std::string* value = dict->FindString("transaction_id")) {
+      confirmation.transaction_id = *value;
+    } else {
+      // Migrate legacy confirmations
+      confirmation.transaction_id =
+          base::GUID::GenerateRandomV4().AsLowercaseString();
+    }
+
+    // Creative instance id
+    if (const std::string* value = dict->FindString("creative_instance_id")) {
+      confirmation.creative_instance_id = *value;
+    } else {
+      BLOG(0, "Missing confirmation creative instance id");
+      continue;
+    }
+
+    // Type
+    if (const std::string* value = dict->FindString("type")) {
+      confirmation.type = ConfirmationType(*value);
+    } else {
+      BLOG(0, "Missing confirmation type");
+      continue;
+    }
+
+    // Ad type
+    if (const std::string* value = dict->FindString("ad_type")) {
+      confirmation.ad_type = AdType(*value);
+    } else {
+      // Migrate legacy confirmations, this value is not used right now so safe
+      // to set to |kNotificationAd|
+      confirmation.ad_type = AdType::kNotificationAd;
+    }
+
+    // Created at
+    if (const std::string* value = dict->FindString("timestamp_in_seconds")) {
+      double timestamp_as_double;
+      if (!base::StringToDouble(*value, &timestamp_as_double)) {
+        continue;
+      }
+
+      confirmation.created_at = base::Time::FromDoubleT(timestamp_as_double);
+    }
+
+    // Was created
+    const absl::optional<bool> was_created = dict->FindBool("created");
+    confirmation.was_created = was_created.value_or(true);
+
+    // Opted-in
+    confirmation.opted_in = GetOptedIn(*dict);
+
+    if (!IsValid(confirmation)) {
+      BLOG(0, "Invalid confirmation");
+      continue;
+    }
+
+    new_failed_confirmations.push_back(confirmation);
+  }
+
+  *confirmations = new_failed_confirmations;
+
+  return true;
+}
+
 }  // namespace
 
 ConfirmationStateManager::ConfirmationStateManager()
@@ -282,180 +449,6 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-base::Value::Dict ConfirmationStateManager::GetFailedConfirmationsAsDictionary(
-    const ConfirmationList& confirmations) const {
-  base::Value::Dict dict;
-
-  base::Value::List list;
-  for (const auto& confirmation : confirmations) {
-    DCHECK(IsValid(confirmation));
-
-    base::Value::Dict confirmation_dict;
-
-    confirmation_dict.Set("transaction_id", confirmation.transaction_id);
-
-    confirmation_dict.Set("creative_instance_id",
-                          confirmation.creative_instance_id);
-
-    confirmation_dict.Set("type", confirmation.type.ToString());
-
-    confirmation_dict.Set("ad_type", confirmation.ad_type.ToString());
-
-    confirmation_dict.Set(
-        "timestamp_in_seconds",
-        base::NumberToString(confirmation.created_at.ToDoubleT()));
-
-    confirmation_dict.Set("created", confirmation.was_created);
-
-    if (confirmation.opted_in) {
-      // Token
-      const absl::optional<std::string> token_base64 =
-          confirmation.opted_in->token.EncodeBase64();
-      if (!token_base64) {
-        continue;
-      }
-      confirmation_dict.Set("payment_token", *token_base64);
-
-      // Blinded token
-      const absl::optional<std::string> blinded_token_base64 =
-          confirmation.opted_in->blinded_token.EncodeBase64();
-      if (!blinded_token_base64) {
-        continue;
-      }
-      confirmation_dict.Set("blinded_payment_token", *blinded_token_base64);
-
-      // Unblinded token
-      base::Value::Dict unblinded_token;
-      const absl::optional<std::string> unblinded_token_base64 =
-          confirmation.opted_in->unblinded_token.value.EncodeBase64();
-      if (!unblinded_token_base64) {
-        continue;
-      }
-      unblinded_token.Set("unblinded_token", *unblinded_token_base64);
-
-      const absl::optional<std::string> public_key_base64 =
-          confirmation.opted_in->unblinded_token.public_key.EncodeBase64();
-      if (!public_key_base64) {
-        continue;
-      }
-      unblinded_token.Set("public_key", *public_key_base64);
-
-      confirmation_dict.Set("token_info", std::move(unblinded_token));
-
-      // User data
-      confirmation_dict.Set("user_data",
-                            confirmation.opted_in->user_data.Clone());
-
-      // Credential
-      if (!confirmation.opted_in->credential_base64url) {
-        continue;
-      }
-      confirmation_dict.Set("credential",
-                            *confirmation.opted_in->credential_base64url);
-    }
-
-    list.Append(std::move(confirmation_dict));
-  }
-
-  dict.Set("failed_confirmations", std::move(list));
-
-  return dict;
-}
-
-bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
-    const base::Value::Dict& dict,
-    ConfirmationList* confirmations) {
-  DCHECK(confirmations);
-
-  // Confirmations
-  const base::Value::List* failed_confirmations =
-      dict.FindList("failed_confirmations");
-  if (!failed_confirmations) {
-    BLOG(0, "Failed confirmations dictionary missing failed confirmations");
-    return false;
-  }
-
-  ConfirmationList new_failed_confirmations;
-
-  for (const auto& item : *failed_confirmations) {
-    const base::Value::Dict* failed_confirmation_dict = item.GetIfDict();
-    if (!failed_confirmation_dict) {
-      BLOG(0, "Confirmation should be a dictionary");
-      continue;
-    }
-
-    ConfirmationInfo confirmation;
-
-    // Transaction id
-    if (const std::string* value =
-            failed_confirmation_dict->FindString("transaction_id")) {
-      confirmation.transaction_id = *value;
-    } else {
-      // Migrate legacy confirmations
-      confirmation.transaction_id =
-          base::GUID::GenerateRandomV4().AsLowercaseString();
-    }
-
-    // Creative instance id
-    if (const std::string* value =
-            failed_confirmation_dict->FindString("creative_instance_id")) {
-      confirmation.creative_instance_id = *value;
-    } else {
-      BLOG(0, "Missing confirmation creative instance id");
-      continue;
-    }
-
-    // Type
-    if (const std::string* value =
-            failed_confirmation_dict->FindString("type")) {
-      confirmation.type = ConfirmationType(*value);
-    } else {
-      BLOG(0, "Missing confirmation type");
-      continue;
-    }
-
-    // Ad type
-    if (const std::string* value =
-            failed_confirmation_dict->FindString("ad_type")) {
-      confirmation.ad_type = AdType(*value);
-    } else {
-      // Migrate legacy confirmations, this value is not used right now so safe
-      // to set to |kNotificationAd|
-      confirmation.ad_type = AdType::kNotificationAd;
-    }
-
-    // Created at
-    if (const std::string* value =
-            failed_confirmation_dict->FindString("timestamp_in_seconds")) {
-      double timestamp_as_double;
-      if (!base::StringToDouble(*value, &timestamp_as_double)) {
-        continue;
-      }
-
-      confirmation.created_at = base::Time::FromDoubleT(timestamp_as_double);
-    }
-
-    // Was created
-    const absl::optional<bool> was_created =
-        failed_confirmation_dict->FindBool("created");
-    confirmation.was_created = was_created.value_or(true);
-
-    // Opted-in
-    confirmation.opted_in = GetOptedIn(*failed_confirmation_dict);
-
-    if (!IsValid(confirmation)) {
-      BLOG(0, "Invalid confirmation");
-      continue;
-    }
-
-    new_failed_confirmations.push_back(confirmation);
-  }
-
-  *confirmations = new_failed_confirmations;
-
-  return true;
-}
 
 bool ConfirmationStateManager::ParseFailedConfirmationsFromDictionary(
     const base::Value::Dict& dict) {

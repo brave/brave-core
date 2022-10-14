@@ -76,10 +76,14 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
 
   // Act
   processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -103,10 +107,14 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
 
   // Act
   processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -130,10 +138,14 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
 
   // Act
   processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -156,7 +168,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
 
   // Act
   processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -172,7 +185,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
 
   // Act
   processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =

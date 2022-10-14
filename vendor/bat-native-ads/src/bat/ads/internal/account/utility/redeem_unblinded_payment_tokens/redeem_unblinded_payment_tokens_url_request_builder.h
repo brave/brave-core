@@ -44,17 +44,11 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
  private:
   GURL BuildUrl() const;
 
-  std::vector<std::string> BuildHeaders() const;
-
   std::string BuildBody(const std::string& payload) const;
 
   std::string CreatePayload() const;
 
   base::Value::List CreatePaymentRequestDTO(const std::string& payload) const;
-
-  base::Value::Dict CreateCredential(
-      const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
-      const std::string& payload) const;
 
   WalletInfo wallet_;
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;

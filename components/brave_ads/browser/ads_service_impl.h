@@ -145,7 +145,6 @@ class AdsServiceImpl : public AdsService,
   void RemoveDeprecatedFiles() const;
 
   void ResetState();
-  void OnResetState(bool success);
 
   void OnEnabledPrefChanged();
   void OnIdleTimeThresholdPrefChanged();
@@ -212,19 +211,9 @@ class AdsServiceImpl : public AdsService,
                           int verbose_level,
                           const std::string& message);
 
-  void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
-                                       history::QueryResults results);
-
   void OnURLRequest(SimpleURLLoaderList::iterator url_loader_iter,
                     ads::UrlRequestCallback callback,
                     std::unique_ptr<std::string> response_body);
-
-  void OnLoad(ads::LoadCallback callback, const std::string& value);
-  void OnLoadFileResource(
-      ads::LoadFileCallback callback,
-      std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
-
-  void OnLogTrainingInstance(bool success);
 
   // KeyedService:
   void Shutdown() override;

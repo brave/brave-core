@@ -65,7 +65,7 @@ class Account final : public PrefManagerObserver,
                const AdType& ad_type,
                const ConfirmationType& confirmation_type) const;
 
-  void GetStatement(GetStatementCallback callback) const;
+  static void GetStatement(GetStatementCallback callback);
 
   void Process() const;
 

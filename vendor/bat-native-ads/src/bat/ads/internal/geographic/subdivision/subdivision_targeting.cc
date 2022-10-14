@@ -52,7 +52,8 @@ SubdivisionTargeting::~SubdivisionTargeting() {
   PrefManager::GetInstance()->RemoveObserver(this);
 }
 
-bool SubdivisionTargeting::ShouldAllow() const {
+// static
+bool SubdivisionTargeting::ShouldAllow() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
       prefs::kShouldAllowSubdivisionTargeting);
 }

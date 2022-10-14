@@ -41,7 +41,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_TRUE(subdivision_targeting_->ShouldAllow());
+  EXPECT_TRUE(geographic::SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 
@@ -60,7 +60,7 @@ TEST_F(BatAdsSubdivisionTargetingTest, AutoDetectSubdivisionTargetingNoRegion) {
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_TRUE(subdivision_targeting_->ShouldAllow());
+  EXPECT_TRUE(geographic::SubdivisionTargeting::ShouldAllow());
   EXPECT_TRUE(subdivision_targeting_->IsDisabled());
   EXPECT_FALSE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -77,7 +77,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
+  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -91,7 +91,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
+  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -105,7 +105,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeAllow();
 
   // Assert
-  EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
+  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -120,7 +120,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeAllow();
 
   // Assert
-  EXPECT_FALSE(subdivision_targeting_->ShouldAllow());
+  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -143,7 +143,7 @@ TEST_P(BatAdsSubdivisionTargetingRetryOnInvalidResponseTest,
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(subdivision_targeting_->ShouldAllow());
+  EXPECT_TRUE(geographic::SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
 
   EXPECT_EQ("US-AL", AdsClientHelper::GetInstance()->GetStringPref(

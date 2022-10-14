@@ -30,8 +30,6 @@ class Dayparts final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const CreativeAdList& creative_ads) const;
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

@@ -681,7 +681,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   SaveTransactions(transactions);
 
   // Act
-  account_->GetStatement([](mojom::StatementInfoPtr statement) {
+  Account::GetStatement([](mojom::StatementInfoPtr statement) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();

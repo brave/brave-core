@@ -12,7 +12,7 @@ namespace ads::promoted_content_ads {
 
 class PermissionRules final : public PermissionRulesBase {
  public:
-  bool HasPermission() const;
+  static bool HasPermission();
 };
 
 }  // namespace ads::promoted_content_ads

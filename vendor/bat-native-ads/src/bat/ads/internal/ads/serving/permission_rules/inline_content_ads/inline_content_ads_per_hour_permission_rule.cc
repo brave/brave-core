@@ -15,7 +15,14 @@
 namespace ads::inline_content_ads {
 
 namespace {
+
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
+
+bool DoesRespectCap(const std::vector<base::Time>& history) {
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, kTimeConstraint, features::GetMaximumInlineContentAdsPerHour());
+}
+
 }  // namespace
 
 bool AdsPerHourPermissionRule::ShouldAllow() {
@@ -32,12 +39,6 @@ bool AdsPerHourPermissionRule::ShouldAllow() {
 
 const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool AdsPerHourPermissionRule::DoesRespectCap(
-    const std::vector<base::Time>& history) {
-  return DoesHistoryRespectRollingTimeConstraint(
-      history, kTimeConstraint, features::GetMaximumInlineContentAdsPerHour());
 }
 
 }  // namespace ads::inline_content_ads

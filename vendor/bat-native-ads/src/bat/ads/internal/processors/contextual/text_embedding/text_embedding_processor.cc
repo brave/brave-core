@@ -23,6 +23,14 @@
 
 namespace ads::processor {
 
+namespace {
+
+bool IsEnabled() {
+  return targeting::features::IsTextEmbeddingEnabled();
+}
+
+}  // namespace
+
 TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
     : resource_(resource) {
   DCHECK(resource_);
@@ -36,10 +44,6 @@ TextEmbedding::~TextEmbedding() {
   LocaleManager::GetInstance()->RemoveObserver(this);
   ResourceManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
-}
-
-bool TextEmbedding::IsEnabled() {
-  return targeting::features::IsTextEmbeddingEnabled();
 }
 
 void TextEmbedding::Process(const std::string& html) {
@@ -118,7 +122,7 @@ void TextEmbedding::OnHtmlContentDidChange(
     return;
   }
 
-  if (!TextEmbedding::IsEnabled()) {
+  if (!IsEnabled()) {
     return;
   }
 

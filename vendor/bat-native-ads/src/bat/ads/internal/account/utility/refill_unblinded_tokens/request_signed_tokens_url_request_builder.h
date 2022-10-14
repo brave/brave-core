@@ -43,7 +43,6 @@ class RequestSignedTokensUrlRequestBuilder final
   GURL BuildUrl() const;
 
   std::vector<std::string> BuildHeaders(const std::string& body) const;
-  std::string BuildDigestHeaderValue(const std::string& body) const;
   std::string BuildSignatureHeaderValue(const std::string& body) const;
 
   std::string BuildBody() const;

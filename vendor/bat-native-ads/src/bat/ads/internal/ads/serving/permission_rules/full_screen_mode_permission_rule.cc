@@ -11,6 +11,18 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  if (PlatformHelper::GetInstance()->IsMobile()) {
+    return true;
+  }
+
+  return !AdsClientHelper::GetInstance()->IsBrowserInFullScreenMode();
+}
+
+}  // namespace
+
 bool FullScreenModePermissionRule::ShouldAllow() {
   if (!permission_rules::features::ShouldOnlyServeAdsInWindowedMode()) {
     return true;
@@ -26,14 +38,6 @@ bool FullScreenModePermissionRule::ShouldAllow() {
 
 const std::string& FullScreenModePermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool FullScreenModePermissionRule::DoesRespectCap() {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
-    return true;
-  }
-
-  return !AdsClientHelper::GetInstance()->IsBrowserInFullScreenMode();
 }
 
 }  // namespace ads

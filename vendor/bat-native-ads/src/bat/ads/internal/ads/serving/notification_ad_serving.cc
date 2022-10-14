@@ -97,8 +97,7 @@ void Serving::MaybeServeAd() {
     return;
   }
 
-  const PermissionRules permission_rules;
-  if (!permission_rules.HasPermission()) {
+  if (!PermissionRules::HasPermission()) {
     BLOG(1, "Notification ad not served: Not allowed due to permission rules");
     FailedToServeAd();
     return;

@@ -78,8 +78,7 @@ void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
     return;
   }
 
-  const PermissionRules permission_rules;
-  if (!permission_rules.HasPermission()) {
+  if (!PermissionRules::HasPermission()) {
     BLOG(1, "Search result ad: Not allowed due to permission rules");
     FailedToFireEvent(ad, event_type, callback);
     return;

@@ -78,9 +78,8 @@ void EventHandler::FireEvent(const std::string& placement_id,
 
   // Apply permission rules for new tab page ad view events if Brave Ads are
   // disabled.
-  const PermissionRules permission_rules;
   if (event_type == mojom::NewTabPageAdEventType::kViewed &&
-      !ShouldRewardUser() && !permission_rules.HasPermission()) {
+      !ShouldRewardUser() && !PermissionRules::HasPermission()) {
     BLOG(1, "New tab page ad: Not allowed due to permission rules");
     FailedToFireEvent(placement_id, creative_instance_id, event_type);
     return;

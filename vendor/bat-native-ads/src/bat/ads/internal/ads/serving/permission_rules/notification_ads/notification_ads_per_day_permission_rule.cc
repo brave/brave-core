@@ -15,7 +15,14 @@
 namespace ads::notification_ads {
 
 namespace {
+
 constexpr base::TimeDelta kTimeConstraint = base::Days(1);
+
+bool DoesRespectCap(const std::vector<base::Time>& history) {
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, kTimeConstraint, features::GetMaximumNotificationAdsPerDay());
+}
+
 }  // namespace
 
 bool AdsPerDayPermissionRule::ShouldAllow() {
@@ -32,12 +39,6 @@ bool AdsPerDayPermissionRule::ShouldAllow() {
 
 const std::string& AdsPerDayPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool AdsPerDayPermissionRule::DoesRespectCap(
-    const std::vector<base::Time>& history) {
-  return DoesHistoryRespectRollingTimeConstraint(
-      history, kTimeConstraint, features::GetMaximumNotificationAdsPerDay());
 }
 
 }  // namespace ads::notification_ads

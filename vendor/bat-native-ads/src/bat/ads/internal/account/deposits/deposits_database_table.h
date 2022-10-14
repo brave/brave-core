@@ -46,12 +46,6 @@ class Deposits final : public TableInterface {
       const CreativeAdList& creative_ads) const;
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const DepositInfo& deposit) const;
-
-  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                  GetDepositsCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

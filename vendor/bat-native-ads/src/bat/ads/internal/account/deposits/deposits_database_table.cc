@@ -62,6 +62,46 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return deposit;
 }
 
+void OnGetForCreativeInstanceId(const std::string& /*creative_instance_id*/,
+                                GetDepositsCallback callback,
+                                mojom::DBCommandResponseInfoPtr response) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    BLOG(0, "Failed to get deposit value");
+    callback(/*success*/ false, absl::nullopt);
+    return;
+  }
+
+  if (response->result->get_records().empty()) {
+    callback(/*success*/ true, absl::nullopt);
+    return;
+  }
+
+  const mojom::DBRecordInfoPtr record =
+      std::move(response->result->get_records().front());
+  DepositInfo deposit = GetFromRecord(record.get());
+
+  callback(/*success*/ true, std::move(deposit));
+}
+
+void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  const std::string query =
+      "CREATE TABLE IF NOT EXISTS deposits "
+      "(creative_instance_id TEXT NOT NULL, "
+      "value DOUBLE NOT NULL, "
+      "expire_at TIMESTAMP NOT NULL, "
+      "PRIMARY KEY (creative_instance_id), "
+      "UNIQUE(creative_instance_id) ON CONFLICT REPLACE)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
 }  // namespace
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
@@ -137,9 +177,8 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&Deposits::OnGetForCreativeInstanceId,
-                     base::Unretained(this), creative_instance_id, callback));
+      std::move(transaction), base::BindOnce(&OnGetForCreativeInstanceId,
+                                             creative_instance_id, callback));
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) const {
@@ -212,47 +251,6 @@ std::string Deposits::BuildInsertOrUpdateQuery(
       "value, "
       "expire_at) VALUES %s",
       GetTableName().c_str(), BuildBindingParameterPlaceholders(3, 1).c_str());
-}
-
-void Deposits::OnGetForCreativeInstanceId(
-    const std::string& /*creative_instance_id*/,
-    GetDepositsCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get deposit value");
-    callback(/*success*/ false, absl::nullopt);
-    return;
-  }
-
-  if (response->result->get_records().empty()) {
-    callback(/*success*/ true, absl::nullopt);
-    return;
-  }
-
-  const mojom::DBRecordInfoPtr record =
-      std::move(response->result->get_records().front());
-  DepositInfo deposit = GetFromRecord(record.get());
-
-  callback(/*success*/ true, std::move(deposit));
-}
-
-void Deposits::MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  const std::string query =
-      "CREATE TABLE IF NOT EXISTS deposits "
-      "(creative_instance_id TEXT NOT NULL, "
-      "value DOUBLE NOT NULL, "
-      "expire_at TIMESTAMP NOT NULL, "
-      "PRIMARY KEY (creative_instance_id), "
-      "UNIQUE(creative_instance_id) ON CONFLICT REPLACE)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace ads::database::table

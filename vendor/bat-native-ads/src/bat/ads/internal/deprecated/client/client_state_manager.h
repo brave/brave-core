@@ -99,7 +99,6 @@ class ClientStateManager final {
 
  private:
   void Save();
-  void OnSaved(bool success);
 
   void Load();
   void OnLoaded(bool success, const std::string& json);

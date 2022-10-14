@@ -15,6 +15,16 @@
 
 namespace ads {
 
+namespace {
+
+GURL BuildUrl() {
+  const std::string spec = base::StringPrintf(
+      "%s/v%d/catalog", server::GetStaticHost().c_str(), kCatalogVersion);
+  return GURL(spec);
+}
+
+}  // namespace
+
 // GET /v#/catalog
 
 mojom::UrlRequestInfoPtr CatalogUrlRequestBuilder::Build() {
@@ -23,14 +33,6 @@ mojom::UrlRequestInfoPtr CatalogUrlRequestBuilder::Build() {
   url_request->method = mojom::UrlRequestMethodType::kGet;
 
   return url_request;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-GURL CatalogUrlRequestBuilder::BuildUrl() const {
-  const std::string spec = base::StringPrintf(
-      "%s/v%d/catalog", server::GetStaticHost().c_str(), kCatalogVersion);
-  return GURL(spec);
 }
 
 }  // namespace ads

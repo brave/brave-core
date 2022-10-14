@@ -49,11 +49,6 @@ class Transactions final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const TransactionList& transactions) const;
-
-  void OnGetTransactions(const GetTransactionsCallback& callback,
-                         mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV18(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

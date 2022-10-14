@@ -85,6 +85,16 @@ bool IsMutated(const std::string& value) {
          GenerateHash(value);
 }
 
+void OnSaved(const bool success) {
+  if (!success) {
+    BLOG(0, "Failed to save client state");
+
+    return;
+  }
+
+  BLOG(9, "Successfully saved client state");
+}
+
 }  // namespace
 
 ClientStateManager::ClientStateManager() : client_(new ClientInfo()) {
@@ -516,19 +526,8 @@ void ClientStateManager::Save() {
     SetHash(json);
   }
 
-  AdsClientHelper::GetInstance()->Save(
-      kClientStateFilename, json,
-      base::BindOnce(&ClientStateManager::OnSaved, base::Unretained(this)));
-}
-
-void ClientStateManager::OnSaved(const bool success) {
-  if (!success) {
-    BLOG(0, "Failed to save client state");
-
-    return;
-  }
-
-  BLOG(9, "Successfully saved client state");
+  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json,
+                                       base::BindOnce(&OnSaved));
 }
 
 void ClientStateManager::Load() {

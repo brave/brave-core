@@ -36,20 +36,11 @@ class AdEvents final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
-  void RunTransaction(const std::string& query, GetAdEventsCallback callback);
-
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const AdEventList& ad_event);
 
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const AdEventList& ad_events) const;
-
-  void OnGetAdEvents(GetAdEventsCallback callback,
-                     mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV5(mojom::DBTransactionInfo* transaction);
-  void MigrateToV13(mojom::DBTransactionInfo* transaction);
-  void MigrateToV17(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

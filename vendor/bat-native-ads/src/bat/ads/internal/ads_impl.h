@@ -205,7 +205,6 @@ class AdsImpl final : public Ads,
   void LoadConfirmationState(InitializeCallback callback);
   void MigrateNotificationState(InitializeCallback callback);
 
-  void FailedToInitialize(InitializeCallback callback);
   void SuccessfullyInitialized(InitializeCallback callback);
   bool IsInitialized() const;
 

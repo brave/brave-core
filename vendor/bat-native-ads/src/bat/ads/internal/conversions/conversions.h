@@ -65,10 +65,6 @@ class Conversions final : public LocaleManagerObserver,
   void Convert(const AdEventInfo& ad_event,
                const VerifiableConversionInfo& verifiable_conversion);
 
-  ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
-                                   const ConversionList& conversions);
-  ConversionList SortConversions(const ConversionList& conversions);
-
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
   void OnSaveConversionQueue(bool success);

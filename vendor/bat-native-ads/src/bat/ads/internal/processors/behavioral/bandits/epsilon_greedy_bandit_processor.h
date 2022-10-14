@@ -16,12 +16,7 @@ class EpsilonGreedyBandit final {
  public:
   EpsilonGreedyBandit();
 
-  void Process(const BanditFeedbackInfo& feedback);
-
- private:
-  void InitializeArms() const;
-
-  void UpdateArm(int reward, const std::string& segment) const;
+  static void Process(const BanditFeedbackInfo& feedback);
 };
 
 }  // namespace ads::processor

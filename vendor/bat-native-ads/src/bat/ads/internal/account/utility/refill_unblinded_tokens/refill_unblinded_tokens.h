@@ -62,10 +62,6 @@ class RefillUnblindedTokens final {
   void Retry();
   void OnRetry();
 
-  bool ShouldRefillUnblindedTokens() const;
-
-  int CalculateAmountOfTokensToRefill() const;
-
   const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 

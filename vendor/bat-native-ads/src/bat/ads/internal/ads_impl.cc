@@ -68,6 +68,16 @@
 
 namespace ads {
 
+namespace {
+
+void FailedToInitialize(InitializeCallback callback) {
+  BLOG(1, "Failed to initialize ads");
+
+  callback(/*success*/ false);
+}
+
+}  // namespace
+
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)) {
   browser_manager_ = std::make_unique<BrowserManager>();
@@ -379,8 +389,7 @@ HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
     return {};
   }
 
-  return HistoryManager::GetInstance()->Get(filter_type, sort_type, from_time,
-                                            to_time);
+  return HistoryManager::Get(filter_type, sort_type, from_time, to_time);
 }
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
@@ -389,7 +398,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
     return;
   }
 
-  account_->GetStatement([callback](mojom::StatementInfoPtr statement) {
+  Account::GetStatement([callback](mojom::StatementInfoPtr statement) {
     callback(std::move(statement));
   });
 }
@@ -523,12 +532,6 @@ void AdsImpl::MigrateNotificationState(InitializeCallback callback) {
 
     SuccessfullyInitialized(callback);
   });
-}
-
-void AdsImpl::FailedToInitialize(InitializeCallback callback) {
-  BLOG(1, "Failed to initialize ads");
-
-  callback(/*success*/ false);
 }
 
 void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {

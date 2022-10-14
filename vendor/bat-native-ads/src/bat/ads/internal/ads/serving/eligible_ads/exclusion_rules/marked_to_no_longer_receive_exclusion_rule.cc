@@ -11,6 +11,14 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+  return !ShouldFilterSegment(creative_ad.segment);
+}
+
+}  // namespace
+
 std::string MarkedToNoLongerReceiveExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.segment;
@@ -33,11 +41,6 @@ bool MarkedToNoLongerReceiveExclusionRule::ShouldExclude(
 const std::string& MarkedToNoLongerReceiveExclusionRule::GetLastMessage()
     const {
   return last_message_;
-}
-
-bool MarkedToNoLongerReceiveExclusionRule::DoesRespectCap(
-    const CreativeAdInfo& creative_ad) {
-  return !ShouldFilterSegment(creative_ad.segment);
 }
 
 }  // namespace ads

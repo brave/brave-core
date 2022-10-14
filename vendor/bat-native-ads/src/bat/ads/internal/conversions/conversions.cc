@@ -176,6 +176,32 @@ AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
   return filtered_ad_events;
 }
 
+ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
+                                 const ConversionList& conversions) {
+  ConversionList filtered_conversions;
+
+  std::copy_if(conversions.cbegin(), conversions.cend(),
+               std::back_inserter(filtered_conversions),
+               [&redirect_chain](const ConversionInfo& conversion) {
+                 const auto iter = base::ranges::find_if(
+                     redirect_chain, [&conversion](const GURL& url) {
+                       return MatchUrlPattern(url, conversion.url_pattern);
+                     });
+
+                 return iter != redirect_chain.cend();
+               });
+
+  return filtered_conversions;
+}
+
+ConversionList SortConversions(const ConversionList& conversions) {
+  const auto sort =
+      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
+  DCHECK(sort);
+
+  return sort->Apply(conversions);
+}
+
 }  // namespace
 
 Conversions::Conversions() {
@@ -328,33 +354,6 @@ void Conversions::Convert(
               << " and advertiser id " << ad_event.advertiser_id);
 
   AddItemToQueue(ad_event, verifiable_conversion);
-}
-
-ConversionList Conversions::FilterConversions(
-    const std::vector<GURL>& redirect_chain,
-    const ConversionList& conversions) {
-  ConversionList filtered_conversions;
-
-  std::copy_if(conversions.cbegin(), conversions.cend(),
-               std::back_inserter(filtered_conversions),
-               [&redirect_chain](const ConversionInfo& conversion) {
-                 const auto iter = base::ranges::find_if(
-                     redirect_chain, [&conversion](const GURL& url) {
-                       return MatchUrlPattern(url, conversion.url_pattern);
-                     });
-
-                 return iter != redirect_chain.cend();
-               });
-
-  return filtered_conversions;
-}
-
-ConversionList Conversions::SortConversions(const ConversionList& conversions) {
-  const auto sort =
-      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
-  DCHECK(sort);
-
-  return sort->Apply(conversions);
 }
 
 void Conversions::AddItemToQueue(

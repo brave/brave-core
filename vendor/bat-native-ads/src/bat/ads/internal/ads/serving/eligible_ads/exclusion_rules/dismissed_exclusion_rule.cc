@@ -16,6 +16,53 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events) {
+  int count = 0;
+
+  for (const auto& ad_event : ad_events) {
+    if (ad_event.confirmation_type == ConfirmationType::kClicked) {
+      count = 0;
+    } else if (ad_event.confirmation_type == ConfirmationType::kDismissed) {
+      count++;
+      if (count >= 2) {
+        // An ad was dismissed two or more times in a row without being clicked,
+        // so do not show another ad from the same campaign for the specified
+        // hours
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+AdEventList FilterAdEvents(const AdEventList& ad_events,
+                           const CreativeAdInfo& creative_ad) {
+  const base::TimeDelta time_constraint =
+      exclusion_rules::features::ExcludeAdIfDismissedWithinTimeWindow();
+  if (time_constraint.is_zero()) {
+    return {};
+  }
+
+  AdEventList filtered_ad_events;
+  std::copy_if(
+      ad_events.cbegin(), ad_events.cend(),
+      std::back_inserter(filtered_ad_events),
+      [time_constraint, &creative_ad](const AdEventInfo& ad_event) {
+        return (ad_event.confirmation_type == ConfirmationType::kClicked ||
+                ad_event.confirmation_type == ConfirmationType::kDismissed) &&
+               ad_event.type == AdType::kNotificationAd &&
+               ad_event.campaign_id == creative_ad.campaign_id &&
+               base::Time::Now() - ad_event.created_at < time_constraint;
+      });
+
+  return filtered_ad_events;
+}
+
+}  // namespace
+
 DismissedExclusionRule::DismissedExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
@@ -43,50 +90,6 @@ bool DismissedExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& DismissedExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool DismissedExclusionRule::DoesRespectCap(const AdEventList& ad_events) {
-  int count = 0;
-
-  for (const auto& ad_event : ad_events) {
-    if (ad_event.confirmation_type == ConfirmationType::kClicked) {
-      count = 0;
-    } else if (ad_event.confirmation_type == ConfirmationType::kDismissed) {
-      count++;
-      if (count >= 2) {
-        // An ad was dismissed two or more times in a row without being clicked,
-        // so do not show another ad from the same campaign for the specified
-        // hours
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
-
-AdEventList DismissedExclusionRule::FilterAdEvents(
-    const AdEventList& ad_events,
-    const CreativeAdInfo& creative_ad) const {
-  const base::TimeDelta time_constraint =
-      exclusion_rules::features::ExcludeAdIfDismissedWithinTimeWindow();
-  if (time_constraint.is_zero()) {
-    return {};
-  }
-
-  AdEventList filtered_ad_events;
-  std::copy_if(
-      ad_events.cbegin(), ad_events.cend(),
-      std::back_inserter(filtered_ad_events),
-      [time_constraint, &creative_ad](const AdEventInfo& ad_event) {
-        return (ad_event.confirmation_type == ConfirmationType::kClicked ||
-                ad_event.confirmation_type == ConfirmationType::kDismissed) &&
-               ad_event.type == AdType::kNotificationAd &&
-               ad_event.campaign_id == creative_ad.campaign_id &&
-               base::Time::Now() - ad_event.created_at < time_constraint;
-      });
-
-  return filtered_ad_events;
 }
 
 }  // namespace ads
