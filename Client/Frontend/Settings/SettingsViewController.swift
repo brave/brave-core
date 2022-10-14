@@ -333,7 +333,14 @@ class SettingsViewController: TableViewController {
     
     if UIDevice.current.userInterfaceIdiom == .pad {
       tabs.rows.append(
-        Row(text: Strings.showTabsBar, image: UIImage(named: "settings-show-tab-bar", in: .module, compatibleWith: nil)!.template, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
+        Row(
+          text: Strings.showTabsBar,
+          image: UIImage(named: "settings-show-tab-bar", in: .module, compatibleWith: nil)!.template,
+          accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value != TabBarVisibility.never.rawValue, {
+            Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue
+          }),
+          cellClass: MultilineValue1Cell.self
+        )
       )
     } else {
       var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, image: UIImage(named: "settings-show-tab-bar", in: .module, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
