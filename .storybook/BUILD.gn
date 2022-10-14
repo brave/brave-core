@@ -11,8 +11,15 @@ group("storybook") {
   # are disabled in a regular brave build due to build flags,
   # they will be generated before storybook is compiled.
   deps = [
+    "//brave/components/brave_new_tab_ui:mojom_js",
+    "//brave/components/brave_shields/common:mojom_js",
+    "//brave/components/brave_today/common:mojom_js",
     "//brave/components/brave_vpn/mojom:mojom_js",
     "//brave/components/brave_wallet/common:mojom_js",
+    "//brave/components/speedreader/common:mojom_js",
+    "//mojo/public/js:bindings",
+    "//mojo/public/js:resources",
+    "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:modulize",
     "//ui/webui/resources/js:preprocess",
   ]
