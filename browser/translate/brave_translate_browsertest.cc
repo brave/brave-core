@@ -307,8 +307,8 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   // script/origin).
   EXPECT_TRUE(HasNoBadFlagsInfobar());
 
-  // Brave language list should be used by default (kBraveDefaultLanguageList).
-  EXPECT_FALSE(TranslateDownloadManager::IsSupportedLanguage("ar"));
+  // Chromium language list should be used by default.
+  EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("ar"));
   EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("vi"));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
