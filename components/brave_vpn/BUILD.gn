@@ -22,6 +22,8 @@ static_library("brave_vpn") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
+    "vpn_response_parser.cc",
+    "vpn_response_parser.h",
   ]
 
   deps = [
@@ -112,6 +114,7 @@ source_set("unit_tests") {
       sources += [
         "brave_vpn_unittest.cc",
         "brave_vpn_utils_unittest.cc",
+        "vpn_response_parser_unittest.cc",
       ]
     }
 
