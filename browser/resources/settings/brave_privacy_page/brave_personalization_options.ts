@@ -7,9 +7,12 @@
 import { Polymer } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
 import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
+import { getTemplate } from './brave_personalization_options.html.js'
 
 Polymer({
   is: 'settings-brave-personalization-options',
+
+  _template: getTemplate(),
 
   behaviors: [
     WebUIListenerBehavior,
