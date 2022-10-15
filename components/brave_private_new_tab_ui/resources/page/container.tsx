@@ -82,8 +82,7 @@ function Container () {
 
     dialogContent = (
       <>
-        <p>{getLocale('headerTorText1')}</p>
-        <p>{getLocale('headerTorText2')}</p>
+        <p>{getLocale('headerTorText')}</p>
       </>
     )
   }
