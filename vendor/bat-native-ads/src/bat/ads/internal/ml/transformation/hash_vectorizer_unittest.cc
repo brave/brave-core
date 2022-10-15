@@ -28,7 +28,6 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   ASSERT_TRUE(json);
 
   // Act
-
   const absl::optional<base::Value> root = base::JSONReader::Read(*json);
   ASSERT_TRUE(root);
 

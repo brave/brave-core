@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
