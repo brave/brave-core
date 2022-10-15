@@ -107,6 +107,15 @@ struct Publisher {
   // feed.
   url.mojom.Url feed_source;
 
+  // The favicon url for this publisher.
+  url.mojom.Url? favicon_url;
+
+  // The cover url for this publisher.
+  url.mojom.Url? cover_url;
+
+  // The background color for this publisher (in hex).
+  string? background_color;
+
   // The url of the site. Used to determine whether the user is subscribed to
   // a site when viewing a webcontents.
   url.mojom.Url site_url;

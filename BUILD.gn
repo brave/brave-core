@@ -57,6 +57,10 @@ if (!is_ios) {
       deps += [ ":packed_resources" ]
     }
   }
+
+  group("storybook") {
+    deps = [ "//brave/.storybook:storybook" ]
+  }
 }
 
 if (is_win) {
@@ -540,10 +544,6 @@ group("tools") {
   if (enable_brave_vpn) {
     deps = [ "//brave/components/brave_vpn:vpntool" ]
   }
-}
-
-group("storybook") {
-  deps = [ "//brave/.storybook:storybook" ]
 }
 
 if (is_redirect_cc_build) {

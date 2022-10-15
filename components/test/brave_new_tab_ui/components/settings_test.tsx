@@ -1,4 +1,8 @@
 import * as React from 'react'
+
+// Note: this needs to be imported before any Settings components, to ensure the mock is set up.
+import '../../../../components/brave_new_tab_ui/stories/default/data/mockBraveNewsController'
+
 import { shallow } from 'enzyme'
 import { SettingsMenu } from '../../../../components/brave_new_tab_ui/components/default'
 import Settings, { Props } from '../../../../components/brave_new_tab_ui/containers/newTab/settings'

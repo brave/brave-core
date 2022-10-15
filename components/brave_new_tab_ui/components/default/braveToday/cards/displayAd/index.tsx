@@ -60,14 +60,7 @@ export default function CardDisplayAd (props: Props) {
     // verbose ref type conversion due to https://stackoverflow.com/questions/61102101/cannot-assign-refobjecthtmldivelement-to-refobjecthtmlelement-instance
     return <div ref={contentTrigger}><div ref={cardRef as unknown as React.RefObject<HTMLDivElement>} /></div>
   }
-  let isImageUnpadded = true
-  let imageUrl: string = ''
-  if (content.image.paddedImageUrl) {
-    imageUrl = content.image.paddedImageUrl.url
-    isImageUnpadded = false
-  } else if (content.image.imageUrl) {
-    imageUrl = content.image.imageUrl.url
-  }
+  const imageUrl = content.image.paddedImageUrl?.url || content.image.imageUrl?.url
   // Render ad when one is available for this unit
   // TODO(petemill): Avoid nested links
   return (
@@ -77,7 +70,6 @@ export default function CardDisplayAd (props: Props) {
       </Styles.BatAdLabel>
       <a onClick={onClick} href={content.targetUrl.url} ref={cardRef}>
         <CardImage
-          isUnpadded={isImageUnpadded}
           imageUrl={imageUrl}
           isPromoted={true}
         />

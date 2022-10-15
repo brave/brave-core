@@ -93,6 +93,7 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
   auto result = mojom::Channel::New();
   result->channel_name = channel_id;
   result->subscribed = subscribed;
+
   return result;
 }
 

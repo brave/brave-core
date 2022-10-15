@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Import BraveNewsControllerMock first.
+import './default/data/mockBraveNewsController'
+
 import * as React from 'react'
 import { Dispatch } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
