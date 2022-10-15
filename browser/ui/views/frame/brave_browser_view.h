@@ -72,6 +72,9 @@ class BraveBrowserView : public BrowserView {
   void ShowSpeedreaderWebUIBubble(Browser* browser) override;
   void HideSpeedreaderWebUIBubble() override;
   bool GetTabStripVisible() const override;
+#if defined(OS_WIN)
+  bool GetSupportsTitle() const override;
+#endif
 
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 

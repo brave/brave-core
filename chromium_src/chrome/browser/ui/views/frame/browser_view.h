@@ -28,7 +28,15 @@
 #define GetTabStripVisible virtual GetTabStripVisible
 #define BrowserViewLayout BraveBrowserViewLayout
 
+#if defined(OS_WIN)
+#define GetSupportsTitle virtual GetSupportsTitle
+#endif
+
 #include "src/chrome/browser/ui/views/frame/browser_view.h"
+
+#if defined(OS_WIN)
+#undef GetSupportsTitle
+#endif
 
 #undef BrowserViewLayout
 #undef GetTabStripVisible
