@@ -53,6 +53,7 @@ export const Tip = styled.div<{ isAddress?: boolean, maxWidth?: CSSProperties['m
   
   width: ${(p) => p.isAddress ? '180px' : 'unset'};
   max-width: ${(p) => p?.maxWidth || '100%'};
+  min-width: fit-content;
   
   word-wrap: break-word;
   white-space: ${(p) => p.isAddress || p?.maxWidth ? 'pre-line' : 'nowrap'};
