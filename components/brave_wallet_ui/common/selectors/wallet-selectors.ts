@@ -55,3 +55,4 @@ export const transactionProviderErrorRegistry = ({ wallet }: State) => wallet.tr
 export const transactionSpotPrices = ({ wallet }: State) => wallet.transactionSpotPrices
 export const transactions = ({ wallet }: State) => wallet.transactions
 export const userVisibleTokensInfo = ({ wallet }: State) => wallet.userVisibleTokensInfo
+export const selectedAccountFilter = ({ wallet }: State) => wallet.selectedAccountFilter
