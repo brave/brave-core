@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -72,7 +73,7 @@ class BraveBrowserView : public BrowserView {
   void ShowSpeedreaderWebUIBubble(Browser* browser) override;
   void HideSpeedreaderWebUIBubble() override;
   bool GetTabStripVisible() const override;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   bool GetSupportsTitle() const override;
 #endif
 

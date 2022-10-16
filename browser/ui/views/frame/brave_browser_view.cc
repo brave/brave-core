@@ -313,7 +313,7 @@ bool BraveBrowserView::GetTabStripVisible() const {
   return BrowserView::GetTabStripVisible();
 }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 bool BraveBrowserView::GetSupportsTitle() const {
   if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
     return true;
