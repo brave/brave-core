@@ -116,8 +116,6 @@ public class BraveAdsSignupDialog {
                 neverShowOnboardingDialogAgain();
 
                 // Enable ads
-                // BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-                // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 if (BraveActivity.getBraveActivity() != null) {
                     BraveActivity.getBraveActivity().openRewardsPanel();
                 }
@@ -142,9 +140,6 @@ public class BraveAdsSignupDialog {
             public void onClick(DialogInterface dialog, int which) {
                 // Enable ads
                 neverShowOnboardingDialogAgain();
-
-                // BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-                // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 if (BraveActivity.getBraveActivity() != null) {
                     BraveActivity.getBraveActivity().openRewardsPanel();
                 }

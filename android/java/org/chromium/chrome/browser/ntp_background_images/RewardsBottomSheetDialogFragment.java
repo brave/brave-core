@@ -136,7 +136,6 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
             turnOnAdsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // turnOnAds();
                     if (BraveActivity.getBraveActivity() != null) {
                         BraveActivity.getBraveActivity().openRewardsPanel();
                     }
@@ -204,11 +203,6 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
         BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, false);
         reloadTab();
     }
-
-    // private void turnOnAds() {
-    //     BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-    //     BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-    // }
 
     private void reloadTab() {
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
