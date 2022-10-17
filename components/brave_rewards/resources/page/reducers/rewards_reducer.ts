@@ -351,8 +351,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      if (data.result === 46) { // type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS
-        ui.modalRedirect = 'mismatchedProviderAccountRegionsModal'
+      if (data.result === 46) { // type::Result::MISMATCHED_COUNTRIES
+        ui.modalRedirect = 'mismatchedCountriesModal'
         break
       }
 
