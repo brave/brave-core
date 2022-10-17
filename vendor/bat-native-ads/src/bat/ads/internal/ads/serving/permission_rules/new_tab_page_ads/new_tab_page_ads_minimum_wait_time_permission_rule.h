@@ -7,13 +7,8 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_PERMISSION_RULES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_MINIMUM_WAIT_TIME_PERMISSION_RULE_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_interface.h"
-
-namespace base {
-class Time;
-}  // namespace base
 
 namespace ads::new_tab_page_ads {
 
@@ -24,8 +19,6 @@ class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const std::vector<base::Time>& history);
-
   std::string last_message_;
 };
 

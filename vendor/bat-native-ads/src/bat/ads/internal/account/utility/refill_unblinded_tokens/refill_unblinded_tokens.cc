@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
-#include <functional>
 #include <utility>
 
 #include "absl/types/optional.h"
@@ -46,6 +45,14 @@ constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 
 constexpr int kMinimumUnblindedTokens = 20;
 constexpr int kMaximumUnblindedTokens = 50;
+
+bool ShouldRefillUnblindedTokens() {
+  return privacy::UnblindedTokenCount() < kMinimumUnblindedTokens;
+}
+
+int CalculateAmountOfTokensToRefill() {
+  return kMaximumUnblindedTokens - privacy::UnblindedTokenCount();
+}
 
 }  // namespace
 
@@ -162,7 +169,7 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
   }
 
   // Get nonce
-  const std::string* nonce = root->FindStringKey("nonce");
+  const std::string* const nonce = root->FindStringKey("nonce");
   if (!nonce) {
     BLOG(0, "Response is missing nonce");
     OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
@@ -221,7 +228,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(1, "Captcha required");
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-    const std::string* captcha_id = root->FindStringKey("captcha_id");
+    const std::string* const captcha_id = root->FindStringKey("captcha_id");
     if (!captcha_id || captcha_id->empty()) {
       BLOG(0, "Response is missing captcha_id");
       OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
@@ -238,7 +245,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   // Get public key
-  const std::string* public_key_base64 = root->FindStringKey("publicKey");
+  const std::string* const public_key_base64 = root->FindStringKey("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing publicKey");
     OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
@@ -264,7 +271,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   // Get batch dleq proof
-  const std::string* batch_dleq_proof_base64 =
+  const std::string* const batch_dleq_proof_base64 =
       root->FindStringKey("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
@@ -282,7 +289,8 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   // Get signed tokens
-  const base::Value* signed_tokens_list = root->FindListKey("signedTokens");
+  const base::Value* const signed_tokens_list =
+      root->FindListKey("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");
     OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
@@ -392,14 +400,6 @@ void RefillUnblindedTokens::OnRetry() {
   } else {
     GetSignedTokens();
   }
-}
-
-bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  return privacy::UnblindedTokenCount() < kMinimumUnblindedTokens;
-}
-
-int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
-  return kMaximumUnblindedTokens - privacy::UnblindedTokenCount();
 }
 
 }  // namespace ads

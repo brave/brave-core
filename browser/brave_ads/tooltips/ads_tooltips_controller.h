@@ -21,10 +21,15 @@ class AdsTooltipsController : public AdsTooltipsDelegate,
                               public brave_tooltips::BraveTooltipDelegate {
  public:
   explicit AdsTooltipsController(Profile* profile);
-  ~AdsTooltipsController() override;
 
   AdsTooltipsController(const AdsTooltipsController&) = delete;
   AdsTooltipsController& operator=(const AdsTooltipsController&) = delete;
+
+  AdsTooltipsController(AdsTooltipsController&& other) noexcept = delete;
+  AdsTooltipsController& operator=(AdsTooltipsController&& other) noexcept =
+      delete;
+
+  ~AdsTooltipsController() override;
 
   // AdsTooltipDelegate:
   void ShowCaptchaTooltip(

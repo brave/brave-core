@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -12,8 +14,24 @@
 
 namespace ads {
 
-PerDayExclusionRule::PerDayExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  if (creative_ad.per_day == 0) {
+    // Always respect cap if set to 0
+    return true;
+  }
+
+  return DoesRespectCreativeSetCap(creative_ad, ad_events,
+                                   ConfirmationType::kServed, base::Days(1),
+                                   creative_ad.per_day);
+}
+
+}  // namespace
+
+PerDayExclusionRule::PerDayExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 PerDayExclusionRule::~PerDayExclusionRule() = default;
 
@@ -36,18 +54,6 @@ bool PerDayExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& PerDayExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool PerDayExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                         const CreativeAdInfo& creative_ad) {
-  if (creative_ad.per_day == 0) {
-    // Always respect cap if set to 0
-    return true;
-  }
-
-  return DoesRespectCreativeSetCap(creative_ad, ad_events,
-                                   ConfirmationType::kServed, base::Days(1),
-                                   creative_ad.per_day);
 }
 
 }  // namespace ads

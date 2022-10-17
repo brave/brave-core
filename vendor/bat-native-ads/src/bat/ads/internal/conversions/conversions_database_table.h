@@ -23,7 +23,7 @@ class Conversions final : public TableInterface {
  public:
   void Save(const ConversionList& conversions, ResultCallback callback);
 
-  void GetAll(GetConversionsCallback callback);
+  void GetAll(GetConversionsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 
@@ -37,11 +37,6 @@ class Conversions final : public TableInterface {
 
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const ConversionList& conversions) const;
-
-  void OnGetConversions(GetConversionsCallback callback,
-                        mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV23(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

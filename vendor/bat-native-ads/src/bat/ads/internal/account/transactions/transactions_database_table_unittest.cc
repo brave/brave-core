@@ -27,7 +27,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Assert
   const TransactionList expected_transactions = transactions;
 
-  Transactions database_table;
+  const Transactions database_table;
   database_table.GetAll(
       [&expected_transactions](const bool success,
                                const TransactionList& transactions) {
@@ -56,7 +56,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Assert
   const TransactionList expected_transactions = transactions;
 
-  Transactions database_table;
+  const Transactions database_table;
   database_table.GetAll(
       [&expected_transactions](const bool success,
                                const TransactionList& transactions) {
@@ -81,7 +81,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Assert
   const TransactionList expected_transactions = transactions;
 
-  Transactions database_table;
+  const Transactions database_table;
   database_table.GetAll(
       [&expected_transactions](const bool success,
                                const TransactionList& transactions) {
@@ -109,7 +109,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Act
   const TransactionList expected_transactions = {info_2};
 
-  Transactions database_table;
+  const Transactions database_table;
   database_table.GetForDateRange(
       Now(), DistantFuture(),
       [&expected_transactions](const bool success,
@@ -140,7 +140,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   unblinded_payment_tokens.push_back(unblinded_payment_token);
 
   // Act
-  Transactions database_table;
+  const Transactions database_table;
   database_table.Update(
       unblinded_payment_tokens,
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
@@ -171,7 +171,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
   SaveTransactions(transactions);
 
-  Transactions database_table;
+  const Transactions database_table;
 
   // Act
   database_table.Delete(

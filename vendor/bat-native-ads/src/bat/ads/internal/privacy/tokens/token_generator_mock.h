@@ -18,6 +18,12 @@ class TokenGeneratorMock : public TokenGenerator {
  public:
   TokenGeneratorMock();
 
+  TokenGeneratorMock(const TokenGeneratorMock& other) = delete;
+  TokenGeneratorMock& operator=(const TokenGeneratorMock& other) = delete;
+
+  TokenGeneratorMock(TokenGeneratorMock&& other) noexcept = delete;
+  TokenGeneratorMock& operator=(TokenGeneratorMock&& other) noexcept = delete;
+
   ~TokenGeneratorMock() override;
 
   MOCK_METHOD(std::vector<cbr::Token>, Generate, (const int count), (const));

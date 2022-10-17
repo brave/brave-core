@@ -67,10 +67,6 @@ class ConfirmationStateManager final {
  private:
   void OnLoaded(bool success, const std::string& json);
 
-  base::Value::Dict GetFailedConfirmationsAsDictionary(
-      const ConfirmationList& confirmations) const;
-  bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
-                                            ConfirmationList* confirmations);
   bool ParseFailedConfirmationsFromDictionary(const base::Value::Dict& dict);
 
   bool ParseUnblindedTokensFromDictionary(const base::Value::Dict& dict);

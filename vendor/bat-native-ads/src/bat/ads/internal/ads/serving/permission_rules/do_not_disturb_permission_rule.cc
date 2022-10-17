@@ -17,22 +17,7 @@ namespace {
 constexpr int kDoNotDisturbFromHour = 21;  // 9pm
 constexpr int kDoNotDisturbToHour = 6;     // 6am
 
-}  // namespace
-
-bool DoNotDisturbPermissionRule::ShouldAllow() {
-  if (!DoesRespectCap()) {
-    last_message_ = "Should not disturb";
-    return false;
-  }
-
-  return true;
-}
-
-const std::string& DoNotDisturbPermissionRule::GetLastMessage() const {
-  return last_message_;
-}
-
-bool DoNotDisturbPermissionRule::DoesRespectCap() {
+bool DoesRespectCap() {
   if (PlatformHelper::GetInstance()->GetType() != PlatformType::kAndroid) {
     return true;
   }
@@ -48,6 +33,21 @@ bool DoNotDisturbPermissionRule::DoesRespectCap() {
 
   return exploded.hour >= kDoNotDisturbToHour &&
          exploded.hour < kDoNotDisturbFromHour;
+}
+
+}  // namespace
+
+bool DoNotDisturbPermissionRule::ShouldAllow() {
+  if (!DoesRespectCap()) {
+    last_message_ = "Should not disturb";
+    return false;
+  }
+
+  return true;
+}
+
+const std::string& DoNotDisturbPermissionRule::GetLastMessage() const {
+  return last_message_;
 }
 
 }  // namespace ads

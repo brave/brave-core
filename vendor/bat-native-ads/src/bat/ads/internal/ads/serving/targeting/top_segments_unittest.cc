@@ -69,6 +69,28 @@ const ModelCombinationsParamInfo kTests[] = {
     {true, true, true, true, 8},
 };
 
+void ProcessEpsilonGreedyBandit() {
+  const std::vector<processor::BanditFeedbackInfo> feedbacks = {
+      {"science", mojom::NotificationAdEventType::kClicked},
+      {"science", mojom::NotificationAdEventType::kClicked},
+      {"science", mojom::NotificationAdEventType::kClicked},
+      {"travel", mojom::NotificationAdEventType::kDismissed},
+      {"travel", mojom::NotificationAdEventType::kClicked},
+      {"travel", mojom::NotificationAdEventType::kClicked},
+      {"technology & computing", mojom::NotificationAdEventType::kDismissed},
+      {"technology & computing", mojom::NotificationAdEventType::kDismissed},
+      {"technology & computing", mojom::NotificationAdEventType::kClicked}};
+
+  for (const auto& segment : kSegments) {
+    processor::EpsilonGreedyBandit::Process(
+        {segment, mojom::NotificationAdEventType::kDismissed});
+  }
+
+  for (const auto& feedback : feedbacks) {
+    processor::EpsilonGreedyBandit::Process(feedback);
+  }
+}
+
 }  // namespace
 
 class BatAdsTopSegmentsTest
@@ -79,7 +101,8 @@ class BatAdsTopSegmentsTest
     UnitTestBase::SetUp();
 
     // We always instantitate processors even if features are disabled
-    bandit_processor_ = std::make_unique<processor::EpsilonGreedyBandit>();
+    epsilon_greedy_bandit_processor_ =
+        std::make_unique<processor::EpsilonGreedyBandit>();
 
     purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
     purchase_intent_resource_->Load();
@@ -93,28 +116,6 @@ class BatAdsTopSegmentsTest
     text_classification_processor_ =
         std::make_unique<processor::TextClassification>(
             text_classification_resource_.get());
-  }
-
-  void ProcessBandit() {
-    const std::vector<processor::BanditFeedbackInfo> feedbacks = {
-        {"science", mojom::NotificationAdEventType::kClicked},
-        {"science", mojom::NotificationAdEventType::kClicked},
-        {"science", mojom::NotificationAdEventType::kClicked},
-        {"travel", mojom::NotificationAdEventType::kDismissed},
-        {"travel", mojom::NotificationAdEventType::kClicked},
-        {"travel", mojom::NotificationAdEventType::kClicked},
-        {"technology & computing", mojom::NotificationAdEventType::kDismissed},
-        {"technology & computing", mojom::NotificationAdEventType::kDismissed},
-        {"technology & computing", mojom::NotificationAdEventType::kClicked}};
-
-    for (const auto& segment : kSegments) {
-      bandit_processor_->Process(
-          {segment, mojom::NotificationAdEventType::kDismissed});
-    }
-
-    for (const auto& feedback : feedbacks) {
-      bandit_processor_->Process(feedback);
-    }
   }
 
   void ProcessTextClassification() {
@@ -139,7 +140,8 @@ class BatAdsTopSegmentsTest
     }
   }
 
-  std::unique_ptr<processor::EpsilonGreedyBandit> bandit_processor_;
+  std::unique_ptr<processor::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_processor_;
   std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
   std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
   std::unique_ptr<resource::TextClassification> text_classification_resource_;
@@ -152,7 +154,7 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
 
   const ModelCombinationsParamInfo param(GetParam());
   if (param.previously_processed) {
-    ProcessBandit();
+    ProcessEpsilonGreedyBandit();
     ProcessTextClassification();
     ProcessPurchaseIntent();
   }
@@ -230,7 +232,7 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
   resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
-  ProcessBandit();
+  ProcessEpsilonGreedyBandit();
   ProcessTextClassification();
   ProcessPurchaseIntent();
 
@@ -268,7 +270,7 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
   resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
-  ProcessBandit();
+  ProcessEpsilonGreedyBandit();
   ProcessTextClassification();
   ProcessPurchaseIntent();
 

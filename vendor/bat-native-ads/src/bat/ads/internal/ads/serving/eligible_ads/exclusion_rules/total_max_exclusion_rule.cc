@@ -6,14 +6,31 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {
 
-TotalMaxExclusionRule::TotalMaxExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  const int count = std::count_if(
+      ad_events.cbegin(), ad_events.cend(),
+      [&creative_ad](const AdEventInfo& ad_event) {
+        return ad_event.confirmation_type == ConfirmationType::kServed &&
+               ad_event.creative_set_id == creative_ad.creative_set_id;
+      });
+
+  return count < creative_ad.total_max;
+}
+
+}  // namespace
+
+TotalMaxExclusionRule::TotalMaxExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 TotalMaxExclusionRule::~TotalMaxExclusionRule() = default;
 
@@ -36,18 +53,6 @@ bool TotalMaxExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& TotalMaxExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool TotalMaxExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                           const CreativeAdInfo& creative_ad) {
-  const int count = std::count_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&creative_ad](const AdEventInfo& ad_event) {
-        return ad_event.confirmation_type == ConfirmationType::kServed &&
-               ad_event.creative_set_id == creative_ad.creative_set_id;
-      });
-
-  return count < creative_ad.total_max;
 }
 
 }  // namespace ads

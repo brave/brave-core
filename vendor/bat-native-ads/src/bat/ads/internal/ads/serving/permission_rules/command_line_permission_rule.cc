@@ -9,6 +9,14 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  return !(IsProductionEnvironment() && DidOverrideFromCommandLine());
+}
+
+}  // namespace
+
 bool CommandLinePermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "--enable-features command-line arg is not supported";
@@ -20,10 +28,6 @@ bool CommandLinePermissionRule::ShouldAllow() {
 
 const std::string& CommandLinePermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool CommandLinePermissionRule::DoesRespectCap() {
-  return !(IsProductionEnvironment() && DidOverrideFromCommandLine());
 }
 
 }  // namespace ads

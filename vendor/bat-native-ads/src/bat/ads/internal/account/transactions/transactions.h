@@ -37,7 +37,7 @@ TransactionInfo Add(const std::string& creative_instance_id,
 
 void GetForDateRange(base::Time from_time,
                      base::Time to_time,
-                     GetCallback callback);
+                     const GetCallback& callback);
 
 void RemoveAll(RemoveAllCallback callback);
 

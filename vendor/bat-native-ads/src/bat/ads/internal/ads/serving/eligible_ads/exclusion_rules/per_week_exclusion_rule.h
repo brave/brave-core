@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class PerWeekExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit PerWeekExclusionRule(const AdEventList& ad_events);
+  explicit PerWeekExclusionRule(AdEventList ad_events);
 
   PerWeekExclusionRule(const PerWeekExclusionRule& other) = delete;
   PerWeekExclusionRule& operator=(const PerWeekExclusionRule& other) = delete;
@@ -36,9 +36,6 @@ class PerWeekExclusionRule final
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const AdEventList& ad_events,
-                      const CreativeAdInfo& creative_ad);
-
   AdEventList ad_events_;
 
   std::string last_message_;

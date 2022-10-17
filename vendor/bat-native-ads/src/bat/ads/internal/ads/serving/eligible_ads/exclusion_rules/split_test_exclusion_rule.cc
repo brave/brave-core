@@ -25,6 +25,26 @@ absl::optional<std::string> GetSplitTestGroup(const std::string& study_name) {
   return field_trial->group_name();
 }
 
+bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+  const absl::optional<std::string> split_test_group =
+      GetSplitTestGroup(kStudyName);
+  if (!split_test_group) {
+    // Only respect cap if browser has signed up to a field trial
+    return creative_ad.split_test_group.empty();
+  }
+
+  if (creative_ad.split_test_group.empty()) {
+    // Always respect cap if there is no split testing group in the catalog
+    return true;
+  }
+
+  if (creative_ad.split_test_group == split_test_group) {
+    return true;
+  }
+
+  return false;
+}
+
 }  // namespace
 
 std::string SplitTestExclusionRule::GetUuid(
@@ -47,27 +67,6 @@ bool SplitTestExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& SplitTestExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool SplitTestExclusionRule::DoesRespectCap(
-    const CreativeAdInfo& creative_ad) const {
-  const absl::optional<std::string> split_test_group =
-      GetSplitTestGroup(kStudyName);
-  if (!split_test_group) {
-    // Only respect cap if browser has signed up to a field trial
-    return creative_ad.split_test_group.empty();
-  }
-
-  if (creative_ad.split_test_group.empty()) {
-    // Always respect cap if there is no split testing group in the catalog
-    return true;
-  }
-
-  if (creative_ad.split_test_group == split_test_group) {
-    return true;
-  }
-
-  return false;
 }
 
 }  // namespace ads

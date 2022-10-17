@@ -16,8 +16,8 @@ namespace ads::ml::pipeline {
 struct PipelineInfo final {
   PipelineInfo();
   PipelineInfo(int version,
-               const std::string& timestamp,
-               const std::string& locale,
+               std::string timestamp,
+               std::string locale,
                TransformationVector transformations,
                model::Linear linear_model);
 

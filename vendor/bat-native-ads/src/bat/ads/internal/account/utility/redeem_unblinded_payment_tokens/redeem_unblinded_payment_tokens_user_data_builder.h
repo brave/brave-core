@@ -15,7 +15,7 @@ class RedeemUnblindedPaymentTokensUserDataBuilder final
     : public UserDataBuilderInterface {
  public:
   explicit RedeemUnblindedPaymentTokensUserDataBuilder(
-      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
+      privacy::UnblindedPaymentTokenList unblinded_payment_tokens);
 
   RedeemUnblindedPaymentTokensUserDataBuilder(
       const RedeemUnblindedPaymentTokensUserDataBuilder& other) = delete;

@@ -23,6 +23,14 @@
 
 namespace ads::processor {
 
+namespace {
+
+bool IsEnabled() {
+  return targeting::features::IsTextEmbeddingEnabled();
+}
+
+}  // namespace
+
 TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
     : resource_(resource) {
   DCHECK(resource_);
@@ -38,10 +46,6 @@ TextEmbedding::~TextEmbedding() {
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
-bool TextEmbedding::IsEnabled() {
-  return targeting::features::IsTextEmbeddingEnabled();
-}
-
 void TextEmbedding::Process(const std::string& html) {
   if (!resource_->IsInitialized()) {
     BLOG(1, "Failed to process text embeddings as resource not initialized");
@@ -54,7 +58,8 @@ void TextEmbedding::Process(const std::string& html) {
     return;
   }
 
-  ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
+  const ml::pipeline::EmbeddingProcessing* const embedding_proc_pipeline =
+      resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
       embedding_proc_pipeline->EmbedText(text);
   if (text_embedding.embedding.GetNonZeroElementCount() == 0) {
@@ -118,7 +123,7 @@ void TextEmbedding::OnHtmlContentDidChange(
     return;
   }
 
-  if (!TextEmbedding::IsEnabled()) {
+  if (!IsEnabled()) {
     return;
   }
 

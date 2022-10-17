@@ -168,7 +168,8 @@ std::vector<brave_federated::mojom::CovariateInfoPtr>
 CovariateManager::GetTrainingInstance() const {
   std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance;
   for (const auto& covariate_log_entry : covariate_log_entries_) {
-    const CovariateLogEntryInterface* entry = covariate_log_entry.second.get();
+    const CovariateLogEntryInterface* const entry =
+        covariate_log_entry.second.get();
     DCHECK(entry);
 
     brave_federated::mojom::CovariateInfoPtr covariate =

@@ -18,10 +18,15 @@ namespace brave_ads {
 class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
  public:
   explicit AdsTooltipsDelegateImpl(Profile* profile);
-  ~AdsTooltipsDelegateImpl() override = default;
 
   AdsTooltipsDelegateImpl(const AdsTooltipsDelegateImpl&) = delete;
   AdsTooltipsDelegateImpl& operator=(const AdsTooltipsDelegateImpl&) = delete;
+
+  AdsTooltipsDelegateImpl(AdsTooltipsDelegateImpl&& other) noexcept = delete;
+  AdsTooltipsDelegateImpl& operator=(AdsTooltipsDelegateImpl&& other) noexcept =
+      delete;
+
+  ~AdsTooltipsDelegateImpl() override = default;
 
   void ShowCaptchaTooltip(
       const std::string& payment_id,

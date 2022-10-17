@@ -31,7 +31,7 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
 
   ~SubdivisionTargeting() override;
 
-  bool ShouldAllow() const;
+  static bool ShouldAllow();
 
   bool IsDisabled() const;
 

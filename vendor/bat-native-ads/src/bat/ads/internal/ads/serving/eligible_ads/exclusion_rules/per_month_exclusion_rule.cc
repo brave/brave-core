@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_month_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -12,8 +14,24 @@
 
 namespace ads {
 
-PerMonthExclusionRule::PerMonthExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  if (creative_ad.per_month == 0) {
+    // Always respect cap if set to 0
+    return true;
+  }
+
+  return DoesRespectCreativeSetCap(creative_ad, ad_events,
+                                   ConfirmationType::kServed, base::Days(28),
+                                   creative_ad.per_month);
+}
+
+}  // namespace
+
+PerMonthExclusionRule::PerMonthExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 PerMonthExclusionRule::~PerMonthExclusionRule() = default;
 
@@ -36,18 +54,6 @@ bool PerMonthExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& PerMonthExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool PerMonthExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                           const CreativeAdInfo& creative_ad) {
-  if (creative_ad.per_month == 0) {
-    // Always respect cap if set to 0
-    return true;
-  }
-
-  return DoesRespectCreativeSetCap(creative_ad, ad_events,
-                                   ConfirmationType::kServed, base::Days(28),
-                                   creative_ad.per_month);
 }
 
 }  // namespace ads

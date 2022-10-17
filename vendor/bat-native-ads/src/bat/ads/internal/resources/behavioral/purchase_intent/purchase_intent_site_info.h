@@ -15,8 +15,8 @@ namespace ads::targeting {
 
 struct PurchaseIntentSiteInfo final {
   PurchaseIntentSiteInfo();
-  PurchaseIntentSiteInfo(const SegmentList& segments,
-                         const GURL& url_netloc,
+  PurchaseIntentSiteInfo(SegmentList segments,
+                         GURL url_netloc,
                          uint16_t weight);
 
   PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& other);

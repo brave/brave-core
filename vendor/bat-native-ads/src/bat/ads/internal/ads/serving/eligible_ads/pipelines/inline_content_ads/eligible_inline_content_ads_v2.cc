@@ -33,7 +33,7 @@ void EligibleAdsV2::GetForUserModel(
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
       [=](const bool success, const AdEventList& ad_events) {
@@ -66,9 +66,9 @@ void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback,
     const BrowsingHistoryList& browsing_history) {
-  database::table::CreativeInlineContentAds database_table;
+  const database::table::CreativeInlineContentAds database_table;
   database_table.GetForDimensions(
       dimensions,
       [=](const bool success, const CreativeInlineContentAdList& creative_ads) {

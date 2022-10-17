@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/bind.h"
@@ -52,7 +51,8 @@ SubdivisionTargeting::~SubdivisionTargeting() {
   PrefManager::GetInstance()->RemoveObserver(this);
 }
 
-bool SubdivisionTargeting::ShouldAllow() const {
+// static
+bool SubdivisionTargeting::ShouldAllow() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
       prefs::kShouldAllowSubdivisionTargeting);
 }
@@ -262,12 +262,12 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  const std::string* country = dict.FindString("country");
+  const std::string* const country = dict.FindString("country");
   if (!country || country->empty()) {
     return false;
   }
 
-  const std::string* region = dict.FindString("region");
+  const std::string* const region = dict.FindString("region");
   if (!region || region->empty()) {
     return false;
   }

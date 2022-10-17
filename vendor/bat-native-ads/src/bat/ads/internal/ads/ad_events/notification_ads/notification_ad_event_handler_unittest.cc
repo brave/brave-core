@@ -22,7 +22,16 @@
 namespace ads::notification_ads {
 
 namespace {
+
 constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
+
+NotificationAdInfo BuildAndSaveNotificationAd() {
+  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+  NotificationAdManager::GetInstance()->Add(ad);
+  return ad;
+}
+
 }  // namespace
 
 class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
@@ -70,14 +79,6 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
       const std::string& /*placement_id*/,
       const mojom::NotificationAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
-  }
-
-  NotificationAdInfo BuildAndSaveNotificationAd() {
-    const CreativeNotificationAdInfo creative_ad =
-        BuildCreativeNotificationAd();
-    NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-    NotificationAdManager::GetInstance()->Add(ad);
-    return ad;
   }
 
   std::unique_ptr<EventHandler> event_handler_;

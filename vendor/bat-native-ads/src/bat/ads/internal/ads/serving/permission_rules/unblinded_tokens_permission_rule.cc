@@ -11,7 +11,17 @@
 namespace ads {
 
 namespace {
+
 constexpr int kUnblindedTokensMinimumThreshold = 10;
+
+bool DoesRespectCap() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
+  return privacy::UnblindedTokenCount() >= kUnblindedTokensMinimumThreshold;
+}
+
 }  // namespace
 
 bool UnblindedTokensPermissionRule::ShouldAllow() {
@@ -25,14 +35,6 @@ bool UnblindedTokensPermissionRule::ShouldAllow() {
 
 const std::string& UnblindedTokensPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool UnblindedTokensPermissionRule::DoesRespectCap() {
-  if (!ShouldRewardUser()) {
-    return true;
-  }
-
-  return privacy::UnblindedTokenCount() >= kUnblindedTokensMinimumThreshold;
 }
 
 }  // namespace ads

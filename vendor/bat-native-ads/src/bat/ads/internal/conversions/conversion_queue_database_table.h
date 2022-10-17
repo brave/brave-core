@@ -38,13 +38,13 @@ class ConversionQueue final : public TableInterface {
   void Update(const ConversionQueueItemInfo& conversion_queue_item,
               ResultCallback callback) const;
 
-  void GetAll(GetConversionQueueCallback callback);
+  void GetAll(GetConversionQueueCallback callback) const;
 
-  void GetUnprocessed(GetConversionQueueCallback callback);
+  void GetUnprocessed(GetConversionQueueCallback callback) const;
 
   void GetForCreativeInstanceId(
       const std::string& creative_instance_id,
-      GetConversionQueueForCreativeInstanceIdCallback callback);
+      GetConversionQueueForCreativeInstanceIdCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);
@@ -63,19 +63,6 @@ class ConversionQueue final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const ConversionQueueItemList& conversion_queue_items) const;
-
-  void OnGetAll(GetConversionQueueCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForCreativeInstanceId(
-      const std::string& creative_instance_id,
-      GetConversionQueueForCreativeInstanceIdCallback callback,
-      mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV10(mojom::DBTransactionInfo* transaction);
-  void MigrateToV11(mojom::DBTransactionInfo* transaction);
-  void MigrateToV17(mojom::DBTransactionInfo* transaction);
-  void MigrateToV21(mojom::DBTransactionInfo* transaction);
 
   int batch_size_;
 };

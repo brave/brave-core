@@ -84,7 +84,8 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
 TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(7'200'000, {},
+      BuildIssuers(/*ping*/ 7'200'000, /*confirmations_public_keys*/ {},
+                   /*payments_public_keys*/
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 

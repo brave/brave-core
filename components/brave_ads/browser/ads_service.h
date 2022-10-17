@@ -32,8 +32,13 @@ namespace brave_ads {
 class AdsService : public KeyedService {
  public:
   AdsService();
+
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
+
+  AdsService(AdsService&& other) noexcept = delete;
+  AdsService& operator=(AdsService&& other) noexcept = delete;
+
   ~AdsService() override;
 
   void AddObserver(AdsServiceObserver* observer);

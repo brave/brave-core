@@ -12,7 +12,7 @@
 namespace ads {
 
 int GetLastDayOfMonth(const int year, const int month) {
-  DCHECK(month >= 1 && month <= 12);
+  DCHECK((month >= 1 && month <= 12));
 
   switch (month) {
     case 2: {  // February
@@ -37,8 +37,8 @@ int GetLastDayOfMonth(const int year, const int month) {
 }
 
 int GetDayOfWeek(int year, int month, int day) {
-  DCHECK(month >= 1 && month <= 12);
-  DCHECK(day >= 1 && day <= GetLastDayOfMonth(year, month));
+  DCHECK((month >= 1 && month <= 12));
+  DCHECK((day >= 1 && day <= GetLastDayOfMonth(year, month)));
 
   if (month < 3) {
     month += 12;

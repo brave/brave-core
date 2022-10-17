@@ -20,7 +20,7 @@ constexpr char kNoSegmentsAsJson[] = "[]";
 
 }  // namespace
 
-TEST(BatAdsSegmentValuesUtilTest, SegmentsToValue) {
+TEST(BatAdsSegmentValueUtilTest, SegmentsToValue) {
   // Arrange
 
   // Act
@@ -30,13 +30,13 @@ TEST(BatAdsSegmentValuesUtilTest, SegmentsToValue) {
 
   // Assert
   const base::Value value = base::test::ParseJson(kSegmentsAsJson);
-  const base::Value::List* expected_list = value.GetIfList();
+  const base::Value::List* const expected_list = value.GetIfList();
   ASSERT_TRUE(expected_list);
 
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsSegmentValuesUtilTest, NoSegmentsToValue) {
+TEST(BatAdsSegmentValueUtilTest, NoSegmentsToValue) {
   // Arrange
 
   // Act
@@ -44,16 +44,16 @@ TEST(BatAdsSegmentValuesUtilTest, NoSegmentsToValue) {
 
   // Assert
   const base::Value value = base::test::ParseJson(kNoSegmentsAsJson);
-  const base::Value::List* expected_list = value.GetIfList();
+  const base::Value::List* const expected_list = value.GetIfList();
   ASSERT_TRUE(expected_list);
 
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsSegmentValuesUtilTest, SegmentsFromValue) {
+TEST(BatAdsSegmentValueUtilTest, SegmentsFromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kSegmentsAsJson);
-  const base::Value::List* list = value.GetIfList();
+  const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
   // Act
@@ -66,10 +66,10 @@ TEST(BatAdsSegmentValuesUtilTest, SegmentsFromValue) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsSegmentValuesUtilTest, NoSegmentsFromValue) {
+TEST(BatAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kNoSegmentsAsJson);
-  const base::Value::List* list = value.GetIfList();
+  const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
   // Act

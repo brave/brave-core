@@ -61,7 +61,7 @@ SignedToken SignedToken::DecodeBase64(const std::string& signed_token_base64) {
 }
 
 absl::optional<std::string> SignedToken::EncodeBase64() const {
-  if (!has_value()) {
+  if (!signed_token_ || !has_value()) {
     return absl::nullopt;
   }
 

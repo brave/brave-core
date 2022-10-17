@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class BatAdsFederatedLogEntriesNotificationAdServedAtTest
-    : public UnitTestBase {};
+class BatAdsNotificationAdServedAtTest : public UnitTestBase {};
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetDataType) {
+TEST_F(BatAdsNotificationAdServedAtTest, GetDataType) {
   const NotificationAdServedAt notification_ad_served_at;
 
   // Act
@@ -26,7 +25,7 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetDataType) {
   EXPECT_EQ(brave_federated::mojom::DataType::kDouble, data_type);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetValue) {
+TEST_F(BatAdsNotificationAdServedAtTest, GetValue) {
   // Arrange
   NotificationAdServedAt notification_ad_served_at;
 
@@ -41,8 +40,7 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetValue) {
   EXPECT_EQ(expected_value, value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest,
-       GetValueWithoutTime) {
+TEST_F(BatAdsNotificationAdServedAtTest, GetValueWithoutTime) {
   // Arrange
   const NotificationAdServedAt notification_ad_served_at;
 

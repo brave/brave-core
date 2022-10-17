@@ -17,8 +17,7 @@ namespace ads {
 class FetchPaymentTokenUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
-  explicit FetchPaymentTokenUrlRequestBuilder(
-      const ConfirmationInfo& confirmation);
+  explicit FetchPaymentTokenUrlRequestBuilder(ConfirmationInfo confirmation);
 
   mojom::UrlRequestInfoPtr Build() override;
 

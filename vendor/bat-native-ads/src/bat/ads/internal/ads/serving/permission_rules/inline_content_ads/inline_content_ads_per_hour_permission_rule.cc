@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/inline_content_ads/inline_content_ads_per_hour_permission_rule.h"
 
+#include <vector>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -15,7 +17,14 @@
 namespace ads::inline_content_ads {
 
 namespace {
+
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
+
+bool DoesRespectCap(const std::vector<base::Time>& history) {
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, kTimeConstraint, features::GetMaximumInlineContentAdsPerHour());
+}
+
 }  // namespace
 
 bool AdsPerHourPermissionRule::ShouldAllow() {
@@ -32,12 +41,6 @@ bool AdsPerHourPermissionRule::ShouldAllow() {
 
 const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool AdsPerHourPermissionRule::DoesRespectCap(
-    const std::vector<base::Time>& history) {
-  return DoesHistoryRespectRollingTimeConstraint(
-      history, kTimeConstraint, features::GetMaximumInlineContentAdsPerHour());
 }
 
 }  // namespace ads::inline_content_ads

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_day_permission_rule.h"
 
+#include <vector>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -15,7 +17,14 @@
 namespace ads::promoted_content_ads {
 
 namespace {
+
 constexpr base::TimeDelta kTimeConstraint = base::Days(1);
+
+bool DoesRespectCap(const std::vector<base::Time>& history) {
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, kTimeConstraint, features::GetMaximumPromotedContentAdsPerDay());
+}
+
 }  // namespace
 
 bool AdsPerDayPermissionRule::ShouldAllow() {
@@ -33,12 +42,6 @@ bool AdsPerDayPermissionRule::ShouldAllow() {
 
 const std::string& AdsPerDayPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool AdsPerDayPermissionRule::DoesRespectCap(
-    const std::vector<base::Time>& history) {
-  return DoesHistoryRespectRollingTimeConstraint(
-      history, kTimeConstraint, features::GetMaximumPromotedContentAdsPerDay());
 }
 
 }  // namespace ads::promoted_content_ads

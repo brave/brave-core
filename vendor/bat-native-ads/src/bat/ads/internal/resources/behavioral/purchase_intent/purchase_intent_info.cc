@@ -17,6 +17,8 @@ PurchaseIntentInfo::PurchaseIntentInfo() = default;
 PurchaseIntentInfo::~PurchaseIntentInfo() = default;
 
 // static
+// TODO(https://github.com/brave/brave-browser/issues/24942): Reduce cognitive
+// complexity.
 std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     base::Value resource_value,
     std::string* error_message) {
@@ -39,7 +41,8 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   // Parsing field: "segments"
-  base::Value::List* incoming_segments = resource->FindList("segments");
+  const base::Value::List* const incoming_segments =
+      resource->FindList("segments");
   if (!incoming_segments) {
     *error_message = "Failed to load from JSON, segments missing";
     return {};
@@ -56,7 +59,7 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   // Parsing field: "segment_keywords"
-  base::Value::Dict* incoming_segment_keywords =
+  const base::Value::Dict* const incoming_segment_keywords =
       resource->FindDict("segment_keywords");
   if (!incoming_segment_keywords) {
     *error_message = "Failed to load from JSON, segment keywords missing";
@@ -80,7 +83,7 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   // Parsing field: "funnel_keywords"
-  base::Value::Dict* incoming_funnel_keywords =
+  const base::Value::Dict* const incoming_funnel_keywords =
       resource->FindDict("funnel_keywords");
   if (!incoming_funnel_keywords) {
     *error_message = "Failed to load from JSON, funnel keywords missing";
@@ -95,22 +98,23 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   // Parsing field: "funnel_sites"
-  base::Value::List* incoming_funnel_sites = resource->FindList("funnel_sites");
+  const base::Value::List* const incoming_funnel_sites =
+      resource->FindList("funnel_sites");
   if (!incoming_funnel_sites) {
     *error_message = "Failed to load from JSON, sites missing";
     return {};
   }
 
   // For each set of sites and segments
-  for (auto& item : *incoming_funnel_sites) {
+  for (const auto& item : *incoming_funnel_sites) {
     if (!item.is_dict()) {
       *error_message = "Failed to load from JSON, site set not of type dict";
       return {};
     }
-    auto& set = item.GetDict();
+    const auto& set = item.GetDict();
 
     // Get all segments...
-    base::Value::List* seg_list = set.FindList("segments");
+    const base::Value::List* const seg_list = set.FindList("segments");
     if (!seg_list) {
       *error_message =
           "Failed to load from JSON, get site segment list as dict";
@@ -118,13 +122,13 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     }
 
     std::vector<std::string> site_segments;
-    for (auto& seg : *seg_list) {
+    for (const auto& seg : *seg_list) {
       DCHECK(seg.is_int());
       site_segments.push_back(segments.at(seg.GetInt()));
     }
 
     // ...and for each site create info with appended segments
-    base::Value::List* site_list = set.FindList("sites");
+    const base::Value::List* const site_list = set.FindList("sites");
     if (!site_list) {
       *error_message = "Failed to load from JSON, get site list as dict";
       return {};

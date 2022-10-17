@@ -11,7 +11,6 @@
 #include "base/containers/contains.h"
 #include "base/strings/string_split.h"
 #include "bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads::locale {
 

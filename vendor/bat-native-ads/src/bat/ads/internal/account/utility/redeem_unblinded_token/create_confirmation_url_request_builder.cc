@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
+#include <utility>
+#include <vector>
+
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
@@ -17,9 +20,25 @@
 
 namespace ads {
 
+namespace {
+
+std::vector<std::string> BuildHeaders() {
+  std::vector<std::string> headers;
+
+  const std::string via_header = server::BuildViaHeader();
+  headers.push_back(via_header);
+
+  const std::string accept_header = "accept: application/json";
+  headers.push_back(accept_header);
+
+  return headers;
+}
+
+}  // namespace
+
 CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
-    const ConfirmationInfo& confirmation)
-    : confirmation_(confirmation) {
+    ConfirmationInfo confirmation)
+    : confirmation_(std::move(confirmation)) {
   DCHECK(IsValid(confirmation_));
 }
 
@@ -40,9 +59,7 @@ mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {
 
 GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
   std::string credential_base64_url;
-  if (confirmation_.opted_in) {
-    DCHECK(confirmation_.opted_in->credential_base64url);
-
+  if (confirmation_.opted_in && confirmation_.opted_in->credential_base64url) {
     credential_base64_url =
         base::StrCat({"/", *confirmation_.opted_in->credential_base64url});
   }
@@ -53,19 +70,6 @@ GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
       confirmation_.transaction_id.c_str(), credential_base64_url.c_str());
 
   return GURL(spec);
-}
-
-std::vector<std::string> CreateConfirmationUrlRequestBuilder::BuildHeaders()
-    const {
-  std::vector<std::string> headers;
-
-  const std::string via_header = server::BuildViaHeader();
-  headers.push_back(via_header);
-
-  const std::string accept_header = "accept: application/json";
-  headers.push_back(accept_header);
-
-  return headers;
 }
 
 std::string CreateConfirmationUrlRequestBuilder::BuildBody() const {

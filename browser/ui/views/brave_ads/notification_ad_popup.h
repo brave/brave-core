@@ -52,6 +52,13 @@ class NotificationAdPopup : public views::WidgetDelegateView,
                       const NotificationAd& notification_ad,
                       gfx::NativeWindow browser_native_window,
                       gfx::NativeView browser_native_view);
+
+  NotificationAdPopup(const NotificationAdPopup&) = delete;
+  NotificationAdPopup& operator=(const NotificationAdPopup&) = delete;
+
+  NotificationAdPopup(NotificationAdPopup&& other) noexcept = delete;
+  NotificationAdPopup& operator=(NotificationAdPopup&& other) noexcept = delete;
+
   ~NotificationAdPopup() override;
 
   // Disables fade in animation for snapshot tests.
@@ -132,9 +139,6 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
-
-  NotificationAdPopup(const NotificationAdPopup&) = delete;
-  NotificationAdPopup& operator=(const NotificationAdPopup&) = delete;
 };
 
 }  // namespace brave_ads

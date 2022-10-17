@@ -63,7 +63,7 @@ TokenPreimage TokenPreimage::DecodeBase64(
 }
 
 absl::optional<std::string> TokenPreimage::EncodeBase64() const {
-  if (!has_value()) {
+  if (!token_preimage_ || !has_value()) {
     return absl::nullopt;
   }
 

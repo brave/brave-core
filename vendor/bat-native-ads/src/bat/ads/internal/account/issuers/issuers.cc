@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
-#include <functional>
-#include <string>
 #include <utility>
 
 #include "absl/types/optional.h"
@@ -27,7 +25,15 @@
 namespace ads {
 
 namespace {
+
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+
+base::TimeDelta GetFetchDelay() {
+  const int ping =
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
+  return base::Milliseconds(ping);
+}
+
 }  // namespace
 
 Issuers::Issuers() = default;
@@ -121,12 +127,6 @@ void Issuers::FetchAfterDelay() {
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at,
                                                   /*use_sentence_style*/ true));
-}
-
-base::TimeDelta Issuers::GetFetchDelay() const {
-  const int ping =
-      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
-  return base::Milliseconds(ping);
 }
 
 void Issuers::RetryAfterDelay() {

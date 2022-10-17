@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
+#include <vector>
+
 #include "base/check.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -63,9 +65,11 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
 
 }  // namespace
 
-class BatAdsRedeemUnblindedPaymentTokensRequestTest : public UnitTestBase {};
+class BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest
+    : public UnitTestBase {};
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
+TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
+       BuildUrlForRPill) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -111,7 +115,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
   // Assert
 }
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
+TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
+       BuildUrlForBPill) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

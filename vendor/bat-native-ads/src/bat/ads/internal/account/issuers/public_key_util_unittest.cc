@@ -46,7 +46,7 @@ TEST_F(BatAdsPublicKeyUtilTest, PublicKeyDoesNotExist) {
 
 TEST_F(BatAdsPublicKeyUtilTest, NoPublicKeys) {
   // Arrange
-  IssuerInfo issuer;
+  const IssuerInfo issuer;
 
   // Act
 

@@ -303,6 +303,49 @@ std::vector<std::string> ExtraCommandLineSwitches() {
   return command_line_switches;
 }
 
+void OnResetState(const bool success) {
+  if (!success) {
+    VLOG(0) << "Failed to reset ads state";
+    return;
+  }
+
+  VLOG(1) << "Successfully reset ads state";
+}
+
+void OnLoad(ads::LoadCallback callback, const std::string& value) {
+  const bool success = !value.empty();
+  std::move(callback).Run(success, value);
+}
+
+void OnLoadFileResource(
+    ads::LoadFileCallback callback,
+    std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file) {
+  DCHECK(file);
+  std::move(callback).Run(std::move(*file));
+}
+
+void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
+                                     history::QueryResults results) {
+  std::vector<GURL> history;
+  for (const auto& result : results) {
+    history.push_back(result.url().GetWithEmptyPath());
+  }
+
+  std::sort(history.begin(), history.end());
+  history.erase(std::unique(history.begin(), history.end()), history.end());
+
+  std::move(callback).Run(history);
+}
+
+void OnLogTrainingInstance(bool success) {
+  if (!success) {
+    VLOG(1) << "Failed to log training covariates";
+    return;
+  }
+
+  VLOG(1) << "Successfully logged training covariates";
+}
+
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
@@ -523,7 +566,7 @@ void AdsServiceImpl::GetDeviceId(const uint32_t number_of_start) {
 
 void AdsServiceImpl::OnGetDeviceId(const uint32_t number_of_start,
                                    std::string device_id) {
-  sys_info_.device_id = device_id;
+  sys_info_.device_id = std::move(device_id);
 
   DetectUncertainFuture(number_of_start);
 }
@@ -669,16 +712,7 @@ void AdsServiceImpl::ResetState() {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&DeletePathOnFileTaskRunner, base_path_),
-      base::BindOnce(&AdsServiceImpl::OnResetState, AsWeakPtr()));
-}
-
-void AdsServiceImpl::OnResetState(const bool success) {
-  if (!success) {
-    VLOG(0) << "Failed to reset ads state";
-    return;
-  }
-
-  VLOG(1) << "Successfully reset ads state";
+      base::BindOnce(&OnResetState));
 }
 
 void AdsServiceImpl::GetRewardsWallet() {
@@ -1000,8 +1034,8 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
 
 void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
     const int64_t ads_per_hour) {
-  DCHECK(ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
-         ads_per_hour <= ads::kMaximumNotificationAdsPerHour);
+  DCHECK((ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
+          ads_per_hour <= ads::kMaximumNotificationAdsPerHour));
   SetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 
@@ -1509,8 +1543,7 @@ void AdsServiceImpl::GetBrowsingHistory(
   options.duplicate_policy = history::QueryOptions::REMOVE_ALL_DUPLICATES;
   history_service_->QueryHistory(
       search_text, options,
-      base::BindOnce(&AdsServiceImpl::OnBrowsingHistorySearchComplete,
-                     AsWeakPtr(), std::move(callback)),
+      base::BindOnce(&OnBrowsingHistorySearchComplete, std::move(callback)),
       &history_service_task_tracker_);
 }
 
@@ -1565,8 +1598,7 @@ void AdsServiceImpl::Load(const std::string& name, ads::LoadCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
-      base::BindOnce(&AdsServiceImpl::OnLoad, AsWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(&OnLoad, std::move(callback)));
 }
 
 void AdsServiceImpl::LoadFileResource(const std::string& id,
@@ -1586,17 +1618,16 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(
-          [](base::FilePath path,
+          [](const base::FilePath& path,
              scoped_refptr<base::SequencedTaskRunner> file_task_runner) {
             std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file(
                 new base::File(path, base::File::Flags::FLAG_OPEN |
                                          base::File::Flags::FLAG_READ),
-                base::OnTaskRunnerDeleter(file_task_runner));
+                base::OnTaskRunnerDeleter(std::move(file_task_runner)));
             return file;
           },
           std::move(file_path), file_task_runner_),
-      base::BindOnce(&AdsServiceImpl::OnLoadFileResource, AsWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(&OnLoadFileResource, std::move(callback)));
 }
 
 std::string AdsServiceImpl::LoadDataResource(const std::string& name) {
@@ -1629,7 +1660,7 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const std::string& captcha_id,
     const bool should_show_tooltip_notification) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  PrefService* pref_service = profile_->GetPrefs();
+  const PrefService* const pref_service = profile_->GetPrefs();
   if (should_show_tooltip_notification) {
     if (pref_service->GetBoolean(
             brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
@@ -1688,8 +1719,7 @@ void AdsServiceImpl::LogTrainingInstance(
   }
 
   notification_ad_timing_data_store_->AddTrainingInstance(
-      std::move(training_instance),
-      base::BindOnce(&AdsServiceImpl::OnLogTrainingInstance, AsWeakPtr()));
+      std::move(training_instance), base::BindOnce(&OnLogTrainingInstance));
 }
 
 bool AdsServiceImpl::GetBooleanPref(const std::string& path) const {
@@ -1936,19 +1966,6 @@ void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
   }
 
   PrefetchNewTabPageAd();
-}
-
-void AdsServiceImpl::OnLoad(ads::LoadCallback callback,
-                            const std::string& value) {
-  const bool success = !value.empty();
-  std::move(callback).Run(success, value);
-}
-
-void AdsServiceImpl::OnLoadFileResource(
-    ads::LoadFileCallback callback,
-    std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file) {
-  DCHECK(file);
-  std::move(callback).Run(std::move(*file));
 }
 
 void AdsServiceImpl::MigratePrefs() {
@@ -2316,29 +2333,6 @@ bool AdsServiceImpl::ShouldShowOnboardingNotification() {
       GetBooleanPref(prefs::kShouldShowOnboardingNotification);
   return IsEnabled() && CanShowNotificationAds() &&
          should_show_my_first_notification_ad;
-}
-
-void AdsServiceImpl::OnBrowsingHistorySearchComplete(
-    ads::GetBrowsingHistoryCallback callback,
-    history::QueryResults results) {
-  std::vector<GURL> history;
-  for (const auto& result : results) {
-    history.push_back(result.url().GetWithEmptyPath());
-  }
-
-  std::sort(history.begin(), history.end());
-  history.erase(std::unique(history.begin(), history.end()), history.end());
-
-  std::move(callback).Run(history);
-}
-
-void AdsServiceImpl::OnLogTrainingInstance(bool success) {
-  if (!success) {
-    VLOG(1) << "Failed to log training covariates";
-    return;
-  }
-
-  VLOG(1) << "Successfully logged training covariates";
 }
 
 void AdsServiceImpl::WriteDiagnosticLog(const std::string& file,

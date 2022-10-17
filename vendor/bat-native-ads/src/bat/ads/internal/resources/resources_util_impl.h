@@ -33,7 +33,7 @@ std::unique_ptr<ParsingResult<T>> ReadFileAndParseResourceOnBackgroundThread(
     return {};
   }
   std::string content;
-  base::ScopedFILE stream(base::FileToFILE(std::move(file), "rb"));
+  const base::ScopedFILE stream(base::FileToFILE(std::move(file), "rb"));
   if (!base::ReadStreamToString(stream.get(), &content)) {
     return {};
   }

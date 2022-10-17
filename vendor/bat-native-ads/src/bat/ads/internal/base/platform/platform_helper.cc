@@ -32,6 +32,7 @@ PlatformHelper::PlatformHelper() = default;
 
 PlatformHelper::~PlatformHelper() = default;
 
+// static
 void PlatformHelper::SetForTesting(PlatformHelper* platform_helper) {
   g_platform_helper_for_testing = platform_helper;
 }

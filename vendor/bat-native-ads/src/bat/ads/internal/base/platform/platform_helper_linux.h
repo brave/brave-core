@@ -6,10 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_PLATFORM_PLATFORM_HELPER_LINUX_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_PLATFORM_PLATFORM_HELPER_LINUX_H_
 
+#include "bat/ads/internal/base/platform/platform_helper.h"
+
 #include <string>
 
 #include "base/no_destructor.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
 
 namespace ads {
 

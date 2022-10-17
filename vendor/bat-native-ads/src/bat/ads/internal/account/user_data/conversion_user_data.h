@@ -21,7 +21,7 @@ using ConversionCallback = std::function<void(base::Value::Dict)>;
 
 void GetConversion(const std::string& creative_instance_id,
                    const ConfirmationType& confirmation_type,
-                   ConversionCallback callback);
+                   const ConversionCallback& callback);
 
 }  // namespace user_data
 }  // namespace ads

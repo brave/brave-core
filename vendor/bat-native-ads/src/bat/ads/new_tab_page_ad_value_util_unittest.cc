@@ -30,7 +30,7 @@ class BatAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
 TEST_F(BatAdsNewTabPageAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::Dict* dict = value.GetIfDict();
+  const base::Value::Dict* const dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
   // Act

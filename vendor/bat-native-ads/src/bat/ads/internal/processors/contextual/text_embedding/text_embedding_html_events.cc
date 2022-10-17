@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
-#include <vector>
-
 #include "base/time/time.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
@@ -34,7 +32,7 @@ void LogTextEmbeddingHtmlEvent(
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(
       text_embedding_html_event,
-      base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
+      base::BindOnce([](const TextEmbeddingHtmlEventCallback& callback,
                         const bool success) { callback(success); },
                      callback));
 }
@@ -43,14 +41,14 @@ void PurgeStaleTextEmbeddingHtmlEvents(
     TextEmbeddingHtmlEventCallback callback) {
   const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.PurgeStale(
-      base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
+      base::BindOnce([](const TextEmbeddingHtmlEventCallback& callback,
                         const bool success) { callback(success); },
                      callback));
 }
 
 void GetTextEmbeddingHtmlEventsFromDatabase(
-    database::table::GetTextEmbeddingHtmlEventsCallback callback) {
-  database::table::TextEmbeddingHtmlEvents database_table;
+    const database::table::GetTextEmbeddingHtmlEventsCallback& callback) {
+  const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(
       [=](const bool success,
           const TextEmbeddingHtmlEventList& text_embedding_html_events) {

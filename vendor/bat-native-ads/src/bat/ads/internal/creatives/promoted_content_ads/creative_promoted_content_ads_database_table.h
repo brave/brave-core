@@ -57,13 +57,14 @@ class CreativePromotedContentAds final : public TableInterface {
 
   void Delete(ResultCallback callback) const;
 
-  void GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativePromotedContentAdCallback callback);
+  void GetForCreativeInstanceId(
+      const std::string& creative_instance_id,
+      GetCreativePromotedContentAdCallback callback) const;
 
   void GetForSegments(const SegmentList& segments,
-                      GetCreativePromotedContentAdsCallback callback);
+                      GetCreativePromotedContentAdsCallback callback) const;
 
-  void GetAll(GetCreativePromotedContentAdsCallback callback);
+  void GetAll(GetCreativePromotedContentAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);
@@ -82,19 +83,6 @@ class CreativePromotedContentAds final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const CreativePromotedContentAdList& creative_ads) const;
-
-  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                  GetCreativePromotedContentAdCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForSegments(const SegmentList& segments,
-                        GetCreativePromotedContentAdsCallback callback,
-                        mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetAll(GetCreativePromotedContentAdsCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 
   int batch_size_;
 

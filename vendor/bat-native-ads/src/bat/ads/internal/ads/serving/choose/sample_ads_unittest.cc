@@ -163,7 +163,7 @@ TEST(BatAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   }
 
   // Assert
-  EXPECT_FALSE(creative_ad_1_count == 0 || creative_ad_2_count == 0);
+  EXPECT_FALSE((creative_ad_1_count == 0 || creative_ad_2_count == 0));
 }
 
 }  // namespace ads

@@ -27,7 +27,7 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
     CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename);
   }
 
-  int GetSchemaVersion() { return GetParam() + 1; }
+  static int GetSchemaVersion() { return GetParam() + 1; }
 };
 
 TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {

@@ -45,7 +45,7 @@ class EligibleAdsV2 final : public EligibleAdsBase {
   void GetEligibleAds(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      const GetEligibleAdsCallback<CreativeNotificationAdList>& callback,
       const BrowsingHistoryList& browsing_history);
 
   CreativeNotificationAdList FilterCreativeAds(

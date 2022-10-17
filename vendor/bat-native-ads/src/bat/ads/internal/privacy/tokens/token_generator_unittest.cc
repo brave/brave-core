@@ -12,7 +12,7 @@
 
 namespace ads::privacy {
 
-TEST(BatAdsTokensTest, Generate) {
+TEST(BatAdsTokenGeneratorTest, Generate) {
   // Arrange
   const TokenGenerator token_generator;
 
@@ -24,7 +24,7 @@ TEST(BatAdsTokensTest, Generate) {
   EXPECT_EQ(5UL, count);
 }
 
-TEST(BatAdsTokensTest, GenerateZero) {
+TEST(BatAdsTokenGeneratorTest, GenerateZero) {
   // Arrange
   const TokenGenerator token_generator;
 

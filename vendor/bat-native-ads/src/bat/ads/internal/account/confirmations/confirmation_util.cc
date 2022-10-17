@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 
-#include <string>
 #include <vector>
 
 #include "base/base64url.h"
@@ -150,7 +149,8 @@ bool IsValid(const ConfirmationInfo& confirmation) {
 
   if (!confirmation.opted_in->token.has_value() ||
       !confirmation.opted_in->blinded_token.has_value() ||
-      !IsValid(confirmation.opted_in->unblinded_token)) {
+      !IsValid(confirmation.opted_in->unblinded_token) ||
+      !confirmation.opted_in->credential_base64url) {
     return false;
   }
 
@@ -178,7 +178,8 @@ bool IsValid(const ConfirmationInfo& confirmation) {
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  if (const std::string* value = dict.FindString(kVerificationSignatureKey)) {
+  if (const std::string* const value =
+          dict.FindString(kVerificationSignatureKey)) {
     const privacy::cbr::VerificationSignature verification_signature =
         privacy::cbr::VerificationSignature(*value);
     if (!verification_signature.has_value()) {

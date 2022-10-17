@@ -6,8 +6,6 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 #include <cstdint>
-#include <functional>
-#include <memory>
 #include <utility>
 
 #include "base/bind.h"
@@ -83,6 +81,16 @@ void SetHash(const std::string& value) {
 bool IsMutated(const std::string& value) {
   return AdsClientHelper::GetInstance()->GetUint64Pref(prefs::kClientHash) !=
          GenerateHash(value);
+}
+
+void OnSaved(const bool success) {
+  if (!success) {
+    BLOG(0, "Failed to save client state");
+
+    return;
+  }
+
+  BLOG(9, "Successfully saved client state");
 }
 
 }  // namespace
@@ -516,19 +524,8 @@ void ClientStateManager::Save() {
     SetHash(json);
   }
 
-  AdsClientHelper::GetInstance()->Save(
-      kClientStateFilename, json,
-      base::BindOnce(&ClientStateManager::OnSaved, base::Unretained(this)));
-}
-
-void ClientStateManager::OnSaved(const bool success) {
-  if (!success) {
-    BLOG(0, "Failed to save client state");
-
-    return;
-  }
-
-  BLOG(9, "Successfully saved client state");
+  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json,
+                                       base::BindOnce(&OnSaved));
 }
 
 void ClientStateManager::Load() {

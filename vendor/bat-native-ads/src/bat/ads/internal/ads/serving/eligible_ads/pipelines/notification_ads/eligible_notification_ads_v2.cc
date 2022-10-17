@@ -32,7 +32,7 @@ void EligibleAdsV2::GetForUserModel(
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNotificationAd,
       [=](const bool success, const AdEventList& ad_events) {
@@ -63,9 +63,9 @@ void EligibleAdsV2::GetBrowsingHistory(
 void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    const GetEligibleAdsCallback<CreativeNotificationAdList>& callback,
     const BrowsingHistoryList& browsing_history) {
-  database::table::CreativeNotificationAds database_table;
+  const database::table::CreativeNotificationAds database_table;
   database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,
                             const CreativeNotificationAdList& creative_ads) {
     if (!success) {

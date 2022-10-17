@@ -30,7 +30,7 @@ std::string AverageClickthroughRate::GetValue() const {
   const base::Time from_time = now - time_window_;
   const base::Time to_time = now;
 
-  const HistoryItemList history_items = HistoryManager::GetInstance()->Get(
+  const HistoryItemList history_items = HistoryManager::Get(
       HistoryFilterType::kNone, HistorySortType::kNone, from_time, to_time);
   if (history_items.empty()) {
     return base::NumberToString(kCovariateMissingValue);

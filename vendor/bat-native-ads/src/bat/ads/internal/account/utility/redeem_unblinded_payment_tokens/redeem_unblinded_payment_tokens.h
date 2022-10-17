@@ -15,11 +15,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace base {
-class Time;
-class TimeDelta;
-}  // namespace base
-
 namespace ads {
 
 class RedeemUnblindedPaymentTokens final {
@@ -59,9 +54,6 @@ class RedeemUnblindedPaymentTokens final {
 
   void Retry();
   void OnRetry();
-
-  base::TimeDelta CalculateTokenRedemptionDelay();
-  base::Time CalculateNextTokenRedemptionDate();
 
   raw_ptr<RedeemUnblindedPaymentTokensDelegate> delegate_ = nullptr;
 

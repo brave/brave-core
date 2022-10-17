@@ -27,10 +27,10 @@ class Transactions final : public TableInterface {
  public:
   void Save(const TransactionList& transactions, ResultCallback callback);
 
-  void GetAll(GetTransactionsCallback callback);
+  void GetAll(GetTransactionsCallback callback) const;
   void GetForDateRange(base::Time from_time,
                        base::Time to_time,
-                       GetTransactionsCallback callback);
+                       GetTransactionsCallback callback) const;
 
   void Update(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
@@ -49,11 +49,6 @@ class Transactions final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const TransactionList& transactions) const;
-
-  void OnGetTransactions(const GetTransactionsCallback& callback,
-                         mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV18(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

@@ -21,6 +21,14 @@ class NotificationAdHeaderView : public views::View {
   METADATA_HEADER(NotificationAdHeaderView);
 
   explicit NotificationAdHeaderView(const int width);
+
+  NotificationAdHeaderView(const NotificationAdHeaderView&) = delete;
+  NotificationAdHeaderView& operator=(const NotificationAdHeaderView&) = delete;
+
+  NotificationAdHeaderView(NotificationAdHeaderView&& other) noexcept = delete;
+  NotificationAdHeaderView& operator=(
+      NotificationAdHeaderView&& other) noexcept = delete;
+
   ~NotificationAdHeaderView() override;
 
   void SetTitle(const std::u16string& name);
@@ -38,9 +46,6 @@ class NotificationAdHeaderView : public views::View {
   views::Label* title_label_ = nullptr;
   views::Label* CreateTitleLabel();
   void UpdateTitleLabel();
-
-  NotificationAdHeaderView(const NotificationAdHeaderView&) = delete;
-  NotificationAdHeaderView& operator=(const NotificationAdHeaderView&) = delete;
 };
 
 }  // namespace brave_ads

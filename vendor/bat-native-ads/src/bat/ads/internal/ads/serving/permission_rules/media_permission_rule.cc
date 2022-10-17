@@ -11,6 +11,19 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
+  if (!tab) {
+    return true;
+  }
+
+  return !TabManager::GetInstance()->IsPlayingMedia(tab->id);
+}
+
+}  // namespace
+
 bool MediaPermissionRule::ShouldAllow() {
   if (!permission_rules::features::ShouldOnlyServeAdsIfMediaIsNotPlaying()) {
     return true;
@@ -26,15 +39,6 @@ bool MediaPermissionRule::ShouldAllow() {
 
 const std::string& MediaPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool MediaPermissionRule::DoesRespectCap() {
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
-  if (!tab) {
-    return true;
-  }
-
-  return !TabManager::GetInstance()->IsPlayingMedia(tab->id);
 }
 
 }  // namespace ads

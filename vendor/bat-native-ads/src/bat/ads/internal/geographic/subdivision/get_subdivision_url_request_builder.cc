@@ -14,6 +14,16 @@
 
 namespace ads::geographic {
 
+namespace {
+
+GURL BuildUrl() {
+  const std::string spec =
+      base::StringPrintf("%s/v1/getstate", server::GetGeoHost().c_str());
+  return GURL(spec);
+}
+
+}  // namespace
+
 // GET /v1/getstate
 
 mojom::UrlRequestInfoPtr GetSubdivisionUrlRequestBuilder::Build() {
@@ -22,14 +32,6 @@ mojom::UrlRequestInfoPtr GetSubdivisionUrlRequestBuilder::Build() {
   url_request->method = mojom::UrlRequestMethodType::kGet;
 
   return url_request;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-GURL GetSubdivisionUrlRequestBuilder::BuildUrl() const {
-  const std::string spec =
-      base::StringPrintf("%s/v1/getstate", server::GetGeoHost().c_str());
-  return GURL(spec);
 }
 
 }  // namespace ads::geographic

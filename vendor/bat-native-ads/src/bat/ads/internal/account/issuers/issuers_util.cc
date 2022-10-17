@@ -50,8 +50,8 @@ bool IsIssuersValid(const IssuersInfo& issuers) {
 }
 
 bool HasIssuers() {
-  return !(!IssuerExistsForType(IssuerType::kConfirmations) ||
-           !IssuerExistsForType(IssuerType::kPayments));
+  return IssuerExistsForType(IssuerType::kConfirmations) &&
+         IssuerExistsForType(IssuerType::kPayments);
 }
 
 bool HasIssuersChanged(const IssuersInfo& issuers) {

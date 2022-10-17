@@ -16,7 +16,8 @@ PermissionRulesBase::PermissionRulesBase() = default;
 
 PermissionRulesBase::~PermissionRulesBase() = default;
 
-bool PermissionRulesBase::HasPermission() const {
+// static
+bool PermissionRulesBase::HasPermission() {
   IssuersPermissionRule issuers_permission_rule;
   if (!ShouldAllow(&issuers_permission_rule)) {
     return false;

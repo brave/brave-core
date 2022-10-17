@@ -11,7 +11,7 @@
 
 namespace ads {
 
-TEST(BatAdsPageTransitionTest, IsNewNavigation) {
+TEST(BatAdsPageTransitionUtilTest, IsNewNavigation) {
   // Arrange
 
   // Act
@@ -21,7 +21,8 @@ TEST(BatAdsPageTransitionTest, IsNewNavigation) {
   EXPECT_TRUE(did_transition_page);
 }
 
-TEST(BatAdsPageTransitionTest, DidUseBackOrFowardButtonToTriggerNavigation) {
+TEST(BatAdsPageTransitionUtilTest,
+     DidUseBackOrFowardButtonToTriggerNavigation) {
   // Arrange
 
   // Act
@@ -32,7 +33,7 @@ TEST(BatAdsPageTransitionTest, DidUseBackOrFowardButtonToTriggerNavigation) {
   EXPECT_TRUE(did_transition_page);
 }
 
-TEST(BatAdsPageTransitionTest, DidUseAddressBarToTriggerNavigation) {
+TEST(BatAdsPageTransitionUtilTest, DidUseAddressBarToTriggerNavigation) {
   // Arrange
 
   // Act
@@ -43,7 +44,7 @@ TEST(BatAdsPageTransitionTest, DidUseAddressBarToTriggerNavigation) {
   EXPECT_TRUE(did_transition_page);
 }
 
-TEST(BatAdsPageTransitionTest, DidNavigateToHomePage) {
+TEST(BatAdsPageTransitionUtilTest, DidNavigateToHomePage) {
   // Arrange
 
   // Act
@@ -54,7 +55,7 @@ TEST(BatAdsPageTransitionTest, DidNavigateToHomePage) {
   EXPECT_TRUE(did_transition_page);
 }
 
-TEST(BatAdsPageTransitionTest, DidTransitionFromExternalApplication) {
+TEST(BatAdsPageTransitionUtilTest, DidTransitionFromExternalApplication) {
   // Arrange
 
   // Act
@@ -65,7 +66,7 @@ TEST(BatAdsPageTransitionTest, DidTransitionFromExternalApplication) {
   EXPECT_TRUE(did_transition_page);
 }
 
-TEST(BatAdsPageTransitionTest, ToUserActivityClickedLinkEventType) {
+TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedLinkEventType) {
   // Arrange
 
   // Act
@@ -76,7 +77,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityClickedLinkEventType) {
   EXPECT_EQ(UserActivityEventType::kClickedLink, event_type);
 }
 
-TEST(BatAdsPageTransitionTest, ToUserActivityTypedUrlEventType) {
+TEST(BatAdsPageTransitionUtilTest, ToUserActivityTypedUrlEventType) {
   // Arrange
 
   // Act
@@ -87,7 +88,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityTypedUrlEventType) {
   EXPECT_EQ(UserActivityEventType::kTypedUrl, event_type);
 }
 
-TEST(BatAdsPageTransitionTest, ToUserActivityClickedBookmarkEventType) {
+TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedBookmarkEventType) {
   // Arrange
 
   // Act
@@ -98,7 +99,8 @@ TEST(BatAdsPageTransitionTest, ToUserActivityClickedBookmarkEventType) {
   EXPECT_EQ(UserActivityEventType::kClickedBookmark, event_type);
 }
 
-TEST(BatAdsPageTransitionTest, ToUserActivityTypedAndSelectedNonUrlEventType) {
+TEST(BatAdsPageTransitionUtilTest,
+     ToUserActivityTypedAndSelectedNonUrlEventType) {
   // Arrange
 
   // Act
@@ -109,7 +111,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityTypedAndSelectedNonUrlEventType) {
   EXPECT_EQ(UserActivityEventType::kTypedAndSelectedNonUrl, event_type);
 }
 
-TEST(BatAdsPageTransitionTest, ToUserActivitySubmittedFormEventType) {
+TEST(BatAdsPageTransitionUtilTest, ToUserActivitySubmittedFormEventType) {
   // Arrange
 
   // Act
@@ -120,7 +122,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivitySubmittedFormEventType) {
   EXPECT_EQ(UserActivityEventType::kSubmittedForm, event_type);
 }
 
-TEST(BatAdsPageTransitionTest, ToUserActivityClickedReloadButtonEventType) {
+TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedReloadButtonEventType) {
   // Arrange
 
   // Act
@@ -131,7 +133,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityClickedReloadButtonEventType) {
   EXPECT_EQ(UserActivityEventType::kClickedReloadButton, event_type);
 }
 
-TEST(BatAdsPageTransitionTest,
+TEST(BatAdsPageTransitionUtilTest,
      ToUserActivityTypedKeywordOtherThanDefaultSearchProviderEventType) {
   // Arrange
 
@@ -144,7 +146,7 @@ TEST(BatAdsPageTransitionTest,
             event_type);
 }
 
-TEST(BatAdsPageTransitionTest, ToUserActivityGeneratedKeywordEventType) {
+TEST(BatAdsPageTransitionUtilTest, ToUserActivityGeneratedKeywordEventType) {
   // Arrange
 
   // Act

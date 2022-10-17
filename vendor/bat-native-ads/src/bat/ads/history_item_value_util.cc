@@ -109,7 +109,7 @@ HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   HistoryItemList history_items;
 
   for (const auto& history_item : list) {
-    const base::Value::Dict* dict = history_item.GetIfDict();
+    const base::Value::Dict* const dict = history_item.GetIfDict();
     if (!dict) {
       continue;
     }

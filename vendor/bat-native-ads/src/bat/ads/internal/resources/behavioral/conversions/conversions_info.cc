@@ -59,13 +59,14 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
       return {};
     }
 
-    const std::string* id_pattern = item.second.FindStringKey("id_pattern");
+    const std::string* const id_pattern =
+        item.second.FindStringKey("id_pattern");
     if (!id_pattern || id_pattern->empty()) {
       *error_message = "Failed to load from JSON, pattern id_pattern missing";
       return {};
     }
 
-    const std::string* search_in = item.second.FindStringKey("search_in");
+    const std::string* const search_in = item.second.FindStringKey("search_in");
     if (!search_in || search_in->empty()) {
       *error_message = "Failed to load from JSON, pattern search_in missing";
       return {};

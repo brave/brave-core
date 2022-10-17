@@ -11,7 +11,7 @@
 
 namespace ads::privacy::p2a {
 
-TEST(BatAdsP2AAdImpressionQuestionTest, CreateAdImpressionQuestions) {
+TEST(BatAdsP2AImpressionQuestionsTest, CreateAdImpressionQuestions) {
   // Arrange
   const std::string segment = "technology & computing-software";
 

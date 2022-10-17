@@ -22,11 +22,13 @@ class AdEvents final : public TableInterface {
  public:
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
-  void GetIf(const std::string& condition, GetAdEventsCallback callback);
+  void GetIf(const std::string& condition,
+             const GetAdEventsCallback& callback) const;
 
-  void GetAll(GetAdEventsCallback callback);
+  void GetAll(const GetAdEventsCallback& callback) const;
 
-  void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback);
+  void GetForType(mojom::AdType ad_type,
+                  const GetAdEventsCallback& callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
   void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;
@@ -36,20 +38,11 @@ class AdEvents final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
-  void RunTransaction(const std::string& query, GetAdEventsCallback callback);
-
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const AdEventList& ad_event);
 
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const AdEventList& ad_events) const;
-
-  void OnGetAdEvents(GetAdEventsCallback callback,
-                     mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV5(mojom::DBTransactionInfo* transaction);
-  void MigrateToV13(mojom::DBTransactionInfo* transaction);
-  void MigrateToV17(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

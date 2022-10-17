@@ -76,7 +76,7 @@ const ParamInfo kTests[] = {
 
 }  // namespace
 
-class BatAdsNotificationAdUtilServeAtRegularIntervalsTest
+class BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
@@ -96,7 +96,8 @@ class BatAdsNotificationAdUtilServeAtRegularIntervalsTest
   }
 };
 
-TEST_P(BatAdsNotificationAdUtilServeAtRegularIntervalsTest, NotificationAd) {
+TEST_P(BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
+       NotificationAd) {
   // Arrange
   const ParamInfo param = GetParam();
 
@@ -134,9 +135,10 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
       can_show_while_browser_is_backgrounded.c_str(), ads_per_hour.c_str());
 }
 
-INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsNotificationAdUtilServeAtRegularIntervalsTest,
-                         testing::ValuesIn(kTests),
-                         TestParamToString);
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
+    testing::ValuesIn(kTests),
+    TestParamToString);
 
 }  // namespace ads

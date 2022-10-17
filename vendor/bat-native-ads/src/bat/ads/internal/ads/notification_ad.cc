@@ -169,7 +169,7 @@ void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
 
-  epsilon_greedy_bandit_processor_->Process(
+  processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
   CovariateManager::GetInstance()->SetNotificationAdEvent(
@@ -185,7 +185,7 @@ void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kDismissed);
 
-  epsilon_greedy_bandit_processor_->Process(
+  processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
   CovariateManager::GetInstance()->SetNotificationAdEvent(
@@ -196,7 +196,7 @@ void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
 void NotificationAd::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
   NotificationAdTimedOut(ad.placement_id);
 
-  epsilon_greedy_bandit_processor_->Process(
+  processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
   CovariateManager::GetInstance()->SetNotificationAdEvent(

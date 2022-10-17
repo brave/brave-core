@@ -48,18 +48,18 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
         subdivision_targeting_.get());
   }
 
-  std::string GetCountryParam() const { return GetParam().country; }
+  static std::string GetCountryParam() { return GetParam().country; }
 
-  std::string GetGeoTargetResponseParam() const {
+  static std::string GetGeoTargetResponseParam() {
     return base::StrCat({R"({"country":")", GetParam().country,
                          R"(", "region":")", GetParam().region, R"("})"});
   }
 
-  std::string GetSubdivisionParam() const {
+  static std::string GetSubdivisionParam() {
     return base::StrCat({GetParam().country, "-", GetParam().region});
   }
 
-  std::string GetAdditionalSubdivisionParam() const {
+  static std::string GetAdditionalSubdivisionParam() {
     const char* additional_region = "";
     if (GetParam().country == base::StringPiece("US")) {
       additional_region = "CA";
@@ -75,7 +75,7 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
     return base::StrCat({GetParam().country, "-", additional_region});
   }
 
-  std::string GetUnsupportedSubdivisionParam() const {
+  static std::string GetUnsupportedSubdivisionParam() {
     return base::StrCat({GetParam().country, "-XX"});
   }
 

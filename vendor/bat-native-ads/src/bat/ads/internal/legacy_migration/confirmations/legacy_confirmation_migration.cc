@@ -19,11 +19,11 @@ namespace ads::confirmations {
 
 namespace {
 
-void FailedToMigrate(InitializeCallback callback) {
+void FailedToMigrate(const InitializeCallback& callback) {
   callback(/*success*/ false);
 }
 
-void SuccessfullyMigrated(InitializeCallback callback) {
+void SuccessfullyMigrated(const InitializeCallback& callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedConfirmationState, true);
   callback(/*success*/ true);
@@ -67,7 +67,7 @@ void Migrate(InitializeCallback callback) {
             AdsClientHelper::GetInstance()->Save(
                 kConfirmationStateFilename, migrated_json,
                 base::BindOnce(
-                    [](InitializeCallback callback, const bool success) {
+                    [](const InitializeCallback& callback, const bool success) {
                       if (!success) {
                         BLOG(0, "Failed to save confirmation state");
                         FailedToMigrate(callback);

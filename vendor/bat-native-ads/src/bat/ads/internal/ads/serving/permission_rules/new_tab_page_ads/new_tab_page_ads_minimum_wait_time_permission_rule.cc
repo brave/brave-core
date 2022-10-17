@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_minimum_wait_time_permission_rule.h"
 
+#include <vector>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -15,7 +17,15 @@
 namespace ads::new_tab_page_ads {
 
 namespace {
+
 constexpr int kMinimumWaitTimeCap = 1;
+
+bool DoesRespectCap(const std::vector<base::Time>& history) {
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, features::GetNewTabPageAdsMinimumWaitTime(),
+      kMinimumWaitTimeCap);
+}
+
 }  // namespace
 
 bool MinimumWaitTimePermissionRule::ShouldAllow() {
@@ -33,13 +43,6 @@ bool MinimumWaitTimePermissionRule::ShouldAllow() {
 
 const std::string& MinimumWaitTimePermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool MinimumWaitTimePermissionRule::DoesRespectCap(
-    const std::vector<base::Time>& history) {
-  return DoesHistoryRespectRollingTimeConstraint(
-      history, features::GetNewTabPageAdsMinimumWaitTime(),
-      kMinimumWaitTimeCap);
 }
 
 }  // namespace ads::new_tab_page_ads

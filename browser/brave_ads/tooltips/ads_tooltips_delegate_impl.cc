@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
 
-#include <string>
 #include <utility>
 
 #include "chrome/browser/profiles/profile.h"

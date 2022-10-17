@@ -14,7 +14,7 @@ using ResetRewardsCallback = std::function<void(const bool)>;
 
 bool ShouldRewardUser();
 
-void ResetRewards(ResetRewardsCallback callback);
+void ResetRewards(const ResetRewardsCallback& callback);
 
 }  // namespace ads
 

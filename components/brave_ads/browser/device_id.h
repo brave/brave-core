@@ -17,9 +17,14 @@ using DeviceIdCallback = base::OnceCallback<void(std::string)>;
 class DeviceId {
  public:
   DeviceId();
-  virtual ~DeviceId();
+
   DeviceId(const DeviceId&) = delete;
   DeviceId& operator=(const DeviceId&) = delete;
+
+  DeviceId(DeviceId&& other) noexcept = delete;
+  DeviceId& operator=(DeviceId&& other) noexcept = delete;
+
+  virtual ~DeviceId();
 
   // Calls |callback| with a unique device identifier as argument. The device
   // identifier has the following characteristics:

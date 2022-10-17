@@ -23,6 +23,12 @@ class NotificationHelperImpl;
 
 class NotificationHelper final {
  public:
+  NotificationHelper(const NotificationHelper&) = delete;
+  NotificationHelper& operator=(const NotificationHelper&) = delete;
+
+  NotificationHelper(NotificationHelper&& other) noexcept = delete;
+  NotificationHelper& operator=(NotificationHelper&& other) noexcept = delete;
+
   static NotificationHelper* GetInstance();
 
   void InitForProfile(Profile* profile);
@@ -38,6 +44,7 @@ class NotificationHelper final {
   friend struct base::DefaultSingletonTraits<NotificationHelper>;
 
   NotificationHelper();
+
   ~NotificationHelper();
 
   void OnSystemNotificationPlatformBridgeReady(bool success);

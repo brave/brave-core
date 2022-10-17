@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 
-#include <vector>
-
 #include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/time/time.h"
@@ -26,7 +24,49 @@
 namespace ads {
 
 namespace {
+
 constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
+
+void AppendToRetryQueue(const ConfirmationInfo& confirmation) {
+  DCHECK(IsValid(confirmation));
+
+  ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
+      confirmation);
+  ConfirmationStateManager::GetInstance()->Save();
+
+  BLOG(1, "Added " << confirmation.type << " confirmation for "
+                   << confirmation.ad_type << " with transaction id "
+                   << confirmation.transaction_id
+                   << " and creative instance id "
+                   << confirmation.creative_instance_id
+                   << " to the confirmations queue");
+}
+
+void RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
+  DCHECK(IsValid(confirmation));
+
+  if (!ConfirmationStateManager::GetInstance()->RemoveFailedConfirmation(
+          confirmation)) {
+    BLOG(0, "Failed to remove "
+                << confirmation.type << " confirmation for "
+                << confirmation.ad_type << " with transaction id "
+                << confirmation.transaction_id << " and creative instance id "
+                << confirmation.creative_instance_id
+                << " from the confirmations queue");
+
+    return;
+  }
+
+  BLOG(1, "Removed " << confirmation.type << " confirmation for "
+                     << confirmation.ad_type << " with transaction id "
+                     << confirmation.transaction_id
+                     << " and creative instance id "
+                     << confirmation.creative_instance_id
+                     << " from the confirmations queue");
+
+  ConfirmationStateManager::GetInstance()->Save();
+}
+
 }  // namespace
 
 Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
@@ -133,46 +173,6 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
 
     AppendToRetryQueue(*new_confirmation);
   });
-}
-
-void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
-
-  ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
-      confirmation);
-  ConfirmationStateManager::GetInstance()->Save();
-
-  BLOG(1, "Added " << confirmation.type << " confirmation for "
-                   << confirmation.ad_type << " with transaction id "
-                   << confirmation.transaction_id
-                   << " and creative instance id "
-                   << confirmation.creative_instance_id
-                   << " to the confirmations queue");
-}
-
-void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
-
-  if (!ConfirmationStateManager::GetInstance()->RemoveFailedConfirmation(
-          confirmation)) {
-    BLOG(0, "Failed to remove "
-                << confirmation.type << " confirmation for "
-                << confirmation.ad_type << " with transaction id "
-                << confirmation.transaction_id << " and creative instance id "
-                << confirmation.creative_instance_id
-                << " from the confirmations queue");
-
-    return;
-  }
-
-  BLOG(1, "Removed " << confirmation.type << " confirmation for "
-                     << confirmation.ad_type << " with transaction id "
-                     << confirmation.transaction_id
-                     << " and creative instance id "
-                     << confirmation.creative_instance_id
-                     << " from the confirmations queue");
-
-  ConfirmationStateManager::GetInstance()->Save();
 }
 
 void Confirmations::OnDidSendConfirmation(
