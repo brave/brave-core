@@ -95,14 +95,6 @@ test("brave_unit_tests") {
     "//brave/browser/browsing_data/brave_browsing_data_remover_delegate_unittest.cc",
     "//brave/browser/core_metrics/core_metrics_service_unittest.cc",
     "//brave/browser/download/brave_download_item_model_unittest.cc",
-    "//brave/browser/net/brave_ad_block_tp_network_delegate_helper_unittest.cc",
-    "//brave/browser/net/brave_block_safebrowsing_urls_unittest.cc",
-    "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
-    "//brave/browser/net/brave_httpse_network_delegate_helper_unittest.cc",
-    "//brave/browser/net/brave_network_delegate_base_unittest.cc",
-    "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
-    "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
-    "//brave/browser/net/brave_system_request_handler_unittest.cc",
     "//brave/browser/ntp_background/ntp_p3a_helper_impl_unittest.cc",
     "//brave/browser/profiles/profile_util_unittest.cc",
     "//brave/chromium_src/chrome/browser/history/history_utils_unittest.cc",
@@ -175,8 +167,7 @@ test("brave_unit_tests") {
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/first_run:unit_tests",
     "//brave/browser/metrics:brave_metrics_unit_tests",
-    "//brave/browser/net",
-    "//brave/browser/net:geolocation",
+    "//brave/browser/net:unit_tests",
     "//brave/browser/new_tab:unittest",
     "//brave/browser/permissions:unit_tests",
     "//brave/browser/profiles:profiles",
@@ -514,22 +505,6 @@ test("brave_unit_tests") {
       "//brave/components/brave_stats/browser",
       "//brave/vendor/bat-native-ads",
     ]
-
-    if (!is_android) {
-      sources += [
-        # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
-        "//brave/browser/net/brave_referrals_network_delegate_helper_unittest.cc",
-      ]
-    }
-  }
-
-  if (enable_brave_webtorrent) {
-    sources += [
-      "//brave/browser/extensions/brave_webtorrent_navigation_throttle_unittest.cc",
-      "//brave/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
-    ]
-
-    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (ethereum_remote_client_enabled) {
@@ -760,13 +735,6 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
     "//brave/browser/extensions/extension_urls_browsertest.cc",
     "//brave/browser/favicon/favicon_database_browsertest.cc",
-    "//brave/browser/net/brave_accept_header_browsertest.cc",
-    "//brave/browser/net/brave_network_delegate_browsertest.cc",
-    "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
-    "//brave/browser/net/brave_service_key_network_delegate_helper_browsertest.cc",
-    "//brave/browser/net/brave_site_hacks_network_delegate_helper_browsertest.cc",
-    "//brave/browser/net/brave_system_request_handler_browsertest.cc",
-    "//brave/browser/net/global_privacy_control_network_delegate_helper_browsertest.cc",
     "//brave/browser/policy/brave_policy_browsertest.cc",
     "//brave/browser/profiles/brave_bookmark_model_loaded_observer_browsertest.cc",
     "//brave/browser/profiles/brave_profile_manager_browsertest.cc",
@@ -854,6 +822,7 @@ test("brave_browser_tests") {
     "//brave/browser/farbling:browser_tests",
     "//brave/browser/metrics/buildflags",
     "//brave/browser/net",
+    "//brave/browser/net:browser_tests",
     "//brave/browser/permissions:browser_tests",
     "//brave/browser/profiles",
     "//brave/browser/test:browser_tests",

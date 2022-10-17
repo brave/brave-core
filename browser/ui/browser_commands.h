@@ -24,6 +24,7 @@ void ToggleBraveVPNButton(Browser* browser);
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 void OpenIpfsFilesWebUI(Browser* browser);
 void CopyCleanLink(Browser* browser, const GURL& url);
+void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
 
 }  // namespace brave
 

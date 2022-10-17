@@ -9,9 +9,12 @@
 
 #include "base/files/file_path.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/net/brave_query_filter.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -192,6 +195,31 @@ void CopyCleanLink(Browser* browser, const GURL& url) {
 
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
   scw.WriteText(base::UTF8ToUTF16(sanitized_url.spec()));
+}
+
+void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
+  GURL final_url;
+  // Apply debounce rules.
+
+  auto* debouce_service =
+      debounce::DebounceServiceFactory::GetForBrowserContext(
+          browser->profile());
+  if (debouce_service && !debouce_service->Debounce(url, &final_url)) {
+    VLOG(1) << "Unable to apply debounce rules";
+    final_url = url;
+  }
+  // Apply query filters.
+  auto filtered_url = ApplyQueryFilter(final_url);
+  if (filtered_url.has_value()) {
+    final_url = filtered_url.value();
+  }
+  // Sanitize url.
+  final_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
+                  browser->profile())
+                  ->SanitizeURL(final_url);
+
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  scw.WriteText(base::UTF8ToUTF16(final_url.spec()));
 }
 
 }  // namespace brave

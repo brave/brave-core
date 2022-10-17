@@ -222,7 +222,7 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_COPY_CLEAN_LINK:
-      brave::CopyCleanLink(GetBrowser(), params_.link_url);
+      brave::CopyLinkWithStrictCleaning(GetBrowser(), params_.link_url);
       break;
     case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
       std::u16string result;
