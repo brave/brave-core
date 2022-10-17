@@ -9,8 +9,6 @@ source_set("profiles") {
     "brave_bookmark_model_loaded_observer.h",
     "brave_profile_avatar_downloader.cc",
     "brave_profile_avatar_downloader.h",
-    "brave_profile_impl.cc",
-    "brave_profile_impl.h",
     "brave_profile_manager.cc",
     "brave_profile_manager.h",
     "brave_renderer_updater.cc",
@@ -18,13 +16,6 @@ source_set("profiles") {
     "brave_renderer_updater_factory.cc",
     "brave_renderer_updater_factory.h",
   ]
-
-  if (is_win) {
-    sources += [
-      "brave_profile_shortcut_manager_win.cc",
-      "brave_profile_shortcut_manager_win.h",
-    ]
-  }
 
   public_deps = [ ":util" ]
 

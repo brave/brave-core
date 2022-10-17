@@ -54,17 +54,6 @@ BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
   MigrateProfileNames();
 }
 
-BraveProfileManager::~BraveProfileManager() {
-  std::vector<Profile*> profiles = GetLoadedProfiles();
-  for (Profile* profile : profiles) {
-    if (brave::IsSessionProfile(profile)) {
-      // passing false for `success` removes the profile from the info cache
-      OnProfileCreationFinished(profile, Profile::CREATE_MODE_ASYNCHRONOUS,
-                                false, false);
-    }
-  }
-}
-
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   // migrate obsolete plugin prefs to temporary migration pref because otherwise
   // they get deleteed by PrefProvider before we can migrate them in
