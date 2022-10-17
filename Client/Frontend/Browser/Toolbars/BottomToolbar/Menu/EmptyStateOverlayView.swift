@@ -7,6 +7,15 @@ import Foundation
 import Shared
 import UIKit
 
+struct EmptyOverlayStateDetails {
+  var title: String?
+  var description: String?
+  var icon: UIImage?
+  var buttonText: String?
+  var action: (() -> Void)?
+  var actionDescription: String?
+}
+
 class EmptyStateOverlayView: UIView {
   
   private struct UX {
@@ -50,70 +59,25 @@ class EmptyStateOverlayView: UIView {
   private let containerView = UIStackView().then {
     $0.axis = .vertical
     $0.alignment = .center
+    $0.layer.masksToBounds = true
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
   }
   
   private var actionHandler: (() -> Void)?
+  private var overlayDetails: EmptyOverlayStateDetails
 
-  required init(
-    title: String? = nil,
-    description: String? = nil,
-    icon: UIImage? = nil,
-    buttonText: String? = nil,
-    action: (() -> Void)? = nil,
-    actionDescription: String? = nil) {
+  required init(overlayDetails: EmptyOverlayStateDetails) {
+    self.overlayDetails = overlayDetails
+    
     super.init(frame: .zero)
 
-    backgroundColor = .secondaryBraveBackground
-    
-    addSubview(containerView)
-    containerView.snp.makeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.centerY.equalToSuperview().offset(-50)
-      $0.width.equalToSuperview().multipliedBy(0.75)
-      $0.size.lessThanOrEqualToSuperview()
-    }
-    
-    if let icon = icon {
-      iconImageView.image = icon
-      containerView.addArrangedSubview(iconImageView)
-      
-      iconImageView.snp.makeConstraints {
-        $0.size.equalTo(60)
-       }
-      
-      containerView.setCustomSpacing(35, after: iconImageView)
-    }
-    
-    if let title = title {
-      informationLabel.text = title
-      containerView.addArrangedSubview(informationLabel)
-      containerView.setCustomSpacing(25, after: informationLabel)
-    }
-    
-    if let description = description {
-      descriptionLabel.text = description
-      containerView.addArrangedSubview(descriptionLabel)
-      containerView.setCustomSpacing(45, after: descriptionLabel)
-    }
-    
-    if let buttonText = buttonText {
-      actionButton.setTitle(buttonText, for: .normal)
-      actionButton.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
-      containerView.addArrangedSubview(actionButton)
-      containerView.setCustomSpacing(25, after: actionButton)
-    }
-    
-    if let actionDescription = actionDescription {
-      actionDescriptionLabel.text = actionDescription
-      containerView.addArrangedSubview(actionDescriptionLabel)
-    }
-    
-    if let action = action {
+    if let action = overlayDetails.action {
       actionHandler = action
     }
-    
+      
+    doLayout(details: overlayDetails)
+             
     updateFont()
   }
 
@@ -125,7 +89,70 @@ class EmptyStateOverlayView: UIView {
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     
+    doLayout(details: overlayDetails)
     updateFont()
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    doLayout(details: overlayDetails)
+    
+    let heightOffset = traitCollection.verticalSizeClass == .compact ? 0 : -50
+    
+    containerView.snp.remakeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(heightOffset)
+    }
+  }
+  
+  private func doLayout(details: EmptyOverlayStateDetails) {
+    backgroundColor = .secondaryBraveBackground
+    
+    let heightOffset = traitCollection.verticalSizeClass == .compact ? 0 : -50
+
+    addSubview(containerView)
+    containerView.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(heightOffset)
+      $0.width.equalToSuperview().multipliedBy(0.75)
+      $0.size.lessThanOrEqualToSuperview()
+    }
+    
+    if let icon = details.icon {
+      iconImageView.image = icon
+      containerView.addArrangedSubview(iconImageView)
+      
+      iconImageView.snp.makeConstraints {
+        $0.size.equalTo(45)
+       }
+      
+      containerView.setCustomSpacing(25, after: iconImageView)
+    }
+    
+    if let title = details.title {
+      informationLabel.text = title
+      containerView.addArrangedSubview(informationLabel)
+      containerView.setCustomSpacing(20, after: informationLabel)
+    }
+    
+    if let description = details.description {
+      descriptionLabel.text = description
+      containerView.addArrangedSubview(descriptionLabel)
+      containerView.setCustomSpacing(35, after: descriptionLabel)
+    }
+    
+    if let buttonText = details.buttonText {
+      actionButton.setTitle(buttonText, for: .normal)
+      actionButton.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
+      containerView.addArrangedSubview(actionButton)
+      containerView.setCustomSpacing(25, after: actionButton)
+    }
+    
+    if let actionDescription = details.actionDescription {
+      actionDescriptionLabel.text = actionDescription
+      containerView.addArrangedSubview(actionDescriptionLabel)
+    }
   }
   
   private func updateFont() {

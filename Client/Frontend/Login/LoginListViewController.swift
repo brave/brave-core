@@ -44,7 +44,8 @@ class LoginListViewController: LoginAuthViewController {
   private var searchLoginTimer: Timer?
   private var isCredentialsBeingSearched = false
   private let searchController = UISearchController(searchResultsController: nil)
-  private let emptyLoginView = EmptyStateOverlayView(title: Strings.Login.loginListEmptyScreenTitle)
+  private let emptyStateOverlayView = EmptyStateOverlayView(
+    overlayDetails: EmptyOverlayStateDetails(title: Strings.Login.loginListEmptyScreenTitle))
 
   // MARK: Lifecycle
 
@@ -181,7 +182,7 @@ class LoginListViewController: LoginAuthViewController {
 extension LoginListViewController {
 
   override func numberOfSections(in tableView: UITableView) -> Int {
-    tableView.backgroundView = credentialList.isEmpty ? emptyLoginView : nil
+    tableView.backgroundView = credentialList.isEmpty ? emptyStateOverlayView : nil
 
     return Section.allCases.count
   }

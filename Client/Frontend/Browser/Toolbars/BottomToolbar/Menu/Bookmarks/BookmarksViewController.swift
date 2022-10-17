@@ -76,7 +76,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   private var isBookmarksBeingSearched = false
   private let bookmarksSearchController = UISearchController(searchResultsController: nil)
   private var bookmarksSearchQuery = ""
-  private lazy var noSearchResultOverlayView = EmptyStateOverlayView(title: Strings.noSearchResultsfound)
+  private lazy var noSearchResultOverlayView = EmptyStateOverlayView(
+    overlayDetails: EmptyOverlayStateDetails(title: Strings.noSearchResultsfound))
 
   // MARK: Lifecycle
 
