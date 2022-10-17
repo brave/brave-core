@@ -201,9 +201,9 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
 
   ConfirmationList new_failed_confirmations;
 
-  for (const auto& item : *failed_confirmations) {
-    const base::Value::Dict* const dict = item.GetIfDict();
-    if (!dict) {
+  for (const auto& value : *failed_confirmations) {
+    const base::Value::Dict* const failed_confirmation_dict = value.GetIfDict();
+    if (!failed_confirmation_dict) {
       BLOG(0, "Confirmation should be a dictionary");
       continue;
     }
@@ -211,7 +211,8 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     ConfirmationInfo confirmation;
 
     // Transaction id
-    if (const std::string* const value = dict->FindString("transaction_id")) {
+    if (const std::string* const value =
+            failed_confirmation_dict->FindString("transaction_id")) {
       confirmation.transaction_id = *value;
     } else {
       // Migrate legacy confirmations
@@ -221,7 +222,7 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
 
     // Creative instance id
     if (const std::string* const value =
-            dict->FindString("creative_instance_id")) {
+            failed_confirmation_dict->FindString("creative_instance_id")) {
       confirmation.creative_instance_id = *value;
     } else {
       BLOG(0, "Missing confirmation creative instance id");
@@ -229,7 +230,8 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     }
 
     // Type
-    if (const std::string* const value = dict->FindString("type")) {
+    if (const std::string* const value =
+            failed_confirmation_dict->FindString("type")) {
       confirmation.type = ConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
@@ -237,7 +239,8 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     }
 
     // Ad type
-    if (const std::string* const value = dict->FindString("ad_type")) {
+    if (const std::string* const value =
+            failed_confirmation_dict->FindString("ad_type")) {
       confirmation.ad_type = AdType(*value);
     } else {
       // Migrate legacy confirmations, this value is not used right now so safe
@@ -247,7 +250,7 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
 
     // Created at
     if (const std::string* const value =
-            dict->FindString("timestamp_in_seconds")) {
+            failed_confirmation_dict->FindString("timestamp_in_seconds")) {
       double timestamp_as_double;
       if (!base::StringToDouble(*value, &timestamp_as_double)) {
         continue;
@@ -257,11 +260,12 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
     }
 
     // Was created
-    const absl::optional<bool> was_created = dict->FindBool("created");
+    const absl::optional<bool> was_created =
+        failed_confirmation_dict->FindBool("created");
     confirmation.was_created = was_created.value_or(true);
 
     // Opted-in
-    confirmation.opted_in = GetOptedIn(*dict);
+    confirmation.opted_in = GetOptedIn(*failed_confirmation_dict);
 
     if (!IsValid(confirmation)) {
       BLOG(0, "Invalid confirmation");
