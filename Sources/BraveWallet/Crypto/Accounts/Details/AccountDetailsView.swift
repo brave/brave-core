@@ -101,6 +101,7 @@ struct AccountDetailsView: View {
         }
       }
     }
+    .accentColor(Color(.braveOrange)) // needed for navigation bar back button(s)
     .onAppear {
       if name.isEmpty {
         // Wait until next runloop pass to fix bug where body isn't recomputed based on state change
