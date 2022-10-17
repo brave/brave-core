@@ -65,7 +65,7 @@ declare namespace Rewards {
         | 'flaggedWalletModal'
         | 'hide'
         | 'kycRequiredModal'
-        | 'mismatchedProviderAccountRegionsModal'
+        | 'mismatchedCountriesModal'
         | 'mismatchedProviderAccountsModal'
         | 'regionNotSupportedModal'
         | 'show'

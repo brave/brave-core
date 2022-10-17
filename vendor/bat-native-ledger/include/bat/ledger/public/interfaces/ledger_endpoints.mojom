@@ -26,7 +26,7 @@ enum PatchWalletsError {
 enum PostConnectError {
   kFailedToCreateRequest,
   kFlaggedWallet,                       // HTTP 400
-  kMismatchedProviderAccountRegions,    // HTTP 400
+  kMismatchedCountries,                 // HTTP 400
   kRegionNotSupported,                  // HTTP 400
   kUnknownMessage,                      // HTTP 400, HTTP 403
   kKycRequired,                         // HTTP 403, HTTP 404

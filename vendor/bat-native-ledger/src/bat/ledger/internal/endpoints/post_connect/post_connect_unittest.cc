@@ -123,7 +123,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kFlaggedWallet)
     },
     PostConnectParamType{
-      "02_HTTP_400_mismatched_provider_account_regions",
+      "02_HTTP_400_mismatched_countries",
       net::HTTP_BAD_REQUEST,
       R"(
         {
@@ -131,7 +131,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      base::unexpected(Error::kMismatchedProviderAccountRegions)
+      base::unexpected(Error::kMismatchedCountries)
     },
     PostConnectParamType{
       "03_HTTP_400_region_not_supported",

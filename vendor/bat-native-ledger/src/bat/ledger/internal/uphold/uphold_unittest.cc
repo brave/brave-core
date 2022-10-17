@@ -1528,8 +1528,8 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::Result::REGION_NOT_SUPPORTED,
       mojom::WalletStatus::NOT_CONNECTED
     },
-    ClaimWalletParamType{  // Mismatched provider account regions.
-      "06_mismatched_provider_account_regions",
+    ClaimWalletParamType{  // Mismatched countries.
+      "06_mismatched_countries",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1565,7 +1565,7 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS,
+      mojom::Result::MISMATCHED_COUNTRIES,
       mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Rewards Link (Claim) Wallet failed.
