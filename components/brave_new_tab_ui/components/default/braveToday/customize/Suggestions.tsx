@@ -13,6 +13,12 @@ const LoadMoreButtonContainer = styled.div`
   grid-column: 2;
 `
 
+const Subtitle = styled.span`
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--text2);
+`
+
 const DEFAULT_SUGGESTIONS_COUNT = 3
 
 export default function Suggestions () {
@@ -22,11 +28,13 @@ export default function Suggestions () {
     .slice(0, showAll ? undefined : DEFAULT_SUGGESTIONS_COUNT), [suggestedPublisherIds, showAll])
 
   return filteredSuggestions.length
-    ? <DiscoverSection name='Suggestions'>
+    ? <DiscoverSection name={getLocale('braveNewsSuggestionsTitle')} subtitle={<>
+      <Subtitle>{getLocale('braveNewsSuggestionsSubtitle')}</Subtitle>
+    </>}>
       {filteredSuggestions.map(s => <FeedCard key={s} publisherId={s} />)}
       {!showAll && suggestedPublisherIds.length > DEFAULT_SUGGESTIONS_COUNT && <LoadMoreButtonContainer>
         <Button onClick={() => setShowAll(true)}>
-          {getLocale('braveNewsLoadMoreCategoriesButton')}
+          {getLocale('braveNewsShowMoreButton')}
         </Button>
       </LoadMoreButtonContainer>}
     </DiscoverSection>

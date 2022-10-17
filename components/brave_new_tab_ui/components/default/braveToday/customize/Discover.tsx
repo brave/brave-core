@@ -76,7 +76,7 @@ function Home () {
       )}
       {!showingAllCategories && <LoadMoreButtonContainer>
         <Button onClick={() => setShowingAllCategories(true)}>
-            {getLocale('braveNewsLoadMoreCategoriesButton')}
+            {getLocale('braveNewsShowMoreButton')}
         </Button>
       </LoadMoreButtonContainer>}
       </DiscoverSection>
