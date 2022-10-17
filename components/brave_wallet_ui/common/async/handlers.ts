@@ -315,6 +315,11 @@ handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: B
   }
 
   const result = await braveWalletService.addUserAsset(payload)
+
+  // Refresh balances here for adding ERC721 tokens if result is successful
+  if (payload.isErc721 && result.success) {
+    refreshBalancesPricesAndHistory(store)
+  }
   store.dispatch(WalletActions.addUserAssetError(!result.success))
 })
 
