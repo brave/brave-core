@@ -21,6 +21,7 @@
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/time_profiler/time_profiler.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -37,6 +38,8 @@ void EligibleAdsV1::GetForUserModel(
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads:");
 
+  TIME_PROFILER_BEGIN("eligible_ads_v1");
+
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNotificationAd,
@@ -51,9 +54,12 @@ void EligibleAdsV1::OnGetForUserModel(
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1", "GetAdEventsForType");
+
   if (!success) {
     BLOG(1, "Failed to get ad events");
     std::move(callback).Run(/*had_opportunity*/ false, {});
+    TIME_PROFILER_END("eligible_ads_v1");
     return;
   }
 
@@ -77,6 +83,8 @@ void EligibleAdsV1::GetEligibleAds(
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1", "GetBrowsingHistory");
+
   GetForChildSegments(std::move(user_model), ad_events, browsing_history,
                       std::move(callback));
 }
@@ -117,6 +125,7 @@ void EligibleAdsV1::OnGetForChildSegments(
   if (!success) {
     BLOG(1, "Failed to get ads for child segments");
     std::move(callback).Run(/*had_opportunity*/ false, {});
+    TIME_PROFILER_END("eligible_ads_v1");
     return;
   }
 
@@ -133,6 +142,8 @@ void EligibleAdsV1::OnGetForChildSegments(
   BLOG(1, eligible_creative_ads.size()
               << " eligible ads out of " << creative_ads.size()
               << " ads for child segments");
+
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1", "GetForChildSegments");
 
   std::move(callback).Run(/*had_opportunity*/ true, eligible_creative_ads);
 }
@@ -170,6 +181,7 @@ void EligibleAdsV1::OnGetForParentSegments(
   if (!success) {
     BLOG(1, "Failed to get ads for parent segments");
     std::move(callback).Run(/*had_opportunity*/ false, {});
+    TIME_PROFILER_END("eligible_ads_v1");
     return;
   }
 
@@ -185,6 +197,8 @@ void EligibleAdsV1::OnGetForParentSegments(
   BLOG(1, eligible_creative_ads.size()
               << " eligible ads out of " << creative_ads.size()
               << " ads for parent segments");
+
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1", "GetForParentSegments");
 
   std::move(callback).Run(/*had_opportunity*/ true, eligible_creative_ads);
 }
@@ -212,6 +226,7 @@ void EligibleAdsV1::OnGetForUntargeted(
   if (!success) {
     BLOG(1, "Failed to get ads for untargeted segment");
     std::move(callback).Run(/*had_opportunity*/ false, {});
+    TIME_PROFILER_END("eligible_ads_v1");
     return;
   }
 
@@ -221,12 +236,15 @@ void EligibleAdsV1::OnGetForUntargeted(
     BLOG(1, "No eligible ads out of " << creative_ads.size()
                                       << " ads for untargeted segment");
     std::move(callback).Run(/*had_opportunity*/ false, {});
+    TIME_PROFILER_END("eligible_ads_v1");
     return;
   }
 
   BLOG(1, eligible_creative_ads.size()
               << " eligible ads out of " << creative_ads.size()
               << " ads for untargeted segment");
+
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1", "GetForForUntargeted");
 
   std::move(callback).Run(/*had_opportunity*/ true, eligible_creative_ads);
 }
@@ -245,16 +263,24 @@ CreativeNotificationAdList EligibleAdsV1::FilterCreativeAds(
                                  anti_targeting_resource_, browsing_history);
   eligible_creative_ads = ApplyExclusionRules(
       eligible_creative_ads, last_served_ad_, &exclusion_rules);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1", "ApplyExclusionRules");
 
   eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kNotificationAd);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE(
+      "eligible_ads_v1", "FilterSeenAdvertisersAndRoundRobinIfNeeded");
 
   eligible_creative_ads = FilterSeenAdsAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kNotificationAd);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1",
+                                     "FilterSeenAdsAndRoundRobinIfNeeded");
 
   eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1", "PaceCreativeAds");
 
   eligible_creative_ads = PrioritizeCreativeAds(eligible_creative_ads);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("eligible_ads_v1",
+                                     "PrioritizeCreativeAds");
 
   return eligible_creative_ads;
 }

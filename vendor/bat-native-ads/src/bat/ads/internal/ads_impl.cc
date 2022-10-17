@@ -25,6 +25,7 @@
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/time_profiler/time_profiler_manager.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
@@ -93,6 +94,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   pref_manager_ = std::make_unique<PrefManager>();
   resource_manager_ = std::make_unique<ResourceManager>();
   tab_manager_ = std::make_unique<TabManager>();
+  time_profiler_manager_ = std::make_unique<TimeProfilerManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 
   catalog_ = std::make_unique<Catalog>();

@@ -16,6 +16,7 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/common/platform/platform_helper_mock.h"
+#include "bat/ads/internal/common/time_profiler/time_profiler_manager.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/internal/database/database_manager.h"
@@ -174,6 +175,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<PrefManager> pref_manager_;
   std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
+  std::unique_ptr<TimeProfilerManager> time_profiler_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 };
 

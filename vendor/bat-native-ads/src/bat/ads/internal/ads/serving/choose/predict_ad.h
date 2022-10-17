@@ -13,6 +13,7 @@
 #include "bat/ads/internal/ads/serving/choose/eligible_ads_predictor_util.h"
 #include "bat/ads/internal/ads/serving/choose/sample_ads.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing.h"
+#include "bat/ads/internal/common/time_profiler/time_profiler.h"
 
 namespace ads {
 
@@ -22,15 +23,30 @@ absl::optional<T> PredictAd(const targeting::UserModelInfo& user_model,
                             const std::vector<T>& creative_ads) {
   DCHECK(!creative_ads.empty());
 
+  TIME_PROFILER_BEGIN("perf.predict_ad");
+
   const std::vector<T> paced_creative_ads = PaceCreativeAds(creative_ads);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("perf.predict_ad", "PaceCreativeAds");
 
   CreativeAdPredictorMap<T> creative_ad_predictors;
+
   creative_ad_predictors =
       GroupCreativeAdsByCreativeInstanceId(paced_creative_ads);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("perf.predict_ad",
+                                     "GroupCreativeAdsByCreativeInstanceId");
+
   creative_ad_predictors = ComputePredictorFeaturesAndScores(
       creative_ad_predictors, user_model, ad_events);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("perf.predict_ad",
+                                     "ComputePredictorFeaturesAndScores");
 
-  return SampleAdFromPredictors(creative_ad_predictors);
+  const absl::optional<T> ad = SampleAdFromPredictors(creative_ad_predictors);
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("perf.predict_ad",
+                                     "SampleAdFromPredictors");
+
+  TIME_PROFILER_END("perf.predict_ad");
+
+  return ad;
 }
 
 }  // namespace ads

@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/dismissed_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
+#include "bat/ads/internal/common/time_profiler/time_profiler.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
@@ -24,9 +25,13 @@ ExclusionRules::ExclusionRules(
   dismissed_exclusion_rule_ =
       std::make_unique<DismissedExclusionRule>(ad_events);
   exclusion_rules_.push_back(dismissed_exclusion_rule_.get());
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("perf.exclusion_rules", "Dismissed");
 
   per_hour_exclusion_rule_ = std::make_unique<PerHourExclusionRule>(ad_events);
   exclusion_rules_.push_back(per_hour_exclusion_rule_.get());
+  TIME_PROFILER_MEASURE_WITH_MESSAGE("perf.exclusion_rules", "PerHour");
+
+  TIME_PROFILER_END("perf.exclusion_rules");
 }
 
 ExclusionRules::~ExclusionRules() = default;
