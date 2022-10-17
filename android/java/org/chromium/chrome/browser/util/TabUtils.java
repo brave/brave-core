@@ -79,7 +79,7 @@ public class TabUtils {
 
     public static void openUrlInSameTab(String url) {
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        if (braveActivity != null) {
+        if (braveActivity != null && braveActivity.getActivityTab() != null) {
             LoadUrlParams loadUrlParams = new LoadUrlParams(url);
             braveActivity.getActivityTab().loadUrl(loadUrlParams);
         }

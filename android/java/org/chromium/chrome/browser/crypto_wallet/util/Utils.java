@@ -1413,7 +1413,7 @@ public class Utils {
 
     public static GURL getCurentTabUrl() {
         ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
-        if (activity != null) {
+        if (activity != null && activity.getActivityTab() != null) {
             return activity.getActivityTab().getUrl().getOrigin();
         }
         return GURL.emptyGURL();
@@ -1432,7 +1432,7 @@ public class Utils {
         org.chromium.url.internal.mojom.Origin hostOrigin =
                 new org.chromium.url.internal.mojom.Origin();
         ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
-        if (activity == null) {
+        if (activity == null || activity.getActivityTab() == null) {
             return hostOrigin;
         }
 
