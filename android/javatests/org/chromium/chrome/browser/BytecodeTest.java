@@ -766,7 +766,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mToolbar"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkBridgeSupplier"));
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkModelSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutManager"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
