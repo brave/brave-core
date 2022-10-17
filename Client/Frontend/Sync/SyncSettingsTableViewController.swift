@@ -132,11 +132,12 @@ class SyncSettingsTableViewController: UIViewController, UITableViewDelegate, UI
   
   private var tableView = UITableView(frame: .zero, style: .grouped)
 
-  private lazy var noSyncedDevicesOverlayView = EmptyStateOverlayView(
-    title: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewTitle,
-    description: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewDescription,
-    icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath"))
-
+  private lazy var emptyStateOverlayView = EmptyStateOverlayView(
+    overlayDetails: EmptyOverlayStateDetails(
+      title: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewTitle,
+      description: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewDescription,
+      icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath")))
+  
   // MARK: Actions
 
   @objc
@@ -221,13 +222,13 @@ class SyncSettingsTableViewController: UIViewController, UITableViewDelegate, UI
   /// - Parameter isHidden: Boolean to set isHidden
   private func updateNoSyncedDevicesState(isHidden: Bool) {
     if isHidden {
-      noSyncedDevicesOverlayView.removeFromSuperview()
+      emptyStateOverlayView.removeFromSuperview()
     } else {
-      if noSyncedDevicesOverlayView.superview == nil {
-        view.addSubview(noSyncedDevicesOverlayView)
-        view.bringSubviewToFront(noSyncedDevicesOverlayView)
+      if emptyStateOverlayView.superview == nil {
+        view.addSubview(emptyStateOverlayView)
+        view.bringSubviewToFront(emptyStateOverlayView)
         
-        noSyncedDevicesOverlayView.snp.makeConstraints {
+        emptyStateOverlayView.snp.makeConstraints {
           $0.edges.equalTo(tableView)
         }
       }

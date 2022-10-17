@@ -17,11 +17,12 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
 
   private lazy var emptyStateOverlayView = EmptyStateOverlayView(
-    title: Preferences.Privacy.privateBrowsingOnly.value
-      ? Strings.History.historyPrivateModeOnlyStateTitle
-      : Strings.History.historyEmptyStateTitle,
-    icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)!)
-
+    overlayDetails: EmptyOverlayStateDetails(
+      title: Preferences.Privacy.privateBrowsingOnly.value
+        ? Strings.History.historyPrivateModeOnlyStateTitle
+        : Strings.History.historyEmptyStateTitle,
+      icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)))
+  
   private let historyAPI: BraveHistoryAPI
   private let tabManager: TabManager
 
