@@ -307,11 +307,20 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
     return false;
 
   return BrowserView::GetTabStripVisible();
 }
+
+#if BUILDFLAG(IS_WIN)
+bool BraveBrowserView::GetSupportsTitle() const {
+  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+    return true;
+
+  return BrowserView::GetSupportsTitle();
+}
+#endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =
@@ -478,6 +487,16 @@ void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
 
 void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
+}
+
+bool BraveBrowserView::ShouldShowWindowTitle() const {
+  if (BrowserView::ShouldShowWindowTitle())
+    return true;
+
+  if (tabs::features::ShouldShowVerticalTabs() && browser_->is_type_normal())
+    return true;
+
+  return false;
 }
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
