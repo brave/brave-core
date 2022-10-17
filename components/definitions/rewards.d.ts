@@ -80,12 +80,14 @@ declare namespace Rewards {
   }
 
   export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
+  export type Regions = { allow: string[], block: string[] }
 
   export interface RewardsParameters {
     rate: number
     autoContributeChoice: number
     autoContributeChoices: number[]
     payoutStatus: Record<string, ProviderPayoutStatus>
+    walletProviderRegions: Record<string, Regions | undefined>
   }
 
   export interface ComponentProps {

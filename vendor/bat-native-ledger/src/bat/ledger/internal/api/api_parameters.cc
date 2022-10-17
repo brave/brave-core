@@ -3,21 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/api/api_parameters.h"
+
 #include <string>
 #include <utility>
 
 #include "base/time/time.h"
-#include "bat/ledger/internal/api/api_parameters.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/endpoints/request_for.h"
 #include "bat/ledger/internal/ledger_impl.h"
+
+using ledger::endpoints::GetParameters;
+using ledger::endpoints::RequestFor;
 
 namespace ledger {
 namespace api {
 
-APIParameters::APIParameters(LedgerImpl* ledger) :
-    ledger_(ledger),
-    api_server_(std::make_unique<endpoint::APIServer>(ledger)) {
-  DCHECK(ledger_ && api_server_);
+APIParameters::APIParameters(LedgerImpl* ledger) : ledger_(ledger) {
+  DCHECK(ledger_);
 }
 
 APIParameters::~APIParameters() = default;
@@ -36,30 +39,28 @@ void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
 
   refresh_timer_.Stop();
 
-  auto url_callback =
-      base::BindOnce(&APIParameters::OnFetch, base::Unretained(this));
-
-  api_server_->get_parameters()->Request(std::move(url_callback));
+  RequestFor<GetParameters>(ledger_).Send(
+      base::BindOnce(&APIParameters::OnFetch, base::Unretained(this)));
 }
 
-void APIParameters::OnFetch(const mojom::Result result,
-                            const mojom::RewardsParameters& parameters) {
-  if (result == mojom::Result::RETRY_SHORT) {
+void APIParameters::OnFetch(GetParameters::Result&& result) {
+  if (result.has_value()) {
+    DCHECK(result.value());
+    ledger_->state()->SetRewardsParameters(*result.value());
     RunCallbacks();
-    SetRefreshTimer(base::Seconds(90));
-    return;
+    return SetRefreshTimer(base::Minutes(10), base::Hours(3));
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(1, "Couldn't parse response");
-    RunCallbacks();
-    SetRefreshTimer(base::Minutes(10));
-    return;
-  }
-
-  ledger_->state()->SetRewardsParameters(parameters);
   RunCallbacks();
-  SetRefreshTimer(base::Minutes(10), base::Hours(3));
+
+  switch (result.error()) {
+    case GetParameters::Error::kFailedToGetParameters:
+      SetRefreshTimer(base::Seconds(90));
+      break;
+    default:
+      SetRefreshTimer(base::Minutes(10));
+      break;
+  }
 }
 
 void APIParameters::RunCallbacks() {

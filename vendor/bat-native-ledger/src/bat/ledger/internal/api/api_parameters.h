@@ -10,8 +10,8 @@
 #include <vector>
 
 #include "base/timer/timer.h"
+#include "bat/ledger/internal/endpoints/get_parameters/get_parameters.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/endpoint/api/api_server.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -28,8 +28,7 @@ class APIParameters {
   void Fetch(ledger::GetRewardsParametersCallback callback);
 
  private:
-  void OnFetch(const mojom::Result result,
-               const mojom::RewardsParameters& parameters);
+  void OnFetch(endpoints::GetParameters::Result&&);
 
   void RunCallbacks();
 
@@ -40,7 +39,6 @@ class APIParameters {
   LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer refresh_timer_;
   std::vector<ledger::GetRewardsParametersCallback> callbacks_;
-  std::unique_ptr<endpoint::APIServer> api_server_;
 };
 
 }  // namespace api

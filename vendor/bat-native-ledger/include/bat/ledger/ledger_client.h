@@ -13,6 +13,7 @@
 #include <map>
 
 #include "base/callback_forward.h"
+#include "base/values.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -116,6 +117,10 @@ class LEDGER_EXPORT LedgerClient {
   virtual void SetUint64State(const std::string& name, uint64_t value) = 0;
 
   virtual uint64_t GetUint64State(const std::string& name) const = 0;
+
+  virtual void SetValueState(const std::string& name, base::Value value) = 0;
+
+  virtual base::Value GetValueState(const std::string& name) const = 0;
 
   virtual void ClearState(const std::string& name) = 0;
 

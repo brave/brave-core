@@ -1353,7 +1353,7 @@ void RewardsServiceImpl::OnRecoverWallet(const ledger::mojom::Result result) {
   }
 }
 
-const std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
+std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     const {
   std::vector<std::string> providers;
 
@@ -1565,6 +1565,15 @@ void RewardsServiceImpl::SetUint64State(const std::string& name,
 
 uint64_t RewardsServiceImpl::GetUint64State(const std::string& name) const {
   return profile_->GetPrefs()->GetUint64(GetPrefPath(name));
+}
+
+void RewardsServiceImpl::SetValueState(const std::string& name,
+                                       base::Value value) {
+  profile_->GetPrefs()->Set(GetPrefPath(name), std::move(value));
+}
+
+base::Value RewardsServiceImpl::GetValueState(const std::string& name) const {
+  return profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone();
 }
 
 void RewardsServiceImpl::ClearState(const std::string& name) {

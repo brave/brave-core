@@ -243,7 +243,7 @@ class BraveRewardsNativeWorker
 
   JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
   raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
-  ledger::mojom::RewardsParameters parameters_;
+  ledger::mojom::RewardsParametersPtr parameters_;
   ledger::mojom::Balance balance_;
   ledger::mojom::AutoContributePropertiesPtr auto_contrib_properties_;
   PublishersInfoMap map_publishers_info_;

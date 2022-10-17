@@ -6,6 +6,7 @@ module bat_ledger.mojom;
 
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom";
+import "mojo/public/mojom/base/values.mojom";
 
 interface BatLedgerService {
   Create(pending_associated_remote<BatLedgerClient> bat_ledger_client,
@@ -209,6 +210,10 @@ interface BatLedgerClient {
   GetUint64State(string name) => (uint64 value);
   [Sync]
   SetUint64State(string name, uint64 value) => ();
+  [Sync]
+  GetValueState(string name) => (mojo_base.mojom.Value value);
+  [Sync]
+  SetValueState(string name, mojo_base.mojom.Value value) => ();
   [Sync]
   ClearState(string name) => ();
 

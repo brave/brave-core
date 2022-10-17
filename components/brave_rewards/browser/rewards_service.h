@@ -317,7 +317,7 @@ class RewardsService : public KeyedService {
 
   virtual std::string GetExternalWalletType() const = 0;
 
-  virtual const std::vector<std::string> GetExternalWalletProviders() const = 0;
+  virtual std::vector<std::string> GetExternalWalletProviders() const = 0;
 
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
