@@ -9,6 +9,8 @@
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
 #include "base/ios/ios_util.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -16,6 +18,7 @@
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -1485,6 +1488,30 @@ BATLedgerBridge(BOOL,
 - (uint64_t)getUint64State:(const std::string&)name {
   const auto key = base::SysUTF8ToNSString(name);
   return [self.prefs[key] unsignedLongLongValue];
+}
+
+- (void)setValueState:(const std::string&)name value:(base::Value)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(name);
+    self.prefs[key] = base::SysUTF8ToNSString(json);
+    [self savePrefs];
+  }
+}
+
+- (base::Value)getValueState:(const std::string&)name {
+  const auto key = base::SysUTF8ToNSString(name);
+  const auto json = (NSString*)self.prefs[key];
+  if (!json) {
+    return base::Value();
+  }
+
+  auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json));
+  if (!value) {
+    return base::Value();
+  }
+
+  return std::move(*value);
 }
 
 - (void)clearState:(const std::string&)name {

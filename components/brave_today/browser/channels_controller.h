@@ -11,6 +11,7 @@
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "components/prefs/pref_service.h"
@@ -32,6 +33,9 @@ class ChannelsController {
   static Channels GetChannelsFromPublishers(const std::string& locale,
                                             const Publishers& publishers,
                                             PrefService* prefs);
+
+  // Get all the Locales the user has subcribed to channels in.
+  std::vector<std::string> GetChannelLocales() const;
   void GetAllChannels(const std::string& locale, ChannelsCallback callback);
   mojom::ChannelPtr SetChannelSubscribed(const std::string& locale,
                                          const std::string& channel_id,

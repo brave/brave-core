@@ -6,7 +6,9 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { Modal, ModalCloseButton } from '../../shared/components/modal'
+import { SelectProviderCaretIcon } from '../components/icons/select_provider_caret_icon'
 import { CaretIcon } from '../../shared/components/icons/caret_icon'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { GeminiIcon } from '../../shared/components/icons/gemini_icon'
 import { UpholdIcon } from '../../shared/components/icons/uphold_icon'
 import { BitflyerIcon } from '../../shared/components/icons/bitflyer_icon'
@@ -29,6 +31,7 @@ type ModalState = 'info' | 'select'
 interface ExternalWalletProvider {
   type: string
   name: string
+  enabled: boolean
 }
 
 interface Props {
@@ -121,8 +124,10 @@ export function ConnectWalletModal (props: Props) {
           {
             props.providers.map((provider) => {
               const onClick = () => {
-                setSelectedProvider(provider)
-                props.onContinue(provider.type)
+                if (provider.enabled) {
+                  setSelectedProvider(provider)
+                  props.onContinue(provider.type)
+                }
               }
 
               const selected =
@@ -134,21 +139,35 @@ export function ConnectWalletModal (props: Props) {
                   data-test-id='connect-provider-button'
                   key={provider.type}
                   onClick={onClick}
-                  className={selected ? 'selected' : ''}
+                  className={!provider.enabled ? 'disabled' : selected ? 'selected' : ''}
                 >
-                  <style.providerButtonIcon>
-                    {renderProviderIcon(provider.type)}
-                  </style.providerButtonIcon>
-                  <style.providerButtonName>
-                    {provider.name}
-                  </style.providerButtonName>
-                  <style.providerButtonCaret>
-                    <CaretIcon direction='right' />
-                  </style.providerButtonCaret>
+                  <style.grid>
+                    <style.providerButtonIcon>
+                      {renderProviderIcon(provider.type)}
+                    </style.providerButtonIcon>
+                    <style.providerButtonName>
+                      {provider.name}
+                    </style.providerButtonName>
+                    {!provider.enabled &&
+                      <style.providerButtonMessage>
+                        {getString('connectWalletProviderNotAvailable')}
+                      </style.providerButtonMessage>}
+                    {provider.enabled &&
+                      <style.providerButtonCaret>
+                        <SelectProviderCaretIcon />
+                      </style.providerButtonCaret>}
+                  </style.grid>
                 </button>
               )
             })
           }
+          <style.learnMoreLink>
+            <NewTabLink
+              href={'https://support.brave.com/hc/en-us/articles/6539887971469'}
+            >
+              {getString('connectWalletLearnMore')}
+            </NewTabLink>
+          </style.learnMoreLink>
         </style.providerButtons>
       )
     }

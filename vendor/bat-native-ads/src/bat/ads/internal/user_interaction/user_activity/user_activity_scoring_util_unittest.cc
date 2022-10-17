@@ -18,8 +18,6 @@ namespace ads {
 
 class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
  protected:
-  BatAdsUserActivityScoringUtilTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

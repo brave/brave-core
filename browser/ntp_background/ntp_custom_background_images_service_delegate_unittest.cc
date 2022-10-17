@@ -49,7 +49,7 @@ class NTPCustomBackgroundImagesServiceDelegateUnitTest : public testing::Test {
   }
 
  private:
-  content::BrowserTaskEnvironment env;
+  content::BrowserTaskEnvironment env_;
 
   std::unique_ptr<TestingProfileManager> profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;

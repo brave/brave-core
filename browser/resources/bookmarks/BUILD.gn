@@ -3,50 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/resources/brave_grit.gni")
-import("//chrome/common/features.gni")
 import("//tools/grit/preprocess_if_expr.gni")
-import("//tools/polymer/polymer.gni")
-import("//ui/webui/resources/tools/generate_grd.gni")
+import("./sources.gni")
 
-preprocess_folder = "preprocessed"
-preprocess_manifest = "brave_preprocessed_manifest.json"
-
-brave_grit("resources") {
-  defines = chrome_grit_defines
-
-  enable_input_discovery_for_gn_analyze = false
-  source = "$target_gen_dir/brave_bookmarks_resources.grd"
-  deps = [ ":build_grd" ]
-
-  outputs = [
-    "grit/brave_bookmarks_resources.h",
-    "grit/brave_bookmarks_resources_map.cc",
-    "grit/brave_bookmarks_resources_map.h",
-    "brave_bookmarks_resources.pak",
-  ]
-}
-
-generate_grd("build_grd") {
-  grd_prefix = "brave_bookmarks"
-  out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
-  input_files = []
-  input_files_base_dir = rebase_path(".", "//")
-
-  deps = [ ":preprocess" ]
-  manifest_files = [
-    "$root_gen_dir/chrome/browser/resources/bookmarks/$preprocess_manifest",
-  ]
-}
-
+# Move brave files to the place where chromium bookmarks page is compiled from. It should be the same directory
+# that build_webui.gni uses after it performs its own preprocess_if_expr. Once chromium and brave frontend files
+# are all in the same place, build_webui.gni will continue its typescript and rollup compile (etc.) from that
+# directory.
 preprocess_if_expr("preprocess") {
   in_folder = "./"
-  out_folder =
-      "$root_gen_dir/chrome/browser/resources/bookmarks/$preprocess_folder"
-  out_manifest =
-      "$root_gen_dir/chrome/browser/resources/bookmarks/$preprocess_manifest"
-  in_files = [
-    "brave_overrides/folder_node.js",
-    "brave_overrides/index.js",
-  ]
+  out_folder = "$root_gen_dir/chrome/browser/resources/bookmarks/preprocessed"
+  in_files = brave_bookmarks_local_files
 }

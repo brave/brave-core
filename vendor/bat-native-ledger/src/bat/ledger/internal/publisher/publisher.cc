@@ -337,11 +337,11 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
        min_duration_new || verified_new)) {
     panel_info = publisher_info->Clone();
 
-    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
-        this,
-        _1);
+    auto publisher_info_saved_callback =
+        std::bind(&Publisher::OnPublisherInfoSaved, this, _1);
 
-    ledger_->database()->SavePublisherInfo(std::move(publisher_info), callback);
+    ledger_->database()->SavePublisherInfo(std::move(publisher_info),
+                                           publisher_info_saved_callback);
   } else if (!excluded && ledger_->state()->GetAutoContributeEnabled() &&
              min_duration_ok && verified_old) {
     if (first_visit) {
@@ -360,11 +360,11 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
 
     panel_info = publisher_info->Clone();
 
-    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
-        this,
-        _1);
+    auto publisher_info_saved_callback =
+        std::bind(&Publisher::OnPublisherInfoSaved, this, _1);
 
-    ledger_->database()->SaveActivityInfo(std::move(publisher_info), callback);
+    ledger_->database()->SaveActivityInfo(std::move(publisher_info),
+                                          publisher_info_saved_callback);
   }
 
   if (panel_info) {

@@ -33,6 +33,7 @@ export const reduxState: Rewards.ApplicationState = {
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
+      subdivisions: [],
       adsUIEnabled: true,
       adsIsSupported: true,
       needsBrowserUpgradeToServeAds: false,
@@ -122,7 +123,12 @@ export const reduxState: Rewards.ApplicationState = {
       autoContributeChoice: 0,
       autoContributeChoices: [1, 2, 5, 10],
       rate: 0,
-      payoutStatus: {}
+      payoutStatus: {},
+      walletProviderRegions: {
+        bitflyer: { allow: [], block: [] },
+        gemini: { allow: [], block: [] },
+        uphold: { allow: [], block: [] }
+      }
     },
     initializing: false,
     paymentId: '',

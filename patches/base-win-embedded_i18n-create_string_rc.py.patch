@@ -1,5 +1,5 @@
 diff --git a/base/win/embedded_i18n/create_string_rc.py b/base/win/embedded_i18n/create_string_rc.py
-index 934131c2af25d4b2bdf5b5af648d5df453582cf8..b8a196381149c6906c89468a078c3c584db945d7 100755
+index 336c4cbc0e2abd764f147f99c856ecedc4248523..f00241916f8a30af0b8504398499bf4e643a7a50 100755
 --- a/base/win/embedded_i18n/create_string_rc.py
 +++ b/base/win/embedded_i18n/create_string_rc.py
 @@ -344,7 +344,13 @@ Extra input files:

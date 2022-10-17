@@ -27,8 +27,6 @@ using ::testing::Invoke;
 
 class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsNotificationAdForMobileIntegrationTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 

@@ -130,9 +130,9 @@ mojom::Result PostOrder::ParseBody(
     order_item->sku = order_items[count].sku;
     order_item->type = order_items[count].type;
 
-    const auto* id = item.FindStringKey("id");
-    if (id) {
-      order_item->order_item_id = *id;
+    const auto* order_item_id = item.FindStringKey("id");
+    if (order_item_id) {
+      order_item->order_item_id = *order_item_id;
     }
 
     const auto quantity = item.FindIntKey("quantity");

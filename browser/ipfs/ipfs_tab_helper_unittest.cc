@@ -32,7 +32,7 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
       : ipfs::IPFSHostResolver(context) {}
   ~FakeIPFSHostResolver() override = default;
   void Resolve(const net::HostPortPair& host,
-               const net::NetworkIsolationKey& isolation_key,
+               const net::NetworkAnonymizationKey& anonymization_key,
                net::DnsQueryType dns_query_type,
                HostTextResultsCallback callback) override {
     resolve_called_ = true;

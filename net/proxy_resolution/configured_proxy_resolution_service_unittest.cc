@@ -49,14 +49,14 @@ class ConfiguredProxyResolutionServiceTest : public TestWithTaskEnvironment {
 TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
   ConfiguredProxyResolutionService* service = GetProxyResolutionService();
   const GURL site_url("https://check.torproject.org/");
-  const std::string isolation_key =
-      ProxyConfigServiceTor::CircuitIsolationKey(site_url);
+  const std::string anonymization_key =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
 
   ProxyInfo info;
   TestCompletionCallback callback;
   std::unique_ptr<ProxyResolutionRequest> request;
   int rv =
-      service->ResolveProxy(site_url, std::string(), NetworkIsolationKey(),
+      service->ResolveProxy(site_url, std::string(), NetworkAnonymizationKey(),
                             &info, callback.callback(), &request,
                             NetLogWithSource::Make(NetLogSourceType::NONE));
   EXPECT_THAT(rv, IsOk());
@@ -66,7 +66,7 @@ TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
   EXPECT_TRUE(server.scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port.host(), "127.0.0.1");
   EXPECT_EQ(host_port.port(), 5566);
-  EXPECT_EQ(host_port.username(), isolation_key);
+  EXPECT_EQ(host_port.username(), anonymization_key);
   EXPECT_FALSE(host_port.password().empty());
 }
 

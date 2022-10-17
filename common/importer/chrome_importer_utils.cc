@@ -72,6 +72,16 @@ bool HasPaymentMethods(const base::FilePath& payments_path) {
   return s.Step();
 }
 
+bool IsLastActiveProfile(const std::string& profile,
+                         const base::Value::List& last_active_profiles) {
+  for (const auto& it : last_active_profiles) {
+    if (it.GetString() == profile) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace
 
 base::Value::List GetChromeSourceProfiles(
@@ -91,6 +101,9 @@ base::Value::List GetChromeSourceProfiles(
 
     const auto* profile_dict = local_state_dict->FindDict("profile");
     if (profile_dict) {
+      const auto* last_active_profiles =
+          profile_dict->FindList("last_active_profiles");
+
       const auto* info_cache = profile_dict->FindDict("info_cache");
       if (info_cache) {
         for (const auto value : *info_cache) {
@@ -103,6 +116,18 @@ base::Value::List GetChromeSourceProfiles(
           base::Value::Dict entry;
           entry.Set("id", value.first);
           entry.Set("name", *name);
+          if (last_active_profiles)
+            entry.Set("last_active",
+                      IsLastActiveProfile(value.first, *last_active_profiles));
+
+          auto* avatar_icon = profile->FindString("avatar_icon");
+          if (avatar_icon) {
+            entry.Set("avatar_icon", *avatar_icon);
+          }
+          auto active_time = profile->FindDouble("active_time");
+          if (active_time) {
+            entry.Set("active_time", *active_time);
+          }
           profiles.Append(std::move(entry));
         }
       }

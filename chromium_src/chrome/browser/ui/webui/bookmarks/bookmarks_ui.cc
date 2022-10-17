@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/resources/bookmarks/grit/brave_bookmarks_resources.h"
-#include "brave/browser/resources/bookmarks/grit/brave_bookmarks_resources_map.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,12 +14,6 @@ namespace {
 void BraveAddBookmarksResources(content::WebUIDataSource* source,
                                 Profile* profile) {
   NavigationBarDataProvider::Initialize(source, profile);
-#if !BUILDFLAG(OPTIMIZE_WEBUI)
-  for (size_t i = 0; i < kBraveBookmarksResourcesSize; ++i) {
-    source->AddResourcePath(kBraveBookmarksResources[i].path,
-                            kBraveBookmarksResources[i].id);
-  }
-#endif
   source->AddLocalizedString("emptyList",
                              IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST);
 }

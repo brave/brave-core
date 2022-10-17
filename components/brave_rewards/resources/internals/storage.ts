@@ -10,7 +10,8 @@ const defaultState: RewardsInternals.State = {
   info: {
     isKeyInfoSeedValid: false,
     walletPaymentId: '',
-    bootStamp: 0
+    bootStamp: 0,
+    declaredGeo: ''
   },
   contributions: [],
   promotions: [],

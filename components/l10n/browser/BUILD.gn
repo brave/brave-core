@@ -1,58 +1,25 @@
 static_library("browser") {
-  deps = [ "//base" ]
-
-  sources = [
-    "locale_helper.cc",
-    "locale_helper.h",
-  ]
+  sources = [ "default_locale_util.h" ]
 
   if (is_android) {
-    sources += [
-      "locale_helper_android.cc",
-      "locale_helper_android.h",
-    ]
-  }
-
-  if (is_linux) {
-    sources += [
-      "locale_helper_linux.cc",
-      "locale_helper_linux.h",
-    ]
+    sources += [ "default_locale_util_android.cc" ]
   }
 
   if (is_ios) {
-    sources += [
-      "locale_helper_ios.h",
-      "locale_helper_ios.mm",
-    ]
+    sources += [ "default_locale_util_ios.mm" ]
+  }
+
+  if (is_linux) {
+    sources += [ "default_locale_util_linux.cc" ]
   }
 
   if (is_mac) {
-    sources += [
-      "locale_helper_mac.h",
-      "locale_helper_mac.mm",
-    ]
+    sources += [ "default_locale_util_mac.mm" ]
   }
 
   if (is_win) {
-    sources += [
-      "locale_helper_win.cc",
-      "locale_helper_win.h",
-    ]
+    sources += [ "default_locale_util_win.cc" ]
   }
-}
 
-source_set("test_support") {
-  testonly = true
-
-  sources = [
-    "locale_helper_mock.cc",
-    "locale_helper_mock.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/components/l10n/browser",
-    "//testing/gmock",
-  ]
+  deps = [ "//base" ]
 }

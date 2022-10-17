@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -81,13 +82,22 @@ std::vector<uint8_t> SupportsInterface(eth_abi::Span4 interface);
 
 namespace unstoppable_domains {
 
+// getMany(string[],uint256)
+constexpr uint8_t kGetManySelector[] = {0x1b, 0xd8, 0xcc, 0x1a};
+
 // Get mutiple record values mapped with keys of the target domain.
 absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
                                     const std::string& domain);
 
-// Get the value of the key for the target domain.
-absl::optional<std::string> Get(const std::string& key,
-                                const std::string& domain);
+std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
+                                              const std::string& chain_id);
+std::vector<std::string> MakeSolLookupKeyList(const std::string& symbol);
+std::vector<std::string> MakeFilLookupKeyList();
+
+std::vector<uint8_t> GetWalletAddr(const std::string& domain,
+                                   mojom::CoinType coin,
+                                   const std::string& symbol,
+                                   const std::string& chain_id);
 
 }  // namespace unstoppable_domains
 

@@ -103,8 +103,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"onboardingErrorHeaderDisabled",
      IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER_DISABLED},
     {"onboardingErrorText", IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT},
-    {"onboardingErrorTextAlreadyDeclared",
-     IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_ALREADY_DECLARED},
     {"onboardingErrorTextDeclareCountry",
      IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DECLARE_COUNTRY},
     {"onboardingErrorTextDisabled",

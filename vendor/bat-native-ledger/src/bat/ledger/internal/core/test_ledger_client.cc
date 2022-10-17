@@ -195,6 +195,16 @@ uint64_t TestLedgerClient::GetUint64State(const std::string& name) const {
   return 0;
 }
 
+void TestLedgerClient::SetValueState(const std::string& name,
+                                     base::Value value) {
+  state_store_.SetByDottedPath(name, std::move(value));
+}
+
+base::Value TestLedgerClient::GetValueState(const std::string& name) const {
+  const auto* value = state_store_.FindByDottedPath(name);
+  return value ? value->Clone() : base::Value();
+}
+
 void TestLedgerClient::ClearState(const std::string& name) {
   state_store_.RemoveByDottedPath(name);
 }

@@ -10,7 +10,7 @@
 
 #include "base/auto_reset.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/download/download_item_mode.h"
 #include "chrome/browser/ui/views/download/download_shelf_view.h"

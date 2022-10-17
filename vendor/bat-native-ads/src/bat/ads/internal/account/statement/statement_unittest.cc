@@ -40,7 +40,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
     expected_statement->earnings_last_month = 0.0;
     expected_statement->earnings_this_month = 0.02;
     expected_statement->next_payment_date =
-        TimeFromString("5 December 2020 23:59:59.999", /*is_local*/ false);
+        TimeFromString("7 December 2020 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 2;
 
     EXPECT_EQ(expected_statement, statement);
@@ -101,7 +101,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
     expected_statement->earnings_last_month = 0.01;
     expected_statement->earnings_this_month = 0.05;
     expected_statement->next_payment_date =
-        TimeFromString("5 January 2021 23:59:59.999", /*is_local*/ false);
+        TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
@@ -152,7 +152,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
     expected_statement->earnings_last_month = 0.01;
     expected_statement->earnings_this_month = 0.04;
     expected_statement->next_payment_date =
-        TimeFromString("5 January 2021 23:59:59.999", /*is_local*/ false);
+        TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
@@ -173,7 +173,7 @@ TEST_F(BatAdsStatementTest, GetForNoTransactions) {
     expected_statement->earnings_last_month = 0.0;
     expected_statement->earnings_this_month = 0.0;
     expected_statement->next_payment_date =
-        TimeFromString("5 January 2021 23:59:59.999", /*is_local*/ false);
+        TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 0;
 
     EXPECT_EQ(expected_statement, statement);

@@ -22,12 +22,12 @@ constexpr bool kDefaultShouldExcludeAdIfConverted = true;
 constexpr char kFieldTrialParameterExcludeAdIfDismissedWithinTimeWindow[] =
     "exclude_ad_if_dismissed_within_time_window";
 constexpr base::TimeDelta kDefaultExcludeAdIfDismissedWithinTimeWindow =
-    base::Days(2);
+    base::Hours(0);
 
 constexpr char kFieldTrialParameterExcludeAdIfTransferredWithinTimeWindow[] =
     "exclude_ad_if_transferred_within_time_window";
 constexpr base::TimeDelta kDefaultExcludeAdIfTransferredWithinTimeWindow =
-    base::Days(2);
+    base::Hours(0);
 
 }  // namespace
 

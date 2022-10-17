@@ -13,6 +13,10 @@
 #include "components/sync_device_info/device_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+namespace base {
+class DictionaryValue;
+}
+
 namespace syncer {
 
 class BraveDeviceInfo : public DeviceInfo {
@@ -39,6 +43,16 @@ class BraveDeviceInfo : public DeviceInfo {
 
   bool is_self_delete_supported() const;
   void set_is_self_delete_supported(bool is_self_delete_supported);
+
+  // Gets the OS in string form.
+  std::string GetOSString() const;
+
+  // Gets the device type in string form.
+  std::string GetDeviceTypeString() const;
+
+  // Converts the |DeviceInfo| values to a JS friendly DictionaryValue,
+  // which extension APIs can expose to third party apps.
+  base::Value::Dict ToValue() const;
 
  private:
   bool is_self_delete_supported_;

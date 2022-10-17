@@ -62,6 +62,7 @@ export const bubbleAction = styled.div`
       vertical-align: middle;
       margin-left: 4px;
       margin-bottom: 2px;
+      --provider-icon-color: var(--brave-palette-white);
     }
 
     .status .icon {

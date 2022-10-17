@@ -177,10 +177,10 @@ TEST(BraveNewsDirectFeed, CanExplicitlySetId) {
   EXPECT_TRUE(controller.AddDirectFeedPref(GURL("https://example.com"),
                                            "Example", kDirectFeedId));
 
-  const auto* dict = prefs.GetDictionary(prefs::kBraveTodayDirectFeeds);
-  ASSERT_EQ(1u, dict->DictItems().size());
-  for (auto pair : dict->DictItems()) {
-    EXPECT_EQ(pair.first, kDirectFeedId);
+  const auto& dict = prefs.GetDict(prefs::kBraveTodayDirectFeeds);
+  ASSERT_EQ(1u, dict.size());
+  for (const auto&& [key, value] : dict) {
+    EXPECT_EQ(key, kDirectFeedId);
   }
 }
 
@@ -193,12 +193,11 @@ TEST(BraveNewsDirectFeed, EmptyTitleFallsBackToFeedSource) {
   constexpr char kFeedSource[] = "https://example.com/";
   EXPECT_TRUE(controller.AddDirectFeedPref(GURL(kFeedSource), ""));
 
-  const auto* dict = prefs.GetDictionary(prefs::kBraveTodayDirectFeeds);
-  ASSERT_EQ(1u, dict->DictItems().size());
-  for (auto pair : dict->DictItems()) {
-    auto title =
-        *pair.second.FindStringKey(prefs::kBraveTodayDirectFeedsKeyTitle);
-    EXPECT_EQ(kFeedSource, title);
+  const auto& dict = prefs.GetDict(prefs::kBraveTodayDirectFeeds);
+  ASSERT_EQ(1u, dict.size());
+  for (const auto&& [key, value] : dict) {
+    auto* title = value.FindStringKey(prefs::kBraveTodayDirectFeedsKeyTitle);
+    EXPECT_EQ(kFeedSource, *title);
   }
 }
 

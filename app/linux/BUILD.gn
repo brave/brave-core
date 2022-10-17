@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//build/linux/extract_symbols.gni")
 
 if (should_generate_breakpad_symbols) {
   action("generate_breakpad_symbols") {
@@ -35,45 +36,23 @@ if (should_generate_breakpad_symbols) {
 
 group("symbol_dist_resources") {
   public_deps = [
+    ":brave_symbols",
     ":generate_breakpad_symbols",
-    ":strip_and_dump_symbols",
   ]
 }
 
 group("dist_resources") {
 }
 
-action("strip_and_dump_symbols") {
-  script = "//build/linux/dump_app_syms.py"
+extract_symbols("brave_symbols") {
+  binary = "$brave_dist_dir/brave"
 
-  dump_syms_label = "//third_party/breakpad:dump_syms($host_toolchain)"
-  dump_syms_binary =
-      get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
-
-  deps = [
-    # TODO(bridiver) - resolve duplicate symbol generation
-    ":generate_breakpad_symbols",
-    "//brave:brave_dist_resources",
-    dump_syms_label,
-  ]
-  brave_binary = "$brave_dist_dir/brave"
   if (current_cpu == "x86") {
     # Use "ia32" instead of "x86" for GYP compat.
-    brave_symbol_file = "$root_out_dir/brave.breakpad.ia32"
+    symbol_file = "$root_out_dir/brave.breakpad.ia32"
   } else {
-    brave_symbol_file = "$root_out_dir/brave.breakpad.$current_cpu"
+    symbol_file = "$root_out_dir/brave.breakpad.$current_cpu"
   }
 
-  inputs = [
-    brave_binary,
-    dump_syms_binary,
-  ]
-  outputs = [ brave_symbol_file ]
-
-  args = [
-    "./" + rebase_path(dump_syms_binary, root_build_dir),
-    "1",  # strip_binary = true
-    rebase_path(brave_binary, root_build_dir),
-    rebase_path(brave_symbol_file, root_build_dir),
-  ]
+  deps = [ "//brave:brave_dist_resources" ]
 }

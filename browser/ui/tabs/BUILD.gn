@@ -6,6 +6,8 @@ source_set("tabs") {
     sources = [
       "brave_tab_menu_model.cc",
       "brave_tab_menu_model.h",
+      "brave_tab_prefs.cc",
+      "brave_tab_prefs.h",
       "brave_tab_strip_model.cc",
       "brave_tab_strip_model.h",
     ]

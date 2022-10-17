@@ -25,8 +25,6 @@ namespace ads {
 class BatAdsHistoryManagerTest : public HistoryManagerObserver,
                                  public UnitTestBase {
  protected:
-  BatAdsHistoryManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

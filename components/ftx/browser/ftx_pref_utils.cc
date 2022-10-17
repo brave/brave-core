@@ -8,7 +8,6 @@
 #include <string>
 
 #include "brave/components/ftx/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "components/prefs/pref_registry_simple.h"
 
@@ -17,10 +16,9 @@ namespace ftx {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFTXNewTabPageShowFTX, false);
   registry->RegisterStringPref(kFTXAccessToken, "");
-  const std::string country_code = brave_l10n::GetCountryCode(
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale());
   const std::string default_ftx_host =
-      (country_code == "US") ? "ftx.us" : "ftx.com";
+      (brave_l10n::GetDefaultISOCountryCodeString() == "US") ? "ftx.us"
+                                                             : "ftx.com";
   registry->RegisterStringPref(kFTXOauthHost, default_ftx_host);
 }
 

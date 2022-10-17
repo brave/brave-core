@@ -33,7 +33,7 @@ import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqu
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
-import { GetAccountsHardwareOperationResult } from '../hardware/types'
+import { GetAccountsHardwareOperationResult, SolDerivationPaths } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
@@ -83,8 +83,8 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
-    } else if (keyring instanceof SolanaLedgerBridgeKeyring && opts.network) {
-      keyring.getAccounts(opts.startIndex, opts.stopIndex)
+    } else if (keyring instanceof SolanaLedgerBridgeKeyring && opts.network && opts.scheme) {
+      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme as SolDerivationPaths)
         .then(async (result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             const { braveWalletService } = getAPIProxy()
@@ -146,9 +146,9 @@ export async function findENSAddress (address: string, ensOffchainLookupOptions?
   return apiProxy.jsonRpcService.ensGetEthAddr(address, ensOffchainLookupOptions || null)
 }
 
-export async function findUnstoppableDomainAddress (address: string) {
+export async function findUnstoppableDomainAddress (address: string, token: BraveWallet.BlockchainToken | null) {
   const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.unstoppableDomainsGetEthAddr(address)
+  return apiProxy.jsonRpcService.unstoppableDomainsGetWalletAddr(address, token)
 }
 
 export async function getBlockchainTokenInfo (contractAddress: string): Promise<GetBlockchainTokenInfoReturnInfo> {
@@ -511,14 +511,23 @@ export function refreshPrices () {
       }
 
       // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
+
       const price = token.balance > 0 && !token.token.isErc721
-        ? await assetRatioService.getPrice([getTokenParam(token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
-        : { values: [{ ...emptyPrice, price: '0' }], success: true }
+        ? await assetRatioService.getPrice(
+            [getTokenParam(token.token)],
+            [defaultFiatCurrency],
+            selectedPortfolioTimeline
+          )
+        : {
+            values: [{ ...emptyPrice, price: '0' }],
+            success: true
+          }
 
       const tokenPrice = {
         ...price.values[0],
         fromAsset: token.token.symbol.toLowerCase()
       }
+
       return price.success ? tokenPrice : emptyPrice
     }))
 

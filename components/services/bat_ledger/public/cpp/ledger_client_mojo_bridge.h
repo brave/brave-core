@@ -87,6 +87,11 @@ class LedgerClientMojoBridge :
                       SetUint64StateCallback callback) override;
   void GetUint64State(const std::string& name,
                       GetUint64StateCallback callback) override;
+  void SetValueState(const std::string& name,
+                     base::Value value,
+                     SetValueStateCallback callback) override;
+  void GetValueState(const std::string& name,
+                     GetValueStateCallback callback) override;
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 

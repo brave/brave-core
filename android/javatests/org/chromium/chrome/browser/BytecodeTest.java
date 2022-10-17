@@ -7,6 +7,7 @@ package org.chromium.chrome.browser;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -71,6 +72,7 @@ import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNTPCreator;
@@ -79,6 +81,7 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
@@ -88,7 +91,6 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
-import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
@@ -285,6 +287,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/BraveLocationBarMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/IntentHandler"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/CachedFlag"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/BraveCachedFlag"));
     }
 
     @Test
@@ -423,6 +429,14 @@ public class BytecodeTest {
                 "shouldShowDeleteButton", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
                 "shouldShowTabSwitcher", true, boolean.class, long.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "getUrlForCustomTab", true, String.class, Intent.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "getUrlForWebapp", true, String.class, Intent.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "extractUrlFromIntent", true, String.class, Intent.class));
     }
 
     @Test
@@ -434,7 +448,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "createViewProvider", true, ViewProvider.class, Context.class,
-                MVCListAdapter.ModelList.class));
+                MVCListAdapter.ModelList.class, LocationBarDataProvider.class));
 
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
@@ -517,7 +531,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
                 WindowAndroid.class, PropertyModel.class, BrowserControlsSizer.class,
-                FullscreenManager.class, int.class, ObservableSupplier.class));
+                FullscreenManager.class, TabObscuringHandler.class, int.class,
+                ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
@@ -571,11 +586,11 @@ public class BytecodeTest {
                 List.class, OneshotSupplier.class, ThemeColorProvider.class,
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
-                ObservableSupplier.class, Callback.class, Supplier.class, Supplier.class,
+                ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
                 ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class,
-                ObservableSupplier.class, Callback.class, boolean.class, ObservableSupplier.class));
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
+                boolean.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -661,6 +676,13 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getLensControllerClass(), Runnable.class,
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                 BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
+                "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
+                IntentHandler.IntentHandlerDelegate.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/AppHooksImpl",
+                "org/chromium/chrome/browser/BraveAppHooks"));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
+                "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
     }
 
     @Test
@@ -761,6 +783,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCreatorManager"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabObscuringHandler"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mTabSwitcherModeCoordinator"));

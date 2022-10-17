@@ -16,8 +16,6 @@ namespace ads {
 class BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
  protected:
-  BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }

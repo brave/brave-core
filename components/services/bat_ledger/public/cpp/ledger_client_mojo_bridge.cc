@@ -202,6 +202,18 @@ void LedgerClientMojoBridge::GetUint64State(const std::string& name,
   std::move(callback).Run(ledger_client_->GetUint64State(name));
 }
 
+void LedgerClientMojoBridge::SetValueState(const std::string& name,
+                                           base::Value value,
+                                           SetValueStateCallback callback) {
+  ledger_client_->SetValueState(name, std::move(value));
+  std::move(callback).Run();
+}
+
+void LedgerClientMojoBridge::GetValueState(const std::string& name,
+                                           GetValueStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetValueState(name));
+}
+
 void LedgerClientMojoBridge::ClearState(const std::string& name,
                                         ClearStateCallback callback) {
   ledger_client_->ClearState(name);

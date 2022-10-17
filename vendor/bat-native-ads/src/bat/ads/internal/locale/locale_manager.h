@@ -34,8 +34,6 @@ class LocaleManager final {
 
   void OnLocaleDidChange(const std::string& locale);
 
-  std::string GetLocale() const;
-
  private:
   void NotifyLocaleDidChange(const std::string& locale) const;
 

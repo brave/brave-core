@@ -1312,7 +1312,7 @@ public class BraveRewardsPanel
         String publisherFavIconURL =
                 mBraveRewardsNativeWorker.GetPublisherFavIconURL(mCurrentTabId);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-        String url = currentActiveTab.getUrl().getSpec();
+        String url = currentActiveTab != null ? currentActiveTab.getUrl().getSpec() : "";
         final String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
 
         mIconFetcher.retrieveLargeIcon(favicon_url, this);

@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"

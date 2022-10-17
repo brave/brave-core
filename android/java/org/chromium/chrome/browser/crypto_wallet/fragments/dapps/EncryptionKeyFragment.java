@@ -155,10 +155,10 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         if (mActivityType
                 == BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
-            mWalletModel.getCryptoModel().processPublicEncryptionKey(
+            mWalletModel.getDappsModel().processPublicEncryptionKey(
                     isPositiveActionTriggered(v), mEncryptionPublicKeyRequest.originInfo.origin);
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
-            mWalletModel.getCryptoModel().processDecryptRequest(
+            mWalletModel.getDappsModel().processDecryptRequest(
                     isPositiveActionTriggered(v), mDecryptRequest.originInfo.origin);
         }
     }

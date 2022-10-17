@@ -183,12 +183,12 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     return;
 
   // Wrap chromium side panel with our sidebar container
-  auto original_side_panel = RemoveChildViewT(right_aligned_side_panel_.get());
+  auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
   sidebar_container_view_ =
       contents_container_->AddChildView(std::make_unique<SidebarContainerView>(
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
-  right_aligned_side_panel_ = sidebar_container_view_->side_panel();
+  unified_side_panel_ = sidebar_container_view_->side_panel();
   if (show_vertical_tabs) {
     vertical_tabs_container_ = contents_container_->AddChildView(
         std::make_unique<VerticalTabStripRegionView>(browser_.get(),
@@ -307,11 +307,20 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
     return false;
 
   return BrowserView::GetTabStripVisible();
 }
+
+#if BUILDFLAG(IS_WIN)
+bool BraveBrowserView::GetSupportsTitle() const {
+  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+    return true;
+
+  return BrowserView::GetSupportsTitle();
+}
+#endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =
@@ -358,7 +367,7 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     translate::TranslateStep step,
     const std::string& source_language,
     const std::string& target_language,
-    translate::TranslateErrors::Type error_type,
+    translate::TranslateErrors error_type,
     bool is_user_gesture) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
@@ -478,6 +487,16 @@ void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
 
 void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
+}
+
+bool BraveBrowserView::ShouldShowWindowTitle() const {
+  if (BrowserView::ShouldShowWindowTitle())
+    return true;
+
+  if (tabs::features::ShouldShowVerticalTabs() && browser_->is_type_normal())
+    return true;
+
+  return false;
 }
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {

@@ -26,6 +26,8 @@ class BraveTab : public Tab {
   int GetWidthOfLargestSelectableRegion() const override;
 
   void ActiveStateChanged() override;
+
+  absl::optional<SkColor> GetGroupColor() const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_

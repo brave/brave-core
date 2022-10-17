@@ -70,8 +70,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kHTTPSEVerywhereControlType));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kNoScriptControlType));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
@@ -145,8 +143,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #endif
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetDictionary(
-      NTPBackgroundPrefs::kPrefName));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->HasPrefPath(
       NTPBackgroundPrefs::kDeprecatedPrefName));
 #endif
@@ -188,11 +184,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
-#if !BUILDFLAG(IS_ANDROID)
-  EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
-      kDefaultBrowserPromptEnabled));
-#endif
-
 #if BUILDFLAG(ENABLE_CRASH_DIALOG)
   EXPECT_FALSE(
       g_browser_process->local_state()->GetBoolean(kDontAskForCrashReporting));

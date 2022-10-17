@@ -19,7 +19,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/pref_service.h"
@@ -40,15 +40,10 @@ class RewardsServiceJPTest : public testing::Test {
   ~RewardsServiceJPTest() override = default;
 
  protected:
-  void SetMockLocale(const std::string& locale) {
-    locale_helper_mock_ =
-        std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>();
-    ON_CALL(*locale_helper_mock_, GetLocale()).WillByDefault(Return(locale));
-  }
-
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    SetMockLocale("ja-JP");
+    scoped_default_locale_ =
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>("ja_JP");
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_);
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -97,7 +92,7 @@ class RewardsServiceJPTest : public testing::Test {
   std::unique_ptr<Profile> profile_;
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   base::ScopedTempDir temp_dir_;
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 };
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)

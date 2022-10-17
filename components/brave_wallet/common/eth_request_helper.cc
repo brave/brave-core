@@ -537,7 +537,7 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
   if (!IsValidHexString(*chain_id_str))
     return false;
 
-  *chain_id = *chain_id_str;
+  *chain_id = base::ToLowerASCII(*chain_id_str);
 
   return true;
 }
@@ -649,7 +649,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
 
   *token = mojom::BlockchainToken::New(
       eth_addr.ToChecksumAddress(), *symbol /* name */, logo, true, false,
-      *symbol, decimals, true, "", "", chain_id, coin);
+      *symbol, decimals, true, "", "", base::ToLowerASCII(chain_id), coin);
   return true;
 }
 

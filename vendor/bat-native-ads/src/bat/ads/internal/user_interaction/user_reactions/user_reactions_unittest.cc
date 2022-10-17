@@ -33,8 +33,6 @@ using ::testing::Return;
 
 class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
  protected:
-  BatAdsReactionsTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

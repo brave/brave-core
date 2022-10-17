@@ -41,8 +41,9 @@ std::string FarbleAcceptLanguageHeader(
     const GURL& tab_origin,
     Profile* profile,
     HostContentSettingsMap* content_settings) {
-  std::string languages =
-      profile->GetPrefs()->Get(language::prefs::kAcceptLanguages)->GetString();
+  std::string languages = profile->GetPrefs()
+                              ->GetValue(language::prefs::kAcceptLanguages)
+                              .GetString();
   std::string accept_language_string = language::GetFirstLanguage(languages);
   // If the first language is a multi-part code like "en-US" or "zh-HK",
   // extract and append the base language code to |accept_language_string|.

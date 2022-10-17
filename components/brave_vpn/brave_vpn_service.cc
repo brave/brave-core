@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/vpn_response_parser.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
@@ -54,8 +55,11 @@ constexpr char kCredential[] = "api/v1.3/device/";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
-
 constexpr int kP3AIntervalHours = 24;
+
+#if !BUILDFLAG(IS_ANDROID)
+constexpr char kTokenNoLongerValid[] = "Token No Longer Valid";
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
@@ -88,19 +92,6 @@ std::string CreateJSONRequestBody(base::ValueView node) {
   return json;
 }
 
-std::string GetSubscriberCredentialFromJson(const std::string& json) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(1) << __func__ << "Invalid response, could not parse JSON.";
-    return "";
-  }
-
-  const auto& dict = records_v->GetDict();
-  const auto* subscriber_credential = dict.FindString("subscriber-credential");
-  return subscriber_credential == nullptr ? "" : *subscriber_credential;
-}
 #if !BUILDFLAG(IS_ANDROID)
 bool IsNetworkAvailable() {
   return net::NetworkChangeNotifier::GetConnectionType() !=
@@ -289,6 +280,9 @@ void BraveVpnService::OnConnectFailed() {
   VLOG(2) << __func__;
 
   cancel_connecting_ = false;
+
+  // Clear previously used connection info if failed.
+  connection_info_.Reset();
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
@@ -298,7 +292,6 @@ void BraveVpnService::OnDisconnected() {
   UpdateAndNotifyConnectionStateChange(!IsNetworkAvailable()
                                            ? ConnectionState::CONNECT_FAILED
                                            : ConnectionState::DISCONNECTED);
-
   if (needs_connect_) {
     needs_connect_ = false;
     Connect();
@@ -799,6 +792,9 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
   if (!success) {
     VLOG(2) << __func__ << " : failed to get subscriber credential";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    if (subscriber_credential == kTokenNoLongerValid) {
+      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::EXPIRED);
+    }
     return;
   }
 
@@ -1010,8 +1006,8 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
           base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
                          base::Unretained(this), domain));
     } else {
-      VLOG(1) << __func__ << " : Credential appears to be expired.";
-      SetPurchasedState(env, PurchasedState::EXPIRED);
+      VLOG(1) << __func__ << " : Credential is not active.";
+      SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     }
   } else {
     VLOG(1) << __func__ << " : Got invalid credential summary!";
@@ -1340,12 +1336,12 @@ void BraveVpnService::GetSubscriberCredential(
 void BraveVpnService::OnGetSubscriberCredential(
     ResponseCallback callback,
     APIRequestResult api_request_result) {
-  std::string subscriber_credential;
   bool success = api_request_result.response_code() == 200;
-  if (success) {
-    subscriber_credential =
-        GetSubscriberCredentialFromJson(api_request_result.body());
-  } else {
+  std::string error;
+  std::string subscriber_credential =
+      ParseSubscriberCredentialFromJson(api_request_result.body(), &error);
+  if (!success) {
+    subscriber_credential = error;
     VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
             << api_request_result.response_code() << ")";
   }

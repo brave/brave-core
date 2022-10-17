@@ -97,8 +97,6 @@ void ExpectConversionCountEquals(const size_t expected_count) {
 class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
                                              public UnitTestBase {
  protected:
-  BatAdsSearchResultAdEventHandlerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

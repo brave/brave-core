@@ -348,7 +348,7 @@ void BatLedgerImpl::GetRewardsInternalsInfo(
       AsWeakPtr(), std::move(callback));
 
   ledger_->GetRewardsInternalsInfo(
-    std::bind(BatLedgerImpl::OnGetRewardsInternalsInfo, holder, _1));
+      std::bind(BatLedgerImpl::OnGetRewardsInternalsInfo, holder, _1));
 }
 
 // static

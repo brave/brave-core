@@ -18,6 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/supported_subdivisions.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -31,7 +32,6 @@
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
@@ -304,14 +304,11 @@ class RewardsDOMHandler
 
 namespace {
 
-const int kDaysOfAdsHistory = 30;
+constexpr int kDaysOfAdsHistory = 30;
 
-const char kShouldAllowAdsSubdivisionTargeting[] =
-    "shouldAllowAdsSubdivisionTargeting";
-const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutoDetectedSubdivisionTargeting[] =
+constexpr char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
+constexpr char kAutoDetectedSubdivisionTargeting[] =
     "automaticallyDetectedAdsSubdivisionTargeting";
-const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
 
 }  // namespace
 
@@ -650,6 +647,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   double rate = 0.0, auto_contribute_choice = 0.0;
   base::Value::List auto_contribute_choices;
   base::Value::Dict payout_status;
+  base::Value::Dict wallet_provider_regions;
   if (parameters) {
     rate = parameters->rate;
     auto_contribute_choice = parameters->auto_contribute_choice;
@@ -659,12 +657,32 @@ void RewardsDOMHandler::OnGetRewardsParameters(
     for (const auto& [key, value] : parameters->payout_status) {
       payout_status.Set(key, value);
     }
+
+    for (const auto& [wallet_provider, regions] :
+         parameters->wallet_provider_regions) {
+      base::Value::List allow;
+      for (const auto& country : regions->allow) {
+        allow.Append(country);
+      }
+
+      base::Value::List block;
+      for (const auto& country : regions->block) {
+        block.Append(country);
+      }
+
+      base::Value::Dict regions_dict;
+      regions_dict.Set("allow", std::move(allow));
+      regions_dict.Set("block", std::move(block));
+
+      wallet_provider_regions.Set(wallet_provider, std::move(regions_dict));
+    }
   }
 
   data.Set("rate", rate);
   data.Set("autoContributeChoice", auto_contribute_choice);
   data.Set("autoContributeChoices", std::move(auto_contribute_choices));
   data.Set("payoutStatus", std::move(payout_status));
+  data.Set("walletProviderRegions", std::move(wallet_provider_regions));
 
   CallJavascriptFunction("brave_rewards.rewardsParameters",
                          base::Value(std::move(data)));
@@ -1197,11 +1215,22 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
                ads_service_->GetSubdivisionTargetingCode());
   ads_data.Set(kAutoDetectedSubdivisionTargeting,
                ads_service_->GetAutoDetectedSubdivisionTargetingCode());
-  ads_data.Set(kShouldAllowAdsSubdivisionTargeting,
+  ads_data.Set("shouldAllowAdsSubdivisionTargeting",
                ads_service_->ShouldAllowSubdivisionTargeting());
   ads_data.Set("adsUIEnabled", true);
-  ads_data.Set(kNeedsBrowserUpgradeToServeAds,
+  ads_data.Set("needsBrowserUpgradeToServeAds",
                ads_service_->NeedsBrowserUpgradeToServeAds());
+
+  base::Value::List subdivisions;
+  const auto supported_subdivisions = ads::GetSupportedSubdivisions();
+  for (const auto& subdivision : supported_subdivisions) {
+    base::Value::Dict subdivision_dict;
+    subdivision_dict.Set("code", subdivision.first);
+    subdivision_dict.Set("name", subdivision.second);
+    subdivisions.Append(std::move(subdivision_dict));
+  }
+
+  ads_data.Set("subdivisions", std::move(subdivisions));
   CallJavascriptFunction("brave_rewards.adsData",
                          base::Value(std::move(ads_data)));
 }

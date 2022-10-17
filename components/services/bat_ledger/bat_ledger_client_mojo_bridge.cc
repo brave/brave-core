@@ -227,6 +227,18 @@ uint64_t BatLedgerClientMojoBridge::GetUint64State(
   return value;
 }
 
+void BatLedgerClientMojoBridge::SetValueState(const std::string& name,
+                                              base::Value value) {
+  bat_ledger_client_->SetValueState(name, std::move(value));
+}
+
+base::Value BatLedgerClientMojoBridge::GetValueState(
+    const std::string& name) const {
+  base::Value value;
+  bat_ledger_client_->GetValueState(name, &value);
+  return value;
+}
+
 void BatLedgerClientMojoBridge::ClearState(const std::string& name) {
   bat_ledger_client_->ClearState(name);
 }

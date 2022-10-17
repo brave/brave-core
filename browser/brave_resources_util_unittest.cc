@@ -12,7 +12,7 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/common/resource_bundle_helper.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/grit/chromium_strings.h"
 #endif
 

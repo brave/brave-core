@@ -18,11 +18,6 @@ namespace ads {
 class BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
  protected:
-  BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest() = default;
-
-  ~BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest() override =
-      default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }

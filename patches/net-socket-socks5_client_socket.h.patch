@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks5_client_socket.h b/net/socket/socks5_client_socket.h
-index 5612be067746833e905d5edaef6937bac88ec3ad..27b365f078dce21fbf7f6c64a4c913b8883f4ad6 100644
+index f6cfbe45c3613c11ffce22d6bacf626cf967e1dd..959f95d96b6749164d0cf785524fd6657609607f 100644
 --- a/net/socket/socks5_client_socket.h
 +++ b/net/socket/socks5_client_socket.h
 @@ -76,11 +76,14 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {

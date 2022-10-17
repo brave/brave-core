@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/chooser_controller/title_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"

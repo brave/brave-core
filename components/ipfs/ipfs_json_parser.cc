@@ -463,8 +463,8 @@ bool IPFSJSONParser::GetPeersFromConfigJSON(const std::string& json,
       continue;
     }
     if (has_addr) {
-      for (const base::Value& item : *addr) {
-        auto address = item.GetString();
+      for (const base::Value& addr_item : *addr) {
+        auto address = addr_item.GetString();
         if (address.empty())
           continue;
         peers->push_back(base::StrCat({address, "/p2p/", *peer}));

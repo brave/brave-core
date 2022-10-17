@@ -208,7 +208,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
 
     private void reloadTab() {
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if (chromeTabbedActivity != null) {
+        if (chromeTabbedActivity != null && chromeTabbedActivity.getActivityTab() != null) {
             Tab currentTab = chromeTabbedActivity.getActivityTab();
             SponsoredTab sponsoredTab = TabAttributes.from(currentTab).get(String.valueOf(((TabImpl)currentTab).getId()));
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());

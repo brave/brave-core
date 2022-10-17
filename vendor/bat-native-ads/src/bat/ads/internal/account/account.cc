@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -15,7 +14,6 @@
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/deposits/deposits_factory.h"
-#include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
@@ -286,14 +284,7 @@ void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
 }
 
 void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
-  const absl::optional<IssuerInfo> issuer =
-      GetIssuerForType(issuers, IssuerType::kPayments);
-  if (!issuer) {
-    BLOG(0, "Missing issuers");
-    return;
-  }
-
-  if (!IsIssuerValid(*issuer)) {
+  if (!IsIssuersValid(issuers)) {
     BLOG(0, "Invalid issuers");
     return;
   }

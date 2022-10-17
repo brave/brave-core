@@ -18,8 +18,6 @@ constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 class BatAdsResourceManagerTest : public ResourceManagerObserver,
                                   public UnitTestBase {
  protected:
-  BatAdsResourceManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

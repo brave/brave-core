@@ -36,6 +36,7 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { useIsMounted } from '../../../common/hooks/useIsMounted'
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import { usePrevNetwork } from '../../../common/hooks'
+import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 
 // style
 import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -80,6 +81,7 @@ export const DepositFundsScreen = () => {
   const isMounted = useIsMounted()
   const { prevNetwork } = usePrevNetwork()
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
+  const scrollIntoView = useScrollIntoView()
 
   // state
   const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
@@ -240,15 +242,11 @@ export const DepositFundsScreen = () => {
     return false
   }, [selectedAsset])
 
-  const scrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
+  const handleScrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
     if (checkIsDepositAssetSelected(asset)) {
-      ref?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center'
-      })
+      scrollIntoView(ref)
     }
-  }, [checkIsDepositAssetSelected])
+  }, [checkIsDepositAssetSelected, scrollIntoView])
 
   // effects
   React.useEffect(() => {
@@ -351,7 +349,7 @@ export const DepositFundsScreen = () => {
                         token={asset}
                         tokenNetwork={getTokensNetwork(mainnetsList, asset)}
                         onClick={setSelectedAsset}
-                        ref={(ref) => scrollIntoView(asset, ref)} />}
+                        ref={(ref) => handleScrollIntoView(asset, ref)} />}
                   />
                   : <Column>
                     <LoadingIcon

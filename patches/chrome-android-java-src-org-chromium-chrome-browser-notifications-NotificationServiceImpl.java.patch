@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
-index 97d4d95290d6446fe2b3c8ea16617e6ca4496af4..2484e763fbb46efb6a88140740e9facfb48258c3 100644
+index 70113ee9b369083a7b12211082b0917795ac2ddd..0f9dd8777d1ebcb10dcd931fb3fb810bc119cc63 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
 @@ -113,7 +113,7 @@ public class NotificationServiceImpl extends NotificationService.Impl {

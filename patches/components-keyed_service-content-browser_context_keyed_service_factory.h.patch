@@ -1,5 +1,5 @@
 diff --git a/components/keyed_service/content/browser_context_keyed_service_factory.h b/components/keyed_service/content/browser_context_keyed_service_factory.h
-index c132b2f466411475588551315a27fac96d4ae164..e4ce1d1cc81e39de00742dc458250844fd2763cc 100644
+index 31540300b1f5c4bbb6f96bbdd418c3906a17c1cb..4dcd4e1c452ee784a5ebf6860f60b69db074321c 100644
 --- a/components/keyed_service/content/browser_context_keyed_service_factory.h
 +++ b/components/keyed_service/content/browser_context_keyed_service_factory.h
 @@ -144,6 +144,7 @@ class KEYED_SERVICE_EXPORT BrowserContextKeyedServiceFactory

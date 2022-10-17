@@ -16,6 +16,7 @@
 #include "base/callback_forward.h"
 #include "base/callback_helpers.h"
 #include "base/containers/flat_set.h"
+#include "base/feature_list.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -32,8 +33,8 @@
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -56,9 +57,8 @@ bool IsPublisherEnabled(const mojom::Publisher* publisher) {
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   // Only default brave today to be shown for
   // certain languages on browser startup.
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
+  const std::string language_code =
+      brave_l10n::GetDefaultISOLanguageCodeString();
   const bool is_english_language = language_code == "en";
   const bool is_japanese_language = language_code == "ja";
   const bool brave_news_enabled_default =
@@ -92,12 +92,13 @@ BraveNewsController::BraveNewsController(
                              &direct_feed_controller_,
                              &unsupported_publisher_migrator_,
                              &api_request_helper_),
+      channels_controller_(prefs_, &publishers_controller_),
       feed_controller_(&publishers_controller_,
                        &direct_feed_controller_,
+                       &channels_controller_,
                        history_service,
                        &api_request_helper_,
                        prefs_),
-      channels_controller_(prefs_, &publishers_controller_),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
   // Set up preference listeners
@@ -110,15 +111,23 @@ BraveNewsController::BraveNewsController(
       prefs::kBraveTodayOptedIn,
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kBraveNewsChannels,
+      base::BindRepeating(&BraveNewsController::HandleSubscriptionsChanged,
+                          base::Unretained(this)));
 
-  auto* channels = prefs_->GetDictionary(prefs::kBraveNewsChannels);
-  if (channels->DictEmpty()) {
-    publishers_controller_.GetLocale(base::BindOnce(
-        [](ChannelsController* channels_controller, const std::string& locale) {
-          channels_controller->SetChannelSubscribed(locale, kTopSourcesChannel,
-                                                    true);
-        },
-        base::Unretained(&channels_controller_)));
+  if (base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsV2Feature)) {
+    const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
+    if (channels.empty()) {
+      publishers_controller_.GetLocale(base::BindOnce(
+          [](ChannelsController* channels_controller,
+             const std::string& locale) {
+            channels_controller->SetChannelSubscribed(locale,
+                                                      kTopSourcesChannel, true);
+          },
+          base::Unretained(&channels_controller_)));
+    }
   }
 
   p3a::RecordAtInit(prefs_);
@@ -500,10 +509,7 @@ void BraveNewsController::Prefetch() {
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {
   // Refresh data on an interval only if Brave News is enabled
-  bool should_show = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
-  bool opted_in = prefs_->GetBoolean(prefs::kBraveTodayOptedIn);
-  bool is_enabled = (should_show && opted_in);
-  if (is_enabled) {
+  if (GetIsEnabled()) {
     VLOG(1) << "STARTING TIMERS";
     if (!timer_feed_update_.IsRunning()) {
       timer_feed_update_.Start(FROM_HERE, base::Hours(3), this,
@@ -526,6 +532,22 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
     feed_controller_.ClearCache();
     publishers_controller_.ClearCache();
+  }
+}
+
+bool BraveNewsController::GetIsEnabled() {
+  bool should_show = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  bool opted_in = prefs_->GetBoolean(prefs::kBraveTodayOptedIn);
+  bool is_enabled = (should_show && opted_in);
+  return is_enabled;
+}
+
+void BraveNewsController::HandleSubscriptionsChanged() {
+  if (GetIsEnabled()) {
+    VLOG(1) << "HandleSubscriptionsChanged: Ensuring feed is updated";
+    feed_controller_.EnsureFeedIsUpdating();
+  } else {
+    VLOG(1) << "HandleSubscriptionsChanged: News not enabled, doing nothing.";
   }
 }
 

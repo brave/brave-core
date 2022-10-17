@@ -31,8 +31,6 @@ constexpr char kCreativeInstanceId[] = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
 
 class BatAdsConfirmationUtilTest : public UnitTestBase {
  protected:
-  BatAdsConfirmationUtilTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

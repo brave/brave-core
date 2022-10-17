@@ -54,3 +54,18 @@ export const NetworkDescriptionText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
 `
+
+export const PriceContainer = styled.div`
+  align-self: center;
+  justify-self: flex-end;
+`
+
+export const PriceText = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text01};
+  text-align: right;
+  vertical-align: middle;
+`

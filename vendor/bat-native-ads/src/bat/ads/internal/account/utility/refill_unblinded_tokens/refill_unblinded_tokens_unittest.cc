@@ -33,8 +33,6 @@ using ::testing::Return;
 
 class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
  protected:
-  BatAdsRefillUnblindedTokensTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

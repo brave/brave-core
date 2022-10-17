@@ -75,8 +75,6 @@ class BatAdsTopSegmentsTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ModelCombinationsParamInfo> {
  protected:
-  BatAdsTopSegmentsTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -34,11 +34,13 @@ class NET_EXPORT TransportSecurityState
   using TransportSecurityState_ChromiumImpl::
       TransportSecurityState_ChromiumImpl;
 
-  bool ShouldSSLErrorsBeFatal(const NetworkIsolationKey& network_isolation_key,
-                              const std::string& host);
-  bool ShouldUpgradeToSSL(const NetworkIsolationKey& network_isolation_key,
-                          const std::string& host,
-                          const NetLogWithSource& net_log = NetLogWithSource());
+  bool ShouldSSLErrorsBeFatal(
+      const NetworkAnonymizationKey& network_anonymization_key,
+      const std::string& host);
+  bool ShouldUpgradeToSSL(
+      const NetworkAnonymizationKey& network_anonymization_key,
+      const std::string& host,
+      const NetLogWithSource& net_log = NetLogWithSource());
   bool AddHSTSHeader(const IsolationInfo& isolation_info,
                      const std::string& host,
                      const std::string& value);

@@ -15,7 +15,7 @@
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -54,11 +54,11 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src chrome-untrusted://resources "
-                  "chrome-untrusted://brave-resources 'unsafe-inline';"));
+                  "'unsafe-inline';"));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
-      std::string("font-src chrome-untrusted://brave-resources "
+      std::string("font-src "
                   "chrome-untrusted://resources;"));
 
   content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),

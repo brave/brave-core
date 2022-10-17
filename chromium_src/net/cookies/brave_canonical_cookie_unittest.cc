@@ -76,8 +76,6 @@ TEST(BraveCanonicalCookieTest, SetHTTPOnlyMaxExpiration) {
 TEST(BraveCanonicalCookieTest, NoExpirationCookie) {
   GURL url("https://www.example.com/test");
 
-  base::Time creation_time = base::Time::Now();
-
   std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
       url, no_expiration_cookie, creation_time, /*server_time=*/absl::nullopt,
       /*cookie_partition_key=*/absl::nullopt));

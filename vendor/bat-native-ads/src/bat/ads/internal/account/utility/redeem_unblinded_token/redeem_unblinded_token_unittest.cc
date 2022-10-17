@@ -26,8 +26,6 @@ using ::testing::NiceMock;
 
 class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
  protected:
-  BatAdsRedeemUnblindedTokenTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

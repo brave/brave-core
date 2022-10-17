@@ -144,16 +144,14 @@ void NTPBackgroundPrefs::RemoveCustomImageFromList(
 }
 
 std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {
-  const auto* list = service_->GetList(kCustomImageListPrefName);
+  const auto& list = service_->GetList(kCustomImageListPrefName);
   std::vector<std::string> result;
-  for (const auto& item : list->GetList())
+  for (const auto& item : list)
     result.push_back(item.GetString());
 
   return result;
 }
 
 const base::Value::Dict* NTPBackgroundPrefs::GetPrefValue() const {
-  const auto* value = service_->GetDictionary(kPrefName);
-  DCHECK(value && value->is_dict());
-  return value->GetIfDict();
+  return &service_->GetDict(kPrefName);
 }

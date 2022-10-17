@@ -1,20 +1,12 @@
 diff --git a/chrome/browser/resources/tools/build_webui.gni b/chrome/browser/resources/tools/build_webui.gni
-index cc4a64c61b40e96f6395c57d319f2b1673c8c5e4..783797ce26b9043c1cb57b34dbac2c405a177be9 100644
+index 4d3dcda0e79d6648fd45aed743e49171d7a23c70..6f227587e70825d8d4109a1df7fb31e04501d89d 100644
 --- a/chrome/browser/resources/tools/build_webui.gni
 +++ b/chrome/browser/resources/tools/build_webui.gni
-@@ -230,6 +230,7 @@ template("build_webui") {
-     if (defined(invoker.ts_extra_deps)) {
-       extra_deps += invoker.ts_extra_deps
+@@ -132,6 +132,7 @@ template("build_webui") {
+     if (defined(invoker.css_files)) {
+       in_files += invoker.css_files
      }
-+    if (defined(invoker.extra_build_ts_in_files)) { in_files += invoker.extra_build_ts_in_files } if (defined(invoker.extra_build_ts_extra_deps)) { extra_deps += invoker.extra_build_ts_extra_deps }
++    if (defined(invoker.exclude_preprocess_files)) { in_files -= invoker.exclude_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
    }
  
-   if (optimize) {
-@@ -277,6 +278,7 @@ template("build_webui") {
-       deps += invoker.extra_grdp_deps
-       grdp_files = invoker.extra_grdp_files
-     }
-+    if (defined(invoker.extra_build_grd_deps)) { deps += invoker.extra_build_grd_deps }
-   }
- 
-   grit("resources") {
+   if (defined(html_files)) {

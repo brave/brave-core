@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/containers/contains.h"
@@ -33,7 +34,7 @@ Channels ChannelsController::GetChannelsFromPublishers(
     const Publishers& publishers,
     PrefService* prefs) {
   Channels channels;
-  auto* channel_subscriptions = prefs->GetDictionary(prefs::kBraveNewsChannels);
+  const auto& channel_subscriptions = prefs->GetDict(prefs::kBraveNewsChannels);
 
   for (const auto& it : publishers) {
     for (const auto& channel_id : it.second->channels) {
@@ -44,13 +45,26 @@ Channels ChannelsController::GetChannelsFromPublishers(
       auto channel = mojom::Channel::New();
       channel->channel_name = channel_id;
       channel->subscribed =
-          channel_subscriptions->FindBoolPath(locale + "." + channel_id)
+          channel_subscriptions.FindBoolByDottedPath(locale + "." + channel_id)
               .value_or(false);
 
       channels.insert({channel_id, std::move(channel)});
     }
   }
   return channels;
+}
+
+std::vector<std::string> ChannelsController::GetChannelLocales() const {
+  std::vector<std::string> result;
+  const auto& pref = prefs_->GetDict(prefs::kBraveNewsChannels);
+
+  for (const auto&& [locale, channel] : pref) {
+    if (channel.DictEmpty())
+      continue;
+    result.push_back(locale);
+  }
+
+  return result;
 }
 
 void ChannelsController::GetAllChannels(const std::string& locale,
@@ -69,17 +83,24 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
     const std::string& channel_id,
     bool subscribed) {
   DictionaryPrefUpdate update(prefs_, prefs::kBraveNewsChannels);
-  update->SetBoolPath(locale + "." + channel_id, subscribed);
+  const auto path = locale + "." + channel_id;
+  if (!subscribed) {
+    update->GetDict().RemoveByDottedPath(path);
+  } else {
+    update->GetDict().SetByDottedPath(path, true);
+  }
 
   auto result = mojom::Channel::New();
   result->channel_name = channel_id;
   result->subscribed = subscribed;
+
   return result;
 }
 
 bool ChannelsController::GetChannelSubscribed(const std::string& locale,
                                               const std::string& channel_id) {
-  auto* subscriptions = prefs_->GetDictionary(prefs::kBraveNewsChannels);
-  return subscriptions->FindBoolPath(locale + "." + channel_id).value_or(false);
+  const auto& subscriptions = prefs_->GetDict(prefs::kBraveNewsChannels);
+  return subscriptions.FindBoolByDottedPath(locale + "." + channel_id)
+      .value_or(false);
 }
 }  // namespace brave_news

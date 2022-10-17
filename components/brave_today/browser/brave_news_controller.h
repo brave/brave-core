@@ -113,6 +113,8 @@ class BraveNewsController : public KeyedService,
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
+  bool GetIsEnabled();
+  void HandleSubscriptionsChanged();
   void Prefetch();
 
   raw_ptr<PrefService> prefs_ = nullptr;
@@ -123,8 +125,8 @@ class BraveNewsController : public KeyedService,
   DirectFeedController direct_feed_controller_;
   UnsupportedPublisherMigrator unsupported_publisher_migrator_;
   PublishersController publishers_controller_;
-  FeedController feed_controller_;
   ChannelsController channels_controller_;
+  FeedController feed_controller_;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer timer_prefetch_;

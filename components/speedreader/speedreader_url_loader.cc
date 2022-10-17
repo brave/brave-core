@@ -164,7 +164,10 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
             },
             response_url_, std::move(body),
             rewriter_service_->MakeRewriter(
-                response_url_, speedreader_service_->GetThemeName()),
+                response_url_, speedreader_service_->GetThemeName(),
+                speedreader_service_->GetFontFamilyName(),
+                speedreader_service_->GetFontSizeName(),
+                speedreader_service_->GetContentStyleName()),
             rewriter_service_->GetContentStylesheet()),
         base::BindOnce(
             [](base::WeakPtr<SpeedReaderURLLoader> self, std::string result) {

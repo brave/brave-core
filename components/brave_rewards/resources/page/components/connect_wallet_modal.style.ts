@@ -21,7 +21,7 @@ export const root = styled.div`
 
   a {
     color: var(--brave-color-brandBat);
-    text-decoration: none;
+    text-decoration: underline;
   }
 
   .layout-narrow & {
@@ -203,6 +203,10 @@ export const providerButtons = styled.div`
     &.selected {
       border-color: var(--brave-color-brandBat);
     }
+
+    &.disabled {
+      background: var(--brave-palette-neutral000);
+    }
   }
 
   .layout-narrow & {
@@ -214,33 +218,100 @@ export const providerButtons = styled.div`
   }
 `
 
+export const grid = styled.div`
+  display: grid;
+  width: 100%;
+
+  grid-template-areas: "icon name caret";
+  grid-template-columns: auto 1fr auto;
+
+  .disabled & {
+    grid-template-areas:
+      "icon name"
+      "icon message";
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+  }
+`
+
 export const providerButtonIcon = styled.div`
-  flex: 0 0 52px;
-  background: rgb(218, 220, 232, .33);
-  border-radius: 50%;
+  align-self: center;
+  display: flex;
   height: 52px;
   width: 52px;
-  padding: 14px 0;
+
+  background: var(--brave-palette-neutral000);
+
+  grid-area: icon;
+
+  border-radius: 50%;
 
   .icon {
     height: 25px;
-    width: auto;
+    margin: auto;
+  }
+
+  .disabled & {
+    background: var(--brave-palette-white);
+
+    --provider-icon-color: var(--brave-palette-neutral600);
   }
 `
 
 export const providerButtonName = styled.div`
-  flex: 1 1 auto;
-  padding-left: 30px;
+  align-items: center;
+  display: flex;
+  padding-left: 14px;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
   text-align: left;
+
+  color: var(--brave-palette-black);
+
+  grid-area: name;
+
+  .disabled & {
+    align-items: end;
+
+    color: var(--brave-palette-neutral700);
+  }
+`
+
+export const providerButtonMessage = styled.div`
+  align-items: start;
+  display: flex;
+  padding-left: 14px;
+
+  font-size: 11px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: left;
+
+  color: var(--brave-palette-neutral700);
+
+  grid-area: message;
 `
 
 export const providerButtonCaret = styled.div`
-  flex: 0 0 10px;
+  display: flex;
+
+  grid-area: caret;
 
   .icon {
     height: 16px;
-    width: auto;
-    vertical-align: middle;
-    margin-bottom: 3px;
+    margin: auto;
+
+    fill: var(--brave-palette-blurple500);
+    stroke: var(--brave-palette-blurple500);
+  }
+`
+
+export const learnMoreLink = styled.div`
+  margin-left: 21px;
+
+  .layout-narrow & {
+    margin-left: 0;
   }
 `

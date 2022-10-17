@@ -449,11 +449,8 @@ constexpr const char kEnsRegistryContractAddress[] =
 
 const base::Value::List* GetCustomNetworksList(PrefService* prefs,
                                                mojom::CoinType coin) {
-  const base::Value* custom_networks =
-      prefs->GetDictionary(kBraveWalletCustomNetworks);
-  if (!custom_networks)
-    return nullptr;
-  return custom_networks->GetDict().FindList(GetPrefKeyForCoinType(coin));
+  const auto& custom_networks = prefs->GetDict(kBraveWalletCustomNetworks);
+  return custom_networks.FindList(GetPrefKeyForCoinType(coin));
 }
 
 std::vector<mojom::NetworkInfoPtr> MergeKnownAndCustomChains(
@@ -465,7 +462,9 @@ std::vector<mojom::NetworkInfoPtr> MergeKnownAndCustomChains(
   for (auto& known_chain : known_chains) {
     bool add_known_chain = true;
     for (auto& custom_chain : custom_chains) {
-      if (custom_chain && custom_chain->chain_id == known_chain->chain_id) {
+      if (custom_chain &&
+          base::CompareCaseInsensitiveASCII(custom_chain->chain_id,
+                                            known_chain->chain_id) == 0) {
         result.push_back(std::move(custom_chain));
         add_known_chain = false;
         break;
@@ -511,7 +510,7 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
                                     mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
     for (const auto* network : GetKnownEthNetworks()) {
-      if (network->chain_id != chain_id)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0)
         continue;
 
       auto result = network->Clone();
@@ -520,7 +519,8 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
         result->rpc_endpoints = {GURL(GetInfuraURLForKnownChainId(chain_id))};
       }
 
-      if (prefs && chain_id == brave_wallet::mojom::kLocalhostChainId) {
+      if (prefs && base::CompareCaseInsensitiveASCII(
+                       chain_id, brave_wallet::mojom::kLocalhostChainId) == 0) {
         result->is_eip1559 = prefs->GetBoolean(kSupportEip1559OnLocalhostChain);
       }
 
@@ -530,14 +530,14 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
   }
   if (coin == mojom::CoinType::FIL) {
     for (const auto* network : GetKnownFilNetworks()) {
-      if (network->chain_id == chain_id)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
         return network->Clone();
     }
     return nullptr;
   }
   if (coin == mojom::CoinType::SOL) {
     for (const auto* network : GetKnownSolNetworks()) {
-      if (network->chain_id == chain_id)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
         return network->Clone();
     }
     return nullptr;
@@ -555,7 +555,7 @@ mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
   for (const auto& it : *custom_list) {
     if (auto opt_chain_id =
             brave_wallet::ExtractChainIdFromValue(it.GetIfDict())) {
-      if (chain_id == *opt_chain_id)
+      if (base::CompareCaseInsensitiveASCII(chain_id, *opt_chain_id) == 0)
         return brave_wallet::ValueToNetworkInfo(it);
     }
   }
@@ -589,26 +589,30 @@ GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
 
 std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id) {
   const auto& endpoints = GetInfuraChainEndpoints();
-  if (endpoints.contains(chain_id))
-    return endpoints.at(chain_id);
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (endpoints.contains(chain_id_lower))
+    return endpoints.at(chain_id_lower);
   return std::string();
 }
 
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
-  if (kInfuraSubdomains.contains(chain_id))
-    return kInfuraSubdomains.at(chain_id);
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (kInfuraSubdomains.contains(chain_id_lower))
+    return kInfuraSubdomains.at(chain_id_lower);
   return std::string();
 }
 
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id) {
-  if (kSolanaSubdomains.contains(chain_id))
-    return kSolanaSubdomains.at(chain_id);
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (kSolanaSubdomains.contains(chain_id_lower))
+    return kSolanaSubdomains.at(chain_id_lower);
   return std::string();
 }
 
 std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id) {
-  if (kFilecoinSubdomains.contains(chain_id))
-    return kFilecoinSubdomains.at(chain_id);
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (kFilecoinSubdomains.contains(chain_id_lower))
+    return kFilecoinSubdomains.at(chain_id_lower);
   return std::string();
 }
 
@@ -633,16 +637,16 @@ std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
 bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
     for (const auto* network : GetKnownEthNetworks()) {
-      if (network->chain_id == chain_id)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
         return true;
     }
   } else if (coin == mojom::CoinType::SOL) {
     for (const auto* network : GetKnownSolNetworks())
-      if (network->chain_id == chain_id)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
         return true;
   } else if (coin == mojom::CoinType::FIL) {
     for (const auto* network : GetKnownFilNetworks())
-      if (network->chain_id == chain_id)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
         return true;
   } else {
     NOTREACHED() << coin;
@@ -658,7 +662,7 @@ bool CustomChainExists(PrefService* prefs,
     return false;
   for (const auto& it : *custom_list) {
     if (auto chain_id = ExtractChainIdFromValue(it.GetIfDict())) {
-      if (*chain_id == custom_chain_id)
+      if (base::CompareCaseInsensitiveASCII(*chain_id, custom_chain_id) == 0)
         return true;
     }
   }
@@ -1060,13 +1064,13 @@ GURL GetNetworkURL(PrefService* prefs,
     }
   } else if (coin == mojom::CoinType::SOL) {
     for (const auto* network : GetKnownSolNetworks()) {
-      if (network->chain_id == chain_id) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return GetActiveEndpointUrl(*network);
       }
     }
   } else if (coin == mojom::CoinType::FIL) {
     for (const auto* network : GetKnownFilNetworks()) {
-      if (network->chain_id == chain_id) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return GetActiveEndpointUrl(*network);
       }
     }
@@ -1119,11 +1123,12 @@ std::string GetKnownEthNetworkId(const std::string& chain_id) {
   //   localhost: Use the first RPC URL.
   //   other: Use chain ID like other custom networks.
   for (const auto* network : GetKnownEthNetworks()) {
-    if (network->chain_id != chain_id)
+    if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0)
       continue;
-    if (chain_id == mojom::kLocalhostChainId)
+    if (base::CompareCaseInsensitiveASCII(chain_id, mojom::kLocalhostChainId) ==
+        0)
       return network->rpc_endpoints.front().spec();
-    return chain_id;
+    return base::ToLowerASCII(chain_id);
   }
 
   return "";
@@ -1136,9 +1141,10 @@ std::string GetKnownSolNetworkId(const std::string& chain_id) {
 
   // Separate check for localhost in known networks as it is predefined but
   // does not have predefined subdomain.
-  if (chain_id == mojom::kLocalhostChainId) {
+  if (base::CompareCaseInsensitiveASCII(chain_id, mojom::kLocalhostChainId) ==
+      0) {
     for (const auto* network : GetKnownSolNetworks()) {
-      if (network->chain_id == chain_id) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return network->rpc_endpoints.front().spec();
       }
     }
@@ -1154,9 +1160,10 @@ std::string GetKnownFilNetworkId(const std::string& chain_id) {
 
   // Separate check for localhost in known networks as it is predefined but
   // does not have predefined subdomain.
-  if (chain_id == mojom::kLocalhostChainId) {
+  if (base::CompareCaseInsensitiveASCII(chain_id, mojom::kLocalhostChainId) ==
+      0) {
     for (const auto* network : GetKnownFilNetworks()) {
-      if (network->chain_id == chain_id) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return network->rpc_endpoints.front().spec();
       }
     }
@@ -1190,14 +1197,14 @@ std::string GetNetworkId(PrefService* prefs,
   if (coin == mojom::CoinType::ETH) {
     for (const auto& network :
          GetAllCustomChains(prefs, mojom::CoinType::ETH)) {
-      if (network->chain_id != chain_id)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0)
         continue;
       id = chain_id;
       break;
     }
   }
 
-  return id;
+  return base::ToLowerASCII(id);
 }
 
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
@@ -1256,8 +1263,10 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 }
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
-  if (chain_id == brave_wallet::mojom::kMainnetChainId ||
-      chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
+  if (base::CompareCaseInsensitiveASCII(
+          chain_id, brave_wallet::mojom::kMainnetChainId) == 0 ||
+      base::CompareCaseInsensitiveASCII(
+          chain_id, brave_wallet::mojom::kPolygonMainnetChainId) == 0) {
     return AddInfuraProjectId(GURL(GetInfuraURLForKnownChainId(chain_id)));
   }
 
@@ -1267,13 +1276,15 @@ GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id) {
-  if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(chain_id))
-    return kUnstoppableDomainsProxyReaderContractAddressMap.at(chain_id);
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(chain_id_lower))
+    return kUnstoppableDomainsProxyReaderContractAddressMap.at(chain_id_lower);
   return "";
 }
 
 std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
-  DCHECK_EQ(chain_id, brave_wallet::mojom::kMainnetChainId);
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  DCHECK_EQ(chain_id_lower, brave_wallet::mojom::kMainnetChainId);
   return kEnsRegistryContractAddress;
 }
 
@@ -1341,15 +1352,15 @@ void RemoveCustomNetwork(PrefService* prefs,
     auto* chain_id_value = v.GetDict().FindString("chainId");
     if (!chain_id_value)
       return false;
-    return *chain_id_value == chain_id_to_remove;
+    return base::CompareCaseInsensitiveASCII(*chain_id_value,
+                                             chain_id_to_remove) == 0;
   });
 }
 
 std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
                                               mojom::CoinType coin) {
   std::vector<std::string> result;
-  const base::Value::Dict& hidden_networks =
-      prefs->GetValueDict(kBraveWalletHiddenNetworks);
+  const auto& hidden_networks = prefs->GetDict(kBraveWalletHiddenNetworks);
 
   auto* hidden_eth_networks =
       hidden_networks.FindList(GetPrefKeyForCoinType(coin));
@@ -1359,7 +1370,7 @@ std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
   for (const auto& it : *hidden_eth_networks) {
     auto* chain_id = it.GetIfString();
     if (chain_id)
-      result.push_back(std::move(*chain_id));
+      result.push_back(base::ToLowerASCII(std::move(*chain_id)));
   }
 
   return result;
@@ -1378,8 +1389,9 @@ void AddHiddenNetwork(PrefService* prefs,
         dict.Set(GetPrefKeyForCoinType(coin), base::Value::List())->GetIfList();
   }
   CHECK(list);
-  if (!base::Contains(*list, base::Value(chain_id))) {
-    list->Append(chain_id);
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (!base::Contains(*list, base::Value(chain_id_lower))) {
+    list->Append(chain_id_lower);
   }
 }
 
@@ -1395,19 +1407,18 @@ void RemoveHiddenNetwork(PrefService* prefs,
     auto* chain_id_string = v.GetIfString();
     if (!chain_id_string)
       return false;
-    return *chain_id_string == chain_id;
+    return base::CompareCaseInsensitiveASCII(*chain_id_string, chain_id) == 0;
   });
 }
 
 std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
-  const base::Value::Dict& selected_networks =
-      prefs->GetValueDict(kBraveWalletSelectedNetworks);
+  const auto& selected_networks = prefs->GetDict(kBraveWalletSelectedNetworks);
   const std::string* chain_id =
       selected_networks.FindString(GetPrefKeyForCoinType(coin));
   if (!chain_id)
     return std::string();
 
-  return *chain_id;
+  return base::ToLowerASCII(*chain_id);
 }
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {

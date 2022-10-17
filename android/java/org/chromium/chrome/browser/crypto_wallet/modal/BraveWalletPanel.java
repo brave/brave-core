@@ -284,7 +284,7 @@ public class BraveWalletPanel implements DialogInterface {
                 mCvSolConnectionStatus.setVisibility(View.GONE);
             } else {
                 BraveActivity activity = BraveActivity.getBraveActivity();
-                if (activity != null) {
+                if (activity != null && activity.getActivityTab() != null) {
                     BraveWalletProviderDelegateImplHelper.IsSolanaConnected(
                             activity.getActivityTab().getWebContents(), selectedAccount.address,
                             isConnected -> {

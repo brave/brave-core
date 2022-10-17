@@ -27,12 +27,7 @@ constexpr char kJsonMalformed[] =
 
 }  // namespace
 
-class BatAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {
- protected:
-  BatAdsEmbeddingPipelineValueUtilTest() = default;
-
-  ~BatAdsEmbeddingPipelineValueUtilTest() override = default;
-};
+class BatAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   // Arrange

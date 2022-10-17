@@ -1,0 +1,13 @@
+diff --git a/tools/perf/process_perf_results.py b/tools/perf/process_perf_results.py
+index 5009ca8a6306a1f30642f4bf3ecbdd9304ac0790..83e30c40d154232265f74b61e75a10238e6b7b3d 100755
+--- a/tools/perf/process_perf_results.py
++++ b/tools/perf/process_perf_results.py
+@@ -41,7 +41,7 @@ except ImportError:
+   pass
+ 
+ 
+-RESULTS_URL = 'https://chromeperf.appspot.com'
++RESULTS_URL = 'https://brave-perf-dashboard.appspot.com'; sys.path.append(os.path.join(path_util.GetChromiumSrcDir(), 'brave', 'tools', 'perf', 'components')); import brave_logdog_helper as logdog_helper
+ 
+ # Until we are migrated to LUCI, we will be utilizing a hard
+ # coded master name based on what is passed in in the build properties.

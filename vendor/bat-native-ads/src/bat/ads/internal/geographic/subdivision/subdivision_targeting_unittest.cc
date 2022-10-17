@@ -10,6 +10,7 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/pref_names.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -18,16 +19,12 @@ namespace ads {
 
 class BatAdsSubdivisionTargetingTest : public UnitTestBase {
  protected:
-  BatAdsSubdivisionTargetingTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
   }
-
-  void SetUpMocks() override { MockLocaleHelper(locale_helper_mock_, "en-US"); }
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
 };
@@ -88,7 +85,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
 TEST_F(BatAdsSubdivisionTargetingTest,
        MaybeFetchSubdivisionTargetingNotSupportedLocale) {
   // Arrange
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   // Act
   subdivision_targeting_->MaybeFetch();
@@ -102,7 +99,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
 TEST_F(BatAdsSubdivisionTargetingTest,
        MaybeAllowSubdivisionTargetingNotSupportedLocale) {
   // Arrange
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   // Act
   subdivision_targeting_->MaybeAllow();

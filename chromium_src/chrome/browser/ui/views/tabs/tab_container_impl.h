@@ -15,9 +15,13 @@
 
 #define UpdateClosingModeOnRemovedTab virtual UpdateClosingModeOnRemovedTab
 #define GetTargetBoundsForClosingTab virtual GetTargetBoundsForClosingTab
+#define StartInsertTabAnimation virtual StartInsertTabAnimation
+#define ShouldTabBeVisible virtual ShouldTabBeVisible
 
 #include "src/chrome/browser/ui/views/tabs/tab_container_impl.h"
 
+#undef ShouldTabBeVisible
+#undef StartInsertTabAnimation
 #undef GetTargetBoundsForClosingTab
 #undef UpdateClosingModeOnRemovedTab
 #undef ExitTabClosingMode

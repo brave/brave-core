@@ -42,8 +42,6 @@ class BatAdsEnvironmentCommandLineSwitchParserUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsEnvironmentCommandLineSwitchParserUtilTest() = default;
-
   void SetUpMocks() override {
     AppendCommandLineSwitches({GetParam().command_line_switch});
   }

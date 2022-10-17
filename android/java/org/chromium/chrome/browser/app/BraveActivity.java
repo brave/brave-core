@@ -399,7 +399,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 return;
             }
             maybeShowPendingTransactions();
-            maybeShowSignMessageRequestLayout();
+            maybeShowSignTxRequestLayout();
         });
     }
 
@@ -414,6 +414,30 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         assert mWalletModel != null;
         // trigger to observer to refresh data to process the pending request
         mWalletModel.getCryptoModel().refreshTransactions();
+    }
+
+    private void maybeShowSignTxRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingSignTransactionRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.SIGN_TRANSACTION);
+                return;
+            }
+            maybeShowSignAllTxRequestLayout();
+        });
+    }
+
+    private void maybeShowSignAllTxRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingSignAllTransactionsRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.SIGN_ALL_TRANSACTIONS);
+                return;
+            }
+            maybeShowSignMessageRequestLayout();
+        });
     }
 
     private void maybeShowSignMessageRequestLayout() {

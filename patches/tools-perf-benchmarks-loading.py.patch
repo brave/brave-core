@@ -1,0 +1,9 @@
+diff --git a/tools/perf/benchmarks/loading.py b/tools/perf/benchmarks/loading.py
+index 21f705aad5da85863e5bb61aec58b869abb50bd0..a9491e59d1ab7fa982e4f9225c13459d092d996b 100644
+--- a/tools/perf/benchmarks/loading.py
++++ b/tools/perf/benchmarks/loading.py
+@@ -103,3 +103,4 @@ class LoadingMBI(_LoadingBase):
+   @classmethod
+   def Name(cls):
+     return 'UNSCHEDULED_loading.mbi'
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/perf/benchmarks/loading.py", globals(), locals())

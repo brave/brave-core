@@ -169,8 +169,8 @@ class PublishersControllerTest : public testing::Test {
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {
-    auto* value = profile_.GetPrefs()->GetDictionary(prefs::kBraveTodaySources);
-    return value->FindBoolKey(publisher_id).has_value();
+    const auto& value = profile_.GetPrefs()->GetDict(prefs::kBraveTodaySources);
+    return value.FindBool(publisher_id).has_value();
   }
 
   bool DirectSourceExists(const std::string& publisher_id) {
@@ -238,8 +238,7 @@ TEST_F(PublishersControllerTest,
   // another when completed.
   WaitForUpdate();
   LOG(ERROR) << "Direct: "
-             << *profile_.GetPrefs()->GetDictionary(
-                    prefs::kBraveTodayDirectFeeds);
+             << profile_.GetPrefs()->GetDict(prefs::kBraveTodayDirectFeeds);
   EXPECT_TRUE(CombinedSourceExists("111"));
   EXPECT_TRUE(DirectSourceExists("222"));
   EXPECT_TRUE(CombinedSourceExists("333"));

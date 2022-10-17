@@ -10,7 +10,6 @@ import os
 
 _gn_args = None
 
-
 def override_function(scope, name=None, condition=True):
     """Replaces an existing function in the scope."""
 
@@ -38,6 +37,27 @@ def override_function(scope, name=None, condition=True):
             setattr(scope, function_name, wrapped_function)
 
         return wrapped_function
+
+    return decorator
+
+def override_method(scope, name=None, condition=True):
+    """Replaces an existing method in the class scope."""
+
+    def decorator(new_method):
+        assert(not isinstance(scope, dict))
+        method_name = name or new_method.__name__
+        original_method = getattr(scope, method_name, None)
+
+        assert(inspect.isfunction(original_method))
+
+        def wrapped_method(self, *args, **kwargs):
+            return new_method(self, original_method, *args, **kwargs)
+        if not condition:
+            wrapped_method = original_method
+
+        setattr(scope, method_name, wrapped_method)
+
+        return wrapped_method
 
     return decorator
 

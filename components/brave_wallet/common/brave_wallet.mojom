@@ -762,6 +762,7 @@ const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5D
 const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
 const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
 
+// It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
 const string kGoerliChainId = "0x5";
 const string kSepoliaChainId = "0xaa36a7";
@@ -899,7 +900,7 @@ interface JsonRpcService {
   EnsGetEthAddr(string domain, EnsOffchainLookupOptions? options) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
 
   // Unstoppable Domains lookups
-  UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
+  UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
 
   // Used for making requests to the currently selected EVM compatible node for
   // coin ETH and other nodes with corresponding coin types

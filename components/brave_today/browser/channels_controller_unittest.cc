@@ -107,8 +107,8 @@ class ChannelsControllerTest : public testing::Test {
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {
-    auto* value = profile_.GetPrefs()->GetDictionary(prefs::kBraveTodaySources);
-    return value->FindBoolKey(publisher_id).has_value();
+    const auto& value = profile_.GetPrefs()->GetDict(prefs::kBraveTodaySources);
+    return value.FindBool(publisher_id).has_value();
   }
 
  protected:
@@ -219,6 +219,40 @@ TEST_F(ChannelsControllerTest,
   channels_controller_.SetChannelSubscribed("ja_JA", "Test", false);
   EXPECT_FALSE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
   EXPECT_FALSE(channels_controller_.GetChannelSubscribed("ja_JA", "Test"));
+}
+
+TEST_F(ChannelsControllerTest, NoChannelsNoChannelLocales) {
+  EXPECT_EQ(0u, channels_controller_.GetChannelLocales().size());
+}
+
+TEST_F(ChannelsControllerTest, SubscribedChannelLocalesIncluded) {
+  channels_controller_.SetChannelSubscribed("en_US", "Test", true);
+
+  auto locales = channels_controller_.GetChannelLocales();
+  EXPECT_EQ(1u, locales.size());
+  EXPECT_EQ("en_US", locales[0]);
+
+  channels_controller_.SetChannelSubscribed("en_US", "Foo", true);
+  locales = channels_controller_.GetChannelLocales();
+  EXPECT_EQ(1u, locales.size());
+
+  channels_controller_.SetChannelSubscribed("ja_JA", "Foo", true);
+  locales = channels_controller_.GetChannelLocales();
+  EXPECT_EQ(2u, locales.size());
+  EXPECT_EQ("en_US", locales[0]);
+  EXPECT_EQ("ja_JA", locales[1]);
+}
+
+TEST_F(ChannelsControllerTest, LocaleWithNoSubscribedChannelsIsNotIncluded) {
+  channels_controller_.SetChannelSubscribed("en_US", "Test", true);
+
+  auto locales = channels_controller_.GetChannelLocales();
+  EXPECT_EQ(1u, locales.size());
+  EXPECT_EQ("en_US", locales[0]);
+
+  channels_controller_.SetChannelSubscribed("en_US", "Test", false);
+  locales = channels_controller_.GetChannelLocales();
+  EXPECT_EQ(0u, locales.size());
 }
 
 }  // namespace brave_news

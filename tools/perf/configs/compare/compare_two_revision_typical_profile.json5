@@ -1,0 +1,35 @@
+// Comparing the two browser binariws with the same 'typical' profile to estimate
+// the performance impact.
+{
+  "configurations": [
+    {
+      "target" : "v1.37.5",
+      "label": "good_1.37.5",
+      "browser-type": "brave",
+      "profile": "old-brave-typical",
+      "extra-browser-args": [],
+      "extra-benchmark-args": [],
+    },
+    {
+      "target" : "v1.37.6",
+      "label": "bad_1.37.6",
+      "browser-type": "brave",
+      "profile": "old-brave-typical",
+      "extra-browser-args": [],
+      "extra-benchmark-args": [],
+    },
+  ],
+  "benchmarks": [
+    {
+      "name": "loading.desktop.brave",
+      "pageset-repeat": 10,
+      "stories": [
+        "example.com_cold",
+        "example.com_warm",
+        "wikipedia.com_cold",
+        "wikipedia.com_warm",
+        "IGN_cold",
+      ]
+    }
+  ]
+}

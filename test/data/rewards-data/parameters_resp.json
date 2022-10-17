@@ -19,5 +19,19 @@
     "gemini": "off",
     "uphold": "off",
     "unverified": "off"
+  },
+  "custodianRegions": {
+    "bitflyer": {
+      "allow": ["JP"],
+      "block": []
+    },
+    "gemini": {
+      "allow": ["AU", "AT", "BE", "CA", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],
+      "block": []
+    },
+    "uphold": {
+      "allow": ["AU", "AT", "BE", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],
+      "block": []
+    }
   }
 }

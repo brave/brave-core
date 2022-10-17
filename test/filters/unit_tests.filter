@@ -1,3 +1,49 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
+# having NOTREACHED which causes an immediate crash
+# https://github.com/brave/brave-browser/issues/25726
+-ApcScrimManagerImplTest.RestoresTheOriginalHiddenStateOnWebcontentsVisibibleTransition
+-ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
+-BatterySaverButtonNoExperimentsAvailableTest.*
+-BatterySaverButtonTest.*
+-ExtensionActionViewControllerFeatureUnitTest.*
+-ExtensionActionViewControllerGrayscaleTest.*
+-ExtensionActionViewControllerUnitTest.*
+-HighEfficiencyChipViewTest.*
+
+# These tests crash when BraveExtensionManagement is initialized via a
+# TestExtensionSystem
+# https://github.com/brave/brave-browser/issues/25727
+-AppHomePageHandlerTest.*
+
+# These tests fail because we customize the download status messages with our
+# own verbiage
+-ContentAnalysisDownloadsDelegateTest.TestGetMessageAndUrl
+-DownloadItemModelTest.CompletedStatus
+-DownloadItemModelTest.InProgressStatus
+-DownloadItemModelTest.InterruptedStatus
+
+# This test fails because the error message contains "Brave" instead of
+# "Chromium" (the string is hard-coded into the test)
+# https://github.com/brave/brave-browser/issues/25728
+-DownloadItemModelTailoredWarningTest.GetBubbleUIInfoForTailoredWarning_SuspiciousArchive
+
+# These tests fail because we've disabled the commerce::kCommercePriceTracking
+# feature
+-PriceTrackingIconViewIntegrationTest.*
+
+# This test fails because tab_next_close_button->GetBoundsInScreen().Contains(tab_center)
+# returns false instead of true
+# https://github.com/brave/brave-browser/issues/25729
+-TabContainerTest.RemoveTabInGroupWithTabClosingMode
+
+# Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
 -AccessCodeCastDiscoveryInterfaceTest.SyncError
@@ -32,7 +78,6 @@
 -All/TabSharingInfoBarDelegateTest.*
 -All/TabStripTest.*
 -All/WebstorePrivateBeginInstallWithManifest3FrictionDialogTest.*
--ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
 -AppInfoDialogViewsTest.*
 -AppLauncherHandlerTest.*
 -AssistantSidePanelCoordinatorImplTest.*
@@ -145,8 +190,6 @@
 -ExistingWindowSubMenuModelTest.*
 -ExtensionActionIconFactoryTest.*
 -ExtensionActionRunnerUnitTest.*
--ExtensionActionViewControllerGrayscaleTest.*
--ExtensionActionViewControllerUnitTest.*
 -ExtensionAllowlistUnitTest.*
 -ExtensionAllowlistWithFeatureDisabledUnitTest.*
 -ExtensionContextMenuModelTest.*

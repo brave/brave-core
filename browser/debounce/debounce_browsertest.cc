@@ -230,7 +230,8 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, QuadRedirect) {
 }
 
 // Test a redirect chain that bounces from a tracker to a final URL in the
-// tracker's domain.
+// tracker's domain. This should NOT be debounced, because the tracker and
+// the final URL share an eTLD+1.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, SameSiteTracker) {
   ASSERT_TRUE(InstallMockExtension());
   GURL final_url = embedded_test_server()->GetURL("z.com", "/");
@@ -238,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, SameSiteTracker) {
       embedded_test_server()->GetURL("tracker.z.com", "/"), final_url);
   GURL start_url = add_redirect_param(
       embedded_test_server()->GetURL("origin.h.com", "/"), intermediate_url);
-  NavigateToURLAndWaitForRedirects(start_url, final_url);
+  NavigateToURLAndWaitForRedirects(start_url, intermediate_url);
 }
 
 // Test a long redirect chain that bounces through the original URL's domain,

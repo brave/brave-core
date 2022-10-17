@@ -297,7 +297,7 @@ class BraveVPNServiceTest : public testing::Test {
   void LoadCachedRegionData() { service_->LoadCachedRegionData(); }
 
   void OnConnected() { service_->OnConnected(); }
-
+  void OnConnectFailed() { service_->OnConnectFailed(); }
   void OnDisconnected() { service_->OnDisconnected(); }
 
   const BraveVPNConnectionInfo& GetConnectionInfo() {
@@ -490,6 +490,7 @@ class BraveVPNServiceTest : public testing::Test {
         }
       )";
   }
+
   std::string SetupTestingStoreForEnv(const std::string& env,
                                       bool active_subscription = true) {
     std::string domain = skus::GetDomain("vpn", env);
@@ -608,7 +609,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   // Treat expired when credential with non active received.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(domain, R"({ "active": false } )");
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   // Treat failed when invalid string received.
   SetPurchasedState(env, PurchasedState::LOADING);
@@ -734,6 +735,14 @@ TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
   // Check cached connection info is cleared when user set new selected region.
   connection_state() = ConnectionState::DISCONNECTED;
   service_->SetSelectedRegion(mojom::Region().Clone());
+  EXPECT_FALSE(GetConnectionInfo().IsValid());
+
+  // Fill connection info again.
+  OnGetProfileCredentials(GetProfileCredentialData(), true);
+  EXPECT_TRUE(GetConnectionInfo().IsValid());
+
+  // Check cached connection info is cleared when connect failed.
+  OnConnectFailed();
   EXPECT_FALSE(GetConnectionInfo().IsValid());
 }
 
@@ -945,6 +954,18 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   local_pref_service_.SetList(prefs::kBraveVPNRegionList, {});
   ResetVpnService();
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+}
+
+TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  cancel_connecting() = false;
+  connection_state() = ConnectionState::CONNECTING;
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  OnGetSubscriberCredentialV12("Token No Longer Valid", false);
+  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  EXPECT_FALSE(cancel_connecting());
+  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
 }
 #endif
 

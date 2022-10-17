@@ -109,12 +109,12 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
   }
 
   if (const auto* fees = dict.FindDict("fees")) {
-    for (const auto [key, value] : *fees) {
-      if (!value.is_double()) {
+    for (const auto [k, v] : *fees) {
+      if (!v.is_double()) {
         continue;
       }
 
-      wallet->fees.insert(std::make_pair(key, value.GetDouble()));
+      wallet->fees.insert(std::make_pair(k, v.GetDouble()));
     }
   }
 

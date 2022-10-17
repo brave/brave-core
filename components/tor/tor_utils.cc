@@ -101,12 +101,8 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
 // clang-format on
 
 // static
-absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
-  if (!v || !v->is_dict())
-    return absl::nullopt;
-
-  const auto& dict = v->GetDict();
-
+absl::optional<BridgesConfig> BridgesConfig::FromDict(
+    const base::Value::Dict& dict) {
   BridgesConfig result;
   result.use_bridges =
       CastToEnum<Usage>(dict.FindInt(kUseBridgesKey).value_or(0));
@@ -130,6 +126,13 @@ absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
   }
 
   return result;
+}
+
+// static
+absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
+  if (!v || !v->is_dict())
+    return absl::nullopt;
+  return FromDict(v->GetDict());
 }
 
 base::Value::Dict BridgesConfig::ToDict() const {

@@ -14,4 +14,7 @@ bool EnabledStateProvider::IsReportingEnabled() const {
   return false;
 }
 
+void EnabledStateProvider::SetIgnoreForceFieldTrialsForTesting(
+    bool ignore_trials) {}
+
 }  // namespace metrics

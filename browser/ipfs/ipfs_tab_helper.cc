@@ -163,12 +163,15 @@ void IPFSTabHelper::CheckDNSLinkRecord(
   auto resolved_callback = base::BindOnce(&IPFSTabHelper::HostResolvedCallback,
                                           weak_ptr_factory_.GetWeakPtr(),
                                           std::move(x_ipfs_path_header));
-  const auto& key =
+  const auto& network_anonymization_key =
       web_contents()->GetPrimaryMainFrame()
-          ? web_contents()->GetPrimaryMainFrame()->GetNetworkIsolationKey()
-          : net::NetworkIsolationKey();
-  resolver_->Resolve(host_port_pair, key, net::DnsQueryType::TXT,
-                     std::move(resolved_callback));
+          ? web_contents()
+                ->GetPrimaryMainFrame()
+                ->GetIsolationInfoForSubresources()
+                .network_anonymization_key()
+          : net::NetworkAnonymizationKey();
+  resolver_->Resolve(host_port_pair, network_anonymization_key,
+                     net::DnsQueryType::TXT, std::move(resolved_callback));
 }
 
 bool IPFSTabHelper::IsDNSLinkCheckEnabled() const {

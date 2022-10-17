@@ -43,8 +43,6 @@ constexpr char kCatalogWithMultipleCampaigns[] =
 
 class BatAdsCatalogTest : public UnitTestBase {
  protected:
-  BatAdsCatalogTest() = default;
-
   CatalogCampaignInfo BuildCatalogCampaign1() {
     // Segments
     CatalogSegmentList catalog_segments;

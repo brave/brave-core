@@ -7,21 +7,19 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_constants.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
 namespace {
-constexpr char kLocale[] = "en-GB";
+constexpr char kLocale[] = "en_GB";
 }  // namespace
 
 class BatAdsLocaleManagerTest : public LocaleManagerObserver,
                                 public UnitTestBase {
  protected:
-  BatAdsLocaleManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -49,17 +47,6 @@ TEST_F(BatAdsLocaleManagerTest, HasInstance) {
 
   // Assert
   EXPECT_TRUE(has_instance);
-}
-
-TEST_F(BatAdsLocaleManagerTest, GetLocale) {
-  // Arrange
-  MockLocaleHelper(locale_helper_mock_, kLocale);
-
-  // Act
-  const std::string locale = LocaleManager::GetInstance()->GetLocale();
-
-  // Assert
-  EXPECT_EQ(kLocale, locale);
 }
 
 TEST_F(BatAdsLocaleManagerTest, LocaleDidChange) {

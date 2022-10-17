@@ -59,7 +59,6 @@
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
@@ -155,7 +154,7 @@ std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
 
 std::string LoadOnFileTaskRunner(const base::FilePath& path) {
   std::string data;
-  bool success = base::ReadFileToString(path, &data);
+  const bool success = base::ReadFileToString(path, &data);
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
@@ -233,7 +232,7 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
       VLOG(1) << "Created " << ads_service_base_path.value();
     }
 
-    base::FilePath confirmations_state_path =
+    const base::FilePath confirmations_state_path =
         ads_service_base_path.AppendASCII("confirmations.json");
 
     VLOG(1) << "Migrating " << legacy_confirmations_state_path.value() << " to "
@@ -274,17 +273,13 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
   return command_response;
 }
 
-std::string GetLocale() {
-  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-}
-
 void RegisterResourceComponentsForLocale(const std::string& locale) {
   g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
       locale);
 }
 
-void RegisterResourceComponentsForCurrentLocale() {
-  RegisterResourceComponentsForLocale(GetLocale());
+void RegisterResourceComponentsForDefaultLocale() {
+  RegisterResourceComponentsForLocale(brave_l10n::GetDefaultLocaleString());
 }
 
 void OnURLResponseStarted(
@@ -447,7 +442,8 @@ void AdsServiceImpl::SetBuildChannel() {
 
 void AdsServiceImpl::MaybeStartOrStop(const bool should_restart) {
   if (!IsSupportedLocale()) {
-    VLOG(1) << GetLocale() << " locale does not support ads";
+    VLOG(1) << brave_l10n::GetDefaultLocaleString()
+            << " locale does not support ads";
     Shutdown();
     return;
   }
@@ -561,7 +557,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
 
   CreateBatAdsService(number_of_start);
 
-  RegisterResourceComponentsForCurrentLocale();
+  RegisterResourceComponentsForDefaultLocale();
 
   GetRewardsWallet();
 }
@@ -977,8 +973,7 @@ void AdsServiceImpl::Shutdown() {
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
-  const std::string locale = GetLocale();
-  return ads::IsSupportedLocale(locale);
+  return ads::IsSupportedLocale(brave_l10n::GetDefaultLocaleString());
 }
 
 bool AdsServiceImpl::IsEnabled() const {
@@ -1410,7 +1405,7 @@ void AdsServiceImpl::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
 
     const GURL url = GURL(kNotificationAdUrlPrefix + ad.placement_id);
 
-    std::unique_ptr<message_center::Notification> notification =
+    const std::unique_ptr<message_center::Notification> notification =
         std::make_unique<message_center::Notification>(
             message_center::NOTIFICATION_TYPE_SIMPLE, ad.placement_id, title,
             body, ui::ImageModel(), std::u16string(), url,
@@ -1466,8 +1461,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   constexpr char kNotificationAdsPrefName[] =
       "brave.brave_ads.notification_ads";
 
-  const base::Value::List& list =
-      profile_->GetPrefs()->GetValueList(kNotificationAdsPrefName);
+  const auto& list = profile_->GetPrefs()->GetList(kNotificationAdsPrefName);
 
   const base::circular_deque<ads::NotificationAdInfo> ads =
       ads::NotificationAdsFromValue(list);
@@ -1508,7 +1502,7 @@ void AdsServiceImpl::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
-  std::u16string search_text;
+  const std::u16string search_text;
   history::QueryOptions options;
   options.SetRecentDayRange(days_ago);
   options.max_count = max_count;
@@ -1778,7 +1772,7 @@ void AdsServiceImpl::SetTimePref(const std::string& path,
 
 absl::optional<base::Value::Dict> AdsServiceImpl::GetDictPref(
     const std::string& path) const {
-  return profile_->GetPrefs()->GetValueDict(path).Clone();
+  return profile_->GetPrefs()->GetDict(path).Clone();
 }
 
 void AdsServiceImpl::SetDictPref(const std::string& path,
@@ -1789,7 +1783,7 @@ void AdsServiceImpl::SetDictPref(const std::string& path,
 
 absl::optional<base::Value::List> AdsServiceImpl::GetListPref(
     const std::string& path) const {
-  return profile_->GetPrefs()->GetValueList(path).Clone();
+  return profile_->GetPrefs()->GetList(path).Clone();
 }
 
 void AdsServiceImpl::SetListPref(const std::string& path,
@@ -1843,7 +1837,7 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
   bat_ads_->OnDidUpdateResourceComponent(id);
 }
 
-void AdsServiceImpl::OnCompleteReset(bool success) {
+void AdsServiceImpl::OnCompleteReset(bool /*success*/) {
   WipeState(/* should_shutdown */ true);
 }
 
@@ -1904,7 +1898,7 @@ void AdsServiceImpl::OnURLRequest(
   } else if (!url_loader->ResponseInfo()->headers) {
     VLOG(6) << "Failed to obtain headers from the network stack";
   } else {
-    scoped_refptr<net::HttpResponseHeaders> headers_list =
+    const scoped_refptr<net::HttpResponseHeaders> headers_list =
         url_loader->ResponseInfo()->headers;
     response_code = headers_list->response_code();
 
@@ -2064,8 +2058,7 @@ void AdsServiceImpl::MigratePrefsVersion1To2() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
   // were always enabled
@@ -2085,8 +2078,7 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   // Disable ads for unsupported legacy country codes due to a bug where ads
   // were enabled even if the users country code was not supported
@@ -2105,8 +2097,7 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion4To5() {
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   // Disable ads for unsupported legacy country codes due to a bug where ads
   // were enabled even if the users country code was not supported
@@ -2155,8 +2146,7 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
   // Disable ads for newly supported country codes due to a bug where ads were
   // enabled even if the users country code was not supported
 
-  const auto locale = GetLocale();
-  const auto country_code = brave_l10n::GetCountryCode(locale);
+  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
   const std::vector<std::string> legacy_country_codes = {
       "US",  // United States of America

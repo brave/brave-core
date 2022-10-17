@@ -7,20 +7,22 @@ package org.chromium.chrome.browser.app.domain;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
+import org.chromium.brave_wallet.mojom.SignTransactionRequest;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.Pair;
+import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,8 +36,16 @@ public class DappsModel {
     private PendingTxHelper mPendingTxHelper;
     private final MutableLiveData<Boolean> _mWalletIconNotificationVisible =
             new MutableLiveData<>(false);
-    public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
     private final Object mLock = new Object();
+    private final MutableLiveData<BraveWalletDAppsActivity.ActivityType> _mProcessNextDAppsRequest =
+            new MutableLiveData<>();
+    private final MutableLiveData<List<SignTransactionRequest>> _mSignTxRequests;
+    private final MutableLiveData<List<SignAllTransactionsRequest>> _mSignAllTxRequests;
+    private final LiveData<List<SignTransactionRequest>> mSignTxRequests;
+    private final LiveData<List<SignAllTransactionsRequest>> mSignAllTxRequests;
+    public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
+    public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
+            _mProcessNextDAppsRequest;
 
     public DappsModel(JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
             KeyringService keyringService, PendingTxHelper pendingTxHelper) {
@@ -43,6 +53,10 @@ public class DappsModel {
         mJsonRpcService = jsonRpcService;
         mKeyringService = keyringService;
         mPendingTxHelper = pendingTxHelper;
+        _mSignTxRequests = new MutableLiveData<>(Collections.emptyList());
+        mSignTxRequests = _mSignTxRequests;
+        _mSignAllTxRequests = new MutableLiveData<>(Collections.emptyList());
+        mSignAllTxRequests = _mSignAllTxRequests;
     }
 
     public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
@@ -74,6 +88,44 @@ public class DappsModel {
         }
     }
 
+    public LiveData<List<SignTransactionRequest>> fetchSignTxRequest() {
+        mBraveWalletService.getPendingSignTransactionRequests(requests -> {
+            _mSignTxRequests.postValue(new ArrayList<>(Arrays.asList(requests)));
+        });
+        return mSignTxRequests;
+    }
+
+    public void signTxRequest(boolean isApproved, SignTransactionRequest signTransactionRequest) {
+        mBraveWalletService.notifySignTransactionRequestProcessed(
+                isApproved, signTransactionRequest.id, null, null);
+        mBraveWalletService.getPendingSignTransactionRequests(requests -> {
+            if (requests.length == 0) {
+                _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType.FINISH);
+            } else {
+                _mSignTxRequests.postValue(new ArrayList<>(Arrays.asList(requests)));
+            }
+        });
+    }
+
+    public LiveData<List<SignAllTransactionsRequest>> fetchSignAllTxRequest() {
+        mBraveWalletService.getPendingSignAllTransactionsRequests(requests -> {
+            _mSignAllTxRequests.postValue(new ArrayList<>(Arrays.asList(requests)));
+        });
+        return mSignAllTxRequests;
+    }
+
+    public void signAllTxRequest(boolean isApproved, SignAllTransactionsRequest request) {
+        mBraveWalletService.notifySignAllTransactionsRequestProcessed(
+                isApproved, request.id, null, null);
+        mBraveWalletService.getPendingSignAllTransactionsRequests(requests -> {
+            if (requests.length == 0) {
+                _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType.FINISH);
+            } else {
+                _mSignAllTxRequests.postValue(new ArrayList<>(Arrays.asList(requests)));
+            }
+        });
+    }
+
     public void resetServices(JsonRpcService jsonRpcService,
             BraveWalletService braveWalletService, PendingTxHelper pendingTxHelper) {
         synchronized (mLock) {
@@ -86,6 +138,46 @@ public class DappsModel {
     public void updateWalletBadgeVisibility() {
         synchronized (mLock) {
             updateWalletBadgeVisibilityInternal();
+        }
+    }
+
+    public void clearDappsState() {
+        _mProcessNextDAppsRequest.postValue(null);
+    }
+
+    public void processPublicEncryptionKey(boolean isApproved, Origin origin) {
+        synchronized (mLock) {
+            if (mBraveWalletService == null) {
+                return;
+            }
+            mBraveWalletService.notifyGetPublicKeyRequestProcessed(isApproved, origin);
+            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
+                if (requests != null && requests.length > 0) {
+                    _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType
+                                                                .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+                } else {
+                    _mProcessNextDAppsRequest.postValue(
+                            BraveWalletDAppsActivity.ActivityType.FINISH);
+                }
+            });
+        }
+    }
+
+    public void processDecryptRequest(boolean isApproved, Origin origin) {
+        synchronized (mLock) {
+            if (mBraveWalletService == null) {
+                return;
+            }
+            mBraveWalletService.notifyDecryptRequestProcessed(isApproved, origin);
+            mBraveWalletService.getPendingDecryptRequests(requests -> {
+                if (requests != null && requests.length > 0) {
+                    _mProcessNextDAppsRequest.postValue(
+                            BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+                } else {
+                    _mProcessNextDAppsRequest.postValue(
+                            BraveWalletDAppsActivity.ActivityType.FINISH);
+                }
+            });
         }
     }
 
@@ -107,37 +199,41 @@ public class DappsModel {
         mBraveWalletService.getPendingSignMessageRequests(requests -> {
             if (requests != null && requests.length > 0) {
                 setWalletBadgeVisible();
-                return;
             }
         });
         mBraveWalletService.getPendingAddSuggestTokenRequests(requests -> {
             if (requests != null && requests.length > 0) {
                 setWalletBadgeVisible();
-                return;
             }
         });
         mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
             if (requests != null && requests.length > 0) {
                 setWalletBadgeVisible();
-                return;
             }
         });
         mJsonRpcService.getPendingAddChainRequests(networks -> {
             if (networks != null && networks.length > 0) {
                 setWalletBadgeVisible();
-                return;
             }
         });
         mJsonRpcService.getPendingSwitchChainRequests(requests -> {
             if (requests != null && requests.length > 0) {
                 setWalletBadgeVisible();
-                return;
             }
         });
         mBraveWalletService.getPendingDecryptRequests(requests -> {
             if (requests != null && requests.length > 0) {
                 setWalletBadgeVisible();
-                return;
+            }
+        });
+        mBraveWalletService.getPendingSignTransactionRequests(requests -> {
+            if (requests != null && requests.length > 0) {
+                setWalletBadgeVisible();
+            }
+        });
+        mBraveWalletService.getPendingSignAllTransactionsRequests(requests -> {
+            if (requests != null && requests.length > 0) {
+                setWalletBadgeVisible();
             }
         });
         for (TransactionInfo info : mPendingTxHelper.mTransactionInfoLd.getValue()) {

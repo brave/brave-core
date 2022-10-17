@@ -1,0 +1,15 @@
+{
+    "archives": {
+        "browse:news:hackernews:2020": {
+            "DEFAULT": "system_health_desktop_c72fda288b.wprgo"
+        },
+        "browse:search:google:2020": {
+            "DEFAULT": "system_health_desktop_20c4fe6ace.wprgo"
+        },
+        "load:media:youtube:2018": {
+            "DEFAULT": "system_health_desktop_81f7c27d9f.wprgo"
+        }
+    },
+    "description": "Describes the Web Page Replay archives for a story set. Don't edit by hand! Use record_wpr for updating.",
+    "platform_specific": true
+}

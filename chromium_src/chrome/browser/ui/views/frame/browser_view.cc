@@ -22,10 +22,15 @@
 #define BrowserTabStripController BraveBrowserTabStripController
 #define TabStrip BraveTabStrip
 #define SidePanel BraveSidePanel
+#define kAlignLeft kHorizontalAlignLeft
+#define kAlignRight kHorizontalAlignRight
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
+
 #undef ToolbarView
 #undef BrowserTabStripController
 #undef TabStrip
 #undef BrowserViewLayout
 #undef SidePanel
+#undef kAlignLeft
+#undef kAlignRight

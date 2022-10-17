@@ -19,7 +19,9 @@ class BraveTab;
   virtual GetWidthOfLargestSelectableRegion
 
 #define ActiveStateChanged virtual ActiveStateChanged
+#define GetGroupColor virtual GetGroupColor
 #include "src/chrome/browser/ui/views/tabs/tab.h"
+#undef GetGroupColor
 #undef ActiveStateChanged
 #undef GetWidthOfLargestSelectableRegion
 #undef kMinimumContentsWidthForCloseButtons

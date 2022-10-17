@@ -40,7 +40,6 @@ source_set("profiles") {
     "//brave/components/constants",
     "//brave/components/ipfs/buildflags",
     "//brave/components/tor",
-    "//brave/content:browser",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
     "//components/keyed_service/content",

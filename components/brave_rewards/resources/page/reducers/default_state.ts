@@ -29,6 +29,7 @@ export function defaultState (): Rewards.State {
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
+      subdivisions: [],
       adsUIEnabled: false,
       adsIsSupported: false,
       needsBrowserUpgradeToServeAds: false,
@@ -62,7 +63,12 @@ export function defaultState (): Rewards.State {
       autoContributeChoice: 0,
       autoContributeChoices: [],
       rate: 0,
-      payoutStatus: {}
+      payoutStatus: {},
+      walletProviderRegions: {
+        bitflyer: { allow: [], block: [] },
+        gemini: { allow: [], block: [] },
+        uphold: { allow: [], block: [] }
+      }
     },
     initializing: true,
     paymentId: '',

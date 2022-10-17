@@ -17,14 +17,16 @@ namespace brave_wallet::unstoppable_domains {
 
 class MultichainCallsUnitTest : public testing::Test {
  public:
-  using CallbackType = MultichainCalls<std::string>::CallbackType;
+  using CallbackType = MultichainCalls<std::string, std::string>::CallbackType;
 
   std::string domain() const { return "brave.com"; }
 
-  MultichainCalls<std::string>& chain_calls() { return chain_calls_; }
+  MultichainCalls<std::string, std::string>& chain_calls() {
+    return chain_calls_;
+  }
 
  private:
-  MultichainCalls<std::string> chain_calls_;
+  MultichainCalls<std::string, std::string> chain_calls_;
   base::test::TaskEnvironment task_environment_;
 };
 

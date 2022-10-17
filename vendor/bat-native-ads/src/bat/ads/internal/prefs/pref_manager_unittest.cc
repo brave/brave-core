@@ -17,8 +17,6 @@ constexpr char kPrefName[] = "FOOBAR";
 
 class BatAdsPrefManagerTest : public PrefManagerObserver, public UnitTestBase {
  protected:
-  BatAdsPrefManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -86,6 +86,24 @@ void Rewriter::SetTheme(const std::string& theme) {
   }
 }
 
+void Rewriter::SetFontFamily(const std::string& font_family) {
+  if (!font_family.empty()) {
+    rewriter_set_font_family(raw_, font_family.c_str());
+  }
+}
+
+void Rewriter::SetFontSize(const std::string& font_size) {
+  if (!font_size.empty()) {
+    rewriter_set_font_size(raw_, font_size.c_str());
+  }
+}
+
+void Rewriter::SetContentStyle(const std::string& content_style) {
+  if (!content_style.empty()) {
+    rewriter_set_content_style(raw_, content_style.c_str());
+  }
+}
+
 int Rewriter::Write(const char* chunk, size_t chunk_len) {
   if (!ended_ && !poisoned_) {
     int ret = rewriter_write(raw_, chunk, chunk_len);

@@ -19,8 +19,6 @@ namespace ads::database::table {
 
 class BatAdsCreativeNotificationAdsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsCreativeNotificationAdsDatabaseTableTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

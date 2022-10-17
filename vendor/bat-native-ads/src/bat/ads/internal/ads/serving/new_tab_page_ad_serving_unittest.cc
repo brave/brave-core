@@ -25,8 +25,6 @@ namespace ads::new_tab_page_ads {
 class BatAdsNewTabPageAdServingTest : public ServingObserver,
                                       public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdServingTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

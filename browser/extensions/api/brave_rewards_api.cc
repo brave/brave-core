@@ -12,6 +12,7 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/supported_subdivisions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -26,7 +27,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -51,12 +51,6 @@ using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 
 namespace {
-
-const char kShouldAllowAdsSubdivisionTargeting[] =
-    "shouldAllowAdsSubdivisionTargeting";
-const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutoDetectedAdsSubdivisionTargeting[] =
-    "automaticallyDetectedAdsSubdivisionTargeting";
 
 RewardsTabHelper* GetRewardsTabHelperForTabId(
     int tab_id,
@@ -110,8 +104,8 @@ ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
 BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
-  std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  return RespondNow(OneArgument(base::Value(std::move(locale))));
+  return RespondNow(
+      OneArgument(base::Value(brave_l10n::GetDefaultLocaleString())));
 }
 
 BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
@@ -1264,19 +1258,23 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   ads_data.Set(
       "adsPerHour",
       static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
-  ads_data.Set(kAdsSubdivisionTargeting,
+  ads_data.Set("adsSubdivisionTargeting",
                ads_service->GetSubdivisionTargetingCode());
-  ads_data.Set(kAutoDetectedAdsSubdivisionTargeting,
+  ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting",
                ads_service->GetAutoDetectedSubdivisionTargetingCode());
-  ads_data.Set(kShouldAllowAdsSubdivisionTargeting,
+  ads_data.Set("shouldAllowAdsSubdivisionTargeting",
                ads_service->ShouldAllowSubdivisionTargeting());
   ads_data.Set("adsUIEnabled", true);
 
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  ads_data.Set("countryCode", country_code);
+  base::Value::List subdivisions;
+  const auto subdivision_infos = ads::GetSupportedSubdivisions();
+  for (const auto& info : subdivision_infos) {
+    base::Value::Dict subdivision;
+    subdivision.Set("value", info.first);
+    subdivision.Set("name", info.second);
+    subdivisions.Append(std::move(subdivision));
+  }
+  ads_data.Set("subdivisions", std::move(subdivisions));
 
   return RespondNow(OneArgument(base::Value(std::move(ads_data))));
 }
@@ -1410,21 +1408,21 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
   auto* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (rewards_service) {
-    bool* ac_enabled = params->prefs.auto_contribute_enabled.get();
+    auto& ac_enabled = params->prefs.auto_contribute_enabled;
     if (ac_enabled)
       rewards_service->SetAutoContributeEnabled(*ac_enabled);
 
-    double* ac_amount = params->prefs.auto_contribute_amount.get();
+    auto& ac_amount = params->prefs.auto_contribute_amount;
     if (ac_amount)
       rewards_service->SetAutoContributionAmount(*ac_amount);
   }
 
   if (ads_service) {
-    bool* ads_enabled = params->prefs.ads_enabled.get();
+    auto& ads_enabled = params->prefs.ads_enabled;
     if (ads_enabled)
       ads_service->SetEnabled(*ads_enabled);
 
-    int* ads_per_hour = params->prefs.ads_per_hour.get();
+    auto& ads_per_hour = params->prefs.ads_per_hour;
     if (ads_per_hour)
       ads_service->SetMaximumNotificationAdsPerHour(*ads_per_hour);
   }

@@ -54,6 +54,7 @@ class DebounceRule {
                         std::string>
   ParseRules(const std::string& contents);
   static const std::string GetETLDForDebounce(const std::string& host);
+  static bool IsSameETLDForDebounce(const GURL& url1, const GURL& url2);
   static bool GetURLPatternSetFromValue(const base::Value* value,
                                         extensions::URLPatternSet* result);
 

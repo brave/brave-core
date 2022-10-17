@@ -20,8 +20,6 @@ namespace ads {
 
 class BatAdsNotificationAdUtilTest : public UnitTestBase {
  protected:
-  BatAdsNotificationAdUtilTest() = default;
-
   void BuildAndShowNotificationAd() {
     const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();

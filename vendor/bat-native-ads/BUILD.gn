@@ -26,6 +26,7 @@ config("internal_config") {
     "//brave/test:*",
   ]
   include_dirs = [ "src" ]
+  cflags = [ "-Wno-shadow" ]
 }
 
 group("bat-native-ads") {
@@ -91,6 +92,7 @@ source_set("headers") {
     "include/bat/ads/pref_names.h",
     "include/bat/ads/promoted_content_ad_info.h",
     "include/bat/ads/promoted_content_ad_value_util.h",
+    "include/bat/ads/supported_subdivisions.h",
     "include/bat/ads/sys_info.h",
   ]
 
@@ -157,6 +159,9 @@ source_set("ads") {
     "src/bat/ads/internal/account/deposits/deposits_factory.h",
     "src/bat/ads/internal/account/deposits/non_cash_deposit.cc",
     "src/bat/ads/internal/account/deposits/non_cash_deposit.h",
+    "src/bat/ads/internal/account/issuers/confirmations_issuer_util.cc",
+    "src/bat/ads/internal/account/issuers/confirmations_issuer_util.h",
+    "src/bat/ads/internal/account/issuers/issuer_constants.h",
     "src/bat/ads/internal/account/issuers/issuer_info.cc",
     "src/bat/ads/internal/account/issuers/issuer_info.h",
     "src/bat/ads/internal/account/issuers/issuer_types.h",
@@ -175,7 +180,11 @@ source_set("ads") {
     "src/bat/ads/internal/account/issuers/issuers_util.h",
     "src/bat/ads/internal/account/issuers/issuers_value_util.cc",
     "src/bat/ads/internal/account/issuers/issuers_value_util.h",
+    "src/bat/ads/internal/account/issuers/payments_issuer_util.cc",
+    "src/bat/ads/internal/account/issuers/payments_issuer_util.h",
     "src/bat/ads/internal/account/issuers/public_key_alias.h",
+    "src/bat/ads/internal/account/issuers/public_key_util.cc",
+    "src/bat/ads/internal/account/issuers/public_key_util.h",
     "src/bat/ads/internal/account/statement/ad_rewards_features.cc",
     "src/bat/ads/internal/account/statement/ad_rewards_features.h",
     "src/bat/ads/internal/account/statement/ads_received_util.cc",
@@ -848,6 +857,7 @@ source_set("ads") {
     "src/bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h",
     "src/bat/ads/internal/geographic/subdivision/subdivision_targeting.cc",
     "src/bat/ads/internal/geographic/subdivision/subdivision_targeting.h",
+    "src/bat/ads/internal/geographic/subdivision/supported_subdivision_codes.cc",
     "src/bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h",
     "src/bat/ads/internal/history/ad_content_util.cc",
     "src/bat/ads/internal/history/ad_content_util.h",
@@ -1157,6 +1167,7 @@ source_set("ads") {
     "src/bat/ads/pref_names.cc",
     "src/bat/ads/promoted_content_ad_info.cc",
     "src/bat/ads/promoted_content_ad_value_util.cc",
+    "src/bat/ads/supported_subdivisions.cc",
     "src/bat/ads/sys_info.cc",
   ]
 
@@ -1201,7 +1212,6 @@ source_set("ads") {
     "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_rewards/common",
     "//brave/components/challenge_bypass_ristretto",
-    "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//brave/components/version_info",
     "//brave/vendor/bat-native-ledger",

@@ -48,8 +48,6 @@ class BatAdsDidOverrideVariationsCommandLineSwitchUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsDidOverrideVariationsCommandLineSwitchUtilTest() = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 

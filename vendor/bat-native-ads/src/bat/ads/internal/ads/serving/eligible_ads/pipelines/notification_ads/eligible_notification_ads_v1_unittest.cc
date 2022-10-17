@@ -24,8 +24,6 @@ namespace ads::notification_ads {
 
 class BatAdsEligibleNotificationAdsV1Test : public UnitTestBase {
  protected:
-  BatAdsEligibleNotificationAdsV1Test() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

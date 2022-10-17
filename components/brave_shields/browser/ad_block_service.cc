@@ -261,8 +261,8 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
     force_hide_selectors.Append(std::move(custom_selector));
   }
 
-  for (auto& subscription_selectors : subscription_selectors) {
-    force_hide_selectors.Append(std::move(subscription_selectors));
+  for (auto& subscription_selector : subscription_selectors) {
+    force_hide_selectors.Append(std::move(subscription_selector));
   }
 
   base::Value::Dict result;

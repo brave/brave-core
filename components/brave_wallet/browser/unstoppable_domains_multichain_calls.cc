@@ -80,26 +80,28 @@ bool MultichainCall<ResultType>::MaybeResolveCallbacks() {
   return true;
 }
 
-template <class ResultType>
-std::vector<std::string> MultichainCalls<ResultType>::GetChains() const {
+template <class KeyType, class ResultType>
+std::vector<std::string> MultichainCalls<KeyType, ResultType>::GetChains()
+    const {
   return {mojom::kPolygonMainnetChainId, mojom::kMainnetChainId};
 }
 
-template <class ResultType>
-bool MultichainCalls<ResultType>::HasCall(const std::string& domain) {
-  return calls_.count(domain) > 0;
+template <class KeyType, class ResultType>
+bool MultichainCalls<KeyType, ResultType>::HasCall(const KeyType& key) {
+  return calls_.count(key) > 0;
 }
 
-template <class ResultType>
-void MultichainCalls<ResultType>::AddCallback(const std::string& domain,
-                                              CallbackType callback) {
-  calls_[domain].AddCallback(std::move(callback));
+template <class KeyType, class ResultType>
+void MultichainCalls<KeyType, ResultType>::AddCallback(const KeyType& key,
+                                                       CallbackType callback) {
+  calls_[key].AddCallback(std::move(callback));
 }
 
-template <class ResultType>
-void MultichainCalls<ResultType>::SetNoResult(const std::string& domain,
-                                              const std::string& chain_id) {
-  auto call = calls_.find(domain);
+template <class KeyType, class ResultType>
+void MultichainCalls<KeyType, ResultType>::SetNoResult(
+    const KeyType& key,
+    const std::string& chain_id) {
+  auto call = calls_.find(key);
   if (call == calls_.end())
     return;
 
@@ -108,11 +110,12 @@ void MultichainCalls<ResultType>::SetNoResult(const std::string& domain,
   }
 }
 
-template <class ResultType>
-void MultichainCalls<ResultType>::SetResult(const std::string& domain,
-                                            const std::string& chain_id,
-                                            ResultType result) {
-  auto call = calls_.find(domain);
+template <class KeyType, class ResultType>
+void MultichainCalls<KeyType, ResultType>::SetResult(
+    const KeyType& key,
+    const std::string& chain_id,
+    ResultType result) {
+  auto call = calls_.find(key);
   if (call == calls_.end())
     return;
 
@@ -121,12 +124,12 @@ void MultichainCalls<ResultType>::SetResult(const std::string& domain,
   }
 }
 
-template <class ResultType>
-void MultichainCalls<ResultType>::SetError(const std::string& domain,
-                                           const std::string& chain_id,
-                                           mojom::ProviderError error,
-                                           std::string error_message) {
-  auto call = calls_.find(domain);
+template <class KeyType, class ResultType>
+void MultichainCalls<KeyType, ResultType>::SetError(const KeyType& key,
+                                                    const std::string& chain_id,
+                                                    mojom::ProviderError error,
+                                                    std::string error_message) {
+  auto call = calls_.find(key);
   if (call == calls_.end())
     return;
 
@@ -136,7 +139,8 @@ void MultichainCalls<ResultType>::SetError(const std::string& domain,
   }
 }
 
-template class MultichainCalls<std::string>;
-template class MultichainCalls<GURL>;
+template class MultichainCalls<std::string, std::string>;
+template class MultichainCalls<WalletAddressKey, std::string>;
+template class MultichainCalls<std::string, GURL>;
 
 }  // namespace brave_wallet::unstoppable_domains

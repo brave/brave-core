@@ -19,8 +19,6 @@ namespace ads {
 
 class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
  protected:
-  BatAdsDatabaseMigrationIssue17231Test() = default;
-
   void SetUpMocks() override {
     CopyFileFromTestPathToTempPath("database_issue_17231.sqlite",
                                    kDatabaseFilename);

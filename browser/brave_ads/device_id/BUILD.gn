@@ -30,6 +30,10 @@ source_set("device_id") {
     "//crypto",
   ]
 
+  if (is_android) {
+    deps += [ "//brave/browser/brave_ads/android:jni_headers" ]
+  }
+
   libs = []
   if (is_win) {
     libs += [ "iphlpapi.lib" ]

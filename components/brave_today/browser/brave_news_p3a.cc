@@ -126,10 +126,8 @@ void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add) {
 
 void RecordDirectFeedsTotal(PrefService* prefs) {
   constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
-  const base::Value* direct_feeds_dict =
-      prefs->GetDictionary(prefs::kBraveTodayDirectFeeds);
-  DCHECK(direct_feeds_dict && direct_feeds_dict->is_dict());
-  std::size_t feed_count = direct_feeds_dict->DictSize();
+  const auto& direct_feeds_dict = prefs->GetDict(prefs::kBraveTodayDirectFeeds);
+  std::size_t feed_count = direct_feeds_dict.size();
   p3a_utils::RecordToHistogramBucket(kDirectFeedsTotalHistogramName, buckets,
                                      feed_count);
 }

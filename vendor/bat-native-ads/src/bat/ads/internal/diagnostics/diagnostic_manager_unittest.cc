@@ -11,12 +11,12 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/sys_info.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
@@ -34,7 +34,7 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
   SetCatalogLastUpdated(Now());
@@ -62,7 +62,7 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
           },
           {
             "name": "Locale",
-            "value": "en-KY"
+            "value": "en_KY"
           },
           {
             "name": "Catalog ID",

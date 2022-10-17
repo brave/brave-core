@@ -67,20 +67,18 @@ const char kMnemonic2[] =
     "misery jeans response tiny nominee civil zoo strong correct taxi chimney "
     "goat";
 
-base::Value GetHardwareKeyringValueForTesting() {
-  base::DictionaryValue dict;
-  dict.SetPath("hardware.A1.account_metas.0x111.account_name",
-               base::Value("test1"));
-  dict.SetPath("hardware.A1.account_metas.0x111.derivation_path",
-               base::Value("path1"));
-  dict.SetPath("hardware.A1.account_metas.0x111.hardware_vendor",
-               base::Value("vendor1"));
-  dict.SetPath("hardware.B2.account_metas.0x222.account_name",
-               base::Value("test2"));
-  dict.SetPath("hardware.B2.account_metas.0x222.derivation_path",
-               base::Value("path2"));
-  dict.SetPath("hardware.B2.account_metas.0x222.hardware_vendor",
-               base::Value("vendor2"));
+base::Value::Dict GetHardwareKeyringValueForTesting() {
+  base::Value::Dict dict;
+  dict.SetByDottedPath("hardware.A1.account_metas.0x111.account_name", "test1");
+  dict.SetByDottedPath("hardware.A1.account_metas.0x111.derivation_path",
+                       "path1");
+  dict.SetByDottedPath("hardware.A1.account_metas.0x111.hardware_vendor",
+                       "vendor1");
+  dict.SetByDottedPath("hardware.B2.account_metas.0x222.account_name", "test2");
+  dict.SetByDottedPath("hardware.B2.account_metas.0x222.derivation_path",
+                       "path2");
+  dict.SetByDottedPath("hardware.B2.account_metas.0x222.hardware_vendor",
+                       "vendor2");
   return dict;
 }
 
@@ -208,13 +206,13 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   bool HasPrefForKeyring(const std::string& key, const std::string& id) {
-    return KeyringService::HasPrefForKeyring(GetPrefs(), key, id);
+    return KeyringService::HasPrefForKeyring(*GetPrefs(), key, id);
   }
 
   std::string GetStringPrefForKeyring(const std::string& key,
                                       const std::string& id) {
     const base::Value* value =
-        KeyringService::GetPrefForKeyring(GetPrefs(), key, id);
+        KeyringService::GetPrefForKeyring(*GetPrefs(), key, id);
     if (!value)
       return std::string();
 
@@ -671,24 +669,24 @@ class KeyringServiceUnitTest : public testing::Test {
 };  // namespace brave_wallet
 
 TEST_F(KeyringServiceUnitTest, HasAndGetPrefForKeyring) {
-  base::DictionaryValue dict;
-  dict.SetPath("default.pref1", base::Value("123"));
-  GetPrefs()->Set(kBraveWalletKeyrings, dict);
-  EXPECT_TRUE(KeyringService::HasPrefForKeyring(GetPrefs(), "pref1",
+  base::Value::Dict dict;
+  dict.SetByDottedPath("default.pref1", base::Value("123"));
+  GetPrefs()->SetDict(kBraveWalletKeyrings, std::move(dict));
+  EXPECT_TRUE(KeyringService::HasPrefForKeyring(*GetPrefs(), "pref1",
                                                 mojom::kDefaultKeyringId));
   const base::Value* value = KeyringService::GetPrefForKeyring(
-      GetPrefs(), "pref1", mojom::kDefaultKeyringId);
+      *GetPrefs(), "pref1", mojom::kDefaultKeyringId);
   ASSERT_NE(value, nullptr);
   EXPECT_EQ(value->GetString(), "123");
 
   EXPECT_FALSE(
-      KeyringService::HasPrefForKeyring(GetPrefs(), "pref1", "keyring2"));
-  EXPECT_EQ(KeyringService::GetPrefForKeyring(GetPrefs(), "pref1", "keyring2"),
+      KeyringService::HasPrefForKeyring(*GetPrefs(), "pref1", "keyring2"));
+  EXPECT_EQ(KeyringService::GetPrefForKeyring(*GetPrefs(), "pref1", "keyring2"),
             nullptr);
 
-  EXPECT_FALSE(KeyringService::HasPrefForKeyring(GetPrefs(), "pref2",
+  EXPECT_FALSE(KeyringService::HasPrefForKeyring(*GetPrefs(), "pref2",
                                                  mojom::kDefaultKeyringId));
-  EXPECT_EQ(KeyringService::GetPrefForKeyring(GetPrefs(), "pref2",
+  EXPECT_EQ(KeyringService::GetPrefForKeyring(*GetPrefs(), "pref2",
                                               mojom::kDefaultKeyringId),
             nullptr);
 }
@@ -696,15 +694,14 @@ TEST_F(KeyringServiceUnitTest, HasAndGetPrefForKeyring) {
 TEST_F(KeyringServiceUnitTest, SetPrefForKeyring) {
   KeyringService::SetPrefForKeyring(GetPrefs(), "pref1", base::Value("123"),
                                     mojom::kDefaultKeyringId);
-  const base::Value* keyrings_pref =
-      GetPrefs()->GetDictionary(kBraveWalletKeyrings);
-  ASSERT_NE(keyrings_pref, nullptr);
-  const base::Value* value = keyrings_pref->FindPath("default.pref1");
+  const auto& keyrings_pref = GetPrefs()->GetDict(kBraveWalletKeyrings);
+  const std::string* value =
+      keyrings_pref.FindStringByDottedPath("default.pref1");
   ASSERT_NE(value, nullptr);
-  EXPECT_EQ(value->GetString(), "123");
+  EXPECT_EQ(*value, "123");
 
-  EXPECT_EQ(keyrings_pref->FindPath("default.pref2"), nullptr);
-  EXPECT_EQ(keyrings_pref->FindPath("keyring2.pref1"), nullptr);
+  EXPECT_EQ(keyrings_pref.FindByDottedPath("default.pref2"), nullptr);
+  EXPECT_EQ(keyrings_pref.FindByDottedPath("keyring2.pref1"), nullptr);
 }
 
 TEST_F(KeyringServiceUnitTest, GetAvailableKeyringsFromPrefs) {
@@ -742,7 +739,7 @@ TEST_F(KeyringServiceUnitTest, GetPrefInBytesForKeyring) {
   };
 
   auto mnemonic = KeyringService::GetPrefInBytesForKeyring(
-      GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId);
+      *GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId);
   ASSERT_TRUE(mnemonic);
   verify_bytes(*mnemonic);
 
@@ -751,22 +748,22 @@ TEST_F(KeyringServiceUnitTest, GetPrefInBytesForKeyring) {
                                     base::Value("3q2+7w^^"),
                                     mojom::kDefaultKeyringId);
   EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
-      GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId));
+      *GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId));
 
   // default pref value (empty)
   GetPrefs()->ClearPref(kBraveWalletKeyrings);
   EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
-      GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId));
+      *GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId));
 
   // non-existing pref
   EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
-      GetPrefs(), "brave.nothinghere", mojom::kDefaultKeyringId));
+      *GetPrefs(), "brave.nothinghere", mojom::kDefaultKeyringId));
 
   // non-string pref
   KeyringService::SetPrefForKeyring(GetPrefs(), "test_num", base::Value(123),
                                     mojom::kDefaultKeyringId);
   EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
-      GetPrefs(), "test_num", mojom::kDefaultKeyringId));
+      *GetPrefs(), "test_num", mojom::kDefaultKeyringId));
 }
 
 TEST_F(KeyringServiceUnitTest, SetPrefInBytesForKeyring) {
@@ -1449,7 +1446,7 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
                                            address2, mojom::kDefaultKeyringId);
 
   const base::Value* account_metas = KeyringService::GetPrefForKeyring(
-      GetPrefs(), kAccountMetas, mojom::kDefaultKeyringId);
+      *GetPrefs(), kAccountMetas, mojom::kDefaultKeyringId);
   ASSERT_NE(account_metas, nullptr);
 
   EXPECT_EQ(
@@ -1458,17 +1455,17 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
   EXPECT_EQ(
       account_metas->FindPath(account_path2 + ".account_name")->GetString(),
       name2);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path1,
+  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(*GetPrefs(), account_path1,
                                                      mojom::kDefaultKeyringId),
             name1);
   EXPECT_EQ(KeyringService::GetAccountAddressForKeyring(
-                GetPrefs(), account_path1, mojom::kDefaultKeyringId),
+                *GetPrefs(), account_path1, mojom::kDefaultKeyringId),
             address1);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path2,
+  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(*GetPrefs(), account_path2,
                                                      mojom::kDefaultKeyringId),
             name2);
   EXPECT_EQ(KeyringService::GetAccountAddressForKeyring(
-                GetPrefs(), account_path2, mojom::kDefaultKeyringId),
+                *GetPrefs(), account_path2, mojom::kDefaultKeyringId),
             address2);
   EXPECT_EQ(service.GetAccountMetasNumberForKeyring(mojom::kDefaultKeyringId),
             2u);
@@ -1639,41 +1636,44 @@ TEST_F(KeyringServiceUnitTest, GetAccountPathByIndex) {
 }
 
 TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
-  GetPrefs()->Set(kBraveWalletKeyrings, GetHardwareKeyringValueForTesting());
-  EXPECT_EQ(
-      *GetPrefs()
-           ->Get(kBraveWalletKeyrings)
-           ->FindStringPath("hardware.A1.account_metas.0x111.account_name"),
-      "test1");
+  GetPrefs()->SetDict(kBraveWalletKeyrings,
+                      GetHardwareKeyringValueForTesting());
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletKeyrings)
+                 .FindStringByDottedPath(
+                     "hardware.A1.account_metas.0x111.account_name"),
+            "test1");
 
   KeyringService::MigrateObsoleteProfilePrefs(GetPrefs());
 
-  const base::Value* hardware_accounts = KeyringService::GetPrefForKeyring(
-      GetPrefs(), kHardwareAccounts, mojom::kDefaultKeyringId);
-  EXPECT_EQ(hardware_accounts->DictSize(), 2u);
-  EXPECT_EQ(
-      *hardware_accounts->FindStringPath("A1.account_metas.0x111.account_name"),
-      "test1");
-  EXPECT_EQ(*hardware_accounts->FindStringPath(
+  const base::Value::Dict& hardware_accounts =
+      KeyringService::GetPrefForKeyring(*GetPrefs(), kHardwareAccounts,
+                                        mojom::kDefaultKeyringId)
+          ->GetDict();
+  EXPECT_EQ(hardware_accounts.size(), 2u);
+  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
+                "A1.account_metas.0x111.account_name"),
+            "test1");
+  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
                 "A1.account_metas.0x111.derivation_path"),
             "path1");
-  EXPECT_EQ(*hardware_accounts->FindStringPath(
+  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
                 "A1.account_metas.0x111.hardware_vendor"),
             "vendor1");
 
-  EXPECT_EQ(
-      *hardware_accounts->FindStringPath("B2.account_metas.0x222.account_name"),
-      "test2");
-  EXPECT_EQ(*hardware_accounts->FindStringPath(
+  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
+                "B2.account_metas.0x222.account_name"),
+            "test2");
+  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
                 "B2.account_metas.0x222.derivation_path"),
             "path2");
-  EXPECT_EQ(*hardware_accounts->FindStringPath(
+  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
                 "B2.account_metas.0x222.hardware_vendor"),
             "vendor2");
-  ASSERT_FALSE(
-      GetPrefs()
-          ->Get(kBraveWalletKeyrings)
-          ->FindStringPath("hardware.A1.account_metas.0x111.account_name"));
+  ASSERT_FALSE(GetPrefs()
+                   ->GetDict(kBraveWalletKeyrings)
+                   .FindStringByDottedPath(
+                       "hardware.A1.account_metas.0x111.account_name"));
 }
 
 TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
@@ -1825,7 +1825,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   EXPECT_EQ(default_keyring->GetImportedAccountsNumber(), 2u);
 
   const base::Value* imported_accounts_value =
-      KeyringService::GetPrefForKeyring(GetPrefs(), kImportedAccounts,
+      KeyringService::GetPrefForKeyring(*GetPrefs(), kImportedAccounts,
                                         mojom::kDefaultKeyringId);
   ASSERT_TRUE(imported_accounts_value);
   EXPECT_EQ(imported_accounts_value->GetList()[0]
@@ -1900,7 +1900,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
 
   // private key is encrypted
   const base::Value* imported_accounts_value =
-      KeyringService::GetPrefForKeyring(GetPrefs(), kImportedAccounts,
+      KeyringService::GetPrefForKeyring(*GetPrefs(), kImportedAccounts,
                                         mojom::kDefaultKeyringId);
   ASSERT_TRUE(imported_accounts_value);
   const std::string encrypted_private_key =
@@ -2019,17 +2019,17 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringDerivedAccountMeta) {
                                            address1, mojom::kDefaultKeyringId);
   KeyringService::SetAccountMetaForKeyring(GetPrefs(), account_path2, name2,
                                            address2, mojom::kDefaultKeyringId);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path1,
+  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(*GetPrefs(), account_path1,
                                                      mojom::kDefaultKeyringId),
             name1);
   EXPECT_EQ(KeyringService::GetAccountAddressForKeyring(
-                GetPrefs(), account_path1, mojom::kDefaultKeyringId),
+                *GetPrefs(), account_path1, mojom::kDefaultKeyringId),
             address1);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path2,
+  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(*GetPrefs(), account_path2,
                                                      mojom::kDefaultKeyringId),
             name2);
   EXPECT_EQ(KeyringService::GetAccountAddressForKeyring(
-                GetPrefs(), account_path2, mojom::kDefaultKeyringId),
+                *GetPrefs(), account_path2, mojom::kDefaultKeyringId),
             address2);
 
   ASSERT_FALSE(observer.AccountsChangedFired());
@@ -2057,10 +2057,10 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringDerivedAccountMeta) {
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
 
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path1,
+  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(*GetPrefs(), account_path1,
                                                      mojom::kDefaultKeyringId),
             name1);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path2,
+  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(*GetPrefs(), account_path2,
                                                      mojom::kDefaultKeyringId),
             kUpdatedName);
 }
@@ -2258,7 +2258,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
     auto path = keyring_id + ".hardware." + account->device_id +
                 ".account_metas." + account->address;
     ASSERT_TRUE(
-        GetPrefs()->GetDictionary(kBraveWalletKeyrings)->FindPath(path));
+        GetPrefs()->GetDict(kBraveWalletKeyrings).FindByDottedPath(path));
   }
   {
     // Checking Default keyring accounts
@@ -2361,26 +2361,30 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
 
-  ASSERT_FALSE(GetPrefs()
-                   ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("default.hardware.device1.account_metas.0x111"));
+  ASSERT_FALSE(
+      GetPrefs()
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath("default.hardware.device1.account_metas.0x111"));
 
-  ASSERT_FALSE(GetPrefs()
-                   ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("default.hardware.device1.account_metas.0x264"));
-
-  ASSERT_TRUE(GetPrefs()
-                  ->GetDictionary(kBraveWalletKeyrings)
-                  ->FindPath("default.hardware.device2.account_metas.0xEA0"));
-
-  ASSERT_TRUE(GetPrefs()
-                  ->GetDictionary(kBraveWalletKeyrings)
-                  ->FindPath("filecoin.hardware.device2.account_metas.0xFIL"));
+  ASSERT_FALSE(
+      GetPrefs()
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath("default.hardware.device1.account_metas.0x264"));
 
   ASSERT_TRUE(
       GetPrefs()
-          ->GetDictionary(kBraveWalletKeyrings)
-          ->FindPath(
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath("default.hardware.device2.account_metas.0xEA0"));
+
+  ASSERT_TRUE(
+      GetPrefs()
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath("filecoin.hardware.device2.account_metas.0xFIL"));
+
+  ASSERT_TRUE(
+      GetPrefs()
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath(
               "filecoin_testnet.hardware.device2.account_metas.0xFILTEST"));
 
   ASSERT_FALSE(observer.AccountsChangedFired());
@@ -2417,22 +2421,24 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
 
-  ASSERT_FALSE(GetPrefs()
-                   ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("default.hardware.device2.account_metas.0xEA0"));
+  ASSERT_FALSE(
+      GetPrefs()
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath("default.hardware.device2.account_metas.0xEA0"));
 
   ASSERT_FALSE(GetPrefs()
-                   ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("default.hardware.device2"));
+                   ->GetDict(kBraveWalletKeyrings)
+                   .FindByDottedPath("default.hardware.device2"));
 
   EXPECT_TRUE(RemoveHardwareAccount(&service, "0xFIL", kPasswordBrave,
                                     mojom::CoinType::FIL));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
-  ASSERT_FALSE(GetPrefs()
-                   ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("filecoin.hardware.device2.account_metas.0xFIL"));
+  ASSERT_FALSE(
+      GetPrefs()
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath("filecoin.hardware.device2.account_metas.0xFIL"));
 
   EXPECT_TRUE(RemoveHardwareAccount(&service, "0xFILTEST", kPasswordBrave,
                                     mojom::CoinType::FIL));
@@ -2441,8 +2447,8 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   observer.Reset();
   ASSERT_FALSE(
       GetPrefs()
-          ->GetDictionary(kBraveWalletKeyrings)
-          ->FindPath(
+          ->GetDict(kBraveWalletKeyrings)
+          .FindByDottedPath(
               "filecoin_testnet.hardware.device2.account_metas.0xFILTEST"));
 }
 
@@ -2782,35 +2788,38 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_TRUE(Unlock(&service, "brave"));
   // Can set Filecoin account
   {
-    absl::optional<std::string> imported_account = ImportFilecoinAccount(
+    absl::optional<std::string> fil_imported_account = ImportFilecoinAccount(
         &service, "Imported Filecoin account 1",
         // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
         "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
         "6b4545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a"
         "58533535794b383d227d",
         mojom::kFilecoinTestnet);
-    ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(*imported_account, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-    EXPECT_TRUE(SetSelectedAccount(
-        &service, &observer, imported_account.value(), mojom::CoinType::FIL));
-    EXPECT_EQ(imported_account.value(),
+    ASSERT_TRUE(fil_imported_account.has_value());
+    EXPECT_EQ(*fil_imported_account,
+              "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+    EXPECT_TRUE(SetSelectedAccount(&service, &observer,
+                                   fil_imported_account.value(),
+                                   mojom::CoinType::FIL));
+    EXPECT_EQ(fil_imported_account.value(),
               GetFilecoinSelectedAccount(&service, mojom::kFilecoinTestnet));
   }
   // Can set Solana account
   {
     // lazily create keyring when importing SOL account
-    absl::optional<std::string> imported_account = ImportAccount(
+    absl::optional<std::string> sol_imported_account = ImportAccount(
         &service, "Imported Account 1",
         // C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ
         "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
         "YbQtaJQKLXET9jVjepWXe",
         mojom::CoinType::SOL);
-    ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(*imported_account,
+    ASSERT_TRUE(sol_imported_account.has_value());
+    EXPECT_EQ(*sol_imported_account,
               "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
-    EXPECT_TRUE(SetSelectedAccount(
-        &service, &observer, imported_account.value(), mojom::CoinType::SOL));
-    EXPECT_EQ(imported_account.value(),
+    EXPECT_TRUE(SetSelectedAccount(&service, &observer,
+                                   sol_imported_account.value(),
+                                   mojom::CoinType::SOL));
+    EXPECT_EQ(sol_imported_account.value(),
               GetSelectedAccount(&service, mojom::CoinType::SOL));
   }
   EXPECT_EQ(hardware_account,
@@ -3525,8 +3534,8 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   }
   {
     // Create wallet with enabled filecoin & solana
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitWithFeatures(
+    base::test::ScopedFeatureList local_feature_list;
+    local_feature_list.InitWithFeatures(
         {brave_wallet::features::kBraveWalletFilecoinFeature,
          brave_wallet::features::kBraveWalletSolanaFeature},
         {});
@@ -3549,8 +3558,8 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
 #endif
     service.Lock();
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitWithFeatures(
+    base::test::ScopedFeatureList local_feature_list;
+    local_feature_list.InitWithFeatures(
         {brave_wallet::features::kBraveWalletFilecoinFeature,
          brave_wallet::features::kBraveWalletSolanaFeature},
         {});
@@ -3580,19 +3589,20 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
 #endif
 
-    base::test::ScopedFeatureList feature_list;
-    base::FieldTrialParams parameters;
-    parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+    base::test::ScopedFeatureList local_feature_list;
+    base::FieldTrialParams local_parameters;
+    local_parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
     std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-        enabled_features;
-    enabled_features.emplace_back(
-        brave_wallet::features::kBraveWalletSolanaFeature, parameters);
-    enabled_features.emplace_back(
+        local_enabled_features;
+    local_enabled_features.emplace_back(
+        brave_wallet::features::kBraveWalletSolanaFeature, local_parameters);
+    local_enabled_features.emplace_back(
         brave_wallet::features::kBraveWalletFilecoinFeature,
         base::FieldTrialParams());
 
-    feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+    local_feature_list.InitWithFeaturesAndParameters(local_enabled_features,
+                                                     {});
 
     service.Reset();
     ASSERT_TRUE(

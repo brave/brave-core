@@ -1091,8 +1091,21 @@
                   "adsUIEnabled": {
                     "type": "boolean"
                   },
-                  "countryCode": {
-                    "type": "string"
+                  "subdivisions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "subdivision name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "subdivision code"
+                        }
+                      }
+                    }
                   }
                 }
               }

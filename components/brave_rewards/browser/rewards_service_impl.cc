@@ -586,7 +586,11 @@ void RewardsServiceImpl::CreateRewardsWallet(
         return;
       }
 
-      if (result != CreateRewardsWalletResult::kSuccess) {
+      // If the server responds with `kGeoCountryAlreadyDeclared`,
+      // optimistically assume that the user has already declared their
+      // country correctly and save `country` in preferences.
+      if (result != CreateRewardsWalletResult::kSuccess &&
+          result != CreateRewardsWalletResult::kGeoCountryAlreadyDeclared) {
         std::move(callback).Run(result);
         return;
       }
@@ -618,7 +622,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
         observer.OnRewardsWalletUpdated();
       }
 
-      std::move(callback).Run(result);
+      std::move(callback).Run(CreateRewardsWalletResult::kSuccess);
     };
 
     self->bat_ledger_->CreateRewardsWallet(
@@ -1349,7 +1353,7 @@ void RewardsServiceImpl::OnRecoverWallet(const ledger::mojom::Result result) {
   }
 }
 
-const std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
+std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     const {
   std::vector<std::string> providers;
 
@@ -1561,6 +1565,15 @@ void RewardsServiceImpl::SetUint64State(const std::string& name,
 
 uint64_t RewardsServiceImpl::GetUint64State(const std::string& name) const {
   return profile_->GetPrefs()->GetUint64(GetPrefPath(name));
+}
+
+void RewardsServiceImpl::SetValueState(const std::string& name,
+                                       base::Value value) {
+  profile_->GetPrefs()->Set(GetPrefPath(name), std::move(value));
+}
+
+base::Value RewardsServiceImpl::GetValueState(const std::string& name) const {
+  return profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone();
 }
 
 void RewardsServiceImpl::ClearState(const std::string& name) {
@@ -2582,11 +2595,11 @@ bool RewardsServiceImpl::IsAutoContributeSupported() const {
 }
 
 std::string RewardsServiceImpl::GetLegacyWallet() {
-  auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
+  const auto& dict = profile_->GetPrefs()->GetDict(prefs::kExternalWallets);
 
   std::string json;
-  for (auto it : dict->DictItems()) {
-    base::JSONWriter::Write(std::move(it.second), &json);
+  for (auto it = dict.begin(); it != dict.end(); ++it) {
+    base::JSONWriter::Write(std::move(it->second), &json);
   }
 
   return json;

@@ -12,11 +12,12 @@ namespace playlist {
 // so that playlists can share same item efficiently
 // Currently, List type preference always has to be updated entirely but there
 // are many cases where we only need update small part of it.
-// Thus, in order to update playlists efficiently, this pref is in Dictionary.
+// Thus, in order to update playlists efficiently, this pref is in Dictionary
 //
-// e.g. { "list1": {name: "playlist1", items: [id1, id2, id3] },
-//      { "list2": {name: "playlist2", items: [id1, id4, id5] }]
-//                                             ^ same item
+// e.g. {
+//        "list1": {name: "playlist1", items: [id1, id2, id3]},
+//        "list2": {name: "playlist2", items: [id1, id4, id5] }
+//      }                                       ^ same item
 constexpr char kPlaylistsPref[] = "brave.playlist.lists";
 
 // Stores playlist item key-value pairs in a dict. Each item has unique key and

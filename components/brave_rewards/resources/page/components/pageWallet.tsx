@@ -621,10 +621,29 @@ class PageWallet extends React.Component<Props, State> {
     return ''
   }
 
+  isWalletProviderEnabled = (walletProvider: string) => {
+    const { currentCountryCode, parameters } = this.props.rewardsData
+    const regions = parameters.walletProviderRegions[walletProvider]
+
+    if (!regions) {
+      return true
+    }
+
+    const { allow, block } = regions
+
+    if (allow.length === 0 && block.length === 0) {
+      return true
+    }
+
+    return allow.includes(currentCountryCode) ||
+      block.length !== 0 && !block.includes(currentCountryCode)
+  }
+
   generateExternalWalletProviderList = (walletProviders: string[]) => {
     return walletProviders.map((type) => ({
       type,
-      name: lookupExternalWalletProviderName(type)
+      name: lookupExternalWalletProviderName(type),
+      enabled: this.isWalletProviderEnabled(type)
     }))
   }
 

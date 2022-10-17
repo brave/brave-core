@@ -95,13 +95,12 @@ a[href] {
 
 #article {
   text-rendering: optimizeLegibility;
-  font-family: "Georgia", "Times New Roman", Times, serif;
   user-select: unset;
 }
 
 #article * {
   /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
-  max-width: 680;
+  max-width: 100%;
 }
 
 #article img {
@@ -139,6 +138,7 @@ body {
   background-color: var(--article-background-color);
   color: var(--article-text-color);
   padding-left: 120px !important;
+  padding-right: 120px !important;
 }
 
 body.watch #article .leading-image,
@@ -468,6 +468,7 @@ iframe {
 
 html,
 html[data-theme='light'] {
+  --font-size-percentage: 100;
   --background-color: #F8F9FA;
   --article-background-color: #FFFFFF;
   --summary-text-color: #495057;
@@ -491,4 +492,68 @@ html[data-theme='dark'] {
   --summary-text-color: #C2C4CF;
   --article-text-color: #F0F2FF;
   --quote-text-color: #C2C4CF;
+}
+
+html[data-font-size="50"] {
+  font-size: 50%;
+}
+
+html[data-font-size="60"] {
+  font-size: 60%;
+}
+
+html[data-font-size="70"] {
+  font-size: 70%;
+}
+
+html[data-font-size="80"] {
+  font-size: 80%;
+}
+
+html[data-font-size="90"] {
+  font-size: 90%;
+}
+
+html[data-font-size="100"] {
+  font-size: 100%;
+}
+
+html[data-font-size="110"] {
+  font-size: 110%;
+}
+
+html[data-font-size="120"] {
+  font-size: 120%;
+}
+
+html[data-font-size="130"] {
+  font-size: 130%;
+}
+
+html[data-font-size="140"] {
+  font-size: 140%;
+}
+
+html[data-font-size="150"] {
+  font-size: 150%;
+}
+
+html[data-font-family="sans"] {
+  font-family: "Arial", Sans-serif;
+}
+
+html[data-font-family="serif"] {
+  font-family: Sans-serif;
+}
+
+html[data-font-family="mono"] {
+  font-family: monospace;
+}
+
+html[data-font-family="dyslexic"] {
+  font-family: "Tahoma", Sans-serif;
+}
+
+html[data-content-style="text-only"] img {
+  display: none !important;
 }

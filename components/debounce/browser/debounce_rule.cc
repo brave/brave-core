@@ -90,8 +90,8 @@ bool DebounceRule::GetURLPatternSetFromValue(
   // work and you're just wasting everyone's time.)
   std::string error;
   bool valid = result->Populate(
-      base::Value::AsListValue(*value),
-      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, false, &error);
+      value->GetList(), URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+      false, &error);
   if (!valid)
     VLOG(1) << error;
   return valid;
@@ -117,6 +117,14 @@ const std::string DebounceRule::GetETLDForDebounce(const std::string& host) {
   return net::registry_controlled_domains::GetDomainAndRegistry(
       host, net::registry_controlled_domains::PrivateRegistryFilter::
                 EXCLUDE_PRIVATE_REGISTRIES);
+}
+
+// static
+bool DebounceRule::IsSameETLDForDebounce(const GURL& url1, const GURL& url2) {
+  return net::registry_controlled_domains::SameDomainOrHost(
+      url1, url2,
+      net::registry_controlled_domains::PrivateRegistryFilter::
+          EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 // static
@@ -308,7 +316,7 @@ bool DebounceRule::Apply(const GURL& original_url,
     return false;
 
   // Failsafe: never redirect to the same site.
-  if (url::IsSameOriginWith(original_url, new_url))
+  if (IsSameETLDForDebounce(original_url, new_url))
     return false;
 
   *final_url = new_url;
