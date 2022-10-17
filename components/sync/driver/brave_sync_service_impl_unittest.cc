@@ -66,9 +66,7 @@ class SyncServiceImplDelegateMock : public SyncServiceImplDelegate {
   void SuspendDeviceObserverForOwnReset() override {}
   void ResumeDeviceObserver() override {}
   void SetLocalDeviceAppearedCallback(
-      base::OnceCallback<void()> local_device_appeared_callback) override{};
-  void set_profile_sync_service(
-      BraveSyncServiceImpl* sync_service_impl) override{};
+      base::OnceCallback<void()> local_device_appeared_callback) override {}
 };
 
 class BraveSyncServiceImplTest : public testing::Test {
