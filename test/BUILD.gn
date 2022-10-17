@@ -1114,6 +1114,10 @@ test("brave_browser_tests") {
     }
   }
 
+  if (!is_android) {
+    deps += [ "//brave/browser/sharing_hub:browser_tests" ]
+  }
+
   if (enable_sidebar) {
     sources += [
       "//brave/browser/ui/views/sidebar/sidebar_container_view_browsertest.cc",
