@@ -771,11 +771,14 @@ extension PlaylistListViewController {
     guard let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
       return
     }
+    
+    cell.itemId = item.id
 
     switch state {
     case .inProgress:
       if let percentComplete = percentComplete {
         getAssetDurationFormatted(item: item) { [weak cell] in
+          guard cell?.itemId == item.id else { return }
           cell?.detailLabel.text = "\($0) - \(Int(percentComplete))% \(Strings.PlayList.savedForOfflineLabelTitle)"
         }
       } else {
@@ -787,16 +790,19 @@ extension PlaylistListViewController {
     case .downloaded:
       if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.tagId) {
         getAssetDurationFormatted(item: item) { [weak cell] in
+          guard cell?.itemId == item.id else { return }
           cell?.detailLabel.text = "\($0) - \(itemSize)"
         }
       } else {
         getAssetDurationFormatted(item: item) { [weak cell] in
+          guard cell?.itemId == item.id else { return }
           cell?.detailLabel.text = "\($0) - \(Strings.PlayList.savedForOfflineLabelTitle)"
         }
       }
 
     case .invalid:
       getAssetDurationFormatted(item: item) { [weak cell] in
+        guard cell?.itemId == item.id else { return }
         cell?.detailLabel.text = $0
       }
     }
@@ -842,19 +848,17 @@ extension PlaylistListViewController {
 
     // Some sort of error happened while downloading the playlist item
     Logger.module.error("Error downloading playlist item: \(error.localizedDescription)")
-
-    guard let item = PlaylistManager.shared.itemAtIndex(index) else {
-      return
-    }
-
+    
     guard let cell = tableView.cellForRow(at: indexPath) as? PlaylistCell else {
       return
     }
 
     // Show only the item duration on the cell
-    getAssetDurationFormatted(item: item) { [weak cell] in
-      cell?.detailLabel.text = $0
-    }
+    updateCellDownloadStatus(
+      indexPath: indexPath,
+      cell: cell,
+      state: .invalid,
+      percentComplete: nil)
 
     let alert = UIAlertController(
       title: Strings.PlayList.playlistSaveForOfflineErrorTitle,

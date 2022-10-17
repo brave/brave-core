@@ -24,6 +24,7 @@ class PlaylistAssetFetcher {
 }
 
 class PlaylistCell: UITableViewCell {
+  var itemId: String?
   let thumbnailGenerator = PlaylistThumbnailRenderer()
 
   private let thumbnailMaskView = CAShapeLayer().then {
