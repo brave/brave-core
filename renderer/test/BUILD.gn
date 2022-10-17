@@ -14,7 +14,6 @@ source_set("browser_tests") {
     "js_ethereum_provider_browsertest.cc",
     "navigator_connection_attribute_browsertest.cc",
     "serial_api_browsertest.cc",
-    "subresource_web_bundles_browsertest.cc",
   ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
