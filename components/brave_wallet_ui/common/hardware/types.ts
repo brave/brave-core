@@ -46,7 +46,18 @@ export enum TrezorDerivationPaths {
   Default = 'trezor'
 }
 
-const DerivationSchemeTypes = [LedgerDerivationPaths.LedgerLive, LedgerDerivationPaths.Legacy, LedgerDerivationPaths.Deprecated, TrezorDerivationPaths.Default] as const
+export enum SolDerivationPaths {
+  Default = 'default',
+  LedgerLive = 'ledger-live'
+}
+
+const DerivationSchemeTypes = [
+  LedgerDerivationPaths.LedgerLive,
+  LedgerDerivationPaths.Legacy,
+  LedgerDerivationPaths.Deprecated,
+  TrezorDerivationPaths.Default,
+  SolDerivationPaths.Default,
+  SolDerivationPaths.LedgerLive] as const
 export type HardwareDerivationScheme = typeof DerivationSchemeTypes[number]
 
 type HardwareWalletAccountBytesAddress = BraveWallet.HardwareWalletAccount & {
