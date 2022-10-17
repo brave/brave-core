@@ -12,6 +12,7 @@
 # This test fails because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
 -AutofillTestPrerendering.DeferWhilePrerendering
+-ShareServicePrerenderBrowserTest.*
 
 # This test fails because we intentionally disable trust tokens via
 # network::features::kTrustTokens
