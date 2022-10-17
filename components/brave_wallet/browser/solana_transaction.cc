@@ -235,40 +235,54 @@ SolanaTransaction::GetSignedTransactionBytes(
 
   // Preparing signatures.
   std::vector<uint8_t> transaction_bytes;
-  std::vector<uint8_t> signature_bytes;
+  if (signers.size() > UINT8_MAX)
+    return absl::nullopt;
+  CompactU16Encode(signers.size(), &transaction_bytes);
+
+  // Assign fee payer's signature, and keep signatures for other signers from
+  // dApp transaction if exists. Fill empty signatures for non-fee-payer
+  // signers if their signatures aren't passed by dApp transaction. This would
+  // make sure solana-web3 JS transactions have entries for all signers in the
+  // signatures property. We have to make sure of this because our fee payer's
+  // signature might be dropped later if Transaction.signatures.length is not
+  // equal to number of required signers for this transaction.
   uint8_t num_of_sig = 0;
   for (const auto& signer : signers) {
     if (message_.fee_payer() == signer) {
       if (fee_payer_signature) {
-        signature_bytes.insert(signature_bytes.end(),
-                               fee_payer_signature->begin(),
-                               fee_payer_signature->end());
+        transaction_bytes.insert(transaction_bytes.end(),
+                                 fee_payer_signature->begin(),
+                                 fee_payer_signature->end());
       } else {
         std::vector<uint8_t> signature = keyring_service->SignMessage(
             mojom::kSolanaKeyringId, signer, message_bytes);
-        signature_bytes.insert(signature_bytes.end(), signature.begin(),
-                               signature.end());
+        transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
+                                 signature.end());
       }
       ++num_of_sig;
+      continue;
     } else if (sign_tx_param_) {
+      bool found = false;
       for (const auto& sig_pubkey_pair : sign_tx_param_->signatures) {
         if (sig_pubkey_pair->public_key == signer &&
             sig_pubkey_pair->signature &&
             sig_pubkey_pair->signature->size() == kSolanaSignatureSize) {
-          signature_bytes.insert(signature_bytes.end(),
-                                 sig_pubkey_pair->signature->begin(),
-                                 sig_pubkey_pair->signature->end());
+          transaction_bytes.insert(transaction_bytes.end(),
+                                   sig_pubkey_pair->signature->begin(),
+                                   sig_pubkey_pair->signature->end());
           ++num_of_sig;
+          found = true;
           break;
         }
       }
+      if (found)
+        continue;
     }
+    transaction_bytes.insert(transaction_bytes.end(), kSolanaSignatureSize, 0);
+    ++num_of_sig;
   }
+  DCHECK(num_of_sig == signers.size());
 
-  // Compact array of signatures.
-  CompactU16Encode(num_of_sig, &transaction_bytes);
-  transaction_bytes.insert(transaction_bytes.end(), signature_bytes.begin(),
-                           signature_bytes.end());
   // Message.
   transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
                            message_bytes.end());
