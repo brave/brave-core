@@ -133,7 +133,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kSCTAuditing,
     &features::kSignedExchangeReportingForDistributors,
     &features::kSignedHTTPExchange,
-    &features::kSubresourceWebBundles,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kTrustSafetySentimentSurvey,
 #endif
