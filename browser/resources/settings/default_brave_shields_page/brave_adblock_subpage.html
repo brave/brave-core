@@ -167,7 +167,7 @@
         </div>
         <cr-input
           type="text"
-          placeholder="Filter lists"
+          placeholder="$i18n{adblockFilterListsInputPlaceHolder}"
           min="1"
           max="100"
           value="{{filterListTitle}}"
@@ -188,7 +188,7 @@
         </div>
         <template is="dom-if" if="[[!hasListExpanded_]]">
           <div class="show-list-button-box">
-            <cr-button on-click="handleShowList_">Show full list</cr-button>
+            <cr-button on-click="handleShowList_">$i18n{adblockShowFullListsButtonLabel}</cr-button>
           </div>
         </template>
     </div>
@@ -233,14 +233,14 @@
             </span>
           </div>
           <template is="dom-repeat" items="[[subscriptionList_]]" initial-count="10">
-            <div class$="subscribe-url-item 
+            <div class$="subscribe-url-item
             selected-[[item.enabled]]">
-              <cr-checkbox 
+              <cr-checkbox
                 checked="{{item.enabled}}"
                 on-change="handleSubscribeUrlItemItemToggle_"
               ></cr-checkbox>
-              <span 
-                title="[[item.subscription_url]]" class$="subscribe-url-item-name 
+              <span
+                title="[[item.subscription_url]]" class$="subscribe-url-item-name
                 selected-[[item.enabled]]"
               >
                 [[item.subscription_url]]
