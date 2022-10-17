@@ -10,6 +10,7 @@ import { getLocale } from '../../../../common/locale'
 
 // types
 import { BraveWallet, ChartTimelineObjectType } from '../../../constants/types'
+import RowReveal from '../../shared/animated-reveals/row-reveal'
 
 // Styled Components
 import { ToggleVisibilityButton } from '../../shared/style'
@@ -36,21 +37,24 @@ export const ChartControlBar = React.memo(({
 }: Props) => {
   return (
     <StyledWrapper>
-      {timelineOptions.map((t) =>
-        <StyledButton
-          key={t.id}
-          onClick={() => onSelectTimeframe(t.id)}
-          isSelected={selectedTimeline === t.id}
-          disabled={disabled}
-        >
-          <ButtonText
+
+      <RowReveal hideContent={disabled}>
+        {timelineOptions.map((t) =>
+          <StyledButton
+            key={t.id}
+            onClick={() => onSelectTimeframe(t.id)}
             isSelected={selectedTimeline === t.id}
             disabled={disabled}
           >
-            {getLocale(t.name)}
-          </ButtonText>
-        </StyledButton>
-      )}
+            <ButtonText
+              isSelected={selectedTimeline === t.id}
+              disabled={disabled}
+            >
+              {getLocale(t.name)}
+            </ButtonText>
+          </StyledButton>
+        )}
+      </RowReveal>
 
       {onDisabledChanged &&
         <StyledButton as="div">

@@ -58,6 +58,7 @@ import {
 } from '../../../shared/style'
 import { formatAsDouble } from '../../../../utils/string-utils'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
+import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 
 export const PortfolioOverview = () => {
   // routing
@@ -258,12 +259,12 @@ export const PortfolioOverview = () => {
 
       <VerticalSpace space='20px' />
 
-      {showChart &&
+      <ColumnReveal hideContent={!showChart}>
         <PortfolioOverviewChart
           hasZeroBalance={isZeroBalance}
           onHover={setHoverBalance}
         />
-      }
+      </ColumnReveal>
 
       <TokenLists
         userAssetList={userAssetList}

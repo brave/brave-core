@@ -364,11 +364,7 @@ export const PortfolioAsset = (props: Props) => {
 
   const onUpdateBalance = React.useCallback((value: number | undefined) => {
     setHoverPrice(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
-  }, [defaultCurrencies])
-
-  // const onToggleHideBalances = React.useCallback(() => {
-  //   setHideBalances(prevHideBalances => !prevHideBalances)
-  // }, [])
+  }, [defaultCurrencies.fiat])
 
   const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
 
