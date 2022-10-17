@@ -218,4 +218,17 @@ TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
             sparse_data_vector_5.GetValuesForTesting());
 }
 
+TEST_F(BatAdsVectorDataTest, GetMagnitude) {
+  const VectorData vector_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
+  const float magnitude = vector_1.GetMagnitude();
+  EXPECT_EQ(magnitude, 4.0);
+}
+
+TEST_F(BatAdsVectorDataTest, ComputeSimilarity) {
+  const VectorData vector_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
+  const VectorData vector_2({-2.0, 1.0, 1.0, -1.0, 2.0, 2.0, 1.0});
+  const float similarity = vector_1.ComputeSimilarity(vector_2);
+  EXPECT_EQ(similarity, 0.875);
+}
+
 }  // namespace brave_ads::ml

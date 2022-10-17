@@ -10,7 +10,9 @@ namespace brave_ads::targeting {
 
 struct UserModelInfo;
 
-UserModelInfo BuildUserModel();
+using GetUserModelCallback = std::function<void(const UserModelInfo)>;
+
+void BuildUserModel(GetUserModelCallback callback);
 
 }  // namespace brave_ads::targeting
 

@@ -172,9 +172,8 @@ std::vector<int> ComputeVoteRegistry(
     int max_index = 0;
     float max_similarity = 0.0;
     for (const auto& creative_ad : creative_ads) {
-      ml::VectorData ad_embedding = ml::VectorData(creative_ad.embedding);
-      const ml::VectorData page_text_embedding =
-          ml::VectorData(text_embedding.embedding);
+      ml::VectorData ad_embedding(creative_ad.embedding);
+      const ml::VectorData page_text_embedding(text_embedding.embedding);
       const float similarity_score =
           ad_embedding.ComputeSimilarity(page_text_embedding);
 

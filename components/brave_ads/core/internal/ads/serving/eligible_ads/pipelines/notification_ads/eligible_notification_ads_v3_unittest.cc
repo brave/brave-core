@@ -54,14 +54,12 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
 
   const TextEmbeddingHtmlEventInfo text_embedding_event =
       BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());
-  LogTextEmbeddingHtmlEvent(text_embedding_event,
-                            [=](const bool success) { ASSERT_TRUE(success); });
 
   SaveCreativeAds(creative_ads);
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}),
+      targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
       [](const bool had_opportunity,
          const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -86,7 +84,7 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoEmbeddings) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}),
+      targeting::BuildUserModel({}, {}, {}, {}),
       [](const bool had_opportunity,
          const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -99,12 +97,10 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
   const TextEmbeddingHtmlEventInfo text_embedding_event =
       BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());
-  LogTextEmbeddingHtmlEvent(text_embedding_event,
-                            [=](const bool success) { ASSERT_TRUE(success); });
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}),
+      targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
       [](const bool had_opportunity,
          const CreativeNotificationAdList& creative_ads) {
         // Assert

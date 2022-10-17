@@ -38,10 +38,12 @@ class EligibleAdsV3 final : public EligibleAdsBase {
 
  private:
   void GetBrowsingHistory(
+      const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       GetEligibleAdsCallback<CreativeNotificationAdList> callback);
 
   void GetEligibleAds(
+      const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       GetEligibleAdsCallback<CreativeNotificationAdList> callback,
       const BrowsingHistoryList& browsing_history);

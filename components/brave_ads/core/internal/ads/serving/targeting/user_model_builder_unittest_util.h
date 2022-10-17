@@ -6,15 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_UNITTEST_UTIL_H_
 
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace brave_ads::targeting {
 
 struct UserModelInfo;
 
-UserModelInfo BuildUserModel(const SegmentList& interest_segments,
-                             const SegmentList& latent_interest_segments,
-                             const SegmentList& purchase_intent_segments);
+UserModelInfo BuildUserModel(
+    const SegmentList& interest_segments,
+    const SegmentList& latent_interest_segments,
+    const SegmentList& purchase_intent_segments,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
 }  // namespace brave_ads::targeting
 

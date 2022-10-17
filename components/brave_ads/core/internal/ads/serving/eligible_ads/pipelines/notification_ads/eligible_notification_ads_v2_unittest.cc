@@ -52,7 +52,7 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"foo-bar3"}, {}, {"foo-bar1", "foo-bar2"}),
+      targeting::BuildUserModel({"foo-bar3"}, {}, {"foo-bar1", "foo-bar2"}, {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -77,7 +77,7 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}),
+      targeting::BuildUserModel({}, {}, {}, {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -92,7 +92,7 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"interest-foo", "interest-bar"}, {},
-                                {"intent-foo", "intent-bar"}),
+                                {"intent-foo", "intent-bar"}, {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert

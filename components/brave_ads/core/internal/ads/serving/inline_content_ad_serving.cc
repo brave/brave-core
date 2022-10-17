@@ -65,40 +65,38 @@ void Serving::MaybeServeAd(const std::string& dimensions,
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  const targeting::UserModelInfo user_model = targeting::BuildUserModel();
+  targeting::BuildUserModel([=](const targeting::UserModelInfo user_model) {
+    DCHECK(eligible_ads_);
+    eligible_ads_->GetForUserModel(
+        user_model, dimensions,
+        base::BindOnce(&Serving::OnGetForUserModel, weak_factory_.GetWeakPtr(),
+                       user_model, dimensions, std::move(callback)));
+  });
 
-  DCHECK(eligible_ads_);
-  eligible_ads_->GetForUserModel(
-      user_model, dimensions,
-      base::BindOnce(&Serving::OnGetForUserModel, weak_factory_.GetWeakPtr(),
-                     user_model, dimensions, std::move(callback)));
-}
+  ///////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
+  void Serving::OnGetForUserModel(
+      const targeting::UserModelInfo& user_model, const std::string& dimensions,
+      MaybeServeInlineContentAdCallback callback, const bool had_opportunity,
+      const CreativeInlineContentAdList& creative_ads) {
+    if (had_opportunity) {
+      const SegmentList segments = targeting::GetTopChildSegments(user_model);
+      NotifyOpportunityAroseToServeInlineContentAd(segments);
+    }
 
-void Serving::OnGetForUserModel(
-    const targeting::UserModelInfo& user_model,
-    const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback,
-    const bool had_opportunity,
-    const CreativeInlineContentAdList& creative_ads) {
-  if (had_opportunity) {
-    const SegmentList segments = targeting::GetTopChildSegments(user_model);
-    NotifyOpportunityAroseToServeInlineContentAd(segments);
-  }
+    if (creative_ads.empty()) {
+      BLOG(1, "Inline content ad not served: No eligible ads found");
+      return FailedToServeAd(dimensions, std::move(callback));
+    }
 
-  if (creative_ads.empty()) {
-    BLOG(1, "Inline content ad not served: No eligible ads found");
-    return FailedToServeAd(dimensions, std::move(callback));
-  }
+    BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  BLOG(1, "Found " << creative_ads.size() << " eligible ads");
+    const int rand =
+        base::RandInt(0, static_cast<int>(creative_ads.size()) - 1);
+    const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
 
-  const int rand = base::RandInt(0, static_cast<int>(creative_ads.size()) - 1);
-  const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
-
-  const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
-  ServeAd(ad, std::move(callback));
+    const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
+    ServeAd(ad, std::move(callback));
 }
 
 bool Serving::IsSupported() const {

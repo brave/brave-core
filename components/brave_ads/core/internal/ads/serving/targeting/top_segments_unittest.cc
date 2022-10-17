@@ -202,11 +202,12 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
                                                     disabled_features);
 
   // Act
-  const UserModelInfo user_model = BuildUserModel();
-  const SegmentList segments = GetTopChildSegments(user_model);
+  BuildUserModel([=](const targeting::UserModelInfo user_model) {
+    const SegmentList segments = GetTopChildSegments(user_model);
 
-  // Assert
-  EXPECT_EQ(param.number_of_segments, segments.size());
+    // Assert
+    EXPECT_EQ(param.number_of_segments, segments.size());
+  });
 }
 
 static std::string GetTestCaseName(
@@ -260,21 +261,22 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
       {});
 
   // Act
-  const UserModelInfo user_model = BuildUserModel();
-  const SegmentList segments = GetTopChildSegments(user_model);
+  BuildUserModel([=](const targeting::UserModelInfo user_model) {
+    const SegmentList segments = GetTopChildSegments(user_model);
 
-  // Assert
-  const SegmentList expected_segments = {
-      "technology & computing-technology & computing",
-      "personal finance-banking",
-      "food & drink-cooking",
-      "science",
-      "travel",
-      "technology & computing",
-      "segment 3",
-      "segment 2"};
+    // Assert
+    const SegmentList expected_segments = {
+        "technology & computing-technology & computing",
+        "personal finance-banking",
+        "food & drink-cooking",
+        "science",
+        "travel",
+        "technology & computing",
+        "segment 3",
+        "segment 2"};
 
-  EXPECT_EQ(expected_segments, segments);
+    EXPECT_EQ(expected_segments, segments);
+  });
 }
 
 TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
@@ -299,13 +301,14 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   scoped_feature_list.InitWithFeatureList(std::move(feature_list));
 
   // Act
-  const UserModelInfo user_model = BuildUserModel();
-  const SegmentList segments = GetTopChildSegments(user_model);
+  BuildUserModel([=](const targeting::UserModelInfo user_model) {
+    const SegmentList segments = GetTopChildSegments(user_model);
 
-  // Assert
-  // Even though text classification has been processed we don't expect
-  // winning segments from it since the trial disabled the model
-  EXPECT_EQ(5U, segments.size());
+    // Assert
+    // Even though text classification has been processed we don't expect
+    // winning segments from it since the trial disabled the model
+    EXPECT_EQ(5U, segments.size());
+  });
 }
 
 }  // namespace brave_ads::targeting

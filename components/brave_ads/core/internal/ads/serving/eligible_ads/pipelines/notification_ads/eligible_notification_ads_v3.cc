@@ -28,7 +28,7 @@ EligibleAdsV3::EligibleAdsV3(
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 void EligibleAdsV3::GetForUserModel(
-    const targeting::UserModelInfo& /*user_model*/,
+    const targeting::UserModelInfo& user_model,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
@@ -42,13 +42,14 @@ void EligibleAdsV3::GetForUserModel(
           return;
         }
 
-        GetBrowsingHistory(ad_events, callback);
+        GetBrowsingHistory(user_model, ad_events, callback);
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void EligibleAdsV3::GetBrowsingHistory(
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   const int max_count = features::GetBrowsingHistoryMaxCount();
@@ -56,10 +57,11 @@ void EligibleAdsV3::GetBrowsingHistory(
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       max_count, days_ago,
       base::BindOnce(&EligibleAdsV3::GetEligibleAds, base::Unretained(this),
-                     ad_events, callback));
+                     user_model, ad_events, callback));
 }
 
 void EligibleAdsV3::GetEligibleAds(
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
@@ -87,7 +89,7 @@ void EligibleAdsV3::GetEligibleAds(
     }
 
     PredictAdEmbeddings<CreativeNotificationAdInfo>(
-        eligible_creative_ads,
+        user_model, eligible_creative_ads,
         [=](const absl::optional<CreativeNotificationAdInfo> creative_ad) {
           if (!creative_ad) {
             BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
