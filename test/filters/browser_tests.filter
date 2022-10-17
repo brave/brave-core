@@ -29,10 +29,6 @@
 # language fingerprinting, regardless of the feature flag state
 -DisableFeatureReduceAcceptLanguageBrowserTest.NoAcceptLanguageHeader
 
-# These tests fail because BookmarkUndoService::Start fails a DCHECK due to its
-# this pointer being null
--IdleServiceTest.*
-
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
