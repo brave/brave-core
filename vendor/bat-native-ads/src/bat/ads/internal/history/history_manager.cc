@@ -70,9 +70,7 @@ HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
-  if (date_range_filter) {
-    history_items = date_range_filter->Apply(history_items);
-  }
+  history_items = date_range_filter->Apply(history_items);
 
   const auto filter = HistoryFilterFactory::Build(filter_type);
   if (filter) {
