@@ -490,6 +490,7 @@ class BraveVPNServiceTest : public testing::Test {
         }
       )";
   }
+
   std::string SetupTestingStoreForEnv(const std::string& env,
                                       bool active_subscription = true) {
     std::string domain = skus::GetDomain("vpn", env);
@@ -953,6 +954,18 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   local_pref_service_.SetList(prefs::kBraveVPNRegionList, {});
   ResetVpnService();
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+}
+
+TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  cancel_connecting() = false;
+  connection_state() = ConnectionState::CONNECTING;
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  OnGetSubscriberCredentialV12("Token No Longer Valid", false);
+  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  EXPECT_FALSE(cancel_connecting());
+  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
 }
 #endif
 
