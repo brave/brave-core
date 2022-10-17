@@ -42,6 +42,8 @@ if (!is_ios) {
       "brave_shields_p3a.h",
       "brave_shields_util.cc",
       "brave_shields_util.h",
+      "cookie_list_opt_in_service.cc",
+      "cookie_list_opt_in_service.h",
       "domain_block_controller_client.cc",
       "domain_block_controller_client.h",
       "domain_block_navigation_throttle.cc",
