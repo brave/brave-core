@@ -175,6 +175,17 @@ extension URL {
     guard let scheme = self.scheme else { return absoluteString }
     return absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
   }
+  
+  public var schemelessAbsoluteDisplayString: String {
+    var urlString = withoutWWW.schemelessAbsoluteString
+    
+    // For http URLs, get rid of the trailing slash if the path is empty or '/'
+    if self.path == "/", urlString.hasSuffix("/") {
+      urlString = String(urlString[..<urlString.index(urlString.endIndex, offsetBy: -1)])
+    }
+
+    return urlString
+  }
 
   /**
     Returns the base domain from a given hostname. The base domain name is defined as the public domain suffix

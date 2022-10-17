@@ -838,8 +838,16 @@ class TabManager: NSObject {
 
   func getTabForURL(_ url: URL) -> Tab? {
     assert(Thread.isMainThread)
-
-    return allTabs.filter { $0.webView?.url == url }.first
+    
+    let tab = allTabs.filter {
+      guard let webViewURL = $0.webView?.url else {
+        return  false
+      }
+      
+      return webViewURL.schemelessAbsoluteDisplayString == url.schemelessAbsoluteDisplayString
+    }.first
+    
+    return tab
   }
   
   func getTabForID(_ id: String) -> Tab? {
