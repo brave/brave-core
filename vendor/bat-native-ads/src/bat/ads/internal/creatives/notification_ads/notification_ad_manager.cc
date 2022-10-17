@@ -26,8 +26,6 @@ NotificationAdManager* g_notification_ad_manager_instance = nullptr;
 
 #if BUILDFLAG(IS_ANDROID)
 constexpr int kMaximumNotificationAds = 3;
-#else   // !BUILDFLAG(IS_ANDROID)
-constexpr int kMaximumNotificationAds = 0;  // Unlimited
 #endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace
@@ -76,12 +74,14 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
 
   ads_.push_back(ad);
 
-  if (kMaximumNotificationAds > 0 && ads_.size() > kMaximumNotificationAds) {
+#if BUILDFLAG(IS_ANDROID)
+  if (ads_.size() > kMaximumNotificationAds) {
     AdsClientHelper::GetInstance()->CloseNotificationAd(
         ads_.front().placement_id);
 
     ads_.pop_front();
   }
+#endif  // BUILDFLAG(IS_ANDROID)
 
   AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
                                               NotificationAdsToValue(ads_));
