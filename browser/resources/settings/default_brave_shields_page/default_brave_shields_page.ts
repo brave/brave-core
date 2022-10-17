@@ -103,13 +103,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       }
     })
 
-  }
-
-  refreshState() {
-    this.browserProxy_.getHTTPSEverywhereEnabled().then(value => {
-      this.httpsEverywhereEnabled_ = value
-    })
-    
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value
     })
