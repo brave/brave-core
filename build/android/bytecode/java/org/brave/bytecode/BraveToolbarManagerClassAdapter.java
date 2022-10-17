@@ -62,8 +62,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mToolbar");
         makeProtectedField(sToolbarManagerClassName, "mToolbar");
 
-        deleteField(sBraveToolbarManagerClassName, "mBookmarkBridgeSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mBookmarkBridgeSupplier");
+        deleteField(sBraveToolbarManagerClassName, "mBookmarkModelSupplier");
+        makeProtectedField(sToolbarManagerClassName, "mBookmarkModelSupplier");
 
         deleteField(sBraveToolbarManagerClassName, "mLayoutManager");
         makeProtectedField(sToolbarManagerClassName, "mLayoutManager");

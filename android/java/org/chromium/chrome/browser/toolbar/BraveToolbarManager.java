@@ -102,7 +102,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private ActionModeController mActionModeController;
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
-    private ObservableSupplier<BookmarkModel> mBookmarkBridgeSupplier;
+    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LayoutManagerImpl mLayoutManager;
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
@@ -328,7 +328,7 @@ public class BraveToolbarManager extends ToolbarManager {
 
     protected void updateBookmarkButtonStatus() {
         Tab currentTab = mLocationBarModel.getTab();
-        BookmarkModel bridge = mBookmarkBridgeSupplier.get();
+        BookmarkModel bridge = mBookmarkModelSupplier.get();
         boolean isBookmarked =
                 currentTab != null && bridge != null && bridge.hasBookmarkIdForTab(currentTab);
         boolean editingAllowed =
