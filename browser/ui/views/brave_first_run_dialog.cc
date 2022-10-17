@@ -34,7 +34,7 @@
 
 namespace {
 
-void ShowBraveFirstRunDialogViews(Profile* profile) {
+void ShowBraveFirstRunDialogViews() {
   base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
   BraveFirstRunDialog::Show(run_loop.QuitClosure());
   run_loop.Run();
@@ -72,14 +72,14 @@ END_METADATA
 
 namespace first_run {
 
-void ShowFirstRunDialog(Profile* profile) {
+void ShowFirstRunDialog() {
 #if BUILDFLAG(IS_MAC)
   if (base::FeatureList::IsEnabled(features::kViewsFirstRunDialog))
-    ShowBraveFirstRunDialogViews(profile);
+    ShowBraveFirstRunDialogViews();
   else
     ShowFirstRunDialogCocoa();
 #else
-  ShowBraveFirstRunDialogViews(profile);
+  ShowBraveFirstRunDialogViews();
 #endif
 }
 
