@@ -1,4 +1,4 @@
-// Copyright 2021 The Brave Authors. All rights reserved.
+// Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -53,9 +53,9 @@ window.__firefox__.includeOnce("Playlist", function($) {
   function tagNode(node) {
     if (node) {
       if (!node.$<tagUUID>) {
+        node.$<tagUUID> = uuid_v4();
         node.addEventListener('webkitpresentationmodechanged', (e) => e.stopPropagation(), true);
       }
-      node.$<tagUUID> = uuid_v4();
     }
   }
   
@@ -214,10 +214,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
     }
     
     function requestWhenIdleShim(fn) {
-      fn.toString = function() {
-          return "function(){\n\t[native code]\n}";
-      }
-      
       var start = Date.now()
       return setTimeout(function () {
         fn({
@@ -227,18 +223,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
           },
         })
       }, 2000);  // Resolution of 1000ms is fine for us.
-    }
-
-    function onReady(fn) {
-        fn.toString = function() {
-            return "function(){\n\t[native code]\n}";
-        }
-      
-        if (document.readyState === "complete" || document.readyState === "ready") {
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
     }
     
     function observePage() {
@@ -287,10 +271,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
               return node;
           }
           return document_createElement.call(this, tag);
-      };
-
-      document.createElement.toString = function() {
-          return "function () { [native code] }";
       };*/
     }
 

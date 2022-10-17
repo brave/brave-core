@@ -317,7 +317,6 @@ class Tab: NSObject {
       }
       let webView = TabWebView(frame: .zero, tab: self, configuration: configuration!, isPrivate: isPrivate)
       webView.delegate = self
-      configuration = nil
 
       webView.accessibilityLabel = Strings.webContentAccessibilityLabel
       webView.allowsBackForwardNavigationGestures = true
@@ -642,6 +641,14 @@ class Tab: NSObject {
   func addContentScript(_ helper: TabContentScript, name: String, contentWorld: WKContentWorld) {
     contentScriptManager.addContentScript(helper, name: name, forTab: self, contentWorld: contentWorld)
   }
+  
+  func removeContentScript(name: String, forTab tab: Tab, contentWorld: WKContentWorld) {
+    contentScriptManager.removeContentScript(name: name, forTab: tab, contentWorld: contentWorld)
+  }
+  
+  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: Tab) {
+    contentScriptManager.replaceContentScript(helper, name: name, forTab: tab)
+  }
 
   func getContentScript(name: String) -> TabContentScript? {
     return contentScriptManager.getContentScript(name)
@@ -837,6 +844,20 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
       tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: contentWorld, name: scriptMessageHandlerName)
     } else {
       tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
+    }
+  }
+  
+  func removeContentScript(name: String, forTab tab: Tab, contentWorld: WKContentWorld) {
+    if let helper = helpers[name] {
+      let scriptMessageHandlerName = type(of: helper).messageHandlerName
+      tab.webView?.configuration.userContentController.removeScriptMessageHandler(forName: scriptMessageHandlerName, contentWorld: contentWorld)
+      helpers[name] = nil
+    }
+  }
+  
+  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: Tab) {
+    if helpers[name] != nil {
+      helpers[name] = helper
     }
   }
 

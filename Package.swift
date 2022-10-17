@@ -169,7 +169,6 @@ let package = Package(
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RewardsReportingScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletEthereumProviderScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
-        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/PlaylistDetectorScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/PlaylistScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/ResourceDownloaderScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SiteStateListenerScript.js"),
