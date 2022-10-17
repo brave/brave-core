@@ -11,13 +11,13 @@
 // In case this fails compilation in the future, simply apply to any
 // other private member, more obscure name is better so it doesn't
 // affect other included header files from this header file.
-#define devtools_global_overrides_origin_ \
-  devtools_global_overrides_origin_;      \
-  friend class BravePermissionManager;    \
+#define subscription_type_counts_      \
+  subscription_type_counts_;           \
+  friend class BravePermissionManager; \
   GURL forced_requesting_origin_
 
 #include "src/components/permissions/permission_manager.h"
 
-#undef devtools_global_overrides_origin_
+#undef subscription_type_counts_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_MANAGER_H_
