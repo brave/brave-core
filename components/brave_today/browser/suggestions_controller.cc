@@ -165,6 +165,17 @@ void SuggestionsController::GetSuggestedPublisherIds(
                         controller->channels_controller_
                             ->GetChannelsFromPublishers(locale, publishers,
                                                         controller->prefs_);
+                    // For each source
+                    //   score[source] += !subscribed ? [0.4 - 1] * normalized_visits[host]
+                    //   if !subscribed: continue
+                    //   for each similar_source which is not subscribed
+                    //     score[similar_source] += [0 - 0.4] * similarity[source][similar_source]
+                    // 
+                    // For each visited page
+                    //   if not has_source: continue
+                    //   
+                    //   for each similar_source of similar_sources[source]:
+                    //      score[similar_source] += [0 - 0.3] * similarity[source][similar_source]    
                     if (!similarity_lookup.contains(locale)) {
                       std::move(callback).Run({});
                       return;
