@@ -184,4 +184,44 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
             vote_registry.at(creative_ads.size() - 1));
 }
 
+TEST(BatAdsEligibleAdsPredictorUtilTest,
+     ComputeVoteRegistryWithNoEmbeddingHistory) {
+  // Arrange
+  CreativeNotificationAdList creative_ads;
+
+  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  creative_ad_1.embedding = {0.0853, -0.1789, -0.4221};
+  creative_ads.push_back(creative_ad_1);
+
+  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  creative_ad_2.embedding = {-0.0853, -0.1789, 0.4221};
+  creative_ads.push_back(creative_ad_2);
+
+  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  creative_ad_3.embedding = {-0.0853, 0.1789, -0.4221};
+  creative_ads.push_back(creative_ad_3);
+
+  CreativeNotificationAdInfo creative_ad_4 = BuildCreativeNotificationAd();
+  creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
+  creative_ad_4.embedding = {0.0853, -0.1789, 0.4221};
+  creative_ads.push_back(creative_ad_4);
+
+  TextEmbeddingHtmlEventList text_embeddings;
+
+  // Act
+  const std::vector<int> vote_registry =
+      ComputeVoteRegistry(creative_ads, text_embeddings);
+
+  // Assert
+  ASSERT_EQ(creative_ads.size(), vote_registry.size());
+
+  int total_votes = 0;
+  for (const int vote : vote_registry) {
+    total_votes += vote;
+  }
+  ASSERT_EQ(static_cast<int>(text_embeddings.size()), total_votes);
+  ASSERT_EQ(static_cast<int>(text_embeddings.size()),
+            vote_registry.at(creative_ads.size() - 1));
+}
+
 }  // namespace brave_ads

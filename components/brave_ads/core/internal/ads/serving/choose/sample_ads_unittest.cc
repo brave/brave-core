@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/sample_ads.h"
 
+#include <vector>
+
 #include "base/guid.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -13,6 +15,28 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
+
+TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseInteger) {
+  // Arrange
+  const std::vector<int> vector = {1, 2, 3, 4, 5};
+
+  // Act
+  const int normalizing_constant = CalculateNormalizingConstantBase(vector);
+
+  // Assert
+  EXPECT_EQ(15, normalizing_constant);
+}
+
+TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseDouble) {
+  // Arrange
+  const std::vector<double> vector = {1.3, 2.7, 3.1, 4.8, 5.2};
+
+  // Act
+  const double normalizing_constant = CalculateNormalizingConstantBase(vector);
+
+  // Assert
+  EXPECT_DOUBLE_EQ(17.1, normalizing_constant);
+}
 
 TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantWithEmptyAds) {
   // Arrange
@@ -164,6 +188,18 @@ TEST(BatAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
 
   // Assert
   EXPECT_FALSE((creative_ad_1_count == 0 || creative_ad_2_count == 0));
+}
+
+TEST(BatAdsSampleAdsTest, ComputeProbabilities) {
+  // Arrange
+  const std::vector<int> scores = {1, 0, 5, 4};
+
+  // Act
+  const std::vector<double> probabilities = ComputeProbabilities(scores);
+
+  // Assert
+  const std::vector<double> expected = {0.1, 0.0, 0.5, 0.4};
+  EXPECT_EQ(expected, probabilities);
 }
 
 }  // namespace brave_ads

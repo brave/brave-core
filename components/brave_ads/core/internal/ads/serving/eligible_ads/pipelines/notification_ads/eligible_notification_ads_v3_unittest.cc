@@ -12,10 +12,11 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -45,11 +46,11 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
-  creative_ad_1.embedding = {0.1, 0.2, 0.3, 0.4, 0.5};
+  creative_ad_1.embedding = {0.1, 0.2, 0.3};
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
-  creative_ad_2.embedding = {-0.3, 0.0, -0.2, 0.6, 0.8};
+  creative_ad_2.embedding = {-0.3, 0.0, -0.2};
   creative_ads.push_back(creative_ad_2);
 
   const TextEmbeddingHtmlEventInfo text_embedding_event =
@@ -60,15 +61,17 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
-      [](const bool had_opportunity,
-         const CreativeNotificationAdList& creative_ads) {
+      [=](const bool had_opportunity,
+          const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(!creative_ads.empty());
+
+        EXPECT_EQ(creative_ads.at(0).embedding, creative_ad_1.embedding);
       });
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoEmbeddings) {
+TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredEmbeddings) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -85,6 +88,35 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoEmbeddings) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}, {}),
+      [](const bool had_opportunity,
+         const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_FALSE(had_opportunity);
+        EXPECT_TRUE(!creative_ads.empty());
+      });
+}
+
+TEST_F(BatAdsEligibleNotificationAdsV3Test,
+       GetAdsForCreativeWithoutEmbeddingProperty) {
+  // Arrange
+  CreativeNotificationAdList creative_ads;
+
+  const CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd();
+  creative_ads.push_back(creative_ad_1);
+
+  const CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd();
+  creative_ads.push_back(creative_ad_2);
+
+  SaveCreativeAds(creative_ads);
+
+  const TextEmbeddingHtmlEventInfo text_embedding_event =
+      BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());
+
+  // Act
+  eligible_ads_->GetForUserModel(
+      targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
       [](const bool had_opportunity,
          const CreativeNotificationAdList& creative_ads) {
         // Assert

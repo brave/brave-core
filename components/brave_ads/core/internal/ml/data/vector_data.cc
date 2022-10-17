@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -198,6 +199,7 @@ void VectorData::Normalize() {
 }
 
 float VectorData::ComputeSimilarity(const VectorData& v_other) const {
+  DCHECK(this->GetDimensionCount() == v_other.GetDimensionCount());
   return (*this * v_other) / (GetMagnitude() * v_other.GetMagnitude());
 }
 

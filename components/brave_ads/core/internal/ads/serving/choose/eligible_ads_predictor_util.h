@@ -165,6 +165,8 @@ template <typename T>
 std::vector<int> ComputeVoteRegistry(
     const std::vector<T>& creative_ads,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+  DCHECK(!creative_ads.empty());
+
   std::vector<int> vote_registry;
   vote_registry.assign(creative_ads.size(), 0);
 

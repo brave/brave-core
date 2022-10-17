@@ -28,6 +28,11 @@ std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
                                              anti_targeting_resource);
     }
 
+    case 3: {
+      return std::make_unique<EligibleAdsV2>(subdivision_targeting,
+                                             anti_targeting_resource);
+    }
+
     default: {
       return nullptr;
     }
