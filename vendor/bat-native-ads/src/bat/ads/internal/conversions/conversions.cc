@@ -89,6 +89,10 @@ bool DoesConfirmationTypeMatchConversionType(
       return false;
     }
   }
+
+  NOTREACHED() << "Unexpected value for ConfirmationType: "
+               << static_cast<int>(confirmation_type.value());
+  return false;
 }
 
 std::string ExtractConversionIdFromText(
