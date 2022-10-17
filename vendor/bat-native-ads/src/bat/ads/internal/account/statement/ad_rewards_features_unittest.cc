@@ -29,7 +29,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.push_back(kAdRewards);
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -51,7 +51,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
   kAdRewardsParameters[kNextPaymentDayParameter] = "5";
   enabled_features.emplace_back(kAdRewards, kAdRewardsParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -70,7 +70,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -88,7 +88,7 @@ TEST(BatAdsAdRewardsFeaturesTest, DisabledAdRewardsDefaultNextPaymentDay) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.push_back(kAdRewards);
 
   base::test::ScopedFeatureList scoped_feature_list;

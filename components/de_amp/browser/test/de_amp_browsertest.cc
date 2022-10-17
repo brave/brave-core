@@ -60,7 +60,7 @@ const char kTestAmpCanonicalLink[] =
 class DeAmpBrowserTest : public InProcessBrowserTest {
  public:
   DeAmpBrowserTest() {
-    std::vector<base::Feature> disabled_features = {};
+    std::vector<base::test::FeatureRef> disabled_features = {};
 #if BUILDFLAG(IS_MAC)
     // On Mac, the DeAmpBrowserTest.AmpURLNotStoredInHistory test crashes
     // due to https://crbug.com/1284500: DCHECK in
