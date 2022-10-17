@@ -9,17 +9,36 @@ package org.chromium.chrome.browser;
 
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.DialogFragment;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class BraveDialogFragment extends DialogFragment {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() instanceof BraveActivity) {
+            ((BraveActivity) getActivity())
+                    .getOnBackPressedDispatcher()
+                    .addCallback(new OnBackPressedCallback(true) {
+                        @Override
+                        public void handleOnBackPressed() {
+                            dismiss();
+                        }
+                    });
+        }
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -29,24 +48,13 @@ public class BraveDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(android.content.DialogInterface dialog, int keyCode,
-                    android.view.KeyEvent event) {
-                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-                    dismiss();
-                    return true;
-                } else
-                    return false;
-            }
-        });
+
         setDialogParams();
     }
 
     private void setDialogParams() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int mDeviceHeight = displayMetrics.heightPixels;
         int mDeviceWidth = displayMetrics.widthPixels;
 
         WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
