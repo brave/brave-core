@@ -2780,5 +2780,26 @@ extension Strings {
       value: "DApps you connect to Brave Wallet will appear here",
       comment: "A message that will be displayed under the section header when there is no dapps have been granted wallet connection."
     )
+    public static let confirmPasswordTitle = NSLocalizedString(
+      "wallet.confirmPasswordTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Confirm Password",
+      comment: "The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account."
+    )
+    public static let removeAccountConfirmationMessage = NSLocalizedString(
+      "wallet.removeAccountConfirmationMessage",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Are you sure you want to remove \"%@\"?",
+      comment: "A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name"
+    )
+    public static let removeAccountErrorMessage = NSLocalizedString(
+      "wallet.removeAccountErrorMessage",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Invalid Password",
+      comment: "A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed."
+    )
   }
 }

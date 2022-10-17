@@ -25,10 +25,6 @@ struct AccountDetailsView: View {
 
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  private func removeAccount(password: String) {
-    keyringStore.removeSecondaryAccount(for: account, password: password)
-  }
-
   private func renameAccountAndDismiss() {
     if name.isEmpty {
       // Show error?
@@ -76,17 +72,12 @@ struct AccountDetailsView: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
             }
-            .alert(isPresented: $isPresentingRemoveConfirmation) {
-              Alert(
-                title: Text(Strings.Wallet.accountRemoveAlertConfirmation),
-                message: Text(Strings.Wallet.warningAlertConfirmation),
-                primaryButton: .destructive(Text(Strings.yes), action: {
-                  // TODO: Issue #5967 - Add password protection to view
-                  removeAccount(password: "")
-                }),
-                secondaryButton: .cancel(Text(Strings.no))
+            .sheet(isPresented: $isPresentingRemoveConfirmation, content: {
+              RemoveAccountConfirmationView(
+                account: account,
+                keyringStore: keyringStore
               )
-            }
+            })
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
