@@ -32,6 +32,7 @@ struct AccountActivityView: View {
     guard let info = keyringStore.allAccounts.first(where: { $0.address == activityStore.account.address }) else {
       // The account has been removed... User should technically never see this state because
       // `AccountsViewController` pops this view off the stack when the account is removed
+      presentationMode.dismiss()
       return activityStore.account
     }
     return info
