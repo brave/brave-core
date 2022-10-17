@@ -19,7 +19,6 @@
 -AllowSubsequentRun/ExistingWinBrowserSigninUtilTest.*
 -BrowserActionApiTest.*
 -BrowserRootViewBrowserTest.*
--ChromeFileSystemAccessPermissionContextPrerenderingBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
 -ChromeTracingDelegateBrowserTest.NewIncognitoSessionBlockingTraceFinalization
