@@ -42,7 +42,8 @@ bool IsBlobUrlValidForPartitionedOrigin(const url::Origin& origin,
 #define BlobURLStoreImpl BlobURLStoreImpl_ChromiumImpl
 #define BRAVE_BLOB_URL_STORE_IMPL_BLOB_URL_IS_VALID                         \
   if (!valid_origin) {                                                      \
-    valid_origin = IsBlobUrlValidForPartitionedOrigin(origin_, url_origin); \
+    valid_origin =                                                          \
+        IsBlobUrlValidForPartitionedOrigin(storage_key_origin, url_origin); \
   }
 
 #include "src/storage/browser/blob/blob_url_store_impl.cc"
@@ -52,10 +53,10 @@ bool IsBlobUrlValidForPartitionedOrigin(const url::Origin& origin,
 
 namespace storage {
 
-BlobURLStoreImpl::BlobURLStoreImpl(const url::Origin& origin,
+BlobURLStoreImpl::BlobURLStoreImpl(const blink::StorageKey& storage_key,
                                    base::WeakPtr<BlobUrlRegistry> registry)
     : BlobURLStoreImpl_ChromiumImpl::BlobURLStoreImpl_ChromiumImpl(
-          origin,
+          storage_key,
           std::move(registry)) {}
 
 void BlobURLStoreImpl::Register(
@@ -120,7 +121,8 @@ void BlobURLStoreImpl::ResolveForNavigation(
 }
 
 GURL BlobURLStoreImpl::GetPartitionedOrOriginalUrl(const GURL& url) const {
-  if (!CanUseOriginForPartitioning(origin_)) {
+  url::Origin storage_key_origin = storage_key_.origin();
+  if (!CanUseOriginForPartitioning(storage_key_origin)) {
     return url;
   }
 
@@ -129,7 +131,7 @@ GURL BlobURLStoreImpl::GetPartitionedOrOriginalUrl(const GURL& url) const {
   std::string partitioned_path = base::StrCat(
       {clean_url.path_piece(), "_",
        net::EphemeralStorageOriginUtils::GetNonceForEphemeralStorageKeying(
-           origin_)
+           storage_key_origin)
            .ToString()});
   GURL::Replacements replacements;
   replacements.SetPathStr(partitioned_path);
