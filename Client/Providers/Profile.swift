@@ -33,7 +33,7 @@ class ProfileFileAccessor: FileAccessor {
         do {
           try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         } catch {
-          log.error("Unable to find the shared container directory and error while trying tpo create a new directory. ")
+          Logger.module.error("Unable to find the shared container directory and error while trying tpo create a new directory. ")
         }
       }
       
