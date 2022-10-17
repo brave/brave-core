@@ -276,23 +276,42 @@ export function createHost (): Host {
     setTimeout(() => { stateManager.update({ loading: false }) }, 3000)
   }
 
+  function startRevealTimer () {
+    let called = false
+
+    // When the panel is displayed using a cached `window`, we need to "reveal"
+    // it by updating `openTime`. Ideally, we do not want to reveal it before
+    // we've updated the UI, but if the browser is taking a long time to return
+    // data we need to show the panel with a loading indicator.
+    let revealTimeout = setTimeout(() => {
+      called = true
+      setLoadingTimer()
+      stateManager.update({ openTime: Date.now(), loading: true })
+    }, 750)
+
+    return () => {
+      if (!called) {
+        clearTimeout(revealTimeout)
+      }
+    }
+  }
+
   function addListeners () {
     // If a Rewards panel request occurs when we are still open or cached,
     // reload data and re-render the app.
     proxy.callbackRouter.onRewardsPanelRequested.addListener(
       (panelArgs: mojom.RewardsPanelArgs) => {
-        stateManager.update({
-          openTime: Date.now(),
-          loading: true
-        })
-
-        setLoadingTimer()
+        let cancelRevealTimer = startRevealTimer()
 
         loadPanelData().then(() => {
+          cancelRevealTimer()
+
           stateManager.update({
+            openTime: Date.now(),
             requestedView: null,
             loading: false
           })
+
           handleRewardsPanelArgs(panelArgs)
         }).catch(console.error)
       })
