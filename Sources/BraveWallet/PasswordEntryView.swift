@@ -82,6 +82,7 @@ struct PasswordEntryField: View {
           icon
             .imageScale(.large)
             .font(.headline)
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
     }

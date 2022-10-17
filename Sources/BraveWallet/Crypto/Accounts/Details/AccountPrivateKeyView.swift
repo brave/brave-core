@@ -11,11 +11,35 @@ import Strings
 struct AccountPrivateKeyView: View {
   @ObservedObject var keyringStore: KeyringStore
   var account: BraveWallet.AccountInfo
-
-  @State private var key: String = ""
-  @State private var isKeyVisible: Bool = false
+  
+  @State private var password = ""
+  @State private var error: PasswordEntryError?
+  @State private var key: String?
+  private var isKeyVisible: Bool { key != nil }
 
   @Environment(\.pixelLength) private var pixelLength
+  
+  private var isShowHideButtonDisabled: Bool {
+    if key != nil {
+      return false
+    } else {
+      return password.isEmpty
+    }
+  }
+  
+  private func validateAndShowPrivateKey() {
+    keyringStore.privateKey(for: account, password: password) { key in
+      if let key = key {
+        withAnimation(nil) {
+          self.key = key
+          self.password = ""
+        }
+      } else {
+        self.error = .incorrectPassword
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
+      }
+    }
+  }
 
   var body: some View {
     ScrollView(.vertical) {
@@ -32,34 +56,45 @@ struct AccountPrivateKeyView: View {
               )
               .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           )
-        SensitiveTextView(text: key, isShowingText: $isKeyVisible)
-          .multilineTextAlignment(.center)
-          .font(.system(.body, design: .monospaced))
-          .padding(40)
-
+        if let key = key {
+          SensitiveTextView(text: key, isShowingText: Binding<Bool>(
+            get: { self.key != nil },
+            set: { if !$0 { self.key = nil } }
+          ))
+            .multilineTextAlignment(.center)
+            .font(.system(.body, design: .monospaced))
+            .padding(40)
+        } else {
+          PasswordEntryField(
+            password: $password,
+            error: $error,
+            shouldShowBiometrics: true,
+            keyringStore: keyringStore,
+            onCommit: validateAndShowPrivateKey
+          )
+            .padding(40)
+        }
         Button(action: {
-          withAnimation {
-            isKeyVisible.toggle()
+          withAnimation(nil) {
+            if isKeyVisible {
+              self.key = nil
+            } else {
+              validateAndShowPrivateKey()
+            }
           }
         }) {
           Text(isKeyVisible ? Strings.Wallet.hidePrivateKeyButtonTitle : Strings.Wallet.showPrivateKeyButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
-        .animation(nil, value: isKeyVisible)
+        .disabled(isShowHideButtonDisabled)
       }
       .padding()
-      .onAppear {
-        // TODO: Issue #5881 - Add password protection to view
-        keyringStore.privateKey(for: account, password: "") { key in
-          self.key = key ?? ""
-        }
-      }
     }
     .background(Color(.braveBackground))
     .navigationTitle(Strings.Wallet.accountPrivateKey)
     .navigationBarTitleDisplayMode(.inline)
     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
-      isKeyVisible = false
+      self.key = nil
     }
     .alertOnScreenshot {
       Alert(
