@@ -60,6 +60,11 @@ class SolanaMessage {
   static absl::optional<SolanaMessage> FromValue(
       const base::Value::Dict& value);
 
+  void SetInstructionsForTesting(
+      const std::vector<SolanaInstruction>& instructions) {
+    instructions_ = instructions;
+  }
+
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
 
