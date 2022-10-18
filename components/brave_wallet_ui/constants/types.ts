@@ -208,6 +208,10 @@ export interface SolFeeEstimates {
   fee: bigint
 }
 
+export interface TokenRegistry {
+  [chainID: string]: BraveWallet.BlockchainToken[]
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean

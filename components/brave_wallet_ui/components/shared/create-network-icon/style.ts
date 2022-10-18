@@ -1,13 +1,15 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 import { AssetIconFactory, AssetIconProps } from '../style'
 
-interface StyleProps {
+export const IconWrapper = styled.div<{
   marginRight: number
   isTestnet: boolean
-  orb: string
-}
-
-export const IconWrapper = styled.div<Partial<StyleProps>>`
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,7 +20,7 @@ export const IconWrapper = styled.div<Partial<StyleProps>>`
   filter: ${(p) => p.isTestnet ? 'grayscale(100%)' : 'none'};
 `
 
-export const Placeholder = styled.div<Partial<StyleProps>>`
+export const Placeholder = styled.div<{ orb: string }>`
   width: 10px;
   height: 10px;
   border-radius: 100%;
@@ -31,6 +33,6 @@ interface IconProps extends AssetIconProps {
 }
 
 export const NetworkIcon = AssetIconFactory<IconProps>(props => ({
-  width: props.size === 'big' ? '25px' : '15px',
+  width: props.size === 'big' ? '24px' : '15px',
   height: 'auto'
 }))

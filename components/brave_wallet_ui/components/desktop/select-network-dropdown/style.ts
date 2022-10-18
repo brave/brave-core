@@ -1,49 +1,52 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 import { WalletButton } from '../../shared/style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<{ useWithSearch?: boolean }>`
   display: flex;
-  width: 100%;
+  width: ${(p) => p.useWithSearch ? 'unset' : '100%'};
+  min-width: fit-content;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   position: relative;
 `
 
-export const NetworkButton = styled(WalletButton)`
+export const NetworkButton = styled(WalletButton) <{ useWithSearch?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   background-color: ${(p) => p.theme.color.background02};
-  width: 265px;
+  min-width: ${(p) => p.useWithSearch ? 'fit-content' : '265px'};
+  height: 40px;
   cursor: pointer;
   outline: none;
   background: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => p.useWithSearch ? 'none' : `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
   padding: 10px;
-  margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  padding-left: 12px;
+  margin-bottom: ${(p) => p.useWithSearch ? '0px' : '8px'};
 `
 
-export const DropDownIcon = styled(CaratStrongDownIcon)`
+export const DropDownIcon = styled(CaratStrongDownIcon) <{ isOpen: boolean }>`
   width: 18px;
   height: 18px;
   color: ${(p) => p.theme.color.interactive07};
+  transition-duration: 0.3s;
+  transform: ${(p) => p.isOpen ? 'rotate(180deg)' : 'unset'};
 `
 
-export const DropDown = styled.div`
+export const DropDown = styled.div <{ useWithSearch?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-conent: center;
   min-width: 275px;
   max-height: 262px;
   padding: 10px 10px 10px 20px;
@@ -56,8 +59,26 @@ export const DropDown = styled.div`
   }
   position: absolute;
   top: 44px;
-  left: 0px;
+  left: ${(p) => p.useWithSearch ? 'unset' : '0px'};
+  right: ${(p) => p.useWithSearch ? '0px' : 'unset'};
   z-index: 12;
   overflow-y: scroll;
   overflow-x: hidden;
  `
+
+export const LeftSide = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin-right: 4px;
+`
+
+export const NetworkText = styled.span`
+  font-family: Poppins;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text01};
+`
