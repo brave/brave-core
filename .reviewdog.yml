@@ -15,7 +15,7 @@ runner:
         --metrics=off \
         --json $(git --no-pager diff --name-only HEAD $(git merge-base HEAD origin/${GITHUB_BASE_REF:-main}) | xargs ls -d 2>/dev/null) \
         | jq -r '.results[] | "\(.extra.severity[0:1]):\(.path):\(.end.line) \(.extra.message)"' \
-        | sed 's/$/ (Cc @brave\/sec-team @thypon)/g' | tee semgrep.log &&\
+        | sed 's/$/ (Cc @brave\/sec-team @thypon @stoletheminerals)/g' | tee semgrep.log &&\
         find semgrep.log -type f -empty -delete
     errorformat:
       - "%t:%f:%l %m"
