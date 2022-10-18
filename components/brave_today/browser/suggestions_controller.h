@@ -20,8 +20,11 @@
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
 
 namespace brave_news {
+using GetSuggestedPublisherIdsCallback =
+    mojom::BraveNewsController::GetSuggestedPublisherIdsCallback;
 class SuggestionsController {
  public:
   struct PublisherSimilarity {
@@ -32,6 +35,7 @@ class SuggestionsController {
   using PublisherSimilarities =
       base::flat_map<std::string, std::vector<PublisherSimilarity>>;
   using SimilarityLookup = base::flat_map<std::string, PublisherSimilarities>;
+
   explicit SuggestionsController(
       PrefService* prefs,
       ChannelsController* channels_controller,
@@ -42,13 +46,16 @@ class SuggestionsController {
   SuggestionsController& operator=(const SuggestionsController&) = delete;
   ~SuggestionsController();
 
-  void GetSuggestedPublisherIds(
-      const std::string& locale,
-      mojom::BraveNewsController::GetSuggestedPublisherIdsCallback callback);
+  void GetSuggestedPublisherIds(const std::string& locale,
+                                GetSuggestedPublisherIdsCallback callback);
   void EnsureSimilarityMatrixIsUpdating();
 
  private:
   void GetOrFetchSimilarityMatrix(base::OnceClosure callback);
+  void GetSuggestedPublisherIdsWithHistory(const std::string& locale,
+                                Publishers publishers,
+                                GetSuggestedPublisherIdsCallback callback,
+                                history::QueryResults history);
 
   bool is_update_in_progress_ = false;
   raw_ptr<PrefService> prefs_;

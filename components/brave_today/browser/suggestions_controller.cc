@@ -6,6 +6,7 @@
 #include "brave/components/brave_today/browser/suggestions_controller.h"
 
 #include <algorithm>
+#include <string>
 #include <unordered_set>
 #include <utility>
 
@@ -24,27 +25,25 @@
 #include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/urls.h"
+#include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 
 namespace brave_news {
 namespace {
-using GetSuggestedPublisherIdsCallback =
-    mojom::BraveNewsController::GetSuggestedPublisherIdsCallback;
-double GetEnabledScore(const mojom::PublisherPtr& publisher,
-                       const Channels& channels) {
-  if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED)
-    return 1;
+constexpr double kVisitedMin = 0.4;
+constexpr double kVisitedMax = 1;
 
-  if (publisher->user_enabled_status == mojom::UserEnabled::NOT_MODIFIED) {
-    // TODO(fallaciousreasoning): Confirm how we should handle subscribed
-    // channels.
-    // TODO(fallaciousreasoning): How do we handle locales here? I could be
-    // subscribed to en_US Top Sources but that shouldn't affect es_MX Top
-    // sources?
-  }
+constexpr double kSimilarSubscribedMin = 0;
+constexpr double kSimilarSubscribedMax = 0.4;
 
-  return 0;
+constexpr double kSimilarVisitedMin = 0;
+constexpr double kSimilarVisitedMax = 0.3;
+
+// Projects a normalized value in the [0, 1] range to a new range.
+double ProjectToRange(double value, double min, double max) {
+  const double range = max - min;
+  return value * range + min;
 }
 
 base::flat_map<std::string, double> GetVisitWeightings(
@@ -74,21 +73,27 @@ base::flat_map<std::string, double> GetVisitWeightings(
   return weightings;
 }
 
-// Visit weighting should be from 0.4 - 1.0, so we don't completely unweight
-// unvisited sources.
+// Get score for having visited a source.
 double GetVisitWeighting(const mojom::PublisherPtr& publisher,
                          base::flat_map<std::string, double> visit_weightings) {
-  constexpr double kMax = 1;
-  constexpr double kMin = 0.4;
-  constexpr double kRange = kMax - kMin;
-
   const auto host_name = publisher->site_url.host();
-  const auto& it = visit_weightings.find(host_name);
+  auto it = visit_weightings.find(host_name);
   if (it == visit_weightings.end()) {
-    return kMin;
+    // The |site_urls| we receive from Brave News aren't terribly accurate, and
+    // many of them are missing bits and pieces. This is a simple middle ground
+    // while we wait for them to be fixed.
+    if (!base::StartsWith(host_name, "www.")) {
+      it = visit_weightings.find("www." + host_name);
+    }
+
+    if (it == visit_weightings.end()) {
+      return 0;
+    }
   }
 
-  return it->second * kRange + kMin;
+  LOG(ERROR) << "Here? " << host_name;
+
+  return ProjectToRange(it->second, kVisitedMin, kVisitedMax);
 }
 
 SuggestionsController::SimilarityLookup ParseSimilarityResponse(
@@ -142,11 +147,6 @@ SuggestionsController::~SuggestionsController() = default;
 void SuggestionsController::GetSuggestedPublisherIds(
     const std::string& locale,
     GetSuggestedPublisherIdsCallback callback) {
-  // TODO(fallaciousreasoning): I have a feeling that this will work better if
-  // we can squash the similarity matrices from all the sources the user is
-  // subscribed to into a single dictionary. That way, we can give them
-  // suggestions from multiple locales at once, and consumers of this API won't
-  // need to pass in a locale.
   GetOrFetchSimilarityMatrix(base::BindOnce(
       [](SuggestionsController* controller, std::string locale,
          GetSuggestedPublisherIdsCallback callback) {
@@ -154,86 +154,107 @@ void SuggestionsController::GetSuggestedPublisherIds(
             [](SuggestionsController* controller, std::string locale,
                GetSuggestedPublisherIdsCallback callback,
                Publishers publishers) {
-              auto onHistory = base::BindOnce(
-                  [](SuggestionsController* controller, std::string locale,
-                     Publishers publishers,
-                     GetSuggestedPublisherIdsCallback callback,
-                     history::QueryResults results) {
-                    const auto& similarity_lookup =
-                        controller->similarity_lookup_;
-                    const auto& channels =
-                        controller->channels_controller_
-                            ->GetChannelsFromPublishers(locale, publishers,
-                                                        controller->prefs_);
-                    // For each source
-                    //   score[source] += !subscribed ? [0.4 - 1] * normalized_visits[host]
-                    //   if !subscribed: continue
-                    //   for each similar_source which is not subscribed
-                    //     score[similar_source] += [0 - 0.4] * similarity[source][similar_source]
-                    // 
-                    // For each visited page
-                    //   if not has_source: continue
-                    //   
-                    //   for each similar_source of similar_sources[source]:
-                    //      score[similar_source] += [0 - 0.3] * similarity[source][similar_source]    
-                    if (!similarity_lookup.contains(locale)) {
-                      std::move(callback).Run({});
-                      return;
-                    }
-
-                    auto visit_weightings =
-                        GetVisitWeightings(publishers, results);
-                    base::flat_map<std::string, double> scores;
-
-                    const auto& lookup = similarity_lookup.at(locale);
-                    for (const auto& [publisher_id, publisher] : publishers) {
-                      const auto& similarity_info_it =
-                          lookup.find(publisher_id);
-                      if (similarity_info_it == lookup.end())
-                        continue;
-
-                      auto enabled_score = GetEnabledScore(publisher, channels);
-                      auto visit_weighting =
-                          GetVisitWeighting(publisher, visit_weightings);
-                      for (const auto& info : similarity_info_it->second) {
-                        const auto score =
-                            (1 - GetEnabledScore(publishers[info.publisher_id],
-                                                 channels)) *
-                            enabled_score * visit_weighting * info.score;
-                        scores[info.publisher_id] += score;
-                      }
-                    }
-
-                    std::vector<std::string> result;
-                    for (const auto& [publisher_id, score] : scores) {
-                      // Either the source it was similar to was disabled, or
-                      // the source is already enabled.
-                      if (score == 0)
-                        continue;
-                      result.push_back(publisher_id);
-                    }
-
-                    std::sort(result.begin(), result.end(),
-                              [scores](const std::string& a_id,
-                                       const std::string& b_id) {
-                                return scores.at(a_id) > scores.at(b_id);
-                              });
-
-                    std::move(callback).Run(std::move(result));
-                  },
-                  base::Unretained(controller), std::move(locale),
-                  std::move(publishers), std::move(callback));
-
               history::QueryOptions options;
               options.max_count = 2000;
               options.SetRecentDayRange(14);
               controller->history_service_->QueryHistory(
-                  std::u16string(), options, std::move(onHistory),
+                  std::u16string(), options,
+                  base::BindOnce(&SuggestionsController::
+                                     GetSuggestedPublisherIdsWithHistory,
+                                 base::Unretained(controller), locale,
+                                 std::move(publishers), std::move(callback)),
                   &controller->task_tracker_);
             },
             base::Unretained(controller), locale, std::move(callback)));
       },
       base::Unretained(this), locale, std::move(callback)));
+}
+
+void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
+    const std::string& locale,
+    Publishers publishers,
+    GetSuggestedPublisherIdsCallback callback,
+    history::QueryResults history) {
+  if (!similarity_lookup_.contains(locale)) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  const auto visit_weightings = GetVisitWeightings(publishers, history);
+  PublisherSimilarities* similarities;
+  auto similarity_it = similarity_lookup_.find(locale);
+  if (similarity_it != similarity_lookup_.end()) {
+    similarities = &similarity_it->second;
+  }
+
+  base::flat_map<std::string, double> scores;
+
+  for (const auto& [publisher_id, publisher] : publishers) {
+    const bool explicitly_enabled =
+        publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
+    const auto visited_score = GetVisitWeighting(publisher, visit_weightings);
+    const bool visited = visited_score != 0;
+
+    if (!explicitly_enabled) {
+      scores[publisher_id] += visited_score;
+    }
+
+    // Only consider similar sources if we have visited this one or it has been
+    // explicitly enabled.
+    if (!visited && !explicitly_enabled) {
+      continue;
+    }
+
+    // If we have no similarities, nothing more to do here.
+    if (!similarities) {
+      continue;
+    }
+
+    // If there are no similar publishers, we have nothing more to do here.
+    const auto& similarity_info_it = similarities->find(publisher_id);
+    if (similarity_info_it == similarities->end()) {
+      continue;
+    }
+
+    for (const auto& info : similarity_info_it->second) {
+      const auto& similar_publisher = publishers.at(info.publisher_id);
+      // Don't suggest similar publishers which are already enabled.
+      // TODO(fallaciousreasoning): Maybe we shouldn't suggest explicitly
+      // disabled publishers either?
+      if (similar_publisher->user_enabled_status ==
+          mojom::UserEnabled::ENABLED) {
+        continue;
+      }
+
+      // TODO(fallaciousreasoning): Should |visit_score| be multiplied by the
+      // visit weight for the original source?
+      auto visit_score = visited
+                             ? ProjectToRange(info.score, kSimilarVisitedMin,
+                                              kSimilarVisitedMax)
+                             : 0;
+      auto subscribed_score =
+          explicitly_enabled ? ProjectToRange(info.score, kSimilarSubscribedMin,
+                                              kSimilarSubscribedMax)
+                             : 0;
+      scores[info.publisher_id] += visit_score + subscribed_score;
+    }
+  }
+
+  std::vector<std::string> result;
+  for (const auto& [publisher_id, score] : scores) {
+    // Either the source it was similar to was disabled, or
+    // the source is already enabled.
+    if (score == 0)
+      continue;
+    result.push_back(publisher_id);
+  }
+
+  std::sort(result.begin(), result.end(),
+            [scores](const std::string& a_id, const std::string& b_id) {
+              return scores.at(a_id) > scores.at(b_id);
+            });
+
+  std::move(callback).Run(std::move(result));
 }
 
 void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
