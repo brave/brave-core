@@ -27,16 +27,23 @@ export default function Suggestions () {
   const filteredSuggestions = React.useMemo(() => suggestedPublisherIds
     .slice(0, showAll ? undefined : DEFAULT_SUGGESTIONS_COUNT), [suggestedPublisherIds, showAll])
 
-  return filteredSuggestions.length
-    ? <DiscoverSection name={getLocale('braveNewsSuggestionsTitle')} subtitle={<>
+  if (!filteredSuggestions.length) {
+    return null
+  }
+
+  return (
+    <DiscoverSection name={getLocale('braveNewsSuggestionsTitle')} subtitle={
       <Subtitle>{getLocale('braveNewsSuggestionsSubtitle')}</Subtitle>
-    </>}>
-      {filteredSuggestions.map(s => <FeedCard key={s} publisherId={s} />)}
-      {!showAll && suggestedPublisherIds.length > DEFAULT_SUGGESTIONS_COUNT && <LoadMoreButtonContainer>
+    }>
+      {filteredSuggestions.map(s =>
+        <FeedCard key={s} publisherId={s} />)
+      }
+      {!showAll && suggestedPublisherIds.length > DEFAULT_SUGGESTIONS_COUNT &&
+      <LoadMoreButtonContainer>
         <Button onClick={() => setShowAll(true)}>
           {getLocale('braveNewsShowMoreButton')}
         </Button>
       </LoadMoreButtonContainer>}
     </DiscoverSection>
-    : null
+  )
 }
