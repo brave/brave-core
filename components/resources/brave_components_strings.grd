@@ -369,7 +369,7 @@
       <message name="IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER" desc="Header for the channel section">
         Channels
       </message>
-      <message name="IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON" desc="Label for the button to show more categories">
+      <message name="IDS_BRAVE_NEWS_SHOW_MORE_BUTTON" desc="Label for the button to show more items from a limited selection. For example, this might show more categories, or more suggested publishers">
         Show more
       </message>
       <message name="IDS_BRAVE_NEWS_ALL_SOURCES_HEADER" desc="Header for the all sources section">
@@ -407,6 +407,12 @@
       </message>
       <message name="IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT" desc="Message displayed when there are no results due to search query being too short">
         Keep typing to search sources
+      </message>
+      <message name="IDS_BRAVE_NEWS_SUGGESTIONS_TITLE" desc="Title of the suggested sources section">
+        Suggestions
+      </message>
+      <message name="IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE" desc="Subtitle of the suggested sources section">
+        Some sources you might like. Suggestions are anonymous and matched only on your device.
       </message>
 
       <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>

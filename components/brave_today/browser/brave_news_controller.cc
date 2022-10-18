@@ -28,6 +28,7 @@
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
+#include "brave/components/brave_today/browser/suggestions_controller.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
@@ -99,6 +100,11 @@ BraveNewsController::BraveNewsController(
                        history_service,
                        &api_request_helper_,
                        prefs_),
+      suggestions_controller_(prefs_,
+                              &channels_controller_,
+                              &publishers_controller_,
+                              &api_request_helper_,
+                              history_service),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
   // Set up preference listeners
@@ -165,6 +171,11 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
+}
+
+void BraveNewsController::GetSuggestedPublisherIds(
+    GetSuggestedPublisherIdsCallback callback) {
+  suggestions_controller_.GetSuggestedPublisherIds(std::move(callback));
 }
 
 void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,

@@ -149,6 +149,7 @@ interface BraveNewsController {
 
   GetFeed() => (Feed feed);
   GetPublishers() => (map<string, Publisher> publishers);
+  GetSuggestedPublisherIds() => (array<string> suggested_publisher_ids);
   GetChannels() => (map<string, Channel> channels);
   SetChannelSubscribed(string channel_id, bool subscribed) => (Channel updated);
   // Look at the incoming url and return results
