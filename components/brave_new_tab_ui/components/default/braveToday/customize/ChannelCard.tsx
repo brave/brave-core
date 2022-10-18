@@ -10,6 +10,12 @@ import { getCardColor } from './colors'
 import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'
 
+const SubscribeButton = styled(FollowButton)`
+    position: absolute;
+    top: 8px;
+    right: 8px;
+`
+
 const Container = styled(Flex) <{ backgroundColor: string }>`
   height: 80px;
   font-weight: 600;
@@ -20,30 +26,27 @@ const Container = styled(Flex) <{ backgroundColor: string }>`
   color: white;
   position: relative;
 
-  :hover {
-    opacity: 0.8;
+  &[data-channel-card-is-followed=true] {
+    &:not(:hover, :has(:focus-visible)) ${SubscribeButton} {
+      opacity: 0;
+    }
   }
 `
 
-const SubscribeButton = styled(FollowButton)`
-    position: absolute;
-    top: 8px;
-    right: 8px;
-`
-
 interface Props {
-  channelId: string
+  channelName: string
 }
 
-export default function ChannelCard ({ channelId }: Props) {
-  const { subscribed, setSubscribed } = useChannelSubscribed(channelId)
+export default function ChannelCard ({ channelName }: Props) {
+  const { subscribed, setSubscribed } = useChannelSubscribed(channelName)
   return <Container
     direction='column'
     justify='center'
     align='center'
-    backgroundColor={getCardColor(channelId)}
+    backgroundColor={getCardColor(channelName)}
+    data-channel-card-is-followed={subscribed}
   >
     <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
-    {channelId}
+    {channelName}
   </Container>
 }

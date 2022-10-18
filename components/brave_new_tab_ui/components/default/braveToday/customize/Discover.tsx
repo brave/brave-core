@@ -70,7 +70,7 @@ function Home () {
     <>
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
       {visibleChannelIds.map(channelId =>
-        <ChannelCard key={channelId} channelId={channelId} />
+        <ChannelCard key={channelId} channelName={channelId} />
       )}
       {!showingAllCategories && <LoadMoreButtonContainer>
         <Button onClick={() => setShowingAllCategories(true)}>
@@ -103,7 +103,7 @@ function SearchResults (props: SearchResultsProps) {
       {hasAnyChannels &&
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
         {search.filteredChannels.map(c =>
-          <ChannelCard key={c.channelName} channelId={c.channelName} />
+          <ChannelCard key={c.channelName} channelName={c.channelName} />
         )}
       </DiscoverSection>
       }

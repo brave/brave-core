@@ -116,14 +116,14 @@ export const usePublisher = (publisherId: string) => {
   return useMemo(() => publishers[publisherId], [publishers[publisherId]])
 }
 
-export const usePublisherSubscribed = (publisherId: string) => {
+export const usePublisherFollowed = (publisherId: string) => {
   const publisher = usePublisher(publisherId)
 
-  const subscribed = isPublisherEnabled(publisher)
-  const setSubscribed = useCallback((subscribed: boolean) => api.setPublisherSubscribed(publisherId, subscribed), [publisherId])
+  const followed = isPublisherEnabled(publisher)
+  const setFollowed = useCallback((followed: boolean) => api.setPublisherFollowed(publisherId, followed), [publisherId])
 
   return {
-    subscribed,
-    setSubscribed
+    followed,
+    setFollowed
   }
 }

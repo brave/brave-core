@@ -7,7 +7,6 @@ import Button, { ButtonProps } from '$web-components/button'
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { getLocale } from '$web-common/locale'
-import { Heart, HeartOutline } from './Icons'
 
 interface Props extends Omit<ButtonProps, 'isPrimary'> {
   className?: string
@@ -29,13 +28,11 @@ const StyledButton = styled.div<{ following: boolean }>`
 export default function FollowButton (props: Props) {
   const { following, className, ...rest } = props
   return <StyledButton className={className} following={following}>
-    <Button {...rest} isPrimary={!following}>
-      {following ? <>
-        {Heart} {getLocale('braveNewsFollowButtonFollowing')}
-      </>
-        : <>
-          {HeartOutline} {getLocale('braveNewsFollowButtonNotFollowing')}
-        </>}
+    <Button {...rest} scale='tiny' isPrimary={!following}>
+      {following
+        ? getLocale('braveNewsFollowButtonFollowing')
+        : getLocale('braveNewsFollowButtonNotFollowing')
+      }
     </Button>
   </StyledButton>
 }
