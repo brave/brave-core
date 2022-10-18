@@ -78,8 +78,8 @@ class BraveNewsApi {
     this.updatePublishers(publishers)
   }
 
-  setPublisherSubscribed (publisherId: string, enabled: boolean) {
-    this.setPublisherPref(publisherId, enabled ? UserEnabled.ENABLED : UserEnabled.DISABLED)
+  setPublisherFollowed (publisherId: string, enabled: boolean) {
+    this.setPublisherPref(publisherId, enabled ? UserEnabled.ENABLED : UserEnabled.NOT_MODIFIED)
   }
 
   async setChannelSubscribed (channelId: string, subscribed: boolean) {

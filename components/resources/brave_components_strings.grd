@@ -385,7 +385,7 @@
         }
       </message>
       <message name="IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING" desc="Label for the follow button to be display when following the feed">
-        Following
+        Unfollow
       </message>
       <message name="IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING" desc="Label for the follow button when the publisher is not currently followed">
         Follow
