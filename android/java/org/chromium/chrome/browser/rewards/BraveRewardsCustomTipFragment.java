@@ -163,7 +163,12 @@ public class BraveRewardsCustomTipFragment extends Fragment {
      * decimal points always roundedOff to floor value.
      */
     private double getBatValue(String inputValue) {
-        double rawValue = Double.parseDouble(inputValue);
+        double rawValue = 0;
+        try {
+            rawValue = Double.parseDouble(inputValue);
+        } catch (NumberFormatException e) {
+        }
+
         if (!isBatCurrencyMode) {
             // from USD to BAT
             rawValue = rawValue / exchangeRate;
