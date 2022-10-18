@@ -5,6 +5,8 @@
 
 #include "brave/components/de_amp/browser/de_amp_util.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/components/de_amp/common/features.h"
