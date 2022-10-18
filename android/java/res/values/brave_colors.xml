@@ -79,6 +79,10 @@
     <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/modern_grey_50</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
+    
+    <!-- Sync informer icon colors -->
+    <color name="brave_informer_dark_theme_icon_color">@color/modern_grey_100</color>
+    <color name="brave_informer_light_theme_icon_color">@color/modern_grey_700</color>
 
     <color name="brave_set_default_dialog_text_color">@color/modern_grey_700</color>
 
