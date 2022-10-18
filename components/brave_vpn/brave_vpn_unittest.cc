@@ -265,6 +265,7 @@ class BraveVPNServiceTest : public testing::Test {
     service_->UpdateAndNotifyConnectionStateChange(state);
   }
   void Suspend() { service_->OnSuspend(); }
+  void OnDNSChanged() { service_->OnDNSChanged(); }
 
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
@@ -287,6 +288,7 @@ class BraveVPNServiceTest : public testing::Test {
   bool& is_simulation() { return service_->is_simulation_; }
 
   bool& needs_connect() { return service_->needs_connect_; }
+  bool& reconnect_on_resume() { return service_->reconnect_on_resume_; }
 
   void Connect() { service_->Connect(); }
 
@@ -935,15 +937,49 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
 }
 
 TEST_F(BraveVPNServiceTest, ResumeAfterSuspend) {
-  connection_state() = ConnectionState::CONNECTED;
-  needs_connect() = false;
-  Suspend();
-  EXPECT_TRUE(needs_connect());
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
 
   connection_state() = ConnectionState::DISCONNECTED;
-  needs_connect() = false;
+  reconnect_on_resume() = false;
   Suspend();
-  EXPECT_FALSE(needs_connect());
+  EXPECT_FALSE(reconnect_on_resume());
+
+  connection_state() = ConnectionState::CONNECTED;
+  reconnect_on_resume() = false;
+  Suspend();
+  EXPECT_TRUE(reconnect_on_resume());
+  EXPECT_EQ(ConnectionState::DISCONNECTING, connection_state());
+
+  connection_state() = ConnectionState::DISCONNECTED;
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
+  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_NONE);
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
+            net::NetworkChangeNotifier::GetConnectionType());
+  OnDNSChanged();
+  EXPECT_TRUE(reconnect_on_resume());
+
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_UNKNOWN);
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_UNKNOWN,
+            net::NetworkChangeNotifier::GetConnectionType());
+  OnDNSChanged();
+  EXPECT_TRUE(reconnect_on_resume());
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_UNKNOWN);
+
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_ETHERNET);
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_ETHERNET,
+            net::NetworkChangeNotifier::GetConnectionType());
+  OnDNSChanged();
+  EXPECT_FALSE(reconnect_on_resume());
+  EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
 }
 
 TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
