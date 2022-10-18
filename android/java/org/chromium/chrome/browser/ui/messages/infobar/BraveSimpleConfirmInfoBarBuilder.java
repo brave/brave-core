@@ -8,14 +8,19 @@ package org.chromium.chrome.browser.ui.messages.infobar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
 import org.chromium.content_public.browser.WebContents;
 
@@ -49,6 +54,11 @@ public class BraveSimpleConfirmInfoBarBuilder extends SimpleConfirmInfoBarBuilde
                 drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        int icon_color = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                ? ContextCompat.getColor(context, R.color.brave_informer_dark_theme_icon_color)
+                : ContextCompat.getColor(context, R.color.brave_informer_light_theme_icon_color);
+        drawable.setColorFilter(new PorterDuffColorFilter(icon_color, PorterDuff.Mode.SRC_ATOP));
         drawable.draw(canvas);
         return bitmap;
     }
