@@ -109,6 +109,8 @@ class SpeedreaderTabHelper
   void SetContentStyle(ContentStyle style);
   ContentStyle GetContentStyle();
 
+  std::string GetCurrentSiteURL();
+
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);
@@ -140,6 +142,8 @@ class SpeedreaderTabHelper
 
   // Updates the distill state when the global speedreader state is changed.
   void OnPrefChanged();
+
+  void OnPropertyPrefChanged(const std::string& path);
 
   // Updates UI if the tab is visible.
   void UpdateButtonIfNeeded();

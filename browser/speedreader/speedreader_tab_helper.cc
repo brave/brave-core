@@ -52,6 +52,10 @@ void SetShowOriginalLinkTitle(const std::u16string* title) {
 
 }  // namespace test
 
+constexpr const char* kPropertyPrefNames[] = {
+    kSpeedreaderPrefTheme, kSpeedreaderPrefFontSize, kSpeedreaderPrefFontFamily,
+    kSpeedreaderPrefContentStyle};
+
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents) {
@@ -61,6 +65,14 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
       kSpeedreaderPrefEnabled,
       base::BindRepeating(&SpeedreaderTabHelper::OnPrefChanged,
                           weak_factory_.GetWeakPtr()));
+
+  for (const auto* pref_name : kPropertyPrefNames) {
+    pref_change_registrar_->Add(
+        pref_name,
+        base::BindRepeating(&SpeedreaderTabHelper::OnPropertyPrefChanged,
+                            weak_factory_.GetWeakPtr()));
+  }
+
   content_rules_ = HostContentSettingsMapFactory::GetForProfile(
       web_contents->GetBrowserContext());
 }
@@ -301,8 +313,6 @@ void SpeedreaderTabHelper::SetTheme(Theme theme) {
   if (speedreader_service->GetTheme() == theme)
     return;
   speedreader_service->SetTheme(theme);
-
-  SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
 }
 
 Theme SpeedreaderTabHelper::GetTheme() {
@@ -329,8 +339,6 @@ void SpeedreaderTabHelper::SetFontFamily(FontFamily font) {
     return;
 
   speedreader_service->SetFontFamily(font);
-  SetDocumentAttribute("data-font-family",
-                       speedreader_service->GetFontFamilyName());
 }
 
 FontFamily SpeedreaderTabHelper::GetFontFamily() {
@@ -347,8 +355,6 @@ void SpeedreaderTabHelper::SetFontSize(FontSize size) {
     return;
 
   speedreader_service->SetFontSize(size);
-  SetDocumentAttribute("data-font-size",
-                       speedreader_service->GetFontSizeName());
 }
 
 FontSize SpeedreaderTabHelper::GetFontSize() const {
@@ -364,13 +370,15 @@ void SpeedreaderTabHelper::SetContentStyle(ContentStyle style) {
     return;
 
   speedreader_service->SetContentStyle(style);
-  SetDocumentAttribute("data-content-style",
-                       speedreader_service->GetContentStyleName());
 }
 
 ContentStyle SpeedreaderTabHelper::GetContentStyle() {
   return SpeedreaderServiceFactory::GetForProfile(GetProfile())
       ->GetContentStyle();
+}
+
+std::string SpeedreaderTabHelper::GetCurrentSiteURL() {
+  return web_contents()->GetLastCommittedURL().host();
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {
@@ -432,6 +440,29 @@ void SpeedreaderTabHelper::OnPrefChanged() {
   }
 
   UpdateButtonIfNeeded();
+}
+
+void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
+  DCHECK(base::Contains(kPropertyPrefNames, path));
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (!speedreader_service)
+    return;
+  if (!PageStateIsDistilled(distill_state_))
+    return;
+
+  if (path == kSpeedreaderPrefTheme) {
+    SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
+  } else if (path == kSpeedreaderPrefFontFamily) {
+    SetDocumentAttribute("data-font-family",
+                         speedreader_service->GetFontFamilyName());
+  } else if (path == kSpeedreaderPrefFontSize) {
+    SetDocumentAttribute("data-font-size",
+                         speedreader_service->GetFontSizeName());
+  } else if (path == kSpeedreaderPrefContentStyle) {
+    SetDocumentAttribute("data-content-style",
+                         speedreader_service->GetContentStyleName());
+  }
 }
 
 void SpeedreaderTabHelper::UpdateButtonIfNeeded() {
