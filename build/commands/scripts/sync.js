@@ -100,8 +100,9 @@ function buildDefaultGClientConfig() {
   if (config.targetOS) {
     out += toGClientConfigItem('target_os', [config.targetOS], false)
   }
-  if (config.targetArch) {
-    out += toGClientConfigItem('target_cpu', [config.targetArch], false)
+  if (config.targetOS === 'linux') {
+    // Run hooks for Arm64. This in particular creates the arm64 sysroot.
+    out += toGClientConfigItem('target_cpu', ['arm64'], false)
   }
 
   fs.writeFileSync(config.defaultGClientFile, out)
