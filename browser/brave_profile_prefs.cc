@@ -65,7 +65,6 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
-#include "components/version_info/channel.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -242,14 +241,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
       registry);
-#endif
-
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
-  // Disable sharing hub on stable only.
-  if (chrome::GetChannel() == version_info::Channel::STABLE) {
-    registry->SetDefaultPrefValue(prefs::kDesktopSharingHubEnabled,
-                                  base::Value(false));
-  }
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
