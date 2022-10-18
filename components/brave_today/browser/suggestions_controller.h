@@ -17,7 +17,6 @@
 #include "base/one_shot_event.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
@@ -37,7 +36,6 @@ class SuggestionsController {
 
   explicit SuggestionsController(
       PrefService* prefs,
-      ChannelsController* channels_controller,
       PublishersController* publishers_controller,
       api_request_helper::APIRequestHelper* api_request_helper,
       history::HistoryService* history_service);
@@ -60,7 +58,6 @@ class SuggestionsController {
   // Task tracker for HistoryService callbacks.
   base::CancelableTaskTracker task_tracker_;
 
-  raw_ptr<ChannelsController> channels_controller_;
   raw_ptr<PublishersController> publishers_controller_;
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   raw_ptr<history::HistoryService> history_service_;

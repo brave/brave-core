@@ -22,7 +22,6 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/urls.h"
@@ -140,12 +139,10 @@ SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
 }  // namespace
 SuggestionsController::SuggestionsController(
     PrefService* prefs,
-    ChannelsController* channels_controller,
     PublishersController* publishers_controller,
     api_request_helper::APIRequestHelper* api_request_helper,
     history::HistoryService* history_service)
     : prefs_(prefs),
-      channels_controller_(channels_controller),
       publishers_controller_(publishers_controller),
       api_request_helper_(api_request_helper),
       history_service_(history_service),

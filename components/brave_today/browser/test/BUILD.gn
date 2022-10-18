@@ -17,6 +17,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_today/browser/locales_helper_unittest.cc",
     "//brave/components/brave_today/browser/publishers_controller_unittest.cc",
     "//brave/components/brave_today/browser/publishers_parsing_unittest.cc",
+    "//brave/components/brave_today/browser/suggestions_controller_unittest.cc",
     "//brave/components/brave_today/browser/unsupported_publisher_migrator_unittest.cc",
     "//brave/components/brave_today/browser/urls_unittest.cc",
   ]
