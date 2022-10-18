@@ -37,6 +37,7 @@
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
+#include "net/base/network_change_notifier.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace network {
@@ -63,6 +64,7 @@ class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
     public BraveVPNOSConnectionAPI::Observer,
     public base::PowerSuspendObserver,
+    public net::NetworkChangeNotifier::DNSObserver,
 #endif
     public mojom::ServiceHandler,
     public KeyedService {
@@ -115,6 +117,9 @@ class BraveVpnService :
   // base::PowerMonitor
   void OnSuspend() override;
   void OnResume() override;
+
+  // net::NetworkChangeNotifier::DNSObserver
+  void OnDNSChanged() override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
@@ -268,6 +273,7 @@ class BraveVpnService :
   mojom::ConnectionState connection_state_ =
       mojom::ConnectionState::DISCONNECTED;
   bool needs_connect_ = false;
+  bool reconnect_on_resume_ = false;
   base::ScopedObservation<BraveVPNOSConnectionAPI,
                           BraveVPNOSConnectionAPI::Observer>
       observed_{this};
