@@ -50,11 +50,13 @@ double ProjectToRange(double value, double min, double max) {
 base::flat_map<std::string, double> GetVisitWeightings(
     const Publishers& publishers,
     const history::QueryResults& history) {
+  // Get a flat list of hostnames from publishers
   base::flat_set<std::string> publisher_hosts;
   for (const auto& [_, publisher] : publishers) {
     publisher_hosts.insert(publisher->site_url.host());
   }
 
+  // Score hostnames from browsing history by how many times they appear
   base::flat_map<std::string, double> weightings;
   for (const auto& entry : history)
     weightings[entry.url().host()] += 1;
@@ -62,12 +64,13 @@ base::flat_map<std::string, double> GetVisitWeightings(
   if (!weightings.size())
     return weightings;
 
+  // Normalize (between 0 and 1) the visit counts by dividing
+  // by the maximum number of visits.
   auto max_visits =
       base::ranges::max(weightings, [](const auto& a, const auto& b) {
         return a.second < b.second;
       }).second;
 
-  // Normalize the visit counts by dividing by the maximum number of visits.
   for (auto& it : weightings) {
     it.second /= max_visits;
   }
@@ -83,7 +86,8 @@ double GetVisitWeighting(const mojom::PublisherPtr& publisher,
     // The |site_urls| we receive from Brave News aren't terribly accurate, and
     // many of them are missing bits and pieces. This is a simple middle ground
     // while we wait for them to be fixed.
-    // Relevant issue: https://github.com/brave/news-aggregator/issues/58
+    // Relevant issues: https://github.com/brave/news-aggregator/issues/58 and
+    // https://github.com/brave/brave-browser/issues/26092
     if (!base::StartsWith(host_name, "www.")) {
       it = visit_weightings.find("www." + host_name);
     }
@@ -103,7 +107,7 @@ SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return {};
   }
 
