@@ -188,7 +188,6 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const bool explicitly_enabled =
         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
     const auto visited_score = GetVisitWeighting(publisher, visit_weightings);
-    const bool visited = visited_score != 0;
 
     if (!explicitly_enabled) {
       scores[publisher_id] += visited_score;
@@ -196,7 +195,7 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
 
     // Only consider similar sources if we have visited this one or it has been
     // explicitly enabled.
-    if (!visited && !explicitly_enabled) {
+    if (visited_score == 0 && !explicitly_enabled) {
       continue;
     }
 
@@ -215,17 +214,17 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
         continue;
       }
 
-      // TODO(fallaciousreasoning): Should |visit_score| be multiplied by the
-      // visit weight for the original source?
-      auto visit_score = visited
-                             ? ProjectToRange(info.score, kSimilarVisitedMin,
-                                              kSimilarVisitedMax)
-                             : 0;
-      auto subscribed_score =
+      // Weight this visited score, based on the visited score of the source
+      // this one is similar to.
+      auto similar_visited_score =
+          visited_score *
+          ProjectToRange(info.score, kSimilarVisitedMin, kSimilarVisitedMax);
+      auto similar_subscribed_score =
           explicitly_enabled ? ProjectToRange(info.score, kSimilarSubscribedMin,
                                               kSimilarSubscribedMax)
                              : 0;
-      scores[info.publisher_id] += visit_score + subscribed_score;
+      scores[info.publisher_id] +=
+          similar_visited_score + similar_subscribed_score;
     }
   }
 
