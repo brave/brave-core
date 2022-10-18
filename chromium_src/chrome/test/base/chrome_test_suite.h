@@ -10,8 +10,6 @@
 #include "src/chrome/test/base/chrome_test_suite.h"
 #undef ChromeTestSuite
 
-class BraveChromeTestSetupHelper;
-
 class ChromeTestSuite : public ChromeTestSuite_ChromiumImpl {
  public:
   ChromeTestSuite(int argc, char** argv);
@@ -20,9 +18,6 @@ class ChromeTestSuite : public ChromeTestSuite_ChromiumImpl {
  protected:
   // base::TestSuite overrides:
   void Initialize() override;
-  void Shutdown() override;
-
-  std::unique_ptr<BraveChromeTestSetupHelper> brave_chrome_test_setup_helper_;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_CHROME_TEST_SUITE_H_

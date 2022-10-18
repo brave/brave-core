@@ -15,6 +15,8 @@
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
 
+namespace {
+
 class BraveChromeTestSetupHelper : public testing::EmptyTestEventListener {
  public:
   struct TestAdjustments {
@@ -92,6 +94,8 @@ class BraveChromeTestSetupHelper : public testing::EmptyTestEventListener {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
+}  // namespace
+
 ChromeTestSuite::ChromeTestSuite(int argc, char** argv)
     : ChromeTestSuite_ChromiumImpl(argc, argv) {}
 
@@ -99,16 +103,8 @@ ChromeTestSuite::~ChromeTestSuite() = default;
 
 void ChromeTestSuite::Initialize() {
   ChromeTestSuite_ChromiumImpl::Initialize();
-  brave_chrome_test_setup_helper_ =
-      std::make_unique<BraveChromeTestSetupHelper>();
   testing::TestEventListeners& listeners =
       testing::UnitTest::GetInstance()->listeners();
-  listeners.Append(brave_chrome_test_setup_helper_.get());
-}
-
-void ChromeTestSuite::Shutdown() {
-  testing::TestEventListeners& listeners =
-      testing::UnitTest::GetInstance()->listeners();
-  listeners.Release(brave_chrome_test_setup_helper_.get());
-  ChromeTestSuite_ChromiumImpl::Shutdown();
+  // TestEventListeners owns listeners and deletes on shutdown.
+  listeners.Append(new BraveChromeTestSetupHelper());
 }
