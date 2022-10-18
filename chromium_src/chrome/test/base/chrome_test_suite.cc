@@ -62,6 +62,20 @@ class BraveChromeTestSetupHelper : public testing::EmptyTestEventListener {
       base::ranges::copy(test_adjustments.disable_features,
                          std::back_inserter(disable_features));
     }
+#if DCHECK_IS_ON()
+    {
+      std::vector<std::string> duplicate_features;
+      base::ranges::sort(enable_features);
+      base::ranges::sort(disable_features);
+      base::ranges::set_intersection(enable_features, disable_features,
+                                     std::back_inserter(duplicate_features));
+      for (const auto& duplicate_feature : duplicate_features) {
+        DLOG(ERROR) << "Found enabled and disabled feature at the same time: "
+                    << duplicate_feature;
+      }
+      DCHECK(duplicate_features.empty());
+    }
+#endif  // DCHECK_IS_ON()
 
     if (!enable_features.empty() || !disable_features.empty()) {
       scoped_feature_list_.InitFromCommandLine(
