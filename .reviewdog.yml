@@ -1,0 +1,21 @@
+runner:
+  semgrep:
+    name: semgrep
+    cmd: |
+      [ "$(git --no-pager diff --name-only HEAD $(git merge-base HEAD origin/${GITHUB_BASE_REF:-main}) | xargs ls  -d 2>/dev/null)" != "" ] &&\
+      semgrep \
+        -c p/ci \
+        -c p/security-audit \
+        -c p/xss \
+        -c p/nginx \
+        -c p/docker \
+        -c p/terraform \
+        -c p/secrets \
+        $(find semgrep_rules -name '*.yml' | sed 's/^/-c /g') \
+        --metrics=off \
+        --json $(git --no-pager diff --name-only HEAD $(git merge-base HEAD origin/${GITHUB_BASE_REF:-main}) | xargs ls -d 2>/dev/null) \
+        | jq -r '.results[] | "\(.extra.severity[0:1]):\(.path):\(.end.line) \(.extra.message)"' \
+        | sed 's/$/ (Cc @brave\/sec-team @thypon)/g' | tee semgrep.log &&\
+        find semgrep.log -type f -empty -delete
+    errorformat:
+      - "%t:%f:%l %m"
