@@ -122,9 +122,15 @@ SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
     const auto& similarity_list = it.second.GetList();
     for (const auto& similarity : similarity_list) {
       const auto& dict = similarity.GetDict();
+      auto* source = dict.FindString("source");
+      if (!source) {
+        VLOG(1) << "Found similarity with no publisher id: "
+                << dict.DebugString();
+        continue;
+      }
+      auto score = dict.FindDouble("score").value_or(0);
       similarities[for_publisher].push_back(
-          {.publisher_id = *dict.FindString("source"),
-           .score = dict.FindDouble("score").value()});
+          {.publisher_id = *source, .score = score});
     }
   }
 
