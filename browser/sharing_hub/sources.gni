@@ -3,7 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-brave_browser_sharing_hub_sources = [
-  "//brave/browser/sharing_hub/brave_sharing_hub_model.cc",
-  "//brave/browser/sharing_hub/brave_sharing_hub_model.h",
-]
+brave_browser_sharing_hub_sources = []
+
+if (!is_android) {
+  brave_browser_sharing_hub_sources += [
+    "//brave/browser/sharing_hub/brave_sharing_hub_model.cc",
+    "//brave/browser/sharing_hub/brave_sharing_hub_model.h",
+  ]
+}
