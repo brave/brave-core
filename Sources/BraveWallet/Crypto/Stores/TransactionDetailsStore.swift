@@ -130,6 +130,8 @@ class TransactionDetailsStore: ObservableObject {
         } else {
           self.value = details.fromAmount
         }
+      case .solDappTransaction:
+        break
       case .other:
         break
       }

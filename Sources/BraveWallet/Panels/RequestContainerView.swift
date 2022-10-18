@@ -76,6 +76,18 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
+          case let .signTransaction(request):
+            SignTransactionView(
+              request: .signTransaction(request),
+              cryptoStore: cryptoStore,
+              onDismiss: onDismiss
+            )
+          case let .signAllTransactions(request):
+            SignTransactionView(
+              request: .signAllTransactions(request),
+              cryptoStore: cryptoStore,
+              onDismiss: onDismiss
+            )
           }
         }
       }

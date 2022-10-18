@@ -632,7 +632,7 @@ class TabSessionTests: XCTestCase {
     let group = DispatchGroup()
     for tab in self.tabManager.allTabs {
       // include all scripts
-      UserScriptManager.shared.loadCustomScripts(into: tab, userScripts: scripts, customScripts: customScripts, walletEthProviderScript: nil)
+      UserScriptManager.shared.loadCustomScripts(into: tab, userScripts: scripts, customScripts: customScripts, walletEthProviderScript: nil, walletSolProviderScripts: [:])
 
       group.enter()
     }

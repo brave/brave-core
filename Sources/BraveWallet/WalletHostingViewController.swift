@@ -27,7 +27,7 @@ public enum PresentingContext {
   /// Shows the user any pending requests made by webpages such as transaction confirmations, adding networks, switch networks, add tokens, sign message, etc.
   case pendingRequests
   /// Shows when a webpage wants to connect with the users wallet
-  case requestEthererumPermissions(_ request: WebpagePermissionRequest, onPermittedAccountsUpdated: (_ permittedAccounts: [String]) -> Void)
+  case requestPermissions(_ request: WebpagePermissionRequest, onPermittedAccountsUpdated: (_ permittedAccounts: [String]) -> Void)
   /// Shows the user only the unlock/setup screen then dismisses to view an unlocked panel
   case panelUnlockOrSetup
   /// Shows the user available wallet accounts to use

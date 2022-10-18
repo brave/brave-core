@@ -90,4 +90,23 @@ public extension WKWebView {
       }
     }
   }
+  
+  @discardableResult @MainActor func evaluateSafeJavaScript(
+    functionName: String,
+    args: [Any] = [],
+    contentWorld: WKContentWorld,
+    escapeArgs: Bool = true,
+    asFunction: Bool = true
+  ) async -> (Any?, Error?) {
+    await withCheckedContinuation { continuation in
+      evaluateSafeJavaScript(
+        functionName: functionName,
+        args: args,
+        contentWorld: contentWorld,
+        escapeArgs: escapeArgs,
+        asFunction: asFunction) { value, error in
+          continuation.resume(returning: (value, error))
+      }
+    }
+  }
 }

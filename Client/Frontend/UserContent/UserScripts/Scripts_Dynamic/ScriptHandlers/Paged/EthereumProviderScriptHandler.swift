@@ -41,13 +41,6 @@ class EthereumProviderScriptHandler: TabContentScript {
                                in: scriptSandbox)
   }()
   
-  static func shouldInjectWalletProvider(_ completion: @escaping (Bool) -> Void) {
-    BraveWallet.KeyringServiceFactory.get(privateMode: false)?
-      .keyringInfo(BraveWallet.DefaultKeyringId, completion: { keyring in
-        completion(keyring.isKeyringCreated)
-      })
-  }
-  
   private struct MessageBody: Decodable {
     enum Method: String, Decodable {
       case request

@@ -13,6 +13,8 @@ enum PendingRequest: Equatable {
   case signMessage([BraveWallet.SignMessageRequest])
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
+  case signTransaction(BraveWallet.SignTransactionRequest)
+  case signAllTransactions(BraveWallet.SignAllTransactionsRequest)
 }
 
 extension PendingRequest: Identifiable {
@@ -25,6 +27,8 @@ extension PendingRequest: Identifiable {
     case let .signMessage(signRequests): return "signMessage-\(signRequests.map(\.id))"
     case let .getEncryptionPublicKey(request): return "getEncryptionPublicKey-\(request.address)-\(request.originInfo.origin)"
     case let .decrypt(request): return "decrypt-\(request.address)-\(request.originInfo.origin)"
+    case let .signTransaction(request): return "signTransaction-\(request.id)"
+    case let .signAllTransactions(request): return "signAllTransactions-\(request.id)"
     }
   }
 }
@@ -36,6 +40,8 @@ enum WebpageRequestResponse: Equatable {
   case signMessage(approved: Bool, id: Int32)
   case getEncryptionPublicKey(approved: Bool, originInfo: BraveWallet.OriginInfo)
   case decrypt(approved: Bool, originInfo: BraveWallet.OriginInfo)
+  case signTransaction(approved: Bool, id: Int32, signature: BraveWallet.ByteArrayStringUnion?, error: String?)
+  case signAllTransactions(approved: Bool, id: Int32, signatures: [BraveWallet.ByteArrayStringUnion]?, error: String?)
 }
 
 public class CryptoStore: ObservableObject {
@@ -276,6 +282,10 @@ public class CryptoStore: ObservableObject {
     // TODO: Add check for eth permissions… get first eth request
     if let chainRequest = await rpcService.pendingAddChainRequests().first {
       return .addChain(chainRequest)
+    } else if let signTransactionRequest = await walletService.pendingSignTransactionRequests().first {
+      return .signTransaction(signTransactionRequest)
+    } else if let signAllTransactionsRequest = await walletService.pendingSignAllTransactionsRequests().first {
+      return .signAllTransactions(signAllTransactionsRequest)
     } else if case let signMessageRequests = await walletService.pendingSignMessageRequests(), !signMessageRequests.isEmpty {
       return .signMessage(signMessageRequests)
     } else if let switchRequest = await rpcService.pendingSwitchChainRequests().first {
@@ -319,6 +329,10 @@ public class CryptoStore: ObservableObject {
       walletService.notifyGetPublicKeyRequestProcessed(approved, origin: originInfo.origin)
     case let .decrypt(approved, originInfo):
       walletService.notifyDecryptRequestProcessed(approved, origin: originInfo.origin)
+    case let .signTransaction(approved, id, signature, error):
+      walletService.notifySignTransactionRequestProcessed(approved, id: id, signature: signature, error: error)
+    case let .signAllTransactions(approved, id, signatures, error):
+      walletService.notifySignAllTransactionsRequestProcessed(approved, id: id, signatures: signatures, error: error)
     }
     pendingRequest = nil
   }

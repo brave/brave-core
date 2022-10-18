@@ -372,6 +372,8 @@ public class TransactionConfirmationStore: ObservableObject {
     case let .erc721Transfer(details):
       symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
+    case .solDappTransaction:
+      break
     case .other:
       break
     }

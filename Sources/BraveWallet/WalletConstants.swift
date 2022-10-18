@@ -93,6 +93,6 @@ struct WalletConstants {
   static let auroraBridgeLink: URL? = URL(string: "https://rainbowbridge.app")
 }
 
-struct WalletDebugFlags {
-  static var isSolanaDappsEnabled: Bool = false
+public struct WalletDebugFlags {
+  public static let isSolanaDappsEnabled: Bool = false
 }
