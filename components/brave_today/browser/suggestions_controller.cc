@@ -208,11 +208,10 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
 
     for (const auto& info : similarity_info_it->second) {
       const auto& similar_publisher = publishers.at(info.publisher_id);
-      // Don't suggest similar publishers which are already enabled.
-      // TODO(fallaciousreasoning): Maybe we shouldn't suggest explicitly
-      // disabled publishers either?
-      if (similar_publisher->user_enabled_status ==
-          mojom::UserEnabled::ENABLED) {
+      // Don't suggest similar publishers which are already enabled,
+      // or which are explicitly disabled.
+      if (similar_publisher->user_enabled_status !=
+          mojom::UserEnabled::NOT_MODIFIED) {
         continue;
       }
 
