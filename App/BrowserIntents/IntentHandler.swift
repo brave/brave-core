@@ -5,6 +5,7 @@
 
 import Intents
 import BrowserIntentsModels
+import BraveWidgetsModels
 
 class IntentHandler: INExtension {
 
@@ -21,6 +22,10 @@ class IntentHandler: INExtension {
       return OpenBookmarkWebsiteIntent()
     }
 
+    if intent is LockScreenFavoriteConfigurationIntent {
+      return LockScreenFavoriteIntentHandler()
+    }
+    
     return self
   }
 }

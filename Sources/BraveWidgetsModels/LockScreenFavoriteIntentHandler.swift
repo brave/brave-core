@@ -3,12 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Intents
-import BraveWidgetsModels
+import Foundation
 import BraveShared
+import Intents
 
-class IntentHandler: INExtension, LockScreenFavoriteConfigurationIntentHandling {
-  func provideFavoriteOptionsCollection(for intent: BraveWidgetsModels.LockScreenFavoriteConfigurationIntent) async throws -> INObjectCollection<FavoriteEntry> {
+public class LockScreenFavoriteIntentHandler: NSObject, LockScreenFavoriteConfigurationIntentHandling {
+  public func provideFavoriteOptionsCollection(
+    for intent: BraveWidgetsModels.LockScreenFavoriteConfigurationIntent
+  ) async throws -> INObjectCollection<FavoriteEntry> {
     let favs = FavoritesWidgetData.loadWidgetData() ?? []
     let entries: [FavoriteEntry] = favs.map { fav in
       let entry = FavoriteEntry(

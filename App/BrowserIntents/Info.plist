@@ -30,6 +30,10 @@
 			<array/>
 			<key>IntentsSupported</key>
 			<array>
+				<string>StatsConfigurationIntent</string>
+				<string>ShortcutsConfigurationIntent</string>
+				<string>LockScreenFavoriteConfigurationIntent</string>
+				<string>LockScreenFavoriteConfiguration</string>
 				<string>OpenBookmarkWebsiteIntent</string>
 				<string>OpenHistoryWebsiteIntent</string>
 				<string>OpenWebsiteIntent</string>

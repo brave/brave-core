@@ -285,7 +285,8 @@ let package = Package(
     ),
     .target(
       name: "BraveWidgetsModels",
-      sources: ["BraveWidgets.intentdefinition", "Empty.swift"],
+      dependencies: ["BraveShared"],
+      sources: ["BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift"],
       plugins: ["IntentBuilderPlugin"]
     ),
     .target(name: "BraveSharedTestUtils"),
