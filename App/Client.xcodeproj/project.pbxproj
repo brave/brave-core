@@ -11,13 +11,10 @@
 		0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */; };
 		0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */; };
 		270ECFC82838210F0089B8B7 /* Brave in Frameworks */ = {isa = PBXBuildFile; productRef = 270ECFC72838210F0089B8B7 /* Brave */; };
-		27262B4D28BEB3D800A2E526 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27262B4C28BEB3D800A2E526 /* Intents.framework */; };
-		27262B5028BEB3D900A2E526 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27262B4F28BEB3D900A2E526 /* IntentHandler.swift */; };
-		27262B5428BEB3D900A2E526 /* BraveWidgetIntentHandler.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27262B4B28BEB3D800A2E526 /* BraveWidgetIntentHandler.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		27262B5C28BEB43400A2E526 /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
-		27262B5E28BEB44200A2E526 /* BraveWidgetsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27262B5D28BEB44200A2E526 /* BraveWidgetsModels */; };
-		27262B6028BEB78200A2E526 /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 27262B5F28BEB78200A2E526 /* BraveShared */; };
 		27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */ = {isa = PBXBuildFile; productRef = 27466BB0288EDB9C00584C90 /* RuntimeWarnings */; };
+		279A828E28FEF01E00F55A5E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		279A829028FEF0BA00F55A5E /* BraveWidgetsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 279A828F28FEF0BA00F55A5E /* BraveWidgetsModels */; };
+		279A829228FEF0BF00F55A5E /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 279A829128FEF0BF00F55A5E /* BraveShared */; };
 		279A9BCC2823370100F40FC6 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BCB2823370100F40FC6 /* SwiftKeychainWrapper */; };
 		279A9BCE2823370100F40FC6 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BCD2823370100F40FC6 /* SDWebImage */; };
 		279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 279C432D2853E51E00A9F708 /* DesignSystem */; };
@@ -66,13 +63,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		27262B5228BEB3D900A2E526 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 27262B4A28BEB3D800A2E526;
-			remoteInfo = FavoriteWidgetIntentHandler;
-		};
 		27F4439D2135E11200296C58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
@@ -106,7 +96,6 @@
 				CA8B4AF0276A8339002120F7 /* BraveWidgetsExtension.appex in Embed App Extensions */,
 				27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */,
 				2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */,
-				27262B5428BEB3D900A2E526 /* BraveWidgetIntentHandler.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -142,15 +131,7 @@
 		2703FC14284FDB6300970FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Shortcuts/ru.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		270ECFC628381E270089B8B7 /* brave-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "brave-ios"; path = ..; sourceTree = "<group>"; };
 		271D0F3A284FDB12002BCF91 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = Shortcuts/it.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
-		27262B4B28BEB3D800A2E526 /* BraveWidgetIntentHandler.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveWidgetIntentHandler.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		27262B4C28BEB3D800A2E526 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
-		27262B4F28BEB3D900A2E526 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
-		27262B5128BEB3D900A2E526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		27262B6328BEBCBD00A2E526 /* WidgetRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetRelease.entitlements; sourceTree = "<group>"; };
-		27262B6428BEBCBD00A2E526 /* WidgetBeta.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetBeta.entitlements; sourceTree = "<group>"; };
-		27262B6528BEBCBD00A2E526 /* WidgetDev.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetDev.entitlements; sourceTree = "<group>"; };
-		27262B6628BEBCBD00A2E526 /* WidgetEnterprise.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetEnterprise.entitlements; sourceTree = "<group>"; };
-		27262B6728BEBCBD00A2E526 /* WidgetDebug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetDebug.entitlements; sourceTree = "<group>"; };
 		272A00F42847B682009F1DC9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		273DFB18284FDB1D007781AF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Shortcuts/ja.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27465DC3284FDB6F0056FDB2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Shortcuts/sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -337,16 +318,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		27262B4828BEB3D800A2E526 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27262B6028BEB78200A2E526 /* BraveShared in Frameworks */,
-				27262B4D28BEB3D800A2E526 /* Intents.framework in Frameworks */,
-				27262B5E28BEB44200A2E526 /* BraveWidgetsModels in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		27F443922135E11200296C58 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -388,7 +359,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				279A829228FEF0BF00F55A5E /* BraveShared in Frameworks */,
 				27FA21752837F8EA00FA2C45 /* BrowserIntentsModels in Frameworks */,
+				279A829028FEF0BA00F55A5E /* BraveWidgetsModels in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,28 +446,6 @@
 				E689C6FF1E0C716F008BAADB /* Entitlements */,
 			);
 			path = iOS;
-			sourceTree = "<group>";
-		};
-		27262B4E28BEB3D900A2E526 /* BraveWidgetIntentHandler */ = {
-			isa = PBXGroup;
-			children = (
-				27262B6228BEBCBD00A2E526 /* Entitlements */,
-				27262B4F28BEB3D900A2E526 /* IntentHandler.swift */,
-				27262B5128BEB3D900A2E526 /* Info.plist */,
-			);
-			path = BraveWidgetIntentHandler;
-			sourceTree = "<group>";
-		};
-		27262B6228BEBCBD00A2E526 /* Entitlements */ = {
-			isa = PBXGroup;
-			children = (
-				27262B6328BEBCBD00A2E526 /* WidgetRelease.entitlements */,
-				27262B6428BEBCBD00A2E526 /* WidgetBeta.entitlements */,
-				27262B6528BEBCBD00A2E526 /* WidgetDev.entitlements */,
-				27262B6628BEBCBD00A2E526 /* WidgetEnterprise.entitlements */,
-				27262B6728BEBCBD00A2E526 /* WidgetDebug.entitlements */,
-			);
-			path = Entitlements;
 			sourceTree = "<group>";
 		};
 		276101FB287890A10039AB22 /* Resources */ = {
@@ -657,7 +608,6 @@
 				2F6931B5260CFB3700ECEB38 /* BrowserIntents */,
 				CA0391B7271E1023000EB13C /* BraveWidgets */,
 				27FDCE522835AE0800E78FAD /* l10n */,
-				27262B4E28BEB3D900A2E526 /* BraveWidgetIntentHandler */,
 				7B604FC11C496005006EEEC3 /* Frameworks */,
 				F84B21BF1A090F8100AAB793 /* Products */,
 			);
@@ -674,7 +624,6 @@
 				2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */,
 				CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */,
 				27FDCE512835AE0800E78FAD /* l10n.framework */,
-				27262B4B28BEB3D800A2E526 /* BraveWidgetIntentHandler.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -699,27 +648,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		27262B4A28BEB3D800A2E526 /* BraveWidgetIntentHandler */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 27262B5528BEB3D900A2E526 /* Build configuration list for PBXNativeTarget "BraveWidgetIntentHandler" */;
-			buildPhases = (
-				27262B4728BEB3D800A2E526 /* Sources */,
-				27262B4828BEB3D800A2E526 /* Frameworks */,
-				27262B4928BEB3D800A2E526 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BraveWidgetIntentHandler;
-			packageProductDependencies = (
-				27262B5D28BEB44200A2E526 /* BraveWidgetsModels */,
-				27262B5F28BEB78200A2E526 /* BraveShared */,
-			);
-			productName = FavoriteWidgetIntentHandler;
-			productReference = 27262B4B28BEB3D800A2E526 /* BraveWidgetIntentHandler.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		27F443942135E11200296C58 /* ShareExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
@@ -772,6 +700,8 @@
 			name = BrowserIntents;
 			packageProductDependencies = (
 				27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */,
+				279A828F28FEF0BA00F55A5E /* BraveWidgetsModels */,
+				279A829128FEF0BF00F55A5E /* BraveShared */,
 			);
 			productName = BrowserIntents;
 			productReference = 2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */;
@@ -818,7 +748,6 @@
 				CA8B4AE4276A830F002120F7 /* PBXTargetDependency */,
 				27F4439E2135E11200296C58 /* PBXTargetDependency */,
 				2F6931BA260CFB3700ECEB38 /* PBXTargetDependency */,
-				27262B5328BEB3D900A2E526 /* PBXTargetDependency */,
 			);
 			name = Client;
 			packageProductDependencies = (
@@ -850,9 +779,6 @@
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
-					27262B4A28BEB3D800A2E526 = {
-						CreatedOnToolsVersion = 14.0;
-					};
 					27F443942135E11200296C58 = {
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1010;
@@ -931,19 +857,11 @@
 				2F6931B3260CFB3700ECEB38 /* BrowserIntents */,
 				CA0391B1271E1023000EB13C /* BraveWidgetsExtension */,
 				27FDCE502835AE0800E78FAD /* l10n */,
-				27262B4A28BEB3D800A2E526 /* BraveWidgetIntentHandler */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		27262B4928BEB3D800A2E526 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		27F443932135E11200296C58 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1028,15 +946,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		27262B4728BEB3D800A2E526 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27262B5028BEB3D900A2E526 /* IntentHandler.swift in Sources */,
-				27262B5C28BEB43400A2E526 /* BraveWidgets.intentdefinition in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		27F443912135E11200296C58 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1061,6 +970,7 @@
 			files = (
 				27D67623282DAD3700BCE16E /* BrowserIntents.intentdefinition in Sources */,
 				2F6931B7260CFB3700ECEB38 /* IntentHandler.swift in Sources */,
+				279A828E28FEF01E00F55A5E /* BraveWidgets.intentdefinition in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1094,11 +1004,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		27262B5328BEB3D900A2E526 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 27262B4A28BEB3D800A2E526 /* BraveWidgetIntentHandler */;
-			targetProxy = 27262B5228BEB3D900A2E526 /* PBXContainerItemProxy */;
-		};
 		27F4439E2135E11200296C58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 27F443942135E11200296C58 /* ShareExtension */;
@@ -1295,190 +1200,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		27262B5628BEB3D900A2E526 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgetIntentHandler/Entitlements/WidgetDebug.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BraveWidgetIntentHandler/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BraveWidgetIntentHandler;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		27262B5728BEB3D900A2E526 /* Dev */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgetIntentHandler/Entitlements/WidgetDev.entitlements";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BraveWidgetIntentHandler/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BraveWidgetIntentHandler;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Dev;
-		};
-		27262B5828BEB3D900A2E526 /* Enterprise */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgetIntentHandler/Entitlements/WidgetEnterprise.entitlements";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BraveWidgetIntentHandler/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BraveWidgetIntentHandler;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Enterprise;
-		};
-		27262B5928BEB3D900A2E526 /* Release (AppStore) */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgetIntentHandler/Entitlements/WidgetRelease.entitlements";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BraveWidgetIntentHandler/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BraveWidgetIntentHandler;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release (AppStore)";
-		};
-		27262B5A28BEB3D900A2E526 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgetIntentHandler/Entitlements/WidgetRelease.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BraveWidgetIntentHandler/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BraveWidgetIntentHandler;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		27262B5B28BEB3D900A2E526 /* Beta */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgetIntentHandler/Entitlements/WidgetBeta.entitlements";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BraveWidgetIntentHandler/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BraveWidgetIntentHandler;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Beta;
-		};
 		27A1AC1624884F7A00344503 /* Enterprise */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 27A1AC1424884EB300344503 /* Enterprise.xcconfig */;
@@ -3029,19 +2750,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		27262B5528BEB3D900A2E526 /* Build configuration list for PBXNativeTarget "BraveWidgetIntentHandler" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				27262B5628BEB3D900A2E526 /* Debug */,
-				27262B5728BEB3D900A2E526 /* Dev */,
-				27262B5828BEB3D900A2E526 /* Enterprise */,
-				27262B5928BEB3D900A2E526 /* Release (AppStore) */,
-				27262B5A28BEB3D900A2E526 /* Release */,
-				27262B5B28BEB3D900A2E526 /* Beta */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3146,17 +2854,17 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Brave;
 		};
-		27262B5D28BEB44200A2E526 /* BraveWidgetsModels */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = BraveWidgetsModels;
-		};
-		27262B5F28BEB78200A2E526 /* BraveShared */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = BraveShared;
-		};
 		27466BB0288EDB9C00584C90 /* RuntimeWarnings */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RuntimeWarnings;
+		};
+		279A828F28FEF0BA00F55A5E /* BraveWidgetsModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveWidgetsModels;
+		};
+		279A829128FEF0BF00F55A5E /* BraveShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveShared;
 		};
 		279A9BCB2823370100F40FC6 /* SwiftKeychainWrapper */ = {
 			isa = XCSwiftPackageProductDependency;
