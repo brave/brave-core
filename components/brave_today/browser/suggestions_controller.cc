@@ -13,6 +13,7 @@
 #include "base/barrier_callback.h"
 #include "base/bind.h"
 #include "base/callback_forward.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/json/json_reader.h"
@@ -91,8 +92,6 @@ double GetVisitWeighting(const mojom::PublisherPtr& publisher,
       return 0;
     }
   }
-
-  LOG(ERROR) << "Here? " << host_name;
 
   return ProjectToRange(it->second, kVisitedMin, kVisitedMax);
 }
@@ -191,6 +190,12 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
   base::flat_map<std::string, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
+    // If this publisher isn't available in the current locale we don't want
+    // it to affect our suggestions.
+    if (!base::Contains(publisher->locales, locale)) {
+      continue;
+    }
+
     const bool explicitly_enabled =
         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
     const auto visited_score = GetVisitWeighting(publisher, visit_weightings);
