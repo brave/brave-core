@@ -49,11 +49,4 @@ copy("dist_resources") {
   outputs = [ "$brave_dist_dir/{{source_file_part}}" ]
 
   public_deps = [ "//chrome/chrome_elf" ]
-
-  # Angle does not define copy_compiler_dll for arm64. The reason for this is
-  # that Windows versions that support arm64 already ship the associated file
-  # d3dcompiler_47.dll. So Chromium and we do not need to build it on arm64.
-  if (target_cpu != "arm64") {
-    public_deps += [ "//third_party/angle:copy_compiler_dll" ]
-  }
 }
