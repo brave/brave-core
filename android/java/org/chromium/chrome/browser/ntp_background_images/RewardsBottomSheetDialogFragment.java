@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
@@ -135,7 +136,9 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
             turnOnAdsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    turnOnAds();
+                    if (BraveActivity.getBraveActivity() != null) {
+                        BraveActivity.getBraveActivity().openRewardsPanel();
+                    }
                     dismiss();
                 }
             });
@@ -199,11 +202,6 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
     private void hideSponsoredImages() {
         BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, false);
         reloadTab();
-    }
-
-    private void turnOnAds() {
-        BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-        BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
     }
 
     private void reloadTab() {

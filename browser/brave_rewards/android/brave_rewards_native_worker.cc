@@ -69,10 +69,37 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
   delete this;
 }
 
-void BraveRewardsNativeWorker::CreateRewardsWallet(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->CreateRewardsWallet("", base::DoNothing());
+std::string BraveRewardsNativeWorker::StringifyResult(
+    ledger::mojom::CreateRewardsWalletResult result) {
+  switch (result) {
+    case ledger::mojom::CreateRewardsWalletResult::kSuccess:
+      return "success";
+    case ledger::mojom::CreateRewardsWalletResult::kWalletGenerationDisabled:
+      return "wallet-generation-disabled";
+    case ledger::mojom::CreateRewardsWalletResult::kGeoCountryAlreadyDeclared:
+      return "country-already-declared";
+    case ledger::mojom::CreateRewardsWalletResult::kUnexpected:
+      return "unexpected-error";
   }
+}
+
+void BraveRewardsNativeWorker::CreateRewardsWallet(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& country_code) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->CreateRewardsWallet(
+        base::android::ConvertJavaStringToUTF8(env, country_code),
+        base::BindOnce(&BraveRewardsNativeWorker::OnCreateRewardsWallet,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnCreateRewardsWallet(
+    ledger::mojom::CreateRewardsWalletResult result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onCreateRewardsWallet(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, StringifyResult(result)));
 }
 
 void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {
@@ -718,6 +745,32 @@ void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
         base::BindOnce(&BraveRewardsNativeWorker::OnGetExternalWallet,
                        weak_factory_.GetWeakPtr()));
   }
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetCountryCode(JNIEnv* env) {
+  std::string country_code;
+  if (brave_rewards_service_) {
+    country_code = brave_rewards_service_->GetCountryCode();
+  }
+
+  return base::android::ConvertUTF8ToJavaString(env, country_code);
+}
+
+void BraveRewardsNativeWorker::GetAvailableCountries(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetAvailableCountries(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetAvailableCountries,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnGetAvailableCountries(
+    std::vector<std::string> countries) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onGetAvailableCountries(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ToJavaArrayOfStrings(env, countries));
 }
 
 void BraveRewardsNativeWorker::GetPublisherBanner(

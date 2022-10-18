@@ -167,9 +167,10 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void CreateRewardsWallet() {
+    public void CreateRewardsWallet(String countryCode) {
         synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().createRewardsWallet(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().createRewardsWallet(
+                    mNativeBraveRewardsNativeWorker, countryCode);
         }
     }
 
@@ -421,6 +422,20 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public String getCountryCode() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getCountryCode(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    public void getAvailableCountries() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().getAvailableCountries(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public void GetPublisherBanner(String publisher_key) {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().GetPublisherBanner(
@@ -445,6 +460,13 @@ public class BraveRewardsNativeWorker {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().getAdsAccountStatement(
                     mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    @CalledByNative
+    public void onCreateRewardsWallet(String result) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onCreateRewardsWallet(result);
         }
     }
 
@@ -615,6 +637,13 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
+    public void onGetAvailableCountries(String[] countries) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onGetAvailableCountries(countries);
+        }
+    }
+
+    @CalledByNative
     public void OnGetAdsAccountStatement(boolean success, double next_payment_date,
             int ads_received_this_month, double earnings_this_month, double earnings_last_month) {
         for (BraveRewardsObserver observer : mObservers) {
@@ -717,10 +746,12 @@ public class BraveRewardsNativeWorker {
         int getAdsPerHour(long nativeBraveRewardsNativeWorker);
         void setAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
         void getExternalWallet(long nativeBraveRewardsNativeWorker);
+        String getCountryCode(long nativeBraveRewardsNativeWorker);
+        void getAvailableCountries(long nativeBraveRewardsNativeWorker);
         void disconnectWallet(long nativeBraveRewardsNativeWorker);
         void recoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
-        void createRewardsWallet(long nativeBraveRewardsNativeWorker);
+        void createRewardsWallet(long nativeBraveRewardsNativeWorker, String countryCode);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
