@@ -29,13 +29,13 @@ jobs:
         if: ${{ hashFiles('semgrep.log') }}
         with:
           github_token: ${{ secrets.github_token }}
-          assignees: thypon
+          assignees: thypon,stoletheminerals
       - uses: actions-ecosystem/action-slack-notifier@v1
         if: ${{ hashFiles('semgrep.log') }}
         with:
           slack_token: ${{ secrets.HOTSPOTS_SLACK_TOKEN }}
           message: |
-            [semgrep] @${{ github.actor }} pushed commits. /cc @thypon
+            [semgrep] @${{ github.actor }} pushed commits. /cc @thypon @stoletheminerals
           channel: secops-hotspots
           color: green
           verbose: true
