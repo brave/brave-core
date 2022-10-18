@@ -96,20 +96,19 @@ double GetVisitWeighting(const mojom::PublisherPtr& publisher,
   return ProjectToRange(it->second, kVisitedMin, kVisitedMax);
 }
 
-SuggestionsController::SimilarityLookup ParseSimilarityResponse(
+SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
     const std::string& json,
     const std::string& locale) {
-  SuggestionsController::SimilarityLookup result;
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return result;
+    return {};
   }
 
   if (!records_v->is_dict()) {
-    return result;
+    return {};
   }
 
   SuggestionsController::PublisherSimilarities similarities;
@@ -125,8 +124,7 @@ SuggestionsController::SimilarityLookup ParseSimilarityResponse(
     }
   }
 
-  result[locale] = std::move(similarities);
-  return result;
+  return similarities;
 }
 
 }  // namespace
@@ -145,13 +143,12 @@ SuggestionsController::SuggestionsController(
 SuggestionsController::~SuggestionsController() = default;
 
 void SuggestionsController::GetSuggestedPublisherIds(
-    const std::string& locale,
     GetSuggestedPublisherIdsCallback callback) {
   GetOrFetchSimilarityMatrix(base::BindOnce(
-      [](SuggestionsController* controller, std::string locale,
+      [](SuggestionsController* controller,
          GetSuggestedPublisherIdsCallback callback) {
         controller->publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-            [](SuggestionsController* controller, std::string locale,
+            [](SuggestionsController* controller,
                GetSuggestedPublisherIdsCallback callback,
                Publishers publishers) {
               history::QueryOptions options;
@@ -161,38 +158,26 @@ void SuggestionsController::GetSuggestedPublisherIds(
                   std::u16string(), options,
                   base::BindOnce(&SuggestionsController::
                                      GetSuggestedPublisherIdsWithHistory,
-                                 base::Unretained(controller), locale,
+                                 base::Unretained(controller),
                                  std::move(publishers), std::move(callback)),
                   &controller->task_tracker_);
             },
-            base::Unretained(controller), locale, std::move(callback)));
+            base::Unretained(controller), std::move(callback)));
       },
-      base::Unretained(this), locale, std::move(callback)));
+      base::Unretained(this), std::move(callback)));
 }
 
 void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
-    const std::string& locale,
     Publishers publishers,
     GetSuggestedPublisherIdsCallback callback,
     history::QueryResults history) {
-  if (!similarity_lookup_.contains(locale)) {
-    std::move(callback).Run({});
-    return;
-  }
-
   const auto visit_weightings = GetVisitWeightings(publishers, history);
-  PublisherSimilarities* similarities;
-  auto similarity_it = similarity_lookup_.find(locale);
-  if (similarity_it != similarity_lookup_.end()) {
-    similarities = &similarity_it->second;
-  }
-
   base::flat_map<std::string, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
     // If this publisher isn't available in the current locale we don't want
     // it to affect our suggestions.
-    if (!base::Contains(publisher->locales, locale)) {
+    if (!base::Contains(publisher->locales, locale_)) {
       continue;
     }
 
@@ -211,14 +196,9 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
       continue;
     }
 
-    // If we have no similarities, nothing more to do here.
-    if (!similarities) {
-      continue;
-    }
-
     // If there are no similar publishers, we have nothing more to do here.
-    const auto& similarity_info_it = similarities->find(publisher_id);
-    if (similarity_info_it == similarities->end()) {
+    const auto& similarity_info_it = similarities_.find(publisher_id);
+    if (similarity_info_it == similarities_.end()) {
       continue;
     }
 
@@ -269,52 +249,38 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
   }
   is_update_in_progress_ = true;
 
-  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](SuggestionsController* controller, Publishers publishers) {
-        auto locales = GetMinimalLocalesSet(
-            controller->channels_controller_->GetChannelLocales(), publishers);
-        auto completed_callback = base::BarrierCallback<SimilarityLookup>(
-            locales.size(),
-            base::BindOnce(
-                [](SuggestionsController* controller,
-                   std::vector<SimilarityLookup> similarity_matrices) {
-                  SimilarityLookup flattened;
-                  for (const auto& locale_lookup : similarity_matrices) {
-                    for (const auto& [key, value] : locale_lookup) {
-                      flattened[std::move(key)] = std::move(value);
-                    }
-                  }
-
-                  controller->similarity_lookup_ = std::move(flattened);
-                  controller->on_current_update_complete_->Signal();
-                  controller->is_update_in_progress_ = false;
-                  controller->on_current_update_complete_ =
-                      std::make_unique<base::OneShotEvent>();
-                },
-                base::Unretained(controller)));
-
-        for (const auto& locale : locales) {
-          const GURL url("https://" + brave_today::GetHostname() +
-                         "/source-suggestions/source_similarity_t10." + locale +
-                         ".json");
-          controller->api_request_helper_->Request(
-              "GET", url, "", "", true,
-              base::BindOnce(
-                  [](SuggestionsController* controller, std::string locale,
-                     base::RepeatingCallback<void(SimilarityLookup)> callback,
-                     api_request_helper::APIRequestResult api_request_result) {
-                    callback.Run(ParseSimilarityResponse(
-                        api_request_result.body(), locale));
-                  },
-                  base::Unretained(controller), locale, completed_callback));
-        }
+  publishers_controller_->GetLocale(base::BindOnce(
+      [](SuggestionsController* controller, const std::string& locale) {
+        controller->publishers_controller_->GetOrFetchPublishers(base::BindOnce(
+            [](SuggestionsController* controller, const std::string& locale,
+               Publishers publishers) {
+              const GURL url("https://" + brave_today::GetHostname() +
+                             "/source-suggestions/source_similarity_t10." +
+                             locale + ".json");
+              controller->api_request_helper_->Request(
+                  "GET", url, "", "", true,
+                  base::BindOnce(
+                      [](SuggestionsController* controller, std::string locale,
+                         api_request_helper::APIRequestResult
+                             api_request_result) {
+                        controller->locale_ = locale;
+                        controller->similarities_ = ParseSimilarityResponse(
+                            api_request_result.body(), locale);
+                        controller->on_current_update_complete_->Signal();
+                        controller->is_update_in_progress_ = false;
+                        controller->on_current_update_complete_ =
+                            std::make_unique<base::OneShotEvent>();
+                      },
+                      base::Unretained(controller), locale));
+            },
+            base::Unretained(controller), locale));
       },
       base::Unretained(this)));
 }
 
 void SuggestionsController::GetOrFetchSimilarityMatrix(
     base::OnceClosure callback) {
-  if (!similarity_lookup_.empty() && !is_update_in_progress_) {
+  if (!similarities_.empty() && !is_update_in_progress_) {
     std::move(callback).Run();
     return;
   }

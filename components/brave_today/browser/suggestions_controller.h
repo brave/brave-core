@@ -34,7 +34,6 @@ class SuggestionsController {
 
   using PublisherSimilarities =
       base::flat_map<std::string, std::vector<PublisherSimilarity>>;
-  using SimilarityLookup = base::flat_map<std::string, PublisherSimilarities>;
 
   explicit SuggestionsController(
       PrefService* prefs,
@@ -46,16 +45,15 @@ class SuggestionsController {
   SuggestionsController& operator=(const SuggestionsController&) = delete;
   ~SuggestionsController();
 
-  void GetSuggestedPublisherIds(const std::string& locale,
-                                GetSuggestedPublisherIdsCallback callback);
+  void GetSuggestedPublisherIds(GetSuggestedPublisherIdsCallback callback);
   void EnsureSimilarityMatrixIsUpdating();
 
  private:
   void GetOrFetchSimilarityMatrix(base::OnceClosure callback);
-  void GetSuggestedPublisherIdsWithHistory(const std::string& locale,
-                                Publishers publishers,
-                                GetSuggestedPublisherIdsCallback callback,
-                                history::QueryResults history);
+  void GetSuggestedPublisherIdsWithHistory(
+      Publishers publishers,
+      GetSuggestedPublisherIdsCallback callback,
+      history::QueryResults history);
 
   bool is_update_in_progress_ = false;
   raw_ptr<PrefService> prefs_;
@@ -68,7 +66,8 @@ class SuggestionsController {
   raw_ptr<history::HistoryService> history_service_;
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
 
-  SimilarityLookup similarity_lookup_;
+  std::string locale_;
+  PublisherSimilarities similarities_;
 };
 }  // namespace brave_news
 

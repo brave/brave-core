@@ -175,13 +175,7 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
 
 void BraveNewsController::GetSuggestedPublisherIds(
     GetSuggestedPublisherIdsCallback callback) {
-  publishers_controller_.GetLocale(base::BindOnce(
-      [](BraveNewsController* controller,
-         GetSuggestedPublisherIdsCallback callback, const std::string& locale) {
-        controller->suggestions_controller_.GetSuggestedPublisherIds(
-            locale, std::move(callback));
-      },
-      base::Unretained(this), std::move(callback)));
+  suggestions_controller_.GetSuggestedPublisherIds(std::move(callback));
 }
 
 void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
