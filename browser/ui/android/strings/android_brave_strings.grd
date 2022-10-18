@@ -152,6 +152,27 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
         Manage downloads, earn tokens, see weekly usage stats, and more.
       </message>
+      <message name="IDS_RETURN_TO_SETTINGS" desc="Text for button Return to settings">
+        Return to settings
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_BOTH_REWARDS_PRIVACY" desc="Text header for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
+        If you turn off notifications, you'll pause Rewards and Privacy Reports
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_REWARDS" desc="Text header for When ONLY Brave Rewards is TURNED ON.">
+        If you turn off notifications, you'll pause Brave Rewards
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_PRIVACY" desc="Text header for When ONLY Privacy Report is TURNED ON.">
+        If you turn off notifications, you'll pause Privacy Reports
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_BOTH_REWARDS_PRIVACY" desc="Text description for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
+        Leave notifications on if you'd like to keep earning BAT and receiving weekly privacy reports.
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_REWARDS" desc="Text description for When ONLY Brave Rewards is TURNED ON.">
+        Leave notifications on if you'd like to keep earning BAT.
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_PRIVACY" desc="Text description for When ONLY Privacy Report is TURNED ON.">
+        Leave notifications on if you'd like to keep receiving weekly privacy reports.
+      </message>
      <message name="IDS_NOTIFICATION_OS_DIALOG_HEADER_BOTH_REWARDS_PRIVACY" desc="Text header for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
         You're not earning Rewards or receiving Privacy Reports
       </message>
