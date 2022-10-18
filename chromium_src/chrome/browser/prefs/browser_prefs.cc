@@ -105,7 +105,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   // Added 05/2022
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  translate::MigrateBraveProfilePrefs(profile->GetPrefs());
+  translate::ClearMigrationBraveProfilePrefs(profile->GetPrefs());
 #endif
 
   // Added 06/2022
