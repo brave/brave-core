@@ -70,7 +70,7 @@ TEST(SkusUtilsUnittest, Migrate) {
 
   EXPECT_FALSE(profile_pref_service.HasPrefPath(skus::prefs::kSkusState));
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
-  EXPECT_EQ(*local_state_pref_service.Get(skus::prefs::kSkusState),
+  EXPECT_EQ(local_state_pref_service.GetDict(skus::prefs::kSkusState),
             *skus_settings);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       skus::prefs::kSkusStateMigratedToLocalState));
@@ -104,7 +104,7 @@ TEST(SkusUtilsUnittest, AlreadyMigrated) {
   skus::MigrateSkusSettings(&profile_pref_service, &local_state_pref_service);
 
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
-  EXPECT_EQ(*local_state_pref_service.Get(skus::prefs::kSkusState),
+  EXPECT_EQ(local_state_pref_service.GetDict(skus::prefs::kSkusState),
             *existing_skus);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       skus::prefs::kSkusStateMigratedToLocalState));

@@ -136,4 +136,4 @@ std::string PostConnect::ContentType() const {
   return "application/json; charset=utf-8";
 }
 
-};  // namespace ledger::request
+}  // namespace ledger::request

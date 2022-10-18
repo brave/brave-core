@@ -231,10 +231,10 @@ void BinanceService::OnURLLoaderComplete(
     response_code = loader->ResponseInfo()->headers->response_code();
     auto headers_list = loader->ResponseInfo()->headers;
     if (headers_list) {
-      size_t iter = 0;
+      size_t headers_iter = 0;
       std::string key;
       std::string value;
-      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
+      while (headers_list->EnumerateHeaderLines(&headers_iter, &key, &value)) {
         key = base::ToLowerASCII(key);
         headers[key] = value;
       }
@@ -492,10 +492,10 @@ void BinanceService::SetClientIdForTest(const std::string& client_id) {
   client_id_ = client_id;
 }
 
-void BinanceService::SetOAuthHostForTest(const std::string& oauth_host) {
-  oauth_host_ = oauth_host;
+void BinanceService::SetOAuthHostForTest(const std::string& host) {
+  oauth_host_ = host;
 }
 
-void BinanceService::SetGatewayHostForTest(const std::string& gateway_host) {
-  gateway_host_ = gateway_host;
+void BinanceService::SetGatewayHostForTest(const std::string& host) {
+  gateway_host_ = host;
 }

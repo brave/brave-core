@@ -1,43 +1,32 @@
-<link rel="import" href="chrome://resources/html/polymer.html">
-
-<link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
-<script type="module" src="../settings_shared.css.js"></script>
-<script type="module" src="../settings_vars.css.js"></script>
-
-<dom-module id="settings-social-blocking-page">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-    </style>
-    <settings-toggle-button id="googleLoginControlType"
-        class="cr-row first"
-        pref="{{prefs.brave.google_login_default}}"
-        label="$i18n{googleLoginControlLabel}"
-        learn-more-url="$i18n{googleLoginLearnMoreURL}"
-        on-settings-boolean-control-change="setSignInEnabledAtNextStartup_"
-        >
-        <template is="dom-if" if="[[shouldShowRestart_(
-          prefs.brave.google_login_default.value)]]">
-        <cr-button on-click="restartBrowser_" slot="more-actions">
-          $i18n{restart}
-        </cr-button>
-        </template>
-    </settings-toggle-button>
-    <settings-toggle-button id="fbEmbedControlType"
-        class="cr-row"
-        pref="{{prefs.brave.fb_embed_default}}"
-        label="$i18n{fbEmbedControlLabel}">
-    </settings-toggle-button>
-    <settings-toggle-button id="twitterEmbedControlType"
-        class="cr-row"
-        pref="{{prefs.brave.twitter_embed_default}}"
-        label="$i18n{twitterEmbedControlLabel}">
-    </settings-toggle-button>
-    <settings-toggle-button id="linkedInEmbedControlType"
-        class="cr-row"
-        pref="{{prefs.brave.linkedin_embed_default}}"
-        label="$i18n{linkedInEmbedControlLabel}">
-    </settings-toggle-button>
-  </template>
-  <script src="social_blocking_page.js"></script>
-</dom-module>
+<link rel="import" href="chrome://resources/cr_elements/md_select.css.html">
+<style include="settings-shared md-select iron-flex">
+</style>
+<settings-toggle-button id="googleLoginControlType"
+    class="cr-row first"
+    pref="{{prefs.brave.google_login_default}}"
+    label="$i18n{googleLoginControlLabel}"
+    learn-more-url="$i18n{googleLoginLearnMoreURL}"
+    on-settings-boolean-control-change="setSignInEnabledAtNextStartup_"
+    >
+    <template is="dom-if" if="[[shouldShowRestart_(
+      prefs.brave.google_login_default.value)]]">
+    <cr-button on-click="restartBrowser_" slot="more-actions">
+      $i18n{restart}
+    </cr-button>
+    </template>
+</settings-toggle-button>
+<settings-toggle-button id="fbEmbedControlType"
+    class="cr-row"
+    pref="{{prefs.brave.fb_embed_default}}"
+    label="$i18n{fbEmbedControlLabel}">
+</settings-toggle-button>
+<settings-toggle-button id="twitterEmbedControlType"
+    class="cr-row"
+    pref="{{prefs.brave.twitter_embed_default}}"
+    label="$i18n{twitterEmbedControlLabel}">
+</settings-toggle-button>
+<settings-toggle-button id="linkedInEmbedControlType"
+    class="cr-row"
+    pref="{{prefs.brave.linkedin_embed_default}}"
+    label="$i18n{linkedInEmbedControlLabel}">
+</settings-toggle-button>

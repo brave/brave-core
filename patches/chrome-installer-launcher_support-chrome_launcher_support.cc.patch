@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/launcher_support/chrome_launcher_support.cc b/chrome/installer/launcher_support/chrome_launcher_support.cc
-index 6657390e3c31e81624c37a881639bf042563c6bc..d4232553512386d9b0b622744635b81f6a7c63f9 100644
+index 8f4e27ca20e17096f1ad23c6d161e8ffcb1d0d24..3ac3c361b4b78fe40a28a8b2d12753199d5c0aba 100644
 --- a/chrome/installer/launcher_support/chrome_launcher_support.cc
 +++ b/chrome/installer/launcher_support/chrome_launcher_support.cc
 @@ -27,12 +27,22 @@ const wchar_t kUpdateClientsRegKey[] = L"Software\\Google\\Update\\Clients";

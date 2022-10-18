@@ -40,7 +40,7 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
 
   void UpdateProxyURI(const std::string& proxy_uri);
 
-  static std::string CircuitIsolationKey(const GURL& url);
+  static std::string CircuitAnonymizationKey(const GURL& url);
   void SetNewTorCircuit(const GURL& url);
   static void SetProxyAuthorization(const ProxyConfigWithAnnotation& config,
                                     const GURL& url,

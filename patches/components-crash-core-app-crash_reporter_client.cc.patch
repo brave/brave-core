@@ -1,5 +1,5 @@
 diff --git a/components/crash/core/app/crash_reporter_client.cc b/components/crash/core/app/crash_reporter_client.cc
-index 463f92a6e547006a46119f52203482dd6695a84a..73e9b253e3642f4a66efca4439e30ae679c11acc 100644
+index 284dd099122df85d2cebf467cdb3a54b45a343eb..89d593d4d9f175d661eb0934aad40ca35b034975 100644
 --- a/components/crash/core/app/crash_reporter_client.cc
 +++ b/components/crash/core/app/crash_reporter_client.cc
 @@ -194,6 +194,7 @@ void CrashReporterClient::GetSanitizationInformation(

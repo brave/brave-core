@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/supervised_user/supervised_user_settings_service_factory.cc b/chrome/browser/supervised_user/supervised_user_settings_service_factory.cc
-index 5f85a90f2f2800c00bf0367c1de83ff36d8b8fe7..9ab88b8a25b36afdbe3016fd20cc29343395e634 100644
+index d0979bc67c47ad2fb163c09151d9a8079247543c..916e24c7458f86d9e0267cbcd5cef8b40edebc44 100644
 --- a/chrome/browser/supervised_user/supervised_user_settings_service_factory.cc
 +++ b/chrome/browser/supervised_user/supervised_user_settings_service_factory.cc
 @@ -36,6 +36,7 @@ SupervisedUserSettingsServiceFactory::BuildServiceInstanceFor(

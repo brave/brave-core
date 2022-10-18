@@ -16,7 +16,7 @@ class BraveTabContainer : public TabContainerImpl {
 
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
-                    TabDragContext* drag_context,
+                    TabDragContextBase* drag_context,
                     TabSlotController& tab_slot_controller,
                     views::View* scroll_contents_view);
   ~BraveTabContainer() override;

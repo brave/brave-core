@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/renderer/BUILD.gn b/components/content_settings/renderer/BUILD.gn
-index e24308c70587fcf8468a11ecd28ddc9e657b2448..13610116bb1c2b4bf9afd1e9bf8891abd34da751 100644
+index 437f4f35768e247ea46f49284c9ed4c88c81b7d7..4112f1b9e2a5cfbc3b8ca338f994732ba6ba5a5d 100644
 --- a/components/content_settings/renderer/BUILD.gn
 +++ b/components/content_settings/renderer/BUILD.gn
 @@ -20,4 +20,5 @@ source_set("renderer") {

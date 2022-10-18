@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/resources/extensions/grit/brave_extensions_resources.h"
-#include "brave/browser/resources/extensions/grit/brave_extensions_resources_map.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,12 +18,6 @@ namespace {
 // patch.
 void BraveAddExtensionsResources(content::WebUIDataSource* source,
                                  Profile* profile) {
-#if !BUILDFLAG(OPTIMIZE_WEBUI)
-  for (size_t i = 0; i < kBraveExtensionsResourcesSize; ++i) {
-    source->AddResourcePath(kBraveExtensionsResources[i].path,
-                            kBraveExtensionsResources[i].id);
-  }
-#endif
   NavigationBarDataProvider::Initialize(source, profile);
   source->AddLocalizedString("privateInfoWarning",
                              IDS_EXTENSIONS_BRAVE_PRIVATE_WARNING);

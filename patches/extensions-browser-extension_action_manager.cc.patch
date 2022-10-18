@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/extension_action_manager.cc b/extensions/browser/extension_action_manager.cc
-index 4738e9bc0910a2c25d7c29cab33f21619a96a84a..891729feb4442d35e2ba2bcbcdfc39a9ab48b3f7 100644
+index acb8ff5abd899ba120121c2e84ef911005795f70..a364d8a588a52c3e48b69a7f7835617e53777e64 100644
 --- a/extensions/browser/extension_action_manager.cc
 +++ b/extensions/browser/extension_action_manager.cc
 @@ -108,6 +108,7 @@ ExtensionAction* ExtensionActionManager::GetExtensionAction(

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
-index 34a7e6bef7608bc1ca61d43fadc0319f23f461da..3bed7105e3ea6e14997f9a6ee80e919656ba2a3e 100644
+index 91be5bb78fca9c30305eda96c558582c82c951e3..346cc66bd618db03669c9dc69c518704def38aac 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
 @@ -149,6 +149,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {

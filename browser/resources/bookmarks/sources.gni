@@ -3,10 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_deps_chrome_browser_resources_bookmarks_in_files = [
-  "brave_overrides/folder_node.js",
-  "brave_overrides/index.js",
+brave_bookmarks_non_web_component_files = [
+  "brave_overrides/folder_node.ts",
+  "brave_overrides/index.ts",
 ]
 
-brave_deps_chrome_browser_resources_bookmarks_extra_deps =
+brave_bookmarks_preprocess_extra_deps =
     [ "//brave/browser/resources/bookmarks:preprocess" ]
+
+brave_bookmarks_local_files = brave_bookmarks_non_web_component_files

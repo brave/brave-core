@@ -25,7 +25,7 @@ using speedreader::mojom::Theme;
 
 namespace speedreader {
 class SpeedreaderTabHelper;
-};  // namespace speedreader
+}  // namespace speedreader
 
 class SpeedreaderPanelDataHandlerImpl
     : public speedreader::mojom::PanelDataHandler {

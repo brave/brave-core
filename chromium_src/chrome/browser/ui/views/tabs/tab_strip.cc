@@ -4,10 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+
+#include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
+#include "chrome/browser/ui/views/tabs/compound_tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
@@ -17,7 +20,7 @@
 
 #define AddTab(TAB, MODEL_INDEX, PINNED) \
   AddTab(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
-#define TabHoverCardController BraveTabHoverCardController
+#define CompoundTabContainer BraveCompoundTabContainer
 #define TabContainerImpl BraveTabContainer
 #define BRAVE_CALCULATE_INSERTION_INDEX                                       \
   if (tabs::features::ShouldShowVerticalTabs()) {                             \
@@ -50,6 +53,6 @@
 
 #undef BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_CALCULATE_INSERTION_INDEX
-#undef TabContainer
-#undef TabHoverCardController
+#undef CompoundTabContainer
+#undef TabContainerImpl
 #undef AddTab

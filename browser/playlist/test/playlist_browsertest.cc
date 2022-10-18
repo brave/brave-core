@@ -216,8 +216,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
     std::string log =
         "type" + PlaylistChangeParams::GetPlaylistChangeTypeAsString(type) +
         " wasn't found: [";
-    for (const auto& type : called_change_types_) {
-      log += PlaylistChangeParams::GetPlaylistChangeTypeAsString(type) + ", ";
+    for (const auto& change_type : called_change_types_) {
+      log += PlaylistChangeParams::GetPlaylistChangeTypeAsString(change_type) +
+             ", ";
     }
     log += "]";
     FAIL() << log;

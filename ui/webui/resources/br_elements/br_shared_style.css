@@ -1,0 +1,38 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style
+ * #scheme=relative
+ * #css_wrapper_metadata_end */
+
+/* Some modules declare variables in :host
+      which cannot be overriden by custom-style (e.g. cr-checkbox)
+      For these, we define a style module and use it as an 'include'
+      in containing apps.
+*/
+
+:host {
+  --cr-radio-button-checked-color: var(--cr-link-color) !important;
+  --cr-radio-button-checked-ripple-color: rgba(var(--cr-link-color-rgb), .2) !important;
+}
+
+:focus {
+  outline-color: var(--flat-focus-shadow-color);
+  outline-width: 3px;
+}
+
+cr-checkbox {
+  --cr-checkbox-checked-box-color: var(--cr-link-color) !important;
+  --cr-checkbox-ripple-checked-color: var(--cr-link-color) !important;
+}
+
+h1, h2, h3, h4, h5, h6, button {
+  font-family: Poppins, sans-serif;
+}
+
+.label:not(.secondary) {
+  font-weight: normal;
+}

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index bd223d35037bbd5344b8c56b3f1f963e80987a9d..7483cf5d860fc8ed518ec64defe1cf094573a0a3 100644
+index 1e88b59d3b15e51349011c4db1f989b388997514..aada570acf431fa8b57d43845929917339c07585 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -76,7 +76,7 @@ export class SettingsPersonalizationOptionsElement extends
@@ -20,7 +20,7 @@ index bd223d35037bbd5344b8c56b3f1f963e80987a9d..7483cf5d860fc8ed518ec64defe1cf09
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject;
    private showRestart_: boolean;
    // </if>
-@@ -159,7 +159,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -177,7 +177,7 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index bd223d35037bbd5344b8c56b3f1f963e80987a9d..7483cf5d860fc8ed518ec64defe1cf09
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -193,7 +193,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -211,7 +211,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  

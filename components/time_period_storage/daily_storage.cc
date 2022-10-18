@@ -61,7 +61,7 @@ void DailyStorage::FilterToDay() {
 
 void DailyStorage::Load() {
   DCHECK(daily_values_.empty());
-  const base::Value::List& list = prefs_->GetValueList(pref_name_);
+  const auto& list = prefs_->GetList(pref_name_);
   base::Time min = clock_->Now() - base::Days(1);
   for (const auto& it : list) {
     DCHECK(it.is_dict());

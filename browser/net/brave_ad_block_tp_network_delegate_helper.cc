@@ -96,7 +96,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     cb_ = base::BindOnce(&UseCnameResult, task_runner, std::move(next_callback),
                          ctx, previous_result);
 
-    const auto network_isolation_key = ctx->network_isolation_key;
+    const auto network_anonymization_key = ctx->network_anonymization_key;
 
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
@@ -116,15 +116,17 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
     if (g_testing_host_resolver) {
       g_testing_host_resolver->ResolveHost(
-          net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
-          std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+          network::mojom::HostResolverHost::NewHostPortPair(
+              net::HostPortPair::FromURL(ctx->request_url)),
+          network_anonymization_key, std::move(optional_parameters),
+          receiver_.BindNewPipeAndPassRemote());
     } else {
       auto* web_contents =
           content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
       if (!web_contents) {
         start_time_ = base::TimeTicks::Now();
         this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
-                         absl::nullopt);
+                         absl::nullopt, absl::nullopt);
         return;
       }
 
@@ -134,20 +136,23 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
               ->GetNetworkContext();
 
       network_context->ResolveHost(
-          net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
-          std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+          network::mojom::HostResolverHost::NewHostPortPair(
+              net::HostPortPair::FromURL(ctx->request_url)),
+          network_anonymization_key, std::move(optional_parameters),
+          receiver_.BindNewPipeAndPassRemote());
     }
 
-    receiver_.set_disconnect_handler(
-        base::BindOnce(&AdblockCnameResolveHostClient::OnComplete,
-                       base::Unretained(this), net::ERR_NAME_NOT_RESOLVED,
-                       net::ResolveErrorInfo(net::ERR_FAILED), absl::nullopt));
+    receiver_.set_disconnect_handler(base::BindOnce(
+        &AdblockCnameResolveHostClient::OnComplete, base::Unretained(this),
+        net::ERR_NAME_NOT_RESOLVED, net::ResolveErrorInfo(net::ERR_FAILED),
+        absl::nullopt, absl::nullopt));
   }
 
-  void OnComplete(
-      int32_t result,
-      const net::ResolveErrorInfo& resolve_error_info,
-      const absl::optional<net::AddressList>& resolved_addresses) override {
+  void OnComplete(int32_t result,
+                  const net::ResolveErrorInfo& resolve_error_info,
+                  const absl::optional<net::AddressList>& resolved_addresses,
+                  const absl::optional<net::HostResolverEndpointResults>&
+                      endpoint_results_with_metadata) override {
     UMA_HISTOGRAM_TIMES("Brave.ShieldsCNAMEBlocking.TotalResolutionTime",
                         base::TimeTicks::Now() - start_time_);
     if (result == net::OK && resolved_addresses) {

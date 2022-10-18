@@ -538,3 +538,7 @@ void BraveActionsContainer::ToggleExtensionsMenu() {}
 bool BraveActionsContainer::HasAnyExtensions() const {
   return false;
 }
+
+void BraveActionsContainer::UpdateToolbarActionHoverCard(
+    ToolbarActionView* action_view,
+    ToolbarActionHoverCardUpdateType update_type) {}

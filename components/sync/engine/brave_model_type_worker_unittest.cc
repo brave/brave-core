@@ -137,7 +137,7 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarker) {
   std::unique_ptr<ScopedTimeClockOverrides> time_override;
   for (const auto& err : err_codes) {
     {
-      auto time_override = AdvanceTimeToAllowResetMarker();
+      auto local_time_override = AdvanceTimeToAllowResetMarker();
       // Cleanup failures counter and setup progress marker
       worker()->OnCommitResponse(CommitResponseDataList(),
                                  FailedCommitResponseDataList());
@@ -147,13 +147,13 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarker) {
     for (size_t i = 0;
          i < BraveModelTypeWorker::GetFailuresToResetMarkerForTests() - 1;
          ++i) {
-      auto time_override = AdvanceTimeToAllowResetMarker();
+      auto local_time_override = AdvanceTimeToAllowResetMarker();
       worker()->OnCommitResponse(CommitResponseDataList(),
                                  MakeErrorResponseList(err));
       EXPECT_FALSE(IsProgressMarkerEmpty());
     }
 
-    auto time_override = AdvanceTimeToAllowResetMarker();
+    auto local_time_override = AdvanceTimeToAllowResetMarker();
     worker()->OnCommitResponse(CommitResponseDataList(),
                                MakeErrorResponseList(err));
     EXPECT_TRUE(IsProgressMarkerEmpty());

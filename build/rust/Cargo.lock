@@ -311,12 +311,11 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "challenge-bypass-ristretto"
-version = "1.0.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a439d42c1cc301fb1a248114b56388e447ac1a9afed7bfb1424ae2f4c26f92c7"
+checksum = "12658b539fe2693b4102b5d47e35e50f44e8096381f087fd8a78446a2b09cf90"
 dependencies = [
  "base64 0.13.0",
- "clear_on_drop",
  "crypto-mac 0.10.1",
  "curve25519-dalek",
  "digest 0.9.0",
@@ -326,6 +325,7 @@ dependencies = [
  "rand_core 0.5.1",
  "serde",
  "subtle",
+ "zeroize",
 ]
 
 [[package]]
@@ -365,15 +365,6 @@ dependencies = [
  "serde",
  "serde_bytes",
  "unsigned-varint",
-]
-
-[[package]]
-name = "clear_on_drop"
-version = "0.2.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c9cc5db465b294c3fa986d5bbb0f3017cd850bff6dd6c52f9ccff8b4d21b7b08"
-dependencies = [
- "cc",
 ]
 
 [[package]]
@@ -1312,12 +1303,7 @@ checksum = "89be94dbd775db37b46ca4f4bf5cf89adfb13ba197bfbcb69b2122848ee73c26"
 
 [[package]]
 name = "link-cplusplus"
-version = "1.0.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8cae2cd7ba2f3f63938b9c724475dfb7b9861b545a90324476324ed21dbc8c8"
-dependencies = [
- "cc",
-]
+version = "1.0.5"
 
 [[package]]
 name = "lock_api"

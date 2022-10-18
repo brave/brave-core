@@ -95,7 +95,7 @@ TEST_F(BraveFontWhitelistRenderViewTest, MAYBE_FontLocalSource) {
 
   // If the width of both spans is the same, that means they were both blocked
   // from using the specified font (Helvetica), which is what we want.
-  EXPECT_EQ(p1.BoundsInViewport().width(), p2.BoundsInViewport().width());
+  EXPECT_EQ(p1.BoundsInWidget().width(), p2.BoundsInWidget().width());
 }
 
 }  // namespace content_settings

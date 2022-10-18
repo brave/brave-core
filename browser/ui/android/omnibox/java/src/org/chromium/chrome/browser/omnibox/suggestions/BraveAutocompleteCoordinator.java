@@ -58,12 +58,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BraveAutocompleteCoordinator {
-    public ViewProvider<SuggestionListViewHolder> createViewProvider(
-            Context context, MVCListAdapter.ModelList modelList) {
+    public ViewProvider<SuggestionListViewHolder> createViewProvider(Context context,
+            MVCListAdapter.ModelList modelList, LocationBarDataProvider locationBarDataProvider) {
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>) BraveReflectionUtil.InvokeMethod(
                         AutocompleteCoordinator.class, this, "createViewProvider", Context.class,
-                        context, MVCListAdapter.ModelList.class, modelList);
+                        context, MVCListAdapter.ModelList.class, modelList,
+                        LocationBarDataProvider.class, locationBarDataProvider);
 
         return new ViewProvider<SuggestionListViewHolder>() {
             private List<Callback<SuggestionListViewHolder>> mCallbacks = new ArrayList<>();

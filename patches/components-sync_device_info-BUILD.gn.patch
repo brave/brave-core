@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/BUILD.gn b/components/sync_device_info/BUILD.gn
-index 8e23456aad1e16fdb80d6738743ca8c6196237c4..ac82e83bb987bd1acf6d45338fa563f23231c366 100644
+index e1f5e097aa00e25899b2ef48b4c9ac186653cf17..a639261b38335273a62a8d6c72affe47082bc50c 100644
 --- a/components/sync_device_info/BUILD.gn
 +++ b/components/sync_device_info/BUILD.gn
 @@ -88,6 +88,7 @@ static_library("sync_device_info") {

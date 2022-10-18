@@ -378,10 +378,10 @@ void FTXService::OnURLLoaderComplete(
     response_code = loader->ResponseInfo()->headers->response_code();
     auto headers_list = loader->ResponseInfo()->headers;
     if (headers_list) {
-      size_t iter = 0;
+      size_t headers_iter = 0;
       std::string key;
       std::string value;
-      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
+      while (headers_list->EnumerateHeaderLines(&headers_iter, &key, &value)) {
         key = base::ToLowerASCII(key);
         headers[key] = value;
       }

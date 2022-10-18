@@ -183,18 +183,18 @@ TEST_F(BraveWalletPrefsUnitTest,
   }
 
   MigrateObsoleteProfilePrefs(GetPrefs());
-  const base::Value* dict = GetPrefs()->GetDictionary(kBraveWalletTransactions);
-  const base::Value* tx1_value = dict->FindDictPath("ethereum.mainnet.meta1");
-  const base::Value* tx2_value = dict->FindDictPath("ethereum.mainnet.meta2");
-  const base::Value* tx3_value = dict->FindDictPath("ethereum.ropsten.meta3");
+  const auto& dict = GetPrefs()->GetDict(kBraveWalletTransactions);
+  const auto* tx1_value = dict.FindDictByDottedPath("ethereum.mainnet.meta1");
+  const auto* tx2_value = dict.FindDictByDottedPath("ethereum.mainnet.meta2");
+  const auto* tx3_value = dict.FindDictByDottedPath("ethereum.ropsten.meta3");
   ASSERT_TRUE(tx1_value && tx2_value && tx3_value);
   EXPECT_EQ(*tx1_value, tx1);
   EXPECT_EQ(*tx2_value, tx2);
   EXPECT_EQ(*tx3_value, tx1);
-  EXPECT_EQ(dict->DictSize(), 1u);
-  EXPECT_EQ(dict->FindDictKey("ethereum")->DictSize(), 2u);
-  EXPECT_EQ(dict->FindDictPath("ethereum.mainnet")->DictSize(), 2u);
-  EXPECT_EQ(dict->FindDictPath("ethereum.ropsten")->DictSize(), 1u);
+  EXPECT_EQ(dict.size(), 1u);
+  EXPECT_EQ(dict.FindDict("ethereum")->size(), 2u);
+  EXPECT_EQ(dict.FindDictByDottedPath("ethereum.mainnet")->size(), 2u);
+  EXPECT_EQ(dict.FindDictByDottedPath("ethereum.ropsten")->size(), 1u);
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
 
@@ -208,7 +208,7 @@ TEST_F(BraveWalletPrefsUnitTest,
     update_dict->RemovePath("mainnet");
   }
   EXPECT_TRUE(pref && !pref->IsDefaultValue());
-  EXPECT_TRUE(GetPrefs()->GetDictionary(kBraveWalletTransactions)->DictEmpty());
+  EXPECT_TRUE(GetPrefs()->GetDict(kBraveWalletTransactions).empty());
 
   MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_TRUE(pref && pref->IsDefaultValue());

@@ -8,7 +8,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "net/base/features.h"
 #include "net/base/isolation_info.h"
-#include "net/base/network_isolation_key.h"
+#include "net/base/network_anonymization_key.h"
 #include "net/base/schemeful_site.h"
 #include "net/test/test_with_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -41,34 +41,35 @@ class TransportSecurityStateTestBase : public ::testing::Test,
                                  site_for_cookies);
   }
 
-  static NetworkIsolationKey CreateNetworkIsolationKey(
+  static NetworkAnonymizationKey CreateNetworkAnonymizationKey(
       const url::Origin& top_frame_origin) {
     SchemefulSite schemeful_site(top_frame_origin);
-    return NetworkIsolationKey(schemeful_site, schemeful_site);
+    return NetworkAnonymizationKey(schemeful_site, schemeful_site);
   }
 
   void ExpectNoHSTS(TransportSecurityState* state,
-                    const NetworkIsolationKey& network_isolation_key,
+                    const NetworkAnonymizationKey& network_anonymization_key,
                     const std::string& host) {
-    SCOPED_TRACE(testing::Message()
-                 << network_isolation_key.ToDebugString() << " host: " << host);
+    SCOPED_TRACE(testing::Message() << network_anonymization_key.ToDebugString()
+                                    << " host: " << host);
     EXPECT_FALSE(state->ShouldUpgradeToSSL(host));
-    EXPECT_FALSE(state->ShouldUpgradeToSSL(network_isolation_key, host));
+    EXPECT_FALSE(state->ShouldUpgradeToSSL(network_anonymization_key, host));
     EXPECT_FALSE(state->ShouldSSLErrorsBeFatal(host));
-    EXPECT_FALSE(state->ShouldSSLErrorsBeFatal(network_isolation_key, host));
+    EXPECT_FALSE(
+        state->ShouldSSLErrorsBeFatal(network_anonymization_key, host));
     TransportSecurityState::STSState dynamic_sts_state;
     EXPECT_FALSE(state->GetDynamicSTSState(host, &dynamic_sts_state));
   }
 
   void ExpectHasHSTS(TransportSecurityState* state,
-                     const NetworkIsolationKey& network_isolation_key,
+                     const NetworkAnonymizationKey& network_anonymization_key,
                      const std::string& host) {
-    SCOPED_TRACE(testing::Message()
-                 << network_isolation_key.ToDebugString() << " host: " << host);
+    SCOPED_TRACE(testing::Message() << network_anonymization_key.ToDebugString()
+                                    << " host: " << host);
     EXPECT_TRUE(state->ShouldUpgradeToSSL(host));
-    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_isolation_key, host));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host));
     EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(host));
-    EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(network_isolation_key, host));
+    EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(network_anonymization_key, host));
     {
       TransportSecurityState::STSState dynamic_sts_state;
       EXPECT_TRUE(state->GetDynamicSTSState(host, &dynamic_sts_state));
@@ -79,14 +80,14 @@ class TransportSecurityStateTestBase : public ::testing::Test,
 
   void ExpectHasHSTSOnlyWithNIK(
       TransportSecurityState* state,
-      const NetworkIsolationKey& network_isolation_key,
+      const NetworkAnonymizationKey& network_anonymization_key,
       const std::string& host) {
-    SCOPED_TRACE(testing::Message()
-                 << network_isolation_key.ToDebugString() << " host: " << host);
+    SCOPED_TRACE(testing::Message() << network_anonymization_key.ToDebugString()
+                                    << " host: " << host);
     EXPECT_FALSE(state->ShouldUpgradeToSSL(host));
-    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_isolation_key, host));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host));
     EXPECT_FALSE(state->ShouldSSLErrorsBeFatal(host));
-    EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(network_isolation_key, host));
+    EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(network_anonymization_key, host));
     {
       TransportSecurityState::STSState dynamic_sts_state;
       EXPECT_FALSE(state->GetDynamicSTSState(host, &dynamic_sts_state));
@@ -111,8 +112,8 @@ TEST_F(TransportSecurityState_DisableHSTSPartitionTest,
 
   auto a_com_origin = url::Origin::Create(GURL("https://a.com"));
 
-  ExpectNoHSTS(&state, NetworkIsolationKey(), "a.com");
-  ExpectNoHSTS(&state, NetworkIsolationKey(), "b.com");
+  ExpectNoHSTS(&state, NetworkAnonymizationKey(), "a.com");
+  ExpectNoHSTS(&state, NetworkAnonymizationKey(), "b.com");
 
   // Simulate valid IsolationInfo (it shouldn't be used anyways).
   EXPECT_TRUE(state.AddHSTSHeader(
@@ -122,8 +123,8 @@ TEST_F(TransportSecurityState_DisableHSTSPartitionTest,
   // Simulate invalid IsolationInfo (it shouldn't be used anyways).
   EXPECT_TRUE(state.AddHSTSHeader(IsolationInfo(), "b.com", kHSTSHeaderValue));
 
-  ExpectHasHSTS(&state, NetworkIsolationKey(), "a.com");
-  ExpectHasHSTS(&state, NetworkIsolationKey(), "b.com");
+  ExpectHasHSTS(&state, NetworkAnonymizationKey(), "a.com");
+  ExpectHasHSTS(&state, NetworkAnonymizationKey(), "b.com");
 }
 
 TEST_F(TransportSecurityState_DisableHSTSPartitionTest,
@@ -132,16 +133,16 @@ TEST_F(TransportSecurityState_DisableHSTSPartitionTest,
 
   EXPECT_TRUE(state.AddHSTSHeader(IsolationInfo(), "a.com", kHSTSHeaderValue));
   EXPECT_TRUE(state.AddHSTSHeader(IsolationInfo(), "b.com", kHSTSHeaderValue));
-  ExpectHasHSTS(&state, NetworkIsolationKey(), "a.com");
-  ExpectHasHSTS(&state, NetworkIsolationKey(), "b.com");
+  ExpectHasHSTS(&state, NetworkAnonymizationKey(), "a.com");
+  ExpectHasHSTS(&state, NetworkAnonymizationKey(), "b.com");
 
   EXPECT_TRUE(state.DeleteDynamicDataForHost("a.com"));
-  ExpectNoHSTS(&state, NetworkIsolationKey(), "a.com");
-  ExpectHasHSTS(&state, NetworkIsolationKey(), "b.com");
+  ExpectNoHSTS(&state, NetworkAnonymizationKey(), "a.com");
+  ExpectHasHSTS(&state, NetworkAnonymizationKey(), "b.com");
 
   // Second time shouldn't delete anything.
   EXPECT_FALSE(state.DeleteDynamicDataForHost("a.com"));
-  ExpectHasHSTS(&state, NetworkIsolationKey(), "b.com");
+  ExpectHasHSTS(&state, NetworkAnonymizationKey(), "b.com");
 }
 
 class TransportSecurityState_EnableHSTSPartitionTest
@@ -164,8 +165,8 @@ TEST_F(TransportSecurityState_EnableHSTSPartitionTest,
   auto a_com_origin = url::Origin::Create(GURL("https://a.com"));
   auto b_com_origin = url::Origin::Create(GURL("https://b.com"));
 
-  ExpectNoHSTS(&state, NetworkIsolationKey(), "a.com");
-  ExpectNoHSTS(&state, NetworkIsolationKey(), "bbb.com");
+  ExpectNoHSTS(&state, NetworkAnonymizationKey(), "a.com");
+  ExpectNoHSTS(&state, NetworkAnonymizationKey(), "bbb.com");
 
   // Add a.com record on a.com frame.
   EXPECT_TRUE(state.AddHSTSHeader(
@@ -185,12 +186,12 @@ TEST_F(TransportSecurityState_EnableHSTSPartitionTest,
                           SiteForCookies::FromOrigin(b_com_origin)),
       "bbb.com", kHSTSHeaderValue));
 
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(a_com_origin), "a.com");
-  ExpectNoHSTS(&state, NetworkIsolationKey(), "b.com");
-  ExpectNoHSTS(&state, CreateNetworkIsolationKey(b_com_origin), "b.com");
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(a_com_origin), "a.com");
+  ExpectNoHSTS(&state, NetworkAnonymizationKey(), "b.com");
+  ExpectNoHSTS(&state, CreateNetworkAnonymizationKey(b_com_origin), "b.com");
   // Partitioned values should be available on b.com frame.
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(b_com_origin), "a.com");
-  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkIsolationKey(b_com_origin),
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(b_com_origin), "a.com");
+  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkAnonymizationKey(b_com_origin),
                            "bbb.com");
 }
 
@@ -210,8 +211,8 @@ TEST_F(TransportSecurityState_EnableHSTSPartitionTest,
       state.AddHSTSHeader(CreateIsolationInfo(a_com_origin, SiteForCookies()),
                           "b.com", kHSTSHeaderValue));
 
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(a_com_origin), "a.com");
-  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkIsolationKey(a_com_origin),
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(a_com_origin), "a.com");
+  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkAnonymizationKey(a_com_origin),
                            "b.com");
 }
 
@@ -231,8 +232,8 @@ TEST_F(TransportSecurityState_EnableHSTSPartitionTest,
       state.AddHSTSHeader(CreateIsolationInfo(a_com_origin, SiteForCookies()),
                           "b.com", kHSTSHeaderValue));
 
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(a_com_origin), "a.com");
-  ExpectNoHSTS(&state, CreateNetworkIsolationKey(a_com_origin), "b.com");
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(a_com_origin), "a.com");
+  ExpectNoHSTS(&state, CreateNetworkAnonymizationKey(a_com_origin), "b.com");
 }
 
 TEST_F(TransportSecurityState_EnableHSTSPartitionTest,
@@ -251,35 +252,35 @@ TEST_F(TransportSecurityState_EnableHSTSPartitionTest,
       CreateIsolationInfo(c_com_origin,
                           SiteForCookies::FromOrigin(c_com_origin)),
       "a.com", kHSTSHeaderValue));
-  ExpectNoHSTS(&state, NetworkIsolationKey(), "a.com");
-  ExpectNoHSTS(&state, CreateNetworkIsolationKey(a_com_origin), "a.com");
+  ExpectNoHSTS(&state, NetworkAnonymizationKey(), "a.com");
+  ExpectNoHSTS(&state, CreateNetworkAnonymizationKey(a_com_origin), "a.com");
 
-  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkIsolationKey(b_com_origin),
+  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkAnonymizationKey(b_com_origin),
                            "a.com");
-  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkIsolationKey(c_com_origin),
+  ExpectHasHSTSOnlyWithNIK(&state, CreateNetworkAnonymizationKey(c_com_origin),
                            "a.com");
 
   EXPECT_TRUE(state.AddHSTSHeader(
       CreateIsolationInfo(a_com_origin,
                           SiteForCookies::FromOrigin(a_com_origin)),
       "a.com", kHSTSHeaderValue));
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(a_com_origin), "a.com");
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(a_com_origin), "a.com");
 
   EXPECT_TRUE(state.AddHSTSHeader(
       CreateIsolationInfo(b_com_origin,
                           SiteForCookies::FromOrigin(b_com_origin)),
       "b.com", kHSTSHeaderValue));
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(b_com_origin), "b.com");
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(b_com_origin), "b.com");
 
   EXPECT_TRUE(state.DeleteDynamicDataForHost("a.com"));
-  ExpectNoHSTS(&state, CreateNetworkIsolationKey(a_com_origin), "a.com");
-  ExpectNoHSTS(&state, CreateNetworkIsolationKey(b_com_origin), "a.com");
-  ExpectNoHSTS(&state, CreateNetworkIsolationKey(c_com_origin), "a.com");
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(b_com_origin), "b.com");
+  ExpectNoHSTS(&state, CreateNetworkAnonymizationKey(a_com_origin), "a.com");
+  ExpectNoHSTS(&state, CreateNetworkAnonymizationKey(b_com_origin), "a.com");
+  ExpectNoHSTS(&state, CreateNetworkAnonymizationKey(c_com_origin), "a.com");
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(b_com_origin), "b.com");
 
   // Second time shouldn't delete anything.
   EXPECT_FALSE(state.DeleteDynamicDataForHost("a.com"));
-  ExpectHasHSTS(&state, CreateNetworkIsolationKey(b_com_origin), "b.com");
+  ExpectHasHSTS(&state, CreateNetworkAnonymizationKey(b_com_origin), "b.com");
 }
 
 }  // namespace net

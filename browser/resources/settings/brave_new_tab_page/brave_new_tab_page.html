@@ -1,47 +1,35 @@
-<link rel="import" href="chrome://resources/html/polymer.html">
-
-<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
-<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
-<link rel="import" href="brave_new_tab_browser_proxy.html">
-<script type="module" src="../settings_shared.css.js"></script>
-<script type="module" src="../settings_vars.css.js"></script>
-
-<dom-module id="settings-brave-new-tab-page">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-      .primary-title {
-        font-weight: 700;
-        padding-top: 1em;
-        font-size: 1.05em;
-      }
-      .nested-section {
-        margin-inline-start: 1.5em;
-        margin-top: -0.5em;
-      }
-      .borderless {
-        border: none;
-      }
-      .normalize-margin {
-        margin: 0 -1.5em 1em;
-      }
-    </style>
-    <div class="settings-box first">
-      <div class="flex cr-padded-text" aria-hidden="true">
-        $i18n{braveNewTabNewTabPageShows}
-      </div>
-      <settings-dropdown-menu label="$i18n{braveNewTabNewTabPageShows}"
-          pref="{{prefs.brave.new_tab_page.shows_options}}"
-          menu-options="[[newTabShowOptions_]]">
-      </settings-dropdown-menu>
-    </div>
-    <template is="dom-if" if="[[showNewTabDashboardSettings_]]">
-      <div class="settings-row">
-        <cr-link-row class="hr"
-          label="$i18n{braveNewTabNewTabCustomizeWidgets}"
-          on-click="openNewTabPage_" external>
-        </cr-link-row>
-      </div>
-    </template>
-  </template>
-  <script src="brave_new_tab_page.js"></script>
-</dom-module>
+<link rel="import" href="chrome://resources/cr_elements/md_select.css.html">
+<style include="settings-shared md-select iron-flex">
+  .primary-title {
+    font-weight: 700;
+    padding-top: 1em;
+    font-size: 1.05em;
+  }
+  .nested-section {
+    margin-inline-start: 1.5em;
+    margin-top: -0.5em;
+  }
+  .borderless {
+    border: none;
+  }
+  .normalize-margin {
+    margin: 0 -1.5em 1em;
+  }
+</style>
+<div class="settings-box first">
+  <div class="flex cr-padded-text" aria-hidden="true">
+    $i18n{braveNewTabNewTabPageShows}
+  </div>
+  <settings-dropdown-menu label="$i18n{braveNewTabNewTabPageShows}"
+      pref="{{prefs.brave.new_tab_page.shows_options}}"
+      menu-options="[[newTabShowOptions_]]">
+  </settings-dropdown-menu>
+</div>
+<template is="dom-if" if="[[showNewTabDashboardSettings_]]">
+  <div class="settings-row">
+    <cr-link-row class="hr"
+      label="$i18n{braveNewTabNewTabCustomizeWidgets}"
+      on-click="openNewTabPage_" external>
+    </cr-link-row>
+  </div>
+</template>

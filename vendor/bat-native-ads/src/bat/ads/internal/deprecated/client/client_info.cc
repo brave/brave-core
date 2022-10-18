@@ -64,8 +64,8 @@ base::Value::Dict ClientInfo::ToValue() const {
   base::Value::Dict advertisers;
   for (const auto& [key, value] : seen_advertisers) {
     base::Value::Dict advertiser;
-    for (const auto& [key, value] : value) {
-      advertiser.Set(key, value);
+    for (const auto& [ad_key, ad_value] : value) {
+      advertiser.Set(ad_key, ad_value);
     }
     advertisers.Set(key, std::move(advertiser));
   }
@@ -103,10 +103,10 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 #endif
 
   if (const auto* value = root.FindDict("purchaseIntentSignalHistory")) {
-    for (const auto [key, value] : *value) {
+    for (const auto [history_key, history_value] : *value) {
       std::vector<targeting::PurchaseIntentSignalHistoryInfo> histories;
 
-      const auto* segment_history_items = value.GetIfList();
+      const auto* segment_history_items = history_value.GetIfList();
       if (!segment_history_items) {
         continue;
       }
@@ -122,7 +122,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         histories.push_back(history);
       }
 
-      purchase_intent_signal_history.emplace(key, histories);
+      purchase_intent_signal_history.emplace(history_key, histories);
     }
   }
 
@@ -132,8 +132,8 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         continue;
       }
 
-      for (const auto [key, value] : list_value.GetDict()) {
-        seen_ads[list_key][key] = value.GetBool();
+      for (const auto [key_seen_ads, value_seen_ads] : list_value.GetDict()) {
+        seen_ads[list_key][key_seen_ads] = value_seen_ads.GetBool();
       }
     }
   }
@@ -144,8 +144,10 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         continue;
       }
 
-      for (const auto [key, value] : list_value.GetDict()) {
-        seen_advertisers[list_key][key] = value.GetBool();
+      for (const auto [key_seen_advertisers, value_seen_advertisers] :
+           list_value.GetDict()) {
+        seen_advertisers[list_key][key_seen_advertisers] =
+            value_seen_advertisers.GetBool();
       }
     }
   }
@@ -176,11 +178,13 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         }
 
         double page_score = 0.0;
-        if (const auto value = root.FindDouble("pageScore")) {
+        if (const auto page_score_value_double = root.FindDouble("pageScore")) {
           // Migrate legacy page score
-          page_score = *value;
-        } else if (const auto* value = root.FindString("pageScore")) {
-          const bool success = base::StringToDouble(*value, &page_score);
+          page_score = *page_score_value_double;
+        } else if (const auto* page_score_value_string =
+                       root.FindString("pageScore")) {
+          const bool success =
+              base::StringToDouble(*page_score_value_string, &page_score);
           DCHECK(success);
         }
 

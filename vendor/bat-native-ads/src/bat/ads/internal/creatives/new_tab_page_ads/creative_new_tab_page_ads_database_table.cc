@@ -190,17 +190,21 @@ void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
   for (const auto& batch : batches) {
     InsertOrUpdate(transaction.get(), batch);
 
-    const CreativeAdList creative_ads(batch.cbegin(), batch.cend());
-    campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
+    const CreativeAdList creative_ads_batch(batch.cbegin(), batch.cend());
+    campaigns_database_table_->InsertOrUpdate(transaction.get(),
+                                              creative_ads_batch);
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
-                                                 creative_ads);
+                                                 creative_ads_batch);
     creative_new_tab_page_ad_wallpapers_database_table_->InsertOrUpdate(
         transaction.get(), batch);
-    dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
-    deposits_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
+    dayparts_database_table_->InsertOrUpdate(transaction.get(),
+                                             creative_ads_batch);
+    deposits_database_table_->InsertOrUpdate(transaction.get(),
+                                             creative_ads_batch);
     geo_targets_database_table_->InsertOrUpdate(transaction.get(),
-                                                creative_ads);
-    segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
+                                                creative_ads_batch);
+    segments_database_table_->InsertOrUpdate(transaction.get(),
+                                             creative_ads_batch);
   }
 
   AdsClientHelper::GetInstance()->RunDBTransaction(

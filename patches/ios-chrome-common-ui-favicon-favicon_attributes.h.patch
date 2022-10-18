@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/common/ui/favicon/favicon_attributes.h b/ios/chrome/common/ui/favicon/favicon_attributes.h
-index d6825c2916761ca445a71f49f86252bfa1032fe5..73a05ed2f08f204e642cc9e8e69b462ab031f7c8 100644
+index a92e1db5907b630667e58643376d22dd33ae5caf..aea766a79c1add71973c050eea8b202ee3eff55c 100644
 --- a/ios/chrome/common/ui/favicon/favicon_attributes.h
 +++ b/ios/chrome/common/ui/favicon/favicon_attributes.h
 @@ -9,6 +9,7 @@

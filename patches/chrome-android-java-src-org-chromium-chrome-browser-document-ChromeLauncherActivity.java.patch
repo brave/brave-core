@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
-index 5b75069397ed9a6d8789183d51cabcc6fdb61ada..60cfb4861d00acd06cdd51638a984577da322f21 100644
+index 10c92e1f9219b03793aec908c4d0c95c38add82b..7e1fe2a76a521ce32623ef80335d2bc07b9898cf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
 @@ -18,7 +18,7 @@ import org.chromium.chrome.browser.vr.VrModuleProvider;

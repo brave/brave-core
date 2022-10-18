@@ -92,25 +92,6 @@
   "brave/vendor/bat-native-ads/data/resources/bat_ads_resources.grd": {
     "includes": [51000]
   },
-  "brave/ui/webui/resources/brave_webui_resources.grd": {
-    "includes": [52000],
-    "structures": [53000],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/bookmarks/brave_bookmarks_resources.grd": {
-    "META": {"sizes": {"includes": [200]}},
-    "includes": [54000],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/extensions/brave_extensions_resources.grd": {
-    "META": {"sizes": {"includes": [200]}},
-    "includes": [54200],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/history/brave_history_resources.grd": {
-    "META": {"sizes": {"includes": [200]}},
-    "includes": [54400],
-  },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_page/brave_wallet_page.grd": {
     "META": {"sizes": {"includes": [100]}},
