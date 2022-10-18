@@ -137,7 +137,7 @@ BraveVpnService::BraveVpnService(
     ReloadPurchasedState();
   }
   base::PowerMonitor::AddPowerSuspendObserver(this);
-
+  net::NetworkChangeNotifier::AddDNSObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   InitP3A();
@@ -870,10 +870,37 @@ void BraveVpnService::OnSuspend() {
   // Set reconnection state in case if computer/laptop is going to sleep.
   // The disconnection event will be fired after waking up and we want to
   // restore the connection.
-  needs_connect_ = is_connected();
+  if (is_connected()) {
+    Disconnect();
+    reconnect_on_resume_ = true;
+  }
+  VLOG(2) << __func__
+          << " Should reconnect when resume:" << reconnect_on_resume_;
 }
 
-void BraveVpnService::OnResume() {}
+void BraveVpnService::OnResume() {
+#if BUILDFLAG(IS_MAC)
+  OnDNSChanged();
+#endif  // BUILDFLAG(IS_MAC)
+}
+
+void BraveVpnService::OnDNSChanged() {
+  if (!IsNetworkAvailable() ||
+      // This event is triggered before going to sleep while vpn is still
+      // active. Vpn is presented as CONNECTION_UNKNOWN and so we have to skip
+      // this to be notified only when default network active without VPN to
+      // reconnect.
+      net::NetworkChangeNotifier::GetConnectionType() ==
+          net::NetworkChangeNotifier::CONNECTION_UNKNOWN)
+    return;
+
+  VLOG(2) << __func__ << " Should reconnect:" << reconnect_on_resume_;
+  if (reconnect_on_resume_) {
+    Connect();
+    reconnect_on_resume_ = false;
+  }
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)
@@ -1176,6 +1203,7 @@ void BraveVpnService::Shutdown() {
   observed_.Reset();
   receivers_.Clear();
   base::PowerMonitor::RemovePowerSuspendObserver(this);
+  net::NetworkChangeNotifier::RemoveDNSObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
