@@ -1447,7 +1447,7 @@ Are you sure you want to do this?
         Earn Tokens &amp; Give Back
       </message>
       <message name="IDS_BRAVE_REWARDS_MODAL_TEXT" desc="Brave rewards modal text">
-        Earn tokens by viewing Brave Private Ads and support content creators automatically.
+        Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
       </message>
       <message name="IDS_BRAVE_REWARDS_TOS_TEXT" desc="Brave rewards tos text">
         By proceeding, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
@@ -1456,7 +1456,7 @@ Are you sure you want to do this?
         Privacy Policy
       </message>
       <message name="IDS_TAKE_QUICK_TOUR" desc="Brave rewards quick tour text">
-        Take a quick tour
+        Let’s take a quick tour
       </message>
       <message name="IDS_WELCOME_TO_BRAVE_REWARDS" desc="Brave rewards onboarding title">
         Welcome to Brave Rewards!

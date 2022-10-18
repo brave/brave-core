@@ -140,8 +140,9 @@ public class BraveAdsSignupDialog {
             public void onClick(DialogInterface dialog, int which) {
                 // Enable ads
                 neverShowOnboardingDialogAgain();
-                if (BraveActivity.getBraveActivity() != null) {
-                    BraveActivity.getBraveActivity().openRewardsPanel();
+                BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                if (braveActivity != null) {
+                    braveActivity.openRewardsPanel();
                 }
             }
         }).create();
