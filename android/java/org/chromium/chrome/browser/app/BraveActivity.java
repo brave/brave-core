@@ -1228,27 +1228,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private void showNotificationWarningDialog() {
         BraveNotificationWarningDialog notificationWarningDialog =
-                new BraveNotificationWarningDialog();
+                BraveNotificationWarningDialog.newInstance(
+                        BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_ACTIVITY);
         notificationWarningDialog.setCancelable(false);
         notificationWarningDialog.show(getSupportFragmentManager(),
                 BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 
-    /**
-     * If no notification permission and if any privacy or rewards state is on then return true
-     * */
-    private boolean shouldShowNotificationWarningDialog() {
-        if (!BravePermissionUtils.hasPermission(
-                    this, PermissionConstants.NOTIFICATION_PERMISSION)) {
-            return OnboardingPrefManager.getInstance().isBraveStatsEnabled()
-                    || OnboardingPrefManager.getInstance().isBraveRewardsEnabled();
-        }
-        return false;
-    }
-
     private void checkForNotificationData() {
-        if (shouldShowNotificationWarningDialog()) {
+        if (BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)) {
             showNotificationWarningDialog();
+            return;
         }
 
         Intent notifIntent = getIntent();

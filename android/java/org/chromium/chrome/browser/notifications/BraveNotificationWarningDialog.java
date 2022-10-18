@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.notifications;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -37,6 +38,34 @@ import org.chromium.ui.permissions.PermissionConstants;
 public class BraveNotificationWarningDialog extends BraveDialogFragment {
     public static final String NOTIFICATION_WARNING_DIALOG_TAG = "NotificationWarningDialog";
 
+    public static final int FROM_LAUNCHED_BRAVE_SETTINGS = 1;
+    public static final int FROM_LAUNCHED_BRAVE_ACTIVITY = 2;
+    private static final String LAUNCHED_FROM = "launched_from";
+
+    private TextView mTitleTextView;
+    private TextView mDescriptionTextView;
+    private Button mPrimaryButton;
+
+    public static BraveNotificationWarningDialog newInstance(int launchedFrom) {
+        BraveNotificationWarningDialog fragment = new BraveNotificationWarningDialog();
+        Bundle args = new Bundle();
+        args.putInt(LAUNCHED_FROM, launchedFrom);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    /**
+     * If no notification permission and if any privacy or rewards state is on then return true
+     * */
+    public static boolean shouldShowNotificationWarningDialog(Context context) {
+        if (!BravePermissionUtils.hasPermission(
+                    context, PermissionConstants.NOTIFICATION_PERMISSION)) {
+            return OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+                    || OnboardingPrefManager.getInstance().isBraveRewardsEnabled();
+        }
+        return false;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +79,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         }
-        return inflater.inflate(R.layout.brave_notification_warning_dialog, container, false);
+        return view;
     }
 
     @Override
@@ -60,6 +89,9 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     private void init(View view) {
+        mTitleTextView = view.findViewById(R.id.notification_title_tv);
+        mDescriptionTextView = view.findViewById(R.id.notification_description_tv);
+        mPrimaryButton = view.findViewById(R.id.notification_warning_primary_button);
         updateTitleDescriptionText(view);
         clickOnPrimaryButton(view);
         clickOnCloseButton(view);
@@ -75,19 +107,48 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     private void updateTitleDescriptionText(View view) {
-        TextView titleTextView = view.findViewById(R.id.notification_title_tv);
-        TextView descriptionTextView = view.findViewById(R.id.notification_description_tv);
+        if (getArguments() != null) {
+            int launchedFrom = getArguments().getInt(LAUNCHED_FROM);
+            if (launchedFrom == FROM_LAUNCHED_BRAVE_ACTIVITY) {
+                launchedFromBraveActivity(view);
+            } else if (launchedFrom == FROM_LAUNCHED_BRAVE_SETTINGS) {
+                launchedFromBraveSettings(view);
+                view.findViewById(R.id.btn_not_now).setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void launchedFromBraveActivity(View view) {
+        mPrimaryButton.setText(R.string.turn_on_brave_notifications);
 
         if (isBraveRewardsEnabled() && isPrivacyReportsEnabled()) {
-            titleTextView.setText(R.string.notification_os_dialog_header_both_rewards_privacy);
-            descriptionTextView.setText(
+            mTitleTextView.setText(R.string.notification_os_dialog_header_both_rewards_privacy);
+            mDescriptionTextView.setText(
                     R.string.notification_os_dialog_description_both_rewards_privacy);
         } else if (isBraveRewardsEnabled()) {
-            titleTextView.setText(R.string.notification_os_dialog_header_only_rewards);
-            descriptionTextView.setText(R.string.notification_os_dialog_description_only_rewards);
+            mTitleTextView.setText(R.string.notification_os_dialog_header_only_rewards);
+            mDescriptionTextView.setText(R.string.notification_os_dialog_description_only_rewards);
         } else if (isPrivacyReportsEnabled()) {
-            titleTextView.setText(R.string.notification_os_dialog_header_only_privacy);
-            descriptionTextView.setText(R.string.notification_os_dialog_description_only_privacy);
+            mTitleTextView.setText(R.string.notification_os_dialog_header_only_privacy);
+            mDescriptionTextView.setText(R.string.notification_os_dialog_description_only_privacy);
+        }
+    }
+
+    private void launchedFromBraveSettings(View view) {
+        mPrimaryButton.setText(R.string.return_to_settings);
+
+        if (isBraveRewardsEnabled() && isPrivacyReportsEnabled()) {
+            mTitleTextView.setText(R.string.notification_brave_dialog_header_both_rewards_privacy);
+            mDescriptionTextView.setText(
+                    R.string.notification_brave_dialog_description_both_rewards_privacy);
+        } else if (isBraveRewardsEnabled()) {
+            mTitleTextView.setText(R.string.notification_brave_dialog_header_only_rewards);
+            mDescriptionTextView.setText(
+                    R.string.notification_brave_dialog_description_only_rewards);
+        } else if (isPrivacyReportsEnabled()) {
+            mTitleTextView.setText(R.string.notification_brave_dialog_header_only_privacy);
+            mDescriptionTextView.setText(
+                    R.string.notification_brave_dialog_description_only_privacy);
         }
     }
 
@@ -95,7 +156,6 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         Button primaryButton = view.findViewById(R.id.notification_warning_primary_button);
         primaryButton.setOnClickListener(v -> {
             dismiss();
-
             if (getActivity().shouldShowRequestPermissionRationale(
                         PermissionConstants.NOTIFICATION_PERMISSION)
                     || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
