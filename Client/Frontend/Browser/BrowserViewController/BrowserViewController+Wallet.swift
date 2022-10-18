@@ -78,8 +78,7 @@ extension BrowserViewController {
   /// when the pending request is updated so we can update the wallet url bar button.
   func newWalletStore() -> WalletStore? {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    guard let walletStore = WalletStore.from(privateMode: privateMode)
-    else {
+    guard let walletStore = WalletStore.from(privateMode: privateMode) else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil
     }
@@ -176,22 +175,52 @@ extension Tab: BraveWalletProviderDelegate {
       // Check if eth permissions already exist for this origin and if they don't, ensure the user allows
       // ethereum/solana provider access
       let walletPermissions = origin.url.map { Domain.walletPermissions(forUrl: $0, coin: coinType) ?? [] } ?? []
-      if walletPermissions.isEmpty, !Preferences.Wallet.allowEthProviderAccess.value {
-        completion(.internal, nil)
-        return
+      if walletPermissions.isEmpty {
+        switch coinType {
+        case .eth:
+          if !Preferences.Wallet.allowEthProviderAccess.value {
+            completion(.internal, nil)
+            return
+          }
+        case .sol:
+          if !Preferences.Wallet.allowSolProviderAccess.value {
+            completion(.internal, nil)
+            return
+          }
+        case .fil:
+          // not supported
+          fallthrough
+        @unknown default:
+          completion(.internal, nil)
+          return
+        }
       }
       
       guard WalletStore.from(privateMode: isPrivate) != nil else {
         completion(.internal, nil)
         return
       }
-      let (success, accounts) = await allowedAccounts(coinType, accounts: accounts)
+      let (success, allowedAccounts) = await allowedAccounts(coinType, accounts: accounts)
       if !success {
         completion(.internal, [])
         return
       }
-      if success && !accounts.isEmpty {
-        completion(.none, accounts)
+      switch coinType {
+      case .eth:
+        if success, !allowedAccounts.isEmpty {
+          completion(.none, allowedAccounts)
+          return
+        }
+      case .sol:
+        if success,
+           accounts.count == 1, // only 1 Solana account connect at a time
+           let account = accounts.first,
+           allowedAccounts.contains(account) {
+          completion(.none, allowedAccounts)
+          return
+        }
+      default:
+        completion(.internal, [])
         return
       }
       
@@ -265,10 +294,20 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   func isPermissionDenied(_ type: BraveWallet.CoinType) -> Bool {
-    return type != .eth
+    switch type {
+    case .eth:
+      return false
+    case .sol:
+      return !WalletDebugFlags.isSolanaDappsEnabled
+    case .fil:
+      return true
+    @unknown default:
+      return true
+    }
   }
   
   func showAccountCreation(_ type: BraveWallet.CoinType) {
+    // TODO: Issue #6046 - Show account creation for given coin type
   }
   
   func isSolanaAccountConnected(_ account: String) -> Bool {
@@ -285,6 +324,9 @@ extension Tab: BraveWalletProviderDelegate {
   
   func clearSolanaConnectedAccounts() {
     tabDappStore.solConnectedAddresses = .init()
+    Task {
+      await updateSolanaProperties()
+    }
   }
 }
 
@@ -370,6 +412,66 @@ extension Tab: BraveWalletEventsListener {
         contentWorld: EthereumProviderScriptHandler.scriptSandbox,
         asFunction: false,
         completion: nil
+      )
+    }
+  }
+}
+
+extension Tab: BraveWalletSolanaEventsListener {
+  func accountChangedEvent(_ account: String?) {
+    Task {
+      if let webView = webView {
+        let script: String
+        if let account = account {
+          script = "if (solanaWeb3) { window.solana.emit('accountChanged', new solanaWeb3.PublicKey('\(account.htmlEntityEncodedString)')) }"
+        } else {
+          script = "window.solana.emit('accountChanged')"
+        }
+        await webView.evaluateSafeJavaScript(functionName: script, contentWorld: .page, asFunction: false)
+      }
+      await updateSolanaProperties()
+    }
+  }
+
+  func emitSolanaEvent(_ event: Web3ProviderEvent) {
+    guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
+          let webView = webView else {
+      return
+    }
+    Task {
+      var arguments: [Any] = [event.name]
+      if let eventArgs = event.arguments {
+        arguments.append(eventArgs)
+      }
+      await webView.evaluateSafeJavaScript(
+        functionName: "window.solana.emit",
+        args: arguments,
+        contentWorld: .page
+      )
+    }
+  }
+
+  @MainActor func updateSolanaProperties() async {
+    guard WalletDebugFlags.isSolanaDappsEnabled,
+          Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
+          let webView = webView,
+          let provider = walletSolProvider else {
+      return
+    }
+    let isConnected = await provider.isConnected()
+    await webView.evaluateSafeJavaScript(
+      functionName: "window.solana.isConnected = \(isConnected)",
+      contentWorld: .page,
+      asFunction: false
+    )
+    // publicKey
+    if let keyringService = walletKeyringService,
+       let publicKey = await keyringService.selectedAccount(.sol),
+       self.isSolanaAccountConnected(publicKey) {
+      await webView.evaluateSafeJavaScript(
+        functionName: "if (solanaWeb3) { window.solana.publicKey = new solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'); }",
+        contentWorld: .page,
+        asFunction: false
       )
     }
   }

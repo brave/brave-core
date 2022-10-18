@@ -398,6 +398,14 @@ public class BrowserViewController: UIViewController {
       }
       return (provider, js: js)
     }
+    tabManager.makeWalletSolProvider = { [weak self] tab in
+      guard let self = self,
+            let provider = self.braveCore.braveWalletAPI.solanaProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
+        return nil
+      }
+      let scripts = self.braveCore.braveWalletAPI.providerScripts(for: .sol)
+      return (provider, jsScripts: scripts)
+    }
     downloadQueue.delegate = self
 
     // Observe some user preferences
@@ -2034,7 +2042,7 @@ public class BrowserViewController: UIViewController {
   }
   
   func displayPageZoom(visible: Bool) {
-    if !visible || pageZoomBar != nil {     
+    if !visible || pageZoomBar != nil {
       pageZoomBar?.view.removeFromSuperview()
 
       if let zoomBarView = pageZoomBar?.view {
@@ -2366,6 +2374,9 @@ extension BrowserViewController: TabDelegate {
         LoginsScriptHandler(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI),
         EthereumProviderScriptHandler(tab: tab)
       ]
+      if WalletDebugFlags.isSolanaDappsEnabled {
+        injectedScripts += [SolanaProviderScriptHandler(tab: tab)]
+      }
     }
 
     // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily

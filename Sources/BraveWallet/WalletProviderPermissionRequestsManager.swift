@@ -75,9 +75,14 @@ public class WalletProviderPermissionRequestsManager {
     requests.contains(where: { $0.requestingOrigin == origin && $0.coinType == coinType })
   }
   
-  /// Returns a list of pending requests waiting for a given origin
+  /// Returns a list of pending requests waiting for a given origin and coin types
   public func pendingRequests(for origin: URLOrigin, coinType: BraveWallet.CoinType) -> [WebpagePermissionRequest] {
     requests.filter({ $0.requestingOrigin == origin && $0.coinType == coinType })
+  }
+  
+  /// Returns the first available pending request for a given origin and for the given coin types.
+  public func firstPendingRequest(for origin: URLOrigin, coinTypes: [BraveWallet.CoinType]) -> WebpagePermissionRequest? {
+    requests.filter { $0.requestingOrigin == origin && coinTypes.contains($0.coinType) }.first
   }
   
   /// Cancels an in-flight request without executing any decision

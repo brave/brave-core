@@ -10,6 +10,7 @@ import BraveShared
 import Data
 import CoreData
 import BraveCore
+import BraveWallet
 import os.log
 
 protocol TabManagerDelegate: AnyObject {
@@ -87,6 +88,7 @@ class TabManager: NSObject {
   private weak var rewards: BraveRewards?
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   var makeWalletEthProvider: ((Tab) -> (BraveWalletEthereumProvider, js: String)?)?
+  var makeWalletSolProvider: ((Tab) -> (BraveWalletSolanaProvider, jsScripts: [BraveWalletProviderScriptKey: String])?)?
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
   private var syncTabsTask: DispatchWorkItem?
@@ -496,7 +498,12 @@ class TabManager: NSObject {
       tab.walletEthProviderScript = WKUserScript.create(source: providerJS,
                                                         injectionTime: .atDocumentStart,
                                                         forMainFrameOnly: true,
-                                                        in: .page)
+                                                        in: EthereumProviderScriptHandler.scriptSandbox)
+    }
+    if WalletDebugFlags.isSolanaDappsEnabled, let (provider, jsScripts) = makeWalletSolProvider?(tab) {
+      tab.walletSolProvider = provider
+      tab.walletSolProvider?.`init`(tab)
+      tab.walletSolProviderScripts = jsScripts
     }
     
     delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }

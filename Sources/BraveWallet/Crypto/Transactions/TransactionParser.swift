@@ -381,11 +381,17 @@ enum TransactionParser {
           )
         )
       )
+    case .solanaDappSignAndSendTransaction, .solanaDappSignTransaction:
+      return .init(
+        transaction: transaction,
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
+        fromAddress: transaction.fromAddress,
+        namedToAddress: "",
+        toAddress: "",
+        networkSymbol: network.symbol,
+        details: .solDappTransaction
+      )
     case .erc1155SafeTransferFrom:
-      return nil
-    case .solanaDappSignAndSendTransaction:
-      return nil
-    case .solanaDappSignTransaction:
       return nil
     @unknown default:
       return nil
@@ -409,6 +415,7 @@ struct ParsedTransaction: Equatable {
     case erc721Transfer(Eth721TransferDetails)
     case solSystemTransfer(SendDetails)
     case solSplTokenTransfer(SendDetails)
+    case solDappTransaction
     case other
   }
   
@@ -444,6 +451,8 @@ struct ParsedTransaction: Equatable {
     case let .ethErc20Approve(details):
       return details.gasFee
     case .erc721Transfer, .other:
+      return nil
+    case .solDappTransaction:
       return nil
     }
   }

@@ -80,6 +80,8 @@ extension BrowserViewController: WKNavigationDelegate {
        selectedTab.url?.origin != webView.url?.origin {
       // new site has a different origin, hide wallet icon.
       tabManager.selectedTab?.isWalletIconVisible = false
+      // new site, reset connected addresses
+      tabManager.selectedTab?.clearSolanaConnectedAccounts()
       // close wallet panel if it's open
       if let popoverController = self.presentedViewController as? PopoverController,
          popoverController.contentController is WalletPanelHostingController {
@@ -551,6 +553,7 @@ extension BrowserViewController: WKNavigationDelegate {
     
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
+    tab.clearSolanaConnectedAccounts()
 
     rewards.reportTabNavigation(tabId: tab.rewardsId)
 
@@ -597,6 +600,9 @@ extension BrowserViewController: WKNavigationDelegate {
         )
       }
       tab.updateEthereumProperties()
+      Task {
+        await tab.updateSolanaProperties()
+      }
       tab.reportPageLoad(to: rewards, redirectionURLs: tab.redirectURLs)
       tab.redirectURLs = []
       if webView.url?.isLocal == false {

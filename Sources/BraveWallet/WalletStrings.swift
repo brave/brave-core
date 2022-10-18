@@ -2780,6 +2780,20 @@ extension Strings {
       value: "DApps you connect to Brave Wallet will appear here",
       comment: "A message that will be displayed under the section header when there is no dapps have been granted wallet connection."
     )
+    public static let signTransactionTitle = NSLocalizedString(
+      "wallet.signTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Sign Transaction",
+      comment: "The title of the view shown over a dapps website that requests the user sign a transaction."
+    )
+    public static let signAllTransactionsTitle = NSLocalizedString(
+      "wallet.signAllTransactionsTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Sign All Transactions",
+      comment: "The title of the view shown over a dapps website that requests the user sign all displayed transactions."
+    )
     public static let confirmPasswordTitle = NSLocalizedString(
       "wallet.confirmPasswordTitle",
       tableName: "BraveWallet",
