@@ -131,13 +131,13 @@ void WalletConnectService::OnTunnelReady(bool success) {
     message.payload = "";
     message.silent = true;
     std::string json;
-    if (base::JSONWriter::Write(*message.ToValue(), &json)) {
+    if (base::JSONWriter::Write(message.ToValue(), &json)) {
       LOG(ERROR) << "send: " << json;
       websocket_client_->Write(std::vector<uint8_t>(json.begin(), json.end()));
     }
     // subscribe to own client id
     message.topic = client_id_;
-    if (base::JSONWriter::Write(*message.ToValue(), &json)) {
+    if (base::JSONWriter::Write(message.ToValue(), &json)) {
       LOG(ERROR) << "send: " << json;
       websocket_client_->Write(std::vector<uint8_t>(json.begin(), json.end()));
     }
@@ -162,7 +162,7 @@ void WalletConnectService::OnTunnelData(
     ack_msg.payload = "";
     ack_msg.silent = true;
     std::string ack_json;
-    if (base::JSONWriter::Write(*ack_msg.ToValue(), &ack_json)) {
+    if (base::JSONWriter::Write(ack_msg.ToValue(), &ack_json)) {
       LOG(ERROR) << "send: " << ack_json;
       websocket_client_->Write(
           std::vector<uint8_t>(ack_json.begin(), ack_json.end()));
@@ -214,7 +214,7 @@ void WalletConnectService::OnTunnelData(
       DCHECK(rpc_request->method == "wc_sessionRequest");
       DCHECK(rpc_request->params.size() == 1);
       auto session_request =
-          types::SessionRequest::FromValue(*std::move(rpc_request->params[0]));
+          types::SessionRequest::FromValue(std::move(rpc_request->params[0]));
       if (!session_request) {
         LOG(ERROR) << "session request from value failed";
         return;
@@ -227,21 +227,20 @@ void WalletConnectService::OnTunnelData(
       session_params.network_id = 0;
       session_params.accounts.push_back(
           "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
-      session_params.peer_id = std::make_unique<std::string>(client_id_);
-      session_params.rpc_url = std::make_unique<std::string>("");
+      session_params.peer_id = client_id_;
+      session_params.rpc_url = absl::nullopt;
       types::ClientMeta meta;
       meta.name = "Brave Wallet";
-      session_params.peer_meta =
-          std::make_unique<types::ClientMeta>(std::move(meta));
+      session_params.peer_meta = std::move(meta);
 
       // put session_params into JsonRpcResponseSuccess
       types::JsonRpcResponseSuccess response;
       response.id = rpc_request->id;
       response.jsonrpc = "2.0";
-      response.result = session_params.ToValue();
+      response.result = base::Value(session_params.ToValue());
 
       std::string response_json;
-      if (!base::JSONWriter::Write(*response.ToValue(), &response_json)) {
+      if (!base::JSONWriter::Write(response.ToValue(), &response_json)) {
         return;
       }
       LOG(ERROR) << "encrypting: " << response_json;
@@ -249,7 +248,7 @@ void WalletConnectService::OnTunnelData(
           std::vector<uint8_t>(response_json.begin(), response_json.end()));
       DCHECK(encrypted_payload.has_value());
       std::string encrypted_response_json;
-      if (!base::JSONWriter::Write(*encrypted_payload.value().ToValue(),
+      if (!base::JSONWriter::Write(encrypted_payload.value().ToValue(),
                                    &encrypted_response_json)) {
         return;
       }
@@ -261,7 +260,7 @@ void WalletConnectService::OnTunnelData(
       socket_response.silent = true;
 
       std::string socket_response_json;
-      if (!base::JSONWriter::Write(*socket_response.ToValue(),
+      if (!base::JSONWriter::Write(socket_response.ToValue(),
                                    &socket_response_json)) {
         return;
       }

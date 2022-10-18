@@ -69,7 +69,7 @@ base::expected<std::vector<uint8_t>, std::string> Encryptor::Decrypt(
       !base::HexStringToBytes(payload.hmac, &hmac_bytes) ||
       !base::HexStringToBytes(payload.iv, &iv)) {
     return base::unexpected("Payload contains invalid hex string: " +
-                            payload.ToValue()->DebugString());
+                            payload.ToValue().DebugString());
   }
 
   std::vector<uint8_t> data_to_sign(ciphertext.begin(), ciphertext.end());
