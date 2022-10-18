@@ -285,6 +285,7 @@ program
   .option('--all', 'run presubmit on all files')
   .option('--files <file list>',
     'semicolon-separated list files to run presubmit on')
+  .option('--verbose [arg]', 'pass --verbose 2 for more debugging info', JSON.parse)
   .action(util.presubmit)
 
 program
