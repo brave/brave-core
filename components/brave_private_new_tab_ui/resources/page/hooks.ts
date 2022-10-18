@@ -1,14 +1,12 @@
 import * as React from 'react'
-import getPageHandlerInstance from './api/brave_page_handler'
+import getPageHandlerInstance, { ConnectionStatus } from './api/brave_page_handler'
 
 export function useTorObserver () {
   const [hasInit, setHasInit] = React.useState<boolean>(false)
   const [isConnected, setIsConnected] = React.useState(false)
   const [progress, setProgress] = React.useState<string | undefined>(undefined)
   const [message, setMessage] = React.useState<string | undefined>(undefined)
-  const [connectionFailed, setFailed] = React.useState<boolean>(false)
-
-  const isLoading = !hasInit && !isConnected
+  const [connectionStatus, setConnectionStatus] = React.useState<ConnectionStatus>(ConnectionStatus.kUnknown)
 
   React.useEffect(() => {
     getPageHandlerInstance().callbackRouter.onTorCircuitEstablished.addListener(setHasInit)
@@ -16,7 +14,7 @@ export function useTorObserver () {
       setProgress(progress)
       setMessage(message)
     })
-    getPageHandlerInstance().callbackRouter.onTorCircuitGetStuck.addListener(setFailed)
+    getPageHandlerInstance().callbackRouter.onTorCircuitStatus.addListener(setConnectionStatus)
   }, [])
 
   React.useEffect(() => {
@@ -26,10 +24,9 @@ export function useTorObserver () {
 
   return {
     isConnected,
-    isLoading,
     progress,
     message,
-    connectionFailed
+    connectionStatus
   }
 }
 

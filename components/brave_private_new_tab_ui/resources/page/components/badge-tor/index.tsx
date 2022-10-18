@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { getLocale } from '$web-common/locale'
-import getPageHandlerInstance from '../../api/brave_page_handler'
+import getPageHandlerInstance, { ConnectionStatus } from '../../api/brave_page_handler'
 
 interface BoxProps {
   isConnected?: boolean
@@ -81,10 +81,9 @@ const Help = styled.div<HelpProps>`
 
 interface Props {
   isConnected: boolean
-  isLoading: boolean
   progress: string
   message: string
-  connectionFailed: boolean
+  connectionStatus: ConnectionStatus
 }
 
 function splitMessage (key: string) {
@@ -104,11 +103,11 @@ function BadgeTor (props: Props) {
     </svg>
   )
 
-  const isLoading = Boolean(props.isLoading && props.progress && !props.connectionFailed)
+  const isLoading = props.connectionStatus === ConnectionStatus.kConnecting || props.connectionStatus === ConnectionStatus.kConnectionSlow
 
-  if (props.isConnected) {
+  if (props.isConnected || props.connectionStatus === ConnectionStatus.kConnected) {
     textElement = getLocale('torStatusConnected')
-  } else if (props.connectionFailed) {
+  } else if (props.connectionStatus === ConnectionStatus.kConnectionStuck) {
     textElement = getLocale('torStatusConnectionFailed')
 
     const [
@@ -136,6 +135,10 @@ function BadgeTor (props: Props) {
       <a onClick={contactBraveSupport}>{contactSupport}</a>
       {rest}
     </p>)
+  } else if (props.connectionStatus === ConnectionStatus.kConnectionSlow) {
+    textElement = getLocale('torStatusConnectionSlow')
+    helpElement = getLocale('torStatusConnectionSlowDesc')
+    iconElement = <LoaderIcon />
   } else if (isLoading) {
     textElement = getLocale('torStatusInitializing', { percentage: props.progress })
     helpElement = props.message
