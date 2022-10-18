@@ -154,6 +154,14 @@
 # render_frame_host->IsActive() || (content::SiteIsolationPolicy::IsSiteIsolationForGuestsEnabled() && render_frame_host->IsInLifecycleState( RenderFrameHost::LifecycleState::kPendingDeletion))
 -WebViewSSLErrorTests/WebViewSSLErrorTest.*/SiteIsolationForGuestsEnabled
 
+# These tests use BroadcastChannel to communicate between 3p frame, we partition
+# these channels, which breaks test communication.
+-FileSystemAccessBrowserTest.RevokePermissionAfter*
+
+# This test checks data sent do DownloadProtectionService (url, filename, etc.)
+# which we filter for privacy reasons.
+-FileSystemAccessBrowserTest.SafeBrowsing
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
@@ -268,7 +276,6 @@
 -AvatarMenuBrowserTest.AddNewProfile
 -AvatarMenuBrowserTest.EditProfile_NotLoaded
 -AvatarToolbarButtonBrowserTest.*
--BackForwardCacheFileSystemAccessBrowserTest.*
 -BackForwardCachePageLoadMetricsObserverBrowserTest.*
 -BackForwardCachePrintBrowserTest.*
 -BackForwardCacheSiteDetailsBrowserTest.*
@@ -436,7 +443,6 @@
 -FencedFrameSiteDetailsBrowserTest.*
 -FieldTrialTest.*
 -FileIFrameAPITest.*
--FileSystemAccessBrowserTest.*
 -FindInPageControllerTest.*
 -FirstPartySets/*
 -FirstPartySetsPolicyBrowsertest.*
@@ -540,7 +546,6 @@
 -MetricsServiceBrowserTest.*
 -MetricsServiceUserDemographicsBrowserTest.*
 -Mode/BackgroundColorChangeWebAppBrowserTest.*
--MojoFileSystemAccessBrowserTest.CanResolveFilePath
 -MojoJSInterfaceBrokerBrowserTest.*
 -MultiOriginSessionRestoreTest.*
 -MultiPageBrowserTest.*
