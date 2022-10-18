@@ -73,11 +73,10 @@
                                          weight:NSFontWeightSemibold]];
   [headerLabel sizeToFit];
   [headerLabel setLineBreakMode:NSLineBreakByWordWrapping];
-  int defaultHeight = NSHeight(headerLabel.frame);
-  int numOfLines =
-      static_cast<int>(NSWidth(headerLabel.frame)) / contentsWidth + 1;
+  CGSize preferredSize =
+      [headerLabel sizeThatFits:CGSizeMake(contentsWidth, 0)];
   [headerLabel
-      setFrame:NSMakeRect(0, 0, contentsWidth, defaultHeight * numOfLines)];
+      setFrame:NSMakeRect(0, 0, preferredSize.width, preferredSize.height)];
 
   std::u16string contentsString = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
@@ -88,11 +87,9 @@
                                            weight:NSFontWeightRegular]];
   [contentsLabel sizeToFit];
   [contentsLabel setLineBreakMode:NSLineBreakByWordWrapping];
-  defaultHeight = NSHeight(contentsLabel.frame);
-  numOfLines =
-      static_cast<int>(NSWidth(contentsLabel.frame)) / contentsWidth + 1;
+  preferredSize = [contentsLabel sizeThatFits:CGSizeMake(contentsWidth, 0)];
   [contentsLabel
-      setFrame:NSMakeRect(0, 0, contentsWidth, defaultHeight * numOfLines)];
+      setFrame:NSMakeRect(0, 0, preferredSize.width, preferredSize.height)];
 
   // It's time to calculate window's height as we can get all controls' final
   // heights.
