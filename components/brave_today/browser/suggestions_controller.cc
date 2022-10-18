@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "base/barrier_callback.h"
 #include "base/bind.h"
@@ -163,10 +164,18 @@ void SuggestionsController::GetSuggestedPublisherIds(
               options.SetRecentDayRange(14);
               controller->history_service_->QueryHistory(
                   std::u16string(), options,
-                  base::BindOnce(&SuggestionsController::
-                                     GetSuggestedPublisherIdsWithHistory,
-                                 base::Unretained(controller),
-                                 std::move(publishers), std::move(callback)),
+                  base::BindOnce(
+                      [](SuggestionsController* controller,
+                         Publishers publishers,
+                         GetSuggestedPublisherIdsCallback callback,
+                         history::QueryResults results) {
+                        auto result =
+                            controller->GetSuggestedPublisherIdsWithHistory(
+                                publishers, results);
+                        std::move(callback).Run(std::move(result));
+                      },
+                      base::Unretained(controller), std::move(publishers),
+                      std::move(callback)),
                   &controller->task_tracker_);
             },
             base::Unretained(controller), std::move(callback)));
@@ -174,10 +183,10 @@ void SuggestionsController::GetSuggestedPublisherIds(
       base::Unretained(this), std::move(callback)));
 }
 
-void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
-    Publishers publishers,
-    GetSuggestedPublisherIdsCallback callback,
-    history::QueryResults history) {
+std::vector<std::string>
+SuggestionsController::GetSuggestedPublisherIdsWithHistory(
+    const Publishers& publishers,
+    const history::QueryResults& history) {
   const auto visit_weightings = GetVisitWeightings(publishers, history);
   base::flat_map<std::string, double> scores;
 
@@ -192,7 +201,8 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
     const auto visited_score = GetVisitWeighting(publisher, visit_weightings);
 
-    if (!explicitly_enabled) {
+    if (!explicitly_enabled &&
+        publisher->user_enabled_status != mojom::UserEnabled::DISABLED) {
       scores[publisher_id] += visited_score;
     }
 
@@ -245,7 +255,7 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
               return scores.at(a_id) > scores.at(b_id);
             });
 
-  std::move(callback).Run(std::move(result));
+  return result;
 }
 
 void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {

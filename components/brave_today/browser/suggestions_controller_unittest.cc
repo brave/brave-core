@@ -1,0 +1,254 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_today/browser/suggestions_controller.h"
+
+#include <utility>
+#include <vector>
+
+#include "base/bind.h"
+#include "base/containers/contains.h"
+#include "base/run_loop.h"
+#include "base/test/bind.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/browser/direct_feed_controller.h"
+#include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
+#include "brave/components/brave_today/common/brave_news.mojom-shared.h"
+#include "chrome/test/base/testing_profile.h"
+#include "components/history/core/browser/history_types.h"
+#include "components/history/core/browser/url_row.h"
+#include "content/public/test/browser_task_environment.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace brave_news {
+namespace {
+Publishers MakePublishers(const std::vector<std::string>& publisher_urls) {
+  Publishers result;
+  size_t next_id = 1;
+  for (const auto& url : publisher_urls) {
+    auto publisher = mojom::Publisher::New();
+    publisher->locales = {"en_US"};
+    publisher->site_url = GURL(url);
+    publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
+    result[std::to_string(next_id++)] = std::move(publisher);
+  }
+  return result;
+}
+
+history::QueryResults MakeQueryResults(const std::vector<std::string>& urls) {
+  history::QueryResults result;
+  std::vector<history::URLResult> url_results;
+  for (const auto& url : urls) {
+    url_results.emplace_back(history::URLResult(GURL(url), base::Time::Now()));
+  }
+
+  result.SetURLResults(std::move(url_results));
+  return result;
+}
+}  // namespace
+
+class SuggestionsControllerTest : public testing::Test {
+ public:
+  SuggestionsControllerTest()
+      : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
+                            test_url_loader_factory_.GetSafeWeakWrapper()),
+        direct_feed_controller_(profile_.GetPrefs(), nullptr),
+        unsupported_publisher_migrator_(profile_.GetPrefs(),
+                                        &direct_feed_controller_,
+                                        &api_request_helper_),
+        publishers_controller_(profile_.GetPrefs(),
+                               &direct_feed_controller_,
+                               &unsupported_publisher_migrator_,
+                               &api_request_helper_),
+        suggestions_controller_(profile_.GetPrefs(),
+                                &publishers_controller_,
+                                &api_request_helper_,
+                                nullptr) {
+    SetLocale("en_US");
+  }
+  ~SuggestionsControllerTest() override = default;
+
+ protected:
+  std::vector<std::string> GetSuggestedPublisherIds(
+      const Publishers& publishers,
+      const history::QueryResults& history) {
+    return suggestions_controller_.GetSuggestedPublisherIdsWithHistory(
+        publishers, history);
+  }
+
+  void SetSimilarityMatrix(
+      SuggestionsController::PublisherSimilarities similarities) {
+    suggestions_controller_.similarities_ = std::move(similarities);
+  }
+
+  void SetLocale(const std::string& locale) {
+    suggestions_controller_.locale_ = locale;
+  }
+
+  content::BrowserTaskEnvironment browser_task_environment_;
+  TestingProfile profile_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+  api_request_helper::APIRequestHelper api_request_helper_;
+
+  DirectFeedController direct_feed_controller_;
+  UnsupportedPublisherMigrator unsupported_publisher_migrator_;
+  PublishersController publishers_controller_;
+  SuggestionsController suggestions_controller_;
+};
+
+TEST_F(SuggestionsControllerTest, VisitedSourcesAreSuggested) {
+  const auto& publishers = MakePublishers({
+      "https://example.com",
+      "https://bar.com",
+      "https://foo.com",
+  });
+  const auto& history = MakeQueryResults(
+      {"https://example.com", "https://foo.com", "https://example.com"});
+  auto suggestions = GetSuggestedPublisherIds(publishers, history);
+  EXPECT_EQ(2u, suggestions.size());
+  EXPECT_EQ("1", suggestions[0]);
+  EXPECT_EQ("3", suggestions[1]);
+}
+
+TEST_F(SuggestionsControllerTest, SubscribedVisitedSourcesAreNotSuggested) {
+  const auto& publishers = MakePublishers({
+      "https://example.com",
+      "https://bar.com",
+      "https://foo.com",
+  });
+  publishers.at("1")->user_enabled_status = mojom::UserEnabled::ENABLED;
+  const auto& history = MakeQueryResults(
+      {"https://example.com", "https://foo.com", "https://example.com"});
+  auto suggestions = GetSuggestedPublisherIds(publishers, history);
+  EXPECT_EQ(1u, suggestions.size());
+  EXPECT_EQ("3", suggestions[0]);
+}
+
+TEST_F(SuggestionsControllerTest, DisabledVisitedSourcesAreNotSuggested) {
+  const auto& publishers = MakePublishers({
+      "https://example.com",
+      "https://bar.com",
+      "https://foo.com",
+  });
+  publishers.at("1")->user_enabled_status = mojom::UserEnabled::DISABLED;
+  const auto& history = MakeQueryResults(
+      {"https://example.com", "https://foo.com", "https://example.com"});
+  auto suggestions = GetSuggestedPublisherIds(publishers, history);
+  EXPECT_EQ(1u, suggestions.size());
+  EXPECT_EQ("3", suggestions[0]);
+}
+
+TEST_F(SuggestionsControllerTest, SimilarSourcesAreSuggested) {
+  const auto& publishers = MakePublishers({
+      "https://example.com",
+      "https://bar.com",
+      "https://foo.com",
+      "https://frob.com",
+  });
+
+  publishers.at("1")->user_enabled_status = mojom::UserEnabled::ENABLED;
+  SetSimilarityMatrix({{"1",
+                        {{.publisher_id = "2", .score = 0.8},
+                         {.publisher_id = "4", .score = 0.9}}}});
+
+  auto suggestions = GetSuggestedPublisherIds(publishers, {});
+  EXPECT_EQ(2u, suggestions.size());
+  EXPECT_EQ("4", suggestions[0]);
+  EXPECT_EQ("2", suggestions[1]);
+}
+
+TEST_F(SuggestionsControllerTest, SimilarToVisitedSourcesAreSuggested) {
+  const auto& publishers = MakePublishers({
+      "https://example.com",
+      "https://bar.com",
+      "https://foo.com",
+      "https://frob.com",
+  });
+
+  auto history = MakeQueryResults({"https://example.com"});
+  SetSimilarityMatrix({{"1",
+                        {{.publisher_id = "2", .score = 0.8},
+                         {.publisher_id = "4", .score = 0.9}}}});
+
+  auto suggestions = GetSuggestedPublisherIds(publishers, history);
+  EXPECT_EQ(3u, suggestions.size());
+  EXPECT_EQ("1", suggestions[0]);
+  EXPECT_EQ("4", suggestions[1]);
+  EXPECT_EQ("2", suggestions[2]);
+}
+
+TEST_F(SuggestionsControllerTest, VisitWeightingAltersSimilarToVisitWeighting) {
+  const auto& publishers = MakePublishers({
+      "https://example.com",
+      "https://bar.com",
+      "https://foo.com",
+      "https://frob.com",
+  });
+
+  auto history = MakeQueryResults({"https://example.com", "https://example.com",
+                                   "https://example.com", "https://bar.com"});
+  SetSimilarityMatrix({{"1", {{.publisher_id = "3", .score = 0.3}}},
+                       {"2", {{.publisher_id = "4", .score = 0.4}}}});
+
+  auto suggestions = GetSuggestedPublisherIds(publishers, history);
+  EXPECT_EQ(4u, suggestions.size());
+  EXPECT_EQ("1", suggestions[0]);
+  EXPECT_EQ("2", suggestions[1]);
+  EXPECT_EQ("3", suggestions[2]);
+  EXPECT_EQ("4", suggestions[3]);
+}
+
+TEST_F(SuggestionsControllerTest,
+       SuggestionsCanComeFromVistSimilarOrSimilarToVisit) {
+  const auto& publishers = MakePublishers({
+      "https://visited.com",
+      "https://similar-to-visited.com",
+      "https://subscribed.com",
+      "https://similar-to-subscribed.com",
+      "https://unrelated.com",
+  });
+
+  publishers.at("3")->user_enabled_status = mojom::UserEnabled::ENABLED;
+
+  auto history = MakeQueryResults({"https://visited.com"});
+  SetSimilarityMatrix({{"1", {{.publisher_id = "2", .score = 0.8}}},
+                       {"3", {{.publisher_id = "4", .score = 0.8}}}});
+
+  auto suggestions = GetSuggestedPublisherIds(publishers, history);
+  EXPECT_EQ(3u, suggestions.size());
+  // Note: Don't care about order here - we're going to be tweaking the weights
+  // and we don't want the test to fail all the time.
+  EXPECT_TRUE(base::Contains(suggestions, "1"));
+  EXPECT_TRUE(base::Contains(suggestions, "2"));
+  EXPECT_TRUE(base::Contains(suggestions, "4"));
+}
+
+TEST_F(SuggestionsControllerTest, SourcesFromDifferentLocalesAreNotSuggested) {
+  const auto& publishers = MakePublishers({
+      "https://visited.com",
+      "https://similar-to-visited.com",
+      "https://subscribed.com",
+      "https://similar-to-subscribed.com",
+      "https://unrelated.com",
+  });
+
+  publishers.at("3")->user_enabled_status = mojom::UserEnabled::ENABLED;
+
+  auto history = MakeQueryResults({"https://visited.com"});
+  SetSimilarityMatrix({{"1", {{.publisher_id = "2", .score = 0.8}}},
+                       {"3", {{.publisher_id = "4", .score = 0.8}}}});
+
+  SetLocale("en_NZ");
+  auto suggestions = GetSuggestedPublisherIds(publishers, history);
+  EXPECT_EQ(0u, suggestions.size());
+}
+
+}  // namespace brave_news

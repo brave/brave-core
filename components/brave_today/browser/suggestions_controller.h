@@ -47,11 +47,11 @@ class SuggestionsController {
   void EnsureSimilarityMatrixIsUpdating();
 
  private:
+  friend class SuggestionsControllerTest;
   void GetOrFetchSimilarityMatrix(base::OnceClosure callback);
-  void GetSuggestedPublisherIdsWithHistory(
-      Publishers publishers,
-      GetSuggestedPublisherIdsCallback callback,
-      history::QueryResults history);
+  std::vector<std::string> GetSuggestedPublisherIdsWithHistory(
+      const Publishers& publishers,
+      const history::QueryResults& history);
 
   bool is_update_in_progress_ = false;
   raw_ptr<PrefService> prefs_;
