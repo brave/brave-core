@@ -82,6 +82,7 @@ double GetVisitWeighting(const mojom::PublisherPtr& publisher,
     // The |site_urls| we receive from Brave News aren't terribly accurate, and
     // many of them are missing bits and pieces. This is a simple middle ground
     // while we wait for them to be fixed.
+    // Relevant issue: https://github.com/brave/news-aggregator/issues/58
     if (!base::StartsWith(host_name, "www.")) {
       it = visit_weightings.find("www." + host_name);
     }
