@@ -20,6 +20,9 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
         makeProtectedField(sToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
 
+        deleteField(sBraveToolbarManagerClassName, "mLayoutStateObserver");
+        makeProtectedField(sToolbarManagerClassName, "mLayoutStateObserver");
+
         deleteField(sBraveToolbarManagerClassName, "mCallbackController");
         makeProtectedField(sToolbarManagerClassName, "mCallbackController");
 

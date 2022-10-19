@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
+import org.chromium.base.Log;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -25,6 +26,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -40,6 +42,7 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.night_mode.NightModeStateProvider;
@@ -114,6 +117,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
     private TabObscuringHandler mTabObscuringHandler;
+    private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -197,6 +201,33 @@ public class BraveToolbarManager extends ToolbarManager {
             }
         };
         HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
+        LayoutStateProvider.LayoutStateObserver tempLayoutStateObserver = mLayoutStateObserver;
+        LayoutStateProvider.LayoutStateObserver layoutStateObserver =
+                new LayoutStateProvider.LayoutStateObserver() {
+                    @Override
+                    public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
+                        tempLayoutStateObserver.onStartedShowing(layoutType, showToolbar);
+                        if (layoutType == LayoutType.TAB_SWITCHER) {
+                            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                            if (braveActivity != null) {
+                                braveActivity.dismissCookieConsent();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onStartedHiding(@LayoutType int layoutType, boolean showToolbar,
+                            boolean delayAnimation) {
+                        tempLayoutStateObserver.onStartedHiding(
+                                layoutType, showToolbar, delayAnimation);
+                    }
+
+                    @Override
+                    public void onFinishedHiding(@LayoutType int layoutType) {
+                        tempLayoutStateObserver.onFinishedHiding(layoutType);
+                    }
+                };
+        mLayoutStateObserver = layoutStateObserver;
     }
 
     @Override
