@@ -9,6 +9,7 @@ import { getLocale } from '$web-common/locale'
 import Flex from '../../../Flex'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
 import { useLazyUnpaddedImageUrl } from '../useUnpaddedImageUrl'
+import { getTranslatedChannelName } from './ChannelCard'
 
 interface Props {
   publisherId: string
@@ -90,7 +91,7 @@ export function ChannelListEntry (props: { channelId: string }) {
   const { setSubscribed } = useChannelSubscribed(props.channelId)
 
   return <Container direction="row" justify='space-between' align='center'>
-    <ChannelNameText>{props.channelId}</ChannelNameText>
+    <ChannelNameText>{getTranslatedChannelName(props.channelId)}</ChannelNameText>
     <ToggleButton onClick={() => setSubscribed(false)}>
       {getLocale('braveNewsFollowButtonFollowing')}
     </ToggleButton>
