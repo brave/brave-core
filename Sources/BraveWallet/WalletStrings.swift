@@ -505,6 +505,13 @@ extension Strings {
       value: "I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.",
       comment: "The label next to a toggle which the user must acknowledge"
     )
+    public static let backupWalletPasswordPlaceholder = NSLocalizedString(
+      "wallet.backupWalletPasswordPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Enter password to backup wallet",
+      comment: "The placeholder for the password entry field when a user tries to backup their wallet."
+    )
     public static let continueButtonTitle = NSLocalizedString(
       "wallet.continueButtonTitle",
       tableName: "BraveWallet",

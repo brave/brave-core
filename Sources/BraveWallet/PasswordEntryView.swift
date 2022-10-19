@@ -23,6 +23,8 @@ struct PasswordEntryField: View {
   @Binding var password: String
   /// The error displayed under the password field
   @Binding var error: PasswordEntryError?
+  /// Password field placeholder
+  let placeholder: String
   /// If we should show the biometrics icon to allow biometics unlock (if available & password stored in keychain)
   let shouldShowBiometrics: Bool
   let keyringStore: KeyringStore
@@ -33,12 +35,14 @@ struct PasswordEntryField: View {
   init(
     password: Binding<String>,
     error: Binding<PasswordEntryError?>,
+    placeholder: String = Strings.Wallet.passwordPlaceholder,
     shouldShowBiometrics: Bool,
     keyringStore: KeyringStore,
     onCommit: @escaping () -> Void
   ) {
     self._password = password
     self._error = error
+    self.placeholder = placeholder
     self.shouldShowBiometrics = shouldShowBiometrics
     self.onCommit = onCommit
     self.keyringStore = keyringStore
@@ -70,7 +74,7 @@ struct PasswordEntryField: View {
   
   var body: some View {
     HStack {
-      SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: onCommit)
+      SecureField(placeholder, text: $password, onCommit: onCommit)
         .textContentType(.password)
         .font(.subheadline)
         .introspectTextField(customize: { tf in

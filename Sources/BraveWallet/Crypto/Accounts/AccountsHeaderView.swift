@@ -31,10 +31,14 @@ struct AccountsHeaderView: View {
         Color.clear
           .sheet(isPresented: $isPresentingBackup) {
             NavigationView {
-              BackupRecoveryPhraseView(keyringStore: keyringStore)
+              BackupWalletView(
+                password: nil,
+                keyringStore: keyringStore
+              )
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .environment(\.modalPresentationMode, $isPresentingBackup)
+            .accentColor(Color(.braveOrange))
           }
       )
       Spacer()
