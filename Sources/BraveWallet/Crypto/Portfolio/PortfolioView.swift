@@ -42,9 +42,13 @@ struct PortfolioView: View {
         .padding([.top, .leading, .trailing], 12)
         .sheet(isPresented: $isPresentingBackup) {
           NavigationView {
-            BackupRecoveryPhraseView(keyringStore: keyringStore)
+            BackupWalletView(
+              password: nil,
+              keyringStore: keyringStore
+            )
           }
           .environment(\.modalPresentationMode, $isPresentingBackup)
+          .accentColor(Color(.braveOrange))
         }
       }
       BalanceHeaderView(

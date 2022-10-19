@@ -11,15 +11,14 @@ import Strings
 struct BackupRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
 
-  private var password: String?
   @State private var confirmedPhraseBackup: Bool = false
-  @State private var recoveryWords: [RecoveryWord] = []
+  @State private var recoveryWords: [RecoveryWord]
   
   init(
-    password: String? = nil,
+    recoveryWords: [RecoveryWord],
     keyringStore: KeyringStore
   ) {
-    self.password = password
+    self.recoveryWords = recoveryWords
     self.keyringStore = keyringStore
   }
 
@@ -111,16 +110,6 @@ struct BackupRecoveryPhraseView: View {
       }
       .padding()
     }
-    .onAppear {
-      if let password = password {
-        keyringStore.recoveryPhrase(password: password) { words in
-          recoveryWords = words
-        }
-      } else {
-        // TODO: Issue #5882 - Add password protection to view (not in Onboarding flow) 
-      }
-    }
-    .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .introspectViewController { vc in
@@ -136,37 +125,16 @@ struct BackupRecoveryPhraseView: View {
       )
     }
   }
-
-  struct ToolbarModifier: ViewModifier {
-    var isShowingCancel: Bool
-
-    @Environment(\.presentationMode) @Binding private var presentationMode
-
-    func body(content: Content) -> some View {
-      if isShowingCancel {
-        content
-          .toolbar {
-            ToolbarItemGroup(placement: .cancellationAction) {
-              Button(action: {
-                presentationMode.dismiss()
-              }) {
-                Text(Strings.cancelButtonTitle)
-                  .foregroundColor(Color(.braveOrange))
-              }
-            }
-          }
-      } else {
-        content
-      }
-    }
-  }
 }
 
 #if DEBUG
 struct BackupRecoveryPhraseView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      BackupRecoveryPhraseView(keyringStore: .previewStore)
+      BackupRecoveryPhraseView(
+        recoveryWords: [],
+        keyringStore: .previewStore
+      )
     }
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()
