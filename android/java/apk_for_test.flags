@@ -614,3 +614,15 @@
 -keep class org.chromium.chrome.browser.flags.BraveCachedFlag {
     <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.logo.LogoCoordinator {
+    *** mShouldShowLogo;
+    public <init>(...);
+    *** updateVisibility(...);
+}
+
+-keep class org.chromium.chrome.browser.logo.BraveLogoCoordinator {
+    *** mShouldShowLogo;
+    public <init>(...);
+    *** updateVisibility(...);
+}

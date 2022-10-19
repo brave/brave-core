@@ -39,6 +39,7 @@ public class BraveClassAdapter {
         chain = new BraveLocationBarCoordinatorClassAdapter(chain);
         chain = new BraveLocationBarLayoutClassAdapter(chain);
         chain = new BraveLocationBarMediatorClassAdapter(chain);
+        chain = new BraveLogoCoordinatorClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveManageAccountDevicesLinkViewClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);
