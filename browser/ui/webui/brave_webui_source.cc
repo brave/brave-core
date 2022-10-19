@@ -231,7 +231,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsChannel-Cars", IDS_BRAVE_NEWS_CHANNEL_CARS},
         { "braveNewsChannel-Crypto", IDS_BRAVE_NEWS_CHANNEL_CRYPTO},
         { "braveNewsChannel-Culture", IDS_BRAVE_NEWS_CHANNEL_CULTURE},
-        { "braveNewsChannel-Entertainment", IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT},
+        { "braveNewsChannel-Entertainment", IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT}, // NOLINT
         { "braveNewsChannel-Fashion", IDS_BRAVE_NEWS_CHANNEL_FASHION},
         { "braveNewsChannel-Food", IDS_BRAVE_NEWS_CHANNEL_FOOD},
         { "braveNewsChannel-Fun", IDS_BRAVE_NEWS_CHANNEL_FUN},
