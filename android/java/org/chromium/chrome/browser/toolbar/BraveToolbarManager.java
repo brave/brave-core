@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
-import org.chromium.base.Log;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -118,6 +117,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private SnackbarManager mSnackbarManager;
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
+    private LayoutStateProvider mLayoutStateProvider;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -201,33 +201,24 @@ public class BraveToolbarManager extends ToolbarManager {
             }
         };
         HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
-        LayoutStateProvider.LayoutStateObserver tempLayoutStateObserver = mLayoutStateObserver;
-        LayoutStateProvider.LayoutStateObserver layoutStateObserver =
-                new LayoutStateProvider.LayoutStateObserver() {
-                    @Override
-                    public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
-                        tempLayoutStateObserver.onStartedShowing(layoutType, showToolbar);
-                        if (layoutType == LayoutType.TAB_SWITCHER) {
-                            BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                            if (braveActivity != null) {
-                                braveActivity.dismissCookieConsent();
-                            }
-                        }
-                    }
+        mLayoutStateProviderSupplier.onAvailable(
+                mCallbackController.makeCancelable(this::setLayoutStateProvider));
+    }
 
-                    @Override
-                    public void onStartedHiding(@LayoutType int layoutType, boolean showToolbar,
-                            boolean delayAnimation) {
-                        tempLayoutStateObserver.onStartedHiding(
-                                layoutType, showToolbar, delayAnimation);
+    private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
+        mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
+            @Override
+            public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
+                if (layoutType == LayoutType.TAB_SWITCHER) {
+                    BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                    if (braveActivity != null) {
+                        braveActivity.dismissCookieConsent();
                     }
-
-                    @Override
-                    public void onFinishedHiding(@LayoutType int layoutType) {
-                        tempLayoutStateObserver.onFinishedHiding(layoutType);
-                    }
-                };
-        mLayoutStateObserver = layoutStateObserver;
+                }
+            }
+        };
+        mLayoutStateProvider = layoutStateProvider;
+        mLayoutStateProvider.addObserver(mLayoutStateObserver);
     }
 
     @Override
@@ -318,8 +309,11 @@ public class BraveToolbarManager extends ToolbarManager {
     @Override
     public void destroy() {
         super.destroy();
-
         HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
+        if (mLayoutStateProvider != null) {
+            mLayoutStateProvider.removeObserver(mLayoutStateObserver);
+            mLayoutStateProvider = null;
+        }
     }
 
     protected void onOrientationChange(int newOrientation) {

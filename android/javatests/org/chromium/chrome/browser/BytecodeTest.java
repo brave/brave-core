@@ -732,8 +732,6 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "mBottomControlsCoordinatorSupplier"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutStateObserver"));
-        Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mCallbackController"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBrowserControlsSizer"));
