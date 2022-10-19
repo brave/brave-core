@@ -51,7 +51,15 @@ public class BraveSyncAccountDeletedInformer {
                     @Override
                     public boolean onInfoBarButtonClicked(boolean isPrimary) {
                         assert isPrimary : "We don't have secondary button";
-                        // Pressing `Begin Setup`
+                        // Pressing `OK`
+                        // Don't show the informer again
+                        disableInformer();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onInfoBarLinkClicked() {
+                        // Pressing link `re-create the account`
                         // Don't show the informer again
                         disableInformer();
                         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
@@ -60,17 +68,14 @@ public class BraveSyncAccountDeletedInformer {
                                 BraveSyncScreensPreference.class);
                         return false;
                     }
-
-                    @Override
-                    public boolean onInfoBarLinkClicked() {
-                        assert false : "We don't have link here";
-                        return false;
-                    }
                 },
                 BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR, activity,
                 R.drawable.ic_warning_circle,
-                activity.getString(R.string.brave_sync_account_deleted_infobar_message),
-                activity.getString(R.string.brave_sync_account_deleted_infobar_command), "", "",
+                // See comment at |BraveSyncAccountDeletedInfoBarDelegate::GetMessageText|
+                // for the informer text and link test placeholder empty substitution
+                activity.getString(R.string.brave_sync_account_deleted_infobar_message, ""),
+                activity.getString(R.string.ok), "",
+                activity.getString(R.string.brave_sync_account_deleted_infobar_link_text, ""),
                 false);
     }
 
