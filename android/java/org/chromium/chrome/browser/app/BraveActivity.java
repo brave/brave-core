@@ -1283,6 +1283,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    public void dismissCookieConsent() {
+        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+        if (layout != null) {
+            layout.dismissCookieConsent();
+        }
+    }
+
     public void openRewardsPanel() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {
