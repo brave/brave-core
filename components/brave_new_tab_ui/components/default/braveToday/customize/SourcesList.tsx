@@ -14,7 +14,7 @@ import usePromise from '../../../../hooks/usePromise'
 
 const Title = styled.span`
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 36px;
 `
 
