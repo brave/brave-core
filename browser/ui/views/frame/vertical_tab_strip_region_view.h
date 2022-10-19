@@ -59,7 +59,7 @@ class VerticalTabStripRegionView : public views::View {
 
   void SetState(State state);
 
-  void UpdateLayout();
+  void UpdateLayout(bool in_destruction = false);
 
   void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
@@ -86,8 +86,6 @@ class VerticalTabStripRegionView : public views::View {
   BooleanPrefMember collapsed_pref_;
 
   base::OneShotTimer mouse_enter_timer_;
-
-  bool in_destruction_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_

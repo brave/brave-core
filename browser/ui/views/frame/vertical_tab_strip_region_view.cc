@@ -279,8 +279,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
-  in_destruction_ = true;
-  UpdateLayout();
+  UpdateLayout(true);
 }
 
 bool VerticalTabStripRegionView::IsTabFullscreen() const {
@@ -347,8 +346,8 @@ void VerticalTabStripRegionView::Layout() {
   UpdateTabSearchButtonVisibility();
 }
 
-void VerticalTabStripRegionView::UpdateLayout() {
-  if (tabs::features::ShouldShowVerticalTabs() && !in_destruction_) {
+void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
+  if (tabs::features::ShouldShowVerticalTabs() && !in_destruction) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
       original_parent_of_region_view_->RemoveChildView(region_view_);
