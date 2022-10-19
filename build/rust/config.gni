@@ -12,17 +12,16 @@ import("//build/config/sysroot.gni")
 declare_args() {
   rustup_path = rebase_path("//brave/build/rustup")
   cargo_profile = ""
+  enable_rust_lto = false
 }
 
 if (cargo_profile == "") {
-  if (is_official_build) {
-    cargo_profile = "release"
-  } else {
+  if (is_debug) {
     cargo_profile = "dev"
+  } else {
+    cargo_profile = "release"
   }
 }
-
-unexport_list_path = "$root_build_dir/brave_rust/rust_lib.unexports"
 
 rustc_target = ""
 rustc_toolchain = ""
@@ -45,25 +44,19 @@ if (use_lld) {
   }
 }
 
-# https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
-# Supposedly this bug was fixed, but it's still happening for us.
-too_many_personality_profiles_workaround =
-    is_apple && use_lld && !is_component_build
-
-enable_rust_lto = too_many_personality_profiles_workaround
-
 if (enable_rust_lto) {
   default_rustflags += [ "-Cembed-bitcode=yes" ]
   default_rustflags += [ "-Clto" ]
+} else {
+  default_rustflags += [ "-Cembed-bitcode=no" ]
+}
+
+if (is_official_build) {
+  default_rustflags += [ "-Ccodegen-units=1" ]
 }
 
 if (is_debug) {
-  if (too_many_personality_profiles_workaround) {
-    # must always be optimized for too_many_personality_profiles_workaround to work
-    default_rustflags += [ "-Copt-level=1" ]
-  } else {
-    default_rustflags += [ "-Copt-level=0" ]
-  }
+  default_rustflags += [ "-Copt-level=0" ]
 } else if (optimize_for_size) {
   default_rustflags += [ "-Copt-level=s" ]
 } else {

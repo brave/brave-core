@@ -509,6 +509,12 @@ Config.prototype.buildArgs = function () {
     delete args.gemini_client_secret
   }
 
+  if (process.platform === 'darwin' || this.targetOS === 'mac' || this.targetOS === 'ios') {
+    // Too many personalities workaround. Will be fixed in llvm
+    // see https://reviews.llvm.org/D135728
+    args.use_lld = false
+  }
+
   if (this.targetOS === 'ios') {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
