@@ -63,4 +63,65 @@
   <message name="IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE" desc="Subtitle of the suggested sources section">
     Some sources you might like. Suggestions are anonymous and matched only on your device.
   </message>
+
+  <message name="IDS_BRAVE_NEWS_CHANNEL_BRAVE" desc="Translation of the 'Brave' channel">
+    Brave
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_BUSINESS" desc="Translation of the 'Business' channel">
+    Business
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_CARS" desc="Translation of the 'Cars' channel">
+    Cars
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_CULTURE" desc="Translation of the 'Culture' channel">
+    Culture
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT" desc="Translation of the 'Entertainment' channel">
+    Entertainment
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_FASHION" desc="Translation of the 'Fashion' channel">
+    Fashion
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_FOOD" desc="Translation of the 'Food' channel">
+    Food
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_FUN" desc="Translation of the 'Fun' channel">
+    Fun
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_GAMING" desc="Translation of the 'Gaming' channel">
+    Gaming
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_HEALTH" desc="Translation of the 'Health' channel">
+    Health
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_HOME" desc="Translation of the 'Home' channel">
+    Home
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_POLITICS" desc="Translation of the 'Politics' channel">
+    Politics
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_SCIENCE" desc="Translation of the 'Science' channel">
+    Science
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_SPORTS" desc="Translation of the 'Sports' channel">
+    Sports
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_TRAVEL" desc="Translation of the 'Travel' channel">
+    Travel
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_TECHNOLOGY" desc="Translation of the 'Technology' channel">
+    Technology
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_TOP_NEWS" desc="Translation of the 'Top News' channel">
+    Top News
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES" desc="Translation of the 'Top Sources' channel">
+    Top Sources
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_WEATHER" desc="Translation of the 'Weather' channel">
+    Weather
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS" desc="Translation of the 'World News' channel">
+    World News
+  </message>
 </grit-part>
