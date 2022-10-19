@@ -9,6 +9,16 @@ import Flex from '../../../Flex'
 import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'
 import { channels } from './Icons'
+import { getLocale } from '$web-common/locale'
+
+export const getTranslatedChannelName = (channelName: string) => {
+  try {
+    return getLocale(`braveNewsChannel-${channelName}`)
+  } catch (err) {
+    console.error(`Couldn't find translation for channel '${channelName}'`)
+    return channelName
+  }
+}
 
 const SubscribeButton = styled(FollowButton)`
     position: absolute;
@@ -65,6 +75,6 @@ export default function ChannelCard ({ channelName }: Props) {
   >
     <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
     <IconContainer>{icon}</IconContainer>
-    {channelName}
+    {getTranslatedChannelName(channelName)}
   </Container>
 }
