@@ -9,6 +9,7 @@ import("//testing/test.gni")
 ios_xctest_test("brave_core_ios_tests") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
+    "brave_core_main_test.mm",
     "dictionary_transform_test.mm",
     "main.mm",
     "net_test.mm",
@@ -19,7 +20,10 @@ ios_xctest_test("brave_core_ios_tests") {
 
   deps = [
     "//base",
+    "//brave/ios/app",
     "//brave/ios/browser/api/net",
+    "//ios/third_party/material_components_ios:material_components_ios+bundle",
+    "//ios/third_party/material_components_ios:material_components_ios+link",
     "//net",
   ]
 
