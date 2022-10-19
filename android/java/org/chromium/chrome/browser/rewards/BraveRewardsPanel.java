@@ -1161,6 +1161,7 @@ public class BraveRewardsPanel
                                             Profile.getLastUsedRegularProfile())) {
                                 showBraveRewardsOnboardingModal();
                             } else {
+                                fetchRewardsData();
                                 mRewardsMainLayout.setForeground(null);
                                 enableControls(true, mRewardsMainLayout);
                             }
