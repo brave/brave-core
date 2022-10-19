@@ -15,7 +15,7 @@
 class BrowserView;
 class VerticalTabStripRegionView;
 
-// This class wraps VerticalTabSTripRegionView and show them atop a Widget.
+// This class wraps VerticalTabStripRegionView and show them atop a Widget.
 // Vertical tab strip could be overlaps with contents web view and
 // we need a Widget to accept user events ahead of contents web view.
 // This Widget's coordinates and visibility are synchronized with a host view
