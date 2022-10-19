@@ -9,6 +9,7 @@ import Flex from '../../../Flex'
 import { getCardColor } from './colors'
 import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'
+import { channels } from './Icons'
 
 const SubscribeButton = styled(FollowButton)`
     position: absolute;
@@ -39,6 +40,7 @@ interface Props {
 
 export default function ChannelCard ({ channelName }: Props) {
   const { subscribed, setSubscribed } = useChannelSubscribed(channelName)
+  const icon = channels[channelName] ?? channels.default
   return <Container
     direction='column'
     justify='center'
@@ -47,6 +49,6 @@ export default function ChannelCard ({ channelName }: Props) {
     data-channel-card-is-followed={subscribed}
   >
     <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
-    {channelName}
+    {icon} {channelName}
   </Container>
 }
