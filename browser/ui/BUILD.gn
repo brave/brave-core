@@ -524,8 +524,6 @@ source_set("ui") {
       "brave_actions/brave_action_icon_with_badge_image_source.h",
       "toolbar/brave_location_bar_model_delegate.cc",
       "toolbar/brave_location_bar_model_delegate.h",
-      "toolbar/brave_toolbar_actions_model.cc",
-      "toolbar/brave_toolbar_actions_model.h",
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
       "views/brave_actions/brave_news_action_view.cc",
