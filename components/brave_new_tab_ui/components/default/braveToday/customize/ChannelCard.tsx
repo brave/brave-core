@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 import * as React from 'react'
 import Flex from '../../../Flex'
-import { getCardColor } from './colors'
 import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'
 import { channels } from './Icons'
@@ -17,7 +16,7 @@ const SubscribeButton = styled(FollowButton)`
     right: 8px;
 `
 
-const Container = styled(Flex) <{ backgroundColor: string }>`
+const Container = styled(Flex)`
   height: 80px;
   font-weight: 600;
   font-size: 14px;
@@ -62,7 +61,6 @@ export default function ChannelCard ({ channelName }: Props) {
     justify='center'
     align='start'
     gap={4}
-    backgroundColor={getCardColor(channelName)}
     data-channel-card-is-followed={subscribed}
   >
     <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
