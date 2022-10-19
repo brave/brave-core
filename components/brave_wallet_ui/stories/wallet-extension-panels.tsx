@@ -786,15 +786,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       }
                       {selectedPanel === 'transactions' &&
                         <TransactionsPanel
-                          accounts={mockedTransactionAccounts}
-                          defaultCurrencies={mockDefaultCurrencies}
                           onSelectTransaction={onSelectTransaction}
                           selectedNetwork={mockNetworks[0]}
-                          selectedAccount={mockedTransactionAccounts[0]}
-                          visibleTokens={mockNewAssetOptions}
-                          transactionSpotPrices={[]}
-                          transactions={transactionList}
-
+                          selectedAccountAddress={mockedTransactionAccounts[0].address}
                         />
                       }
                       {selectedPanel === 'assets' &&
@@ -960,14 +954,9 @@ export const _RecentTransaction = () => {
         >
           <ScrollContainer>
             <TransactionsPanel
-              accounts={mockedTransactionAccounts}
-              defaultCurrencies={mockDefaultCurrencies}
               onSelectTransaction={onSelectTransaction}
               selectedNetwork={mockNetworks[0]}
-              selectedAccount={mockedTransactionAccounts[0]}
-              visibleTokens={mockNewAssetOptions}
-              transactionSpotPrices={[{ assetTimeframeChange: '', fromAsset: 'ETH', toAsset: 'USD', price: '2500' }]}
-              transactions={transactionList}
+              selectedAccountAddress={mockedTransactionAccounts[0].address}
             />
           </ScrollContainer>
         </Panel>

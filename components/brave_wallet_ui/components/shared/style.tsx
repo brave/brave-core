@@ -8,7 +8,7 @@ import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 // types
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
 import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 // utils
@@ -28,8 +28,11 @@ import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
 import CheckIconSvg from '../../assets/svg-icons/checkbox-check.svg'
 import SwitchDown from '../../assets/svg-icons/switch-icon.svg'
 
+export type ThemeColor = StringWithAutocomplete<keyof IThemeProps['color']>
+
 // graphics
 import BraveWalletWithCoins from '../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
+import { makePaddingMixin } from '../../utils/style.utils'
 
 // Spacers
 export const VerticalSpacer = styled.div<{ space: number | string }>`
@@ -78,6 +81,14 @@ export const walletButtonFocusMixin = css`
   }
 `
 
+export const backgroundColorMixin = css<{
+  color?: ThemeColor
+}>`
+  background-color: ${(p) => p?.color
+    ? p.theme.color?.[p.color] || p.theme.palette?.[p.color] || p.color
+    : p.theme.palette.white};
+`
+
 // Containers
 export const Row = styled.div<FlexProps & {
   maxWidth?: CSSProperties['maxWidth']
@@ -95,6 +106,8 @@ export const Row = styled.div<FlexProps & {
 export const Column = styled.div<FlexProps & {
   fullWidth?: boolean
   fullHeight?: boolean
+  color?: ThemeColor
+  padding?: number | string
 }>`
   height: ${(p) => p.fullHeight ? '100%' : 'unset'};
   width: ${(p) => p.fullWidth ? '100%' : 'unset'};
@@ -104,6 +117,8 @@ export const Column = styled.div<FlexProps & {
   align-items: ${(p) => p.alignItems ?? 'center'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
+  ${(p) => p?.color && backgroundColorMixin}
+  ${makePaddingMixin(0)}
 `
 
 export const ScrollableColumn = styled(Column)<{
@@ -346,6 +361,25 @@ export const IconsWrapper = styled.div<{
   flex-direction: row;
   position: relative;
   margin-right: ${(p) => p.marginRight || '6px'};
+`
+
+export const CircleIconWrapper = styled.div<{
+  padding?: number | string
+}>`
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: relative;
+  ${makePaddingMixin('12px')}
+  box-shadow: 0px 0px 1px rgba(66, 69, 82, 0.08), 0px 0.5px 1.5px rgba(66, 69, 82, 0.1);
+  
+  background-color: ${p => p.theme.color.background01};
+  @media (prefers-color-scheme: dark) {
+    background-color: ${p => p.theme.color.background02};
+  }
 `
 
 export const NetworkIconWrapper = styled.div`

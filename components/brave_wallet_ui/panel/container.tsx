@@ -96,7 +96,6 @@ function Container () {
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const selectedPendingTransaction = useUnsafeWalletSelector(WalletSelectors.selectedPendingTransaction)
-  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
   const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
 
@@ -792,18 +791,11 @@ function Container () {
             title={panelTitle}
             useSearch={false}
           >
-            <ScrollContainer>
-              <TransactionsPanel
-                accounts={accounts}
-                defaultCurrencies={defaultCurrencies}
-                onSelectTransaction={viewTransactionDetail}
-                selectedNetwork={selectedNetwork}
-                selectedAccount={selectedAccount}
-                visibleTokens={userVisibleTokensInfo}
-                transactionSpotPrices={transactionSpotPrices}
-                transactions={transactions}
-              />
-            </ScrollContainer>
+            <TransactionsPanel
+              onSelectTransaction={viewTransactionDetail}
+              selectedNetwork={selectedNetwork}
+              selectedAccountAddress={selectedAccount.address}
+            />
           </Panel>
         </StyledExtensionWrapper>
       </PanelWrapper>

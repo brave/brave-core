@@ -526,6 +526,10 @@ provideStrings({
   braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation on device.',
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
+  // Transaction History Panel (Empty)
+  braveWalletNoTransactionsYet: 'No transactions yet',
+  braveWalletNoTransactionsYetDescription: 'After your first transaction you will be able to view it here.',
+
   // Transaction List Item
   braveWalletTransactionSent: 'sent',
   braveWalletTransactionReceived: 'received',
