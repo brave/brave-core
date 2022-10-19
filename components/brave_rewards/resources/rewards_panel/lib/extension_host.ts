@@ -19,7 +19,6 @@ import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
 import * as apiAdapter from './extension_api_adapter'
 import { RewardsPanelProxy } from './rewards_panel_proxy'
-import { RewardsPanelExtensionProxy } from './rewards_panel_extension_proxy'
 
 type LocalStorageKey = 'catcha-grant-id' | 'load-adaptive-captcha'
 
@@ -50,14 +49,8 @@ function openTab (url: string) {
   chrome.tabs.create({ url })
 }
 
-function isWebUI () {
-  return Boolean((window as any).loadTimeData)
-}
-
 function getString (key: string) {
-  return isWebUI()
-    ? String((window as any).loadTimeData.getString(key) || '')
-    : RewardsPanelExtensionProxy.getString(key)
+  return String((window as any).loadTimeData.getString(key) || '')
 }
 
 export function createHost (): Host {
@@ -65,9 +58,7 @@ export function createHost (): Host {
   const storage = createLocalStorageScope<LocalStorageKey>('rewards-panel')
   const grants = new Map<string, GrantInfo>()
 
-  const proxy = isWebUI()
-    ? RewardsPanelProxy.getInstance()
-    : RewardsPanelExtensionProxy.getInstance()
+  const proxy = RewardsPanelProxy.getInstance()
 
   function closePanel () {
     proxy.handler.closeUI()
@@ -261,13 +252,6 @@ export function createHost (): Host {
     }).catch(console.error)
   }
 
-  async function requestPublisherInfoForExtension () {
-    const tabInfo = await getCurrentTabInfo()
-    if (tabInfo) {
-      await apiAdapter.fetchPublisherInfo(tabInfo.id)
-    }
-  }
-
   function setLoadingTimer () {
     // Set a maximum time to display the loading indicator. Several calls to
     // the `braveRewards` extension API can block on network requests. If the
@@ -396,12 +380,6 @@ export function createHost (): Host {
     setLoadingTimer()
 
     await loadPanelData()
-
-    if (!isWebUI()) {
-      // If we are running in the Rewards extension, then ensure that publisher
-      // info has been initialized in the Rewards database.
-      requestPublisherInfoForExtension().catch(console.error)
-    }
 
     loadPersistedState()
     handleRewardsPanelArgs((await proxy.handler.getRewardsPanelArgs()).args)

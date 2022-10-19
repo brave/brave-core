@@ -13,10 +13,4 @@ brave_stage_install_common() {
   cp -a "${OUTPUTDIR}/resources/brave_extension/_locales" "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension"
   find "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension/_locales" -type f -exec chmod 644 '{}' \;
   find "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension/_locales" -type d -exec chmod 755 '{}' \;
-
-  # localization files for Brave Rewards
-  install -d -m 755 "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards/_locales"
-  cp -a "${OUTPUTDIR}/resources/brave_rewards/_locales" "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards"
-  find "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards/_locales" -type f -exec chmod 644 '{}' \;
-  find "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards/_locales" -type d -exec chmod 755 '{}' \;
 }

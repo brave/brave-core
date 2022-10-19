@@ -16,10 +16,6 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/common/features.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
@@ -52,13 +48,7 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
                                            Profile* profile)
     : ComponentLoader(extension_system, profile),
       profile_(profile),
-      profile_prefs_(profile->GetPrefs()) {
-  pref_change_registrar_.Init(profile_prefs_);
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kAutoContributeEnabled,
-      base::BindRepeating(&BraveComponentLoader::CheckRewardsStatus,
-                          base::Unretained(this)));
-}
+      profile_prefs_(profile->GetPrefs()) {}
 
 BraveComponentLoader::~BraveComponentLoader() = default;
 
@@ -133,35 +123,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     brave_extension_path =
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
     Add(IDR_BRAVE_EXTENSION, brave_extension_path);
-  }
-
-  // Enable rewards extension if already opted-in
-  CheckRewardsStatus();
-}
-
-void BraveComponentLoader::AddRewardsExtension() {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kDisableBraveRewardsExtension) ||
-      !brave_rewards::IsSupportedForProfile(profile_) ||
-      Exists(brave_rewards_extension_id) ||
-      base::FeatureList::IsEnabled(
-          brave_rewards::features::kWebUIPanelFeature)) {
-    return;
-  }
-
-  base::FilePath brave_rewards_path(FILE_PATH_LITERAL(""));
-  brave_rewards_path =
-      brave_rewards_path.Append(FILE_PATH_LITERAL("brave_rewards"));
-  Add(IDR_BRAVE_REWARDS, brave_rewards_path);
-}
-
-void BraveComponentLoader::CheckRewardsStatus() {
-  const bool is_ac_enabled =
-      profile_prefs_->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled);
-
-  if (is_ac_enabled) {
-    AddRewardsExtension();
   }
 }
 

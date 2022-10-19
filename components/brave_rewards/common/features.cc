@@ -29,8 +29,5 @@ const base::Feature kGeminiFeature{"BraveRewardsGemini",
 const base::Feature kVerboseLoggingFeature{"BraveRewardsVerboseLogging",
                                            base::FEATURE_DISABLED_BY_DEFAULT};
 
-const base::Feature kWebUIPanelFeature{"BraveRewardsWebUIPanel",
-                                       base::FEATURE_DISABLED_BY_DEFAULT};
-
 }  // namespace features
 }  // namespace brave_rewards

@@ -1,5 +1,3 @@
-import("//extensions/buildflags/buildflags.gni")
-
 source_set("rewards_panel") {
   if (!is_android) {
     sources = [
@@ -17,19 +15,6 @@ source_set("rewards_panel") {
       "//chrome/browser/ui",
       "//url",
     ]
-
-    if (enable_extensions) {
-      sources += [
-        "rewards_panel_extension_handler.cc",
-        "rewards_panel_extension_handler.h",
-      ]
-
-      deps += [
-        "//brave/browser/extensions",
-        "//chrome/browser/extensions",
-        "//extensions/browser",
-      ]
-    }
   }
 }
 

@@ -23,8 +23,6 @@ extern const base::Feature kGeminiFeature;
 
 extern const base::Feature kVerboseLoggingFeature;
 
-extern const base::Feature kWebUIPanelFeature;
-
 }  // namespace features
 }  // namespace brave_rewards
 
