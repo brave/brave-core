@@ -32,7 +32,7 @@ def run_cargo(command, args):
 
     if args.toolchain:
         toolchains_path = os.path.abspath(
-            os.path.join(rustup_path, 'toolchains', args.toolchain, "bin"))
+            os.path.join(rustup_home, 'toolchains', args.toolchain, "bin"))
         env['PATH'] = toolchains_path + os.pathsep + env['PATH']
 
     if args.clang_bin_path is not None and not sys.platform.startswith('win'):
