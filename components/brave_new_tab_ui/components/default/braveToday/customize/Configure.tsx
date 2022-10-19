@@ -21,13 +21,14 @@ import { PopularPage } from './Popular'
 
 const Grid = styled.div`
   width: 100%;
+  min-width: 730px;
   height: 100%;
 
   overflow: auto;
   overscroll-behavior: none;
 
   display: grid;
-  grid-template-columns: 250px auto;
+  grid-template-columns: 307px auto;
   grid-template-rows: 64px 2px auto;
 
   grid-template-areas:
@@ -86,7 +87,7 @@ const Sidebar = styled.div`
   position: relative;
   overflow: auto;
   grid-area: sidebar;
-  padding: 28px 32px;
+  padding: 28px 22px 28px 32px;
   background: var(--background2);
 `
 
