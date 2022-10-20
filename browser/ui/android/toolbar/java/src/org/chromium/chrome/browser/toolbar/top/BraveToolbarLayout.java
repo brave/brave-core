@@ -22,8 +22,6 @@ public interface BraveToolbarLayout {
 
     public void updateModernLocationBarColorImpl(int color);
 
-    public int getBoundsAfterAccountingForRightButtonsImpl(ViewGroup toolbarButtonsContainer);
-
     public void populateUrlAnimatorSetImpl(boolean showExpandedState,
             int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
             List<Animator> animators);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..d5afa354c14afb3ffc83440a8bf8ecac35a8d34e 100644
+index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..2b9a24df8a72d90baf06cc2e5972b6481d7d9147 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -377,6 +377,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -18,15 +18,7 @@ index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..d5afa354c14afb3ffc83440a8bf8ecac
      }
  
      @Override
-@@ -734,6 +736,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
-      * @return The right bounds of the location bar after accounting for any visible right buttons.
-      */
-     private int getBoundsAfterAccountingForRightButtons() {
-+        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
-         if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
- 
-         int toolbarButtonsContainerWidth = mToolbarButtonsContainer.getMeasuredWidth();
-@@ -983,6 +986,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -983,6 +985,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * New Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -34,7 +26,7 @@ index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..d5afa354c14afb3ffc83440a8bf8ecac
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (mOptimizationsEnabled && isInTabSwitcherMode()) return;
  
-@@ -1973,6 +1977,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -1973,6 +1976,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
