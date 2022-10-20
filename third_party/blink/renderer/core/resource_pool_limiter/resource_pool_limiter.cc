@@ -94,7 +94,8 @@ ResourcePoolLimiter::IssueResourceInUseTracker(
   }
 
   ++resource_in_use_count;
-  return std::make_unique<ResourceInUseTracker>(resource_id.IsolatedCopy());
+  return std::make_unique<ResourceInUseTracker>(
+      resource_id.Impl()->IsolatedCopy());
 }
 
 void ResourcePoolLimiter::DropResourceInUse(
