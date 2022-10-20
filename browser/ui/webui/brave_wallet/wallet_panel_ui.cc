@@ -148,7 +148,8 @@ void WalletPanelUI::CreatePanelHandler(
   brave_wallet::BraveWalletServiceFactory::BindForContext(
       profile, std::move(brave_wallet_service_receiver));
   wallet_connect::WalletConnectServiceFactory::BindForContext(
-      profile, std::move(wallet_connect_service_receiver));
+      profile, std::move(wallet_connect_service_receiver),
+      brave_wallet::GetActiveWebContents());
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

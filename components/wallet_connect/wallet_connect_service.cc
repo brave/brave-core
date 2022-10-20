@@ -64,6 +64,13 @@ void WalletConnectService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
+mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider>
+WalletConnectService::BindRemote() {
+  if (ethereum_provider_service_.is_bound())
+    return mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider>();
+  return ethereum_provider_service_.BindNewPipeAndPassReceiver();
+}
+
 void WalletConnectService::Init(const std::string& wc_uri,
                                 InitCallback callback) {
   auto data = ParseWalletConnectURI(wc_uri);
@@ -270,9 +277,23 @@ void WalletConnectService::OnTunnelData(
       state_ = State::kSessionEstablished;
     } else if (state_ == State::kSessionEstablished) {
       // Handle wallet request
+      ethereum_provider_service_->Request(
+          std::move(*rpc_request_value),
+          base::BindOnce(&WalletConnectService::OnRequestProcessed,
+                         base::Unretained(this)));
       LOG(ERROR) << *rpc_request_value;
     }
   }
+}
+
+void WalletConnectService::OnRequestProcessed(
+    base::Value id,
+    base::Value formed_response,
+    const bool reject,
+    const std::string& first_allowed_account,
+    const bool update_bind_js_properties) {
+  LOG(ERROR) << id;
+  LOG(ERROR) << formed_response;
 }
 
 }  // namespace wallet_connect

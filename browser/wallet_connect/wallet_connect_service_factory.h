@@ -14,6 +14,10 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace wallet_connect {
 
 class WalletConnectService;
@@ -31,7 +35,8 @@ class WalletConnectServiceFactory : public BrowserContextKeyedServiceFactory {
   static WalletConnectServiceFactory* GetInstance();
   static void BindForContext(
       content::BrowserContext* context,
-      mojo::PendingReceiver<mojom::WalletConnectService> receiver);
+      mojo::PendingReceiver<mojom::WalletConnectService> receiver,
+      content::WebContents* web_contents);
 
  private:
   friend struct base::DefaultSingletonTraits<WalletConnectServiceFactory>;

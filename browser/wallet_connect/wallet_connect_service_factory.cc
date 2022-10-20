@@ -8,10 +8,13 @@
 #include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
+#include "brave/browser/brave_wallet/ethereum_provider_service_factory.h"
 #include "brave/components/wallet_connect/wallet_connect_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/web_contents.h"
 
 namespace wallet_connect {
 
@@ -44,10 +47,18 @@ WalletConnectService* WalletConnectServiceFactory::GetServiceForContext(
 // static
 void WalletConnectServiceFactory::BindForContext(
     content::BrowserContext* context,
-    mojo::PendingReceiver<mojom::WalletConnectService> receiver) {
+    mojo::PendingReceiver<mojom::WalletConnectService> receiver,
+    content::WebContents* web_contents) {
   auto* wallet_connect_service =
       WalletConnectServiceFactory::GetServiceForContext(context);
   if (wallet_connect_service) {
+    auto ethereum_provider_service_receiver =
+        wallet_connect_service->BindRemote();
+    if (ethereum_provider_service_receiver.is_valid())
+      brave_wallet::EthereumProviderServiceFactory::BindForContext(
+          context, std::move(ethereum_provider_service_receiver),
+          std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
+              web_contents, web_contents->GetPrimaryMainFrame()));
     wallet_connect_service->Bind(std::move(receiver));
   }
 }
@@ -56,7 +67,7 @@ WalletConnectServiceFactory::WalletConnectServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "WalletConnectService",
           BrowserContextDependencyManager::GetInstance()) {
-  // DependsOn(EthereumProviderImpl);
+  DependsOn(brave_wallet::EthereumProviderServiceFactory::GetInstance());
 }
 
 WalletConnectServiceFactory::~WalletConnectServiceFactory() = default;
