@@ -50,7 +50,7 @@ const ToggleRow = styled.div`
 const DescriptionRow = styled.div`
   width: 100%;
   display: grid;
-  grid-template-rows: 16px 1fr;
+  grid-template-rows: fit-content(16px) 1fr;
   grid-template-columns: 16px 1fr;
   padding: 0 8px;
   gap: 8px;
@@ -62,6 +62,8 @@ const DescriptionRow = styled.div`
 
 const DescriptionIcon = styled.div`
   background: url(${InfoIcon}) no-repeat;
+  background-size: 16px 16px;
+  background-position: center;
 `
 
 const DescriptionTitle = styled.div`
