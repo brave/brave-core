@@ -511,13 +511,28 @@ struct WalletPanelView: View {
     .onChange(of: keyringStore.selectedAccount) { _ in
       isConnectHidden = isConnectButtonHidden()
     }
-    .onAppear {
-      let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
-      if let request = permissionRequestManager.firstPendingRequest(for: origin, coinTypes: [.eth, .sol]) {
+    .onChange(of: tabDappStore.latestPendingPermissionRequest) { newValue in
+      if let request = newValue, request.requestingOrigin == origin, request.coinType == keyringStore.selectedAccount.coin {
         presentWalletWithContext(.requestPermissions(request, onPermittedAccountsUpdated: { accounts in
           if request.coinType == .eth {
             ethPermittedAccounts = accounts
           } else if request.coinType == .sol {
+            solConnectedAddresses = Set(accounts)
+            isConnectHidden = false
+          }
+          tabDappStore.latestPendingPermissionRequest = nil
+        }))
+      }
+    }
+    .onAppear {
+      if let accountCreationRequest = WalletProviderAccountCreationRequestManager.shared.firstPendingRequest(for: origin, coinTypes: Array(WalletConstants.supportedCoinTypes)) {
+        presentWalletWithContext(.createAccount(accountCreationRequest))
+      } else if let request = WalletProviderPermissionRequestsManager.shared.firstPendingRequest(for: origin, coinTypes: [.eth, .sol]) {
+        presentWalletWithContext(.requestPermissions(request, onPermittedAccountsUpdated: { accounts in
+          if request.coinType == .eth {
+            ethPermittedAccounts = accounts
+          } else if request.coinType == .sol {
+            solConnectedAddresses = Set(accounts)
             isConnectHidden = false
           }
         }))

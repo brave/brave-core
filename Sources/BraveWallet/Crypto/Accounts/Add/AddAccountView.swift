@@ -26,6 +26,8 @@ struct AddAccountView: View {
   private let maxIconSize: CGFloat = 80.0
   
   var preSelectedCoin: BraveWallet.CoinType?
+  var onCreate: (() -> Void)?
+  var onDismiss: (() -> Void)?
 
   private func addAccount(for coin: BraveWallet.CoinType) {
     if privateKey.isEmpty {
@@ -33,12 +35,14 @@ struct AddAccountView: View {
       let accountName = name.isEmpty ? defaultAccountName(for: coin, isPrimary: true) : name
       keyringStore.addPrimaryAccount(accountName, coin: coin) { success in
         if success {
+          onCreate?()
           presentationMode.dismiss()
         }
       }
     } else {
       let handler: (Bool, String) -> Void = { success, _ in
         if success {
+          onCreate?()
           presentationMode.dismiss()
         } else {
           failedToImport = true
@@ -69,6 +73,13 @@ struct AddAccountView: View {
     preSelectedCoin == nil && WalletConstants.supportedCoinTypes.count > 1
   }
   
+  private var navigationTitle: String {
+    if preSelectedCoin == nil, selectedCoin == nil {
+      return Strings.Wallet.addAccountTitle
+    }
+    return String.localizedStringWithFormat(Strings.Wallet.addAccountWithCoinTypeTitle, preSelectedCoin?.localizedTitle ?? (selectedCoin?.localizedTitle ?? BraveWallet.CoinType.eth.localizedTitle))
+  }
+  
   @ViewBuilder private var addAccountView: some View {
     List {
       accountNameSection
@@ -80,7 +91,7 @@ struct AddAccountView: View {
     .listStyle(InsetGroupedListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle(Strings.Wallet.addAccountTitle)
+    .navigationTitle(navigationTitle)
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
       trailing: Button(action: {
@@ -151,6 +162,7 @@ struct AddAccountView: View {
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
         Button(action: {
+          onDismiss?()
           presentationMode.dismiss()
         }) {
           Text(Strings.cancelButtonTitle)

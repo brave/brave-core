@@ -225,7 +225,7 @@ extension Tab: BraveWalletProviderDelegate {
       }
       
       // add permission request to the queue
-      _ = permissionRequestManager.beginRequest(for: origin, coinType: coinType, providerHandler: completion, completion: { response in
+      let request = permissionRequestManager.beginRequest(for: origin, coinType: coinType, providerHandler: completion, completion: { response in
         switch response {
         case .granted(let accounts):
           completion(.none, accounts)
@@ -235,6 +235,7 @@ extension Tab: BraveWalletProviderDelegate {
         self.tabDelegate?.updateURLBarWalletButton()
       })
 
+      tabDappStore.latestPendingPermissionRequest = request
       self.tabDelegate?.showWalletNotification(self, origin: origin)
     }
   }
@@ -307,7 +308,19 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   func showAccountCreation(_ type: BraveWallet.CoinType) {
-    // TODO: Issue #6046 - Show account creation for given coin type
+    let origin = getOrigin()
+    let accountCreationRequestManager = WalletProviderAccountCreationRequestManager.shared
+    
+    // check if same account creation request exists
+    guard !accountCreationRequestManager.hasPendingRequest(for: origin, coinType: type)
+    else { return }
+    
+    // store the account creation request
+    accountCreationRequestManager.beginRequest(for: origin, coinType: type) { [weak self] in
+      self?.tabDelegate?.updateURLBarWalletButton()
+    }
+    // show wallet notification
+    self.tabDelegate?.showWalletNotification(self, origin: origin)
   }
   
   func isSolanaAccountConnected(_ account: String) -> Bool {
@@ -315,17 +328,21 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   func addSolanaConnectedAccount(_ account: String) {
-    tabDappStore.solConnectedAddresses.insert(account)
+    Task { @MainActor in
+      tabDappStore.solConnectedAddresses.insert(account)
+    }
   }
   
   func removeSolanaConnectedAccount(_ account: String) {
-    tabDappStore.solConnectedAddresses.remove(account)
+    Task { @MainActor in
+      tabDappStore.solConnectedAddresses.remove(account)
+    }
   }
   
   func clearSolanaConnectedAccounts() {
-    tabDappStore.solConnectedAddresses = .init()
-    Task {
-      await updateSolanaProperties()
+    Task { @MainActor in
+        tabDappStore.solConnectedAddresses = .init()
+        await updateSolanaProperties()
     }
   }
 }
