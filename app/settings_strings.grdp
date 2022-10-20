@@ -114,6 +114,11 @@
       Show a quick highlight on the focused object
     </message>
   </if>
+  <if expr="chromeos_lacros">
+    <message name="IDS_SETTINGS_ACCESSIBILITY_MANAGE_ACCESSIBILITY_FEATURES" desc="In the settings tab, the title of a link that opens a screen allowing the user to change accessibility features.">
+      Manage accessibility features
+    </message>
+  </if>
 
   <!-- Appearance Page -->
   <message name="IDS_SETTINGS_APPEARANCE" desc="Name of the settings page which displays appearance preferences.">
@@ -1931,9 +1936,6 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_ICON_WARNING_ARIA_LABEL" desc="Accessibility text for a safety check child icon, that indicates a warning for the child check.">
     Warning
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSIONS_PRIMARY_LABEL" translateable="false" desc="The placeholder title for 'Notification Permissions' module. It is an element in safety check that shows the websites with high volume notification permissions.">
-    Review sites that recently sent a lot of notifications
-  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW" desc="Text for a button that allows users to review safety check findings, such as compromised passwords or blocklisted extensions.">
     Review
   </message>
@@ -2003,8 +2005,10 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their extensions settings.">
     Review extensions
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_PRIMARY_LABEL" translateable="false" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the header of the module in site settings notification page.">
-    Review websites that sent a lot of notifications
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_PRIMARY_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the header of the module in the site settings notification page. The number represents the number of notification permissions to be reviewed.">
+    {NUM_SITES, plural,
+     =1 {Review 1 site that recently sent a lot of notifications}
+     other {Review {NUM_SITES} sites that recently sent a lot of notifications}}
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_SECONDARY_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the description of the module in site settings notification page.">
     These sites sent a lot of notifications recently. You can stop them from sending future notifications.
@@ -2023,17 +2027,45 @@
      =1 {About 1 notification a day}
      other {About {NUM_NOTIFICATION} notifications a day}}
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_DONT_ALLOW_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for 'don't allow' action for a website in the module.">
+  <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_DONE_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is to inform users that there are no more permissions left to review.">
+    All done for now
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_DONT_ALLOW_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for the action to block notifications from a specific website.">
     Don't allow
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_IGNORE_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is to manually set users to allow the website so that the permissions will be never revoked later.">
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_DONT_ALLOW_ARIA_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This ARIA (accessibility) label is for the action to block notifications from a specific website.">
+    Don't allow notifications from <ph name="WEBSITE">$1<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_IGNORE_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for the action to allow the website so that the permissions will be never revoked later.">
     Always allow notifications from this site
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_RESET_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for resetings the permission to the 'ask' state.">
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_IGNORE_ARIA_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This ARIA (accessibility) label is is for the action to allow the website so that the permissions will be never revoked later.">
+    Always allow notifications from <ph name="WEBSITE">$1<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_RESET_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for resetting the permission to the 'ask' state.">
     Don’t allow but ask later
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_RESET_ARIA_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This ARIA (accessibility) label is for resetings the permission to the 'ask' state.">
+    Don’t allow notifications from <ph name="WEBSITE">$1<ex>website.com</ex></ph> but ask later
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_MORE_ACTIONS_ARIA_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This ARIA (accessibility) label is to show more actions for a notification permissions item.">
+    More actions for <ph name="WEBSITE">$1<ex>website.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_UNDO" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for undoing the current action after blocking permission for a site.">
     Undo
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_HEADER_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for the header in Privacy and Security Settings page that surface an entry point to the module itself. The integer input represents the number of notification permissions to be reviewed.">
+    {NUM_SITES, plural,
+     =1 {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 site<ph name="END_BOLD">&lt;/b&gt;</ph> that recently sent a lot of notifications}
+     other {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{NUM_SITES} sites<ph name="END_BOLD">&lt;/b&gt;</ph> that recently sent a lot of notifications}}
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_BLOCK_ALL_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for a button that allows the user to block notifications for all selected sites.">
+    Block all
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_BLOCK_ALL_TOAST_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is to indicate for how many sites the user has blocked permissions.">
+    {NUM_SITES, plural,
+    =1 {Notifications not allowed for 1 site}
+    other {Notifications not allowed for {NUM_SITES} sites}}
   </message>
   <if expr="is_win and _google_chrome">
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
@@ -2510,6 +2542,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEFAULT_BEHAVIOR_DESCRIPTION" desc="Description for the site settings default behavior.">
     Sites automatically follow this setting when you visit them
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_DEFAULT_BEHAVIOR_DESC" desc="Description for the site settings notifications content setting default behavior.">
+    Sites automatically follow this setting when you visit them. Sites usually send notifications to let you know about breaking news or chat messages.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS" desc="Label for the site settings exceptions.">
     Customized behaviors
@@ -3046,11 +3081,11 @@
   <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL_BULLET_THREE" desc="Description for the third bullet of block all cookies radio toggle">
     Features on many sites may not work
   </message>
-  <message name="IDS_SETTINGS_COOKIES_FIRST_PARTY_SETS_TOGGLE_LABEL" desc="Label for the toggle that allows the user to control First Party sets enabled sharing between related sites" translateable="false">
-    Allow related sites to remember you across sites
+  <message name="IDS_SETTINGS_COOKIES_FIRST_PARTY_SETS_TOGGLE_LABEL" desc="Label for the toggle that allows the user to control first-party sets enabled sharing between related sites">
+    Allow related sites to see your activity in the group
   </message>
-  <message name="IDS_SETTINGS_COOKIES_FIRST_PARTY_SETS_TOGGLE_SUB_LABEL" desc="Sub-label for the toggle that allows the user to control First Party sets enabled sharing between related sites" translateable="false">
-    Related sites use cookies to help with things like keeping you signed in
+  <message name="IDS_SETTINGS_COOKIES_FIRST_PARTY_SETS_TOGGLE_SUB_LABEL" desc="Sub-label for the toggle that allows the user to control first-party sets enabled sharing between related sites">
+    A company can define a group of sites that can use cookies to share your activity in the group. This is off in Private.
   </message>
   <message name="IDS_SETTINGS_COOKIES_CLEAR_ON_EXIT" desc="Label for the toggle that allows the user to automatically delete their cookies and site data when they close all browser windows.">
     Clear cookies and site data when you close all windows
@@ -3340,8 +3375,8 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting displayed site data.">
     Clear displayed data?
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_LEARN_MORE" translateable="false" desc="Placeholder string for first party sets informational learn more link shown when sites are filtered by first party set owner">
-     These sites are in <ph name="FPS_OWNER">$1<ex>google.com</ex></ph>'s group of sites that can see your activity in the group. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_LEARN_MORE" desc="Label for first-party sets explainer with a learn more link shown when sites are filtered by first-party set owner">
+     These sites are in a group defined by <ph name="FPS_OWNER">$1<ex>google.com</ex></ph>. Sites in a group can see your activity in the group. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_DESCRIPTION" desc="Label describing how much total disk space chrome is using, next to the clear all button">
     Total storage used by sites: <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph>
@@ -3354,15 +3389,18 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_LABEL" desc="Label for button to clear displayed site data">
     Clear displayed data
-  </message>  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_MEMBERSHIP_LABEL" translateable="false" desc="Placeholder string for first party sets member count shown on site details and site entry">
+  </message>  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_MEMBERSHIP_LABEL" desc="Label displaying how many members are in a first-party set for a specific site. This is displayed on site entries in all sites page and site details page.">
     {MEMBERS, plural,
-        =1 {Allowed for 1 <ph name="FPS_OWNER">$1<ex>google.com</ex></ph> site}
-        other {Allowed for {MEMBERS} <ph name="FPS_OWNER">{FPS_OWNER}<ex>google.com</ex></ph> sites}}
+        =1 {1 site in <ph name="FPS_OWNER">{FPS_OWNER}<ex>google.com</ex></ph>'s group}
+        other {{MEMBERS} sites in <ph name="FPS_OWNER">{FPS_OWNER}<ex>google.com</ex></ph>'s group}}
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_SHOW_RELATED_SITES_BUTTON" translateable="false" desc="Placeholder string for first party sets show related sites button">
-    Show related sites
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_MORE_ACTIONS_TITLE" desc="The (accessibility) title of a button, which brings up a menu of actions that can be taken on a site group.">
+    More actions for <ph name="SITE_GROUP">$1<ex>google.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_SITE_CLEAR_STORAGE_BUTTON" translateable="false" desc="Placeholder string for first party sets clear data and permissions for site button">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_SHOW_RELATED_SITES_BUTTON" desc="Label for the button on the first-party sets more actions menu to allow users to filter sites by the first-party set owner.">
+    Show sites in same group
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FIRST_PARTY_SETS_SITE_CLEAR_STORAGE_BUTTON" desc="Label for the button on the first-party sets more actions menu to allow users to clear data and permissions for a specific site entry.">
     Clear data and permissions
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by all sites.">
