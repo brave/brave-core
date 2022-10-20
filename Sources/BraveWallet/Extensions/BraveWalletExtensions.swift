@@ -234,3 +234,57 @@ extension BraveWallet.BlockchainToken {
     return (contractAddress.isEmpty || isSupportedContractAddress) && chainId == BraveWallet.MainnetChainId
   }
 }
+
+extension BraveWallet.OnRampProvider {
+  var name: String {
+    switch self {
+    case .ramp:
+      return Strings.Wallet.rampNetworkProviderName
+    case .sardine:
+      return Strings.Wallet.sardineProviderName
+    case .wyre:
+      return Strings.Wallet.wyreProviderName
+    @unknown default:
+      return ""
+    }
+  }
+  
+  var shortName: String {
+    switch self {
+    case .ramp:
+      return Strings.Wallet.rampNetworkProviderShortName
+    case .sardine:
+      return Strings.Wallet.sardineProviderShortName
+    case .wyre:
+      return Strings.Wallet.wyreProviderShortName
+    @unknown default:
+      return ""
+    }
+  }
+  
+  var localizedDescription: String {
+    switch self {
+    case .ramp:
+      return Strings.Wallet.rampNetworkProviderDescription
+    case .sardine:
+      return Strings.Wallet.sardineProviderDescription
+    case .wyre:
+      return Strings.Wallet.wyreProviderDescription
+    @unknown default:
+      return ""
+    }
+  }
+  
+  var iconName: String {
+    switch self {
+    case .ramp:
+      return "ramp-network-icon"
+    case .sardine:
+      return "sardine-icon"
+    case .wyre:
+      return "wyre-icon"
+    @unknown default:
+      return ""
+    }
+  }
+}

@@ -14,15 +14,9 @@ struct BuyTokenView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var buyTokenStore: BuyTokenStore
 
-  @State private var amountInput = ""
-
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @State private var showProviderSelection = false
   
   var onDismiss: (() -> Void)
-  
-  private var isBuySupported: Bool {
-    WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(networkStore.selectedChainId)
-  }
 
   var body: some View {
     NavigationView {
@@ -35,11 +29,12 @@ struct BuyTokenView: View {
           .listRowBackground(Color.clear)
           .resetListHeaderStyle()
         }
-        if isBuySupported {
+        if buyTokenStore.isSelectedNetworkSupported {
           Section(
             header: WalletListHeaderView(title: Text(Strings.Wallet.buy))
           ) {
-            NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore, network: networkStore.selectedChain)) {
+            NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore, network: networkStore.selectedChain)
+            ) {
               HStack {
                 if let token = buyTokenStore.selectedBuyToken {
                   AssetIconView(token: token, network: networkStore.selectedChain, length: 26)
@@ -56,8 +51,28 @@ struct BuyTokenView: View {
             header: WalletListHeaderView(title: Text(Strings.Wallet.enterAmount))
           ) {
             HStack {
-              Text("$")
-              TextField(String.localizedStringWithFormat(Strings.Wallet.amountInCurrency, "USD"), text: $amountInput)
+              Menu {
+                ForEach(buyTokenStore.supportedCurrencies) { currency in
+                  Button {
+                    buyTokenStore.selectedCurrency = currency
+                  } label: {
+                    Text(currency.currencyCode)
+                  }
+                }
+              } label: {
+                HStack(spacing: 4) {
+                  Text(buyTokenStore.selectedCurrency.symbol)
+                    .font(.title2.weight(.bold))
+                    .foregroundColor(Color(.braveLabel))
+                  Image(systemName: "chevron.down")
+                    .imageScale(.small)
+                    .foregroundColor(Color(.secondaryBraveLabel))
+                }
+              }
+              TextField(
+                String.localizedStringWithFormat(Strings.Wallet.amountInCurrency, buyTokenStore.selectedCurrency.currencyCode),
+                text: $buyTokenStore.buyAmount
+              )
                 .keyboardType(.decimalPad)
             }
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -65,18 +80,9 @@ struct BuyTokenView: View {
           Section(
             header: HStack {
               Button(action: {
-                buyTokenStore.fetchBuyUrl(
-                  chainId: networkStore.selectedChainId,
-                  account: keyringStore.selectedAccount,
-                  amount: amountInput
-                ) { urlString in
-                  guard let urlString = urlString, let url = URL(string: urlString) else {
-                    return
-                  }
-                  openWalletURL?(url)
-                }
+                showProviderSelection = true
               }) {
-                Text(Strings.Wallet.buyButtonTitle)
+                Text(Strings.Wallet.purchaseMethodButtonTitle)
               }
               .buttonStyle(BraveFilledButtonStyle(size: .normal))
               .frame(maxWidth: .infinity)
@@ -102,7 +108,7 @@ struct BuyTokenView: View {
       }
       .overlay(
         Group {
-          if !isBuySupported {
+          if !buyTokenStore.isSelectedNetworkSupported {
             Text(Strings.Wallet.networkNotSupportedForBuyToken)
               .font(.headline.weight(.medium))
               .frame(maxWidth: .infinity)
@@ -112,9 +118,19 @@ struct BuyTokenView: View {
           }
         }
       )
-      .onAppear {
-        buyTokenStore.fetchBuyTokens(network: networkStore.selectedChain)
-      }
+      .background(
+        NavigationLink(
+          isActive: $showProviderSelection,
+          destination: {
+            BuyProviderSelectionView(
+              buyTokenStore: buyTokenStore,
+              keyringStore: keyringStore
+            )
+          },
+          label: {
+            EmptyView()
+          })
+      )
     }
     .navigationViewStyle(.stack)
   }

@@ -14,7 +14,7 @@ struct BuyTokenSearchView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   var body: some View {
-    TokenList(tokens: buyTokenStore.buyTokens) { token in
+    TokenList(tokens: buyTokenStore.allTokens) { token in
       Button(action: {
         buyTokenStore.selectedBuyToken = token
         presentationMode.dismiss()
