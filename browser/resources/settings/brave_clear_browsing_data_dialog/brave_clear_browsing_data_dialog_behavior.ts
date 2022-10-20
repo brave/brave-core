@@ -14,32 +14,54 @@ import type {SettingsClearBrowsingDataDialogElement as BraveSettingsClearBrowsin
 
 const BaseElement = WebUIListenerMixin(SettingsClearBrowsingDataDialogElement)
 export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
-  ready() {
+  override ready() {
     super.ready()
     this.addOnExitElements_();
     this.addWebUIListener(
       'update-counter-text', this.updateOnExitCountersText.bind(this));
   }
 
-  attached() {
-    super.attached()
-    this.listen(this.$.tabs, 'selected-item-changed',
-      'onSelectedTabChanged_');
-    this.listen(this.$$('#on-exit-tab'), 'clear-data-on-exit-page-change',
-      'updateSaveButtonState_');
-    this.listen(this.$$('#saveOnExitSettingsConfirm'), 'click',
-      'saveOnExitSettings_');
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.onSelectedTabChangedCallback_ = this.onSelectedTabChanged_.bind(this);
+    this.$.tabs.addEventListener('selected-item-changed',
+      this.onSelectedTabChangedCallback_);
+
+    this.updateSaveButtonStateCallback_ = this.updateSaveButtonState_.bind(this);
+    this.shadowRoot.querySelector('#on-exit-tab').addEventListener(
+      'clear-data-on-exit-page-change', this.updateSaveButtonStateCallback_);
+
+    this.saveOnExitSettingsCallback_ = this.saveOnExitSettings_.bind(this);
+    this.shadowRoot.querySelector('#saveOnExitSettingsConfirm').addEventListener(
+      'click', this.saveOnExitSettingsCallback_);
   }
 
-  detached() {
-    super.detached()
-    this.unlisten(this.$.tabs, 'selected-item-changed',
-      'onSelectedTabChanged_');
-    this.unlisten(this.$$('#on-exit-tab'), 'clear-data-on-exit-page-change',
-      'updateSaveButtonState_');
-    this.unlisten(this.$$('#saveOnExitSettingsConfirm'), 'click',
-      'saveOnExitSettings_');
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+
+    if (this.onSelectedTabChangedCallback_) {
+      this.$.tabs.removeEventListener('selected-item-changed',
+        this.onSelectedTabChangedCallback_);
+      this.onSelectedTabChangedCallback_ = null;
+    }
+
+    if (this.saveOnExitSettingsCallback_) {
+      this.shadowRoot.querySelector('#on-exit-tab').removeEventListener(
+        'clear-data-on-exit-page-change', this.updateSaveButtonStateCallback_);
+      this.updateSaveButtonStateCallback_ = null;
+    }
+
+    if (this.saveOnExitSettingsCallback_) {
+      this.shadowRoot.querySelector('#saveOnExitSettingsConfirm').removeEventListener(
+        'click', this.saveOnExitSettingsCallback_);
+      this.saveOnExitSettingsCallback_ = null;
+    }
   }
+
+  private onSelectedTabChangedCallback_: (() => void) | null = null
+  private updateSaveButtonStateCallback_: (() => void) | null = null
+  private saveOnExitSettingsCallback_: (() => void) | null = null
 
   /**
    * Adds OnExit tab and Save button to the DOM.
@@ -76,7 +98,7 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
     // Data type deletion preferences are named "browser.clear_data.<datatype>".
     // Strip the common prefix, i.e. use only "<datatype>".
     const matches = prefName.match(/^browser\.clear_data\.(\w+)$/);
-    this.$$('#on-exit-tab').setCounter(matches[1], text);
+    this.shadowRoot.querySelector('#on-exit-tab').setCounter(matches[1], text);
   }
 
   /**
@@ -88,9 +110,9 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
     if (!tab) {
       return;
     }
-    const isOnExitTab = (this.$.tabs.selectedItem.id == 'on-exit-tab');
+    const isOnExitTab = (tab.id === 'on-exit-tab');
     this.$.clearBrowsingDataConfirm.hidden = isOnExitTab;
-    this.$$('#saveOnExitSettingsConfirm').hidden = !isOnExitTab;
+    this.shadowRoot.querySelector('#saveOnExitSettingsConfirm').hidden = !isOnExitTab;
   }
 
   /**
@@ -98,8 +120,8 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
    * @private
    */
   updateSaveButtonState_() {
-    this.$$('#saveOnExitSettingsConfirm').disabled =
-        !this.$$('#on-exit-tab').isModified;
+    this.shadowRoot.querySelector('#saveOnExitSettingsConfirm').disabled =
+        !this.shadowRoot.querySelector('#on-exit-tab').isModified;
   }
 
   /**
@@ -107,7 +129,7 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
    * @private
    */
   saveOnExitSettings_() {
-    const changed = this.$$('#on-exit-tab').getChangedSettings();
+    const changed = this.shadowRoot.querySelector('#on-exit-tab').getChangedSettings();
     changed.forEach((change) => {
       this.set('prefs.' + change.key + '.value', change.value);
     });
