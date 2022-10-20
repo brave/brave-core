@@ -27,12 +27,6 @@ interface PanelHandler {
 
 interface ServiceObserver {
   [EnableIfNot=is_android]
-  OnConnectionCreated();
-
-  [EnableIfNot=is_android]
-  OnConnectionRemoved();
-
-  [EnableIfNot=is_android]
   OnConnectionStateChanged(ConnectionState state);
 
   OnPurchasedStateChanged(PurchasedState state);
@@ -46,12 +40,6 @@ interface ServiceHandler {
 
   [EnableIfNot=is_android]
   GetConnectionState() => (ConnectionState state);
-
-  [EnableIfNot=is_android]
-  ResetConnectionState();
-
-  [EnableIfNot=is_android]
-  CreateVPNConnection();
 
   [EnableIfNot=is_android]
   Connect();
