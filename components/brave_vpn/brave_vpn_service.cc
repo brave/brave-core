@@ -76,6 +76,13 @@ BraveVpnService::BraveVpnService(
   if (preference && !preference->IsDefaultValue()) {
     ReloadPurchasedState();
   }
+
+  pref_change_registrar_.Init(local_prefs_);
+  pref_change_registrar_.Add(
+      prefs::kBraveVPNSelectedRegion,
+      base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
+                          base::Unretained(this)));
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   InitP3A();
@@ -471,6 +478,16 @@ void BraveVpnService::OnCreateSupportTicket(
   VLOG(2) << "OnCreateSupportTicket success=" << success
           << "\nresponse_code=" << api_request_result.response_code();
   std::move(callback).Run(success, api_request_result.body());
+}
+
+void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
+  if (pref_name == prefs::kBraveVPNSelectedRegion) {
+    for (const auto& obs : observers_) {
+      obs->OnSelectedRegionChanged(
+          GetRegionPtrWithNameFromRegionList(GetSelectedRegion(), regions_));
+    }
+    return;
+  }
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
