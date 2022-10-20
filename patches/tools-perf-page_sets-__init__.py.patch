@@ -1,5 +1,5 @@
 diff --git a/tools/perf/page_sets/__init__.py b/tools/perf/page_sets/__init__.py
-index ebbcb6e921c8f80bfc044c5391bd74c5adef8616..3a1e80ba8ab8754a98d8b7f2d32027f258393707 100644
+index 63f264c3b1caeb6e677366ac794983f84ec534fc..39c0195ef78a44b546b5f0881953d8983f7df361 100644
 --- a/tools/perf/page_sets/__init__.py
 +++ b/tools/perf/page_sets/__init__.py
 @@ -19,3 +19,4 @@ for base_class in base_classes:
