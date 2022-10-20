@@ -7,7 +7,7 @@
 
 window.__firefox__.includeOnce("BraveTalkScript", function($) {
   let sendMessage = $(function() {
-    return $.postNativeMessage('$<message_handler>', { 'securitytoken': SECURITY_TOKEN });
+    return $.postNativeMessage('$<message_handler>', { 'securityToken': SECURITY_TOKEN });
   });
   
   Object.defineProperty(window, 'chrome', {
@@ -20,4 +20,23 @@ window.__firefox__.includeOnce("BraveTalkScript", function($) {
       }
     }
   });
+  
+  const launchNativeBraveTalk = $(function (url) {
+    $.postNativeMessage('$<message_handler>', {
+      'kind': 'launchNativeBraveTalk',
+      'url': url,
+      'securityToken': SECURITY_TOKEN
+    });
+  });
+  
+  if (document.location.host === "talk.brave.com") {
+    const postRoom = $((event) => {
+      if (event.target.tagName !== undefined && event.target.tagName.toLowerCase() == "iframe") {
+        launchNativeBraveTalk(event.target.src);
+        window.removeEventListener("DOMNodeInserted", postRoom)
+      }
+    });
+    window.addEventListener("DOMNodeInserted", postRoom);
+  }
 });
+

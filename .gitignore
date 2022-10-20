@@ -79,6 +79,8 @@ MozBuildID.xcconfig
 
 # Node.js
 node_modules
+# assets from frameworks
+!ThirdParty/**/node_modules
 
 # Brave
 scripts/
