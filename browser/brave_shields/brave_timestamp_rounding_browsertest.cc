@@ -11,8 +11,6 @@
 #include "content/public/test/render_view_test.h"
 #include "third_party/blink/public/common/features.h"
 
-namespace {
-
 using blink::features::kBraveRoundTimeStamps;
 
 class BraveTimeStampRoundingRenderViewTest
@@ -73,5 +71,3 @@ TEST_P(BraveTimeStampRoundingRenderViewTest, SynchronousApisRounded) {
 INSTANTIATE_TEST_SUITE_P(BraveTimeStampRoundingRenderViewTest,
                          BraveTimeStampRoundingRenderViewTest,
                          ::testing::Bool());
-
-}  // namespace
