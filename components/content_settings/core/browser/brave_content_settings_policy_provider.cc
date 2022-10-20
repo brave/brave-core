@@ -95,8 +95,7 @@ void BravePolicyProvider::GetBraveContentSettingsFromPreferences(
       return;
     }
 
-    base::Value::ConstListView pattern_str_list =
-        pref->GetValue()->GetListDeprecated();
+    const base::Value::List& pattern_str_list = pref->GetValue()->GetList();
     for (size_t i = 0; i < pattern_str_list.size(); ++i) {
       if (!pattern_str_list[i].is_string()) {
         NOTREACHED() << "Could not read content settings pattern #" << i

@@ -94,14 +94,14 @@ def AddBravePolicies(template_file_contents):
               'type': 'array',
               'items': { 'type': 'string' },
             },
-            'supported_on': ['chrome.*:106-'],
+            'supported_on': ['chrome.*:107-'],
             'features': {
                 'dynamic_refresh': False,
                 'per_profile': True,
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
+            'example_value': ['https://brave.com'],
             'id': 4,
             'caption': '''Blocks Brave Shields for urls.''',
             'tags': [],
@@ -115,14 +115,14 @@ def AddBravePolicies(template_file_contents):
               'type': 'array',
               'items': { 'type': 'string' },
             },
-            'supported_on': ['chrome.*:106-'],
+            'supported_on': ['chrome.*:107-'],
             'features': {
                 'dynamic_refresh': False,
                 'per_profile': True,
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
+            'example_value': ['https://brave.com'],
             'id': 5,
             'caption': '''Allows Brave Shields for urls.''',
             'tags': [],
