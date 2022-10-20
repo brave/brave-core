@@ -990,6 +990,7 @@
       <part file="tor_strings.grdp" />
       <part file="brave_news_strings.grdp" />
       <part file="brave_shields_strings.grdp" />
+      <part file="brave_welcome_strings.grdp" />
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
       </if>

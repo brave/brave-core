@@ -13,19 +13,26 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
+#include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "chrome/browser/ui/webui/settings/performance_handler.h"
+#include "chrome/browser/ui/webui/settings/privacy_sandbox_handler.h"
+#include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/page_navigator.h"
@@ -35,6 +42,33 @@
 using content::WebUIMessageHandler;
 
 namespace {
+
+constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWelcomeTitle", IDS_BRAVE_WELCOME_TITLE},
+    {"braveWelcomeDesc", IDS_BRAVE_WELCOME_DESC},
+    {"braveWelcomeImportSettingsTitle",
+     IDS_BRAVE_WELCOME_IMPORT_SETTINGS_TITLE},
+    {"braveWelcomeImportSettingsDesc", IDS_BRAVE_WELCOME_IMPORT_SETTINGS_DESC},
+    {"braveWelcomeSelectProfileLabel", IDS_BRAVE_WELCOME_SELECT_PROFILE_LABEL},
+    {"braveWelcomeSelectProfileDesc", IDS_BRAVE_WELCOME_SELECT_PROFILE_DESC},
+    {"braveWelcomeImportButtonLabel", IDS_BRAVE_WELCOME_IMPORT_BUTTON_LABEL},
+    {"braveWelcomeImportProfilesButtonLabel",
+     IDS_BRAVE_WELCOME_IMPORT_PROFILES_BUTTON_LABEL},
+    {"braveWelcomeSkipButtonLabel", IDS_BRAVE_WELCOME_SKIP_BUTTON_LABEL},
+    {"braveWelcomeBackButtonLabel", IDS_BRAVE_WELCOME_BACK_BUTTON_LABEL},
+    {"braveWelcomeNextButtonLabel", IDS_BRAVE_WELCOME_NEXT_BUTTON_LABEL},
+    {"braveWelcomeSetDefaultButtonLabel",
+     IDS_BRAVE_WELCOME_SET_DEFAULT_BUTTON_LABEL},
+    {"braveWelcomeSelectAllButtonLabel",
+     IDS_BRAVE_WELCOME_SELECT_ALL_BUTTON_LABEL},
+    {"braveWelcomeHelpImproveBraveTitle",
+     IDS_BRAVE_WELCOME_HELP_IMPROVE_BRAVE_TITLE},
+    {"braveWelcomeHelpImproveBraveDesc",
+     IDS_BRAVE_WELCOME_HELP_IMPROVE_BRAVE_DESC},
+    {"braveWelcomeSendReportsLabel", IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL},
+    {"braveWelcomeSendInsightsLabel", IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL},
+    {"braveWelcomeSetupCompleteLabel", IDS_BRAVE_WELCOME_SETUP_COMPLETE_LABEL},
+};
 
 void OpenJapanWelcomePage(Profile* profile) {
   DCHECK(profile);
@@ -139,9 +173,18 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       IDR_BRAVE_WELCOME_HTML,
       /*disable_trusted_types_csp=*/true);
 
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::WorkerSrc, "worker-src blob: 'self';");
+
   web_ui->AddMessageHandler(std::make_unique<WelcomeDOMHandler>());
   web_ui->AddMessageHandler(
       std::make_unique<settings::BraveImportDataHandler>());
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::DefaultBrowserHandler>());  // set default
+                                                             // browser
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::MetricsReportingHandler>());  // metrics
+  web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());  // p3a
 
   Profile* profile = Profile::FromWebUI(web_ui);
   // added to allow front end to read/modify default search engine
@@ -158,6 +201,12 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     }
   }
   // Variables considered when determining which onboarding cards to show
+  for (const auto& str : kLocalizedStrings) {
+    std::u16string l10n_str =
+        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    source->AddString(str.name, l10n_str);
+  }
+
   source->AddString("countryString", CountryIDToCountryString(country_id));
   source->AddBoolean(
       "showRewardsCard",

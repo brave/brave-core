@@ -9,17 +9,21 @@
 <if expr="is_android">
   <title>Welcome to Brave</title>
 </if>
-<link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
-<link rel="stylesheet" href="chrome://resources/fonts/poppins.css">
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="chrome://resources/brave/css/reset.css">
+<link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
 <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
 <script src="/strings.js"></script>
-<script src="/brave_welcome.bundle.js"></script>
 <style>
   #root { height: 100%; width: 100%; }
+
+  body {
+    background: black;
+  }
 </style>
 </head>
 <body>
-<div id="root"></div>
+<script src="chrome://resources/cr_elements/cr_lottie/cr_lottie.js" type="module"></script>
+<script src="/brave_welcome.bundle.js"></script>
+<div id="root" />
 </body>
 </html>

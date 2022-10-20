@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_WELCOME_TITLE" desc="">
+  Privacy. By Default.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_DESC" desc="">
+  Get Brave protection on every link you click. Just set Brave as default and browse. Privately.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_SETTINGS_TITLE" desc="">
+  Import Settings
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_SETTINGS_DESC" desc="">
+  Easily import bookmarks, extensions, even saved passwords from your old browser.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_PROFILE_LABEL" desc="">
+  Select profile to import
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_PROFILE_DESC" desc="">
+  The browser you chose has multiple profiles. Select the profile(s) you'd like to import.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_BUTTON_LABEL" desc="">
+  Import
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_PROFILES_BUTTON_LABEL" desc="">
+  Import profiles
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SKIP_BUTTON_LABEL" desc="">
+  Skip
+</message>
+
+<message name="IDS_BRAVE_WELCOME_BACK_BUTTON_LABEL" desc="">
+  Back
+</message>
+
+<message name="IDS_BRAVE_WELCOME_NEXT_BUTTON_LABEL" desc="">
+  Next
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SET_DEFAULT_BUTTON_LABEL" desc="">
+  Set Brave as default browser
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_ALL_BUTTON_LABEL" desc="">
+  Select All
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_IMPROVE_BRAVE_TITLE" desc="">
+  Help improve Brave
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_IMPROVE_BRAVE_DESC" desc="">
+  Fine-tuning the product. Protecting your privacy. Every day.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL" desc="">
+  Send dianogstic reports if Brave crashes or freezes.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL" desc="">
+  Share anonymous, private product insights. This helps us learn what Brave features are used most often.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SETUP_COMPLETE_LABEL" desc="">
+  Setup complete
+</message>
+</grit-part>
