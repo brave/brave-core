@@ -16,6 +16,7 @@ class BraveBrowserTabStripController;
 class BraveTabMenuModel;
 class Browser;
 class Tab;
+class PrefService;
 
 namespace sessions {
 class TabRestoreService;
@@ -51,6 +52,9 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   bool IsBraveCommandIdEnabled(int command_id) const;
   void ExecuteBraveCommand(int command_id);
   bool IsBraveCommandId(int command_id) const;
+
+  const PrefService* GetPrefs() const;
+  PrefService* GetPrefs();
 
   std::unique_ptr<BraveTabMenuModel> model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;

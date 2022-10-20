@@ -24,7 +24,7 @@
 #define CompoundTabContainer BraveCompoundTabContainer
 #define TabContainerImpl BraveTabContainer
 #define BRAVE_CALCULATE_INSERTION_INDEX                                       \
-  if (tabs::features::ShouldShowVerticalTabs()) {                             \
+  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {     \
     const int ideal_y =                                                       \
         candidate_index == 0                                                  \
             ? 0                                                               \
@@ -39,7 +39,7 @@
   }
 
 #define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS                           \
-  if (tabs::features::ShouldShowVerticalTabs()) {                          \
+  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {  \
     std::vector<gfx::Rect> bounds;                                         \
     int y = 0;                                                             \
     for (const TabSlotView* view : views) {                                \

@@ -150,14 +150,18 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
                           base::Unretained(this)));
 
-  if (tabs::features::ShouldShowVerticalTabs()) {
+  if (tabs::features::SupportsVerticalTabs(browser_)) {
+    show_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsEnabled,
+        profile->GetOriginalProfile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
+                            base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow,
         profile->GetOriginalProfile()->GetPrefs(),
-        base::BindRepeating(
-            &BraveToolbarView::OnShowTitleBarOnVerticalTabsChanged,
-            base::Unretained(this)));
-    OnShowTitleBarOnVerticalTabsChanged();
+        base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
+                            base::Unretained(this)));
+    UpdateHorizontalPadding();
   }
 
   const auto callback = [](Browser* browser, int command,
@@ -282,7 +286,7 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
                         show_bookmarks_button_.GetValue());
 }
 
-void BraveToolbarView::OnShowTitleBarOnVerticalTabsChanged() {
+void BraveToolbarView::UpdateHorizontalPadding() {
   if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser())) {
     SetBorder(nullptr);
   } else {

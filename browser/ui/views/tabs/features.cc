@@ -28,19 +28,25 @@ namespace features {
 const base::Feature kBraveVerticalTabs{"BraveVerticalTabs",
                                        base::FEATURE_DISABLED_BY_DEFAULT};
 
-bool ShouldShowVerticalTabs() {
-  // TODO(sangwoo.ko) This should consider pref too.
-  // https://github.com/brave/brave-browser/issues/23467
-  return base::FeatureList::IsEnabled(features::kBraveVerticalTabs);
+bool SupportsVerticalTabs(const Browser* browser) {
+  DCHECK(browser);
+  return base::FeatureList::IsEnabled(features::kBraveVerticalTabs) &&
+         browser->is_type_normal();
+}
+
+bool ShouldShowVerticalTabs(const Browser* browser) {
+  DCHECK(browser);
+  if (!SupportsVerticalTabs(browser))
+    return false;
+
+  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsEnabled);
 }
 
 bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
   DCHECK(browser);
 
-  if (!ShouldShowVerticalTabs())
-    return false;
-
-  if (!browser->is_type_normal())
+  if (!ShouldShowVerticalTabs(browser))
     return false;
 
   return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(

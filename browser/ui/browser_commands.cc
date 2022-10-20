@@ -233,4 +233,10 @@ void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
       !prefs->GetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow));
 }
 
+void ToggleVerticalTabStrip(Browser* browser) {
+  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled,
+                    !prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+}
+
 }  // namespace brave

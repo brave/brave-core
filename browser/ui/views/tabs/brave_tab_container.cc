@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -23,8 +24,16 @@ BraveTabContainer::BraveTabContainer(
                        drag_context,
                        tab_slot_controller,
                        scroll_contents_view) {
-  layout_helper_->set_use_vertical_tabs(
-      tabs::features::ShouldShowVerticalTabs());
+  show_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsEnabled,
+      tab_slot_controller_->GetBrowser()
+          ->profile()
+          ->GetOriginalProfile()
+          ->GetPrefs(),
+      base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
+                          base::Unretained(this)));
+
+  UpdateLayoutOrientation();
 }
 
 BraveTabContainer::~BraveTabContainer() {
@@ -37,7 +46,8 @@ BraveTabContainer::~BraveTabContainer() {
 }
 
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
-  if (!tabs::features::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()))
     return TabContainerImpl::CalculatePreferredSize();
 
   const int tab_count = tabs_view_model_.view_size();
@@ -64,7 +74,8 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
                                                       bool was_active) {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()))
     return;
 
   TabContainerImpl::UpdateClosingModeOnRemovedTab(model_index, was_active);
@@ -73,7 +84,8 @@ void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
 gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
     Tab* tab,
     int former_model_index) const {
-  if (!tabs::features::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()))
     return TabContainerImpl::GetTargetBoundsForClosingTab(tab,
                                                           former_model_index);
 
@@ -89,7 +101,8 @@ gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
 void BraveTabContainer::EnterTabClosingMode(absl::optional<int> override_width,
                                             CloseTabSource source) {
   // Don't shrink vertical tab strip's width
-  if (tabs::features::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return;
   }
 
@@ -98,14 +111,16 @@ void BraveTabContainer::EnterTabClosingMode(absl::optional<int> override_width,
 
 bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
   // We don't have to clip tabs out of bounds. Scroll view will handle it.
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()))
     return true;
 
   return TabContainerImpl::ShouldTabBeVisible(tab);
 }
 
 void BraveTabContainer::StartInsertTabAnimation(int model_index) {
-  if (!tabs::features::ShouldShowVerticalTabs()) {
+  if (!tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::StartInsertTabAnimation(model_index);
     return;
   }
@@ -126,17 +141,25 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
 }
 
 void BraveTabContainer::RemoveTab(int index, bool was_active) {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()))
     closing_tabs_.insert(tabs_view_model_.view_at(index));
 
   TabContainerImpl::RemoveTab(index, was_active);
 }
 
 void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()))
     closing_tabs_.erase(tab);
 
   TabContainerImpl::OnTabCloseAnimationCompleted(tab);
+}
+
+void BraveTabContainer::UpdateLayoutOrientation() {
+  layout_helper_->set_use_vertical_tabs(tabs::features::ShouldShowVerticalTabs(
+      tab_slot_controller_->GetBrowser()));
+  InvalidateLayout();
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)

@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 
@@ -84,13 +85,35 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
+  // Pre-conditions
+  // The default orientation is horizontal.
+  ASSERT_FALSE(tabs::features::ShouldShowVerticalTabs(browser()));
+  ASSERT_EQ(browser_view()->GetWidget(),
+            browser_view()->tabstrip()->GetWidget());
+
+  // Show vertical tab strip. This will move tabstrip to its own widget.
+  brave::ToggleVerticalTabStrip(browser());
+  EXPECT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
+  EXPECT_NE(browser_view()->GetWidget(),
+            browser_view()->tabstrip()->GetWidget());
+
+  // Hide vertical tab strip and restore to the horizontal tabstrip.
+  brave::ToggleVerticalTabStrip(browser());
+  EXPECT_FALSE(tabs::features::ShouldShowVerticalTabs(browser()));
+  EXPECT_EQ(browser_view()->GetWidget(),
+            browser_view()->tabstrip()->GetWidget());
+}
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
+  brave::ToggleVerticalTabStrip(browser());
+
 #if BUILDFLAG(IS_LINUX)
   browser()->profile()->GetPrefs()->SetBoolean(prefs::kUseCustomChromeFrame,
                                                true);
 #endif
   // Pre-condition: Window title is "visible" by default on vertical tabs
-  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs());
+  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
   ASSERT_TRUE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
   ASSERT_TRUE(browser_view()->ShouldShowWindowTitle());
   ASSERT_TRUE(IsWindowTitleViewVisible());

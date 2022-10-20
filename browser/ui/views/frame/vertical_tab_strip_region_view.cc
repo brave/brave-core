@@ -266,14 +266,18 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   new_tab_button_->SetAccessibleName(
       l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
 
+  auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
+  show_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsEnabled, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::UpdateLayout,
+                          base::Unretained(this), false));
+  UpdateLayout();
+
   collapsed_pref_.Init(
-      brave_tabs::kVerticalTabsCollapsed,
-      browser_->profile()->GetOriginalProfile()->GetPrefs(),
+      brave_tabs::kVerticalTabsCollapsed, prefs,
       base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
                           base::Unretained(this)));
   OnCollapsedPrefChanged();
-
-  UpdateLayout();
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
@@ -347,7 +351,7 @@ void VerticalTabStripRegionView::Layout() {
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
-  if (tabs::features::ShouldShowVerticalTabs() && !in_destruction) {
+  if (tabs::features::ShouldShowVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
       original_parent_of_region_view_->RemoveChildView(region_view_);
@@ -363,6 +367,8 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
     region_view_->layout_manager_->SetOrientation(
         views::LayoutOrientation::kHorizontal);
   }
+
+  PreferredSizeChanged();
   Layout();
 }
 
@@ -400,7 +406,8 @@ void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
 }
 
 void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
-  const bool is_vertical_tabs = tabs::features::ShouldShowVerticalTabs();
+  const bool is_vertical_tabs =
+      tabs::features::ShouldShowVerticalTabs(browser_);
   if (auto* tab_search_button = region_view_->tab_search_button())
     tab_search_button->SetVisible(!is_vertical_tabs);
 }
@@ -411,7 +418,7 @@ void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
 
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     State state) const {
-  if (!tabs::features::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs(browser_))
     return {};
 
   if (IsTabFullscreen())

@@ -112,7 +112,9 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
     return;
 
   auto* widget = GetWidget();
-  DCHECK(widget);
+  if (!widget)
+    return;
+
   // Convert coordinate system based on Browser's widget.
   gfx::Rect widget_bounds = host_->ConvertRectToWidget(host_->GetLocalBounds());
   widget_bounds.set_width(region_view_->GetPreferredSize().width());

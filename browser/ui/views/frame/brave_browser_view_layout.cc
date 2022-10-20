@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 
 BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
 
@@ -19,7 +20,7 @@ void BraveBrowserViewLayout::LayoutSidePanelView(
 }
 
 int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(browser_view_->browser()))
     return top;
 
   return BrowserViewLayout::LayoutTabStripRegion(top);

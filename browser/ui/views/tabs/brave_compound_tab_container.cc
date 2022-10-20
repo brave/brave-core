@@ -21,7 +21,8 @@ BraveCompoundTabContainer::BraveCompoundTabContainer(
                            drag_context,
                            tab_slot_controller,
                            scroll_contents_view) {
-  if (tabs::features::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller.GetBrowser())) {
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kVertical);
   }
