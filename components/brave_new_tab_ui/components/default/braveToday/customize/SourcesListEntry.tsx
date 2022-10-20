@@ -7,8 +7,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '../../../Flex'
-import { useGetUnpaddedImage } from '../cards/CardImage'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
+import { useUnpaddedImageUrl } from '../useUnpaddedImageUrl'
 
 interface Props {
   publisherId: string
@@ -60,7 +60,7 @@ const ChannelNameText = styled.span`
 `
 
 function FavIcon (props: { src?: string }) {
-  const url = useGetUnpaddedImage(props.src, undefined, /* useCache= */true)
+  const url = useUnpaddedImageUrl(props.src, undefined, /* useCache= */true)
   const [error, setError] = React.useState(false)
   return <FavIconContainer>
     {url && !error && <img src={url} onError={() => setError(true)} />}
