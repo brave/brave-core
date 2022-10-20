@@ -8,7 +8,7 @@ import BraveShared
 import BraveCore
 import BraveUI
 
-extension BraveCoreSwitch {
+extension BraveCoreSwitchKey {
   fileprivate var displayString: String {
     switch self {
     case .vModule:
@@ -34,7 +34,7 @@ private struct BasicStringInputView: View {
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  var coreSwitch: BraveCoreSwitch
+  var coreSwitch: BraveCoreSwitchKey
   var hint: String?
 
   @State private var text: String = ""
@@ -87,7 +87,7 @@ private struct BasicPickerInputView: View {
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  var coreSwitch: BraveCoreSwitch
+  var coreSwitch: BraveCoreSwitchKey
   var options: [String]
 
   @State private var selectedItem: String = ""
@@ -143,9 +143,9 @@ struct BraveCoreDebugSwitchesView: View {
     @ObservedObject private var activeSwitches = Preferences.BraveCore.activeSwitches
     @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
 
-    var coreSwitch: BraveCoreSwitch
+    var coreSwitch: BraveCoreSwitchKey
 
-    init(_ coreSwitch: BraveCoreSwitch) {
+    init(_ coreSwitch: BraveCoreSwitchKey) {
       self.coreSwitch = coreSwitch
     }
 
