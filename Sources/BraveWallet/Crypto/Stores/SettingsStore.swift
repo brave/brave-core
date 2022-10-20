@@ -159,59 +159,73 @@ extension SettingsStore: BraveWalletBraveWalletServiceObserver {
 
 struct CurrencyCode: Hashable, Identifiable {
   let code: String
+  let symbol: String
   var id: String { code }
   
   init(code: String) {
     self.code = code
+    self.symbol = CurrencyCode.symbol(for: code)
   }
   
-  static let aed: Self = .init(code: "AED")
-  static let ars: Self = .init(code: "ARS")
-  static let aud: Self = .init(code: "AUD")
-  static let bdt: Self = .init(code: "BDT")
-  static let bhd: Self = .init(code: "BHD")
-  static let bmd: Self = .init(code: "BMD")
-  static let brl: Self = .init(code: "BRL")
-  static let cad: Self = .init(code: "CAD")
-  static let chf: Self = .init(code: "CHF")
-  static let clp: Self = .init(code: "CLP")
-  static let czk: Self = .init(code: "CZK")
-  static let dkk: Self = .init(code: "DKK")
-  static let eur: Self = .init(code: "EUR")
-  static let gbp: Self = .init(code: "GBP")
-  static let hkd: Self = .init(code: "HKD")
-  static let huf: Self = .init(code: "HUF")
-  static let idr: Self = .init(code: "IDR")
-  static let ils: Self = .init(code: "ILS")
-  static let inr: Self = .init(code: "INR")
-  static let jpy: Self = .init(code: "JPY")
-  static let krw: Self = .init(code: "KRW")
-  static let kwd: Self = .init(code: "KWD")
-  static let lkr: Self = .init(code: "LKR")
-  static let mmk: Self = .init(code: "MMK")
-  static let mxn: Self = .init(code: "MXN")
-  static let myr: Self = .init(code: "MYR")
-  static let ngn: Self = .init(code: "NGN")
-  static let nok: Self = .init(code: "NOK")
-  static let nzd: Self = .init(code: "NZD")
-  static let php: Self = .init(code: "PHP")
-  static let pkr: Self = .init(code: "PKR")
-  static let pln: Self = .init(code: "PLN")
-  static let rub: Self = .init(code: "RUB")
-  static let sar: Self = .init(code: "SAR")
-  static let sek: Self = .init(code: "SEK")
-  static let sgd: Self = .init(code: "SGD")
-  static let thb: Self = .init(code: "THB")
-  static let `try`: Self = .init(code: "TRY")
-  static let twd: Self = .init(code: "TWD")
-  static let uah: Self = .init(code: "UAH")
-  static let usd: Self = .init(code: "USD")
-  static let vef: Self = .init(code: "VEF")
-  static let vnd: Self = .init(code: "VND")
-  static let zap: Self = .init(code: "ZAR")
-  static let xag: Self = .init(code: "XAG")
-  static let xau: Self = .init(code: "XAU")
-  static let xdr: Self = .init(code: "XDR")
+  private init(code: String, symbol: String) {
+    self.code = code
+    self.symbol = symbol
+  }
   
-  static let allCurrencyCodes: [CurrencyCode] = [aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, `try`, twd, uah, usd, vef, vnd, zap, xag, xau, xdr]
+  static let aed: Self = .init(code: "AED", symbol: "د.إ‎")
+  static let ars: Self = .init(code: "ARS", symbol: "$")
+  static let aud: Self = .init(code: "AUD", symbol: "$")
+  static let bdt: Self = .init(code: "BDT", symbol: "৳")
+  static let bhd: Self = .init(code: "BHD", symbol: ".د.ب")
+  static let bmd: Self = .init(code: "BMD", symbol: "$")
+  static let brl: Self = .init(code: "BRL", symbol: "R$")
+  static let cad: Self = .init(code: "CAD", symbol: "$")
+  static let chf: Self = .init(code: "CHF", symbol: "CHF")
+  static let clp: Self = .init(code: "CLP", symbol: "$")
+  static let czk: Self = .init(code: "CZK", symbol: "Kč")
+  static let dkk: Self = .init(code: "DKK", symbol: "kr")
+  static let eur: Self = .init(code: "EUR", symbol: "€")
+  static let gbp: Self = .init(code: "GBP", symbol: "£")
+  static let hkd: Self = .init(code: "HKD", symbol: "$")
+  static let huf: Self = .init(code: "HUF", symbol: "Ft")
+  static let idr: Self = .init(code: "IDR", symbol: "Rp")
+  static let ils: Self = .init(code: "ILS", symbol: "₪")
+  static let inr: Self = .init(code: "INR", symbol: "₹")
+  static let jpy: Self = .init(code: "JPY", symbol: "¥")
+  static let krw: Self = .init(code: "KRW", symbol: "₩")
+  static let kwd: Self = .init(code: "KWD", symbol: "KD")
+  static let lkr: Self = .init(code: "LKR", symbol: "₨")
+  static let mmk: Self = .init(code: "MMK", symbol: "K")
+  static let mxn: Self = .init(code: "MXN", symbol: "$")
+  static let myr: Self = .init(code: "MYR", symbol: "RM")
+  static let ngn: Self = .init(code: "NGN", symbol: "₦")
+  static let nok: Self = .init(code: "NOK", symbol: "kr")
+  static let nzd: Self = .init(code: "NZD", symbol: "$")
+  static let php: Self = .init(code: "PHP", symbol: "₱")
+  static let pkr: Self = .init(code: "PKR", symbol: "₨")
+  static let pln: Self = .init(code: "PLN", symbol: "zł")
+  static let rub: Self = .init(code: "RUB", symbol: "₽")
+  static let sar: Self = .init(code: "SAR", symbol: "﷼")
+  static let sek: Self = .init(code: "SEK", symbol: "kr")
+  static let sgd: Self = .init(code: "SGD", symbol: "S$")
+  static let thb: Self = .init(code: "THB", symbol: "฿")
+  static let `try`: Self = .init(code: "TRY", symbol: "₺")
+  static let twd: Self = .init(code: "TWD", symbol: "NT$")
+  static let uah: Self = .init(code: "UAH", symbol: "₴")
+  static let usd: Self = .init(code: "USD", symbol: "$")
+  static let vef: Self = .init(code: "VEF", symbol: "Bs")
+  static let vnd: Self = .init(code: "VND", symbol: "₫")
+  static let xag: Self = .init(code: "XAG", symbol: "XAG")
+  static let xau: Self = .init(code: "XAU", symbol: "XAU")
+  static let xdr: Self = .init(code: "XDR", symbol: "XDR")
+  static let zap: Self = .init(code: "ZAR", symbol: "R")
+  
+  static let allCurrencyCodes: [CurrencyCode] = [aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, `try`, twd, uah, usd, vef, vnd, xag, xau, xdr, zap]
+  
+  static func symbol(for currencyCode: String) -> String {
+    if let currency = CurrencyCode.allCurrencyCodes.first(where: { $0.code.caseInsensitiveCompare(currencyCode) == .orderedSame }) {
+      return currency.symbol
+    }
+    return ""
+  }
 }

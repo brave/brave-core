@@ -91,6 +91,8 @@ extension BuyTokenStore {
     .init(
       blockchainRegistry: MockBlockchainRegistry(),
       rpcService: MockJsonRpcService(),
+      walletService: BraveWallet.TestBraveWalletService.previewWalletService,
+      assetRatioService: BraveWallet.TestAssetRatioService.previewAssetRatioService,
       prefilledToken: .previewToken
     )
   }
@@ -216,6 +218,26 @@ extension BraveWallet.TestSolanaTxManagerProxy {
     solTxManagerProxy._estimatedTxFee = { $1(UInt64(0), .success, "") }
     
     return solTxManagerProxy
+  }
+}
+
+extension BraveWallet.TestBraveWalletService {
+  static var previewWalletService: BraveWallet.TestBraveWalletService {
+    let walletService = BraveWallet.TestBraveWalletService()
+    walletService._selectedCoin = { $0(.eth) }
+    
+    return walletService
+  }
+}
+
+extension BraveWallet.TestAssetRatioService {
+  static var previewAssetRatioService: BraveWallet.TestAssetRatioService {
+    let assetRatioService = BraveWallet.TestAssetRatioService()
+    assetRatioService._buyUrlV1 = { _, _, _, _, _, _, completion in
+      completion("", nil)
+    }
+    
+    return assetRatioService
   }
 }
 

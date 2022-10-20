@@ -123,6 +123,8 @@ public class CryptoStore: ObservableObject {
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
+      walletService: walletService,
+      assetRatioService: assetRatioService,
       prefilledToken: prefilledToken
     )
     buyTokenStore = store

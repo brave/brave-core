@@ -425,7 +425,7 @@ extension Strings {
       "wallet.buyDescription",
       tableName: "BraveWallet",
       bundle: .strings,
-      value: "Buy crypto with Apple Pay, credit or debit card through Wyre.",
+      value: "Buy crypto with Apple Pay, credit or debit card.",
       comment: "The description of a buy button on the buy/send/swap modal"
     )
     public static let send = NSLocalizedString(
@@ -945,6 +945,13 @@ extension Strings {
       bundle: .strings,
       value: "Continue to Wyre",
       comment: "The title of the button for users to click when they are ready to buy using Wyre payment"
+    )
+    public static let purchaseMethodButtonTitle = NSLocalizedString(
+      "wallet.purchaseMethodButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Select purchase method",
+      comment: "The title of the button for users to click to select a purchase method."
     )
     public static let sendCryptoFromTitle = NSLocalizedString(
       "wallet.sendCryptoFromTitle",
@@ -2828,6 +2835,90 @@ extension Strings {
       bundle: .strings,
       value: "Invalid Password",
       comment: "A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed."
+    )
+    public static let providerSelectionScreenTitle = NSLocalizedString(
+      "wallet.providerSelectionScreenTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Select purchase method",
+      comment: "The title of the screen for users to select a purchase method. For example, 'Ramp.Network'."
+    )
+    public static let providerSelectionSectionHeader = NSLocalizedString(
+      "wallet.providerSelectionSectionHeader",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Select one of the following options",
+      comment: "The section header for the list of available purchse methods."
+    )
+    public static let providerSelectionButtonTitle = NSLocalizedString(
+      "wallet.providerSelectionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Buy with %@",
+      comment: "The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'."
+    )
+    public static let rampNetworkProviderName = NSLocalizedString(
+      "wallet.rampNetworkProviderName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Ramp.Network",
+      comment: "The name of one of the on ramp provider."
+    )
+    public static let rampNetworkProviderShortName = NSLocalizedString(
+      "wallet.rampNetworkProviderShortName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Ramp",
+      comment: "The short name of one of the on ramp provider."
+    )
+    public static let rampNetworkProviderDescription = NSLocalizedString(
+      "wallet.rampNetworkProviderDescription",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Buy crypto with Visa or Mastercard.",
+      comment: "The description of one of the 'Ramp.Network' provider."
+    )
+    public static let sardineProviderName = NSLocalizedString(
+      "wallet.sardineProviderName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Sardine",
+      comment: "The name of one of the on ramp provider."
+    )
+    public static let sardineProviderShortName = NSLocalizedString(
+      "wallet.sardineProviderShortName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Sardine",
+      comment: "The short name of one of the on ramp provider."
+    )
+    public static let sardineProviderDescription = NSLocalizedString(
+      "wallet.sardineProviderDescription",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Instant buy with your bank account. Lower fees.",
+      comment: "The description of one of the 'Sardine' provider."
+    )
+    public static let wyreProviderName = NSLocalizedString(
+      "wallet.wyreProviderName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Wyre",
+      comment: "The name of one of the on ramp provider."
+    )
+    public static let wyreProviderShortName = NSLocalizedString(
+      "wallet.wyreProviderShortName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Wyre",
+      comment: "The short name of one of the on ramp provider."
+    )
+    public static let wyreProviderDescription = NSLocalizedString(
+      "wallet.wyreProviderDescription",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Buy crypto with Visa or Mastercard.",
+      comment: "The description of one of the 'Wyre' provider."
     )
   }
 }

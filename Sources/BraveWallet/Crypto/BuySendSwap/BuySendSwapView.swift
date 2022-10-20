@@ -18,7 +18,7 @@ struct BuySendSwapView: View {
   ) {
     self.networkStore = networkStore
     self.action = action
-    if WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(networkStore.selectedChainId) {
+    if !WalletConstants.supportedTestNetworkChainIds.contains(networkStore.selectedChainId) {
       self.destinations.append(BuySendSwapDestination(kind: .buy))
     }
     self.destinations.append(BuySendSwapDestination(kind: .send))

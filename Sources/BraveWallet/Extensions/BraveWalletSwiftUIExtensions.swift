@@ -104,3 +104,19 @@ extension BraveWallet.CoinType: Identifiable {
     rawValue
   }
 }
+
+extension BraveWallet.OnRampProvider: Identifiable {
+  public var id: Int {
+    rawValue
+  }
+}
+
+extension BraveWallet.OnRampCurrency: Identifiable {
+  public var id: String {
+    currencyCode
+  }
+  
+  var symbol: String {
+    CurrencyCode.symbol(for: currencyCode)
+  }
+}
