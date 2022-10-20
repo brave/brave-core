@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index d1c4447bd34448735277c2b537258b525a6894bb..018f19c1058b7eb705d99f95e76030a9d068311d 100755
+index d1c4447bd34448735277c2b537258b525a6894bb..c9734c1fce5b961c7acf688ff07a3f76f852a4d1 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -46,6 +46,15 @@ index d1c4447bd34448735277c2b537258b525a6894bb..018f19c1058b7eb705d99f95e76030a9
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
+@@ -119,7 +120,7 @@ do_package() {
+     gen_control
+   fi
+   log_cmd fakeroot dpkg-deb -Znone -b "${STAGEDIR}" "${TMPFILEDIR}"
+-  local PACKAGEFILE="${PACKAGE}-${CHANNEL}_${VERSIONFULL}_${ARCHITECTURE}.deb"
++  local PACKAGEFILE="${PACKAGEANDCHANNEL}_${VERSIONFULL}_${ARCHITECTURE}.deb"
+   if [ ${IS_OFFICIAL_BUILD} -ne 0 ]; then
+     (cd "${TMPFILEDIR}" && ar -x "${TMPFILEDIR}/${PACKAGEFILE}")
+     xz -z9 -T0 --lzma2='dict=256MiB' "${TMPFILEDIR}/data.tar"
 @@ -165,8 +166,11 @@ verify_channel() {
        ;;
      dev|unstable|alpha )
