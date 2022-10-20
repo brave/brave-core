@@ -173,15 +173,16 @@ class ArrayMojoTypemap(MojoTypemap):
         return "@[]"
     def ObjCToCpp(self, accessor):
         local_var_name = _RandomLocalVarName()
-        args = (self.wrappedTypemap.ExpectedCppType(),
+        args = (self.wrappedTypemap.ExpectedCppType(), local_var_name,
                 self.wrappedTypemap.ObjCWrappedType(), local_var_name,
-                accessor, self.wrappedTypemap.ObjCToCpp(local_var_name))
+                accessor, local_var_name, self.wrappedTypemap.ObjCToCpp(
+                    local_var_name), local_var_name)
         return """^{
-            std::vector<%s> array;
+            std::vector<%s> array_%s;
             for (%s %s in %s) {
-                array.push_back(%s);
+                array_%s.push_back(%s);
             }
-            return array;
+            return array_%s;
         }()""" % args
     def CppToObjC(self, accessor):
         args = (accessor, self.wrappedTypemap.CppToObjC("o"))
