@@ -1103,26 +1103,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    @Override
-    public int getBoundsAfterAccountingForRightButtonsImpl(ViewGroup toolbarButtonsContainer) {
-        if (toolbarButtonsContainer == null || mShieldsLayout == null) {
-            assert false;
-            return 0;
-        }
-        ViewGroup.MarginLayoutParams params =
-                (ViewGroup.MarginLayoutParams) toolbarButtonsContainer.getLayoutParams();
-
-        int rewardsLen = (mRewardsLayout == null || mRewardsLayout.getVisibility() == View.GONE)
-                ? 0
-                : mRewardsLayout.getWidth();
-        int walletLen = (mWalletLayout == null || mWalletLayout.getVisibility() == View.GONE)
-                ? 0
-                : mWalletLayout.getWidth();
-
-        return toolbarButtonsContainer.getMeasuredWidth() - mShieldsLayout.getWidth() - rewardsLen
-                - walletLen + params.getMarginEnd();
-    }
-
     /**
      * If |tab| is null, set disabled image to shields button and |urlString| is
      * ignored.
@@ -1353,8 +1333,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void updateShieldsLayoutBackground(boolean rounded) {
-        if (!BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarTablet.class)
-                || (mShieldsLayout == null)) {
+        if (mShieldsLayout == null) {
             return;
         }
 
