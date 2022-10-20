@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/base/crypto/crypto_unittest_util.h"
 
+#include <algorithm>
+#include <iterator>
+
 #include "tweetnacl.h"  // NOLINT
 
 namespace ads::security {
@@ -18,9 +21,9 @@ std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
                   ciphertext.size(), &nonce.front(),
                   &ephemeral_public_key.front(), &secret_key.front());
 
-  std::vector<uint8_t> plaintext(
-      padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
-      padded_plaintext.cend());
+  std::vector<uint8_t> plaintext;
+  std::copy(padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
+            padded_plaintext.cend(), std::back_inserter(plaintext));
 
   return plaintext;
 }

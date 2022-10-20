@@ -5,11 +5,9 @@
 
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
-#include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/publisher_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -182,10 +180,6 @@ void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
 
 void RewardsTabHelper::MaybeSavePublisherInfo() {
   if (!rewards_service_) {
-    return;
-  }
-
-  if (!base::FeatureList::IsEnabled(features::kWebUIPanelFeature)) {
     return;
   }
 

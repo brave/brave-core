@@ -15,7 +15,6 @@ BraveVPN.setPanelBrowserApiForTesting({
     addObserver: doNothing,
     getPurchasedState: () => Promise.resolve({ state: BraveVPN.PurchasedState.LOADING }),
     getConnectionState: () => Promise.resolve({ state: BraveVPN.ConnectionState.CONNECTED }),
-    createVPNConnection: doNothing,
     connect: doNothing,
     disconnect: doNothing,
     loadPurchasedState: doNothing,
@@ -38,7 +37,6 @@ BraveVPN.setPanelBrowserApiForTesting({
     createSupportTicket: (email: string, subject: string, body: string) => Promise.resolve({
       success: true,
       response: 'OK'
-    }),
-    resetConnectionState: doNothing
+    })
   }
 })

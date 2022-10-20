@@ -28,7 +28,6 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
-#include "extensions/common/constants.h"
 
 class BraveActionsContainerTest : public InProcessBrowserTest {
  public:
@@ -51,22 +50,13 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
     prefs_ = browser->profile()->GetPrefs();
   }
 
-  bool UsingRewardsExtension() { return !brave_actions_->rewards_action_btn_; }
-
   void CheckBraveRewardsActionShown(bool expected_shown) {
-    const bool shown =
-        UsingRewardsExtension()
-            ? brave_actions_->IsActionShown(brave_rewards_extension_id)
-            : brave_actions_->rewards_action_btn_->GetVisible();
+    const bool shown = brave_actions_->rewards_action_btn_->GetVisible();
     ASSERT_EQ(shown, expected_shown);
   }
 
   void CloseRewardsPanel() {
-    if (UsingRewardsExtension()) {
-      static_cast<ExtensionsContainer*>(brave_actions_)->HideActivePopup();
-    } else {
-      brave_actions_->rewards_action_btn_->ClosePanelForTesting();
-    }
+    brave_actions_->rewards_action_btn_->ClosePanelForTesting();
   }
 
  protected:
@@ -130,14 +120,5 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
   coordinator->OpenRewardsPanel();
   base::RunLoop().RunUntilIdle();
 
-  // If the Rewards extension is used to display the Rewards panel, then the
-  // Rewards action should be shown while the popup is open.
-  CheckBraveRewardsActionShown(UsingRewardsExtension());
-
-  // Close the rewards popup.
-  CloseRewardsPanel();
-  base::RunLoop().RunUntilIdle();
-
-  // Rewards action should be hidden after popup is closed.
   CheckBraveRewardsActionShown(false);
 }

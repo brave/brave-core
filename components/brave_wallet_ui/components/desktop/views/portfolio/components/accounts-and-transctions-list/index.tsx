@@ -35,6 +35,7 @@ import {
   AssetBalanceDisplay,
   DividerRow
 } from '../../style'
+import { HorizontalSpace, Row, ToggleVisibilityButton } from '../../../../../shared/style'
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
@@ -42,7 +43,6 @@ export interface Props {
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
   selectedAssetTransactions: BraveWallet.TransactionInfo[]
-  hideBalances: boolean
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
 }
 
@@ -52,7 +52,6 @@ const AccountsAndTransactionsList = (props: Props) => {
     fullAssetFiatBalance,
     formattedFullAssetBalance,
     selectedAssetTransactions,
-    hideBalances,
     networkList,
     onClickAddAccount
   } = props
@@ -64,6 +63,9 @@ const AccountsAndTransactionsList = (props: Props) => {
     defaultCurrencies,
     selectedNetwork
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // state
+  const [hideBalances, setHideBalances] = React.useState<boolean>(false)
 
   const selectedAssetsNetwork = React.useMemo(() => {
     if (!selectedAsset) {
@@ -99,16 +101,23 @@ const AccountsAndTransactionsList = (props: Props) => {
         <>
           <DividerRow>
             <DividerText>{selectedAsset?.isErc721 ? getLocale('braveWalletOwner') : getLocale('braveWalletAccounts')}</DividerText>
-            {!selectedAsset?.isErc721 &&
-              <WithHideBalancePlaceholder
-                size='small'
-                hideBalances={hideBalances}
-              >
-                <AssetBalanceDisplay>
-                  {fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)} {formattedFullAssetBalance}
-                </AssetBalanceDisplay>
-              </WithHideBalancePlaceholder>
-            }
+            <Row justifyContent='flex-end'>
+              {!selectedAsset?.isErc721 &&
+                <WithHideBalancePlaceholder
+                  size='small'
+                  hideBalances={hideBalances}
+                >
+                  <AssetBalanceDisplay>
+                    {fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)} {formattedFullAssetBalance}
+                  </AssetBalanceDisplay>
+                </WithHideBalancePlaceholder>
+              }
+              <HorizontalSpace space='16px' />
+              <ToggleVisibilityButton
+                isVisible={!hideBalances}
+                onClick={() => setHideBalances(prev => !prev)}
+              />
+            </Row>
           </DividerRow>
           <SubDivider />
           {accountsList.map((account) =>

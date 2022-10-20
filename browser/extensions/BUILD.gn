@@ -17,8 +17,6 @@ source_set("extensions") {
   # Remove when https://github.com/brave/brave-browser/issues/10661 is resolved
   check_includes = false
   sources = [
-    "api/brave_action_api.cc",
-    "api/brave_action_api.h",
     "api/brave_extensions_api_client.cc",
     "api/brave_extensions_api_client.h",
     "api/brave_rewards_api.cc",
@@ -208,8 +206,6 @@ group("resources") {
   deps = [
     "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_extension:static_resources",
-    "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
-    "//brave/components/brave_rewards/resources/extension:static_resources",
   ]
   if (enable_brave_webtorrent) {
     deps += [

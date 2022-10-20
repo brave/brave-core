@@ -9,7 +9,6 @@ import TopTabNavButton from './top-tab-nav-button'
 import TopTabNav from './top-tab-nav'
 import WalletPageLayout from './wallet-page-layout'
 import WalletSubViewLayout from './wallet-sub-view-layout'
-import ChartControlBar from './chart-control-bar'
 import LineChart from './line-chart'
 import PortfolioAssetItem from './portfolio-asset-item'
 import PortfolioAccountItem from './portfolio-account-item'
@@ -41,7 +40,6 @@ export {
   TopTabNav,
   WalletPageLayout,
   WalletSubViewLayout,
-  ChartControlBar,
   LineChart,
   PortfolioAssetItem,
   PortfolioAccountItem,

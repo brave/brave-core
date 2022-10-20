@@ -1,10 +1,13 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 
-interface StyleProps {
+export const PlaceholderText = styled.p<{
   isBig: boolean
-}
-
-export const PlaceholderText = styled.span<StyleProps>`
+}>`
   font-family: Poppins;
   font-size: ${(p) => p.isBig ? '32px' : '14px'};
   line-height: ${(p) => p.isBig ? '32px' : '20px'};

@@ -1,6 +1,5 @@
 import("//brave/components/common/typescript.gni")
 import("//brave/resources/brave_grit.gni")
-import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/repack.gni")
 
 pack_web_resources("page_generated_resources") {

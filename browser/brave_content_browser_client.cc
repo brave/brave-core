@@ -606,11 +606,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         brave_shields::mojom::CookieListOptInPageHandlerFactory,
         CookieListOptInUI>(map);
   }
-  if (base::FeatureList::IsEnabled(
-          brave_rewards::features::kWebUIPanelFeature)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
-  }
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
   if (base::FeatureList::IsEnabled(
           brave_federated::features::kFederatedLearning)) {
     content::RegisterWebUIControllerInterfaceBinder<

@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
@@ -256,13 +257,17 @@ AdContentLikeActionType ClientStateManager::ToggleAdThumbDown(
 AdContentLikeActionType
 ClientStateManager::GetAdContentLikeActionTypeForAdvertiser(
     const std::string& advertiser_id) {
-  for (const auto& item : client_->history_items) {
-    if (item.ad_content.advertiser_id == advertiser_id) {
-      return item.ad_content.like_action_type;
-    }
+  const auto iter = base::ranges::find_if(
+      client_->history_items,
+      [&advertiser_id](const HistoryItemInfo& history_item) -> bool {
+        return history_item.ad_content.advertiser_id == advertiser_id;
+      });
+
+  if (iter == client_->history_items.cend()) {
+    return AdContentLikeActionType::kNeutral;
   }
 
-  return AdContentLikeActionType::kNeutral;
+  return iter->ad_content.like_action_type;
 }
 
 CategoryContentOptActionType ClientStateManager::ToggleAdOptIn(
@@ -327,13 +332,17 @@ CategoryContentOptActionType ClientStateManager::ToggleAdOptOut(
 CategoryContentOptActionType
 ClientStateManager::GetCategoryContentOptActionTypeForSegment(
     const std::string& segment) {
-  for (const auto& item : client_->history_items) {
-    if (item.category_content.category == segment) {
-      return item.category_content.opt_action_type;
-    }
+  const auto iter = base::ranges::find_if(
+      client_->history_items,
+      [&segment](const HistoryItemInfo& history_item) -> bool {
+        return history_item.category_content.category == segment;
+      });
+
+  if (iter == client_->history_items.cend()) {
+    return CategoryContentOptActionType::kNone;
   }
 
-  return CategoryContentOptActionType::kNone;
+  return iter->category_content.opt_action_type;
 }
 
 bool ClientStateManager::ToggleSavedAd(const AdContentInfo& ad_content) {

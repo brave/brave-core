@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
+#include "base/timer/timer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 
@@ -20,7 +21,20 @@ class VerticalTabStripRegionView : public views::View {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
-  enum class State { kCollapsed, kExpanded };
+  // We have a state machine which cycles like:
+  //
+  //               <hovered>          <pressed button>
+  //   kCollapsed <----------> kFloating ----------> kExpanded
+  //       ^        <exited>                            |
+  //       |                                            |
+  //       +--------------------------------------------+
+  //                  <press button>
+  //
+  enum class State {
+    kCollapsed,
+    kFloating,
+    kExpanded,
+  };
 
   VerticalTabStripRegionView(Browser* browser, TabStripRegionView* region_view);
   ~VerticalTabStripRegionView() override;
@@ -34,20 +48,25 @@ class VerticalTabStripRegionView : public views::View {
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
+  gfx::Size GetMinimumSize() const override;
   void Layout() override;
   void OnThemeChanged() override;
+  void OnMouseExited(const ui::MouseEvent& event) override;
+  void OnMouseEntered(const ui::MouseEvent& event) override;
 
  private:
   bool IsTabFullscreen() const;
 
   void SetState(State state);
 
-  void UpdateLayout();
+  void UpdateLayout(bool in_destruction = false);
 
   void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();
+
+  gfx::Size GetPreferredSizeForState(State state) const;
 
   raw_ptr<Browser> browser_ = nullptr;
 
@@ -65,6 +84,8 @@ class VerticalTabStripRegionView : public views::View {
   State state_ = State::kExpanded;
 
   BooleanPrefMember collapsed_pref_;
+
+  base::OneShotTimer mouse_enter_timer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_

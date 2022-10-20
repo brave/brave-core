@@ -1,7 +1,10 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 import { ArrowUpIcon } from 'brave-ui/components/icons'
-import EyeOnIcon from '../../../../assets/svg-icons/eye-on-icon.svg'
-import EyeOffIcon from '../../../../assets/svg-icons/eye-off-icon.svg'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../shared/style'
 import More from '../../../extension/assets/actions.svg'
 
@@ -35,7 +38,6 @@ export const BalanceText = styled.span`
   font-weight: 600;
   margin-bottom: 20px;
   color: ${(p) => p.theme.color.text01};
-  height: 32px;
 `
 
 export const PriceText = styled.span`
@@ -62,6 +64,8 @@ export const BalanceRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  height: 36px;
+  vertical-align: middle;
 `
 
 export const InfoColumn = styled.div`
@@ -221,25 +225,6 @@ export const CoinGeckoText = styled.span`
   font-weight: normal;
   color: ${(p) => p.theme.color.text03};
   margin: 15px 0px;
-`
-
-export const ShowBalanceButton = styled(WalletButton) <{ hideBalances?: boolean}>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
-  padding: 0px;
-  margin-left: 16px;
-  width: 18px;
-  height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
-  -webkit-mask-image: url(${(p) => p.hideBalances ? EyeOffIcon : EyeOnIcon});
-  mask-image: url(${(p) => p.hideBalances ? EyeOffIcon : EyeOnIcon});
-  mask-size: cover;
 `
 
 export const FilterTokenRow = styled.div`

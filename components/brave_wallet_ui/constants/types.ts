@@ -823,3 +823,5 @@ export interface AccountButtonOptionsObjectType {
   id: AccountModalTypes
   icon: string
 }
+
+export type StringWithAutocomplete<T> = T | (string & Record<never, never>)

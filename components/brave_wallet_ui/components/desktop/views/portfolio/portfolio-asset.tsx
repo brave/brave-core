@@ -47,7 +47,7 @@ import { AllNetworksOption } from '../../../../options/network-filter-options'
 // Components
 import { BackButton } from '../../../shared'
 import withPlaceholderIcon from '../../../shared/create-placeholder-icon'
-import { ChartControlBar, LineChart } from '../../'
+import { LineChart } from '../../'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
@@ -71,7 +71,6 @@ import {
   PercentText,
   PriceRow,
   PriceText,
-  ShowBalanceButton,
   StyledWrapper,
   TopRow,
   SubDivider,
@@ -85,6 +84,7 @@ import { TokenDetailsModal } from './components/token-details-modal/token-detail
 import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
+import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -191,7 +191,7 @@ export const PortfolioAsset = (props: Props) => {
   // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
   const [hoverPrice, setHoverPrice] = React.useState<string>()
-  const [hideBalances, setHideBalances] = React.useState<boolean>(false)
+
   const selectedAssetsNetwork = React.useMemo(() => {
     if (!selectedAsset) {
       return selectedNetwork
@@ -364,11 +364,7 @@ export const PortfolioAsset = (props: Props) => {
 
   const onUpdateBalance = React.useCallback((value: number | undefined) => {
     setHoverPrice(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
-  }, [defaultCurrencies])
-
-  const onToggleHideBalances = React.useCallback(() => {
-    setHideBalances(prevHideBalances => !prevHideBalances)
-  }, [])
+  }, [defaultCurrencies.fiat])
 
   const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
 
@@ -533,15 +529,11 @@ export const PortfolioAsset = (props: Props) => {
         <BalanceRow>
           {!isNftAsset &&
             <ChartControlBar
-              onSubmit={onChangeTimeline}
+              onSelectTimeframe={onChangeTimeline}
               selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
               timelineOptions={ChartTimelineOptions}
             />
           }
-          <ShowBalanceButton
-            hideBalances={hideBalances}
-            onClick={onToggleHideBalances}
-          />
           {selectedAsset?.contractAddress && !selectedAsset?.isErc721 &&
             <MoreButton onClick={onShowMore} />
           }
@@ -653,18 +645,17 @@ export const PortfolioAsset = (props: Props) => {
 
       {isTokenSupported
         ? <AccountsAndTransactionsList
-          formattedFullAssetBalance={formattedFullAssetBalance}
-          fullAssetFiatBalance={fullAssetFiatBalance}
-          selectedAsset={selectedAsset}
-          selectedAssetTransactions={selectedAssetTransactions}
-          onClickAddAccount={onClickAddAccount}
-          hideBalances={hideBalances}
-          networkList={networkList}
-        />
+            formattedFullAssetBalance={formattedFullAssetBalance}
+            fullAssetFiatBalance={fullAssetFiatBalance}
+            selectedAsset={selectedAsset}
+            selectedAssetTransactions={selectedAssetTransactions}
+            onClickAddAccount={onClickAddAccount}
+            networkList={networkList}
+          />
         : <>
-          <SubDivider />
-          <NotSupportedText>{getLocale('braveWalletMarketDataCoinNotSupported')}</NotSupportedText>
-        </>
+            <SubDivider />
+            <NotSupportedText>{getLocale('braveWalletMarketDataCoinNotSupported')}</NotSupportedText>
+          </>
       }
 
       {isShowingMarketData && selectedCoinMarket &&
