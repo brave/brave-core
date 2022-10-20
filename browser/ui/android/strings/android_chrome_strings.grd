@@ -1993,7 +1993,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Sync everything
       </message>
       <message name="IDS_SYNC_AUTOFILL" desc="Title for preference which enables sync'ing of autofill. [CHAR_LIMIT=32]">
-        Addresses, payment info, etc.
+        Addresses and more
       </message>
       <message name="IDS_SYNC_BOOKMARKS" desc="Title for preference which enables sync'ing of bookmarks. [CHAR_LIMIT=32]">
         Bookmarks
