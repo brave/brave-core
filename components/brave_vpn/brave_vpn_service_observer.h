@@ -27,6 +27,7 @@ class BraveVPNServiceObserver : public mojom::ServiceObserver {
   void OnPurchasedStateChanged(mojom::PurchasedState state) override {}
 #if !BUILDFLAG(IS_ANDROID)
   void OnConnectionStateChanged(mojom::ConnectionState state) override {}
+  void OnSelectedRegionChanged(mojom::RegionPtr region) override {}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
  private:

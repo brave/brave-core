@@ -20,6 +20,7 @@
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -195,6 +196,8 @@ class BraveVpnService :
   void OnCreateSupportTicket(CreateSupportTicketCallback callback,
                              APIRequestResult api_request_result);
 
+  void OnPreferenceChanged(const std::string& pref_name);
+
   BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -236,6 +239,8 @@ class BraveVpnService :
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
+
+  PrefChangeRegistrar pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   SEQUENCE_CHECKER(sequence_checker_);
