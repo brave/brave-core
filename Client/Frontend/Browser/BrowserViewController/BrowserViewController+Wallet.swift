@@ -225,15 +225,21 @@ extension Tab: BraveWalletProviderDelegate {
       }
       
       // add permission request to the queue
-      let request = permissionRequestManager.beginRequest(for: origin, coinType: coinType, providerHandler: completion, completion: { response in
-        switch response {
-        case .granted(let accounts):
-          completion(.none, accounts)
-        case .rejected:
-          completion(.none, [])
+      let request = permissionRequestManager.beginRequest(
+        for: origin,
+        accounts: accounts,
+        coinType: coinType,
+        providerHandler: completion,
+        completion: { response in
+          switch response {
+          case .granted(let accounts):
+            completion(.none, accounts)
+          case .rejected:
+            completion(.none, [])
+          }
+          self.tabDelegate?.updateURLBarWalletButton()
         }
-        self.tabDelegate?.updateURLBarWalletButton()
-      })
+      )
 
       tabDappStore.latestPendingPermissionRequest = request
       self.tabDelegate?.showWalletNotification(self, origin: origin)

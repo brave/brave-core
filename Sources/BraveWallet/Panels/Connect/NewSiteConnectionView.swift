@@ -14,6 +14,7 @@ import BraveUI
 public struct NewSiteConnectionView: View {
   @ObservedObject var keyringStore: KeyringStore
   var origin: URLOrigin
+  var accounts: [String]
   var coin: BraveWallet.CoinType
   var onConnect: (_ addresses: [String]) -> Void
   
@@ -22,12 +23,14 @@ public struct NewSiteConnectionView: View {
   
   public init(
     origin: URLOrigin,
+    accounts: [String],
     coin: BraveWallet.CoinType,
     keyringStore: KeyringStore,
     onConnect: @escaping (_ addresses: [String]) -> Void,
     onDismiss: @escaping () -> Void
   ) {
     self.origin = origin
+    self.accounts = accounts
     self.coin = coin
     self.keyringStore = keyringStore
     self.onConnect = onConnect
@@ -40,14 +43,8 @@ public struct NewSiteConnectionView: View {
   @State private var isConfirmationViewVisible: Bool = false
   
   private var accountInfos: [BraveWallet.AccountInfo] {
-    if coin == .sol {
-      if let solanaDefaultAccount = keyringStore.defaultAccounts.first(where: { $0.coin == .sol }) {
-        return [solanaDefaultAccount]
-      } else {
-        return []
-      }
-    }
-    return keyringStore.allKeyrings.first(where: { $0.coin == coin })?.accountInfos ?? []
+    let allAccounts = keyringStore.allKeyrings.first(where: { $0.coin == coin })?.accountInfos ?? []
+    return allAccounts.filter { self.accounts.contains($0.address) }
   }
   
   @ViewBuilder private func originAndFavicon(urlOrigin: URLOrigin) -> some View {
@@ -170,12 +167,20 @@ public struct NewSiteConnectionView: View {
     }
     .navigationViewStyle(.stack)
     .onAppear {
-      if keyringStore.selectedAccount.coin == coin {
+      if accounts.contains(keyringStore.selectedAccount.address),
+         keyringStore.selectedAccount.coin == coin {
+        // currently selected account exists in permissions request, select it
         selectedAccounts.insert(keyringStore.selectedAccount.id)
       } else { // Need to fetch selected account for coin
         Task { @MainActor in
           if let selectedAccount = await keyringStore.selectedAccount(for: coin) {
-            selectedAccounts.insert(selectedAccount.id)
+            if accounts.contains(selectedAccount.address) {
+              // currently gselected account exists in permissions request, select it
+              selectedAccounts.insert(selectedAccount.id)
+            } else if let firstAccount = accounts.first {
+              // else select the first account by default
+              selectedAccounts.insert(firstAccount)
+            }
           }
         }
       }
@@ -241,6 +246,7 @@ struct NewSiteConnectionView_Previews: PreviewProvider {
   static var previews: some View {
     NewSiteConnectionView(
       origin: .init(url: URL(string: "https://app.uniswap.org")!),
+      accounts: [BraveWallet.AccountInfo.previewAccount.address],
       coin: .eth,
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
