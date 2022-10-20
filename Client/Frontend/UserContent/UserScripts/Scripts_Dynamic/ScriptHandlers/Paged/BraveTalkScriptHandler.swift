@@ -9,18 +9,25 @@ import Shared
 import BraveShared
 import BraveCore
 import os.log
+import BraveTalk
 
 class BraveTalkScriptHandler: TabContentScript {
   private weak var tab: Tab?
   private weak var rewards: BraveRewards?
-  private var callback: ((Any?, String?) -> Void)?
+  private var rewardsEnabledReplyHandler: ((Any?, String?) -> Void)?
+  private let launchNativeBraveTalk: (_ tab: Tab?, _ room: String, _ token: String) -> Void
 
-  required init(tab: Tab, rewards: BraveRewards) {
+  required init(
+    tab: Tab,
+    rewards: BraveRewards,
+    launchNativeBraveTalk: @escaping (_ tab: Tab?, _ room: String, _ token: String) -> Void
+  ) {
     self.tab = tab
     self.rewards = rewards
+    self.launchNativeBraveTalk = launchNativeBraveTalk
 
     tab.rewardsEnabledCallback = { [weak self] success in
-      self?.callback?(success, nil)
+      self?.rewardsEnabledReplyHandler?(success, nil)
     }
   }
 
@@ -40,6 +47,38 @@ class BraveTalkScriptHandler: TabContentScript {
                                in: scriptSandbox)
   }()
 
+  private struct Payload: Decodable {
+    enum Kind: Decodable {
+      case braveRequestAdsEnabled
+      case launchNativeBraveTalk(String)
+    }
+    var kind: Kind
+    var securityToken: String
+    
+    enum CodingKeys: String, CodingKey {
+      case kind
+      case url
+      case securityToken = "securityToken"
+    }
+    
+    init(from decoder: Decoder) throws {
+      enum RawKindKey: String, Decodable {
+        case braveRequestAdsEnabled
+        case launchNativeBraveTalk
+      }
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      let kind = try container.decode(RawKindKey.self, forKey: .kind)
+      self.securityToken = try container.decode(String.self, forKey: .securityToken)
+      switch kind {
+      case .launchNativeBraveTalk:
+        let url = try container.decode(String.self, forKey: .url)
+        self.kind = .launchNativeBraveTalk(url)
+      case .braveRequestAdsEnabled:
+        self.kind = .braveRequestAdsEnabled
+      }
+    }
+  }
+  
   func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
@@ -60,14 +99,30 @@ class BraveTalkScriptHandler: TabContentScript {
       replyHandler(nil, nil)
       return
     }
+    
+    guard let json = try? JSONSerialization.data(withJSONObject: message.body, options: []),
+          let payload = try? JSONDecoder().decode(Payload.self, from: json) else {
+      return
+    }
 
-    handleBraveRequestAdsEnabled(replyHandler: replyHandler)
+    switch payload.kind {
+    case .braveRequestAdsEnabled:
+      handleBraveRequestAdsEnabled(replyHandler)
+    case .launchNativeBraveTalk(let url):
+      guard let components = URLComponents(string: url),
+            case let room = String(components.path.dropFirst(1)),
+            let jwt = components.queryItems?.first(where: { $0.name == "jwt" })?.value
+      else {
+        return
+      }
+      launchNativeBraveTalk(tab, room, jwt)
+      replyHandler(nil, nil)
+    }
   }
 
-  private func handleBraveRequestAdsEnabled(replyHandler: @escaping (Any?, String?) -> Void) {
-
+  private func handleBraveRequestAdsEnabled(_ replyHandler: @escaping (Any?, String?) -> Void) {
     guard let rewards = rewards, !PrivateBrowsingManager.shared.isPrivateBrowsing else {
-      replyHandler(true, nil)
+      replyHandler(false, nil)
       return
     }
 
@@ -77,9 +132,9 @@ class BraveTalkScriptHandler: TabContentScript {
     }
 
     // If rewards are disabled we show a Rewards panel,
-    // The `callback` will be called from other place.
+    // The `rewardsEnabledReplyHandler` will be called from other place.
     if let tab = tab {
-      callback = replyHandler
+      rewardsEnabledReplyHandler = replyHandler
       tab.tabDelegate?.showRequestRewardsPanel(tab)
     }
   }
