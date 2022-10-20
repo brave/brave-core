@@ -495,9 +495,9 @@ class SettingsViewController: TableViewController {
             return BraveVPN.vpnState.enableVPNDestinationVC
           case .purchased:
             let vc = BraveVPNSettingsViewController()
-            vc.faqButtonTapped = { [weak self] in
-              self?.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveVPNFaqURL)
-              self?.dismiss(animated: true)
+            vc.openURL = { [unowned self] url in
+              self.settingsDelegate?.settingsOpenURLInNewTab(url)
+              self.dismiss(animated: true)
             }
             
             return vc
