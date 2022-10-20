@@ -44,6 +44,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveVpnPaymentFailure", IDS_BRAVE_VPN_PAYMENT_FAILURE},
     {"braveVpnPaymentFailureReason", IDS_BRAVE_VPN_PAYMENT_FAILURE_REASON},
     {"braveVpnSupportEmail", IDS_BRAVE_VPN_SUPPORT_EMAIL},
+    {"braveVpnSupportEmailNotValid", IDS_BRAVE_VPN_SUPPORT_EMAIL_NOT_VALID},
     {"braveVpnSupportSubject", IDS_BRAVE_VPN_SUPPORT_SUBJECT},
     {"braveVpnSupportSubjectNotSet", IDS_BRAVE_VPN_SUPPORT_SUBJECT_NOTSET},
     {"braveVpnSupportSubjectOtherConnectionProblem",
