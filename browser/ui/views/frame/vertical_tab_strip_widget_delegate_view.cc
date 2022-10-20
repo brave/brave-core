@@ -62,6 +62,9 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
 
 void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
     views::View* child) {
+  if (!host_)
+    return;
+
   // Setting minimum size for |host_| so that we can overlay vertical tabs over
   // the web view.
   auto new_host_size = region_view_->GetMinimumSize();
@@ -105,6 +108,9 @@ void VerticalTabStripWidgetDelegateView::OnWidgetBoundsChanged(
 }
 
 void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
+  if (!host_)
+    return;
+
   auto* widget = GetWidget();
   DCHECK(widget);
   // Convert coordinate system based on Browser's widget.
