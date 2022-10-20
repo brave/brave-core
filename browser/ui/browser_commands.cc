@@ -200,11 +200,10 @@ void CopyCleanLink(Browser* browser, const GURL& url) {
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
   GURL final_url;
   // Apply debounce rules.
-
-  auto* debouce_service =
+  auto* debounce_service =
       debounce::DebounceServiceFactory::GetForBrowserContext(
           browser->profile());
-  if (debouce_service && !debouce_service->Debounce(url, &final_url)) {
+  if (debounce_service && !debounce_service->Debounce(url, &final_url)) {
     VLOG(1) << "Unable to apply debounce rules";
     final_url = url;
   }

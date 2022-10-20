@@ -64,8 +64,8 @@ static constexpr auto kConditionalQueryStringTrackers =
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
-std::string StripQueryParameter(const std::string& query,
-                                const std::string& spec) {
+absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
+                                                const std::string& spec) {
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
   // for more information on why this approach was selected.
@@ -73,14 +73,14 @@ std::string StripQueryParameter(const std::string& query,
   // Split query string by ampersands, remove tracking parameters,
   // then join the remaining query parameters, untouched, back into
   // a single query string.
-  const std::vector<std::string> input_kv_strings =
-      SplitString(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::vector<std::string> output_kv_strings;
+  const std::vector<base::StringPiece> input_kv_strings =
+      SplitStringPiece(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::vector<base::StringPiece> output_kv_strings;
   int disallowed_count = 0;
-  for (const std::string& kv_string : input_kv_strings) {
-    const std::vector<std::string> pieces = SplitString(
+  for (const auto& kv_string : input_kv_strings) {
+    const std::vector<base::StringPiece> pieces = SplitStringPiece(
         kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    const std::string& key = pieces.empty() ? "" : pieces[0];
+    const base::StringPiece& key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
         (kSimpleQueryStringTrackers.count(key) == 1 ||
          (kConditionalQueryStringTrackers.count(key) == 1 &&
@@ -93,17 +93,19 @@ std::string StripQueryParameter(const std::string& query,
   }
   if (disallowed_count > 0) {
     return base::JoinString(output_kv_strings, "&");
-  } else {
-    return query;
   }
+  return absl::nullopt;
 }
 
 }  // namespace
 
 absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
-  const std::string query = original_url.query();
-  const std::string spec = original_url.spec();
-  const std::string clean_query = StripQueryParameter(query, spec);
+  const auto& query = original_url.query_piece();
+  const std::string& spec = original_url.spec();
+  const auto clean_query_value = StripQueryParameter(query, spec);
+  if (!clean_query_value.has_value())
+    return absl::nullopt;
+  const auto& clean_query = clean_query_value.value();
   if (clean_query.length() < query.length()) {
     GURL::Replacements replacements;
     if (clean_query.empty()) {

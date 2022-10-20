@@ -13,6 +13,8 @@
 TEST(BraveQueryFilter, FilterQueryTrackers) {
   EXPECT_EQ(ApplyQueryFilter(GURL("https://test.com/?gclid=123")),
             GURL("https://test.com/"));
+  EXPECT_EQ(ApplyQueryFilter(GURL("https://test.com/?fbclid=123")),
+            GURL("https://test.com/"));
   EXPECT_EQ(ApplyQueryFilter(GURL("https://test.com/?mkt_tok=123")),
             GURL("https://test.com/"));
   EXPECT_EQ(
