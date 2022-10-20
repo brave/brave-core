@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index a98fde2bb0c3ba2da211a5197d107f354f8a0d38..bd27a3b6398e57753a1ecf0ec972f0f5e48c2bc4 100644
+index 4c4ff67ae6fd0ae9b9d29ba3db0cec20c790dfb0..b84d239ef072450230a3fe1f93d02c89f0d79bf1 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
 @@ -398,6 +398,7 @@ AutocompleteController::AutocompleteController(
@@ -10,12 +10,11 @@ index a98fde2bb0c3ba2da211a5197d107f354f8a0d38..bd27a3b6398e57753a1ecf0ec972f0f5
      }
      // Providers run in the order they're added.  Add `HistoryURLProvider` after
      // `SearchProvider` because:
-@@ -973,6 +974,8 @@ void AutocompleteController::UpdateResult(
-   metrics_.OnUpdateResult(last_result_for_logging,
-                           result_.GetMatchDedupComparators());
- 
+@@ -968,6 +969,7 @@ void AutocompleteController::UpdateResult(
+ #if DCHECK_IS_ON()
+   result_.Validate();
+ #endif  // DCHECK_IS_ON()
 +  BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
-+
+ 
    // Below are all annotations after the match list is ready.
  
-   // Only produce Pedals for the default focus case (not on focus or on delete).
