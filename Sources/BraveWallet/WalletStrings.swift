@@ -253,12 +253,19 @@ extension Strings {
       value: "Secondary Filecoin Account %lld",
       comment: "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\")"
     )
+    public static let addAccountWithCoinTypeTitle = NSLocalizedString(
+      "wallet.addAccountTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Add %@ Account",
+      comment: "The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. "
+    )
     public static let addAccountTitle = NSLocalizedString(
       "wallet.addAccountTitle",
       tableName: "BraveWallet",
       bundle: .strings,
       value: "Add Account",
-      comment: "The title of the add account screen"
+      comment: "The title of the add account screen."
     )
     public static let add = NSLocalizedString(
       "wallet.addAccountAddButton",

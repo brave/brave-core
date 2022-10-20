@@ -381,7 +381,8 @@ extension CryptoStore: BraveWalletTxServiceObserver {
 
 extension CryptoStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
-    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests()
+    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth, .sol])
+    WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth, .sol])
     rejectAllPendingWebpageRequests()
   }
   public func keyringCreated(_ keyringId: String) {
