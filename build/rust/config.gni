@@ -15,14 +15,12 @@ declare_args() {
 }
 
 if (cargo_profile == "") {
-  if (is_official_build) {
-    cargo_profile = "release"
-  } else {
+  if (is_debug) {
     cargo_profile = "dev"
+  } else {
+    cargo_profile = "release"
   }
 }
-
-unexport_list_path = "$root_build_dir/brave_rust/rust_lib.unexports"
 
 rustc_target = ""
 rustc_toolchain = ""
@@ -55,6 +53,12 @@ enable_rust_lto = too_many_personality_profiles_workaround
 if (enable_rust_lto) {
   default_rustflags += [ "-Cembed-bitcode=yes" ]
   default_rustflags += [ "-Clto" ]
+} else {
+  default_rustflags += [ "-Cembed-bitcode=no" ]
+}
+
+if (is_official_build) {
+  default_rustflags += [ "-Ccodegen-units=1" ]
 }
 
 if (is_debug) {
@@ -62,7 +66,7 @@ if (is_debug) {
     # must always be optimized for too_many_personality_profiles_workaround to work
     default_rustflags += [ "-Copt-level=1" ]
   } else {
-    default_rustflags += [ "-Copt-level=0" ]
+  default_rustflags += [ "-Copt-level=0" ]
   }
 } else if (optimize_for_size) {
   default_rustflags += [ "-Copt-level=s" ]
