@@ -76,8 +76,11 @@ TEST_F(
 
   // Update the active types to only include Wallet. This disables all other
   // types, including profiles.
-  sync_service_.SetActiveDataTypes(
-      syncer::ModelTypeSet(syncer::AUTOFILL_WALLET_DATA));
+  sync_service_.GetUserSettings()->SetSelectedTypes(
+      /*sync_everything=*/false,
+      /*types=*/syncer::UserSelectableTypeSet(
+          syncer::UserSelectableType::kAutofill));
+  sync_service_.SetFailedDataTypes(syncer::AUTOFILL_PROFILE);
 
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
