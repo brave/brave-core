@@ -94,6 +94,7 @@ public struct CryptoView: View {
             case .requestPermissions(let request, let onPermittedAccountsUpdated):
               NewSiteConnectionView(
                 origin: request.requestingOrigin,
+                accounts: request.requestingAccounts,
                 coin: request.coinType,
                 keyringStore: keyringStore,
                 onConnect: {

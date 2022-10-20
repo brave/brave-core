@@ -18,6 +18,8 @@ public struct WebpagePermissionRequest: Equatable {
   }
   /// The origin that requested this permission
   let requestingOrigin: URLOrigin
+  /// The accounts being requested to connect
+  let requestingAccounts: [String]
   /// The type of request
   let coinType: BraveWallet.CoinType
   /// A handler to be called when the user either approves or rejects the connection request
@@ -49,11 +51,16 @@ public class WalletProviderPermissionRequestsManager {
   /// users response by providing a closure
   public func beginRequest(
     for origin: URLOrigin,
+    accounts: [String],
     coinType: BraveWallet.CoinType,
     providerHandler: RequestPermissionsCallback?,
     completion: ((WebpagePermissionRequest.Response) -> Void)? = nil
   ) -> WebpagePermissionRequest {
-    var request = WebpagePermissionRequest(requestingOrigin: origin, coinType: coinType) { [weak self] decision in
+    var request = WebpagePermissionRequest(
+      requestingOrigin: origin,
+      requestingAccounts: accounts,
+      coinType: coinType
+    ) { [weak self] decision in
       guard let self = self, let originURL = origin.url else { return }
       if case .granted(let accounts) = decision {
         Domain.setWalletPermissions(
