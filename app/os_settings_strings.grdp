@@ -610,6 +610,12 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_NUMBER_OF_SUGGESTIONS" desc="The label for the setting to set the number of suggestions the Japanese input method should show.">
     Number of suggestions
   </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DISABLE_PERSONALIZED_SUGGESTIONS" desc="The label for the setting toggle to enable or disable the personalized conversions and custom user dictionaries for Japanese. The original string in Japanese is '学習機能、入力履歴からのサジェスト機能、ユーザ辞書機能を無効にする'.">
+    Disable personalized conversions and suggestions as well as user dictionary
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SEND_STATISTICS_TO_GOOGLE" desc="The label for the setting toggle to enable or disable sending all usage statistics and crash reports to Brave. The original string in Japanese is '使用統計データや障害レポートを Brave に自動送信する'.">
+    Automatically send usage statistics and crash reports to Brave
+  </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_DOUBLE_SPACE_PERIOD" desc="The label for the input method option to enable double-space to type period (when an user types two consecutive space, it outputs a period).">
     Double-space to type period
   </message>
@@ -2615,18 +2621,6 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
     Or specify your printer PPD <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_EDIT_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
-    Or specify your printer PPD
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_VIEW_PPD" desc="Text for the button which allows the user to view the PPD for the active printer.">
-    View PPD
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_VIEW_PPD_ERROR_MESSAGE" desc="The message shown when the request to view a PPD is unsuccessful.">
-    Unable to retrieve PPD.
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_PPD_INTRO" desc="Text used to introduce the PPD for an active printer.">
-    PPD for <ph name="PRINTER_NAME">$1<ex>Acme Printer</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_BUTTON_SELECT_DRIVER_ARIA_LABEL" desc="ARIA label for the file selector button to manually select a PPD file from the user's file system. This text will not be visual on any page. It will only be spoken by screen readers.">
     Browse to specify your printer PPD
