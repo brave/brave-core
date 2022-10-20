@@ -62,7 +62,7 @@ TEST_F(BatAdsNotificationAdValueUtilTest, ToListValue) {
 TEST_F(BatAdsNotificationAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::Dict* dict = value.GetIfDict();
+  const base::Value::Dict* const dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
   // Act
@@ -79,7 +79,7 @@ TEST_F(BatAdsNotificationAdValueUtilTest, FromValue) {
 TEST_F(BatAdsNotificationAdValueUtilTest, FromListValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kListJson);
-  const base::Value::List* list = value.GetIfList();
+  const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
   // Act

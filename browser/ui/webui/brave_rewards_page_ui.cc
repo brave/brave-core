@@ -647,6 +647,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   double rate = 0.0, auto_contribute_choice = 0.0;
   base::Value::List auto_contribute_choices;
   base::Value::Dict payout_status;
+  base::Value::Dict wallet_provider_regions;
   if (parameters) {
     rate = parameters->rate;
     auto_contribute_choice = parameters->auto_contribute_choice;
@@ -656,12 +657,32 @@ void RewardsDOMHandler::OnGetRewardsParameters(
     for (const auto& [key, value] : parameters->payout_status) {
       payout_status.Set(key, value);
     }
+
+    for (const auto& [wallet_provider, regions] :
+         parameters->wallet_provider_regions) {
+      base::Value::List allow;
+      for (const auto& country : regions->allow) {
+        allow.Append(country);
+      }
+
+      base::Value::List block;
+      for (const auto& country : regions->block) {
+        block.Append(country);
+      }
+
+      base::Value::Dict regions_dict;
+      regions_dict.Set("allow", std::move(allow));
+      regions_dict.Set("block", std::move(block));
+
+      wallet_provider_regions.Set(wallet_provider, std::move(regions_dict));
+    }
   }
 
   data.Set("rate", rate);
   data.Set("autoContributeChoice", auto_contribute_choice);
   data.Set("autoContributeChoices", std::move(auto_contribute_choices));
   data.Set("payoutStatus", std::move(payout_status));
+  data.Set("walletProviderRegions", std::move(wallet_provider_regions));
 
   CallJavascriptFunction("brave_rewards.rewardsParameters",
                          base::Value(std::move(data)));

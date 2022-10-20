@@ -102,6 +102,7 @@ import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.shields.CookieListOptInServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabHidingType;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -418,6 +419,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
 
             @Override
+            public void onHidden(Tab tab, @TabHidingType int reason) {
+                dismissCookieConsent();
+            }
+
+            @Override
             public void onPageLoadStarted(Tab tab, GURL url) {
                 showWalletIcon(false);
                 if (getToolbarDataProvider().getTab() == tab) {
@@ -701,6 +707,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
+    public void dismissCookieConsent() {
+        if (mCookieConsentTooltip != null && mCookieConsentTooltip.isShowing()) {
+            mCookieConsentTooltip.dismiss();
+            mCookieConsentTooltip = null;
+        }
+    }
+
     public void reopenShieldsPanel() {
         if (mBraveShieldsHandler != null && mBraveShieldsHandler.isShowing()) {
             mBraveShieldsHandler.hideBraveShieldsMenu();
@@ -807,13 +820,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
-                if (BraveActivity.getBraveActivity() != null) {
-                    BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
-                    BraveActivity.getBraveActivity().openRewardsPanel();
-                }
+                BraveRewardsHelper.setShowDeclareGeoModal(true);
+                openRewardsPanel();
                 dialog.dismiss();
             }
         }));

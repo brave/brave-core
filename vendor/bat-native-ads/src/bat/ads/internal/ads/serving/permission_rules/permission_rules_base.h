@@ -21,7 +21,7 @@ class PermissionRulesBase {
  protected:
   PermissionRulesBase();
 
-  bool HasPermission() const;
+  static bool HasPermission();
 };
 
 }  // namespace ads

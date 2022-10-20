@@ -16,10 +16,9 @@
 
 namespace ads {
 
-class BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest
-    : public UnitTestBase {};
+class BatAdsLastNotificationAdWasClickedTest : public UnitTestBase {};
 
-TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest, GetDataType) {
+TEST_F(BatAdsLastNotificationAdWasClickedTest, GetDataType) {
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastNotificationAdWasClicked>();
 
@@ -30,8 +29,7 @@ TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest, GetDataType) {
   EXPECT_EQ(brave_federated::mojom::DataType::kBool, data_type);
 }
 
-TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
-       GetValueWithoutHistory) {
+TEST_F(BatAdsLastNotificationAdWasClickedTest, GetValueWithoutHistory) {
   // Arrange
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastNotificationAdWasClicked>();
@@ -43,8 +41,7 @@ TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
   EXPECT_EQ("-1", value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
-       GetValueNotInTimeWindow) {
+TEST_F(BatAdsLastNotificationAdWasClickedTest, GetValueNotInTimeWindow) {
   // Arrange
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastNotificationAdWasClicked>();
@@ -62,8 +59,7 @@ TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
   EXPECT_EQ("-1", value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
-       GetValueWasClicked) {
+TEST_F(BatAdsLastNotificationAdWasClickedTest, GetValueWasClicked) {
   // Arrange
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastNotificationAdWasClicked>();
@@ -79,8 +75,7 @@ TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
   EXPECT_EQ("1", value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
-       GetValueWasNotClicked) {
+TEST_F(BatAdsLastNotificationAdWasClickedTest, GetValueWasNotClicked) {
   // Arrange
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastNotificationAdWasClicked>();

@@ -1447,7 +1447,7 @@ Are you sure you want to do this?
         Earn Tokens &amp; Give Back
       </message>
       <message name="IDS_BRAVE_REWARDS_MODAL_TEXT" desc="Brave rewards modal text">
-        Earn tokens by viewing Brave Private Ads and support content creators automatically.
+        Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
       </message>
       <message name="IDS_BRAVE_REWARDS_TOS_TEXT" desc="Brave rewards tos text">
         By proceeding, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
@@ -1456,7 +1456,7 @@ Are you sure you want to do this?
         Privacy Policy
       </message>
       <message name="IDS_TAKE_QUICK_TOUR" desc="Brave rewards quick tour text">
-        Take a quick tour
+        Let’s take a quick tour
       </message>
       <message name="IDS_WELCOME_TO_BRAVE_REWARDS" desc="Brave rewards onboarding title">
         Welcome to Brave Rewards!
@@ -3155,6 +3155,27 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_UNKNOWN" desc="Transaction subtype of Unknown">
       Unknown
+    </message>
+    <message name="IDS_SELECT_YOUR_COUNTRY_TITLE" desc="Declare geo modal title">
+      Select your country
+    </message>
+    <message name="IDS_SELECT_YOUR_COUNTRY_TEXT" desc="Declare geo modal text">
+      Select your country so we can show you the right options and ads for your region. <ph name="PRIVACY_POLICY">%1$s</ph>
+    </message>
+    <message name="IDS_DECLARE_GEO_SUCCESS_RESPONSE_TEXT" desc="Declare geo success modal text">
+      Your Brave Rewards region has been set to <ph name="COUNTRY_NAME">%1$s</ph>.
+    </message>
+    <message name="IDS_DECLARE_GEO_FAILED_RESPONSE_TEXT" desc="Declare geo failed modal text">
+      Unfortunately, there was an error while trying to set your country. Please try again.
+    </message>
+    <message name="IDS_SOMETHING_WENT_WRONG_TEXT" desc="Declare geo failed modal title">
+      Something went wrong
+    </message>
+    <message name="IDS_RETRY_TEXT" desc="Declare geo failed modal action text">
+      Retry
+    </message>
+    <message name="IDS_CLOSE_TEXT" desc="Declare geo success modal action text">
+      Close
     </message>
   </messages>
   </release>

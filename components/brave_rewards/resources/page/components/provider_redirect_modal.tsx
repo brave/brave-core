@@ -80,12 +80,13 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case 'mismatchedProviderAccountRegionsModal':
+    case 'mismatchedCountriesModal':
       return (
         <ModalRedirect
-          id={'redirect-modal-mismatched-provider-account-regions'}
-          errorText={[getString('redirectModalMismatchedProviderAccountRegionsText')]}
-          titleText={getString('redirectModalMismatchedProviderAccountRegionsTitle')}
+          id={'redirect-modal-mismatched-countries'}
+          errorText={[getString('redirectModalMismatchedCountriesText').replace('$1', providerName)]}
+          titleText={getString('redirectModalMismatchedCountriesTitle')}
+          learnMore={'https://support.brave.com/hc/en-us/articles/9809690466061'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}

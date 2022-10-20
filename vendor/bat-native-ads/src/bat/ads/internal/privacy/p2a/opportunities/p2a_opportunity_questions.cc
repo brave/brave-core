@@ -37,7 +37,7 @@ std::vector<std::string> CreateAdOpportunityQuestions(
     questions.push_back(question);
   }
 
-  questions.push_back("Brave.P2A.TotalAdOpportunities");
+  questions.emplace_back("Brave.P2A.TotalAdOpportunities");
 
   return questions;
 }

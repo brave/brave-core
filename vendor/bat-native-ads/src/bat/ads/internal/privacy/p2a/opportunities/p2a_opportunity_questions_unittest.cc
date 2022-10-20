@@ -11,7 +11,7 @@
 
 namespace ads::privacy::p2a {
 
-TEST(BatAdsP2AAdOpportunityTest, CreateAdOpportunityQuestions) {
+TEST(BatAdsP2AOpportunityQuestionsTest, CreateAdOpportunityQuestions) {
   // Arrange
   const std::vector<std::string> segments = {
       "technology & computing", "personal finance-crypto", "travel"};
@@ -30,7 +30,8 @@ TEST(BatAdsP2AAdOpportunityTest, CreateAdOpportunityQuestions) {
   EXPECT_EQ(expected_questions, questions);
 }
 
-TEST(BatAdsP2AAdOpportunityTest, CreateAdOpportunityQuestionsForEmptySegments) {
+TEST(BatAdsP2AOpportunityQuestionsTest,
+     CreateAdOpportunityQuestionsForEmptySegments) {
   // Arrange
   const std::vector<std::string> segments;
 

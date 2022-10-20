@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/issuers/public_key_util.h"
 
-#include <algorithm>
-
 #include "bat/ads/internal/account/issuers/issuer_info.h"
 
 namespace ads {

@@ -17,7 +17,7 @@ namespace ads {
 class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
  public:
   ConfirmationUserDataBuilder(base::Time created_at,
-                              const std::string& creative_instance_id,
+                              std::string creative_instance_id,
                               const ConfirmationType& confirmation_type);
 
   void Build(UserDataBuilderCallback callback) const override;

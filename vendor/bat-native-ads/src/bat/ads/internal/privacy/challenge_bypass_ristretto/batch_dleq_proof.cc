@@ -102,6 +102,10 @@ absl::optional<std::string> BatchDLEQProof::EncodeBase64() const {
     return absl::nullopt;
   }
 
+  if (!batch_dleq_proof_) {
+    return absl::nullopt;
+  }
+
   const std::string encoded_base64 = batch_dleq_proof_->encode_base64();
   if (ExceptionOccurred()) {
     return absl::nullopt;
@@ -117,6 +121,10 @@ bool BatchDLEQProof::Verify(const std::vector<BlindedToken>& blinded_tokens,
     return false;
   }
 
+  if (!batch_dleq_proof_) {
+    return false;
+  }
+
   const bool is_valid = batch_dleq_proof_->verify(
       ToRawBlindedTokens(blinded_tokens), ToRawSignedTokens(signed_tokens),
       public_key.get());
@@ -129,7 +137,8 @@ absl::optional<std::vector<UnblindedToken>> BatchDLEQProof::VerifyAndUnblind(
     const std::vector<BlindedToken>& blinded_tokens,
     const std::vector<SignedToken>& signed_tokens,
     const PublicKey& public_key) {
-  if (!has_value() || tokens.empty() || !public_key.has_value()) {
+  if (!batch_dleq_proof_ || !has_value() || tokens.empty() ||
+      !public_key.has_value()) {
     return absl::nullopt;
   }
 

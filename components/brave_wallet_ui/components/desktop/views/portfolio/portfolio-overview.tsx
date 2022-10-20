@@ -14,14 +14,12 @@ import {
   WalletState,
   PageState,
   SupportedTestNetworks,
-  WalletRoutes,
-  PriceDataObjectType
+  WalletRoutes
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 
 // Utils
 import { getTokensCoinType } from '../../../../utils/network-utils'
-import { formatAsDouble } from '../../../../utils/string-utils'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
@@ -33,29 +31,34 @@ import { AllAccountsOption } from '../../../../options/account-filter-options'
 
 // Components
 import { LoadingSkeleton } from '../../../shared'
-import {
-  ChartControlBar,
-  LineChart,
-  PortfolioAssetItem,
-  WithHideBalancePlaceholder
-} from '../../'
+import { PortfolioAssetItem } from '../../'
 import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 import { TokenLists } from './components/token-lists/token-list'
 
 // Styled Components
 import {
   StyledWrapper,
-  TopRow,
   BalanceTitle,
   BalanceText,
-  BalanceRow,
-  ShowBalanceButton
+  BalanceRow
 } from './style'
 
 // actions
 import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
+import PortfolioOverviewChart from './components/portfolio-overview-chart/portfolio-overview-chart'
+import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
+import {
+  Column,
+  HorizontalSpace,
+  Row,
+  ToggleVisibilityButton,
+  VerticalSpace
+} from '../../../shared/style'
+import { formatAsDouble } from '../../../../utils/string-utils'
+import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
+import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 
 export const PortfolioOverview = () => {
   // routing
@@ -65,11 +68,9 @@ export const PortfolioOverview = () => {
   const dispatch = useDispatch()
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const portfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.portfolioPriceHistory)
   const selectedPortfolioTimeline = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPortfolioTimeline)
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const isFetchingPortfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFetchingPortfolioPriceHistory)
   const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
@@ -177,16 +178,10 @@ export const PortfolioOverview = () => {
     return parseFloat(formatAsDouble(fullPortfolioFiatBalance)) === 0
   }, [fullPortfolioFiatBalance])
 
-  const priceHistory = React.useMemo((): PriceDataObjectType[] => {
-    if (isZeroBalance) {
-      return []
-    }
-    return portfolioPriceHistory
-  }, [portfolioPriceHistory, isZeroBalance])
-
   // state
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
+  const [showChart, setShowChart] = React.useState<boolean>(false)
 
   // methods
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
@@ -210,10 +205,6 @@ export const PortfolioOverview = () => {
     }
   }, [selectedTimeline])
 
-  const onUpdateBalance = React.useCallback((value: number | undefined) => {
-    setHoverBalance(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
-  }, [defaultCurrencies.fiat])
-
   const onToggleHideBalances = React.useCallback(() => {
     setHideBalances(prev => !prev)
   }, [])
@@ -226,43 +217,54 @@ export const PortfolioOverview = () => {
   // render
   return (
     <StyledWrapper>
-      <TopRow>
-        <BalanceRow>
-          <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
-        </BalanceRow>
-        <BalanceRow>
-          <ChartControlBar
-            onSubmit={onChangeTimeline}
-            selectedTimeline={selectedPortfolioTimeline}
-            timelineOptions={ChartTimelineOptions}
-          />
-          <ShowBalanceButton
-            hideBalances={hideBalances}
-            onClick={onToggleHideBalances}
-          />
-        </BalanceRow>
-      </TopRow>
 
-      <WithHideBalancePlaceholder
-        size='big'
-        hideBalances={hideBalances}
-      >
-        <BalanceText>
-          {fullPortfolioFiatBalance !== ''
-            ? `${hoverBalance || fullPortfolioFiatBalance}`
-            : <LoadingSkeleton width={150} height={32} />
-          }
-        </BalanceText>
-      </WithHideBalancePlaceholder>
+      <Row alignItems='flex-start' justifyContent='flex-start'>
+        <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
+      </Row>
 
-      <LineChart
-        isDown={false}
-        isAsset={false}
-        priceData={priceHistory}
-        onUpdateBalance={onUpdateBalance}
-        isLoading={isZeroBalance ? false : isFetchingPortfolioPriceHistory}
-        isDisabled={isZeroBalance}
-      />
+      <Row justifyContent='space-between'>
+        <Column>
+          <BalanceRow>
+            {hideBalances
+              ? <PlaceholderText isBig>******</PlaceholderText>
+              : <div>
+                  <BalanceText>
+                    {fullPortfolioFiatBalance !== ''
+                      ? `${hoverBalance || fullPortfolioFiatBalance}`
+                      : <LoadingSkeleton width={150} height={32} />
+                    }
+                  </BalanceText>
+                </div>
+            }
+            <HorizontalSpace space='16px' />
+            <ToggleVisibilityButton
+              isVisible={!hideBalances}
+              onClick={onToggleHideBalances}
+            />
+          </BalanceRow>
+        </Column>
+
+        <Column>
+          <BalanceRow>
+            <ChartControlBar
+              disabled={!showChart}
+              onSelectTimeframe={onChangeTimeline}
+              onDisabledChanged={() => setShowChart(prev => !prev)}
+              selectedTimeline={selectedPortfolioTimeline}
+              timelineOptions={ChartTimelineOptions}
+            />
+          </BalanceRow>
+        </Column>
+      </Row>
+
+      <VerticalSpace space='20px' />
+
+      <ColumnReveal hideContent={!showChart}>
+        <PortfolioOverviewChart
+          hasZeroBalance={isZeroBalance}
+          onHover={setHoverBalance}
+        />
+      </ColumnReveal>
 
       <TokenLists
         userAssetList={userAssetList}

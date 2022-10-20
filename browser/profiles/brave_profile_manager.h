@@ -15,7 +15,6 @@ class BraveProfileManager : public ProfileManager {
   explicit BraveProfileManager(const base::FilePath& user_data_dir);
   BraveProfileManager(const BraveProfileManager&) = delete;
   BraveProfileManager& operator=(const BraveProfileManager&) = delete;
-  ~BraveProfileManager() override;
 
   void InitProfileUserPrefs(Profile* profile) override;
   void SetNonPersonalProfilePrefs(Profile* profile) override;

@@ -40,9 +40,9 @@ constexpr char kTextCMCCrash[] =
 
 }  // namespace
 
-class BatAdsTextProcessingPipelineTest : public UnitTestBase {};
+class BatAdsTextProcessingTest : public UnitTestBase {};
 
-TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
+TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   // Arrange
   const double kTolerance = 1e-6;
   const unsigned kExpectedLen = 3;
@@ -82,7 +82,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   }
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
+TEST_F(BatAdsTextProcessingTest, TestLoadFromValue) {
   // Arrange
   const std::vector<std::string> train_texts = {
       "This is a spam email.", "Another spam trying to sell you viagra",
@@ -120,7 +120,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
   }
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
+TEST_F(BatAdsTextProcessingTest, InitValidModelTest) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
@@ -136,7 +136,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
   EXPECT_TRUE(success);
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
+TEST_F(BatAdsTextProcessingTest, EmptySegmentModelTest) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
@@ -152,7 +152,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
   EXPECT_FALSE(success);
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, EmptyModelTest) {
+TEST_F(BatAdsTextProcessingTest, EmptyModelTest) {
   // Arrange
   const std::string json = "{}";
 
@@ -166,7 +166,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptyModelTest) {
   EXPECT_FALSE(success);
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, MissingModelTest) {
+TEST_F(BatAdsTextProcessingTest, MissingModelTest) {
   // Arrange
 
   // Act
@@ -177,7 +177,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, MissingModelTest) {
   EXPECT_FALSE(success);
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
+TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
   // Arrange
   const size_t kMaxPredictionsSize = 100;
   const std::string kTestPage = "ethereum bitcoin bat zcash crypto tokens!";
@@ -204,7 +204,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   }
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
+TEST_F(BatAdsTextProcessingTest, TextCMCCrashTest) {
   // Arrange
   const size_t kMinPredictionsSize = 2;
   const size_t kMaxPredictionsSize = 100;

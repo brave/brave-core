@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.logo.LogoView;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
@@ -291,6 +292,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/CachedFlag"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/BraveCachedFlag"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/BraveLogoCoordinator"));
     }
 
     @Test
@@ -437,6 +440,8 @@ public class BytecodeTest {
                 "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "extractUrlFromIntent", true, String.class, Intent.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoCoordinator",
+                "updateVisibility", true, void.class));
     }
 
     @Test
@@ -683,6 +688,9 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
                 "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoCoordinator",
+                "org/chromium/chrome/browser/logo/BraveLogoCoordinator", Callback.class,
+                LogoView.class, boolean.class, Callback.class, Runnable.class, boolean.class));
     }
 
     @Test
@@ -866,6 +874,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mBrandedColorScheme"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "mAssistantVoiceSearchServiceSupplier"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/logo/LogoCoordinator", "mShouldShowLogo"));
     }
 
     @Test

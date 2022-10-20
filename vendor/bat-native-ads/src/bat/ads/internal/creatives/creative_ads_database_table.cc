@@ -120,6 +120,55 @@ CreativeAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
+void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
+                                const GetCreativeAdCallback& callback,
+                                mojom::DBCommandResponseInfoPtr response) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    BLOG(0, "Failed to get creative ad");
+    callback(/*success*/ false, creative_instance_id, {});
+    return;
+  }
+
+  const CreativeAdList creative_ads =
+      GetCreativeAdsFromResponse(std::move(response));
+
+  if (creative_ads.size() != 1) {
+    BLOG(0, "Failed to get creative ad");
+    callback(/*success*/ false, creative_instance_id, {});
+    return;
+  }
+
+  const CreativeAdInfo& creative_ad = creative_ads.front();
+
+  callback(/*success*/ true, creative_instance_id, creative_ad);
+}
+
+void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  DropTable(transaction, "creative_ads");
+
+  const std::string query =
+      "CREATE TABLE creative_ads "
+      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
+      "ON CONFLICT REPLACE, "
+      "conversion INTEGER NOT NULL DEFAULT 0, "
+      "per_day INTEGER NOT NULL DEFAULT 0, "
+      "per_week INTEGER NOT NULL DEFAULT 0, "
+      "per_month INTEGER NOT NULL DEFAULT 0, "
+      "total_max INTEGER NOT NULL DEFAULT 0, "
+      "value DOUBLE NOT NULL DEFAULT 0, "
+      "split_test_group TEXT, "
+      "target_url TEXT NOT NULL)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
 }  // namespace
 
 void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -149,7 +198,7 @@ void CreativeAds::Delete(ResultCallback callback) const {
 
 void CreativeAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    GetCreativeAdCallback callback) {
+    GetCreativeAdCallback callback) const {
   const CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {
@@ -193,9 +242,8 @@ void CreativeAds::GetForCreativeInstanceId(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&CreativeAds::OnGetForCreativeInstanceId,
-                     base::Unretained(this), creative_instance_id, callback));
+      std::move(transaction), base::BindOnce(&OnGetForCreativeInstanceId,
+                                             creative_instance_id, callback));
 }
 
 std::string CreativeAds::GetTableName() const {
@@ -240,56 +288,6 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       "target_url) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(9, count).c_str());
-}
-
-void CreativeAds::OnGetForCreativeInstanceId(
-    const std::string& creative_instance_id,
-    GetCreativeAdCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get creative ad");
-    callback(/*success*/ false, creative_instance_id, {});
-    return;
-  }
-
-  const CreativeAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
-
-  if (creative_ads.size() != 1) {
-    BLOG(0, "Failed to get creative ad");
-    callback(/*success*/ false, creative_instance_id, {});
-    return;
-  }
-
-  const CreativeAdInfo& creative_ad = creative_ads.front();
-
-  callback(/*success*/ true, creative_instance_id, creative_ad);
-}
-
-void CreativeAds::MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  DropTable(transaction, "creative_ads");
-
-  const std::string query =
-      "CREATE TABLE creative_ads "
-      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
-      "ON CONFLICT REPLACE, "
-      "conversion INTEGER NOT NULL DEFAULT 0, "
-      "per_day INTEGER NOT NULL DEFAULT 0, "
-      "per_week INTEGER NOT NULL DEFAULT 0, "
-      "per_month INTEGER NOT NULL DEFAULT 0, "
-      "total_max INTEGER NOT NULL DEFAULT 0, "
-      "value DOUBLE NOT NULL DEFAULT 0, "
-      "split_test_group TEXT, "
-      "target_url TEXT NOT NULL)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace ads::database::table

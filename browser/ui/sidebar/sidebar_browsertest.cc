@@ -62,7 +62,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   views::View* GetVerticalTabsContainer() const {
     auto* view = BrowserView::GetBrowserViewForBrowser(browser());
-    return static_cast<BraveBrowserView*>(view)->vertical_tabs_container_;
+    return static_cast<BraveBrowserView*>(view)->vertical_tab_strip_host_view_;
   }
 
   void SimulateSidebarItemClickAt(int index) const {

@@ -10,7 +10,8 @@
   color: var(--text2);
 
   > input, > textarea {
-    --focus-border-color: var(--highlight-color);
+    --border-color: --interactive8;
+    --focus-border-color: var(--focus-border);
     box-sizing: border-box;
     border: none;
     width: 100%;
@@ -24,7 +25,7 @@
     line-height: 20px;
     color: var(--text1);
     &:hover, &:focus-visible, &:active {
-      outline: 4px solid var(--focus-border);
+      outline: 4px solid var(--focus-border-color);
     }
     &:disabled {
       color: var(--disabled);
@@ -32,9 +33,9 @@
     }
   }
 
-  .hasError & input {
-    background-color: #FFEBEB;
-    --focus-border-color: #FF0000;
+  &:has([data-has-error]) :is(input, textarea) {
+    --border-color: #BD1531;
+    --focus-border-color: #BD1531;
   }
 }
 

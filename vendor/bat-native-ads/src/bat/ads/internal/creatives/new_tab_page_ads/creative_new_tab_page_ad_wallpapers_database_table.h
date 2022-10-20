@@ -30,8 +30,6 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const CreativeNewTabPageAdList& creative_ads) const;
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

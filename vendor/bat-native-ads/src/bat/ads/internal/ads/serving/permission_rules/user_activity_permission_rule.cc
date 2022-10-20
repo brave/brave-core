@@ -11,6 +11,22 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
+  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kIOS) {
+    return true;
+  }
+
+  return WasUserActive();
+}
+
+}  // namespace
+
 bool UserActivityPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "User was inactive";
@@ -22,18 +38,6 @@ bool UserActivityPermissionRule::ShouldAllow() {
 
 const std::string& UserActivityPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool UserActivityPermissionRule::DoesRespectCap() {
-  if (!ShouldRewardUser()) {
-    return true;
-  }
-
-  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kIOS) {
-    return true;
-  }
-
-  return WasUserActive();
 }
 
 }  // namespace ads

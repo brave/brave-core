@@ -72,7 +72,7 @@ mojom::SearchResultAdInfoPtr BuildAdWithConversion(
 
 void ExpectDepositExistsForCreativeInstanceId(
     const std::string& creative_instance_id) {
-  database::table::Deposits database_table;
+  const database::table::Deposits database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [](const bool success, const absl::optional<DepositInfo>& deposit) {
@@ -83,7 +83,7 @@ void ExpectDepositExistsForCreativeInstanceId(
 }
 
 void ExpectConversionCountEquals(const size_t expected_count) {
-  database::table::Conversions database_table;
+  const database::table::Conversions database_table;
   database_table.GetAll(
       [expected_count](const bool success, const ConversionList& conversions) {
         ASSERT_TRUE(success);

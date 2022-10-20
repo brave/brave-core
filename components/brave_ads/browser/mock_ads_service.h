@@ -17,8 +17,13 @@ namespace brave_ads {
 class MockAdsService : public AdsService {
  public:
   MockAdsService();
+
   MockAdsService(const MockAdsService&) = delete;
   MockAdsService& operator=(const MockAdsService&) = delete;
+
+  MockAdsService(MockAdsService&& other) noexcept = delete;
+  MockAdsService& operator=(MockAdsService&& other) noexcept = delete;
+
   ~MockAdsService() override;
 
   MOCK_CONST_METHOD0(IsSupportedLocale, bool());

@@ -31,7 +31,7 @@ void EligibleAdsV2::GetForUserModel(
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads");
 
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
       [=](const bool success, const AdEventList& ad_events) {
@@ -62,9 +62,9 @@ void EligibleAdsV2::GetBrowsingHistory(
 void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback,
     const BrowsingHistoryList& browsing_history) {
-  database::table::CreativeNewTabPageAds database_table;
+  const database::table::CreativeNewTabPageAds database_table;
   database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,
                             const CreativeNewTabPageAdList& creative_ads) {
     if (!success) {

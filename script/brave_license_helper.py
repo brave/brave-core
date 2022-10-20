@@ -38,12 +38,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # Add the licensing info that would normally be in a README.chromium file.
     # This is for when we pull in external repos directly.
     special_cases.update({
-        os.path.join('brave', 'vendor', 'bat-native-anonize'): {
-            "Name": "bat-native-anonize",
-            "URL": "https://github.com/brave-intl/bat-native-anonize",
-            "License": "Apache-2.0",
-            "License File": "/brave/vendor/bat-native-anonize/LICENSE.txt",
-        },
         os.path.join('brave', 'vendor', 'bat-native-rapidjson'): {
             "Name": "RapidJSON",
             "URL": "https://github.com/brave-intl/bat-native-rapidjson",

@@ -67,3 +67,19 @@ void SpeedreaderPanelDataHandlerImpl::SetContentStyle(ContentStyle style) {
   DCHECK(speedreader_tab_helper_);
   speedreader_tab_helper_->SetContentStyle(style);
 }
+
+void SpeedreaderPanelDataHandlerImpl::GetCurrentSiteURL(
+    GetCurrentSiteURLCallback callback) {
+  DCHECK(speedreader_tab_helper_);
+  std::move(callback).Run(speedreader_tab_helper_->GetCurrentSiteURL());
+}
+
+void SpeedreaderPanelDataHandlerImpl::IsEnabled(IsEnabledCallback callback) {
+  DCHECK(speedreader_tab_helper_);
+  std::move(callback).Run(speedreader_tab_helper_->IsEnabledForSite());
+}
+
+void SpeedreaderPanelDataHandlerImpl::SetEnabled(bool on) {
+  DCHECK(speedreader_tab_helper_);
+  speedreader_tab_helper_->MaybeToggleEnabledForSite(on);
+}

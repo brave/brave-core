@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -13,11 +15,20 @@
 namespace ads {
 
 namespace {
+
 constexpr int kPerHourCap = 1;
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  return DoesRespectCreativeCap(creative_ad, ad_events,
+                                ConfirmationType::kServed, base::Hours(1),
+                                kPerHourCap);
+}
+
 }  // namespace
 
-PerHourExclusionRule::PerHourExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+PerHourExclusionRule::PerHourExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 PerHourExclusionRule::~PerHourExclusionRule() = default;
 
@@ -40,13 +51,6 @@ bool PerHourExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& PerHourExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool PerHourExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                          const CreativeAdInfo& creative_ad) {
-  return DoesRespectCreativeCap(creative_ad, ad_events,
-                                ConfirmationType::kServed, base::Hours(1),
-                                kPerHourCap);
 }
 
 }  // namespace ads

@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 
 #include <string>
-#include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -77,12 +76,14 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       features::kEpsilonGreedyBandit, {{"epsilon_value", "1.0"}});
 
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
 
   const std::string segment_1 = "travel";
-  processor.Process({segment_1, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_1, mojom::NotificationAdEventType::kDismissed});
   const std::string segment_2 = "personal finance";
-  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_2, mojom::NotificationAdEventType::kClicked});
 
   // Act
   const EpsilonGreedyBandit model;
@@ -103,25 +104,35 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   for (const auto& segment : kSegments) {
-    processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+    processor::EpsilonGreedyBandit::Process(
+        {segment, mojom::NotificationAdEventType::kDismissed});
   }
 
   const std::string segment_1 = "science";
-  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_1, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_1, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_1, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_2 = "travel";
-  processor.Process({segment_2, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_2, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_2, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_2, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_3 = "technology & computing";
-  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_3, mojom::NotificationAdEventType::kClicked});
 
   // Act
   const EpsilonGreedyBandit model;
@@ -145,25 +156,35 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
   for (const auto& segment : kSegments) {
-    processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+    processor::EpsilonGreedyBandit::Process(
+        {segment, mojom::NotificationAdEventType::kDismissed});
   }
 
   const std::string segment_1 = "science";
-  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_1, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_1, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_1, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_2 = "travel";
-  processor.Process({segment_2, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_2, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_2, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_2, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_3 = "technology & computing";
-  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment_3, mojom::NotificationAdEventType::kClicked});
 
   // Act
   const EpsilonGreedyBandit model;

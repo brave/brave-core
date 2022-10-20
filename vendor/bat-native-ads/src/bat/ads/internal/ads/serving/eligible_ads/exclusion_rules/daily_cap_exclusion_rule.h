@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class DailyCapExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit DailyCapExclusionRule(const AdEventList& ad_events);
+  explicit DailyCapExclusionRule(AdEventList ad_events);
 
   DailyCapExclusionRule(const DailyCapExclusionRule& other) = delete;
   DailyCapExclusionRule& operator=(const DailyCapExclusionRule& other) = delete;
@@ -36,9 +36,6 @@ class DailyCapExclusionRule final
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const AdEventList& ad_events,
-                      const CreativeAdInfo& creative_ad);
-
   AdEventList ad_events_;
 
   std::string last_message_;

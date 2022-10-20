@@ -15,7 +15,6 @@ interface Props {
 
 const Container = styled(Flex)`
   padding: 16px 0;
-  cursor: pointer;
 `
 
 const Header = styled.span`

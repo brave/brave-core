@@ -114,6 +114,10 @@ class MockLedgerClient : public LedgerClient {
   MOCK_CONST_METHOD1(GetUint64State, uint64_t(
       const std::string& name));
 
+  MOCK_METHOD2(SetValueState, void(const std::string& name, base::Value value));
+
+  MOCK_CONST_METHOD1(GetValueState, base::Value(const std::string& name));
+
   MOCK_METHOD1(ClearState, void(
       const std::string& name));
 

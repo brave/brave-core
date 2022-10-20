@@ -75,17 +75,17 @@ std::string GetViewedSearchResultAdCreativeInstanceId(
     return {};
   }
 
-  const base::Value::Dict* payload_dict = payload_value->GetIfDict();
+  const base::Value::Dict* const payload_dict = payload_value->GetIfDict();
   if (!payload_dict) {
     return {};
   }
 
-  const std::string* type = payload_dict->FindString(kTypeParameterName);
+  const std::string* const type = payload_dict->FindString(kTypeParameterName);
   if (!type || *type != kTypeViewParameterValue) {
     return {};
   }
 
-  const std::string* creative_instance_id =
+  const std::string* const creative_instance_id =
       payload_dict->FindString(kCreativeInstanceIdParameterName);
   if (!creative_instance_id) {
     return {};

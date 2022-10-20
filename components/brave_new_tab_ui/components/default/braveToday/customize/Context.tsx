@@ -24,6 +24,8 @@ interface BraveNewsContext {
   filteredPublisherIds: string[]
   // Publishers the user is directly subscribed to
   subscribedPublisherIds: string[]
+  // Publishers to suggest to the user.
+  suggestedPublisherIds: string[]
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -33,13 +35,15 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   sortedPublishers: [],
   filteredPublisherIds: [],
   subscribedPublisherIds: [],
-  channels: {}
+  channels: {},
+  suggestedPublisherIds: []
 })
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
+  const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
 
   React.useEffect(() => {
     const handler = () => setChannels(api.getChannels())
@@ -47,6 +51,12 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
     api.addChannelsListener(handler)
     return () => api.removeChannelsListener(handler)
+  }, [])
+
+  const updateSuggestedPublishers = useCallback(async () => {
+    setSuggestedPublisherIds([])
+    const { suggestedPublisherIds } = await api.controller.getSuggestedPublisherIds()
+    setSuggestedPublisherIds(suggestedPublisherIds)
   }, [])
 
   React.useEffect(() => {
@@ -72,11 +82,16 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     sortedPublishers.filter(isPublisherEnabled).map(p => p.publisherId),
     [sortedPublishers])
 
-  const context = useMemo(() => ({
+  React.useEffect(() => {
+    updateSuggestedPublishers()
+  }, [])
+
+  const context = useMemo<BraveNewsContext>(() => ({
     customizePage,
     setCustomizePage,
     channels,
     publishers,
+    suggestedPublisherIds,
     sortedPublishers,
     filteredPublisherIds,
     subscribedPublisherIds
@@ -116,14 +131,14 @@ export const usePublisher = (publisherId: string) => {
   return useMemo(() => publishers[publisherId], [publishers[publisherId]])
 }
 
-export const usePublisherSubscribed = (publisherId: string) => {
+export const usePublisherFollowed = (publisherId: string) => {
   const publisher = usePublisher(publisherId)
 
-  const subscribed = isPublisherEnabled(publisher)
-  const setSubscribed = useCallback((subscribed: boolean) => api.setPublisherSubscribed(publisherId, subscribed), [publisherId])
+  const followed = isPublisherEnabled(publisher)
+  const setFollowed = useCallback((followed: boolean) => api.setPublisherFollowed(publisherId, followed), [publisherId])
 
   return {
-    subscribed,
-    setSubscribed
+    followed,
+    setFollowed
   }
 }

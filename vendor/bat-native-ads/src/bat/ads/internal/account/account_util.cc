@@ -18,7 +18,7 @@ bool ShouldRewardUser() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
 }
 
-void ResetRewards(ResetRewardsCallback callback) {
+void ResetRewards(const ResetRewardsCallback& callback) {
   transactions::RemoveAll([callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to remove transactions");

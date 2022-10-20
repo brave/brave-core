@@ -5,13 +5,15 @@
 
 #include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.h"
 
+#include <utility>
+
 namespace ads::targeting {
 
 PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo() = default;
 
 PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
-    const std::string& keywords,
+    std::string keywords,
     const uint16_t weight)
-    : keywords(keywords), weight(weight) {}
+    : keywords(std::move(keywords)), weight(weight) {}
 
 }  // namespace ads::targeting

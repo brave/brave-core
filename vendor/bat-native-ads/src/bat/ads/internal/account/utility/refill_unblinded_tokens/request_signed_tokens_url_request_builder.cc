@@ -21,10 +21,23 @@
 
 namespace ads {
 
+namespace {
+
+std::string BuildDigestHeaderValue(const std::string& body) {
+  DCHECK(!body.empty());
+
+  const std::vector<uint8_t> body_sha256 = security::Sha256(body);
+  const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
+
+  return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());
+}
+
+}  // namespace
+
 RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
-    const WalletInfo& wallet,
-    const std::vector<privacy::cbr::BlindedToken>& blinded_tokens)
-    : wallet_(wallet), blinded_tokens_(blinded_tokens) {
+    WalletInfo wallet,
+    std::vector<privacy::cbr::BlindedToken> blinded_tokens)
+    : wallet_(std::move(wallet)), blinded_tokens_(std::move(blinded_tokens)) {
   DCHECK(wallet_.IsValid());
   DCHECK(!blinded_tokens_.empty());
 }
@@ -79,16 +92,6 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
   headers.push_back(accept_header);
 
   return headers;
-}
-
-std::string RequestSignedTokensUrlRequestBuilder::BuildDigestHeaderValue(
-    const std::string& body) const {
-  DCHECK(!body.empty());
-
-  const std::vector<uint8_t> body_sha256 = security::Sha256(body);
-  const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
-
-  return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(

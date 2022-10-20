@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/base/time/time_constraint_util.h"
 
-#include <vector>
-
 #include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"

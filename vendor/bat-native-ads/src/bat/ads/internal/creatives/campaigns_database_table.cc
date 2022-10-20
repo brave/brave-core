@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/creatives/campaigns_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/bind.h"
@@ -43,6 +42,28 @@ int BindParameters(mojom::DBCommandInfo* command,
   }
 
   return count;
+}
+
+void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  DropTable(transaction, "campaigns");
+
+  const std::string query =
+      "CREATE TABLE campaigns "
+      "(campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
+      "start_at_timestamp TIMESTAMP NOT NULL, "
+      "end_at_timestamp TIMESTAMP NOT NULL, "
+      "daily_cap INTEGER DEFAULT 0 NOT NULL, "
+      "advertiser_id TEXT NOT NULL, "
+      "priority INTEGER NOT NULL DEFAULT 0, "
+      "ptr DOUBLE NOT NULL DEFAULT 1)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -112,28 +133,6 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
       "ptr) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(7, count).c_str());
-}
-
-void Campaigns::MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  DropTable(transaction, "campaigns");
-
-  const std::string query =
-      "CREATE TABLE campaigns "
-      "(campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
-      "start_at_timestamp TIMESTAMP NOT NULL, "
-      "end_at_timestamp TIMESTAMP NOT NULL, "
-      "daily_cap INTEGER DEFAULT 0 NOT NULL, "
-      "advertiser_id TEXT NOT NULL, "
-      "priority INTEGER NOT NULL DEFAULT 0, "
-      "ptr DOUBLE NOT NULL DEFAULT 1)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace ads::database::table

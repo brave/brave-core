@@ -14,8 +14,8 @@ std::string GetEventLogKeyForLinkingResult(mojom::Result result) {
       return log::kDeviceLimitReached;
     case mojom::Result::FLAGGED_WALLET:
       return log::kFlaggedWallet;
-    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
-      return log::kMismatchedProviderAccountRegions;
+    case mojom::Result::MISMATCHED_COUNTRIES:
+      return log::kMismatchedCountries;
     case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
       return log::kMismatchedProviderAccounts;
     case mojom::Result::NOT_FOUND:

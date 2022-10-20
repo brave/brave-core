@@ -71,7 +71,7 @@ VerificationSignature VerificationSignature::DecodeBase64(
 }
 
 absl::optional<std::string> VerificationSignature::EncodeBase64() const {
-  if (!has_value()) {
+  if (!verification_signature_ || !has_value()) {
     return absl::nullopt;
   }
 

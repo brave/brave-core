@@ -7,6 +7,7 @@
 
 #include <string>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 #include "base/test/values_test_util.h"
@@ -32,7 +33,7 @@ class BatAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {};
 TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::Dict* dict = value.GetIfDict();
+  const base::Value::Dict* const dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
   const std::vector<std::tuple<std::string, VectorData>> kSamples = {
@@ -64,7 +65,7 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
 TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJsonEmpty);
-  const base::Value::Dict* dict = value.GetIfDict();
+  const base::Value::Dict* const dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
   // Act
@@ -78,7 +79,7 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
 TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueMalformed) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJsonMalformed);
-  const base::Value::Dict* dict = value.GetIfDict();
+  const base::Value::Dict* const dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
   // Act

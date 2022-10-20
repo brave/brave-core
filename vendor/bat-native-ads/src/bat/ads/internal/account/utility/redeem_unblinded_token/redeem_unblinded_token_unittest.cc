@@ -81,7 +81,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   ConfirmationInfo expected_confirmation = *confirmation;
@@ -113,7 +113,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -167,7 +167,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   ConfirmationInfo expected_confirmation = *confirmation;
@@ -212,7 +212,7 @@ TEST_F(
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -255,7 +255,7 @@ TEST_F(
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   ConfirmationInfo expected_confirmation = *confirmation;
@@ -301,7 +301,7 @@ TEST_F(
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   ConfirmationInfo expected_confirmation = *confirmation;
@@ -347,7 +347,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
@@ -382,7 +382,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -417,7 +417,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -452,7 +452,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -487,7 +487,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))

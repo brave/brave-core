@@ -26,9 +26,11 @@ constexpr inline auto kCollectedTypicalHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Core.BookmarksCountOnProfileLoad.2",
     "Brave.Core.CrashReportsEnabled",
+    "Brave.Core.DomainsLoaded",
     "Brave.Core.IsDefault",
     "Brave.Core.LastTimeIncognitoUsed",
     "Brave.Core.NumberOfExtensions",
+    "Brave.Core.PagesLoaded",
     "Brave.Core.TabCount",
     "Brave.Core.TorEverUsed",
     "Brave.Core.WindowCount.2",

@@ -37,7 +37,9 @@ class BlindedToken {
   bool operator==(const BlindedToken& other) const;
   bool operator!=(const BlindedToken& other) const;
 
-  bool has_value() const { return blinded_token_.has_value(); }
+  bool has_value() const {
+    return blinded_token_ && blinded_token_.has_value();
+  }
 
   challenge_bypass_ristretto::BlindedToken& get() {
     DCHECK(blinded_token_);

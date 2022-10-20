@@ -20,9 +20,9 @@ namespace {
 constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
 }  // namespace
 
-class BatAdsTargetingSegmentUtilTest : public UnitTestBase {};
+class BatAdsSegmentUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
+TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kCatalog);
@@ -41,7 +41,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
+TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   // Arrange
   const CatalogInfo catalog;
 
@@ -53,7 +53,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
+TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
   // Arrange
   const std::string segment = "technology & computing-software";
 
@@ -66,7 +66,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentFromParentSegment) {
+TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentSegment) {
   // Arrange
   const std::string segment = "technology & computing";
 
@@ -79,7 +79,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentFromParentSegment) {
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegments) {
+TEST_F(BatAdsSegmentUtilTest, GetParentSegments) {
   // Arrange
   const SegmentList segments = {"technology & computing-software",
                                 "personal finance-personal finance",
@@ -95,7 +95,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegments) {
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
+TEST_F(BatAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
   // Arrange
   const SegmentList segments;
 
@@ -108,7 +108,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
+TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent-child", CategoryContentOptActionType::kNone);
@@ -120,8 +120,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest,
-       ShouldNotFilterNonMatchingParentChildSegment) {
+TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent-child", CategoryContentOptActionType::kNone);
@@ -133,7 +132,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
   EXPECT_FALSE(should_filter_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
+TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent", CategoryContentOptActionType::kNone);
@@ -145,8 +144,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest,
-       ShouldNotFilterNonMatchingParentSegment) {
+TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent", CategoryContentOptActionType::kNone);
@@ -158,7 +156,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
   EXPECT_FALSE(should_filter_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest,
+TEST_F(BatAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleAdOptOut(
@@ -171,7 +169,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest,
+TEST_F(BatAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleAdOptOut(
@@ -184,7 +182,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
   EXPECT_FALSE(should_filter_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, MatchParentSegments) {
+TEST_F(BatAdsSegmentUtilTest, MatchParentSegments) {
   // Arrange
 
   // Act
@@ -195,7 +193,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, MatchParentSegments) {
   EXPECT_TRUE(does_match);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, ParentSegmentsDoNotMatch) {
+TEST_F(BatAdsSegmentUtilTest, ParentSegmentsDoNotMatch) {
   // Arrange
 
   // Act
@@ -206,7 +204,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, ParentSegmentsDoNotMatch) {
   EXPECT_FALSE(does_match);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, HasChildSegment) {
+TEST_F(BatAdsSegmentUtilTest, HasChildSegment) {
   // Arrange
 
   // Act
@@ -217,7 +215,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, HasChildSegment) {
   EXPECT_TRUE(has_child_segment);
 }
 
-TEST_F(BatAdsTargetingSegmentUtilTest, DoesNotHaveChildSegment) {
+TEST_F(BatAdsSegmentUtilTest, DoesNotHaveChildSegment) {
   // Arrange
 
   // Act

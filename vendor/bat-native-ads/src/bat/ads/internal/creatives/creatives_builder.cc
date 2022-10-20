@@ -28,6 +28,8 @@
 
 namespace ads {
 
+// TODO(https://github.com/brave/brave-browser/issues/24938): Reduce cognitive
+// complexity.
 CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
   CreativesInfo creatives;
 

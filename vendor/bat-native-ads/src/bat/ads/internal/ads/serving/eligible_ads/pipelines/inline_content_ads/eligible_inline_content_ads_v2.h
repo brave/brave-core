@@ -51,7 +51,7 @@ class EligibleAdsV2 final : public EligibleAdsBase {
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback,
       const BrowsingHistoryList& browsing_history);
 
   CreativeInlineContentAdList FilterCreativeAds(

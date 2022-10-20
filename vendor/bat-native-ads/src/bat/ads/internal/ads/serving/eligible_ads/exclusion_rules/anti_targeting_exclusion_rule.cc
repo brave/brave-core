@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/base/url/url_util.h"
@@ -27,8 +29,8 @@ bool HasVisitedSiteOnAntiTargetingList(
 
 AntiTargetingExclusionRule::AntiTargetingExclusionRule(
     resource::AntiTargeting* anti_targeting_resource,
-    const BrowsingHistoryList& browsing_history)
-    : browsing_history_(browsing_history) {
+    BrowsingHistoryList browsing_history)
+    : browsing_history_(std::move(browsing_history)) {
   anti_targeting_ = anti_targeting_resource->get();
 }
 

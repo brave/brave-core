@@ -15,7 +15,7 @@
 
 namespace ads {
 
-TEST(BatAdsSearchEngineUtilTest, IsSearchEngineResultsPage) {
+TEST(BatAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
   // Arrange
   const std::vector<GURL>& urls = GetSearchEngineResultsPageUrls();
 
@@ -27,7 +27,7 @@ TEST(BatAdsSearchEngineUtilTest, IsSearchEngineResultsPage) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineResultsPage) {
+TEST(BatAdsSearchEngineResultsPageUtilTest, IsNotSearchEngineResultsPage) {
   // Arrange
   const GURL url = GURL("https://brave.com/");
 
@@ -38,7 +38,8 @@ TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineResultsPage) {
   EXPECT_FALSE(is_search_engine_result_page);
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineResultsPageWithInvalidUrl) {
+TEST(BatAdsSearchEngineResultsPageUtilTest,
+     IsNotSearchEngineResultsPageWithInvalidUrl) {
   // Arrange
   const GURL url = GURL("INVALID_URL");
 
@@ -49,7 +50,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineResultsPageWithInvalidUrl) {
   EXPECT_FALSE(is_search_engine_result_page);
 }
 
-TEST(BatAdsSearchEngineUtilTest, ExtractSearchTermQueryValue) {
+TEST(BatAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
   // Arrange
   const std::vector<GURL>& urls = GetSearchEngineResultsPageUrls();
 
@@ -65,7 +66,7 @@ TEST(BatAdsSearchEngineUtilTest, ExtractSearchTermQueryValue) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest,
+TEST(BatAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromUrlWithMissingQuery) {
   // Arrange
   const GURL url = GURL("https://google.com/");
@@ -78,7 +79,7 @@ TEST(BatAdsSearchEngineUtilTest,
   EXPECT_FALSE(search_term_query_value);
 }
 
-TEST(BatAdsSearchEngineUtilTest,
+TEST(BatAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromInvalidUrl) {
   // Arrange
   const GURL url = GURL("INVALID_URL");

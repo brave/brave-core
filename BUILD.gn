@@ -141,10 +141,7 @@ if (is_android) {
 
 if (is_mac) {
   group("framework_bundle_data") {
-    deps = [
-      "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
-      "components/brave_rewards/resources/extension:framework_bundle_data",
-    ]
+    deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
   }
 }
 
@@ -154,7 +151,6 @@ group("unpacked_resources") {
     if (enable_extensions) {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
-        "//brave/components/brave_rewards/resources/extension:locales",
       ]
     }
   }
@@ -259,28 +255,17 @@ if (!is_mac && !is_android && !is_ios) {
     group("brave_extensions_locale_dist_resources") {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
-        "//brave/components/brave_rewards/resources/extension:locales",
       ]
 
       public_deps = []
       foreach(locale, platform_pak_locales) {
         # public_deps is used intentionaly because ":create_dist_zip" needs the all dependency
         # of all locale files.
-        public_deps += [
-          ":brave_rewards_locales_${locale}",
-          ":brave_shields_locales_${locale}",
-        ]
+        public_deps += [ ":brave_shields_locales_${locale}" ]
       }
     }
 
     foreach(locale, platform_pak_locales) {
-      copy("brave_rewards_locales_${locale}") {
-        deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
-
-        locale = string_replace(locale, "-", "_")
-        sources = [ "$root_out_dir/resources/brave_rewards/_locales/$locale/messages.json" ]
-        outputs = [ "$brave_dist_dir/resources/brave_rewards/_locales/$locale/{{source_file_part}}" ]
-      }
       copy("brave_shields_locales_${locale}") {
         deps = [ "//brave/components/brave_extension/extension/brave_extension:locales_$locale" ]
 
@@ -440,7 +425,6 @@ action("create_dist_zips") {
       if (enable_extensions) {
         foreach(locale, platform_pak_locales) {
           inputs += get_target_outputs(":brave_shields_locales_${locale}")
-          inputs += get_target_outputs(":brave_rewards_locales_${locale}")
         }
       }
     }

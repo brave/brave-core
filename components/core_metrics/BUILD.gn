@@ -1,0 +1,18 @@
+static_library("core_metrics") {
+  sources = [
+    "core_metrics_service.cc",
+    "core_metrics_service.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/p3a_utils",
+    "//brave/components/time_period_storage",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//url",
+  ]
+}

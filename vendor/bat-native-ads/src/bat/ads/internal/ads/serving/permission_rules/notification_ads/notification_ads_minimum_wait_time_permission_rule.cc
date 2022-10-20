@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
 
+#include <vector>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -16,7 +18,22 @@
 namespace ads::notification_ads {
 
 namespace {
+
 constexpr int kMinimumWaitTimeCap = 1;
+
+bool DoesRespectCap(const std::vector<base::Time>& history) {
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
+  if (ads_per_hour == 0) {
+    return false;
+  }
+
+  const base::TimeDelta time_constraint =
+      base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
+
+  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint,
+                                                 kMinimumWaitTimeCap);
+}
+
 }  // namespace
 
 bool MinimumWaitTimePermissionRule::ShouldAllow() {
@@ -40,20 +57,6 @@ bool MinimumWaitTimePermissionRule::ShouldAllow() {
 
 const std::string& MinimumWaitTimePermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool MinimumWaitTimePermissionRule::DoesRespectCap(
-    const std::vector<base::Time>& history) {
-  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
-  if (ads_per_hour == 0) {
-    return false;
-  }
-
-  const base::TimeDelta time_constraint =
-      base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
-
-  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint,
-                                                 kMinimumWaitTimeCap);
 }
 
 }  // namespace ads::notification_ads

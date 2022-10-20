@@ -83,7 +83,7 @@ export const CreateAccountTab = ({
     if (accountNetwork.coin === BraveWallet.CoinType.FIL) {
       dispatch(WalletActions.addFilecoinAccount({
         accountName: suggestedAccountName,
-        network: 'f'
+        network: accountNetwork.chainId === BraveWallet.FILECOIN_TESTNET ? BraveWallet.FILECOIN_TESTNET : BraveWallet.FILECOIN_MAINNET
       }))
     } else {
       dispatch(WalletActions.addAccount({
@@ -100,7 +100,8 @@ export const CreateAccountTab = ({
     showUnlock,
     accountNetwork.coin,
     suggestedAccountName,
-    isPanel
+    isPanel,
+    accountNetwork.chainId
   ])
 
   const handleUnlockAttempt = React.useCallback((password: string): void => {

@@ -22,7 +22,7 @@ base::Value::List ToValue(const DiagnosticMap& diagnostics) {
   base::Value::List list;
 
   for (const auto& diagnostic : diagnostics) {
-    DiagnosticEntryInterface* entry = diagnostic.second.get();
+    const DiagnosticEntryInterface* const entry = diagnostic.second.get();
     DCHECK(entry);
 
     base::Value::Dict dict;

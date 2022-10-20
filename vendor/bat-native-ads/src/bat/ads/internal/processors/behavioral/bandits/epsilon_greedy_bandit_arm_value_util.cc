@@ -21,7 +21,7 @@ constexpr char kPullsKey[] = "pulls";
 
 absl::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromDict(
     const base::Value::Dict& dict) {
-  const std::string* segment = dict.FindString(kSegmentKey);
+  const std::string* const segment = dict.FindString(kSegmentKey);
   if (!segment || segment->empty()) {
     return absl::nullopt;
   }
@@ -36,7 +36,7 @@ absl::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromDict(
 
 absl::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromValue(
     const base::Value& value) {
-  const base::Value::Dict* dict = value.GetIfDict();
+  const base::Value::Dict* const dict = value.GetIfDict();
   if (!dict) {
     return absl::nullopt;
   }

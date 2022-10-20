@@ -14,7 +14,8 @@
 
 namespace ads::new_tab_page_ads {
 
-bool PermissionRules::HasPermission() const {
+// static
+bool PermissionRules::HasPermission() {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }

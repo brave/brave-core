@@ -9,22 +9,16 @@
 #include <memory>
 #include <utility>
 
-#include "base/files/file_path.h"
-#include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/no_destructor.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_key.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -38,153 +32,6 @@ using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImag
 #endif
 
 namespace brave {
-
-namespace {
-
-using PathMap = std::map<const base::FilePath, Profile*>;
-
-PathMap* GetPathMap() {
-  static base::NoDestructor<PathMap> provider;
-  return provider.get();
-}
-
-Profile* GetFromPath(const base::FilePath& key) {
-  auto mapping = *GetPathMap();
-  const auto& it = mapping.find(key);
-  if (it == mapping.end()) {
-    DCHECK(false);
-    return nullptr;
-  }
-
-  return it->second;
-}
-
-class ParentProfileData : public base::SupportsUserData::Data {
- public:
-  ParentProfileData(const ParentProfileData&) = delete;
-  ParentProfileData& operator=(const ParentProfileData&) = delete;
-  ~ParentProfileData() override;
-  static void CreateForProfile(content::BrowserContext* context);
-  static ParentProfileData* FromProfile(content::BrowserContext* context);
-  static const ParentProfileData* FromProfile(
-      const content::BrowserContext* context);
-  static const ParentProfileData* FromPath(const base::FilePath& path);
-
-  Profile* profile() const;
-
-  std::unique_ptr<Data> Clone() override;
-
- private:
-  static const void* const kUserDataKey;
-  static const void* UserDataKey();
-
-  explicit ParentProfileData(Profile* profile);
-
-  raw_ptr<Profile> profile_ = nullptr;
-  base::FilePath path_;
-};
-
-const void* const ParentProfileData::kUserDataKey = &kUserDataKey;
-
-// static
-void ParentProfileData::CreateForProfile(content::BrowserContext* context) {
-  DCHECK(context);
-  if (FromProfile(context))
-    return;
-
-  auto* profile = Profile::FromBrowserContext(context);
-  auto* profile_manager = g_browser_process->profile_manager();
-  DCHECK(profile_manager);
-
-  auto* parent_profile =
-      profile_manager->GetProfileByPath(GetParentProfilePath(profile));
-  DCHECK(parent_profile);
-  DCHECK(parent_profile != profile);
-
-  profile->SetUserData(UserDataKey(),
-                       base::WrapUnique(new ParentProfileData(parent_profile)));
-
-  GetPathMap()->insert(
-      std::pair<const base::FilePath, Profile*>(profile->GetPath(), profile));
-}
-
-// static
-ParentProfileData* ParentProfileData::FromProfile(
-    content::BrowserContext* context) {
-  DCHECK(context);
-  auto* profile = Profile::FromBrowserContext(context);
-  return static_cast<ParentProfileData*>(
-      profile->GetOriginalProfile()->GetUserData(UserDataKey()));
-}
-
-// static
-const ParentProfileData* ParentProfileData::FromProfile(
-    const content::BrowserContext* context) {
-  DCHECK(context);
-  const auto* profile = static_cast<const Profile*>(context);
-  return static_cast<const ParentProfileData*>(
-      profile->GetOriginalProfile()->GetUserData(UserDataKey()));
-}
-
-// static
-const ParentProfileData* ParentProfileData::FromPath(
-    const base::FilePath& path) {
-  auto* profile = GetFromPath(path);
-  DCHECK(profile);
-  return FromProfile(profile);
-}
-
-Profile* ParentProfileData::profile() const {
-  return profile_;
-}
-
-std::unique_ptr<base::SupportsUserData::Data> ParentProfileData::Clone() {
-  return base::WrapUnique(new ParentProfileData(profile_));
-}
-
-const void* ParentProfileData::UserDataKey() {
-  return &kUserDataKey;
-}
-
-ParentProfileData::ParentProfileData(Profile* profile)
-    : profile_(profile), path_(profile->GetPath()) {}
-
-ParentProfileData::~ParentProfileData() {
-  GetPathMap()->erase(path_);
-}
-
-}  // namespace
-
-Profile* CreateParentProfileData(content::BrowserContext* context) {
-  ParentProfileData::CreateForProfile(context);
-  return ParentProfileData::FromProfile(context)->profile();
-}
-
-base::FilePath GetParentProfilePath(content::BrowserContext* context) {
-  return GetParentProfilePath(context->GetPath());
-}
-
-base::FilePath GetParentProfilePath(const base::FilePath& path) {
-  return path.DirName().DirName();
-}
-
-bool IsSessionProfile(content::BrowserContext* context) {
-  DCHECK(context);
-  return ParentProfileData::FromProfile(context) != nullptr;
-}
-
-bool IsSessionProfilePath(const base::FilePath& path) {
-  return path.DirName().BaseName() == base::FilePath(kSessionProfileDir);
-}
-
-Profile* GetParentProfile(content::BrowserContext* context) {
-  DCHECK(context);
-  return ParentProfileData::FromProfile(context)->profile();
-}
-
-Profile* GetParentProfile(const base::FilePath& path) {
-  return ParentProfileData::FromPath(path)->profile();
-}
 
 bool IsGuestProfile(content::BrowserContext* context) {
   DCHECK(context);
@@ -254,16 +101,3 @@ void SetDefaultThirdPartyCookieBlockValue(Profile* profile) {
 }
 
 }  // namespace brave
-
-namespace chrome {
-
-// Get the correct profile for keyed services that use
-// GetBrowserContextRedirectedInIncognito or equivalent
-content::BrowserContext* GetBrowserContextRedirectedInIncognitoOverride(
-    content::BrowserContext* context) {
-  if (brave::IsSessionProfile(context))
-    context = brave::GetParentProfile(context);
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
-}
-
-}  // namespace chrome

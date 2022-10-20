@@ -5,8 +5,6 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 
-#include <memory>
-
 #include "base/threading/sequence_bound.h"
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"

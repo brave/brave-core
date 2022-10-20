@@ -18,6 +18,17 @@ class NotificationAdBackgroundPainter : public views::Painter {
   NotificationAdBackgroundPainter(const int top_radius,
                                   const int bottom_radius,
                                   const SkColor color = SK_ColorWHITE);
+
+  NotificationAdBackgroundPainter(const NotificationAdBackgroundPainter&) =
+      delete;
+  NotificationAdBackgroundPainter& operator=(
+      const NotificationAdBackgroundPainter&) = delete;
+
+  NotificationAdBackgroundPainter(
+      NotificationAdBackgroundPainter&& other) noexcept = delete;
+  NotificationAdBackgroundPainter& operator=(
+      NotificationAdBackgroundPainter&& other) noexcept = delete;
+
   ~NotificationAdBackgroundPainter() override;
 
   // views::Painter:
@@ -28,11 +39,6 @@ class NotificationAdBackgroundPainter : public views::Painter {
   const SkScalar top_radius_;
   const SkScalar bottom_radius_;
   const SkColor color_;
-
-  NotificationAdBackgroundPainter(const NotificationAdBackgroundPainter&) =
-      delete;
-  NotificationAdBackgroundPainter& operator=(
-      const NotificationAdBackgroundPainter&) = delete;
 };
 
 }  // namespace brave_ads

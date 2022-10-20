@@ -15,6 +15,7 @@ import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
 import FeedCard, { DirectFeedCard } from './FeedCard'
 import useSearch from './useSearch'
+import Suggestions from './Suggestions'
 
 const Header = styled.span`
   font-size: 24px;
@@ -68,13 +69,14 @@ function Home () {
 
   return (
     <>
+      <Suggestions/>
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
       {visibleChannelIds.map(channelId =>
-        <ChannelCard key={channelId} channelId={channelId} />
+        <ChannelCard key={channelId} channelName={channelId} />
       )}
       {!showingAllCategories && <LoadMoreButtonContainer>
         <Button onClick={() => setShowingAllCategories(true)}>
-            {getLocale('braveNewsLoadMoreCategoriesButton')}
+            {getLocale('braveNewsShowMoreButton')}
         </Button>
       </LoadMoreButtonContainer>}
       </DiscoverSection>
@@ -103,7 +105,7 @@ function SearchResults (props: SearchResultsProps) {
       {hasAnyChannels &&
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
         {search.filteredChannels.map(c =>
-          <ChannelCard key={c.channelName} channelId={c.channelName} />
+          <ChannelCard key={c.channelName} channelName={c.channelName} />
         )}
       </DiscoverSection>
       }

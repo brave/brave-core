@@ -31,10 +31,15 @@ class AdsService;
 class SearchResultAdService : public KeyedService {
  public:
   explicit SearchResultAdService(AdsService* ads_service);
-  ~SearchResultAdService() override;
 
   SearchResultAdService(const SearchResultAdService&) = delete;
   SearchResultAdService& operator=(const SearchResultAdService&) = delete;
+
+  SearchResultAdService(SearchResultAdService&& other) noexcept = delete;
+  SearchResultAdService& operator=(SearchResultAdService&& other) noexcept =
+      delete;
+
+  ~SearchResultAdService() override;
 
   // Retrieves search result ads from the render frame.
   // If should_trigger_viewed_event value is false, then viewed

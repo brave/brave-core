@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
-#include <vector>
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -38,7 +36,8 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
   // Assert
   const std::vector<std::string> segments = {"technology & computing"};
 
-  database::table::CreativePromotedContentAds creative_promoted_content_ads;
+  const database::table::CreativePromotedContentAds
+      creative_promoted_content_ads;
   creative_promoted_content_ads.GetForSegments(
       segments,
       [](const bool success, const SegmentList& /*segments*/,

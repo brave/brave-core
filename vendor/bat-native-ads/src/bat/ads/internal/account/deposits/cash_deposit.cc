@@ -13,7 +13,7 @@ namespace ads {
 
 void CashDeposit::GetValue(const std::string& creative_instance_id,
                            GetDepositCallback callback) {
-  database::table::Deposits database_table;
+  const database::table::Deposits database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [callback](const bool success,

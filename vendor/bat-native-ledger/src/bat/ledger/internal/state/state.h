@@ -92,6 +92,8 @@ class State {
 
   base::flat_map<std::string, std::string> GetPayoutStatus();
 
+  base::flat_map<std::string, mojom::RegionsPtr> GetWalletProviderRegions();
+
   void SetEmptyBalanceChecked(const bool checked);
 
   bool GetEmptyBalanceChecked();

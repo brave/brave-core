@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
@@ -14,11 +15,25 @@
 namespace ads {
 
 namespace {
+
 constexpr int kConversionCap = 1;
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  const int count = std::count_if(
+      ad_events.cbegin(), ad_events.cend(),
+      [&creative_ad](const AdEventInfo& ad_event) {
+        return ad_event.confirmation_type == ConfirmationType::kConversion &&
+               ad_event.creative_set_id == creative_ad.creative_set_id;
+      });
+
+  return count < kConversionCap;
+}
+
 }  // namespace
 
-ConversionExclusionRule::ConversionExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+ConversionExclusionRule::ConversionExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 ConversionExclusionRule::~ConversionExclusionRule() = default;
 
@@ -45,19 +60,6 @@ bool ConversionExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& ConversionExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool ConversionExclusionRule::DoesRespectCap(
-    const AdEventList& ad_events,
-    const CreativeAdInfo& creative_ad) {
-  const int count = std::count_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&creative_ad](const AdEventInfo& ad_event) {
-        return ad_event.confirmation_type == ConfirmationType::kConversion &&
-               ad_event.creative_set_id == creative_ad.creative_set_id;
-      });
-
-  return count < kConversionCap;
 }
 
 }  // namespace ads

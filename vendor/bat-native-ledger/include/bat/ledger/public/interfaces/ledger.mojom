@@ -111,6 +111,11 @@ struct VisitData {
   string favicon_url;
 };
 
+struct Regions {
+  array<string> allow;
+  array<string> block;
+};
+
 struct RewardsParameters {
   double rate;
   double auto_contribute_choice;
@@ -118,6 +123,7 @@ struct RewardsParameters {
   array<double> tip_choices;
   array<double> monthly_tip_choices;
   map<string, string> payout_status;
+  map<string, Regions> wallet_provider_regions;
 };
 
 struct Balance {
@@ -244,7 +250,7 @@ enum Result {
   UPHOLD_INSUFFICIENT_CAPABILITIES = 43,
   FLAGGED_WALLET = 44,
   REGION_NOT_SUPPORTED = 45,
-  MISMATCHED_PROVIDER_ACCOUNT_REGIONS = 46
+  MISMATCHED_COUNTRIES = 46
 };
 
 enum PublisherStatus {

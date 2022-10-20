@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class TransferredExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit TransferredExclusionRule(const AdEventList& ad_events);
+  explicit TransferredExclusionRule(AdEventList ad_events);
 
   TransferredExclusionRule(const TransferredExclusionRule& other) = delete;
   TransferredExclusionRule& operator=(const TransferredExclusionRule& other) =
@@ -37,9 +37,6 @@ class TransferredExclusionRule final
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const AdEventList& ad_events,
-                      const CreativeAdInfo& creative_ad);
-
   AdEventList ad_events_;
 
   std::string last_message_;

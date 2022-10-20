@@ -106,13 +106,14 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root) {
 
   if (const auto* wallpapers = root.FindList(kWallpapersKey)) {
     for (const auto& value : *wallpapers) {
-      const base::Value::Dict* dict = value.GetIfDict();
+      const base::Value::Dict* const dict = value.GetIfDict();
       if (!dict) {
         continue;
       }
 
-      const std::string* image_url = dict->FindString(kImageUrlKey);
-      const base::Value::Dict* focal_point = dict->FindDict(kFocalPointKey);
+      const std::string* const image_url = dict->FindString(kImageUrlKey);
+      const base::Value::Dict* const focal_point =
+          dict->FindDict(kFocalPointKey);
       if (!image_url || !focal_point) {
         continue;
       }

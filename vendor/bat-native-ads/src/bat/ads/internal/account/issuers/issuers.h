@@ -44,7 +44,6 @@ class Issuers {
   void FailedToFetchIssuers(bool should_retry);
 
   void FetchAfterDelay();
-  base::TimeDelta GetFetchDelay() const;
 
   void RetryAfterDelay();
   void OnRetry();

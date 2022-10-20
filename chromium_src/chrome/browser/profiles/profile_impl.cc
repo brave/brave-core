@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/profiles/brave_bookmark_model_loaded_observer.h"
-#include "brave/browser/profiles/brave_profile_impl.h"
 #define BookmarkModelLoadedObserver BraveBookmarkModelLoadedObserver
 #define ChromeBrowsingDataRemoverDelegate BraveBrowsingDataRemoverDelegate
 #include "src/chrome/browser/profiles/profile_impl.cc"

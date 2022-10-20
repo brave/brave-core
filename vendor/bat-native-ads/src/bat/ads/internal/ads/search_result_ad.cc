@@ -79,8 +79,8 @@ void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
-  DCHECK(!ad_viewed_event_queue_.empty() ||
-         !trigger_ad_viewed_event_in_progress_);
+  DCHECK((!ad_viewed_event_queue_.empty() ||
+          !trigger_ad_viewed_event_in_progress_));
 
   if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
     return;

@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 using ::testing::Return;
 
@@ -23,6 +22,14 @@ constexpr char kNotAllowedURL[] = "https://brave.com/search";
 constexpr char kTestingHeaderName[] = "TestingHeaderName";
 constexpr char kTestingHeaderValue[] = "TestingHeaderValue";
 
+network::ResourceRequest BuildRequest() {
+  network::ResourceRequest request;
+  request.url = GURL(kAllowedURL);
+  request.is_outermost_main_frame = true;
+  request.headers.SetHeader("TestingHeaderName", "TestingHeaderValue");
+  return request;
+}
+
 }  // namespace
 
 namespace brave_ads {
@@ -34,14 +41,6 @@ class AdsStatusHeaderThrottleTest : public ::testing::Test {
   }
 
   const AdsService* GetAdsService() const { return &mock_ads_service_; }
-
-  network::ResourceRequest BuildRequest() {
-    network::ResourceRequest request;
-    request.url = GURL(kAllowedURL);
-    request.is_outermost_main_frame = true;
-    request.headers.SetHeader("TestingHeaderName", "TestingHeaderValue");
-    return request;
-  }
 
  private:
   MockAdsService mock_ads_service_;
@@ -63,7 +62,7 @@ TEST_F(AdsStatusHeaderThrottleTest, AdsEnabledForAllowedHost) {
 }
 
 TEST_F(AdsStatusHeaderThrottleTest, AdsDisabledForAllowedHost) {
-  network::ResourceRequest request = BuildRequest();
+  const network::ResourceRequest request = BuildRequest();
   MockAdsService ads_service;
   EXPECT_CALL(ads_service, IsEnabled()).WillOnce(Return(false));
   auto throttle =
@@ -72,7 +71,7 @@ TEST_F(AdsStatusHeaderThrottleTest, AdsDisabledForAllowedHost) {
 }
 
 TEST_F(AdsStatusHeaderThrottleTest, IncognitoModeForAllowedHost) {
-  network::ResourceRequest request = BuildRequest();
+  const network::ResourceRequest request = BuildRequest();
   auto throttle =
       AdsStatusHeaderThrottle::MaybeCreateThrottle(nullptr, request);
   EXPECT_FALSE(throttle);

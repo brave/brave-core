@@ -4,18 +4,18 @@
      found in the LICENSE file. -->
 <androidx.cardview.widget.CardView
 	xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/brave_rewards_onboarding_modal_layout"
-    android:layout_width="320dp"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:gravity="center"
-    android:layout_gravity="center_horizontal"
-    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
-    android:visibility="gone"
-    app:cardElevation="10dp"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="12dp">
+    	xmlns:app="http://schemas.android.com/apk/res-auto"
+    	android:id="@+id/brave_rewards_onboarding_modal_layout"
+    	android:layout_width="340dp"
+    	android:layout_height="wrap_content"
+    	android:layout_margin="4dp"
+    	android:gravity="center"
+    	android:layout_gravity="center_horizontal"
+    	app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
+    	android:visibility="gone"
+    	app:cardElevation="10dp"
+    	app:cardUseCompatPadding="true"
+    	app:cardCornerRadius="12dp">
 
 	<androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -30,69 +30,104 @@
 	        android:orientation="vertical">
 
 	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginTop="24dp"
-	            android:layout_marginBottom="8dp"
-	            app:drawableStartCompat="@drawable/btn_bat"
-	            android:drawablePadding="8dp"
-	            android:fontFamily="@font/poppins_regular"
-	            android:text="@string/earn_tokens_and_give_back"
-	            android:textSize="20sp"
-	            android:textStyle="bold"
-	            android:textColor="@color/rewards_panel_text_color"/>
+	        	android:id="@+id/modal_title"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_marginTop="24dp"
+	          android:layout_marginBottom="8dp"
+	          app:drawableStartCompat="@drawable/ic_bat_logo"
+	          android:drawablePadding="8dp"
+	          android:layout_gravity="center"
+	          android:gravity="center"
+	          android:fontFamily="@font/poppins_regular"
+	          android:text="@string/earn_tokens_and_give_back"
+	          android:textSize="20sp"
+	          android:textStyle="bold"
+	          android:textAlignment="center"
+	          android:textColor="@color/rewards_panel_text_color"/>
 
 	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginBottom="16dp"
-	            android:layout_gravity="center"
-	            android:gravity="center"
-	            android:text="@string/brave_rewards_modal_text"
-	            android:textSize="14sp"
-	            android:fontFamily="@font/poppins_regular"
-	            android:textColor="@color/rewards_panel_secondary_text_color"/>
+	        	android:id="@+id/modal_text"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_gravity="center"
+	          android:gravity="center"
+	          android:text="@string/brave_rewards_modal_text"
+	          android:textSize="14sp"
+	          android:fontFamily="@font/poppins_regular"
+	          android:textColor="@color/rewards_panel_secondary_text_color"/>
+
+	        <Spinner
+	         	android:id="@+id/country_spinner"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginVertical="16dp"
+			android:background="@drawable/country_spinner_background"
+			android:visibility="gone" />
+
+	        <TextView
+	          android:id="@+id/start_using_brave_rewards_text"
+	          android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:layout_gravity="center_horizontal"
+	          android:gravity="center"
+	          android:background="@drawable/blue_48_rounded_bg"
+	          android:text="@string/start_using_brave_rewards"
+	          android:textAllCaps="false"
+	          android:textSize="16sp"
+	          android:padding="8dp"
+	          android:fontFamily="@font/poppins_regular"
+	          android:layout_marginTop="24dp"
+	          android:layout_marginBottom="18dp"
+	          android:textAlignment="center"
+	          android:textColor="@android:color/white"
+	          style="?android:attr/borderlessButtonStyle"/>
+
+	        <TextView
+	          android:id="@+id/btn_continue"
+	          android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:layout_gravity="center_horizontal"
+	          android:gravity="center"
+	          android:enabled="false"
+	          android:background="@drawable/set_default_rounded_button_disabled"
+	          android:text="@string/continue_text"
+	          android:textAllCaps="false"
+	          android:textSize="16sp"
+	          android:padding="8dp"
+	          android:visibility="gone"
+	          android:textAlignment="center"
+	          android:fontFamily="@font/poppins_regular"
+	          android:layout_marginTop="16dp"
+	          android:layout_marginBottom="20dp"
+	          android:textColor="@android:color/white"
+	          style="?android:attr/borderlessButtonStyle"/>
 
 	        <TextView
 	        	android:id="@+id/take_quick_tour_button"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginBottom="24dp"
-	            android:layout_gravity="center"
-	            android:text="@string/take_quick_tour"
-	            android:textSize="14sp"
-	            android:textStyle="bold"
-	            android:fontFamily="@font/poppins_regular"
-	            android:textColor="@color/rewards_panel_action_color"/>
-
-	        <TextView
-	            android:id="@+id/start_using_brave_rewards_text"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_horizontal"
-	            android:gravity="center"
-	            android:background="@drawable/blue_48_rounded_bg"
-	            android:text="@string/start_using_brave_rewards"
-	            android:textAllCaps="false"
-	            android:textSize="16sp"
-	            android:padding="8dp"
-	            android:fontFamily="@font/poppins_regular"
-	            android:layout_marginBottom="20dp"
-	            android:textColor="@android:color/white"
-	            style="?android:attr/borderlessButtonStyle"/>
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_marginBottom="32dp"
+	          android:layout_gravity="center"
+	          android:text="@string/take_quick_tour"
+	          android:textSize="14sp"
+	          android:textStyle="bold"
+	          android:textAlignment="center"
+	          android:fontFamily="@font/poppins_regular"
+	          android:textColor="@color/rewards_panel_action_color"/>
 
 	        <TextView
 	        	android:id="@+id/brave_rewards_onboarding_modal_tos_pp_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_horizontal"
-	            android:gravity="center"
-	            android:lineSpacingMultiplier="1.5"
-	            android:text="@string/brave_rewards_tos_text"
-	            android:textSize="12sp"
-	            android:textStyle="bold"
-	            android:fontFamily="@font/poppins_regular"
-	            android:textColor="@color/rewards_panel_text_color"/>
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_gravity="center_horizontal"
+	          android:gravity="center"
+	          android:lineSpacingMultiplier="1.5"
+	          android:text="@string/brave_rewards_tos_text"
+	          android:textSize="12sp"
+	          android:textStyle="bold"
+	          android:fontFamily="@font/poppins_regular"
+	          android:textColor="@color/rewards_panel_text_color"/>
 
 	    </LinearLayout>
 

@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 
-#include <string>
-
 #include "absl/types/optional.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"

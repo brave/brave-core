@@ -65,8 +65,8 @@ Result ParseBody(const std::string& body) {
   } else if (message->find("mismatched provider account regions") !=
              std::string::npos) {
     // HTTP 400: bitFlyer, Gemini, Uphold
-    BLOG(0, "Mismatched provider account regions!");
-    return base::unexpected(Error::kMismatchedProviderAccountRegions);
+    BLOG(0, "Mismatched countries!");
+    return base::unexpected(Error::kMismatchedCountries);
   } else {
     // bitFlyer, Gemini, Uphold
     BLOG(0, "Unknown message!");
@@ -108,8 +108,8 @@ mojom::Result PostConnect::ToLegacyResult(const Result& result) {
         return mojom::Result::LEDGER_ERROR;
       case Error::kFlaggedWallet:  // HTTP 400
         return mojom::Result::FLAGGED_WALLET;
-      case Error::kMismatchedProviderAccountRegions:  // HTTP 400
-        return mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS;
+      case Error::kMismatchedCountries:  // HTTP 400
+        return mojom::Result::MISMATCHED_COUNTRIES;
       case Error::kRegionNotSupported:  // HTTP 400
         return mojom::Result::REGION_NOT_SUPPORTED;
       case Error::kUnknownMessage:  // HTTP 400, HTTP 403

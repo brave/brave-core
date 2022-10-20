@@ -84,7 +84,8 @@ bool GetIntValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  *out_value = ad_property->values->get_long_values().front();
+  *out_value =
+      static_cast<int32_t>(ad_property->values->get_long_values().front());
 
   return true;
 }
@@ -100,7 +101,7 @@ bool GetDoubleValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  std::string value = ad_property->values->get_string_values().front();
+  const std::string& value = ad_property->values->get_string_values().front();
   return base::StringToDouble(value, out_value);
 }
 
@@ -115,8 +116,8 @@ bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  std::string value = ad_property->values->get_string_values().front();
-  GURL url(value);
+  const std::string& value = ad_property->values->get_string_values().front();
+  const GURL url(value);
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
     return false;
   }
@@ -192,6 +193,8 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
   return false;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/25971): Reduce cognitive
+// complexity.
 absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
     const schema_org::mojom::EntityPtr& entity) {
   DCHECK(entity);

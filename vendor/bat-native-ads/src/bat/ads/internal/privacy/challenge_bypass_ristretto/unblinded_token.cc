@@ -66,7 +66,7 @@ UnblindedToken UnblindedToken::DecodeBase64(
 }
 
 absl::optional<std::string> UnblindedToken::EncodeBase64() const {
-  if (!has_value()) {
+  if (!unblinded_token_ || !has_value()) {
     return absl::nullopt;
   }
 
@@ -79,7 +79,7 @@ absl::optional<std::string> UnblindedToken::EncodeBase64() const {
 }
 
 absl::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
-  if (!has_value()) {
+  if (!unblinded_token_ || !has_value()) {
     return absl::nullopt;
   }
 
@@ -93,7 +93,7 @@ absl::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
 }
 
 absl::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
-  if (!has_value()) {
+  if (!unblinded_token_ || !has_value()) {
     return absl::nullopt;
   }
 

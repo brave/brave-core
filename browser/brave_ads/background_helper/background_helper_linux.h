@@ -17,10 +17,14 @@ class BackgroundHelperLinux
       public base::SupportsWeakPtr<BackgroundHelperLinux>,
       public BrowserListObserver {
  public:
-  ~BackgroundHelperLinux() override;
-
   BackgroundHelperLinux(const BackgroundHelperLinux&) = delete;
   BackgroundHelperLinux& operator=(const BackgroundHelperLinux&) = delete;
+
+  BackgroundHelperLinux(BackgroundHelperLinux&& other) noexcept = delete;
+  BackgroundHelperLinux& operator=(BackgroundHelperLinux&& other) noexcept =
+      delete;
+
+  ~BackgroundHelperLinux() override;
 
  protected:
   friend class BackgroundHelperHolder;

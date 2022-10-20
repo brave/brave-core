@@ -37,7 +37,9 @@ class TokenPreimage {
   bool operator==(const TokenPreimage& other) const;
   bool operator!=(const TokenPreimage& other) const;
 
-  bool has_value() const { return token_preimage_.has_value(); }
+  bool has_value() const {
+    return token_preimage_ && token_preimage_.has_value();
+  }
 
   challenge_bypass_ristretto::TokenPreimage& get() {
     DCHECK(token_preimage_);

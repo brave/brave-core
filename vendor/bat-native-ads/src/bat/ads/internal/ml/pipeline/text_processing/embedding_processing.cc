@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
-#include <algorithm>
 #include <cstdint>
 #include <utility>
 #include <vector>
@@ -44,7 +43,7 @@ bool EmbeddingProcessing::IsInitialized() const {
 }
 
 bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
-  const base::Value::Dict* value = resource_value.GetIfDict();
+  const base::Value::Dict* const value = resource_value.GetIfDict();
   if (!value) {
     return is_initialized_;
   }

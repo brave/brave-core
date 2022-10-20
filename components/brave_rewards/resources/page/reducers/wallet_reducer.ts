@@ -199,8 +199,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
-      if (action.payload.result === 46) { // type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS
-        state.ui.modalRedirect = 'mismatchedProviderAccountRegionsModal'
+      if (action.payload.result === 46) { // type::Result::MISMATCHED_COUNTRIES
+        state.ui.modalRedirect = 'mismatchedCountriesModal'
         break
       }
 

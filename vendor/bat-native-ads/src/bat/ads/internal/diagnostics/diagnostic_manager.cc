@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 
-#include <string>
 #include <utility>
 
 #include "base/check_op.h"
@@ -59,7 +58,8 @@ void DiagnosticManager::SetEntry(
   diagnostics_[type] = std::move(entry);
 }
 
-void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
+void DiagnosticManager::GetDiagnostics(
+    const GetDiagnosticsCallback& callback) const {
   callback(ToValue(diagnostics_));
 }
 

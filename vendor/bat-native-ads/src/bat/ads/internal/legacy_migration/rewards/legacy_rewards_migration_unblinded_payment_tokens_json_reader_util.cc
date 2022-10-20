@@ -34,7 +34,8 @@ absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
   }
 
   // Unblinded token
-  const std::string* unblinded_token = value.FindStringKey(kUnblindedTokenKey);
+  const std::string* const unblinded_token =
+      value.FindStringKey(kUnblindedTokenKey);
   if (!unblinded_token) {
     return absl::nullopt;
   }

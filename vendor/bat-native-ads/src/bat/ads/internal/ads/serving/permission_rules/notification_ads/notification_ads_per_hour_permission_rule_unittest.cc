@@ -16,9 +16,10 @@
 
 namespace ads::notification_ads {
 
-class BatAdsAdsPerHourPermissionRuleTest : public UnitTestBase {};
+class BatAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
+       AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
@@ -29,7 +30,7 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
+TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -49,7 +50,7 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
+TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
@@ -68,7 +69,8 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
+       AllowAdIfDoesNotExceedCap) {
   // Arrange
   const int64_t ads_per_hour = 5;
 
@@ -86,7 +88,7 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerHourPermissionRuleTest,
+TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   const int64_t ads_per_hour = 5;
@@ -107,7 +109,7 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerHourPermissionRuleTest,
+TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   const int64_t ads_per_hour = 5;

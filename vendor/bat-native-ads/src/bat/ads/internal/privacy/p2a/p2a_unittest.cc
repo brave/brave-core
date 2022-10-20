@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/privacy/p2a/p2a.h"
 
-#include <functional>
-
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -29,7 +27,7 @@ class BatAdsP2ATest : public UnitTestBase {};
 TEST_F(BatAdsP2ATest, RecordEvent) {
   // Arrange
   const base::Value value = base::test::ParseJson(kQuestionsAsJson);
-  const base::Value::List* list = value.GetIfList();
+  const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
   EXPECT_CALL(*ads_client_mock_,

@@ -51,8 +51,6 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   void CreateNewConfirmationAndAppendToRetryQueue(
       const ConfirmationInfo& confirmation);
-  void AppendToRetryQueue(const ConfirmationInfo& confirmation);
-  void RemoveFromRetryQueue(const ConfirmationInfo& confirmation);
 
   // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;

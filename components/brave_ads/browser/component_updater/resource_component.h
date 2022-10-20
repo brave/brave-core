@@ -22,10 +22,14 @@ namespace brave_ads {
 class ResourceComponent : public brave_component_updater::BraveComponent {
  public:
   explicit ResourceComponent(Delegate* delegate);
-  ~ResourceComponent() override;
 
   ResourceComponent(const ResourceComponent&) = delete;
   ResourceComponent& operator=(const ResourceComponent&) = delete;
+
+  ResourceComponent(ResourceComponent&& other) noexcept = delete;
+  ResourceComponent& operator=(ResourceComponent&& other) noexcept = delete;
+
+  ~ResourceComponent() override;
 
   void AddObserver(ResourceComponentObserver* observer);
   void RemoveObserver(ResourceComponentObserver* observer);

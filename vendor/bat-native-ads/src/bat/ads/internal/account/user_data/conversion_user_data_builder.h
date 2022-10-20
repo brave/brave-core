@@ -16,7 +16,7 @@ namespace ads::user_data::builder {
 using BuildConversionCallback = std::function<void(base::Value::Dict)>;
 
 void BuildConversion(const std::string& creative_instance_id,
-                     BuildConversionCallback callback);
+                     const BuildConversionCallback& callback);
 
 }  // namespace ads::user_data::builder
 

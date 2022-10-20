@@ -28,11 +28,15 @@ base::Value::List UnblindedTokensToValue(
   for (const auto& unblinded_token : unblinded_tokens) {
     const absl::optional<std::string> unblinded_token_base64 =
         unblinded_token.value.EncodeBase64();
-    DCHECK(unblinded_token_base64);
+    if (!unblinded_token_base64) {
+      continue;
+    }
 
     const absl::optional<std::string> public_key_base64 =
         unblinded_token.public_key.EncodeBase64();
-    DCHECK(public_key_base64);
+    if (!public_key_base64) {
+      continue;
+    }
 
     base::Value::Dict dict;
     dict.Set(kUnblindedTokenKey, *unblinded_token_base64);
@@ -47,7 +51,7 @@ UnblindedTokenList UnblindedTokensFromValue(const base::Value::List& list) {
   UnblindedTokenList unblinded_tokens;
 
   for (const auto& item : list) {
-    const base::Value::Dict* dict = item.GetIfDict();
+    const base::Value::Dict* const dict = item.GetIfDict();
     if (!dict) {
       BLOG(0, "Unblinded token should be a dictionary");
       continue;
@@ -56,7 +60,7 @@ UnblindedTokenList UnblindedTokensFromValue(const base::Value::List& list) {
     UnblindedTokenInfo unblinded_token;
 
     // Unblinded token
-    if (const std::string* value = dict->FindString(kUnblindedTokenKey)) {
+    if (const std::string* const value = dict->FindString(kUnblindedTokenKey)) {
       unblinded_token.value = cbr::UnblindedToken(*value);
       if (!unblinded_token.value.has_value()) {
         BLOG(0, "Invalid unblinded token");
@@ -68,7 +72,7 @@ UnblindedTokenList UnblindedTokensFromValue(const base::Value::List& list) {
     }
 
     // Public key
-    if (const std::string* value = dict->FindString(kPublicKey)) {
+    if (const std::string* const value = dict->FindString(kPublicKey)) {
       unblinded_token.public_key = cbr::PublicKey(*value);
       if (!unblinded_token.public_key.has_value()) {
         BLOG(0, "Invalid unblinded token public key");

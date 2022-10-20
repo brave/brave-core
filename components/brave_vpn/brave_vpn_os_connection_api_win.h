@@ -34,12 +34,11 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI,
 
  private:
   // BraveVPNOSConnectionAPI overrides:
-  void CreateVPNConnection(const BraveVPNConnectionInfo& info) override;
-  void UpdateVPNConnection(const BraveVPNConnectionInfo& info) override;
-  void RemoveVPNConnection(const std::string& name) override;
-  void Connect(const std::string& name) override;
-  void Disconnect(const std::string& name) override;
-  void CheckConnection(const std::string& name) override;
+  void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) override;
+  void RemoveVPNConnectionImpl(const std::string& name) override;
+  void ConnectImpl(const std::string& name) override;
+  void DisconnectImpl(const std::string& name) override;
+  void CheckConnectionImpl(const std::string& name) override;
 
   // base::win::ObjectWatcher::Delegate overrides:
   void OnObjectSignaled(HANDLE object) override;

@@ -47,7 +47,7 @@ TEST_F(BatAdsHistoryItemValueUtilTest, FromValue) {
   AdvanceClockTo(TimeFromString("22 March 2023", /*is_local*/ false));
 
   const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::List* list = value.GetIfList();
+  const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
   // Act

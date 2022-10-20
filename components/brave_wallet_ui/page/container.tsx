@@ -208,10 +208,6 @@ export const Container = () => {
                 </SimplePageWrapper>
               </Route>
 
-              <Route path={WalletRoutes.Swap} exact={true}>
-                <Swap />
-              </Route>
-
               {isWalletLocked &&
                 <Route path={WalletRoutes.Unlock} exact={true}>
                   <SimplePageWrapper>
@@ -224,6 +220,12 @@ export const Container = () => {
                       onShowRestore={onToggleShowRestore}
                     />
                   </SimplePageWrapper>
+                </Route>
+              }
+
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.Swap} exact={true}>
+                  <Swap />
                 </Route>
               }
 

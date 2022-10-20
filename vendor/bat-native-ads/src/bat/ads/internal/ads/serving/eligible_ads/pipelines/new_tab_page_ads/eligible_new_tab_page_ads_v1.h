@@ -43,27 +43,28 @@ class EligibleAdsV1 final : public EligibleAdsBase {
       const AdEventList& ad_events,
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
-  void GetEligibleAds(const targeting::UserModelInfo& user_model,
-                      const AdEventList& ad_events,
-                      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
-                      const BrowsingHistoryList& browsing_history);
+  void GetEligibleAds(
+      const targeting::UserModelInfo& user_model,
+      const AdEventList& ad_events,
+      const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback,
+      const BrowsingHistoryList& browsing_history);
 
   void GetForChildSegments(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
+      const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback);
 
   void GetForParentSegments(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
+      const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback);
 
   void GetForUntargeted(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
+      const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback);
 
   CreativeNewTabPageAdList FilterCreativeAds(
       const CreativeNewTabPageAdList& creative_ads,

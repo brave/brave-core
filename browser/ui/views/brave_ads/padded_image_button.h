@@ -24,16 +24,19 @@ class PaddedImageButton : public views::ImageButton {
   METADATA_HEADER(PaddedImageButton);
 
   explicit PaddedImageButton(PressedCallback callback);
+
+  PaddedImageButton(const PaddedImageButton&) = delete;
+  PaddedImageButton& operator=(const PaddedImageButton&) = delete;
+
+  PaddedImageButton(PaddedImageButton&& other) noexcept = delete;
+  PaddedImageButton& operator=(PaddedImageButton&& other) noexcept = delete;
+
   ~PaddedImageButton() override = default;
 
   void AdjustBorderInsetToFitHeight(const int height);
 
   // views::Button:
   void OnThemeChanged() override;
-
- private:
-  PaddedImageButton(const PaddedImageButton&) = delete;
-  PaddedImageButton& operator=(const PaddedImageButton&) = delete;
 };
 
 }  // namespace brave_ads

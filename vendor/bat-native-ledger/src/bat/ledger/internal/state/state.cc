@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/endpoints/get_parameters/get_parameters_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/state/state_keys.h"
@@ -81,6 +82,50 @@ base::flat_map<std::string, std::string> StringToPayoutStatus(
   }
 
   return payout_status;
+}
+
+base::Value WalletProviderRegionsToValue(
+    const base::flat_map<std::string, ledger::mojom::RegionsPtr>&
+        wallet_provider_regions) {
+  base::Value::Dict wallet_provider_regions_dict;
+
+  for (const auto& [wallet_provider, regions] : wallet_provider_regions) {
+    base::Value::List allow;
+    for (const auto& country : regions->allow) {
+      allow.Append(country);
+    }
+
+    base::Value::List block;
+    for (const auto& country : regions->block) {
+      block.Append(country);
+    }
+
+    base::Value::Dict regions_dict;
+    regions_dict.Set("allow", std::move(allow));
+    regions_dict.Set("block", std::move(block));
+
+    wallet_provider_regions_dict.Set(wallet_provider, std::move(regions_dict));
+  }
+
+  return base::Value(std::move(wallet_provider_regions_dict));
+}
+
+base::flat_map<std::string, ledger::mojom::RegionsPtr>
+ValueToWalletProviderRegions(const base::Value& value) {
+  DCHECK(value.is_dict());
+  if (!value.is_dict()) {
+    BLOG(0, "Failed to parse JSON!");
+    return {};
+  }
+
+  auto wallet_provider_regions =
+      ledger::endpoints::GetWalletProviderRegions(value.GetDict());
+  if (!wallet_provider_regions) {
+    BLOG(0, "Failed to parse JSON!");
+    return {};
+  }
+
+  return std::move(*wallet_provider_regions);
 }
 
 std::string ConvertInlineTipPlatformToKey(
@@ -295,6 +340,9 @@ void State::SetRewardsParameters(const mojom::RewardsParameters& parameters) {
       VectorDoubleToString(parameters.monthly_tip_choices));
   ledger_->ledger_client()->SetStringState(
       kParametersPayoutStatus, PayoutStatusToString(parameters.payout_status));
+  ledger_->ledger_client()->SetValueState(
+      kParametersWalletProviderRegions,
+      WalletProviderRegionsToValue(parameters.wallet_provider_regions));
 }
 
 mojom::RewardsParametersPtr State::GetRewardsParameters() {
@@ -305,6 +353,7 @@ mojom::RewardsParametersPtr State::GetRewardsParameters() {
   parameters->tip_choices = GetTipChoices();
   parameters->monthly_tip_choices = GetMonthlyTipChoices();
   parameters->payout_status = GetPayoutStatus();
+  parameters->wallet_provider_regions = GetWalletProviderRegions();
 
   return parameters;
 }
@@ -349,6 +398,12 @@ std::vector<double> State::GetMonthlyTipChoices() {
 base::flat_map<std::string, std::string> State::GetPayoutStatus() {
   return StringToPayoutStatus(
       ledger_->ledger_client()->GetStringState(kParametersPayoutStatus));
+}
+
+base::flat_map<std::string, mojom::RegionsPtr>
+State::GetWalletProviderRegions() {
+  return ValueToWalletProviderRegions(ledger_->ledger_client()->GetValueState(
+      kParametersWalletProviderRegions));
 }
 
 void State::SetEmptyBalanceChecked(const bool checked) {

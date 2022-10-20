@@ -24,6 +24,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -115,8 +116,9 @@ public class BraveAdsSignupDialog {
                 neverShowOnboardingDialogAgain();
 
                 // Enable ads
-                BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+                if (BraveActivity.getBraveActivity() != null) {
+                    BraveActivity.getBraveActivity().openRewardsPanel();
+                }
             }
         }).create();
         alertDialog.show();
@@ -138,9 +140,10 @@ public class BraveAdsSignupDialog {
             public void onClick(DialogInterface dialog, int which) {
                 // Enable ads
                 neverShowOnboardingDialogAgain();
-
-                BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+                BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                if (braveActivity != null) {
+                    braveActivity.openRewardsPanel();
+                }
             }
         }).create();
         alertDialog.show();

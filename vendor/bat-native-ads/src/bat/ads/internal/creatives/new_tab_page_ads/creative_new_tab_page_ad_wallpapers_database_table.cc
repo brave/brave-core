@@ -6,7 +6,6 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 
 #include <algorithm>
-#include <functional>
 #include <iterator>
 #include <utility>
 
@@ -43,6 +42,29 @@ int BindParameters(mojom::DBCommandInfo* command,
   }
 
   return count;
+}
+
+void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
+
+  const std::string query =
+      "CREATE TABLE creative_new_tab_page_ad_wallpapers "
+      "(creative_instance_id TEXT NOT NULL, "
+      "image_url TEXT NOT NULL, "
+      "focal_point_x INT NOT NULL, "
+      "focal_point_y INT NOT NULL, "
+      "PRIMARY KEY (creative_instance_id, image_url, focal_point_x, "
+      "focal_point_y), "
+      "UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) "
+      "ON CONFLICT REPLACE)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -119,30 +141,6 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateQuery(
       "focal_point_y) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(4, count).c_str());
-}
-
-void CreativeNewTabPageAdWallpapers::MigrateToV24(
-    mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
-
-  const std::string query =
-      "CREATE TABLE creative_new_tab_page_ad_wallpapers "
-      "(creative_instance_id TEXT NOT NULL, "
-      "image_url TEXT NOT NULL, "
-      "focal_point_x INT NOT NULL, "
-      "focal_point_y INT NOT NULL, "
-      "PRIMARY KEY (creative_instance_id, image_url, focal_point_x, "
-      "focal_point_y), "
-      "UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) "
-      "ON CONFLICT REPLACE)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace ads::database::table

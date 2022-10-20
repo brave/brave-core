@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
@@ -190,15 +191,14 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
           std::move(original_side_panel)));
   unified_side_panel_ = sidebar_container_view_->side_panel();
   if (show_vertical_tabs) {
-    vertical_tabs_container_ = contents_container_->AddChildView(
-        std::make_unique<VerticalTabStripRegionView>(browser_.get(),
-                                                     tab_strip_region_view_));
+    vertical_tab_strip_host_view_ =
+        contents_container_->AddChildView(std::make_unique<views::View>());
   }
 
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view_, contents_web_view_, sidebar_container_view_,
-          vertical_tabs_container_));
+          vertical_tab_strip_host_view_));
   sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
 
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
@@ -307,11 +307,20 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
     return false;
 
   return BrowserView::GetTabStripVisible();
 }
+
+#if BUILDFLAG(IS_WIN)
+bool BraveBrowserView::GetSupportsTitle() const {
+  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+    return true;
+
+  return BrowserView::GetSupportsTitle();
+}
+#endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =
@@ -419,6 +428,15 @@ void BraveBrowserView::CloseWalletBubble() {
     GetWalletButton()->CloseWalletBubble();
 }
 
+void BraveBrowserView::AddedToWidget() {
+  BrowserView::AddedToWidget();
+
+  if (vertical_tab_strip_host_view_) {
+    VerticalTabStripWidgetDelegateView::Create(this,
+                                               vertical_tab_strip_host_view_);
+  }
+}
+
 void BraveBrowserView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -478,6 +496,16 @@ void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
 
 void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
+}
+
+bool BraveBrowserView::ShouldShowWindowTitle() const {
+  if (BrowserView::ShouldShowWindowTitle())
+    return true;
+
+  if (tabs::features::ShouldShowVerticalTabs() && browser_->is_type_normal())
+    return true;
+
+  return false;
 }
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {

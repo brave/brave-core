@@ -3,20 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import * as React from 'react'
-import styled, { keyframes } from 'styled-components'
-import Flex from '../../../Flex'
-import FollowButton from './FollowButton'
-import { Heart, HeartOutline } from './Icons'
-import { usePublisher, usePublisherSubscribed } from './Context'
-import { getCardColor } from './colors'
-import { useGetUnpaddedImage } from '../cards/CardImage'
+import styled from 'styled-components'
 import { api } from '../../../../api/brave_news/news'
+import Flex from '../../../Flex'
+import { useGetUnpaddedImage } from '../cards/CardImage'
+import FollowButton from './FollowButton'
+import { getCardColor } from './colors'
+import { usePublisher, usePublisherFollowed } from './Context'
 
 interface CardProps {
   backgroundColor?: string
 }
+
+const StyledFollowButton = styled(FollowButton)`
+  position: absolute;
+  right: 8px;
+  top: 8px;
+`
 
 const Card = styled('div').attrs<CardProps>(props => ({
   style: {
@@ -28,6 +33,12 @@ const Card = styled('div').attrs<CardProps>(props => ({
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 0px 16px 0px #63696E2E;
+
+  &[data-feed-card-is-followed=true] {
+    &:not(:hover, :has(:focus-visible)) ${StyledFollowButton} {
+      opacity: 0;
+    }
+  }
 `
 
 const CoverImage = styled('div') <{ backgroundImage: string }>`
@@ -40,85 +51,23 @@ const CoverImage = styled('div') <{ backgroundImage: string }>`
   background-image: url('${p => p.backgroundImage}');
 `
 
-const StyledFollowButton = styled(FollowButton)`
-  position: absolute;
-  right: 8px;
-  top: 8px;
-`
-
 const Name = styled.span`
   font-size: 14px;
   font-weight: 600;
-`
-
-const Pulse = keyframes`
-  0% {
-    pointer-events: auto;
-  }
-  5% { opacity: 1; }
-  80% { opacity: 1; }
-  99% {
-    pointer-events: auto;
-  }
-  100% {
-    pointer-events: none;
-    opacity: 0;
-  }
-`
-
-const HeartOverlay = styled(Flex)`
-  pointer-events: none;
-  background: white;
-  color: #aeb1c2;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  opacity: 0;
-  animation: ${Pulse} 2s ease-in-out;
-`
-
-const HeartContainer = styled.div`
-  width: 32px;
-  height: 32px;
-
-  > svg {
-    width: 100%;
-    height: 100%;
-  }
 `
 
 export default function FeedCard (props: {
   publisherId: string
 }) {
   const publisher = usePublisher(props.publisherId)
-  const { subscribed, setSubscribed } = usePublisherSubscribed(props.publisherId)
-  const [changeCount, setToggleCount] = useState(0)
-  useEffect(() => {
-    setToggleCount(t => t + 1)
-  }, [subscribed])
+  const { followed, setFollowed } = usePublisherFollowed(props.publisherId)
 
   const backgroundColor = publisher.backgroundColor || getCardColor(publisher.feedSource?.url || publisher.publisherId)
   const coverUrl = useGetUnpaddedImage(publisher.coverUrl?.url, undefined, /* useCache= */true)
   return <Flex direction="column" gap={8}>
-    <Card backgroundColor={backgroundColor}>
+    <Card backgroundColor={backgroundColor} data-feed-card-is-followed={followed}>
       {coverUrl && <CoverImage backgroundImage={coverUrl} />}
-      <StyledFollowButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
-
-      {/*
-        Use whether or not we're following this element as the key, so
-        React remounts the component when we toggle following and plays
-        the animation.
-
-        We don't display the overlay unless we've toggled this publisher
-        so we don't play the pulse animation on first load.
-      */}
-      {changeCount > 1 && <HeartOverlay key={changeCount} align="center" justify="center">
-        <HeartContainer>
-          {subscribed ? Heart : HeartOutline}
-        </HeartContainer>
-      </HeartOverlay>}
+      <StyledFollowButton following={followed} onClick={() => setFollowed(!followed)} />
     </Card>
     <Name>
       {publisher.publisherName}
@@ -132,7 +81,7 @@ export function DirectFeedCard (props: {
 }) {
   const [loading, setLoading] = useState(false)
   return <Flex direction="column" gap={8}>
-    <Card backgroundColor={getCardColor(props.feedUrl)}>
+    <Card backgroundColor={getCardColor(props.feedUrl)} data-feed-card-is-followed={true}>
       <StyledFollowButton isDisabled={loading} following={false} onClick={async () => {
         setLoading(true)
         await api.subscribeToDirectFeed(props.feedUrl)

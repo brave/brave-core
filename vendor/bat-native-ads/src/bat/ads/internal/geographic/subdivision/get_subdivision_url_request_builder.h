@@ -17,9 +17,6 @@ class GetSubdivisionUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
   mojom::UrlRequestInfoPtr Build() override;
-
- private:
-  GURL BuildUrl() const;
 };
 
 }  // namespace ads::geographic

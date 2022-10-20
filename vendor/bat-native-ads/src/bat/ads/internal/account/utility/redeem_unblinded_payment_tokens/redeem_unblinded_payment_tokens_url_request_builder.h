@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_URL_REQUEST_BUILDER_H_
 
 #include <string>
-#include <vector>
 
 #include "base/values.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -23,8 +22,8 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
-      const WalletInfo& wallet,
-      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+      WalletInfo wallet,
+      privacy::UnblindedPaymentTokenList unblinded_payment_tokens,
       const base::Value::Dict& user_data);
 
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
@@ -44,17 +43,11 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
  private:
   GURL BuildUrl() const;
 
-  std::vector<std::string> BuildHeaders() const;
-
   std::string BuildBody(const std::string& payload) const;
 
   std::string CreatePayload() const;
 
   base::Value::List CreatePaymentRequestDTO(const std::string& payload) const;
-
-  base::Value::Dict CreateCredential(
-      const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
-      const std::string& payload) const;
 
   WalletInfo wallet_;
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;

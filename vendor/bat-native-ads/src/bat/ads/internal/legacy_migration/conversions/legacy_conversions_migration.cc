@@ -34,11 +34,11 @@ bool HasMigrated() {
       prefs::kHasMigratedConversionState);
 }
 
-void FailedToMigrate(InitializeCallback callback) {
+void FailedToMigrate(const InitializeCallback& callback) {
   callback(/*success*/ false);
 }
 
-void SuccessfullyMigrated(InitializeCallback callback) {
+void SuccessfullyMigrated(const InitializeCallback& callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedConversionState, true);
   callback(/*success*/ true);
@@ -47,7 +47,7 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
     const base::Value::Dict& dict) {
   // Timestamp
-  const std::string* timestamp_value = dict.FindString(kTimestampKey);
+  const std::string* const timestamp_value = dict.FindString(kTimestampKey);
   if (!timestamp_value) {
     return absl::nullopt;
   }
@@ -58,7 +58,8 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   }
 
   // Creative set id
-  const std::string* creative_set_id_value = dict.FindString(kCreativeSetIdKey);
+  const std::string* const creative_set_id_value =
+      dict.FindString(kCreativeSetIdKey);
   if (!creative_set_id_value) {
     return absl::nullopt;
   }
@@ -83,7 +84,7 @@ absl::optional<ConversionQueueItemList> GetFromList(
   ConversionQueueItemList conversion_queue_items;
 
   for (const auto& item : list) {
-    const base::Value::Dict* dict = item.GetIfDict();
+    const base::Value::Dict* const dict = item.GetIfDict();
     if (!dict) {
       return absl::nullopt;
     }
@@ -107,7 +108,7 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  const base::Value::List* list = dict.FindList(kListKey);
+  const base::Value::List* const list = dict.FindList(kListKey);
   if (!list) {
     return absl::nullopt;
   }
@@ -140,7 +141,7 @@ void OnMigrate(InitializeCallback callback,
   conversion_queue.Save(
       *conversion_queue_items,
       base::BindOnce(
-          [](InitializeCallback callback, const bool success) {
+          [](const InitializeCallback& callback, const bool success) {
             if (!success) {
               BLOG(0, "Failed to save conversion state");
               FailedToMigrate(callback);

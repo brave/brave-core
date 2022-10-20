@@ -12,6 +12,11 @@ class NotificationHelperImpl {
  public:
   NotificationHelperImpl(const NotificationHelperImpl&) = delete;
   NotificationHelperImpl& operator=(const NotificationHelperImpl&) = delete;
+
+  NotificationHelperImpl(NotificationHelperImpl&& other) noexcept = delete;
+  NotificationHelperImpl& operator=(NotificationHelperImpl&& other) noexcept =
+      delete;
+
   virtual ~NotificationHelperImpl();
 
   virtual bool CanShowNotifications();

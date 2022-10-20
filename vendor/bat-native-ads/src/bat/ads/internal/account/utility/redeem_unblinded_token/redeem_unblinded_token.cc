@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
 
-#include <functional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -99,9 +98,9 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     }
 
     const bool should_retry =
-        !(url_response.status_code == net::HTTP_CONFLICT ||
-          url_response.status_code == net::HTTP_BAD_REQUEST ||
-          url_response.status_code == net::HTTP_CREATED);
+        url_response.status_code != net::HTTP_CONFLICT &&
+        url_response.status_code != net::HTTP_BAD_REQUEST &&
+        url_response.status_code != net::HTTP_CREATED;
     OnFailedToSendConfirmation(confirmation, should_retry);
     return;
   }
@@ -182,7 +181,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get id
-  const std::string* id = root->FindStringKey("id");
+  const std::string* const id = root->FindStringKey("id");
   if (!id) {
     BLOG(0, "Response is missing id");
     OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
@@ -201,7 +200,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get payment token
-  const base::Value* payment_token = root->FindDictKey("paymentToken");
+  const base::Value* const payment_token = root->FindDictKey("paymentToken");
   if (!payment_token) {
     BLOG(1, "Response is missing paymentToken");
     OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
@@ -210,7 +209,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get public key
-  const std::string* public_key_base64 =
+  const std::string* const public_key_base64 =
       payment_token->FindStringKey("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing publicKey in paymentToken dictionary");
@@ -239,7 +238,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get batch dleq proof
-  const std::string* batch_dleq_proof_base64 =
+  const std::string* const batch_dleq_proof_base64 =
       payment_token->FindStringKey("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
@@ -258,7 +257,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get signed tokens
-  const base::Value* signed_tokens_list =
+  const base::Value* const signed_tokens_list =
       payment_token->FindListKey("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");
@@ -283,9 +282,28 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Verify and unblind tokens
+  if (!confirmation.opted_in) {
+    BLOG(0, "Missing confirmation opted-in");
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
+    return;
+  }
+
+  if (!confirmation.opted_in->token.has_value()) {
+    BLOG(0, "Missing confirmation opted-in token");
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
+    return;
+  }
   const std::vector<privacy::cbr::Token> tokens = {
       confirmation.opted_in->token};
 
+  if (!confirmation.opted_in->blinded_token.has_value()) {
+    BLOG(0, "Missing confirmation opted-in blinded token");
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
+    return;
+  }
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens = {
       confirmation.opted_in->blinded_token};
 

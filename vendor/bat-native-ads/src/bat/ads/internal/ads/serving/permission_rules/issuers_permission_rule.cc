@@ -10,6 +10,18 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
+  return HasIssuers();
+}
+
+}  // namespace
+
 bool IssuersPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "Missing issuers";
@@ -21,14 +33,6 @@ bool IssuersPermissionRule::ShouldAllow() {
 
 const std::string& IssuersPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool IssuersPermissionRule::DoesRespectCap() {
-  if (!ShouldRewardUser()) {
-    return true;
-  }
-
-  return HasIssuers();
 }
 
 }  // namespace ads

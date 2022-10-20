@@ -44,6 +44,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveVpnPaymentFailure", IDS_BRAVE_VPN_PAYMENT_FAILURE},
     {"braveVpnPaymentFailureReason", IDS_BRAVE_VPN_PAYMENT_FAILURE_REASON},
     {"braveVpnSupportEmail", IDS_BRAVE_VPN_SUPPORT_EMAIL},
+    {"braveVpnSupportEmailNotValid", IDS_BRAVE_VPN_SUPPORT_EMAIL_NOT_VALID},
     {"braveVpnSupportSubject", IDS_BRAVE_VPN_SUPPORT_SUBJECT},
     {"braveVpnSupportSubjectNotSet", IDS_BRAVE_VPN_SUPPORT_SUBJECT_NOTSET},
     {"braveVpnSupportSubjectOtherConnectionProblem",
@@ -86,6 +87,22 @@ constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
 constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
 constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
+
+constexpr char kVpnHost[] = "connect-api.guardianapp.com";
+constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";
+constexpr char kTimezonesForRegions[] =
+    "api/v1.1/servers/timezones-for-regions";
+constexpr char kHostnameForRegion[] = "api/v1.2/servers/hostnames-for-region";
+constexpr char kProfileCredential[] = "api/v1.1/register-and-create";
+constexpr char kCredential[] = "api/v1.3/device/";
+constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
+constexpr char kCreateSubscriberCredentialV12[] =
+    "api/v1.2/subscriber-credential/create";
+constexpr int kP3AIntervalHours = 24;
+
+#if !BUILDFLAG(IS_ANDROID)
+constexpr char kTokenNoLongerValid[] = "Token No Longer Valid";
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_vpn
 

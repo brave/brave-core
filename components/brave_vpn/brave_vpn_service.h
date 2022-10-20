@@ -20,6 +20,7 @@
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -31,7 +32,6 @@
 #include <memory>
 #include <vector>
 
-#include "base/power_monitor/power_observer.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
@@ -62,7 +62,6 @@ constexpr char kLastUsageTimeHistogramName[] = "Brave.VPN.LastUsageTime";
 class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
     public BraveVPNOSConnectionAPI::Observer,
-    public base::PowerSuspendObserver,
 #endif
     public mojom::ServiceHandler,
     public KeyedService {
@@ -89,18 +88,14 @@ class BraveVpnService :
 
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
-  void RemoveVPNConnnection();
-  bool is_connected() const {
-    return connection_state_ == mojom::ConnectionState::CONNECTED;
-  }
-  mojom::ConnectionState connection_state() const { return connection_state_; }
+  void RemoveVPNConnection();
+  mojom::ConnectionState GetConnectionState() const;
+  bool IsConnected() const;
 
   // mojom::vpn::ServiceHandler
   void GetConnectionState(GetConnectionStateCallback callback) override;
-  void ResetConnectionState() override;
   void Connect() override;
   void Disconnect() override;
-  void CreateVPNConnection() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
   void GetDeviceRegion(GetDeviceRegionCallback callback) override;
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
@@ -111,10 +106,6 @@ class BraveVpnService :
                            const std::string& body,
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
-
-  // base::PowerMonitor
-  void OnSuspend() override;
-  void OnResume() override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
@@ -174,28 +165,15 @@ class BraveVpnService :
  private:
   friend class BraveVPNServiceTest;
 
-  void InitP3A();
-  void OnP3AInterval();
-
 #if !BUILDFLAG(IS_ANDROID)
   friend class ::BraveAppMenuBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
 
   // BraveVPNOSConnectionAPI::Observer overrides:
-  void OnCreated() override;
-  void OnCreateFailed() override;
-  void OnRemoved() override;
-  void OnConnected() override;
-  void OnIsConnecting() override;
-  void OnConnectFailed() override;
-  void OnDisconnected() override;
-  void OnIsDisconnecting() override;
+  void OnGetInvalidToken() override;
+  void OnConnectionStateChanged(mojom::ConnectionState state) override;
 
-  const BraveVPNConnectionInfo& GetConnectionInfo();
   void LoadCachedRegionData();
-  void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state,
-                                            bool force = false);
-
   void FetchRegionData(bool background_fetch);
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
@@ -204,12 +182,6 @@ class BraveVpnService :
                                bool save_to_prefs = false);
   void OnFetchTimezones(const std::string& timezones_list, bool success);
   void SetDeviceRegionWithTimezone(const base::Value::List& timezons_value);
-  void FetchHostnamesForRegion(const std::string& name);
-  void OnFetchHostnames(const std::string& region,
-                        const std::string& hostnames,
-                        bool success);
-  void ParseAndCacheHostnames(const std::string& region,
-                              const base::Value::List& hostnames_value);
   void SetDeviceRegion(const std::string& name);
   void SetSelectedRegion(const std::string& name);
   std::string GetDeviceRegion() const;
@@ -221,14 +193,12 @@ class BraveVpnService :
   void ScheduleBackgroundRegionDataFetch();
   void ScheduleFetchRegionDataIfNeeded();
 
-  void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
-                                    bool success);
-  void OnGetProfileCredentials(const std::string& profile_credential,
-                               bool success);
   void OnCreateSupportTicket(CreateSupportTicketCallback callback,
                              APIRequestResult api_request_result);
 
-  BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
+  void OnPreferenceChanged(const std::string& pref_name);
+
+  BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   using URLRequestCallback = base::OnceCallback<void(APIRequestResult)>;
@@ -236,15 +206,16 @@ class BraveVpnService :
   // KeyedService overrides:
   void Shutdown() override;
 
+  void InitP3A();
+  void OnP3AInterval();
+
   void OAuthRequest(
       const GURL& url,
       const std::string& method,
       const std::string& post_data,
       URLRequestCallback callback,
       const base::flat_map<std::string, std::string>& headers = {});
-
   void OnGetResponse(ResponseCallback callback, APIRequestResult request);
-
   void OnGetSubscriberCredential(ResponseCallback callback,
                                  APIRequestResult request);
   mojom::PurchasedState GetPurchasedStateSync() const;
@@ -258,16 +229,8 @@ class BraveVpnService :
       const std::string& domain,
       const std::string& credential_as_cookie);
 
-  raw_ptr<PrefService> local_prefs_ = nullptr;
-  raw_ptr<PrefService> profile_prefs_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::Region> regions_;
-  std::unique_ptr<Hostname> hostname_;
-  BraveVPNConnectionInfo connection_info_;
-  bool cancel_connecting_ = false;
-  mojom::ConnectionState connection_state_ =
-      mojom::ConnectionState::DISCONNECTED;
-  bool needs_connect_ = false;
   base::ScopedObservation<BraveVPNOSConnectionAPI,
                           BraveVPNOSConnectionAPI::Observer>
       observed_{this};
@@ -276,12 +239,15 @@ class BraveVpnService :
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
-#endif  // !BUILDFLAG(IS_ANDROID)
 
-  mojo::ReceiverSet<mojom::ServiceHandler> receivers_;
+  PrefChangeRegistrar pref_change_registrar_;
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   SEQUENCE_CHECKER(sequence_checker_);
 
+  raw_ptr<PrefService> local_prefs_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
+  mojo::ReceiverSet<mojom::ServiceHandler> receivers_;
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;

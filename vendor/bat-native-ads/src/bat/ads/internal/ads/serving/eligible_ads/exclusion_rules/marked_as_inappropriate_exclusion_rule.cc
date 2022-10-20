@@ -13,6 +13,21 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+  const FlaggedAdList& flagged_ads =
+      ClientStateManager::GetInstance()->GetFlaggedAds();
+  if (flagged_ads.empty()) {
+    return true;
+  }
+
+  return !base::Contains(flagged_ads, creative_ad.creative_set_id,
+                         &FlaggedAdInfo::creative_set_id);
+}
+
+}  // namespace
+
 std::string MarkedAsInappropriateExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
@@ -33,18 +48,6 @@ bool MarkedAsInappropriateExclusionRule::ShouldExclude(
 
 const std::string& MarkedAsInappropriateExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool MarkedAsInappropriateExclusionRule::DoesRespectCap(
-    const CreativeAdInfo& creative_ad) {
-  const FlaggedAdList& flagged_ads =
-      ClientStateManager::GetInstance()->GetFlaggedAds();
-  if (flagged_ads.empty()) {
-    return true;
-  }
-
-  return !base::Contains(flagged_ads, creative_ad.creative_set_id,
-                         &FlaggedAdInfo::creative_set_id);
 }
 
 }  // namespace ads

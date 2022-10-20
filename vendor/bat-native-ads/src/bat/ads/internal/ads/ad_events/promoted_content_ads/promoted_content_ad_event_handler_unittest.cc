@@ -34,6 +34,16 @@ constexpr char kInvalidPlacementId[] = "";
 constexpr char kCreativeInstanceId[] = "1547f94f-9086-4db9-a441-efb2f0365269";
 constexpr char kInvalidCreativeInstanceId[] = "";
 
+CreativePromotedContentAdInfo BuildAndSaveCreativeAd() {
+  CreativePromotedContentAdList creative_ads;
+  CreativePromotedContentAdInfo creative_ad = BuildCreativePromotedContentAd();
+  creative_ads.push_back(creative_ad);
+
+  SaveCreativeAds(creative_ads);
+
+  return creative_ad;
+}
+
 }  // namespace
 
 class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerObserver,
@@ -72,17 +82,6 @@ class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerObserver,
       const std::string& /*creative_instance_id*/,
       const mojom::PromotedContentAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
-  }
-
-  CreativePromotedContentAdInfo BuildAndSaveCreativeAd() {
-    CreativePromotedContentAdList creative_ads;
-    CreativePromotedContentAdInfo creative_ad =
-        BuildCreativePromotedContentAd();
-    creative_ads.push_back(creative_ad);
-
-    SaveCreativeAds(creative_ads);
-
-    return creative_ad;
   }
 
   std::unique_ptr<EventHandler> event_handler_;

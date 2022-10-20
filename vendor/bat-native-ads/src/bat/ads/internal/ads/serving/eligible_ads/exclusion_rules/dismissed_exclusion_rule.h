@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 class DismissedExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit DismissedExclusionRule(const AdEventList& ad_events);
+  explicit DismissedExclusionRule(AdEventList ad_events);
 
   DismissedExclusionRule(const DismissedExclusionRule& other) = delete;
   DismissedExclusionRule& operator=(const DismissedExclusionRule& other) =
@@ -37,11 +37,6 @@ class DismissedExclusionRule final
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const AdEventList& ad_events);
-
-  AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const CreativeAdInfo& creative_ad) const;
-
   AdEventList ad_events_;
 
   std::string last_message_;

@@ -29,7 +29,7 @@ absl::optional<TransactionInfo> ParseTransaction(
   transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Created at
-  const std::string* created_at = value.FindString(kCreatedAtKey);
+  const std::string* const created_at = value.FindString(kCreatedAtKey);
   if (!created_at) {
     return absl::nullopt;
   }
@@ -49,7 +49,8 @@ absl::optional<TransactionInfo> ParseTransaction(
   transaction.value = *redemption_value;
 
   // Confirmation type
-  const std::string* confirmation_type = value.FindString(kConfirmationTypeKey);
+  const std::string* const confirmation_type =
+      value.FindString(kConfirmationTypeKey);
   if (!confirmation_type) {
     return absl::nullopt;
   }
@@ -83,13 +84,13 @@ absl::optional<TransactionList> GetTransactionsFromList(
 
 absl::optional<TransactionList> ParseTransactionHistory(
     const base::Value::Dict& value) {
-  const base::Value::Dict* transaction_history =
+  const base::Value::Dict* const transaction_history =
       value.FindDict(kTransactionHistoryKey);
   if (!transaction_history) {
     return TransactionList{};
   }
 
-  const base::Value::List* list =
+  const base::Value::List* const list =
       transaction_history->FindList(kTransactionListKey);
   if (!list) {
     return absl::nullopt;

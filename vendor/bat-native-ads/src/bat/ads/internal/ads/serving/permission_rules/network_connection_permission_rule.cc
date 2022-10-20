@@ -10,6 +10,14 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  return AdsClientHelper::GetInstance()->IsNetworkConnectionAvailable();
+}
+
+}  // namespace
+
 bool NetworkConnectionPermissionRule::ShouldAllow() {
   if (!permission_rules::features::
           ShouldOnlyServeAdsWithValidInternetConnection()) {
@@ -26,10 +34,6 @@ bool NetworkConnectionPermissionRule::ShouldAllow() {
 
 const std::string& NetworkConnectionPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool NetworkConnectionPermissionRule::DoesRespectCap() {
-  return AdsClientHelper::GetInstance()->IsNetworkConnectionAvailable();
 }
 
 }  // namespace ads

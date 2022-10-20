@@ -19,6 +19,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
@@ -88,6 +89,10 @@ bool DoesConfirmationTypeMatchConversionType(
       return false;
     }
   }
+
+  NOTREACHED() << "Unexpected value for ConfirmationType: "
+               << static_cast<int>(confirmation_type.value());
+  return false;
 }
 
 std::string ExtractConversionIdFromText(
@@ -176,6 +181,32 @@ AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
   return filtered_ad_events;
 }
 
+ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
+                                 const ConversionList& conversions) {
+  ConversionList filtered_conversions;
+
+  std::copy_if(conversions.cbegin(), conversions.cend(),
+               std::back_inserter(filtered_conversions),
+               [&redirect_chain](const ConversionInfo& conversion) {
+                 const auto iter = base::ranges::find_if(
+                     redirect_chain, [&conversion](const GURL& url) {
+                       return MatchUrlPattern(url, conversion.url_pattern);
+                     });
+
+                 return iter != redirect_chain.cend();
+               });
+
+  return filtered_conversions;
+}
+
+ConversionList SortConversions(const ConversionList& conversions) {
+  const auto sort =
+      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
+  DCHECK(sort);
+
+  return sort->Apply(conversions);
+}
+
 }  // namespace
 
 Conversions::Conversions() {
@@ -220,7 +251,7 @@ void Conversions::MaybeConvert(
 }
 
 void Conversions::Process() {
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(
       [=](const bool success,
           const ConversionQueueItemList& conversion_queue_items) {
@@ -249,7 +280,7 @@ void Conversions::CheckRedirectChain(
     const ConversionIdPatternMap& conversion_id_patterns) {
   BLOG(1, "Checking URL for conversions");
 
-  database::table::AdEvents ad_events_database_table;
+  const database::table::AdEvents ad_events_database_table;
   ad_events_database_table.GetAll([=](const bool success,
                                       const AdEventList& ad_events) {
     if (!success) {
@@ -257,7 +288,7 @@ void Conversions::CheckRedirectChain(
       return;
     }
 
-    database::table::Conversions conversions_database_table;
+    const database::table::Conversions conversions_database_table;
     conversions_database_table.GetAll([=](const bool success,
                                           const ConversionList& conversions) {
       if (!success) {
@@ -330,33 +361,6 @@ void Conversions::Convert(
   AddItemToQueue(ad_event, verifiable_conversion);
 }
 
-ConversionList Conversions::FilterConversions(
-    const std::vector<GURL>& redirect_chain,
-    const ConversionList& conversions) {
-  ConversionList filtered_conversions;
-
-  std::copy_if(conversions.cbegin(), conversions.cend(),
-               std::back_inserter(filtered_conversions),
-               [&redirect_chain](const ConversionInfo& conversion) {
-                 const auto iter = base::ranges::find_if(
-                     redirect_chain, [&conversion](const GURL& url) {
-                       return MatchUrlPattern(url, conversion.url_pattern);
-                     });
-
-                 return iter != redirect_chain.cend();
-               });
-
-  return filtered_conversions;
-}
-
-ConversionList Conversions::SortConversions(const ConversionList& conversions) {
-  const auto sort =
-      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
-  DCHECK(sort);
-
-  return sort->Apply(conversions);
-}
-
 void Conversions::AddItemToQueue(
     const AdEventInfo& ad_event,
     const VerifiableConversionInfo& verifiable_conversion) {
@@ -382,6 +386,7 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
+  // TODO(tmancey): Cleanup
   const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
       ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.process_at =
@@ -451,7 +456,7 @@ void Conversions::ConvertedQueueItem(
 }
 
 void Conversions::ProcessQueue() {
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(
       [=](const bool success,
           const ConversionQueueItemList& conversion_queue_items) {
