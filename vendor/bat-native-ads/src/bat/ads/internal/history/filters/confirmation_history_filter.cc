@@ -37,6 +37,10 @@ bool ShouldFilterConfirmationType(const ConfirmationType& confirmation_type) {
       return true;
     }
   }
+
+  NOTREACHED() << "Unexpected value for ConfirmationType: "
+               << static_cast<int>(confirmation_type.value());
+  return true;
 }
 
 std::map<std::string, HistoryItemInfo> BuildBuckets(
