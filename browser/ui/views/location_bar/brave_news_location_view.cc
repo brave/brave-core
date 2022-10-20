@@ -39,7 +39,6 @@
 namespace {
 constexpr SkColor kSubscribedLightColor = SkColorSetRGB(76, 84, 210);
 constexpr SkColor kSubscribedDarkColor = SkColorSetRGB(115, 122, 222);
-}  // namespace
 
 class BraveNewsButtonView : public views::LabelButton,
                             public TabStripModelObserver,
@@ -198,6 +197,7 @@ class BraveNewsButtonView : public views::LabelButton,
   base::raw_ptr<TabStripModel> tab_strip_;
   base::WeakPtr<views::Widget> bubble_widget_;
 };
+}  // namespace
 
 BraveNewsLocationView::BraveNewsLocationView(Profile* profile,
                                              TabStripModel* tab_strip_model) {

@@ -75,13 +75,13 @@ class BraveLocationBarView : public LocationBarView {
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
-  BraveActionsContainer* brave_actions_ = nullptr;
-  BraveNewsLocationView* brave_news_location_view = nullptr;
+  raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
+  raw_ptr<BraveNewsLocationView> brave_news_location_view_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
-  OnionLocationView* onion_location_view_ = nullptr;
+  raw_ptr<OnionLocationView> onion_location_view_ = nullptr;
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
-  IPFSLocationView* ipfs_location_view_ = nullptr;
+  raw_ptr<IPFSLocationView> ipfs_location_view_ = nullptr;
 #endif
 };
 

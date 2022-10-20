@@ -17,11 +17,6 @@ class BraveNewsLocationView : public views::View {
   BraveNewsLocationView(const BraveNewsLocationView&) = delete;
   BraveNewsLocationView& operator=(const BraveNewsLocationView&) = delete;
   ~BraveNewsLocationView() override;
-
-  void Update();
-
- private:
-  views::View* button_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_

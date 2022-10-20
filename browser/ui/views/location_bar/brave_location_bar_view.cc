@@ -95,23 +95,23 @@ void BraveLocationBarView::Init() {
           brave_today::features::kBraveNewsSubscribeButtonFeature) &&
       base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
       !browser_->profile()->IsOffTheRecord()) {
-    brave_news_location_view =
+    brave_news_location_view_ =
         AddChildView(std::make_unique<BraveNewsLocationView>(
             browser_->profile(), browser_->tab_strip_model()));
   }
 #if BUILDFLAG(ENABLE_TOR)
-  onion_location_view_ = new OnionLocationView(browser_->profile());
-  AddChildView(onion_location_view_);
+  onion_location_view_ =
+      AddChildView(std::make_unique<OnionLocationView>(browser_->profile()));
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
-  ipfs_location_view_ = new IPFSLocationView(browser_->profile());
-  AddChildView(ipfs_location_view_);
+  ipfs_location_view_ =
+      AddChildView(std::make_unique<IPFSLocationView>(browser_->profile()));
 #endif
 
   // brave action buttons
-  brave_actions_ = new BraveActionsContainer(browser_, profile());
+  brave_actions_ = AddChildView(
+      std::make_unique<BraveActionsContainer>(browser_, profile()));
   brave_actions_->Init();
-  AddChildView(brave_actions_);
   // Call Update again to cause a Layout
   Update(nullptr);
 
@@ -197,8 +197,8 @@ void BraveLocationBarView::OnChanged() {
 
 std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   std::vector<views::View*> views;
-  if (brave_news_location_view)
-    views.push_back(brave_news_location_view);
+  if (brave_news_location_view_)
+    views.push_back(brave_news_location_view_);
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     views.push_back(onion_location_view_);
@@ -222,9 +222,9 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
         brave_actions_min + GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
     min_size.Enlarge(extra_width, 0);
   }
-  if (brave_news_location_view && brave_news_location_view->GetVisible()) {
+  if (brave_news_location_view_ && brave_news_location_view_->GetVisible()) {
     const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
-                            brave_news_location_view->GetMinimumSize().width();
+                            brave_news_location_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
 #if BUILDFLAG(ENABLE_TOR)
