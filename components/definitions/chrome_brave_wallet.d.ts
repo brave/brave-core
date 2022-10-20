@@ -4,4 +4,5 @@ declare namespace chrome.braveWallet {
   const loadUI: (callback: () => void) => void
   const isNativeWalletEnabled: (callback: (enabled: boolean) => void) => void
   const notifyWalletUnlock: () => void
+  const getWeb3ProviderList: (callback: (types: string) => void) => void
 }
