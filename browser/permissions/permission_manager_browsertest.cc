@@ -55,8 +55,8 @@ class PermissionRequestManagerObserver
   }
 
   // PermissionRequestManager::Observer:
-  void OnBubbleAdded() override { is_showing_bubble_ = true; }
-  void OnBubbleRemoved() override { is_showing_bubble_ = false; }
+  void OnPromptAdded() override { is_showing_bubble_ = true; }
+  void OnPromptRemoved() override { is_showing_bubble_ = false; }
   void OnRequestsFinalized() override { is_requests_finalized_ = true; }
 
   bool IsShowingBubble() { return is_showing_bubble_; }
