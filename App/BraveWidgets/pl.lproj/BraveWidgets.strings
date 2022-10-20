@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Czy na pewno masz na myśli „Lista odtwarzania”?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Czy na pewno masz na myśli „Pobrania”?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Skrót jako widget";
 
 /* (No Comment) */
-"FGO5qW" = "Lista odtwarzania";
-
-/* (No Comment) */
 "gpCwrM" = "Konfiguracja statystyk";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Do „Lista odtwarzania” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Do „Pobrania” pasuje następująca liczba opcji: ${count}";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Czy na pewno masz na myśli „Lista odtwarzania”?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Czy na pewno masz na myśli „Pobrania”?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Do „Lista odtwarzania” pasuje następująca liczba opcji: ${count}";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Do „Pobrania” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Do „Lista odtwarzania” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Do „Pobrania” pasuje następująca liczba opcji: ${count}";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Czy na pewno masz na myśli „Lista odtwarzania”?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Czy na pewno masz na myśli „Pobrania”?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Czy na pewno masz na myśli „Nowa karta w trybie prywatnym”?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget konfiguracji statystyk";
 

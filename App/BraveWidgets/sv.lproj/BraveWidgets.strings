@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Var det ”Spellista” du sökte efter?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Widgetgenväg";
 
 /* (No Comment) */
-"FGO5qW" = "Spellista";
-
-/* (No Comment) */
 "gpCwrM" = "Statistikkonfigurering";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Det finns ${count} alternativ som matchar ”Spellista”.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Var det ”Spellista” du sökte efter?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Det finns ${count} alternativ som matchar ”Spellista”.";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Det finns ${count} alternativ som matchar ”Spellista”.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Var det ”Spellista” du sökte efter?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget för statistikkonfigurering";
 

@@ -1,9 +1,3 @@
-/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
-"AppAndDeviceNameFormat" = "%2$@の%1$@";
-
-/* Accessibility label for the Menu button. */
-"AppMenuButtonAccessibilityLabel" = "メニュー";
-
 /* Toast displayed to user after copy url pressed. */
 "AppMenuCopyURLConfirmMessage" = "URLをクリップボードにコピーしました";
 
@@ -74,16 +68,10 @@
 "ExternalLinkAppStoreConfirmationTitle" = "このリンクをApp Storeアプリで開きますか？";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "検索";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "進む";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "開く";
-
-/* Message displayed when the user has a copied link on the clipboard */
-"GoToCopiedLink" = "コピーしたリンクを開きますか？";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "保存しない";
@@ -151,35 +139,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "ロケーションバーの選択";
 
-/* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "設定でいつでも変更できます";
-
-/* Button cancelling changes setting the home page for the first time. */
-"SetHomePageDialogNo" = "キャンセル";
-
-/* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "このウェブページをホームページにしますか？";
-
-/* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "ホームページを設定";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "一般";
 
-/* Option in settings to show a blank page when you open a new tab */
-"SettingsNewTabBlankPage" = "空白のページを表示";
-
-/* Option in settings to show your homepage when you open a new tab */
-"SettingsNewTabHomePage" = "ホームページを表示";
-
-/* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "上位サイトを表示";
-
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "完了";
-
-/* Button displayed at the top of the search settings. */
-"SettingsSearchEditButton" = "動画の管理";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "ブックマークを表示";
@@ -228,10 +192,4 @@
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "%2$@の%1$@のログイン情報を更新しますか？";
-
-/* List section title for when to use Face ID */
-"UseFaceID" = "Face IDを使う";
-
-/* List section title for when to use Touch ID */
-"UseTouchID" = "Touch IDを使う";
 

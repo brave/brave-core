@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "您要的是“书签”，对吗？";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "您要的是“播放列表”，对吗？";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "您要的是“下载”，对吗？";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "小组件快捷方式";
 
 /* (No Comment) */
-"FGO5qW" = "播放列表";
-
-/* (No Comment) */
 "gpCwrM" = "统计数据配置";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "有 ${count} 个与“播放列表”匹配的选项。";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "有 ${count} 个与“下载”匹配的选项。";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "您要的是“书签”，对吗？";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "您要的是“播放列表”，对吗？";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "您要的是“下载”，对吗？";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "有 ${count} 个与“播放列表”匹配的选项。";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "有 ${count} 个与“下载”匹配的选项。";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "有 ${count} 个与“播放列表”匹配的选项。";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "有 ${count} 个与“下载”匹配的选项。";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "您要的是“书签”，对吗？";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "您要的是“播放列表”，对吗？";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "您要的是“下载”，对吗？";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "您要的是“新隐私标签页”，对吗？";
-
-/* (No Comment) */
-"ziTvSZ" = "统计数据配置小组件";
 

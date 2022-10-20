@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Sadece onaylamak için soruyorum, \"Oynatma Listesi\" bölümünü mü istediniz?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Sadece onaylamak için soruyorum, \"İndirilenler\" bölümünü mü istediniz?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Pencere Öğesi Kısayolu";
 
 /* (No Comment) */
-"FGO5qW" = "Oynatma listesi";
-
-/* (No Comment) */
 "gpCwrM" = "İstatistik Yapılandırması";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "\"Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "\"İndirilenler\" ile eşleşen ${count} seçenek var.";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Sadece onaylamak için soruyorum, \"Oynatma Listesi\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Sadece onaylamak için soruyorum, \"İndirilenler\" bölümünü mü istediniz?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "\"Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "\"İndirilenler\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "\"Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "\"İndirilenler\" ile eşleşen ${count} seçenek var.";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Sadece onaylamak için soruyorum, \"Oynatma Listesi\" bölümünü mü istediniz?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Sadece onaylamak için soruyorum, \"İndirilenler\" bölümünü mü istediniz?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Sadece onaylamak için soruyorum, \"Yeni Gizli Sekme\" bölümünü mü istediniz?";
-
-/* (No Comment) */
-"ziTvSZ" = "İstatistik Yapılandırma Pencere Öğesi";
 

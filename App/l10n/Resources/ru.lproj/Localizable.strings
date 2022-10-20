@@ -1,9 +1,3 @@
-/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
-"AppAndDeviceNameFormat" = "Приложение «%1$@» на устройстве «%2$@»";
-
-/* Accessibility label for the Menu button. */
-"AppMenuButtonAccessibilityLabel" = "Меню";
-
 /* Toast displayed to user after copy url pressed. */
 "AppMenuCopyURLConfirmMessage" = "URL скопирован в буфер обмена";
 
@@ -74,16 +68,10 @@
 "ExternalLinkAppStoreConfirmationTitle" = "Открыть эту ссылку в App Store?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "Найти";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Вперед";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Перейти";
-
-/* Message displayed when the user has a copied link on the clipboard */
-"GoToCopiedLink" = "Перейти по скопированной ссылке?";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "Не сохранять";
@@ -151,35 +139,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Выбрать адресную строку";
 
-/* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "Этот параметр можно изменить в настройках";
-
-/* Button cancelling changes setting the home page for the first time. */
-"SetHomePageDialogNo" = "Отмена";
-
-/* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "Сделать эту страницу домашней?";
-
-/* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "Сделать домашней";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Основные";
 
-/* Option in settings to show a blank page when you open a new tab */
-"SettingsNewTabBlankPage" = "Открывать пустую страницу";
-
-/* Option in settings to show your homepage when you open a new tab */
-"SettingsNewTabHomePage" = "Открывать домашнюю страницу";
-
-/* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "Показывать часто посещаемые сайты";
-
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Готово";
-
-/* Button displayed at the top of the search settings. */
-"SettingsSearchEditButton" = "Изменить";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Показать закладки";
@@ -228,10 +192,4 @@
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "Обновить имя пользователя «%1$@» на сайте %2$@?";
-
-/* List section title for when to use Face ID */
-"UseFaceID" = "Использовать Face ID";
-
-/* List section title for when to use Touch ID */
-"UseTouchID" = "Использовать Touch ID";
 

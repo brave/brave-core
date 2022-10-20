@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Bare som en bekreftelse – du ville ha 'Spilleliste'?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Widget-snarvei";
 
 /* (No Comment) */
-"FGO5qW" = "Spilleliste";
-
-/* (No Comment) */
 "gpCwrM" = "Konfigurering av statistikk";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "${count} alternativer matcher med 'Spilleliste'.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Bare som en bekreftelse – du ville ha 'Spilleliste'?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "${count} alternativer matcher med 'Spilleliste'.";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "${count} alternativer matcher med 'Spilleliste'.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Bare som en bekreftelse – du ville ha 'Spilleliste'?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget for statistikkonfig.";
 

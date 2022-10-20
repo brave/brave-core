@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Solo per conferma, volevi “Playlist”?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Solo per conferma, volevi “Download”?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Comando rapido del widget";
 
 /* (No Comment) */
-"FGO5qW" = "Playlist";
-
-/* (No Comment) */
 "gpCwrM" = "Configurazione delle statistiche";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Ci sono ${count} opzioni che corrispondono a “Playlist”.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Ci sono ${count} opzioni che corrispondono a “Download”.";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Solo per conferma, volevi “Playlist”?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Solo per conferma, volevi “Download”?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Ci sono ${count} opzioni che corrispondono a “Playlist”.";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Ci sono ${count} opzioni che corrispondono a “Download”.";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Ci sono ${count} opzioni che corrispondono a “Playlist”.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Ci sono ${count} opzioni che corrispondono a “Download”.";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Solo per conferma, volevi “Playlist”?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Solo per conferma, volevi “Download”?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget di configurazione delle statistiche";
 

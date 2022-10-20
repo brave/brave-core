@@ -1,9 +1,3 @@
-/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
-"AppAndDeviceNameFormat" = "%2$@의 %1$@";
-
-/* Accessibility label for the Menu button. */
-"AppMenuButtonAccessibilityLabel" = "메뉴";
-
 /* Toast displayed to user after copy url pressed. */
 "AppMenuCopyURLConfirmMessage" = "URL이 클립보드에 복사됨";
 
@@ -74,16 +68,10 @@
 "ExternalLinkAppStoreConfirmationTitle" = "이 링크를 App Store 앱에서 여시겠습니까?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "찾기";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "앞으로";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "이동";
-
-/* Message displayed when the user has a copied link on the clipboard */
-"GoToCopiedLink" = "복사된 링크로 이동하시겠습니까?";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "저장하지 않음";
@@ -151,35 +139,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "주소창 선택";
 
-/* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "언제든지 설정에서 변경할 수 있습니다.";
-
-/* Button cancelling changes setting the home page for the first time. */
-"SetHomePageDialogNo" = "취소";
-
-/* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "이 웹 페이지를 홈페이지로 사용하시겠습니까?";
-
-/* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "홈페이지 설정";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "일반";
 
-/* Option in settings to show a blank page when you open a new tab */
-"SettingsNewTabBlankPage" = "빈 페이지 표시";
-
-/* Option in settings to show your homepage when you open a new tab */
-"SettingsNewTabHomePage" = "홈페이지 표시";
-
-/* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "자주 가는 사이트 표시";
-
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "완료";
-
-/* Button displayed at the top of the search settings. */
-"SettingsSearchEditButton" = "편집";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "북마크 표시";
@@ -228,10 +192,4 @@
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "%2$@에 대한 %1$@ 로그인 정보를 업데이트하시겠습니까?";
-
-/* List section title for when to use Face ID */
-"UseFaceID" = "Face ID 사용";
-
-/* List section title for when to use Touch ID */
-"UseTouchID" = "Touch ID 사용";
 

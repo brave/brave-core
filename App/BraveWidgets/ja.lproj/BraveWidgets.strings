@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "確認ですが、'Playlist' を探していましたか？";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "ウィジェットショートカット";
 
 /* (No Comment) */
-"FGO5qW" = "Playlist";
-
-/* (No Comment) */
 "gpCwrM" = "統計の設定";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "‘Playlist’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "‘ダウンロード’ に一致する ${count} 件の選択肢があります";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "確認ですが、'Playlist' を探していましたか？";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "‘Playlist’ に一致する ${count} 件の選択肢があります";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "‘ダウンロード’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "‘Playlist’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "‘ダウンロード’ に一致する ${count} 件の選択肢があります";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "確認ですが、'Playlist' を探していましたか？";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
-
-/* (No Comment) */
-"ziTvSZ" = "統計の設定ウィジェット";
 

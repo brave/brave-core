@@ -1,9 +1,3 @@
-/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
-"AppAndDeviceNameFormat" = "%1$@ pada %2$@";
-
-/* Accessibility label for the Menu button. */
-"AppMenuButtonAccessibilityLabel" = "Menu";
-
 /* Toast displayed to user after copy url pressed. */
 "AppMenuCopyURLConfirmMessage" = "URL Disalin Kepada Papan Klip";
 
@@ -74,16 +68,10 @@
 "ExternalLinkAppStoreConfirmationTitle" = "Buka pautan ini dalam apl App Store?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "Cari";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Ke Hadapan";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Pergi";
-
-/* Message displayed when the user has a copied link on the clipboard */
-"GoToCopiedLink" = "Pergi ke pautan yang disalin?";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "Jangan Simpan";
@@ -151,35 +139,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Pilih Bar Lokasi";
 
-/* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "Anda boleh menukar ini pada bila-bila masa dalam Tetapan";
-
-/* Button cancelling changes setting the home page for the first time. */
-"SetHomePageDialogNo" = "Batal";
-
-/* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "Adakah anda mahu menggunakan laman web ini sebagai laman utama anda?";
-
-/* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "Tetapkan Laman Utama";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Umum";
 
-/* Option in settings to show a blank page when you open a new tab */
-"SettingsNewTabBlankPage" = "Tunjukkan Halaman kosong";
-
-/* Option in settings to show your homepage when you open a new tab */
-"SettingsNewTabHomePage" = "Tunjuk Laman Utama anda";
-
-/* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "Tunjuk Laman Terbaik anda";
-
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Selesai";
-
-/* Button displayed at the top of the search settings. */
-"SettingsSearchEditButton" = "Edit";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Tunjukkan Penanda Halaman";
@@ -228,10 +192,4 @@
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "Kemas kini log masuk %1$@ untuk %2$@?";
-
-/* List section title for when to use Face ID */
-"UseFaceID" = "Guna ID Muka";
-
-/* List section title for when to use Touch ID */
-"UseTouchID" = "Guna ID Sentuhan";
 
