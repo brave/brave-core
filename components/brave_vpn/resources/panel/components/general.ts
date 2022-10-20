@@ -49,6 +49,7 @@ export const ButtonText = styled.button`
   }
 `
 
-export const ErrorLabel = styled.label`
-  color: red;
+export const ErrorLabel = styled.div`
+  margin: 6px 4px;
+  color: #BD1531;
 `
