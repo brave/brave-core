@@ -20,6 +20,7 @@ brave_chrome_renderer_public_deps = [
   "//brave/components/brave_shields/common",
   "//brave/components/brave_wallet/renderer",
   "//brave/components/cosmetic_filters/renderer",
+  "//brave/components/google_sign_in/renderer",
   "//brave/components/skus/renderer",
   "//brave/components/speedreader/renderer",
   "//brave/renderer/brave_wallet",

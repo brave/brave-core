@@ -1,0 +1,18 @@
+source_set("renderer") {
+  sources = [
+    "google_sign_in_renderer_throttle.cc",
+    "google_sign_in_renderer_throttle.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/permissions:permissions",
+    "//content/public/renderer",
+    "//extensions/common:common",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}

@@ -25,12 +25,15 @@
   {ContentSettingsType::BRAVE_COOKIES, nullptr},                   \
   {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},               \
   {ContentSettingsType::BRAVE_ETHEREUM, nullptr},                  \
-  {ContentSettingsType::BRAVE_SOLANA, nullptr},
+  {ContentSettingsType::BRAVE_SOLANA, nullptr},                    \
+  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, nullptr},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
   if (name == "autoplay")                                                \
     return ContentSettingsType::AUTOPLAY;                                \
+  if (name == "googleSignIn")                                            \
+    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;                    \
   if (name == "ethereum")                                                \
     return ContentSettingsType::BRAVE_ETHEREUM;                          \
   if (name == "solana")                                                  \
@@ -51,6 +54,8 @@ namespace site_settings {
 bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::AUTOPLAY)
     return true;
+  if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)
+    return true;
   if (type == ContentSettingsType::BRAVE_ETHEREUM)
     return true;
   if (type == ContentSettingsType::BRAVE_SOLANA)
@@ -63,6 +68,8 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
 base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::AUTOPLAY)
     return "autoplay";
+  if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)
+    return "googleSignIn";
   if (type == ContentSettingsType::BRAVE_ETHEREUM)
     return "ethereum";
   if (type == ContentSettingsType::BRAVE_SOLANA)
@@ -75,7 +82,8 @@ base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
 const std::vector<ContentSettingsType>& GetVisiblePermissionCategories() {
   static base::NoDestructor<std::vector<ContentSettingsType>> types{
       {ContentSettingsType::AUTOPLAY, ContentSettingsType::BRAVE_ETHEREUM,
-       ContentSettingsType::BRAVE_SOLANA}};
+       ContentSettingsType::BRAVE_SOLANA,
+       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN}};
   static bool initialized = false;
   if (!initialized) {
     auto& base_types = GetVisiblePermissionCategories_ChromiumImpl();

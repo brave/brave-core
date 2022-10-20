@@ -8,6 +8,7 @@
 #include "brave/browser/geolocation/brave_geolocation_permission_context_delegate.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/components/permissions/brave_permission_manager.h"
+#include "brave/components/permissions/contexts/brave_social_media_permission_context.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "components/permissions/features.h"
@@ -33,6 +34,8 @@ KeyedService* PermissionManagerFactory::BuildServiceInstanceFor(
   permission_contexts[ContentSettingsType::BRAVE_SOLANA] =
       std::make_unique<permissions::BraveWalletPermissionContext>(
           profile, ContentSettingsType::BRAVE_SOLANA);
+  permission_contexts[ContentSettingsType::BRAVE_GOOGLE_SIGN_IN] =
+      std::make_unique<permissions::BraveSocialMediaPermissionContext>(profile);
 
   if (base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {

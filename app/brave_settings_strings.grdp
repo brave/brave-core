@@ -503,6 +503,19 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK" desc="Label for solana site settings.">
     Block sites from accessing the Solana provider API
   </message>
+  <!-- Google Sign-In setting -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN" desc="Label for G sign-in site settings.">
+    Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK" desc="Label for G sign-in site settings.">
+    Ask when a site wants to use Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK" desc="Label for G sign-in site settings.">
+    Block sites from using Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW" desc="Label for G sign-in site settings.">
+    Allow sites to use Google Sign-In
+  </message>
 
   <!-- Settings / Privacy and security / Safety Check -->
   <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">

@@ -9,6 +9,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_ads/renderer/search_result_ad_renderer_throttle.h"
+#include "brave/components/google_sign_in/renderer/google_sign_in_renderer_throttle.h"
 #include "chrome/renderer/chrome_content_renderer_client.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
 #include "third_party/blink/public/common/thread_safe_browser_interface_broker_proxy.h"
@@ -54,6 +55,12 @@ BraveURLLoaderThrottleProvider::CreateThrottles(
     if (search_result_ad_throttle) {
       throttles.emplace_back(std::move(search_result_ad_throttle));
     }
+  }
+
+  if (auto google_sign_in_throttle =
+          google_sign_in::GoogleSignInRendererThrottle::MaybeCreateThrottleFor(
+              render_frame_id, request)) {
+    throttles.emplace_back(std::move(google_sign_in_throttle));
   }
 
   return throttles;

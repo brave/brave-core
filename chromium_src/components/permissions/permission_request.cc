@@ -17,13 +17,15 @@
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
-  case RequestType::kBraveEthereum: \
-  case RequestType::kBraveSolana:   \
-    NOTREACHED();                   \
-    return std::u16string();        \
-  case RequestType::kWidevine:      \
-    NOTREACHED();                   \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH     \
+  case RequestType::kBraveGoogleSignIn: \
+    return u"Sign-In With Google";      \
+  case RequestType::kBraveEthereum:     \
+  case RequestType::kBraveSolana:       \
+    NOTREACHED();                       \
+    return std::u16string();            \
+  case RequestType::kWidevine:          \
+    NOTREACHED();                       \
     return std::u16string();
 
 namespace {

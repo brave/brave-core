@@ -6,6 +6,8 @@
 #include "components/permissions/permission_context_base.h"
 #include "components/permissions/permissions_client.h"
 
+#include <iostream>
+
 #define PermissionContextBase PermissionContextBase_ChromiumImpl
 #define CanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN) \
   BraveCanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN,  \

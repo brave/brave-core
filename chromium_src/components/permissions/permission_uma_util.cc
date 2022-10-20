@@ -12,6 +12,7 @@
   case RequestType::kWidevine:               \
   case RequestType::kBraveEthereum:          \
   case RequestType::kBraveSolana:            \
+  case RequestType::kBraveGoogleSignIn:      \
     return RequestTypeForUma::PERMISSION_VR;
 
 // We do not record permissions UKM and this can save us from patching
