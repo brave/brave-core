@@ -197,7 +197,7 @@ void BraveVPNButton::UpdateButtonState() {
 }
 
 bool BraveVPNButton::IsConnected() {
-  return service_->is_connected();
+  return service_->IsConnected();
 }
 
 void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
