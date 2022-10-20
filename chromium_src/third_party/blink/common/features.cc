@@ -65,5 +65,6 @@ const base::Feature kBraveTorWindowsHttpsOnly{"BraveTorWindowsHttpsOnly",
 // Enables protection against fingerprinting via high-resolution time stamps.
 const base::Feature kBraveRoundTimeStamps{"BraveRoundTimeStamps",
                                           base::FEATURE_ENABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace blink
