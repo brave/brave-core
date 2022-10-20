@@ -24,10 +24,10 @@
 
     _digest = base::SysUTF8ToNSString(
         certificate::x509_utils::SignatureAlgorithmDigestToName(
-            certificate->signature_algorithm()));
+            *certificate->signature_algorithm()));
     _algorithm = base::SysUTF8ToNSString(
         certificate::x509_utils::SignatureAlgorithmIdToName(
-            certificate->signature_algorithm()));
+            *certificate->signature_algorithm()));
 
     net::der::Input signature_oid;
     net::der::Input signature_params;
