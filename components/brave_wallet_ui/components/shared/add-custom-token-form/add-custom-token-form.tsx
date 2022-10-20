@@ -144,6 +144,7 @@ export const AddCustomTokenForm = (props: Props) => {
       foundToken.logo = foundToken.logo ? foundToken.logo : iconURL
       foundToken.chainId = customAssetsNetwork.chainId
       onAddCustomAsset(foundToken)
+      onHideForm()
     } else {
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
