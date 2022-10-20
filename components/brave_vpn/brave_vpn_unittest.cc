@@ -139,13 +139,22 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
     if (connection_state_callback_)
       std::move(connection_state_callback_).Run();
   }
+  void OnSelectedRegionChanged(mojom::RegionPtr region) override {
+    if (selected_region_callback_)
+      std::move(selected_region_callback_).Run();
+  }
 #endif
   void WaitPurchasedStateChange(base::OnceClosure callback) {
     purchased_callback_ = std::move(callback);
   }
+#if !BUILDFLAG(IS_ANDROID)
   void WaitConnectionStateChange(base::OnceClosure callback) {
     connection_state_callback_ = std::move(callback);
   }
+  void WaitSelectedRegionStateChange(base::OnceClosure callback) {
+    selected_region_callback_ = std::move(callback);
+  }
+#endif
   mojo::PendingRemote<mojom::ServiceObserver> GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
@@ -165,6 +174,7 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
   absl::optional<ConnectionState> connection_state_;
   base::OnceClosure purchased_callback_;
   base::OnceClosure connection_state_callback_;
+  base::OnceClosure selected_region_callback_;
   mojo::Receiver<mojom::ServiceObserver> observer_receiver_{this};
 };
 
@@ -274,6 +284,10 @@ class BraveVPNServiceTest : public testing::Test {
   }
   void Suspend() { GetBraveVPNConnectionAPI()->OnSuspend(); }
   void OnDNSChanged() { GetBraveVPNConnectionAPI()->OnDNSChanged(); }
+
+  void SetSelectedRegion(const std::string& region) {
+    service_->SetSelectedRegion(region);
+  }
 
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
@@ -746,6 +760,17 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
     loop.Run();
   }
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+}
+
+TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+
+  OnFetchRegionList(false, GetRegionsData(), true);
+  SetSelectedRegion("asia-sg");
+  base::RunLoop loop;
+  observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+  loop.Run();
 }
 
 TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
