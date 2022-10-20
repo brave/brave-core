@@ -1,10 +1,11 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_view_ids.h"
 #include "brave/browser/ui/views/bookmarks/bookmark_bar_instructions_view.h"
+#include "brave/browser/ui/views/bookmarks/brave_bookmark_context_menu.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
@@ -69,8 +70,9 @@ void InstallNoHighlightPathGenerator(View* view) {
 #define BRAVE_LAYOUT                                                  \
   LayoutBookmarkBarInstructionsView(this, bookmark_model_, browser(), \
                                     button_height, x, max_x, y);
-
+#define BookmarkContextMenu BraveBookmarkContextMenu
 #define InstallPillHighlightPathGenerator InstallNoHighlightPathGenerator
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc"
 #undef InstallPillHighlightPathGenerator
+#undef BookmarkContextMenu
 #undef BRAVE_LAYOUT
