@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/android/java/org/chromium/chrome/browser/search_engines/settings/jni_headers/BraveSearchEnginePrefHelper_jni.h"
+#include "brave/android/java/org/chromium/chrome/browser/search_engines/jni_headers/BraveSearchEnginePrefHelper_jni.h"
 
 #include "brave/components/brave_search/browser/prefs.h"
 #include "chrome/browser/profiles/profile.h"

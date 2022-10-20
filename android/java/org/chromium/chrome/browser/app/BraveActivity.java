@@ -268,11 +268,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
             BraveVpnUtils.reportBackgroundUsageP3A();
         }
-        Tab tab = getActivityTab();
-        if (tab != null) {
+        Profile profile = getCurrentTabModel().getProfile();
+        if (profile != null) {
             // Set proper active DSE whenever brave returns to foreground.
             // If active tab is private, set private DSE as an active DSE.
-            BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
+            BraveSearchEngineUtils.updateActiveDSE(profile);
         }
 
         // The check on mNativeInitialized is mostly to ensure that mojo
@@ -292,11 +292,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
         }
-        Tab tab = getActivityTab();
-        if (tab != null && tab.isIncognito()) {
+        Profile profile = getCurrentTabModel().getProfile();
+        if (profile != null && profile.isOffTheRecord()) {
             // Set normal DSE as an active DSE when brave goes in background
             // because currently set DSE is used by outside of brave(ex, brave search widget).
-            BraveSearchEngineUtils.updateActiveDSE(false);
+            BraveSearchEngineUtils.updateActiveDSE(profile);
         }
         super.onPauseWithNative();
     }
@@ -1191,11 +1191,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private void checkForYandexSE() {
         String countryCode = Locale.getDefault().getCountry();
         if (yandexRegions.contains(countryCode)) {
-            TemplateUrl yandexTemplateUrl =
-                    BraveSearchEngineUtils.getTemplateUrlByShortName(OnboardingPrefManager.YANDEX);
+            Profile lastUsedRegularProfile = Profile.getLastUsedRegularProfile();
+            TemplateUrl yandexTemplateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
+                    lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
             if (yandexTemplateUrl != null) {
-                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, false);
-                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, true);
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, lastUsedRegularProfile);
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl,
+                        lastUsedRegularProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
             }
         }
     }

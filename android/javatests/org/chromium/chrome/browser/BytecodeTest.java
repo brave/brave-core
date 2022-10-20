@@ -110,6 +110,7 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.permissions.PermissionDialogController;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.WindowAndroid;
@@ -499,6 +500,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory",
+                        "get", true, TemplateUrlService.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
