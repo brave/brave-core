@@ -13,6 +13,7 @@ import os.log
 
 /// A static class to handle all things related to the Brave VPN service.
 public class BraveVPN {
+  public static let linkReceiptEnabled = false
 
   private static let housekeepingApi = GRDHousekeepingAPI()
   private static let helper = GRDVPNHelper.sharedInstance()
@@ -82,6 +83,14 @@ public class BraveVPN {
           let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString else { return nil }
     
     return receipt
+  }
+  
+  /// Returns true if the app store receipt is in sandbox mode.
+  /// This can typically let us know whether a Testflight build is used or not.
+  /// Keep in mind this function may not work correctly for future iOS builds.
+  /// Apple prefers to validate the receipt by using a server.
+  public static var isSandbox: Bool {
+    Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
   }
   
   public static func setCustomVPNCredential(_ credential: String, environment: String) {

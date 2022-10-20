@@ -12,7 +12,7 @@ import os.log
 
 public class BraveVPNSettingsViewController: TableViewController {
 
-  public var faqButtonTapped: (() -> Void)?
+  public var openURL: ((URL) -> Void)?
 
   public init() {
     super.init(style: .grouped)
@@ -65,6 +65,30 @@ public class BraveVPNSettingsViewController: TableViewController {
       overlayView = overlay
     }
   }
+  
+  private var linkReceiptRows: [Row] {
+    var rows = [Row]()
+    
+    if BraveVPN.linkReceiptEnabled {
+      rows.append(Row(text: Strings.VPN.settingsLinkReceipt,
+                      selection: { [unowned self] in
+        openURL?(BraveUX.braveVPNLinkReceiptProd)
+      }, cellClass: ButtonCell.self))
+    }
+    
+    if BraveVPN.isSandbox {
+      rows += [Row(text: "[Staging] Link Receipt",
+                   selection: { [unowned self] in
+        openURL?(BraveUX.braveVPNLinkReceiptStaging)
+      }, cellClass: ButtonCell.self),
+               Row(text: "[Dev] Link Receipt",
+                   selection: { [unowned self] in
+        openURL?(BraveUX.braveVPNLinkReceiptDev)
+      }, cellClass: ButtonCell.self)]
+    }
+    
+    return rows
+  }
 
   public override func viewDidLoad() {
     super.viewDidLoad()
@@ -105,7 +129,8 @@ public class BraveVPNSettingsViewController: TableViewController {
         // Opens Apple's 'manage subscription' screen.
         UIApplication.shared.open(url, options: [:])
       }
-    }, cellClass: ButtonCell.self)])
+    }, cellClass: ButtonCell.self)] + linkReceiptRows,
+            footer: .title(Strings.VPN.settingsLinkReceiptFooter))
     
     let location = BraveVPN.serverLocation ?? "-"
     
@@ -133,7 +158,8 @@ public class BraveVPNSettingsViewController: TableViewController {
     
     let termsSection = Section(rows:
                                 [Row(text: Strings.VPN.settingsFAQ, selection: { [unowned self] in
-      self.faqButtonTapped?()
+      self.openURL?(BraveUX.braveVPNFaqURL)
+      
     }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)])
     
     dataSource.sections = [vpnStatusSection,

@@ -2508,6 +2508,16 @@ extension Strings {
       NSLocalizedString("vpn.settingsManageSubscription", tableName: "BraveShared", bundle: .strings,
         value: "Manage Subscription",
         comment: "Button to manage your VPN subscription")
+    
+    public static let settingsLinkReceipt =
+      NSLocalizedString("vpn.settingsLinkReceipt", tableName: "BraveShared", bundle: .strings,
+        value: "Link purchase to your Brave account",
+        comment: "Button to link your VPN receipt to other devices.")
+    
+    public static let settingsLinkReceiptFooter =
+      NSLocalizedString("vpn.settingsLinkReceiptFooter", tableName: "BraveShared", bundle: .strings,
+        value: "Link your App Store purchase to your Brave account to use Brave VPN on other devices.",
+        comment: "Footer text to link your VPN receipt to other devices.")
 
     public static let settingsServerHost =
       NSLocalizedString("vpn.settingsServerHost", tableName: "BraveShared", bundle: .strings,
