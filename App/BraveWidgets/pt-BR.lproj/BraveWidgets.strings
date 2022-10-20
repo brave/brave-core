@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Só para confirmar: você queria a opção \"Playlist\"?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Atalho de widget";
 
 /* (No Comment) */
-"FGO5qW" = "Playlist";
-
-/* (No Comment) */
 "gpCwrM" = "Configuração de estatísticas";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist\".";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Só para confirmar: você queria a opção \"Playlist\"?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist\".";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist\".";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Só para confirmar: você queria a opção \"Playlist\"?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget de configuração de estatísticas";
 

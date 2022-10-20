@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Vouliez-vous dire « Liste de lecture » ?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Raccourci du widget";
 
 /* (No Comment) */
-"FGO5qW" = "Liste de lecture";
-
-/* (No Comment) */
 "gpCwrM" = "Configuration des statistiques";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Il y a ${count} options correspondant à « Liste de lecture ».";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Vouliez-vous dire « Liste de lecture » ?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Il y a ${count} options correspondant à « Liste de lecture ».";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Il y a ${count} options correspondant à « Liste de lecture ».";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Vouliez-vous dire « Liste de lecture » ?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget de configuration des statistiques";
 

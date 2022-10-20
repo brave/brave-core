@@ -1,9 +1,3 @@
-/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
-"AppAndDeviceNameFormat" = "%2$@'de %1$@";
-
-/* Accessibility label for the Menu button. */
-"AppMenuButtonAccessibilityLabel" = "Menü";
-
 /* Toast displayed to user after copy url pressed. */
 "AppMenuCopyURLConfirmMessage" = "Panoya Kopyalanan URL";
 
@@ -74,16 +68,10 @@
 "ExternalLinkAppStoreConfirmationTitle" = "Bu bağlantıyı App Store uygulamasında açmak istiyor musunuz?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "Bul";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "İleri";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Başla";
-
-/* Message displayed when the user has a copied link on the clipboard */
-"GoToCopiedLink" = "Kopyalanan bağlantıya gidilsin mi?";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "Kaydetme";
@@ -151,35 +139,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Konum Çubuğu Seç";
 
-/* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "Bunu istediğiniz zaman Ayarlar'dan değiştirebilirsiniz";
-
-/* Button cancelling changes setting the home page for the first time. */
-"SetHomePageDialogNo" = "İptal";
-
-/* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "Bu web sayfasını giriş sayfanız olarak kullanmak istiyor musunuz?";
-
-/* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "Ana Sayfayı Ayarla";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Genel";
 
-/* Option in settings to show a blank page when you open a new tab */
-"SettingsNewTabBlankPage" = "Boş Sayfa Göster";
-
-/* Option in settings to show your homepage when you open a new tab */
-"SettingsNewTabHomePage" = "Ana Sayfanızı Gösterin";
-
-/* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "En İyi Sitelerinizi Gösterin";
-
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Tamamlandı";
-
-/* Button displayed at the top of the search settings. */
-"SettingsSearchEditButton" = "Düzenle";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Yer İşaretlerini Göster";
@@ -228,10 +192,4 @@
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "%2$@ için %1$@ oturum açma bilgisi güncellensin mi?";
-
-/* List section title for when to use Face ID */
-"UseFaceID" = "Face ID Kullan";
-
-/* List section title for when to use Touch ID */
-"UseTouchID" = "Touch ID'i kullanma";
 

@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Playlist“?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Widget-Verknüpfung";
 
 /* (No Comment) */
-"FGO5qW" = "Playlist";
-
-/* (No Comment) */
 "gpCwrM" = "Statistikkonfiguration";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Es gibt ${count} Optionen, die mit „Playlist“ übereinstimmen.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Playlist“?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Es gibt ${count} Optionen, die mit „Playlist“ übereinstimmen.";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Es gibt ${count} Optionen, die mit „Playlist“ übereinstimmen.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Playlist“?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
-
-/* (No Comment) */
-"ziTvSZ" = "Statistikkonfigurations-Widget";
 

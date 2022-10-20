@@ -1370,7 +1370,7 @@
 "pagezoom.settings.emptyWebsitesTitle" = "Ingen nettsider lagt til";
 
 /* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "Sidezoon";
+"pagezoom.settings.menu-title" = "Zoom";
 
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Alle andre nettsider";
@@ -1388,7 +1388,7 @@
 "pagezoom.settings.title" = "Sidezoom-innstillinger";
 
 /* Title for the web-page zoom level view */
-"pagezoom.zoomView.text" = "Sidezoon";
+"pagezoom.zoomView.text" = "Zoom";
 
 /* Sync pair device settings section title */
 "Pair" = "Par";

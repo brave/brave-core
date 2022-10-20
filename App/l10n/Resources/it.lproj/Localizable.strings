@@ -1,9 +1,3 @@
-/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
-"AppAndDeviceNameFormat" = "%1$@ su %2$@";
-
-/* Accessibility label for the Menu button. */
-"AppMenuButtonAccessibilityLabel" = "Menu";
-
 /* Toast displayed to user after copy url pressed. */
 "AppMenuCopyURLConfirmMessage" = "URL copiato negli appunti";
 
@@ -74,16 +68,10 @@
 "ExternalLinkAppStoreConfirmationTitle" = "Vuoi aprire questo link nell’App Store?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "Trova";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Avanti";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Vai";
-
-/* Message displayed when the user has a copied link on the clipboard */
-"GoToCopiedLink" = "Vuoi andare al link copiato?";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "Non salvare";
@@ -151,35 +139,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Seleziona la barra di posizione";
 
-/* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "Puoi cambiarla in qualsiasi momento da Impostazioni";
-
-/* Button cancelling changes setting the home page for the first time. */
-"SetHomePageDialogNo" = "Annulla";
-
-/* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "Vuoi usare questa pagina web come pagina iniziale?";
-
-/* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "Imposta pagina iniziale";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Generali";
 
-/* Option in settings to show a blank page when you open a new tab */
-"SettingsNewTabBlankPage" = "Mostra una pagina vuota";
-
-/* Option in settings to show your homepage when you open a new tab */
-"SettingsNewTabHomePage" = "Mostra la pagina iniziale";
-
-/* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "Mostra “I siti migliori”";
-
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Fine";
-
-/* Button displayed at the top of the search settings. */
-"SettingsSearchEditButton" = "Modifica";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Mostra i segnalibri";
@@ -228,10 +192,4 @@
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "Vuoi aggiornare l’accesso %1$@ per %2$@?";
-
-/* List section title for when to use Face ID */
-"UseFaceID" = "Usa il Face ID";
-
-/* List section title for when to use Touch ID */
-"UseTouchID" = "Usa il Touch ID";
 

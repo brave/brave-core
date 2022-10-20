@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Solo para confirmar: ¿querías decir \"Lista de reproducción\"?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Solo para confirmar: ¿querías decir \"Descargas\"?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Accesos directos al widget";
 
 /* (No Comment) */
-"FGO5qW" = "Lista de reproducción";
-
-/* (No Comment) */
 "gpCwrM" = "Configuración de estadísticas";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Hay ${count} opciones que coinciden con \"Lista de reproducción\".";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Hay ${count} opciones que coinciden con \"Descargas\".";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Solo para confirmar: ¿querías decir \"Lista de reproducción\"?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Solo para confirmar: ¿querías decir \"Descargas\"?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Hay ${count} opciones que coinciden con \"Lista de reproducción\".";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Hay ${count} opciones que coinciden con \"Descargas\".";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Hay ${count} opciones que coinciden con \"Lista de reproducción\".";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Hay ${count} opciones que coinciden con \"Descargas\".";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Solo para confirmar: ¿querías decir \"Lista de reproducción\"?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Solo para confirmar: ¿querías decir \"Descargas\"?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget de configuración de estadísticas";
 

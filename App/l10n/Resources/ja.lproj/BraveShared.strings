@@ -212,7 +212,7 @@
 "BraveShieldsGlobalControls" = "グローバル設定";
 
 /* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "もしサイトに正しく表示されていない場合は、Shieldをオフにしてみてください";
+"BraveShieldsSiteBroken" = "サイトの表示が崩れている場合は、Shieldをオフにしてみてください";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
 "BraveShieldsStatusTitle" = "Brave Shield";

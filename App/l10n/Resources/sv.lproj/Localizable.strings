@@ -1,9 +1,3 @@
-/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
-"AppAndDeviceNameFormat" = "%1$@ på %2$@";
-
-/* Accessibility label for the Menu button. */
-"AppMenuButtonAccessibilityLabel" = "Meny";
-
 /* Toast displayed to user after copy url pressed. */
 "AppMenuCopyURLConfirmMessage" = "URL kopierad till urklipp";
 
@@ -74,16 +68,10 @@
 "ExternalLinkAppStoreConfirmationTitle" = "Vill du öppna den här länken i App Store-appen?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "Hitta";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Framåt";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Öppna";
-
-/* Message displayed when the user has a copied link on the clipboard */
-"GoToCopiedLink" = "Öppna kopierad länk?";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "Spara inte";
@@ -151,35 +139,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Välj adressfältet";
 
-/* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "Du kan ändra detta när som helst under Inställningar";
-
-/* Button cancelling changes setting the home page for the first time. */
-"SetHomePageDialogNo" = "Avbryt";
-
-/* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "Vill du använda den här webbplatsen som din hemsida?";
-
-/* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "Använd som hemsida";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Allmänt";
 
-/* Option in settings to show a blank page when you open a new tab */
-"SettingsNewTabBlankPage" = "Visa en tom sida";
-
-/* Option in settings to show your homepage when you open a new tab */
-"SettingsNewTabHomePage" = "Visa din hemsida";
-
-/* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "Visa dina toppsidor";
-
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Klar";
-
-/* Button displayed at the top of the search settings. */
-"SettingsSearchEditButton" = "Redigera";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Visa bokmärken";
@@ -228,10 +192,4 @@
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "Vill du uppdatera inloggningen %1$@ på %2$@?";
-
-/* List section title for when to use Face ID */
-"UseFaceID" = "Använd Face ID";
-
-/* List section title for when to use Touch ID */
-"UseTouchID" = "Använd Touch ID";
 

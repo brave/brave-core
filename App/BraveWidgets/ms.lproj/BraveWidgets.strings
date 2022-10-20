@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Sebagai pengesahan, betulkah anda inginkan 'Senarai Main'?";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "Sebagai pengesahan, betulkah anda inginkan 'Muat Turun'?";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "Pintasan Widget";
 
 /* (No Comment) */
-"FGO5qW" = "Senarai Main";
-
-/* (No Comment) */
 "gpCwrM" = "Konfigurasi Stat";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "Terdapat ${count} pilihan yang sepadan dengan ‘Senarai Main’.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Terdapat ${count} pilihan yang sepadan dengan ‘Muat Turun’.";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "Sebagai pengesahan, betulkah anda inginkan 'Senarai Main'?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Sebagai pengesahan, betulkah anda inginkan 'Muat Turun'?";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Terdapat ${count} pilihan yang sepadan dengan ‘Senarai Main’.";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "Terdapat ${count} pilihan yang sepadan dengan ‘Muat Turun’.";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "Terdapat ${count} pilihan yang sepadan dengan ‘Senarai Main’.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Terdapat ${count} pilihan yang sepadan dengan ‘Muat Turun’.";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Sebagai pengesahan, betulkah anda inginkan 'Senarai Main'?";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "Sebagai pengesahan, betulkah anda inginkan 'Muat Turun'?";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Peribadi Baharu'?";
-
-/* (No Comment) */
-"ziTvSZ" = "Widget Konfigurasi Stat";
 

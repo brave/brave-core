@@ -35,9 +35,6 @@
 "e13lS3-crhbMy" = "您要的是「書籤」，對嗎？";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "您要的是「播放清單」，對嗎？";
-
-/* (No Comment) */
 "e13lS3-nthxSL" = "您要的是「下載」，對嗎？";
 
 /* (No Comment) */
@@ -50,9 +47,6 @@
 "EUS9FL" = "小工具捷徑";
 
 /* (No Comment) */
-"FGO5qW" = "播放清單";
-
-/* (No Comment) */
 "gpCwrM" = "統計資料組態";
 
 /* (No Comment) */
@@ -63,9 +57,6 @@
 
 /* (No Comment) */
 "L1fziM-crhbMy" = "有 ${count} 個選項符合「書籤」。";
-
-/* (No Comment) */
-"L1fziM-FGO5qW" = "有 ${count} 個選項符合「播放清單」。";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "有 ${count} 個選項符合「下載」。";
@@ -84,9 +75,6 @@
 
 /* (No Comment) */
 "r2EI05-crhbMy" = "您要的是「書籤」，對嗎？";
-
-/* (No Comment) */
-"r2EI05-FGO5qW" = "您要的是「播放清單」，對嗎？";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "您要的是「下載」，對嗎？";
@@ -113,9 +101,6 @@
 "tNCrcE-crhbMy" = "有 ${count} 個選項符合「書籤」。";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "有 ${count} 個選項符合「播放清單」。";
-
-/* (No Comment) */
 "tNCrcE-nthxSL" = "有 ${count} 個選項符合「下載」。";
 
 /* (No Comment) */
@@ -132,9 +117,6 @@
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "有 ${count} 個選項符合「書籤」。";
-
-/* (No Comment) */
-"TxuMja-FGO5qW" = "有 ${count} 個選項符合「播放清單」。";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "有 ${count} 個選項符合「下載」。";
@@ -167,9 +149,6 @@
 "YQiQuz-crhbMy" = "您要的是「書籤」，對嗎？";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "您要的是「播放清單」，對嗎？";
-
-/* (No Comment) */
 "YQiQuz-nthxSL" = "您要的是「下載」，對嗎？";
 
 /* (No Comment) */
@@ -177,7 +156,4 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "您要的是「新隱私分頁」，對嗎？";
-
-/* (No Comment) */
-"ziTvSZ" = "統計資料組態小工具";
 
