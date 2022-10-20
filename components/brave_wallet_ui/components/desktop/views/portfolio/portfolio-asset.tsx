@@ -335,7 +335,7 @@ export const PortfolioAsset = (props: Props) => {
 
     return new Amount(fullAssetBalances.assetBalance)
       .divideByDecimals(selectedAsset?.decimals ?? 18)
-      .formatAsAsset()
+      .formatAsAsset(8)
   }, [fullAssetBalances, selectedAsset])
 
   const isNftAsset = selectedAssetFromParams?.isErc721

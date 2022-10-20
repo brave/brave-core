@@ -14,6 +14,7 @@ import { getLocale } from '../../../../../../../common/locale'
 // components
 import CopyTooltip from '../../../../../shared/copy-tooltip/copy-tooltip'
 import withPlaceholderIcon from '../../../../../shared/create-placeholder-icon'
+import { Skeleton } from '../../../../../shared/loading-skeleton/styles'
 
 // styles
 import PopupModal from '../../../../../desktop/popup-modals'
@@ -64,7 +65,7 @@ export const TokenDetailsModal = (props: Props) => {
             <CryptoBalance>{assetBalance}</CryptoBalance>
             <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetNetwork} />
           </TokenBalanceRow>
-          <FiatBalance>{formattedFiatBalance}</FiatBalance>
+          <FiatBalance>{formattedFiatBalance || <Skeleton width='20%' /> }</FiatBalance>
           <DetailColumn>
             <TokenDetailLabel>Token Contract Address</TokenDetailLabel>
             <CopyTooltip text={selectedAsset.contractAddress}>
