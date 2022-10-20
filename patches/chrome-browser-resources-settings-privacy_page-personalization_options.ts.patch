@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 25cc81c7ce82200ca9eff2df31907f9df507b5f6..cf287e66f391e84c739bac4479d29818d97ae3f4 100644
+index 3941dbb1589d98d34471524312736e50d1bf8a99..3fe4cad9cdb5d9e31c87ca0743e3a06d01455038 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -76,7 +76,7 @@ export class SettingsPersonalizationOptionsElement extends
@@ -17,7 +17,7 @@ index 25cc81c7ce82200ca9eff2df31907f9df507b5f6..cf287e66f391e84c739bac4479d29818
  
 -  // <if expr="_google_chrome and not chromeos_ash">
 +  // <if expr="not chromeos_ash">
-   private metricsReportingPref_: chrome.settingsPrivate.PrefObject;
+   private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>;
    private showRestart_: boolean;
    // </if>
 @@ -176,7 +176,7 @@ export class SettingsPersonalizationOptionsElement extends
