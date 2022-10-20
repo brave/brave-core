@@ -10,7 +10,6 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/ui/views/brave_actions/brave_news_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
@@ -63,13 +62,6 @@ void BraveActionsContainer::Init() {
   AddActionViewForShields();
   AddActionViewForRewards();
 
-  if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
-      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
-      !browser_->profile()->IsOffTheRecord()) {
-    AddActionViewForNews();
-  }
-
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
       brave_rewards::prefs::kShowButton, browser_->profile()->GetPrefs(),
@@ -103,15 +95,6 @@ void BraveActionsContainer::AddActionViewForRewards() {
   rewards_action_btn_->Update();
 }
 
-void BraveActionsContainer::AddActionViewForNews() {
-  news_action_btn_ =
-      AddChildViewAt(std::make_unique<BraveNewsActionView>(
-                         browser_->profile(), browser_->tab_strip_model()),
-                     0);
-  news_action_btn_->SetPreferredSize(kToolbarActionSize);
-  news_action_btn_->Init();
-}
-
 void BraveActionsContainer::Update() {
   if (shields_action_btn_) {
     shields_action_btn_->Update();
@@ -135,9 +118,6 @@ void BraveActionsContainer::UpdateVisibility() {
   if (rewards_action_btn_) {
     can_show = can_show || rewards_action_btn_->GetVisible();
   }
-
-  if (news_action_btn_)
-    news_action_btn_->Update();
 
   // If no buttons are visible, then we want to hide this view so that the
   // separator is not displayed.

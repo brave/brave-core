@@ -20,7 +20,6 @@ class BraveActionsContainerTest;
 class BraveRewardsActionView;
 class BraveShieldsActionView;
 class RewardsBrowserTest;
-class BraveNewsActionView;
 
 namespace policy {
 FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
@@ -59,7 +58,6 @@ class BraveActionsContainer : public views::View {
   bool ShouldShowBraveRewardsAction() const;
   void AddActionViewForRewards();
   void AddActionViewForShields();
-  void AddActionViewForNews();
 
   void UpdateVisibility();
 
@@ -75,7 +73,6 @@ class BraveActionsContainer : public views::View {
 
   raw_ptr<BraveShieldsActionView> shields_action_btn_ = nullptr;
   raw_ptr<BraveRewardsActionView> rewards_action_btn_ = nullptr;
-  raw_ptr<BraveNewsActionView> news_action_btn_ = nullptr;
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember show_brave_rewards_button_;
