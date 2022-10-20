@@ -33,9 +33,13 @@
 #include "components/sync/test/test_sync_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/first_party_sets_handler.h"
 #include "content/public/browser/interest_group_manager.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/first_party_sets/first_party_set_entry.h"
+#include "net/first_party_sets/first_party_sets_context_config.h"
+#include "net/first_party_sets/global_first_party_sets.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -87,7 +91,9 @@ class PrivacySandboxServiceTest : public testing::Test {
 #if !BUILDFLAG(IS_ANDROID)
         mock_sentiment_service(),
 #endif
-        mock_browsing_topics_service());
+        mock_browsing_topics_service(), first_party_sets_policy_service());
+
+    SetGlobalFirstPartySetsAndWait();
   }
 
   virtual void InitializePrefsBeforeStart() {}
@@ -126,8 +132,22 @@ class PrivacySandboxServiceTest : public testing::Test {
     return mock_sentiment_service_.get();
   }
 #endif
+  first_party_sets::FirstPartySetsPolicyService*
+  first_party_sets_policy_service() {
+    return &first_party_sets_policy_service_;
+  }
 
  private:
+  void SetGlobalFirstPartySetsAndWait() {
+    content::FirstPartySetsHandler::GetInstance()->ResetForTesting();
+    content::FirstPartySetsHandler::GetInstance()->SetGlobalSetsForTesting({});
+    base::RunLoop run_loop;
+    first_party_sets_policy_service_.WaitForFirstInitCompleteForTesting(
+        run_loop.QuitClosure());
+    run_loop.Run();
+    first_party_sets_policy_service_.ResetForTesting();
+  }
+
   content::BrowserTaskEnvironment browser_task_environment_;
   signin::IdentityTestEnvironment identity_test_env_;
   testing::NiceMock<policy::MockPolicyService> mock_policy_service_;
@@ -139,6 +159,10 @@ class PrivacySandboxServiceTest : public testing::Test {
 
   std::unique_ptr<PrivacySandboxService> privacy_sandbox_service_;
   browsing_topics::MockBrowsingTopicsService* mock_browsing_topics_service_;
+  first_party_sets::FirstPartySetsPolicyService
+      first_party_sets_policy_service_ =
+          first_party_sets::FirstPartySetsPolicyService(
+              profile_.GetOriginalProfile());
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MockTrustSafetySentimentService> mock_sentiment_service_;
 #endif
