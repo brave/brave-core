@@ -7,7 +7,7 @@ deps = {
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@2ecd0b965df89efe5fefab13867f0740c973906c",
+    "url": "https://github.com/brave/omaha.git@28162eea5ef4ef42723979e4e15089c78cb5844f",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
