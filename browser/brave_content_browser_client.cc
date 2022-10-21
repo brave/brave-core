@@ -15,7 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_ads/brave_ads_host.h"
+#include "brave/browser/brave_ads/search_result_ad/search_result_ad_redirect_throttle.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -248,19 +248,6 @@ void BindCosmeticFiltersResourcesOnTaskRunner(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
           g_brave_browser_process->ad_block_service()),
-      std::move(receiver));
-}
-
-void BindBraveAdsHost(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_ads::mojom::BraveAdsHost> receiver) {
-  auto* context = frame_host->GetBrowserContext();
-  auto* profile = Profile::FromBrowserContext(context);
-  content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(frame_host);
-
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_ads::BraveAdsHost>(profile, web_contents),
       std::move(receiver));
 }
 
@@ -567,12 +554,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_ads::features::kSupportBraveSearchResultAdConfirmationEvents)) {
-    map->Add<brave_ads::mojom::BraveAdsHost>(
-        base::BindRepeating(&BindBraveAdsHost));
-  }
-
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));
   if (brave_wallet::IsAllowedForContext(
@@ -806,6 +787,12 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               brave_ads::AdsStatusHeaderThrottle::MaybeCreateThrottle(
                   ads_service, request)) {
         result.push_back(std::move(ads_status_header_throttle));
+      }
+
+      if (auto search_result_ad_throttle =
+              brave_ads::SearchResultAdRedirectThrottle::MaybeCreateThrottleFor(
+                  request, wc_getter)) {
+        result.push_back(std::move(search_result_ad_throttle));
       }
     }
   }

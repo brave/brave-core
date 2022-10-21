@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing.h"
+#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_parsing.h"
 
 #include <utility>
 #include <vector>
@@ -195,12 +195,12 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
 
 // TODO(https://github.com/brave/brave-browser/issues/25971): Reduce cognitive
 // complexity.
-absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
-    const schema_org::mojom::EntityPtr& entity) {
+void ParseSearchResultAdMapEntityProperties(
+    const schema_org::mojom::EntityPtr& entity,
+    SearchResultAdMap* search_result_ads) {
   DCHECK(entity);
   DCHECK_EQ(entity->type, kProductType);
-
-  SearchResultAdMap search_result_ads;
+  DCHECK(search_result_ads);
 
   for (const auto& property : entity->properties) {
     if (!property || property->name == kContextPropertyName ||
@@ -211,20 +211,19 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
     // Search result ads list product could have only "@context" and "creatives"
     // properties.
     if (property->name != "creatives") {
-      return absl::nullopt;
+      return;
     }
 
     if (!property->values->is_entity_values() ||
         property->values->get_entity_values().empty()) {
-      LOG(ERROR) << "Search result ad attributes list is empty";
-      return SearchResultAdMap();
+      VLOG(1) << "Search result ad attributes list is empty";
+      return;
     }
 
     for (const auto& ad_entity : property->values->get_entity_values()) {
       if (!ad_entity || ad_entity->type != kSearchResultAdType) {
-        LOG(ERROR) << "Wrong search result ad type specified: "
-                   << ad_entity->type;
-        return SearchResultAdMap();
+        VLOG(1) << "Wrong search result ad type specified: " << ad_entity->type;
+        return;
       }
 
       if (property->name == kTypePropertyName) {
@@ -241,16 +240,16 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
             kSearchResultAdAttributes, base::StringPiece(ad_property->name));
 
         if (it == kSearchResultAdAttributes.end()) {
-          LOG(ERROR) << "Wrong search result ad attribute specified: "
-                     << ad_property->name;
-          return SearchResultAdMap();
+          VLOG(1) << "Wrong search result ad attribute specified: "
+                  << ad_property->name;
+          return;
         }
         found_attributes.insert(*it);
 
         if (!SetSearchAdProperty(ad_property, search_result_ad.get())) {
-          LOG(ERROR) << "Cannot read search result ad attribute value: "
-                     << ad_property->name;
-          return SearchResultAdMap();
+          VLOG(1) << "Cannot read search result ad attribute value: "
+                  << ad_property->name;
+          return;
         }
       }
 
@@ -262,62 +261,58 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
                             found_attributes.begin(), found_attributes.end(),
                             std::back_inserter(absent_attributes));
 
-        LOG(ERROR) << "Some of search result ad attributes were not specified: "
-                   << base::JoinString(absent_attributes, ", ");
+        VLOG(1) << "Some of search result ad attributes were not specified: "
+                << base::JoinString(absent_attributes, ", ");
 
-        return SearchResultAdMap();
+        return;
       }
 
-      const std::string creative_instance_id =
-          search_result_ad->creative_instance_id;
-      search_result_ads.emplace(creative_instance_id,
-                                std::move(search_result_ad));
+      std::string creative_instance_id = search_result_ad->creative_instance_id;
+      search_result_ads->emplace(std::move(creative_instance_id),
+                                 std::move(search_result_ad));
     }
 
     // Creatives has been parsed.
     break;
   }
-
-  return search_result_ads;
 }
 
 void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
-  if (!VLOG_IS_ON(1)) {
+  if (!VLOG_IS_ON(2)) {
     return;
   }
 
   if (search_result_ads.empty()) {
-    VLOG(1) << "Parsed search result ads list is empty.";
     return;
   }
 
-  VLOG(1) << "Parsed search result ads list:";
+  VLOG(2) << "Parsed search result ads list:";
   for (const auto& search_result_ad_pair : search_result_ads) {
     const auto& search_result_ad = search_result_ad_pair.second;
-    VLOG(1) << "Ad with \"" << kDataPlacementId
+    VLOG(2) << "Ad with \"" << kDataPlacementId
             << "\": " << search_result_ad->placement_id;
-    VLOG(1) << "  \"" << kDataCreativeInstanceId
+    VLOG(2) << "  \"" << kDataCreativeInstanceId
             << "\": " << search_result_ad->creative_instance_id;
-    VLOG(1) << "  \"" << kDataCreativeSetId
+    VLOG(2) << "  \"" << kDataCreativeSetId
             << "\": " << search_result_ad->creative_set_id;
-    VLOG(1) << "  \"" << kDataCampaignId
+    VLOG(2) << "  \"" << kDataCampaignId
             << "\": " << search_result_ad->campaign_id;
-    VLOG(1) << "  \"" << kDataAdvertiserId
+    VLOG(2) << "  \"" << kDataAdvertiserId
             << "\": " << search_result_ad->advertiser_id;
-    VLOG(1) << "  \"" << kDataLandingPage
+    VLOG(2) << "  \"" << kDataLandingPage
             << "\": " << search_result_ad->target_url;
-    VLOG(1) << "  \"" << kDataHeadlineText
+    VLOG(2) << "  \"" << kDataHeadlineText
             << "\": " << search_result_ad->headline_text;
-    VLOG(1) << "  \"" << kDataDescription
+    VLOG(2) << "  \"" << kDataDescription
             << "\": " << search_result_ad->description;
-    VLOG(1) << "  \"" << kDataRewardsValue << "\": " << search_result_ad->value;
-    VLOG(1) << "  \"" << kDataConversionTypeValue
+    VLOG(2) << "  \"" << kDataRewardsValue << "\": " << search_result_ad->value;
+    VLOG(2) << "  \"" << kDataConversionTypeValue
             << "\": " << search_result_ad->conversion->type;
-    VLOG(1) << "  \"" << kDataConversionUrlPatternValue
+    VLOG(2) << "  \"" << kDataConversionUrlPatternValue
             << "\": " << search_result_ad->conversion->url_pattern;
-    VLOG(1) << "  \"" << kDataConversionAdvertiserPublicKeyValue
+    VLOG(2) << "  \"" << kDataConversionAdvertiserPublicKeyValue
             << "\": " << search_result_ad->conversion->advertiser_public_key;
-    VLOG(1) << "  \"" << kDataConversionObservationWindowValue
+    VLOG(2) << "  \"" << kDataConversionObservationWindowValue
             << "\": " << search_result_ad->conversion->observation_window;
   }
 }
@@ -325,23 +320,17 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
 }  // namespace
 
 SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page) {
+  SearchResultAdMap search_result_ads;
   for (const auto& entity : web_page->entities) {
     if (entity->type != kProductType) {
       continue;
     }
 
-    absl::optional<SearchResultAdMap> search_result_ads =
-        ParseSearchResultAdMapEntityProperties(entity);
-
-    if (search_result_ads) {
-      LogSearchResultAdMap(*search_result_ads);
-      return std::move(*search_result_ads);
-    }
+    ParseSearchResultAdMapEntityProperties(entity, &search_result_ads);
   }
 
-  VLOG(1) << "No search result ad found.";
-
-  return {};
+  LogSearchResultAdMap(search_result_ads);
+  return search_result_ads;
 }
 
 }  // namespace brave_ads

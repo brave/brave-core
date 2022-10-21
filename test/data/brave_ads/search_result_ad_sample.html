@@ -12,7 +12,7 @@
           "data-creative-set-id": "data-creative-set-id-1",
           "data-campaign-id": "data-campaign-id-1",
           "data-advertiser-id": "data-advertiser-id-1",
-          "data-landing-page": "https://brave.com/data-landing-page-1",
+          "data-landing-page": "https://brave.com:REPLACE_WITH_HTTP_PORT/simple.html",
           "data-headline-text": "data-headline-text-1",
           "data-description": "data-description-1",
           "data-rewards-value": 1.5,
@@ -20,7 +20,14 @@
           "data-conversion-url-pattern-value": "data-conversion-url-pattern-value-1",
           "data-conversion-advertiser-public-key-value": "data-conversion-advertiser-public-key-value-1",
           "data-conversion-observation-window-value": 1
-        },
+        }
+      ]
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@type": "Product",
+      "creatives": [
         {
           "@type": "SearchResultAd",
           "data-placement-id": "data-placement-id-2",
@@ -28,7 +35,7 @@
           "data-creative-set-id": "data-creative-set-id-2",
           "data-campaign-id": "data-campaign-id-2",
           "data-advertiser-id": "data-advertiser-id-2",
-          "data-landing-page": "https://brave.com/data-landing-page-2",
+          "data-landing-page": "https://brave.com:REPLACE_WITH_HTTP_PORT/simple.html",
           "data-headline-text": "data-headline-text-2",
           "data-description": "data-description-2",
           "data-rewards-value": 2.5,
@@ -40,30 +47,17 @@
       ]
     }
   </script>
-  <script>
-    const sendViewConfirmation = (creativeInstanceIdValue) => {
-      fetch('https://search.anonymous.brave.com/v3/confirmation', {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({
-          type: 'view',
-          creativeInstanceId: creativeInstanceIdValue
-        })
-      })
-      .then(response => {})
-      .catch((error) => {})
-    }
-    const load = () => {
-      sendViewConfirmation('data-creative-instance-id-1')
-      sendViewConfirmation('data-creative-instance-id-2')
-      // Somthing went wrong and we've sent view confirmation twice
-      // for data-creative-instance-id-1.
-      sendViewConfirmation('data-creative-instance-id-1')
-      // Somthing went wrong and we've sent not existant view confirmation.
-      sendViewConfirmation('not-existant')
-    }
-    window.onload = load
-  </script>
 </head>
-<body></body>
+<body>
+  <div id="ad_frame_1" >
+    <a id='ad_link_1' href='https://search.anonymous.ads.brave.com/v3/click?creativeInstanceId=data-creative-instance-id-1'/>
+      Click me
+    </a>
+  </div>
+  <div id="ad_frame_2">
+    <a id='ad_link_2' href='https://search.anonymous.ads.brave.com/v3/click?creativeInstanceId=data-creative-instance-id-2' target="_blank" rel="noopener noreferrer">
+      Click me
+    </a>
+  </div>
+</body>
 </html>

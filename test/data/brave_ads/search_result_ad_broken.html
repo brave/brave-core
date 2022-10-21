@@ -12,7 +12,7 @@
           "data-creative-set-id": "data-creative-set-id-1",
           "data-campaign-id": "data-campaign-id-1",
           "data-advertiser-id": "data-advertiser-id-1",
-          "data-landing-page": "https://brave.com/data-landing-page-1",
+          "data-landing-page": "https://brave.com:REPLACE_WITH_HTTP_PORT/simple.html",
           "data-headline-text": "data-headline-text-1",
           "data-description": "data-description-1",
           "data-rewards-value": 1.5,
@@ -24,33 +24,10 @@
       ]
     }
   </script>
-  <script>
-    const load = () => {
-      fetch('https://search.anonymous.brave.com/v3/confirmation', {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({
-          type: 'view',
-          creativeInstanceId: 'data-creative-instance-id-1'
-        })
-      })
-      .then(response => {})
-      .catch((error) => {})
-
-      // Confirmation with wrong type 'click' shouldn't be counted
-      fetch('https://search.anonymous.brave.com/v3/confirmation', {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({
-          type: 'click',
-          creativeInstanceId: 'data-creative-instance-id-2'
-        })
-      })
-      .then(response => {})
-      .catch((error) => {})
-    }
-    window.onload = load
-  </script>
 </head>
-<body></body>
+<body>
+  <a id='ad-link-1' href='https://search.anonymous.ads.brave.com/v3/click?creativeInstanceId=data-creative-instance-id-1'>
+    Click me
+  </a>
+</body>
 </html>

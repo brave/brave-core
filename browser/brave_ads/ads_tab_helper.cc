@@ -8,8 +8,6 @@
 #include <string>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h"
-#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
 #include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
@@ -44,8 +42,6 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   if (!ads_service_) {
     return;
   }
-  search_result_ad_service_ =
-      SearchResultAdServiceFactory::GetForProfile(profile);
 
 #if !BUILDFLAG(IS_ANDROID)
   BrowserList::AddObserver(this);
@@ -127,9 +123,6 @@ void AdsTabHelper::DidFinishNavigation(
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
   if (!navigation_handle->IsSameDocument()) {
-    if (search_result_ad_service_) {
-      search_result_ad_service_->OnDidFinishNavigation(tab_id_);
-    }
     should_process_ = navigation_handle->GetRestoreType() ==
                       content::RestoreType::kNotRestored;
     return;
@@ -144,11 +137,6 @@ void AdsTabHelper::DidFinishNavigation(
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   content::RenderFrameHost* render_frame_host =
       web_contents()->GetPrimaryMainFrame();
-  if (search_result_ad_service_) {
-    search_result_ad_service_->MaybeRetrieveSearchResultAd(
-        render_frame_host, tab_id_, should_process_);
-  }
-
   if (!should_process_) {
     return;
   }
@@ -211,10 +199,6 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 }
 
 void AdsTabHelper::WebContentsDestroyed() {
-  if (search_result_ad_service_) {
-    search_result_ad_service_->OnDidCloseTab(tab_id_);
-  }
-
   if (!ads_service_) {
     return;
   }
