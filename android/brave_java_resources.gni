@@ -642,6 +642,7 @@ brave_java_resources = [
   "java/res/drawable/ic_youtube.xml",
   "java/res/drawable/image_credit_rounded_shape.xml",
   "java/res/drawable/modern_toolbar_background_grey_end_segment.xml",
+  "java/res/drawable/modern_toolbar_background_grey_middle_segment.xml",
   "java/res/drawable/monthly_selector.xml",
   "java/res/drawable/news_button_bg.xml",
   "java/res/drawable/orange_rounded_button.xml",
