@@ -1,5 +1,5 @@
 diff --git a/tools/perf/page_sets/system_health/system_health_stories.py b/tools/perf/page_sets/system_health/system_health_stories.py
-index 8889e230b5e8fb53f81b09b07a30f83da0b22067..03352444d8425329b6b52de766de79ff7af36018 100644
+index 113257076777fed9c9fb1e2ff13b6e528a32d26e..8c337a7cffa7d35579fef845da017dc2181214bf 100644
 --- a/tools/perf/page_sets/system_health/system_health_stories.py
 +++ b/tools/perf/page_sets/system_health/system_health_stories.py
 @@ -26,7 +26,7 @@ class SystemHealthStorySet(story.StorySet):
