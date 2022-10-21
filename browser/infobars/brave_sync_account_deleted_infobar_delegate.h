@@ -17,7 +17,7 @@ namespace content {
 class WebContents;
 }
 
-// An infobar that is run with a string, buttons, and a "Learn More" link.
+// An infobar that is run with a string, "re-create account" link and a button.
 class BraveSyncAccountDeletedInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
   BraveSyncAccountDeletedInfoBarDelegate(
@@ -40,8 +40,12 @@ class BraveSyncAccountDeletedInfoBarDelegate : public ConfirmInfoBarDelegate {
   void InfoBarDismissed() override;
   std::u16string GetMessageText() const override;
   int GetButtons() const override;
+  GURL GetLinkURL() const override;
+  std::u16string GetLinkText() const override;
   std::u16string GetButtonLabel(InfoBarButton button) const override;
   bool Accept() override;
+  bool LinkClicked(WindowOpenDisposition disposition) override;
+  bool IsCloseable() const override;
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;

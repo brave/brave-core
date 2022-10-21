@@ -6,8 +6,9 @@
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 
 #include <memory>
+#include <utility>
 
-#include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/views/infobars/brave_sync_account_deleted_infobar.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -17,6 +18,7 @@
 #include "chrome/browser/ui/chrome_pages.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
 // static
@@ -45,10 +47,14 @@ void BraveSyncAccountDeletedInfoBarDelegate::Create(
     return;
   }
 
+  // Create custom confirm infobar
+  std::unique_ptr<infobars::InfoBar> infobar(
+      std::make_unique<BraveSyncAccountDeletedInfoBar>(
+          std::unique_ptr<ConfirmInfoBarDelegate>(
+              new BraveSyncAccountDeletedInfoBarDelegate(browser, profile))));
+
   // Show infobar
-  infobar_manager->AddInfoBar(
-      CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
-          new BraveSyncAccountDeletedInfoBarDelegate(browser, profile))));
+  infobar_manager->AddInfoBar(std::move(infobar));
 }
 
 // Start class impl
@@ -81,8 +87,13 @@ void BraveSyncAccountDeletedInfoBarDelegate::InfoBarDismissed() {
 }
 
 std::u16string BraveSyncAccountDeletedInfoBarDelegate::GetMessageText() const {
-  return brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE);
+  // The replacement with empty string here is required to eat placeholder $1
+  // in grit string resource. And it's impossible to have empty placeholder
+  // <ph name="NAME"></ph>, grit compiler gives error. Placeholder is required
+  // to explane translation team that message string and link text are part of
+  // the same sentense.
+  return l10n_util::GetStringFUTF16(
+      IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE, u"");
 }
 
 int BraveSyncAccountDeletedInfoBarDelegate::GetButtons() const {
@@ -92,12 +103,34 @@ int BraveSyncAccountDeletedInfoBarDelegate::GetButtons() const {
 std::u16string BraveSyncAccountDeletedInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
   return brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_COMMAND);
+      IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_BUTTON);
+}
+
+std::u16string BraveSyncAccountDeletedInfoBarDelegate::GetLinkText() const {
+  // See comment at |BraveSyncAccountDeletedInfoBarDelegate::GetMessageText|
+  // above for empty substitution
+  return l10n_util::GetStringFUTF16(
+      IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT, u"");
+}
+
+GURL BraveSyncAccountDeletedInfoBarDelegate::GetLinkURL() const {
+  return chrome::GetSettingsUrl(kBraveSyncSetupPath);
 }
 
 bool BraveSyncAccountDeletedInfoBarDelegate::Accept() {
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
-  brave::ShowSync(browser_);
   return true;
+}
+
+bool BraveSyncAccountDeletedInfoBarDelegate::LinkClicked(
+    WindowOpenDisposition disposition) {
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
+  InfoBarDelegate::LinkClicked(disposition);
+  return true;
+}
+
+bool BraveSyncAccountDeletedInfoBarDelegate::IsCloseable() const {
+  return false;
 }
