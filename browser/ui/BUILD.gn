@@ -428,6 +428,12 @@ source_set("ui") {
     }
   }
 
+  if (toolkit_views) {
+    deps += [
+      "//brave/browser/ui/views/infobars:brave_sync_account_deleted_infobar",
+    ]
+  }
+
   if (enable_ipfs) {
     deps += [
       "//brave/components/ipfs",

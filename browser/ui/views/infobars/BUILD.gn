@@ -40,3 +40,20 @@ source_set("brave_wayback_machine") {
   # brave_wayback_machine_infobar_contents_view.cc is compiled.
   deps += [ "//chrome/common:buildflags" ]
 }
+
+source_set("brave_sync_account_deleted_infobar") {
+  # Remove when https://github.com/brave/brave-browser/issues/10652 is resolved
+  check_includes = false
+  sources = [
+    "brave_sync_account_deleted_infobar.cc",
+    "brave_sync_account_deleted_infobar.h",
+  ]
+
+  deps = [
+    "//base",
+
+    # "//chrome/browser/ui" - causes dependency cycle gn error
+    "//ui/base",
+    "//ui/views",
+  ]
+}
