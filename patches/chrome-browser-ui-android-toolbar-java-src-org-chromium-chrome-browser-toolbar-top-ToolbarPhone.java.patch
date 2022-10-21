@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 5c92c4f8324619454d88eb3d5d9cd5b127075e17..efe8e2ab64bc026aa566c3f13cc5c6428b86c9be 100644
+index 5c92c4f8324619454d88eb3d5d9cd5b127075e17..ddd2d71fd2479bbe4c58706d5accd1c7a1f9e605 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -377,6 +377,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -18,15 +18,7 @@ index 5c92c4f8324619454d88eb3d5d9cd5b127075e17..efe8e2ab64bc026aa566c3f13cc5c642
      }
  
      @Override
-@@ -741,6 +743,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
-      * @return The right bounds of the location bar after accounting for any visible right buttons.
-      */
-     private int getBoundsAfterAccountingForRightButtons() {
-+        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
-         if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
- 
-         int toolbarButtonsContainerWidth = mToolbarButtonsContainer.getMeasuredWidth();
-@@ -991,6 +994,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -991,6 +993,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * New Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
