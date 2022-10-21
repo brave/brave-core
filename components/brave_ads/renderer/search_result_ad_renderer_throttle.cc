@@ -124,4 +124,8 @@ void SearchResultAdRendererThrottle::OnMaybeTriggerAdViewedEvent(
   }
 }
 
+const char* SearchResultAdRendererThrottle::NameForLoggingWillStartRequest() {
+  return "SearchResultAdRendererThrottle";
+}
+
 }  // namespace brave_ads

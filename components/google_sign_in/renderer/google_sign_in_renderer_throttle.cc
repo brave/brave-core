@@ -95,7 +95,10 @@ GoogleSignInRendererThrottle::MaybeCreateThrottleFor(
 
 GoogleSignInRendererThrottle::~GoogleSignInRendererThrottle() = default;
 
-void GoogleSignInRendererThrottle::DetachFromCurrentSequence() {}
+
+const char* GoogleSignInRendererThrottle::NameForLoggingWillStartRequest() {
+  return "GoogleSignInRendererThrottle";
+}
 
 void GoogleSignInRendererThrottle::WillStartRequest(
     network::ResourceRequest* request,

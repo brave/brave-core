@@ -42,6 +42,7 @@ class SearchResultAdRendererThrottle : public blink::URLLoaderThrottle {
   void DetachFromCurrentSequence() override;
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
+  const char* NameForLoggingWillStartRequest() override;
 
  private:
   void OnMaybeTriggerAdViewedEvent(

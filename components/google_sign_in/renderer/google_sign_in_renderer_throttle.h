@@ -35,9 +35,9 @@ class GoogleSignInRendererThrottle : public blink::URLLoaderThrottle {
       delete;
 
   // Implements blink::URLLoaderThrottle:
-  void DetachFromCurrentSequence() override;
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
+  const char* NameForLoggingWillStartRequest() override;
 
  private:
   base::WeakPtrFactory<GoogleSignInRendererThrottle> weak_factory_{this};
