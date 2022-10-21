@@ -180,7 +180,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private ImageView mBraveRewardsOnboardingIcon;
     private View mBraveWalletBadge;
     private ImageView mWalletIcon;
-    private boolean mShieldsLayoutIsColorBackground;
     private int mCurrentToolbarColor;
 
     private boolean mIsPublisherVerified;
@@ -346,6 +345,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 customActionButtons.setLayoutParams(actionButtonsLayout);
             }
         }
+        updateShieldsLayoutBackground(isIncognito()
+                || !ContextUtils.getAppSharedPreferences().getBoolean(
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true));
     }
 
     @Override
@@ -1087,10 +1089,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void updateModernLocationBarColorImpl(int color) {
-        if (mShieldsLayout != null && mShieldsLayoutIsColorBackground) {
-            mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getContext(), isIncognito()));
-        }
         mCurrentToolbarColor = color;
         if (mShieldsLayout != null) {
             mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
@@ -1337,16 +1335,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
-        if (rounded) {
-            mShieldsLayout.setBackgroundDrawable(
-                    ApiCompatibilityUtils.getDrawable(getContext().getResources(),
-                            R.drawable.modern_toolbar_background_grey_end_segment));
-            mShieldsLayoutIsColorBackground = false;
-        } else {
-            mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getContext(), isIncognito()));
-            mShieldsLayoutIsColorBackground = true;
-        }
+        mShieldsLayout.setBackgroundDrawable(
+                ApiCompatibilityUtils.getDrawable(getContext().getResources(),
+                        rounded ? R.drawable.modern_toolbar_background_grey_end_segment
+                                : R.drawable.modern_toolbar_background_grey_middle_segment));
+
         if (mWalletLayout != null) {
             mWalletLayout.setBackgroundColor(
                     ChromeColors.getDefaultThemeColor(getContext(), false));
