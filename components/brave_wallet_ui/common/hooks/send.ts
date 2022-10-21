@@ -13,7 +13,8 @@ import {
   IsBase58EncodedSolanaPubkeyReturnInfo,
   AmountValidationErrorType,
   WalletState,
-  SendFilTransactionParams
+  SendFilTransactionParams,
+  GetSolAddrReturnInfo
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 import * as WalletActions from '../actions/wallet_actions'
@@ -28,6 +29,7 @@ import { useAssets } from './assets'
 import { PendingCryptoSendState, SendCryptoActions } from '../reducers/send_crypto_reducer'
 
 const supportedENSExtensions = ['.eth']
+const supportedSNSExtensions = ['.sol']
 // Should match `kUDPattern` array from json_rpc_service.cc.
 const supportedUDExtensions = [
   '.crypto', '.x', '.coin', '.nft', '.dao', '.wallet', '.888', '.blockchain', '.bitcoin']
@@ -60,6 +62,7 @@ export default function useSend () {
   // custom hooks
   const {
     findENSAddress,
+    findSNSAddress,
     findUnstoppableDomainAddress,
     getChecksumEthAddress,
     isBase58EncodedSolanaPubkey
@@ -254,6 +257,20 @@ export default function useSend () {
       }).catch(e => console.log(e))
       return
     }
+
+    if (endsWithAny(supportedSNSExtensions, valueToLowerCase)) {
+      findSNSAddress(toAddressOrUrl).then((value: GetSolAddrReturnInfo) => {
+        if (value.error === BraveWallet.ProviderError.kSuccess) {
+          setAddressError('')
+          setAddressWarning('')
+          setToAddress(value.address)
+          return
+        }
+        setNotRegisteredError(valueToLowerCase)
+      }).catch(e => console.log(e))
+      return
+    }
+
     setToAddress(toAddressOrUrl)
 
     // Do nothing if value is an empty string
