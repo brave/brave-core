@@ -36,10 +36,10 @@ std::string GetPlatformIdentifier() {
     return "winx64-bc";
 #endif
 #elif BUILDFLAG(IS_MAC)
-#if defined(ARCH_CPU_X86_64)
-  return "osx-bc";
-#elif defined(ARCH_CPU_ARM64)
+#if defined(ARCH_CPU_ARM64)
   return "osxarm64-bc";
+#elif defined(ARCH_CPU_X86_64)
+  return "osx-bc";
 #endif
 #elif BUILDFLAG(IS_ANDROID)
   return "android-bc";
