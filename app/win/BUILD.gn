@@ -11,7 +11,14 @@ if (should_generate_breakpad_symbols) {
       platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
       outputs += [ platform_symbols_dir ]
     }
-    dump_syms = "//third_party/breakpad:dump_syms($host_toolchain)"
+    dump_syms_toolchain = ""
+    if (target_cpu == "x86") {
+      # Use x64 dump_syms for x86
+      dump_syms_toolchain = "//build/toolchain/win:win_clang_x64"
+    } else {
+      dump_syms_toolchain = "$host_toolchain"
+    }
+    dump_syms = "//third_party/breakpad:dump_syms(" + dump_syms_toolchain + ")"
     deps = [
       "//brave/build/win:copy_pdb",
       dump_syms,
