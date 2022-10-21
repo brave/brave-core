@@ -34,7 +34,6 @@ source_set("brave_ipfs_unit_tests") {
       "//services/data_decoder/public/cpp:test_support",
       "//services/network:test_support",
       "//testing/gtest",
-      "//third_party/abseil-cpp:absl",
       "//url",
     ]
   }  # if (enable_ipfs)
