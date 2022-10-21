@@ -173,6 +173,24 @@ export const Container = () => {
     }
   }, [walletLocation, isWalletCreated])
 
+  React.useEffect(() => {
+    const toobarElement = document.getElementById('toolbar')
+    const rootElement = document.getElementById('root')
+    if (toobarElement && rootElement) {
+      if (
+        walletLocation === WalletRoutes.Swap ||
+        walletLocation.includes(WalletRoutes.DepositFundsPage) ||
+        walletLocation.includes(WalletRoutes.FundWalletPage)
+      ) {
+        toobarElement.hidden = true
+        rootElement.style.setProperty('min-height', '100vh')
+        return
+      }
+      toobarElement.hidden = false
+      rootElement.style.setProperty('min-height', 'calc(100vh - 56px)')
+    }
+  }, [walletLocation])
+
   // render
   if (!hasInitialized) {
     return <Skeleton />
