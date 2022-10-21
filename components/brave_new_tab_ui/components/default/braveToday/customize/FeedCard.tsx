@@ -11,7 +11,7 @@ import Flex from '../../../Flex'
 import FollowButton from './FollowButton'
 import { getCardColor } from './colors'
 import { usePublisher, usePublisherFollowed } from './Context'
-import { useUnpaddedImageUrl } from '../useUnpaddedImageUrl'
+import { useLazyUnpaddedImageUrl } from '../useUnpaddedImageUrl'
 
 interface CardProps {
   backgroundColor?: string
@@ -63,8 +63,13 @@ export default function FeedCard (props: {
   const { followed, setFollowed } = usePublisherFollowed(props.publisherId)
 
   const backgroundColor = publisher.backgroundColor || getCardColor(publisher.feedSource?.url || publisher.publisherId)
-  const coverUrl = useUnpaddedImageUrl(publisher.coverUrl?.url, undefined, /* useCache= */true)
-  return <Flex direction="column" gap={8}>
+  const { url: coverUrl, elementRef } = useLazyUnpaddedImageUrl(publisher.coverUrl?.url, {
+    rootElement: document.getElementById('brave-news-container')!,
+    rootMargin: '0px 0px 200px 0px',
+    useCache: true
+  })
+
+  return <Flex direction="column" gap={8} ref={elementRef}>
     <Card backgroundColor={backgroundColor} data-feed-card-is-followed={followed}>
       {coverUrl && <CoverImage backgroundImage={coverUrl} />}
       <StyledFollowButton following={followed} onClick={() => setFollowed(!followed)} />
