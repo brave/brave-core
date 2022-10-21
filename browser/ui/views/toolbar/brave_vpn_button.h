@@ -32,13 +32,15 @@ class BraveVPNButton : public ToolbarButton,
   // BraveVPNServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
+  std::u16string GetTooltipText(const gfx::Point& p) const override;
 
  private:
   void UpdateColorsAndInsets() override;
 
   // Update button based on connection state.
   void UpdateButtonState();
-  bool IsConnected();
+  bool IsConnected() const;
+  bool IsPurchased() const;
 
   void OnButtonPressed(const ui::Event& event);
 
