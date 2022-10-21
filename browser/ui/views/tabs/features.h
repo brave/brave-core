@@ -14,10 +14,6 @@ namespace base {
 struct LOGICALLY_CONST Feature;
 }  // namespace base
 
-namespace views {
-class View;
-}  // namespace views
-
 class Browser;
 class BrowserFrame;
 

@@ -804,7 +804,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Bookmark all tabs...
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
-          Show window title
+          Show title bar
         </message>
       </if>
       <if expr="use_titlecase">
@@ -812,7 +812,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Bookmark All Tabs...
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
-          Show Window Title
+          Show title bar
         </message>
       </if>
 

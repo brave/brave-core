@@ -72,7 +72,7 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
   }
 
   // In this case, we use OpaqueBrowserFrameView. OpaqueBrowserFrameView has
-  // two types of frame button per platform but on Window, it uses image
+  // two types of frame button per platform but on Windows, it uses image
   // buttons. See OpaqueBrowserFrameView::GetFrameButtonStyle().
   int width = 0;
   // Uses image icons

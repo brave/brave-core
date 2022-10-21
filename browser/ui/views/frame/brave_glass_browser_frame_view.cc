@@ -41,8 +41,7 @@ void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
-  if (browser_view()->browser()->is_type_normal() &&
-      tabs::features::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs()) {
     if (!tabs::features::ShouldShowWindowTitleForVerticalTabs(
             browser_view()->browser()))
       return 0;
