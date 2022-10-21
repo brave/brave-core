@@ -135,6 +135,12 @@ class TabsBarViewController: UIViewController {
       }
       .store(in: &cancellables)
   }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    updateOverflowIndicatorsLayout(addButtonIncluded: true)
+  }
 
   private var privateModeCancellable: AnyCancellable?
   private func updateColors(_ isPrivateBrowsing: Bool) {
@@ -269,13 +275,16 @@ class TabsBarViewController: UIViewController {
     return max(overflow, 0)
   }
 
-  private func updateOverflowIndicatorsLayout() {
+  private func updateOverflowIndicatorsLayout(addButtonIncluded: Bool = false) {
     let offset = Float(collectionView.contentOffset.x)
     let startFade = Float(30)
     leftOverflowIndicator.opacity = min(1, offset / startFade)
 
     // all the way scrolled right
-    let offsetFromRight = collectionView.contentSize.width - CGFloat(offset) - collectionView.frame.width
+    var offsetFromRight = collectionView.contentSize.width - CGFloat(offset) - collectionView.frame.width
+    if addButtonIncluded {
+      offsetFromRight -= plusButton.frame.width
+    }
     rightOverflowIndicator.opacity = min(1, Float(offsetFromRight) / startFade)
   }
 
