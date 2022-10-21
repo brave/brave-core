@@ -38,6 +38,8 @@ public class BraveVpnPrefUtils {
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
     public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
+    public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_DEV =
+            "vpn_link_subscription_on_dev";
     public static final String PREF_BRAVE_VPN_START = "brave_vpn_start";
 
     public static final String PREF_BRAVE_VPN_API_AUTH_TOKEN = "brave_vpn_api_auth_token";
