@@ -88,14 +88,12 @@ export const auroraSupportedContractAddresses = [
 ].map(contractAddress => contractAddress.toLowerCase())
 
 export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
-  return {
-    ...token,
-    logo: token.logo?.startsWith('ipfs://')
-      ? httpifyIpfsUrl(token.logo)
-      : token.logo?.startsWith('data:image/')
-        ? token.logo
-        : `chrome://erc-token-images/${token.logo}`
-  }
+  token.logo = token.logo?.startsWith('ipfs://')
+    ? httpifyIpfsUrl(token.logo)
+    : token.logo?.startsWith('data:image/')
+      ? token.logo
+      : `chrome://erc-token-images/${token.logo}`
+  return token
 }
 
 export const getNativeTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) => {

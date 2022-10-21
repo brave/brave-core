@@ -205,6 +205,11 @@ export async function getBuyAssetUrl (args: {
   return url
 }
 
+export async function getTokenList (network: BraveWallet.NetworkInfo) {
+  const { blockchainRegistry } = getAPIProxy()
+  return (blockchainRegistry.getAllTokens(network.chainId, network.coin))
+}
+
 export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, chainId: string) {
   const { blockchainRegistry } = getAPIProxy()
   return (await blockchainRegistry.getBuyTokens(
@@ -514,14 +519,14 @@ export function refreshPrices () {
 
       const price = token.balance > 0 && !token.token.isErc721
         ? await assetRatioService.getPrice(
-            [getTokenParam(token.token)],
-            [defaultFiatCurrency],
-            selectedPortfolioTimeline
-          )
+          [getTokenParam(token.token)],
+          [defaultFiatCurrency],
+          selectedPortfolioTimeline
+        )
         : {
-            values: [{ ...emptyPrice, price: '0' }],
-            success: true
-          }
+          values: [{ ...emptyPrice, price: '0' }],
+          success: true
+        }
 
       const tokenPrice = {
         ...price.values[0],
@@ -711,8 +716,8 @@ export function refreshKeyringInfo () {
     const defaultAccounts = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
       const chainId = await jsonRpcService.getChainId(coin)
       const defaultAccount = coin === BraveWallet.CoinType.FIL
-          ? await keyringService.getFilecoinSelectedAccount(chainId.chainId)
-          : await keyringService.getSelectedAccount(coin)
+        ? await keyringService.getFilecoinSelectedAccount(chainId.chainId)
+        : await keyringService.getSelectedAccount(coin)
       const defaultAccountAddress = defaultAccount.address
       return walletInfo.accountInfos.find((account) => account.address.toLowerCase() === defaultAccountAddress?.toLowerCase()) ?? {} as BraveWallet.AccountInfo
     }))
@@ -722,8 +727,8 @@ export function refreshKeyringInfo () {
 
     // Get selectedAccountAddress
     const getSelectedAccount = selectedCoin === BraveWallet.CoinType.FIL
-        ? await keyringService.getFilecoinSelectedAccount(coinsChainId.chainId)
-        : await keyringService.getSelectedAccount(selectedCoin)
+      ? await keyringService.getFilecoinSelectedAccount(coinsChainId.chainId)
+      : await keyringService.getSelectedAccount(selectedCoin)
     const selectedAddress = getSelectedAccount.address
 
     // Fallback account address if selectedAccount returns null
