@@ -25,6 +25,9 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 BraveTabStrip::~BraveTabStrip() = default;
 
 bool BraveTabStrip::ShouldDrawStrokes() const {
+  if (tabs::features::ShouldShowVerticalTabs())
+    return false;
+
   if (!TabStrip::ShouldDrawStrokes())
     return false;
 
