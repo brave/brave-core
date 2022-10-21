@@ -440,14 +440,29 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </if>
 
       <!-- Brave Rewards Extension -->
-      <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
-        Hide Brave Rewards icon
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
+          Hide Brave Rewards Icon
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
+          Hide Brave Rewards icon
+        </message>
+      </if>
 
       <!-- Brave Wallet Extension -->
-      <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave wallet panel icon on the toolbar">
-        Hide Brave Wallet icon
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave Wallet icon on the toolbar">
+          Hide Brave Wallet Icon
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave Wallet icon on the toolbar">
+          Hide Brave Wallet icon
+        </message>
+      </if>
+
 
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
