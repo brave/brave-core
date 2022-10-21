@@ -365,7 +365,7 @@ void PlaylistService::CreatePlaylist(PlaylistInfo& info) {
   playlist.Set(kPlaylistNameKey, info.name);
   playlist.Set(kPlaylistItemsKey, base::Value::List());
 
-  LOG(ERROR) << "CreatePlaylist : " << id << info.name;
+  LOG(ERROR) << "CreatePlaylist : " << info.id << info.name;
 
   prefs::ScopedDictionaryPrefUpdate playlists_update(prefs_, kPlaylistsPref);
   playlists_update.Get()->Set(

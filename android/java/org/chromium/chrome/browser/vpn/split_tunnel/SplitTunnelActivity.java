@@ -82,7 +82,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
 
         // specify the location of media file
         Uri uri = Uri.parse(
-                "file:///data/user/0/com.brave.browser_nightly/app_chrome/Default/playlist/06417E171234276326ABDC9C102360DE/media_file.mp4");
+                "file:///data/user/0/com.brave.browser_nightly/app_chrome/Default/playlist/1BAC4ED21291C84DFD370C2730B017D2/media_file.mp4");
 
         // Setting MediaController and URI, then starting the videoView
         videoView.setMediaController(mediaController);
