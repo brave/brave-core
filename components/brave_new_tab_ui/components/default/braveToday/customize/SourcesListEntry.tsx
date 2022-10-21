@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '../../../Flex'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
-import { useUnpaddedImageUrl } from '../useUnpaddedImageUrl'
+import { useLazyUnpaddedImageUrl } from '../useUnpaddedImageUrl'
 
 interface Props {
   publisherId: string
@@ -60,9 +60,13 @@ const ChannelNameText = styled.span`
 `
 
 function FavIcon (props: { src?: string }) {
-  const url = useUnpaddedImageUrl(props.src, undefined, /* useCache= */true)
+  const { url, elementRef } = useLazyUnpaddedImageUrl(props.src, {
+    rootElement: document.getElementById('brave-news-configure'),
+    rootMargin: '0px 0px 100px 0px',
+    useCache: true
+  })
   const [error, setError] = React.useState(false)
-  return <FavIconContainer>
+  return <FavIconContainer ref={elementRef}>
     {url && !error && <img src={url} onError={() => setError(true)} />}
   </FavIconContainer>
 }

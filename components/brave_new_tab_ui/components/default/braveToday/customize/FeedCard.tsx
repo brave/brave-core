@@ -64,7 +64,7 @@ export default function FeedCard (props: {
 
   const backgroundColor = publisher.backgroundColor || getCardColor(publisher.feedSource?.url || publisher.publisherId)
   const { url: coverUrl, elementRef } = useLazyUnpaddedImageUrl(publisher.coverUrl?.url, {
-    rootElement: document.getElementById('brave-news-container')!,
+    rootElement: document.getElementById('brave-news-configure'),
     rootMargin: '0px 0px 200px 0px',
     useCache: true
   })

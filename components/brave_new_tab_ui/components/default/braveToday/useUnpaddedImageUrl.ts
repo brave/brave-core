@@ -7,7 +7,7 @@ import * as React from 'react'
 import getBraveNewsController from '../../../api/brave_news'
 
 interface Options {
-  rootElement?: HTMLElement
+  rootElement?: HTMLElement | null
   rootMargin?: string
   threshold?: number
 
