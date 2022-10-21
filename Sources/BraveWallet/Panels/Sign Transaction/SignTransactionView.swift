@@ -11,6 +11,18 @@ struct SignTransactionView: View {
   enum Request {
     case signTransaction(BraveWallet.SignTransactionRequest)
     case signAllTransactions(BraveWallet.SignAllTransactionsRequest)
+    
+    var instructions: [[BraveWallet.SolanaInstruction]] {
+      switch self {
+      case let .signTransaction(request):
+        if let instructions = request.txData.solanaTxData?.instructions {
+          return [instructions]
+        }
+        return []
+      case let .signAllTransactions(request):
+        return request.txDatas.map { $0.solanaTxData?.instructions ?? [] }
+      }
+    }
   }
   
   var request: Request
@@ -26,27 +38,44 @@ struct SignTransactionView: View {
     }
   }
   
+  private func instructionsDisplayString() -> String {
+    request.instructions
+      .map { instructionsForOneTx in
+        instructionsForOneTx
+          .map { TransactionParser.parseSolanaInstruction($0).toString }
+          .joined(separator: "\n\n") // separator between each instruction
+      }
+      .joined(separator: "\n\n\n\n") // separator between each transaction
+  }
+  
   var body: some View { // TODO: Issue #6005 - SignTransaction / SignAllTransactions panel
-    Color.gray
-      .overlay(
-        Button(action: {
-          switch request {
-          case let .signTransaction(request):
-            cryptoStore.handleWebpageRequestResponse(
-              .signTransaction(approved: false, id: request.id, signature: nil, error: "User rejected the request")
-            )
-          case let .signAllTransactions(request):
-            cryptoStore.handleWebpageRequestResponse(
-              .signAllTransactions(approved: false, id: request.id, signatures: nil, error: "User rejected the request")
-            )
-          }
-          onDismiss()
-        }) {
-          Text(Strings.Wallet.rejectTransactionButtonTitle)
+    VStack {
+      StaticTextView(text: instructionsDisplayString(), isMonospaced: false)
+        .frame(maxWidth: .infinity)
+        .frame(height: 200)
+        .background(Color(.tertiaryBraveGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+        .padding()
+        .background(Color(.secondaryBraveGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+      Button(action: {
+        switch request {
+        case let .signTransaction(request):
+          cryptoStore.handleWebpageRequestResponse(
+            .signTransaction(approved: false, id: request.id, signature: nil, error: "User rejected the request")
+          )
+        case let .signAllTransactions(request):
+          cryptoStore.handleWebpageRequestResponse(
+            .signAllTransactions(approved: false, id: request.id, signatures: nil, error: "User rejected the request")
+          )
         }
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
-      )
-      .navigationBarTitleDisplayMode(.inline)
-      .navigationTitle(Text(navigationTitle))
+        onDismiss()
+      }) {
+        Text(Strings.Wallet.rejectTransactionButtonTitle)
+      }
+        .buttonStyle(BraveFilledButtonStyle(size: .large))
+    }
+    .navigationBarTitleDisplayMode(.inline)
+    .navigationTitle(Text(navigationTitle))
   }
 }

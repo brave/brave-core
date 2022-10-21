@@ -19,40 +19,50 @@ struct TransactionHeader: View {
   let fiat: String?
   
   @Environment(\.sizeCategory) private var sizeCategory
+  @ScaledMetric private var blockieSize = 48
+  private let maxBlockieSize: CGFloat = 96
   
   var body: some View {
     VStack(spacing: 8) {
       VStack(spacing: 8) {
-        BlockieGroup(
-          fromAddress: fromAccountAddress,
-          toAddress: toAccountAddress,
-          size: 48
-        )
-        Group {
-          if sizeCategory.isAccessibilityCategory {
-            VStack {
-              AddressView(address: fromAccountAddress) {
-                Text(fromAccountName)
+        if fromAccountAddress == toAccountAddress {
+          Blockie(address: fromAccountAddress)
+            .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
+          AddressView(address: fromAccountAddress) {
+            Text(fromAccountName)
+          }
+        } else {
+          BlockieGroup(
+            fromAddress: fromAccountAddress,
+            toAddress: toAccountAddress,
+            size: min(blockieSize, maxBlockieSize)
+          )
+          Group {
+            if sizeCategory.isAccessibilityCategory {
+              VStack {
+                AddressView(address: fromAccountAddress) {
+                  Text(fromAccountName)
+                }
+                Image(systemName: "arrow.down")
+                AddressView(address: toAccountAddress) {
+                  Text(toAccountName)
+                }
               }
-              Image(systemName: "arrow.down")
-              AddressView(address: toAccountAddress) {
-                Text(toAccountName)
-              }
-            }
-          } else {
-            HStack {
-              AddressView(address: fromAccountAddress) {
-                Text(fromAccountName)
-              }
-              Image(systemName: "arrow.right")
-              AddressView(address: toAccountAddress) {
-                Text(toAccountName)
+            } else {
+              HStack {
+                AddressView(address: fromAccountAddress) {
+                  Text(fromAccountName)
+                }
+                Image(systemName: "arrow.right")
+                AddressView(address: toAccountAddress) {
+                  Text(toAccountName)
+                }
               }
             }
           }
+          .foregroundColor(Color(.bravePrimary))
+          .font(.callout)
         }
-        .foregroundColor(Color(.bravePrimary))
-        .font(.callout)
       }
       .accessibilityElement()
       .accessibility(addTraits: .isStaticText)

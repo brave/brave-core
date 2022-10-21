@@ -2920,5 +2920,292 @@ extension Strings {
       value: "Buy crypto with Visa or Mastercard.",
       comment: "The description of one of the 'Wyre' provider."
     )
+    public static let solanaDappTransactionTitle = NSLocalizedString(
+      "wallet.solanaDappTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Approve Transaction",
+      comment: "The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows."
+    )
+    public static let solanaSystemProgramName = NSLocalizedString(
+      "wallet.solanaSystemProgramName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "System Program - %@",
+      comment: "The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. \"System Program - Transfer\""
+    )
+    public static let solanaTransferInstructionName = NSLocalizedString(
+      "wallet.solanaTransferInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Transfer",
+      comment: "The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details."
+    )
+    public static let solanaTransferWithSeedInstructionName = NSLocalizedString(
+      "wallet.solanaTransferWithSeedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Transfer With Seed",
+      comment: "The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details."
+    )
+    public static let solanaWithdrawNonceAccountInstructionName = NSLocalizedString(
+      "wallet.solanaWithdrawNonceAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Withdraw Nonce Account",
+      comment: "The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details."
+    )
+    public static let solanaCreateAccountInstructionName = NSLocalizedString(
+      "wallet.solanaCreateAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Create Account",
+      comment: "The title displayed above the System Program CreateAccount instruction type for Solana Instruction details."
+    )
+    public static let solanaCreateAccountWithSeedInstructionName = NSLocalizedString(
+      "wallet.solanaCreateAccountWithSeedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Create Account With Seed",
+      comment: "The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details."
+    )
+    public static let solanaAssignInstructionName = NSLocalizedString(
+      "wallet.solanaAssignInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Assign",
+      comment: "The title displayed above the System Program Assign instruction type for Solana Instruction details."
+    )
+    public static let solanaAssignWithSeedInstructionName = NSLocalizedString(
+      "wallet.solanaAssignWithSeedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Assign With Seed",
+      comment: "The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details."
+    )
+    public static let solanaAllocateInstructionName = NSLocalizedString(
+      "wallet.solanaAllocateInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Allocate",
+      comment: "The title displayed above the System Program Allocate instruction type for Solana Instruction details."
+    )
+    public static let solanaAllocateWithSeedInstructionName = NSLocalizedString(
+      "wallet.solanaAllocateWithSeedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Allocate With Seed",
+      comment: "The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details."
+    )
+    public static let solanaAdvanceNonceAccountInstructionName = NSLocalizedString(
+      "wallet.solanaAdvanceNonceAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Advance Nonce Account",
+      comment: "The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details."
+    )
+    public static let solanaInitializeNonceAccountInstructionName = NSLocalizedString(
+      "wallet.solanaInitializeNonceAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Nonce Account",
+      comment: "The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details."
+    )
+    public static let solanaAuthorizeNonceAccountInstructionName = NSLocalizedString(
+      "wallet.solanaAuthorizeNonceAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Authorize Nonce Account",
+      comment: "The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details."
+    )
+    public static let solanaUpgradeNonceAccountInstructionName = NSLocalizedString(
+      "wallet.solanaUpgradeNonceAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Upgrade Nonce Account",
+      comment: "The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details."
+    )
+    public static let solanaTokenProgramName = NSLocalizedString(
+      "wallet.solanaTokenProgramName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Token Program - %@",
+      comment: "The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. \"Token Program - Initialize Mint\""
+    )
+    public static let solanaInitializeMintInstructionName = NSLocalizedString(
+      "wallet.solanaInitializeMintInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Mint",
+      comment: "The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details."
+    )
+    public static let solanaInitializeMint2InstructionName = NSLocalizedString(
+      "wallet.solanaInitializeMint2InstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Mint 2",
+      comment: "The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details."
+    )
+    public static let solanaInitializeAccountInstructionName = NSLocalizedString(
+      "wallet.solanaInitializeAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Account",
+      comment: "The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details."
+    )
+    public static let solanaInitializeAccount2InstructionName = NSLocalizedString(
+      "wallet.solanaInitializeAccount2InstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Account 2",
+      comment: "The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details."
+    )
+    public static let solanaInitializeAccount3InstructionName = NSLocalizedString(
+      "wallet.solanaInitializeAccount3InstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Account 3",
+      comment: "The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details."
+    )
+    public static let solanaInitializeMultisigInstructionName = NSLocalizedString(
+      "wallet.solanaInitializeMultisigInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Multisig",
+      comment: "The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details."
+    )
+    public static let solanaInitializeMultisig2InstructionName = NSLocalizedString(
+      "wallet.solanaInitializeMultisig2InstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Initialize Multisig 2",
+      comment: "The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details."
+    )
+    public static let solanaApproveInstructionName = NSLocalizedString(
+      "wallet.solanaApproveInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Approve",
+      comment: "The title displayed above the Token Program Approve instruction type for Solana Instruction details."
+    )
+    public static let solanaRevokeInstructionName = NSLocalizedString(
+      "wallet.solanaRevokeInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Revoke",
+      comment: "The title displayed above the Token Program Revoke instruction type for Solana Instruction details."
+    )
+    public static let solanaSetAuthorityInstructionName = NSLocalizedString(
+      "wallet.solanaSetAuthorityInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Set Authority",
+      comment: "The title displayed above the Token Program Set Authority instruction type for Solana Instruction details."
+    )
+    public static let solanaMintToInstructionName = NSLocalizedString(
+      "wallet.solanaMintToInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Mint To",
+      comment: "The title displayed above the Token Program Mint To instruction type for Solana Instruction details."
+    )
+    public static let solanaBurnInstructionName = NSLocalizedString(
+      "wallet.solanaBurnInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Burn",
+      comment: "The title displayed above the Token Program Burn instruction type for Solana Instruction details."
+    )
+    public static let solanaCloseAccountInstructionName = NSLocalizedString(
+      "wallet.solanaCloseAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Close Account",
+      comment: "The title displayed above the Token Program Close Account instruction type for Solana Instruction details."
+    )
+    public static let solanaFreezeAccountInstructionName = NSLocalizedString(
+      "wallet.solanaFreezeAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Freeze Account",
+      comment: "The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details."
+    )
+    public static let solanaThawAccountInstructionName = NSLocalizedString(
+      "wallet.solanaThawAccountInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Thaw Account",
+      comment: "The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details."
+    )
+    public static let solanaApproveCheckedInstructionName = NSLocalizedString(
+      "wallet.solanaApproveCheckedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Approve Checked",
+      comment: "The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details."
+    )
+    public static let solanaTransferCheckedInstructionName = NSLocalizedString(
+      "wallet.solanaTransferCheckedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Transfer Checked",
+      comment: "The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details."
+    )
+    public static let solanaMintToCheckedInstructionName = NSLocalizedString(
+      "wallet.solanaMintToCheckedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Mint To Checked",
+      comment: "The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details."
+    )
+    public static let solanaBurnCheckedInstructionName = NSLocalizedString(
+      "wallet.solanaBurnCheckedInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Burn Checked",
+      comment: "The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details."
+    )
+    public static let solanaSyncNativeInstructionName = NSLocalizedString(
+      "wallet.solanaSyncNativeInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Sync Native",
+      comment: "The title displayed above the Token Program Sync Native instruction type for Solana Instruction details."
+    )
+    public static let solanaAmount = NSLocalizedString(
+      "wallet.solanaAmount",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Amount",
+      comment: "The label displayed beside the formatted amount of an instruction type. Ex. \"Amount: 0.1 SOL\""
+    )
+    public static let solanaUnknownInstructionName = NSLocalizedString(
+      "wallet.solanaUnknownInstructionName",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Unknown Instruction Type",
+      comment: "The title displayed above an unknown instruction type for Solana Instruction details."
+    )
+    public static let solanaInstructionProgramId = NSLocalizedString(
+      "wallet.solanaInstructionProgramId",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Program Id",
+      comment: "The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. \"Program Id: 1111223344aabbccd\""
+    )
+    public static let solanaInstructionAccounts = NSLocalizedString(
+      "wallet.solanaInstructionAccounts",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Program Id",
+      comment: "The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\""
+    )
+    public static let solanaInstructionData = NSLocalizedString(
+      "wallet.solanaInstructionData",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Data",
+      comment: "The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\""
+    )
   }
 }
