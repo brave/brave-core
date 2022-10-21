@@ -38,7 +38,14 @@ struct TransactionConfirmationView: View {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
     }
-    return confirmationStore.activeParsedTransaction.transaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
+    switch confirmationStore.activeParsedTransaction.transaction.txType {
+    case .erc20Approve:
+      return Strings.Wallet.transactionTypeApprove
+    case .solanaDappSignTransaction, .solanaDappSignAndSendTransaction:
+      return Strings.Wallet.solanaDappTransactionTitle
+    default:
+      return confirmationStore.activeParsedTransaction.transaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
+    }
   }
 
   /// View showing the currently selected account with a blockie
@@ -409,19 +416,11 @@ struct TransactionConfirmationView: View {
       .navigationBarTitleDisplayMode(.inline)
       .foregroundColor(Color(.braveLabel))
       .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
-      .toolbar {
-        ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { presentationMode.dismiss() }) {
-            Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveOrange))
-          }
+      .onAppear {
+        Task {
+          await confirmationStore.prepare()
         }
       }
-    .onAppear {
-      Task { @MainActor in
-        await confirmationStore.prepare()
-      }
-    }
   }
 
   @ViewBuilder private var rejectConfirmContainer: some View {

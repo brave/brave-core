@@ -6,6 +6,7 @@
 import XCTest
 import BraveCore
 @testable import BraveWallet
+import CustomDump
 
 private extension BraveWallet.AccountInfo {
   convenience init(
@@ -783,5 +784,147 @@ class TransactionParserTests: XCTestCase {
     }
     
     XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+  }
+  
+  func testParseSolanaInstruction() {
+    let fromPubkey = "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeee"
+    let toPubkey = "zzzzzzzzzzyyyyyyyyyyxxxxxxxxxxwwwwwwwwwwvvvv"
+    let transferInstruction = BraveWallet.SolanaInstruction(
+      programId: BraveWallet.SolanaSystemProgramId,
+      accountMetas: [
+        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, isSigner: false, isWritable: false)
+      ],
+      data: [],
+      decodedData: .init(
+        instructionType: UInt32(BraveWallet.SolanaSystemInstruction.transfer.rawValue),
+        accountParams: [
+          .init(name: "from_account", localizedName: "From Account"),
+          .init(name: "to_account", localizedName: "To Account"),],
+        params: [.init(name: "lamports", localizedName: "Lamports", value: "10000")]
+      )
+    )
+    let expectedParsedTransfer = SolanaDappTxDetails.ParsedSolanaInstruction(
+      name: "System Program - Transfer",
+      details: [
+        .init(key: "From Account", value: fromPubkey),
+        .init(key: "To Account", value: toPubkey),
+        .init(key: "Amount", value: "0.00001 SOL"),
+        .init(key: "Lamports", value: "10000")
+      ],
+      instruction: transferInstruction
+    )
+    XCTAssertNoDifference(expectedParsedTransfer, TransactionParser.parseSolanaInstruction(transferInstruction))
+    
+    let withdrawNonceAccountInstruction = BraveWallet.SolanaInstruction(
+      programId: BraveWallet.SolanaSystemProgramId,
+      accountMetas: [
+        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: "SysvarRecentB1ockHashes11111111111111111111", isSigner: false, isWritable: false),
+        .init(pubkey: "SysvarRent111111111111111111111111111111111", isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
+      ],
+      data: [],
+      decodedData: .init(
+        instructionType: UInt32(BraveWallet.SolanaSystemInstruction.withdrawNonceAccount.rawValue),
+        accountParams: [
+          .init(name: "nonce_account", localizedName: "Nonce Account"),
+          .init(name: "to_account", localizedName: "To Account"),
+          .init(name: "recentblockhashes_sysvar", localizedName: "RecentBlockhashes sysvar"),
+          .init(name: "rent_sysvar", localizedName: "Rent sysvar"),
+          .init(name: "nonce_authority", localizedName: "Nonce Authority")
+        ],
+        params: [
+          .init(name: "lamports", localizedName: "Lamports", value: "40")
+        ]
+      )
+    )
+    let expectedParsedWithdrawNonceAccount = SolanaDappTxDetails.ParsedSolanaInstruction(
+      name: "System Program - Withdraw Nonce Account",
+      details: [
+        .init(key: "Nonce Account", value: fromPubkey),
+        .init(key: "To Account", value: toPubkey),
+        .init(key: "RecentBlockhashes sysvar", value: "SysvarRecentB1ockHashes11111111111111111111"),
+        .init(key: "Rent sysvar", value: "SysvarRent111111111111111111111111111111111"),
+        .init(key: "Nonce Authority", value: toPubkey),
+        .init(key: "Amount", value: "0.00000004 SOL"),
+        .init(key: "Lamports", value: "40")
+      ],
+      instruction: withdrawNonceAccountInstruction
+    )
+    XCTAssertNoDifference(expectedParsedWithdrawNonceAccount, TransactionParser.parseSolanaInstruction(withdrawNonceAccountInstruction))
+    
+    let createAccountInstruction = BraveWallet.SolanaInstruction(
+      programId: BraveWallet.SolanaSystemProgramId,
+      accountMetas: [
+        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
+      ],
+      data: [],
+      decodedData: .init(
+        instructionType: UInt32(BraveWallet.SolanaSystemInstruction.createAccount.rawValue),
+        accountParams: [
+          .init(name: "from_account", localizedName: "From Account"),
+          .init(name: "new_account", localizedName: "New Account"),
+        ],
+        params: [
+          .init(name: "lamports", localizedName: "Lamports", value: "2000"),
+          .init(name: "space", localizedName: "Space", value: "1"),
+          .init(name: "owner_program", localizedName: "Owner Program", value: toPubkey)
+        ]
+      )
+    )
+    let expectedParsedCreateAccount = SolanaDappTxDetails.ParsedSolanaInstruction(
+      name: "System Program - Create Account",
+      details: [
+        .init(key: "From Account", value: fromPubkey),
+        .init(key: "New Account", value: toPubkey),
+        .init(key: "Amount", value: "0.000002 SOL"),
+        .init(key: "Lamports", value: "2000"),
+        .init(key: "Space", value: "1"),
+        .init(key: "Owner Program", value: toPubkey)
+      ],
+      instruction: createAccountInstruction
+    )
+    XCTAssertNoDifference(expectedParsedCreateAccount, TransactionParser.parseSolanaInstruction(createAccountInstruction))
+    
+    let createAccountWithSeedInstruction = BraveWallet.SolanaInstruction(
+      programId: BraveWallet.SolanaSystemProgramId,
+      accountMetas: [
+        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
+      ],
+      data: [],
+      decodedData: .init(
+        instructionType: UInt32(BraveWallet.SolanaSystemInstruction.createAccountWithSeed.rawValue),
+        accountParams: [
+          .init(name: "from_account", localizedName: "From Account"),
+          .init(name: "created_account", localizedName: "Created Account"),
+        ],
+        params: [
+          .init(name: "lamports", localizedName: "Lamports", value: "300"),
+          .init(name: "base", localizedName: "Base", value: toPubkey),
+          .init(name: "seed", localizedName: "Seed", value: ""),
+          .init(name: "space", localizedName: "Space", value: "1"),
+          .init(name: "owner_program", localizedName: "Owner Program", value: toPubkey)
+        ]
+      )
+    )
+    let expectedParsedCreateAccountWithSeed = SolanaDappTxDetails.ParsedSolanaInstruction(
+      name: "System Program - Create Account With Seed",
+      details: [
+        .init(key: "From Account", value: fromPubkey),
+        .init(key: "Created Account", value: toPubkey),
+        .init(key: "Amount", value: "0.0000003 SOL"),
+        .init(key: "Lamports", value: "300"),
+        .init(key: "Base", value: toPubkey),
+        .init(key: "Seed", value: ""),
+        .init(key: "Space", value: "1"),
+        .init(key: "Owner Program", value: toPubkey)
+      ],
+      instruction: createAccountWithSeedInstruction
+    )
+    XCTAssertNoDifference(expectedParsedCreateAccountWithSeed, TransactionParser.parseSolanaInstruction(createAccountWithSeedInstruction))
   }
 }

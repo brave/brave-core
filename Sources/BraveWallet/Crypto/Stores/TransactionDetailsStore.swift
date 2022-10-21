@@ -130,8 +130,9 @@ class TransactionDetailsStore: ObservableObject {
         } else {
           self.value = details.fromAmount
         }
-      case .solDappTransaction:
-        break
+      case let .solDappTransaction(details):
+        self.title = Strings.Wallet.solanaDappTransactionTitle
+        self.value = details.fromAmount
       case .other:
         break
       }

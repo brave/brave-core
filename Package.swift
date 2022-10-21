@@ -48,6 +48,7 @@ let package = Package(
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.0.0"),
     .package(url: "https://github.com/apple/swift-markdown", revision: "4f0c76fcd29fea648915f41e2aa896d47608087a"),
     .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.7.2"),
+    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(name: "Static", path: "ThirdParty/Static"),
     .package(name: "JitsiMeet", path: "ThirdParty/JitsiMeet"),
   ],
@@ -359,7 +360,14 @@ let package = Package(
         .copy("Certificates/certviewer/github.com.cer"),
       ]
     ),
-    .testTarget(name: "BraveWalletTests", dependencies: ["BraveWallet", "DataTestsUtils"]),
+    .testTarget(
+      name: "BraveWalletTests",
+      dependencies: [
+        "BraveWallet",
+        "DataTestsUtils",
+        .product(name: "CustomDump", package: "swift-custom-dump")
+      ]
+    ),
     .testTarget(name: "StorageTests", dependencies: ["Storage", "BraveSharedTestUtils"], resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]),
     .testTarget(name: "DataTests", dependencies: ["Data", "DataTestsUtils"]),
     .testTarget(name: "SPMLibrariesTests", dependencies: ["GCDWebServers"]),

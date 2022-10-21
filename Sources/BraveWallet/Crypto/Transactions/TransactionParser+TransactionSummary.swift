@@ -152,8 +152,8 @@ extension TransactionParser {
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
         namedToAddress: parsedTransaction.namedToAddress,
-        title: "",
-        gasFee: nil,
+        title: Strings.Wallet.solanaDappTransactionTitle,
+        gasFee: parsedTransaction.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
     case .other:
