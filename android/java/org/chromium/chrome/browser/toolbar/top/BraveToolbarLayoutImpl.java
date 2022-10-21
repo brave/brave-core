@@ -481,51 +481,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     if (!url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
                             && !UrlUtilities.isNTPUrl(url.getSpec())
                             && mPlaylistPageHandler != null) {
-                        // Log.e("NTP", "mPlaylistPageHandler 1");
-                        // Playlist playlist = new Playlist();
-                        // playlist.name = "first";
-                        // PlaylistItem playlistItems[] = {};
-                        // playlist.items = playlistItems;
-                        // mPlaylistPageHandler.createPlaylist(playlist);
-                        // Log.e("NTP", "mPlaylistPageHandler 2");
-                        // mPlaylistPageHandler.getAllPlaylists(playlists -> {
-                        //     for (Playlist temp : playlists) {
-                        //         Log.e("NTP", "Playlist : "+" id : "+temp.id+" name :
-                        //         "+temp.name); mPlaylistPageHandler.getPlaylist(temp.id, pl -> {
-                        //             Log.e("NTP", "mPlaylistPageHandler size : "+
-                        //             pl.items.length); if (pl.items.length > 0) {
-                        //                 PlaylistItem playlistItem = pl.items[0];
-                        //                 Log.e("NTP",
-                        //                         playlistItem.name + " : " +
-                        //                         playlistItem.pageSource.url
-                        //                                 + " : " + playlistItem.mediaPath.url + "
-                        //                                 : "
-                        //                                 + playlistItem.thumbnailPath.url);
-                        //                 }
-                        //         });
-                        //     }
-
                         // org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
                         // contentUrl.url = "https://www.youtube.com/watch?v=WETz6EaohrM";
                         // mPlaylistPageHandler.addMediaFilesFromPageToPlaylist("default",
                         // contentUrl);
 
-                        // Log.e("NTP", "mPlaylistPageHandler 3");
-                        // org.chromium.url.mojom.Url contentUrl =
-                        //         new org.chromium.url.mojom.Url();
-                        // contentUrl.url = "https://www.youtube.com/watch?v=3peLyPOKEwE";
-                        // mPlaylistPageHandler.addMediaFilesFromPageToPlaylist(
-                        //         playlists[0].id, contentUrl);
-
-                        mPlaylistPageHandler.getPlaylist("default", pl -> {
-                            Log.e("NTP", "mPlaylistPageHandler 4");
-                            PlaylistItem playlistItem = pl.items[0];
-                            Log.e("NTP",
-                                    playlistItem.name + " : " + playlistItem.pageSource.url + " : "
-                                            + playlistItem.mediaPath.url + " : "
-                                            + playlistItem.thumbnailPath.url);
-                        });
-
+                        // mPlaylistPageHandler.getPlaylist("default", pl -> {
+                        //     Log.e("NTP", "mPlaylistPageHandler 4");
+                        //     PlaylistItem playlistItem = pl.items[0];
+                        //     Log.e("NTP",
+                        //             playlistItem.name + " : " + playlistItem.pageSource.url + " :
+                        //             "
+                        //                     + playlistItem.mediaPath.url + " : "
+                        //                     + playlistItem.thumbnailPath.url);
                         // });
                     }
                 }
