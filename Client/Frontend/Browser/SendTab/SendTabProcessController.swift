@@ -35,6 +35,8 @@ class SendTabProcessController: SendTabTransitioningController {
   
   struct UX {
     static let contentInset = 20.0
+    static let maxTabletWidth = 400
+    static let maxPhoneWidth = 300
   }
   
   private let processTypeImageView = UIImageView().then {
@@ -102,7 +104,15 @@ class SendTabProcessController: SendTabTransitioningController {
     
     containerView.snp.makeConstraints {
       $0.centerX.centerY.equalToSuperview()
-      $0.width.equalToSuperview().multipliedBy(0.75)
+      if traitCollection.verticalSizeClass == .compact {
+        $0.width.greaterThanOrEqualTo(UX.maxPhoneWidth)
+      } else {
+        if traitCollection.horizontalSizeClass == .regular {
+          $0.width.greaterThanOrEqualTo(UX.maxTabletWidth)
+        } else {
+          $0.width.equalToSuperview().multipliedBy(0.75)
+        }
+      }
       $0.height.equalTo(containerView.snp.width)
     }
     
