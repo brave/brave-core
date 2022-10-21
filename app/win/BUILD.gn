@@ -11,6 +11,7 @@ if (should_generate_breakpad_symbols) {
       platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
       outputs += [ platform_symbols_dir ]
     }
+
     # We want to use x64 dump_syms for x86. The obvious way of doing this would
     # be to depend on dump_sums($host_toolchain). But on Windows, host_toolchain
     # on an x64 system is actually win_clang_x86 - see BUILDCONFIG.gn. The
