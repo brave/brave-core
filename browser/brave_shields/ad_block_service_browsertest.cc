@@ -2455,7 +2455,7 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
     feature_list_.InitWithFeaturesAndParameters(
         {{kBraveAdblockCosmeticFilteringChildFrames, {}},
         {kCosmeticFilteringJsPerformance,
-         {{"subframes_first_query_delay_ms", "1000"},
+         {{"subframes_first_query_delay_ms", "3000"},
           {"switch_to_polling_threshold", "500"},
           {"fetch_throttling_ms", "500"}}}}, {});
   }
@@ -2568,9 +2568,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
   EXPECT_TRUE(content::ExecJs(iframe, "didWait = true"));
 
   // Verify subframes_first_query_delay_ms delay.
-  // Wait subframes_first_query_delay_ms/4 and check the selector is still
+  // Wait some time less than subframes_first_query_delay_ms and check the selector is still
   // visible.
-  NonBlockingDelay(base::Milliseconds(250));
+  NonBlockingDelay(base::Milliseconds(100));
 
   EXPECT_TRUE(
       EvalJs(iframe, "checkSelector('.div-class-500', 'display', 'block')")
