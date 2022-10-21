@@ -3,52 +3,66 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
-
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {BaseMixin} from '../base_mixin.js'
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
+import {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import {getTemplate} from './add_ipfs_peer_dialog.html.js'
 
-Polymer({
-  is: 'add-ipfs-peer-dialog',
+const SettingsBraveIpfsPeersDialogElementBase =
+  I18nMixin(BaseMixin(PolymerElement)) as {
+    new(): PolymerElement & I18nMixinInterface
+  }
 
-  _template: getTemplate(),
+export interface PeersListItem {
+  name: string;
+  value: string;
+}
 
-  behaviors: [
-    I18nBehavior
-  ],
+export interface SettingsBraveIpfsPeersDialogElement {
+  $: {
+    peer: CrInputElement,
+  };
+}
 
-  properties: {
-    validValue_: Boolean,
+export class SettingsBraveIpfsPeersDialogElement extends SettingsBraveIpfsPeersDialogElementBase {
+  static get is() {
+    return 'add-ipfs-peer-dialog'
+  }
 
-    peers: {
-      type: Array,
-      value() {
-        return [];
+  static get template() {
+    return getTemplate()
+  }
+
+  static get properties() {
+    return {
+      validValue_: Boolean,
+
+      peers: {
+        type: Array,
+        value() {
+          return [];
+        },
       },
-    },
 
-    isSubmitButtonEnabled_: {
-      type: Boolean,
-      value: false,
-    }
-  },
+      isSubmitButtonEnabled_: {
+        type: Boolean,
+        value: false,
+      }
+    };
+  }
 
-  browserProxy_: null,
+  private validValue_: boolean;
+  private peers: PeersListItem[];
+  private isSubmitButtonEnabled_: boolean;
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
-    this.needToApply = true;
-  },
+  browserProxy_: BraveIPFSBrowserProxyImpl = BraveIPFSBrowserProxyImpl.getInstance();
 
-  /** @private */
-  nameChanged_: function() {
+  nameChanged_() {
     const value = this.$.peer.value.trim()
     // Disable the submit button if input text is empty
     if (value == '') {
@@ -62,7 +76,7 @@ Polymer({
     }
     let parts = value.split("/p2p/");
     let has_address = parts.length === 2
-    var result = this.peers.find(function(element, index) {
+    var result = this.peers.find((element: PeersListItem) => {
       if (has_address) {
         return element.value == parts[0];
       } else return element.name == parts[0];
@@ -70,14 +84,18 @@ Polymer({
     let valid = result === undefined
     this.validValue_ = valid;
     this.isSubmitButtonEnabled_ = valid;
-  },
-  handleSubmit_: function() {
+  }
+
+  handleSubmit_() {
     var value = this.$.peer.value
-    this.browserProxy_.addIpfsPeer(value).then(success => {
+    this.browserProxy_.addIpfsPeer(value).then((success: boolean) => {
       this.validValue_ = success;
       if (success) {
-        this.fire('close')
+        this.dispatchEvent(new CustomEvent('close'));
       }
     });
-  },
-});
+  }
+}
+
+customElements.define(
+  SettingsBraveIpfsPeersDialogElement.is, SettingsBraveIpfsPeersDialogElement)

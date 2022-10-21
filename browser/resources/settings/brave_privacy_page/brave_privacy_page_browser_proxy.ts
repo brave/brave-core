@@ -3,36 +3,35 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
+import {loadTimeData} from '../i18n_setup.js';
 
 export interface BravePrivacyBrowserProxy {
-  getP3AEnabled(): Promise<string>
-  setP3AEnabled(value: boolean)
-  getStatsUsagePingEnabled(): Promise<string>
-  setStatsUsagePingEnabled(value: boolean)
+  getP3AEnabled(): Promise<boolean>
+  setP3AEnabled(value: boolean): void
+  getStatsUsagePingEnabled(): Promise<boolean>
+  setStatsUsagePingEnabled(value: boolean): void
   wasPushMessagingEnabledAtStartup(): boolean
 }
 
 export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
-  getP3AEnabled() {
+  getP3AEnabled(): Promise<boolean> {
     return sendWithPromise('getP3AEnabled');
   }
 
-  setP3AEnabled(value) {
+  setP3AEnabled(value: boolean): void {
     chrome.send('setP3AEnabled', [value])
   }
 
-  getStatsUsagePingEnabled() {
+  getStatsUsagePingEnabled(): Promise<boolean> {
     return sendWithPromise('getStatsUsagePingEnabled');
   }
 
-  setStatsUsagePingEnabled(value) {
+  setStatsUsagePingEnabled(value: boolean): void {
     chrome.send('setStatsUsagePingEnabled', [value])
   }
 
-  wasPushMessagingEnabledAtStartup() {
+  wasPushMessagingEnabledAtStartup(): boolean {
     return loadTimeData.getBoolean('pushMessagingEnabledAtStartup');
   }
 
@@ -41,4 +40,4 @@ export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
   }
 }
 
-let instance: BravePrivacyBrowserProxy|null = null
+let instance: BravePrivacyBrowserProxy | null = null

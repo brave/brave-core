@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
-/**
- * 'settings-brave-sync-page' is the settings page containing brave's
- * custom sync.
- */
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/icons.html.js';
 import '../settings_page/settings_animated_pages.js';
@@ -17,90 +11,93 @@ import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import './brave_sync_subpage.js';
 
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
-import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-
-import {Router} from '../router.js';
-import {SyncBrowserProxyImpl} from '../people_page/sync_browser_proxy.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {BaseMixin} from '../base_mixin.js'
+import {Route, Router} from '../router.js';
+import {SyncStatus, SyncPrefs, SyncBrowserProxy, SyncBrowserProxyImpl} from '../people_page/sync_browser_proxy.js';
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
 import {getTemplate} from './brave_sync_page.html.js'
 
-Polymer({
-  is: 'settings-brave-sync-page',
+/**
+ * @fileoverview
+ * 'settings-brave-sync-page' is the settings page containing brave's
+ * custom sync.
+ */
 
-  _template: getTemplate(),
+const SettingsBraveSyncPageElementBase =
+  I18nMixin(WebUIListenerMixin(BaseMixin(PolymerElement))) as {
+    new(): PolymerElement & WebUIListenerMixinInterface & I18nMixinInterface
+  }
 
-  behaviors: [
-    I18nBehavior,
-    WebUIListenerBehavior,
-  ],
+export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBase {
+  static get is() {
+    return 'settings-brave-sync-page'
+  }
 
-  properties: {
-    /**
-     * The current sync status, supplied by SyncBrowserProxy.
-     * @type {?SyncStatus}
-     */
-    syncStatus_: Object,
-    isEncryptionSet_: {
-      type: Boolean,
-      value: false
-    },
-    syncLabel_: {
-      type: String,
-      computed: 'computeSyncLabel_(syncStatus_.firstSetupInProgress)'
-    },
-  },
+  static get template() {
+    return getTemplate()
+  }
 
-  /** @private {?SyncBrowserProxy} */
-  browserProxy_: null,
-  /** @private */
-  braveBrowserProxy_: null,
+  static get properties() {
+    return {
+      /**
+       * The current sync status, supplied by SyncBrowserProxy.
+       * @type {?SyncStatus}
+       */
+      syncStatus_: Object,
+      isEncryptionSet_: {
+        type: Boolean,
+        value: false
+      },
+      syncLabel_: {
+        type: String,
+        computed: 'computeSyncLabel_(syncStatus_.firstSetupInProgress)'
+      },
+    };
+  }
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = SyncBrowserProxyImpl.getInstance();
-    this.braveBrowserProxy_ = BraveSyncBrowserProxy.getInstance();
-  },
+  private syncStatus_: SyncStatus;
+  private isEncryptionSet_: boolean;
+  private syncLabel_: string;
 
-  /** @private */
+  browserProxy_: SyncBrowserProxy = SyncBrowserProxyImpl.getInstance();
+  braveBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
+
   computeSyncLabel_() {
     const isAlreadySetup = this.syncStatus_ !== undefined &&
         !this.syncStatus_.firstSetupInProgress;
     const key = isAlreadySetup ? 'braveSyncManageActionLabel' : 'braveSyncSetupActionLabel';
-    return I18nBehavior.i18n(key);
-  },
+    return this.i18n(key);
+  }
 
-  /** @override */
-  attached: function() {
+  override connectedCallback() {
+    super.connectedCallback()
     const onSyncStatus = this.handleSyncStatus_.bind(this)
-    this.browserProxy_.getSyncStatus().then(onSyncStatus);
+    this.browserProxy_.getSyncStatus().then((status: SyncStatus) => onSyncStatus(status));
     this.addWebUIListener(
       'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
     this.addWebUIListener('sync-status-changed', onSyncStatus);
-  },
+  }
 
-  /** @private */
-  onSyncTap_: function() {
+  onSyncTap_() {
     // Users can go to sync subpage regardless of sync status.
     const router = Router.getInstance();
-    router.navigateTo(router.getRoutes().BRAVE_SYNC_SETUP);
-  },
+    router.navigateTo((router.getRoutes() as {BRAVE_SYNC_SETUP: Route}).BRAVE_SYNC_SETUP);
+  }
 
   /**
    * Handler for when the sync state is pushed from the browser.
-   * @param {?SyncStatus} syncStatus
-   * @private
    */
-  handleSyncStatus_: async function(syncStatus) {
+  async handleSyncStatus_(syncStatus: SyncStatus) {
     this.syncStatus_ = syncStatus;
-  },
+  }
 
   /**
    * Handler for when the sync preferences are updated.
-   * @private
    */
-  handleSyncPrefsChanged_: async function(syncPrefs) {
+  async handleSyncPrefsChanged_(syncPrefs: SyncPrefs) {
     if (this.syncStatus_ && !this.syncStatus_.firstSetupInProgress) {
       const pureSyncCode = await this.braveBrowserProxy_.getPureSyncCode()
       if (syncPrefs.passphraseRequired) {
@@ -112,5 +109,8 @@ Polymer({
         })
       }
     }
-  },
-});
+  }
+}
+
+customElements.define(
+  SettingsBraveSyncPageElement.is, SettingsBraveSyncPageElement)

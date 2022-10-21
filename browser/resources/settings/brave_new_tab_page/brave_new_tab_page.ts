@@ -3,56 +3,62 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
-
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
-import {BraveNewTabBrowserProxyImpl} from './brave_new_tab_browser_proxy.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {BaseMixin} from '../base_mixin.js'
+import {NewTabOption, BraveNewTabBrowserProxy, BraveNewTabBrowserProxyImpl} from './brave_new_tab_browser_proxy.js'
 import {getTemplate} from './brave_new_tab_page.html.js'
 
 /**
  * 'settings-brave-new-tab-page' is the settings page containing
  * brave's new tab features.
  */
-Polymer({
-  is: 'settings-brave-new-tab-page',
 
-  _template: getTemplate(),
+const SettingsBraveNewTabPageElementBase =
+  WebUIListenerMixin(BaseMixin(PolymerElement)) as {
+    new(): PolymerElement & WebUIListenerMixinInterface
+  }
 
-  browserProxy_: null,
+export class SettingsBraveNewTabPageElement extends SettingsBraveNewTabPageElementBase {
+  static get is() {
+    return 'settings-brave-new-tab-page'
+  }
 
-  behaviors: [
-    WebUIListenerBehavior,
-  ],
+  static get template() {
+    return getTemplate()
+  }
 
-  properties: {
-    newTabShowOptions_: Array,
-    shouldNewTabShowDashboardSettings_: Boolean,
-  },
+  static get properties() {
+    return {
+      newTabShowOptions_: Array,
+      showNewTabDashboardSettings_: Boolean,
+    };
+  }
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = BraveNewTabBrowserProxyImpl.getInstance()
-    this.showNewTabDashboardSettings_ = false
-  },
+  private newTabShowOptions_: NewTabOption[];
+  private showNewTabDashboardSettings_: boolean;
 
-  /** @override */
-  ready: function() {
+  browserProxy_: BraveNewTabBrowserProxy = BraveNewTabBrowserProxyImpl.getInstance();
+
+  override ready() {
+    super.ready()
     this.openNewTabPage_ = this.openNewTabPage_.bind(this)
 
-    this.browserProxy_.getNewTabShowsOptionsList().then(list => {
+    this.browserProxy_.getNewTabShowsOptionsList().then((list: NewTabOption[]) => {
       this.newTabShowOptions_ = list
     })
-    this.browserProxy_.shouldShowNewTabDashboardSettings().then(showNewTabDashboardSettings => {
-      this.showNewTabDashboardSettings_ = showNewTabDashboardSettings
-    })
-
-    this.addWebUIListener('show-new-tab-dashboard-settings-changed', (show) => {
+    this.browserProxy_.shouldShowNewTabDashboardSettings().then((show: boolean) => {
       this.showNewTabDashboardSettings_ = show
     })
-  },
+    this.addWebUIListener('show-new-tab-dashboard-settings-changed', (show: boolean) => {
+      this.showNewTabDashboardSettings_ = show
+    })
+  }
 
-  openNewTabPage_: function () {
+  openNewTabPage_() {
     window.open("chrome://newTab?openSettings=1", "_self")
   }
-})
+}
+
+customElements.define(
+  SettingsBraveNewTabPageElement.is, SettingsBraveNewTabPageElement)

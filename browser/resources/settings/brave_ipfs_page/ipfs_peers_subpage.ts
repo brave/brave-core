@@ -3,121 +3,141 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
-
 import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js'
 import '../settings_page/settings_section.js'
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 import './add_ipfs_peer_dialog.js'
 
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
-import {WebUIListenerBehavior} from 'chrome://resources/cr_elements/web_ui_listener_behavior.js';
+import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
+import {BaseMixin} from '../base_mixin.js'
 import {getTemplate} from './ipfs_peers_subpage.html.js'
+import {IronListElement} from 'chrome://resources/polymer/v3_0/iron-list/iron-list.js';
 
 /**
 * @fileoverview
 * 'settings-sync-subpage' is the settings page content
 */
-Polymer({
-  is: 'settings-ipfs-peers-subpage',
 
-  _template: getTemplate(),
+const SettingsBraveIpfsPeersSubpageElementBase =
+  I18nMixin(WebUIListenerMixin(BaseMixin(PolymerElement))) as {
+    new(): PolymerElement & WebUIListenerMixinInterface & I18nMixinInterface
+  }
 
-  behaviors: [
-    I18nBehavior,
-    WebUIListenerBehavior
-  ],
+export interface PeersListItem {
+  name: string;
+  value: string;
+}
 
-  properties: {
-    /**
-     * Array of sites to display in the widget.
-     * @type {!Array<SiteException>}
-     */
-    peers: {
-      type: Array,
-      value() {
-        return [];
+export interface SettingsBraveIpfsPeersSubpageElement {
+  $: {
+    peersList: IronListElement,
+  }
+}
+
+export class SettingsBraveIpfsPeersSubpageElement extends SettingsBraveIpfsPeersSubpageElementBase {
+  static get is() {
+    return 'settings-ipfs-peers-subpage'
+  }
+
+  static get template() {
+    return getTemplate()
+  }
+
+  static get properties() {
+    return {
+      peers: {
+        type: Array,
+        value() {
+          return [];
+        },
       },
-    },
-    needToApply: {
-      type: Boolean,
-      value: false,
-      reflectToAttribute: true
-    },
-    localNodeLaunched: {
-      type: Boolean,
-      value: false
-    },
-    localNodeLaunchError_: {
-      type: Boolean,
-      value: false,
-    },
-    showAddPeerDialog_: {
-      type: Boolean,
-      value: false,
-    },
-    nodeRestarting_: {
-      type: Boolean,
-      value: false,
-    }
-  },
+      needToApply: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
+      },
+      localNodeLaunched: {
+        type: Boolean,
+        value: false
+      },
+      localNodeLaunchError_: {
+        type: Boolean,
+        value: false,
+      },
+      showAddPeerDialog_: {
+        type: Boolean,
+        value: false,
+      },
+      nodeRestarting_: {
+        type: Boolean,
+        value: false,
+      }
+    };
+  }
 
-  browserProxy_: null,
+  private peers: PeersListItem[];
+  private needToApply: boolean;
+  private localNodeLaunched: boolean;
+  private localNodeLaunchError_: boolean;
+  private showAddPeerDialog_: boolean;
+  private nodeRestarting_: boolean;
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
-    this.addWebUIListener('brave-ipfs-node-status-changed', (launched) => {
+  browserProxy_: BraveIPFSBrowserProxyImpl = BraveIPFSBrowserProxyImpl.getInstance();
+
+  override ready() {
+    super.ready()
+    this.addWebUIListener('brave-ipfs-node-status-changed', (launched: boolean) => {
       this.onServiceLaunched(launched)
     })
-  },
-  toggleUILayout: function(launched) {
+    this.onServiceLaunched(this.localNodeLaunched)
+    this.updatePeers();
+  }
+
+  private toggleUILayout(launched: boolean) {
     this.localNodeLaunched = launched
     if (launched) {
       this.localNodeLaunchError_ = false
     } else {
       this.showAddPeerDialog_ = false
     }
-  },
-  onServiceLaunched: function(success) {
+  }
+
+  private onServiceLaunched(success: boolean) {
     this.toggleUILayout(success)
     if (success) {
       this.updatePeers();
     }
-  },
-  onRestartNodeTap_: function() {
+  }
+
+  private onRestartNodeTap() {
     this.nodeRestarting_ = true
     this.localNodeLaunchError_ = false
     this.browserProxy_.shutdownIPFSService().then(() => {
       this.browserProxy_.launchIPFSService().then(success => {
-        this.isLocalNodeLaunched_ = success
+        this.localNodeLaunched = success
         this.localNodeLaunchError_ = !success
         this.needToApply = !success
         this.nodeRestarting_ = false
       })
     })
-  },
-  notifyPeerslist: function() {
-    const peersList =
-    /** @type {IronListElement} */ (this.$$('#peersList'));
-    if (peersList) {
-      peersList.notifyResize();
+  }
+
+  private notifyPeerslist() {
+    if (this.$.peersList) {
+      this.$.peersList.notifyResize();
     }
-  },
-  /*++++++
-  * @override */
-  ready: function() {
-    this.onServiceLaunched(this.localNodeLaunched)
-    this.updatePeers();
-  },
-  onAddPeerTap_: function(item) {
+  }
+
+  private onAddPeerTap_() {
     this.showAddPeerDialog_ = true
-  },
-  updatePeers: function() {
-    this.browserProxy_.getIpfsPeersList().then(peers => {
+  }
+
+  private updatePeers() {
+    this.browserProxy_.getIpfsPeersList().then((peers: string) => {
       if (!peers)
         return;
       let currentSize = this.peers.length
@@ -127,14 +147,14 @@ Polymer({
       }
       this.notifyPeerslist();
     });
-  },
+  }
 
-  onAddPeerDialogClosed_: function(value) {
+  private onAddPeerDialogClosed_() {
     this.showAddPeerDialog_ = false
     this.updatePeers();
-  },
+  }
 
-  onPeerDeleteTapped_: function(event) {
+  private onPeerDeleteTapped_(event: DomRepeatEvent<PeersListItem>) {
     let id_to_remove = event.model.item.name
     let address_to_remove = event.model.item.value
     var message = this.i18n('ipfsDeletePeerConfirmation', id_to_remove)
@@ -147,4 +167,7 @@ Polymer({
       }
     });
   }
-})
+}
+
+customElements.define(
+  SettingsBraveIpfsPeersSubpageElement.is, SettingsBraveIpfsPeersSubpageElement)
