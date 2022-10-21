@@ -13,7 +13,7 @@ import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {getTemplate} from './brave_tor_bridges_dialog.html.js'
+import { getTemplate } from './brave_tor_bridges_dialog.html.js'
 
 import {
   BraveTorBrowserProxy,
@@ -42,8 +42,15 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
       status_: String,
       captcha_: String,
       captchaResolve_: String,
-      renewDisabled_: Boolean,
-      submitDisabled_: Boolean,
+      renewDisabled_: {
+        type: Boolean,
+        value: true
+      },
+      submitDisabled_: {
+        type: Boolean,
+        value: true,
+        computed: 'computeSubmitDisabled_(captchaResolve_)'
+      },
       bridges_: Array
     }
   }
@@ -67,7 +74,6 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
   }
 
   private submitClicked_() {
-    this.enableSubmit_(false)
     this.browserProxy_.resolveBridgesCaptcha(this.captchaResolve_).then(
       (response: { bridges: Object[] }) => {
         this.bridges_ = response.bridges
@@ -76,6 +82,7 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
       () => {
         this.requestCaptcha_()
       })
+    this.captchaResolve_ = ''
   }
 
   private cancelClicked_() {
@@ -86,20 +93,19 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
     this.captchaResolve_ = ''
     this.status_ = this.i18n('torRequestBridgeDialogWaiting')
     this.captcha_ = ''
-    this.enableSubmit_(false)
+
     this.browserProxy_.requestBridgesCaptcha().then((result) => {
       this.captcha_ = result.captcha
       this.status_ = this.i18n('torRequestBridgeDialogSolve')
-      this.enableSubmit_(true)
+      this.renewDisabled_ = false;
     }, () => {
       this.status_ = this.i18n('torRequestBridgeDialogError')
       this.renewDisabled_ = false
     })
   }
 
-  private enableSubmit_(enabled: boolean) {
-    this.renewDisabled_ = !enabled
-    this.submitDisabled_ = !enabled
+  private computeSubmitDisabled_(captchaResolve) {
+    return captchaResolve.length === 0
   }
 }
 
