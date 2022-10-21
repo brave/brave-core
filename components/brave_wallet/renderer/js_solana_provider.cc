@@ -157,9 +157,9 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   for (const std::string& method :
        {"connect", "disconnect", "signAndSendTransaction", "signMessage",
         "request", "signTransaction", "signAllTransactions"}) {
-    SetOwnPropertyNonWritable(
-        context, provider_value->ToObject(context).ToLocalChecked(),
-        gin::StringToV8(isolate, method));
+    SetOwnPropertyWritable(context,
+                           provider_value->ToObject(context).ToLocalChecked(),
+                           gin::StringToV8(isolate, method), false);
   }
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();

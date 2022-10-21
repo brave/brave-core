@@ -210,12 +210,21 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
                content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
     EXPECT_EQ(base::Value(true), result.value) << result.error;
   }
+  {
+    auto result =
+        EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", "send"),
+               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(false), result.value) << result.error;
+  }
+
   // window._metamask.isUnlocked()
-  auto result =
-      EvalJs(web_contents(),
-             NonWriteableScriptMethod("ethereum._metamask", "isUnlocked"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result.value) << result.error;
+  {
+    auto result =
+        EvalJs(web_contents(),
+               NonWriteableScriptMethod("ethereum._metamask", "isUnlocked"),
+               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(true), result.value) << result.error;
+  }
 }
 
 // See https://github.com/brave/brave-browser/issues/22213 for details

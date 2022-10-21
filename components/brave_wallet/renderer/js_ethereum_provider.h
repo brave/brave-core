@@ -10,66 +10,71 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/render_frame_observer.h"
 #include "gin/arguments.h"
+#include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
 
 namespace brave_wallet {
 
-class JSEthereumProvider : public mojom::EventsListener {
+class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
+                                 public content::RenderFrameObserver,
+                                 public mojom::EventsListener {
  public:
-  explicit JSEthereumProvider(content::RenderFrame* render_frame,
-                              bool brave_use_native_wallet);
-  ~JSEthereumProvider() override;
+  static gin::WrapperInfo kWrapperInfo;
 
-  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context,
-                                  bool allow_overwrite_window_ethereum,
-                                  bool is_main_world);
-  void FireEvent(const std::string& event, base::Value event_args);
-  void ConnectEvent();
-  void OnGetChainId(const std::string& chain_id);
-  void DisconnectEvent(const std::string& message);
+  JSEthereumProvider(const JSEthereumProvider&) = delete;
+  JSEthereumProvider& operator=(const JSEthereumProvider&) = delete;
+
+  static void Install(bool allow_overwrite_window_ethereum_provider,
+                      content::RenderFrame* render_frame);
+
+  // gin::WrappableBase
+  gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
+      v8::Isolate* isolate) override;
+  const char* GetTypeName() override;
+
+  // mojom::EventsListener
   void AccountsChangedEvent(const std::vector<std::string>& accounts) override;
   void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
-  void BindFunctionsToObject(v8::Isolate* isolate,
-                             v8::Local<v8::Context> context,
-                             v8::Local<v8::Object> ethereum_object,
-                             v8::Local<v8::Object> metamask_object);
-  void UpdateAndBindJSProperties();
-  void UpdateAndBindJSProperties(v8::Isolate* isolate,
-                                 v8::Local<v8::Context> context,
-                                 v8::Local<v8::Object> ethereum_obj);
+  explicit JSEthereumProvider(content::RenderFrame* render_frame);
+  ~JSEthereumProvider() override;
 
-  // Adds a function to the provided object.
-  template <typename Sig>
-  void BindFunctionToObject(v8::Isolate* isolate,
-                            v8::Local<v8::Object> javascript_object,
-                            const std::string& name,
-                            const base::RepeatingCallback<Sig>& callback);
-  void CreateEthereumObject(v8::Isolate* isolate,
-                            v8::Local<v8::Context> context,
-                            bool allow_overwrite_window_ethereum);
+  // content::RenderFrameObserver
+  void OnDestruct() override {}
+  void WillReleaseScriptContext(v8::Local<v8::Context>,
+                                int32_t world_id) override;
+
   bool EnsureConnected();
-  void InjectInitScript(bool is_main_world);
+
+  void FireEvent(const std::string& event, base::Value event_args);
+  void OnGetChainId(const std::string& chain_id);
+  void ConnectEvent();
+  void DisconnectEvent(const std::string& message);
+
+  bool GetIsBraveWallet();
+  bool GetIsMetaMask();
+  std::string GetChainId();
+  v8::Local<v8::Value> GetNetworkVersion(v8::Isolate* isolate);
+  v8::Local<v8::Value> GetSelectedAddress(v8::Isolate* isolate);
 
   // Functions to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
                                  v8::Local<v8::Value> input);
-  v8::Local<v8::Value> IsConnected();
-  v8::Local<v8::Promise> Enable();
-  v8::Local<v8::Promise> IsUnlocked();
-  v8::Local<v8::Promise> Send(gin::Arguments* args);
+  v8::Local<v8::Value> IsConnected(v8::Isolate* isolate);
+  v8::Local<v8::Promise> Enable(v8::Isolate* isolate);
+  v8::Local<v8::Promise> IsUnlocked(v8::Isolate* isolate);
+  v8::Local<v8::Promise> SendMethod(gin::Arguments* args);
   void SendAsync(gin::Arguments* args);
-  bool ProxyDeletePropertyHandler(gin::Arguments* args);
 
   void OnRequestOrSendAsync(v8::Global<v8::Context> global_context,
                             std::unique_ptr<v8::Global<v8::Function>> callback,
@@ -95,11 +100,9 @@ class JSEthereumProvider : public mojom::EventsListener {
                     base::Value formed_response,
                     bool success);
 
-  raw_ptr<content::RenderFrame> render_frame_ = nullptr;
-  bool brave_use_native_wallet_;
   mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};
-  bool is_connected_;
+  bool is_connected_ = false;
   std::string chain_id_;
   std::string first_allowed_account_;
   base::WeakPtrFactory<JSEthereumProvider> weak_ptr_factory_{this};
