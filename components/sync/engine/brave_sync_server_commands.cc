@@ -23,9 +23,6 @@ void InitClearServerDataContext(SyncCycle* cycle,
   message->set_share(cycle->context()->account_name());
   message->set_message_contents(
       sync_pb::ClientToServerMessage::CLEAR_SERVER_DATA);
-  sync_pb::ClearServerDataMessage* clear_server_data =
-      message->mutable_clear_server_data();
-  clear_server_data->set_disable_sync_chain(true);
 }
 
 }  // namespace
