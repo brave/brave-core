@@ -807,30 +807,4 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
             true);
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
-                       EnsurePropertiesCantBeDeleted) {
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_TRUE(WaitForLoadStop(web_contents()));
-  ASSERT_EQ(EvalJs(web_contents(), "ensurePropertiesCantBeDeleted()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractBool(),
-            true);
-}
-
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
-                       EnsurePropertiesCantBeDeletedNoOverwrite) {
-  brave_wallet_service_->SetDefaultEthereumWallet(
-      mojom::DefaultWallet::BraveWallet);
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_TRUE(WaitForLoadStop(web_contents()));
-  ASSERT_EQ(EvalJs(web_contents(), "ensurePropertiesCantBeDeleted()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractBool(),
-            true);
-}
-
 }  // namespace brave_wallet

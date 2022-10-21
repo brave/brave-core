@@ -99,14 +99,6 @@
     window.ethereum._metamask.isUnlocked().then(result =>
       window.domAutomationController.send(result))
   }
-  function ensurePropertiesCantBeDeleted() {
-    // window.ethereum properties cannot be deleted AND they return true
-    // this is for web-compat, for example https://wallet.polygon.technology/
-    // fails otherwise as it uses a library which tries to delete
-    // window.ethereum.sendAsync and then uses it. Seriously.
-    window.domAutomationController.send(delete window.ethereum.sendAsync === true &&
-        typeof(window.ethereum.sendAsync) === 'function')
-  }
 </script>
 
 <body>
