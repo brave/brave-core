@@ -26,6 +26,10 @@ export const groupAccountsById = (accounts: WalletAccountType[], key: string) =>
   }, {})
 }
 
+export const findAccountByAddress = (accounts: WalletAccountType[], address: string): WalletAccountType | undefined => {
+  return accounts.find((account) => address === account.address)
+}
+
 export const findAccountName = (accounts: WalletAccountType[], address: string) => {
   return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
 }

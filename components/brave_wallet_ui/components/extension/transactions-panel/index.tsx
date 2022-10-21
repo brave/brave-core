@@ -9,6 +9,7 @@ import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
+import { getLocale } from '../../../../common/locale'
 import { sortTransactionByDate } from '../../../utils/tx-utils'
 import { WalletSelectors } from '../../../common/selectors'
 
@@ -19,10 +20,16 @@ import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector
 import { TransactionsListItem } from '../'
 
 // Styled Components
-import { CircleIconWrapper, Column, Row, VerticalSpace } from '../../shared/style'
-import { FillerDescriptionText, FillerTitleText, FloatAboveBottomRightCorner, InfoCircleIcon, StyledWrapper, TransactionsIcon } from './style'
 import { ScrollContainer } from '../../../stories/style'
-import { getLocale } from '../../../../common/locale'
+import { CircleIconWrapper, Column, Row, VerticalSpace } from '../../shared/style'
+import {
+  FillerDescriptionText,
+  FillerTitleText,
+  FloatAboveBottomRightCorner,
+  InfoCircleIcon,
+  StyledWrapper,
+  TransactionsIcon
+} from './style'
 
 export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo
@@ -38,14 +45,15 @@ export const TransactionsPanel = ({
   // redux
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
 
-  // memos
-  const transactionList = React.useMemo(() => {
-    if (selectedAccountAddress && transactions[selectedAccountAddress]) {
-      return sortTransactionByDate(transactions[selectedAccountAddress], 'descending')
-    } else {
-      return []
-    }
-  }, [selectedAccountAddress, transactions])
+  // memos / computed
+  const transactionList = transactions?.[selectedAccountAddress] || []
+
+  const sortedNonRejectedTransactionList = React.useMemo(() => {
+    return sortTransactionByDate(
+      transactionList.filter(t => t.txStatus !== BraveWallet.TransactionStatus.Rejected),
+      'descending'
+    )
+  }, [transactionList])
 
   // render
   if (transactionList.length === 0) {
@@ -89,10 +97,11 @@ export const TransactionsPanel = ({
     )
   }
 
+  // render
   return (
     <ScrollContainer>
       <StyledWrapper>
-        {transactionList.map((transaction: BraveWallet.TransactionInfo) =>
+        {sortedNonRejectedTransactionList.map((transaction) =>
           <TransactionsListItem
             key={transaction.id}
             onSelectTransaction={onSelectTransaction}
