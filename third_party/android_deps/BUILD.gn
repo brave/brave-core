@@ -6,6 +6,13 @@ group("android_deps") {
     ":com_android_billingclient_java",
     ":com_android_installreferrer_java",
     ":com_github_bumptech_glide_java",
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    ":com_google_android_exoplayer_exoplayer_core_java",
+    ":com_google_android_exoplayer_exoplayer_database_java",
+    ":com_google_android_exoplayer_exoplayer_datasource_java",
+    ":com_google_android_exoplayer_exoplayer_decoder_java",
+    ":com_google_android_exoplayer_exoplayer_extractor_java",
+    ":com_google_android_exoplayer_exoplayer_ui_java",
     ":com_wireguard_android_java",
     ":google_play_services_safetynet_java",
   ]
@@ -68,4 +75,74 @@ android_aar_prebuilt("com_wireguard_android_java") {
 android_aar_prebuilt("com_github_bumptech_disklrucache_java") {
   aar_path = "libs/com_github_bumptech_disklrucache/disklrucache-4.12.0.aar"
   info_path = "libs/com_github_bumptech_glide_gifdecoder/com_github_bumptech_disklrucache.info"
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_core_java") {
+  aar_path = "libs/com_google_android_exoplayer_exoplayer_core/exoplayer-core-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_core/com_google_android_exoplayer_exoplayer_core.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    ":com_google_android_exoplayer_exoplayer_database_java",
+    ":com_google_android_exoplayer_exoplayer_datasource_java",
+    ":com_google_android_exoplayer_exoplayer_decoder_java",
+    ":com_google_android_exoplayer_exoplayer_extractor_java",
+    "//third_party/androidx:androidx_core_core_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_common_java") {
+  aar_path = "libs/com_google_android_exoplayer_exoplayer_common/exoplayer-common-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_common/com_google_android_exoplayer_exoplayer_common.info"
+  deps = [ "//third_party/android_deps:com_google_guava_guava_android_java" ]
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_datasource_java") {
+  aar_path = "libs/com_google_android_exoplayer_exoplayer_datasource/exoplayer-datasource-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_datasource/com_google_android_exoplayer_exoplayer_datasource.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    ":com_google_android_exoplayer_exoplayer_database_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_decoder_java") {
+  aar_path = "libs/com_google_android_exoplayer_exoplayer_decoder/exoplayer-decoder-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_decoder/com_google_android_exoplayer_exoplayer_decoder.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_extractor_java") {
+  aar_path = "libs/com_google_android_exoplayer_exoplayer_extractor/exoplayer-extractor-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_extractor/com_google_android_exoplayer_exoplayer_extractor.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    ":com_google_android_exoplayer_exoplayer_decoder_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_database_java") {
+  aar_path = "libs/com_google_android_exoplayer_exoplayer_database/exoplayer-database-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_database/com_google_android_exoplayer_exoplayer_database.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_ui_java") {
+  aar_path =
+      "libs/com_google_android_exoplayer_exoplayer_ui/exoplayer-ui-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_ui/com_google_android_exoplayer_exoplayer_ui.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    ":com_google_android_exoplayer_exoplayer_core_java",
+    "//third_party/androidx:androidx_core_core_java",
+    "//third_party/androidx:androidx_media_media_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+  ]
 }
