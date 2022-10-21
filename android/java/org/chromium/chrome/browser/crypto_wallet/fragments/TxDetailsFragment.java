@@ -24,6 +24,7 @@ import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class TxDetailsFragment extends Fragment {
@@ -59,35 +60,7 @@ public class TxDetailsFragment extends Fragment {
             return;
         }
         assert mTxInfo.txParams.length == mTxInfo.txArgs.length;
-        String functionType = getResources().getString(R.string.wallet_details_function_type_other);
-        switch (mTxInfo.txType) {
-            case TransactionType.ERC20_TRANSFER:
-                functionType = getResources().getString(
-                        R.string.wallet_details_function_type_erc20transfer);
-                break;
-            case TransactionType.ERC20_APPROVE:
-                functionType = getResources().getString(
-                        R.string.wallet_details_function_type_erc20approve);
-                break;
-            case TransactionType.ERC721_TRANSFER_FROM:
-                functionType = getResources().getString(
-                        R.string.wallet_details_function_type_erc721transfer);
-                break;
-            case TransactionType.SOLANA_SYSTEM_TRANSFER:
-                functionType = getResources().getString(
-                        R.string.wallet_details_function_type_solana_system_transfer);
-                break;
-            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER:
-                functionType = getResources().getString(
-                        R.string.wallet_details_function_type_spl_token_transfer);
-                break;
-            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION:
-                functionType = getResources().getString(
-                        R.string.wallet_details_function_type_solana_spl_token_transfer_with_associated_token_account_creation);
-                break;
-            default:
-                break;
-        }
+        String functionType = getString(TransactionUtils.getTxType(mTxInfo));
 
         TextView functionTypeWidget = view.findViewById(R.id.function_type);
         functionTypeWidget.setText(String.format(
