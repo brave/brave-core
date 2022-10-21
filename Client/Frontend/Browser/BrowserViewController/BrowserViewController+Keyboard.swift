@@ -41,7 +41,9 @@ extension BrowserViewController: KeyboardHelperDelegate {
   
   public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
     keyboardState = nil
-    if isUsingBottomBar && !topToolbar.inOverlayMode && (presentedViewController == nil || collapsedURLBarView.isKeyboardVisible) {
+    if isUsingBottomBar && !topToolbar.inOverlayMode &&
+        (presentedViewController == nil || collapsedURLBarView.isKeyboardVisible) /* Always reset things if collapsed url bar is visible */ ||
+        !toolbarVisibilityViewModel.isEnabled /* Always reset things after orientation change that may change bottom bar */ {
       UIView.animate(withDuration: 0.1) { [self] in
         // We can't actually set the toolbar state to expanded since bar collapsing/expanding is based on
         // many web view traits such as content size and such so we will just use the collapsed bar view
