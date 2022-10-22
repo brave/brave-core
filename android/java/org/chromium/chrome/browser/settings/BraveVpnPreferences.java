@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -26,7 +27,9 @@ import com.wireguard.crypto.KeyPair;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.InternetConnection;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
@@ -56,6 +59,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private static final String TAG = "BraveVPN";
     public static final String PREF_VPN_SWITCH = "vpn_switch";
     public static final String PREF_SUBSCRIPTION_MANAGE = "subscription_manage";
+    public static final String PREF_LINK_SUBSCRIPTION = "link_subscription";
     public static final String PREF_SUBSCRIPTION_STATUS = "subscription_status";
     public static final String PREF_SUBSCRIPTION_EXPIRES = "subscription_expires";
     public static final String PREF_SERVER_HOST = "server_host";
@@ -156,6 +160,19 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         Intent browserIntent =
                                 new Intent(Intent.ACTION_VIEW, Uri.parse(MANAGE_SUBSCRIPTION_PAGE));
                         getActivity().startActivity(browserIntent);
+                        return true;
+                    }
+                });
+        findPreference(PREF_LINK_SUBSCRIPTION)
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        // BraveVpnUtils.getBraveAccountUrl();
+                        Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
+                        intent.putExtra(BraveActivity.OPEN_URL, BraveVpnUtils.getBraveAccountUrl());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        getActivity().finish();
+                        startActivity(intent);
                         return true;
                     }
                 });
