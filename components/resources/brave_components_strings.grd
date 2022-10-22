@@ -637,6 +637,9 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_COUNTRIES_TITLE" desc="">Error: Country mismatch</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">Error: Different account</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_1" desc="">It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Brave Rewards is temporarily unavailable. Please try again later.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_2" desc="">You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TITLE" desc="">Error: Connecting to selected custodian temporarily unavailable</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1" desc="">Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2" desc="">See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Brave Rewards.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE" desc="">Error: Region currently not supported</message>

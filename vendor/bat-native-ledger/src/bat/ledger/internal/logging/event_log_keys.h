@@ -19,6 +19,7 @@ const char kKYCRequired[] = "kyc_required";
 const char kMismatchedCountries[] = "mismatched_countries";
 const char kMismatchedProviderAccounts[] = "mismatched_provider_accounts";
 const char kPromotionVBATDrained[] = "promotion_vbat_drained";
+const char kProviderUnavailable[] = "provider_unavailable";
 const char kRecurringTipAdded[] = "recurring_tip_added";
 const char kRecurringTipRemoved[] = "recurring_tip_removed";
 const char kRegionNotSupported[] = "region_not_supported";

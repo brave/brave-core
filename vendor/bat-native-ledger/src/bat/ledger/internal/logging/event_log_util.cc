@@ -20,6 +20,8 @@ std::string GetEventLogKeyForLinkingResult(mojom::Result result) {
       return log::kMismatchedProviderAccounts;
     case mojom::Result::NOT_FOUND:
       return log::kKYCRequired;
+    case mojom::Result::PROVIDER_UNAVAILABLE:
+      return log::kProviderUnavailable;
     case mojom::Result::REGION_NOT_SUPPORTED:
       return log::kRegionNotSupported;
     case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:

@@ -232,6 +232,7 @@ void GeminiAuthorization::OnConnectWallet(
     case mojom::Result::FLAGGED_WALLET:
     case mojom::Result::REGION_NOT_SUPPORTED:
     case mojom::Result::MISMATCHED_COUNTRIES:
+    case mojom::Result::PROVIDER_UNAVAILABLE:
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(legacy_result),
           constant::kWalletGemini + std::string("/") + abbreviated_address);

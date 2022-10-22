@@ -104,6 +104,20 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
+    case 'providerUnavailableModal':
+      return (
+        <ModalRedirect
+          id={'redirect-modal-provider-unavailable'}
+          errorText={[
+            getString('redirectModalProviderUnavailableText1').replaceAll('$1', providerName),
+            getString('redirectModalProviderUnavailableText2')]}
+          titleText={getString('redirectModalProviderUnavailableTitle')}
+          errorTextLink={'https://status.brave.com/'}
+          buttonText={getString('redirectModalClose')}
+          walletType={walletType}
+          onClick={actions.hideRedirectModal}
+        />
+      )
     case 'regionNotSupportedModal':
       return (
         <ModalRedirect
