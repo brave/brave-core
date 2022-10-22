@@ -91,6 +91,7 @@ import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
+import org.chromium.chrome.browser.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
@@ -966,6 +967,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }
+        if (BraveVpnPrefUtils.isSubscriptionPurchase()
+                && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
+            showLinkVpnSubscriptionDialog();
+        }
         if (PackageUtils.isFirstInstall(this)
                 && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
                         || getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME))) {
@@ -1083,6 +1088,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 new BraveVpnCalloutDialogFragment();
         braveVpnCalloutDialogFragment.show(
                 getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
+    }
+
+    private void showLinkVpnSubscriptionDialog() {
+        LinkVpnSubscriptionDialogFragment linkVpnSubscriptionDialogFragment =
+                new LinkVpnSubscriptionDialogFragment();
+        linkVpnSubscriptionDialogFragment.setCancelable(false);
+        linkVpnSubscriptionDialogFragment.show(
+                getSupportFragmentManager(), "LinkVpnSubscriptionDialogFragment");
     }
 
     private void showAdFreeCalloutDialog() {
@@ -1571,6 +1584,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (intent != null) {
+            String openUrl = intent.getStringExtra(BraveActivity.OPEN_URL);
+            if (!TextUtils.isEmpty(openUrl)) {
+                openNewOrSelectExistingTab(openUrl);
+            }
+        }
         checkForNotificationData();
     }
 

@@ -308,7 +308,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 }
             }
         }.start();
-
+        findPreference(PREF_LINK_SUBSCRIPTION)
+                .setEnabled(BraveVpnPrefUtils.isSubscriptionPurchase());
         BraveVpnUtils.dismissProgressDialog();
     }
 
