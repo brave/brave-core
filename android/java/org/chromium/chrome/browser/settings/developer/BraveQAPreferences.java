@@ -98,7 +98,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
         }
 
         mVpnLinkSubscriptionOnDev = (ChromeSwitchPreference) findPreference(
-                BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_DEV);
+                BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING);
         if (mVpnLinkSubscriptionOnDev != null) {
             mVpnLinkSubscriptionOnDev.setOnPreferenceChangeListener(this);
         }
@@ -259,7 +259,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
                 || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
                 || PREF_QA_VLOG_REWARDS.equals(preference.getKey())
                 || BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE.equals(preference.getKey())
-                || BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_DEV.equals(
+                || BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING.equals(
                         preference.getKey())
                 || OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT.equals(
                         preference.getKey())) {

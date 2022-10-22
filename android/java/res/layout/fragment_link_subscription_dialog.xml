@@ -52,7 +52,7 @@
             android:background="@drawable/crypto_wallet_blue_button"
             android:text="@string/link_subscription_dialog_action_text"
             android:textAllCaps="false"
-            android:textColor="@color/shield_text_color"
+            android:textColor="@android:color/white"
             android:textSize="16sp"
             android:layout_marginBottom="24dp"
             style="?android:attr/borderlessButtonStyle"/>
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="8dp"
             android:text="@string/powered_by"
-            android:textColor="@android:color/white"
+            android:textColor="@color/shield_text_color"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:textSize="13sp"

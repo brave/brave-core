@@ -14,8 +14,8 @@
         android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave_vpn_link_subscription_on_dev"
-        android:title="Link VPN subscription on Dev"
+        android:key="brave_vpn_link_subscription_on_staging"
+        android:title="Link VPN subscription on Staging"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 

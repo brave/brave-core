@@ -38,8 +38,8 @@ public class BraveVpnPrefUtils {
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
     public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
-    public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_DEV =
-            "brave_vpn_link_subscription_on_dev";
+    public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING =
+            "brave_vpn_link_subscription_on_staging";
     public static final String PREF_BRAVE_VPN_START = "brave_vpn_start";
 
     public static final String PREF_BRAVE_VPN_API_AUTH_TOKEN = "brave_vpn_api_auth_token";
@@ -66,13 +66,13 @@ public class BraveVpnPrefUtils {
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean isLinkSubscriptionOnDev() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_DEV, false);
+    public static boolean isLinkSubscriptionOnStaging() {
+        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, false);
     }
 
-    public static void setLinkSubscriptionOnDev(boolean newValue) {
+    public static void setLinkSubscriptionOnStaging(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_DEV, newValue);
+        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, newValue);
         sharedPreferencesEditor.apply();
     }
 

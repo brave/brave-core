@@ -54,7 +54,8 @@ public class BraveVpnUtils {
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
     private static final String BRAVE_ACCOUNT_PROD_PAGE_URL = "https://account.brave.com";
-    private static final String BRAVE_ACCOUNT_DEV_PAGE_URL = "https://account.brave.software";
+    private static final String BRAVE_ACCOUNT_STAGING_PAGE_URL =
+            "https://account.bravesoftware.com";
 
     public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;
@@ -72,8 +73,8 @@ public class BraveVpnUtils {
     }
 
     public static String getBraveAccountUrl() {
-        return BraveVpnPrefUtils.isLinkSubscriptionOnDev() ? BRAVE_ACCOUNT_DEV_PAGE_URL
-                                                           : BRAVE_ACCOUNT_PROD_PAGE_URL;
+        return BraveVpnPrefUtils.isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_STAGING_PAGE_URL
+                                                               : BRAVE_ACCOUNT_PROD_PAGE_URL;
     }
 
     public static void openBraveVpnPlansActivity(Activity activity) {

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.vpn.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveDialogFragment;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
