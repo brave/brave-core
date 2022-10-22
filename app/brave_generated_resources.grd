@@ -937,7 +937,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Imported from <ph name="BROWSER_NAME">$1<ex>Chrome</ex></ph>.
       </message>
       <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
-        Copy clean link (only main URL)
+        Copy clean link
       </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
