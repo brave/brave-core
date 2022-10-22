@@ -8,7 +8,13 @@
 namespace views {
 
 void NativeWidgetMac::SetWindowTitleVisibility(bool visible) {
+  if (overridden_window_title_visibility_.has_value() &&
+      visible == *overridden_window_title_visibility_) {
+    return;
+  }
+
   GetNSWindowMojo()->SetWindowTitleVisibility(visible);
+  overridden_window_title_visibility_ = visible;
 }
 
 }  // namespace views

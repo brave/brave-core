@@ -8,8 +8,19 @@
 
 #include "ui/views/widget/native_widget_private.h"
 
-#define SetWindowIcons                    \
-  SetWindowTitleVisibility(bool visible); \
+#define SetWindowIcons                                      \
+  SetWindowTitleVisibility(bool visible);                   \
+  bool has_overridden_window_title_visibility() const {     \
+    return overridden_window_title_visibility_.has_value(); \
+  }                                                         \
+  bool overridden_window_title_visibility() const {         \
+    return overridden_window_title_visibility_.value();     \
+  }                                                         \
+                                                            \
+ private:                                                   \
+  absl::optional<bool> overridden_window_title_visibility_; \
+                                                            \
+ public:                                                    \
   void SetWindowIcons
 
 #include "src/ui/views/widget/native_widget_mac.h"

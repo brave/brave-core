@@ -16,4 +16,9 @@
 
 #undef OpaqueBrowserFrameView
 
+// Sanity check at compile time.
+static_assert(
+    std::is_base_of_v<BraveOpaqueBrowserFrameView, BrowserFrameViewLinux>,
+    "BrowserFrameViewLinux should be a child of BraveOpaqueBrowserFrameView");
+
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_LINUX_H_

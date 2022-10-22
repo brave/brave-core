@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
@@ -51,11 +52,8 @@ void BraveTabContextMenuContents::RunMenuAt(
 
 bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
   if (command_id == BraveTabMenuModel::CommandShowTitleBar) {
-    return controller_->browser()
-        ->profile()
-        ->GetOriginalProfile()
-        ->GetPrefs()
-        ->GetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow);
+    return tabs::features::ShouldShowWindowTitleForVerticalTabs(
+        controller_->browser());
   }
 
   return false;
@@ -135,11 +133,8 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       chrome::BookmarkAllTabs(browser_);
       return;
     case BraveTabMenuModel::CommandShowTitleBar: {
-      auto* browser = controller_->browser();
-      browser->profile()->GetOriginalProfile()->GetPrefs()->SetBoolean(
-          brave_tabs::kVerticalTabsShowTitleOnWindow,
-          !IsCommandIdChecked(command_id));
-      BrowserView::GetBrowserViewForBrowser(browser)->InvalidateLayout();
+      brave::ToggleWindowTitleVisibilityForVerticalTabs(browser_);
+      BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();
       return;
     }
     default:
