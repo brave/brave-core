@@ -8,14 +8,6 @@ if (is_apple) {
   unexport_list_path = "$root_build_dir/brave_rust/rust_lib.unexports"
 }
 
-# Too many personalities workaround. Will be fixed in llvm see
-# https://reviews.llvm.org/D135728
-config("too_many_personalities_workaround") {
-  if (is_apple && !is_component_build && !use_lld) {
-    ldflags = [ "-Wl,-no_compact_unwind" ]
-  }
-}
-
 config("strip_rust_symbols") {
   if (is_apple) {
     ldflags = [
@@ -23,6 +15,11 @@ config("strip_rust_symbols") {
       "-Wl,-unexported_symbols_list," +
           rebase_path(unexport_list_path, root_build_dir),
     ]
+    # Too many personalities workaround. Will be fixed in llvm see
+    # https://reviews.llvm.org/D135728
+    if (!is_component_build && !use_lld) {
+      ldflags = [ "-Wl,-no_compact_unwind" ]
+    }
   }
 }
 
