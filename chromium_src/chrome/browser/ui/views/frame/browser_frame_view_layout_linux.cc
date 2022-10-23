@@ -25,19 +25,24 @@ int BrowserFrameViewLayoutLinux::NonClientTopHeight(bool restored) const {
       return OpaqueBrowserFrameViewLayout::NonClientTopHeight(restored);
     }
 
-    if (tabs::features::ShouldShowWindowTitleForVerticalTabs(
-            view_->browser_view()->browser())) {
-      return 30;
-    }
-
     // TODO(sko) For now, I couldn't find a way to overlay caption buttons
     // on toolbar. Once it gets possible, we shouldn't reserve non client top
-    // height.
-    if (view_->ShouldShowCaptionButtons()) {
-      // Uses the same caption height defined in
-      // c/b/u/v/frame/opaque_browser_frame_view_layout.cc
-      return 18;
-    }
+    // height when window title isn't visible.
+
+    // Adding 2px of vertical padding puts at least 1 px of space on the top and
+    // bottom of the element.
+    constexpr int kVerticalPadding = 2;
+    // delegate_->GetIconSize() also considers the default font's height so
+    // title will be visible.
+    const int icon_height = FrameEdgeInsets(restored).top() +
+                            delegate_->GetIconSize() + kVerticalPadding;
+
+    const int caption_button_height =
+        DefaultCaptionButtonY(restored) +
+        18 /*kCaptionButtonHeight in OpaqueBrowserFrameView*/ +
+        kCaptionButtonBottomPadding;
+    return std::max(icon_height, caption_button_height) +
+           kCaptionButtonBottomPadding;
   }
 
   return OpaqueBrowserFrameViewLayout::NonClientTopHeight(restored);
