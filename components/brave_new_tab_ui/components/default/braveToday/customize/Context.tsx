@@ -113,12 +113,12 @@ export const useChannels = (options: { subscribedOnly: boolean } = { subscribedO
     .filter(c => c.subscribed || !options.subscribedOnly), [channels, options.subscribedOnly])
 }
 
-export const useChannelSubscribed = (channelId: string) => {
+export const useChannelSubscribed = (channelName: string) => {
   const { channels } = useBraveNews()
-  const subscribed = useMemo(() => channels[channelId]?.subscribed ?? false, [channels[channelId]])
+  const subscribed = useMemo(() => channels[channelName]?.subscribed ?? false, [channels[channelName]])
   const setSubscribed = React.useCallback((subscribed: boolean) => {
-    api.setChannelSubscribed(channelId, subscribed)
-  }, [channelId])
+    api.setChannelSubscribed(channelName, subscribed)
+  }, [channelName])
 
   return {
     subscribed,
