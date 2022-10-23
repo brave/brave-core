@@ -92,6 +92,6 @@ export function useLazyUnpaddedImageUrl (paddedUrl: string | undefined, options:
 
   return {
     url: useUnpaddedImageUrl(visible ? paddedUrl : undefined, options.onLoaded, options.useCache) || cache[paddedUrl!],
-    elementRef: setElementRef
+    setElementRef
   }
 }

@@ -60,13 +60,13 @@ const ChannelNameText = styled.span`
 `
 
 function FavIcon (props: { src?: string }) {
-  const { url, elementRef } = useLazyUnpaddedImageUrl(props.src, {
+  const { url, setElementRef } = useLazyUnpaddedImageUrl(props.src, {
     rootElement: document.getElementById('brave-news-configure'),
     rootMargin: '0px 0px 100px 0px',
     useCache: true
   })
   const [error, setError] = React.useState(false)
-  return <FavIconContainer ref={elementRef}>
+  return <FavIconContainer ref={setElementRef}>
     {url && !error && <img src={url} onError={() => setError(true)} />}
   </FavIconContainer>
 }
