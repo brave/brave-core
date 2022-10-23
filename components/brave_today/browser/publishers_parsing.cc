@@ -113,6 +113,10 @@ bool ParseCombinedPublisherList(const std::string& json,
       publisher->background_color = *background_color;
     }
 
+    // We consider '0' to be unranked, as mojo doesn't support nullable
+    // primitives.
+    publisher->rank = publisher_dict.FindInt("rank").value_or(0);
+
     // TODO(petemill): Validate
     publishers->insert_or_assign(publisher->publisher_id, std::move(publisher));
   }
