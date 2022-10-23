@@ -8,8 +8,8 @@
 
 #include "build/build_config.h"
 
-extern const char kManagedShieldsAllowedForUrls[];
-extern const char kManagedShieldsBlockedForUrls[];
+extern const char kManagedShieldsEnabledForUrls[];
+extern const char kManagedShieldsDisabledForUrls[];
 extern const char kAdsBlocked[];
 extern const char kTrackersBlocked[];
 extern const char kJavascriptBlocked[];

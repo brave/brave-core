@@ -27,13 +27,13 @@ struct PrefsForManagedContentSettingsMapEntry {
 
 constexpr PrefsForManagedContentSettingsMapEntry
     kBravePrefsForManagedContentSettingsMap[] = {
-        {kManagedShieldsBlockedForUrls, ContentSettingsType::BRAVE_SHIELDS,
+        {kManagedShieldsDisabledForUrls, ContentSettingsType::BRAVE_SHIELDS,
          CONTENT_SETTING_BLOCK},
-        {kManagedShieldsAllowedForUrls, ContentSettingsType::BRAVE_SHIELDS,
+        {kManagedShieldsEnabledForUrls, ContentSettingsType::BRAVE_SHIELDS,
          CONTENT_SETTING_ALLOW}};
 
-constexpr const char* kBraveManagedPrefs[] = {kManagedShieldsBlockedForUrls,
-                                              kManagedShieldsAllowedForUrls};
+constexpr const char* kBraveManagedPrefs[] = {kManagedShieldsDisabledForUrls,
+                                              kManagedShieldsEnabledForUrls};
 
 }  // namespace
 

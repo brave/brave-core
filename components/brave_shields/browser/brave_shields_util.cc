@@ -580,8 +580,8 @@ bool IsShieldsManaged(PrefService* prefs,
   DCHECK(map);
   content_settings::SettingInfo info;
   map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
-  return (prefs->IsManagedPreference(kManagedShieldsBlockedForUrls) ||
-          prefs->IsManagedPreference(kManagedShieldsAllowedForUrls)) &&
+  return (prefs->IsManagedPreference(kManagedShieldsDisabledForUrls) ||
+          prefs->IsManagedPreference(kManagedShieldsEnabledForUrls)) &&
          info.source == content_settings::SettingSource::SETTING_SOURCE_POLICY;
 }
 
