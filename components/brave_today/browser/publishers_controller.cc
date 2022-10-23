@@ -54,10 +54,13 @@ const mojom::Publisher* PublishersController::GetPublisherForSite(
   if (publishers_.empty())
     return nullptr;
 
-  const auto& site_origin = url::Origin::Create(site_url);
+  const auto& site_host = site_url.host();
   for (const auto& kv : publishers_) {
-    const auto& publisher_origin = url::Origin::Create(kv.second->site_url);
-    if (site_origin.IsSameOriginWith(publisher_origin)) {
+    const auto& publisher_host = kv.second->site_url.host();
+    // When https://github.com/brave/brave-browser/issues/26092 is fixed, this
+    // hack can be removed.
+    const auto& publisher_host_www = "www." + publisher_host;
+    if (publisher_host == site_host || publisher_host_www == site_host) {
       return kv.second.get();
     }
   }

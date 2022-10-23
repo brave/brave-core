@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -74,12 +75,13 @@ class BraveLocationBarView : public LocationBarView {
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
-  BraveActionsContainer* brave_actions_ = nullptr;
+  raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
+  raw_ptr<BraveNewsLocationView> brave_news_location_view_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
-  OnionLocationView* onion_location_view_ = nullptr;
+  raw_ptr<OnionLocationView> onion_location_view_ = nullptr;
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
-  IPFSLocationView* ipfs_location_view_ = nullptr;
+  raw_ptr<IPFSLocationView> ipfs_location_view_ = nullptr;
 #endif
 };
 
