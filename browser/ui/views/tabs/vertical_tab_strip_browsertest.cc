@@ -60,7 +60,7 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
           ->ShouldShowWindowTitle();
     }
 
-    return native_widget->overridden_window_title_visibility();
+    return native_widget->GetOverriddenWindowTitleVisibility();
 #elif BUILDFLAG(IS_WIN)
     if (browser_view()->GetWidget()->ShouldUseNativeFrame()) {
       return static_cast<const GlassBrowserFrameView*>(

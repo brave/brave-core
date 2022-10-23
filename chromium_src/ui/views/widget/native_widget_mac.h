@@ -13,9 +13,7 @@
   bool has_overridden_window_title_visibility() const {     \
     return overridden_window_title_visibility_.has_value(); \
   }                                                         \
-  bool overridden_window_title_visibility() const {         \
-    return overridden_window_title_visibility_.value();     \
-  }                                                         \
+  bool GetOverriddenWindowTitleVisibility() const;          \
                                                             \
  private:                                                   \
   absl::optional<bool> overridden_window_title_visibility_; \

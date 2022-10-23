@@ -17,4 +17,11 @@ void NativeWidgetMac::SetWindowTitleVisibility(bool visible) {
   overridden_window_title_visibility_ = visible;
 }
 
+bool NativeWidgetMac::GetOverriddenWindowTitleVisibility() const {
+  DCHECK(has_overridden_window_title_visibility())
+      << "Didn't call SetWindowTitleVisibility(). Use "
+         "WidgetDelegate::ShouldShowWindowTitle() instead.";
+  return *overridden_window_title_visibility_;
+}
+
 }  // namespace views
