@@ -228,6 +228,14 @@ class BraveRewardsGetDeclaredCountryFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetUserVersionFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getUserVersion", UNKNOWN)
+ protected:
+  ~BraveRewardsGetUserVersionFunction() override;
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReport", UNKNOWN)

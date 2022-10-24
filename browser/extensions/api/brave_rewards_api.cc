@@ -12,6 +12,7 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/version.h"
 #include "bat/ads/supported_subdivisions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
@@ -696,6 +697,16 @@ BraveRewardsGetDeclaredCountryFunction::Run() {
   auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
   std::string country = prefs->GetString(::brave_rewards::prefs::kDeclaredGeo);
   return RespondNow(OneArgument(base::Value(std::move(country))));
+}
+
+BraveRewardsGetUserVersionFunction::~BraveRewardsGetUserVersionFunction() =
+    default;
+
+ExtensionFunction::ResponseAction BraveRewardsGetUserVersionFunction::Run() {
+  auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
+  base::Version version(prefs->GetString(::brave_rewards::prefs::kUserVersion));
+  return RespondNow(OneArgument(
+      base::Value(version.IsValid() ? version.GetString() : std::string())));
 }
 
 BraveRewardsGetBalanceReportFunction::~BraveRewardsGetBalanceReportFunction() =

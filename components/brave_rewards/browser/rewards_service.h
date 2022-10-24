@@ -37,7 +37,6 @@ bool IsMediaLink(const GURL& url,
 
 class RewardsNotificationService;
 class RewardsServiceObserver;
-class RewardsServicePrivateObserver;
 
 using GetPublisherInfoListCallback =
     base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;

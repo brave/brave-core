@@ -605,6 +605,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       // automatically enable Ads and AC.
       if (!prefs->GetBoolean(prefs::kEnabled)) {
         prefs->SetBoolean(prefs::kEnabled, true);
+        prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
         prefs->SetBoolean(ads::prefs::kEnabled, true);
 
         // Fetch the user's balance before turning on AC. We don't want to

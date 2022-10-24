@@ -846,6 +846,23 @@
         ]
       },
       {
+        "name": "getUserVersion",
+        "type": "function",
+        "description": "Returns the Rewards version in which the current user was created",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "version",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getBalanceReport",
         "type": "function",
         "description": "Get current month wallet report",
