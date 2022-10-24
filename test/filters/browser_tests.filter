@@ -9,6 +9,13 @@
 # display an additional confirmation infobar for P3A
 -All/PageSpecificSiteDataDialogBrowserTest.*/*
 
+# These tests fail because they expect an additional Manifest V2 deprecation
+# warning, which is disabled in Brave.
+-ErrorConsoleBrowserTest.BadAPIArgumentsRuntimeError
+-ErrorConsoleBrowserTest.BadAPIPermissionsRuntimeError
+-ErrorConsoleBrowserTest.BrowserActionRuntimeError
+-WindowOpenApiTest.OpenLockedFullscreenWindowNonChromeOS
+
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
 # kPrerender2 feature is disabled in Brave.
