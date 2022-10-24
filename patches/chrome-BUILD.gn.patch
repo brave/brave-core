@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 36b6fc1d94957475528e7a1de2ec97cfca682682..f4600188e919c08189a0a7fd429bb2943eec16e7 100644
+index 36b6fc1d94957475528e7a1de2ec97cfca682682..e795f4e983e78ba7f8f32d101af8b24737ca4778 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -174,6 +174,7 @@ if (!is_android && !is_mac) {
@@ -73,7 +73,7 @@ index 36b6fc1d94957475528e7a1de2ec97cfca682682..f4600188e919c08189a0a7fd429bb294
        chrome_dylib_version,
        "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
-+    import("//brave/browser/sources.gni") public_deps += brave_chrome_framework_public_deps bundle_deps += brave_chrome_framework_bundle_deps framework_contents += brave_chrome_framework_contents ldflags += brave_chrome_framework_ldflags
++    import("//brave/browser/sources.gni") public_deps += brave_chrome_framework_public_deps bundle_deps += brave_chrome_framework_bundle_deps framework_contents += brave_chrome_framework_contents configs += brave_chrome_framework_configs
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is

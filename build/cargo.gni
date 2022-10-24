@@ -21,11 +21,6 @@ template("rust_ffi") {
   static_library(target_name) {
     libs = [ rust_lib_output_path ]
 
-    all_dependent_configs = [
-      "//brave/build/rust:strip_rust_symbols",
-      "//brave/build/rust:too_many_personalities_workaround",
-    ]
-
     if (is_mac) {
       frameworks = [ "Security.framework" ]
 
