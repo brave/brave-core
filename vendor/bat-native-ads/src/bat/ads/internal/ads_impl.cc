@@ -412,7 +412,7 @@ AdContentLikeActionType AdsImpl::ToggleAdThumbUp(base::Value::Dict value) {
 }
 
 AdContentLikeActionType AdsImpl::ToggleAdThumbDown(base::Value::Dict value) {
-  return HistoryManager::GetInstance()->LikeAd(AdContentFromValue(value));
+  return HistoryManager::GetInstance()->DislikeAd(AdContentFromValue(value));
 }
 
 CategoryContentOptActionType AdsImpl::ToggleAdOptIn(
