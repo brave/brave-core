@@ -2454,14 +2454,16 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
   AdBlockServiceTestJsPerformance() {
     feature_list_.InitWithFeaturesAndParameters(
         {{kBraveAdblockCosmeticFilteringChildFrames, {}},
-        {kCosmeticFilteringJsPerformance,
-         {{"subframes_first_query_delay_ms", "3000"},
-          {"switch_to_polling_threshold", "500"},
-          {"fetch_throttling_ms", "500"}}}}, {});
+         {kCosmeticFilteringJsPerformance,
+          {{"subframes_first_query_delay_ms", "3000"},
+           {"switch_to_polling_threshold", "500"},
+           {"fetch_throttling_ms", "500"}}}},
+        {});
   }
 
   void AddDivsWithDynamicClasses(const content::ToRenderFrameHost& target,
-                                 int start_number, int end_number) const {
+                                 int start_number,
+                                 int end_number) const {
     const char kTemplate[] = R"(
     for (let i = $1; i <= $2; i++) {
       const e = document.createElement('div');
@@ -2568,8 +2570,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
   EXPECT_TRUE(content::ExecJs(iframe, "didWait = true"));
 
   // Verify subframes_first_query_delay_ms delay.
-  // Wait some time less than subframes_first_query_delay_ms and check the selector is still
-  // visible.
+  // Wait some time less than subframes_first_query_delay_ms and check the
+  // selector is still visible.
   NonBlockingDelay(base::Milliseconds(100));
 
   EXPECT_TRUE(
