@@ -30,6 +30,7 @@ import {
   sendMessageToNftUiFrame,
   ToggleNftModal,
   UpdateLoadingMessage,
+  UpdateNFtMetadataErrorMessage,
   UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage,
@@ -113,33 +114,32 @@ export const PortfolioAsset = (props: Props) => {
   const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
   // redux
   const dispatch = useDispatch()
-  const {
-    defaultCurrencies,
-    userVisibleTokensInfo,
-    selectedNetwork,
-    portfolioPriceHistory,
-    selectedPortfolioTimeline,
-    accounts,
-    networkList,
-    transactions,
-    isFetchingPortfolioPriceHistory,
-    transactionSpotPrices,
-    selectedNetworkFilter,
-    coinMarketData,
-    fullTokenList
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  const {
-    isFetchingPriceHistory: isLoading,
-    selectedAsset,
-    selectedAssetCryptoPrice,
-    selectedAssetFiatPrice,
-    selectedAssetPriceHistory,
-    selectedTimeline,
-    isFetchingNFTMetadata,
-    nftMetadata,
-    selectedCoinMarket
-  } = useSelector(({ page }: { page: PageState }) => page)
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
+  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
+  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+  const portfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.portfolioPriceHistory)
+  const selectedPortfolioTimeline = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPortfolioTimeline)
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+  const transactions = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactions)
+  const isFetchingPortfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFetchingPortfolioPriceHistory)
+  const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
+  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const coinMarketData = useSelector(({ wallet }: { wallet: WalletState }) => wallet.coinMarketData)
+  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
+
+  const isLoading = useSelector(({ page }: { page: PageState }) => page.isFetchingPriceHistory)
+  const selectedAsset = useSelector(({ page }: { page: PageState }) => page.selectedAsset)
+  const selectedAssetCryptoPrice = useSelector(({ page }: { page: PageState }) => page.selectedAssetCryptoPrice)
+  const selectedAssetFiatPrice = useSelector(({ page }: { page: PageState }) => page.selectedAssetFiatPrice)
+  const selectedAssetPriceHistory = useSelector(({ page }: { page: PageState }) => page.selectedAssetPriceHistory)
+  const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
+  const isFetchingNFTMetadata = useSelector(({ page }: { page: PageState }) => page.isFetchingNFTMetadata)
+  const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
+  const selectedCoinMarket = useSelector(({ page }: { page: PageState }) => page.selectedCoinMarket)
+  const nftMetadataError = useSelector(({ page }: { page: PageState }) => page.nftMetadataError)
+
   // custom hooks
   const getAccountBalance = useBalance(networkList)
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
@@ -372,7 +372,9 @@ export const PortfolioAsset = (props: Props) => {
     setHoverPrice(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
   }, [defaultCurrencies.fiat])
 
-  const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
+  const onNftDetailsLoad = React.useCallback(() => {
+    setNftIframeLoaded(true)
+  }, [])
 
   const onOpenRainbowAppClick = React.useCallback(() => {
     chrome.tabs.create({ url: rainbowbridgeLink }, () => {
@@ -507,11 +509,25 @@ export const PortfolioAsset = (props: Props) => {
     if (nftMetadata && nftDetailsRef?.current) {
       const command: UpdateNFtMetadataMessage = {
         command: NftUiCommand.UpdateNFTMetadata,
-        payload: nftMetadata
+        payload: {
+          displayMode: 'details',
+          nftMetadata
+        }
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList])
+
+    if (nftMetadataError && nftDetailsRef?.current) {
+      const command: UpdateNFtMetadataErrorMessage = {
+        command: NftUiCommand.UpdateNFTMetadataError,
+        payload: {
+          displayMode: 'details',
+          error: nftMetadataError
+        }
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
@@ -674,9 +690,10 @@ export const PortfolioAsset = (props: Props) => {
         ref={nftDetailsRef}
         sandbox="allow-scripts allow-popups allow-same-origin"
         src='chrome-untrusted://nft-display'
+        allowFullScreen
       />
 
-      {showNftModal && nftMetadata &&
+      {showNftModal && nftMetadata?.imageURL &&
         <NftModal nftImageUrl={nftMetadata.imageURL} onClose={onCloseNftModal} />
       }
 

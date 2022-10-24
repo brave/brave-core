@@ -24,9 +24,10 @@ import {
   braveWalletOrigin,
   braveWalletPanelOrigin,
   CommandMessage,
+  DisplayMode,
   NftUiCommand,
   UpdateLoadingMessage,
-  UpdateNftImageUrl,
+  UpdateNFtMetadataErrorMessage,
   UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage
@@ -38,8 +39,10 @@ import { NftContent } from './components/nft-content/nft-content'
 
 const App = () => {
   const [loadingNftMetadata, setLoadingNftMetadata] = React.useState<boolean>(true)
+  const [displayMode, setDisplayMode] = React.useState<DisplayMode>()
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>()
   const [nftMetadata, setNftMetadata] = React.useState<NFTMetadataReturnType>()
+  const [nftMetadataError, setNftMetadataError] = React.useState<string | undefined>()
   const [tokenNetwork, setTokenNetwork] = React.useState<BraveWallet.NetworkInfo>()
   const [imageUrl, setImageUrl] = React.useState<string>()
 
@@ -67,7 +70,25 @@ const App = () => {
         case NftUiCommand.UpdateNFTMetadata:
         {
           const { payload } = message as UpdateNFtMetadataMessage
-          setNftMetadata(payload)
+          setDisplayMode(payload.displayMode)
+
+          if (payload.displayMode === 'icon') {
+            setImageUrl(payload.icon)
+          }
+
+          if (payload.displayMode === 'grid' || payload.displayMode === 'details') {
+            setNftMetadata(payload.nftMetadata)
+          }
+
+          break
+        }
+
+        case NftUiCommand.UpdateNFTMetadataError:
+        {
+          const { payload } = message as UpdateNFtMetadataErrorMessage
+          setNftMetadataError(payload.error)
+          setDisplayMode(payload.displayMode)
+
           break
         }
 
@@ -75,13 +96,6 @@ const App = () => {
         {
           const { payload } = message as UpdateTokenNetworkMessage
           setTokenNetwork(payload)
-          break
-        }
-
-        case NftUiCommand.UpdateNFTImageUrl:
-        {
-          const { payload } = message as UpdateNftImageUrl
-          setImageUrl(payload)
           break
         }
       }
@@ -106,6 +120,8 @@ const App = () => {
         nftMetadata={nftMetadata}
         tokenNetwork={tokenNetwork}
         imageUrl={imageUrl}
+        displayMode={displayMode}
+        nftMetadataError={nftMetadataError}
       />
     </BraveCoreThemeProvider>
     </BrowserRouter>

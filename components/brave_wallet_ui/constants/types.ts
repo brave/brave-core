@@ -286,6 +286,7 @@ export interface PageState {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
+  nftMetadataError: string | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
@@ -704,7 +705,10 @@ export interface NFTMetadataReturnType {
   chainName: string
   tokenType: string
   tokenID: string
-  imageURL: string
+  imageURL?: string
+  imageMimeType?: string
+  animationURL?: string
+  animationMimeType?: string
   floorFiatPrice: string
   floorCryptoPrice: string
   contractInformation: {

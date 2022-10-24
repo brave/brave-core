@@ -17,8 +17,8 @@ export const enum NftUiCommand {
   UpdateLoading = 'update-loading',
   UpdateSelectedAsset = 'update-selected-asset',
   UpdateNFTMetadata = 'update-nft-metadata',
+  UpdateNFTMetadataError = 'update-nft-metadata-error',
   UpdateTokenNetwork = 'update-token-network',
-  UpdateNFTImageUrl = 'update-nft-image-url',
   ToggleNftModal = 'toggle-nft-modal'
 }
 
@@ -34,16 +34,28 @@ export type UpdateSelectedAssetMessage = CommandMessage & {
   payload: BraveWallet.BlockchainToken
 }
 
+export type DisplayMode =
+| 'icon'
+| 'grid'
+| 'details'
+
 export type UpdateNFtMetadataMessage = CommandMessage & {
-  payload: NFTMetadataReturnType
+  payload: {
+    displayMode: DisplayMode
+    icon?: string
+    nftMetadata?: NFTMetadataReturnType
+  }
+}
+
+export type UpdateNFtMetadataErrorMessage = CommandMessage & {
+  payload: {
+    displayMode: DisplayMode
+    error: string | undefined
+  }
 }
 
 export type UpdateTokenNetworkMessage = CommandMessage & {
   payload: BraveWallet.NetworkInfo
-}
-
-export type UpdateNftImageUrl = CommandMessage & {
-  payload: string
 }
 
 export type ToggleNftModal = CommandMessage & {
