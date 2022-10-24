@@ -9,6 +9,7 @@ import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-d
 
 // utils
 import { getLocale } from '$web-common/locale'
+import { getWalletLocationTitle } from '../utils/string-utils'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -189,6 +190,10 @@ export const Container = () => {
       toobarElement.hidden = false
       rootElement.style.setProperty('min-height', 'calc(100vh - 56px)')
     }
+  }, [walletLocation])
+
+  React.useEffect(() => {
+    document.title = getWalletLocationTitle(walletLocation)
   }, [walletLocation])
 
   // render

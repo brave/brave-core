@@ -200,7 +200,7 @@ provideStrings({
   // Onboarding Success
   braveWalletOnboardingSuccessTitle: 'Congratulations! Your Brave Wallet is ready to go!',
   braveWalletOnboardingSuccessDescription: 'To access your wallet, just click the wallet icon at the top right of any Brave browser window.',
-  braveWalletBuyCryptoButton: 'Buy Crypto',
+  braveWalletBuyCryptoButton: 'Buy crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
 
@@ -488,6 +488,7 @@ provideStrings({
   braveWalletAssetsPanelTitle: 'Account assets',
   braveWalletPanelDisconnected: 'Disconnected',
   braveWalletPanelBlocked: 'Blocked',
+  braveWalletTitle: 'Wallet',
 
   // Wallet Welcome Panel
   braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',

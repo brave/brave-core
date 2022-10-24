@@ -319,6 +319,7 @@
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE" desc="Site Permissions panel revoke account for connected site">Revoke</message>
   <message name="IDS_BRAVE_WALLET_PANEL_DISCONNECTED" desc="Brave Wallet panel disconnected status">Disconnected</message>
   <message name="IDS_BRAVE_WALLET_PANEL_BLOCKED" desc="Brave Wallet panel blocked status">Blocked</message>
+  <message name="IDS_BRAVE_WALLET_TITLE" desc="Brave Wallet Title">Wallet</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT" desc="Site Permissions panel add a new account">New account</message>
   <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
   <message name="IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS" desc="Brave Wallet panel view account assets button">View account assets</message>
@@ -660,7 +661,7 @@
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">Please acknowledge the following:</message>
   <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
   <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of use acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of use<ph name="LINK_AFTER">$2</ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy Crypto button text">Buy Crypto</message>
+  <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy crypto button text">Buy crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
   <message name="IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS" desc="Loading text while checking for installed crypto wallet extensions">Checking for wallet extensions...</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_LEGACY" desc="Import from legacy crypto wallet extension button text">Import from legacy Brave crypto wallets</message>
