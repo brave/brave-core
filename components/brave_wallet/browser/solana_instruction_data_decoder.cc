@@ -9,11 +9,13 @@
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/span.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/sys_byteorder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -631,15 +633,13 @@ absl::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
   }
 
   // Read bytes in little endian order.
-  uint32_t uint32_le = 0;
-  for (size_t i = offset; i < offset + sizeof(uint32_t); i++) {
-    uint32_le <<= 8;
-    uint32_le |= input[i];
-  }
+  base::span<const uint8_t> s =
+      base::make_span(input.begin() + offset, sizeof(uint32_t));
+  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
 
   offset += sizeof(uint32_t);
 
-#if defined(ARCH_CPU_LITTE_ENDIAN)
+#if defined(ARCH_CPU_LITTLE_ENDIAN)
   return uint32_le;
 #else
   return base::ByteSwap(uint32_le);
@@ -662,15 +662,13 @@ absl::optional<uint64_t> DecodeUint64(const std::vector<uint8_t>& input,
   }
 
   // Read bytes in little endian order.
-  uint64_t uint64_le = 0;
-  for (size_t i = offset; i < offset + sizeof(uint64_t); i++) {
-    uint64_le <<= 8;
-    uint64_le |= input[i];
-  }
+  base::span<const uint8_t> s =
+      base::make_span(input.begin() + offset, sizeof(uint64_t));
+  uint64_t uint64_le = *reinterpret_cast<const uint64_t*>(s.data());
 
   offset += sizeof(uint64_t);
 
-#if defined(ARCH_CPU_LITTE_ENDIAN)
+#if defined(ARCH_CPU_LITTLE_ENDIAN)
   return uint64_le;
 #else
   return base::ByteSwap(uint64_le);
