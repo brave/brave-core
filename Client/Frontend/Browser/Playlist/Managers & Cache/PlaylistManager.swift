@@ -277,7 +277,7 @@ public class PlaylistManager: NSObject {
         assetFetcher.cancelLoading()
       }
 
-      if !deleteCache(itemId: item.tagId) {
+      if !deleteCache(item: item) {
         // If we cannot delete an item's cache for any given reason,
         // Do NOT delete the folder containing the item.
         // Delete all other items.
@@ -323,36 +323,36 @@ public class PlaylistManager: NSObject {
   }
 
   @discardableResult
-  func delete(itemId: String) -> Bool {
-    cancelDownload(itemId: itemId)
+  func delete(item: PlaylistInfo) -> Bool {
+    cancelDownload(itemId: item.tagId)
 
-    if let index = assetInformation.firstIndex(where: { $0.itemId == itemId }) {
+    if let index = assetInformation.firstIndex(where: { $0.itemId == item.tagId }) {
       let assetFetcher = self.assetInformation.remove(at: index)
       assetFetcher.cancelLoading()
     }
 
-    if let cacheItem = PlaylistItem.getItem(uuid: itemId),
+    if let cacheItem = PlaylistItem.getItem(uuid: item.tagId),
       cacheItem.cachedData != nil {
       // Do NOT delete the item if we can't delete it's local cache.
       // That will cause zombie items.
-      if deleteCache(itemId: itemId) {
-        PlaylistItem.removeItem(uuid: itemId)
-        onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
+      if deleteCache(item: item) {
+        PlaylistItem.removeItems([item])
+        onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
         return true
       }
       return false
     } else {
-      PlaylistItem.removeItem(uuid: itemId)
-      onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
+      PlaylistItem.removeItems([item])
+      onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
       return true
     }
   }
 
   @discardableResult
-  func deleteCache(itemId: String) -> Bool {
-    cancelDownload(itemId: itemId)
+  func deleteCache(item: PlaylistInfo) -> Bool {
+    cancelDownload(itemId: item.tagId)
 
-    if let cacheItem = PlaylistItem.getItem(uuid: itemId),
+    if let cacheItem = PlaylistItem.getItem(uuid: item.tagId),
       let cachedData = cacheItem.cachedData,
       !cachedData.isEmpty {
       var isStale = false
@@ -361,12 +361,12 @@ public class PlaylistManager: NSObject {
         let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
         if FileManager.default.fileExists(atPath: url.path) {
           try FileManager.default.removeItem(atPath: url.path)
-          PlaylistItem.updateCache(uuid: itemId, cachedData: nil)
-          onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
+          PlaylistItem.updateCache(uuid: item.tagId, cachedData: nil)
+          onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
         }
         return true
       } catch {
-        Logger.module.error("An error occured deleting Playlist Cached Item \(cacheItem.name ?? itemId): \(error.localizedDescription)")
+        Logger.module.error("An error occured deleting Playlist Cached Item \(cacheItem.name ?? item.tagId): \(error.localizedDescription)")
         return false
       }
     }
@@ -382,18 +382,19 @@ public class PlaylistManager: NSObject {
     // At least this way, we deallocate both AND pip is stopped in the destructor of `PlaylistViewController->ListController`
     PlaylistCarplayManager.shared.playlistController = nil
 
-    guard let playlistItemIds = frc.fetchedObjects?.compactMap({ $0.uuid }) else {
+    guard let playlistItems = frc.fetchedObjects else {
       Logger.module.error("An error occured while fetching Playlist Objects")
       return
     }
 
-    for itemId in playlistItemIds {
-      if !deleteCache(itemId: itemId) {
+    for item in playlistItems {
+      let item = PlaylistInfo(item: item)
+      if !deleteCache(item: item) {
         continue
       }
 
       if !cacheOnly {
-        PlaylistItem.removeItem(uuid: itemId)
+        PlaylistItem.removeItems([item])
       }
     }
 
@@ -743,7 +744,7 @@ extension PlaylistManager {
     let newItems = Set(model.mediaItems).subtracting(oldItems)
     oldItems = []
     
-    deletedItems.forEach({ PlaylistManager.shared.delete(itemId: $0.tagId) })
+    deletedItems.forEach({ PlaylistManager.shared.delete(item: $0) })
     
     if !newItems.isEmpty {
       await withCheckedContinuation { continuation in
