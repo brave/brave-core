@@ -62,6 +62,9 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' https: data:;"));
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ChildSrc,
+      std::string("child-src 'self' https:;"));
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
   content::WebUIDataSource::Add(browser_context, untrusted_source);
 }
