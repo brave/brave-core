@@ -643,7 +643,7 @@ const util = {
         const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
         if (gomaLoginInfo.status !== 0) {
           console.log('Login required for using Goma. This is only needed once')
-          util.run('goma_auth', ['login', '--no-browser'], options)
+          util.run('goma_auth', ['login'], options)
         }
         util.run('goma_ctl', ['ensure_start'], options)
       }
