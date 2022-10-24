@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 9acede502b82e75da554c3b0ae3d7fb7fec4a731..76c745e509263902387c308ac32e060f34d5a8d9 100644
+index 9acede502b82e75da554c3b0ae3d7fb7fec4a731..2b1dca7fb45309cb561c56e2487cb657636d3b73 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
 @@ -275,7 +275,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
@@ -27,3 +27,11 @@ index 9acede502b82e75da554c3b0ae3d7fb7fec4a731..76c745e509263902387c308ac32e060f
    static const IconResourceInfo resource_info[kDefaultAvatarIconsCount] = {
    // Old avatar icons:
  #if !BUILDFLAG(IS_ANDROID)
+@@ -669,6 +671,7 @@ base::Value::List GetIconsAndLabelsForProfileAvatarSelector(
+         selected_avatar_idx == GetPlaceholderAvatarIndex());
+     avatars.Insert(avatars.begin(),
+                    base::Value(std::move(generic_avatar_info)));
++    BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN
+     return avatars;
+   }
+ 
