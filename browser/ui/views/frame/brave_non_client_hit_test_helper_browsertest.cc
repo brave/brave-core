@@ -32,6 +32,7 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   // can interact with them. Checks a typical child of toolbar as a sanity
   // check.
   toolbar->SetVisible(true);
+  point = {};
   views::View::ConvertPointToWidget(toolbar->reload_button(), &point);
   EXPECT_NE(HTCAPTION, frame_view->NonClientHitTest(point));
 }
