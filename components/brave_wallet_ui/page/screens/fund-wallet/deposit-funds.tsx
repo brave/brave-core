@@ -186,8 +186,12 @@ export const DepositFundsScreen = () => {
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
   const goToPortfolio = React.useCallback(() => {
+    if (tokenId !== undefined) {
+      history.goBack()
+      return
+    }
     history.push(WalletRoutes.Portfolio)
-  }, [history])
+  }, [history, tokenId])
 
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
