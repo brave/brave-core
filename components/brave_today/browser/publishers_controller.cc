@@ -174,7 +174,10 @@ void PublishersController::EnsurePublishersIsUpdating() {
                     << publisher_id
                     << ". This could be because we've removed the publisher. "
                        "Attempting to migrate to a direct feed.";
-            missing_publishers_.push_back(publisher_id);
+            // We only care about missing publishers if the user was subscribed
+            // to them.
+            if (is_user_enabled.value_or(false))
+              missing_publishers_.push_back(publisher_id);
           }
         }
         // Add direct feeds
