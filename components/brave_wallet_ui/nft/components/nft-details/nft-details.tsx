@@ -80,8 +80,6 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
     onClickLink(nftMetadata?.contractInformation?.facebook)
   }
 
-  console.log(nftMetadataError)
-
   return (
     <StyledWrapper>
       {nftMetadataError
