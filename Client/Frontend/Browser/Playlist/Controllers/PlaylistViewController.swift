@@ -612,7 +612,11 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
   }
 
   func deleteItem(itemId: String, at index: Int) {
-    PlaylistManager.shared.delete(itemId: itemId)
+    guard let item = PlaylistItem.getItem(uuid: itemId) else {
+      return
+    }
+    
+    PlaylistManager.shared.delete(item: PlaylistInfo(item: item))
 
     if PlaylistCarplayManager.shared.currentlyPlayingItemIndex == index || PlaylistManager.shared.numberOfAssets == 0 {
       stopPlaying()

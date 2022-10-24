@@ -63,7 +63,7 @@ private extension PlaylistListViewController {
         UIAlertAction(
           title: Strings.PlayList.removeActionButtonTitle, style: .destructive,
           handler: { [unowned self] _ in
-            _ = PlaylistManager.shared.deleteCache(itemId: item.tagId)
+            _ = PlaylistManager.shared.deleteCache(item: item)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
           }))
 

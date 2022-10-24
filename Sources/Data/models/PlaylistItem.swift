@@ -298,8 +298,25 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   }
 
   public static func removeItems(_ items: [PlaylistInfo], completion: (() -> Void)? = nil) {
-    let uuids = items.map({ $0.tagId })
+    var uuids = [String]()
+    var mediaSrcs = [String]()
+    
+    items.forEach({
+      if $0.tagId.isEmpty {
+        mediaSrcs.append($0.src)
+      } else {
+        uuids.append($0.tagId)
+      }
+    })
+    
     PlaylistItem.deleteAll(predicate: NSPredicate(format: "uuid IN %@", uuids), context: .new(inMemory: false), includesPropertyValues: false, completion: completion)
+    
+    if !mediaSrcs.isEmpty {
+      // As a backup, we delete by media source (not page source)
+      // This is more unique than pageSrc.
+      // This is because you can add multiple items per page but they'd each have a different media source.
+      PlaylistItem.deleteAll(predicate: NSPredicate(format: "mediaSrc IN %@", mediaSrcs), context: .new(inMemory: false), includesPropertyValues: false, completion: completion)
+    }
   }
 
   public static func moveItems(items: [NSManagedObjectID], to folderUUID: String?) {

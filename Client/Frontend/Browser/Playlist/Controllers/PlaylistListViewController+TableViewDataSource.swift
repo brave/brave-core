@@ -296,9 +296,7 @@ extension PlaylistListViewController: UITableViewDataSource {
         
         let deleteOfflineAction = UIAction(title: Strings.PlaylistFolderSharing.deleteOfflineDataMenuTitle, image: UIImage(braveSystemNamed: "brave.cloud.slash")?.template) { [unowned self] _ in
           folder.playlistItems?.forEach {
-            if let itemId = $0.uuid {
-              PlaylistManager.shared.deleteCache(itemId: itemId)
-            }
+            PlaylistManager.shared.deleteCache(item: PlaylistInfo(item: $0))
           }
           
           self.tableView.reloadData()
