@@ -22,7 +22,7 @@ class SidebarBrowserTest;
 
 class BraveBrowserView;
 
-// Monitors mouse event to show sidebar when mouser is around the left or
+// Monitors mouse event to show sidebar when mouse is around the left or
 // right side of browser window.
 class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
                                             public views::WidgetDelegate {

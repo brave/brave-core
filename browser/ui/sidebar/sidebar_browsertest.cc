@@ -227,6 +227,26 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   EXPECT_EQ(0, tab_model()->active_index());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
+  auto* widget = GetEventDetectWidget();
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* contents_container = browser_view->contents_container();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Check widget is located on left side when sidebar on left.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  service->SetSidebarShowOption(
+      SidebarService::ShowSidebarOption::kShowOnMouseOver);
+  EXPECT_EQ(contents_container->GetBoundsInScreen().x(),
+            widget->GetWindowBoundsInScreen().x());
+
+  // Check widget is located on right side when sidebar on right.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
+            widget->GetWindowBoundsInScreen().right());
+}
+
 class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithVerticalTabs() {
@@ -236,25 +256,6 @@ class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
 
   base::test::ScopedFeatureList feature_list_;
 };
-
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
-  auto* widget = GetEventDetectWidget();
-  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* prefs = browser()->profile()->GetPrefs();
-
-  // Check widget is located on left side when sidebar on left.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  service->SetSidebarShowOption(
-      SidebarService::ShowSidebarOption::kShowOnMouseOver);
-  EXPECT_EQ(browser_view->GetWidget()->GetRestoredBounds().x(),
-            widget->GetRestoredBounds().x());
-
-  // Check widget is located on right side when sidebar on right.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-  EXPECT_EQ(browser_view->GetWidget()->GetRestoredBounds().right(),
-            widget->GetRestoredBounds().right());
-}
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
                        SidebarRightSideTest) {

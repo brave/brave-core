@@ -99,7 +99,15 @@ void SidebarShowOptionsEventDetectWidget::OnViewBoundsChanged(
 }
 
 void SidebarShowOptionsEventDetectWidget::AdjustWidgetBounds() {
-  auto rect = browser_view_->contents_container()->bounds();
+  // Convert contents container's rect into widget's coordinate
+  // to use it as a detect widget's bounds as detect widget is parented
+  // to browser widget.
+  auto rect = browser_view_->contents_container()->GetLocalBounds();
+  auto point = rect.origin();
+  views::View::ConvertPointToTarget(browser_view_->contents_container(),
+                                    browser_view_->GetWidget()->GetRootView(),
+                                    &point);
+  rect.set_origin(point);
   constexpr int kWidgetNarrowWidth = 7;
   if (!sidebar_on_left_) {
     rect.set_x(rect.right() - kWidgetNarrowWidth);
