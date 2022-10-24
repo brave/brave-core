@@ -65,6 +65,12 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return static_cast<BraveBrowserView*>(view)->vertical_tab_strip_host_view_;
   }
 
+  views::Widget* GetEventDetectWidget() {
+    auto* sidebar_container_view =
+        static_cast<SidebarContainerView*>(controller()->sidebar());
+    return sidebar_container_view->GetEventDetectWidget()->widget_.get();
+  }
+
   void SimulateSidebarItemClickAt(int index) const {
     auto* sidebar_container_view =
         static_cast<SidebarContainerView*>(controller()->sidebar());
@@ -230,6 +236,25 @@ class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
 
   base::test::ScopedFeatureList feature_list_;
 };
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
+  auto* widget = GetEventDetectWidget();
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Check widget is located on left side when sidebar on left.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  service->SetSidebarShowOption(
+      SidebarService::ShowSidebarOption::kShowOnMouseOver);
+  EXPECT_EQ(browser_view->GetWidget()->GetRestoredBounds().x(),
+            widget->GetRestoredBounds().x());
+
+  // Check widget is located on right side when sidebar on right.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  EXPECT_EQ(browser_view->GetWidget()->GetRestoredBounds().right(),
+            widget->GetRestoredBounds().right());
+}
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
                        SidebarRightSideTest) {
