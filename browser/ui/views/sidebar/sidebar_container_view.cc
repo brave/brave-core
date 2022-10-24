@@ -125,13 +125,21 @@ void SidebarContainerView::Init() {
   // Hide by default. Visibility will be controlled by show options later.
   DoHideSidebar(false);
   UpdateToolbarButtonVisibility();
+  SetSidebarOnLeft(sidebar_on_left_);
 }
 
 void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
+  if (sidebar_on_left_ == sidebar_on_left)
+    return;
+
   sidebar_on_left_ = sidebar_on_left;
-  if (sidebar_control_view_) {
-    sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
-  }
+
+  if (!initialized_)
+    return;
+
+  DCHECK(sidebar_control_view_);
+  sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
+  GetEventDetectWidget()->SetSidebarOnLeft(sidebar_on_left_);
 
   DCHECK(side_panel_);
   side_panel_->SetHorizontalAlignment(
@@ -187,7 +195,6 @@ void SidebarContainerView::AddChildViews() {
   // we want the controls first.
   sidebar_control_view_ =
       AddChildViewAt(std::make_unique<SidebarControlView>(this, browser_), 0);
-  sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
 }
 
 void SidebarContainerView::Layout() {

@@ -59,13 +59,19 @@ SidebarShowOptionsEventDetectWidget::~SidebarShowOptionsEventDetectWidget() =
 
 void SidebarShowOptionsEventDetectWidget::Show() {
   DCHECK(widget_);
-  widget_->Show();
   AdjustWidgetBounds();
+  widget_->Show();
 }
 
 void SidebarShowOptionsEventDetectWidget::Hide() {
   DCHECK(widget_);
   widget_->Hide();
+}
+
+void SidebarShowOptionsEventDetectWidget::SetSidebarOnLeft(
+    bool sidebar_on_left) {
+  sidebar_on_left_ = sidebar_on_left;
+  AdjustWidgetBounds();
 }
 
 std::unique_ptr<views::Widget>
@@ -93,9 +99,21 @@ void SidebarShowOptionsEventDetectWidget::OnViewBoundsChanged(
 }
 
 void SidebarShowOptionsEventDetectWidget::AdjustWidgetBounds() {
-  auto rect = browser_view_->contents_container()->bounds();
+  // Convert contents container's rect into widget's coordinate
+  // to use it as a detect widget's bounds as detect widget is parented
+  // to browser widget.
+  auto rect = browser_view_->contents_container()->GetLocalBounds();
+  auto point = rect.origin();
+  views::View::ConvertPointToTarget(browser_view_->contents_container(),
+                                    browser_view_->GetWidget()->GetRootView(),
+                                    &point);
+  rect.set_origin(point);
   constexpr int kWidgetNarrowWidth = 7;
+  if (!sidebar_on_left_) {
+    rect.set_x(rect.right() - kWidgetNarrowWidth);
+  }
   rect.set_width(kWidgetNarrowWidth);
+
   contents_view_->SetPreferredSize(rect.size());
   widget_->SetBounds(rect);
 }
