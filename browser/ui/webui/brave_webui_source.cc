@@ -797,6 +797,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "bitflyerVerificationPromoTitle", IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE },  // NOLINT
         { "bitflyerVerificationPromoInfo", IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO },    // NOLINT
 
+        { "braveCreatorsPromoTitle", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE },
+        { "braveCreatorsPromoInfo1", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1 },
+        { "braveCreatorsPromoInfo2", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2 },
+
         { "geminiPromoTitle", IDS_BRAVE_UI_GEMINI_PROMO_TITLE },
         { "geminiPromoInfo", IDS_BRAVE_UI_GEMINI_PROMO_INFO },
 
