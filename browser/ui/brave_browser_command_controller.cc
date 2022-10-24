@@ -309,7 +309,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::OpenBraveVPNUrls(browser_, id);
       break;
     case IDC_COPY_CLEAN_LINK:
-      brave::CopyCleanLink(
+      brave::CopySanitizedURL(
           browser_,
           browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
       break;

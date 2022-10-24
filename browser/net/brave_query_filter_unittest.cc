@@ -5,10 +5,9 @@
 
 #include "brave/browser/net/brave_query_filter.h"
 
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/origin.h"
+#include "url/gurl.h"
 
 TEST(BraveQueryFilter, FilterQueryTrackers) {
   EXPECT_EQ(ApplyQueryFilter(GURL("https://test.com/?gclid=123")),

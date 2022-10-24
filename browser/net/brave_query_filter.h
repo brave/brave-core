@@ -7,7 +7,8 @@
 #define BRAVE_BROWSER_NET_BRAVE_QUERY_FILTER_H_
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
+
+class GURL;
 
 absl::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 

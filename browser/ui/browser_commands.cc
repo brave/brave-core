@@ -188,7 +188,7 @@ void CloseWalletBubble(Browser* browser) {
 #endif
 }
 
-void CopyCleanLink(Browser* browser, const GURL& url) {
+void CopySanitizedURL(Browser* browser, const GURL& url) {
   GURL sanitized_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
                            browser->profile())
                            ->SanitizeURL(url);
@@ -197,6 +197,10 @@ void CopyCleanLink(Browser* browser, const GURL& url) {
   scw.WriteText(base::UTF8ToUTF16(sanitized_url.spec()));
 }
 
+// Copies an url cleared through:
+// - Debouncer (potentially debouncing many levels)
+// - Query filter
+// - URLSanitizerService
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
   GURL final_url;
   // Apply debounce rules.

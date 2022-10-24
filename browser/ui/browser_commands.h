@@ -23,7 +23,12 @@ void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 void OpenIpfsFilesWebUI(Browser* browser);
-void CopyCleanLink(Browser* browser, const GURL& url);
+// Copies an url sanitized by URLSanitizerService.
+void CopySanitizedURL(Browser* browser, const GURL& url);
+// Copies an url cleared through:
+// - Debouncer (potentially debouncing many levels)
+// - Query filter
+// - URLSanitizerService
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
 
 }  // namespace brave
