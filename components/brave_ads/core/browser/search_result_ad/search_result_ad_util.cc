@@ -42,7 +42,8 @@ bool IsSearchResultAdClickedConfirmationUrl(const GURL& url) {
 }
 
 std::string GetClickedSearchResultAdCreativeInstanceId(const GURL& url) {
-  if (!IsSearchResultAdClickedConfirmationUrl(url) || !url.has_query()) {
+  DCHECK(IsSearchResultAdClickedConfirmationUrl(url));
+  if (!url.has_query()) {
     return {};
   }
 

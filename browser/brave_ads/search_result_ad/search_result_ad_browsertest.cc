@@ -40,6 +40,7 @@ namespace {
 
 constexpr char kAllowedDomain[] = "search.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
+constexpr char kTargetDomain[] = "example.com";
 
 brave_ads::SearchResultAdTabHelper* GetSearchResultAdTabHelper(
     Browser* browser) {
@@ -103,8 +104,8 @@ class SearchResultAdTest : public InProcessBrowserTest {
 
   GURL CreateTargetURL() {
     const std::string target_url =
-        "https://brave.com:" + base::NumberToString(https_server_->port()) +
-        "/simple.html";
+        std::string("https://") + kTargetDomain + ":" +
+        base::NumberToString(https_server_->port()) + "/simple.html";
     return GURL(target_url);
   }
 

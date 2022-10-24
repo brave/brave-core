@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 
@@ -34,6 +35,7 @@ void SearchResultAdTabHelper::MaybeCreateForWebContents(
   DCHECK(web_contents);
   if (!base::FeatureList::IsEnabled(
           features::kSupportBraveSearchResultAdConfirmationEvents) ||
+      !web_contents->GetBrowserContext() ||
       web_contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
   }

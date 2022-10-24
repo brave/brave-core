@@ -51,11 +51,6 @@ TEST(SearchResultAdUtilTest, CheckGetClickedSearchResultAdCreativeInstanceId) {
             GetClickedSearchResultAdCreativeInstanceId(request_url));
 
   request_url = GURL(
-      "https://search.ads.brave.com/v3/click?"
-      "creativeInstanceId=creative-instance-id");
-  EXPECT_TRUE(GetClickedSearchResultAdCreativeInstanceId(request_url).empty());
-
-  request_url = GURL(
       "https://search.anonymous.ads.brave.com/v3/click?"
       "creativeInstanceId=");
   EXPECT_TRUE(GetClickedSearchResultAdCreativeInstanceId(request_url).empty());

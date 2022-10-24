@@ -15,7 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_ads/search_result_ad/search_result_ad_redirect_throttle.h"
+#include "brave/browser/brave_ads/search_result_ad/search_result_ad_navigation_throttle.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -788,12 +788,6 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
                   ads_service, request)) {
         result.push_back(std::move(ads_status_header_throttle));
       }
-
-      if (auto search_result_ad_throttle =
-              brave_ads::SearchResultAdRedirectThrottle::MaybeCreateThrottleFor(
-                  request, wc_getter)) {
-        result.push_back(std::move(search_result_ad_throttle));
-      }
     }
   }
 
@@ -1036,6 +1030,12 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               handle,
               debounce::DebounceServiceFactory::GetForBrowserContext(context)))
     throttles.push_back(std::move(debounce_throttle));
+
+  if (auto search_result_ad_throttle =
+          brave_ads::SearchResultAdNavigationThrottle::MaybeCreateThrottleFor(
+              handle)) {
+    throttles.push_back(std::move(search_result_ad_throttle));
+  }
 
   return throttles;
 }
