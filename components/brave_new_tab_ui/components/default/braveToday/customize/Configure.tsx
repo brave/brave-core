@@ -114,7 +114,7 @@ export default function Configure () {
   }
 
   return (
-    <Grid>
+    <Grid id='brave-news-configure'>
       <BackButtonContainer>
         <Button onClick={() => setCustomizePage(null)}>
           {BackArrow}
