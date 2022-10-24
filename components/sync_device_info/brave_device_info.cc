@@ -58,41 +58,37 @@ void BraveDeviceInfo::set_is_self_delete_supported(
 }
 
 std::string BraveDeviceInfo::GetOSString() const {
-  switch (device_type()) {
-    case sync_pb::SyncEnums_DeviceType_TYPE_WIN:
-      return "win";
-    case sync_pb::SyncEnums_DeviceType_TYPE_MAC:
-      return "mac";
-    case sync_pb::SyncEnums_DeviceType_TYPE_LINUX:
-      return "linux";
-    case sync_pb::SyncEnums_DeviceType_TYPE_CROS:
-      return "chrome_os";
-    case sync_pb::SyncEnums_DeviceType_TYPE_PHONE:
-    case sync_pb::SyncEnums_DeviceType_TYPE_TABLET:
-      if (sync_user_agent().find("IOS") != std::string::npos)
-        return "ios";
-
-      return "android";
-    case sync_pb::SyncEnums_DeviceType_TYPE_UNSET:
-    case sync_pb::SyncEnums_DeviceType_TYPE_OTHER:
+  switch (os_type()) {
+    case OsType::kUnknown:
       return "unknown";
+    case OsType::kWindows:
+      return "win";
+    case OsType::kMac:
+      return "mac";
+    case OsType::kLinux:
+      return "linux";
+    case OsType::kChromeOsAsh:
+    case OsType::kChromeOsLacros:
+      return "chrome_os";
+    case OsType::kAndroid:
+      return "android";
+    case OsType::kIOS:
+      return "ios";
+    case OsType::kFuchsia:
+      return "fuchisa";
   }
 }
 
 std::string BraveDeviceInfo::GetDeviceTypeString() const {
-  switch (device_type()) {
-    case sync_pb::SyncEnums_DeviceType_TYPE_WIN:
-    case sync_pb::SyncEnums_DeviceType_TYPE_MAC:
-    case sync_pb::SyncEnums_DeviceType_TYPE_LINUX:
-    case sync_pb::SyncEnums_DeviceType_TYPE_CROS:
-      return "desktop_or_laptop";
-    case sync_pb::SyncEnums_DeviceType_TYPE_PHONE:
-      return "phone";
-    case sync_pb::SyncEnums_DeviceType_TYPE_TABLET:
-      return "tablet";
-    case sync_pb::SyncEnums_DeviceType_TYPE_UNSET:
-    case sync_pb::SyncEnums_DeviceType_TYPE_OTHER:
+  switch (form_factor()) {
+    case FormFactor::kUnknown:
       return "unknown";
+    case FormFactor::kDesktop:
+      return "desktop_or_laptop";
+    case FormFactor::kPhone:
+      return "phone";
+    case FormFactor::kTablet:
+      return "tablet";
   }
 }
 
