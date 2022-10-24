@@ -11,7 +11,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/power_monitor/power_observer.h"
@@ -27,6 +26,7 @@ class PrefService;
 
 namespace brave_vpn {
 
+class BraveVpnAPIRequest;
 struct Hostname;
 
 // Interface for managing OS' vpn connection.
@@ -104,11 +104,6 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
  private:
   friend class BraveVPNServiceTest;
 
-  using URLRequestCallback =
-      base::OnceCallback<void(api_request_helper::APIRequestResult)>;
-  using ResponseCallback =
-      base::OnceCallback<void(const std::string&, bool success)>;
-
   // base::PowerMonitor
   void OnSuspend() override;
   void OnResume() override;
@@ -121,36 +116,18 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
   std::string GetDeviceRegion() const;
   std::string GetCurrentEnvironment() const;
   void FetchHostnamesForRegion(const std::string& name);
-  void GetHostnamesForRegion(ResponseCallback callback,
-                             const std::string& region);
   void OnFetchHostnames(const std::string& region,
                         const std::string& hostnames,
                         bool success);
   void ParseAndCacheHostnames(const std::string& region,
                               const base::Value::List& hostnames_value);
-  void GetSubscriberCredentialV12(ResponseCallback callback);
   void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
                                     bool success);
-  void OnGetSubscriberCredential(
-      ResponseCallback callback,
-      api_request_helper::APIRequestResult api_request_result);
-  void GetProfileCredentials(ResponseCallback callback,
-                             const std::string& subscriber_credential,
-                             const std::string& hostname);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
 
   void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state);
-  api_request_helper::APIRequestHelper* GetAPIRequestHelper();
-
-  void OAuthRequest(
-      const GURL& url,
-      const std::string& method,
-      const std::string& post_data,
-      URLRequestCallback callback,
-      const base::flat_map<std::string, std::string>& headers = {});
-  void OnGetResponse(ResponseCallback callback,
-                     api_request_helper::APIRequestResult result);
+  BraveVpnAPIRequest* GetAPIRequest();
 
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
@@ -164,9 +141,8 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
   raw_ptr<PrefService> local_prefs_ = nullptr;
   std::unique_ptr<Hostname> hostname_;
   base::ObserverList<Observer> observers_;
-  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  std::unique_ptr<BraveVpnAPIRequest> api_request_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_vpn

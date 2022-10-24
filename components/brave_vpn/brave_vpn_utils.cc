@@ -22,7 +22,6 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/network_change_notifier.h"
-#include "url/gurl.h"
 
 namespace brave_vpn {
 
@@ -115,37 +114,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       registry, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
       prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed);
   RegisterVPNLocalStatePrefs(registry);
-}
-
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
-      semantics {
-        sender: "Brave VPN Service"
-        description:
-          "This service is used to communicate with Guardian VPN apis"
-          "on behalf of the user interacting with the Brave VPN."
-        trigger:
-          "Triggered by user connecting the Brave VPN."
-        data:
-          "Servers, hosts and credentials for Brave VPN"
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )");
-}
-
-GURL GetURLWithPath(const std::string& host, const std::string& path) {
-  return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
-}
-
-std::string CreateJSONRequestBody(base::ValueView node) {
-  std::string json;
-  base::JSONWriter::Write(node, &json);
-  return json;
 }
 
 #if !BUILDFLAG(IS_ANDROID)

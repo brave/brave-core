@@ -12,6 +12,7 @@
 #include "base/check_is_test.h"
 #include "base/json/json_reader.h"
 #include "base/power_monitor/power_monitor.h"
+#include "brave/components/brave_vpn/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
@@ -310,20 +311,17 @@ void BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange(
     obs.OnConnectionStateChanged(connection_state_);
 }
 
-api_request_helper::APIRequestHelper*
-BraveVPNOSConnectionAPI::GetAPIRequestHelper() {
+BraveVpnAPIRequest* BraveVPNOSConnectionAPI::GetAPIRequest() {
   if (!url_loader_factory_) {
     CHECK_IS_TEST();
     return nullptr;
   }
 
-  if (!api_request_helper_) {
-    api_request_helper_ =
-        std::make_unique<api_request_helper::APIRequestHelper>(
-            GetNetworkTrafficAnnotationTag(), url_loader_factory_);
+  if (!api_request_) {
+    api_request_ = std::make_unique<BraveVpnAPIRequest>(url_loader_factory_);
   }
 
-  return api_request_helper_.get();
+  return api_request_.get();
 }
 
 std::string BraveVPNOSConnectionAPI::GetDeviceRegion() const {
@@ -340,26 +338,20 @@ std::string BraveVPNOSConnectionAPI::GetCurrentEnvironment() const {
 
 void BraveVPNOSConnectionAPI::FetchHostnamesForRegion(const std::string& name) {
   VLOG(2) << __func__;
+
   // Hostname will be replaced with latest one.
   hostname_.reset();
 
+  if (!GetAPIRequest()) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   // Unretained is safe here becasue this class owns request helper.
-  GetHostnamesForRegion(
+  GetAPIRequest()->GetHostnamesForRegion(
       base::BindOnce(&BraveVPNOSConnectionAPI::OnFetchHostnames,
                      base::Unretained(this), name),
       name);
-}
-
-void BraveVPNOSConnectionAPI::GetHostnamesForRegion(ResponseCallback callback,
-                                                    const std::string& region) {
-  auto internal_callback =
-      base::BindOnce(&BraveVPNOSConnectionAPI::OnGetResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  GURL base_url = GetURLWithPath(kVpnHost, kHostnameForRegion);
-  base::Value::Dict dict;
-  dict.Set("region", region);
-  std::string request_body = CreateJSONRequestBody(dict);
-  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
 void BraveVPNOSConnectionAPI::OnFetchHostnames(const std::string& region,
@@ -416,45 +408,19 @@ void BraveVPNOSConnectionAPI::ParseAndCacheHostnames(
     return;
   }
 
+  if (!GetAPIRequest()) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   // Get subscriber credentials and then get EAP credentials with it to create
   // OS VPN entry.
   VLOG(2) << __func__ << " : request subscriber credential:"
           << GetBraveVPNPaymentsEnv(GetCurrentEnvironment());
-  GetSubscriberCredentialV12(
+  GetAPIRequest()->GetSubscriberCredentialV12(
       base::BindOnce(&BraveVPNOSConnectionAPI::OnGetSubscriberCredentialV12,
-                     base::Unretained(this)));
-}
-
-void BraveVPNOSConnectionAPI::GetSubscriberCredentialV12(
-    ResponseCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&BraveVPNOSConnectionAPI::OnGetSubscriberCredential,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  const GURL base_url =
-      GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
-  base::Value::Dict dict;
-  dict.Set("validation-method", "brave-premium");
-  dict.Set("brave-vpn-premium-monthly-pass", skus_credential_);
-  std::string request_body = CreateJSONRequestBody(dict);
-  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
-               {{"Brave-Payments-Environment",
-                 GetBraveVPNPaymentsEnv(GetCurrentEnvironment())}});
-}
-
-void BraveVPNOSConnectionAPI::OnGetSubscriberCredential(
-    ResponseCallback callback,
-    api_request_helper::APIRequestResult api_request_result) {
-  bool success = api_request_result.response_code() == 200;
-  std::string error;
-  std::string subscriber_credential =
-      ParseSubscriberCredentialFromJson(api_request_result.body(), &error);
-  if (!success) {
-    subscriber_credential = error;
-    VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
-            << api_request_result.response_code() << ")";
-  }
-  std::move(callback).Run(subscriber_credential, success);
+                     base::Unretained(this)),
+      skus_credential_, GetBraveVPNPaymentsEnv(GetCurrentEnvironment()));
 }
 
 void BraveVPNOSConnectionAPI::OnGetSubscriberCredentialV12(
@@ -477,26 +443,18 @@ void BraveVPNOSConnectionAPI::OnGetSubscriberCredentialV12(
   }
 
   VLOG(2) << __func__ << " : received subscriber credential";
+
+  if (!GetAPIRequest()) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   // TODO(bsclifton): consider storing `subscriber_credential` for
   // support ticket use-case (see `CreateSupportTicket`).
-  GetProfileCredentials(
+  GetAPIRequest()->GetProfileCredentials(
       base::BindOnce(&BraveVPNOSConnectionAPI::OnGetProfileCredentials,
                      base::Unretained(this)),
       subscriber_credential, hostname_->hostname);
-}
-
-void BraveVPNOSConnectionAPI::GetProfileCredentials(
-    ResponseCallback callback,
-    const std::string& subscriber_credential,
-    const std::string& hostname) {
-  auto internal_callback =
-      base::BindOnce(&BraveVPNOSConnectionAPI::OnGetResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  GURL base_url = GetURLWithPath(hostname, kProfileCredential);
-  base::Value::Dict dict;
-  dict.Set("subscriber-credential", subscriber_credential);
-  std::string request_body = CreateJSONRequestBody(dict);
-  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
 void BraveVPNOSConnectionAPI::OnGetProfileCredentials(
@@ -539,29 +497,6 @@ void BraveVPNOSConnectionAPI::OnGetProfileCredentials(
 
   VLOG(2) << __func__ << " : it's invalid profile credential";
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-}
-
-void BraveVPNOSConnectionAPI::OnGetResponse(
-    ResponseCallback callback,
-    api_request_helper::APIRequestResult result) {
-  // NOTE: |api_request_helper_| uses JsonSanitizer to sanitize input made with
-  // requests. |body| will be empty when the response from service is invalid
-  // json.
-  const bool success = result.response_code() == 200;
-  std::move(callback).Run(result.body(), success);
-}
-
-void BraveVPNOSConnectionAPI::OAuthRequest(
-    const GURL& url,
-    const std::string& method,
-    const std::string& post_data,
-    URLRequestCallback callback,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (!GetAPIRequestHelper())
-    return;
-
-  GetAPIRequestHelper()->Request(method, url, post_data, "application/json",
-                                 true, std::move(callback), headers);
 }
 
 }  // namespace brave_vpn
