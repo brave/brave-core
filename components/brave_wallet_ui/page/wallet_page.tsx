@@ -9,6 +9,9 @@ import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { BrowserRouter } from 'react-router-dom'
 
+// assets
+import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
+
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
 import * as Lib from '../common/async/lib'
@@ -35,6 +38,18 @@ function App () {
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
   }, [])
+
+  React.useEffect(() => {
+    /** Sets FAVICON for Wallet Pages */
+    let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement
+    if (!link) {
+      link = document.createElement('link')
+      link.rel = 'icon'
+      document.getElementsByTagName('head')[0].appendChild(link)
+    }
+    link.href = faveiconUrl
+  }, [])
+
   return (
     <Provider store={store}>
       <BrowserRouter>
