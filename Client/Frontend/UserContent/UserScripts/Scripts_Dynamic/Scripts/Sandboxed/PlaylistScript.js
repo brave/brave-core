@@ -53,9 +53,15 @@ window.__firefox__.includeOnce("Playlist", function($) {
   function tagNode(node) {
     if (node) {
       if (!node.$<tagUUID>) {
-        node.$<tagUUID> = uuid_v4();
         node.addEventListener('webkitpresentationmodechanged', (e) => e.stopPropagation(), true);
       }
+      
+      // This is awful on dynamic websites.
+      // Some websites are now using the re-using video tag even if the page itself, and the history changes.
+      // I no longer have a proper way to detect if a video was already detected.
+      // IE: If a page has TWO videos on it, there is no way to display which was already added, as we have to now rely on PageURL
+      // or video src (or <source> tag)
+      node.$<tagUUID> = uuid_v4();
     }
   }
   
