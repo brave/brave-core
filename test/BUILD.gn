@@ -786,6 +786,7 @@ if (!is_android) {
       "//brave/browser/farbling:browser_tests",
       "//brave/browser/metrics/buildflags",
       "//brave/browser/permissions:browser_tests",
+      "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/test:browser_tests",
       "//brave/browser/tor:browser_tests",
       "//brave/browser/ui:browser_tests",
