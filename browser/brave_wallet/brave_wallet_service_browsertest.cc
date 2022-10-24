@@ -53,6 +53,8 @@ class TestBraveWalletServiceObserver
   void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {
     active_origin_info_ = origin_info->Clone();
   }
+  void OnDiscoverAssetsCompleted(
+      std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
 
   const mojom::OriginInfoPtr& active_origin_info() const {
     return active_origin_info_;

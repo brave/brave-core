@@ -330,6 +330,9 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     @Override
+    public void accountsAdded(int coin, String[] addresses) {}
+
+    @Override
     public void autoLockMinutesChanged() {}
 
     @Override

@@ -15,6 +15,8 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
+    "asset_discovery_manager.cc",
+    "asset_discovery_manager.h",
     "asset_ratio_response_parser.cc",
     "asset_ratio_response_parser.h",
     "asset_ratio_service.cc",
