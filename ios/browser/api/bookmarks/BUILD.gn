@@ -6,8 +6,15 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
+config("allow_shadow_variables") {
+  cflags = [ "-Wno-shadow" ]
+}
+
 source_set("bookmarks") {
-  configs += [ "//build/config/compiler:enable_arc" ]
+  configs += [
+    "//build/config/compiler:enable_arc",
+    ":allow_shadow_variables",
+  ]
 
   sources = [
     "bookmark_model_listener_ios.h",

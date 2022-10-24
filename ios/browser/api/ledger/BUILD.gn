@@ -12,9 +12,14 @@ config("external_config") {
   include_dirs = [ "$target_gen_dir" ]
 }
 
+config("allow_shadow_variables") {
+  cflags = [ "-Wno-shadow" ]
+}
+
 source_set("ledger") {
   configs += [
     ":external_config",
+    ":allow_shadow_variables",
     "//build/config/compiler:enable_arc",
   ]
 
