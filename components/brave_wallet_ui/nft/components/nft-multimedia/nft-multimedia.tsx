@@ -22,6 +22,7 @@ import {
 } from './nft-multimedia.styles'
 import { NftImage } from '../nft-image/nft-image'
 import placeholderImage from '../../../assets/svg-icons/placeholdr-image.svg'
+import { NftAudio } from '../nft-audio/nft-audio'
 
 const placeholderImageMimeType = 'image/svg+xml'
 
@@ -72,6 +73,13 @@ export const NftMultimedia = (props: Props) => {
           imageUrl={mediaUrl}
           mimeType={mimeType}
           onMagnify={onClickMagnify}
+        />
+      )
+    } else if (mediaType === 'audio') {
+      return (
+        <NftAudio
+          audioUrl={mediaUrl}
+          posterUrl={nftMetadata.imageURL}
         />
       )
     }
