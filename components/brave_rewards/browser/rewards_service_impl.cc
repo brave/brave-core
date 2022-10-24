@@ -459,6 +459,9 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
   if (key == ads::prefs::kEnabled) {
+    p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
+                                          ads::prefs::kEnabled);
+
     bool ads_enabled = profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
 
 #if BUILDFLAG(ENABLE_GREASELION)
