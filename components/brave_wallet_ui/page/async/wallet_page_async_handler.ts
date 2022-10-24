@@ -280,6 +280,7 @@ handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: Br
       tokenType: 'ERC721', // getNFTMetadata currently supports only ERC721 standard. When other standards are supported, this value should be dynamic
       tokenID: payload.tokenId,
       imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
+      imageMimeType: 'image/*',
       floorFiatPrice: '',
       floorCryptoPrice: '',
       contractInformation: {
@@ -293,8 +294,9 @@ handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: Br
       }
     }
     store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
+    store.dispatch(WalletPageActions.updateNftMetadataError(undefined))
   } else {
-    console.error(result.errorMessage)
+    store.dispatch(WalletPageActions.updateNftMetadataError(result.errorMessage))
   }
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
 })
