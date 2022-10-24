@@ -55,6 +55,7 @@ export const TokenDetailLabel = styled.h6`
   font-weight: 600;
   margin: 0;
   padding: 0;
+  color: ${p => p.theme.color.text01};
 `
 
 export const TokenDetailValue = styled.h6`
@@ -64,6 +65,7 @@ export const TokenDetailValue = styled.h6`
   font-weight: 400;
   margin: 8px 0 0 0;
   padding: 0;
+  color: ${p => p.theme.color.text01};
 `
 
 export const ContractAddress = styled(TokenDetailValue)`
