@@ -10,7 +10,11 @@ import { BraveWallet, WalletAccountType } from '../constants/types'
 import { createTokenBalanceRegistryKey } from './account-utils'
 import { getTokensCoinType } from './network-utils'
 
-export const getBalance = (networks: BraveWallet.NetworkInfo[], account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
+export const getBalance = (
+  networks: BraveWallet.NetworkInfo[],
+  account?: WalletAccountType,
+  token?: BraveWallet.BlockchainToken
+) => {
   if (!account || !token) {
     return ''
   }

@@ -15,6 +15,9 @@ import { useTransactionParser } from './transaction-parser'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { combineReducers, createStore } from 'redux'
 import { createWalletReducer } from '../reducers/wallet_reducer'
+import { Store } from '../async/types'
+import { parseTransactionWithoutPrices } from '../../utils/transaction-parser'
+import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
 
 const customMockedWalletState = {
   ...mockWalletState,
@@ -33,7 +36,7 @@ const makeStore = (customStore?: any) => {
   return store
 }
 
-const store = makeStore()
+const store: Store = makeStore()
 
 function renderHookOptionsWithCustomStore (store: any) {
   return {
@@ -44,7 +47,31 @@ function renderHookOptionsWithCustomStore (store: any) {
   }
 }
 
-describe('useTransactionParser hook', () => {
+const parseTxUsingStoreData = (
+  tx: BraveWallet.TransactionInfo,
+  store: Store
+) => {
+  const {
+    accounts,
+    fullTokenList,
+    userVisibleTokensInfo,
+    networkList,
+    selectedNetwork
+  } = store.getState().wallet
+  return parseTransactionWithoutPrices({
+    accounts: accounts,
+    fullTokenList: fullTokenList,
+    userVisibleTokensList: userVisibleTokensInfo,
+    transactionNetwork: getNetworkFromTXDataUnion(
+      tx.txDataUnion,
+      networkList,
+      selectedNetwork
+    ),
+    tx
+  })
+}
+
+describe('useTransactionParser hook & txParser utils parse data the same way', () => {
   describe('check for sameAddressError', () => {
     describe.each([
       ['ERC20Transfer', BraveWallet.TransactionType.ERC20Transfer, 'recipient'],
@@ -55,14 +82,16 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           fromAddress: '0xdeadbeef',
           txArgs: ['0xdeadbeef', 'foo']
-        })
+        } as BraveWallet.TransactionInfo
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.sameAddressError).toBeDefined()
+        expect(parseTxUsingStoreData(testTx, store).hasSameAddressError).toBeDefined()
       })
 
       it(`should be undefined when sender and ${toLabel} are different`, () => {
@@ -70,14 +99,16 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           fromAddress: '0xdeadbeef',
           txArgs: ['0xbadcafe', 'foo']
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.sameAddressError).toBeUndefined()
+        expect(parseTxUsingStoreData(testTx, store).hasSameAddressError).toBeFalsy() // updated to a bool from a locale string
       })
     })
 
@@ -90,14 +121,16 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           fromAddress: '0xdeadbeef',
-          txArgs: ['mockOwner', '0xdeadbeef', 'mockTokenID']
-        })
+          txArgs: ['mockOwner', '0xdeadbeef', 'mockTokenID'] // (address owner, address to, uint256 tokenId)
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.sameAddressError).toBeUndefined()
+        expect(parseTxUsingStoreData(testTx, store).hasSameAddressError).toBeFalsy() // updated to a bool from a locale string
       })
 
       it('should be defined when owner and recipient are same', () => {
@@ -105,14 +138,16 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           fromAddress: 'mockFromAddress',
           txArgs: ['0xdeadbeef', '0xdeadbeef', 'mockTokenID']
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.sameAddressError).toBeDefined()
+        expect(parseTxUsingStoreData(testTx, store).hasSameAddressError).toBeTruthy()
       })
 
       it('should be undefined when owner and recipient are different', () => {
@@ -120,14 +155,16 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           fromAddress: 'mockFromAddress',
           txArgs: ['mockOwner', 'mockToAddress', 'mockTokenID']
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.sameAddressError).toBeUndefined()
+        expect(parseTxUsingStoreData(testTx, store).hasSameAddressError).toBeFalsy() // now a bool
       })
     })
 
@@ -142,7 +179,7 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           fromAddress: '0xdeadbeef',
@@ -158,9 +195,11 @@ describe('useTransactionParser hook', () => {
               }
             }
           }
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.sameAddressError).toBeUndefined()
+        expect(parseTxUsingStoreData(testTx, store).hasSameAddressError).toBeFalsy() // now a bool
       })
     })
   })
@@ -172,12 +211,12 @@ describe('useTransactionParser hook', () => {
       ['Other', BraveWallet.TransactionType.Other],
       ['0x Swap', BraveWallet.TransactionType.Other]
     ])('%s', (name, txType) => {
-      it('should always be undefined', () => {
+      it(`${name} result should always be undefined`, () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txArgs: txType === BraveWallet.TransactionType.ETHSend ? [] : ['mockArg1', 'mockArg2'],
           txType,
@@ -193,9 +232,11 @@ describe('useTransactionParser hook', () => {
               }
             }
           }
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.contractAddressError).toBeUndefined()
+        expect(parseTxUsingStoreData(testTx, store).hasContractAddressError).toBeFalsy() // now a bool
       })
     })
 
@@ -209,15 +250,17 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txArgs: txType === BraveWallet.TransactionType.ERC20Transfer
             ? ['0xdeadbeef', 'mockAmount']
             : ['mockOwner', '0xdeadbeef', 'mockTokenID'],
           txType
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.contractAddressError).toBeDefined()
+        expect(parseTxUsingStoreData(testTx, store).hasContractAddressError).toBeTruthy() // now a bool
       })
 
       it('should be undefined when recipient is an unknown contract address', () => {
@@ -225,15 +268,17 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txArgs: txType === BraveWallet.TransactionType.ERC20Transfer
             ? ['0xbadcafe', 'mockAmount']
             : ['mockOwner', '0xbadcafe', 'mockTokenID'],
           txType
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.contractAddressError).toBeUndefined()
+        expect(parseTxUsingStoreData(testTx, store).hasContractAddressError).toBeFalsy() // now a bool
       })
     })
   })
@@ -275,13 +320,13 @@ describe('useTransactionParser hook', () => {
                 }
               ]
             })
-          }))
+          })) as Store
 
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
             renderHookOptionsWithCustomStore(customStore))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           fromAddress: '0xdeadbeef',
           txArgs: [BraveWallet.TransactionType.ERC20Approve, BraveWallet.TransactionType.ERC20Transfer].includes(txType)
@@ -294,22 +339,24 @@ describe('useTransactionParser hook', () => {
             solanaTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559!,
-              maxFeePerGas: '0x22ecb25c00', // 150 Gwei
-              maxPriorityFeePerGas: '0x22ecb25c00', // 150 Gwei
+              maxFeePerGas: '0x22ecb25c00',
+              maxPriorityFeePerGas: '0x22ecb25c00',
               baseData: {
                 ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
                 to: txType === BraveWallet.TransactionType.ERC20Transfer
                   ? mockERC20Token.contractAddress.toLowerCase()
                   : mockTransactionInfo.txDataUnion.ethTxData1559!.baseData.to,
-                value: '0x0', // 0 ETH
-                gasLimit: '0x5208', // 21000
-                gasPrice: '0x22ecb25c00' // 150 Gwei
+                value: '0x0',
+                gasLimit: '0x5208',
+                gasPrice: '0x22ecb25c00'
               }
             }
           }
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.insufficientFundsForGasError).toBeTruthy()
+        expect(parseTxUsingStoreData(testTx, customStore).insufficientFundsForGas).toBeTruthy() // now a bool
       })
 
       it('should be false when funds are sufficient for gas', () => {
@@ -327,7 +374,7 @@ describe('useTransactionParser hook', () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
           renderHookOptionsWithCustomStore(store))
 
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           fromAddress: '0xdeadbeef',
           txArgs: [BraveWallet.TransactionType.ERC20Approve, BraveWallet.TransactionType.ERC20Transfer].includes(txType)
@@ -343,15 +390,20 @@ describe('useTransactionParser hook', () => {
               baseData: {
                 ...mockTxData.baseData,
                 value: '0x0',
-                gasLimit: '0x5208', // 21000
-                gasPrice: '0x22ecb25c00' // 150 Gwei
+                gasLimit: '0x5208',
+                gasPrice: '0x22ecb25c00'
               }
             }
           }
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
         expect(parsedTransaction.insufficientFundsError).toBeFalsy()
+
+        const newParsedTx = parseTxUsingStoreData(testTx, store)
+        expect(newParsedTx.insufficientFundsForGas).toBeFalsy() // now a bool
+        expect(newParsedTx.insufficientFunds).toBeFalsy() // now a bool
       })
     })
 
@@ -403,7 +455,7 @@ describe('useTransactionParser hook', () => {
             }],
             selectedNetwork: mockNetwork
           })
-        }))
+        })) as Store
 
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
           renderHookOptionsWithCustomStore(customStore))
@@ -411,6 +463,10 @@ describe('useTransactionParser hook', () => {
         const parsedTransaction = transactionParser(transactionInfo)
         expect(parsedTransaction.insufficientFundsError).toBeTruthy()
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
+
+        const newParsedTx = parseTxUsingStoreData(transactionInfo, customStore)
+        expect(newParsedTx.insufficientFunds).toBeTruthy() // now a bool
+        expect(newParsedTx.insufficientFundsForGas).toBeFalsy() // now a bool
       })
 
       it('should be false when funds are sufficient for send amount', () => {
@@ -436,7 +492,7 @@ describe('useTransactionParser hook', () => {
                 }
               }]
             })
-          }))
+          })) as Store
 
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
             renderHookOptionsWithCustomStore(customStore))
@@ -444,6 +500,10 @@ describe('useTransactionParser hook', () => {
         const parsedTransaction = transactionParser(transactionInfo)
         expect(parsedTransaction.insufficientFundsError).toBeFalsy()
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
+
+        const newParsedTx = parseTxUsingStoreData(transactionInfo, customStore)
+        expect(newParsedTx.insufficientFunds).toBeFalsy()
+        expect(newParsedTx.insufficientFundsForGas).toBeFalsy()
       })
     })
 
@@ -487,6 +547,7 @@ describe('useTransactionParser hook', () => {
       const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
         renderHookOptionsWithCustomStore(store))
       const parsedTransaction = transactionParser(transactionInfo)
+      const newParsedTx = parseTxUsingStoreData(transactionInfo, store)
 
       it('should be true when funds are insufficient for send amount', () => {
         // [FIXME] - Difficult to capture results from reinvocation of a
@@ -498,14 +559,18 @@ describe('useTransactionParser hook', () => {
         //
         // expect(parsedTransaction.insufficientFundsError).toBeTruthy()
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
+        expect(newParsedTx.insufficientFundsForGas).toBeFalsy()
       })
 
       it('should be false when funds are sufficient for send amount', () => {
         expect(parsedTransaction.insufficientFundsError).toBeFalsy()
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
+        expect(newParsedTx.insufficientFunds).toBeFalsy()
+        expect(newParsedTx.insufficientFundsForGas).toBeFalsy()
       })
     })
   })
+
   describe('check for token symbol', () => {
     describe.each([
       ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve],
@@ -518,7 +583,7 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           txDataUnion: {
@@ -537,9 +602,13 @@ describe('useTransactionParser hook', () => {
             'mockRecipient',
             '0xde0b6b3a7640000'
           ]
-        })
-
+        }
+        const parsedTransaction = transactionParser(testTx)
         expect(parsedTransaction.symbol).toEqual('')
+
+        const newParsedTx = parseTxUsingStoreData(testTx, store)
+
+        expect(newParsedTx.symbol).toEqual('')
       })
 
       it('Gets token symbol from visibleList, should be DOG', () => {
@@ -547,7 +616,7 @@ describe('useTransactionParser hook', () => {
           renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
+        const testTx = {
           ...mockTransactionInfo,
           txType,
           txDataUnion: {
@@ -566,9 +635,13 @@ describe('useTransactionParser hook', () => {
             'mockRecipient',
             '0xde0b6b3a7640000'
           ]
-        })
+        }
+        const parsedTransaction = transactionParser(testTx)
 
         expect(parsedTransaction.symbol).toEqual('DOG')
+
+        const newParsedTx = parseTxUsingStoreData(testTx, store)
+        expect(newParsedTx.symbol).toEqual('DOG')
       })
     })
   })
@@ -611,8 +684,12 @@ describe('useTransactionParser hook', () => {
           }
         }
         const parsedTransaction1 = transactionParser(mockTransactionInfo1)
+        const newParsedTx1 = parseTxUsingStoreData(mockTransactionInfo1, store)
+
         expect(parsedTransaction1.gasLimit).toEqual('')
         expect(parsedTransaction1.missingGasLimitError).toBeTruthy()
+        expect(newParsedTx1.gasLimit).toEqual('')
+        expect(newParsedTx1.isMissingGasLimit).toBeTruthy()
 
         const mockTransactionInfo2: BraveWallet.TransactionInfo = {
           ...baseMockTransactionInfo,
@@ -630,8 +707,12 @@ describe('useTransactionParser hook', () => {
           }
         }
         const parsedTransaction2 = transactionParser(mockTransactionInfo2)
+
+        const newParsedTx2 = parseTxUsingStoreData(mockTransactionInfo2, store)
         expect(parsedTransaction2.gasLimit).toEqual('0')
         expect(parsedTransaction2.missingGasLimitError).toBeTruthy()
+        expect(newParsedTx2.gasLimit).toEqual('0')
+        expect(newParsedTx2.isMissingGasLimit).toBeTruthy()
 
         const mockTransactionInfo3: BraveWallet.TransactionInfo = {
           ...baseMockTransactionInfo,
@@ -649,8 +730,11 @@ describe('useTransactionParser hook', () => {
           }
         }
         const parsedTransaction3 = transactionParser(mockTransactionInfo3)
+        const newParsedTx3 = parseTxUsingStoreData(mockTransactionInfo3, store)
         expect(parsedTransaction3.gasLimit).toEqual('1')
         expect(parsedTransaction3.missingGasLimitError).toBeUndefined()
+        expect(newParsedTx3.gasLimit).toEqual('1')
+        expect(newParsedTx3.isMissingGasLimit).toBeFalsy()
       })
     })
   })

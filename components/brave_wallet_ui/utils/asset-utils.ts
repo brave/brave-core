@@ -153,6 +153,15 @@ export const getBatTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) =
   }
 }
 
+export const findTokenByContractAddress = (
+  contractAddress: string,
+  tokensList: BraveWallet.BlockchainToken[]
+) => {
+  return tokensList.find((token) =>
+    token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+  )
+}
+
 /**
  * @param asset The token to get an id for
  * @returns an id that can be used as a react element key
