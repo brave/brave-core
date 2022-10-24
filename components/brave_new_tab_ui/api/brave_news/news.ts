@@ -5,6 +5,7 @@
 
 import { BraveNewsControllerRemote, Publisher, PublisherType, UserEnabled } from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
 import getBraveNewsController, { Channels, Publishers } from '.'
+import { publishers } from '../../stories/default/data/mockBraveNewsController'
 
 type PublishersListener = (publishers: Publishers, oldValue: Publishers) => void
 type ChannelsListener = (newValue: Channels, oldValue: Channels) => void
@@ -79,6 +80,13 @@ class BraveNewsApi {
   }
 
   setPublisherFollowed (publisherId: string, enabled: boolean) {
+    // For now, Direct Sources work differently to Combined Sources - in their
+    // not modified state they are considered enabled.
+    if (isDirectFeed(publishers[publisherId]) && !enabled) {
+      this.setPublisherPref(publisherId, UserEnabled.DISABLED)
+      return
+    }
+
     this.setPublisherPref(publisherId, enabled ? UserEnabled.ENABLED : UserEnabled.NOT_MODIFIED)
   }
 
