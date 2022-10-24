@@ -33,9 +33,10 @@ import {
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
-import { getTokensNetwork } from '../../utils/network-utils'
-import { httpifyIpfsUrl } from '../../utils/string-utils'
+// import { getTokensNetwork } from '../../utils/network-utils'
+// import { httpifyIpfsUrl } from '../../utils/string-utils'
 import { getLocale } from '../../../common/locale'
+import { mockNFTMetadata } from '../../stories/mock-data/mock-nft-metadata'
 
 const handler = new AsyncActionHandler()
 
@@ -273,26 +274,27 @@ handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: Br
   const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
 
   if (!result.error) {
-    const response = JSON.parse(result.response)
-    const tokenNetwork = getTokensNetwork(getWalletState(store).networkList, payload)
-    const nftMetadata: NFTMetadataReturnType = {
-      chainName: tokenNetwork.chainName,
-      tokenType: 'ERC721', // getNFTMetadata currently supports only ERC721 standard. When other standards are supported, this value should be dynamic
-      tokenID: payload.tokenId,
-      imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
-      imageMimeType: 'image/*',
-      floorFiatPrice: '',
-      floorCryptoPrice: '',
-      contractInformation: {
-        address: payload.contractAddress,
-        name: response.name,
-        description: response.description,
-        website: '',
-        twitter: '',
-        facebook: '',
-        logo: ''
-      }
-    }
+    // const response = JSON.parse(result.response)
+    // const tokenNetwork = getTokensNetwork(getWalletState(store).networkList, payload)
+    // const nftMetadata: NFTMetadataReturnType = {
+    //   chainName: tokenNetwork.chainName,
+    //   tokenType: 'ERC721', // getNFTMetadata currently supports only ERC721 standard. When other standards are supported, this value should be dynamic
+    //   tokenID: payload.tokenId,
+    //   imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
+    //   imageMimeType: 'image/*',
+    //   floorFiatPrice: '',
+    //   floorCryptoPrice: '',
+    //   contractInformation: {
+    //     address: payload.contractAddress,
+    //     name: response.name,
+    //     description: response.description,
+    //     website: '',
+    //     twitter: '',
+    //     facebook: '',
+    //     logo: ''
+    //   }
+    // }
+    const nftMetadata: NFTMetadataReturnType = { ...mockNFTMetadata[2] }
     store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
     store.dispatch(WalletPageActions.updateNftMetadataError(undefined))
   } else {
