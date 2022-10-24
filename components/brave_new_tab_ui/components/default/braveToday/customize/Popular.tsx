@@ -37,7 +37,7 @@ export default function Suggestions () {
   }
 
   return (
-    <DiscoverSection name={'Popular Sources'}>
+    <DiscoverSection name={getLocale('braveNewsPopularTitle')}>
       {popularPublishersTruncated.map(s => <FeedCard key={s} publisherId={s} />)}
       {!showAll && popularPublisherIds.length > DEFAULT_SUGGESTIONS_COUNT &&
       <LoadMoreButtonContainer>
