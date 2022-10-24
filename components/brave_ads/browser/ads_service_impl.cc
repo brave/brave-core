@@ -53,7 +53,6 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
-#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
@@ -746,9 +745,6 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
 #endif
 #endif
   }
-
-  brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
-                                                       ads::prefs::kEnabled);
 
   MaybeStartOrStop(/*should_restart*/ false);
 }
