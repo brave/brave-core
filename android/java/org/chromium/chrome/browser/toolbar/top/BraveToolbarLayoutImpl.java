@@ -130,6 +130,7 @@ import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.UiUtils;
+import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.util.ColorUtils;
 import org.chromium.ui.widget.Toast;
@@ -1340,10 +1341,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         rounded ? R.drawable.modern_toolbar_background_grey_end_segment
                                 : R.drawable.modern_toolbar_background_grey_middle_segment));
 
-        if (mWalletLayout != null) {
-            mWalletLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getContext(), false));
-        }
         updateModernLocationBarColorImpl(mCurrentToolbarColor);
     }
 
@@ -1393,5 +1390,27 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public boolean isLocationBarValid(LocationBarCoordinator locationBar) {
         return locationBar != null && locationBar.getPhoneCoordinator() != null
                 && locationBar.getPhoneCoordinator().getViewForDrawing() != null;
+    }
+
+    @Override
+    public void drawAnimationOverlay(ViewGroup toolbarButtonsContainer, Canvas canvas) {
+        if (mWalletLayout != null && mWalletLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mWalletLayout, canvas);
+            mWalletLayout.draw(canvas);
+            canvas.restore();
+        }
+        if (mShieldsLayout != null && mShieldsLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mShieldsLayout, canvas);
+            mShieldsLayout.draw(canvas);
+            canvas.restore();
+        }
+        if (mRewardsLayout != null && mRewardsLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mRewardsLayout, canvas);
+            mRewardsLayout.draw(canvas);
+            canvas.restore();
+        }
     }
 }
