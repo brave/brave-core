@@ -121,6 +121,9 @@ const char kTestVpnOrders[] = R"(
                       "merchant_id": "brave.com",
                       "metadata":
                       {
+                          "num_intervals": null,
+                          "num_per_interval": null,
+                          "payment_processor": null,
                           "stripe_checkout_session_id": null
                       },
                       "status": "paid",
@@ -169,6 +172,9 @@ const char kTestVpnOrders[] = R"(
                       "merchant_id": "brave.com",
                       "metadata":
                       {
+                          "num_intervals": null,
+                          "num_per_interval": null,
+                          "payment_processor": null,
                           "stripe_checkout_session_id": null
                       },
                       "status": "paid",
@@ -203,6 +209,9 @@ const char kTestVpnOrders[] = R"(
                       "merchant_id": "brave.com",
                       "metadata":
                       {
+                          "num_intervals": null,
+                          "num_per_interval": null,
+                          "payment_processor": null,
                           "stripe_checkout_session_id": null
                       },
                       "status": "paid",

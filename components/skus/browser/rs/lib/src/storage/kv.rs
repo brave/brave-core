@@ -5,6 +5,8 @@ use std::fmt::Debug;
 use async_trait::async_trait;
 use challenge_bypass_ristretto::voprf::*;
 
+use chrono::{NaiveDateTime, Utc};
+
 use crate::errors::InternalError;
 use crate::models::*;
 use crate::StorageClient;
@@ -17,9 +19,10 @@ use tracing::{event, instrument, Level};
 enum Credentials {
     SingleUse(SingleUseCredentials),
     TimeLimited(TimeLimitedCredentials),
+    TimeLimitedV2(TimeLimitedV2Credentials),
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 struct CredentialsState {
     pub items: HashMap<String, Credentials>,
 }
@@ -119,7 +122,7 @@ where
     async fn get_orders(&self) -> Result<Option<Vec<Order>>, InternalError> {
         let mut store = self.get_store()?;
         let state: KVState = store.get_state()?;
-        let orders = state.orders.map(|os| os.into_iter().map(|(_, order)| order).collect());
+        let orders = state.orders.map(|os| os.into_values().collect());
         event!(Level::DEBUG, orders = ?orders, "got orders");
         Ok(orders)
     }
@@ -150,6 +153,51 @@ where
     }
 
     #[instrument]
+    #[cfg(feature = "e2e_test")]
+    async fn delete_n_item_creds(&self, item_id: &str, n: usize) -> Result<(), InternalError> {
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if let Some(mut credentials) = state.credentials {
+            // remove old creds
+            if let Some(item_credentials) = credentials.items.remove(&item_id.to_string()) {
+                // remove old creds
+                match item_credentials {
+                    Credentials::TimeLimitedV2(mut item_creds) => {
+                        let desired_len = item_creds
+                            .unblinded_creds
+                            .as_ref()
+                            .expect("should exist")
+                            .len()
+                            .saturating_sub(n);
+
+                        let mut new_creds = Vec::<TimeLimitedV2Credential>::new();
+                        for _ in 1..desired_len {
+                            new_creds.push(
+                                item_creds
+                                    .unblinded_creds
+                                    .as_mut()
+                                    .expect("should exist")
+                                    .pop()
+                                    .unwrap(),
+                            );
+                        }
+
+                        item_creds.unblinded_creds = Some(new_creds);
+
+                        credentials
+                            .items
+                            .insert((&item_id).to_string(), Credentials::TimeLimitedV2(item_creds)); // insert truncated
+                    }
+                    _ => (), // only care about time limted for the test
+                }
+            }
+            state.credentials = Some(credentials);
+        }
+        store.set_state(&state)
+    }
+
+    #[instrument]
     async fn delete_item_creds(&self, item_id: &str) -> Result<(), InternalError> {
         let mut store = self.get_store()?;
         let mut state: KVState = store.get_state()?;
@@ -160,6 +208,38 @@ where
         }
 
         store.set_state(&state)
+    }
+
+    #[instrument]
+    async fn get_time_limited_v2_creds(
+        &self,
+        item_id: &str,
+    ) -> Result<Option<TimeLimitedV2Credentials>, InternalError> {
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if state.credentials.is_none() {
+            state.credentials = Some(CredentialsState::default());
+        }
+
+        if let Some(credentials) = state.credentials.as_mut() {
+            if let Some(item_credentials) = credentials.items.remove(item_id) {
+                match item_credentials {
+                    Credentials::TimeLimitedV2(credentials) => {
+                        event!(Level::DEBUG, "got credentials");
+                        return Ok(Some(credentials));
+                    }
+                    _ => {
+                        return Err(InternalError::StorageReadFailed(
+                            "Item is not time limited v2".to_string(),
+                        ));
+                    }
+                }
+            }
+        }
+        let credentials = None;
+        event!(Level::DEBUG, "got credentials");
+        return Ok(credentials);
     }
 
     #[instrument]
@@ -178,6 +258,51 @@ where
         });
         event!(Level::DEBUG, credentials = ?credentials, "got credentials");
         return Ok(credentials);
+    }
+
+    #[instrument]
+    async fn upsert_time_limited_v2_item_creds(
+        &self,
+        item_id: &str,
+        creds: Vec<Token>,
+    ) -> Result<(), InternalError> {
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if state.credentials.is_none() {
+            state.credentials = Some(CredentialsState::default());
+        }
+
+        if let Some(credentials) = state.credentials.as_mut() {
+            // check and see if we already have this item initialized
+            if let Some(item_credentials) = credentials.items.get_mut(item_id) {
+                // don't overwrite the existing unblinded_creds, we just want to add the new blinded
+                // tokens to the item_credentials.creds for signing request
+                if let Credentials::TimeLimitedV2(item_credentials) = item_credentials {
+                    item_credentials.creds = creds;
+                    // update state to generated credentials
+                    item_credentials.state = CredentialState::GeneratedCredentials;
+                }
+            } else {
+                // item credentials are not actually created yet, so add the tokens
+                // to empty item credentials structure for initialization
+                let tlv2_vec = Vec::new();
+                let tlv2_creds = Credentials::TimeLimitedV2(TimeLimitedV2Credentials {
+                    item_id: item_id.to_string(),
+                    creds,
+                    unblinded_creds: Some(tlv2_vec),
+                    state: CredentialState::GeneratedCredentials,
+                });
+
+                if credentials.items.insert(item_id.to_string(), tlv2_creds).is_some() {
+                    return Err(InternalError::StorageWriteFailed(
+                        "Item credentials were already initialized".to_string(),
+                    ));
+                }
+            }
+        }
+
+        store.set_state(&state)
     }
 
     #[instrument]
@@ -208,6 +333,68 @@ where
         }
 
         store.set_state(&state)
+    }
+
+    #[instrument]
+    async fn append_time_limited_v2_item_unblinded_creds(
+        &self,
+        item_id: &str,
+        issuer_id: &str,
+        unblinded_creds: Vec<UnblindedToken>,
+        valid_from: &str,
+        valid_to: &str,
+    ) -> Result<(), InternalError> {
+        // each time this function is run, we are going to append a credential
+
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if let Some(credentials) = state.credentials.as_mut() {
+            if let Some(item_credentials) = credentials.items.get_mut(item_id) {
+                match item_credentials {
+                    Credentials::TimeLimitedV2(item_credentials) => {
+                        let from = NaiveDateTime::parse_from_str(valid_from, "%Y-%m-%dT%H:%M:%SZ")
+                            .map_err(|_| {
+                                InternalError::InvalidResponse(
+                                    "Could not parse valid from".to_string(),
+                                )
+                            })?;
+                        let to = NaiveDateTime::parse_from_str(valid_to, "%Y-%m-%dT%H:%M:%SZ")
+                            .map_err(|_| {
+                                InternalError::InvalidResponse(
+                                    "Could not parse valid to".to_string(),
+                                )
+                            })?;
+
+                        if let Some(tlv2_creds) = item_credentials.unblinded_creds.as_mut() {
+                            tlv2_creds.push(TimeLimitedV2Credential {
+                                unblinded_creds: Some(
+                                    unblinded_creds
+                                        .into_iter()
+                                        .map(|unblinded_cred| SingleUseCredential {
+                                            unblinded_cred,
+                                            spent: false,
+                                        })
+                                        .collect(),
+                                ),
+                                issuer_id: Some(issuer_id.to_string()),
+                                valid_from: from,
+                                valid_to: to,
+                            });
+                        }
+                        // change state to active_credentials
+                        item_credentials.state = CredentialState::ActiveCredentials
+                    }
+                    _ => {
+                        return Err(InternalError::StorageWriteFailed(
+                            "Item is not single use".to_string(),
+                        ));
+                    }
+                }
+                return store.set_state(&state);
+            }
+        }
+        Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
     }
 
     #[instrument]
@@ -245,6 +432,47 @@ where
             }
         }
         Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
+    }
+
+    #[instrument]
+    async fn spend_time_limited_v2_item_cred(
+        &self,
+        item_id: &str,
+        index: usize,
+    ) -> Result<(), InternalError> {
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if let Some(credentials) = state.credentials.as_mut() {
+            if let Some(item_credentials) = credentials.items.get_mut(item_id) {
+                match item_credentials {
+                    Credentials::TimeLimitedV2(item_credentials) => {
+                        if let Some(creds) = item_credentials.unblinded_creds.as_mut() {
+                            // iterate over each time limited cred, and find where now is between
+                            for tlv2_cred in creds {
+                                if Utc::now().naive_utc() < tlv2_cred.valid_to
+                                    && Utc::now().naive_utc() > tlv2_cred.valid_from
+                                {
+                                    // find an open unblinded token to spend
+                                    if let Some(unblinded_creds) =
+                                        tlv2_cred.unblinded_creds.as_mut()
+                                    {
+                                        unblinded_creds[index].spent = true;
+                                        return store.set_state(&state);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _ => {
+                        return Err(InternalError::StorageWriteFailed(
+                            "Item is not time limited v2".to_string(),
+                        ));
+                    }
+                }
+            }
+        }
+        Err(InternalError::StorageWriteFailed("Item credentials were not completed".to_string()))
     }
 
     #[instrument]

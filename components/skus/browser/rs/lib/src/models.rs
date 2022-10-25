@@ -8,6 +8,39 @@ use serde_json::Value;
 
 use crate::errors::*;
 
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum CredentialState {
+    GeneratedCredentials,
+    SubmittedCredentials,
+    FetchedCredentials,
+    ActiveCredentials,
+}
+
+impl Display for CredentialState {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            CredentialState::GeneratedCredentials => write!(f, "generated credentials"),
+            CredentialState::SubmittedCredentials => write!(f, "submitted credentials"),
+            CredentialState::FetchedCredentials => write!(f, "fetched credentials"),
+            CredentialState::ActiveCredentials => write!(f, "active credentials"),
+        }
+    }
+}
+
+impl FromStr for CredentialState {
+    type Err = InternalError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "generated credentials" => Ok(Self::GeneratedCredentials),
+            "submitted credentials" => Ok(Self::SubmittedCredentials),
+            "fetched credentials" => Ok(Self::FetchedCredentials),
+            "active credentials" => Ok(Self::ActiveCredentials),
+            _ => Err(InternalError::UnhandledVariant),
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum Environment {
     Local,
@@ -99,11 +132,15 @@ pub struct UnredeemedToken {
 pub enum CredentialType {
     SingleUse,
     TimeLimited,
+    TimeLimitedV2,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OrderMetadata {
     pub stripe_checkout_session_id: Option<String>,
+    pub payment_processor: Option<String>,
+    pub num_intervals: Option<usize>,
+    pub num_per_interval: Option<usize>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -184,6 +221,22 @@ pub struct SingleUseCredentials {
     pub creds: Vec<Token>,
     pub unblinded_creds: Option<Vec<SingleUseCredential>>,
     pub issuer_id: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TimeLimitedV2Credential {
+    pub unblinded_creds: Option<Vec<SingleUseCredential>>,
+    pub issuer_id: Option<String>,
+    pub valid_from: NaiveDateTime,
+    pub valid_to: NaiveDateTime,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TimeLimitedV2Credentials {
+    pub item_id: String,
+    pub creds: Vec<Token>,
+    pub unblinded_creds: Option<Vec<TimeLimitedV2Credential>>,
+    pub state: CredentialState,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

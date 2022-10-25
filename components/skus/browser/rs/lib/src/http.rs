@@ -23,7 +23,7 @@ impl From<http::Response<Vec<u8>>> for InternalError {
         event!(Level::DEBUG, "coming from response to internal error");
         let body = resp.body();
 
-        let app_err: APIError = serde_json::from_slice(&body).unwrap_or(APIError {
+        let app_err: APIError = serde_json::from_slice(body).unwrap_or(APIError {
             code: 0,
             message: "unknown".to_string(),
             error_code: "".to_string(),

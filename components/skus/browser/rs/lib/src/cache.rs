@@ -97,7 +97,7 @@ impl<U> SDK<U> {
         Ok(self
             .cache
             .try_borrow()
-            .or(Err(InternalError::RetryLater(None)))?
+            .map_err(|_| InternalError::RetryLater(None))?
             .get(cache_key)
             .map(clone_resp))
     }
@@ -116,11 +116,10 @@ impl<U> SDK<U> {
             // Cache 429 responses so we don't exceed advised retry-after
             http::StatusCode::TOO_MANY_REQUESTS => {
                 if let Some(delay) = delay_from_response(resp) {
-                    self.cache.try_borrow_mut().or(Err(InternalError::RetryLater(None)))?.insert(
-                        cache_key,
-                        clone_resp(resp),
-                        delay,
-                    );
+                    self.cache
+                        .try_borrow_mut()
+                        .map_err(|_| InternalError::RetryLater(None))?
+                        .insert(cache_key, clone_resp(resp), delay);
                 }
             }
             // Cache 200 OK on GET requests for 1 second.
@@ -129,7 +128,7 @@ impl<U> SDK<U> {
             http::StatusCode::OK if *method == http::Method::GET => self
                 .cache
                 .try_borrow_mut()
-                .or(Err(InternalError::RetryLater(None)))?
+                .map_err(|_| InternalError::RetryLater(None))?
                 .insert(cache_key, clone_resp(resp), Duration::from_secs(1)),
             _ => match *method {
                 // Mutating methods invalidate cached GET requests by including any parent cached
@@ -140,7 +139,7 @@ impl<U> SDK<U> {
                 http::Method::DELETE | http::Method::POST | http::Method::PUT => self
                     .cache
                     .try_borrow_mut()
-                    .or(Err(InternalError::RetryLater(None)))?
+                    .map_err(|_| InternalError::RetryLater(None))?
                     .remove_path(get_cache_key),
                 _ => (),
             },
