@@ -85,10 +85,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8303432794159193481">Brave Browser Dev-appar</translation>
 <translation id="8292967014767479012">Brave Browser-appar</translation>
 <translation id="4743468424889072281">Brave Browser utvecklingsappar</translation>
-<translation id="239760341987199724">Använd Brave som standardwebbläsare</translation>
-<translation id="1391855377994926460">Fortsätt surfa snabbare på webben – upp till sex gånger snabbare på större nyhetssajter.</translation>
-<translation id="9218430445555521422">Använd som standard</translation>
-<translation id="3479552764303398839">Inte nu</translation>
 <translation id="732814027519296280">Vill du göra Brave Search ännu bättre?</translation>
 <translation id="2677865600861971449">Registrera dig till Web Discovery Project för att anonymt bidra med sök&amp; surfdata och förbättra Brave Search-resultat för alla. Sekretessbevarande. Och noll ansträngning. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Läs mer</translation>
@@ -204,9 +200,10 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Ange Brave som standardwebbläsare för att få Braves sekretesskydd på varje webbsida du öppnar.</translation>
 <translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
 <translation id="2370739752330685659">Kanske senare</translation>
+<translation id="7537601449003285327">Fäst i aktivitetsfältet</translation>
 <translation id="961012016278832836">Äldre Microsoft Edge-version</translation>
 <translation id="6436994631426134065">Importerade från <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Kopiera ren länk (endast huvud-URL)</translation>
+<translation id="7630214457764713113">Kopiera ren länk</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="4472575034687746823">Kom igång</translation>
@@ -246,10 +243,17 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3719826155360621982">Hemsida</translation>
 <translation id="5448570825852364919">Tom sida</translation>
 <translation id="5919424224662539292">Anpassa bakgrundsbilden och widgets som visas på den nya fliksidan</translation>
+<translation id="7461924472993315131">Fäst</translation>
+<translation id="7506648566440714944">Brave är redan fäst</translation>
+<translation id="3195845168740336657">Shields-inställningar</translation>
+<translation id="754769152790647708">Shields-status</translation>
+<translation id="3615717588724840230">Webbplatser kan blockera spårare, annonser och fingeravtryck med Shields</translation>
+<translation id="5690973901138662477">Shields aktiverad</translation>
+<translation id="4697275813919189958">Shields inaktiverad</translation>
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="7133511168130368997">Blockera spårare och annonser som följer dig på nätet.</translation>
 <translation id="2761825942249694703">Detta är standardinställningarna för Shields. De gäller alla webbplatser om du inte ändrar något i Shields-panelen på en viss webbplats. Att ändra dessa påverkar inte dina befintliga inställningar per webbplats.</translation>
-<translation id="1435116578479068303">Detta kommer att blockera de flesta annonser på webbplatser, inte Brave Private Ads – de kontrolleras i <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-inställningarna .</translation>
+<translation id="1435116578479068303">Detta kommer att blockera de flesta annonser på webbplatser, inte Brave Private Ads – de kontrolleras i <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-inställningarna.</translation>
 <translation id="8452536890042542134">Detta blockerar de flesta annonser på webbplatser.</translation>
 <translation id="4800195524776354947">Visa antalet saker som blockeras på ikonen med en sköld</translation>
 <translation id="5510493033031835532">Automatiskt omdirigerade AMP-sidor</translation>
@@ -259,7 +263,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2133317862976486547">Blockning av spårare och annonser</translation>
 <translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="4824468494729001999">Blockera skript</translation>
 <translation id="6531019308847917584">Blockera fingeravtryck</translation>
 <translation id="5533533363827555308">Strikt, kan bryta sajter</translation>
@@ -269,14 +272,14 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7390783310074170337">Standardvy</translation>
 <translation id="130615081792797568">Enkel vy</translation>
 <translation id="2360360976480535628">Avancerad vy</translation>
-<translation id="6486983549008741930">Innehållsfiltrering</translation>
+<translation id="101592339984642584">Innehållsfiltrering</translation>
 <translation id="8694564340481124390">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och irritationsmoment.</translation>
-<translation id="6522618763902154348">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och 
-    <ph name="BEGIN_LINK"/>irritationsmoment<ph name="END_LINK"/>.</translation>
+<translation id="4877657558909976793">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och 
+ <ph name="BEGIN_LINK"/>irritationsmoment<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Lägg till anpassade filterlistor</translation>
 <translation id="1020877116991797978">Lägg till ytterligare listor som skapas och underhålls av gemenskapen som du litar på.</translation>
 <translation id="7617831480435794399">Prenumerera bara på listor från entiteter som du litar på. Din webbläsare söker regelbundet efter listuppdateringar från webbadressen du anger och avslöjar din IP-adress för deras server.</translation>
-<translation id="2831397936251948638">Skapa anpassade filter</translation>
+<translation id="8580328754808744073">Skapa anpassade filter</translation>
 <translation id="4618274268052410139">Lägg till anpassade filter som du har skapat, en per rad, i fältet nedan. Se till att använda <ph name="BEGIN_LINK"/>Adblock-filtersyntaxen<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Lägg till</translation>
 <translation id="571950783952070673">Listans URL</translation>
@@ -292,6 +295,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5438573563213942361">Anpassade listor</translation>
 <translation id="4182731739150761577">Se fullständig lista</translation>
 <translation id="1340263054776016283">Ange filterlistans URL</translation>
+<translation id="8578397014396032341">Innehållsfilter</translation>
 <translation id="6821903322090655051">Brave Rewards är inaktiverade</translation>
 <translation id="413570371620795359">Öppna Rewards-panelen för att aktivera och komma igång</translation>
 <translation id="3849957491997306859">Auto-upptäck</translation>
@@ -402,6 +406,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5927916530277631319">Metod för att lösa ostoppbara domäner</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/> om Ethereum-integritetsskydd.</translation>
 <translation id="5248318250177143470">Metod för att lösa Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Tillåt ENS-sökning utanför kedja.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/> om ENS-sökning utanför kedja och sekretessöverväganden.</translation>
 <translation id="6241402707160226266">Privat fönster med Tor</translation>
 <translation id="8762452230727230396">Tor gömmer din IP-adress från sidorna du besöker.</translation>
 <translation id="2959986444009520721">Använd broar</translation>

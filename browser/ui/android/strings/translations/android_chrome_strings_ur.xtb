@@ -454,6 +454,7 @@
 <translation id="3435465986463792564">کیا آپ کے پاس بہت ساری ونڈوز ہیں؟ آپ یہاں سے ان کا نظم کر سکتے ہیں</translation>
 <translation id="3443221991560634068">موجودہ صفحہ دوبارہ لوڈ کریں</translation>
 <translation id="3444179773590444986">سائٹس کیلئے گہری تھیم پر تاثرات کا اشتراک کریں؟</translation>
+<translation id="7384339501748168186">‏آپ کی رازداری کے تحفظ کے لیے، Brave اس فیلڈ میں آپ کا پاس ورڈ آٹو فل نہیں کرے گا۔</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 ڈاؤن لوڈ شیڈول کیا گیا}other{# ڈاؤن لوڈز شیڈول کیے گئے}}</translation>
 <translation id="3474624961160222204">بطور <ph name="NAME"/> جاری رکھیں</translation>
 <translation id="3478363558367712427">آپ اپنا سرچ انجن منتخب کر سکتے ہیں</translation>
@@ -679,6 +680,7 @@
 <translation id="4763480195061959176">ویڈیو</translation>
 <translation id="4766313118839197559">پاس ورڈز اس آلہ پر پاس ورڈ مینیجر میں محفوظ کیے جاتے ہیں</translation>
 <translation id="4766678251456904326">اکاؤنٹ کو آلہ میں شامل کریں</translation>
+<translation id="4787736314074622408">کیا آپ <ph name="ITEM_TITLE"/> کو حذف کرنا چاہتے ہیں؟</translation>
 <translation id="4791358705705538979">آپ کو پورے ویب پر چیک آؤٹ جیسی ٹاسکس کو مکمل کرنے میں مدد کرتا ہے</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">‏پاس فریز کی مرموز کاری میں Google Pay سے ادائیگی کے طریقے اور پتے شامل نہیں ہوتے ہیں۔
@@ -748,6 +750,7 @@
 <translation id="4744980273298156620">‏جلد ہی، نیا ٹیب کھولنے پر آپ کو <ph name="SITE_NAME"/> سے کہانیاں دکھائی دیں گی۔ آپ جن سائٹس کی پیروی کرتے ہیں انہیں آپ کے Brave اکاؤنٹ میں محفوظ کیا جاتا ہے۔ آپ Discover کی ترتیبات میں ان کا نظم کر سکتے ہیں۔</translation>
 <translation id="5091249083535528968">توسیع کردہ استعمال کا ڈیٹا</translation>
 <translation id="509429900233858213">ایک خرابی پیش آگئی۔</translation>
+<translation id="5099845111805573968">آپ کے ڈیسک ٹاپ سائٹ کو منتخب کرنے کے بعد ہر بار آپ کے سائٹ کو ملاحظہ کرنے پر اس پر ترتیب لاگو ہوتی ہے</translation>
 <translation id="225414324447409614">‏اگر کوئی سائٹ آپ کا پاس ورڈ چرانے کی کوشش کرتی ہے یا جب آپ نقصان دہ فائل ڈاؤن لوڈ کرتے ہیں تو Brave محفوظ براؤزنگ پر صفحہ کے مواد کے کچھ حصوں سمیت URLs بھیج سکتا ہے</translation>
 <translation id="510275257476243843">1 گھنٹہ باقی</translation>
 <translation id="5115811374190515607"><ph name="PRODUCT_NAME"/> تک</translation>
@@ -907,6 +910,7 @@
 <translation id="5958275228015807058">اپنی فائلیں اور صفحات ڈاؤن لوڈز میں تلاش کریں</translation>
 <translation id="5962718611393537961">سکیڑنے کیلئے تھپتھپائیں</translation>
 <translation id="5964869237734432770">تصویری تفصیلات کو روکیں</translation>
+<translation id="9135546826883360971">‏Brave آپ کے انتخاب کو یاد رکھے گا</translation>
 <translation id="5979084224081478209">پاس ورڈز چیک کریں</translation>
 <translation id="5995726099713306770">صفحے کو دوبارہ لوڈ کریں؟</translation>
 <translation id="6456271171669383967">‏Brave کو رکھیں</translation>
@@ -946,6 +950,7 @@
 <translation id="6192907950379606605">تصویری تفصیلات حاصل کریں</translation>
 <translation id="8367262879301982880">‏پاس ورڈز اس آلہ پر Brave پاس ورڈ مینیجر میں محفوظ کیے جاتے ہیں</translation>
 <translation id="620197886010707372">‏Google Play کے ساتھ <ph name="APPNAME"/> کے لیے ایپ کھولیں؟</translation>
+<translation id="6202812185118613467">مطابقت پذیری شروع کرنے کے لیے دوبارہ سائن ان کریں</translation>
 <translation id="6203593061661911168">‏ڈاؤن لوڈ Wi-Fi آن ہونے پر شروع ہوگا</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> نہیں؟</translation>
 <translation id="6211386937064921208">اس صفحہ کا پیش منظر دکھایا جا رہا ہے</translation>
@@ -1083,6 +1088,7 @@
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>، ٹیب منتخب ہو گیا</translation>
 <translation id="6828070228333235514">قیمت کو ٹریک کرنا بند کریں</translation>
+<translation id="6830728435402077660">محفوظ نہیں</translation>
 <translation id="6833996806551876956">رازداری سینڈ باکس کا ٹرائل</translation>
 <translation id="6836206421467243968"><ph name="TITLE_OF_GROUP"/> کے ٹیب گروپ کو پس منظر کے ایک نئے ٹیب گروپ کے بطور بحال کریں۔</translation>
 <translation id="6846298663435243399">لوڈ ہو رہا ہے…</translation>
@@ -1393,7 +1399,7 @@
 <translation id="8460448946170646641">کلیدی رازداری اور سیکیورٹی کنٹرولز کا جائزہ لیں</translation>
 <translation id="8461694314515752532">اپنے ذاتی مطابقت پذیر پاس فریز کے ساتھ مطابقت پذیر کردہ ڈیٹا کی مرموزکاری کریں</translation>
 <translation id="8466613982764129868">یہ یقینی بنائیں کہ <ph name="TARGET_DEVICE_NAME"/> انٹرنیٹ سے منسلک ہے</translation>
-<translation id="8473863474539038330">پتے وغیرہ</translation>
+<translation id="5633907266617216186">پتے وغیرہ</translation>
 <translation id="8481921391193215807">‏آن ہونے پر، سائٹس اپنے مواد اور سروسز کو فراہم کرنے کے لیے یہاں دکھائی گئی رازداری کے تحفظ کی تکنیکوں کا استعمال کر سکتی ہیں۔ ان میں کراس سائٹ ٹریکنگ کے متبادلات شامل ہیں۔ آنے والے وقت میں مزید ٹرائلز شامل کئے جا سکتے ہیں۔
 
 <ph name="BEGIN_LIST_ITEM1"/>مشتہرین اور ناشرین FLoC کا استعمال کر سکتے ہیں۔<ph name="END_LIST_ITEM1"/>

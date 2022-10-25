@@ -85,10 +85,6 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8303432794159193481">Razvojne aplikacije Brave pregledača</translation>
 <translation id="8292967014767479012">Aplikacije Brave pregledača</translation>
 <translation id="4743468424889072281">Razvojne aplikacije Brave pregledača</translation>
-<translation id="239760341987199724">Подеси Brave као подразумевани прегледач</translation>
-<translation id="1391855377994926460">Nastavite brže pregledavati mrežu – do 6 puta brže na velikim novinskim stranicama.</translation>
-<translation id="9218430445555521422">Подеси као подразумеван</translation>
-<translation id="3479552764303398839">Не сада</translation>
 <translation id="732814027519296280">Želite li da Brave pretragu učinite još boljom?</translation>
 <translation id="2677865600861971449">Pridružite se projektu istraživanja veba kako biste anonimno priložili neke podatke o pretrazi &amp; pregledanju, i tako poboljšali rezultate Brave pretrage za sve korisnike. Zaštita privatnosti. Bez imalo napora. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Научи више</translation>
@@ -204,9 +200,10 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Podesite Brave kao podrazumevani pretraživač kako biste dobili Brave zaštite privatnosti na svakoj veb-stranici koju otvorite.</translation>
 <translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
 <translation id="2370739752330685659">Možda kasnije</translation>
+<translation id="7537601449003285327">Pin to taskbar (Закачи на траку задатака)</translation>
 <translation id="961012016278832836">Zastarela verzija pregledača Microsoft Edge</translation>
 <translation id="6436994631426134065">Uvezeno iz <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Kopirati čist link (samo glavni URL)</translation>
+<translation id="7630214457764713113">Kopirati čist link</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="4472575034687746823">Започнимо</translation>
@@ -246,10 +243,17 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3719826155360621982">Početna stranica</translation>
 <translation id="5448570825852364919">Prazna strana</translation>
 <translation id="5919424224662539292">Prilagodite pozadinsku sliku i vidžete koji se pojavljuju na stranici nove kartice</translation>
+<translation id="7461924472993315131">Закачи</translation>
+<translation id="7506648566440714944">Brave je već zakačen</translation>
+<translation id="3195845168740336657">Podešavanje štitova</translation>
+<translation id="754769152790647708">Status štitova</translation>
+<translation id="3615717588724840230">Sajtovi mogu da blokiraju praćenja, oglase i beleženje posebnih obeležja koristeći štitove</translation>
+<translation id="5690973901138662477">Uključeni štitovi</translation>
+<translation id="4697275813919189958">Isključeni štitovi</translation>
 <translation id="6303294677342628402">Štitovi</translation>
 <translation id="7133511168130368997">Blokiraj praćenja i reklame koje te prate preko veba.</translation>
 <translation id="2761825942249694703">Ovo su podrazumevana Shields podešavanja. Ona se primenjuju na sve veb lokacije osim ukoliko nešto ne promenite u Shields panelu određene lokacije. Menjanje ovoga neće uticati na vaša postojeća podešavanja po lokaciji.</translation>
-<translation id="1435116578479068303">Ovo će blokirati većinu reklama na veb-sajtovima, ali ne Brave Private Ads - one se kontrolišu u <ph name="BEGIN_LINK"/> Brave Rewards <ph name="END_LINK"/> podešavanjima.</translation>
+<translation id="1435116578479068303">Ovo će blokirati većinu reklama na veb-sajtovima, ali ne Brave privatne oglase – oni se kontrolišu u podešavanjima za <ph name="BEGIN_LINK"/>Brave nagrade<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">To će blokirati većinu reklama na veb-sajtovima.</translation>
 <translation id="4800195524776354947">Pokaži broj blokiranih stavki na Štit ikonici</translation>
 <translation id="5510493033031835532">Automatsko preusmeravanje AMP stranica</translation>
@@ -259,7 +263,6 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2133317862976486547">Praćenja &amp; blokiranje reklama</translation>
 <translation id="4078738236287221428">Agresivno</translation>
 <translation id="7740996059027112821">Стандардно</translation>
-<translation id="3570081523466826008">Nadogradi veze u HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="6531019308847917584">Blokirati otiske prstiju</translation>
 <translation id="5533533363827555308">Strogo, može da probija lokacije</translation>
@@ -269,14 +272,14 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7390783310074170337">Podrazumevani prikaz</translation>
 <translation id="130615081792797568">Jednostavan prikaz</translation>
 <translation id="2360360976480535628">Prikaz više opcija</translation>
-<translation id="6486983549008741930">Filtriranje sadržaja</translation>
+<translation id="101592339984642584">Filtriranje sadržaja</translation>
 <translation id="8694564340481124390">Omogućuje prilagođene filtere koji blokiraju regionalno i jezičko praćenje i smetnje.</translation>
-<translation id="6522618763902154348">Omogućuje prilagođene filtere koji blokiraju regionalno i jezičko praćenje i 
+<translation id="4877657558909976793">Omogućuje prilagođene filtere koji blokiraju regionalno i jezičko praćenje i
     <ph name="BEGIN_LINK"/>smetnje<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Dodavanje prilagođenih lista filtera</translation>
 <translation id="1020877116991797978">Dodajte liste koje kreira i održava vaša pouzdana zajednica.</translation>
 <translation id="7617831480435794399">Prijavite se samo za liste iz pouzdanih izvora. Vaš pretraživač će povremeno proveriti da li je ažurirana lista za URL koji ste upisali, pri čemu će otkriti vašu IP adresu njihovom serveru.</translation>
-<translation id="2831397936251948638">Kreiranje prilagođenih filtera</translation>
+<translation id="8580328754808744073">Kreiranje prilagođenih filtera</translation>
 <translation id="4618274268052410139">Dodajte prilagođene filtere koje ste kreirali, jedan po liniji, u polju ispod. Obavezno koristite <ph name="BEGIN_LINK"/>Adblock filter sintaksu<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="571950783952070673">URL adresa liste</translation>
@@ -292,6 +295,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5438573563213942361">Prilagođene liste</translation>
 <translation id="4182731739150761577">Prikaži kompletnu listu</translation>
 <translation id="1340263054776016283">Upišite URL adresu liste filtera</translation>
+<translation id="8578397014396032341">Filteri sadržaja</translation>
 <translation id="6821903322090655051">Brave nagrade su onemogućene</translation>
 <translation id="413570371620795359">Za aktiviranje i započinjanje otvorite tablu za nagrade</translation>
 <translation id="3849957491997306859">Automatsko otkrivanje</translation>
@@ -402,6 +406,8 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o razmatranjima privatnosti Ethereum-a.</translation>
 <translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Dozvoliti ENS pronalaženje van lanca.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o pitanjima privatnosti što se tiče ENS pronalaženja van lanca.</translation>
 <translation id="6241402707160226266">Privatni prozor u Toru</translation>
 <translation id="8762452230727230396">Tor krije vašu IP adresu od lokacija koje ste posetili.</translation>
 <translation id="2959986444009520721">Koristite mostove</translation>

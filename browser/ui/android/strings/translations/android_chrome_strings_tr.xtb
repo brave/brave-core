@@ -441,6 +441,7 @@ Belirli bir siteye ait veya tüm tarama geçmişinizi sildiğinizde bununla ili�
 <translation id="3435465986463792564">Çok fazla pencere mi açık? Hepsini buradan yönetebilirsiniz</translation>
 <translation id="3443221991560634068">Geçerli sayfayı yeniden yükler</translation>
 <translation id="3444179773590444986">Sitelerdeki koyu temayla ilgili geri bildirim paylaşmak ister misiniz?</translation>
+<translation id="7384339501748168186">Gizliliğinizi korumak için Brave, bu alanda şifrenizi otomatik olarak doldurmayacaktır.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 indirme işlemi programlandı}other{# indirme işlemi programlandı}}</translation>
 <translation id="3474624961160222204"><ph name="NAME"/> olarak devam et</translation>
 <translation id="3478363558367712427">Arama motorunuzu seçebilirsiniz</translation>
@@ -658,6 +659,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Şifreler bu cihazda Şifre Yöneticisi'ne kaydedilir</translation>
 <translation id="4766678251456904326">Hesabı cihaza ekleyin</translation>
+<translation id="4787736314074622408"><ph name="ITEM_TITLE"/> adlı dosyayı silmek istiyor musunuz?</translation>
 <translation id="4791358705705538979">Web'de çeşitli görevleri (ör. ödeme yapma) tamamlamanıza yardımcı olur</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Parolayla şifreleme, Google Pay'deki adresleri ve ödeme yöntemlerini kapsamaz.
@@ -726,6 +728,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="4744980273298156620">Yakında yeni sekme açtığınızda <ph name="SITE_NAME"/> kaynağından haberler göreceksiniz. Takip ettiğiniz siteler Brave hesabınıza kaydedilir. Bunları Keşfet ayarlarından yönetebilirsiniz.</translation>
 <translation id="5091249083535528968">Genişletilmiş kullanım verileri</translation>
 <translation id="509429900233858213">Bir hata oluştu.</translation>
+<translation id="5099845111805573968">Masaüstü sitesini bir kez seçtiğinizde bu ayar her ziyaret ettiğinizde siteye uygulanır</translation>
 <translation id="225414324447409614">Brave, bir sitenin şifrenizi çalmaya çalışması veya zararlı bir dosya indirmeniz halinde Güvenli Tarama'ya sayfa içeriğinden parçalarla birlikte URL'ler gönderebilir</translation>
 <translation id="510275257476243843">1 saat kaldı</translation>
 <translation id="5115811374190515607">Hedef: <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="5958275228015807058">Dosyalarınızı ve sayfalarınızı İndirilenler bölümünde bulabilirsiniz</translation>
 <translation id="5962718611393537961">Daraltmak için dokunun</translation>
 <translation id="5964869237734432770">Resim açıklamasını durdur</translation>
+<translation id="9135546826883360971">Brave seçiminizi hatırlar</translation>
 <translation id="5979084224081478209">Şifreleri kontrol et</translation>
 <translation id="5995726099713306770">Sayfa tekrar indirilsin mi?</translation>
 <translation id="6456271171669383967">Brave kalsın</translation>
@@ -920,6 +924,7 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="6192907950379606605">Resim açıklaması al</translation>
 <translation id="8367262879301982880">Şifreler bu cihazda Brave Şifre Yöneticisi'ne kaydedilir</translation>
 <translation id="620197886010707372"><ph name="APPNAME"/> uygulaması Google Play ile açılsın mı?</translation>
+<translation id="6202812185118613467">Senkronizasyonu başlatmak için tekrar oturum açın</translation>
 <translation id="6203593061661911168">İndirme kablosuz bağlantı üzerinden başlatılacak</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> değil misiniz?</translation>
 <translation id="6211386937064921208">Sayfanın önizlemesi gösteriliyor</translation>
@@ -1051,6 +1056,7 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/> sekmesi seçildi</translation>
 <translation id="6828070228333235514">Fiyat takibini durdur</translation>
+<translation id="6830728435402077660">Güvenli değil</translation>
 <translation id="6833996806551876956">Privacy Sandbox denemesi</translation>
 <translation id="6836206421467243968"><ph name="TITLE_OF_GROUP"/> sekme grubunu, yeni bir arka plan sekme grubu olarak geri yükleyin.</translation>
 <translation id="6846298663435243399">Yükleniyor...</translation>
@@ -1213,7 +1219,7 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="7772032839648071052">Parolayı onayla</translation>
 <translation id="7772375229873196092"><ph name="APP_NAME"/> penceresini kapat</translation>
 <translation id="7774809984919390718">{PAYMENT_METHOD,plural, =1{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 ve <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> ödeme yöntemi daha}other{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 ve <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> ödeme yöntemi daha}}</translation>
-<translation id="7778840695157240389">Yeni hikaye için daha sonra tekrar kontrol edin</translation>
+<translation id="7778840695157240389">Yeni haberler için sonra yine gelin</translation>
 <translation id="7703329426540523149">Sizi Brave uygulamalarında korumak için oturumunuz açıkken bu verileri geçici olarak Brave Hesabınıza bağlar</translation>
 <translation id="4885054029571583374">Brave Asistan hem web'de arama yapmak hem de açtığınız sitelerle etkileşim kurmak için daha iyi ses deneyimi sağlar. Brave Asistan, Asistan'ı kullandığınız sitelerin URL'leri ile içeriklerini alır.</translation>
 <translation id="7791543448312431591">Ekle</translation>
@@ -1343,7 +1349,7 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="8430824733382774043">Yalnızca ekran görüntüsü paylaşılıyor</translation>
 <translation id="8438566539970814960">Aramaları ve göz atmayı daha iyi yap</translation>
 <translation id="8439974325294139057"><ph name="LANG"/> - Dil hazır, <ph name="APP_NAME"/> uygulamasını yeniden başlatın.</translation>
-<translation id="8442258441309440798">Kullanılabilir hikaye yok</translation>
+<translation id="8442258441309440798">Şu anda yeni haber bulunmuyor</translation>
 <translation id="4058091506841967397">Brave güncellenemiyor</translation>
 <translation id="8445448999790540984">Şifreler dışa aktarılamıyor</translation>
 <translation id="8446884382197647889">Daha Fazla Bilgi Edinin</translation>
@@ -1351,7 +1357,7 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="8460448946170646641">Önemli gizlilik ve güvenlik kontrollerini inceleyin</translation>
 <translation id="8461694314515752532">Senkronize edilen verileri kendi senkronizasyon parolanızla şifreleyin</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/> cihazının internete bağlı olduğundan emin olun</translation>
-<translation id="8473863474539038330">Adresler ve daha fazlası</translation>
+<translation id="5633907266617216186">Adresler ve daha fazlası</translation>
 <translation id="8481921391193215807">Etkinleştirildiğinde, siteler içeriklerini ve hizmetlerini sunmak için burada gösterilen gizliliği koruma tekniklerini kullanabilir. Bu teknikler, siteler arası izlemeye alternatif çözümler sağlar. Zaman içinde başka denemeler de eklenebilir.
 
 <ph name="BEGIN_LIST_ITEM1"/>Reklamverenler ve yayıncılar FLoC'u kullanabilir.<ph name="END_LIST_ITEM1"/>

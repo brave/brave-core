@@ -441,6 +441,7 @@ Kur ti fshin historikun tënd të shfletimit — të gjithë ose për një sajt 
 <translation id="3435465986463792564">Ke shumë dritare? Mund t'i menaxhosh ato nga këtu</translation>
 <translation id="3443221991560634068">Ringarko faqen aktuale</translation>
 <translation id="3444179773590444986">Të ndahen komentet për temën e errët për sajtet?</translation>
+<translation id="7384339501748168186">Për të mbrojtur privatësinë tënde, Brave nuk do ta plotësojë automatikisht fjalëkalimin tënd në këtë fushë.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 shkarkim i planifikuar}other{# shkarkime të planifikuara}}</translation>
 <translation id="3474624961160222204">Vazhdo si <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Mund të zgjedhësh motorin tënd të kërkimit</translation>
@@ -658,6 +659,7 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Fjalëkalimet ruhen në "Menaxherin e fjalëkalimeve" në këtë pajisje</translation>
 <translation id="4766678251456904326">Shto llogari në pajisje</translation>
+<translation id="4787736314074622408">Dëshiron të fshish <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Të ndihmon me përfundimin e detyrave, si p.sh. përfundimi i blerjes, nëpër ueb</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Enkriptimi me frazën e kalimit nuk përfshin mënyrat e pagesës dhe adresat nga Google Pay.
@@ -726,6 +728,7 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="4744980273298156620">Së shpejti do të shikosh histori nga <ph name="SITE_NAME"/> kur të hapësh një skedë të re. Sajtet që ndjek ruhen në llogarinë tënde të Brave. Mund t'i menaxhosh te cilësimet e "Zbulo".</translation>
 <translation id="5091249083535528968">Të dhënat e zgjeruara të përdorimit</translation>
 <translation id="509429900233858213">Ndodhi një gabim.</translation>
+<translation id="5099845111805573968">Kur zgjedh një herë sajtin për desktop, cilësimi zbatohet te sajti sa herë që e viziton atë</translation>
 <translation id="225414324447409614">Nëse një sajt përpiqet të vjedhë fjalëkalimin tënd ose kur shkarkon një skedar të dëmshëm, Brave mund t'i dërgojë URL-të, duke përfshirë pjesë të përmbajtjes së faqeve te "Shfletimi i sigurt"</translation>
 <translation id="510275257476243843">1 orë e mbetur</translation>
 <translation id="5115811374190515607">te <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="5958275228015807058">Gjej skedarët dhe faqet e tua te "Shkarkimet"</translation>
 <translation id="5962718611393537961">Trokit për të palosur</translation>
 <translation id="5964869237734432770">Ndalo përshkrimet e imazheve</translation>
+<translation id="9135546826883360971">Brave do ta kujtojë këtë zgjedhje</translation>
 <translation id="5979084224081478209">Kontrollo fjalëkalimet</translation>
 <translation id="5995726099713306770">Të shkarkohet faqja sërish?</translation>
 <translation id="6456271171669383967">Mbaj Brave</translation>
@@ -920,6 +924,7 @@ Provat për Privacy Sandbox janë ende në zhvillim aktiv dhe ofrohen në rajone
 <translation id="6192907950379606605">Merr përshkrimet e imazheve</translation>
 <translation id="8367262879301982880">Fjalëkalimet ruhen në "Menaxherin e fjalëkalimeve të Brave" në këtë pajisje</translation>
 <translation id="620197886010707372">Të hapet aplikacioni për <ph name="APPNAME"/> me Brave Play?</translation>
+<translation id="6202812185118613467">Identifikohu përsëri për të nisur sinkronizimin</translation>
 <translation id="6203593061661911168">Shkarkimi do të fillojë kur të jesh në Wi-Fi</translation>
 <translation id="6210748933810148297">Nuk je <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Po shikon paraprakisht këtë faqe</translation>
@@ -1051,6 +1056,7 @@ Për shembull, disa sajte uebi mund t'i përgjigjen kësaj kërkese duke të tre
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612">Skeda <ph name="TAB_TITLE"/> është zgjedhur</translation>
 <translation id="6828070228333235514">Ndalo monitorimin e çmimit</translation>
+<translation id="6830728435402077660">Jo e sigurt</translation>
 <translation id="6833996806551876956">Prova e "Nismës për mjedis uebi privat"</translation>
 <translation id="6836206421467243968">Restauro grupin e skedave "<ph name="TITLE_OF_GROUP"/>" si një grup të ri të skedave në sfond.</translation>
 <translation id="6846298663435243399">Po ngarkohet...</translation>
@@ -1353,7 +1359,7 @@ Për shembull, disa sajte uebi mund t'i përgjigjen kësaj kërkese duke të tre
 <translation id="8460448946170646641">Shqyrto kontrollet kryesore të privatësisë dhe sigurisë</translation>
 <translation id="8461694314515752532">Enkripto të dhënat e sinkronizuara me frazën tënde të kalimit për sinkronizimin</translation>
 <translation id="8466613982764129868">Sigurohu që <ph name="TARGET_DEVICE_NAME"/> të jetë lidhur me internetin</translation>
-<translation id="8473863474539038330">Adresat dhe të tjera</translation>
+<translation id="5633907266617216186">Adresat dhe të tjera</translation>
 <translation id="8481921391193215807">Kur janë aktive, sajtet mund të përdorin teknikat e ruajtjes së privatësisë që shfaqen këtu për të ofruar përmbajtjen dhe shërbimet e tyre. Këto përfshijnë alternativa për gjurmimin ndërmjet sajteve. Mund të shtohen prova të tjera me kalimin e kohës.
 
 <ph name="BEGIN_LIST_ITEM1"/>Reklamuesit dhe botuesit mund të përdorin teknikën FLoC.<ph name="END_LIST_ITEM1"/>

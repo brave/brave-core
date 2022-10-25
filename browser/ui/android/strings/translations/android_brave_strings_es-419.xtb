@@ -2,7 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="es-419">
 <translation id="7307834434086582547">Activar/desactivar escudos de Brave</translation>
+<translation id="6945863270524203017">Recibe actualizaciones de privacidad semanales sobre el bloqueo de rastreadores y anuncios.</translation>
+<translation id="4324735664183300693">Activar notificaciones</translation>
 <translation id="3570081523466826008">Actualizar las conexiones a HTTPS</translation>
+<translation id="5153702175393349577">Fecha de la próxima propina</translation>
+<translation id="8979401359137062629">Nota:</translation>
+<translation id="7277134233385925078">Configurar propina mensual</translation>
+<translation id="3765933240178364575">Importe de la propina única</translation>
+<translation id="1101015459918930887">Tu propina puede tardar varios minutos en procesarse</translation>
+<translation id="4088764345615745058">Monto personalizado de propina</translation>
+<translation id="8759753423332885148">Más información.</translation>
+<translation id="3271043362279673449">¡Gracias por tu apoyo!</translation>
+<translation id="3312470408978098625">Tu propina única se ha enviado.</translation>
+<translation id="9088057605518918276">Se ha establecido una propina mensual.</translation>
+<translation id="2978223787436054634">Tuit sobre tu ayuda</translation>
+<translation id="1166682575529520472">Mensual</translation>
+<translation id="5906820630265272615">Fondos BAT</translation>
+<translation id="3586352807094428968">Brave recauda el 5 % de la propina en concepto de tarifa de tramitación.</translation>
+<translation id="7723816962634734185">Monto personalizado</translation>
+<translation id="1986030365413628297">por ej.: 12,75 BAT</translation>
+<translation id="5087864757604726239">volver</translation>
+<translation id="6661699662755460155">cambiar</translation>
+<translation id="864162897141534043">Estás por dejar una propina</translation>
+<translation id="7286679368056222644">Tu apoyo mensual será</translation>
+<translation id="8195146845495346281">El importe mínimo de propina es 0,25 BAT</translation>
+<translation id="4647657427328119430">No hay suficientes tokens.</translation>
+<translation id="2359808026110333948">Continuar</translation>
+<translation id="4227681408214010862">¡Me encanta que #Brave me permita apoyar a mis creadores favoritos! Acabo de donar #BAT a <ph name="NAME"/>. Si se verifica en https://creators.brave.com antes del<ph name="DATE"/>, ¡los bats serán suyos!</translation>
+<translation id="6231182869178328516">Acabo de dar una propina a <ph name="NAME"/> con el navegador Brave. Puedes verlo en https://brave.com/tips.</translation>
+<translation id="7172012963002631836">Hubo un problema al enviar tu propina.</translation>
+<translation id="8994556588732085585">Cierra el banner de propinas, ábrelo otra vez e inténtalo de nuevo.</translation>
 <translation id="2278950434998763147">Abre algunos sitios utilizando una conexión HTTPS segura en lugar de HTTP simple.</translation>
 <translation id="5510493033031835532">Redirigir automáticamente las páginas AMP</translation>
 <translation id="5197219128592971597">Utiliza siempre las URL de la página original en lugar de las páginas móviles aceleradas (AMP) de Google</translation>
@@ -24,6 +53,8 @@
 <translation id="9148058034647219655">Salir</translation>
 <translation id="4022987104439075738">Puerta de enlace a IPFS</translation>
 <translation id="2688519859165248360">Permite la navegación a los recursos de IPFS a través de una puerta de enlace de IPFS.</translation>
+<translation id="8047754398610073499">Bloquear avisos de consentimiento de cookies</translation>
+<translation id="2621893359845808115">Bloquea las ventanas emergentes que solicitan aceptar o rechazar las cookies en sitios web</translation>
 <translation id="7534079972563542000">Dominios imparables</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/>Precio (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Servicio de DNS de Ethereum</translation>
@@ -124,17 +155,11 @@
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Has enviado una propina a:</translation>
 <translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
-<translation id="1166682575529520472">Mensual</translation>
 <translation id="1628742278973105368">Tu primera propina mensual se enviará el:</translation>
-<translation id="298349922412901215">NOTA: Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Seguiremos intentando contribuir hasta que el creador confirme la titularidad o hasta que hayan transcurrido 90 días.</translation>
+<translation id="1642952941091001113">Este creador aún no se ha registrado para recibir contribuciones de los usuarios de Brave. Seguiremos intentando contribuir hasta que se verifique o hayan transcurrido 90 días.</translation>
 <translation id="635752162765375187">AVISO: Este creador aún no ha configurado la recepción de propinas del servicio de billetera con custodia de Recompensas de Brave. Cualquier propina que envíes quedará pendiente, y se volverá a intentar el pago durante 90 días.</translation>
 <translation id="1910721550319506122">¡Bienvenido!</translation>
-<translation id="3165726837666415756">Puedes colaborar con este sitio enviando una propina. De esa manera, podrás agradecerle por haber creado contenido excelente. Los creadores de contenido verificados reciben el pago de sus propinas durante la primera semana de cada mes calendario.</translation>
-<translation id="1704859330137112950">Si lo desea, puede configurar propinas mensuales para apoyar a este sitio de manera continua.</translation>
-<translation id="245015745140252435">Monto de la propina</translation>
-<translation id="7873874596836611687">Saldo de recompensas:</translation>
-<translation id="2573313946367623146">Enviar mi propina</translation>
-<translation id="3250511771491660127">Hazlo mensualmente</translation>
+<translation id="5830114181292529917">Puedes apoyar este sitio web con una propina como forma de agradecimiento por su genial contenido.</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="1201402288615127009">Siguiente</translation>
 <translation id="8481779960444041069">Si quieres mejorar tu privacidad, establece Brave como tu navegador predeterminado</translation>
@@ -181,9 +206,6 @@
 <translation id="683765328936486920">en YouTube</translation>
 <translation id="8969049974285901797">en Twitch</translation>
 <translation id="3101693828171454453">no son suficientes <ph name="TOKEN"/>s</translation>
-<translation id="6940273954212603510">Por favor</translation>
-<translation id="1036277985068412734">agregar fondos</translation>
-<translation id="3492491948683276944">Configurar propina mensual</translation>
 <translation id="8038539967102225446">Los anuncios de Brave ya están aquí</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="4157741509680155021">DISPOSITIVOS EN LA CADENA DE SINCRONIZACIÓN</translation>
@@ -403,10 +425,10 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="223536150967420869">Comprar</translation>
 <translation id="2956070106555335453">Resumen</translation>
 <translation id="7465614181960492526">Gana tokens y retribuye</translation>
-<translation id="244362569344671266">Gana tokens por ver anuncios privados de Brave y apoya a creadores de contenido de forma automática.</translation>
+<translation id="2731539192954672606">Gana tokens por ver anuncios que respetan la privacidad y apoya a tus sitios y creadores de contenido favoritos de forma automática.</translation>
 <translation id="631124996535890460">Al continuar, aceptas las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Política de privacidad</translation>
-<translation id="6318696841371191107">Haz un recorrido rápido</translation>
+<translation id="185034574799484512">Hagamos un recorrido rápido</translation>
 <translation id="7930505144430343145">¡Te damos la bienvenida a Recompensas Brave!</translation>
 <translation id="3477340970981564961">Brave Private Ads te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.</translation>
 <translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
@@ -455,9 +477,6 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="2222442600106681391">2 BAT</translation>
 <translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
-<translation id="8762169086048682708">10 BAT</translation>
-<translation id="4548973860489847866">0,00 BAT</translation>
-<translation id="4193129043743994339">0,00 USD</translation>
 <translation id="8792121506918889955">Política de manejo de WebRTC IP</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
 <translation id="1822560017823072927">Interfaces públicas y privadas predeterminadas</translation>
@@ -470,7 +489,6 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="4472575034687746823">Comenzar</translation>
 <translation id="2759836790106646094">¡Haz una copia de seguridad de tu billetera ahora!</translation>
 <translation id="1078873179929044999">En el siguiente paso, verá una frase de recuperación de 12 palabras que puede usar para recuperar sus cuentas de criptoactivos principales. Guárdela en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
-<translation id="2359808026110333948">Continuar</translation>
 <translation id="5488357322146334497">Mensaje</translation>
 <translation id="1904000155026201268">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis frase de recuperación.</translation>
 <translation id="3933122286596948824">Tu frase de recuperación</translation>
@@ -865,4 +883,58 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="8423380132356660250">Abrir la aplicación de <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Actualizando el perfil de VPN...</translation>
 <translation id="7457027586454688423">Introduzca la contraseña de su billetera de Brave</translation>
+<translation id="6588595775439619209">Bloquear avisos de cookies</translation>
+<translation id="264682546981571963">¿Se cansó de los avisos de consentimiento de cookies?</translation>
+<translation id="4986297793092101884">Brave ya bloquea las cookies de terceros. También podemos bloquear los avisos de consentimiento de cookies.</translation>
+<translation id="4784306439879850873">Ten en cuenta que Brave no puede verificar qué sucederá si firmas. La firma autoriza casi cualquier operación en tu cuenta o en tu nombre, lo que incluye, entre otras cosas, dar un control total de tu cuenta y tus criptoactivos al sitio que realiza la solicitud. Firma solo si quieres realizar esta acción y confías en el sitio que envía la solicitud.</translation>
+<translation id="3474375934783434676">Firme bajo su propia responsabilidad</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/> de <ph name="SIZE"/></translation>
+<translation id="6450792191436242818">Programa del sistema</translation>
+<translation id="6252742184395380448">Programa de configuración</translation>
+<translation id="5358970666412490132">Programa de recompensas</translation>
+<translation id="346636227344244984">Programa de votación</translation>
+<translation id="3538368258493053874">Cargador BPF</translation>
+<translation id="2334098351242742927">Programa Ed25519</translation>
+<translation id="6421371987002247943">Programa de tokens</translation>
+<translation id="8780753288764281797">Programa Secp256k1</translation>
+<translation id="8504640708321980506">Datos</translation>
+<translation id="4771176409524282426">Crear cuenta</translation>
+<translation id="1755120947324658439">Asignar</translation>
+<translation id="7588707273764747927">Transferir</translation>
+<translation id="5328067049293286962">Crear cuenta con semilla</translation>
+<translation id="1512366326138054636">Cuenta de nonce avanzada</translation>
+<translation id="7042202638449257311">Retirar cuenta de nonce</translation>
+<translation id="6586085653712983224">Inicializar cuenta de nonce</translation>
+<translation id="8790312855368673743">Autorizar cuenta de nonce</translation>
+<translation id="5312748886432335174">Entregar</translation>
+<translation id="7678705217826797696">Entrega con semilla</translation>
+<translation id="7436137523759921028">Asignar con semilla</translation>
+<translation id="3360695936886670509">Transferir con semilla</translation>
+<translation id="7323636209143541483">Mejorar cuenta de nonce</translation>
+<translation id="616021855350068202">Inicializar acuñación</translation>
+<translation id="4377316227435786423">Inicializar cuenta</translation>
+<translation id="7474306790151660826">Inicializar multifirma</translation>
+<translation id="363258595406850968">Establecer autoridad</translation>
+<translation id="2091563464450586155">Acuñar a</translation>
+<translation id="1252941298291625577">Quemar</translation>
+<translation id="5211196599627796093">Cerrar cuenta</translation>
+<translation id="6988707241715050556">Congelar cuenta</translation>
+<translation id="857250415816680832">Descongelar cuenta</translation>
+<translation id="5453172892735755262">Transferir comprobado</translation>
+<translation id="471669767157904431">Aprobar comprobado</translation>
+<translation id="3530340583186873359">Acuñar a comprobado</translation>
+<translation id="5068456869800056740">Quemar comprobado</translation>
+<translation id="3004830385467519189">Inicializar cuenta 2</translation>
+<translation id="8026488633670875516">Sincronizar nativo</translation>
+<translation id="2024649614526778327">Inicializar cuenta 3</translation>
+<translation id="8382368767453083629">Inicializar multifirma 2</translation>
+<translation id="77243237706803459">Inicializar acuñación 2</translation>
+<translation id="583281660410589416">Desconocido</translation>
+<translation id="2862978891748913252">Selecciona tu país</translation>
+<translation id="3832588024105436400">Selecciona tu país para que podamos mostrarte las opciones y anuncios adecuados para tu región. <ph name="PRIVACY_POLICY"/></translation>
+<translation id="5666264859501108700">Se ha establecido en <ph name="COUNTRY_NAME"/> tu región para las Recompensas de Brave.</translation>
+<translation id="3180990265682133881">Lamentamos comunicarte que se ha producido un error al tratar de establecer tu país. Vuelve a intentarlo.</translation>
+<translation id="7352651011704765696">Algo salió mal</translation>
+<translation id="7144878232160441200">Volver a intentarlo</translation>
+<translation id="6040143037577758943">Cerrar</translation>
 </translationbundle>

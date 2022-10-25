@@ -441,6 +441,7 @@ Az összes böngészési előzmény vagy csak adott webhely böngészési előzm
 <translation id="3435465986463792564">Több ablak is meg van nyitva Önnél? Itt kezelheti őket.</translation>
 <translation id="3443221991560634068">Az aktuális oldal újratöltése</translation>
 <translation id="3444179773590444986">Megosztja velünk véleményét a webhelyeknél használt sötét témával kapcsolatban?</translation>
+<translation id="7384339501748168186">Adatai védelme érdekében a Brave nem tölti ki automatikusan a jelszót ebben a mezőben.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 ütemezett letöltés}other{# ütemezett letöltés}}</translation>
 <translation id="3474624961160222204">Folytatás mint <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Kiválaszthatja keresőmotorját</translation>
@@ -658,6 +659,7 @@ Előfordulhat, hogy Brave-fiókjában (a <ph name="BEGIN_LINK"/>myactivity.googl
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">A jelszavakat ezen az eszközön menti a rendszer a Jelszókezelőbe.</translation>
 <translation id="4766678251456904326">Fiók hozzáadása az eszközhöz</translation>
+<translation id="4787736314074622408">Törli a következőt: <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Segít a műveletek (pl. fizetés) elvégzésében a weben</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Az összetett jelszavas titkosítás nem tartalmazza a Google Payben megadott fizetési módokat és címeket.
@@ -726,6 +728,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="4744980273298156620">Új lap megnyitásakor hamarosan látni fogja a(z) <ph name="SITE_NAME"/> webhely történeteit. A követett webhelyeket a Brave-fiókjába menti a rendszer. A Discover beállításaiban kezelheti őket.</translation>
 <translation id="5091249083535528968">Bővített használati adatok</translation>
 <translation id="509429900233858213">Hiba történt.</translation>
+<translation id="5099845111805573968">Ha egyszer kiválasztja az Asztali webhely lehetőséget, akkor a rendszer minden további látogatáskor azt a beállítást alkalmazza</translation>
 <translation id="225414324447409614">Ha egy webhely megpróbálja ellopni az Ön jelszavát, illetve ha Ön ártalmas fájlt tölt le, akkor a Brave elküldheti az URL-eket (az oldaltartalmak részleteivel együtt) a Biztonságos Böngészésnek.</translation>
 <translation id="510275257476243843">1 óra van hátra</translation>
 <translation id="5115811374190515607">ide: <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="5958275228015807058">A fájlokat és oldalakat a Letöltések között találja meg</translation>
 <translation id="5962718611393537961">Koppintson az összecsukáshoz</translation>
 <translation id="5964869237734432770">Képleírások leállítása</translation>
+<translation id="9135546826883360971">A Brave megjegyzi a választását</translation>
 <translation id="5979084224081478209">Jelszavak ellenőrzése</translation>
 <translation id="5995726099713306770">Ismét letölti az oldalt?</translation>
 <translation id="6456271171669383967">A Brave megtartása</translation>
@@ -920,6 +924,7 @@ A Privacy Sandbox próbaverziói még mindig aktív fejlesztés alatt állnak, �
 <translation id="6192907950379606605">Képleírások lekérése</translation>
 <translation id="8367262879301982880">A jelszavakat ezen az eszközön menti a rendszer a Brave Jelszókezelőbe.</translation>
 <translation id="620197886010707372">Megnyitja a következőhöz tartozó alkalmazást a Google Play segítségével: <ph name="APPNAME"/>?</translation>
+<translation id="6202812185118613467">A szinkronizálás megkezdéséhez jelentkezzen be újra.</translation>
 <translation id="6203593061661911168">A letöltés Wi-Fi-hálózaton indul el</translation>
 <translation id="6210748933810148297">Nem <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Az oldal előnézete</translation>
@@ -1051,6 +1056,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, lap, kiválasztva</translation>
 <translation id="6828070228333235514">Árkövetés leállítása</translation>
+<translation id="6830728435402077660">Nem biztonságos</translation>
 <translation id="6833996806551876956">A Privacy Sandbox próbaidőszaka</translation>
 <translation id="6836206421467243968">A(z) <ph name="TITLE_OF_GROUP"/> nevű lapcsoport visszaállítása új háttérbeli lapcsoportként.</translation>
 <translation id="6846298663435243399">Betöltés…</translation>
@@ -1351,7 +1357,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="8460448946170646641">A legfontosabb adatvédelmi és biztonsági beállítások áttekintése</translation>
 <translation id="8461694314515752532">A szinkronizált adatok titkosítása saját összetett szinkronizálási jelszóval</translation>
 <translation id="8466613982764129868">Győződjön meg arról, hogy a(z) <ph name="TARGET_DEVICE_NAME"/> eszköz csatlakozik az internethez</translation>
-<translation id="8473863474539038330">Címek és egyebek</translation>
+<translation id="5633907266617216186">Címek és egyebek</translation>
 <translation id="8481921391193215807">Ha engedélyezve van, a webhelyek használhatják az itt bemutatott adatvédelem-biztosítási módszereket a tartalmaiknál és a szolgáltatásaiknál. Itt találhatók alternatívák a webhelyeken átnyúló nyomon követésre is. Később további próbafunkciók is belekerülhetnek.
 
 <ph name="BEGIN_LIST_ITEM1"/>A hirdetők és a megjelenítők használhatják a FLoC technológiát.<ph name="END_LIST_ITEM1"/>

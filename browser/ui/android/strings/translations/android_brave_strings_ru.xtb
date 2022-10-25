@@ -2,7 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
 <translation id="7307834434086582547">Включить/Отключить Защиту Brave</translation>
+<translation id="6945863270524203017">Получайте еженедельные отчеты о блокировке трекеров и рекламы.</translation>
+<translation id="4324735664183300693">Включить уведомления</translation>
 <translation id="3570081523466826008">Переключаться на HTTPS</translation>
+<translation id="5153702175393349577">Дата следующего платежа</translation>
+<translation id="8979401359137062629">Примечание:</translation>
+<translation id="7277134233385925078">Установить ежемесячные чаевые</translation>
+<translation id="3765933240178364575">Сумма единоразового платежа</translation>
+<translation id="1101015459918930887">Обработка платежа займет несколько минут</translation>
+<translation id="4088764345615745058">Размер вознаграждения</translation>
+<translation id="8759753423332885148">Узнать больше.</translation>
+<translation id="3271043362279673449">Спасибо за поддержку!</translation>
+<translation id="3312470408978098625">Ваш единоразовый платеж отправлен.</translation>
+<translation id="9088057605518918276">Ежемесячный платеж настроен.</translation>
+<translation id="2978223787436054634">Отправьте твит о вашей поддержке</translation>
+<translation id="1166682575529520472">Ежемесячно</translation>
+<translation id="5906820630265272615">Средства в BAT</translation>
+<translation id="3586352807094428968">Brave берет 5% от суммы отчисления в качестве сбора за его обработку.</translation>
+<translation id="7723816962634734185">Сумма</translation>
+<translation id="1986030365413628297">Например, 12,75 токена BAT</translation>
+<translation id="5087864757604726239">Назад</translation>
+<translation id="6661699662755460155">Обменять</translation>
+<translation id="864162897141534043">Вы планируете дать автору вознаграждение.</translation>
+<translation id="7286679368056222644">Ежемесячный платеж составит</translation>
+<translation id="8195146845495346281">Минимальная сумма вознаграждения — 0,25 токена BAT</translation>
+<translation id="4647657427328119430">Недостаточно токенов.</translation>
+<translation id="2359808026110333948">Продолжить</translation>
+<translation id="4227681408214010862">Здорово, что #Brave дает мне возможность поддерживать авторов! Только что пользователю <ph name="NAME"/> переведены от меня токены #BAT. Чтобы получить их, автору нужно подтвердить профиль на сайте https://creators.brave.com до <ph name="DATE"/>.</translation>
+<translation id="6231182869178328516">Только что пользователь <ph name="NAME"/> получил от меня вознаграждение через браузер Brave. Узнать больше можно на странице https://brave.com/tips.</translation>
+<translation id="7172012963002631836">При переводе средств возникла ошибка.</translation>
+<translation id="8994556588732085585">Пожалуйста, закройте и снова откройте баннер донатов, чтобы попробовать снова.</translation>
 <translation id="2278950434998763147">Открывать некоторые сайты, используя для безопасного подключения HTTPS вместо обычного протокола HTTP</translation>
 <translation id="5510493033031835532">Автоматически перенаправлять с AMP-страниц</translation>
 <translation id="5197219128592971597">Всегда открывать оригинальные страницы вместо ускоренных мобильных версий (AMP)</translation>
@@ -24,6 +53,8 @@
 <translation id="9148058034647219655">Выход</translation>
 <translation id="4022987104439075738">Шлюз IPFS</translation>
 <translation id="2688519859165248360">Разрешает навигацию по ресурсам IPFS с помощью шлюза IPFS</translation>
+<translation id="8047754398610073499">Блокировка уведомлений о согласии на использование файлов cookie</translation>
+<translation id="2621893359845808115">Блокирует всплывающие окна с запросом на принятие/отклонение файлов cookie на сайтах</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> — цена (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Служба имен Ethereum</translation>
@@ -124,17 +155,11 @@
 <translation id="8826007068782654809">Спасибо</translation>
 <translation id="6665366815203065060">Вы только что отправили чаевые:</translation>
 <translation id="5441565662498481293">Вы автоматически отправляете чаевые:</translation>
-<translation id="1166682575529520472">Ежемесячно</translation>
 <translation id="1628742278973105368">Ваши первые ежемесячные чаевые будут отправлены:</translation>
-<translation id="298349922412901215">ПРИМЕЧАНИЕ. Этот автор еще не подписался на получение взносов от пользователей Brave. Мы продолжим делать взносы, пока он не подтвердит это, или пока не пройдет 90 дней.</translation>
+<translation id="1642952941091001113">Автор еще не зарегистрирован и не может получать баллы от пользователей Brave. Если он не сделает этого в течение 90 дней, мы перестанем пытаться отправить баллы.</translation>
 <translation id="635752162765375187">ПРИМЕЧАНИЕ. В настоящий момент этот автор не может получать платежи из вашего кастодиального кошелька Brave Наград. Если вы попытаетесь перевести средства, запрос останется незавершенным и будет автоматически отправляться снова в течение 90 дней.</translation>
 <translation id="1910721550319506122">Добро пожаловать!</translation>
-<translation id="3165726837666415756">Вы можете поддержать этот сайт, отправив чаевые. Это способ поблагодарить его создателей за отличный контент. Верифицированные создатели контента получают оплату за чаевые в течение первой недели каждого календарного месяца.</translation>
-<translation id="1704859330137112950">Если вы хотите, вы можете запланировать ежемесячные чаевые, чтобы поддерживать этот сайт на постоянной основе.</translation>
-<translation id="245015745140252435">Сумма чаевых</translation>
-<translation id="7873874596836611687">Баланс наград:</translation>
-<translation id="2573313946367623146">отправить мои чаевые</translation>
-<translation id="3250511771491660127">Делать это ежемесячно</translation>
+<translation id="5830114181292529917">Вы можете поблагодарить сайт, отправив вознаграждение.</translation>
 <translation id="7658239707568436148">Отмена</translation>
 <translation id="1201402288615127009">Далее</translation>
 <translation id="8481779960444041069">Чтобы повысить конфиденциальность, сделайте Brave браузером по умолчанию</translation>
@@ -181,9 +206,6 @@
 <translation id="683765328936486920">на YouTube</translation>
 <translation id="8969049974285901797">на Twitch</translation>
 <translation id="3101693828171454453">недостаточно <ph name="TOKEN"/>ов</translation>
-<translation id="6940273954212603510">пожалуйста</translation>
-<translation id="1036277985068412734">добавить средства</translation>
-<translation id="3492491948683276944">установить ежемесячные чаевые</translation>
 <translation id="8038539967102225446">Brave Ads уже здесь!</translation>
 <translation id="222883304157347087">(это устройство)</translation>
 <translation id="4157741509680155021">УСТРОЙСТВА В ЦЕПОЧКЕ СИНХРОНИЗАЦИИ</translation>
@@ -403,10 +425,10 @@
 <translation id="223536150967420869">Купить</translation>
 <translation id="2956070106555335453">Сводка</translation>
 <translation id="7465614181960492526">Зарабатывайте жетоны и выражайте благодарность</translation>
-<translation id="244362569344671266">Зарабатывайте жетоны, просматривая Brave Private Ads, и поддерживайте создателей контента автоматически.</translation>
+<translation id="2731539192954672606">Зарабатывайте жетоны, просматривая рекламу, не нарушающую вашу конфиденциальность, и автоматически поддерживайте ваши любимые сайты и создателей контента.</translation>
 <translation id="631124996535890460">Продолжая, вы соглашаетесь с <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Политика конфиденциальности</translation>
-<translation id="6318696841371191107">Сделайте быстрый обзорный тур</translation>
+<translation id="185034574799484512">Давайте проведем небольшой тур</translation>
 <translation id="7930505144430343145">Добро пожаловать в Brave Rewards!</translation>
 <translation id="3477340970981564961">В отличие от традиционной рекламы, просмотр Brave Private Ads приносит вам вознаграждения в виде токенов для поддержки создателей контента, сохраняя при этом конфиденциальность ваших персональных данных.</translation>
 <translation id="6973095375773523904">Где появляются рекламные объявления?</translation>
@@ -455,9 +477,6 @@
 <translation id="2222442600106681391">2 BAT</translation>
 <translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
-<translation id="8762169086048682708">10 BAT</translation>
-<translation id="4548973860489847866">0,00 BAT</translation>
-<translation id="4193129043743994339">0,00 USD</translation>
 <translation id="8792121506918889955">Политика обработки IP WebRTC</translation>
 <translation id="8798099450830957504">По умолчанию</translation>
 <translation id="1822560017823072927">Публичные и приватные интерфейсы по умолчанию</translation>
@@ -470,7 +489,6 @@
 <translation id="4472575034687746823">Начало работы</translation>
 <translation id="2759836790106646094">Создайте резервную копию своего кошелька</translation>
 <translation id="1078873179929044999">На следующем шаге вы увидите секретную фразу из 12 слов, с помощью которой вы сможете восстановить доступ к основным криптовалютным счетам. Храните ее в безопасном месте. Без этой фразы вы не сможете восстановить доступ к счетам при потере или краже устройства, а также если забудете пароль или захотите сменить кошелек.</translation>
-<translation id="2359808026110333948">Продолжить</translation>
 <translation id="5488357322146334497">Сообщение</translation>
 <translation id="1904000155026201268">Я понимаю, что если я забуду секретную фразу, то не смогу войти в криптокошелек.</translation>
 <translation id="3933122286596948824">Ваша секретная фраза</translation>
@@ -865,4 +883,58 @@
 <translation id="8423380132356660250">Открыть <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Обновление профиля VPN…</translation>
 <translation id="7457027586454688423">Введите пароль от Brave Кошелька</translation>
+<translation id="6588595775439619209">Блокировать уведомления о файлах cookie</translation>
+<translation id="264682546981571963">Устали от уведомлений о согласии на использование файлов cookie?</translation>
+<translation id="4986297793092101884">Brave уже блокирует сторонние файлы cookie. Но мы можем избавить вас и от уведомлений о согласии на использование файлов cookie.</translation>
+<translation id="4784306439879850873">Brave не несет ответственности за то, что произойдет, если вы оставите подпись. С ее помощью можно разрешить практически любую операцию в вашем аккаунте или от вашего лица. Например, сайт может получить полный доступ к аккаунту и криптоактивам. Оставляйте подпись, только если вы уверены, что это необходимо, и доверяете запрашивающему сайту.</translation>
+<translation id="3474375934783434676">Оставляя подпись, вы берете на себя весь связанный с этим риск</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/> из <ph name="SIZE"/></translation>
+<translation id="6450792191436242818">Системная программа</translation>
+<translation id="6252742184395380448">Программа для конфигурации</translation>
+<translation id="5358970666412490132">Программа для ставок</translation>
+<translation id="346636227344244984">Программа для голосования</translation>
+<translation id="3538368258493053874">Загрузчик BPF</translation>
+<translation id="2334098351242742927">Программа Ed25519</translation>
+<translation id="6421371987002247943">Программа токенов</translation>
+<translation id="8780753288764281797">Программа Secp256k1</translation>
+<translation id="8504640708321980506">Данные</translation>
+<translation id="4771176409524282426">Создать аккаунт</translation>
+<translation id="1755120947324658439">Назначить</translation>
+<translation id="7588707273764747927">Transfer</translation>
+<translation id="5328067049293286962">Создать аккаунт с seed-фразой</translation>
+<translation id="1512366326138054636">Улучшить аккаунт со счетчиком транзакций</translation>
+<translation id="7042202638449257311">Вывести средства с аккаунта со счетчиком транзакций</translation>
+<translation id="6586085653712983224">Инициализировать аккаунт со счетчиком транзакций</translation>
+<translation id="8790312855368673743">Утвердить аккаунт со счетчиком транзакций</translation>
+<translation id="5312748886432335174">Распределить</translation>
+<translation id="7678705217826797696">Распределить с seed-фразой</translation>
+<translation id="7436137523759921028">Назначить с seed-фразой</translation>
+<translation id="3360695936886670509">Перенести с seed-фразой</translation>
+<translation id="7323636209143541483">Повысить уровень аккаунта со счетчиком транзакций</translation>
+<translation id="616021855350068202">Инициализировать минт</translation>
+<translation id="4377316227435786423">Инициализировать аккаунт</translation>
+<translation id="7474306790151660826">Инициализировать кошелек с мультиподписью</translation>
+<translation id="363258595406850968">Установить полномочие</translation>
+<translation id="2091563464450586155">Выполнить минт в отношении</translation>
+<translation id="1252941298291625577">Сжечь</translation>
+<translation id="5211196599627796093">Закрыть аккаунт</translation>
+<translation id="6988707241715050556">Заморозить аккаунт</translation>
+<translation id="857250415816680832">Разморозить аккаунт</translation>
+<translation id="5453172892735755262">Выбран перенос</translation>
+<translation id="471669767157904431">Выбрано одобрение</translation>
+<translation id="3530340583186873359">Выбрано выполнение минта</translation>
+<translation id="5068456869800056740">Выбрано сжигание</translation>
+<translation id="3004830385467519189">Инициализировать аккаунт 2</translation>
+<translation id="8026488633670875516">Синхронизировать аккаунт с нативными токенами</translation>
+<translation id="2024649614526778327">Инициализировать аккаунт 3</translation>
+<translation id="8382368767453083629">Инициализировать кошелек с мультиподписью 2</translation>
+<translation id="77243237706803459">Инициализировать минт 2</translation>
+<translation id="583281660410589416">Неизвестно</translation>
+<translation id="2862978891748913252">Выбор страны</translation>
+<translation id="3832588024105436400">Выберите страну, тогда мы сможем показывать вам настройки и рекламу, соответствующие вашему региону. <ph name="PRIVACY_POLICY"/></translation>
+<translation id="5666264859501108700">Установлен ваш регион использования Brave Наград: <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="3180990265682133881">При указании страны произошла ошибка. Повторите попытку.</translation>
+<translation id="7352651011704765696">Что-то пошло не так</translation>
+<translation id="7144878232160441200">Повторить попытку</translation>
+<translation id="6040143037577758943">Close</translation>
 </translationbundle>

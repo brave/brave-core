@@ -52,6 +52,7 @@
 <translation id="7291143854620707672">Alle Brave-data, der genereres ved brug af denne profil (f.eks. oprettelse af bogmærker, historik, adgangskoder og andre indstillinger) kan fjernes af arbejdsprofilens administrator. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Der opstod en fejl i operativsystemet under installationen. Download Brave igen.</translation>
 <translation id="2648689842065142443">Hvis du deler en enhed, kan venner og familie browse individuelt og konfigurere Brave hver især</translation>
+<translation id="5926459996518749366">Brave har blokeret denne arkivfil, fordi den kan indeholde malware</translation>
 <translation id="6384359666082467439">Velkommen til Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Fanen Brave</translation>
 <translation id="8372880274820509128">Som et ekstra sikkerhedsniveau krypterer Brave dine data.</translation>
@@ -194,6 +195,7 @@
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> er føjet til Brave</translation>
 <translation id="608006075545470555">Føj arbejdsprofilen til denne browser</translation>
 <translation id="5849446944780602366">Tilpas og administrer Brave. Der er en tilgængelig opdatering.</translation>
+<translation id="7433698744896946664">Tillad, at udvidelsen viser adgangsanmodninger på Brave-værktøjslinjen</translation>
 <translation id="492209281555538239">Brave gemmer denne adgangskode på din Brave-konto. Du behøver ikke at huske den.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er skadelig, så Brave har blokeret den.</translation>
 <translation id="7006260220514217183">Beskyttet browsing er deaktiveret. Brave anbefaler, at du aktiverer funktionen.</translation>
@@ -286,6 +288,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8678991866891573053">Brave afprøver nye funktioner, der giver websites mulighed for at levere den samme browseroplevelse med færre af dine data</translation>
 <translation id="3343095737966473035">Brave er ikke din standardbrowser</translation>
 <translation id="5477319665405831211">Synkroniser og tilpas Brave på alle dine enheder</translation>
+<translation id="2280238321454602884">Når indstillingen er aktiveret, bruger Brave hukommelse fra faner, du ikke aktivt bruger. Dette frigør din computers ressourcer til andre opgaver og sørger for, at Brave er hurtigt. Inaktive faner fremstår som tomme og genindlæses automatisk, når du klikker på dem. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/>, eller <ph name="BEGIN_LINK_2"/>send feedback<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Denne handling sletter dine browserdata på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Installationsprogrammet kunne ikke oprette en midlertidig mappe. Tjek, om der er tilstrækkelig diskplads, og om der er tilladelse til at installere software.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -314,6 +317,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="6914496861676471566">Installationsarkivet er beskadiget eller ugyldigt. Download Brave igen.</translation>
 <translation id="6431861494713261006">Valgfrit: Vær med til at forbedre funktioner og ydeevne i Chrome OS ved automatisk at sende diagnostik og brugsdata til Brave.</translation>
 <translation id="2097604701283463988">Brave er forældet</translation>
+<translation id="607365808648940765">Når det er nødvendigt, bruger Brave hukommelse fra faner, du ikke aktivt bruger. Du kan altid ændre dette under Indstillinger.</translation>
 <translation id="8550334526674375523">Denne arbejdsprofil er totalt adskilt fra din personlige profile.</translation>
 <translation id="2452889775041290116">Din forælder har deaktiveret "Tilladelser til websites, apps og udvidelser" for Brave. Det er ikke tilladt at tilføje denne <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Hvis du vil have fremtidige Brave-opdateringer, skal du have macOS 10.13 eller nyere. Denne computer anvender macOS 10.12.</translation>

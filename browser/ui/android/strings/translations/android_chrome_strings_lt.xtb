@@ -441,6 +441,7 @@ Ištrindami naršymo istoriją (visą ar konkrečios svetainės) taip pat galite
 <translation id="3435465986463792564">Atidaryta daug langų? Galite tvarkyti juos čia</translation>
 <translation id="3443221991560634068">Iš naujo įkelti dabartinį puslapį</translation>
 <translation id="3444179773590444986">Bendrinti atsiliepimą apie tamsiąją temą, skirtą svetainėms?</translation>
+<translation id="7384339501748168186">Siekiant apsaugoti jūsų privatumą, „Brave“ šio lauko automatiškai nepildys jūsų slaptažodžiu.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{Suplanuotas 1 atsisiuntimas}one{Suplanuotas # atsisiuntimas}few{Suplanuoti # atsisiuntimai}many{Suplanuota # atsisiuntimo}other{Suplanuota # atsisiuntimų}}</translation>
 <translation id="3474624961160222204">Tęsti kaip <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Galite pasirinkti paieškos variklį</translation>
@@ -658,6 +659,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="4763480195061959176">vaizdo įrašas</translation>
 <translation id="4766313118839197559">Slaptažodžiai saugomi Slaptažodžių tvarkyklėje šiame įrenginyje</translation>
 <translation id="4766678251456904326">Pridėti paskyrą prie įrenginio</translation>
+<translation id="4787736314074622408">Ar norite ištrinti „<ph name="ITEM_TITLE"/>“?</translation>
 <translation id="4791358705705538979">Padedama jums atlikti užduotis, pvz., atsiskaitymo veiksmus, žiniatinklyje</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Slaptafrazės šifruotė neapima mokėjimo metodų ir adresų iš „Google Pay“.
@@ -726,6 +728,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="4744980273298156620">Netrukus atidarę naują skirtuką matysite istorijas iš „<ph name="SITE_NAME"/>“. Svetainės, kurias stebite, saugomos jūsų „Brave“ paskyroje. Jas galite tvarkyti „Discover“ nustatymuose.</translation>
 <translation id="5091249083535528968">Išplėstiniai naudojimo duomenys</translation>
 <translation id="509429900233858213">Įvyko klaida.</translation>
+<translation id="5099845111805573968">Vienąkart pasirinkus svetainę kompiuteriams, nustatymas taikomas svetainei kaskart apsilankius</translation>
 <translation id="225414324447409614">Jei svetainė bando pavogti slaptažodį ar atsisiuntėte žalingą failą, „Brave“ gali siųsti URL, įskaitant puslapio turinio dalis, Saugaus naršymo funkcijai</translation>
 <translation id="510275257476243843">Liko 1 val.</translation>
 <translation id="5115811374190515607">į <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="5958275228015807058">Suraskite failus ir puslapius „Atsisiuntimų“ skiltyje</translation>
 <translation id="5962718611393537961">Palieskite ir sutraukite</translation>
 <translation id="5964869237734432770">Stabdyti vaizdų aprašus</translation>
+<translation id="9135546826883360971">„Brave“ prisimins jūsų pasirinkimą</translation>
 <translation id="5979084224081478209">Patikrinti slaptažodžius</translation>
 <translation id="5995726099713306770">Atsisiųsti puslapį dar kartą?</translation>
 <translation id="6456271171669383967">Palikti „Brave“</translation>
@@ -920,6 +924,7 @@ Privatumo „sandbox“ (smėlio dėžės) bandomosios versijos vis dar intensyv
 <translation id="6192907950379606605">Gauti vaizdų aprašus</translation>
 <translation id="8367262879301982880">Slaptažodžiai saugomi „Brave“ slaptažodžių tvarkyklėje šiame įrenginyje</translation>
 <translation id="620197886010707372">Atidaryti programą „<ph name="APPNAME"/>“ sistemoje „Google Play“?</translation>
+<translation id="6202812185118613467">Prisijunkite vėl ir pradėkite sinchronizuoti</translation>
 <translation id="6203593061661911168">Atsisiuntimas bus pradėtas prisijungus prie „Wi-Fi“</translation>
 <translation id="6210748933810148297">Ne <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Peržiūrimas šis puslapis</translation>
@@ -1051,6 +1056,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612">„<ph name="TAB_TITLE"/>“, skirtukas, pasirinktas</translation>
 <translation id="6828070228333235514">Stabdyti kainos stebėjimą</translation>
+<translation id="6830728435402077660">Nesaugu</translation>
 <translation id="6833996806551876956">„Privacy Sandbox“ bandomasis laikotarpis</translation>
 <translation id="6836206421467243968">Atkurkite skirtukų grupę „<ph name="TITLE_OF_GROUP"/>“ kaip naują foninę skirtukų grupę.</translation>
 <translation id="6846298663435243399">Įkeliama…</translation>
@@ -1351,7 +1357,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="8460448946170646641">Peržiūrėkite pagrindinius privatumo ir saugos valdiklius</translation>
 <translation id="8461694314515752532">Šifruokite sinchronizuojamus duomenis taikydami savo sinchronizavimo slaptafrazę</translation>
 <translation id="8466613982764129868">Įsitikinkite, kad įrenginys „<ph name="TARGET_DEVICE_NAME"/>“ prijungtas prie interneto</translation>
-<translation id="8473863474539038330">Adresai ir dar daugiau</translation>
+<translation id="5633907266617216186">Adresai ir dar daugiau</translation>
 <translation id="8481921391193215807">Įjungus svetainėse galima naudoti čia nurodytus privatumą užtikrinančius metodus turiniui ir paslaugoms teikti. Įtraukiami alternatyvūs veiklos skirtingose svetainėse stebėjimo metodai. Per laiką gali būti pridėta daugiau bandomųjų versijų.
 
 <ph name="BEGIN_LIST_ITEM1"/>Reklamuotojai ir leidėjai gali naudoti „FLoC“.<ph name="END_LIST_ITEM1"/>

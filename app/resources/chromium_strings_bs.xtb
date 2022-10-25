@@ -54,6 +54,7 @@ Neke funkcije možda neće biti dostupne i promjene postavki se neće sačuvati.
 <translation id="7291143854620707672">Administrator radnog profila može ukloniti bilo koje podatke Bravea koji se generiraju tokom korištenja ovog profila (naprimjer kreiranje oznaka, historije, lozinki i drugih postavki). <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Tokom instaliranja se pojavila greška operativnog sistema. Ponovo preuzmite Brave.</translation>
 <translation id="2648689842065142443">Ako dijelite uređaj, prijatelji i porodica mogu odvojeno pregledati i postavljati Brave na način koji njima odgovara</translation>
+<translation id="5926459996518749366">Brave je blokirao ovaj fajl arhive jer možda sadržava zlonamjerni softver</translation>
 <translation id="6384359666082467439">Dobro došli u Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Kartica Bravea</translation>
 <translation id="8372880274820509128">Brave će šifrirati vaše podatke radi dodatne sigurnosti.</translation>
@@ -196,6 +197,7 @@ Neke funkcije možda neće biti dostupne i promjene postavki se neće sačuvati.
 <translation id="7861579472672677409">Ekstenzija <ph name="EXTENSION_NAME"/> je dodana u Brave</translation>
 <translation id="608006075545470555">Dodajte radni profil na ovaj preglednik</translation>
 <translation id="5849446944780602366">Prilagodite i kontrolirajte Brave. Dostupno je ažuriranje.</translation>
+<translation id="7433698744896946664">Dozvoli ekstenziju za prikaz zahtjeva za pristup na alatnoj traci Bravea</translation>
 <translation id="492209281555538239">Brave će sačuvati ovu lozinku na vašem Brave računu. Nećete je morati zapamtiti.</translation>
 <translation id="4168372721886011198">Fajl <ph name="FILE_NAME"/> je opasan pa ga je Brave blokirao.</translation>
 <translation id="7006260220514217183">Sigurno pregledanje je isključeno. Brave preporučuje da ga uključite.</translation>
@@ -288,6 +290,7 @@ Brave ne može vratiti vaše postavke.</translation>
 <translation id="8678991866891573053">Brave istražuje nove funkcije koje dozvoljavaju web lokacijama da pružaju isto iskustvo pregledanja korištenjem manje količine vaših podataka</translation>
 <translation id="3343095737966473035">Brave nije vaš zadani preglednik</translation>
 <translation id="5477319665405831211">Sinhronizirajte i personalizirajte Brave na svim uređajima</translation>
+<translation id="2280238321454602884">Kada je uključeno, Brave preuzima memorijski prostor od kartica koje ne koristite aktivno. Time se oslobađaju izvori računara za druge zadatke i održava brzi rad Bravea. Neaktivne kartice izgledaju prazno i automatski se ponovo učitavaju kada kliknete na njih. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> ili <ph name="BEGIN_LINK_2"/>pošaljite povratne informacije<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Na ovaj način će se podaci o pregledanju izbrisati s ovog uređaja. Za preuzimanje podataka kasnije prijavite se u Brave kao korisnik <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Aplikacija za instaliranje nije uspjela kreirati privremeni direktorij. Provjerite imate li slobodnog prostora na disku kao i odobrenje da instalirate softver.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -316,6 +319,7 @@ Brave ne može vratiti vaše postavke.</translation>
 <translation id="6914496861676471566">Arhiva alata za instaliranje je oštećena ili nevažeća. Ponovo preuzmite Brave.</translation>
 <translation id="6431861494713261006">Nije obavezno: Pomozite nam da poboljšamo funkcije i performanse ChromeOS-a automatskim slanjem podataka o dijagnostici i korištenju Braveu.</translation>
 <translation id="2097604701283463988">Brave nije ažuriran</translation>
+<translation id="607365808648940765">Brave po potrebi preuzima memorijski prostor od kartica koje ne koristite aktivno. Ovo možete promijeniti bilo kada u postavkama.</translation>
 <translation id="8550334526674375523">Ovaj radni profil je u potpunosti odvojen od vašeg ličnog profila.</translation>
 <translation id="2452889775041290116">Tvoj roditelj je isključio "Odobrenja za web lokacije, aplikacije i ekstenzije" za Brave. Dodavanje ove stavke (<ph name="EXTENSION_TYPE_PARAMETER"/>) nije dozvoljeno.</translation>
 <translation id="8502436661255886343">Da primate buduća ažuriranja za Brave, trebat će vam macOS 10.13 ili novija verzija. Ovaj računar koristi macOS 10.12.</translation>

@@ -52,6 +52,7 @@
 <translation id="7291143854620707672">Kõik Bravei andmed, mis luuakse selle profiili kasutamise ajal (nt järjehoidjad, ajalugu, paroolid ja muud seaded), saab tööprofiili administraator eemaldada. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Installimisel ilmnes operatsioonisüsteemi viga. Laadige Brave uuesti alla.</translation>
 <translation id="2648689842065142443">Kui jagate seadet, saavad sõbrad ja pereliikmed eraldi sirvida ning seadistada Bravei just nii, nagu neile meeldib.</translation>
+<translation id="5926459996518749366">Brave blokeeris selle arhiivifaili, kuna see võib sisaldada pahavara</translation>
 <translation id="6384359666082467439">Tere tulemast Bravei, <ph name="ACCOUNT_FIRST_NAME"/>!</translation>
 <translation id="6791166902140255175">Bravei vaheleht</translation>
 <translation id="8372880274820509128">Turvalisuse suurendamiseks krüptib Brave teie andmed.</translation>
@@ -194,6 +195,7 @@
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> on Bravei lisatud</translation>
 <translation id="608006075545470555">Tööprofiili lisamine sellesse brauserisse</translation>
 <translation id="5849446944780602366">Kohandage ja juhtige Bravei. Saadaval on värskendus.</translation>
+<translation id="7433698744896946664">Lubage laiendus, et juurdepääsutaotlused Bravei tööriistaribal kuvada</translation>
 <translation id="492209281555538239">Brave salvestab selle parooli teie Brave'i kontole. Te ei pea seda meeles pidama.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> on ohtlik, mistõttu Brave blokeeris selle.</translation>
 <translation id="7006260220514217183">Brave'i ohutu sirvimine on välja lülitatud. Brave soovitab selle sisse lülitada.</translation>
@@ -285,6 +287,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="8678991866891573053">Brave katsetab uusi funktsioone, mis võimaldaksid saitidel pakkuda väiksema andmemahu juures samasugust sirvimiskogemust</translation>
 <translation id="3343095737966473035">Brave ei ole teie vaikebrauser</translation>
 <translation id="5477319665405831211">Sünkroonige ja isikupärastage Brave kõigis oma seadmetes</translation>
+<translation id="2280238321454602884">Kui see on sisse lülitatud, võtab Brave mälu tagasi vahelehtedelt, mida te aktiivselt ei kasuta. See võimaldab teie arvuti ressursse muude ülesannete jaoks kasutada ja aitab Braveil kiiresti töötada. Passiivsed vahelehed kuvatakse tühjana ja laaditakse automaatselt uuesti, kui nendel klõpsate. <ph name="BEGIN_LINK"/>Lugege lisateavet<ph name="END_LINK"/> või <ph name="BEGIN_LINK_2"/>saatke tagasisidet<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">See kustutab sellest seadmest teie sirvimisandmed. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Installija ei suutnud luua ajutist kataloogi. Palun kontrollige vaba kettaruumi ja tarkvara installimise loa olemasolu.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -313,6 +316,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="6914496861676471566">Installeri arhiiv on rikutud või kehtetu. Laadige Brave uuesti alla.</translation>
 <translation id="6431861494713261006">Valikuline. Aidake Chrome OS-i funktsioone ning toimivust täiustada, saates Brave'ile automaatselt diagnostika- ja kasutusandmeid.</translation>
 <translation id="2097604701283463988">Brave on aegunud</translation>
+<translation id="607365808648940765">Vajaduse korral võtab Brave mälu tagasi vahelehtedelt, mida te aktiivselt ei kasuta. Saate seda menüüs Seaded alati muuta.</translation>
 <translation id="8550334526674375523">See tööprofiil on teie isiklikust profiilist täielikult eraldi.</translation>
 <translation id="2452889775041290116">Sinu vanem lülitas valiku „Saitide, rakenduste ja laienduste load” Bravei puhul välja. Laienduse <ph name="EXTENSION_TYPE_PARAMETER"/> lubamine on keelatud.</translation>
 <translation id="8502436661255886343">Bravei tulevaste värskenduste saamiseks on teil vaja operatsioonisüsteemi macOS 10.13 või uuemat versiooni. See arvuti kasutab operatsioonisüsteemi macOS 10.12.</translation>

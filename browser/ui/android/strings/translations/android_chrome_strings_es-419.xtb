@@ -441,6 +441,7 @@ Si borras el historial de navegación por completo o de un sitio específico, ta
 <translation id="3435465986463792564">¿Tienes muchas ventanas? Puedes administrarlas desde aquí.</translation>
 <translation id="3443221991560634068">Volver a cargar la página actual</translation>
 <translation id="3444179773590444986">¿Deseas compartir comentarios sobre el Tema oscuro para los sitios?</translation>
+<translation id="7384339501748168186">Para proteger tu privacidad, Brave no completará de forma automática tu contraseña en este campo.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{Se programó 1 descarga.}other{Se programaron # descargas.}}</translation>
 <translation id="3474624961160222204">Continuar como <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Puedes elegir tu motor de búsqueda</translation>
@@ -658,6 +659,7 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Las contraseñas se guardan en el Administrador de contraseñas en este dispositivo</translation>
 <translation id="4766678251456904326">Agregar una cuenta al dispositivo</translation>
+<translation id="4787736314074622408">¿Quieres borrar <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Te ayuda a completar tareas en la Web, como confirmaciones de compras.</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">La encriptación de la frase de contraseña no incluye formas de pago ni direcciones de Brave Pay.
@@ -726,6 +728,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="4744980273298156620">Pronto, cuando abras una nueva pestaña, verás historias de <ph name="SITE_NAME"/>. Los sitios que sigues se guardan en tu Cuenta de Brave. Puedes administrarlos en la configuración de Descubre.</translation>
 <translation id="5091249083535528968">Datos de uso extendidos</translation>
 <translation id="509429900233858213">Se ha producido un error.</translation>
+<translation id="5099845111805573968">Si seleccionas el sitio para computadoras una vez, la configuración se aplicará al sitio cada vez que lo visites.</translation>
 <translation id="225414324447409614">Si un sitio intenta robar tu contraseña, o cuando descargas un archivo dañino, es posible que Brave también envíe las URL con partes del contenido de la página a la Navegación segura.</translation>
 <translation id="510275257476243843">1 hora restante</translation>
 <translation id="5115811374190515607">a <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="5958275228015807058">Encuentra tus archivos y páginas en Descargas</translation>
 <translation id="5962718611393537961">Presiona para contraer</translation>
 <translation id="5964869237734432770">Detener descripciones de imágenes</translation>
+<translation id="9135546826883360971">Brave recordará tu elección</translation>
 <translation id="5979084224081478209">Revisar contraseñas</translation>
 <translation id="5995726099713306770">¿Quieres descargar la página de nuevo?</translation>
 <translation id="6456271171669383967">Seguir usando Brave</translation>
@@ -920,6 +924,7 @@ Las pruebas de Privacy Sandbox siguen en desarrollo y están disponibles en cie
 <translation id="6192907950379606605">Obtener descripción de imágenes</translation>
 <translation id="8367262879301982880">Las contraseñas se guardan en el Administrador de contraseñas de Brave en este dispositivo</translation>
 <translation id="620197886010707372">¿Quieres abrir la app de <ph name="APPNAME"/> con Brave Play?</translation>
+<translation id="6202812185118613467">Vuelve a acceder para iniciar la sincronización</translation>
 <translation id="6203593061661911168">Se iniciará la descarga cuando el dispositivo se conecte a Wi-Fi.</translation>
 <translation id="6210748933810148297">¿No eres <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Vista previa de esta página</translation>
@@ -1051,6 +1056,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, pestaña, seleccionada</translation>
 <translation id="6828070228333235514">Dejar de seguir el precio</translation>
+<translation id="6830728435402077660">No seguro</translation>
 <translation id="6833996806551876956">Prueba de Privacy Sandbox</translation>
 <translation id="6836206421467243968">Restablece el grupo de pestañas <ph name="TITLE_OF_GROUP"/> como nuevo grupo de pestañas en segundo plano.</translation>
 <translation id="6846298663435243399">Cargando…</translation>
@@ -1351,7 +1357,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="8460448946170646641">Revisa los controles de seguridad y privacidad más importantes</translation>
 <translation id="8461694314515752532">Encriptar los datos sincronizados con tu propia frase de contraseña de sincronización</translation>
 <translation id="8466613982764129868">Comprueba que <ph name="TARGET_DEVICE_NAME"/> tenga conexión a Internet</translation>
-<translation id="8473863474539038330">Direcciones y más</translation>
+<translation id="5633907266617216186">Direcciones y más</translation>
 <translation id="8481921391193215807">Si habilitas esta opción, los sitios podrán utilizar las técnicas de protección de la privacidad que se muestran aquí para ofrecer su contenido y sus servicios. Estas técnicas incluyen alternativas al seguimiento entre sitios. Es posible que se agreguen más pruebas a lo largo del tiempo.
 
 <ph name="BEGIN_LIST_ITEM1"/>Los anunciantes y los publicadores pueden usar el FLoC.<ph name="END_LIST_ITEM1"/>
