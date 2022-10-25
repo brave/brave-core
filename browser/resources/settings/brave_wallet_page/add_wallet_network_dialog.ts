@@ -29,6 +29,12 @@ export interface ExtendedNetworkInfo extends NetworkInfo {
 
 export type UrlType = 'rpc' | 'icon' | 'block';
 
+declare global {
+  interface Window {
+    testing: any;
+  }
+}
+
 export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAddWalletNetworkDialogElementBase {
   static get is() {
     return 'add-wallet-network-dialog'
@@ -197,17 +203,17 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
 
   override connectedCallback() {
     super.connectedCallback()
-    //if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-    //  window.testing = window.testing || {}
-    //  window.testing['addWalletNetworkDialog'] = this.shadowRoot
-    //}
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing['addWalletNetworkDialog'] = this.shadowRoot
+    }
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
-    //if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-    //  delete window.testing['addWalletNetworkDialog']
-    //}
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      delete window.testing['addWalletNetworkDialog']
+    }
   }
 
   updatePrepopulatedNetworks() {
