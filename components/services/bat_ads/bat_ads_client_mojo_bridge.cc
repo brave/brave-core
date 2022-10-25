@@ -7,13 +7,11 @@
 
 #include <utility>
 
-#include "base/logging.h"
 #include "base/time/time.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
-#include "mojo/public/cpp/bindings/sync_call_restrictions.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace bat_ads {
@@ -148,7 +146,8 @@ void BatAdsClientMojoBridge::UrlRequest(
     return;
   }
 
-  bat_ads_client_->UrlRequest(std::move(url_request),
+  bat_ads_client_->UrlRequest(
+      std::move(url_request),
       base::BindOnce(&OnUrlRequest, std::move(callback)));
 }
 
@@ -200,9 +199,8 @@ void BatAdsClientMojoBridge::LogTrainingInstance(
   }
 }
 
-void BatAdsClientMojoBridge::Load(
-    const std::string& name,
-    ads::LoadCallback callback) {
+void BatAdsClientMojoBridge::Load(const std::string& name,
+                                  ads::LoadCallback callback) {
   if (!connected()) {
     std::move(callback).Run(/*success*/ false, /*value*/ {});
     return;
@@ -260,11 +258,10 @@ void BatAdsClientMojoBridge::UpdateAdRewards() {
   }
 }
 
-void BatAdsClientMojoBridge::Log(
-    const char* file,
-    const int line,
-    const int verbose_level,
-    const std::string& message) {
+void BatAdsClientMojoBridge::Log(const char* file,
+                                 const int line,
+                                 const int verbose_level,
+                                 const std::string& message) {
   if (connected()) {
     bat_ads_client_->Log(file, line, verbose_level, message);
   }
@@ -280,9 +277,8 @@ bool BatAdsClientMojoBridge::GetBooleanPref(const std::string& path) const {
   return value;
 }
 
-void BatAdsClientMojoBridge::SetBooleanPref(
-    const std::string& path,
-    const bool value) {
+void BatAdsClientMojoBridge::SetBooleanPref(const std::string& path,
+                                            const bool value) {
   if (connected()) {
     bat_ads_client_->SetBooleanPref(path, value);
   }
@@ -298,9 +294,8 @@ int BatAdsClientMojoBridge::GetIntegerPref(const std::string& path) const {
   return value;
 }
 
-void BatAdsClientMojoBridge::SetIntegerPref(
-    const std::string& path,
-    const int value) {
+void BatAdsClientMojoBridge::SetIntegerPref(const std::string& path,
+                                            const int value) {
   if (connected()) {
     bat_ads_client_->SetIntegerPref(path, value);
   }
@@ -316,9 +311,8 @@ double BatAdsClientMojoBridge::GetDoublePref(const std::string& path) const {
   return value;
 }
 
-void BatAdsClientMojoBridge::SetDoublePref(
-    const std::string& path,
-    const double value) {
+void BatAdsClientMojoBridge::SetDoublePref(const std::string& path,
+                                           const double value) {
   if (connected()) {
     bat_ads_client_->SetDoublePref(path, value);
   }
@@ -335,9 +329,8 @@ std::string BatAdsClientMojoBridge::GetStringPref(
   return value;
 }
 
-void BatAdsClientMojoBridge::SetStringPref(
-    const std::string& path,
-    const std::string& value) {
+void BatAdsClientMojoBridge::SetStringPref(const std::string& path,
+                                           const std::string& value) {
   if (connected()) {
     bat_ads_client_->SetStringPref(path, value);
   }
@@ -353,9 +346,8 @@ int64_t BatAdsClientMojoBridge::GetInt64Pref(const std::string& path) const {
   return value;
 }
 
-void BatAdsClientMojoBridge::SetInt64Pref(
-    const std::string& path,
-    const int64_t value) {
+void BatAdsClientMojoBridge::SetInt64Pref(const std::string& path,
+                                          const int64_t value) {
   if (connected()) {
     bat_ads_client_->SetInt64Pref(path, value);
   }
@@ -371,9 +363,8 @@ uint64_t BatAdsClientMojoBridge::GetUint64Pref(const std::string& path) const {
   return value;
 }
 
-void BatAdsClientMojoBridge::SetUint64Pref(
-    const std::string& path,
-    const uint64_t value) {
+void BatAdsClientMojoBridge::SetUint64Pref(const std::string& path,
+                                           const uint64_t value) {
   if (connected()) {
     bat_ads_client_->SetUint64Pref(path, value);
   }
@@ -432,8 +423,7 @@ void BatAdsClientMojoBridge::SetListPref(const std::string& path,
   }
 }
 
-void BatAdsClientMojoBridge::ClearPref(
-    const std::string& path) {
+void BatAdsClientMojoBridge::ClearPref(const std::string& path) {
   if (connected()) {
     bat_ads_client_->ClearPref(path);
   }
