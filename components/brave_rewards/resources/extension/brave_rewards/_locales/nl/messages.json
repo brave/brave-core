@@ -398,12 +398,97 @@
     "message": "U hebt openstaande fooien door ontoereikende fondsen",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Sluit",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Doorgaan met",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Tokens verdienen en ze weer terugschenken",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Verdien tokens door privacy-respecterende advertenties te bekijken en steun automatisch uw favoriete sites en makers van inhoud.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Er ging iets fout",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards is niet beschikbaar",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Er heeft zich een probleem voorgedaan tijdens het instellen van Brave Rewards. Probeer het opnieuw.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Er heeft zich een probleem voorgedaan tijdens het instellen van uw land. Probeer het opnieuw.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Nieuwe aanmeldingen voor Brave Rewards zijn momenteel uitgeschakeld in uw regio. U kunt het later echter altijd opnieuw proberen. $link_begin$Meer informatie$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Uw land selecteren",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Bedankt!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Uw Brave Rewards-regio is ingesteld op $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Selecteer uw land zodat we u de juiste opties en advertenties kunnen laten zien voor uw regio. $link_begin$Privacybeleid$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Om Brace Rewards te blijven gebruiken, selecteert u uw land zodat we u de juiste opties en advertenties voor uw regio kunnen laten zien. $link_begin$Privacybeleid$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Save",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Uw land selecteren",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

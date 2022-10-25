@@ -441,6 +441,7 @@ Když smažete historii prohlížení (celou nebo na určitém webu), smažou se
 <translation id="3435465986463792564">Otevřeli jste si víc oken? Tady je můžete spravovat</translation>
 <translation id="3443221991560634068">Znovu načíst aktuální stránku</translation>
 <translation id="3444179773590444986">Poskytnout zpětnou vazbu k tmavému motivu pro weby?</translation>
+<translation id="7384339501748168186">Aby Brave chránil vaše soukromí, nebude do tohoto pole automaticky vyplňovat heslo.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{Je naplánováno stažení 1 souboru}few{Je naplánováno stažení # souborů}many{Je naplánováno stažení # souboru}other{Je naplánováno stažení # souborů}}</translation>
 <translation id="3474624961160222204">Pokrač. jako <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Můžete si vybrat vyhledávač</translation>
@@ -658,6 +659,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Hesla se ukládají pouze do Správce hesel na tomto zařízení</translation>
 <translation id="4766678251456904326">Přidat účet do zařízení</translation>
+<translation id="4787736314074622408">Opravdu chcete smazat položku <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Pomáhá dokončovat na webu úkony, jako je například platba</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Šifrování pomocí heslové fráze se nevztahuje na platební metody a adresy ze služby Google Pay.
@@ -726,6 +728,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="4744980273298156620">Brzy se vám po otevření nové karty začnou zobrazovat články z webu <ph name="SITE_NAME"/>. Weby, které sledujete, se ukládají do vašeho účtu Brave. Můžete je spravovat v nastavení funkce Objevit.</translation>
 <translation id="5091249083535528968">Rozšířené údaje o využití</translation>
 <translation id="509429900233858213">Došlo k chybě.</translation>
+<translation id="5099845111805573968">Když jednou vyberete web pro počítače, toto nastavení bude na web použito při každé návštěvě</translation>
 <translation id="225414324447409614">Pokud se web pokusí odcizit vám heslo nebo když stáhnete škodlivý soubor, může Brave Bezpečnému prohlížení odeslat adresy URL, včetně částí obsahu stránky</translation>
 <translation id="510275257476243843">Zbývá: 1 h</translation>
 <translation id="5115811374190515607">do: <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="5958275228015807058">Najděte stažené soubory a stránky</translation>
 <translation id="5962718611393537961">Klepnutím sbalíte</translation>
 <translation id="5964869237734432770">Nezobrazovat popisy obrázků</translation>
+<translation id="9135546826883360971">Brave si váš výběr zapamatuje</translation>
 <translation id="5979084224081478209">Zkontrolovat hesla</translation>
 <translation id="5995726099713306770">Stáhnout stránku znovu?</translation>
 <translation id="6456271171669383967">Ponechat Brave</translation>
@@ -920,6 +924,7 @@ Zkušební technologie Privacy Sandbox jsou stále aktivně vyvíjeny a jsou do
 <translation id="6192907950379606605">Zobrazovat popisy obrázků</translation>
 <translation id="8367262879301982880">Hesla se ukládají do Správce hesel Brave pouze na tomto zařízení</translation>
 <translation id="620197886010707372">Otevřít aplikaci <ph name="APPNAME"/> pomocí Google Play?</translation>
+<translation id="6202812185118613467">Přihlásit se a zahájit synchronizaci</translation>
 <translation id="6203593061661911168">Stahování bude zahájeno při připojení k Wi-Fi</translation>
 <translation id="6210748933810148297">Nejste <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Zobrazování náhledu této stránky</translation>
@@ -1051,6 +1056,7 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="6820686453637990663">Bezpečnostní kód platební karty (CVC)</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, karta, vybráno</translation>
 <translation id="6828070228333235514">Ukončit sledování ceny</translation>
+<translation id="6830728435402077660">Nezabezpečeno</translation>
 <translation id="6833996806551876956">Testování izolovaného prostoru ochrany soukromí</translation>
 <translation id="6836206421467243968">Obnovit skupinu karet <ph name="TITLE_OF_GROUP"/> jako novou skupinu karet na pozadí.</translation>
 <translation id="6846298663435243399">Načítání…</translation>
@@ -1351,7 +1357,7 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="8460448946170646641">Zkontrolujte klíčové ovládací prvky ochrany soukromí a zabezpečení</translation>
 <translation id="8461694314515752532">Šifrovat synchronizovaná data pomocí vlastní heslové fráze pro synchronizaci</translation>
 <translation id="8466613982764129868">Zkontrolujte, zda je zařízení <ph name="TARGET_DEVICE_NAME"/> připojené k internetu</translation>
-<translation id="8473863474539038330">Adresy a další</translation>
+<translation id="5633907266617216186">Adresy a další</translation>
 <translation id="8481921391193215807">Když je tato možnost zapnutá, weby při poskytování obsahu a služeb mohou používat zde uvedené techniky zajišťující ochranu soukromí. Patří sem i alternativy ke sledování napříč weby. Časem mohou přibýt další zkušební funkce.
 
 <ph name="BEGIN_LIST_ITEM1"/>Inzerenti a majitelé obsahu mohou používat federované učení kohort.<ph name="END_LIST_ITEM1"/>

@@ -398,12 +398,97 @@
     "message": "Ihr Kontostand reicht nicht aus um alle Spenden zu decken",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Schließen",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Fortfahren",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Token verdienen & andere fördern",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Verdienen Sie Token, indem Sie Werbeanzeigen ansehen, die Ihre Privatsphäre respektieren, und unterstützen Sie automatisch Ihre Lieblingswebsites und liebsten Inhaltsersteller.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Etwas ist schiefgegangen",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave-Belohnungen nicht verfügbar",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Beim Versuch, Brave-Belohnungen einzurichten, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Beim Versuch, Ihr Land festzulegen, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Neuregistrierungen für Brave-Belohnungen sind derzeit in Ihrer Region deaktiviert. Sie können es jedoch zu einem späteren Zeitpunkt erneut versuchen. $link_begin$Mehr erfahren$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Wählen Sie Ihr Land aus",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Vielen Dank!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "$country$ wurde als Ihre Region für Brave-Belohnungen festgelegt.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können. $link_begin$Datenschutzrichtlinie$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Um weiterhin Brave-Belohnungen zu nutzen, wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können. $link_begin$Datenschutzrichtlinie$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Speichern",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Wählen Sie Ihr Land aus",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

@@ -441,6 +441,7 @@ Kapag na-delete mo ang iyong history ng pag-browse — lahat o para sa isang par
 <translation id="3435465986463792564">Maraming window? Puwede mong pamahalaan ang mga ito mula rito</translation>
 <translation id="3443221991560634068">I-reload ang kasalukuyang page</translation>
 <translation id="3444179773590444986">Magbahagi ng feedback sa madilim na tema para sa mga site?</translation>
+<translation id="7384339501748168186">Para protektahan ang iyong privacy, hindi io-autofill ng Brave ang password mo sa field na ito.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 download ang nakaiskedyul}one{# download ang nakaiskedyul}other{# na download ang nakaiskedyul}}</translation>
 <translation id="3474624961160222204">Magpatuloy bilang si <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Puwede mong piliin ang iyong search engine</translation>
@@ -658,6 +659,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave account tulad ng
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Sine-save ang mga password sa Password Manager sa device na ito.</translation>
 <translation id="4766678251456904326">Magdagdag ng account sa device</translation>
+<translation id="4787736314074622408">Gusto mo bang i-delete ang <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Tinutulungan kang kumumpleto ng mga gawain, gaya ng pag-checkout, sa buong web</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Hindi kasama sa pag-encrypt ng passphrase ang mga paraan ng pagbabayad at address mula sa Google Pay.
@@ -726,6 +728,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="4744980273298156620">Hindi magtatagal at makakakita ka ng mga kuwento mula sa <ph name="SITE_NAME"/> kapag nagbukas ka ng bagong tab. Mase-save sa iyong Brave account ang mga site na sinusubaybayan mo. Puwede mong pamahalaan ang mga ito sa mga setting ng Discover.</translation>
 <translation id="5091249083535528968">Pinalawak na data ng paggamit</translation>
 <translation id="509429900233858213">May naganap na error.</translation>
+<translation id="5099845111805573968">Kapag pinili mo ang pang-desktop na site nang isang beses, ilalapat ang setting sa site sa tuwing bibisita ka</translation>
 <translation id="225414324447409614">Kung susubukan ng site na nakawin ang iyong password, o kapag nag-download ka ng mapaminsalang file, posibleng magpadala ang Brave sa Ligtas na Pag-browse ng mga URL, pati ng ilang content ng page</translation>
 <translation id="510275257476243843">1 oras na lang ang natitira</translation>
 <translation id="5115811374190515607">sa <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="5958275228015807058">Hanapin ang iyong mga file at page sa Mga Download</translation>
 <translation id="5962718611393537961">I-tap upang i-collapse</translation>
 <translation id="5964869237734432770">Ihinto ang desc ng larawan</translation>
+<translation id="9135546826883360971">Matatandaan ng Brave ang iyong napili</translation>
 <translation id="5979084224081478209">Suriin ang mga password</translation>
 <translation id="5995726099713306770">I-download ulit ang page?</translation>
 <translation id="6456271171669383967">Panatilihin ang Brave</translation>
@@ -920,6 +924,7 @@ Kasalukuyan pa ring dine-develop ang mga trial ng Privacy Sandbox at available a
 <translation id="6192907950379606605">Makakuha ng desc ng larawan</translation>
 <translation id="8367262879301982880">Sine-save ang mga password sa Brave Password Manager sa device na ito.</translation>
 <translation id="620197886010707372">Buksan ang app para sa <ph name="APPNAME"/> gamit ang Google Play?</translation>
+<translation id="6202812185118613467">Mag-sign in ulit para simulan ang pag-sync</translation>
 <translation id="6203593061661911168">Magsisimula ang pag-download kapag nakakonekta sa Wi-Fi</translation>
 <translation id="6210748933810148297">Hindi si <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Pini-preview ang page na ito</translation>
@@ -1051,6 +1056,7 @@ Halimbawa, puwedeng tumugon ang ilang website sa kahilingang ito sa pamamagitan 
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, tab, napili</translation>
 <translation id="6828070228333235514">Ihinto ang pagsubaybay ng presyo</translation>
+<translation id="6830728435402077660">Hindi secure</translation>
 <translation id="6833996806551876956">Trial ng Privacy Sandbox</translation>
 <translation id="6836206421467243968">I-restore ang grupo ng tab na <ph name="TITLE_OF_GROUP"/> bilang bagong background na grupo ng tab.</translation>
 <translation id="6846298663435243399">Naglo-load…</translation>
@@ -1351,7 +1357,7 @@ Halimbawa, puwedeng tumugon ang ilang website sa kahilingang ito sa pamamagitan 
 <translation id="8460448946170646641">Suriin ang mga pangunahing kontrol sa privacy at seguridad</translation>
 <translation id="8461694314515752532">I-encrypt ang naka-sync na data gamit ang iyong sariling passphrase sa pag-sync</translation>
 <translation id="8466613982764129868">Tiyaking nakakonekta ang <ph name="TARGET_DEVICE_NAME"/> sa internet</translation>
-<translation id="8473863474539038330">Mga address at higit pa</translation>
+<translation id="5633907266617216186">Mga address at higit pa</translation>
 <translation id="8481921391193215807">Kapag naka-on ito, posibleng gamitin ng mga site ang mga technique sa pagpapanatili ng privacy na ipinapakita rito para maibigay ang content at mga serbisyo ng mga ito. Kasama sa mga ito ang mga alternatibo sa cross-site na pagsubaybay. Posibleng magdagdag ng higit pang trial sa paglipas ng panahon.
 
 <ph name="BEGIN_LIST_ITEM1"/>Magagamit ng mga advertiser at publisher ang FLoC.<ph name="END_LIST_ITEM1"/>

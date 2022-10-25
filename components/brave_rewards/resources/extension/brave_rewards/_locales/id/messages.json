@@ -398,12 +398,97 @@
     "message": "Anda memiliki tip tertunda akibat dana kurang",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Tutup",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Lanjutkan",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Dapatkan Token & Berikan Balik",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung situs dan pembuat konten favorit Anda secara otomatis.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Terjadi sesuatu",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Imbalan Brave tidak tersedia",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Sayangnya, telah terjadi kesalahan saat mencoba menetapkan Imbaan Brave. Silakan coba lagi.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Sayangnya, telah terjadi kesalahan saat mencoba menetapkan negara Anda. Silakan coba lagi.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Pendaftaran baru untuk Imbalan Brave saat ini telah dinonaktifkan di wilayah Anda. Namun, Anda selalu dapat mencobanya kembali nanti. $link_begin$Pelajari lebih lanjut$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Pilih negara Anda",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Terima kasih!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Wilayah Imbalan Brave Anda telah ditetapkan di $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Pilih negara Anda sehingga kami dapat menunjukkan kepada Anda opsi dan iklan yang tepat untuk wilayah Anda. $link_begin$Kebijakan Privasi$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Untuk tetap menggunakan Imbalan Brave, pilih negara Anda sehingga kami dapat menunjukkan opsi dan iklan yang sesuai dengan wilayah Anda. $link_begin$Kebijakan Privasi$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Simpan",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Pilih negara Anda",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

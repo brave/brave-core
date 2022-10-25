@@ -398,12 +398,97 @@
     "message": "Függőben lévő borravalóid vannak, mivel nincs elegendő fedezet",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Bezárás",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Folytatás",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Szerezzen tokeneket és adjon vissza",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Szerezzen tokeneket adatvédelmet tiszteletben tartó hirdetések nézésével, és támogassa automatikusan kedvenc oldalait és tartalomkészítőit.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Valami hiba történt",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "A Brave-jutalmak nem érhetők el",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Sajnos hiba történt a Brave-jutalmak beállítása során. Kérjük, próbálja újra.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Sajnos hiba történt az ország beállítása során. Kérjük, próbálja újra.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "A Brave-jutalmakra való regisztráció jelenleg le van tiltva a régiójában, de később ismét megpróbálhatja. $link_begin$További információ$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Válassza ki az országot",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Köszönjük!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "A Brave-jutalmakhoz beállított régiója: $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Válassza ki az országát, hogy a régiójának megfelelő lehetőségeket és hirdetéseket mutathassuk. $link_begin$Adatvédelmi szabályzat$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "A Brave-jutalmak további használatához válassza ki az országát, hogy a régiójának megfelelő lehetőségeket és hirdetéseket mutathassuk. $link_begin$Adatvédelmi szabályzat$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Mentés",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Válassza ki az országot",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

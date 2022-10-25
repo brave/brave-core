@@ -398,12 +398,97 @@
     "message": "Teil on ebapiisavate vahendite tõttu ootel preemiaid.",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Sulge",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Jätka",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Teenige ja andke tokeneid",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Teenite tokeneid, vaadates privaatsust austavaid reklaame ja toetate automaatselt oma lemmiksaite ja -loojaid.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Midagi läks valesti",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave'i Preemiaid ei saa kasutada",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Kahjuks ilmnes Brave'i Preemiate seadistamise katsel tõrge. Proovige uuesti.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Kahjuks ilmnes teie riigi seadmise katsel tõrge. Proovige uuesti.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Praegu on Brave'i Preemiate uute kasutajate registreerimine teie piirkonnas keelatud. Võite aga alati hiljem uuesti proovida. $link_begin$Lisateave$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Valige oma riik",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Täname!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Teie Brave'i Preemiate piirkonnaks on seatud $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Valige oma riik, et saaksime kuvada teie piirkonna jaoks õiged valikud ja reklaamid. $link_begin$Privaatsuspõhimõtted$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Kui soovite jätkata Brave'i Preemiate kasutamist, valige oma riik, et saaksime kuvada teie piirkonna jaoks õiged valikud ja reklaamid. $link_begin$Privaatsuspõhimõtted$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Salvesta",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Valige oma riik",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

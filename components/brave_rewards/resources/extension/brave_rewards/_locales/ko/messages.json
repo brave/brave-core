@@ -398,12 +398,97 @@
     "message": "부족한 자금으로 인해 보류 중인 팁이 있습니다",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "닫기",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "계속",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "토큰 획득 및 돌려주기",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "개인 정보를 존중하는 광고를 보고 토큰을 얻고 즐겨 찾는 사이트와 콘텐츠 크리에이터를 자동으로 지원하세요.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "문제가 생겼습니다",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards 사용 불가",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Brave Rewards를 설정하는 중에 오류가 발생했습니다. 다시 시도하세요.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "국가를 설정하는 중에 오류가 발생했습니다. 다시 시도하세요.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "귀하가 계신 지역에서는 현재 Brave Rewards 신규 가입이 중단되었습니다. 나중에 언제든 다시 시도해주세요. $link_begin$자세히 알아보기$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "국가 선택",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "감사합니다!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Brave Rewards 지역이 $country$인 것으로 설정되었습니다.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다. $link_begin$개인정보 보호정책$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Brave Rewards를 계속 사용하려면 국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다. $link_begin$개인정보 보호정책$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "저장",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "국가 선택",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

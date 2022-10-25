@@ -398,12 +398,97 @@
     "message": "Máte čakajúce príspevky z dôvodu nedostatočných finančných prostriedkov",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Zavrieť",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Pokračovat",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Zarábajte žetóny a dávajte späť",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Zarábajte žetóny zobrazovaním reklám rešpektujúcich súkromie a automaticky podporujte svoje obľúbené weby a tvorcov obsahu.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Niečo sa pokazilo",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards nie sú k dispozícii",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Ľutujeme, pri pokuse o nastavenie Brave Rewards sa vyskytla chyba. Skúste to znova.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Ľutujeme, pri pokuse o nastavenie krajiny sa vyskytla chyba. Skúste to znova.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Nové registrácie do služby Brave Rewards sú vo vašom regióne momentálne zakázané. Vždy to však môžete skúsiť neskôr. $link_begin$Ďalšie informácie$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Vyberte krajinu",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Ďakujeme!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Váš región Brave Rewards bol nastavený na $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Vyberte krajinu, aby sme vám mohli zobraziť správne možnosti a reklamy pre váš región. $link_begin$Zásady ochrany osobných údajov$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Ak chcete pokračovať v používaní Brave Rewards, vyberte svoju krajinu, aby sme vám mohli zobraziť správne možnosti a reklamy pre váš región. $link_begin$Zásady ochrany osobných údajov$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Uložiť",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Vyberte krajinu",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

@@ -2,7 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
 <translation id="7307834434086582547">เปิด/ปิดใช้งาน Brave Shields</translation>
+<translation id="6945863270524203017">รับการอัปเดตความเป็นส่วนตัวรายสัปดาห์เกี่ยวกับตัวติดตามและการบล็อกโฆษณา</translation>
+<translation id="4324735664183300693">เปิดการแจ้งเตือน</translation>
 <translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
+<translation id="5153702175393349577">วันที่ให้ทิปครั้งถัดไป</translation>
+<translation id="8979401359137062629">หมายเหตุ:</translation>
+<translation id="7277134233385925078">ตั้งเคล็ดลับประจำเดือน</translation>
+<translation id="3765933240178364575">จำนวนทิปครั้งเดียว</translation>
+<translation id="1101015459918930887">ทิปของคุณอาจใช้เวลาหลายนาทีในการดำเนินการ</translation>
+<translation id="4088764345615745058">จำนวนทิปแบบกำหนดเอง</translation>
+<translation id="8759753423332885148">เรียนรู้เพิ่มเติม</translation>
+<translation id="3271043362279673449">ขอบคุณที่สนับสนุน!</translation>
+<translation id="3312470408978098625">คุนได้ส่งทิปครั้งเดียวแล้ว</translation>
+<translation id="9088057605518918276">ตั้งค่าการให้ทิปรายเดือนแล้ว</translation>
+<translation id="2978223787436054634">ทวีตเกี่ยวกับการสนับสนุนของคุณ</translation>
+<translation id="1166682575529520472">รายเดือน</translation>
+<translation id="5906820630265272615">เงินทุน BAT</translation>
+<translation id="3586352807094428968">Brave จะเรียกเก็บ 5% ของจำนวนเงินทิปเพื่อเป็นค่าธรรมเนียมในการประมวลผล</translation>
+<translation id="7723816962634734185">จำนวนแบบกำหนดเอง</translation>
+<translation id="1986030365413628297">เช่น 12.75 BAT</translation>
+<translation id="5087864757604726239">กลับ</translation>
+<translation id="6661699662755460155">แลกเปลี่ยน</translation>
+<translation id="864162897141534043">คุณจะให้ทิป</translation>
+<translation id="7286679368056222644">การสนับสนุนรายเดือนของคุณจะเป็น</translation>
+<translation id="8195146845495346281">จำนวนทิปขั้นต่ำคือ 0.25 BAT</translation>
+<translation id="4647657427328119430">โทเค็นไม่เพียงพอ</translation>
+<translation id="2359808026110333948">ดำเนินการต่อ</translation>
+<translation id="4227681408214010862">ชอบที่ #Brave อนุญาตให้ฉันสนับสนุนครีเอเตอร์! เพิ่งให้ทิป<ph name="NAME"/>ด้วย #BAT โดยครีเอเตอร์จะได้รับ BAT หากยืนยันที่ https://creators.brave.com ก่อน <ph name="DATE"/></translation>
+<translation id="6231182869178328516">ฉันเพิ่งให้ทิป <ph name="NAME"/> ผ่านเบราว์เซอร์ Brave ลองเข้าไปดูได้ที่ https://brave.com/tips</translation>
+<translation id="7172012963002631836">มีปัญหาในการส่งทิปของคุณ</translation>
+<translation id="8994556588732085585">โปรดปิดแล้วเปิดแบนเนอร์แสดงเคล็ดลับใหม่เพื่อลองอีกครั้ง</translation>
 <translation id="2278950434998763147">เปิดบางเว็บไซต์โดยใช้การเชื่อมต่อ HTTPS ที่ปลอดภัยแทน HTTP ธรรมดา</translation>
 <translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
 <translation id="5197219128592971597">ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google</translation>
@@ -24,6 +53,8 @@
 <translation id="9148058034647219655">ออก</translation>
 <translation id="4022987104439075738">เกตเวย์ IPFS</translation>
 <translation id="2688519859165248360">อนุญาตให้นำทางไปยังทรัพยากร IPFS ผ่านเกตเวย์ IPFS</translation>
+<translation id="8047754398610073499">บล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้</translation>
+<translation id="2621893359845808115">บล็อกป๊อปอัปของเว็บไซต์ที่ขอให้คุณยอมรับหรือปฏิเสธคุกกี้บนเว็บไซต์</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="3872060236937011862">ราคา <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
@@ -124,17 +155,11 @@
 <translation id="8826007068782654809">ขอบคุณ</translation>
 <translation id="6665366815203065060">คุณเพิ่งส่งทิปให้กับ:</translation>
 <translation id="5441565662498481293">คุณกำลังส่งทิปโดยอัตโนมัติไปยัง:</translation>
-<translation id="1166682575529520472">รายเดือน</translation>
 <translation id="1628742278973105368">ทิปประจำเดือนรายการแรกของคุณจะถูกส่งใน:</translation>
-<translation id="298349922412901215">หมายเหตุ: ผู้สร้างรายนี้ยังไม่ได้ลงทะเบียนเพื่อรับการสนับสนุนจากผู้ใช้ Brave เราจะพยายามส่งการสนับสนุนให้ต่อไปจนกว่าผู้สร้างจะยืนยันตัวตน หรือจนเมื่อผ่านไปครบ 90 วัน</translation>
+<translation id="1642952941091001113">ครีเอเตอร์รายนี้ยังไม่ได้ลงทะเบียนเพื่อรับการสนับสนุนจากผู้ใช้ของ Brave เราจะพยายามส่งการสนับสนุนให้ต่อไปจนกว่าครีเอเตอร์จะยืนยันตัวตน หรือจนเมื่อผ่านไปครบ 90 วัน</translation>
 <translation id="635752162765375187">หมายเหตุ: ผู้สร้างคนนี้ยังไม่ได้กำหนดค่าให้รับทิปจากบริการวอลเล็ตรับฝากรางวัลของคุณ ทิปทั้งหมดที่คุณให้จะยังคงรอดำเนินการอยู่และจะดำเนินการอีกครั้งโดยอัตโนมัติตลอดช่วงเวลา 90 วัน</translation>
 <translation id="1910721550319506122">ยินดีต้อนรับ!</translation>
-<translation id="3165726837666415756">คุณสามารถสนับสนุนเว็บไซต์นี้ได้โดยการส่งทิปให้ วิธีนี้เป็นวิธีการแสดงความขอบคุณที่พวกเขาสร้างคอนเทนต์ดีๆ ขึ้นมา ผู้สร้างคอนเทนต์ที่ยืนยันตัวตนแล้วจะได้รับการจ่ายทิปในช่วงสัปดาห์แรกของแต่ละเดือนในปฏิทิน</translation>
-<translation id="1704859330137112950">หากต้องการ คุณยังสามารถกำหนดเวลาการให้ทิปเป็นรายเดือนเพื่อสนับสนุนไซต์นี้ในลักษณะต่อเนื่อง</translation>
-<translation id="245015745140252435">จำนวนเงินการให้ทิป</translation>
-<translation id="7873874596836611687">ยอดรางวัลคงเหลือ:</translation>
-<translation id="2573313946367623146">ส่งทิปของฉัน</translation>
-<translation id="3250511771491660127">ทำให้เป็นรายเดือน</translation>
+<translation id="5830114181292529917">คุณสามารถสนับสนุนเว็บไซต์นี้ได้โดยการให้เงินสนับสนุน ซึ่งถือเป็นวิธีขอบคุณเว็บไซต์ที่สร้างเนื้อหาดี ๆ</translation>
 <translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="1201402288615127009">ถัดไป</translation>
 <translation id="8481779960444041069">เพื่อการปรับปรุงความเป็นส่วนตัวของคุณ โปรดตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
@@ -181,9 +206,6 @@
 <translation id="683765328936486920">บน YouTube</translation>
 <translation id="8969049974285901797">บน Twitch</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/> มีไม่เพียงพอ</translation>
-<translation id="6940273954212603510">โปรด</translation>
-<translation id="1036277985068412734">เพิ่มเงินทุน</translation>
-<translation id="3492491948683276944">ตั้งทิปรายเดือน</translation>
 <translation id="8038539967102225446">Brave Ads อยู่นี่!</translation>
 <translation id="222883304157347087">(อุปกรณ์นี้)</translation>
 <translation id="4157741509680155021">อุปกรณ์บนห่วงโซ่การซิงก์</translation>
@@ -403,10 +425,10 @@
 <translation id="223536150967420869">ซื้อ</translation>
 <translation id="2956070106555335453">สรุป</translation>
 <translation id="7465614181960492526">รับโทเค็นเพื่อนำไปตอบแทน</translation>
-<translation id="244362569344671266">รับโทเค็นผ่านการดูโฆษณาส่วนตัวของ Brave เพื่อนำไปสนับสนุนผู้สร้างเนื้อหาโดยอัตโนมัติ</translation>
+<translation id="2731539192954672606">รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบโดยอัตโนมัติ</translation>
 <translation id="631124996535890460">หากดำเนินการต่อ จะถือว่าคุณยอมรับ <ph name="TERMS_OF_SERVICE"/> และ <ph name="PRIVACY_POLICY"/></translation>
 <translation id="8804164990146287819">นโยบายสความเป็นส่วนตัว</translation>
-<translation id="6318696841371191107">ดูการแนะนำสั้นๆ</translation>
+<translation id="185034574799484512">มาดูรายละเอียดคร่าวๆ กัน</translation>
 <translation id="7930505144430343145">ยินดีต้อนรับสู่ Brave Reward</translation>
 <translation id="3477340970981564961">โฆษณาส่วนตัวของ Brave ให้ Reward เป็นโทเค็นสำหรับนำไปสนับสนุนผู้สร้างคอนเทนต์ ซึ่งจะต่างจากโฆษณาทั่วไป แต่ยังคงรักษาความเป็นส่วนตัวให้กับข้อมูลส่วนตัวของคุณไว้ในทุกๆ ส่วน</translation>
 <translation id="6973095375773523904">โฆษณาจะปรากฏที่ใด</translation>
@@ -455,9 +477,6 @@
 <translation id="2222442600106681391">2 BAT</translation>
 <translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
-<translation id="8762169086048682708">10 BAT</translation>
-<translation id="4548973860489847866">0.00 BAT</translation>
-<translation id="4193129043743994339">0.00 USD</translation>
 <translation id="8792121506918889955">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
@@ -470,7 +489,6 @@
 <translation id="4472575034687746823">เริ่มต้น</translation>
 <translation id="2759836790106646094">สำรองข้อมูลกระเป๋าเงินของคุณตอนนี้!</translation>
 <translation id="1078873179929044999">ในขั้นตอนถัดไป คุณจะได้เห็นกลุ่มคำสำหรับการกู้คืน (Recovery Phrase) 12 คำ ซึ่งคุณสามารถใช้ในการกู้คืนบัญชีคริปโตหลักของคุณได้ เก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานกระเป๋าเงิน</translation>
-<translation id="2359808026110333948">ดำเนินการต่อ</translation>
 <translation id="5488357322146334497">ข้อความ</translation>
 <translation id="1904000155026201268">ฉันเข้าใจว่าหากฉันลืมคำกู้คืน ฉันจะไม่สามารถเข้าถึงกระเป๋าเงินคริปโตของฉันได้</translation>
 <translation id="3933122286596948824">วลีกู้คืนของคุณ</translation>
@@ -865,4 +883,58 @@
 <translation id="8423380132356660250">เปิดแอป <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">กำลังอัปเดตโปรไฟล์ VPN ...</translation>
 <translation id="7457027586454688423">ใส่รหัสผ่าน Brave Wallet ของคุณ</translation>
+<translation id="6588595775439619209">บล็อกการแจ้งเตือนคุกกี้</translation>
+<translation id="264682546981571963">เบื่อไหมกับการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้</translation>
+<translation id="4986297793092101884">Brave บล็อกคุกกี้ของบุคคลที่สามแล้ว เราสามารถบล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้ได้เช่นกัน</translation>
+<translation id="4784306439879850873">โปรดทราบว่า Brave ไม่สามารถตรวจสอบได้ว่าจะเกิดอะไรขึ้นหากคุณลงชื่อ ลายเซ็นสามารถอนุญาตการดำเนินการเกือบทั้งหมดในบัญชีของคุณหรือในนามของคุณ ซึ่งรวมถึง (แต่ไม่จำกัดเพียง) ให้การควบคุมบัญชีและทรัพย์สินเข้ารหัสของคุณทั้งหมดแก่ไซต์ที่ส่งคำขอ ลงชื่อเฉพาะเมื่อคุณแน่ใจว่าต้องการดำเนินการนี้ และเชื่อถือไซต์ที่ร้องขอ</translation>
+<translation id="3474375934783434676">ลงชื่อโดยยอมรับความเสี่ยงด้วยตัวคุณเอง</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/> จาก <ph name="SIZE"/></translation>
+<translation id="6450792191436242818">โปรแกรมระบบ</translation>
+<translation id="6252742184395380448">โปรแกรมกำหนดค่า</translation>
+<translation id="5358970666412490132">โปรแกรมสเตก</translation>
+<translation id="346636227344244984">โปรแกรมโหวต</translation>
+<translation id="3538368258493053874">โปรแกรมโหลด BPF</translation>
+<translation id="2334098351242742927">โปรแกรม Ed25519</translation>
+<translation id="6421371987002247943">โปรแกรมโทเค็น</translation>
+<translation id="8780753288764281797">โปรแกรม Secp256k1</translation>
+<translation id="8504640708321980506">ข้อมูล</translation>
+<translation id="4771176409524282426">สร้างบัญชี</translation>
+<translation id="1755120947324658439">โอนสิทธิ์</translation>
+<translation id="7588707273764747927">Transfer</translation>
+<translation id="5328067049293286962">สร้างบัญชีด้วย Seed</translation>
+<translation id="1512366326138054636">เพิ่มบัญชี Nonce</translation>
+<translation id="7042202638449257311">ถอนบัญชี Nonce</translation>
+<translation id="6586085653712983224">เริ่มต้นบัญชี Nonce</translation>
+<translation id="8790312855368673743">อนุญาตบัญชี Nonce</translation>
+<translation id="5312748886432335174">จัดสรร</translation>
+<translation id="7678705217826797696">จัดสรรด้วย Seed</translation>
+<translation id="7436137523759921028">โอนสิทธิ์ด้วย Seed</translation>
+<translation id="3360695936886670509">โอนย้ายด้วย Seed</translation>
+<translation id="7323636209143541483">อัปเกรดบัญชี Nonce</translation>
+<translation id="616021855350068202">เริ่มต้นสร้าง</translation>
+<translation id="4377316227435786423">เริ่มต้นบัญชี</translation>
+<translation id="7474306790151660826">เริ่มต้น Multisig</translation>
+<translation id="363258595406850968">กำหนดอำนาจ</translation>
+<translation id="2091563464450586155">สร้างถึง</translation>
+<translation id="1252941298291625577">เผา</translation>
+<translation id="5211196599627796093">ปิดบัญชี</translation>
+<translation id="6988707241715050556">ระงับบัญชี</translation>
+<translation id="857250415816680832">ยกเลิกการระงับบัญชี</translation>
+<translation id="5453172892735755262">ตรวจสอบการโอนย้ายแล้ว</translation>
+<translation id="471669767157904431">ตรวจสอบการอนุมัติแล้ว</translation>
+<translation id="3530340583186873359">ตรวจสอบการสร้างถึงแล้ว</translation>
+<translation id="5068456869800056740">ตรวจสอบการเผาแล้ว</translation>
+<translation id="3004830385467519189">เริ่มต้นบัญชี 2</translation>
+<translation id="8026488633670875516">ซิงค์ค่าดั้งเดิม</translation>
+<translation id="2024649614526778327">เริ่มต้นบัญชี 3</translation>
+<translation id="8382368767453083629">เริ่มต้น Multisig 2</translation>
+<translation id="77243237706803459">เริ่มต้นสร้าง 2</translation>
+<translation id="583281660410589416">ไม่รู้จัก</translation>
+<translation id="2862978891748913252">เลือกประเทศของคุณ</translation>
+<translation id="3832588024105436400">เลือกประเทศของคุณ เพื่อให้เราสามารถแสดงตัวเลือกและโฆษณาที่เหมาะสมกับภูมิภาคของคุณ <ph name="PRIVACY_POLICY"/></translation>
+<translation id="5666264859501108700">ตั้งค่าภูมิภาค Brave Rewards ของคุณเป็น <ph name="COUNTRY_NAME"/> แล้ว</translation>
+<translation id="3180990265682133881">ขออภัย มีข้อผิดพลาดขณะพยายามตั้งค่าประเทศของคุณ โปรดลองอีกครั้ง</translation>
+<translation id="7352651011704765696">มีบางอย่างผิดพลาด</translation>
+<translation id="7144878232160441200">ลองใหม่</translation>
+<translation id="6040143037577758943">ปิด</translation>
 </translationbundle>

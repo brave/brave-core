@@ -398,12 +398,97 @@
     "message": "คุณมีทิปที่รอดำเนินการอยู่เนื่องจากมีเงินในบัญชีไม่พอ",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "ปิด",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "ดำเนินการต่อ",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "รับโทเค็นเพื่อนำไปตอบแทน",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบโดยอัตโนมัติ",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "มีบางอย่างผิดพลาด",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards ไม่พร้อมให้บริการ",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "ขออภัย มีข้อผิดพลาดขณะพยายามตั้งค่า Brave Rewards โปรดลองอีกครั้ง",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "ขออภัย มีข้อผิดพลาดขณะพยายามตั้งค่าประเทศของคุณ โปรดลองอีกครั้ง",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "ขณะนี้ไม่สามารถลงทะเบียน Brave Rewards ใหม่ในภูมิภาคของคุณได้ แต่คุณสามารถลองอีกครั้งในภายหลังได้เสมอ $link_begin$เรียนรู้เพิ่มเติม$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "เลือกประเทศของคุณ",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "ขอบคุณค่ะ",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "ตั้งค่าภูมิภาค Brave Rewards ของคุณเป็น $country$ แล้ว",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "เลือกประเทศของคุณ เพื่อให้เราสามารถแสดงตัวเลือกและโฆษณาที่เหมาะสมกับภูมิภาคของคุณ $link_begin$นโยบายความเป็นส่วนตัว$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "หากต้องการใช้ Brave Rewards ต่อไป โปรดเลือกประเทศของคุณ เพื่อให้เราสามารถแสดงตัวเลือกและโฆษณาที่เหมาะสมกับภูมิภาคของคุณ $link_begin$นโยบายความเป็นส่วนตัว$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "บันทึก",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "เลือกประเทศของคุณ",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

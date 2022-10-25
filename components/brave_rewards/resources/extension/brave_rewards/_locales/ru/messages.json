@@ -398,12 +398,97 @@
     "message": "Из-за нехватки средств у вас есть чаевые в статусе ожидания",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Close",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Продолжить",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Зарабатывайте жетоны и выражайте благодарность",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Зарабатывайте жетоны, просматривая рекламу, не нарушающую вашу конфиденциальность, и автоматически поддерживайте ваши любимые сайты и создателей контента.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Что-то пошло не так",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Награды недоступны",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Во время настройки Brave Наград произошла ошибка. Повторите попытку.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "При указании страны произошла ошибка. Повторите попытку.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Регистрация в Brave Наградах для вашего региона отключена. Повторите попытку позже. $link_begin$Подробнее$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Выберите страну",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Спасибо!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Установлен ваш регион использования Brave Наград: $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Выберите страну, тогда мы сможем показывать вам настройки и рекламу, соответствующие вашему региону. $link_begin$Политика конфиденциальности$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Чтобы дальше использовать Brave Награды, выберите страну. Тогда мы сможем показывать вам настройки и рекламу, соответствующие вашему региону. $link_begin$Политика конфиденциальности$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Save",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Выберите страну",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

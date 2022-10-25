@@ -398,12 +398,97 @@
     "message": "You have tips pending due to insufficient funds\t",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Close",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Continue",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Earn Tokens & Give Back",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Something went wrong",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards not available",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Unfortunately, there was an error while trying to set your country. Please try again.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "New sign-ups for Brave Rewards are currently disabled in your region. However, you can always try again later. $link_begin$Learn more$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Select your country",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Thank you!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Your Brave Rewards region has been set to $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Select your country so we can show you the right options and ads for your region. $link_begin$Privacy Policy$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. $link_begin$Privacy Policy$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Save",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Select your country",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

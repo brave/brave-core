@@ -398,12 +398,97 @@
     "message": "Anda mempunyai tip menunggu kerana dana yang tidak mencukupi",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Tutup",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Teruskan",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Dapatkan Token & Beri Balik",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Dapatkan token dengan melihat iklan yang menghormati privasi dan sokong laman dan pencipta kandungan kegemaran anda secara automatik.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Ada sesuatu yang tidak kena",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Ganjaran Brave tidak tersedia",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Malangnya, terdapat ralat semasa cuba menetapkan Ganjaran Brave. Sila cuba sekali lagi.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Malangnya, terdapat ralat semasa cuba menetapkan negara anda. Sila cuba sekali lagi.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Pendaftaran baharu untuk Ganjaran Brave dinyahdayakan dalam rantau anda buat masa ini. Walau bagaimanapun, anda boleh mencuba semula kemudian pada bila-bila masa. $link_begin$Ketahui lebih lanjut$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Pilih negara anda",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Terima kasih!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Rantau Ganjaran Brave anda telah ditetapkan kepada$country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Pilih negara anda supaya kami boleh menunjukkan pilihan dan iklan yang betul untuk rantau anda kepada anda. $link_begin$Dasar Privasi$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Untuk terus menggunakan Ganjaran Brave, pilih negara anda supaya kami boleh menunjukkan pilihan dan iklan yang betul untuk rantau anda kepada anda. $link_begin$Dasar Privasi$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Simpan",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Pilih negara anda",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

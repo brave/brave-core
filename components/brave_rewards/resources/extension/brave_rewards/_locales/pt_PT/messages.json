@@ -398,12 +398,97 @@
     "message": "Dispõe de dicas pendentes por fundos insuficientes",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Fechar",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Continuar",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Ganhe Tokens & Contribua",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Ganhe tokens ao visualizar anúncios que respeitam a sua privacidade e apoie os seus sites preferidos e os criadores de conteúdo automaticamente. ",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Algo correu mal",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Recompensas Brave não disponíveis",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Ocorreu um erro ao tentar configurar as Recompensas Brave. Tente novamente.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Ocorreu um erro ao tentar definir o país. Tente novamente.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Neste momento, não são aceites novas inscrições nas Recompensas Brave nesta região. Pode sempre tentar novamente mais tarde. $link_begin$Saiba mais$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Selecione o seu país",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Obrigado!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "A sua região para as Recompensas Brave é $country$",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Selecione o seu país para que possamos apresentar-lhe as opções e anúncios adequados à região. $link_begin$Política de Privacidade$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Para continuar a utilizar as Recompensas Brave, selecione o seu país para que possamos apresentar-lhe as opções e anúncios adequados à região. $link_begin$Política de Privacidade$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Guardar",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Selecione o seu país",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

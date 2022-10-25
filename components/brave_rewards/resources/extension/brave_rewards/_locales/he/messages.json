@@ -398,12 +398,97 @@
     "message": "יש לכם טיפים שממתינים בשל חוסר בכסף",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "סגור",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "המשך",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "הרוויחו טוקנים ותנו בחזרה",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "הרוויחו טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות ותמכו באתרים וביוצרי התוכן המועדפים עליכם באופן אוטומטי.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "משהו השתבש",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards לא זמינים",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "לרוע המזל, אירעה שגיאה בעת ניסיון להגדיר את Brave Rewards. בבקשה נסו שוב.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "למרבה הצער, אירעה שגיאה בעת ניסיון להגדיר את המדינה שלכם. בבקשה נסו שוב.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "הרשמות חדשות ל-Brave Rewards מושבתות כעת באזור שלכם. עם זאת, תמיד תוכלו לנסות שוב מאוחר יותר. $link_begin$למדו עוד $link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "בחרו את המדינה שלכם",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "תודה!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "אזור ה-Brave Rewards שלכם הוגדר ל-$country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "בחרו את המדינה שלכם כדי שנוכל להראות לכם את האפשרויות והמודעות הנכונות עבור האזור שלכם. $link_begin$ מדיניות פרטיות $link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "כדי להמשיך להשתמש ב-Brave Rewards, בחרו את המדינה שלכם כדי שנוכל להציג לכם את האפשרויות והמודעות הנכונות עבור האזור שלכם. $link_begin$ מדיניות פרטיות $link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "שמור",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "בחרו את המדינה שלכם",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

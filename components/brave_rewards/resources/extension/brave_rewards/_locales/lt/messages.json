@@ -398,12 +398,97 @@
     "message": "Turite laukiančių indėlių dėl nepakankamų lėšų",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Uždaryti",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Tęsti",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Gaukite žetonų ir atsilyginkite",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Gaukite žetonų žiūrėdami privatumo nepažeidžiančias reklamas ir automatiškai paremkite mėgstamas svetaines bei turinio kūrėjus.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Kažkas negerai",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "„Brave“ atlygis nepasiekiamas",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Deja, bandant nustatyti „Brave“ atlygį įvyko klaida. Bandykite dar kartą.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Deja, bandant nustatyti jūsų šalį įvyko klaida. Bandykite dar kartą.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Nauji asmenys, užsiregistravę gauti „Brave“ atlygį, šiuo metu jūsų regione neaktyvūs. Vis dėlto bet kada galite dar kartą bandyti vėliau. $link_begin$Sužinoti daugiau$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Pasirinkite savo šalį",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Dėkojame!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Jūsų „Brave“ atlygio regionas nustatytas kaip $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Pasirinkite savo šalį, kad galėtume rodyti jūsų regionui tinkamas parinktis ir reklamas. $link_begin$Privatumo politika$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Jei norite toliau naudoti „Brave“ atlygį, pasirinkite savo šalį, kad galėtume rodyti jūsų regionui tinkamas parinktis ir reklamas. $link_begin$Privatumo politika$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Išsaugoti",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Pasirinkite savo šalį",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

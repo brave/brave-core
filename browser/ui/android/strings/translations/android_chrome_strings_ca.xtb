@@ -441,6 +441,7 @@ Quan suprimeixes l'historial de navegació (sigui per complet o un lloc web espe
 <translation id="3435465986463792564">Tens moltes finestres obertes? Pots gestionar-les aquí.</translation>
 <translation id="3443221991560634068">Torna a carregar la pàgina actual</translation>
 <translation id="3444179773590444986">Vols compartir suggeriments sobre el tema fosc per als llocs web?</translation>
+<translation id="7384339501748168186">Amb la finalitat de protegir la teva privadesa, Brave no emplenarà automàticament la contrasenya en aquest camp.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{S'ha programat 1 baixada}other{S'han programat # baixades}}</translation>
 <translation id="3474624961160222204">Continua com a <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Pots triar el motor de cerca que prefereixis</translation>
@@ -658,6 +659,7 @@ Quan suprimeixes l'historial de navegació (sigui per complet o un lloc web espe
 <translation id="4763480195061959176">vídeo</translation>
 <translation id="4766313118839197559">Les contrasenyes es desen al gestor de contrasenyes en aquest dispositiu.</translation>
 <translation id="4766678251456904326">Afegeix un compte al dispositiu</translation>
+<translation id="4787736314074622408">Vols suprimir <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">T'ajuda a completar tasques, com ara la tramitació de compres, al web</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">L'encriptació de frases de contrasenya no inclou les formes de pagament ni les adreces de Brave Pay.
@@ -726,6 +728,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="4744980273298156620">Aviat, quan obris una pestanya nova, veuràs històries de: <ph name="SITE_NAME"/>. Els llocs web que segueixes es desen al teu Compte de Brave. Pots gestionar-los a la configuració de Discover.</translation>
 <translation id="5091249083535528968">Dades d'ús ampliades</translation>
 <translation id="509429900233858213">S'ha produït un error.</translation>
+<translation id="5099845111805573968">Quan seleccionis "lloc web per a ordinadors" una vegada, aquesta opció s'aplicarà al lloc web cada vegada que el visitis.</translation>
 <translation id="225414324447409614">Si un lloc web prova de robar-te la contrasenya o si baixes un fitxer maliciós, és possible que Brave n'enviï els URL, inclosos fragments de contingut de les pàgines, a Navegació segura</translation>
 <translation id="510275257476243843">Queda 1 hora</translation>
 <translation id="5115811374190515607">a <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="5958275228015807058">Trobaràs els teus fitxers i les teves pàgines a Baixades</translation>
 <translation id="5962718611393537961">Toca per replegar</translation>
 <translation id="5964869237734432770">Atura descripcions d'imatges</translation>
+<translation id="9135546826883360971">Brave recordarà la teva elecció</translation>
 <translation id="5979084224081478209">Comprova les contrasenyes</translation>
 <translation id="5995726099713306770">Vols tornar a baixar la pàgina?</translation>
 <translation id="6456271171669383967">Continua amb Brave</translation>
@@ -920,6 +924,7 @@ Les proves de Privacy Sandbox encara s'estan desenvolupant i només estan dispon
 <translation id="6192907950379606605">Obtén descripcions d'imatges</translation>
 <translation id="8367262879301982880">Les contrasenyes es desen al gestor de contrasenyes de Brave en aquest dispositiu</translation>
 <translation id="620197886010707372">Vols obrir l'aplicació per a <ph name="APPNAME"/> amb Google Play?</translation>
+<translation id="6202812185118613467">Torna a iniciar la sessió per començar la sincronització</translation>
 <translation id="6203593061661911168">La baixada començarà quan hi hagi connexió Wi‑Fi</translation>
 <translation id="6210748933810148297">No ets <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Es previsualitza aquesta pàgina</translation>
@@ -1051,6 +1056,7 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612">Pestanya <ph name="TAB_TITLE"/> seleccionada</translation>
 <translation id="6828070228333235514">Atura el seguiment del preu</translation>
+<translation id="6830728435402077660">No segura</translation>
 <translation id="6833996806551876956">Prova de la zona de proves de privadesa</translation>
 <translation id="6836206421467243968">Restaura el grup de pestanyes <ph name="TITLE_OF_GROUP"/> com un nou grup de pestanyes en segon pla.</translation>
 <translation id="6846298663435243399">S'està carregant…</translation>
@@ -1351,7 +1357,7 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="8460448946170646641">Revisa els controls principals de privadesa i seguretat</translation>
 <translation id="8461694314515752532">Encripta les dades sincronitzades amb la teva frase de contrasenya de sincronització</translation>
 <translation id="8466613982764129868">Comprova que el dispositiu <ph name="TARGET_DEVICE_NAME"/> estigui connectat a Internet</translation>
-<translation id="8473863474539038330">Adreces i més</translation>
+<translation id="5633907266617216186">Adreces i més</translation>
 <translation id="8481921391193215807">Quan està activada, els llocs web poden utilitzar les tècniques de protecció de la privadesa que es mostren aquí per oferir el seu contingut i els seus serveis. Per exemple, alternatives per fer seguiments entre llocs web. Pot ser que més endavant s'hi afegeixin més proves.
 
 <ph name="BEGIN_LIST_ITEM1"/>Els anunciants i els editors poden utilitzar la tècnica FLoC.<ph name="END_LIST_ITEM1"/>

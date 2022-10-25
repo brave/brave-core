@@ -398,12 +398,97 @@
     "message": "Bạn có các gợi ý đang chờ xử lý do không đủ tiền",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Đóng",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Tiếp tục",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Kiếm Token & Tặng Lại",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư, đồng thời tự động hỗ trợ các website và người sáng tạo nội dung mà bạn yêu thích.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Đã xảy ra sự cố",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Phần thưởng Brave không khả dụng",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Rất tiếc, đã xảy ra lỗi khi cố gắng thiết lập Phần thưởng Brave. Vui lòng thử lại.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Rất tiếc, đã xảy ra lỗi khi cố gắng cài đặt quốc gia của bạn. Vui lòng thử lại.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Các đăng ký mới cho Phần thưởng Brave hiện đã bị vô hiệu hóa ở khu vực của bạn. Tuy nhiên, bạn luôn có thể thử lại sau. $link_begin$Tìm hiểu thêm$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Chọn quốc gia của bạn",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Cảm ơn bạn!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Khu vực Phần thưởng Brave của bạn đã được đặt thành $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Chọn quốc gia của bạn để chúng tôi có thể hiển thị cho bạn các tùy chọn và quảng cáo phù hợp cho khu vực của bạn. $link_begin$Chính sách quyền riêng tư$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Để tiếp tục sử dụng Phần thưởng Brave, hãy chọn quốc gia của bạn để chúng tôi có thể hiển thị cho bạn các tùy chọn và quảng cáo phù hợp cho khu vực của bạn. $link_begin$Chính sách quyền riêng tư$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Lưu",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Chọn quốc gia của bạn",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

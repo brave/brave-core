@@ -54,6 +54,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="7291143854620707672">Podatke v Braveu, ki se ustvarijo med uporabo tega profila (na primer zaznamke, zgodovino, gesla in druge nastavitve), lahko odstrani skrbnik delovnega profila. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Napaka v operacijskem sistemu med namestitvijo. Znova prenesite Brave.</translation>
 <translation id="2648689842065142443">Če napravo souporabljate z drugimi, lahko prijatelji in sorodniki ločeno brskajo ter nastavijo Brave tako, kot ga želijo.</translation>
+<translation id="5926459996518749366">Brave je blokiral to datoteko arhiva, ker morda skriva zlonamerno programsko opremo.</translation>
 <translation id="6384359666082467439">Pozdravljeni v Braveu, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Zavihek v Braveu</translation>
 <translation id="8372880274820509128">Zaradi večje varnosti bo Brave šifriral vaše podatke.</translation>
@@ -196,6 +197,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="7861579472672677409">Razširitev <ph name="EXTENSION_NAME"/> je dodana v Brave</translation>
 <translation id="608006075545470555">Dodajanje delovnega profila v ta brskalnik</translation>
 <translation id="5849446944780602366">Prilagodite in nadzirajte Brave. Posodobitev je na voljo.</translation>
+<translation id="7433698744896946664">Omogočanje razširitve za prikaz zahtev za dostop v orodni vrstici Bravea</translation>
 <translation id="492209281555538239">Brave bo shranil to geslo v Brave Računu. Ni si vam ga treba zapomniti.</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> je nevarna, zato jo je Brave blokiral.</translation>
 <translation id="7006260220514217183">Varno brskanje je izklopljeno. Brave priporoča, da ga vklopite.</translation>
@@ -288,6 +290,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8678991866891573053">Brave raziskuje nove funkcije, ki spletnim mestom omogočajo, da z manjšo količino prenesenih podatkov zagotavljajo isto izkušnjo pri brskanju.</translation>
 <translation id="3343095737966473035">Brave ni privzeti brskalnik</translation>
 <translation id="5477319665405831211">V vseh svojih napravah sinhronizirajte in prilagodite Brave</translation>
+<translation id="2280238321454602884">Če je vklopljena ta nastavitev, Brave znova pridobi pomnilnik z zavihkov, ki jih ne uporabljate aktivno. S tem sprostite sredstva računalnika za druga opravila in poskrbite, da Brave še naprej deluje hitro. Neaktivni zavihki so videti prazni in se samodejno znova naložijo, ko jih kliknete. <ph name="BEGIN_LINK"/>Preberite več<ph name="END_LINK"/> ali <ph name="BEGIN_LINK_2"/>pošljite povratne informacije<ph name="END_LINK_2"/>.</translation>
 <translation id="4784414698887946907">S tem bodo iz te naprave izbrisani podatki brskanja. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Namestitvenemu programu ni uspelo ustvariti začasnega imenika. Preverite, ali je na disku dovolj prostora in ali imate dovoljenje za namestitev programske opreme.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – delovna različica Bravea</translation>
@@ -316,6 +319,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="6914496861676471566">Arhiv namestitvenega programa je poškodovan ali neveljaven. Znova prenesite Brave.</translation>
 <translation id="6431861494713261006">Izbirno: Pomagajte izboljšati funkcije sistema Chrome OS in njegovo delovanje s samodejnim pošiljanjem diagnostičnih podatkov in podatkov o uporabi Googlu.</translation>
 <translation id="2097604701283463988">Brave je zastarel</translation>
+<translation id="607365808648940765">Brave po potrebi znova pridobi pomnilnik z zavihkov, ki jih ne uporabljate aktivno. To lahko kadar koli spremenite v nastavitvah.</translation>
 <translation id="8550334526674375523">Ta delovni profil je v celoti ločen od osebnega profila.</translation>
 <translation id="2452889775041290116">Tvoj starš je izklopil »Dovoljenja za spletna mesta, aplikacije in razširitve« za Brave. Dodajanje tega ni dovoljeno: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Če želite prejemati prihodnje posodobitve Bravea, potrebujete macOS 10.13 ali novejšega. V tem računalniku je nameščen macOS 10.12.</translation>

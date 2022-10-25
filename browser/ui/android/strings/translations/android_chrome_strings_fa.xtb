@@ -45,7 +45,7 @@
 <translation id="1209206284964581585">فعلاً پنهان شود</translation>
 <translation id="1227058898775614466">سابقه پیمایش</translation>
 <translation id="1231733316453485619">همگام‌سازی روشن شود؟</translation>
-<translation id="123724288017357924">تازه‌سازی صفحه اصلی با نادیده گرفتن محتوای حافظه پنهان</translation>
+<translation id="123724288017357924">بار کردن مجدد صفحه اصلی با نادیده گرفتن محتوای حافظه پنهان</translation>
 <translation id="1239792311949352652">به‌سرعت این صفحه را هم‌رسانی کنید. برای ویرایش این میان‌بر، به «تنظیمات» بروید.</translation>
 <translation id="3251315496493761426">‏نکته‌های Brave</translation>
 <translation id="1240288207750131269">درحال بار کردن <ph name="LANG"/></translation>
@@ -416,7 +416,7 @@
 <translation id="82609232232243542">‏ورود به Brave</translation>
 <translation id="3284510035090979597">کمک کنش‌گرایانه</translation>
 <translation id="1793814306828610181">‏ویدیوهایی درباره نحوه استفاده از Brave</translation>
-<translation id="3288003805934695103">تازه‌سازی صفحه</translation>
+<translation id="3288003805934695103">بار کردن مجدد صفحه</translation>
 <translation id="3290249595466894471">نمونه کوچکی از صفحات، بارگیری‌ها، فعالیت افزونه، و اطلاعات سیستم را هم ارسال می‌کند تا به کشف تهدیدهای جدید کمک کند</translation>
 <translation id="3297344142967351106">دستیار صوتی</translation>
 <translation id="3303414029551471755">ادامه می‌دهید و محتوا را بارگیری می‌کنید؟</translation>
@@ -439,8 +439,9 @@
 <translation id="5265419033369521352">‏وقتی به سیستم وارد شده باشید، امنیت شما را در Brave حفظ می‌کند و ممکن است برای بهبود امنیت شما در برنامه‌های دیگر Brave استفاده شود</translation>
 <translation id="3429160811076349561">ویژگی‌های آزمایشی خاموش است</translation>
 <translation id="3435465986463792564">پنجره‌های زیادی دارید؟ می‌توانید از اینجا مدیریتشان کنید</translation>
-<translation id="3443221991560634068">تازه‌سازی صفحه کنونی</translation>
+<translation id="3443221991560634068">بار کردن مجدد صفحه کنونی</translation>
 <translation id="3444179773590444986">مایلید بازخوردتان را درباره زمینه تیره برای سایت‌ها هم‌رسانی کنید؟</translation>
+<translation id="7384339501748168186">‏برای حفظ حریم‌خصوصی‌تان، Brave گذرواژه‌تان را به‌طور خودکار در این فیلد وارد نخواهد کرد.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{یک بارگیری زمان‌بندی شد}one{# بارگیری زمان‌بندی شد}other{# بارگیری زمان‌بندی شد}}</translation>
 <translation id="3474624961160222204">ادامه دادن به‌عنوان <ph name="NAME"/></translation>
 <translation id="3478363558367712427">می‌توانید موتور جستجویتان را انتخاب کنید</translation>
@@ -658,6 +659,7 @@
 <translation id="4763480195061959176">ویدئو</translation>
 <translation id="4766313118839197559">گذرواژه‌ها در «مدیر گذرواژه» در این دستگاه ذخیره می‌شوند</translation>
 <translation id="4766678251456904326">افزودن حساب به دستگاه</translation>
+<translation id="4787736314074622408">می‌خواهید <ph name="ITEM_TITLE"/> را حذف کنید؟</translation>
 <translation id="4791358705705538979">به شما کمک می‌کند برخی کارها، مثل تسویه‌حساب، را در وب انجام دهید</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">‏رمزگذاری گذرعبارت شامل روش‌های پرداخت و نشانی‌های موجود در Google Pay نمی‌شود.
@@ -726,6 +728,7 @@
 <translation id="4744980273298156620">‏به‌زودی وقتی برگه جدیدی باز می‌کنید، داستان‌هایی از <ph name="SITE_NAME"/> را خواهید دید. سایت‌هایی که دنبال می‌کنید در «حساب Brave» شما ذخیره می‌شوند. می‌توانید در تنظیمات «یافته‌ها»، آن‌ها را مدیریت کنید.</translation>
 <translation id="5091249083535528968">داده‌های استفاده گسترده</translation>
 <translation id="509429900233858213">خطایی روی داد.</translation>
+<translation id="5099845111805573968">وقتی سایت ویژه رایانه را یک‌بار انتخاب کنید، هربار که از آن سایت بازدید کنید این تنظیم اعمال می‌شود</translation>
 <translation id="225414324447409614">‏اگر سایتی تلاش کند گذرواژه شما را به‌سرقت ببرد، یا وقتی فایل مخربی بارگیری می‌کنید، Brave ممکن است نشانی‌های وب را به‌همراه بخش‌های کوچکی از محتوای صفحه به «مرور ایمن» ارسال کند</translation>
 <translation id="510275257476243843">۱ ساعت باقی‌مانده است</translation>
 <translation id="5115811374190515607">به <ph name="PRODUCT_NAME"/></translation>
@@ -733,7 +736,7 @@
 <translation id="5126510351761255129">کارتتان را تأیید کنید</translation>
 <translation id="5132942445612118989">همگام‌سازی گذرواژه‌ها، سابقه و موارد دیگر در همه دستگاه‌ها</translation>
 <translation id="5139940364318403933">‏آشنایی با نحوه استفاده از Google Drive</translation>
-<translation id="5142281402488957685">برای داستان‌های جدید، صفحه را به‌طرف پایین بکشید تا بازخوانی شود</translation>
+<translation id="5142281402488957685">برای داستان‌های جدید، صفحه را به‌طرف پایین بکشید تا بازآوری شود</translation>
 <translation id="5152843274749979095">هیچ برنامه پشتیبانی‌شده‌ای نصب نشده است</translation>
 <translation id="5161254044473106830">عنوان مورد نیاز است</translation>
 <translation id="5170568018924773124">نمایش در پوشه</translation>
@@ -801,7 +804,7 @@
 <translation id="5524843473235508879">هدایت کردن مسدود شد.</translation>
 <translation id="5548606607480005320">بررسی ایمنی</translation>
 <translation id="5555525474779371165">انتخاب ویژگی حفاظتی «مرور ایمن»</translation>
-<translation id="5556459405103347317">تازه‌سازی</translation>
+<translation id="5556459405103347317">بار کردن مجدد</translation>
 <translation id="555816257274242153">پیگیری قیمت متوقف شد</translation>
 <translation id="5561162485081632007">رویدادهای خطرناک را درصورت وقوع شناسایی می‌کند و به شما هشدار می‌دهد</translation>
 <translation id="5561549206367097665">در انتظار شبکه…</translation>
@@ -833,7 +836,7 @@
 <translation id="5749237766298580851">خاموش <ph name="SEPARATOR"/> توصیه نمی‌شود</translation>
 <translation id="5752232708629533680">‏فقط هم‌رسانی GIF</translation>
 <translation id="416316836590748269">‏می‌توانید از صدایتان برای جستجو در Brave استفاده کنید</translation>
-<translation id="5754350196967618083">«یافته‌ها» بازخوانی نمی‌شود</translation>
+<translation id="5754350196967618083">«یافته‌ها» بازآوری نمی‌شود</translation>
 <translation id="5763514718066511291">برای کپی کردن نشانی وب این برنامه ضربه بزنید</translation>
 <translation id="5765517223145864268">درباره تجربه‌تان به ما بگویید. یا <ph name="BEGIN_LINK"/>تنظیماتتان را تغییر دهید<ph name="END_LINK"/>.</translation>
 <translation id="5765780083710877561">توضیح:</translation>
@@ -881,6 +884,7 @@
 <translation id="5958275228015807058">فایل‌ها و صفحه‌هایتان را در «بارگیری‌ها» پیدا کنید</translation>
 <translation id="5962718611393537961">برای کوچک کردن ضربه بزنید</translation>
 <translation id="5964869237734432770">توقف توضیحات تصویر</translation>
+<translation id="9135546826883360971">‏Brave انتخابتان را به‌خاطر می‌سپارد</translation>
 <translation id="5979084224081478209">بررسی گذرواژه‌ها</translation>
 <translation id="5995726099713306770">صفحه دوباره بارگیری شود؟</translation>
 <translation id="6456271171669383967">‏حفظ Brave</translation>
@@ -920,6 +924,7 @@
 <translation id="6192907950379606605">دریافت توضیحات تصویر</translation>
 <translation id="8367262879301982880">‏گذرواژه‌ها در «مدیر گذرواژه Brave» در این دستگاه ذخیره می‌شوند</translation>
 <translation id="620197886010707372">‏برنامه <ph name="APPNAME"/> با Google Play باز شود؟</translation>
+<translation id="6202812185118613467">برای شروع همگام‌سازی دوباره به سیستم وارد شوید</translation>
 <translation id="6203593061661911168">‏بارگیری هنگام اتصال به Wi-Fi شروع خواهد شد</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> ایمیل شما نیست؟</translation>
 <translation id="6211386937064921208">درحال پیش‌نمایش این صفحه</translation>
@@ -1051,6 +1056,7 @@
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>، برگه، انتخاب‌شده</translation>
 <translation id="6828070228333235514">توقف پیگیری قیمت</translation>
+<translation id="6830728435402077660">امن نیست</translation>
 <translation id="6833996806551876956">دوره آزمایشی «جعبه ایمنی حریم خصوصی»</translation>
 <translation id="6836206421467243968">بازیابی گروه برگه <ph name="TITLE_OF_GROUP"/> به‌عنوان گروه برگه جدید پس‌زمینه.</translation>
 <translation id="6846298663435243399">درحال بارگیری…</translation>
@@ -1351,7 +1357,7 @@
 <translation id="8460448946170646641">مرور کنترل‌های اصلی امنیت و حریم خصوصی</translation>
 <translation id="8461694314515752532">رمزگذاری داده‌های همگام‌سازی‌شده با گذرعبارت همگام‌سازی خودتان</translation>
 <translation id="8466613982764129868">مطمئن شوید <ph name="TARGET_DEVICE_NAME"/> به اینترنت متصل باشد</translation>
-<translation id="8473863474539038330">نشانی‌ها و سایر موارد</translation>
+<translation id="5633907266617216186">نشانی‌ها و سایر موارد</translation>
 <translation id="8481921391193215807">‏وقتی روشن باشد، سایت‌ها می‌توانند برای ارائه محتوا و سرویس‌هایشان از تکنیک‌های حفظ حریم خصوصی نشان داده‌شده در اینجا استفاده کنند. این تکنیک‌ها شامل روش‌های جایگزین برای ردیابی بین‌سایتی می‌شود. ممکن است در گذر زمان، دوره‌های آزمایشی بیشتری اضافه شود.
 
 <ph name="BEGIN_LIST_ITEM1"/>تبلیغ‌کنندگان و ناشران می‌توانند از FLoC استفاده کنند.<ph name="END_LIST_ITEM1"/>
