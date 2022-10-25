@@ -54,6 +54,7 @@
 <translation id="7291143854620707672">북마크, 방문 기록, 비밀번호, 기타 설정 생성 등 이 프로필을 사용하는 동안 생성된 모든 Brave 데이터는 직장 프로필 관리자가 삭제할 수 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">설치 중 운영체제 오류가 발생했습니다. Brave을 다시 다운로드하세요.</translation>
 <translation id="2648689842065142443">기기를 공유하는 경우 친구와 가족이 개별적으로 탐색하고 원하는 대로 Brave을 설정할 수 있습니다.</translation>
+<translation id="5926459996518749366">멀웨어가 숨겨져 있을 수 있어 Brave에서 이 보관 파일을 차단했습니다.</translation>
 <translation id="6384359666082467439"><ph name="ACCOUNT_FIRST_NAME"/>님, Brave에 오신 것을 환영합니다</translation>
 <translation id="6791166902140255175">Brave 탭</translation>
 <translation id="8372880274820509128">보안 강화를 위해 Brave에서 사용자 데이터를 암호화합니다.</translation>
@@ -196,6 +197,7 @@
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/>이(가) Brave에 추가됨</translation>
 <translation id="608006075545470555">이 브라우저에 직장 프로필 추가</translation>
 <translation id="5849446944780602366">Brave을 맞춤설정하고 제어하세요. 업데이트가 출시되었습니다.</translation>
+<translation id="7433698744896946664">확장 프로그램이 Brave 툴바에 액세스 요청을 표시하도록 허용</translation>
 <translation id="492209281555538239">Brave에서 내 Brave 계정에 이 비밀번호를 저장하므로 기억하지 않아도 됩니다.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다.</translation>
 <translation id="7006260220514217183">세이프 브라우징이 사용 중지되어 있습니다. 사용 설정하는 것이 좋습니다.</translation>
@@ -288,6 +290,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8678991866891573053">Brave은 사용자의 데이터를 더 적게 사용하면서도 사이트에서 동일한 탐색 환경을 제공할 수 있는 새로운 기능을 알아보고 있습니다.</translation>
 <translation id="3343095737966473035">Brave이 기본 브라우저로 설정되어 있지 않습니다</translation>
 <translation id="5477319665405831211">모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
+<translation id="2280238321454602884">사용 설정하면 Brave에서 사용자가 현재 사용하지 않는 탭의 메모리를 회수합니다. 이렇게 하면 다른 작업을 위해 컴퓨터 리소스를 확보하고 Brave의 속도를 빠르게 유지합니다. 비활성 탭은 비어 있을 때 표시되며 클릭하면 자동으로 새로고침됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/> 또는 <ph name="BEGIN_LINK_2"/>의견 보내기<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">인터넷 사용 기록이 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="7747138024166251722">설치 프로그램이 임시 디렉터리를 만들지 못했습니다. 디스크 공간 및 설치 권한을 확인해 보세요.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -316,6 +319,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="6914496861676471566">설치 프로그램 아카이브가 손상되었거나 잘못되었습니다. Brave을 다시 다운로드하세요.</translation>
 <translation id="6431861494713261006">선택사항: 진단 및 사용 데이터를 Brave에 자동으로 전송하여 ChromeOS의 기능 및 성능 개선에 참여합니다.</translation>
 <translation id="2097604701283463988">Brave이 이전 버전임</translation>
+<translation id="607365808648940765">필요한 경우 Brave에서는 사용자가 현재 사용하지 않는 탭에서 메모리를 회수합니다. 언제든지 설정에서 변경할 수 있습니다.</translation>
 <translation id="8550334526674375523">이 직장 프로필은 개인 프로필과 완전히 분리됩니다.</translation>
 <translation id="2452889775041290116">부모님이 Brave의 ‘사이트, 앱, 확장 프로그램에 대한 권한’을 사용 중지하셨습니다. 이 <ph name="EXTENSION_TYPE_PARAMETER"/> 추가가 허용되지 않습니다.</translation>
 <translation id="8502436661255886343">향후 Brave 업데이트를 받으려면 macOS 10.13 이상이 필요합니다. 이 컴퓨터에서는 macOS X 10.12를 사용하고 있습니다.</translation>

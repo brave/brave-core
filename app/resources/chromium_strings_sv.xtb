@@ -54,6 +54,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="7291143854620707672">All data i Brave som uppstår när den här profilen används (t.ex. bokmärken, historik, lösenord och andra inställningar) kan tas bort av jobbprofilens administratör. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Ett operativsystemsfel inträffade under installationen. Ladda ned Brave igen.</translation>
 <translation id="2648689842065142443">Om du delar en enhet med vänner och familj kan de konfigurera Brave precis som de vill och surfa separat.</translation>
+<translation id="5926459996518749366">Den här arkivfilen blockerades av Brave eftersom den kan dölja skadlig programvara</translation>
 <translation id="6384359666082467439">Välkommen till Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Brave-flik</translation>
 <translation id="8372880274820509128">Din data krypteras i Brave för att öka säkerheten.</translation>
@@ -196,6 +197,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> har lagts till i Brave</translation>
 <translation id="608006075545470555">Lägg till en jobbprofil i den här webbläsaren</translation>
 <translation id="5849446944780602366">Anpassa och styr Brave. En uppdatering är tillgänglig.</translation>
+<translation id="7433698744896946664">Tillåt att tillägg visar åtkomstförfrågningar i verktygsfältet i Brave</translation>
 <translation id="492209281555538239">Det här lösenordet sparas i ditt Brave-konto. Du behöver inte komma ihåg det.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> är skadlig och har blockerats av Brave.</translation>
 <translation id="7006260220514217183">Säker webbsökning har inaktiverats. Du rekommenderas att aktivera funktionen i Brave.</translation>
@@ -288,6 +290,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8678991866891573053">Brave utforskar nya funktioner som gör att webbplatser kan leverera samma upplevelse av webbläsaren med mindre av din data</translation>
 <translation id="3343095737966473035">Brave är inte din standardwebbläsare</translation>
 <translation id="5477319665405831211">Synkronisera och anpassa Brave på alla enheter du använder</translation>
+<translation id="2280238321454602884">Om aktiverat återtar Brave minne från flikar som du inte använder aktivt. Då frigörs datorns resurser för andra uppgifter så Brave fungerar så snabbt som möjligt. Inaktiva flikar verkar tomma och läses in automatiskt när du klickar på dem. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/> eller <ph name="BEGIN_LINK_2"/>skicka feedback<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Webbinformationen raderas från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>
 <translation id="7747138024166251722">Det gick inte att skapa en tillfällig katalog för installationsfilen. Kontrollera diskutrymmet och att du har behörighet att installera program.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -316,6 +319,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="6914496861676471566">Arkivet för installationsfilen är skadat eller ogiltigt. Ladda ned Brave igen.</translation>
 <translation id="6431861494713261006">Valfritt: Skicka diagnostik- och användningsdata automatiskt till Brave och hjälp oss att förbättra funktioner och prestanda i Chrome OS.</translation>
 <translation id="2097604701283463988">Den här versionen av Brave är inaktuell</translation>
+<translation id="607365808648940765">Om det behövs återtar Brave minne från flikar som du inte använder aktivt. Du kan när som helst ändra detta i inställningarna.</translation>
 <translation id="8550334526674375523">Jobbprofilen hålls helt åtskild från din privata profil.</translation>
 <translation id="2452889775041290116">Din förälder har inaktiverat Behörigheter för webbplatser, appar och tillägg för Brave. Det är inte tillåtet att lägga till denna <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Du behöver macOS 10.13 eller senare för att få kommande uppdateringar av Brave. På den här datorn används macOS 10.12.</translation>

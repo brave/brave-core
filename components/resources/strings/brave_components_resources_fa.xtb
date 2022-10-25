@@ -88,9 +88,11 @@
 <translation id="1447534717041828517">نمایش دکمه Brave News در نوار ابزار</translation>
 <translation id="370665806235115550">در حال بارکردن…</translation>
 <translation id="4634933166298842522">مدیریت اشتراک ها</translation>
-<translation id="3632460243282703117">اشتراک در</translation>
-<translation id="4720556299488643018">لغو اشتراک</translation>
-<translation id="5227905322248018544">پنهان کنید و دیگر این را نشان ندهید</translation>
+<translation id="4108314971463891922">دنبال کردن</translation>
+<translation id="3861486700625780712">لغو دنبال کردن</translation>
+<translation id="8909741410750517071">با 1 کلیک این منبع را دنبال کنید.</translation>
+<translation id="1982678174789043774">تمام گزارش‌های اخیر موجود در اخبار Brave را دریافت کنید.</translation>
+<translation id="7894417427965898400">مدیریت فید‌ها</translation>
 <translation id="780301667611848630">نه متشکرم</translation>
 <translation id="9164544612367905452">واکشی…</translation>
 <translation id="1276592121036104130">بار کردن محتوای جدید</translation>
@@ -102,6 +104,26 @@
 <translation id="5158129253322921540">محتوا از <ph name="PUBLISHER_NAME"/> غیرفعال شود</translation>
 <translation id="3189348785087463371">ارتقایافته</translation>
 <translation id="4541978218358617681">آگهی</translation>
+<translation id="6265592479622441247">بازگشت به <ph name="BEGIN_BOLD"/>میز کار<ph name="END_BOLD"/></translation>
+<translation id="8300751939969131609">اخبار Brave را روشن کنید تا حتی یک گزارش را از دست ندهید</translation>
+<translation id="8117813824055029515">با هدایت منابع و ارسال مستقیم آن‌ها به مرورگرتان، فیدهای خبری را شخصی‌سازی کنید. همه این کار‌ها 100% محرمانه انجام خواهد شد.</translation>
+<translation id="1765217911817124376">روشن کردن Brave News</translation>
+<translation id="7845637671472170434">جستجوی اخبار، سایت، موضوع یا فید RSS</translation>
+<translation id="1498364270401875204">کانال‌ها</translation>
+<translation id="1472675084647422956">بیشتر ببینید</translation>
+<translation id="8032569120109842252">دنبال کردن</translation>
+<translation id="7841646697467892441">{FEED_COUNT, plural,
+          =1 {# source}
+          other {# sources}
+        }</translation>
+<translation id="6143382357119101833">دریافت فید‌ها از <ph name="URL"/></translation>
+<translation id="4515121482885046194">فیدی در <ph name="URL"/> یافت نشد</translation>
+<translation id="8535964427132833909">چیزی در اینجا یافت نشد :'(</translation>
+<translation id="9036971622563146214">نتایج</translation>
+<translation id="6727452620418483718">نتایج مستقیم</translation>
+<translation id="7697251281928908970">به نوشتن برای جستجوی منبع‌ها ادامه دهید</translation>
+<translation id="4750394297954878236">پیشنهادها</translation>
+<translation id="7436846601026966360">ممکن است از برخی منابع خوشتان بیاید. پیشنهادها به‌صورت ناشناس هستند و فقط با دستگاه شما مطابقت دارند.</translation>
 <translation id="1776831331757823105">ساعت</translation>
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="7679334366167089823">برای تماشای آگهی‌هایی که به حریم‌خصوصی احترام می‌گذارند، توکن کسب کنید.</translation>
@@ -117,6 +139,7 @@
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="1644574205037202324">سابقه</translation>
 <translation id="2702801445560668637">لیست خواندن</translation>
+<translation id="4590997608186539865">فهرست پخش</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="8730621377337864115">تمام</translation>
 <translation id="730042046912793465">این یک</translation>
@@ -125,10 +148,8 @@
 <translation id="4085423007106063912">Brave هرگز کارهایی را که در پنجره خصوصی انجام می‌دهید به خاطر نمی‌سپارد. سایت‌هایی که بازدید می‌کنید در تاریخچه شما نشان داده نمی‌شوند. وقتی پنجره را می‌بندید کوکی‌ها، داده‌های فرم، و داده‌های سایت ناپدید می‌شوند.</translation>
 <translation id="1700746046668116047">توجه داشته باشید که (اگر از دستگاه کاری یا شبکه استفاده می‌کنید) فعالیت شما همچنان می‌تواند برای ارائه‌دهنده خدمات اینترنت، ناظران منفعل شبکه یا کارفرمای شما قابل مشاهده باشد. برای حفظ حریم خصوصی بیشتر، پنجره‌ای خصوصی با Tor باز کنید.</translation>
 <translation id="8759753423332885148">بیشتر بدانید.</translation>
-<translation id="3546750666732517156">«پنجره خصوصی» با اتصال Tor</translation>
-<translation id="5383068818957293256">Brave هیچ‌گاه آنچه را در «پنجره خصوصی» انجام می‌دهید به‌خاطر نمی‌سپارد. با اتصال Tor، نشانی IP شما از سایت‌هایی که بازدید می‌کنید پنهان می‌شود. درهرصورت، اگر امنیت شخصی‌تان به ناشناس ماندن بستگی دارد، درعوض از «مرورگر Tor» استفاده کنید.</translation>
-<translation id="3338507774653218581">Brave هرگز به خاطر نمی‌سپارد که شما در یک پنجره خصوصی چه کاری می‌کنید. با اتصال Tor، دو مزیت اضافی دریافت می‌کنید: آدرس IP شما از سایت‌هایی که بازدید می‌کنید پنهان می‌شود و سایت‌هایی که بازدید می‌کنید از دید ناظران شبکه غیرفعال پنهان می‌شوند. توجه داشته باشید که Tor ممکن است سرعت مرور را کاهش دهد، یا در برخی از وب‌سایت‌ها جواب ندهد.</translation>
-<translation id="8666930656222843375">یک پنجره خصوصی با Tor کار را برای ISP یا کارفرمای شما (اگر از یک دستگاه کاری یا شبکه استفاده می‌کنید) دشوارتر می‌سازد تا ببیند از چه سایت‌هایی بازدید می‌کنید، هر چند این کار را برای آنها غیرممکن نمی‌کند. با این حال، حتی یک پنجره خصوصی با Tor به‌طور کامل در برابر ردیابی از شما دفاع نمی‌کند. اگر امنیت شخصی شما به ناشناس ماندن بستگی دارد، به جای آن از مرورگر Tor استفاده کنید.</translation>
+<translation id="8611976753572844841">پنجره خصوصی با اتصال Tor</translation>
+<translation id="1645589858096839236">Brave هرگز آنچه را در پنجره خصوصی انجام می‌دهید ذخیره نمی‌کند. با اتصال Tor، دسترسی به آدرس IP حقیقی شما از طریق سایت‌ها و دسترسی شبکه‌ها به سایت‌هایی که از آن‌ها بازدید می‌کنید دشوارتر خواهد بود. در هر صورت، اگر امنیت شخصی‌تان به ناشناس ماندن بستگی دارد، در عوض از مرورگر Tor استفاده کنید.</translation>
 <translation id="7919374705736538787">جستجوی خصوصی با</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">با جستجوی خصوصی، Brave از DuckDuckGo برای جستجو در «پنجره‌های خصوصی» استفاده خواهد کرد. DuckDuckGo سابقه جستجویتان را ردیابی نمی‌کند، بنابراین می‌توانید به‌طور خصوصی جستجو کنید.</translation>
@@ -136,7 +157,7 @@
 <translation id="4371533307685765155">جستجو با DuckDuckGo</translation>
 <translation id="548478195417408221">«پنجره‌های خصوصی» را خصوصی‌تر کنید</translation>
 <translation id="3294503279952534143">این «پنجره خصوصی» خصوصی‌تر است</translation>
-<translation id="4644024131266615376">با اتصال Tor</translation>
+<translation id="6126226144537295436">با اتصال Tor</translation>
 <translation id="8541421872680304667">Tor با هدایت مرور کردن از بین چند سرور Tor قبل از رسیدن به مقصدتان، نشانی IP‌ شما را از سایت‌هایی که بازدید می‌کنید پنهان می‌کند. Tor می‌تواند باعث کاهش سرعت مرور کردن شود و شاید بعضی از سایت‌ها اصلاً کار نکنند.</translation>
 <translation id="8897548669448660973">استفاده از «پنجره خصوصی»، فقط آنچه را Brave در دستگاهتان انجام می‌دهد تغییر می‌دهد — این کار رفتار هیچ‌کس را تغییر نمی‌دهد. Tor نشانی IP شما را برای سایت‌هایی که بازدید می‌کنید پنهان می‌کند و کاری می‌کند که دیدن سایت‌هایی که بازدید می‌کنید برای ISP یا کارفرمای شما دشوار (نه غیرممکن) شود. «پنجره خصوصی با Tor» را از منو یا با [[ key ]] باز کنید.</translation>
 <translation id="6975708438781948564">با Tor در Brave بیشتر آشنا شوید</translation>
@@ -164,6 +185,7 @@
 <translation id="9204006549413740506">آخرین به‌روزرسانی</translation>
 <translation id="6745592621698551453">اکنون به‌روز شود</translation>
 <translation id="5334844597069022743">مشاهده منبع</translation>
+<translation id="4720556299488643018">لغو اشتراک</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
 <translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
 <translation id="4105411033440701818">توجه: زمانی که روی «ارسال» کلیک می‌کنید، آدرس سایت، شماره نسخه Brave خود و آدرس IP را با توسعه‌دهندگان Brave به اشتراک خواهید گذاشت. (آدرس IP ذخیره نخواهد شد.)</translation>
@@ -274,8 +296,8 @@
 <translation id="5028274575541726856">خطا: نمایه «جوایز Brave» پرچم‌گذاری شده است</translation>
 <translation id="2607420597216860026">لطفاً بعد از تکمیل تأیید شناسه در <ph name="PROVIDER"/>، دوباره امتحان کنید.</translation>
 <translation id="3183954159462541696">خطا: برای ورود به سیستم، به حساب تأییدشده نیاز دارید</translation>
-<translation id="6650468331440842419">هوم، به نظر می‌رسد نمایه Brave Rewards شما قبلاً به یک حساب نگهبانی در منطقه دیگری متصل شده است. لطفاً دوباره با حساب نگهداری قبلی خود وصل شوید، یا منطقه حساب نگهداری خود را برای مطابقت با حساب قبلی خود به روز کنید.</translation>
-<translation id="5955021799827127089">خطا: منطقه حساب متفاوت</translation>
+<translation id="1859789048900659918">همم، به نظر می‌رسد که کشور Brave Rewards شما با کشور حساب <ph name="PROVIDER"/> که سعی به اتصال آن دارید مطابقت ندارد.</translation>
+<translation id="8925428135452218262">خطا: عدم مطابقت کشور</translation>
 <translation id="5260522591743022748">هوم، به نظر می‌رسد پاداش‌های Brave شما قبلاً با یک حساب <ph name="PROVIDER"/> دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود دوباره تأیید کنید.</translation>
 <translation id="5111921830714291902">خطا: حساب متفاوت</translation>
 <translation id="1024520300696337331">حساب <ph name="PROVIDER"/> شما در حال حاضر به پروفایل Brave Rewards متصل نمی‌شود. حسابتان <ph name="PROVIDER"/> در کشوری ثبت شده که در حال حاضر برای وصل شدن به Brave Rewards پشتیبانی نمی‌شود.</translation>
@@ -297,6 +319,8 @@
 <translation id="6682919029276027868">با این حال، قابلیت‌‌های پاداش‌های Brave فعلی‌تان محدود است. به تأیید رساندن با شریک کیف پول نظارتی به شما اجازه می‌دهد کارهای زیر را انجام دهید:</translation>
 <translation id="9064931634458501855">به‌راحتی وجوه را برداشت و واریز کنید</translation>
 <translation id="3222002542796906461">پاداش‌های خود را مستقیماً در حساب خود دریافت کنید</translation>
+<translation id="1233129511866436960">درباره مناطق و پشتیبانی بیشتر بدانید</translation>
+<translation id="7329170127335794328">در حال حاضر در منطقه شما در دسترس نیست</translation>
 <translation id="8304979233901023264">’s <ph name="TOS_LINK_BEGIN"/>شرایط خدمات<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>خط‌مشی رازداری<ph name="PP_LINK_END"/> ‏Brave را خوانده‌ام و با آن‌ها موافقم.</translation>
 <translation id="2359808026110333948">ادامه</translation>
 <translation id="1892970806832316900">در حال انتظار تا <ph name="DATE"/></translation>
@@ -341,6 +365,7 @@
 <translation id="6161467863097205016">مبنای اطلاعات کلیدی:</translation>
 <translation id="5323604113525002127">ما [[numberOfLines]] خط آخر گزارش را نشان می‌دهیم. اگر کل گزارش را می‌خواهید، می‌توانید آن را از بالا دانلود کنید.</translation>
 <translation id="7168491065836975228">ویژگی‌های ذاتی پاداش‌ها</translation>
+<translation id="1992397118740194946">تنظیم نشده است</translation>
 <translation id="758790787422117549">شناسه شخصی</translation>
 <translation id="1919345977826869612">آگهی‌ها</translation>
 <translation id="3671566813999349838">مبلغ</translation>
@@ -362,6 +387,7 @@
 <translation id="3798449238516105146">نسخه</translation>
 <translation id="7180611975245234373">بازخوانی</translation>
 <translation id="1456696701804096710">تعداد تلاش مجدد:</translation>
+<translation id="8118649457152178086">کشور Rewards:</translation>
 <translation id="2152423226436243241">کمک خودکار</translation>
 <translation id="2927922949538312364">انعام یک‌باره</translation>
 <translation id="3164105678355419142">انعام تکرارشونده</translation>
@@ -647,9 +673,14 @@
 <translation id="6513892817556267573">سرویس نام اتریوم</translation>
 <translation id="4335039108389860301">پشتیبانی از «سروبی نام اتریوم» (ENS) در Brave فعال شود؟</translation>
 <translation id="8328137586971750853">Brave از Infura برای صدور فراخوان‌های Ethereum JSON-RPC در قرارداد هوشمند از «سرویس نام Ethereum» برای حل و فصل درخواست‌های جستجوی نام دامنه eth. استفاده خواهد کرد. اگر آن را فعال کنید، Infura می‌تواند دامنه‌هایی را که سعی دارید بازدید کنید ببیند، اما قادر به دیدن سایر دامنه‌ها نخواهد بود. به <ph name="BEGIN_INFURA_TOU_LINK"/>شرایط استفاده<ph name="END_INFURA_TOU_LINK"/>و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/>Infira مراجعه کنید.</translation>
+<translation id="807404806385418949">مراجعه برون زنجیره‌ای سرویس نام اتریوم</translation>
+<translation id="4049590838234508776">پشتیبانی از مراجعه برون زنجیره‌ای سرویس نام اتریوم (ENS) در Brave فعال شود؟</translation>
+<translation id="1769433806670482329">Brave برای ترجمه درخواست‌های مراجعه به دامنه نام اتریوم از درگاه‌های برون زنجیره‌ای استفاده خواهد کرد. با فعال کردن این بخش، درگاه‌های سیستم شخص ثالث دامنه‌ اتریومی را که از آن بازدید می‌کنید مشاهده خواهد کرد اما قادر به مشاهده دامنه‌های دیگر نخواهد بود. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>بیشتر بدانید<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="4047002754575891955">ادامه دادن با مراجعه برون زنجیره‌ای</translation>
 <translation id="7378412287463452336">ادامه با استفاده از سرور Infura</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="1448289340149908413">اتریوم</translation>
+<translation id="59174027418879706">فعال شد</translation>
 <translation id="2468755552460246661">دامنه مسدود شد</translation>
 <translation id="6393849031898466746">ممکن است این سایت تلاش کند شما را در سایت‌های دیگر ردیابی کند</translation>
 <translation id="983774928604730749">Brave مانع از بار کردن سایت زیر شده است:</translation>
@@ -762,6 +793,8 @@
 <translation id="244362569344671266">با مشاهده «آگهی‌های خصوصی Brave»، توکن کسب کنید و به‌طور خودکار از سازندگان محتوا پشتیبانی کنید.</translation>
 <translation id="5095252080770652994">پیشرفت</translation>
 <translation id="6278643716658443228">تنظیمات پاداش‌ها</translation>
+<translation id="2862978891748913252">کشور خود را انتخاب کنید</translation>
+<translation id="3717922248131893262">برای ادامه استفاده از Brave Rewards، کشور خود را انتخاب کنید تا به شما گزینه‌های صحیح و آگهی‌های مربوط به منطقه‌تان را نشان دهیم. <ph name="LINK_BEGIN"/>سیاست حفظ حریم شخصی<ph name="LINK_END"/></translation>
 <translation id="6777169449483742979">برای مشاهده این تصویر دارای حامی مالی، توکن کسب می‌کنید.</translation>
 <translation id="5486114327664215175">بابت مشاهده این تصویر و پشتیبانی از پدیدآورندگان محتوا، توکن کسب کنید.</translation>
 <translation id="2940863921746574646">موجودی توکن</translation>
@@ -809,9 +842,16 @@
 <translation id="6717671373796332174">برای جزئیات، <ph name="TOUR_LINK_BEGIN"/>گشت سریعی بزنید<ph name="TOUR_LINK_END"/> یا <ph name="LEARN_LINK_BEGIN"/>بیشتر بدانید<ph name="LEARN_LINK_END"/>.</translation>
 <translation id="7465614181960492526">کسب توکن و برگرداندن</translation>
 <translation id="2731539192954672606">با مشاهده آگهی‌هایی که به حریم خصوصی احترام می‌گذارند، توکن کسب کنید و به‌طور خودکار از سایت‌ها و سازندگان محتوای دلخواهتان پشتیبانی کنید.</translation>
+<translation id="5425006356459378415">Brave Rewards در دسترس نیست</translation>
+<translation id="909076461795862330">متأسفانه هنگام تلاش برای راه‌اندازی Brave Rewards خطایی رخ داده است. لطفاً دوباره تلاش کنید.</translation>
+<translation id="3180990265682133881">متاسفانه هنگام تلاش برای ثبت کشورتان خطایی رخ داده است. لطفاً دوباره تلاش کنید.</translation>
+<translation id="2191603160848789187">در حال حاضر امکان ثبت‌نام جدید در Brave Rewards در منطقه شما وجود ندارد. در هر صورت، می‌توانید بعداً دوباره تلاش کنید. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_BEGIN"/></translation>
+<translation id="8764860730661377310">منطقه Brave Rewards شما در <ph name="COUNTRY"/>ثبت شده است.</translation>
+<translation id="7068416025603720599">کشور خود را انتخاب کنید تا به شما گزینه‌های صحیح و آگهی‌های مربوط به منطقه‌تان را نشان دهیم. <ph name="LINK_BEGIN"/>سیاست حفظ حریم شخصی<ph name="LINK_END"/></translation>
 <translation id="1275213816424141989">شاید بعداً</translation>
 <translation id="5187052478998910855">به مرور اطلاعات مربوط به Rewards نیاز دارید؟</translation>
 <translation id="8622329973403382303">گشت سریعی بزنید تا نحوه عملکرد برای پیوستن به تاریخ به‌عنوان ستاره راک Rewards را مرور کنید!</translation>
+<translation id="4331886860862592203">کشور را انتخاب کنید</translation>
 <translation id="3115702351969988294">چندوقت یکبار می‌خواهید آگهی‌ها را ببینید؟</translation>
 <translation id="7532131110478098401">(آگهی در هر ساعت)</translation>
 <translation id="2951964054390325080">ماهانه چقدر می‌خواهید از تولیدکنندگان محتوای دلخواهتان حمایت مالی کنید؟</translation>
@@ -1040,6 +1080,7 @@
 <translation id="2708402071160162126">هشدار: هرگز عبارت بازیابی را با کسی به اشتراک نگذارید. هر کسی با داشتن این عبارت می‌تواند دارایی‌های شما را به‌صورت همیشگی تصاحب کند.</translation>
 <translation id="2416098547200943834">توجه: کلید خصوصی در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه می‌شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">توجه: کلید خصوصی باید در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
+<translation id="42126664696688958">گرفتن خروجی</translation>
 <translation id="2902856457593699108">نمایش کلید</translation>
 <translation id="8033497299373164724">مخفی کردن کلید</translation>
 <translation id="2702143907607790516">نام حساب به‌روزرسانی نشد، لطفاً دوباره امتحان کنید.</translation>
@@ -1050,10 +1091,8 @@
 <translation id="5398538976202345089">شبکه فاقد پشتیبانی</translation>
 <translation id="1530109021798294736">شبکه اصلی</translation>
 <translation id="1613627717923045622">تست شبکه</translation>
-<translation id="4245123003308024264">Ropsten</translation>
-<translation id="2219337030359508039">Kovan</translation>
-<translation id="992469614838016642">Rinkeby</translation>
 <translation id="4022672158058543834">Goerli</translation>
+<translation id="6742767287935968736">Sepolia</translation>
 <translation id="1260818237399583903">زنجیره هوشمند Binance</translation>
 <translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
@@ -1242,8 +1281,9 @@
 <translation id="6169371176266800104">24 ساعت</translation>
 <translation id="7677692756188354224">Mkt کلاه لبه دار</translation>
 <translation id="4430019312045809116">میزان صدا</translation>
+<translation id="4312994183947987913">خرید/سپرده</translation>
 <translation id="5133421763709317473">هیچ دارایی منطبق با جستجو یا فیلتر یافت نشد</translation>
-<translation id="8813832913015888458">این دارایی توسط کیف پول شجاع پشتیبانی نمی شود</translation>
+<translation id="7383613643114466279">این دارایی توسط کیف پول Brave پشتیبانی نمی‌شود</translation>
 <translation id="6423985584914773314">آدرس FIL معتبر نیست</translation>
 <translation id="3898731124813934210">خرید با Wyre</translation>
 <translation id="5522073372365069684">خرید با Ramp</translation>
@@ -1256,6 +1296,26 @@
 <translation id="8528916244724490964">تمام شبکه‌ها</translation>
 <translation id="4038403584813842767">تعادل ↑</translation>
 <translation id="1695096446857675822">تعادل ↓</translation>
+<translation id="7198018180583855568">همه حساب‌ها</translation>
+<translation id="6954150712710630841">تراکنش ثبت شد</translation>
+<translation id="905855245798176174">تراکنش با موفقیت به شبکه ارسال شد و در انتظار تأیید است.</translation>
+<translation id="3183790760060544368"><ph name="VALUE"/> به کیف پول شما برگشت داده شد</translation>
+<translation id="4577432071459867390">تراکنش ناموفق</translation>
+<translation id="4359235192593147041">به‌علت سقف بالای جا‌به‌جایی تراکنش انجام نشد. برای جابه‌جایی با سقف بالا سطح تحمل لغزش را افزایش دهید.</translation>
+<translation id="8584830404080597280">خرید و فروش جدید</translation>
+<translation id="8065905913745172640">تراکنش جدید</translation>
+<translation id="9079041000600020902">نمایش خطا</translation>
+<translation id="6257687515171395402">رسید</translation>
+<translation id="7065228161830418508">پیام خطا</translation>
+<translation id="5711048370886541571">لطفاً پیام خطا را برای مراجعه بعدی ذخیره کنید.</translation>
+<translation id="4315561646577477669">تبادل <ph name="MAKER"/> با <ph name="TAKER"/></translation>
+<translation id="5896915466769225182">تراکنش انجام شد!</translation>
+<translation id="3541662075332902575">تراکنش با موفقیت در یک بلاک گنجانده شد. برای پیشگیری از احتمال دو بار خرج کردن، به شما پیشنهاد می‌کنیم که تا تأیید بلاک صبر کنید.</translation>
+<translation id="1349457304183253101">تراکنش در حال پردازش است</translation>
+<translation id="5132698868627864842">در حال تأیید</translation>
+<translation id="5601436886921227795">تعامل Dapp</translation>
+<translation id="9104177294757104789">ارسال <ph name="VALUE"/></translation>
+<translation id="4048336522751528394">تبادل <ph name="MAKER"/> با <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">شبکه‌های ثانویه</translation>
 <translation id="2816106784624007524">محدوده گس باید عدد صحیح بزرگ‌تر از 0 باشد</translation>
 <translation id="3354376789153561654">داده‌های تراکنش «به» باید مشخص شود</translation>
@@ -1280,6 +1340,45 @@
 <translation id="4719005063558335704">حساب:</translation>
 <translation id="4337554812324118382">تاریخ:</translation>
 <translation id="569870799832027680">شناسه برنامه:</translation>
+<translation id="9071560809248786823">لمپورت‌ها</translation>
+<translation id="6129953537138746214">فاصله</translation>
+<translation id="2333894833508885986">برنامه مالک</translation>
+<translation id="673881072848521017">پایه</translation>
+<translation id="6602282658898162258">سید</translation>
+<translation id="6985542807131223826">اعتبار</translation>
+<translation id="938125553895090449">اعتبار جدید</translation>
+<translation id="6309334520637986016">از سید</translation>
+<translation id="7779353517712893336">از برنامه مالک</translation>
+<translation id="3116904380055282595">اعشار</translation>
+<translation id="2576809855031734288">اعتبار مینت</translation>
+<translation id="3472592357259422295">فریز کردن اعتبار</translation>
+<translation id="6965572321703653296">نوع اعتبار</translation>
+<translation id="21140452451144431">تعداد امضاکنندگان</translation>
+<translation id="5108161910968957837">از حساب</translation>
+<translation id="174345730328470349">به حساب</translation>
+<translation id="2687968143695057804">حساب جدید</translation>
+<translation id="8274326034751772925">حساب تعیین‌شده</translation>
+<translation id="3287245755942479694">حساب ساخته‌شده</translation>
+<translation id="6559616978170662285">حساب پایه</translation>
+<translation id="3157085877070297608">حساب نانس</translation>
+<translation id="3052313599928914393">اعتبار نانس</translation>
+<translation id="2818177840313215015">حساب اختصاص‌یافته</translation>
+<translation id="3332926854409491692">اجاره sysvar</translation>
+<translation id="1338923714285924422">بلاک هش جدید sysvar</translation>
+<translation id="7718273517583726718">راه‌اندازی مینت</translation>
+<translation id="1982396945501942785">حساب راه‌اندازی‌شده</translation>
+<translation id="4448996702733695148">حساب چند امضایی راه‌اندازی‌شده</translation>
+<translation id="8881659593032980372">حساب سوخته</translation>
+<translation id="5601061394286676366">حساب بسته‌شده</translation>
+<translation id="4100192671552260674">حساب فریزشده</translation>
+<translation id="1865659351831046902">حساب بومی رمز یکبار مصرف</translation>
+<translation id="3430421677512658698">توکن مینت</translation>
+<translation id="5371133472668945195">مینت</translation>
+<translation id="3591768665664470087">امضا کنندگان</translation>
+<translation id="2761935211528145049">نماینده</translation>
+<translation id="5048094297412542354">مالک/نماینده</translation>
+<translation id="6600221609132728151">مالک حساب/نماینده</translation>
+<translation id="1444051660240401461">حساب یا مینت تغییریافته</translation>
 <translation id="7843211152394841558">حداکثر تعداد تلاش‌های مجدد:</translation>
 <translation id="8496335570810457">تعهد پیش از پرواز:</translation>
 <translation id="5100124500279922001">رد کردن پیش از پرواز:</translation>
@@ -1289,6 +1388,7 @@
 <translation id="2095142195578664632">به راهنمایی نیاز دارید؟ نگاه کنید به</translation>
 <translation id="3253669416991680932">این کیف پول سخت‌افزاری از این عملیات پشتیبانی نمی‌کند.</translation>
 <translation id="7457027586454688423">رمز Brave Wallet خود را وارد کنید</translation>
+<translation id="7553242001898162573">رمز عبور خود را وارد کنید</translation>
 <translation id="2873714185189940594">برنامه Rainbow Bridge باز شود؟</translation>
 <translation id="2069777099181262239">Rainbow Bridge سرویس مستقلی است که به شما کمک می‌کند تا بین دارایی‌ها از میان شبکه‌ها پل بزنید و از رمزارزتان روی شبکه‌های دیگر و یا اکوسیستم‌های DApp استفاده کنید. پل زدن بین دارایی با شبکه‌های دیگر، خطرات احتمالی به همراه دارد.</translation>
 <translation id="7387899248733396663">درباره Rainbow Bridge بیشتر بدانید</translation>
@@ -1395,6 +1495,9 @@
 <translation id="7657322905916621147">اندازه عبارت بازیابی باید 12، 15، 18، 21 یا 24 کلمه باشد</translation>
 <translation id="5307206077701819797">هیچ NFT ای در کیف پول شما یافت نشد. شما می‌توانید با کلیک روی دکمه «+ دارایی‌های آشکار» ‏که در پایین زبانه «پرتفوی» قرار دارد، به NFT های خود بیافزایید.</translation>
 <translation id="3528540388456395658">هیچ گونه جستجوی منطبقی با NFT ها یا فیلتر یافت نشد</translation>
+<translation id="5026874946691314267">این مورد دیگر نشان داده نشود</translation>
+<translation id="434502623875309667">تفکیک نشانی به درخواست شبکه برون زنجیره‌ای نیاز دارد. ادامه می‌دهید؟</translation>
+<translation id="2779500703989728346">NFT</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -1403,6 +1506,7 @@
 <translation id="6951743416068151209">URI پراکسی Tor</translation>
 <translation id="1671503397662036257">وضعیت اتصال Tor</translation>
 <translation id="6024292492796847324">پیشرفت مقداردهی اولیه Tor</translation>
+<translation id="6303294677342628402">سپر ایمنی</translation>
 <translation id="8458987127502506209">فعال کردن Brave سپرها</translation>
 <translation id="7509914170164691086">سپرهای <ph name="LINK_BEFORE"/>برای<ph name="LINK_AFTER"/> روشن است</translation>
 <translation id="260764436039299868">سپرهای <ph name="LINK_BEFORE"/> برای <ph name="LINK_AFTER"/> خاموش است</translation>
@@ -1436,7 +1540,6 @@
 <translation id="7194012750329511146">«سپرهای Brave»
 <ph name="NUMBER"/> ردیاب‌،‌ آگهی و موارد دیگر مسدود شد</translation>
 <translation id="4292121526390005808">اسکریپت‌های مسدود</translation>
-<translation id="6303294677342628402">سپر ایمنی</translation>
 <translation id="264682546981571963">از اعلامیه های رضایت کوکی خسته شده اید؟</translation>
 <translation id="4986297793092101884">Brave قبلاً کوکی‌های شخص ثالث را مسدود می‌کند. همچنین می‌توانیم اعلامیه‌های رضایت کوکی را مسدود کنیم.</translation>
 <translation id="535688588637568715">بله، اعلامیه‌های رضایت کوکی را مسدود کنید</translation>

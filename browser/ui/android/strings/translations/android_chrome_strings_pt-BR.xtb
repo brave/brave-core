@@ -441,6 +441,7 @@ Ao excluir todo o histórico de navegação ou apenas o de um site específico, 
 <translation id="3435465986463792564">Muitas janelas? Gerencie aqui.</translation>
 <translation id="3443221991560634068">Atualizar a página atual</translation>
 <translation id="3444179773590444986">Enviar feedback sobre o tema escuro para sites?</translation>
+<translation id="7384339501748168186">Para proteger sua privacidade, o Brave não vai preencher a senha automaticamente neste campo.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 download programado}one{# download programado}other{# downloads programados}}</translation>
 <translation id="3474624961160222204">Continuar como <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Você pode escolher seu mecanismo de pesquisa</translation>
@@ -659,6 +660,7 @@ Ao excluir todo o histórico de navegação ou apenas o de um site específico, 
 <translation id="4763480195061959176">vídeo</translation>
 <translation id="4766313118839197559">As senhas são salvas no Gerenciador de senhas neste dispositivo</translation>
 <translation id="4766678251456904326">Adicionar uma conta ao dispositivo</translation>
+<translation id="4787736314074622408">Quer excluir o arquivo <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Ajuda você a realizar tarefas na Web, como finalizações de compra</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">A criptografia por senha longa não inclui formas de pagamento e endereços do Google Pay.
@@ -727,6 +729,7 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="4744980273298156620">Em breve, você verá stories de <ph name="SITE_NAME"/> quando abrir uma nova guia. Os sites que você segue são armazenados na sua Conta do Brave. Você pode gerenciá-los nas configurações do Discover.</translation>
 <translation id="5091249083535528968">Dados de uso estendidos</translation>
 <translation id="509429900233858213">Ocorreu um erro.</translation>
+<translation id="5099845111805573968">Ao selecionar o site para computador uma vez, a configuração vai ser aplicada sempre que ele for acessado</translation>
 <translation id="225414324447409614">Se um site tentar roubar sua senha ou se você fizer o download de um arquivo perigoso, o Brave poderá enviar os URLs, incluindo partes do conteúdo da página, para o Navegação segura</translation>
 <translation id="510275257476243843">Uma hora restante</translation>
 <translation id="5115811374190515607">para <ph name="PRODUCT_NAME"/></translation>
@@ -882,6 +885,7 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="5958275228015807058">Encontre seus arquivos e páginas em Downloads</translation>
 <translation id="5962718611393537961">Toque para recolher</translation>
 <translation id="5964869237734432770">Parar descrição de imagens</translation>
+<translation id="9135546826883360971">O Brave vai lembrar sua escolha</translation>
 <translation id="5979084224081478209">Verificar senhas</translation>
 <translation id="5995726099713306770">Fazer o download da página novamente?</translation>
 <translation id="6456271171669383967">Continuar usando o Brave</translation>
@@ -921,6 +925,7 @@ Os testes dessa tecnologia ainda estão em desenvolvimento ativo e estão dispon
 <translation id="6192907950379606605">Ver descrições de imagens</translation>
 <translation id="8367262879301982880">As senhas são salvas no Gerenciador de senhas do Brave neste dispositivo</translation>
 <translation id="620197886010707372">Abrir app <ph name="APPNAME"/> com o Google Play?</translation>
+<translation id="6202812185118613467">Faça login novamente para iniciar a sincronização</translation>
 <translation id="6203593061661911168">O download será iniciado quando houver uma conexão Wi-Fi</translation>
 <translation id="6210748933810148297">Não é <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Visualizando esta página</translation>
@@ -1052,6 +1057,7 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612">A guia <ph name="TAB_TITLE"/> está selecionada</translation>
 <translation id="6828070228333235514">Parar de monitorar preço</translation>
+<translation id="6830728435402077660">Não seguro</translation>
 <translation id="6833996806551876956">Teste da Privacy Sandbox</translation>
 <translation id="6836206421467243968">Restaurar grupo <ph name="TITLE_OF_GROUP"/> como um novo grupo de guias em segundo plano.</translation>
 <translation id="6846298663435243399">Carregando…</translation>
@@ -1352,7 +1358,7 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="8460448946170646641">Revise os principais controles de privacidade e segurança</translation>
 <translation id="8461694314515752532">Criptografar dados sincronizados com sua própria senha longa de sincronização</translation>
 <translation id="8466613982764129868">Verifique se o <ph name="TARGET_DEVICE_NAME"/> está conectado à Internet</translation>
-<translation id="8473863474539038330">Endereços e mais</translation>
+<translation id="5633907266617216186">Endereços e mais</translation>
 <translation id="8481921391193215807">Quando esse recurso estiver ativado, os sites poderão usar as técnicas de preservação de privacidade mostradas aqui para exibir conteúdo e serviços. Isso inclui alternativas ao rastreamento entre sites. Ao longo do tempo, é possível que outros testes sejam adicionados.
 
 <ph name="BEGIN_LIST_ITEM1"/>Anunciantes e editores podem usar o FLoC.<ph name="END_LIST_ITEM1"/>

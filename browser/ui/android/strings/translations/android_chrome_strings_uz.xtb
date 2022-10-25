@@ -454,6 +454,7 @@ Barcha yoki ayrim saytlar uchun — ochilgan sahifalar tarixi oʻchirilganida �
 <translation id="3435465986463792564">Koʻp oynalar ochildimi? Ularni bu yerdan boshqarish mumkin</translation>
 <translation id="3443221991560634068">Joriy sahifani qayta yuklash</translation>
 <translation id="3444179773590444986">Saytlar uchun tungi mavzuda oid fikr-mulohaza yuborilsinmi?</translation>
+<translation id="7384339501748168186">Maxfiyligingizni muhofaza qilish uchun Brave parolingizni bu maydonga kiritmaydi.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 ta yuklanma rejalashtirildi}other{# ta yuklanma rejalashtirildi}}</translation>
 <translation id="3474624961160222204"><ph name="NAME"/> sifatida davom etish</translation>
 <translation id="3478363558367712427">Qidiruv tizimini tanlashingiz mumkin</translation>
@@ -679,6 +680,7 @@ Brave hisobingiz orqali amalga oshirgan qidiruvlaringiz, brauzer tarixi va boshq
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Parollar shu qurilmadagi Parollar menejeriga saqlanadi.</translation>
 <translation id="4766678251456904326">Qurilmaga hisob kiritish</translation>
+<translation id="4787736314074622408"><ph name="ITEM_TITLE"/> oʻchirib tashlansinmi?</translation>
 <translation id="4791358705705538979">Internetda turli ishlarni bajarishda, masalan, xaridlarni rasmiylashtirishda yordam beradi</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Kodli ibora yordamida shifrlanganda Google Pay manzillari va toʻlov usullari shifrlanmaydi.
@@ -748,6 +750,7 @@ Bu sozlamani almashtirish uchun <ph name="BEGIN_LINK"/>sinxronizatsiyani tiklang
 <translation id="4744980273298156620">Tez orada yangi varaq ochilganda <ph name="SITE_NAME"/> hikoyalari chiqadi. Kuzatuvdagi saytlar Brave hisobingizda saqlanadi. Ularni Discover sozlamalari orqali boshqarish mumkin.</translation>
 <translation id="5091249083535528968">Kengaytirilgan foydalanish statistikasi</translation>
 <translation id="509429900233858213">Xatolik yuz berdi.</translation>
+<translation id="5099845111805573968">Desktop saytni bir marta tanlasangiz, har safar saytni ochganingizda sozlama unga tatbiq etiladi</translation>
 <translation id="225414324447409614">Agar sayt parolingizni oʻgirlashga urinsa yoki zararli fayl yuklab olsangiz, Brave ham URL manzillar kabi sahifa elementlarini Saytlarni xavfsiz kezish tizimiga yuborishi mumkin</translation>
 <translation id="510275257476243843">1 soat qoldi</translation>
 <translation id="5115811374190515607">Qayerga: <ph name="PRODUCT_NAME"/></translation>
@@ -907,6 +910,7 @@ Bu sozlamani almashtirish uchun <ph name="BEGIN_LINK"/>sinxronizatsiyani tiklang
 <translation id="5958275228015807058">Fayl va sahiflarni “Yuklanmalar” jildidan topish mumkin</translation>
 <translation id="5962718611393537961">Bosib yig‘ish</translation>
 <translation id="5964869237734432770">Rasm tavsiflari yuklanmasin</translation>
+<translation id="9135546826883360971">Brave tanlovingizni eslab qoladi</translation>
 <translation id="5979084224081478209">Parollarni tekshiring</translation>
 <translation id="5995726099713306770">Sahifa qayta yuklab olinsinmi?</translation>
 <translation id="6456271171669383967">Brave qolaversin</translation>
@@ -946,6 +950,7 @@ Privacy Sandbox hali ishlab chiqish jarayonida va faqatgina ayrim mamlakatlarda 
 <translation id="6192907950379606605">Rasm tavsiflari chiqsin</translation>
 <translation id="8367262879301982880">Parollar shu qurilmadagi Brave Parollar menejeriga saqlanadi.</translation>
 <translation id="620197886010707372"><ph name="APPNAME"/> ilovasi Google Play orqali ochilsinmi?</translation>
+<translation id="6202812185118613467">Sinxronizatsiyani boshlash uchun hisobga qayta kiring.</translation>
 <translation id="6203593061661911168">Yuklab olish Wi-Fi orqali ishga tushadi</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> emasmi?</translation>
 <translation id="6211386937064921208">Bu sahifaga razm solyapsiz</translation>
@@ -1083,6 +1088,7 @@ Ishonch tokenlari Internetdagi maxfiylikni oshiradi va shaxsiy maʼlumotlaringiz
 <translation id="6820686453637990663">CVC kod</translation>
 <translation id="6824899148643461612">Varaq tanlandi: <ph name="TAB_TITLE"/></translation>
 <translation id="6828070228333235514">Narx kuzatuvini toʻxtatish</translation>
+<translation id="6830728435402077660">Xavfsiz emas</translation>
 <translation id="6833996806551876956">Privacy Sandbox sinov versiyasi</translation>
 <translation id="6836206421467243968">Varaqlar guruhini (<ph name="TITLE_OF_GROUP"/>) yangi fondagi varaqlar guruhi sifatida tiklash.</translation>
 <translation id="6846298663435243399">Yuklanmoqda…</translation>
@@ -1393,7 +1399,7 @@ Ishonch tokenlari Internetdagi maxfiylikni oshiradi va shaxsiy maʼlumotlaringiz
 <translation id="8460448946170646641">Asosiy maxfiylik va xavfsizlik boshqaruv elementlarini tekshirish</translation>
 <translation id="8461694314515752532">Sinxronlangan ma’lumotlarni kodli ibora bilan shifrlash</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/> internetga ulanganini tekshiring.</translation>
-<translation id="8473863474539038330">Mazillar va boshqa ma’lumotlar</translation>
+<translation id="5633907266617216186">Mazillar va boshqa ma’lumotlar</translation>
 <translation id="8481921391193215807">Agar yoqilsa, saytlar oʻzlarining kontent va xizmatlarini taqdim etish uchun bu yerda koʻrsatilgan maxfiylikni saqlash texnikalaridan foydalanishi mumkin. Bunga muqobil saytlararo kuzatuv ham kiradi. Vaqti-vaqti bilan koʻproq sinov funksiyalari kiritiladi.
 
 <ph name="BEGIN_LIST_ITEM1"/>Reklama beruvchilar va noshirlar FLoC uslubidan foydalanishi mumkin.<ph name="END_LIST_ITEM1"/>
