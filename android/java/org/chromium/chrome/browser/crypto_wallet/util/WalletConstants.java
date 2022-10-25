@@ -94,4 +94,13 @@ public final class WalletConstants {
     public static final String SOL_INS_BPF = "BPFLoaderUpgradeab1e11111111111111111111111";
     public static final String SOL_INS_SIG_VERIFY = "Ed25519SigVerify111111111111111111111111111";
     public static final String SOL_INS_SECP = "KeccakSecp256k11111111111111111111111111111";
+
+    public static final List<String> KNOWN_TEST_CHAIN_IDS = Arrays.asList(
+            BraveWalletConstants.GOERLI_CHAIN_ID, BraveWalletConstants.SEPOLIA_CHAIN_ID,
+            BraveWalletConstants.LOCALHOST_CHAIN_ID, BraveWalletConstants.SOLANA_TESTNET,
+            BraveWalletConstants.SOLANA_DEVNET, BraveWalletConstants.FILECOIN_TESTNET);
+    public static final List<Integer> SEND_TRANSACTION_TYPES = Arrays.asList(
+            TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,
+            TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
+            TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION);
 }

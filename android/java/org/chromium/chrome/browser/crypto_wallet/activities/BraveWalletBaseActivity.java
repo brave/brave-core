@@ -73,6 +73,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         if (mTxService != null) mTxService.close();
         if (mEthTxManagerProxy != null) mEthTxManagerProxy.close();
         if (mSolanaTxManagerProxy != null) mSolanaTxManagerProxy.close();
+        if (mBraveWalletP3A != null) mBraveWalletP3A.close();
         if (mBraveWalletService != null) mBraveWalletService.close();
 
         mKeyringService = null;

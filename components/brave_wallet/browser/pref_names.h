@@ -43,6 +43,8 @@ extern const char kBraveWalletP3AUsedSecondDay[];
 
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
 
+extern const char kBraveWalletLastTransactionSentTimeDict[];
+
 // DEPRECATED
 extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];

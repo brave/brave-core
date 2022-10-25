@@ -31,12 +31,16 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
+import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -54,6 +58,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.SolanaTransactionsGasHelpe
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.GURL;
 
@@ -166,6 +171,15 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (activity instanceof BraveWalletBaseActivity) {
             return ((BraveWalletBaseActivity) activity).getKeyringService();
         }
+        return null;
+    }
+
+    private BraveWalletP3a getBraveWalletP3A() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getBraveWalletP3A();
+        }
+
         return null;
     }
 
@@ -443,11 +457,31 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                         "approveTransaction", error.getProviderError(), errorMessage);
                 return;
             }
+            reportTransactionForP3A();
             mApproved = true;
             if (mTransactionConfirmationListener != null) {
                 mTransactionConfirmationListener.onApproveTransaction();
             }
             dismiss();
+        });
+    }
+
+    private void reportTransactionForP3A() {
+        if (!WalletConstants.SEND_TRANSACTION_TYPES.contains(mTxInfo.txType)
+                && !(mCoinType == CoinType.FIL && mTxInfo.txType == TransactionType.OTHER)) {
+            return;
+        }
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+        assert jsonRpcService != null && braveWalletP3A != null;
+
+        jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
+            boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
+                    BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
+            if (countTestNetworks
+                    || !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(selectedNetwork.chainId)) {
+                braveWalletP3A.reportTransactionSent(mCoinType, true);
+            }
         });
     }
 

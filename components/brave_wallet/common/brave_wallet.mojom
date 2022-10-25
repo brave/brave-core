@@ -223,7 +223,8 @@ interface PanelHandlerFactory {
                      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                     pending_receiver<BraveWalletService> brave_wallet_service);
+                     pending_receiver<BraveWalletService> brave_wallet_service,
+                     pending_receiver<BraveWalletP3A> brave_wallet_p3a);
 };
 
 interface PageHandlerFactory {
@@ -407,6 +408,9 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
+
+const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
+const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
 
 enum FilecoinAddressProtocol {
   SECP256K1 = 1, // Represents the address SECP256K1 protocol
@@ -1321,6 +1325,9 @@ interface BraveWalletP3A {
 
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);
+
+  // Called when a mainnet transaction is sent.
+  ReportTransactionSent(CoinType coin, bool new_send);
 };
 
 enum OnboardingAction {
