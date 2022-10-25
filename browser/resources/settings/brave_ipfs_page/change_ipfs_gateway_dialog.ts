@@ -20,6 +20,7 @@ import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import '../settings_shared.css.js';
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
 import {getTemplate} from './change_ipfs_gateway_dialog.html.js'
+import { prefToString } from '../prefs/pref_util.js';
 
 const ChangeIpfsGatewayDialogBase = I18nMixin(PrefsMixin(PolymerElement))
 
@@ -34,11 +35,17 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
 
   static get properties() {
     return {
+      pref: {
+          type: Object,
+          notify: true
+      },
+
       /** Preferences state. */
       prefs: {
         type: Object,
         notify: true,
       },
+
 
       isUrlValid_: Boolean,
       isSumitButtonEnabled_: Boolean,
@@ -58,7 +65,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
 
   override ready() {
     super.ready()
-    this.$.url.value = this.getPref('brave.ipfs.public_gateway_address').value;
+    this.$.url.value = prefToString(this.pref);
   }
 
   handleSubmit_() {
@@ -66,7 +73,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
         this.gatewayUrl_.toString()).then(success => {
       this.isUrlValid_ = success
       if (success) {
-        this.setPrefValue('brave.ipfs.public_gateway_address', this.gatewayUrl_);
+        this.setPrefValue(this.pref.key, this.gatewayUrl_);
         this.fire('close');
       } else {
         this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddressOrigin')

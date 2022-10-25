@@ -973,6 +973,9 @@
   <message name="IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC" desc="The description of changing IPFS public gateway">
     IPFS public gateway address
   </message>
+  <message name="IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC" desc="The description of changing NFT IPFS public gateway">
+    IPFS public gateway address for NFT
+  </message>
   <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
     Change
   </message>

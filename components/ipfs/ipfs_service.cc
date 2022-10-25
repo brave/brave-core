@@ -159,6 +159,8 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
   registry->RegisterIntegerPref(kIpfsStorageMax, 1);
   registry->RegisterStringPref(kIPFSPublicGatewayAddress, kDefaultIPFSGateway);
+  registry->RegisterStringPref(kIPFSPublicNFTGatewayAddress,
+                               kDefaultIPFSNFTGateway);
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
 }
 
