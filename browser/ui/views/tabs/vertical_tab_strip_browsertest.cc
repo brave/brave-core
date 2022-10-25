@@ -17,6 +17,10 @@
 #include "chrome/browser/ui/views/frame/glass_browser_frame_view.h"
 #endif
 
+#if BUILDFLAG(IS_LINUX)
+#include "chrome/common/pref_names.h"
+#endif
+
 #if BUILDFLAG(IS_MAC)
 #include "ui/views/widget/native_widget_mac.h"
 #endif
@@ -81,6 +85,10 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
+#if BUILDFLAG(IS_LINUX)
+  browser()->profile()->GetPrefs()->SetBoolean(prefs::kUseCustomChromeFrame,
+                                               true);
+#endif
   // Pre-condition: Window title is "visible" by default on vertical tabs
   ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs());
   ASSERT_TRUE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
