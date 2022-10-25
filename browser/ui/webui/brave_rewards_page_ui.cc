@@ -1423,7 +1423,7 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
 
   AllowJavascript();
 
-  ads_service_->ToggleSavedAd(
+  ads_service_->ToggleFlaggedAd(
       dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleFlaggedAd,
                                     weak_factory_.GetWeakPtr()));
 }
