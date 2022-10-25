@@ -1604,4 +1604,14 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="3632460243282703117">Subskrybuj</translation>
+<translation id="5227905322248018544">Ukryj i nie pokazuj tego ponownie</translation>
+<translation id="3546750666732517156">Okno prywatne z połączeniem z Tor</translation>
+<translation id="5383068818957293256">Brave nigdy nie zapamiętuje działań, które wykonujesz w oknie prywatnym. Dzięki połączeniu z Tor Twój adres IP jest także ukryty przed witrynami, które odwiedzasz. Jeśli jednak Twoje osobiste bezpieczeństwo zależy od zachowania anonimowości, zamiast tego użyj przeglądarki Tor.</translation>
+<translation id="3338507774653218581">Brave zapamiętuje to, co robisz w prywatnym oknie. Dzięki łączności Tor otrzymujesz dwie dodatkowe korzyści: Twój adres IP będzie ukryty przed stronami, które odwiedzasz, a strony, które odwiedzasz, będą ukryte przed pasywnymi obserwatorami sieci. Pamiętaj, że Tor może spowolnić przeglądanie lub popsuć działanie niektórych witryn.</translation>
+<translation id="8666930656222843375">Prywatne okno Tor utrudnia, ale nie uniemożliwia, Twojemu ISP lub pracodawcy (jeśli używasz maszyny lub sieci firmowej) sprawdzenie stron, które odwiedzasz. Jednakże nawet prywatne okno z Tor nie zabezpieczy Cię w pełni przed śledzeniem. Jeśli Twoje bezpieczeństwo zależy od zachowania anonimowości, używaj przeglądarki Tor.</translation>
+<translation id="4644024131266615376">z połączeniem z Tor</translation>
+<translation id="6650468331440842419">Hmm, wygląda na to, że Twój profil Nagród Brave był już połączony z kontem powierniczym w innym regionie. Spróbuj ponownie połączyć się z poprzednim kontem powierniczym lub zaktualizuj region konta powierniczego, aby pasował do poprzedniego konta.</translation>
+<translation id="5955021799827127089">Błąd: inny region konta</translation>
+<translation id="8813832913015888458">Te aktywa nie są obsługiwane przez portfel Brave</translation>
 </translationbundle>

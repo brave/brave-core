@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
+<translation id="3632460243282703117">Mag-subscribe</translation>
+<translation id="5227905322248018544">Itago at huwag na itong ipakita ulit</translation>
+<translation id="3546750666732517156">Pribadong Window na May Koneksyon sa Tor</translation>
+<translation id="5383068818957293256">Hindi kailanman tinatandaan ng Brave kung ano ang ginagawa mo sa isang Pribadong Window. Sa pamamagitan ng koneksyon sa Tor, nakatago rin ang iyong IP address mula sa mga site na binibisita mo. Gayunpaman, kung nakadepende ang iyong personal na kaligtasan sa pananatiling anonymous, gumamit na lang ng Tor Browser.</translation>
+<translation id="3338507774653218581">Hindi kailanman tatandaan ng Brave ang ginagawa mo sa isang Pribadong Window. Sa pamamagitan ng pagkakakonekta sa Tor, makakakuha ka ng dalawang karagdagang benepisyo: nakatago ang iyong IP address mula sa mga site na binibisita mo, at nakatago ang mga site na binibisita mo mula sa mga passive network observer. Tandaan na posibleng pabagalin ng Tor ang pag-browse, o masira ang ilang website.</translation>
+<translation id="8666930656222843375">Mas pinapahirap ng pribadong window na may Tor, pero hindi imposible, na makita ng iyong ISP o employer (kung gumagamit ka ng machine o network sa trabaho) ang mga site na binibisita mo. Gayunpaman, hindi ganap na magdedepensa laban sa pagsubaybay kahit na ang isang pribadong window na may Tor. Kung nakadepende sa pananatiling anonymous ang iyong personal na kaligtasan, gamitin na lang ang Tor Browser.</translation>
+<translation id="4644024131266615376">sa pamamagitan ng Koneksyon sa Tor</translation>
+<translation id="6650468331440842419">Hmm, mukhang ang iyong Brave Rewards profile ay konektado na sa isang custodial account sa ibang rehiyon. Pakisubukang kumonekta muli sa dati mong custodial account, o i-update ang rehiyon ng iyong custodial account para tumugma sa iyong nakaraang account.</translation>
+<translation id="5955021799827127089">Error: Ibang rehiyon ng account</translation>
+<translation id="8813832913015888458">Ang asset na ito ay hindi sinusuportahan ng brave wallet</translation>
 </translationbundle>

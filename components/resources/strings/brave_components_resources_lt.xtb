@@ -1603,4 +1603,18 @@
 <translation id="6973157709854838218">Slėpti likučius ekrane</translation>
 <translation id="4548946945059463969">Likučius matykite ekrane</translation>
 <translation id="242959166945779492">Jūsų sąskaitoje likučio nėra. Apsilankykite FTX ir šiek tiek įsigykite.</translation>
+<translation id="3632460243282703117">Prenumeruoti</translation>
+<translation id="5227905322248018544">Slėpti ir daugiau nerodyti</translation>
+<translation id="3546750666732517156">Privatus langas su „Tor“ prisijungimu</translation>
+<translation id="5383068818957293256">„Brave“ niekada nekaupia atmintyje jokių jūsų veiksmų privačiame lange. „Tor“ prisijungimas taip pat leidžia paslėpti jūsų IP adresą nuo jūsų lankomų svetainių. Tačiau jei nuo anonimiškumo priklauso jūsų asmeninis saugumas, geriau naudokite „Tor“ naršyklę.</translation>
+<translation id="3338507774653218581">„Brave“ niekada neprisimena, ką darote privačiame lange. Naudodami „Tor“
+ryšį, gaunate du papildomus privalumus: jūsų IP adresas yra paslėptas nuo
+lankomų svetainių, o lankomos svetainės paslėptos nuo pasyvių tinklo stebėtojų. Atkreipkite dėmesį, kad „Tor“ gali sulėtinti naršymą arba sugadinti kai kurias svetaines.</translation>
+<translation id="8666930656222843375">Dėl privataus lango su „Tor“ jūsų interneto paslaugų teikėjui arba
+darbdaviui (jei naudojatės darbo kompiuteriu arba tinklu) bus sunkiau, bet ne
+neįmanoma, matyti, kokiose svetainėse lankotės. Tačiau net ir privatus langas su „Tor“ visiškai neapsaugos nuo sekimo. Jei jūsų asmeninis saugumas priklauso nuo anonimiškumo, naudokite „Tor“ naršyklę.</translation>
+<translation id="4644024131266615376">su „Tor“ prisijungimu</translation>
+<translation id="6650468331440842419">Hmm, atrodo, kad jūsų „Brave“ atlygio profilis jau buvo susietas su saugojimo paskyra kitame regione. Pabandykite dar kartą prisijungti prie ankstesnės saugojimo paskyros arba atnaujinkite saugojimo paskyros regioną, kad jis atitiktų ankstesnę paskyrą.</translation>
+<translation id="5955021799827127089">Klaida: kitas paskyros regionas</translation>
+<translation id="8813832913015888458">„Brave“ piniginė nepalaiko šio ištekliaus</translation>
 </translationbundle>

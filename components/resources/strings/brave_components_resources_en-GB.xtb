@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="3632460243282703117">Subscribe</translation>
+<translation id="5227905322248018544">Hide and don't show this again</translation>
+<translation id="3546750666732517156">Private Window with Tor connectivity</translation>
+<translation id="5383068818957293256">Brave never remembers what you do in a Private Window. With Tor connectivity, your IP address is also hidden from the sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.</translation>
+<translation id="3338507774653218581">Brave never remembers what you do in a Private Window. With Tor connectivity, you get two additional benefits: your IP address is hidden from the sites you visit and the sites you visit are hidden from passive network observers. Note that Tor may slow down browsing or break some websites.</translation>
+<translation id="8666930656222843375">A private window with Tor makes it more difficult, but not impossible, for your ISP or employer (if you're using a work machine or network) to see what sites you visit. However, even a private window with Tor won't fully defend against tracking. If your personal safety depends on remaining anonymous, use the Tor Browser instead.</translation>
+<translation id="4644024131266615376">with Tor connectivity</translation>
+<translation id="6650468331440842419">Hmm, it looks like your Brave Rewards profile was already connected to a custodial account in another region. Please try connecting again with your previous custodial account, or update your custodial account's region to match your previous account.</translation>
+<translation id="5955021799827127089">Error: Different account region</translation>
+<translation id="8813832913015888458">This asset is not supported by Brave Wallet</translation>
 </translationbundle>

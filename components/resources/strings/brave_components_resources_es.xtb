@@ -1602,4 +1602,14 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Ocultar tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostrar tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes saldo disponible en tu cuenta. Pásate por FTX para adquirir fondos.</translation>
+<translation id="3632460243282703117">Suscribirme</translation>
+<translation id="5227905322248018544">Ocultar y no mostrar esto de nuevo</translation>
+<translation id="3546750666732517156">Ventana privada con conectividad Tor</translation>
+<translation id="5383068818957293256">Brave nunca recuerda lo que hace en una ventana privada. Con la conectividad Tor, su dirección IP también se oculta de los sitios que visita. Sin embargo, si su seguridad personal depende de permanecer en el anonimato, utilice el navegador Tor en su lugar.</translation>
+<translation id="3338507774653218581">Brave nunca registra lo que haces en una ventana privada. Con la conectividad Tor, tienes dos ventajas adicionales: las webs que visitas no pueden ver tu dirección IP, y los observadores de red pasivos no pueden ver estas webs. Ten en cuenta que es posible que Tor ralentice la navegación o tenga problemas para funcionar correctamente en algunos sitios web.</translation>
+<translation id="8666930656222843375">Si tienes una ventana privada con Tor, a tu proveedor de servicios de Internet o empresa (en caso de que uses una red u ordenador del trabajo) les resultará más difícil, aunque no imposible, saber qué webs visitas. Sin embargo, ni siquiera una ventana privada con Tor podrá protegerte completamente frente a los rastreos. Si tu seguridad personal depende de la permanencia en el anonimato, lo mejor será que utilices el navegador Tor.</translation>
+<translation id="4644024131266615376">con conectividad Tor</translation>
+<translation id="6650468331440842419">Parece que tu perfil de Brave Rewards ya estaba conectado a una cuenta de custodia en otra región. Intenta conectarte de nuevo con tu cuenta de custodia anterior o actualiza la región de tu cuenta de custodia para que coincida con tu cuenta anterior.</translation>
+<translation id="5955021799827127089">Error: la región es distinta de la cuenta</translation>
+<translation id="8813832913015888458">Este activo no es compatible con la cartera de Brave</translation>
 </translationbundle>

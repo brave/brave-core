@@ -1598,4 +1598,14 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="3632460243282703117">Přihlásit se</translation>
+<translation id="5227905322248018544">Skrýt a znovu to nezobrazovat</translation>
+<translation id="3546750666732517156">Soukromé okno s připojením prostřednictvím sítě Tor</translation>
+<translation id="5383068818957293256">Brave si nikdy nepamatuje, co děláte v soukromém okně. Díky připojení prostřednictvím sítě Tor je vaše IP adresa utajena také před weby, které navštěvujete. Pokud však vaše osobní bezpečnost závisí na zachování anonymity, použijte raději prohlížeč Tor.</translation>
+<translation id="3338507774653218581">Prohlížeč Brave nikdy neukládá vaši činnost v soukromých kartách. S konektivitou Tor navíc získáte další dvě výhody: stránky, které navštívíte, neuvidí vaši IP adresu a ty navíc budou skryty před pasivními pozorovateli sítě. Mějte však na paměti, že Tor může procházení webových stránek zpomalit nebo některé stránky rozbít.</translation>
+<translation id="8666930656222843375">Díky soukromému oknu s Tor bude pro vašeho poskytovatele internetu nebo zaměstnavatele (pokud používáte pracovní zařízení nebo síť) těžší, avšak ne nemožné, vidět vámi navštívené stránky. I soukromé okno s Tor vás však plně neochrání před sledováním. Pokud vaše osobní bezpečnost závisí na anonymitě, použijte raději prohlížeč Tor.</translation>
+<translation id="4644024131266615376">s připojením prostřednictvím sítě Tor</translation>
+<translation id="6650468331440842419">Hmm, vypadá to, že váš profil Brave Rewards byl již připojen ke schovatelskému účtu v jiné oblasti. Zkuste se znovu připojit k předchozímu schovatelskému účtu, nebo aktualizujte region svého schovatelského účtu, tak aby odpovídal vašemu předchozímu účtu.</translation>
+<translation id="5955021799827127089">Chyba: Jiná oblast účtu</translation>
+<translation id="8813832913015888458">Toto aktivum není podporováno Brave Wallet</translation>
 </translationbundle>

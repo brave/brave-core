@@ -1602,4 +1602,14 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="3632460243282703117">Abonēt</translation>
+<translation id="5227905322248018544">Slēpt un vairs nerādīt</translation>
+<translation id="3546750666732517156">Privāts logs ar Tor savienojamību</translation>
+<translation id="5383068818957293256">Brave neatceras, ko jūs darāt privātā logā. Pateicoties Tor savienojamībai, arī jūsu IP adrese tiek paslēpta no vietnēm, kuras apmeklējat. Tomēr, ja jūsu personiskā drošība ir atkarīga no anonimitātes, iesakām tā vietā izmantot Tor pārlūku.</translation>
+<translation id="3338507774653218581">Brave nekad nesaglabā to, ko jūs darāt Inkognito logā. Ar Tor savienojamību jūs saņemat divas papildu priekšrocības: jūsu IP adrese tiek slēpta no vietnēm, ko apmeklējat, un vietnes, ko apmeklējat, tiek slēptas no pasīviem tīkla vērotājiem. Ievērojiet, ka Tor var palēnināt pārlūkošanu vai salauzt atsevišķas vietnes.</translation>
+<translation id="8666930656222843375">Izmantojot Inkognito logu ar Tor, jūsu ISP vai darba devējam (ja izmantojat darba iekārtu vai tīklu) būs sarežģīti, bet ne neiespējami redzēt, kādas vietnes apmeklējat. Taču pat inkognito logs ar Tor pilībā neaizsargās pret izsekošanu. Ja jūsu personīgā drošība ir atkarīga no anonimitātes, izmantojiet Tor pārlūku.</translation>
+<translation id="4644024131266615376">ar Tor savienojamību</translation>
+<translation id="6650468331440842419">Hmm, šķiet, ka jūsu Brave Rewards profils jau bija saistīts ar aizbildnības kontu citā reģionā. Lūdzu, mēģiniet vēlreiz izveidot savienojumu ar savu iepriekšējo aizgādības kontu vai atjauniniet sava aizbildnības konta reģionu, lai tas atbilstu jūsu iepriekšējam kontam.</translation>
+<translation id="5955021799827127089">Kļūda: cits konta reģions</translation>
+<translation id="8813832913015888458">Brave maks neatbalsta šo aktīvu</translation>
 </translationbundle>

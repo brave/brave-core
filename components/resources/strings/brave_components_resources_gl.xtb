@@ -1490,4 +1490,15 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="6973157709854838218">Oculta a visualización dos teus saldos</translation>
 <translation id="4548946945059463969">Amosa os teus saldos na pantalla</translation>
 <translation id="242959166945779492">Non tes saldo na conta. Visita FTX para comprar saldo.</translation>
+<translation id="3632460243282703117">Subscribirse</translation>
+<translation id="5227905322248018544">Ocultar e non amosar isto de novo</translation>
+<translation id="3546750666732517156">Xanela privada con conectividade Tor</translation>
+<translation id="5383068818957293256">Brave nunca se lembra do que fas nunha Xanela privada. Coa conectividade Tor, tamén se oculta o teu enderezo IP nos sitios que visites. Porén, se a túa seguridade persoal depende de que permanezas no anonimato, usa o navegador Tor no seu lugar.</translation>
+<translation id="3338507774653218581">Brave nunca rexistra o que fas nunha ventá no modo de incógnito. Coa conectividade Tor, tes dúas vantaxes adicionais: as webs que visitas non poden ver o teu enderezo IP, e os observadores de rede pasivos non poden ver estas webs. Ten en conta que Tor pode diminuír a velocidade de navegación ou ter problemas de funcionamento nalgúns sitios web.</translation>
+<translation id="8666930656222843375">Se tes unha xanela privada con Tor, ao teu fornecedor de servizos de Internet ou á túa empresa (no caso de que utilices unha rede ou ordenador do traballo) resultaralles máis difícil, mais non imposible, ver as webs que visitas. Porén, nin sequera unha xanela privada con Tor poderá ofrecerche una protección total fronte ao seguimento. Se a túa seguridade persoal depende da permanencia no anonimato, será mellor que empregues o navegador Tor.</translation>
+<translation id="4644024131266615376">con conectividade Tor</translation>
+<translation id="6650468331440842419">Vaites, parece que o teu perfil de Recompensas de Brave xa estaba vinculado a unha conta de custodia noutra rexión. Tenta conectarte de novo coa túa conta de custodia anterior ou actualiza a rexión da túa conta de custodia actual para que coincida coa anterior.</translation>
+<translation id="5955021799827127089">Erro: rexión de conta diferente</translation>
+<translation id="3352959425838279177">Obter Ether dunha billa para <ph name="SELECTED_NETWORK"/></translation>
+<translation id="8813832913015888458">Carteira de Brave non admite este activo</translation>
 </translationbundle>

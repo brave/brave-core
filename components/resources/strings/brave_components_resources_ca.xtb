@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="3632460243282703117">Subscriviu-vos</translation>
+<translation id="5227905322248018544">Amaga i no ho tornis a mostrar</translation>
+<translation id="3546750666732517156">Finestra privada amb connectivitat Tor</translation>
+<translation id="5383068818957293256">Brave no recorda mai el que fas en una finestra privada. Amb la connectivitat Tor, també s'amaga la teva adreça IP als llocs que visites. Tot i això, si la teva seguretat personal depèn de mantenir l'anonimat, utilitza el navegador Tor.</translation>
+<translation id="3338507774653218581">Brave mai no recorda la teva activitat en una finestra d'incògnit. Si et connectes amb Tor, tens dos avantatges addicionals: la teva adreça IP s'amaga dels llocs que visites i els llocs que visites s'amaguen dels observadors passius de la xarxa. Tingues en compte que Tor pot alentir la navegació o trencar alguns llocs web.</translation>
+<translation id="8666930656222843375">Una finestra d'incògnit a Tor fa difícil, però no impossible, que el teu proveïdor de serveis d'Internet o la teva empresa (si estàs fent servir un dispositiu o una xarxa d'empresa) vegin els llocs que visites. Tanmateix, fins i tot una finestra d'incògnit a Tor no et protegirà completament del seguiment. Si la teva seguretat personal depèn de mantenir l'anonimat, fes servir el navegador Tor.</translation>
+<translation id="4644024131266615376">amb Connectivitat Tor</translation>
+<translation id="6650468331440842419">Hmm, sembla que el vostre perfil de Brave Rewards ja estava connectat a un compte de custòdia d'una altra regió. Proveu de connectar-vos de nou amb el vostre compte de custòdia anterior o actualitzeu la regió del vostre compte de custòdia perquè coincideixi amb el vostre compte anterior.</translation>
+<translation id="5955021799827127089">Error: regió del compte diferent</translation>
+<translation id="8813832913015888458">Aquest actiu no és compatible amb la cartera valenta</translation>
 </translationbundle>

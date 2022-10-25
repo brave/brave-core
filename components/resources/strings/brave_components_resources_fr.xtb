@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Masquer vos soldes</translation>
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
+<translation id="3632460243282703117">S'abonner</translation>
+<translation id="5227905322248018544">Masquer et ne plus afficher ce message</translation>
+<translation id="3546750666732517156">Navigation privée avec connexion Tor</translation>
+<translation id="5383068818957293256">Brave ne sauvegarde pas ce que vous faites en navigation privée. Grâce à la connexion Tor, les sites que vous visitez ne connaîtront pas non plus votre adresse IP. Toutefois, si votre sécurité personnelle dépend de votre anonymat, utilisez plutôt le navigateur Tor.</translation>
+<translation id="3338507774653218581">Brave ne retient jamais ce que vous faites dans une fenêtre privée. Avec la connectivité Tor, vous aurez deux avantages : votre adresse IP est masquée pour les sites que vous consultez, et les sites que vous consultez sont masqués pour les observateurs passifs du réseau. Notez que Tor peut ralentir la navigation ou empêcher certains sites web de fonctionner.</translation>
+<translation id="8666930656222843375">Lorsque vous utilisez une fenêtre privée avec Tor, il sera plus difficile, mais pas impossible, pour votre FAI ou votre employeur (si vous utilisez une machine ou un réseau professionnels) de voir les sites que vous consultez. Cependant, même une fenêtre privée avec Tor ne vous protégera pas totalement face au suivi. Si vous avez besoin de rester anonyme pour votre sécurité personnelle, utilisez plutôt le navigateur Tor.</translation>
+<translation id="4644024131266615376">avec connexion Tor</translation>
+<translation id="6650468331440842419">Hmm, il semble que votre profil de récompenses Brave ait déjà été connecté à un compte de dépôt dans une autre région. Veuillez essayer de vous reconnecter avec votre ancien compte de dépôt, ou mettez à jour la région de votre compte de dépôt pour qu'elle corresponde à votre ancien compte.</translation>
+<translation id="5955021799827127089">Erreur : Région de compte différente</translation>
+<translation id="8813832913015888458">Cet actif n'est pas pris en charge par le portefeuille Brave</translation>
 </translationbundle>

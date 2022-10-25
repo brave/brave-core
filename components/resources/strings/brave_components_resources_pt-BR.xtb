@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Ocultar a exibição dos seus saldos</translation>
 <translation id="4548946945059463969">Revelar seus saldos na tela</translation>
 <translation id="242959166945779492">Você não tem nenhum saldo na sua conta. Acesse o FTX para adquirir saldo.</translation>
+<translation id="3632460243282703117">Assinar</translation>
+<translation id="5227905322248018544">Ocultar e não mostrar novamente</translation>
+<translation id="3546750666732517156">Janela Privada com conectividade Tor</translation>
+<translation id="5383068818957293256">O Brave nunca lembra o que você faz em uma Janela Privada. Com a conectividade Tor, seu endereço de IP também fica oculto dos sites que você acessa. No entanto, se sua segurança pessoal depende do anonimato, use o navegador Tor.</translation>
+<translation id="3338507774653218581">O Brave nunca memoriza o que você faz em uma janela privada. Com a conectividade ao Tor, você tem dois benefícios adicionais: seu endereço IP fica oculto dos sites que você acessa, e os sites que você acessa ficam ocultos dos observadores passivos da rede. Tenha em mente que o Tor pode tornar a navegação mais lenta ou fazer com que alguns sites não funcionem corretamente.</translation>
+<translation id="8666930656222843375">Uma janela privada com o Tor torna mais difícil, mas não impossível, que seu provedor de internet ou empregador (caso você esteja usando uma máquina ou rede de trabalho) veja os sites que você acessa. No entanto, nem mesmo uma janela privada com o Tor pode garantir totalmente que não ocorra rastreamento. Se você precisa manter a anonimidade para garantir sua segurança pessoal, use o navegador Tor em vez disso.</translation>
+<translation id="4644024131266615376">com conectividade Tor</translation>
+<translation id="6650468331440842419">Parece que seu perfil das Recompensas Brave já estava conectado a uma conta custodial em outra região. Tente se conectar novamente com sua conta custodial anterior ou atualize a região da sua conta custodial para que corresponda à sua conta anterior.</translation>
+<translation id="5955021799827127089">Erro: região de conta diferente</translation>
+<translation id="8813832913015888458">Este ativo não é compatível com a Carteira Brave</translation>
 </translationbundle>

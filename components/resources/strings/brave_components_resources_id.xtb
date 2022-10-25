@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="3632460243282703117">Berlangganan</translation>
+<translation id="5227905322248018544">Sembunyikan dan jangan tampilkan ini lagi</translation>
+<translation id="3546750666732517156">Jendela Pribadi dengan Koneksi Tor</translation>
+<translation id="5383068818957293256">Brave tidak akan pernah mengingat apa yang Anda lakukan di Jendela Pribadi. Dengan koneksi Tor, alamat IP Anda juga disembunyikan dari situs yang Anda kunjungi. Namun, jika untuk keselamatan pribadi Anda harus tetap anonim, lebih baik gunakan Tor Browser.</translation>
+<translation id="3338507774653218581">Brave tidak pernah mengingat hal yang Anda lakukan di Jendela Privat. Dengan konektivitas Tor, Anda mendapatkan dua keuntungan tambahan: alamat IP Anda disembunyikan dari situs yang Anda kunjungi, dan situs yang Anda kunjungi tersembunyi dari pengamat jaringan pasif. Perlu diketahui bahwa Tor dapat memperlamban perambanan, atau menggagalkan dibukanya beberapa situs web.</translation>
+<translation id="8666930656222843375">Jendela privat dengan Tor mempersulit, namun tidak menutup kemungkinan, bagi ISP atau kantor Anda (jika Anda menggunakan perangkat atau jaringan kantor) untuk melihat situs-situs yang Anda kunjungi. Namun, bahkan jendela privat dengan Tor tidak akan sepenuhnya melindungi dari pelacakan. Jika keselamatan pribadi Anda bergantung pada tetap menjadi anonim, lebih baik jika Anda menggunakan Peramban Tor.</translation>
+<translation id="4644024131266615376">dengan Koneksi Tor</translation>
+<translation id="6650468331440842419">Hmm, sepertinya profil Imbalan Brave Anda sudah terhubung ke akun kustodian di wilayah lain. Silakan coba sambungkan kembali dengan akun kustodian Anda yang sebelumnya, atau perbarui wilayah akun kustodian Anda agar sesuai dengan akun Anda sebelumnya.</translation>
+<translation id="5955021799827127089">Kesalahan: Wilayah akun berbeda</translation>
+<translation id="8813832913015888458">Aset ini tidak didukung oleh dompet Brave</translation>
 </translationbundle>

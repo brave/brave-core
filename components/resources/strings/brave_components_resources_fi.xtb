@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="3632460243282703117">Tilaa</translation>
+<translation id="5227905322248018544">Piilota, älä näytä tätä uudelleen</translation>
+<translation id="3546750666732517156">Yksityinen ikkuna Tor-yhteydellä</translation>
+<translation id="5383068818957293256">Brave ei koskaan tallenna yksityisikkunassa tekemiäsi toimenpiteitä. Tor-yhteyden ansiosta myös IP-osoitteesi piilotetaan käyttämiltäsi sivustoilta. Jos henkilökohtainen turvallisuutesi on riippuvainen nimettömänä pysymisestä, niin käytä Tor-selainta.</translation>
+<translation id="3338507774653218581">Brave ei koskaan muista, mitä teet yksityisessä ikkunassa. Tor-yhteydellä saat kaksi lisäetua: IP-osoitteesi on piilossa vierailemiltasi sivustoilta, ja sivustot, joilla vierailet, ovat piilossa passiivisilta verkon tarkkailijoilta. Huomaa, että Tor voi hidastaa selaamista tai rikkoa joitakin sivustoja.</translation>
+<translation id="8666930656222843375">Kun sinulla on yksityinen ikkuna Torin kautta, ISP:si tai työnantajasi (jos käytät työkonetta tai -verkkoa) on vaikeampi, muttei mahdoton, nähdä sivustoja, joilla vierailet. Siitä huolimatta yksityinen ikkuna Torin kautta ei täysin suojaa seuraamista vastaan. Jos henkilökohtainen turvallisuutesi riippuu anonyyminä pysymisestä, käytä sen sijaan Tor-selainta.</translation>
+<translation id="4644024131266615376">Tor-yhteydellä</translation>
+<translation id="6650468331440842419">Hmm, näyttää siltä, että Brave Rewards -profiilisi oli jo yhdistetty toisella alueella olevaan säilytystiliin. Yritä muodostaa yhteys uudelleen aiempaan säilytystiliisi tai päivitä säilytystilisi alue vastaamaan edellistä tiliäsi.</translation>
+<translation id="5955021799827127089">Virhe: eri tilialue</translation>
+<translation id="8813832913015888458">Brave-lompakko ei tue tätä omaisuutta</translation>
 </translationbundle>

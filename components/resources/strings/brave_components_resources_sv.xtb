@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
+<translation id="3632460243282703117">Prenumerera</translation>
+<translation id="5227905322248018544">Göm och visa inte detta igen</translation>
+<translation id="3546750666732517156">Privat fönster med Tor-anslutning</translation>
+<translation id="5383068818957293256">Brave kommer aldrig ihåg vad du gör i ett Privat fönster. Med Tor-anslutning döljs din IP-adress också från de webbplatser du besöker. Men om din personliga säkerhet är beroende av att vara anonym, använd Tor Browser istället.</translation>
+<translation id="3338507774653218581">Brave kommer aldrig ihåg vad du gör i ett privat fönster. Med Tor-anslutning får du ytterligare två fördelar: din IP-adress är dold från de webbplatser du besöker och webbplatserna du besöker är dolda för passiva nätverksobservatörer. Observera att Tor kan göra att det går långsammare att surfa eller göra att vissa webbplatser inte fungerar korrekt.</translation>
+<translation id="8666930656222843375">Ett privat fönster med Tor gör det svårare, men inte omöjligt, för din internetleverantör eller arbetsgivare (om du använder en arbetsenhet eller ett arbetsnätverk) att se vilka webbplatser du besöker. Men inte ens ett privat fönster med Tor kommer att försvara sig helt mot spårning. Om din personliga säkerhet är beroende av att du förblir anonym, använd Tor Browser istället.</translation>
+<translation id="4644024131266615376">med Tor-anslutning</translation>
+<translation id="6650468331440842419">Hmm, det verkar som att din Brave Rewards-profil redan var ansluten till ett depåkonto i en annan region. Försök att ansluta igen till ditt tidigare depåkonto, eller uppdatera ditt depåkontos region för att matcha ditt tidigare konto.</translation>
+<translation id="5955021799827127089">Fel: annan kontoregion</translation>
+<translation id="8813832913015888458">Den här tillgången stöds inte av modig plånbok</translation>
 </translationbundle>

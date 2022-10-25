@@ -1603,4 +1603,14 @@ few {# zdroje}
 <translation id="6973157709854838218">Skryť vaše zostatky na displeji</translation>
 <translation id="4548946945059463969">Ukázať vaše zostatky na obrazovke</translation>
 <translation id="242959166945779492">Na svojom účte nemáte žiadne zostatky. Navštívte FTX a niektoré si zakúpte.</translation>
+<translation id="3632460243282703117">Prihlásiť sa na odber</translation>
+<translation id="5227905322248018544">Skryť a už to nezobrazovať</translation>
+<translation id="3546750666732517156">Súkromné okno s pripojením Tor</translation>
+<translation id="5383068818957293256">Prehliadač Brave si nikdy nepamätá, čo robíte v súkromnom okne. Vďaka pripojeniu Tor je vaša IP adresa skrytá aj pred navštívenými stránkami. Ak však vaša osobná bezpečnosť závisí od anonymity, použite prehliadač Tor.</translation>
+<translation id="3338507774653218581">Prehliadač Brave si nikdy nezapamätá, čo robíte v súkromnom okne. S pripojením softvéru Tor získate dve ďalšie výhody: vaša IP adresa je skrytá pred webovými stránkami, ktoré navštívite, a webové stránky, ktoré navštívite, sú skryté pred pasívnymi pozorovateľmi siete. Upozorňujeme, že softvér Tor môže spomaliť prehliadanie alebo prerušiť niektoré webové stránky.</translation>
+<translation id="8666930656222843375">Súkromné okno so softvérom Tor sťažuje, ale neznemožňuje, aby váš ISP alebo zamestnávateľ (ak používate pracovné zariadenie alebo sieť) videli, aké stránky navštevujete. Ani súkromné okno so softvérom Tor však nebude úplne brániť sledovaniu. Ak vaša osobná bezpečnosť závisí od anonymity, použite namiesto toho prehliadač Tor Browser.</translation>
+<translation id="4644024131266615376">s pripojením Tor</translation>
+<translation id="6650468331440842419">Hm, zdá sa, že váš profil s odmenami Brave už bol pripojený k správcovskému účtu v inom regióne. Skúste sa znova pripojiť k svojmu predchádzajúcemu účtu správcu alebo aktualizujte región svojho účtu správcu tak, aby sa zhodoval s predchádzajúcim účtom.</translation>
+<translation id="5955021799827127089">Chyba: iný región účtu</translation>
+<translation id="8813832913015888458">Toto aktívum nie je podporované peňaženkou Brave</translation>
 </translationbundle>

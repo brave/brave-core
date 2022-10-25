@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="3632460243282703117">Abonner</translation>
+<translation id="5227905322248018544">Skjul og ikke vis dette igjen</translation>
+<translation id="3546750666732517156">Privat vindu med Tor-tilkobling</translation>
+<translation id="5383068818957293256">Brave husker aldri hva du gjør i private vinduer. Med Tor-tilkobling er IP-adressen din også skjult for nettstedene du besøker. Men hvis den personlige tryggheten din er avhengig av at du forblir anonym, må du bruke Tor-nettleseren i stedet.</translation>
+<translation id="3338507774653218581">Brave husker aldri hva du gjør i et Privat Vindu. Med Tor-tilkobling får du også to fordeler til: IP-adressen din skjules for sidene du besøker, og sidene du besøker skjules fra passive nettverksobservatører. Vær oppmerksom på at Tor kan senke nettleserhastigheten eller gjøre at enkelte nettsider ikke fungerer.</translation>
+<translation id="8666930656222843375">Et privat Tor-vindu gjør det vanskeligere (men ikke umulig) for internettleverandøren eller arbeidsgiveren din (hvis du bruker en jobbmaskin eller et jobbnettverk) å se hvilke sider du besøker. Selv et privat vindu med Tor vil imidlertid ikke kunne sikre deg fullstendig mot sporing. Hvis din personlige sikkerhet avhenger av at du er fullstendig anonym, bør du bruke Tor Browser i stedet.</translation>
+<translation id="4644024131266615376">med Tor-tilkobling</translation>
+<translation id="6650468331440842419">Hmm, det ser ut som om Brave Rewards-profilen din allerede er koblet til en konto i en annen region. Prøv å koble til på nytt med den tidligere kontoen din eller oppdater kontoens region så den matcher den tidligere kontoen.</translation>
+<translation id="5955021799827127089">Feil: Ulik kontoregion</translation>
+<translation id="8813832913015888458">Denne ressursen støttes ikke av Brave-lommeboken</translation>
 </translationbundle>

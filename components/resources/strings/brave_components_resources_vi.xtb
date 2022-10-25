@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="3632460243282703117">Đăng ký</translation>
+<translation id="5227905322248018544">Ẩn và không hiển thị lại</translation>
+<translation id="3546750666732517156">Cửa sổ Riêng tư với Kết nối Tor</translation>
+<translation id="5383068818957293256">Brave không bao giờ ghi nhớ những hoạt động của bạn trong một Cửa sổ Riêng tư. Với kết nối Tor, địa chỉ IP của bạn cũng được ẩn khỏi các website bạn truy cập. Tuy nhiên, nếu an toàn cá nhân của bạn phụ thuộc vào việc duy trì sự ẩn danh, hãy dùng Trình duyệt Tor để thay thế.</translation>
+<translation id="3338507774653218581">Brave không bao giờ ghi nhớ những gì bạn làm trong Cửa sổ Riêng tư. Với kết nối Tor, bạn nhận thêm hai lợi ích: địa chỉ IP của bạn bị ẩn khỏi các trang web bạn truy cập và các trang web bạn truy cập bị ẩn khỏi những người giám sát mạng thụ động. Lưu ý rằng Tor có thể làm chậm quá trình duyệt hoặc làm hỏng một số trang web.</translation>
+<translation id="8666930656222843375">Cửa sổ riêng tư với Tor gây khó khăn hơn, nhưng không phải là không thể, đối với ISP hoặc chủ lao động của bạn (nếu bạn đang sử dụng máy công việc hoặc mạng) để xem những trang web bạn truy cập. Tuy nhiên, ngay cả một cửa sổ riêng với Tor cũng không hoàn toàn chống lại được việc theo dõi. Nếu sự an toàn cá nhân của bạn phụ thuộc vào việc ẩn danh, hãy sử dụng Trình duyệt Tor để thay thế.</translation>
+<translation id="4644024131266615376">với Kết nối Tor</translation>
+<translation id="6650468331440842419">Rất tiếc, có vẻ như hồ sơ Phần thưởng Brave của bạn đã được kết nối với tài khoản lưu ký ở khu vực khác. Vui lòng thử kết nối lại với tài khoản lưu ký trước đó của bạn hoặc cập nhật khu vực của tài khoản lưu ký để khớp với tài khoản trước đó của bạn.</translation>
+<translation id="5955021799827127089">Lỗi: Khu vực tài khoản khác nhau</translation>
+<translation id="8813832913015888458">Tài sản này không được hỗ trợ bởi ví Brave</translation>
 </translationbundle>

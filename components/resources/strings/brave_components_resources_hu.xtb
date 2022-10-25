@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="3632460243282703117">Feliratkozás</translation>
+<translation id="5227905322248018544">Rejtse el, és ne mutassa többet</translation>
+<translation id="3546750666732517156">Privát ablak Tor csatlakozással</translation>
+<translation id="5383068818957293256">A Brave soha nem jegyzi meg, mit teszel egy privát ablakban. Tor csatlakozással az IP-címed is rejtett marad a felkeresett weboldalak előtt. Viszont ha személyes biztonságod érdekében névtelen kell maradnod, használd inkább a Tor böngészőt.</translation>
+<translation id="3338507774653218581">A Brave soha nem jegyzi meg a Privát ablakban végzett tevékenységeit. A Tor kapcsolódással további két előnyre tehet szert: IP-címe rejtve marad a felkeresett weboldalak elől, a felkeresett oldalak pedig rejtve maradnak a passzív hálózatmegfigyelők elől. Vegye figyelembe, hogy a Tor lelassíthatja a böngészést, vagy akadályozhatja bizonyos weboldalak működését.</translation>
+<translation id="8666930656222843375">A Tor privát ablakai révén internetszolgáltatója vagy munkaadója (amennyiben munkahelyi gépet vagy hálózatot használ) számára nehezebbé – de nem lehetetlenné – válik annak megfigyelése, hogy Ön milyen weboldalakat keres fel. Azonban még a Tor privát ablaka sem nyújt teljes körű védelmet a nyomkövetéssel szemben. Ha személyes biztonsága az anonimitástól függ, használja inkább a Tor böngészőt.</translation>
+<translation id="4644024131266615376">Tor csatlakozással</translation>
+<translation id="6650468331440842419">Hmm, úgy tűnik, a Brave jutalmak-profilja már össze van kapcsolva egy másik régióban lévő letétkezelő fiókkal. Próbáljon újra kapcsolódni előző letétkezelő fiókjával, vagy frissítse a letétkezelő fiók régióját, hogy az megegyezzen az előző fiókjával.</translation>
+<translation id="5955021799827127089">Hiba: Eltérő fiókrégió</translation>
+<translation id="8813832913015888458">A Brave-pénztárca nem támogatja ezt az eszközt</translation>
 </translationbundle>

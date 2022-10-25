@@ -1601,4 +1601,14 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="3632460243282703117">Telli</translation>
+<translation id="5227905322248018544">Peida ja ära seda enam kuva</translation>
+<translation id="3546750666732517156">Privaatne aken Tori ühenduvusega</translation>
+<translation id="5383068818957293256">Brave ei jäta kunagi meelde, mida privaatses aknas teete. Tori ühenduvuse korral on IP-aadress peidetud ka külastatavate saitide eest. Kui aga anonüümseks jäämisest oleneb teie isiklik ohutus, kasutage hoopis Tori brauserit.</translation>
+<translation id="3338507774653218581">Brave ei jäta kunagi meelde, mida te privaatses aknas teete. Tori ühenduvusega lisandub veel kaks eelist: veebisaidid, mida külastate, ei näe teie IP-aadressi ja passiivsed võrguvaatlejad ei näe veebisaite, mida külastate. Pidage silmas, et Tor võib sirvimist aeglustada ja mõne veebisaidi funktsioonid ei pruugi sellega töötada.</translation>
+<translation id="8666930656222843375">Toriga privaatse akna puhul on teie internetiteenuse pakkujal või tööandjal (kui kasutate tööseadet või -võrku) olla keerulisem, kuid mitte võimatu näha, milliseid veebisaite te külastate. Sellele vaatamata ei saa isegi Toriga privaatne aken kaitsta jälitamise eest. Kui anonüümseks jäämisest oleneb teie isiklik ohutus, kasutage hoopis Tori brauserit.</translation>
+<translation id="4644024131266615376">Tori ühenduvusega</translation>
+<translation id="6650468331440842419">Hm, paistab, et teie Brave'i Preemiate profiil on juba ühendatud muu piirkonna hallatava kontoga. Palun proovige luua uuesti ühendus oma eelmise kontoga või muutke oma hallatava konto piirkonda, et see vastaks eelmisele kontole.</translation>
+<translation id="5955021799827127089">Tõrge: erinev konto piirkond</translation>
+<translation id="8813832913015888458">Brave'i rahakott ei toeta seda vara</translation>
 </translationbundle>

@@ -1607,4 +1607,14 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="3632460243282703117">Pretplatite se</translation>
+<translation id="5227905322248018544">Sakrij i ne pokazuj više</translation>
+<translation id="3546750666732517156">Privatni prozor s povezivosti s funkcijom Tor</translation>
+<translation id="5383068818957293256">Preglednikom Brave nikada se ne pamti što radite u privatnom prozoru s povezivosti s funkcijom Tor. Uz povezivost s funkcijom Tor, vaša IP adresa skriva se i od mrežnih mjesta koja posjećujete. No, ako vaša osobna sigurnost ovisi o zadržavanju anonimnosti, koristite se preglednikom Tor.</translation>
+<translation id="3338507774653218581">Preglednikom Brave nikada se ne pamti vaša aktivnost u anonimnom prozoru. Uz povezivost Tor dobivate dvije dodatne pogodnosti: vaša je adresa IP skrivena od mrežnih mjesta koja posjećujete , a mrežna mjesta koja posjećujete skrivena su od pasivnih promatrača mreže. Imajte na umu da se softverom Tor može usporiti pregledavanje ili srušiti neka mrežna mjesta.</translation>
+<translation id="8666930656222843375">Anonimnim prozorom softvera Tor postaje teže, ali ne i nemoguće vašem ISP-u ili poslodavcu (ako upotrebljavate poslovni uređaj ili poslovnu mrežu) vidjeti koja mrežna mjesta posjećujete. Međutim, čak i anonimni prozor softvera Tor nije potpuna obrana od praćenja. Ako vaša osobna sigurnost ovisi o anonimnosti, radije upotrebljavajte preglednik Tor.</translation>
+<translation id="4644024131266615376">s povezivosti s funkcijom Tor</translation>
+<translation id="6650468331440842419">Hmm, izgleda da je vaš profil nagrada Brave već bio povezan sa skrbničkim računom u drugoj regiji. Pokušajte se ponovo povezati sa svojim prethodnim skrbničkim računom ili ažurirajte regiju svog skrbničkog računa kako bi odgovarala vašem prethodnom računu.</translation>
+<translation id="5955021799827127089">Pogreška: druga regija računa</translation>
+<translation id="8813832913015888458">Ovu imovinu ne podržava novčanik brave</translation>
 </translationbundle>

@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="3632460243282703117">Abonner</translation>
+<translation id="5227905322248018544">Skjul og vis ikke dette igen</translation>
+<translation id="3546750666732517156">Privat vindue med Tor-forbindelse</translation>
+<translation id="5383068818957293256">Brave husker aldrig, hvad man laver i et privat vindue. Med en Tor-forbindelse er din IP-adresse også skjult fra de hjemmesider, du besøger. Men hvis din personlige sikkerhed afhænger af at forblive anonym, skal du bruge Tor-browseren i stedet.</translation>
+<translation id="3338507774653218581">Brave gemmer aldrig din aktivitet i et privatvindue. Med en Tor-forbindelse får du yderligere to fordele: Din IP-adresse er skjult for de hjemmesider, du besøger, og siderne, du besøger, er skjult fra passive netværksobservatører. Bemærk, at Tor kan gøre din browser langsommere eller ødelægge visse sider.</translation>
+<translation id="8666930656222843375">Et privatvindue med Tor gør det svært, men ikke umuligt for din ISP eller arbejdsgiver (hvis du bruger en arbejdsenhed eller et arbejdsnetværk) at se, hvilke sider du besøger. Selv et privatvindue med Tor er ikke totalt sikret mod tracking. Hvis din personlige sikkerhed afhænger af at være anonym, skal du bruge Tor-browseren i stedet.</translation>
+<translation id="4644024131266615376">med Tor-forbindelse</translation>
+<translation id="6650468331440842419">Hmm, det ser ud til, at din Brave Rewards-profil allerede var forbundet til en depotkonto i en anden region. Prøv at oprette forbindelse igen til din tidligere depotkonto, eller opdater dit depotområde, så det matcher din tidligere konto.</translation>
+<translation id="5955021799827127089">Fejl: Andet kontoområde</translation>
+<translation id="8813832913015888458">Dette aktiv understøttes ikke af Brave Wallet</translation>
 </translationbundle>

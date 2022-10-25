@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">Sakriti saldo sa ekrana</translation>
 <translation id="4548946945059463969">Prikazati saldo na ekranu</translation>
 <translation id="242959166945779492">Nemate ništa na stanju na vašem računu. Posetite FTX da biste nešto imali.</translation>
+<translation id="3632460243282703117">Pretplati se</translation>
+<translation id="5227905322248018544">Sakrij i nemoj više ovo da prikazuješ</translation>
+<translation id="3546750666732517156">Privatni prozor sa Tor povezivanjem</translation>
+<translation id="5383068818957293256">Brave nikada ne pamti ono što radite u privatnom prozoru. Sa Tor povezivanjem, vaša IP adresa je takođe sakrivena i od lokacija koje posećujete. Međutim, ako vaša lična bezbednost zavisi od toga da li ćete ostati anonimni, umesto toga koristite Tor pregledač.</translation>
+<translation id="3338507774653218581">Brave nikada ne pamti šta radite u privatnom prozoru. Uz tor povezivanje dobijate dve dodatne pogodnosti: vaša IP adresa je sakrivena na sajtovima koje posećujete i sajtovi koji posećujete sakriveni su od pasivnih internet posmatrača. Imajte u vidu da tor može usporiti pretraživanje ili pokvariti neke vebsajtove.</translation>
+<translation id="8666930656222843375">Privatni prozor uz tor otežava, ali ne onemogućava, vašem ISP ili poslodavcu (ako koristite poslovnu mašinu ili mrežu) da vidi koje sajtove posećujete. Međutim, čak i privatni prozor uz tor neće u potpunosti sprečiti praćenje. Ako vaša lična bezbednost zavisi od toga da ostanete anonimni, koristite tor pretraživač.</translation>
+<translation id="4644024131266615376">sa Tor povezivanjem</translation>
+<translation id="6650468331440842419">Hmm, izgleda da je vaš profil Brave nagrada već povezan sa nalogom ovlašćenika u drugom regionu. Pokušajte ponovo da se povežete sa svojim prethodnim nalogom ovlašćenika ili ažurirajte region svog naloga ovlašćenika tako da odgovara vašem prethodnom nalogu.</translation>
+<translation id="5955021799827127089">Greška: Drugi region naloga</translation>
+<translation id="8813832913015888458">Ovo sredstvo nije podržano Brave novčanikom</translation>
 </translationbundle>

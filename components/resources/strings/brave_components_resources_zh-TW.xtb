@@ -1602,4 +1602,14 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="3632460243282703117">订阅</translation>
+<translation id="5227905322248018544">隱藏且不再顯示</translation>
+<translation id="3546750666732517156">用 Tor 連線的私密視窗</translation>
+<translation id="5383068818957293256">Brave 永遠不會紀錄您在私密視窗中所做的事。使用 Tor 連線時，您的 IP 位址也不會被造訪之網站看見。但如果匿名性攸關您的人身安全，請改用 Tor 瀏覽器。</translation>
+<translation id="3338507774653218581">Brave 一律不會記錄您在隱私視窗中的活動。使用 Tor 連線時，會向您所造訪的網站隱藏您的 IP 位址，被動網路觀察員也不會得知您所造訪的網站。請注意，Tor 可能造成瀏覽速度變慢，或使某些網站無法正常運作。</translation>
+<translation id="8666930656222843375">使用 Tor 的隱私視窗可讓 ISP 或雇主 (如果您使用工作電腦或網路) 不容易查看您所造訪的網站，但並非完全不可能。不過，即使是使用 Tor 的隱私視窗，仍無法完全杜絕追蹤行為。如果保持匿名攸關您的人身安全，請改用 Tor 瀏覽器。</translation>
+<translation id="4644024131266615376">使用 Tor 連線</translation>
+<translation id="6650468331440842419">嗯，您的 Brave 獎勵個人檔案似乎已連結到另一個區域的監管帳戶。請嘗試重新連結您之前的監管帳戶，或更新您的監管帳戶區域，以符合您之前的帳戶。</translation>
+<translation id="5955021799827127089">錯誤：不同的帳戶區域</translation>
+<translation id="8813832913015888458">Brave 錢包不支援此資產</translation>
 </translationbundle>

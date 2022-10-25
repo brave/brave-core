@@ -1602,4 +1602,14 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="3632460243282703117">Abbonati</translation>
+<translation id="5227905322248018544">Nascondi e non mostrare più</translation>
+<translation id="3546750666732517156">Finestra privata con connettività Tor</translation>
+<translation id="5383068818957293256">Brave non ricorda mai quello che fai in una finestra privata. Con la connettività Tor, il tuo indirizzo IP è nascosto anche ai siti che visiti. Tuttavia, se la tua sicurezza personale dipende dall'anonimato, usa Tor Browser.</translation>
+<translation id="3338507774653218581">Brave non memorizza mai quello che fai in una finestra privata. Con la connettività Tor, hai altri due vantaggi: il tuo indirizzo IP è nascosto ai siti che visiti, e i siti che visiti sono nascosti agli osservatori di rete passivi. Tor potrebbe rallentare l'attività di navigazione o non far funzionare alcuni siti.</translation>
+<translation id="8666930656222843375">Usando una finestra privata con Tor è più difficile, ma non impossibile, per il tuo ISP o datore di lavoro (se stai utilizzando un computer o una rete di lavoro) vedere quali siti visiti. Tuttavia, anche una finestra privata con Tor non ti protegge completamente dal monitoraggio. Se la tua sicurezza personale dipende dall'anonimato, usa Tor Browser.</translation>
+<translation id="4644024131266615376">con connettività Tor</translation>
+<translation id="6650468331440842419">Il tuo profilo Ricompense Brave risulta già collegato a un conto custodial in un’altra regione. Prova a connetterti nuovamente con il conto custodial precedente, oppure aggiorna la regione del conto custodial in modo che corrisponda a quella del conto precedente.</translation>
+<translation id="5955021799827127089">Errore: regione del conto diversa</translation>
+<translation id="8813832913015888458">Questo asset non è supportato dal Portafoglio Brave</translation>
 </translationbundle>

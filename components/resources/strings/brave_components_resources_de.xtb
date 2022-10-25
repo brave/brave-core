@@ -1602,4 +1602,14 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="3632460243282703117">Abonnieren</translation>
+<translation id="5227905322248018544">Ausblenden und nicht mehr anzeigen</translation>
+<translation id="3546750666732517156">Privates Fenster mit Tor-Konnektivität</translation>
+<translation id="5383068818957293256">Brave speichert nie, was Sie in einem privaten Fenster tun. Mit der Tor-Konnektivität ist Ihre IP-Adresse auch vor den von Ihnen besuchten Websites verborgen. Wenn Ihre persönliche Sicherheit jedoch davon abhängt, anonym zu bleiben, verwenden Sie stattdessen den Tor-Browser.</translation>
+<translation id="3338507774653218581">Brave speichert nie, was Sie in einem privaten Fenster tun. Mit der Tor-Konnektivität erhalten Sie zwei zusätzliche Vorteile: Ihre IP-Adresse wird vor den von Ihnen besuchten Websites verborgen, und die von Ihnen besuchten Websites werden vor passiven Netzwerkbeobachtern verborgen. Beachten Sie, dass Tor das Surfen verlangsamen oder einige Websites eventuell nicht korrekt darstellen kann.</translation>
+<translation id="8666930656222843375">Ein privates Fenster mit Tor macht es für Ihren Internetdienstanbieter oder Arbeitgeber (wenn Sie einen Arbeitscomputer oder -Netzwerk verwenden) schwieriger, aber nicht unmöglich, zu sehen, welche Websites Sie besuchen. Allerdings schützt selbst ein privates Fenster mit Tor nicht vollständig vor Tracking. Wenn Ihre persönliche Sicherheit davon abhängt, anonym zu bleiben, verwenden Sie stattdessen den Tor-Browser.</translation>
+<translation id="4644024131266615376">mit Tor-Konnektivität</translation>
+<translation id="6650468331440842419">Hmm, es sieht so aus, als ob Ihr Brave-Belohnungs-Profil bereits mit einem Depotkonto in einer anderen Region verbunden war. Bitte versuchen Sie, sich mit Ihrem vorherigen Depotkonto zu verbinden, oder aktualisieren Sie die Region Ihres Depotkontos, damit diese mit Ihrem vorherigen Konto übereinstimmt.</translation>
+<translation id="5955021799827127089">Fehler: Andere Kontoregion</translation>
+<translation id="8813832913015888458">Dieser Vermögenswert wird von Brave Wallet nicht unterstützt</translation>
 </translationbundle>

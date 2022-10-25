@@ -1598,4 +1598,14 @@
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
+<translation id="3632460243282703117">订阅</translation>
+<translation id="5227905322248018544">隐藏且不再显示</translation>
+<translation id="3546750666732517156">带有 Tor 连接的私人窗户</translation>
+<translation id="5383068818957293256">Brave 永远不会记住您在私人窗口中执行的操作。通过 Tor 连接，您访问的站点还会隐藏您的 IP 地址。但是，如果您的人身安全取决于是否保持匿名，那就请使用 Tor 浏览器。</translation>
+<translation id="3338507774653218581">Brave 永远不会记录您在无痕窗口的活动。使用 Tor 连接，您可以获得两个附加福利：您的 IP 地址对访问的站点是隐藏的，访问的站点对被动网络观察程序是隐藏的。注意，Tor 可能会拖慢浏览速度，或导致一些站点无法访问。</translation>
+<translation id="8666930656222843375">带有 Tor 的无痕窗口让 ISP 或雇主（如果您使用工作机器或网络）更难看到你访问的网站，但并非完全不可能。然而，即使是 Tor 的无痕窗口也不能完全抵御跟踪。如果您的个人安全依赖于保持匿名，请使用 Tor 浏览器。</translation>
+<translation id="4644024131266615376">带有 Tor 连接</translation>
+<translation id="6650468331440842419">嗯，您的 Brave Rewards 的个人资料好象已与另一个地区的托管账户相关联。请尝试重新连接您之前的托管账户，或更新您的托管账户区域以便能够与您之前的账户匹配。</translation>
+<translation id="5955021799827127089">错误：不同的账户区域</translation>
+<translation id="8813832913015888458">Brave Wallet 不支持此资产</translation>
 </translationbundle>
