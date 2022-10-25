@@ -9,10 +9,8 @@
 #include "components/content_settings/core/common/features.h"
 
 #if !BUILDFLAG(IS_IOS)
-#include "brave/components/content_settings/core/browser/brave_content_settings_policy_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #define PrefProvider BravePrefProvider
-#define PolicyProvider BravePolicyProvider
 #endif
 
 namespace content_settings {
