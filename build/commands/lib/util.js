@@ -711,11 +711,16 @@ const util = {
     cmd_options.cwd = config.braveCoreDir
     cmd_options = mergeWithDefault(cmd_options)
     cmd = 'git'
-    args = ['cl', 'presubmit', options.base, '--force']
+    // --upload mode is similar to `git cl upload`. Non-upload mode covers less
+    // checks.
+    args = ['cl', 'presubmit', options.base, '--force', '--upload']
     if (options.all)
       args.push('--all')
     if (options.files)
       args.push('--files', options.files)
+    if (options.verbose) {
+      args.push(...Array(options.verbose).fill('--verbose'))
+    }
     util.run(cmd, args, cmd_options)
   },
 
