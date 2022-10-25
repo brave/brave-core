@@ -202,24 +202,16 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   brave_shields::SetBraveShieldsEnabled(map, true, blocked);
 
   // setting should not be changed.
-  setting = map->GetContentSetting(blocked, GURL(),
-                                   ContentSettingsType::BRAVE_SHIELDS);
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+  EXPECT_FALSE(brave_shields::GetBraveShieldsEnabled(map, blocked));
 
   // setting should apply allow to origin.
-  setting = map->GetContentSetting(allowed, GURL(),
-                                   ContentSettingsType::BRAVE_SHIELDS);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(map, allowed));
   brave_shields::SetBraveShieldsEnabled(map, false, allowed);
   // setting should not be changed.
-  setting = map->GetContentSetting(allowed, GURL(),
-                                   ContentSettingsType::BRAVE_SHIELDS);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(map, allowed));
 
   // setting should not apply to default
-  setting = map->GetContentSetting(GURL(), GURL(),
-                                   ContentSettingsType::BRAVE_SHIELDS);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(map, GURL()));
 }
 
 TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
