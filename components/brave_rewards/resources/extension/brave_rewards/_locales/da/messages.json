@@ -398,12 +398,97 @@
     "message": "Du har afventende belønninger grundet utilstrækkelige midler",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Luk",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Fortsæt",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Optjen tokens og giv tilbage",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Optjen tokens ved at se annoncer, der respekterer dine persondata, og støt automatisk dine foretrukne hjemmesider og indholdsskabere.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Noget gik galt",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave-belønninger er ikke tilgængelige",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Der opstod en fejl da vi prøvede at oprette Brave-belønninger. Prøv venligst igen.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Der opstod desværre en fejl, da vi forsøgte at oprette dit land. Prøv igen.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Du kan pt ikke tilmelde dig Brave-belønninger i dit område. Men du kan altid prøve igen senere.$link_begin$Læse mere$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Vælg land",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Tak!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Dit Brave-belønningsområde er sat til $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Vælg dit land, så vi kan vise dig de rette valgmuligheder, og reklamer i dit område. $link_begin$Privatlivspolitik$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "For at fortsætte med at bruge Brave-belønninger skal du vælge land, så vi kan vise dig de rette valgmuligheder, og reklamer i dit område. $link_begin$Privatlivspolitik$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Gem",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Vælg land",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

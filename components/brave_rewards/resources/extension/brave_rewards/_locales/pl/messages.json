@@ -398,12 +398,97 @@
     "message": "Masz oczekujące napiwki z powodu niewystarczających środków",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Zamknij",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Dalej",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Zarabiaj tokeny i obdarowuj innych",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Zarabiaj tokeny, oglądając reklamy z poszanowaniem prywatności i automatycznie wspieraj ulubione strony oraz twórców treści.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Coś poszło nie tak",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Nagrody Brave nie są dostępne",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Niestety wystąpił błąd podczas konfigurowania Nagród Brave. Spróbuj ponownie.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Niestety wystąpił błąd podczas ustawianiu kraju. Spróbuj ponownie.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Nowe rejestracje w ramach Nagród Brave są obecnie wyłączone w Twoim regionie. Zawsze możesz spróbować później. $link_begin$Dowiedz się więcej$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Wybierz kraj",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Dziękujemy!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Region Twoich Nagród Brave ustawiono na: $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Wybierz kraj, żebyśmy mogli pokazać Ci opcje i reklamy właściwe dla Twojego regionu. $link_begin$Polityka prywatności$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Wybierz kraj, żebyśmy mogli pokazać Ci opcje i reklamy właściwe dla Twojego regionu. $link_begin$Polityka prywatności$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Zapisz",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Wybierz kraj",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

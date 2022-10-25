@@ -85,10 +85,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8303432794159193481">„Brave“ naršyklės kūrimo programos</translation>
 <translation id="8292967014767479012">„Brave“ naršyklės programos</translation>
 <translation id="4743468424889072281">„Brave“ naršyklės kūrimo programos</translation>
-<translation id="239760341987199724">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
-<translation id="1391855377994926460">Saityne naršykite sparčiau – pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
-<translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
-<translation id="3479552764303398839">Ne dabar</translation>
 <translation id="732814027519296280">Norite, kad „Brave“ paieška veiktų dar geriau?</translation>
 <translation id="2677865600861971449">Sutikite dalyvauti žiniatinklio pažinimo projekte ir anonimiškai pateikite paieškos ir naršymo duomenis, kad padėtumėte patikslinti „Brave“ paieškos rezultatus visiems šia funkcija besinaudojantiems naudotojams. Visiškai privačiai, neįdedant nė kiek pastangų.<ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
@@ -204,9 +200,10 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6817415381278637662">Nustatykite „Brave“ kaip savo numatytąją naršyklę, kad galėtumėte pasinaudoti „Brave“ privatumo apsauga visuose tinklalapiuose, kuriuos atveriate.</translation>
 <translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
 <translation id="2370739752330685659">Gal vėliau</translation>
+<translation id="7537601449003285327">Prisegti prie užduočių juostos</translation>
 <translation id="961012016278832836">„Microsoft Edge Legacy“</translation>
 <translation id="6436994631426134065">Importuota iš <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Kopijuoti švarią nuorodą (tik pagrindinis URL adresas)</translation>
+<translation id="7630214457764713113">Kopijuoti švarią nuorodą</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
 <translation id="7179921470347911571">Paleisti iš naujo dabar</translation>
 <translation id="4472575034687746823">Pradėkite</translation>
@@ -246,6 +243,13 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3719826155360621982">Pagrindinis puslapis</translation>
 <translation id="5448570825852364919">Tuščias puslapis</translation>
 <translation id="5919424224662539292">Tinkinkite fono vaizdą ir valdiklius, kurie atsiranda naujo skirtuko puslapyje</translation>
+<translation id="7461924472993315131">Prisegti</translation>
+<translation id="7506648566440714944">„Brave“ jau prisegta</translation>
+<translation id="3195845168740336657">Skydų nuostatos</translation>
+<translation id="754769152790647708">Skydų būsena</translation>
+<translation id="3615717588724840230">Naudodamos skydus svetainės gali blokuoti sekiklius, reklamas ir pirštų atspaudus</translation>
+<translation id="5690973901138662477">Įjungti skydus</translation>
+<translation id="4697275813919189958">Išjungti skydus</translation>
 <translation id="6303294677342628402">Skydai</translation>
 <translation id="7133511168130368997">Blokuoti visame žiniatinklyje jus sekančius sekiklius ir reklamas.</translation>
 <translation id="2761825942249694703">Tai numatytosios skydo nuostatos. Jos taikomos visoms svetainėms, nebent atliekate pakeitimų tam tikros svetainės skydų skiltyje. Atlikus tokius pakeitimus nustatytos kitoms svetainėms nuostatos išliks tokios pačios.</translation>
@@ -259,7 +263,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2133317862976486547">Sekiklių ir reklamos blokavimas</translation>
 <translation id="4078738236287221428">Agresyvus</translation>
 <translation id="7740996059027112821">Standartinis</translation>
-<translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
 <translation id="4824468494729001999">Blokuoti scenarijus</translation>
 <translation id="6531019308847917584">Blokuoti kontrolinius kodus</translation>
 <translation id="5533533363827555308">Griežtai, gali neveikti svetainės</translation>
@@ -269,14 +272,14 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7390783310074170337">Numatytasis rodinys</translation>
 <translation id="130615081792797568">Paprastas rodinys</translation>
 <translation id="2360360976480535628">Išplėstinis rodinys</translation>
-<translation id="6486983549008741930">Turinio filtravimas</translation>
+<translation id="101592339984642584">Turinio filtravimas</translation>
 <translation id="8694564340481124390">Nustatykite tinkintus filtrus, kurie blokuotų regioninius ir su kalba susijusius sekiklius bei trukdžius.</translation>
-<translation id="6522618763902154348">Nustatykite tinkintus filtrus, kurie blokuotų regioninius ir su kalba susijusius sekiklius bei 
+<translation id="4877657558909976793">Nustatykite tinkintus filtrus, kurie blokuotų regioninius ir su kalba susijusius sekiklius bei 
 <ph name="BEGIN_LINK"/>trukdžius<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Pridėti tinkintų filtrų sąrašus</translation>
 <translation id="1020877116991797978">Pridėkite papildomų sąrašų, kuriuos kuria ir palaiko bendruomenė, kuria pasitikite.</translation>
 <translation id="7617831480435794399">Prenumeruokite tik tų subjektų sąrašus, kuriais pasitikite. Jūsų naršyklė periodiškai tikrins sąrašų atnaujinimus pagal jūsų įvestą URL adresą ir jų serveryje bus rodomas jūsų IP adresas.</translation>
-<translation id="2831397936251948638">Kurti tinkintus filtrus</translation>
+<translation id="8580328754808744073">Kurti tinkintus filtrus</translation>
 <translation id="4618274268052410139">Sukurtus tinkintus filtrus pridėkite toliau esančiame laukelyje, po vieną eilutėje. Būtinai naudokite <ph name="BEGIN_LINK"/>reklamos blokavimo filtrų sintaksę<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Pridėti</translation>
 <translation id="571950783952070673">Sąrašo URL</translation>
@@ -292,6 +295,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="5438573563213942361">Tinkinti sąrašai</translation>
 <translation id="4182731739150761577">Rodyti visą sąrašą</translation>
 <translation id="1340263054776016283">Įvesti filtrų sąrašo URL</translation>
+<translation id="8578397014396032341">Turinio filtrai</translation>
 <translation id="6821903322090655051">„Brave Rewards“ funkcija išjungta</translation>
 <translation id="413570371620795359">Atverkite skyrių „Rewards“, kad įjungtumėte ir pradėtumėte naudoti</translation>
 <translation id="3849957491997306859">Aptinkama automatiškai</translation>
@@ -402,6 +406,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5927916530277631319">„Unstoppable Domains“ sprendimo būdas</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/> apie „Ethereum“ privatumo nuostatas.</translation>
 <translation id="5248318250177143470">Eterio pavadinimų paslaugos (ENS) sprendimo būdas</translation>
+<translation id="6421218422395686663">Leisti ENS paiešką už blokų grandinės ribų.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/> apie ENS paieškos už blokų grandinės ribų privatumo nuostatas.</translation>
 <translation id="6241402707160226266">Privatus langas su „Tor“</translation>
 <translation id="8762452230727230396">„Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės.</translation>
 <translation id="2959986444009520721">Naudokite tiltus</translation>
@@ -563,4 +569,9 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5318548116565208315">Avataras „Bonbon Corn“</translation>
 <translation id="1959966725083452288">Avataras „Bonbon Royal“</translation>
 <translation id="2039034364578911089">Avataras „Bonbon Ninja“</translation>
+<translation id="239760341987199724">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
+<translation id="1391855377994926460">Saityne naršykite sparčiau – pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
+<translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
+<translation id="3479552764303398839">Ne dabar</translation>
+<translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
 </translationbundle>

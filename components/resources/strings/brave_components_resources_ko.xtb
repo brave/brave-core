@@ -88,9 +88,11 @@
 <translation id="1447534717041828517">툴바에 Brave News 버튼 표시</translation>
 <translation id="370665806235115550">로딩중...</translation>
 <translation id="4634933166298842522">구독 관리</translation>
-<translation id="3632460243282703117">구독</translation>
-<translation id="4720556299488643018">구독 취소</translation>
-<translation id="5227905322248018544">숨기고 다시 표시하지 않음</translation>
+<translation id="4108314971463891922">팔로우</translation>
+<translation id="3861486700625780712">언팔로우</translation>
+<translation id="8909741410750517071">한 번의 클릭으로 이 소스를 팔로우합니다.</translation>
+<translation id="1982678174789043774">Brave News에서 최신 스토리를 모두 확인합니다.</translation>
+<translation id="7894417427965898400">피드 관리</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="9164544612367905452">가져 오는 중…</translation>
 <translation id="1276592121036104130">새 콘텐츠 로드하기</translation>
@@ -102,6 +104,26 @@
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> 콘텐츠 비활성화</translation>
 <translation id="3189348785087463371">촉진됨</translation>
 <translation id="4541978218358617681">광고</translation>
+<translation id="6265592479622441247"><ph name="BEGIN_BOLD"/>대시보드<ph name="END_BOLD"/>로 돌아가기</translation>
+<translation id="8300751939969131609">Brave News를 켜고 스토리를 놓치지 마세요</translation>
+<translation id="8117813824055029515">유수의 매체에서 제공하는 맞춤 뉴스 피드가 브라우저로 바로 전달되고 프라이버시가 100% 보장됩니다.</translation>
+<translation id="1765217911817124376">Brave News 켜기</translation>
+<translation id="7845637671472170434">뉴스, 사이트, 주제, RSS 피드 검색</translation>
+<translation id="1498364270401875204">채널</translation>
+<translation id="1472675084647422956">자세히 보기</translation>
+<translation id="8032569120109842252">팔로잉</translation>
+<translation id="7841646697467892441">{FEED_COUNT, plural,
+          =1 {#개 소스}
+          other {#개 소스}
+        }</translation>
+<translation id="6143382357119101833"><ph name="URL"/> 피드 받기</translation>
+<translation id="4515121482885046194"><ph name="URL"/>에서 찾은 피드 없음</translation>
+<translation id="8535964427132833909">아무것도 없습니다. :'(</translation>
+<translation id="9036971622563146214">결과</translation>
+<translation id="6727452620418483718">다이렉트 결과</translation>
+<translation id="7697251281928908970">소스를 더 타이핑하여 검색</translation>
+<translation id="4750394297954878236">추천</translation>
+<translation id="7436846601026966360">좋아하실 만한 소스입니다. 익명 기반으로 기기에만 맞춰 추천되었습니다.</translation>
 <translation id="1776831331757823105">시계</translation>
 <translation id="7791543448312431591">추가</translation>
 <translation id="7679334366167089823">개인정보 존중 광고를 시청하여 토큰을 획득하십시오.</translation>
@@ -117,6 +139,7 @@
 <translation id="8820817407110198400">북마크</translation>
 <translation id="1644574205037202324">방문 기록</translation>
 <translation id="2702801445560668637">읽기 목록</translation>
+<translation id="4590997608186539865">재생목록</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="730042046912793465">이것은</translation>
@@ -125,10 +148,8 @@
 <translation id="4085423007106063912">시크릿 창에서 무엇을 하든 Brave에는 절대 저장되지 않습니다. 방문한 사이트가 기록에 표시되지 않습니다. 창을 닫으면 쿠키, 양식 데이터, 사이트 데이터가 삭제됩니다.</translation>
 <translation id="1700746046668116047">귀하의 활동을 인터넷 서비스 공급자, 패시브 네트워크 옵저버, 고용주(업무용 장비나 네트워크를 사용하는 경우)는 볼 수 있습니다. 프라이버시를 더욱 보호하려면 Tor로 시크릿 창을 여세요.</translation>
 <translation id="8759753423332885148">더 알아보기.</translation>
-<translation id="3546750666732517156">Tor 연결이 제공되는 Private Window</translation>
-<translation id="5383068818957293256">Brave는 사용자가 Private Window에서 무엇을 하는지 기억하지 않습니다. Tor 연결을 이용하면, 방문하는 사이트에서 사용자의 IP 주소도 숨겨집니다. 다만, 신변의 안전이 익명 유지에 달려 있다면, 대신 Tor 브라우저를 사용하십시오.</translation>
-<translation id="3338507774653218581">비공개 창에서 무엇을 하든 Brave에는 절대 저장되지 않습니다. Tor 연결을 이용하면 두 가지 추가 이점이 있습니다. 방문한 사이트에서 귀하의 IP 주소를 알 수 없고, 귀하 어떤 사이트를 방문했는지를 패시브 네트워크 옵저버가 알 수 없습니다. Tor는 인터넷 사용 속도를 늦출 수 있으며 일부 사이트가 깨져 보일 수 있습니다.</translation>
-<translation id="8666930656222843375">Tor를 적용한 비공개 창을 사용하면 어떤 사이트를 방문했는지 ISP나 근무하는 회사(업무용 컴퓨터나 네트워크 사용 시)가 파악하기가 불가능하지는 않지만 더욱 어려워집니다. Tor를 적용한 비공개 창을 사용하더라도 추적을 완전히 차단할 수는 없습니다. 개인의 안전이 익명성 유지에 달려 있다면 대신 Tor 브라우저를 사용하세요.</translation>
+<translation id="8611976753572844841">Tor 연결이 제공되는 비공개 창</translation>
+<translation id="1645589858096839236">Brave 비공개 창에서는 어떠한 브라우징 활동도 저장되지 않습니다. Tor 연결을 사용하면 사이트가 사용자의 진짜 IP 주소를 파악하기도, 네트워크 감시자가 사용자가 방문한 사이트를 알아내기도 더욱 어려워집니다. 하지만 익명 유지가 개인의 안전에 절대적이라면 Tor 브라우저를 사용하는 것이 낫습니다.</translation>
 <translation id="7919374705736538787">다음으로 비공개 검색하기:</translation>
 <translation id="3135655280958284640">DuckDuckGo (덕덕고)</translation>
 <translation id="218839872518145456">비공개 검색에선, Brave가 검색을 위해 비공개 윈도우에서 DuckDuckGo를 사용합니다. DuckDuckGo는 검색 내역을 추적하지 않기에, 비공개로 검색할 수 있습니다.</translation>
@@ -136,7 +157,7 @@
 <translation id="4371533307685765155">DuckDuckGo로 검색하기</translation>
 <translation id="548478195417408221">Private Windows에 대해 추가로 비공개로 설정</translation>
 <translation id="3294503279952534143">이 Private Window는 비공개에 더욱 철저합니다</translation>
-<translation id="4644024131266615376">Tor 연결과 함께</translation>
+<translation id="6126226144537295436">Tor 연결 제공</translation>
 <translation id="8541421872680304667">Tor는 목적지에 도달하기 전에 여러 Tor 서버를 통해 브라우징을 라우팅하는 방식으로 방문하는 사이트에 대해 사용자의 IP 주소를 숨깁니다. Tor를 이용함으로써 브라우징 속도가 느려질 수 있으며, 일부 사이트는 전혀 동작하지 않을 수 있습니다.</translation>
 <translation id="8897548669448660973">시크릿 창을 사용하면 현재 사용 중인 기기에서의 Brave 동작 방식만 변화하며 다른 사용자의 동작 방식은 변화하지 않습니다. Tor는 방문한 사이트에서 IP 주소를 숨겨, 어떤 사이트를 방문했는지 ISP나 직장 상사가 파악하기 어려워집니다. Tor로 시크릿 창을 열려면 메뉴에서 찾아보거나 [[ key ]] 키를 누르세요.</translation>
 <translation id="6975708438781948564">Brave에서 Tor에 대해 더 알아보기</translation>
@@ -164,6 +185,7 @@
 <translation id="9204006549413740506">최근 업데이트</translation>
 <translation id="6745592621698551453">지금 업데이트</translation>
 <translation id="5334844597069022743">소스 보기</translation>
+<translation id="4720556299488643018">구독 취소</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
 <translation id="4105411033440701818">참고: "제출"을 클릭하면 사이트 주소, 사용 중인 Brave 버전 번호, 귀하의 IP 주소가 Brave 개발자에게 공유됩니다. (IP 주소가 저장되지는 않음.)</translation>
@@ -274,8 +296,8 @@
 <translation id="5028274575541726856">오류: Brave Rewards 프로필이 플래깅됨</translation>
 <translation id="2607420597216860026"><ph name="PROVIDER"/>에서 ID 확인을 완료하고 다시 시도하세요.</translation>
 <translation id="3183954159462541696">오류: 로그인하려면 계정을 검증해야 함</translation>
-<translation id="6650468331440842419">회원님의 Brave Rewards 프로필이 이미 다른 지역의 보호관리 계정에 연결되어 있는 것 같습니다. 전에 사용했던 보호관리 계정을 다시 연결해보거나 이전 계정과 동일한 지역으로 보호관리 계정을 업데이트하세요.</translation>
-<translation id="5955021799827127089">오류: 계정 지역 다름</translation>
+<translation id="1859789048900659918">Brave Rewards 국가와 연결하려는 <ph name="PROVIDER"/> 계정의 국가가 일치하지 않습니다.</translation>
+<translation id="8925428135452218262">오류: 국가 불일치</translation>
 <translation id="5260522591743022748">다른 <ph name="PROVIDER"/> 계정에서 이미 확인을 완료한 Brave Rewards인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.</translation>
 <translation id="5111921830714291902">오류: 다른 계정</translation>
 <translation id="1024520300696337331">지금은 귀하의 <ph name="PROVIDER"/> 계정을 Brave Rewards 프로필에 연결할 수 없습니다. Brave Rewards 연결이 현재 지원되지 않는 국가에 귀하의 <ph name="PROVIDER"/> 계정이 등록되어 있습니다.</translation>
@@ -297,6 +319,8 @@
 <translation id="6682919029276027868">하지만 현재 사용 중이신 Brave Rewards 기능에는 제한이 있습니다. 보호관리 월렛 파트너로 검증할 경우 다음이 가능합니다.</translation>
 <translation id="9064931634458501855">자유롭게 자금 인출 및 예치</translation>
 <translation id="3222002542796906461">계정에 바로 리워드 적립</translation>
+<translation id="1233129511866436960">지역 및 지원에 대해 자세히 알아보기</translation>
+<translation id="7329170127335794328">현재 귀하의 지역에서 사용할 수 없음</translation>
 <translation id="8304979233901023264">Brave <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>을 읽었으며 이에 동의합니다.</translation>
 <translation id="2359808026110333948">계속</translation>
 <translation id="1892970806832316900"><ph name="DATE"/>까지 보류 중</translation>
@@ -341,6 +365,7 @@
 <translation id="6161467863097205016">키 정보 시드:</translation>
 <translation id="5323604113525002127">로그의 마지막 {{numberOfLines} 줄을 보여 줍니다. 전체 로그를 원하면 위에서 다운로드할 수 있습니다.</translation>
 <translation id="7168491065836975228">리워드 내부</translation>
+<translation id="1992397118740194946">설정 안됨</translation>
 <translation id="758790787422117549">페르소나 ID</translation>
 <translation id="1919345977826869612">광고</translation>
 <translation id="3671566813999349838">총액</translation>
@@ -362,6 +387,7 @@
 <translation id="3798449238516105146">버전</translation>
 <translation id="7180611975245234373">새로고침</translation>
 <translation id="1456696701804096710">재시도 횟수:</translation>
+<translation id="8118649457152178086">Rewards 국가:</translation>
 <translation id="2152423226436243241">자동 기부</translation>
 <translation id="2927922949538312364">1회용 팁</translation>
 <translation id="3164105678355419142">정기 팁</translation>
@@ -647,9 +673,14 @@
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Brave에서 Ethereum Name Service(ENS) 지원을 활성화할까요?</translation>
 <translation id="8328137586971750853">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 이더리움 네임 서비스에서의 스마트 컨트랙트로 발행하고 .eth 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="807404806385418949">ENS(Ethereum Name Service) 오프체인 룩업</translation>
+<translation id="4049590838234508776">Brave는 ENS(Ethereum Name Service) 오프체인 룩업을 지원하나요?</translation>
+<translation id="1769433806670482329">Brave는 오프체인 게이트웨이를 사용하여 .eth 도메인 이름 룩업 요청을 해독합니다. 이를 활성화하면 귀하가 방문하려는 .eth 도메인을 제3자 게이트웨이가 볼 수 있지만 다른 도메인은 볼 수 없습니다. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>자세히 알아보기<ph name="END_BRAVE_LEARN_MORE_LINK"/></translation>
+<translation id="4047002754575891955">오프체인 룩업으로 계속</translation>
 <translation id="7378412287463452336">Infura 서버를 사용하여 계속하기</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="1448289340149908413">이더리움</translation>
+<translation id="59174027418879706">사용함</translation>
 <translation id="2468755552460246661">도메인 차단</translation>
 <translation id="6393849031898466746">이 사이트는 다른 사이트에서도 귀하의 추적을 시도할 수 있습니다.</translation>
 <translation id="983774928604730749">Brave는 다음 사이트의 로드를 차단했습니다:</translation>
@@ -762,6 +793,8 @@
 <translation id="244362569344671266">Brave Private Ads를 보고 토큰을 얻고 콘텐츠 크리에이터를 자동으로 지원하세요.</translation>
 <translation id="5095252080770652994">진행</translation>
 <translation id="6278643716658443228">리워드 설정</translation>
+<translation id="2862978891748913252">국가 선택</translation>
+<translation id="3717922248131893262">Brave Rewards를 계속 사용하려면 국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다. <ph name="LINK_BEGIN"/>개인정보 보호정책<ph name="LINK_END"/></translation>
 <translation id="6777169449483742979">이 스폰서 이미지를 보며 토큰이 적립되고 있습니다.</translation>
 <translation id="5486114327664215175">이 이미지를 보고 토큰을 적립하여 콘텐츠 제작자를 후원할 수 있습니다.</translation>
 <translation id="2940863921746574646">토큰 잔액</translation>
@@ -809,9 +842,16 @@
 <translation id="6717671373796332174">자세한 정보는<ph name="TOUR_LINK_BEGIN"/>빠르게 둘러보기<ph name="TOUR_LINK_END"/> 또는 <ph name="LEARN_LINK_BEGIN"/>더 알아보기<ph name="LEARN_LINK_END"/>에서 확인하세요.</translation>
 <translation id="7465614181960492526">토큰 획득 &amp; 돌려주기</translation>
 <translation id="2731539192954672606">개인 정보를 존중하는 광고를 보고 토큰을 얻고 즐겨 찾는 사이트와 콘텐츠 크리에이터를 자동으로 지원하세요.</translation>
+<translation id="5425006356459378415">Brave Rewards 사용 불가</translation>
+<translation id="909076461795862330">Brave Rewards를 설정하는 중에 오류가 발생했습니다. 다시 시도하세요.</translation>
+<translation id="3180990265682133881">국가를 설정하는 중에 오류가 발생했습니다. 다시 시도하세요.</translation>
+<translation id="2191603160848789187">귀하가 계신 지역에서는 현재 Brave Rewards 신규 가입이 중단되었습니다. 나중에 언제든 다시 시도해주세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_BEGIN"/></translation>
+<translation id="8764860730661377310">Brave Rewards 지역이 <ph name="COUNTRY"/>인 것으로 설정되었습니다.</translation>
+<translation id="7068416025603720599">국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다. <ph name="LINK_BEGIN"/>개인정보 보호정책<ph name="LINK_END"/></translation>
 <translation id="1275213816424141989">나중에</translation>
 <translation id="5187052478998910855">리워드에 대해 복습이 필요하신가요?</translation>
 <translation id="8622329973403382303">어떻게 작동하는지에 대해 역사에 리워드 락스타로 남을 수 있도록 간단히 복습해 봅시다!</translation>
+<translation id="4331886860862592203">국가 선택</translation>
 <translation id="3115702351969988294">얼마나 자주 광고를 보고 싶으신가요?</translation>
 <translation id="7532131110478098401">(시간당 광고)</translation>
 <translation id="2951964054390325080">좋아하는 크리에이터에게 매달 얼마나 지원하고 싶으신가요?</translation>
@@ -1040,6 +1080,7 @@
 <translation id="2708402071160162126">경고: 백복구 문구는 절대 공유하지 마세요. 이 문구를 아는 누군가가 회원님의 자금을 탈취하면 되찾을 수 없습니다.</translation>
 <translation id="2416098547200943834">참고: 비공개 키는 비공개 키와 프로토콜 정보가 포함된 헥스 인코디드 JSON 형식으로 제공됩니다. <ph name="LINK_START"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7657130382217527063">참고: 비공개 키는 비공개 키와 프로토콜 정보가 포함된 헥스 인코디드 JSON 형식으로 제공되어야 합니다. <ph name="LINK_START"/>자세히 알아보기<ph name="LINK_END"/></translation>
+<translation id="42126664696688958">내보내기</translation>
 <translation id="2902856457593699108">키 표시</translation>
 <translation id="8033497299373164724">키 숨기기</translation>
 <translation id="2702143907607790516">게정 이름 업데이트에 실패했습니다. 다시 시도하세요.</translation>
@@ -1050,10 +1091,8 @@
 <translation id="5398538976202345089">지원되지 않는 네트워크</translation>
 <translation id="1530109021798294736">메인넷</translation>
 <translation id="1613627717923045622">네트워크 테스트</translation>
-<translation id="4245123003308024264">Ropsten</translation>
-<translation id="2219337030359508039">Kovan</translation>
-<translation id="992469614838016642">Rinkeby</translation>
 <translation id="4022672158058543834">Goerli</translation>
+<translation id="6742767287935968736">Sepolia</translation>
 <translation id="1260818237399583903">Binance Smart Chain</translation>
 <translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">로컬호스트</translation>
@@ -1242,8 +1281,9 @@
 <translation id="6169371176266800104">24시간</translation>
 <translation id="7677692756188354224">시가총액</translation>
 <translation id="4430019312045809116">볼륨</translation>
+<translation id="4312994183947987913">구입/입금</translation>
 <translation id="5133421763709317473">검색어 또는 필터와 일치하는 자산 없음</translation>
-<translation id="8813832913015888458">Brave 월렛이 지원하지 않는 자산</translation>
+<translation id="7383613643114466279">Brave 월렛이 지원하지 않는 자산</translation>
 <translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
 <translation id="3898731124813934210">Wyre로 구매</translation>
 <translation id="5522073372365069684">Ramp로 구매</translation>
@@ -1256,6 +1296,26 @@
 <translation id="8528916244724490964">모든 네트워크</translation>
 <translation id="4038403584813842767">잔액 ↑</translation>
 <translation id="1695096446857675822">잔액 ↓</translation>
+<translation id="7198018180583855568">모든 계정</translation>
+<translation id="6954150712710630841">트랜잭션 제출됨</translation>
+<translation id="905855245798176174">트랜잭션이 네트워크로 전송되어 확인을 기다리고 있습니다.</translation>
+<translation id="3183790760060544368"><ph name="VALUE"/>, 월렛으로 반송됨</translation>
+<translation id="4577432071459867390">트랜잭션 실패</translation>
+<translation id="4359235192593147041">가격 변동폭이 커서 트랜잭션이 실패했습니다. 가격 변동폭이 커도 성공하려면 슬리피지 허용 오차를 늘리세요.</translation>
+<translation id="8584830404080597280">새 거래</translation>
+<translation id="8065905913745172640">새 트랜잭션</translation>
+<translation id="9079041000600020902">오류 보기</translation>
+<translation id="6257687515171395402">수취</translation>
+<translation id="7065228161830418508">오류 메시지</translation>
+<translation id="5711048370886541571">향후 참조를 위해 오류 메시지를 저장하세요.</translation>
+<translation id="4315561646577477669"><ph name="MAKER"/>에서 <ph name="TAKER"/>(으)로 스왑됨</translation>
+<translation id="5896915466769225182">트랜잭션 완료!</translation>
+<translation id="3541662075332902575">트랜잭션이 성공적으로 블록에 포함되었습니다. 이중 지출 위험을 피하려면 블록이 확인될 때까지 기다리세요.</translation>
+<translation id="1349457304183253101">트랜잭션 처리 중</translation>
+<translation id="5132698868627864842">확인 중</translation>
+<translation id="5601436886921227795">Dapp 인터랙션</translation>
+<translation id="9104177294757104789"><ph name="VALUE"/> 보내기</translation>
+<translation id="4048336522751528394"><ph name="MAKER"/>에서 <ph name="TAKER"/>(으)로 스왑</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="2816106784624007524">가스 한도는 0보다 큰 정수여야 합니다.</translation>
 <translation id="3354376789153561654">트랜잭션 데이터 'to'를 지정해야 함</translation>
@@ -1280,6 +1340,45 @@
 <translation id="4719005063558335704">계정:</translation>
 <translation id="4337554812324118382">데이터:</translation>
 <translation id="569870799832027680">프로그램 ID:</translation>
+<translation id="9071560809248786823">Lamports</translation>
+<translation id="6129953537138746214">공백</translation>
+<translation id="2333894833508885986">Owner Program</translation>
+<translation id="673881072848521017">Base</translation>
+<translation id="6602282658898162258">Seed</translation>
+<translation id="6985542807131223826">Authority</translation>
+<translation id="938125553895090449">New Authority</translation>
+<translation id="6309334520637986016">From Seed</translation>
+<translation id="7779353517712893336">From Owner Program</translation>
+<translation id="3116904380055282595">Decimals</translation>
+<translation id="2576809855031734288">Mint Authority</translation>
+<translation id="3472592357259422295">Freeze Authority</translation>
+<translation id="6965572321703653296">Authority Type</translation>
+<translation id="21140452451144431">Number of Signers</translation>
+<translation id="5108161910968957837">From Account</translation>
+<translation id="174345730328470349">To Account</translation>
+<translation id="2687968143695057804">새 계정</translation>
+<translation id="8274326034751772925">Assigned Account</translation>
+<translation id="3287245755942479694">Created Account</translation>
+<translation id="6559616978170662285">Base Account</translation>
+<translation id="3157085877070297608">Nonce Account</translation>
+<translation id="3052313599928914393">Nonce Authority</translation>
+<translation id="2818177840313215015">Allocated Account</translation>
+<translation id="3332926854409491692">Rent sysvar</translation>
+<translation id="1338923714285924422">RecentBlockhashes sysvar</translation>
+<translation id="7718273517583726718">Initialized Mint</translation>
+<translation id="1982396945501942785">Initialized Account</translation>
+<translation id="4448996702733695148">Initialized Multisig Account</translation>
+<translation id="8881659593032980372">Burned Account</translation>
+<translation id="5601061394286676366">Closed Account</translation>
+<translation id="4100192671552260674">Frozen Account</translation>
+<translation id="1865659351831046902">Native Token Account</translation>
+<translation id="3430421677512658698">Token Mint</translation>
+<translation id="5371133472668945195">Mint</translation>
+<translation id="3591768665664470087">Signers</translation>
+<translation id="2761935211528145049">Delegate</translation>
+<translation id="5048094297412542354">Owner/Delegate</translation>
+<translation id="6600221609132728151">Account Owner/Delegate</translation>
+<translation id="1444051660240401461">Changed Mint or Account</translation>
 <translation id="7843211152394841558">최대 재시도 횟수:</translation>
 <translation id="8496335570810457">프리플라이트 약속:</translation>
 <translation id="5100124500279922001">프리플라이트 건너뛰기:</translation>
@@ -1289,6 +1388,7 @@
 <translation id="2095142195578664632">도움이 필요하시면 다음을 참조하세요.</translation>
 <translation id="3253669416991680932">이 하드웨어 월렛에서는 이 작업이 지원되지 않습니다.</translation>
 <translation id="7457027586454688423">Brave Wallet 비밀번호 입력</translation>
+<translation id="7553242001898162573">비밀번호 입력</translation>
 <translation id="2873714185189940594">Rainbow Bridge 앱을 여시겠습니까?</translation>
 <translation id="2069777099181262239">Rainbow Bridge는 자산을 여러 네트워크에 걸쳐 브리징하여 보유한 암호화폐를 다른 네트워크 및 DApp 생태계에서도 사용할 수 있게 해주는 독립적 서비스입니다. 자산을 다른 네트워크로 브리징하면 다소 위험이 따릅니다.</translation>
 <translation id="7387899248733396663">Rainbow Bridge 사용에 대해 자세히 알아보기</translation>
@@ -1395,6 +1495,9 @@
 <translation id="7657322905916621147">복구 문구는 길이가 12, 15, 18, 21, 24단어 중 하나여야 함</translation>
 <translation id="5307206077701819797">월렛 내에 NFT가 없습니다. "포트폴리오" 탭 하단 "+ 가시 자산" 버튼을 클릭하면 NFT를 추가할 수 있습니다.</translation>
 <translation id="3528540388456395658">검색어 또는 필터와 일치하는 NFT 없음</translation>
+<translation id="5026874946691314267">다시 표시하지 않음</translation>
+<translation id="434502623875309667">주소 해석에 오프체인 네트워크 요청이 필요합니다. 계속하시겠습니까?</translation>
+<translation id="2779500703989728346">NFT</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1403,6 +1506,7 @@
 <translation id="6951743416068151209">Tor 프록시 URI</translation>
 <translation id="1671503397662036257">Tor 연결 상태</translation>
 <translation id="6024292492796847324">토르 초기화 진행률</translation>
+<translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Brave Shields <ph name="LINK_BEFORE"/>비활성화됨<ph name="LINK_AFTER"/></translation>
@@ -1436,7 +1540,6 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
 <translation id="4292121526390005808">차단된 스크립트</translation>
-<translation id="6303294677342628402">보호</translation>
 <translation id="264682546981571963">쿠키 동의 문구를 보면 지치시지요?</translation>
 <translation id="4986297793092101884">Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.</translation>
 <translation id="535688588637568715">예, 쿠키 동의 문구 차단</translation>
@@ -1499,4 +1602,14 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="3632460243282703117">구독</translation>
+<translation id="5227905322248018544">숨기고 다시 표시하지 않음</translation>
+<translation id="3546750666732517156">Tor 연결이 제공되는 Private Window</translation>
+<translation id="5383068818957293256">Brave는 사용자가 Private Window에서 무엇을 하는지 기억하지 않습니다. Tor 연결을 이용하면, 방문하는 사이트에서 사용자의 IP 주소도 숨겨집니다. 다만, 신변의 안전이 익명 유지에 달려 있다면, 대신 Tor 브라우저를 사용하십시오.</translation>
+<translation id="3338507774653218581">비공개 창에서 무엇을 하든 Brave에는 절대 저장되지 않습니다. Tor 연결을 이용하면 두 가지 추가 이점이 있습니다. 방문한 사이트에서 귀하의 IP 주소를 알 수 없고, 귀하 어떤 사이트를 방문했는지를 패시브 네트워크 옵저버가 알 수 없습니다. Tor는 인터넷 사용 속도를 늦출 수 있으며 일부 사이트가 깨져 보일 수 있습니다.</translation>
+<translation id="8666930656222843375">Tor를 적용한 비공개 창을 사용하면 어떤 사이트를 방문했는지 ISP나 근무하는 회사(업무용 컴퓨터나 네트워크 사용 시)가 파악하기가 불가능하지는 않지만 더욱 어려워집니다. Tor를 적용한 비공개 창을 사용하더라도 추적을 완전히 차단할 수는 없습니다. 개인의 안전이 익명성 유지에 달려 있다면 대신 Tor 브라우저를 사용하세요.</translation>
+<translation id="4644024131266615376">Tor 연결과 함께</translation>
+<translation id="6650468331440842419">회원님의 Brave Rewards 프로필이 이미 다른 지역의 보호관리 계정에 연결되어 있는 것 같습니다. 전에 사용했던 보호관리 계정을 다시 연결해보거나 이전 계정과 동일한 지역으로 보호관리 계정을 업데이트하세요.</translation>
+<translation id="5955021799827127089">오류: 계정 지역 다름</translation>
+<translation id="8813832913015888458">Brave 월렛이 지원하지 않는 자산</translation>
 </translationbundle>

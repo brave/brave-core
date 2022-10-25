@@ -398,12 +398,97 @@
     "message": "Sinulla on varojen riittämättömyydestä johtuvia odottavia tippejä",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Sulje",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Jatka",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Ansaitse maksutunnuksia & osoita anteliaisuutta",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Ansaitse maksutunnuksia katsomalla tietosuojaasi kunnioittavia mainoksia sekä tukemalla suosikkisivustojasi ja -kehittäjiäsi automaattisesti.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Jotakin meni vikaan",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave-palkinnot eivät ole käytettävissä",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Brave-palkintojen määrittämisen aikana tapahtui valitettavasti virhe. Yritä uudelleen.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Maan asettamisen aikana tapahtui valitettavasti virhe. Yritä uudelleen.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Uudet rekisteröitymiset Brave-palkinto-ohjelmaan on poistettu käytöstä alueellasi. Voit kuitenkin aina yrittää myöhemmin uudelleen. $link_begin$Learn more$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Valitse maa",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Kiitos!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Brave-palkintojen alueeksi on asetettu $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Valitse maa, jotta voimme näyttää alueesi mukaisia vaihtoehtoja ja mainoksia. $link_begin$Tietosuojakäytäntö$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Jatka Brave-palkintojen käyttöä valitsemalla maa, jotta voimme näyttää alueesi mukaisia vaihtoehtoja ja mainoksia. $link_begin$Tietosuojakäytäntö$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Tallenna",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Valitse maa",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

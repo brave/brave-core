@@ -398,12 +398,97 @@
     "message": "لديك نصائح معلقة بسبب عدم كفاية الأموال",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "إغلاق",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "متابعة",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "اكسب العملات الرمزية وأعطها مرة أخرى",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "اربح العملات الرمزية من خلال عرض الإعلانات التي تحترم الخصوصية ودعم مواقعك المفضلة ومنشئي المحتوى تلقائياً.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "حدث خطأ ما",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "مكافآت Brave غير متوفرة",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "لسوء الحظ، حدث خطأ أثناء محاولة إعداد مكافآت Brave. يُرجى إعادة المحاولة.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "لسوء الحظ، حدث خطأ أثناء محاولة ضبط بلدك. يُرجى إعادة المحاولة.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "تم تعطيل عمليات تسجيل الدخول الجديدة في مكافآت Brave حاليًا في منطقتك. ولكن يمكنك دائمًا إعادة المحاولة لاحقًا.$link_begin$تعرّف على المزيد$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "حدّد بلدك",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "شكراً لك!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "تم تعيين منطقة مكافآت Brave الخاصة بك على $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "حدّد بلدك حتى نتمكن من عرض الخيارات والإعلانات المناسبة لمنطقتك. $link_begin$سياسة الخصوصية$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "لمواصلة استخدام مكافآت Brave، حدد بلدك حتى نتمكن من عرض الخيارات والإعلانات المناسبة لمنطقتك. $link_begin$سياسة الخصوصية$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "حفظ",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "حدّد بلدك",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

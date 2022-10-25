@@ -84,10 +84,6 @@
 <translation id="8303432794159193481">برنامه‌های Dev مرورگر Brave</translation>
 <translation id="8292967014767479012">برنامه‌های مرورگر Brave</translation>
 <translation id="4743468424889072281">برنامه‌های Development مرورگر Brave</translation>
-<translation id="239760341987199724">‏تنظیم Brave به عنوان مرورگر پیش‌فرضتان</translation>
-<translation id="1391855377994926460">همچنان وب را سریع‌تر - تا 6 برابر سریع‌تر در سایت‌های خبری اصلی - مرور کنید.</translation>
-<translation id="9218430445555521422">تنظیم به‌عنوان پیش‌فرض</translation>
-<translation id="3479552764303398839">اکنون نه</translation>
 <translation id="732814027519296280">می‌خواهید جستجوی Brave را حتی بهتر از این کنید؟</translation>
 <translation id="2677865600861971449">برای مشارکت ناشناس در ارائه برخی داده‌های جستجو و مرور، و بهبود نتایج جستجوی Brave برای همه، در «پروژه کشف وب» شرکت کنید. حفظ حریم خصوصی. بدون هیچ دردسری. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
@@ -203,9 +199,10 @@
 <translation id="6817415381278637662">Brave را به‌عنوان مرورگر پیش‌فرضتان تنظیم کنید تا در هر صفحه وبی که باز می‌کنید از قابلیت‌های حفاظت حریم خصوصی Brave بهره‌مند شوید.</translation>
 <translation id="8722651357687610395">Brave را به‌عنوان پیش فرض تنظیم کنید</translation>
 <translation id="2370739752330685659">شاید بعداً</translation>
+<translation id="7537601449003285327">پین کردن به نوار وظیفه</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">درون‌برد از <ph name="BROWSER_NAME"/></translation>
-<translation id="1506190932569739298">کپی کردن لینک خالص (فقط نشانی وب اصلی)</translation>
+<translation id="7630214457764713113">کپی کردن پیوند تمیز</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
@@ -245,10 +242,17 @@
 <translation id="3719826155360621982">صفحه اصلی</translation>
 <translation id="5448570825852364919">صفحه خالی</translation>
 <translation id="5919424224662539292">تصویر پس‌زمینه و ابزارک‌هایی را که در صفحه زبانه جدید نشان داده می‌شود سفارشی کنید</translation>
+<translation id="7461924472993315131">پین</translation>
+<translation id="7506648566440714944">Brave قبلاً سنجاق شده است</translation>
+<translation id="3195845168740336657">تنظیمات سپر امنیتی</translation>
+<translation id="754769152790647708">وضعیت سپر امنیتی</translation>
+<translation id="3615717588724840230">سایت‌ها با استفاده از سپر امنیتی قادر به مسدودسازی ردیاب‌ها، آگهی‌ها و انگشت‌نگاری خواهند بود.</translation>
+<translation id="5690973901138662477">روشن کردن سپر امنیتی</translation>
+<translation id="4697275813919189958">خاموش کردن سپر امنیتی</translation>
 <translation id="6303294677342628402">سپر ایمنی</translation>
 <translation id="7133511168130368997">ردیاب‌ها و آگهی‌هایی که شما را در سراسر وب دنبال می‌کنند، مسدود کنید.</translation>
 <translation id="2761825942249694703">این‌ها تنظیمات پیش‌فرض «سپر ایمنی» هستند. برای همه وب‌سایت‌ها اعمال می‌شوند مگراینکه موردی را در پانل «سپرایمنی» در سایت خاصی تغییر دهید. تغییر این موارد، تأثیری بر تنظیمات موجود هر سایت نمی‌گذارد.</translation>
-<translation id="1435116578479068303">با این کار بیشتر آگهی سایت‌ها مسدود می‌شوند، به جز آگهی‌های شخصی Brave که در قسمت تنظیمات <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> کنترل می‌شوند.</translation>
+<translation id="1435116578479068303">با این کار بیشتر آگهی سایت‌ها مسدود می‌شوند، به جز آگهی‌های خصوصی Brave — که در قسمت تنظیمات <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> کنترل می‌شوند.</translation>
 <translation id="8452536890042542134">با این کار بیشتر آگهی سایت‌ها مسدود می‌شوند.</translation>
 <translation id="4800195524776354947">نمایش تعداد موارد مسدودشده روی نماد سپر ایمنی</translation>
 <translation id="5510493033031835532">تغییر مسیر خودکار صفحات AMP</translation>
@@ -258,7 +262,6 @@
 <translation id="2133317862976486547">مسدود کردن ردیاب‌ها و آگهی‌ها</translation>
 <translation id="4078738236287221428">تهاجمی</translation>
 <translation id="7740996059027112821">استاندارد</translation>
-<translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
 <translation id="6531019308847917584">مسدود کردن تشخیص اثر انگشت</translation>
 <translation id="5533533363827555308">شدید، ممکن است منجر به خرابی سایت‌ها شود</translation>
@@ -268,13 +271,14 @@
 <translation id="7390783310074170337">نمای پیش‌فرض</translation>
 <translation id="130615081792797568">نمای ساده</translation>
 <translation id="2360360976480535628">نمای پیشرفته</translation>
-<translation id="6486983549008741930">فیلتر کردن محتوا</translation>
+<translation id="101592339984642584">فیلتر کردن محتوا</translation>
 <translation id="8694564340481124390">فیلترهای سفارشی را که باعث مسدودسازی مزاحمت‌ها و ردیاب‌های مختص زبان و  منطقه‌ای می‌شود فعال کنید.</translation>
-<translation id="6522618763902154348">فیلترهای سفارشی را که باعث مسدودسازی <ph name="BEGIN_LINK"/>مزاحمت‌ها<ph name="END_LINK"/> و ردیاب‌های مختص زبان و منطقه‌ای می‌شود فعال کنید.</translation>
+<translation id="4877657558909976793">فیلتر‌های سفارشی را که باعث مسدودسازی ردیاب‌های مختص زبان و منطقه‌ای و
+    <ph name="BEGIN_LINK"/>مزاحمت‌ها<ph name="END_LINK"/>می‌شود فعال کنید.</translation>
 <translation id="3482656215021340727">افزودن فهرست‌های فیلتر سفارشی</translation>
 <translation id="1020877116991797978">فهرست‌های تکمیلی ایجاد و نگهداری‌شده توسط انجمن مورد اعتمادتان را اضافه کنید.</translation>
 <translation id="7617831480435794399">فقط در فهرست‌های مربوط به نهادهای مورداعتمادتان مشترک شوید. مرورگر شما به‌طور دوره‌ای به‌روزرسانی‌های فهرست را از نشانی وبی وارد می‌کنید بررسی می‌کند و نشانی IP شما برای سرور آنها آشکار می‌شود.</translation>
-<translation id="2831397936251948638">ایجاد فیلترهای سفارشی</translation>
+<translation id="8580328754808744073">ایجاد فیلتر‌های سفارشی</translation>
 <translation id="4618274268052410139">فیلترهای سفارشی را که ایجاد کرده‌اید، در فیلد زیر اضافه کنید به‌طوری‌که در هر خط یکی باشد. حتماً از <ph name="BEGIN_LINK"/>دستور فیلتر Adblock<ph name="END_LINK"/> استفاده کنید.</translation>
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="571950783952070673">نشانی وب فهرست</translation>
@@ -290,6 +294,7 @@
 <translation id="5438573563213942361">فهرست‌های سفارشی</translation>
 <translation id="4182731739150761577">نمایش فهرست کامل</translation>
 <translation id="1340263054776016283">وارد کردن نشانی وب فهرست فیلتر</translation>
+<translation id="8578397014396032341">فیلتر‌های محتوا</translation>
 <translation id="6821903322090655051">«پاداش‌های Brave» غیرفعال است</translation>
 <translation id="413570371620795359">برای فعال‌سازی و شروع، دریچه‌ی جوایز را باز کنید</translation>
 <translation id="3849957491997306859">به‌طور خودکار شناسایی شد</translation>
@@ -400,6 +405,8 @@
 <translation id="5927916530277631319">روش تحلیل دامنه‌های توقف‌ناپذیر</translation>
 <translation id="2889554198027690581">درباره رعایت حریم خصوصی Ethereum<ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
+<translation id="6421218422395686663">به ENS اجازه مراجعه برون زنجیره‌ای دهید.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/> درباره ملاحظات حریم خصوصی جستجوی برون زنجیره‌ای ENS.</translation>
 <translation id="6241402707160226266">پنجره خصوصی با Tor</translation>
 <translation id="8762452230727230396">Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید، مخفی می‌کند.</translation>
 <translation id="2959986444009520721">از پل ها استفاده کنید</translation>
@@ -561,4 +568,9 @@
 <translation id="5318548116565208315">آواتار ذرت آب‌نبات</translation>
 <translation id="1959966725083452288">آواتار سلطنتی آب‌نبات</translation>
 <translation id="2039034364578911089">آواتار نینجای آب‌نبات</translation>
+<translation id="239760341987199724">‏تنظیم Brave به عنوان مرورگر پیش‌فرضتان</translation>
+<translation id="1391855377994926460">همچنان وب را سریع‌تر - تا 6 برابر سریع‌تر در سایت‌های خبری اصلی - مرور کنید.</translation>
+<translation id="9218430445555521422">تنظیم به‌عنوان پیش‌فرض</translation>
+<translation id="3479552764303398839">اکنون نه</translation>
+<translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 </translationbundle>

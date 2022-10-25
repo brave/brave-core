@@ -54,6 +54,7 @@
 <translation id="7291143854620707672">O administrador do perfil de traballo pode quitar os datos de Brave que se xeren durante o uso deste perfil (por exemplo, os marcadores, o historial, os contrasinais e outras opcións de configuración). <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Produciuse un erro no sistema operativo durante a instalación. Volve descargar Brave.</translation>
 <translation id="2648689842065142443">Se compartes un dispositivo, as túas amizades e os membros da túa familia poden navegar cun perfil independente e configurar Brave como prefiran</translation>
+<translation id="5926459996518749366">Brave bloqueou este ficheiro de arquivo porque é posible que conteña software malicioso</translation>
 <translation id="6384359666082467439">Dámosche a benvida a Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Pestana de Brave</translation>
 <translation id="8372880274820509128">Para obter unha maior seguranza, Brave encriptará os teus datos.</translation>
@@ -196,6 +197,7 @@
 <translation id="7861579472672677409">Engadiuse a extensión <ph name="EXTENSION_NAME"/> a Brave</translation>
 <translation id="608006075545470555">Engadir un perfil de traballo a este navegador</translation>
 <translation id="5849446944780602366">Personalizar e controlar Brave. Hai una actualización dispoñible.</translation>
+<translation id="7433698744896946664">Permitir que a extensión mostre solicitudes de acceso na barra de ferramentas de Brave</translation>
 <translation id="492209281555538239">Brave gardará este contrasinal na túa Conta de Brave. Non terás que recordalo.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> é perigoso, así que Brave bloqueouno.</translation>
 <translation id="7006260220514217183">A opción Navegación segura está desactivada. Brave recomenda activala.</translation>
@@ -287,6 +289,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="8678991866891573053">Brave está explorando novas funcións que lles permiten aos sitios ofrecer a mesma experiencia de navegación usando menos datos</translation>
 <translation id="3343095737966473035">Brave non é o teu navegador predeterminado</translation>
 <translation id="5477319665405831211">Sincroniza e personaliza Brave nos teus dispositivos</translation>
+<translation id="2280238321454602884">Se activas esta opción, Brave recuperará a memoria das pestanas que non esteas a usar de maneira activa. Deste xeito libéranse os recursos do ordenador para outras tarefas e mantense a rapidez de Brave. As pestanas inactivas aparecen baleiras e volven cargar automaticamente ao facer clic nelas. Consulta <ph name="BEGIN_LINK"/>máis información<ph name="END_LINK"/> ou <ph name="BEGIN_LINK_2"/>envía os teus comentarios<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Esta acción eliminará os teus datos de navegación deste dispositivo. Para recuperar os teus datos máis tarde, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">O programa de instalación non puido crear un directorio temporal. Comproba se hai espazo libre no disco e se tes autorización para instalar o software.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> (versión experimental de Brave)</translation>
@@ -315,6 +318,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="6914496861676471566">O arquivo do instalador está danado ou non é válido. Volve descargar Brave.</translation>
 <translation id="6431861494713261006">Opcional: Axuda a mellorar as funcións e o rendemento de Chrome OS enviando automaticamente datos de uso e diagnóstico a Brave.</translation>
 <translation id="2097604701283463988">Brave está desactualizado</translation>
+<translation id="607365808648940765">Brave recuperará, segundo sexa necesario, a memoria das pestanas que non esteas a usar de maneira activa. Podes cambiar esta opción en calquera momento en Configuración.</translation>
 <translation id="8550334526674375523">Este perfil de traballo é totalmente independente do teu perfil persoal.</translation>
 <translation id="2452889775041290116">O teu pai ou nai desactivou esta opción en Brave: Permisos para sitios, aplicacións e extensións. Non está permitido engadir esta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Se queres recibir actualizacións de Brave no futuro, debes instalar o sistema operativo macOS 10.13 ou unha versión posterior. Este ordenador ten macOS 10.12.</translation>

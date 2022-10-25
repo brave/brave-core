@@ -37,9 +37,6 @@
 <translation id="3425600262621021599">Tor உடனான பிரேவ் மறைநிலைச் சாளரத்தில் தொடுப்பை திற</translation>
 <translation id="4928988318462976765">வலை நீட்டிப்புகள் அங்காடி</translation>
 <translation id="9181207987584064303">வலை நீட்டிப்புகள் அங்காடியில் பார்</translation>
-<translation id="239760341987199724">உங்கள் இயல்புநிலை உலாவியாக பிரேவை அமை</translation>
-<translation id="9218430445555521422">இயல்புநிலையாக அமை</translation>
-<translation id="3479552764303398839">இப்போது வேண்டாம்</translation>
 <translation id="6165508094623778733">மேலும் அறிக</translation>
 <translation id="5860491529813859533">இயக்கு</translation>
 <translation id="780301667611848630">தேவையில்லை</translation>
@@ -86,6 +83,7 @@
 <translation id="8487693399751278191">இப்போது புத்தகக்குறிகளை இறக்கு...</translation>
 <translation id="2557899542277210112">விரைவு அணுகலுக்கு, உமது புத்தகக்குறிகளை இங்கே புத்தகக்குறி பட்டையில் வை.</translation>
 <translation id="8722651357687610395">இயல்புநிலையாக பிரேவை அமை</translation>
+<translation id="7537601449003285327">பணிப்பட்டியில் பொருத்து</translation>
 <translation id="9156965752763025780">அடுத்த முறை நீங்கள் Brave ஐ மீண்டும் தொடங்கும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="7179921470347911571">இப்போது மறுயேவு</translation>
 <translation id="4472575034687746823">தொடங்குக</translation>
@@ -105,12 +103,12 @@
 <translation id="2970343821770026391">முகப்பலகம்</translation>
 <translation id="3719826155360621982">முகப்புப்பக்கம்</translation>
 <translation id="5448570825852364919">வெற்று பக்கம்</translation>
+<translation id="7461924472993315131">நிலையாக வை</translation>
 <translation id="6303294677342628402">கவசங்கள்</translation>
 <translation id="4800195524776354947">கவசங்கள் படவுருவில் தடுக்கப்பட்ட உருப்படிகளின் எண்ணிக்கையைக் காட்டு</translation>
 <translation id="2133317862976486547">தடமிகள் &amp; விளம்பரங்கள் தடுத்தல்</translation>
 <translation id="4078738236287221428">கடுமையான</translation>
 <translation id="7740996059027112821">நிலையானது</translation>
-<translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
 <translation id="4824468494729001999">சிறுநிரல்களைத் தடு</translation>
 <translation id="5770288601196774623">குறுக்கு-தளம் மட்டும்</translation>
 <translation id="3587482841069643663">எல்லாம்</translation>
@@ -187,4 +185,8 @@
 <translation id="8275038454117074363">இறக்குமதி செய்</translation>
 <translation id="3654980960391973513">உருவாக்கு</translation>
 <translation id="3411013544209536575">உதவிக் குறிப்புக்கள்</translation>
+<translation id="239760341987199724">உங்கள் இயல்புநிலை உலாவியாக பிரேவை அமை</translation>
+<translation id="9218430445555521422">இயல்புநிலையாக அமை</translation>
+<translation id="3479552764303398839">இப்போது வேண்டாம்</translation>
+<translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
 </translationbundle>

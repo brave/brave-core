@@ -85,10 +85,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8303432794159193481">Brave Browser Dev-apps</translation>
 <translation id="8292967014767479012">Brave Browser-apps</translation>
 <translation id="4743468424889072281">Brave Browser-ontwikkelingsapps</translation>
-<translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
-<translation id="1391855377994926460">Sneller online browsen - tot wel 6 keer sneller op populaire nieuwswebsites.</translation>
-<translation id="9218430445555521422">Instellen als standaard</translation>
-<translation id="3479552764303398839">Niet nu</translation>
 <translation id="732814027519296280">Wil je Brave Search nog meer verbeteren?</translation>
 <translation id="2677865600861971449">Meld je aan voor het Web Discovery Project om anoniem wat zoek- en browsegegevens bij te dragen om Brave Search-resultaten voor iedereen te verbeteren. Je privacy wordt beschermd. Geen enkele moeite. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Meer Leren</translation>
@@ -204,9 +200,10 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6817415381278637662">Stel Brave in als je standaardbrowser om gebruik te kunnen maken van de privacybescherming van Brave op elke webpagina die je opent.</translation>
 <translation id="8722651357687610395">Stel Brave in als standaard</translation>
 <translation id="2370739752330685659">Misschien later</translation>
+<translation id="7537601449003285327">Vastzetten op taakbalk</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Geïmporteerd uit <ph name="BROWSER_NAME"/></translation>
-<translation id="1506190932569739298">Clean link kopiëren (alleen hoofd-URL)</translation>
+<translation id="7630214457764713113">Clean link kopiëren</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
@@ -246,10 +243,17 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3719826155360621982">Homepage</translation>
 <translation id="5448570825852364919">Blanco pagina</translation>
 <translation id="5919424224662539292">De achtergrondafbeelding en de widgets die verschijnen op de nieuwe tabbladpagina personaliseren</translation>
+<translation id="7461924472993315131">Vastzetten</translation>
+<translation id="7506648566440714944">Brave is al vastgemaakt</translation>
+<translation id="3195845168740336657">Instellingen Shields</translation>
+<translation id="754769152790647708">Status Shields</translation>
+<translation id="3615717588724840230">Sites kunnen trackers, advertenties en fingerprinting blokkeren met Shields</translation>
+<translation id="5690973901138662477">Shields is ingeschakeld</translation>
+<translation id="4697275813919189958">Shields is uitgeschakeld</translation>
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="7133511168130368997">Blokkeer trackers en advertenties die u op het internet volgen.</translation>
 <translation id="2761825942249694703">Dit zijn de standaard Shields-instellingen. Ze zijn van toepassing op alle websites, tenzij u iets verandert via het Shields-configuratiescherm op een specifieke website. Deze veranderingen hebben geen invloed op uw bestaande instellingen per website.</translation>
-<translation id="1435116578479068303">Hiermee worden de meeste advertenties op websites geblokkeerd, behalve Brave Private-advertenties; die worden beheerd in de <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-instellingen.</translation>
+<translation id="1435116578479068303">Hiermee worden de meeste advertenties op websites geblokkeerd, behalve Brave privéadvertenties; die worden beheerd in de <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-instellingen.</translation>
 <translation id="8452536890042542134">Hiermee kunt u de meeste advertenties op websites blokkeren.</translation>
 <translation id="4800195524776354947">Toon het aantal geblokkeerde items op het schild-icoontje</translation>
 <translation id="5510493033031835532">AMP-pagina's automatisch omleiden</translation>
@@ -259,7 +263,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2133317862976486547">Trackers &amp; advertenties geblokkeerd</translation>
 <translation id="4078738236287221428">Agressief</translation>
 <translation id="7740996059027112821">Standaard</translation>
-<translation id="3570081523466826008">Waardeer verbindingen op naar HTTPS</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
 <translation id="6531019308847917584">Fingerprinting blokkeren</translation>
 <translation id="5533533363827555308">Strikt, kan websites doen stukgaan</translation>
@@ -269,14 +272,14 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="7390783310074170337">Standaard weergave</translation>
 <translation id="130615081792797568">Eenvoudig overzicht</translation>
 <translation id="2360360976480535628">Geavanceerde weergave</translation>
-<translation id="6486983549008741930">Contentfilter</translation>
+<translation id="101592339984642584">Content filteren</translation>
 <translation id="8694564340481124390">Schakel aangepaste filters in die regionale en taalspecifieke trackers en storende elementen blokkeren.</translation>
-<translation id="6522618763902154348">Schakel aangepaste filters in die regionale en taalspecifieke trackers en 
-    <ph name="BEGIN_LINK"/>storende elementen<ph name="END_LINK"/> blokkeren.</translation>
+<translation id="4877657558909976793">Schakel aangepaste filters in die regionale en taalspecifieke trackers en
+<ph name="BEGIN_LINK"/>storende elementen<ph name="END_LINK"/> blokkeren.</translation>
 <translation id="3482656215021340727">Aangepaste filterlijsten toevoegen</translation>
 <translation id="1020877116991797978">Voeg extra lijsten toe die gemaakt en beheerd worden door uw vertrouwde community.</translation>
 <translation id="7617831480435794399">Abonneer je alleen op lijsten van entiteiten die je kent. Je browser zal regelmatig controleren of er lijstbijwerkingen zijn van de URL's die je invoert, waarbij jouw IP-adres wordt getoond aan hun server.</translation>
-<translation id="2831397936251948638">Aangepaste filters maken</translation>
+<translation id="8580328754808744073">Aangepaste filters maken</translation>
 <translation id="4618274268052410139">Voeg aangepaste filters die u hebt gemaakt in het veld hieronder in (één per regel). Gebruik de <ph name="BEGIN_LINK"/>Adblock-filtersyntaxis<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Toevoegen</translation>
 <translation id="571950783952070673">Lijst-URL</translation>
@@ -292,6 +295,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="5438573563213942361">Aangepaste lijsten</translation>
 <translation id="4182731739150761577">Volledige lijst weergeven</translation>
 <translation id="1340263054776016283">URL van filterlijst invoeren</translation>
+<translation id="8578397014396032341">Contentfilters</translation>
 <translation id="6821903322090655051">Brave-beloningen zijn uitgeschakeld</translation>
 <translation id="413570371620795359">Open het venster Beloningen om in te schakelen en aan de slag te gaan</translation>
 <translation id="3849957491997306859">Automatisch gedetecteerd</translation>
@@ -402,6 +406,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over privacy-overwegingen voor Ethereum.</translation>
 <translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
+<translation id="6421218422395686663">ENS-zoekopdrachten buiten blockchain toestaan.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over privacy-overwegingen voor ENS-zoekopdrachten buiten de blockchain.</translation>
 <translation id="6241402707160226266">Privéscherm met Tor</translation>
 <translation id="8762452230727230396">Tor verbergt je IP-adres van de websites die je bezoekt.</translation>
 <translation id="2959986444009520721">Tor-bridges gebruiken</translation>
@@ -563,4 +569,9 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
+<translation id="1391855377994926460">Sneller online browsen - tot wel 6 keer sneller op populaire nieuwswebsites.</translation>
+<translation id="9218430445555521422">Instellen als standaard</translation>
+<translation id="3479552764303398839">Niet nu</translation>
+<translation id="3570081523466826008">Waardeer verbindingen op naar HTTPS</translation>
 </translationbundle>

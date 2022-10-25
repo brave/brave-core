@@ -398,12 +398,97 @@
     "message": "Du har dricks som väntar eftersom det inte finns tillräckliga medel",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Stäng",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Fortsätt",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Tjäna tokens och ge tillbaka",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser och innehållsskapare automatiskt.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Något gick fel",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards är inte tillgängligt",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Tyvärr uppstod ett fel när Brave Rewards konfigurerades. Försök igen.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Tyvärr uppstod ett fel när ditt land skulle väljas. Försök igen.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Nya registrerade Brave Rewards-medlemmar är för närvarande inaktiverade i din region. Du kan dock alltid försöka igen senare. $link_begin$Läs mer$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Välj ditt land",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Tack!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Din Brave Rewards-region har angetts till $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Välj ditt land så att vi kan visa dig rätt alternativ och annonser för din region. $link_begin$Sekretesspolicy$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Om du vill fortsätta använda Brave Rewards väljer du ditt land så att vi kan visa dig rätt alternativ och annonser för din region. $link_begin$Sekretesspolicy$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Spara",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Välj ditt land",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

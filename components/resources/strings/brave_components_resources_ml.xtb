@@ -19,6 +19,8 @@
 <translation id="370665806235115550">ലോഡ്ചെയ്യുന്നു...</translation>
 <translation id="780301667611848630">വേണ്ട നന്ദി</translation>
 <translation id="8890516388109605451">ഉറവിടങ്ങള്‍</translation>
+<translation id="1472675084647422956">കൂടുതൽ‍ കാണിക്കുക</translation>
+<translation id="4750394297954878236">നിർദ്ദേശങ്ങൾ</translation>
 <translation id="7791543448312431591">ചേര്‍ക്കൂ</translation>
 <translation id="8820817407110198400">ബുക്ക്‌മാര്‍ക്കുകള്‍</translation>
 <translation id="1644574205037202324">ചരിത്രം</translation>
@@ -39,6 +41,7 @@
 <translation id="6643016212128521049">മായ്‌ക്കുക</translation>
 <translation id="583281660410589416">അജ്ഞാതം</translation>
 <translation id="7375125077091615385">തരം:</translation>
+<translation id="1992397118740194946">സജ്ജമാക്കിയിട്ടില്ല</translation>
 <translation id="1919345977826869612">പരസ്യങ്ങള്‍</translation>
 <translation id="3970114302595058915">ഐഡി</translation>
 <translation id="4250680216510889253">ഇല്ല</translation>
@@ -74,6 +77,7 @@
 <translation id="8131740175452115882">സ്ഥിരീകരിക്കുക</translation>
 <translation id="8688672835843460752">ലഭ്യമാണ്</translation>
 <translation id="2356070529366658676">ചോദിക്കുക</translation>
+<translation id="59174027418879706">പ്രാപ്‌തമാക്കി</translation>
 <translation id="2501278716633472235">പിന്നോട്ട് പോകുക</translation>
 <translation id="2903493209154104877">വിലാസങ്ങള്‍‌</translation>
 <translation id="1327977588028644528">ഗേറ്റ്‌വേ</translation>
@@ -101,6 +105,7 @@
 <translation id="4378551569595875038">കണക്റ്റുചെയ്യുന്നു...</translation>
 <translation id="4522570452068850558">വിശദാംശങ്ങൾ</translation>
 <translation id="9220525904950070496">അക്കൗണ്ട് നീക്കംചെയ്യൽ</translation>
+<translation id="42126664696688958">എക്‌സ്‌പോർട്ടുചെയ്യുക</translation>
 <translation id="5039804452771397117">അനുവദിക്കൂ</translation>
 <translation id="9065203028668620118">എഡിറ്റ് ചെയ്യുക</translation>
 <translation id="6452181791372256707">നിരസിക്കുക</translation>
@@ -113,8 +118,10 @@
 <translation id="9100765901046053179">വിപുലമായ ക്രമീകരണം</translation>
 <translation id="3380365263193509176">അജ്ഞാതമായ പിശക്</translation>
 <translation id="4430019312045809116">അളവ്</translation>
+<translation id="6129953537138746214">സ്പെയ്സ്</translation>
 <translation id="8297006494302853456">ദുര്‍ബലം</translation>
 <translation id="6657585470893396449">പാസ്‌വേഡ്</translation>
+<translation id="5026874946691314267">ഇത് വീണ്ടും ദൃശ്യമാക്കരുത്</translation>
 <translation id="5657156137487675418">എല്ലാ കുക്കികളും അനുവദിക്കൂ</translation>
 <translation id="5747552184818312860">കാലഹരണപ്പെടുന്നു</translation>
 <translation id="1116694919640316211">വിവരം</translation>

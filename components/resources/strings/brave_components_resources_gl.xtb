@@ -88,9 +88,6 @@
 <translation id="1447534717041828517">Mostrar o botón Noticias de Brave na barra de ferramentas</translation>
 <translation id="370665806235115550">Cargando...</translation>
 <translation id="4634933166298842522">Xestionar subscricións</translation>
-<translation id="3632460243282703117">Subscribirse</translation>
-<translation id="4720556299488643018">Cancelar subscripción</translation>
-<translation id="5227905322248018544">Ocultar e non amosar isto de novo</translation>
 <translation id="780301667611848630">Non, grazas</translation>
 <translation id="9164544612367905452">Buscando…</translation>
 <translation id="1276592121036104130">Cargar contido novo</translation>
@@ -102,6 +99,8 @@
 <translation id="5158129253322921540">Desactivar o contido de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promocionado</translation>
 <translation id="4541978218358617681">Anuncio</translation>
+<translation id="1765217911817124376">Activar Brave News</translation>
+<translation id="1472675084647422956">Mostrar máis</translation>
 <translation id="1776831331757823105">Reloxo</translation>
 <translation id="7791543448312431591">Engadir</translation>
 <translation id="7679334366167089823">Gana tokens por ver anuncios respectuosos coa privacidade.</translation>
@@ -125,10 +124,6 @@
 <translation id="4085423007106063912">Brave nunca lembra o que fas nunha ventá privada. Os sitios que visites non aparecerán no historial. As cookies, os datos de formularios e os datos dos sitios desaparecerán cando peches a ventá.</translation>
 <translation id="1700746046668116047">Ten en conta que a túa actividade podería seguir sendo visible para o teu fornecedor de servizos de Internet, para observadores pasivos de Internet ou para o teu xefe (se utilizas un equipo ou unha rede de traballo). Se queres ter máis privacidade, abre unha ventá privada con Tor.</translation>
 <translation id="8759753423332885148">Saiba máis.</translation>
-<translation id="3546750666732517156">Xanela privada con conectividade Tor</translation>
-<translation id="5383068818957293256">Brave nunca se lembra do que fas nunha Xanela privada. Coa conectividade Tor, tamén se oculta o teu enderezo IP nos sitios que visites. Porén, se a túa seguridade persoal depende de que permanezas no anonimato, usa o navegador Tor no seu lugar.</translation>
-<translation id="3338507774653218581">Brave nunca rexistra o que fas nunha ventá no modo de incógnito. Coa conectividade Tor, tes dúas vantaxes adicionais: as webs que visitas non poden ver o teu enderezo IP, e os observadores de rede pasivos non poden ver estas webs. Ten en conta que Tor pode diminuír a velocidade de navegación ou ter problemas de funcionamento nalgúns sitios web.</translation>
-<translation id="8666930656222843375">Se tes unha xanela privada con Tor, ao teu fornecedor de servizos de Internet ou á túa empresa (no caso de que utilices unha rede ou ordenador do traballo) resultaralles máis difícil, mais non imposible, ver as webs que visitas. Porén, nin sequera unha xanela privada con Tor poderá ofrecerche una protección total fronte ao seguimento. Se a túa seguridade persoal depende da permanencia no anonimato, será mellor que empregues o navegador Tor.</translation>
 <translation id="7919374705736538787">Buscar Privacidade con</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Coa busca privada, Brave usará DuckDuckGo para as buscas en xanelas privadas. DuckDuckGo non fai o seguimento do seu historial de busca, para que poida facer unha busca privada.</translation>
@@ -136,7 +131,6 @@
 <translation id="4371533307685765155">Buscar con DuckDuckGo</translation>
 <translation id="548478195417408221">Facer máis privadas as Xanelas privadas</translation>
 <translation id="3294503279952534143">Esta Xanela privada é máis privada</translation>
-<translation id="4644024131266615376">con conectividade Tor</translation>
 <translation id="8541421872680304667">Tor esconde o teu enderezo IP dos sitios que visitas, dirixindo a túa navegación a través de varios servidores Tor antes de chegar ao teu destino. Tor pode retardar a navegación e algúns sitios poden non funcionar en absoluto.</translation>
 <translation id="8897548669448660973">Usar xanelas privadas só cambia o que Brave fai no seu dispositivo e non cambia o comportamento de ninguén. Tor esconde o seu enderezo IP dos sitios que visita e fai máis difícil, pero non imposible, que o seu ISP ou o seu xefe vexan que páxinas visita. Abra unha xanela privada con Tor desde o menú ou con [[ key ]].</translation>
 <translation id="6975708438781948564">Saiba máis sobre Tor en Brave</translation>
@@ -164,6 +158,7 @@
 <translation id="9204006549413740506">Última actualización</translation>
 <translation id="6745592621698551453">Actualizar agora</translation>
 <translation id="5334844597069022743">Ver orixe</translation>
+<translation id="4720556299488643018">Cancelar subscrición</translation>
 <translation id="1209739344687072997">Informar sobre un sitio roto</translation>
 <translation id="8510478288840333677">Informe aos desenvolvedores de Brave que este sitio non funciona correctamente con Shields:</translation>
 <translation id="4105411033440701818">Nota: Se premes "Enviar", compartirás o enderezo da web, o número da versión de Brave que empregas e o enderezo IP dos programadores de Brave. (O enderezo IP non quedará almacenado).</translation>
@@ -274,8 +269,6 @@
 <translation id="5028274575541726856">Erro: o perfil de Recompensas de Brave está marcado</translation>
 <translation id="2607420597216860026">Téntao de novo tras verificar o ID en <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Erro: precisas dunha conta verificada para iniciar sesión</translation>
-<translation id="6650468331440842419">Vaites, parece que o teu perfil de Recompensas de Brave xa estaba vinculado a unha conta de custodia noutra rexión. Tenta conectarte de novo coa túa conta de custodia anterior ou actualiza a rexión da túa conta de custodia actual para que coincida coa anterior.</translation>
-<translation id="5955021799827127089">Erro: rexión de conta diferente</translation>
 <translation id="5260522591743022748">Vaites, parece que o teu perfil de Recompensas de Brave xa se verificou con outra conta de <ph name="PROVIDER"/>. Tenta verificalo de novo coa túa conta anterior.</translation>
 <translation id="5111921830714291902">Erro: conta diferente</translation>
 <translation id="1024520300696337331">A túa conta de <ph name="PROVIDER"/> non se pode conectar neste momento ao teu perfil de Recompensas de Brave.  A túa conta de <ph name="PROVIDER"/> está rexistrada nun país que actualmente non admite a conexión a Recompensas de Brave.</translation>
@@ -650,6 +643,7 @@
 <translation id="7378412287463452336">Continuar usando servidor de Infura</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Activado</translation>
 <translation id="2468755552460246661">Dominio bloqueado</translation>
 <translation id="6393849031898466746">Este sitio pode tentar rastrexarte noutros sitios</translation>
 <translation id="983774928604730749">Brave impediu que se cargase o seguinte sitio:</translation>
@@ -1050,9 +1044,6 @@
 <translation id="5398538976202345089">Rede non compatible</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Probar rede</translation>
-<translation id="4245123003308024264">Ropsten</translation>
-<translation id="2219337030359508039">Kovan</translation>
-<translation id="992469614838016642">Rinkeby</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="1260818237399583903">Binance Smart Chain</translation>
 <translation id="9047549342128428249">BSC</translation>
@@ -1067,7 +1058,6 @@
 <translation id="59223531494896848">Límite</translation>
 <translation id="8569380433211549748">Prezo en</translation>
 <translation id="2490428413101944234">Billa de proba</translation>
-<translation id="3352959425838279177">Obter Ether dunha billa para <ph name="SELECTED_NETWORK"/></translation>
 <translation id="6449626816252815844">Seleccionar método de compra</translation>
 <translation id="8009571545960303544">Foi requirida a súa sinatura</translation>
 <translation id="5294062982587710720">Teña en conta que Brave non pode verificar o que ocorrerá se asina. Unha sinatura podería autorizar case calquera operación na súa conta ou no seu nome, incluído (entre outras cousas) outorgar control total da súa conta e dos activos de criptomoedas ao sitio que realiza a solicitude. Asine unicamente se ten a certeza de que quere realizar esta acción e se confía no sitio que a solicita.</translation>
@@ -1243,7 +1233,6 @@
 <translation id="7677692756188354224">Cap. de mercado</translation>
 <translation id="4430019312045809116">Volume</translation>
 <translation id="5133421763709317473">Non se atopou ningún activo que coincida coa busca nin co filtro</translation>
-<translation id="8813832913015888458">Carteira de Brave non admite este activo</translation>
 <translation id="6423985584914773314">Non é un enderezo FIL válido</translation>
 <translation id="3898731124813934210">Comprar con Wyre</translation>
 <translation id="5522073372365069684">Comprar con Ramp</translation>
@@ -1280,6 +1269,7 @@
 <translation id="4719005063558335704">Contas:</translation>
 <translation id="4337554812324118382">Datos:</translation>
 <translation id="569870799832027680">ID do programa:</translation>
+<translation id="2687968143695057804">Nova conta</translation>
 <translation id="7843211152394841558">Máx. de tentativas:</translation>
 <translation id="8496335570810457">Compromiso de simulación:</translation>
 <translation id="5100124500279922001">Omitir simulación:</translation>
@@ -1395,6 +1385,7 @@
 <translation id="7657322905916621147">A frase de recuperación debe ter 12, 15, 18, 21 ou 24 palabras</translation>
 <translation id="5307206077701819797">Non se atopou ningún NFT na túa carteira. Podes engadir NFT facendo clic no botón "+ Activos visibles" na parte inferior da pestana "Carteira"</translation>
 <translation id="3528540388456395658">Non se atopou ningún NFT que coincida coa busca ou filtro</translation>
+<translation id="5026874946691314267">Non amosar isto de novo</translation>
 <translation id="3155170474926428993">Lanzador Tor</translation>
 <translation id="3745016858329272300">Información xeral</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>
@@ -1403,6 +1394,7 @@
 <translation id="6951743416068151209">URI do proxy de Tor</translation>
 <translation id="1671503397662036257">Estado da conexión de Tor</translation>
 <translation id="6024292492796847324">Progreso do inicio de Tor</translation>
+<translation id="6303294677342628402">Escudos</translation>
 <translation id="8458987127502506209">Activar Escudos de Brave</translation>
 <translation id="7509914170164691086">Os escudos están activos <ph name="LINK_BEFORE"/>para<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Os escudos están desactivados <ph name="LINK_BEFORE"/>para<ph name="LINK_AFTER"/></translation>
@@ -1436,7 +1428,6 @@
 <translation id="7194012750329511146">Escudos de Brave
 Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</translation>
 <translation id="4292121526390005808">Guións bloqueados</translation>
-<translation id="6303294677342628402">Escudos</translation>
 <translation id="264682546981571963">Cánsanche os avisos de consentimento das cookies?</translation>
 <translation id="4986297793092101884">Brave xa bloquea as cookies de terceiros, ademais dos avisos de consentimento das cookies.</translation>
 <translation id="535688588637568715">Si, bloquear os avisos de consentimento das cookies</translation>
@@ -1499,4 +1490,15 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="6973157709854838218">Oculta a visualización dos teus saldos</translation>
 <translation id="4548946945059463969">Amosa os teus saldos na pantalla</translation>
 <translation id="242959166945779492">Non tes saldo na conta. Visita FTX para comprar saldo.</translation>
+<translation id="3632460243282703117">Subscribirse</translation>
+<translation id="5227905322248018544">Ocultar e non amosar isto de novo</translation>
+<translation id="3546750666732517156">Xanela privada con conectividade Tor</translation>
+<translation id="5383068818957293256">Brave nunca se lembra do que fas nunha Xanela privada. Coa conectividade Tor, tamén se oculta o teu enderezo IP nos sitios que visites. Porén, se a túa seguridade persoal depende de que permanezas no anonimato, usa o navegador Tor no seu lugar.</translation>
+<translation id="3338507774653218581">Brave nunca rexistra o que fas nunha ventá no modo de incógnito. Coa conectividade Tor, tes dúas vantaxes adicionais: as webs que visitas non poden ver o teu enderezo IP, e os observadores de rede pasivos non poden ver estas webs. Ten en conta que Tor pode diminuír a velocidade de navegación ou ter problemas de funcionamento nalgúns sitios web.</translation>
+<translation id="8666930656222843375">Se tes unha xanela privada con Tor, ao teu fornecedor de servizos de Internet ou á túa empresa (no caso de que utilices unha rede ou ordenador do traballo) resultaralles máis difícil, mais non imposible, ver as webs que visitas. Porén, nin sequera unha xanela privada con Tor poderá ofrecerche una protección total fronte ao seguimento. Se a túa seguridade persoal depende da permanencia no anonimato, será mellor que empregues o navegador Tor.</translation>
+<translation id="4644024131266615376">con conectividade Tor</translation>
+<translation id="6650468331440842419">Vaites, parece que o teu perfil de Recompensas de Brave xa estaba vinculado a unha conta de custodia noutra rexión. Tenta conectarte de novo coa túa conta de custodia anterior ou actualiza a rexión da túa conta de custodia actual para que coincida coa anterior.</translation>
+<translation id="5955021799827127089">Erro: rexión de conta diferente</translation>
+<translation id="3352959425838279177">Obter Ether dunha billa para <ph name="SELECTED_NETWORK"/></translation>
+<translation id="8813832913015888458">Carteira de Brave non admite este activo</translation>
 </translationbundle>

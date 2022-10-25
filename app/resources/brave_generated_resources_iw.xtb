@@ -84,10 +84,6 @@
 <translation id="8303432794159193481">יישומי פיתוח של דפדפן Brave</translation>
 <translation id="8292967014767479012">יישומי דפדפן Brave</translation>
 <translation id="4743468424889072281">יישומי פיתוח של דפדפן Brave</translation>
-<translation id="239760341987199724">‏הגדר את Brave כדפדפן ברירת המחדל שלך</translation>
-<translation id="1391855377994926460">אפשר להמשיך לגלוש מהר יותר באינטרנט – אפילו מהר פי 6 באתרי החדשות העיקריים.</translation>
-<translation id="9218430445555521422">הגדר כברירת מחדל</translation>
-<translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="732814027519296280">רוצה להפוך את ה-Brave Search לאפילו יותר טוב?</translation>
 <translation id="2677865600861971449">הצטרף ל-Web Discovery Project כדי לתרום באופן אנונימי לחיפוש ונתוני גלישה ולשפר את תוצאות Brave Search לכולם. תוך שמירה על פרטיות ואפס מאמץ.
 <ph name="LEARN_MORE_TEXT"/></translation>
@@ -123,10 +119,15 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
+<translation id="7986278174934557414">הסתרת סמל הלוח הצדדי</translation>
+<translation id="6915291874524466201">הסתרת סמל הלוח הצדדי</translation>
 <translation id="9149866541089851383">ערוך...</translation>
 <translation id="1181037720776840403">הסרה</translation>
+<translation id="7513769021866698486">עריכת פריט</translation>
 <translation id="4002066346123236978">כותרת</translation>
 <translation id="7400418766976504921">כתובת אתר</translation>
+<translation id="5877900074358050101">כותרת הפריט בסרגל הצד</translation>
+<translation id="1613695740874407223">קישור הפריט בסרגל הצד</translation>
 <translation id="4877147287319222750">הוסף לסרגל הצידי</translation>
 <translation id="5404213409401164238">הצג סרגל צידי</translation>
 <translation id="7561196759112975576">תמיד</translation>
@@ -198,8 +199,10 @@
 <translation id="6817415381278637662">הגדירו את Brave כדפדפן ברירת המחדל שלכם כדי לקבל את הגנת הפרטיות של Brave בכל דף אינטרנט שאתם פותחים.</translation>
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
 <translation id="2370739752330685659">אולי מאוחר יותר</translation>
+<translation id="7537601449003285327">הצמד לשורת המשימות</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">יובא מ-<ph name="BROWSER_NAME"/>.</translation>
+<translation id="7630214457764713113">העתיקו קישור נקי</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -219,6 +222,7 @@
 <translation id="4096343215397759358">כרטיס עם תצוגה מקדימה</translation>
 <translation id="5297085818601043899">טיפים לכלי עבודה</translation>
 <translation id="2396127686705429331">הצג כפתור סימניות</translation>
+<translation id="2369560305991805099">הצגת כפתור הלוח הצדדי</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
 <translation id="2858138569776157458">אתרים נבחרים</translation>
@@ -238,9 +242,18 @@
 <translation id="3719826155360621982">דף הבית</translation>
 <translation id="5448570825852364919">עמוד ריק</translation>
 <translation id="5919424224662539292">התאם אישית את תמונת הרקע והיישומונים המופיעים בעמוד הלשונית החדשה</translation>
+<translation id="7461924472993315131">הצמד</translation>
+<translation id="7506648566440714944">Brave כבר נעוץ</translation>
+<translation id="3195845168740336657">הגדרות Shields</translation>
+<translation id="754769152790647708">מצב Shields</translation>
+<translation id="3615717588724840230">אתרים יכולים לחסום עוקבים, מודעות וטביעות אצבע באמצעות Shields</translation>
+<translation id="5690973901138662477">Shields פועל</translation>
+<translation id="4697275813919189958">Shields לא פועל</translation>
 <translation id="6303294677342628402">הגנות</translation>
 <translation id="7133511168130368997">חסמו עוקבים ומודעות אשר עוקבים אחריכם ברחבי האינטרנט.</translation>
 <translation id="2761825942249694703">אלו הן הגדרות ברירת המחדל של Shields. הן חלות על כל אתרי האינטרנט, אלא אם תבצעו שינוי כלשהו בפאנל של Shields באתר מסוים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
+<translation id="1435116578479068303">זה יחסום את רוב המודעות באתרים, לא מודעות פרטיות ב-Brave- אלה נשלטות ב-<ph name="BEGIN_LINK"/> Brave Rewards הגדרות<ph name="END_LINK"/>.</translation>
+<translation id="8452536890042542134">הפעולה תחסום את רוב המודעות באתרים.</translation>
 <translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
 <translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
 <translation id="7630031867325944356">העדיפו כתובות אתרים של דפי בעלי אתרים, במקום AMP וגרסאות דומות.</translation>
@@ -249,7 +262,6 @@
 <translation id="2133317862976486547">חסימת עוקבים &amp; פרסומות</translation>
 <translation id="4078738236287221428">אגרסיבי</translation>
 <translation id="7740996059027112821">רגילה</translation>
-<translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="4824468494729001999">חסום סקריפטים</translation>
 <translation id="6531019308847917584">חסימת טביעות אצבע</translation>
 <translation id="5533533363827555308">מחמיר, עלול לשבש פעולה תקינה של אתרים</translation>
@@ -259,14 +271,13 @@
 <translation id="7390783310074170337">תצוגת ברירת מחדל</translation>
 <translation id="130615081792797568">תצוגה רגילה</translation>
 <translation id="2360360976480535628">תצוגה מתקדמת</translation>
-<translation id="6486983549008741930">סינון תוכן</translation>
+<translation id="101592339984642584">סינון תוכן</translation>
 <translation id="8694564340481124390">מאפשר הפעלה של מסננים מותאמים אישית שחוסמים מטרדים ומעקבים מבוססי מיקום או שפה.</translation>
-<translation id="6522618763902154348">מאפשר הפעלה של מסננים מותאמים אישית שחוסמים 
-<ph name="BEGIN_LINK"/> מטרדים ומעקבים מבוססי מיקום או שפה<ph name="END_LINK"/>.</translation>
+<translation id="4877657558909976793">אפשר מסננים מותאמים אישית שחוסמים עוקבים אזוריים וספציפיים לשפה ו-<ph name="BEGIN_LINK"/>טרדות <ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">הוספת רשימות סינון מותאמות אישית</translation>
 <translation id="1020877116991797978">הוספה של רשימות נוספות שנוצרו על ידי הקהילה המהימנה שלך ומתוחזקות על ידה.</translation>
 <translation id="7617831480435794399">הירשם כמנוי רק לרשימות שמקורן בישויות שיש לך אמון בהן. הדפדפן יבדוק מעת לעת אם קיימים עדכונים לרשימות בכתובת ה-URL שתזין. פעולה זו תחשוף את כתובת ה-IP שלך לשרת של ישות זו.</translation>
-<translation id="2831397936251948638">יצירת פילטרים מותאמים אישית</translation>
+<translation id="8580328754808744073">צרו מסננים מותאמים אישית.</translation>
 <translation id="4618274268052410139">באפשרותך להוסיף מסננים מותאמים אישית שיצרת בעצמך, אחד בכל שורה, בשדה למטה. יש להקפיד להשתמש<ph name="BEGIN_LINK"/>בתחביר של מסנן Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">הוסף</translation>
 <translation id="571950783952070673">רשימת כתובות אינטרנט</translation>
@@ -282,6 +293,7 @@
 <translation id="5438573563213942361">רשימות מותאמות אישית</translation>
 <translation id="4182731739150761577">הצג רשימה מלאה</translation>
 <translation id="1340263054776016283">יש להזין את כתובת האתר של רשימת הסינון</translation>
+<translation id="8578397014396032341">מסנני תוכן</translation>
 <translation id="6821903322090655051">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="3849957491997306859">זוהה אוטומטית</translation>
@@ -390,10 +402,15 @@
 <translation id="6554397389149987360">משתמש ברכיב Hangouts כדי לאפשר שיתוף מסך ותכונות אחרות בדפדפן.</translation>
 <translation id="7878791177459550035">נתב מדיה הופך את תכונת ההעברה לזמינה בדפדפן.</translation>
 <translation id="5927916530277631319">שיטה לזיהוי דומיינים בלתי ניתנים לעצירה</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>לפרטים נוספים<ph name="END_LINK"/> על שיקולי הפרטיות של Ethereum.</translation>
 <translation id="5248318250177143470">שיטה לזיהוי Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">אפשרו חיפוש offchain של ENS</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>למדו עוד
+<ph name="END_LINK"/>על שיקולי הפרטיות של חיפוש offchain של ENS.</translation>
 <translation id="6241402707160226266">חלון פרטי עם Tor</translation>
 <translation id="8762452230727230396">Tor מסתיר את כתובת ה-IP שלכם מהאתרים בהם אתם מבקרים.</translation>
 <translation id="2959986444009520721">השתמש בגשרים</translation>
+<translation id="8416750895933172460">גשרים עוזרים לגשת לרשת Tor במקומות שבהם Tor חסום. תלוי איפה אתה נמצא, גשר אחד עשוי לעבוד טוב יותר מאחרים.</translation>
 <translation id="7206799843254049470">הגדרות חיבור Tor</translation>
 <translation id="3194502271166340944">שולט באופן שבו Private Windows עם  Tor מתחברים לרשת Tor</translation>
 <translation id="4859228830700205299">בחר גשר מובנה</translation>
@@ -410,6 +427,7 @@
 <translation id="6936835573742749135">לא ניתן לבקש CAPTCHA. נסה שוב מאוחר יותר.</translation>
 <translation id="2653659639078652383">שלח</translation>
 <translation id="1369311132025451972">הפנה מחדש אוטומטית אתרי .onion</translation>
+<translation id="1658670175365815312">Brave עוברת לגרסת .onion כשהדבר אפשרי, ופותחת אוטומטית את כל הדומיינים עם סיומת .onion בחלון Tor.</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="5249433283143453448">השתמש/י ברכיב ניהול זכויות דיגיטלית (DRM) Widevine כדי לצפות בסרטון מוגן ובתכנים אחרים בדפדפן.</translation>
 <translation id="8137559199583651773">נהל תוספים</translation>
@@ -435,10 +453,16 @@
 <translation id="3752403403443723332">הארנק שלכם אופס.</translation>
 <translation id="594766067816395072">פרטי העסקאות בארנקכם אופסו.</translation>
 <translation id="1426410128494586442">כן</translation>
+<translation id="4226543734057230801">רשתות Ethereum</translation>
+<translation id="3504157706952484145">רשתות Filecoin</translation>
+<translation id="1561541094377237745">רשתות Solana</translation>
 <translation id="3159419679550543837">הצג רשתות בדיקה</translation>
+<translation id="3215569562674795548">ערוך או הוסף רשת חדשה</translation>
+<translation id="4418993400653250511">המזהה של השרשרת</translation>
 <translation id="3423620355610881890">מספר עשרוני חיובי</translation>
 <translation id="8110465398315041268">חפש רשת</translation>
 <translation id="3579705520805744214">מזהה או שם השרשרת</translation>
+<translation id="8502525913969149079">שם השרשרת</translation>
 <translation id="1034112277864078119">הזן שרשרת חדשה</translation>
 <translation id="4672314527143443556">שמו של מטבע השרשרת</translation>
 <translation id="4652114030688989556">הזן את שם השרשרת</translation>
@@ -544,4 +568,9 @@
 <translation id="5318548116565208315">אווטאר בונבון תירס</translation>
 <translation id="1959966725083452288">אווטאר בונבון Royal</translation>
 <translation id="2039034364578911089">אווטאר בונבון נינג'ה</translation>
+<translation id="239760341987199724">‏הגדר את Brave כדפדפן ברירת המחדל שלך</translation>
+<translation id="1391855377994926460">אפשר להמשיך לגלוש מהר יותר באינטרנט – אפילו מהר פי 6 באתרי החדשות העיקריים.</translation>
+<translation id="9218430445555521422">הגדר כברירת מחדל</translation>
+<translation id="3479552764303398839">לא עכשיו</translation>
+<translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 </translationbundle>

@@ -52,6 +52,7 @@
 <translation id="7291143854620707672">Darba profila administrators var noņemt šī profila lietošanas laikā ģenerētos Brave datus (piemēram, grāmatzīmes, vēsturi, paroles un citus iestatījumus). <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Instalācijas laikā radās operētājsistēmas kļūda. Lejupielādējiet Brave vēlreiz.</translation>
 <translation id="2648689842065142443">Ja ierīci izmanto arī jūsu draugi un ģimenes locekļi, viņi var iestatīt pārlūku Brave atbilstoši savām vēlmēm un pārlūkot saturu atsevišķos profilos.</translation>
+<translation id="5926459996518749366">Pārlūkā Brave šis arhīva fails tika bloķēts, jo tas var slēpt ļaunprātīgu programmatūru.</translation>
 <translation id="6384359666082467439">Laipni lūdzam pārlūkā Brave, <ph name="ACCOUNT_FIRST_NAME"/>!</translation>
 <translation id="6791166902140255175">Brave cilne</translation>
 <translation id="8372880274820509128">Papildu drošības nolūkos Brave šifrēs jūsu datus.</translation>
@@ -194,6 +195,7 @@
 <translation id="7861579472672677409">Paplašinājums <ph name="EXTENSION_NAME"/> ir pievienots pārlūkam Brave</translation>
 <translation id="608006075545470555">Darba profila pievienošana šai pārlūkprogrammai</translation>
 <translation id="5849446944780602366">Pielāgojiet un pārvaldiet pārlūku Brave. Ir pieejams atjauninājums.</translation>
+<translation id="7433698744896946664">Atļaut paplašinājumam rādīt piekļuves pieprasījumus Brave rīkjoslā</translation>
 <translation id="492209281555538239">Pārlūks Brave saglabās šo paroli jūsu Brave kontā. To nav nepieciešams iegaumēt.</translation>
 <translation id="4168372721886011198">Fails <ph name="FILE_NAME"/> ir bīstams, tādēļ Brave to bloķēja.</translation>
 <translation id="7006260220514217183">Droša pārlūkošana ir izslēgta. Pārlūkā Brave tiek ieteikts to ieslēgt.</translation>
@@ -283,6 +285,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="8678991866891573053">Brave pēta jaunas funkcijas, kas ļauj vietnēm nodrošināt tādas pašas pārlūkošanas iespējas, izmantojot mazāk datu.</translation>
 <translation id="3343095737966473035">Brave nav jūsu noklusējuma pārlūks.</translation>
 <translation id="5477319665405831211">Brave sinhronizēšana un personalizēšana visās savās ierīcēs</translation>
+<translation id="2280238321454602884">Kad šis iestatījums ir ieslēgts, Brave atgūst atmiņas lietojumu no cilnēm, kuras aktīvi neizmantojat. Tādējādi tiek atbrīvoti datora resursi citiem uzdevumiem un tiek nodrošināta ātra Brave darbība. Neaktīvās cilnes tiek rādītas tukšas un tiek automātiski atkārtoti ielādētas, kad uz tām noklikšķināt. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/> vai <ph name="BEGIN_LINK_2"/>nosūtiet atsauksmes<ph name="END_LINK_2"/>.</translation>
 <translation id="4784414698887946907">Veicot šo darbību, no šīs ierīces tiks dzēsti pārlūkošanas dati. Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Instalētājam neizdevās izveidot pagaidu katalogu. Lūdzu, pārbaudiet, vai diskā pietiek vietas un vai ir atļauja instalēt programmatūru.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> — Brave Canary</translation>
@@ -311,6 +314,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="6914496861676471566">Instalēšanas programmas arhīvs ir bojāts vai nav derīgs. Lejupielādējiet Brave vēlreiz.</translation>
 <translation id="6431861494713261006">Neobligāti: palīdziet uzlabot Brave OS funkcijas un veiktspēju, automātiski nosūtot Brave serveriem diagnostikas un lietojuma datus.</translation>
 <translation id="2097604701283463988">Brave versija ir novecojusi</translation>
+<translation id="607365808648940765">Brave pēc vajadzības atgūst atmiņas lietojumu no cilnēm, kuras jūs aktīvi neizmantojat. Iestatījumos varat jebkurā laikā to mainīt.</translation>
 <translation id="8550334526674375523">Šis darba profils ir pilnīgi nesaistīts ar jūsu personīgo profilu.</translation>
 <translation id="2452889775041290116">Viens no jūsu vecākiem ir izslēdzis “Atļaujas vietnēm, lietotnēm un paplašinājumiem” pārlūkam Brave. Nav atļauts pievienot šo: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Lai saņemtu turpmākus Brave atjauninājumus, ir nepieciešama operētājsistēma macOS 10.13 vai jaunāka versija. Šajā datorā tiek izmantota macOS 10.12. versija</translation>

@@ -5,9 +5,6 @@
 <translation id="2445484935443597917">नवीन प्रोफाइल तयार करा</translation>
 <translation id="2666990579225592931">अतिथी विंडो उघडा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
-<translation id="239760341987199724">तुमचा डीफॉल्ट ब्राउझर म्हणून Brave सेट करा</translation>
-<translation id="9218430445555521422">डीफॉल्ट म्हणून सेट करा</translation>
-<translation id="3479552764303398839">सध्या नाही</translation>
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="5860491529813859533">चालू करा</translation>
 <translation id="780301667611848630">नाही, नको</translation>
@@ -33,6 +30,7 @@
 <translation id="1536754031901697553">डिस्कनेक्ट करत आहे...</translation>
 <translation id="8041089156583427627">अभिप्राय पाठवा</translation>
 <translation id="945522503751344254">अभिप्राय पाठवा</translation>
+<translation id="7537601449003285327">टास्कबारवर पिन करा</translation>
 <translation id="9156965752763025780">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील.</translation>
 <translation id="4472575034687746823">प्रारंभ करा</translation>
 <translation id="6786747875388722282">विस्तार</translation>
@@ -41,9 +39,9 @@
 <translation id="2414886740292270097">गडद</translation>
 <translation id="2858138569776157458">टॉप साइट</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
+<translation id="7461924472993315131">पिन</translation>
 <translation id="6303294677342628402">शिल्ड्स</translation>
 <translation id="7740996059027112821">मानक</translation>
-<translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="3587482841069643663">सर्व</translation>
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="6745592621698551453">आता अपडेट करा</translation>
@@ -65,4 +63,8 @@
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="8425213833346101688">बदल करा</translation>
 <translation id="8275038454117074363">इंपोर्ट</translation>
+<translation id="239760341987199724">तुमचा डीफॉल्ट ब्राउझर म्हणून Brave सेट करा</translation>
+<translation id="9218430445555521422">डीफॉल्ट म्हणून सेट करा</translation>
+<translation id="3479552764303398839">सध्या नाही</translation>
+<translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 </translationbundle>

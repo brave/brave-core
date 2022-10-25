@@ -398,12 +398,97 @@
     "message": "Imate napojnice na čekanju zbog nedovoljnih sredstava",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Затвори",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Nastavi",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Zaradi tokene & Uzvrati isto",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Zaradite tokene gledajući reklame koje poštuju privatnost i podržavajte automatski vaše omiljene veb lokacije i kreatore sadržaja.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Nešto nije u redu",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave nagrade nisu dostupne",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Nažalost, došlo je do greške pri podešavanju Brave nagrada. Pokušajte ponovo.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Nažalost, došlo je do greške pri podešavanju vaše zemlje. Pokušajte ponovo.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Nova prijavljivanja za Brave nagrade su trenutno onemogućena u vašem regionu. Međutim, uvek možete pokušati ponovo. $link_begin$Saznajte više$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Izaberite svoju zemlju",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Hvala!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Vaš region za Brave nagrade podešen je na $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Izaberite svoju zemlju tako da vam možemo prikazati odgovarajuće opcije i oglase za vaš region. $link_begin$Politika privatnosti$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Da biste i dalje koristili Brave nagrade, izaberite svoju zemlju tako da vam možemo prikazati odgovarajuće opcije i oglase za vaš region. $link_begin$Politika privatnosti$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Сачувај",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Izaberite svoju zemlju",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

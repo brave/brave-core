@@ -85,10 +85,6 @@
 <translation id="8303432794159193481">แอป Brave Browser Dev</translation>
 <translation id="8292967014767479012">แอป Brave Browser</translation>
 <translation id="4743468424889072281">แอป Brave Browser Development</translation>
-<translation id="239760341987199724">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
-<translation id="1391855377994926460">ท่องเว็บได้เร็วขึ้น - สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
-<translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
-<translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="732814027519296280">ต้องการให้ Brave Search ทำงานได้ดีขึ้นใช่ไหม</translation>
 <translation id="2677865600861971449">เข้าร่วมใน โปรเจ็กต์การค้นพบบนเว็บ เพื่อร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน และช่วยปรับปรุงผลการค้นหาของ Brave Search ให้กับทุกๆ คน โดยรักษาความเป็นส่วนตัว และทำได้แบบง่ายๆ <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
@@ -204,9 +200,10 @@
 <translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
 <translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
 <translation id="2370739752330685659">ภายหลัง</translation>
+<translation id="7537601449003285327">ตรึงกับแถบงาน</translation>
 <translation id="961012016278832836">Microsoft Edge เวอร์ชันเก่า</translation>
 <translation id="6436994631426134065">นำเข้าจาก <ph name="BROWSER_NAME"/></translation>
-<translation id="1506190932569739298">คัดลอกลิงก์เท่านั้น (URL หลักเท่านั้น)</translation>
+<translation id="7630214457764713113">คัดลอกลิงก์เท่านั้น</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -246,10 +243,17 @@
 <translation id="3719826155360621982">หน้าหลัก</translation>
 <translation id="5448570825852364919">หน้าว่าง</translation>
 <translation id="5919424224662539292">ปรับแต่งภาพพื้นหลังและวิดเจ็ตที่ปรากฏในหน้าแท็บใหม่</translation>
+<translation id="7461924472993315131">ตรึง</translation>
+<translation id="7506648566440714944">มีการตรึง Brave แล้ว</translation>
+<translation id="3195845168740336657">การตั้งค่า Shields</translation>
+<translation id="754769152790647708">สถานะ Shields</translation>
+<translation id="3615717588724840230">เว็บไซต์สามารถบล็อกตัวติดตาม โฆษณา และการเก็บร่องรอยได้โดยใช้ Shields</translation>
+<translation id="5690973901138662477">เปิด Shields</translation>
+<translation id="4697275813919189958">ปิด Shields</translation>
 <translation id="6303294677342628402">ปกป้อง</translation>
 <translation id="7133511168130368997">บล็อกตัวติดตามและโฆษณาที่ติดตามคุณข้ามเว็บ</translation>
 <translation id="2761825942249694703">นี่คือการตั้งค่า Shields เริ่มต้น การตั้งค่าเหล่านี้จะมีผลกับเว็บไซต์ทั้งหมด เว้นแต่ว่าคุณจะเปลี่ยนแปลงอะไรบางอย่างในแผง Shields บนไซต์ใดไซต์หนึ่งโดยเฉพาะ การเปลี่ยนแปลงค่าเหล่านี้จะไม่มีผลกับการตั้งค่าต่อไซต์ที่มีอยู่แล้วของคุณ</translation>
-<translation id="1435116578479068303">วิธีนี้จะบล็อกโฆษณาส่วนใหญ่บนเว็บไซต์ แต่ไม่รวม Brave Private Ads ซึ่งได้รับการควบคุมในการตั้งค่า <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/></translation>
+<translation id="1435116578479068303">วิธีนี้จะบล็อกโฆษณาส่วนใหญ่บนเว็บไซต์ แต่ไม่รวม Brave Ads ส่วนตัว ซึ่งได้รับการควบคุมในการตั้งค่า <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/></translation>
 <translation id="8452536890042542134">สิ่งนี้จะบล็อคโฆษณาส่วนใหญ่บนเว็บไซต์</translation>
 <translation id="4800195524776354947">แสดงจำนวนรายการที่ถูกบล็อคบนไอคอนชิลด์</translation>
 <translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
@@ -259,7 +263,6 @@
 <translation id="2133317862976486547">การบล็อก Tracker &amp; โฆษณา</translation>
 <translation id="4078738236287221428">รุนแรง</translation>
 <translation id="7740996059027112821">มาตรฐาน</translation>
-<translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
 <translation id="4824468494729001999">บล็อกสคริปต์</translation>
 <translation id="6531019308847917584">บล็อกการพิมพ์ลายนิ้วมือ</translation>
 <translation id="5533533363827555308">เข้มงวด อาจทำเว็บเสียหาย</translation>
@@ -269,14 +272,14 @@
 <translation id="7390783310074170337">มุมมองเริ่มต้น</translation>
 <translation id="130615081792797568">มุมมองอย่างง่าย</translation>
 <translation id="2360360976480535628">มุมมองขั้นสูง</translation>
-<translation id="6486983549008741930">การกรองเนื้อหา</translation>
+<translation id="101592339984642584">การกรองเนื้อหา</translation>
 <translation id="8694564340481124390">เปิดใช้งานตัวกรองแบบกำหนดเองเพื่อบล็อกตัวติดตามและสิ่งรบกวนที่เจาะจงภูมิภาคและภาษา</translation>
-<translation id="6522618763902154348">เปิดใช้งานตัวกรองแบบกำหนดเองเพื่อบล็อกตัวติดตามและสิ่งรบกวน 
-    <ph name="BEGIN_LINK"/>ที่เจาะจงภูมิภาคและภาษา<ph name="END_LINK"/></translation>
+<translation id="4877657558909976793">เปิดใช้งานตัวกรองแบบกำหนดเองเพื่อบล็อกตัวติดตามและ
+    <ph name="BEGIN_LINK"/>สิ่งรบกวน<ph name="END_LINK"/>ที่เจาะจงภูมิภาคและภาษา</translation>
 <translation id="3482656215021340727">เพิ่มรายการตัวกรองแบบกำหนดเอง</translation>
 <translation id="1020877116991797978">เพิ่มรายการเพิ่มเติมที่สร้างและดูแลโดยชุมชนที่เชื่อถือได้ของคุณ</translation>
 <translation id="7617831480435794399">สมัครเฉพาะรายการจากหน่วยงานที่คุณไว้วางใจเท่านั้น เบราว์เซอร์ของคุณจะตรวจสอบรายการอัปเดตจาก URL ที่คุณป้อนเป็นระยะ โดยจะเปิดเผยที่อยู่ IP ของคุณไปยังเซิร์ฟเวอร์</translation>
-<translation id="2831397936251948638">สร้างตัวกรองแบบกำหนดเอง</translation>
+<translation id="8580328754808744073">สร้างตัวกรองแบบกำหนดเอง</translation>
 <translation id="4618274268052410139">เพิ่มตัวกรองแบบกำหนดเองที่คุณสร้าง บรรทัดละหนึ่งรายการ ในช่องด้านล่าง และตรวจสอบให้มั่นใจว่าได้ใช้ <ph name="BEGIN_LINK"/>รูปแบบ syntax สำหรับตัวกรอง Adblock<ph name="END_LINK"/></translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
 <translation id="571950783952070673">ลงรายการ URL</translation>
@@ -292,6 +295,7 @@
 <translation id="5438573563213942361">รายการแบบกำหนดเอง</translation>
 <translation id="4182731739150761577">แสดงรายการทั้งหมด</translation>
 <translation id="1340263054776016283">ระบุ URL ของรายการตัวกรอง</translation>
+<translation id="8578397014396032341">ตัวกรองเนื้อหา</translation>
 <translation id="6821903322090655051">ปิดใช้งาน Brave Rewards แล้ว</translation>
 <translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
 <translation id="3849957491997306859">ตรวจพบอัตโนมัติ</translation>
@@ -402,10 +406,12 @@
 <translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/> เกี่ยวกับการพิจารณาความเป็นส่วนตัวของ Ethereum</translation>
 <translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">อนุญาตการค้นหานอกเครือข่ายบล็อกเชนของ ENS</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับข้อควรพิจารณาด้านความเป็นส่วนตัวในการค้นหานอกเครือข่ายบล็อกเชนของ ENS</translation>
 <translation id="6241402707160226266">หน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="8762452230727230396">Tor จะซ่อนที่อยู่ IP ของคุณจากเว็บไซต์ที่คุณเยี่ยมชม</translation>
 <translation id="2959986444009520721">ใช้สะพาน</translation>
-<translation id="8416750895933172460">บริดจ์ช่วยให้คุณเข้าถึงเครือข่าย Tor ในตำแหน่งที่ Tor ถูกบล็อก บริดจ์ตัวหนึ่งอาจทำงานได้ดีกว่าตัวอื่นขึ้นอยู่กับตำแหน่งของคุณ</translation>
+<translation id="8416750895933172460">บริดจ์ช่วยให้คุณเข้าถึงเครือข่าย Tor ในตำแหน่งที่ Tor ถูกบล็อก บริดจ์ตัวหนึ่งอาจทำงานได้ดีกว่าตัวอื่น ขึ้นอยู่กับตำแหน่งของคุณ</translation>
 <translation id="7206799843254049470">การตั้งค่าการเชื่อมต่อทอร์</translation>
 <translation id="3194502271166340944">ควบคุมวิธีที่วินโดว์ส่วนบุคคลด้วยทอร์เชื่อมต่อกับเครือข่ายทอร์</translation>
 <translation id="4859228830700205299">เลือกสะพานในตัว</translation>
@@ -563,4 +569,9 @@
 <translation id="5318548116565208315">อวทาร์ Bonbon Corn</translation>
 <translation id="1959966725083452288">อวทาร์ Bonbon Royal</translation>
 <translation id="2039034364578911089">อวทาร์ Bonbon Ninja</translation>
+<translation id="239760341987199724">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
+<translation id="1391855377994926460">ท่องเว็บได้เร็วขึ้น - สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
+<translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
+<translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
+<translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
 </translationbundle>

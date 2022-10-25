@@ -2,7 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
 <translation id="7307834434086582547">Brave শিল্ড সক্ষম/অক্ষম করুন</translation>
+<translation id="6945863270524203017">ট্র্যাকার এবং বিজ্ঞাপন ব্লক সম্পর্কে সাপ্তাহিক গোপনীয়তা আপডেট পান।</translation>
+<translation id="4324735664183300693">নোটিফিকেশন চালু করুন</translation>
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
+<translation id="5153702175393349577">পরবর্তী বখশিশের তারিখ</translation>
+<translation id="8979401359137062629">নোট করুন:</translation>
+<translation id="7277134233385925078">মাসিক পরামর্শ সেট করুন</translation>
+<translation id="3765933240178364575">এককালীন বখশিশের অর্থরাশি</translation>
+<translation id="1101015459918930887">আপনার বখশিশের প্রক্রিয়াকরণে কয়েক মিনিট সময় লাগতে পারে</translation>
+<translation id="4088764345615745058">কাস্টম বখশিশের পরিমাণ</translation>
+<translation id="8759753423332885148">আরও জানুন।</translation>
+<translation id="3271043362279673449">সহায়তার জন্য ধন্যবাদ!</translation>
+<translation id="3312470408978098625">আপনার এককালীন টিপ পাঠানো হয়েছে।</translation>
+<translation id="9088057605518918276">মাসিক বখশিশ নির্ধারণ করা হয়েছে।</translation>
+<translation id="2978223787436054634">আপনার সহায়তা সম্পর্কে টুইট</translation>
+<translation id="1166682575529520472">মাসিক</translation>
+<translation id="5906820630265272615">BAT ফান্ডগুলি</translation>
+<translation id="3586352807094428968">Brave টিপের পরিমানের 5%প্রসেসিং ফি হিসেবে সগ্রহ করে।</translation>
+<translation id="7723816962634734185">কাস্টম পরিমাণ</translation>
+<translation id="1986030365413628297">যেমন 12.75 BAT</translation>
+<translation id="5087864757604726239">ফিরুন</translation>
+<translation id="6661699662755460155">বিনিময় করুন</translation>
+<translation id="864162897141534043">আপনি বখশিশ দিতে চলেছেন</translation>
+<translation id="7286679368056222644">আপনার মাসিক সমর্থন হবে</translation>
+<translation id="8195146845495346281">ন্যূনতম বখশিশের পরিমাণ 0.25 BAT</translation>
+<translation id="4647657427328119430">পর্যাপ্ত টোকেন নেই।</translation>
+<translation id="2359808026110333948">চালিয়ে যান</translation>
+<translation id="4227681408214010862">ভালো লেগেছে যে, #Brave আমাকে নির্মাতাদের সহায়তা করতে দেয়! শুধুনাত্র #BAT-এর সাথে বখশিশ পাওয়া <ph name="NAME"/>। তারা <ph name="DATE"/> এর আগে https://creators.brave.com যাচাই করলে, BAT তাদের হবে!</translation>
+<translation id="6231182869178328516">Brave ব্রাউজার <ph name="NAME"/> এইমাত্র বখশিশ দিয়েছি। https://brave.com/tips তে এটি পরীক্ষা করে দেখুন।</translation>
+<translation id="7172012963002631836">আপনার টিপ পাঠাতে একটি সমস্যা হয়েছে।</translation>
+<translation id="8994556588732085585">আবার চেষ্টা করার জন্য টিপিং ব্যানারটি বন্ধ করুন এবং আবার খুলুন।</translation>
 <translation id="2278950434998763147">কিছু সাইটকে সাধারণ HTTP এর পরিবর্তে একটি সুরক্ষিত HTTPS সংযোগ ব্যবহার করে খুলুন।</translation>
 <translation id="5510493033031835532">AMP পৃষ্ঠাগুলি অটো-রিডাইরেক্ট করুন</translation>
 <translation id="5197219128592971597">Google-এর অ্যাক্সিলারেটেড মোবাইল পৃষ্ঠা সংস্করণের পরিবর্তে সর্বদা আসল (নন-AMP) পৃষ্ঠার URL দেখুন</translation>
@@ -24,6 +53,8 @@
 <translation id="9148058034647219655">প্রস্থান করুন</translation>
 <translation id="4022987104439075738">IPFS গেটওয়ে</translation>
 <translation id="2688519859165248360">একটি IPFS গেটওয়ের মাধ্যমে IPFS রিসোর্সগুলোতে নেভিগেশন করার অনুমতি দেয়</translation>
+<translation id="8047754398610073499">কুকি সম্মতি নোটিশগুলি ব্লক করুন</translation>
+<translation id="2621893359845808115">ওয়েবসাইট পপ-আপগুলিকে ব্লক করে যা আপনাকে তাদের সাইটে কুকি গ্রহণ / প্রত্যাখ্যান করতে বলে</translation>
 <translation id="7534079972563542000">অপ্রতিরোধ্য ডোমেইনসমূহ</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> প্রাইস (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
@@ -124,17 +155,11 @@
 <translation id="8826007068782654809">আপনাকে ধন্যবাদ</translation>
 <translation id="6665366815203065060">আপনি এইমাত্র একটি বখশিশ পাঠিয়েছেন একে:</translation>
 <translation id="5441565662498481293">আপনি স্বয়ংক্রিয়ভাবে একটি বখশিশ পাঠিয়েছেন একে:</translation>
-<translation id="1166682575529520472">মাসিক</translation>
 <translation id="1628742278973105368">আপনার প্রথম মাসিক বখশিশ পাঠানো হবে এই তারিখে:</translation>
-<translation id="298349922412901215">দ্রষ্টব্য: এই নির্মাতাটি Brave ব্যবহারকারীদের কাছ থেকে অবদান নেওয়ার জন্য এখনও পর্যন্ত সাইন আপ করেননি। তারা যাচাই না করা পর্যন্ত বা 90 দিন কেটে যাওয়ার আগে পর্যন্ত আমরা অবদান রাখার চেষ্টা চালিয়ে যাব।</translation>
+<translation id="1642952941091001113">Brave ব্যবহারকারীদের কাছ থেকে কনট্রিবিউশন পাওয়ার জন্য এই নির্মাতা এখনও সাইন আপ করেননি। তারা যাচাই না করা পর্যন্ত বা 90 দিন কেটে যাওয়ার আগে পর্যন্ত আমরা অবদান রাখার চেষ্টা চালিয়ে যাব।</translation>
 <translation id="635752162765375187">দ্রষ্টব্য: এই নির্মাতাটিকে বর্তমানে আপনার রিওয়ার্ডসের কাস্টোডিয়াল ওয়ালেট পরিষেবা থেকে টিপসগুলি গ্রহণ করার মতো কনফিগার করা নেই। আপনার পাঠানো যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনরায় চেষ্টা করবে।</translation>
 <translation id="1910721550319506122">স্বাগত!</translation>
-<translation id="3165726837666415756">আপনি একটি পরামর্শ পাঠানোর মাধ্যমে এই সাইটটি সমর্থন করতে পারেন। এটি দুর্দান্ত কনটেন্ট তৈরি করার জন্য তাঁদের ধন্যবাদ জানানোর একটি উপায়। ক্যালেন্ডারের প্রতি মাসের প্রথম সপ্তাহের মধ্যে যাচাইকৃত সামগ্রী নির্মাতাদেরকে তাদের পরামর্শগুলির জন্য অর্থপ্রদান করা হয়।</translation>
-<translation id="1704859330137112950">যদি আপনি চান, তবে আপনি অবিরতভাবে এই সাইটটিকে সমর্থন করতে মাসিক টিপগুলির সময় নির্ধারণ করতে পারেন।</translation>
-<translation id="245015745140252435">দানের পরিমান</translation>
-<translation id="7873874596836611687">পুরষ্কার ব্যালেন্স:</translation>
-<translation id="2573313946367623146">আমার পরামর্শ পাঠান</translation>
-<translation id="3250511771491660127">এটি মাসিক করে দিন</translation>
+<translation id="5830114181292529917">আপনি বখশিশ পাঠিয়ে এই কনটেন্ট নির্মাতাকে সমর্থন করতে পারেন। দুর্দান্ত কনটেন্ট তৈরি করার জন্য তাঁদের ধন্যবাদ জানানোর এটি একটি উপায়।</translation>
 <translation id="7658239707568436148">বাতিল করুন</translation>
 <translation id="1201402288615127009">পরবর্তী</translation>
 <translation id="8481779960444041069">আপনার গোপনীয়তা আরও উন্নত করতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
@@ -181,9 +206,6 @@
 <translation id="683765328936486920">YouTube এ</translation>
 <translation id="8969049974285901797">Twitch এ</translation>
 <translation id="3101693828171454453">পর্যাপ্ত <ph name="TOKEN"/> নেই</translation>
-<translation id="6940273954212603510">অনুগ্রহ করে</translation>
-<translation id="1036277985068412734">অর্থ যোগ করুন</translation>
-<translation id="3492491948683276944">মাসিক পরামর্শ সেট করুন</translation>
 <translation id="8038539967102225446">Brave বিজ্ঞাপনগুলি এখানে রয়েছে!</translation>
 <translation id="222883304157347087">(এই ডিভাইসটি)</translation>
 <translation id="4157741509680155021">সিঙ্ক চেইন ডিভাইসগুলি</translation>
@@ -403,10 +425,10 @@
 <translation id="223536150967420869">ক্রয় করুন</translation>
 <translation id="2956070106555335453">সংক্ষিপ্তসার</translation>
 <translation id="7465614181960492526">টোকেন উপার্জন করুন &amp; ফেরৎ পাঠান</translation>
-<translation id="244362569344671266">Brave Private Ads দেখে টোকেন উপার্জন করুন এবং স্বয়ংক্রিয়ভাবে সামগ্রী নির্মাতাদের সমর্থন করুন।</translation>
+<translation id="2731539192954672606">গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখে টোকেনগুলি উপার্জন করুন এবং আপনার পছন্দসই সাইট এবং সামগ্রী নির্মাতাকে স্বয়ংক্রিয়ভাবে সমর্থন করুন।</translation>
 <translation id="631124996535890460">এগিয়ে চলার মাধ্যমে, আপনি এর সাথে সম্মত হন <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">সম্মত হয়েছেন</translation>
-<translation id="6318696841371191107">দ্রুত ভ্রমণ করুন</translation>
+<translation id="185034574799484512">আসুন দ্রুত ভ্রমণ করি</translation>
 <translation id="7930505144430343145">Brave Rewards এ স্বাগতম</translation>
 <translation id="3477340970981564961">Brave এর  ব্যক্তিগত বিজ্ঞাপনগুলি আপনাকে প্রচলিত বিজ্ঞাপনগুলির বিপরীতে সামগ্রী নির্মাতাদের সমর্থন করার জন্য টোকেন দিয়ে পুরস্কৃত করে, আপনার ব্যক্তিগত তথ্য ব্যক্তিগত রাখার সময়।</translation>
 <translation id="6973095375773523904">বিজ্ঞাপনগুলি কোথায় প্রদর্শিত হবে?</translation>
@@ -455,9 +477,6 @@
 <translation id="2222442600106681391">2 BAT</translation>
 <translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
-<translation id="8762169086048682708">10 BAT</translation>
-<translation id="4548973860489847866">0.00 BAT</translation>
-<translation id="4193129043743994339">0.00 USD</translation>
 <translation id="8792121506918889955">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
@@ -470,7 +489,6 @@
 <translation id="4472575034687746823">শুরু করুন</translation>
 <translation id="2759836790106646094">আপনার ওয়ালেট এখনই ব্যাকআপ করুন!</translation>
 <translation id="1078873179929044999">পরের ধাপে আপনি একটি 12-শব্দের অ্যাকাউন্ট ফিরিয়ে আনার শব্দগুচ্ছ দেখবেন, যা আপনি আপনার প্রাথমিক ক্রিপ্টো অ্যাকাউন্টগুলো ফিরিয়ে আনার জন্য ব্যবহার করতে পারবেন। এটিকে কোথাও নিরাপদে রাখুন। আপনি পাসওয়ার্ড ভুলে গেলে, ডিভাইস হারালে বা চুরি গেলে অথবা আপনি ওয়ালেট স্যুইচ করতে চাইলে অ্যাকাউন্টে পুনরায় অ্যাক্সেস ফিরে পাওয়ার একমাত্র উপায় হলো আপনার অ্যাকাউন্ট ফিরিয়ে আনার শব্দগুচ্ছ।</translation>
-<translation id="2359808026110333948">চালিয়ে যান</translation>
 <translation id="5488357322146334497">বার্তা</translation>
 <translation id="1904000155026201268">আমি বুঝি যে আমি আমার রিকভারি শব্দগুলি হারিয়ে ফেললে, আমি আমার ক্রিপ্টো ওয়ালেট অ্যাক্সেস করতে পারব না।</translation>
 <translation id="3933122286596948824">আপনার রিকভারি বাক্যাংশ</translation>
@@ -865,4 +883,73 @@
 <translation id="8423380132356660250"><ph name="APP_NAME"/> অ্যাপটি খুলুন</translation>
 <translation id="168154537623654021">VPN প্রোফাইল আপডেট করা হচ্ছে ...</translation>
 <translation id="7457027586454688423">আপনার Brave ওয়ালেট পাসওয়ার্ড লিখুন</translation>
+<translation id="6588595775439619209">কুকি নোটিশ ব্লক করুন</translation>
+<translation id="264682546981571963">কুকি সম্মতি বিজ্ঞপ্তিগুলি ক্লান্ত?</translation>
+<translation id="4986297793092101884">Brave ইতিমধ্যে তৃতীয় পক্ষের কুকিগুলি ব্লক করে। আমরা কুকি সম্মতি বিজ্ঞপ্তিগুলিও ব্লক করতে পারি।</translation>
+<translation id="4784306439879850873">মনে রাখবেন আপনি সাইন করলে কী ঘটবে তা Brave যাচাই করতে পারবে না। একটি স্বাক্ষর আপনার অ্যাকাউন্টে বা আপনার পক্ষে প্রায় যে কোনো কার্যকলাপ অনুমোদন করতে পারে, যার মধ্যে রয়েছে (তবে এতে সীমাবদ্ধ নয়) যে সাইট অনুরোধটি করছে সেটিকে আপনার অ্যাকাউন্টের ও ক্রিপ্টো সম্পদের সম্পূর্ণ নিয়ন্ত্রণ প্রদান। আপনি এই পদক্ষেপটি নেওয়ার বিষয়ে নিশ্চিত হলে এবং অনুরোধ করা সাইটে আস্থা রাখলে তবেই সাইন করুন।</translation>
+<translation id="3474375934783434676">আপনার নিজের ঝুঁকিতে স্বাক্ষর করুন</translation>
+<translation id="7134370164002095282"><ph name="SIZE"/> টির মধ্যে <ph name="CURRENT"/>টি</translation>
+<translation id="6450792191436242818">সিস্টেম প্রোগ্রাম</translation>
+<translation id="6252742184395380448">কনফিগারেশন প্রোগ্রাম</translation>
+<translation id="5358970666412490132">স্টেক প্রোগ্রাম</translation>
+<translation id="346636227344244984">ভোট কর্মসূচি</translation>
+<translation id="3538368258493053874">BPF লোডার</translation>
+<translation id="2334098351242742927">Ed25519 প্রোগ্রাম</translation>
+<translation id="6421371987002247943">টোকেন প্রোগ্রাম</translation>
+<translation id="8780753288764281797">Secp256k1 প্রোগ্রাম</translation>
+<translation id="8504640708321980506">ডেটা</translation>
+<translation id="4771176409524282426">অ্যাকাউন্ট তৈরি করুন</translation>
+<translation id="1755120947324658439">অ্যাসাইন</translation>
+<translation id="7588707273764747927">ট্রান্সফার করুন</translation>
+<translation id="5328067049293286962">সীড দিয়ে অ্যাকাউন্ট তৈরি করুন</translation>
+<translation id="1512366326138054636">অগ্রিম নন্‌স অ্যাকাউন্ট</translation>
+<translation id="7042202638449257311">নন্‌স অ্যাকাউন্ট প্রত্যাহার</translation>
+<translation id="6586085653712983224">শুরু করা নন্‌স অ্যাকাউন্ট</translation>
+<translation id="8790312855368673743">অনুমোদিত নন্‌স অ্যাকাউন্ট</translation>
+<translation id="5312748886432335174">বরাদ্দ</translation>
+<translation id="7678705217826797696">সীডের সাথে বরাদ্দ</translation>
+<translation id="7436137523759921028">সীডের সাথে অ্যাসাইন</translation>
+<translation id="3360695936886670509">সীডের সাথে ট্রান্সফার</translation>
+<translation id="7323636209143541483">নন্‌স অ্যাকাউন্ট আপগ্রেড করুন</translation>
+<translation id="616021855350068202">মিন্ট শুরু করুন</translation>
+<translation id="4377316227435786423">অ্যাকাউন্ট শুরু করুন</translation>
+<translation id="7474306790151660826">মাল্টিসিগ শুরু করুন</translation>
+<translation id="363258595406850968">কর্তৃপক্ষ সেট করুন</translation>
+<translation id="2091563464450586155">মিন্ট-এ</translation>
+<translation id="1252941298291625577">বার্ন</translation>
+<translation id="5211196599627796093">অ্যাকাউন্ট বন্ধ করুন</translation>
+<translation id="6988707241715050556">অ্যাকাউন্ট ফ্রিজ করুন</translation>
+<translation id="857250415816680832">অ্যাকাউন্ট আনফ্রিজ করুন</translation>
+<translation id="5453172892735755262">ট্রান্সফার পরীক্ষা করা হয়েছে</translation>
+<translation id="471669767157904431">অনুমোদন পরীক্ষা করা হয়েছে</translation>
+<translation id="3530340583186873359">মিন্ট পরীক্ষা করা হয়েছে</translation>
+<translation id="5068456869800056740">বার্ন পরীক্ষা করা হয়েছে</translation>
+<translation id="3004830385467519189">অ্যাকাউন্ট 2 শুরু করুন</translation>
+<translation id="8026488633670875516">নেটিভ সিঙ্ক করুন</translation>
+<translation id="2024649614526778327">অ্যাকাউন্ট 3 শুরু করুন</translation>
+<translation id="8382368767453083629">মাল্টিসিগ 2 শুরু করুন</translation>
+<translation id="77243237706803459">মিন্ট 2 শুরু করুন</translation>
+<translation id="583281660410589416">অজানা</translation>
+<translation id="2862978891748913252">আপনার দেশ নির্বাচন করুন</translation>
+<translation id="3832588024105436400">আপনার দেশ নির্বাচন করুন যাতে আমরা আপনাকে আপনার অঞ্চলের জন্য সঠিক বিকল্প এবং বিজ্ঞাপন দেখাতে পারি। <ph name="PRIVACY_POLICY"/></translation>
+<translation id="5666264859501108700">আপনার Brave পুরস্কার অঞ্চল <ph name="COUNTRY_NAME"/> সেট করা আছে।</translation>
+<translation id="3180990265682133881">দুর্ভাগ্যবশত, আপনার দেশ সেট করার চেষ্টায় কোনো ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="7352651011704765696">কিছু সমস্যা হয়েছে</translation>
+<translation id="7144878232160441200">আবার চেষ্টা করুন</translation>
+<translation id="6040143037577758943">বন্ধ করুন</translation>
+<translation id="298349922412901215">দ্রষ্টব্য: এই নির্মাতাটি Brave ব্যবহারকারীদের কাছ থেকে অবদান নেওয়ার জন্য এখনও পর্যন্ত সাইন আপ করেননি। তারা যাচাই না করা পর্যন্ত বা 90 দিন কেটে যাওয়ার আগে পর্যন্ত আমরা অবদান রাখার চেষ্টা চালিয়ে যাব।</translation>
+<translation id="3165726837666415756">আপনি একটি পরামর্শ পাঠানোর মাধ্যমে এই সাইটটি সমর্থন করতে পারেন। এটি দুর্দান্ত কনটেন্ট তৈরি করার জন্য তাঁদের ধন্যবাদ জানানোর একটি উপায়। ক্যালেন্ডারের প্রতি মাসের প্রথম সপ্তাহের মধ্যে যাচাইকৃত সামগ্রী নির্মাতাদেরকে তাদের পরামর্শগুলির জন্য অর্থপ্রদান করা হয়।</translation>
+<translation id="1704859330137112950">যদি আপনি চান, তবে আপনি অবিরতভাবে এই সাইটটিকে সমর্থন করতে মাসিক টিপগুলির সময় নির্ধারণ করতে পারেন।</translation>
+<translation id="245015745140252435">দানের পরিমান</translation>
+<translation id="7873874596836611687">পুরষ্কার ব্যালেন্স:</translation>
+<translation id="2573313946367623146">আমার পরামর্শ পাঠান</translation>
+<translation id="3250511771491660127">এটি মাসিক করে দিন</translation>
+<translation id="6940273954212603510">অনুগ্রহ করে</translation>
+<translation id="1036277985068412734">অর্থ যোগ করুন</translation>
+<translation id="3492491948683276944">মাসিক পরামর্শ সেট করুন</translation>
+<translation id="244362569344671266">Brave Private Ads দেখে টোকেন উপার্জন করুন এবং স্বয়ংক্রিয়ভাবে সামগ্রী নির্মাতাদের সমর্থন করুন।</translation>
+<translation id="6318696841371191107">দ্রুত ভ্রমণ করুন</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="4548973860489847866">0.00 BAT</translation>
+<translation id="4193129043743994339">0.00 USD</translation>
 </translationbundle>

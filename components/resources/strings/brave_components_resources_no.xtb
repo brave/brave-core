@@ -88,9 +88,11 @@
 <translation id="1447534717041828517">Vis Brave-nyhetsknappen i verktøylinjen</translation>
 <translation id="370665806235115550">Laster inn ...</translation>
 <translation id="4634933166298842522">Administrer abonnementer</translation>
-<translation id="3632460243282703117">Abonner</translation>
-<translation id="4720556299488643018">Avslutt abonnement</translation>
-<translation id="5227905322248018544">Skjul og ikke vis dette igjen</translation>
+<translation id="4108314971463891922">Følg</translation>
+<translation id="3861486700625780712">Slutt å følge</translation>
+<translation id="8909741410750517071">Følg denne kilden med 1 klikk.</translation>
+<translation id="1982678174789043774">Hold deg oppdatert på siste nytt i Brave News</translation>
+<translation id="7894417427965898400">Administrer feeder</translation>
 <translation id="780301667611848630">Nei takk</translation>
 <translation id="9164544612367905452">Henter ...</translation>
 <translation id="1276592121036104130">Last inn nytt innhold</translation>
@@ -102,6 +104,26 @@
 <translation id="5158129253322921540">Deaktiver innhold fra <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Anbefalt</translation>
 <translation id="4541978218358617681">Annonse</translation>
+<translation id="6265592479622441247">Tilbake til <ph name="BEGIN_BOLD"/>Dashbordet<ph name="END_BOLD"/></translation>
+<translation id="8300751939969131609">Slå på Brave News og gå aldri mer glipp av siste nytt</translation>
+<translation id="8117813824055029515">Tilpassede nyhetsfeeder, fra ledende kilder, levert rett i nettleseren. Alt 100 % privat.</translation>
+<translation id="1765217911817124376">Slå på Brave-nyheter</translation>
+<translation id="7845637671472170434">Søk etter nyheter, nettsteder, emner eller RSS-feeder</translation>
+<translation id="1498364270401875204">Kanaler</translation>
+<translation id="1472675084647422956">Vis mer</translation>
+<translation id="8032569120109842252">Følger</translation>
+<translation id="7841646697467892441">{FEED_COUNT, plural,
+          =1 {# kilde}
+          other {# kilder}
+        }</translation>
+<translation id="6143382357119101833">Hent feeder fra <ph name="URL"/></translation>
+<translation id="4515121482885046194">Ingen feeder funnet på <ph name="URL"/></translation>
+<translation id="8535964427132833909">Ingen resultater :'(</translation>
+<translation id="9036971622563146214">Resultater</translation>
+<translation id="6727452620418483718">Direkte resultater</translation>
+<translation id="7697251281928908970">Fortsett å skrive for å søke i kilder</translation>
+<translation id="4750394297954878236">Forslag</translation>
+<translation id="7436846601026966360">Her er noen kilder du kanskje er interessert i. Forslagene er anonyme og matches bare lokalt på enheten din.</translation>
 <translation id="1776831331757823105">Klokke</translation>
 <translation id="7791543448312431591">Legg til</translation>
 <translation id="7679334366167089823">Tjen polletter på å se annonser som respekterer personvernet ditt.</translation>
@@ -117,6 +139,7 @@
 <translation id="8820817407110198400">Bokmerker</translation>
 <translation id="1644574205037202324">Logg</translation>
 <translation id="2702801445560668637">Leseliste</translation>
+<translation id="4590997608186539865">Spilleliste</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="730042046912793465">Dette er et</translation>
@@ -125,10 +148,8 @@
 <translation id="4085423007106063912">Brave «husker» aldri noe av det du gjør i Private vinduer. Nettsteder du besøker, vises ikke i loggen, og informasjonskapsler, skjemadata og nettstedsdata forsvinner idet du lukker vinduet.</translation>
 <translation id="1700746046668116047">Merk at aktiviteten din fortsatt kan være synlig for internettleverandøren din, passive nettverksobservatører eller arbeidsgiveren din (hvis du bruker en jobbdatamaskin eller et jobbnettverk). For å ivareta personvernet ditt kan du åpne en privat fane med Tor.</translation>
 <translation id="8759753423332885148">Finn ut mer.</translation>
-<translation id="3546750666732517156">Privat vindu med Tor-tilkobling</translation>
-<translation id="5383068818957293256">Brave husker aldri hva du gjør i private vinduer. Med Tor-tilkobling er IP-adressen din også skjult for nettstedene du besøker. Men hvis den personlige tryggheten din er avhengig av at du forblir anonym, må du bruke Tor-nettleseren i stedet.</translation>
-<translation id="3338507774653218581">Brave husker aldri hva du gjør i et Privat Vindu. Med Tor-tilkobling får du også to fordeler til: IP-adressen din skjules for sidene du besøker, og sidene du besøker skjules fra passive nettverksobservatører. Vær oppmerksom på at Tor kan senke nettleserhastigheten eller gjøre at enkelte nettsider ikke fungerer.</translation>
-<translation id="8666930656222843375">Et privat Tor-vindu gjør det vanskeligere (men ikke umulig) for internettleverandøren eller arbeidsgiveren din (hvis du bruker en jobbmaskin eller et jobbnettverk) å se hvilke sider du besøker. Selv et privat vindu med Tor vil imidlertid ikke kunne sikre deg fullstendig mot sporing. Hvis din personlige sikkerhet avhenger av at du er fullstendig anonym, bør du bruke Tor Browser i stedet.</translation>
+<translation id="8611976753572844841">Privat vindu med Tor-tilkobling</translation>
+<translation id="1645589858096839236">Brave lagrer ikke nettleseraktivitet fra Private vinduer. Med Tor-tilkobling blir det vanskeligere for nettsider å se den faktiske IP-adressen din, og for nettverksobservatører å se hvilke sider du besøler. Hvis din personlige sikkerhet krever at du er helt anonym, bør du imidlertid bruke Tor-nettleseren i stedet.</translation>
 <translation id="7919374705736538787">Søk privat med</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Med privat søk vil Brave bruke DuckDuckGo for søk i private vinduer. DuckDuckGo sporer ikke søkehistorien din, så du kan søke privat.</translation>
@@ -136,7 +157,7 @@
 <translation id="4371533307685765155">Søk ved hjelp av DuckDuckGo</translation>
 <translation id="548478195417408221">Gjør private vinduer mer private</translation>
 <translation id="3294503279952534143">Dette private vinduet er mer privat</translation>
-<translation id="4644024131266615376">med Tor-tilkobling</translation>
+<translation id="6126226144537295436">med Tor-tilkobling</translation>
 <translation id="8541421872680304667">Tor skjuler IP-adressen din for nettstedene du besøker, ved å dirigere surfingen din gjennom flere Tor-tjenere før den når destinasjonen. Tor kan gjøre surfingen tregere, og noen nettsteder fungerer kanskje ikke i det hele tatt.</translation>
 <translation id="8897548669448660973">Bruk av private vinduer endrer bare hva Brave gjør på enheten din — det endrer ikke andres oppførsel. Tor skjuler IP-adressen din fra nettstedene du besøker og gjør det noe vanskeligere, men ikke umulig, for din ISP eller arbeidsgiver å se hvilke nettsteder du besøker. Åpne et privat vindu med Tor fra menyen, eller med [[ key ]].</translation>
 <translation id="6975708438781948564">Lær mer om Tor i Brave</translation>
@@ -164,6 +185,7 @@
 <translation id="9204006549413740506">Sist oppdatert</translation>
 <translation id="6745592621698551453">Oppdater nå</translation>
 <translation id="5334844597069022743">Vis kilde</translation>
+<translation id="4720556299488643018">Avslutt abonnement</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
 <translation id="4105411033440701818">Merk: Når du klikker på «Send inn», deler du nettstedsadressen, Brave-versjonsnummeret ditt og IP-adressen din med Brave-utviklerne. (IP-adressen blir ikke lagret).</translation>
@@ -274,8 +296,8 @@
 <translation id="5028274575541726856">Feil: Brave Rewards-profilen er flagget</translation>
 <translation id="2607420597216860026">Prøv igjen etter du har fullført ID-verifisering på <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Feil: Du trenger en bekreftet konto for å logge på</translation>
-<translation id="6650468331440842419">Hmm, det ser ut som om Brave Rewards-profilen din allerede er koblet til en konto i en annen region. Prøv å koble til på nytt med den tidligere kontoen din eller oppdater kontoens region så den matcher den tidligere kontoen.</translation>
-<translation id="5955021799827127089">Feil: Ulik kontoregion</translation>
+<translation id="1859789048900659918">Hmm, det ser ut til at Brave Rewards-landet ditt ikke samsvarer med <ph name="PROVIDER"/>-kontoen du prøver å koble til.</translation>
+<translation id="8925428135452218262">Feil: Landene samsvarer ikke</translation>
 <translation id="5260522591743022748">Hmm, det ser ut som at Brave Rewards allerede er bekreftet med en annen <ph name="PROVIDER"/>-konto. Prøv å bekrefte på nytt med den tidligere kontoen.</translation>
 <translation id="5111921830714291902">Feil: Annen konto</translation>
 <translation id="1024520300696337331"><ph name="PROVIDER"/>-kontoen din kan ikke knyttes til Brav Rewards-profilen din akkurat nå. <ph name="PROVIDER"/>-kontoen er registrert i et land som for tiden ikke støttes for tilkobling til Brave Rewards.</translation>
@@ -297,6 +319,8 @@
 <translation id="6682919029276027868">Den nåværende Brave Rewards-versjonen din er imidlertid begrenset. Ved verifisering med en partner innen lommebøker kan du:</translation>
 <translation id="9064931634458501855">Fritt ta ut og sette inn midler</translation>
 <translation id="3222002542796906461">Motta belønningene dine direkte i kontoen</translation>
+<translation id="1233129511866436960">Finn ut mer om regioner og support</translation>
+<translation id="7329170127335794328">Ikke tilgjengelig i din region ennå</translation>
 <translation id="8304979233901023264">Jeg har lest og samtykker til Brave’ sine <ph name="TOS_LINK_BEGIN"/>bruksvilkår<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>retningslinjene for personvern<ph name="PP_LINK_END"/>.</translation>
 <translation id="2359808026110333948">Fortsett</translation>
 <translation id="1892970806832316900">Venter frem til <ph name="DATE"/></translation>
@@ -341,6 +365,7 @@
 <translation id="6161467863097205016">Nøkkelinso seed:</translation>
 <translation id="5323604113525002127">Vi viser siste {{numberOfLines}} linjer av loggen. Hvis du vil se hele loggen, kan du laste den ned over.</translation>
 <translation id="7168491065836975228">Interne belønninger</translation>
+<translation id="1992397118740194946">Ikke angitt</translation>
 <translation id="758790787422117549">Person-ID</translation>
 <translation id="1919345977826869612">Annonser</translation>
 <translation id="3671566813999349838">Sum</translation>
@@ -362,6 +387,7 @@
 <translation id="3798449238516105146">Versjon</translation>
 <translation id="7180611975245234373">Last inn på nytt</translation>
 <translation id="1456696701804096710">Telling nytt forsøk:</translation>
+<translation id="8118649457152178086">Rewards-land:</translation>
 <translation id="2152423226436243241">Bidra automatisk</translation>
 <translation id="2927922949538312364">Engangstips</translation>
 <translation id="3164105678355419142">Gjentatt tips</translation>
@@ -647,9 +673,14 @@
 <translation id="6513892817556267573">Ethereum-navnetjenesten</translation>
 <translation id="4335039108389860301">Vil du slå på støtte for Ethereum-navnetjenesten (ENS) i Brave?</translation>
 <translation id="8328137586971750853">Brave vil bruke Infura til å sende Ethereum JSON-RPC-kall til smarkontrakten fra Ethereum Name Service for lookupforespørsler for .eth-domener. Hvis du slår på dette, vil Infura se .eth-domenet du prøver å besøke, men vil andre domener. Se også Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>brukervilkår<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>personvernerklæring<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="807404806385418949">Ethereum Name Service offchain-søk</translation>
+<translation id="4049590838234508776">Vil du aktivere støtte for Ethereum Name Service-offchainsøk i Brave?</translation>
+<translation id="1769433806670482329">Brave vil bruke offchain-gatewayer for å innfri søk etter .eth-domenenavn. Hvis du slår på dette, vil tredjeparts gatewayer se .eth-domenet du prøver å besøke, men vil ikke kunne se andre domener. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Finn ut mer<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="4047002754575891955">Fortsett med offchain-søk</translation>
 <translation id="7378412287463452336">Fortsett med Infura-serveren</translation>
 <translation id="2356070529366658676">Spør</translation>
 <translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Aktivert</translation>
 <translation id="2468755552460246661">Domenet er blokkert</translation>
 <translation id="6393849031898466746">Dette nettstedet kan prøve å spore deg på tvers av andre nettsteder</translation>
 <translation id="983774928604730749">Brave har forhindret det følgende nettstedet fra å lastes inn:</translation>
@@ -762,6 +793,8 @@
 <translation id="244362569344671266">Tjen tokener ved å se på private Brave-annonser og støtt innholdsprodusenter automatisk.</translation>
 <translation id="5095252080770652994">Fremgang</translation>
 <translation id="6278643716658443228">Rewards-innstillinger</translation>
+<translation id="2862978891748913252">Velg land</translation>
+<translation id="3717922248131893262">For å fortsette å bruke Brave Rewards må du velge landet ditt, så vi kan vise deg de riktige alternativene og annonsene for din region. <ph name="LINK_BEGIN"/>Personvernerklæring<ph name="LINK_END"/></translation>
 <translation id="6777169449483742979">Du tjener tokener for å se dette sponsede bildet.</translation>
 <translation id="5486114327664215175">Tjen tokener for å vise dette bildet og støtt innholdsskapere.</translation>
 <translation id="2940863921746574646">Token-saldo</translation>
@@ -809,9 +842,16 @@
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Ta en rask tur<ph name="TOUR_LINK_END"/> eller <ph name="LEARN_LINK_BEGIN"/>les mer<ph name="LEARN_LINK_END"/> for å få flere detaljer.</translation>
 <translation id="7465614181960492526">Tjen tokener og gi tilbake</translation>
 <translation id="2731539192954672606">Tjen tokener ved å se på personvern-respekterende annonser og støtt favorittnettstedene og innholdsprodusentene dine automatisk.</translation>
+<translation id="5425006356459378415">Brave-belønninger er ikke tilgjengelig</translation>
+<translation id="909076461795862330">Dessverre oppstod det en feil under forsøket på å konfigurere Brave Rewards. Prøv på nytt.</translation>
+<translation id="3180990265682133881">Dessverre oppstod det en feil da landet skulle angis. Prøv på nytt.</translation>
+<translation id="2191603160848789187">Nye registreringer for Brave-belønninger er deaktivert for din region for tiden. Du kan alltids prøve igjen senere. <ph name="LINK_BEGIN"/>Les mer<ph name="LINK_BEGIN"/></translation>
+<translation id="8764860730661377310">Brave Rewards-regionen din er angitt som <ph name="COUNTRY"/>.</translation>
+<translation id="7068416025603720599">Velg landet ditt, så vi kan vise deg de riktige alternativene og annonsene for din region. <ph name="LINK_BEGIN"/>Personvernerklæring<ph name="LINK_END"/></translation>
 <translation id="1275213816424141989">Kanskje senere</translation>
 <translation id="5187052478998910855">Behov for å friske opp kunnskapen om Belønninger?</translation>
 <translation id="8622329973403382303">Ta en rask omvisning og frisk opp kunnskapen om hvordan du går inn i historien som Rewards-rockestjerne!</translation>
+<translation id="4331886860862592203">Velg land</translation>
 <translation id="3115702351969988294">Hvor ofte ønsker du å se annonser?</translation>
 <translation id="7532131110478098401">(annonser per time)</translation>
 <translation id="2951964054390325080">Hvor mye støtte ønsker du å gi til favorittskaperne dine hver måned?</translation>
@@ -1040,6 +1080,7 @@
 <translation id="2708402071160162126">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen, kan ta ut verdiene dine for alltid.</translation>
 <translation id="2416098547200943834">MERK: Den private nøkkelen er gitt som en hex-kodet JSON som inneholder privatnøkkel- og protokollinfo. <ph name="LINK_START"/>Les mer<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">MERK: Den private nøkkelen må gis som en hex-kodet JSON som inneholder privatnøkkel- og protokollinfo. <ph name="LINK_START"/>Les mer<ph name="LINK_END"/>.</translation>
+<translation id="42126664696688958">Eksportér</translation>
 <translation id="2902856457593699108">Vis nøkkel</translation>
 <translation id="8033497299373164724">Skjul nøkkel</translation>
 <translation id="2702143907607790516">Kunne ikke oppdatere kontonavnet – prøv på nytt.</translation>
@@ -1050,10 +1091,8 @@
 <translation id="5398538976202345089">Nettverket støttes ikke</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Testnettverk</translation>
-<translation id="4245123003308024264">Ropsten</translation>
-<translation id="2219337030359508039">Kovan</translation>
-<translation id="992469614838016642">Rinkeby</translation>
 <translation id="4022672158058543834">Goerli</translation>
+<translation id="6742767287935968736">Sepolia</translation>
 <translation id="1260818237399583903">Binance Smart Chain</translation>
 <translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
@@ -1067,7 +1106,7 @@
 <translation id="59223531494896848">Begrensning</translation>
 <translation id="8569380433211549748">Pris i</translation>
 <translation id="2490428413101944234">Test faucet</translation>
-<translation id="3352959425838279177">Få Ether fra en kran for <ph name="SELECTED_NETWORK"/></translation>
+<translation id="3352959425838279177">Hent Eter fra en kran for <ph name="SELECTED_NETWORK"/></translation>
 <translation id="6449626816252815844">Velg kjøpsmetode</translation>
 <translation id="8009571545960303544">Det bes om signaturen din</translation>
 <translation id="5294062982587710720">Vær oppmerksom på at Brave ikke kan gå god for hva som skjer hvis du signerer. En signatur kan autorisere nesten en hvilken som helst operasjon i kontoen din eller på dine vegne, herunder blant annet å gi full kontroll over kontoen og kryptoressursene dine til siden som kommer med forespørselen, Signer bare hvis du er sikker på at du stoler på den aktuelle siden og vil gjøre denne handlingen.</translation>
@@ -1242,8 +1281,9 @@
 <translation id="6169371176266800104">24 timer</translation>
 <translation id="7677692756188354224">Mkt.-grense</translation>
 <translation id="4430019312045809116">Volum</translation>
+<translation id="4312994183947987913">Kjøp/deponer</translation>
 <translation id="5133421763709317473">Ingen ressurser matcher søket eller filteret</translation>
-<translation id="8813832913015888458">Denne ressursen støttes ikke av Brave-lommeboken</translation>
+<translation id="7383613643114466279">Denne ressursen støttes ikke av Brave-lommeboken</translation>
 <translation id="6423985584914773314">Ikke en gyldig FIL-adresse</translation>
 <translation id="3898731124813934210">Kjøp med Wyre</translation>
 <translation id="5522073372365069684">Kjøp med Ramp</translation>
@@ -1256,6 +1296,26 @@
 <translation id="8528916244724490964">Alle nettverk</translation>
 <translation id="4038403584813842767">Balanse ↑</translation>
 <translation id="1695096446857675822">Balanse ↓</translation>
+<translation id="7198018180583855568">Alle kontoer</translation>
+<translation id="6954150712710630841">Transaksjonen er sendt</translation>
+<translation id="905855245798176174">Transaksjonen er send til nettverket og venter på bekreftelse.</translation>
+<translation id="3183790760060544368"><ph name="VALUE"/> ble returnert til lommeboken din</translation>
+<translation id="4577432071459867390">Transaksjonen mislyktes</translation>
+<translation id="4359235192593147041">Transaksjonen mislyktes som følge av en stor prisendring. Øk slingringstoleransen for å gjennomføre transaksjoner ved større prisendringer.</translation>
+<translation id="8584830404080597280">Ny handel</translation>
+<translation id="8065905913745172640">Ny transaksjon</translation>
+<translation id="9079041000600020902">Vis feil</translation>
+<translation id="6257687515171395402">Kvittering</translation>
+<translation id="7065228161830418508">Feilmelding</translation>
+<translation id="5711048370886541571">Lagre feilmeldingen for referanse.</translation>
+<translation id="4315561646577477669">Byttet <ph name="MAKER"/> i <ph name="TAKER"/></translation>
+<translation id="5896915466769225182">Transaksjonen er fullført!</translation>
+<translation id="3541662075332902575">Transaksjonen ble inkludert i en blokk. For å unngå risiko for dobbeltforbruk anbefaler vi å vente på blokkbekreftelser.</translation>
+<translation id="1349457304183253101">Transaksjonen behandles</translation>
+<translation id="5132698868627864842">Bekrefter</translation>
+<translation id="5601436886921227795">Dapp-interaksjon</translation>
+<translation id="9104177294757104789">Send <ph name="VALUE"/></translation>
+<translation id="4048336522751528394">Bytt <ph name="MAKER"/> til <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">Sekundære nettverk</translation>
 <translation id="2816106784624007524">«Gas»-grensen må være et heltall større enn 0</translation>
 <translation id="3354376789153561654">Transaksjonsdata må spesifiseres</translation>
@@ -1280,6 +1340,45 @@
 <translation id="4719005063558335704">Kontoer:</translation>
 <translation id="4337554812324118382">Data:</translation>
 <translation id="569870799832027680">Program-ID:</translation>
+<translation id="9071560809248786823">Lamports</translation>
+<translation id="6129953537138746214">Mellomrom</translation>
+<translation id="2333894833508885986">Eierprogram</translation>
+<translation id="673881072848521017">Base</translation>
+<translation id="6602282658898162258">Seed</translation>
+<translation id="6985542807131223826">Fullmakt</translation>
+<translation id="938125553895090449">Ny fullmakt</translation>
+<translation id="6309334520637986016">Fra Seed</translation>
+<translation id="7779353517712893336">Fra eierprogram</translation>
+<translation id="3116904380055282595">Desimaler</translation>
+<translation id="2576809855031734288">Mint-fullmakt</translation>
+<translation id="3472592357259422295">Frys fullmakt</translation>
+<translation id="6965572321703653296">Fullmaktstype</translation>
+<translation id="21140452451144431">Antallet signatarer</translation>
+<translation id="5108161910968957837">Fra konto</translation>
+<translation id="174345730328470349">Til konto</translation>
+<translation id="2687968143695057804">Ny konto</translation>
+<translation id="8274326034751772925">Tilordnet konto</translation>
+<translation id="3287245755942479694">Opprettet konto</translation>
+<translation id="6559616978170662285">Basiskonto</translation>
+<translation id="3157085877070297608">Nonce-konto</translation>
+<translation id="3052313599928914393">Nonce-fullmakt</translation>
+<translation id="2818177840313215015">Allokert konto</translation>
+<translation id="3332926854409491692">Rent sysvar</translation>
+<translation id="1338923714285924422">RecentBlockhashes sysvar</translation>
+<translation id="7718273517583726718">Initialisert mint</translation>
+<translation id="1982396945501942785">Initialisert konto</translation>
+<translation id="4448996702733695148">Initialisert multisig-konto</translation>
+<translation id="8881659593032980372">Brent konto</translation>
+<translation id="5601061394286676366">Lukket konto</translation>
+<translation id="4100192671552260674">Fryst konto</translation>
+<translation id="1865659351831046902">Innebygd token-konto</translation>
+<translation id="3430421677512658698">Token mint</translation>
+<translation id="5371133472668945195">Mint</translation>
+<translation id="3591768665664470087">Signatarer</translation>
+<translation id="2761935211528145049">Delegat</translation>
+<translation id="5048094297412542354">Eier/delegat</translation>
+<translation id="6600221609132728151">Kontoeier/delegat</translation>
+<translation id="1444051660240401461">Endret Mint eller konto</translation>
 <translation id="7843211152394841558">Maks. nye forsøk:</translation>
 <translation id="8496335570810457">Preflight-forpliktelse:</translation>
 <translation id="5100124500279922001">Hopp over Preflight:</translation>
@@ -1289,6 +1388,7 @@
 <translation id="2095142195578664632">Trenger du hjelp? Gå til</translation>
 <translation id="3253669416991680932">Maskinvarelommeboken støtter ikke denne handlingen.</translation>
 <translation id="7457027586454688423">Skriv inn passordet til Brave-lommeboken din</translation>
+<translation id="7553242001898162573">Skriv inn passord</translation>
 <translation id="2873714185189940594">Vil du åpne Rainbow Bridge-appen?</translation>
 <translation id="2069777099181262239">Rainbow Bridge er en uavhengig tjeneste som hjelper deg å brygge bro mellom ressurser på tvers av nettverk, og bruke kryptoen din i andre nettverk og DApp-økosystemer. Å bygge broer mellom nettverk kan noen ganger være forbudet med en viss risiko.</translation>
 <translation id="7387899248733396663">Les mer om hvordan du bruker Rainbow Bridge</translation>
@@ -1395,6 +1495,9 @@
 <translation id="7657322905916621147">Gjenopprettingsfrasen må være på 12, 15, 18, 21 eller 24 ord.</translation>
 <translation id="5307206077701819797">Fant ingen NFT-er i lommeboken din. Du kan legge til NFT-er ved å klikke på «+ Synlige ressurser»-knappen nederst på «Portefølje»-fanen.</translation>
 <translation id="3528540388456395658">Ingen NFT-er matcher søket eller filteret</translation>
+<translation id="5026874946691314267">Ikke vis dette igjen.</translation>
+<translation id="434502623875309667">Adresseresolusjon krever offchain-nettverksforespørsler. Vil du fortsette?</translation>
+<translation id="2779500703989728346">NFT</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>
@@ -1403,6 +1506,7 @@
 <translation id="6951743416068151209">Tor-mellomtjener-URI</translation>
 <translation id="1671503397662036257">Tor-tilkoblingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialiseringsprosess</translation>
+<translation id="6303294677342628402">Skjold</translation>
 <translation id="8458987127502506209">Aktiver Brave Shields</translation>
 <translation id="7509914170164691086">Skjoldene er OPPE <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Skjoldene er NEDE <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
@@ -1436,7 +1540,6 @@
 <translation id="7194012750329511146">Brave Shields 
 <ph name="NUMBER"/>Sporere, annonser med mer er blokkert</translation>
 <translation id="4292121526390005808">Blokkerte skript</translation>
-<translation id="6303294677342628402">Skjold</translation>
 <translation id="264682546981571963">Lei av meldinger om å godta informasjonskapsler?</translation>
 <translation id="4986297793092101884">Brave blokkerer allerede informasjonskapsler fra tredjepart. Vi kan blokkere meldinger om å godta informasjonskapsler også.</translation>
 <translation id="535688588637568715">Ja, blokker meldinger om å godta informasjonskapsler</translation>
@@ -1499,4 +1602,14 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="3632460243282703117">Abonner</translation>
+<translation id="5227905322248018544">Skjul og ikke vis dette igjen</translation>
+<translation id="3546750666732517156">Privat vindu med Tor-tilkobling</translation>
+<translation id="5383068818957293256">Brave husker aldri hva du gjør i private vinduer. Med Tor-tilkobling er IP-adressen din også skjult for nettstedene du besøker. Men hvis den personlige tryggheten din er avhengig av at du forblir anonym, må du bruke Tor-nettleseren i stedet.</translation>
+<translation id="3338507774653218581">Brave husker aldri hva du gjør i et Privat Vindu. Med Tor-tilkobling får du også to fordeler til: IP-adressen din skjules for sidene du besøker, og sidene du besøker skjules fra passive nettverksobservatører. Vær oppmerksom på at Tor kan senke nettleserhastigheten eller gjøre at enkelte nettsider ikke fungerer.</translation>
+<translation id="8666930656222843375">Et privat Tor-vindu gjør det vanskeligere (men ikke umulig) for internettleverandøren eller arbeidsgiveren din (hvis du bruker en jobbmaskin eller et jobbnettverk) å se hvilke sider du besøker. Selv et privat vindu med Tor vil imidlertid ikke kunne sikre deg fullstendig mot sporing. Hvis din personlige sikkerhet avhenger av at du er fullstendig anonym, bør du bruke Tor Browser i stedet.</translation>
+<translation id="4644024131266615376">med Tor-tilkobling</translation>
+<translation id="6650468331440842419">Hmm, det ser ut som om Brave Rewards-profilen din allerede er koblet til en konto i en annen region. Prøv å koble til på nytt med den tidligere kontoen din eller oppdater kontoens region så den matcher den tidligere kontoen.</translation>
+<translation id="5955021799827127089">Feil: Ulik kontoregion</translation>
+<translation id="8813832913015888458">Denne ressursen støttes ikke av Brave-lommeboken</translation>
 </translationbundle>

@@ -54,6 +54,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="7291143854620707672">Alle Brave-gegevens die worden gegenereerd bij het gebruik van dit profiel (zoals bookmarks, geschiedenis, wachtwoorden en andere instellingen) kunnen worden verwijderd door de beheerder van het werkprofiel. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Er is tijdens de installatie een fout opgetreden in het besturingssysteem. Download Brave opnieuw.</translation>
 <translation id="2648689842065142443">Als je een apparaat deelt, kunnen vrienden en familie afzonderlijk surfen en Brave instellen zoals zij dat willen.</translation>
+<translation id="5926459996518749366">Brave heeft dit archiefbestand geblokkeerd omdat het misschien malware bevat</translation>
 <translation id="6384359666082467439">Welkom bij Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Brave-tabblad</translation>
 <translation id="8372880274820509128">Je gegevens worden voor extra beveiliging door Brave gecodeerd.</translation>
@@ -196,6 +197,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> is toegevoegd aan Brave</translation>
 <translation id="608006075545470555">Werkprofiel toevoegen aan deze browser</translation>
 <translation id="5849446944780602366">Brave aanpassen en beheren. Update is beschikbaar</translation>
+<translation id="7433698744896946664">Toestaan dat de extensie toegangsverzoeken toont op de Brave-werkbalk</translation>
 <translation id="492209281555538239">Brave slaat dit wachtwoord op in je Brave-account. Je hoeft het niet te onthouden.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
 <translation id="7006260220514217183">Safe Browsing staat uit. Brave raadt je aan deze functie aan te zetten.</translation>
@@ -287,6 +289,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8678991866891573053">Brave bevat nieuwe experimentele functies waarmee sites dezelfde browsefunctionaliteit kunnen leveren terwijl er minder van je gegevens worden gebruikt</translation>
 <translation id="3343095737966473035">Brave is niet je standaardbrowser</translation>
 <translation id="5477319665405831211">Brave synchroniseren en personaliseren op al je apparaten</translation>
+<translation id="2280238321454602884">Als deze instelling aanstaat, claimt Brave geheugen terug van tabbladen die je niet actief gebruikt. Zo worden de resources van je computer vrijgemaakt voor andere taken en blijft Brave snel. Inactieve tabbladen worden leeg weergegeven en worden automatisch opnieuw geladen als je erop klikt. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> of <ph name="BEGIN_LINK_2"/>feedback sturen<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Hiermee worden je browsegegevens verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Het installatieprogramma kan geen tijdelijke directory maken. Controleer of je nog schijfruimte hebt en of je rechten hebt om software te installeren.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -315,6 +318,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="6914496861676471566">Het archief van het installatieprogramma is beschadigd of ongeldig. Download Brave opnieuw.</translation>
 <translation id="6431861494713261006">Optioneel: Help de functies en prestaties van Brave OS te verbeteren door automatisch diagnostische en gebruiksgegevens naar Brave te sturen.</translation>
 <translation id="2097604701283463988">Brave is verouderd</translation>
+<translation id="607365808648940765">Zo nodig claimt Brave geheugen terug van tabbladen die je niet actief gebruikt. Je kunt dit altijd wijzigen in de instellingen.</translation>
 <translation id="8550334526674375523">Dit werkprofiel is volledig gescheiden van je persoonlijke profiel.</translation>
 <translation id="2452889775041290116">Je ouder heeft Rechten voor sites, apps en extensies uitgezet voor Brave. Je mag deze <ph name="EXTENSION_TYPE_PARAMETER"/> niet toevoegen.</translation>
 <translation id="8502436661255886343">Als je toekomstige Brave-updates wilt krijgen, heb je macOS 10.13 of hoger nodig. Deze computer gebruikt macOS 10.12.</translation>

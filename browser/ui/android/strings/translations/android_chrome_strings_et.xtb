@@ -441,6 +441,7 @@ Kui kustutate oma sirvimisajaloo – kogu ajaloo või konkreetse saidi ajaloo �
 <translation id="3435465986463792564">Kas teil on palju aknaid? Saate neid kõiki siin hallata.</translation>
 <translation id="3443221991560634068">Praeguse lehe uuesti laadimine</translation>
 <translation id="3444179773590444986">Kas soovite saitide tumeda teema kohta tagasisidet jagada?</translation>
+<translation id="7384339501748168186">Teie privaatsuse kaitsmiseks ei sisesta Brave sellele väljale automaatselt parooli.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 allalaadimine on ajastatud}other{# allalaadimist on ajastatud}}</translation>
 <translation id="3474624961160222204">Jätka kasutajana <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Võite valida oma otsingumootori</translation>
@@ -658,6 +659,7 @@ Veebisaidil <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> v�
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Paroolid salvestatakse rakendusse Paroolihaldur selles seadmes</translation>
 <translation id="4766678251456904326">Konto lisamine seadmesse</translation>
+<translation id="4787736314074622408">Kas soovite faili <ph name="ITEM_TITLE"/> kustutada?</translation>
 <translation id="4791358705705538979">Aitab teil kõikjal veebis toiminguid (nt maksmine) lõpule viia</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Parooli krüpteerimine ei hõlma Google Pay makseviise ja aadresse.
@@ -726,6 +728,7 @@ Seade muutmiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_
 <translation id="4744980273298156620">Varsti näete uue vahelehe avamisel lugusid saidilt <ph name="SITE_NAME"/>. Jälgitud saidid salvestatakse teie Brave'i kontole. Saate neid hallata teenuse Discover seadetes.</translation>
 <translation id="5091249083535528968">Laiendatud kasutusandmed</translation>
 <translation id="509429900233858213">Tekkis viga.</translation>
+<translation id="5099845111805573968">Kui valite ühe korra arvutisaidi, rakendatakse seade saidi jaoks ka järgmistel külastuskordadel</translation>
 <translation id="225414324447409614">Kui sait üritab teie parooli varastada või laadite alla kahjuliku faili, võib Brave saata URL-id ja lehe sisu osad teenusele Brave'i ohutu sirvimine</translation>
 <translation id="510275257476243843">Jäänud on 1 tund</translation>
 <translation id="5115811374190515607">teenusesse <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Seade muutmiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_
 <translation id="5958275228015807058">Leidke oma failid ja lehed jaotisest Allalaadimised</translation>
 <translation id="5962718611393537961">Ahendamiseks puudutage</translation>
 <translation id="5964869237734432770">Piltide kirjelduste peatam.</translation>
+<translation id="9135546826883360971">Brave jätab teie valiku meelde</translation>
 <translation id="5979084224081478209">Kontrolli paroole</translation>
 <translation id="5995726099713306770">Kas soovite lehe uuesti alla laadida?</translation>
 <translation id="6456271171669383967">Säilita Brave</translation>
@@ -920,6 +924,7 @@ Privaatsuse liivakasti prooviperioodid on endiselt arendusjärgus ja saadaval va
 <translation id="6192907950379606605">Piltide kirjelduste saamine</translation>
 <translation id="8367262879301982880">Paroolid salvestatakse Brave'i paroolihaldurisse selles seadmes</translation>
 <translation id="620197886010707372">Kas soovite avada rakenduse <ph name="APPNAME"/> Google Playga?</translation>
+<translation id="6202812185118613467">Sünkroonimise alustamiseks logige uuesti sisse</translation>
 <translation id="6203593061661911168">Allalaadimine algab, kui loodud on WiFi-ühendus</translation>
 <translation id="6210748933810148297">Kas pole <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Selle lehe eelvaade</translation>
@@ -1051,6 +1056,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, vaheleht, valitud</translation>
 <translation id="6828070228333235514">Peata hinna jälgimine</translation>
+<translation id="6830728435402077660">Pole turvaline</translation>
 <translation id="6833996806551876956">Privaatsuse liivakasti prooviperiood</translation>
 <translation id="6836206421467243968">Vahelehegrupi <ph name="TITLE_OF_GROUP"/> taastamine uue taustal oleva vahelehegrupina.</translation>
 <translation id="6846298663435243399">Laadimine…</translation>
@@ -1351,7 +1357,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="8460448946170646641">Vaadake üle peamised privaatsus- ja turvaseaded</translation>
 <translation id="8461694314515752532">Krüpteeri sünkroonitud andmed sünkroonimisparooliga</translation>
 <translation id="8466613982764129868">Veenduge, et seadmel <ph name="TARGET_DEVICE_NAME"/> oleks internetiühendus</translation>
-<translation id="8473863474539038330">Aadressid ja muu</translation>
+<translation id="5633907266617216186">Aadressid ja muu</translation>
 <translation id="8481921391193215807">Kui see on sisse lülitatud, võivad saidid oma sisu ja teenuste pakkumiseks kasutada siin kuvatud privaatsust säilitavaid meetodeid. Need hõlmavad saitidevahelise jälgimise alternatiive. Aja jooksul võidakse lisada rohkem prooviversioone.
 
 <ph name="BEGIN_LIST_ITEM1"/>Reklaamijad ja väljaandjad saavad kasutada FLoC-tehnoloogiat.<ph name="END_LIST_ITEM1"/>

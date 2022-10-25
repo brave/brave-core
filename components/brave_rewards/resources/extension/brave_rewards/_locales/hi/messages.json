@@ -398,12 +398,97 @@
     "message": "अपर्याप्त राशि के कारण आपके पास लंबित टिप्स हैं",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "बंद करें",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "जारी रखें",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "टोकन कमाएँ और वापस दें",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "गोपनीयता का सम्मान करने वाले विज्ञापन देखकर टोकन कमाएँ और अपने पसंदीदा साइटों और कंटेंट रचनाकारों का स्वचालित रूप से सपोर्ट करें।",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "कुछ गलत हो गया",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave रिवॉर्ड उपलब्ध नहीं हैं",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "बदकिस्तमी से Brave रिवॉर्ड को सेट अप करने में गड़बड़ी हुई थी. कृपया फिर से कोशिश करें.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "बदकिस्मती से अपका देश सेट करने में गड़बड़ी हुई थी. कृपया फिर से कोशिश करें.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Brave रिवॉर्ड के लिए नए साइनअप अभी बद हैं. हालाँकि, आप बाद में फिर से कोशिश कर सकते हैं. $link_begin$और जानें$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "अपना देश चुनें",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "धन्यवाद!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "आपके Brave रिवॉर्ड क्षेत्र को $country$ पर सेट कर दिया गया है.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प और विज्ञापन दिखा सकें. $link_begin$निजता नीति$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Brave रिवॉर्ड का इस्तेमाल करते रहने के लिए अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प और विज्ञापन दिखा सकें. $link_begin$निजता नीति$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "सेव करें",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "अपना देश चुनें",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

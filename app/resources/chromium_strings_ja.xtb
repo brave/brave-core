@@ -52,6 +52,7 @@
 <translation id="7291143854620707672">このプロファイルの使用中に生成された Brave データ（ブックマーク、履歴、パスワード、他の設定など）は、仕事用プロファイルの管理者によって削除される場合があります。<ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">インストール中にオペレーティング システム エラーが発生しました。Brave をダウンロードし直してください。</translation>
 <translation id="2648689842065142443">デバイスを共有している場合でも、友だちや家族はそれぞれ Brave を自分専用のブラウザとして自分用の設定をして使うことができます</translation>
+<translation id="5926459996518749366">このアーカイブ ファイルはマルウェアが潜んでいる可能性があるため、Brave でブロックされました</translation>
 <translation id="6384359666082467439"><ph name="ACCOUNT_FIRST_NAME"/> さん、Brave へようこそ</translation>
 <translation id="6791166902140255175">Brave タブ</translation>
 <translation id="8372880274820509128">セキュリティ強化のため、Brave ではデータが暗号化されます。</translation>
@@ -101,7 +102,7 @@
 <translation id="1073077513148817424">別のアカウントですでにログインしています。ブラウジング環境を分ける場合は、Brave で自分用のプロフィールを作成できます。</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/> から Android スマートフォンに番号を送信するには、両方のデバイスで Brave にログインしてください。</translation>
 <translation id="4304059894777924102">Brave がパスワードを確認できません。インターネット接続を確認してみてください。</translation>
-<translation id="2100587595569959771">Brave での広告のカスタマイズの詳細</translation>
+<translation id="2100587595569959771">Brave での広告のパーソナライズの詳細</translation>
 <translation id="1807774211756215222">新しい Brave タブでリンクを開く(&amp;T)</translation>
 <translation id="7453070689008684791">Brave からお客様のドライブにアクセスして、アドレスバーに候補を表示します</translation>
 <translation id="2106568569080763501">Brave では、ウェブサイト上の電話番号をクリックするだけで Skype で通話を発信できます。</translation>
@@ -194,6 +195,7 @@
 <translation id="7861579472672677409">「<ph name="EXTENSION_NAME"/>」が Brave に追加されました</translation>
 <translation id="608006075545470555">このブラウザに仕事用プロファイルを追加</translation>
 <translation id="5849446944780602366">Brave をカスタマイズしてご活用ください。アップデートが利用可能です。</translation>
+<translation id="7433698744896946664">拡張機能に Brave ツールバーへのアクセス リクエストの表示を許可する</translation>
 <translation id="492209281555538239">このパスワードは Brave アカウントに保存されるため、覚えておく必要はありません。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> は危険なファイルであるため、Brave でブロックしました。</translation>
 <translation id="7006260220514217183">セーフ ブラウジングがオフになっています。Brave はオンにすることをおすすめしています。</translation>
@@ -285,6 +287,7 @@
 <translation id="8678991866891573053">Brave では、使用されるユーザーデータの量を抑えつつ、同じようにサイトをブラウジングできる新機能をテストしています</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="5477319665405831211">同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
+<translation id="2280238321454602884">オンにすると、使用していないタブのメモリが再利用されます。これにより、パソコンのリソースを他のタスクに解放して、Brave を高速な状態に維持できます。使用していないタブは空白になり、クリックすると自動的に再読み込みされます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/>または<ph name="BEGIN_LINK_2"/>フィードバックを送信<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">このデバイスから閲覧データを削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="7747138024166251722">インストーラーの一時ディレクトリを作成できませんでした。ディスクの空き領域とソフトウェアのインストール許可があることを確認してください。</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -313,6 +316,7 @@
 <translation id="6914496861676471566">インストーラ アーカイブが壊れているか無効です。Brave をダウンロードし直してください。</translation>
 <translation id="6431861494713261006">任意: 診断と使用状況のデータを Brave に自動送信して、Chrome OS の機能とパフォーマンスの改善に協力する。</translation>
 <translation id="2097604701283463988">Brave は古いバージョンです</translation>
+<translation id="607365808648940765">Brave では必要に応じて、使用していないタブのメモリが再利用されます。これは [設定] でいつでも変更できます。</translation>
 <translation id="8550334526674375523">この仕事用プロファイルは個人用プロファイルとは別に管理されます。</translation>
 <translation id="2452889775041290116">保護者が Brave の「サイト、アプリ、拡張機能の権限」をオフにしました。この <ph name="EXTENSION_TYPE_PARAMETER"/> を追加することはできません。</translation>
 <translation id="8502436661255886343">今後、Brave のアップデートを受信するには、macOS 10.13 以降が必要となります。このコンピュータでは macOS 10.12 が実行されています。</translation>

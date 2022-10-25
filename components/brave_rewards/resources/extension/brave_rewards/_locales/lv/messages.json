@@ -398,12 +398,97 @@
     "message": "Jums ir nesamaksātas dzeramnaudas nepietiekamu līdzekļu dēļ",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Aizvērt",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Turpināt",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Pelnīt žetonus un Atdot atpakaļ",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Nopelniet žetonus, apskatot konfidencialitāti cienošas reklāmas, un automātiski atbalstiet savas iecienītākās vietnes un veidotājus.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Radusies kļūda",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards nav pieejami",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Diemžēl radās kļūda, iestatot Brave Rewards. Lūdzu, mēģiniet vēlreiz.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Diemžēl radās kļūda, iestatot valsti. Lūdzu, mēģiniet vēlreiz.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Jūsu reģionā pašlaik atspējotas jaunas reģistrācijas Brave Rewards. Taču jūs vienmēr varat mēģināt vēlreiz. $link_begin$Uzzināt vairāk$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Atlasīt valsti",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Paldies!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Jūsu Brave Rewards reģions ir iestatīts: $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Atlasiet valsti, lai varam jums parādīt pareizās opcijas un reklāmas jūsu reģionam. $link_begin$Privātuma politika$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Lai turpinātu izmantot Brave Rewards, atlasiet valsti, lai varam jums parādīt pareizās opcijas un reklāmas jūsu reģionam. $link_begin$Privātuma politika$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Saglabāt",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Atlasīt valsti",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

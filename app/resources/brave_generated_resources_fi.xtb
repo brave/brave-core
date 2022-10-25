@@ -85,10 +85,6 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8303432794159193481">Brave-selaimen kehittäjän sovellukset</translation>
 <translation id="8292967014767479012">Brave-selainsovellukset</translation>
 <translation id="4743468424889072281">Brave-selaimen kehityssovellukset</translation>
-<translation id="239760341987199724">Aseta Brave oletusselaimeksi</translation>
-<translation id="1391855377994926460">Jatka verkon selailua nopeammin – jopa 6x nopeammin suosituilla uutissivustoilla.</translation>
-<translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
-<translation id="3479552764303398839">Ei nyt</translation>
 <translation id="732814027519296280">Haluatko tehdä Brave Search -palvelusta entistä paremman?</translation>
 <translation id="2677865600861971449">Osallistu verkon löytämisprojektiin anonyymisti haku- ja selaustietojen antamiseksi ja Brave Search -hakutuloksien parantamiseksi. Privacy-preserving. Se ei vaadi mitään vaivaa. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Lisätietoja</translation>
@@ -204,9 +200,10 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="6817415381278637662">Aseta Brave oletusselaimeksi, niin saat Braven yksityisyyssuojan käyttöösi jokaisella avaamallasi verkkosivulla.</translation>
 <translation id="8722651357687610395">Aseta Brave oletukseksi</translation>
 <translation id="2370739752330685659">Ehkä myöhemmin</translation>
+<translation id="7537601449003285327">Kiinnitä tehtäväpalkkiin</translation>
 <translation id="961012016278832836">Vanha Microsoft Edge -versio</translation>
 <translation id="6436994631426134065">Tuotu selaimesta <ph name="BROWSER_NAME"/></translation>
-<translation id="1506190932569739298">Kopioi puhdas linkki (vain ensisijainen URL-osoite)</translation>
+<translation id="7630214457764713113">Kopioi puhdas linkki</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Braven seuraavan kerran.</translation>
 <translation id="7179921470347911571">Käynnistä uudelleen nyt</translation>
 <translation id="4472575034687746823">Aloita</translation>
@@ -246,10 +243,17 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3719826155360621982">Kotisivu</translation>
 <translation id="5448570825852364919">Tyhjä sivu</translation>
 <translation id="5919424224662539292">Muokkaa uudella välilehtisivulla näkyvä taustakuva ja widgetit mieleisiksesi</translation>
+<translation id="7461924472993315131">Kiinnitä</translation>
+<translation id="7506648566440714944">Brave on jo kiinnitetty</translation>
+<translation id="3195845168740336657">Shields-asetukset</translation>
+<translation id="754769152790647708">Shields-tila</translation>
+<translation id="3615717588724840230">Sivustot voivat estää seurantavälineitä, mainoksia ja sormenjälkkitunnistuksen käyttäen Shieldsiä</translation>
+<translation id="5690973901138662477">Shields käytössä</translation>
+<translation id="4697275813919189958">Shields ei käytössä</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="7133511168130368997">Estä seuraimet ja mainokset, jotka seuraavat sinua verkossa.</translation>
 <translation id="2761825942249694703">Nämä ovat oletusarvoiset Shields-asetukset. Ne pätevät kaikilla verkkosivuilla, ellet tee muutoksia jonkin tietyn sivun Shields-ohjauspaneelissa. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.</translation>
-<translation id="1435116578479068303">Tämä estää useimmat mainokset verkkosivustoilla, ei yksityisiä Brave-mainoksia – niitä hallitaan <ph name="BEGIN_LINK"/>Brave-palkintojen<ph name="END_LINK"/> asetuksissa.</translation>
+<translation id="1435116578479068303">Tämä estää useimmat mainokset verkkosivustoilla, mutta ei Braven yksityisiä mainoksia –niitä hallitaan <ph name="BEGIN_LINK"/>Brave-palkinto-ohjelman<ph name="END_LINK"/> asetuksissa.</translation>
 <translation id="8452536890042542134">Tämä estää useimmat mainokset verkkosivustoilla.</translation>
 <translation id="4800195524776354947">Näytä estettyjen kohteiden lukumäärä Suojakilpi-kuvakkessa</translation>
 <translation id="5510493033031835532">AMP-sivujen automaattinen uudelleenohjaus</translation>
@@ -259,7 +263,6 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="2133317862976486547">Seurainten ja mainosten estäminen</translation>
 <translation id="4078738236287221428">Aggressiivinen</translation>
 <translation id="7740996059027112821">Vakio</translation>
-<translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="4824468494729001999">Estä komentosarjat</translation>
 <translation id="6531019308847917584">Estä sormenjälkitunnistus</translation>
 <translation id="5533533363827555308">Ankara, voi rikkoa sivustoja</translation>
@@ -269,14 +272,14 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="7390783310074170337">Oletusnäkymä</translation>
 <translation id="130615081792797568">Yksinkertainen näkymä</translation>
 <translation id="2360360976480535628">Edistynyt näkymä</translation>
-<translation id="6486983549008741930">Sisällön suodatus</translation>
+<translation id="101592339984642584">Sisällön suodattaminen</translation>
 <translation id="8694564340481124390">Ota käyttöön mukautetut suodattimet, jotka estävät alueelliset ja kielikohtaiset seurantavälineet ja häiriötekijät.</translation>
-<translation id="6522618763902154348">Ota käyttöön mukautetut suodattimet, jotka estävät alueelliset ja kielikohtaiset seurantalaitteet ja
-<ph name="BEGIN_LINK"/>häiriötekijät<ph name="END_LINK"/>.</translation>
+<translation id="4877657558909976793">Ota käyttöön mukautetut suodattimet, jotka estävät alueelliset ja kieliperusteiset seurantavälineet ja
+   <ph name="BEGIN_LINK"/>riesat<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Lisää mukautettuja suodatinluetteloita</translation>
 <translation id="1020877116991797978">Lisää muita luottamasi yhteisön luomia ja ylläpitämiä luetteloita.</translation>
 <translation id="7617831480435794399">Liity vain luottamiesi entiteettien listoille. Selaimesi tarkistaa säännöllisesti listan päivitykset antamastasi URL-osoitteesta, paljastaen IP-osoitteesi niiden palvelimelle.</translation>
-<translation id="2831397936251948638">Luo muokattuja suodattimia</translation>
+<translation id="8580328754808744073">Luo mukautettuja suodattimia</translation>
 <translation id="4618274268052410139">Lisää luomiasi mukautettuja suodattimia, yksi per rivi, alla olevaan kenttään. Muista käyttää <ph name="BEGIN_LINK"/>Adblock-suodatinsyntaksia<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Lisää</translation>
 <translation id="571950783952070673">Luettelon URL</translation>
@@ -292,6 +295,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5438573563213942361">Muokatut luettelot</translation>
 <translation id="4182731739150761577">Näytä koko luettelo</translation>
 <translation id="1340263054776016283">Anna suodatinluettelon URL</translation>
+<translation id="8578397014396032341">Sisältösuodattimet</translation>
 <translation id="6821903322090655051">Brave Rewards -ei ole käytössä</translation>
 <translation id="413570371620795359">Ota käyttöön avaamalla Palkinnot-paneeli ja aloita</translation>
 <translation id="3849957491997306859">Havaittu automaattisesti</translation>
@@ -402,6 +406,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5927916530277631319">Pysäyttämättömien verkkotunnusten käsittelytapa</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/> Etheriumin tietosuojanäkökohdista.</translation>
 <translation id="5248318250177143470">ENS-palvelun (Ethereum Name Service) selvityskeino</translation>
+<translation id="6421218422395686663">Salli ketjun ulkopuolinen ENS-haku.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/> ketjun ulkopuolisten ENS-hakujen tietosuojanäkökohdista.</translation>
 <translation id="6241402707160226266">Yksityinen ikkuna Tor-palvelussa</translation>
 <translation id="8762452230727230396">Tor piilottaa IP-osoitteesi vierailemiltasi sivustoilta.</translation>
 <translation id="2959986444009520721">Käytä siltoja</translation>
@@ -563,4 +569,9 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5318548116565208315">Karamellimaissi-kuvake</translation>
 <translation id="1959966725083452288">Kuninkaallinen karamelli -kuvake</translation>
 <translation id="2039034364578911089">Karamellininja-kuvake</translation>
+<translation id="239760341987199724">Aseta Brave oletusselaimeksi</translation>
+<translation id="1391855377994926460">Jatka verkon selailua nopeammin – jopa 6x nopeammin suosituilla uutissivustoilla.</translation>
+<translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
+<translation id="3479552764303398839">Ei nyt</translation>
+<translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 </translationbundle>

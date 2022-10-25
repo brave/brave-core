@@ -85,10 +85,6 @@
 <translation id="8303432794159193481">Brave ব্রাউজার ডেভ অ্যাপস</translation>
 <translation id="8292967014767479012">Brave ব্রাউজার অ্যাপস</translation>
 <translation id="4743468424889072281">Brave ব্রাউজার ডেভেলপমেন্ট অ্যাপস</translation>
-<translation id="239760341987199724">Brave কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
-<translation id="1391855377994926460">আরো দ্রুত ওয়েব ব্রাউজ করুন - মুখ্য সংবাদের সাইটগুলিতে 6x পর্যন্ত দ্রুত ব্রাউজ করুন।</translation>
-<translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>
-<translation id="3479552764303398839">এখনই নয়</translation>
 <translation id="732814027519296280">Brave অনুসন্ধানকে আরও উন্নত করতে চান?</translation>
 <translation id="2677865600861971449">বেনামে কিছু অনুসন্ধান &amp; ব্রাউজিং ডেটায় অবদান রাখতে ওয়েব আবিষ্কার প্রোজেক্টের সুবিধা নিন এবং সকলের জন্য Brave অনুসন্ধান উন্নত করুন। গোপনীয়্তা-রক্ষণ। এবং শূন্য প্রয়াস। <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
@@ -204,9 +200,10 @@
 <translation id="6817415381278637662">আপনার খোলা প্রতিটি ওয়েব পৃষ্ঠাতে Brave-এর গোপনীয়তা সুরক্ষা পেতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন।</translation>
 <translation id="8722651357687610395">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
 <translation id="2370739752330685659">সম্ভবত পরে</translation>
+<translation id="7537601449003285327">কার্যদণ্ডে পিন করুন</translation>
 <translation id="961012016278832836">Microsoft Edge লেগ্যাসি</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> থেকে আমদানি করা হয়েছে।</translation>
-<translation id="1506190932569739298">স্পষ্ট লিঙ্ক কপি করুন (শুধুমাত্র প্রধান URL)</translation>
+<translation id="7630214457764713113">ক্লিন লিঙ্ক কপি করুন</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
@@ -246,6 +243,13 @@
 <translation id="3719826155360621982">হোমপেজ</translation>
 <translation id="5448570825852364919">খালি পাতা</translation>
 <translation id="5919424224662539292">পটভূমি চিত্র কাস্টমাইজ করুন এবং নতুন ট্যাব পৃষ্ঠায় প্রদর্শিত উইজেটগুলি</translation>
+<translation id="7461924472993315131">পিন</translation>
+<translation id="7506648566440714944">Brave ইতিমধ্যেই পিন করা হয়েছে</translation>
+<translation id="3195845168740336657">শিল্ড সেটিং</translation>
+<translation id="754769152790647708">শিল্ড স্টেটাস</translation>
+<translation id="3615717588724840230">শিল্ড ব্যবহার করে সাইট ট্র্যাকার, বিজ্ঞাপন ও ফিঙ্গারপ্রিন্ট ব্লক করতে পারে</translation>
+<translation id="5690973901138662477">শিল্ড আপ</translation>
+<translation id="4697275813919189958">শিল্ড ডাউন</translation>
 <translation id="6303294677342628402">শিল্ড</translation>
 <translation id="7133511168130368997">ওয়েবে আপনাকে অনুসরণ করে এমন ট্র্যাকার এবং বিজ্ঞাপনগুলিকে ব্লক করুন।</translation>
 <translation id="2761825942249694703">ডিফল্ট শীল্ড সেটিংস। একটি নির্দিষ্ট সাইটে শীল্ডস প্যানেলে আপনি কিছু পরিবর্তন না করা পর্যন্ত সেগুলি সমস্ত ওয়েবসাইটে প্রযোজ্য। এগুলির পরিবর্তন আপনার বিদ্যমান পার-সাইট সেটিংসকে ক্ষতিগ্রস্ত করবে না।</translation>
@@ -259,7 +263,6 @@
 <translation id="2133317862976486547">ট্র্যাকারগুলি &amp; বিজ্ঞাপন ব্লকিং</translation>
 <translation id="4078738236287221428">আক্রমনাত্মক</translation>
 <translation id="7740996059027112821">মানক</translation>
-<translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="4824468494729001999">স্ক্রিপ্টগুলি ব্লক করুন</translation>
 <translation id="6531019308847917584">আঙুলের ছাপ মূদ্রণ অবরুদ্ধ করুন</translation>
 <translation id="5533533363827555308">কঠোর, সাইটগুলিকে ভাঙ্গতে পারে</translation>
@@ -269,14 +272,14 @@
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
 <translation id="130615081792797568">সহজ ভিউ</translation>
 <translation id="2360360976480535628">উন্নত ভিউ</translation>
-<translation id="6486983549008741930">কনটেন্ট ফিল্টার করা</translation>
+<translation id="101592339984642584">কনটেন্ট ফিল্টার</translation>
 <translation id="8694564340481124390">কাস্টম ফিল্টার চালু করুন যা আঞ্চলিক ও ভাষা-নির্দিষ্ট ট্র্যাকার ও অ্যানয়েন্স ব্লক করুন।</translation>
-<translation id="6522618763902154348">কাস্টম ফিল্টার চালু করুন যা আঞ্চলিক ও ভাষা-নির্দিষ্ট ট্র্যাকার ও 
-    <ph name="BEGIN_LINK"/>অ্যানয়েন্স<ph name="END_LINK"/> ব্লক করুন।</translation>
+<translation id="4877657558909976793">কাস্টম ফিল্টার চালু করুন যা আঞ্চলিক ও ভাষা-নির্দিষ্ট ট্র্যাকার ও
+   <ph name="BEGIN_LINK"/>অ্যানয়েন্স<ph name="END_LINK"/> ব্লক করুন।</translation>
 <translation id="3482656215021340727">কাস্টম ফিল্টারের লিস্ট যোগ করুন</translation>
 <translation id="1020877116991797978">আপনার বিশ্বস্ত কমিউনিটির তৈরি করা এবং রক্ষণাবেক্ষণ করা অতিরিক্ত তালিকাগুলো যোগ করুন।</translation>
 <translation id="7617831480435794399">শুধুমাত্র আপনার বিশ্বস্ত সংস্থার থেকে তালিকার জন্য সাবস্ক্রাইব করুন। আপনার ব্রাউজার তাদের সার্ভারে আপনার IP ঠিকানা প্রকাশ করে মাঝে-মাঝে আপনার দেওয়া URL থেকে আপডেটের তালিকা দেখবে।</translation>
-<translation id="2831397936251948638">কাস্টম ফিল্টারগুলো পরিচালনা করুন</translation>
+<translation id="8580328754808744073">কাস্টম ফিল্টারগুলো তৈরি করুন</translation>
 <translation id="4618274268052410139">নিচে লাইন অনুযায়ী, ক্ষেত্রের মধ্যে আপনি যে ফিল্টার যোগ করেছেন সেই কাস্টম ফিল্টার যোগ করুন। <ph name="BEGIN_LINK"/>Adblock ফিল্টারের সিনট্যাক্স<ph name="END_LINK"/> ব্যবহারের বিষয়ে নিশ্চিত থাকুন।</translation>
 <translation id="7791543448312431591">জুড়ুন</translation>
 <translation id="571950783952070673">লিস্টের URL</translation>
@@ -292,6 +295,7 @@
 <translation id="5438573563213942361">নিজের পছন্দমত ফাইলগুলি</translation>
 <translation id="4182731739150761577">সম্পূর্ণ ইতিহাস দেখান</translation>
 <translation id="1340263054776016283">ফিল্টারের লিস্ট URL দেখুন</translation>
+<translation id="8578397014396032341">কনটেন্ট ফিল্টার</translation>
 <translation id="6821903322090655051">Brave পুরষ্কার অক্ষম করা আছে</translation>
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="3849957491997306859">স্বয়ংক্রিয়ভাবে সনাক্ত হয়েছে</translation>
@@ -402,6 +406,8 @@
 <translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
 <translation id="2889554198027690581">Ethereum গোপনীয়তা বিবেচনা সম্পর্কে <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/>।</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
+<translation id="6421218422395686663">ENS অফচেইন লুকআপকে অনুমতি দিন।</translation>
+<translation id="7831978744512353629">ENS অফচেইন লুকআপ গোপনীয়তা সংক্রান্ত বিষয়ে <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/>।</translation>
 <translation id="6241402707160226266">Tor এর সাথে ব্যক্তিগত উইন্ডো</translation>
 <translation id="8762452230727230396">Tor আপনার দেখা সাইটগুলি থেকে IP ঠিকানাগুলিকে লুকায়।</translation>
 <translation id="2959986444009520721">ব্রিজগুলি ব্যবহার করুন</translation>
@@ -563,4 +569,9 @@
 <translation id="5318548116565208315">অবতার বনবন কর্ন</translation>
 <translation id="1959966725083452288">অবতার বনবন রয়্যাল</translation>
 <translation id="2039034364578911089">অবতার বনবন নিনজা</translation>
+<translation id="239760341987199724">Brave কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
+<translation id="1391855377994926460">আরো দ্রুত ওয়েব ব্রাউজ করুন - মুখ্য সংবাদের সাইটগুলিতে 6x পর্যন্ত দ্রুত ব্রাউজ করুন।</translation>
+<translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>
+<translation id="3479552764303398839">এখনই নয়</translation>
+<translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 </translationbundle>

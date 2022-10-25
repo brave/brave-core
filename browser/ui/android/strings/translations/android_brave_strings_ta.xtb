@@ -3,6 +3,11 @@
 <translationbundle lang="ta">
 <translation id="7307834434086582547">பிரேவ் கவசங்களை இயக்கு/முடக்கு</translation>
 <translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
+<translation id="7277134233385925078">மாதாந்திர துணுக்குதவியை பார்</translation>
+<translation id="8759753423332885148">மேலும் அறிக.</translation>
+<translation id="2978223787436054634">உம் ஆதரவு பற்றி கீச்சிடு</translation>
+<translation id="1166682575529520472">மாதாந்திர</translation>
+<translation id="2359808026110333948">தொடர்க</translation>
 <translation id="2278950434998763147">வெற்று HTTP-க்கு பதிலாக பாதுகாப்பான HTTPS இணைப்பை பயன்படுத்தி சில தளங்களை திற.</translation>
 <translation id="6052725679982758334">சமூக ஊடகம் தடுத்தல்</translation>
 <translation id="7498695072878479744">கூகிள் உள்நுழைவு பொத்தான்களை மூன்றாம் தரப்பு தளங்களில் அனுமதி</translation>
@@ -60,12 +65,7 @@
 <translation id="8389661903259423907">நீங்கள் ஏற்கனவே இயல்புநிலை உலாவியை அமைத்துள்ளீர்கள். செயலி அமைப்புகளில் இயல்புநிலை உலாவியை நீங்கள் மாற்றலாம்.</translation>
 <translation id="1545749641540134597">விரைவுக்குறியை ஒளிவருடு</translation>
 <translation id="8826007068782654809">நன்றி</translation>
-<translation id="1166682575529520472">மாதாந்திர</translation>
 <translation id="1910721550319506122">வாருங்கள்!</translation>
-<translation id="245015745140252435">துணுக்குதவி தொகை</translation>
-<translation id="7873874596836611687">பணப்பை கையிருப்பு:</translation>
-<translation id="2573313946367623146">என் துணுக்குதவியை அனுப்பு</translation>
-<translation id="3250511771491660127">இதை மாதந்திரமாக்கு</translation>
 <translation id="7658239707568436148">ரத்துசெய்</translation>
 <translation id="1201402288615127009">அடுத்து</translation>
 <translation id="8926389886865778422">மீண்டும் கேட்காதே</translation>
@@ -95,9 +95,6 @@
 <translation id="7510166204621526816">பிரேவ் வெகுமதிகள் தேக்கம் பதிலளிக்கவில்லை. கூடிய விரைவில் இதை சரிசெய்திடுவோம்.</translation>
 <translation id="683765328936486920">யூடியூபில்</translation>
 <translation id="8969049974285901797">ட்விட்ச்சில்</translation>
-<translation id="6940273954212603510">தயவுசெய்து</translation>
-<translation id="1036277985068412734">நிதி சேர்</translation>
-<translation id="3492491948683276944">மாதாந்திர துணுக்குதவியை அமை</translation>
 <translation id="8038539967102225446">பிரேவ் விளம்பரங்கள் இங்கே!</translation>
 <translation id="222883304157347087">(இச்சாதனம்)</translation>
 <translation id="4157741509680155021">ஒத்திசைவு சங்கிலியிலுள்ள சாதனங்கள்</translation>
@@ -213,7 +210,6 @@
 <translation id="5825943197137337319">இயல்புநிலை பொது இடைமுகங்களை மட்டும்</translation>
 <translation id="1483493594462132177">அனுப்பு</translation>
 <translation id="4472575034687746823">தொடங்குக</translation>
-<translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="7665369617277396874">கணக்கைச் சேர்</translation>
 <translation id="1544192797660353713">பணப்பை</translation>
@@ -278,4 +274,15 @@
 <translation id="714506544401754321">தகவலை மறைநீக்கு</translation>
 <translation id="5039804452771397117">அனுமதி</translation>
 <translation id="1324417023773393937">பிரேவ் உலாவி</translation>
+<translation id="7588707273764747927">பரிமாற்று</translation>
+<translation id="583281660410589416">தெரியாதது</translation>
+<translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
+<translation id="6040143037577758943">மூடு</translation>
+<translation id="245015745140252435">துணுக்குதவி தொகை</translation>
+<translation id="7873874596836611687">பணப்பை கையிருப்பு:</translation>
+<translation id="2573313946367623146">என் துணுக்குதவியை அனுப்பு</translation>
+<translation id="3250511771491660127">இதை மாதந்திரமாக்கு</translation>
+<translation id="6940273954212603510">தயவுசெய்து</translation>
+<translation id="1036277985068412734">நிதி சேர்</translation>
+<translation id="3492491948683276944">மாதாந்திர துணுக்குதவியை அமை</translation>
 </translationbundle>

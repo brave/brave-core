@@ -84,10 +84,6 @@
 <translation id="8303432794159193481">Brave 浏览器开发应用</translation>
 <translation id="8292967014767479012">Brave 浏览器应用</translation>
 <translation id="4743468424889072281">Brave 浏览器开发应用</translation>
-<translation id="239760341987199724">将Brave设为默认浏览器</translation>
-<translation id="1391855377994926460">保持浏览网页的速度更快——在主要的新闻网站上最多快6倍。</translation>
-<translation id="9218430445555521422">设为默认浏览器</translation>
-<translation id="3479552764303398839">以后再说</translation>
 <translation id="732814027519296280">想改进 Brave 搜索吗？</translation>
 <translation id="2677865600861971449">选择加入 Web 发现项目，匿名贡献一些搜索和浏览数据，为所有用户改进 Brave 搜索结果。保护隐私。无需任何精力。<ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">了解详情</translation>
@@ -203,9 +199,10 @@
 <translation id="6817415381278637662">将 Brave 设置为你的默认浏览器，以便你打开的每个网页都获得 Brave 的隐私保护。</translation>
 <translation id="8722651357687610395">将 Brave 设置为默认</translation>
 <translation id="2370739752330685659">回头再说</translation>
+<translation id="7537601449003285327">固定在任务栏上</translation>
 <translation id="961012016278832836">Microsoft Edge 旧版</translation>
 <translation id="6436994631426134065">已从 <ph name="BROWSER_NAME"/> 导入。</translation>
-<translation id="1506190932569739298">复制清洁链接（仅主 URL）</translation>
+<translation id="7630214457764713113">复制干净的链接</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="4472575034687746823">开始使用</translation>
@@ -245,6 +242,13 @@
 <translation id="3719826155360621982">主页</translation>
 <translation id="5448570825852364919">空白页面</translation>
 <translation id="5919424224662539292">自定义显示在新标签页上的背景图片和小部件</translation>
+<translation id="7461924472993315131">固定</translation>
+<translation id="7506648566440714944">Brave 已被固定</translation>
+<translation id="3195845168740336657">Shields 设置</translation>
+<translation id="754769152790647708">Shields 状态</translation>
+<translation id="3615717588724840230">网站可以通过 Shields 来阻止跟踪器、广告和指纹识别</translation>
+<translation id="5690973901138662477">Shields Up</translation>
+<translation id="4697275813919189958">Shields Down</translation>
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="7133511168130368997">拦截在网络上无所不在的跟踪器和广告。</translation>
 <translation id="2761825942249694703">这些是默认屏蔽设置，适用于所有网站（除非您更改了某特定网站的屏蔽面板中的某些设置）。更改这些设置不会影响您现有的每个站点的设置。</translation>
@@ -258,7 +262,6 @@
 <translation id="2133317862976486547">跟踪器和和广告拦截</translation>
 <translation id="4078738236287221428">攻击性</translation>
 <translation id="7740996059027112821">标准</translation>
-<translation id="3570081523466826008">升级为 HTTPS 连接</translation>
 <translation id="4824468494729001999">拦截脚本</translation>
 <translation id="6531019308847917584">阻止指纹识别</translation>
 <translation id="5533533363827555308">严格，可能会破坏网站</translation>
@@ -268,14 +271,14 @@
 <translation id="7390783310074170337">默认视图</translation>
 <translation id="130615081792797568">简单视图</translation>
 <translation id="2360360976480535628">高级视图</translation>
-<translation id="6486983549008741930">内容过滤</translation>
+<translation id="101592339984642584">内容过滤</translation>
 <translation id="8694564340481124390">启用自定义过滤器来阻止特定区域和语言的跟踪器和烦人的内容。</translation>
-<translation id="6522618763902154348">启用自定义过滤器以阻止特定区域和语言的跟踪器和 
+<translation id="4877657558909976793">启用自定义过滤器以阻止特定区域和语言的跟踪器和
     <ph name="BEGIN_LINK"/>烦人的内容<ph name="END_LINK"/>。</translation>
 <translation id="3482656215021340727">添加自定义过滤器列表</translation>
 <translation id="1020877116991797978">添加由您信任的社区创建和维护的其他列表。</translation>
 <translation id="7617831480435794399">仅订阅您信任的实体的列表。您的浏览器会在定期检查您输入的 URL 中的列表更新情况，与此同时会将您的 IP 地址显示给其服务器。</translation>
-<translation id="2831397936251948638">创建自定义过滤器</translation>
+<translation id="8580328754808744073">创建自定义过滤器</translation>
 <translation id="4618274268052410139">在下面的字段中添加您创建的自定义过滤器，每行一个。请务必使用<ph name="BEGIN_LINK"/> Adblock 过滤器语法<ph name="END_LINK"/>。</translation>
 <translation id="7791543448312431591">添加</translation>
 <translation id="571950783952070673">列单 URL</translation>
@@ -291,6 +294,7 @@
 <translation id="5438573563213942361">自定义列单</translation>
 <translation id="4182731739150761577">显示完整列表</translation>
 <translation id="1340263054776016283">输入过滤器列表 URL</translation>
+<translation id="8578397014396032341">内容过滤</translation>
 <translation id="6821903322090655051">Brave 奖励已禁用</translation>
 <translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
 <translation id="3849957491997306859">自动检测</translation>
@@ -401,6 +405,8 @@
 <translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>详细了解<ph name="END_LINK"/>太坊隐私注意事项。</translation>
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
+<translation id="6421218422395686663">允许 ENS 链下查找。</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>进一步了解<ph name="END_LINK"/>关于 DNS 链下查找方面的隐私注意事项。</translation>
 <translation id="6241402707160226266">带 Tor 的私人窗户</translation>
 <translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
 <translation id="2959986444009520721">使用网桥</translation>
@@ -562,4 +568,9 @@
 <translation id="5318548116565208315">邦邦 Corn 的头像</translation>
 <translation id="1959966725083452288">邦邦 Royal 的头像</translation>
 <translation id="2039034364578911089">邦邦 Ninja 的头像</translation>
+<translation id="239760341987199724">将Brave设为默认浏览器</translation>
+<translation id="1391855377994926460">保持浏览网页的速度更快——在主要的新闻网站上最多快6倍。</translation>
+<translation id="9218430445555521422">设为默认浏览器</translation>
+<translation id="3479552764303398839">以后再说</translation>
+<translation id="3570081523466826008">升级为 HTTPS 连接</translation>
 </translationbundle>

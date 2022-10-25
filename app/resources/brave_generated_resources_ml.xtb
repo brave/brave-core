@@ -6,9 +6,6 @@
 <translation id="744341768939279100">ഒരു പുതിയ പ്രൊഫൈൽ സൃഷ്‌ടിക്കുക</translation>
 <translation id="2666990579225592931">അതിഥി വിൻഡോ തുറക്കുക</translation>
 <translation id="8926389886865778422">എന്നോട് വീണ്ടും ചോദിക്കരുത്</translation>
-<translation id="239760341987199724">നിങ്ങളുടെ സ്ഥിര ബ്രൗസറായി Brave സജ്ജമാക്കുക</translation>
-<translation id="9218430445555521422">സ്ഥിരസ്ഥിതിയാക്കുക</translation>
-<translation id="3479552764303398839">ഇപ്പോഴല്ല</translation>
 <translation id="6165508094623778733">കൂടുതലറിയുക</translation>
 <translation id="5860491529813859533">ഓൺ ചെയ്യുക</translation>
 <translation id="780301667611848630">വേണ്ട നന്ദി</translation>
@@ -36,6 +33,7 @@
 <translation id="1536754031901697553">വിച്ഛേദിക്കുന്നു...</translation>
 <translation id="8041089156583427627">ഫീഡ്ബാക്ക് അയയ്ക്കുക</translation>
 <translation id="945522503751344254">ഫീഡ്ബാക്ക് അയയ്ക്കുക</translation>
+<translation id="7537601449003285327">ടാസ്‌ക്‌ബാറിൽ പിന്‍‌ ചെയ്യുക</translation>
 <translation id="9156965752763025780">നിങ്ങളുടെ മാറ്റങ്ങൾ അടുത്ത തവണ Brave വീണ്ടും സമാരംഭിക്കുമ്പോൾ പ്രാബല്യത്തിൽ വരും.</translation>
 <translation id="4472575034687746823">ആരംഭിക്കാം</translation>
 <translation id="6786747875388722282">വിപുലീകരണങ്ങള്‍</translation>
@@ -46,6 +44,7 @@
 <translation id="8820817407110198400">ബുക്ക്‌മാര്‍ക്കുകള്‍</translation>
 <translation id="3416468988018290825">എപ്പോഴും പൂർണ്ണ URL-കൾ കാണിക്കുക</translation>
 <translation id="3719826155360621982">ഹോംപേജ്</translation>
+<translation id="7461924472993315131">പിൻ ചെയ്യുക</translation>
 <translation id="7740996059027112821">സാധാരണം</translation>
 <translation id="8823559166155093873">കുക്കികൾ ബ്ലോക്ക് ചെയ്യുക</translation>
 <translation id="3587482841069643663">എല്ലാം</translation>
@@ -66,4 +65,7 @@
 <translation id="1327977588028644528">ഗേറ്റ്‌വേ</translation>
 <translation id="8425213833346101688">മാറ്റുക</translation>
 <translation id="8275038454117074363">ഇറക്കുമതിചെയ്യുക</translation>
+<translation id="239760341987199724">നിങ്ങളുടെ സ്ഥിര ബ്രൗസറായി Brave സജ്ജമാക്കുക</translation>
+<translation id="9218430445555521422">സ്ഥിരസ്ഥിതിയാക്കുക</translation>
+<translation id="3479552764303398839">ഇപ്പോഴല്ല</translation>
 </translationbundle>

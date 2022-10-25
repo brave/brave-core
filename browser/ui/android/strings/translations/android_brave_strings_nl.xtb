@@ -2,7 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
 <translation id="7307834434086582547">Schakel Brave Shields in/uit</translation>
+<translation id="6945863270524203017">Ontvang wekelijks privacy-updates voor tracker- en advertentieblokkering.</translation>
+<translation id="4324735664183300693">Meldingen aanzetten</translation>
 <translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
+<translation id="5153702175393349577">Volgende datum van bijdrage</translation>
+<translation id="8979401359137062629">Opmerking:</translation>
+<translation id="7277134233385925078">Stel maandelijks fooien in.</translation>
+<translation id="3765933240178364575">Bedrag van eenmalige bijdrage</translation>
+<translation id="1101015459918930887">Het kan enkele minuten duren voor uw bijdrage is verwerkt</translation>
+<translation id="4088764345615745058">Aangepast bedrag aan fooi</translation>
+<translation id="8759753423332885148">Learn more.</translation>
+<translation id="3271043362279673449">Bedankt voor de ondersteuning!</translation>
+<translation id="3312470408978098625">Je eenmalige fooi is verzonden.</translation>
+<translation id="9088057605518918276">Maandelijkse bijdrage is ingesteld.</translation>
+<translation id="2978223787436054634">Tweet over uw support</translation>
+<translation id="1166682575529520472">Maandelijks</translation>
+<translation id="5906820630265272615">BAT-geld</translation>
+<translation id="3586352807094428968">Brave krijgt 5% van het fooibedrag om de verwerkingskosten te dekken.</translation>
+<translation id="7723816962634734185">Aangepast bedrag</translation>
+<translation id="1986030365413628297">bv. 12,75 BAT</translation>
+<translation id="5087864757604726239">terug</translation>
+<translation id="6661699662755460155">uitwisselen</translation>
+<translation id="864162897141534043">Het bedrag aan fooi dat je geeft is</translation>
+<translation id="7286679368056222644">Je maandelijkse bijdrage is</translation>
+<translation id="8195146845495346281">Minimaal bedrag voor bijdrage is 0,25 BAT</translation>
+<translation id="4647657427328119430">Niet genoeg tokens.</translation>
+<translation id="2359808026110333948">Doorgaan met</translation>
+<translation id="4227681408214010862">Geweldig dat ik met #Brave makers kan steunen! Ik heb net een bijdrage gegeven aan <ph name="NAME"/> met #BAT. Die kan via https://creators.brave.com worden geverifieerd vóór <ph name="DATE"/> en worden geïnd!</translation>
+<translation id="6231182869178328516">Ik heb zojuist via de Brave Browser een bijdrage gegeven aan <ph name="NAME"/>. Ontdek meer op https://brave.com/tips.</translation>
+<translation id="7172012963002631836">Er is een probleem opgetreden bij het verzenden van je fooi.</translation>
+<translation id="8994556588732085585">Gelieve de fooien-banner te sluiten en te heropenen om het opnieuw te proberen.</translation>
 <translation id="2278950434998763147">Hiermee worden sommige websites met gebruik van een beveiligde HTTPS-verbinding geopend in plaats van standaard HTTP.</translation>
 <translation id="5510493033031835532">AMP-pagina's automatisch omleiden</translation>
 <translation id="5197219128592971597">Bezoek altijd originele (niet-AMP) pagina-URL's in plaats van mobiele paginaversies van Google Accelerated</translation>
@@ -24,6 +53,8 @@
 <translation id="9148058034647219655">Sluiten</translation>
 <translation id="4022987104439075738">IPFS-gateway</translation>
 <translation id="2688519859165248360">Staat navigatie naar IPFS-hulpmiddelen toe met een IPFS-gateway</translation>
+<translation id="8047754398610073499">Kennisgevingen over cookietoestemming blokkeren</translation>
+<translation id="2621893359845808115">Websites die pop-ups geven die vragen om cookies op hun site te accepteren/weigeren worden geblokkeerd</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/>-prijs (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
@@ -124,17 +155,11 @@
 <translation id="8826007068782654809">Bedankt</translation>
 <translation id="6665366815203065060">Je hebt zojuist een tip verzonden naar:</translation>
 <translation id="5441565662498481293">Je stuurt automatisch een fooi naar:</translation>
-<translation id="1166682575529520472">Maandelijks</translation>
 <translation id="1628742278973105368">Je eerste maandelijkse tip wordt verzonden op:</translation>
-<translation id="298349922412901215">OPMERKING: deze maker heeft zich nog niet aangemeld om bijdragen van Brave-gebruikers te ontvangen. We blijven proberen bij te dragen tot ze verifiëren of tot 90 dagen zijn verstreken.</translation>
+<translation id="1642952941091001113">Deze maker heeft zich nog niet aangemeld om bijdragen van Brave-gebruikers te ontvangen. We blijven proberen bij te dragen tot ze verifiëren of tot 90 dagen zijn verstreken.</translation>
 <translation id="635752162765375187">OPMERKING: deze maker is momenteel nog niet geconfigureerd voor het ontvangen van fooi uit uw beheerde Beloningen-wallet. Alle fooien die u stuurt, blijven in uw wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.</translation>
 <translation id="1910721550319506122">Welkom!</translation>
-<translation id="3165726837666415756">Je kunt deze site ondersteunen door een fooitje te sturen. Het is een manier om hen te bedanken voor het maken van geweldige content. Geverifieerde makers van content ontvangen hun fooi tijdens de eerste week van elke kalendermaand.</translation>
-<translation id="1704859330137112950">Als je wilt, kun je maandelijks tippen instellen om deze website continue te steunen.</translation>
-<translation id="245015745140252435">Tip bedrag</translation>
-<translation id="7873874596836611687">Beloningensaldo:</translation>
-<translation id="2573313946367623146">stuur mijn fooi</translation>
-<translation id="3250511771491660127">Laat dit maandelijks plaatsvinden</translation>
+<translation id="5830114181292529917">U kunt deze site steunen door een bijdrage te verzenden. Dit is een blijk van waardering voor het maken van goede content.</translation>
 <translation id="7658239707568436148">Annuleren</translation>
 <translation id="1201402288615127009">Volgende</translation>
 <translation id="8481779960444041069">Stel Brave in als standaardbrowser om uw privacy te verbeteren</translation>
@@ -181,9 +206,6 @@
 <translation id="683765328936486920">op Youtube</translation>
 <translation id="8969049974285901797">op Twitch</translation>
 <translation id="3101693828171454453">niet genoeg <ph name="TOKEN"/>s</translation>
-<translation id="6940273954212603510">alsjeblieft</translation>
-<translation id="1036277985068412734">voeg geld toe</translation>
-<translation id="3492491948683276944">stel maandelijkse fooi in</translation>
 <translation id="8038539967102225446">Brave Ads zijn hier!</translation>
 <translation id="222883304157347087">(dit apparaat)</translation>
 <translation id="4157741509680155021">APPARATEN IN SYNCHRONISATIEKETEN</translation>
@@ -403,10 +425,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="223536150967420869">Kopen</translation>
 <translation id="2956070106555335453">Samenvatting</translation>
 <translation id="7465614181960492526">Tokens verdienen en ze weer terugschenken</translation>
-<translation id="244362569344671266">Verdien tokens door het bekijken van Brave Private Ads en ondersteun automatisch makers van inhoud.</translation>
+<translation id="2731539192954672606">Verdien tokens door privacy-respecterende advertenties te bekijken en steun automatisch uw favoriete sites en makers van inhoud.</translation>
 <translation id="631124996535890460">Door verder te gaan, gaat u akkoord met de <ph name="TERMS_OF_SERVICE"/> en het <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Privacybeleid</translation>
-<translation id="6318696841371191107">Een beknopt overzicht bekijken</translation>
+<translation id="185034574799484512">Laten we een snelle tour nemen</translation>
 <translation id="7930505144430343145">Welkom bij Brave Rewards!</translation>
 <translation id="3477340970981564961">Brave Private Ads belonen je met tokens om de makers van content te ondersteunen, in tegenstelling tot traditionele advertenties, terwijl je persoonlijke informatie privé blijft.</translation>
 <translation id="6973095375773523904">Waar verschijnen de advertenties?</translation>
@@ -455,9 +477,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2222442600106681391">2 BAT</translation>
 <translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
-<translation id="8762169086048682708">10 BAT</translation>
-<translation id="4548973860489847866">0.00 BAT</translation>
-<translation id="4193129043743994339">0,00 USD</translation>
 <translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
@@ -470,7 +489,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
 <translation id="2759836790106646094">Maak nu een back-up van je wallet!</translation>
 <translation id="1078873179929044999">Bij de volgende stap zie je een herstelzin van 12 woorden die je kunt gebruiken om je primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met je herstelzin kun je weer toegang krijgen tot je account wanneer je je wachtwoord bent vergeten, je apparaat kwijt is of is gestolen en wanneer je van wallet wilt wisselen.</translation>
-<translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">Ik begrijp dat indien ik mijn herstelwoorden kwijtraak, ik geen toegang meer heb tot mijn cryptowallet.</translation>
 <translation id="3933122286596948824">Jouw herstelwoorden</translation>
@@ -865,4 +883,73 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8423380132356660250">Open de <ph name="APP_NAME"/>-app</translation>
 <translation id="168154537623654021">VPN-profiel bijwerken ...</translation>
 <translation id="7457027586454688423">Voer het wachtwoord van uw Brave-wallet in</translation>
+<translation id="6588595775439619209">Kennisgevingen over cookies blokkeren</translation>
+<translation id="264682546981571963">Heeft u genoeg van meldingen over toestemming voor cookies?</translation>
+<translation id="4986297793092101884">Brave blokkeert al cookies van derden. We kunnen ook de kennisgevingen over cookietoestemming blokkeren.</translation>
+<translation id="4784306439879850873">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als u tekent. Een ondertekening kan bijna elke bewerking in uw account of namens uw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over uw account en cryptoassets aan de website die het verzoek doet. Teken alleen als u deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
+<translation id="3474375934783434676">Tekenen op eigen risico</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/> of <ph name="SIZE"/></translation>
+<translation id="6450792191436242818">Systeemprogramma</translation>
+<translation id="6252742184395380448">Configuratieprogramma</translation>
+<translation id="5358970666412490132">Aandelenprogramma</translation>
+<translation id="346636227344244984">Stemprogramma</translation>
+<translation id="3538368258493053874">BPF-lader</translation>
+<translation id="2334098351242742927">Ed25519-programma</translation>
+<translation id="6421371987002247943">Token-programma</translation>
+<translation id="8780753288764281797">Secp256k1-programma</translation>
+<translation id="8504640708321980506">Data</translation>
+<translation id="4771176409524282426">Account maken</translation>
+<translation id="1755120947324658439">Toewijzen</translation>
+<translation id="7588707273764747927">Transfer</translation>
+<translation id="5328067049293286962">Account met seed maken</translation>
+<translation id="1512366326138054636">Advance-nonce-account</translation>
+<translation id="7042202638449257311">Nonce-account intrekken</translation>
+<translation id="6586085653712983224">Nonce-account initialiseren</translation>
+<translation id="8790312855368673743">Nonce-account autoriseren</translation>
+<translation id="5312748886432335174">Toekennen</translation>
+<translation id="7678705217826797696">Toekennen met seed</translation>
+<translation id="7436137523759921028">Toewijzen met seed</translation>
+<translation id="3360695936886670509">Overdragen met seed</translation>
+<translation id="7323636209143541483">Nonce-account upgraden</translation>
+<translation id="616021855350068202">Mint initialiseren</translation>
+<translation id="4377316227435786423">Account initialiseren</translation>
+<translation id="7474306790151660826">Multisig initialiseren</translation>
+<translation id="363258595406850968">Autoriteit instellen</translation>
+<translation id="2091563464450586155">Mint naar</translation>
+<translation id="1252941298291625577">Burn</translation>
+<translation id="5211196599627796093">Account sluiten</translation>
+<translation id="6988707241715050556">Account bevriezen</translation>
+<translation id="857250415816680832">Account ontdooien</translation>
+<translation id="5453172892735755262">Overdracht gecontroleerd</translation>
+<translation id="471669767157904431">Goedkeuring gecontroleerd</translation>
+<translation id="3530340583186873359">Mint naar gecontroleerd</translation>
+<translation id="5068456869800056740">Burn gecontroleerd</translation>
+<translation id="3004830385467519189">Account 2 initialiseren</translation>
+<translation id="8026488633670875516">Sync native</translation>
+<translation id="2024649614526778327">Account 3 initialiseren</translation>
+<translation id="8382368767453083629">Multisig 2 initialiseren</translation>
+<translation id="77243237706803459">Mint 2 initialiseren</translation>
+<translation id="583281660410589416">Unknown</translation>
+<translation id="2862978891748913252">Uw land selecteren</translation>
+<translation id="3832588024105436400">Selecteer uw land zodat we u de juiste opties en advertenties kunnen laten zien voor uw regio. <ph name="PRIVACY_POLICY"/></translation>
+<translation id="5666264859501108700">Uw Brave Rewards-regio is ingesteld op <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="3180990265682133881">Er heeft zich een probleem voorgedaan tijdens het instellen van uw land. Probeer het opnieuw.</translation>
+<translation id="7352651011704765696">Er ging iets fout</translation>
+<translation id="7144878232160441200">Opnieuw proberen</translation>
+<translation id="6040143037577758943">Sluit</translation>
+<translation id="298349922412901215">OPMERKING: deze maker heeft zich nog niet aangemeld om bijdragen van Brave-gebruikers te ontvangen. We blijven proberen bij te dragen tot ze verifiëren of tot 90 dagen zijn verstreken.</translation>
+<translation id="3165726837666415756">Je kunt deze site ondersteunen door een fooitje te sturen. Het is een manier om hen te bedanken voor het maken van geweldige content. Geverifieerde makers van content ontvangen hun fooi tijdens de eerste week van elke kalendermaand.</translation>
+<translation id="1704859330137112950">Als je wilt, kun je maandelijks tippen instellen om deze website continue te steunen.</translation>
+<translation id="245015745140252435">Tip bedrag</translation>
+<translation id="7873874596836611687">Beloningensaldo:</translation>
+<translation id="2573313946367623146">stuur mijn fooi</translation>
+<translation id="3250511771491660127">Laat dit maandelijks plaatsvinden</translation>
+<translation id="6940273954212603510">alsjeblieft</translation>
+<translation id="1036277985068412734">voeg geld toe</translation>
+<translation id="3492491948683276944">stel maandelijkse fooi in</translation>
+<translation id="244362569344671266">Verdien tokens door het bekijken van Brave Private Ads en ondersteun automatisch makers van inhoud.</translation>
+<translation id="6318696841371191107">Een beknopt overzicht bekijken</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="4548973860489847866">0.00 BAT</translation>
+<translation id="4193129043743994339">0,00 USD</translation>
 </translationbundle>

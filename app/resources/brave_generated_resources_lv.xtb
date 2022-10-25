@@ -84,10 +84,6 @@
 <translation id="8303432794159193481">Brave Dev pārlūka lietotnes</translation>
 <translation id="8292967014767479012">Brave pārlūka vietnes</translation>
 <translation id="4743468424889072281">Brave pārlūka izstrādes lietotnes</translation>
-<translation id="239760341987199724">Iestatīt Brave kā noklusējuma pārlūku</translation>
-<translation id="1391855377994926460">Turpiniet pārlūkot tīmekli ātrāk – līdz pat 6 reizes ātrāk lielākajās ziņu vietnēs.</translation>
-<translation id="9218430445555521422">Iestatīt kā noklusējumu</translation>
-<translation id="3479552764303398839">Vēlāk</translation>
 <translation id="732814027519296280">Vai vēlaties vēl vairāk uzlabot Brave meklēšanu?</translation>
 <translation id="2677865600861971449">Izvēlieties Tīmekļa atklāšanas projektu, lai anonīmi sniegtu dažus meklēšanas un pārlūkošanas datus, kā arī uzlabotu Brave meklēšanas rezultātus visiem. Ievērojot privātumu. Un bez piepūles. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Uzziniet vairāk</translation>
@@ -203,9 +199,10 @@
 <translation id="6817415381278637662">Iestatiet Brave kā savu noklusējuma pārlūku, lai saņemtu Brave privātuma aizsardzību ikvienā tīmekļa lapā, kuru atverat.</translation>
 <translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="2370739752330685659">Varbūt vēlāk</translation>
+<translation id="7537601449003285327">Piespraust pie uzdevumjoslas</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importēts no <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Kopēt tīru saiti (tikai galveno URL)</translation>
+<translation id="7630214457764713113">Kopēt tikai saiti</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
@@ -245,10 +242,17 @@
 <translation id="3719826155360621982">Sākumlapa</translation>
 <translation id="5448570825852364919">Tukša lapa</translation>
 <translation id="5919424224662539292">Pielāgojiet fona attēlu un logrīkus, kas parādās jaunās cilnes lapā</translation>
+<translation id="7461924472993315131">Piespraust</translation>
+<translation id="7506648566440714944">Brave jau ir piesprausta</translation>
+<translation id="3195845168740336657">Aizsarga iestatījumi</translation>
+<translation id="754769152790647708">Aizsargu statuss</translation>
+<translation id="3615717588724840230">Izmantojot aizsargus, vietnes var bloķēt izsekotājus, reklāmas un pirkstu nospiedumus</translation>
+<translation id="5690973901138662477">Aizsargi ieslēgti</translation>
+<translation id="4697275813919189958">Aizsargi izslēgti</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
 <translation id="7133511168130368997">Bloķēt izsekotājus un reklāmas, kas seko jums tīmeklī.</translation>
 <translation id="2761825942249694703">Šie ir noklusējuma aizsargu iestatījumi. Tie ir attiecināmi uz visām tīmekļa vietnēm, ja vien jūs konkrētai vietnei aizsargu panelī kaut ko neizmainīsiet. Šīs izmaiņas neietekmēs jūsu esošo vietņu iestatījumus.</translation>
-<translation id="1435116578479068303">Tādējādi tiks bloķēta lielākā daļa tīmekļa vietņu reklāmu, izņemot Brave Private Ads — tās kontrolē <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> iestatījumos.</translation>
+<translation id="1435116578479068303">Tā tiks bloķēta lielākā daļa tīmekļa vietņu reklāmu, izņemot Brave Private Ads — tās var izmainīt <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> iestatījumos.</translation>
 <translation id="8452536890042542134">Tādējādi tiks bloķēta lielākā daļa reklāmu tīmekļa vietnēs.</translation>
 <translation id="4800195524776354947">Rādīt bloķēto vienumu skaitu uz aizsargu ikonas</translation>
 <translation id="5510493033031835532">Automātiski novirzīt AMP lapas</translation>
@@ -258,7 +262,6 @@
 <translation id="2133317862976486547">Izsekotāju un reklāmu bloķēšana</translation>
 <translation id="4078738236287221428">Agresīvais režīms</translation>
 <translation id="7740996059027112821">Standarta</translation>
-<translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="4824468494729001999">Bloķēt skriptus</translation>
 <translation id="6531019308847917584">Bloķēt identificējošās ciparvirknes veidošanu</translation>
 <translation id="5533533363827555308">Stingrais režīms, var radīt vietņu darbības traucējumus</translation>
@@ -268,14 +271,14 @@
 <translation id="7390783310074170337">Noklusējuma skats</translation>
 <translation id="130615081792797568">Vienkāršs skats</translation>
 <translation id="2360360976480535628">Uzlabots skats</translation>
-<translation id="6486983549008741930">Satura filtrēšana</translation>
+<translation id="101592339984642584">Satura filtrēšana</translation>
 <translation id="8694564340481124390">Iespējot pielāgotus filtrus, kas bloķē reģionālus un valodai specifiskus izsekotājus un Annoyances.</translation>
-<translation id="6522618763902154348">Iespējojiet pielāgotus filtrus, kas bloķē reģionālus un valodai specifiskus izsekotājus un 
+<translation id="4877657558909976793">Iespējojiet pielāgotus filtrus, kas bloķē reģionālus un valodai specifiskus izsekotājus un 
 <ph name="BEGIN_LINK"/>Annoyances<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Pievienot pielāgotu filtru sarakstus</translation>
 <translation id="1020877116991797978">Pievienojiet papildu sarakstus, ko izveidojusi un uztur kopiena, kurai uzticaties.</translation>
 <translation id="7617831480435794399">Abonējiet tikai tādu vienību sarakstus, kurām uzticaties. Jūsu pārlūks periodiski pārbaudīs, vai no jūsu ievadītā URL nav atjauninātu sarakstu, atklājot jūsu IP adresi to serverim.</translation>
-<translation id="2831397936251948638">Izveidot pielāgotos filtrus</translation>
+<translation id="8580328754808744073">Izveidot pielāgotos filtrus</translation>
 <translation id="4618274268052410139">Pievienot savus pielāgotos filtrus, pievienojot vienu katrā līnijā tālāk norādītajā laukā. Izmantojiet <ph name="BEGIN_LINK"/>Adblock filtra sintaksi<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Pievienot</translation>
 <translation id="571950783952070673">Norādīt URL</translation>
@@ -291,6 +294,7 @@
 <translation id="5438573563213942361">Pielāgotie saraksti</translation>
 <translation id="4182731739150761577">Rādīt pilnu sarakstu</translation>
 <translation id="1340263054776016283">Ievadīt filtru sarakstu URL</translation>
+<translation id="8578397014396032341">Satura filtri</translation>
 <translation id="6821903322090655051">Brave Rewards ir atspējots</translation>
 <translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
 <translation id="3849957491997306859">Automātiski uztverts</translation>
@@ -401,6 +405,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5927916530277631319">Neapturamo domēnu atrisināšanas metode</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/> par Ethereum privātuma apsvērumiem.</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) atrisināšanas metode</translation>
+<translation id="6421218422395686663">Atļaut ENS ārpus ķēdes meklēšanu.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/> par ENS ārpus ķēdes meklēšanas privātuma apsvērumiem.</translation>
 <translation id="6241402707160226266">Inkognito logs ar Tor</translation>
 <translation id="8762452230727230396">Paslēpj Jūsu IP adresi no apmeklētajām vietnēm.</translation>
 <translation id="2959986444009520721">Izmantojiet Tiltus</translation>
@@ -562,4 +568,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="239760341987199724">Iestatīt Brave kā noklusējuma pārlūku</translation>
+<translation id="1391855377994926460">Turpiniet pārlūkot tīmekli ātrāk – līdz pat 6 reizes ātrāk lielākajās ziņu vietnēs.</translation>
+<translation id="9218430445555521422">Iestatīt kā noklusējumu</translation>
+<translation id="3479552764303398839">Vēlāk</translation>
+<translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 </translationbundle>

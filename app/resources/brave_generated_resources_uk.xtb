@@ -85,10 +85,6 @@
 <translation id="8303432794159193481">Додатки браузера Brave</translation>
 <translation id="8292967014767479012">Програми браузера Brave</translation>
 <translation id="4743468424889072281">Розробницькі програми браузера Brave</translation>
-<translation id="239760341987199724">Зробити Brave веб-переглядачем за умовчанням</translation>
-<translation id="1391855377994926460">Переглядайте головні новинні вебсайти у 6 разів швидше.</translation>
-<translation id="9218430445555521422">Установити за умовчанням</translation>
-<translation id="3479552764303398839">Не зараз</translation>
 <translation id="732814027519296280">Хочете зробити пошук Brave ще кращим?</translation>
 <translation id="2677865600861971449">Підпишіться на участь у проєкті з аналізу мережі (Web Discovery Project), щоб анонімно внести деякі результати пошуку й дані перегляду, а також покращити результати пошуку Brave для всіх. Збереження конфіденційності. І жодних зусиль. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Докладніше</translation>
@@ -204,9 +200,10 @@
 <translation id="6817415381278637662">Установіть браузер Brave за замовчуванням, щоб отримати захист конфіденційності Brave на кожній вебсторінці, яку ви відкриваєте.</translation>
 <translation id="8722651357687610395">Встановіть Brave  за замовчуванням</translation>
 <translation id="2370739752330685659">Можливо, пізніше</translation>
+<translation id="7537601449003285327">Закріпити на панелі завдань</translation>
 <translation id="961012016278832836">Microsoft Edge застарів</translation>
 <translation id="6436994631426134065">Імпортовано з <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Скопіювати очищене посилання (лише основну URL-адресу)</translation>
+<translation id="7630214457764713113">Скопіювати очищене посилання</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -246,10 +243,17 @@
 <translation id="3719826155360621982">Домашня сторінка</translation>
 <translation id="5448570825852364919">Порожня сторінка</translation>
 <translation id="5919424224662539292">Налаштовуйте фонові зображення та віджети, які з'являються на сторінці нової вкладки</translation>
+<translation id="7461924472993315131">Закріпити</translation>
+<translation id="7506648566440714944">Brave уже закріплено</translation>
+<translation id="3195845168740336657">Налаштування щитів</translation>
+<translation id="754769152790647708">Статус щитів</translation>
+<translation id="3615717588724840230">Сайти можуть блокувати трекери, рекламу та відстеження за допомогою щитів</translation>
+<translation id="5690973901138662477">Щити ввімкнено</translation>
+<translation id="4697275813919189958">Щити вимкнено</translation>
 <translation id="6303294677342628402">Щити</translation>
 <translation id="7133511168130368997">Заблокуйте відстеження та рекламу, які ходять за вами по Інтернету.</translation>
 <translation id="2761825942249694703">Це налаштування Shields за замовчуванням. Вони застосовуються до всіх сайтів, якщо ви не зробите певні зміни в панелі Shields на певному сайті. Ці зміни не вплинуть на ваші наявні налаштування для кожного сайту.</translation>
-<translation id="1435116578479068303">Цей засіб дасть змогу блокувати більшість реклами на вебсайтах, крім Brave Private Ads, якими керують налаштування <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">Цей засіб дасть змогу блокувати більшість реклами на вебсайтах, крім Brave Private Ads, якими керують налаштування <ph name="BEGIN_LINK"/>винагород Brave<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">Це заблокує більшість реклами на вебсайтах.</translation>
 <translation id="4800195524776354947">Показати кількість блокованих зображень на іконці Щитів</translation>
 <translation id="5510493033031835532">Автоматичне переспрямування сторінок AMP</translation>
@@ -259,7 +263,6 @@
 <translation id="2133317862976486547">Блокування відстежувачів та рекламних оголошень</translation>
 <translation id="4078738236287221428">Агресивно</translation>
 <translation id="7740996059027112821">Стандартно</translation>
-<translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
 <translation id="4824468494729001999">Блокувати скрипти</translation>
 <translation id="6531019308847917584">Блокувати цифрові сліди</translation>
 <translation id="5533533363827555308">Суворо, сайти можуть не працювати</translation>
@@ -269,14 +272,14 @@
 <translation id="7390783310074170337">Вигляд за замовчуванням</translation>
 <translation id="130615081792797568">Простий вигляд</translation>
 <translation id="2360360976480535628">Розширений вигляд</translation>
-<translation id="6486983549008741930">Фільтрація вмісту</translation>
+<translation id="101592339984642584">Фільтрація вмісту</translation>
 <translation id="8694564340481124390">Увімкніть користувацькі фільтри, що блокують трекери й дратівні елементи, специфічні для регіону чи мови.</translation>
-<translation id="6522618763902154348">Увімкніть користувацькі фільтри, що блокують трекери й 
+<translation id="4877657558909976793">Увімкніть користувацькі фільтри, що блокують трекери й 
     <ph name="BEGIN_LINK"/>дратівні елементи<ph name="END_LINK"/>, специфічні для регіону чи мови.</translation>
 <translation id="3482656215021340727">Додавання списків користувацьких фільтрів</translation>
 <translation id="1020877116991797978">Додавайте окремі списки, що створені довіреною спільнотою та які підтримуються нею.</translation>
 <translation id="7617831480435794399">Підписуйтеся лише на списки від тих компаній, яким довіряєте. Ваш браузер буде час від часу перевіряти наявність оновлень списків з указаної вами URL-адреси, повідомляючи вашу IP-адресу вашому серверу.</translation>
-<translation id="2831397936251948638">Створення користувацьких фільтрів</translation>
+<translation id="8580328754808744073">Створення користувацьких фільтрів</translation>
 <translation id="4618274268052410139">Додавайте створені вами користувацькі фільтри в розташованому нижче полі по одному в рядку. Обов’язково користуйтеся <ph name="BEGIN_LINK"/>синтаксисом фільтрів Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Додати</translation>
 <translation id="571950783952070673">URL-адреса списку</translation>
@@ -292,6 +295,7 @@
 <translation id="5438573563213942361">Користувацькі списки</translation>
 <translation id="4182731739150761577">Показати весь список</translation>
 <translation id="1340263054776016283">Уведіть URL-адресу списку фільтрів</translation>
+<translation id="8578397014396032341">Фільтри вмісту</translation>
 <translation id="6821903322090655051">Винагороди Brave вимкнено</translation>
 <translation id="413570371620795359">Відкрийте панель «Нагороди», щоб увімкнути й почати роботу</translation>
 <translation id="3849957491997306859">Визначено автоматично</translation>
@@ -402,6 +406,8 @@
 <translation id="5927916530277631319">Метод вирішення Unstoppable Domains</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Дізнайтеся більше<ph name="END_LINK"/> про визначення приватності Ethereum.</translation>
 <translation id="5248318250177143470">Спосіб вирішення Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Дозволити ENS пошук за межами мережі.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Детальніше<ph name="END_LINK"/> про визначення приватності пошуку за межами мережі ENS.</translation>
 <translation id="6241402707160226266">Приватне вікно з Tor</translation>
 <translation id="8762452230727230396">Tor приховує вашу IP адресу від сайтів, які ви відвідуєте.</translation>
 <translation id="2959986444009520721">Використовуйте мости</translation>
@@ -563,4 +569,9 @@
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="239760341987199724">Зробити Brave веб-переглядачем за умовчанням</translation>
+<translation id="1391855377994926460">Переглядайте головні новинні вебсайти у 6 разів швидше.</translation>
+<translation id="9218430445555521422">Установити за умовчанням</translation>
+<translation id="3479552764303398839">Не зараз</translation>
+<translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
 </translationbundle>

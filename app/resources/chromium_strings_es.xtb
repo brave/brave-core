@@ -54,6 +54,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="7291143854620707672">El administrador del perfil de trabajo puede quitar cualquier dato de Brave generado durante el uso de este perfil, como los marcadores, el historial, las contraseñas y otros ajustes. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Se ha producido un error de sistema operativo durante el proceso de instalación. Vuelve a descargar Brave.</translation>
 <translation id="2648689842065142443">Si compartes un dispositivo, tus amigos y familiares pueden navegar de forma independiente y configurar Brave a su gusto.</translation>
+<translation id="5926459996518749366">Brave ha bloqueado este archivo porque puede ocultar software malicioso</translation>
 <translation id="6384359666082467439">Te damos la bienvenida a Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Pestaña de Brave</translation>
 <translation id="8372880274820509128">Para mayor seguridad, Brave cifrará tus datos.</translation>
@@ -135,7 +136,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="9183662282810237335">¿Quieres salir de Brave de todas formas?</translation>
 <translation id="4065288863231444640">Permitir que Brave se ejecute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
-<translation id="4427306783828095590">La protección mejorada es más eficaz para bloquear ataques de suplantación de identidad y software malicioso.</translation>
+<translation id="4427306783828095590">La protección mejorada es más eficaz para bloquear ataques de suplantación de identidad y malware.</translation>
 <translation id="7084397798469173252">Te damos la bienvenida a Brave. Se ha abierto una nueva ventana del navegador.</translation>
 <translation id="2633397153656205379">Brave no se ha actualizado, algo no va bien. <ph name="BEGIN_LINK"/>Soluciona los problemas y errores de actualización de Brave<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">¿Continuar en un nuevo perfil de Brave?</translation>
@@ -181,7 +182,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="5646769069113654257">Reinicia Brave ahora</translation>
 <translation id="2335583906071111058">Mostrar Brave en este idioma</translation>
 <translation id="7207456302801184289">Te damos la bienvenida a Brave</translation>
-<translation id="8054200348483755053">Brave ha detectado que estos elementos contienen software malicioso:</translation>
+<translation id="8054200348483755053">Brave ha detectado que estos elementos contienen malware:</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/>, inicio de sesión en la red</translation>
 <translation id="5924017743176219022">Conectando a Internet...</translation>
@@ -196,6 +197,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> se ha añadido a Brave</translation>
 <translation id="608006075545470555">Añadir perfil de trabajo a este navegador</translation>
 <translation id="5849446944780602366">Personaliza y controla Brave. Hay una actualización disponible.</translation>
+<translation id="7433698744896946664">Permitir que la extensión muestre solicitudes de acceso en la barra de herramientas de Brave</translation>
 <translation id="492209281555538239">Brave guardará esta contraseña en tu cuenta de Brave para que no tengas que recordarla.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> es peligroso, por lo que Brave lo ha bloqueado.</translation>
 <translation id="7006260220514217183">La función Navegación segura está desactivada. Brave recomienda activarla.</translation>
@@ -219,7 +221,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="8616874628011103667">Ahora es más fácil utilizar Brave con tu cuenta de Brave y en ordenadores compartidos.</translation>
 <translation id="335632367599648646">¿Seguro que quieres desinstalar Brave?</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>Cómo usamos estos datos:<ph name="END_BOLD"/> Brave puede estimar tus intereses. Después, un sitio que visites puede pedirle a Brave consultar tus intereses para personalizar los anuncios que veas.</translation>
-<translation id="6373767849825830651">Brave es un navegador web que ejecuta páginas web y aplicaciones a gran velocidad. Es rápido, estable y fácil de utilizar. Brave te permite navegar en la Web de forma más segura, ya que incluye protección contra software malicioso y phishing.</translation>
+<translation id="6373767849825830651">Brave es un navegador web que ejecuta páginas web y aplicaciones a gran velocidad. Es rápido, estable y fácil de utilizar. Brave te permite navegar en la Web de forma más segura, ya que incluye protección contra malware y phishing.</translation>
 <translation id="2139300032719313227">Reiniciar ChromeOS</translation>
 <translation id="1684121725014454063">Te damos la bienvenida a los perfiles de Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave se reiniciará en 1 segundo}other{Brave se reiniciará en # segundos}}</translation>
@@ -241,10 +243,10 @@ Es posible que algunas funciones no estén disponibles. Especifica un directorio
 <translation id="8291513491595858997">Tus padres han desactivado "Permisos de sitios, aplicaciones y extensiones" en Brave. No se permite habilitar <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="1547295885616600893">ChromeOS se ha creado gracias a <ph name="BEGIN_LINK_CROS_OSS"/>software libre<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
 <translation id="8211837073776713955">Brave te avisará si tus contraseñas están en riesgo</translation>
-<translation id="4879299985215961051">Brave ha bloqueado este archivo porque contiene software malicioso.</translation>
+<translation id="4879299985215961051">Brave ha bloqueado este archivo porque contiene malware.</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="2049565899730874086">Google Pay (copiada en Brave)</translation>
-<translation id="3028928628792374067">Brave ha detectado que "<ph name="EXTENSION_NAME"/>" contiene software malicioso</translation>
+<translation id="3028928628792374067">Brave ha detectado que "<ph name="EXTENSION_NAME"/>" contiene malware</translation>
 <translation id="2301993384336631869">Brave se ha actualizado, pero llevas al menos 30 días sin utilizarlo.</translation>
 <translation id="8828443087767259398">Brave necesita acceso al Bluetooth para continuar 
  con la vinculación. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -288,6 +290,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="8678991866891573053">Brave está explorando nuevas funciones que permitan que los sitios ofrezcan la misma experiencia de navegación usando menos datos</translation>
 <translation id="3343095737966473035">Brave no es tu navegador predeterminado</translation>
 <translation id="5477319665405831211">Sincroniza y personaliza Brave en todos tus dispositivos</translation>
+<translation id="2280238321454602884">Si se activa esta opción, Brave recuperará la memoria de las pestañas que no estés usando activamente. De esta forma, se liberarán recursos de tu ordenador para otras tareas y Brave podrá seguir ejecutándose con rapidez. Las pestañas inactivas se mostrarán vacías y se volverán a cargar automáticamente cuando hagas clic en ellas. <ph name="BEGIN_LINK"/>Consulta más información<ph name="END_LINK"/> o <ph name="BEGIN_LINK_2"/>envíanos comentarios<ph name="END_LINK_2"/>.</translation>
 <translation id="4784414698887946907">Se eliminarán tus datos de navegación de este dispositivo. Para recuperar tus datos en otro momento, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">El programa de instalación no ha podido crear un directorio temporal. Comprueba si hay espacio libre en el disco y si tienes autorización para instalar el software.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> ‑ Brave Canary</translation>
@@ -316,6 +319,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="6914496861676471566">El archivo de instalación está dañado o no es válido. Vuelve a descargar Brave.</translation>
 <translation id="6431861494713261006">Opcional: Ayuda a mejorar las funciones y el rendimiento de ChromeOS enviando automáticamente datos de diagnóstico y de uso a Brave.</translation>
 <translation id="2097604701283463988">Brave no está actualizado</translation>
+<translation id="607365808648940765">Cuando es necesario, Brave recupera la memoria de las pestañas que no estás usando activamente. Puedes cambiar esta opción en cualquier momento en la configuración.</translation>
 <translation id="8550334526674375523">Este perfil de trabajo es completamente independiente de tu perfil personal.</translation>
 <translation id="2452889775041290116">Tus padres han desactivado "Permisos de sitios, aplicaciones y extensiones" en Brave. No se permite añadir <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Para recibir futuras actualizaciones de Brave, necesitarás macOS 10.13 o una versión posterior. Este ordenador utiliza macOS 10.12.</translation>
