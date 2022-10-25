@@ -160,11 +160,6 @@ WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
 }
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {
-  // Suppress request if not from active web_contents.
-  if (GetActiveWebContents() != web_contents_) {
-    return;
-  }
-
   webui_bubble_manager_->ShowBubble();
 }
 

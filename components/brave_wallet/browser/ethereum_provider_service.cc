@@ -371,6 +371,10 @@ void EthereumProviderService::IsLocked(IsLockedCallback callback) {
   delegates_[receivers_.current_receiver()]->WalletInteractionDetected();
 }
 
+void EthereumProviderService::SetRequestUrl(const GURL& url) {
+  delegates_[receivers_.current_receiver()]->SetRequestUrl(url);
+}
+
 void EthereumProviderService::ContinueAddAndApproveTransaction(
     RequestCallback callback,
     mojo::ReceiverId receiver_id,
@@ -1029,23 +1033,6 @@ void EthereumProviderService::CommonRequestOrSendAsync(
     return;
   }
 
-  // That check prevents from pop ups from backgrounded pages.
-  // We need to add any method that requires a dialog to interact with.
-  if ((method == kEthRequestAccounts || method == kAddEthereumChainMethod ||
-       method == kSwitchEthereumChainMethod || method == kEthSendTransaction ||
-       method == kEthSign || method == kPersonalSign ||
-       method == kPersonalEcRecover || method == kEthSignTypedDataV3 ||
-       method == kEthSignTypedDataV4 || method == kEthGetEncryptionPublicKey ||
-       method == kEthDecrypt || method == kWalletWatchAsset ||
-       method == kRequestPermissionsMethod) &&
-      !delegates_[receiver_id]->IsTabVisible()) {
-    SendErrorOnRequest(
-        mojom::ProviderError::kResourceUnavailable,
-        l10n_util::GetStringUTF8(IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR),
-        std::move(callback), base::Value());
-    return;
-  }
-
   if (method == kEthAccounts || method == kEthCoinbase) {
     GetAllowedAccounts(
         receiver_id, false,
@@ -1308,13 +1295,6 @@ void EthereumProviderService::ContinueRequestEthereumPermissions(
 }
 
 void EthereumProviderService::Enable(EnableCallback callback) {
-  if (!delegates_[receivers_.current_receiver()]->IsTabVisible()) {
-    SendErrorOnRequest(
-        mojom::ProviderError::kResourceUnavailable,
-        l10n_util::GetStringUTF8(IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR),
-        std::move(callback), base::Value());
-    return;
-  }
   RequestEthereumPermissions(
       std::move(callback), receivers_.current_receiver(), base::Value(), "",
       delegates_[receivers_.current_receiver()]->GetOrigin());

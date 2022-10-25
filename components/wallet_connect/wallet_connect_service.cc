@@ -8,7 +8,6 @@
 #include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/wallet_connect/encryptor.h"
 #include "brave/components/wallet_connect/wallet_connect.h"
 #include "brave/components/wallet_connect/wallet_connect_utils.h"
 #include "content/public/browser/network_service_instance.h"
@@ -71,8 +70,8 @@ WalletConnectService::BindRemote() {
   return ethereum_provider_service_.BindNewPipeAndPassReceiver();
 }
 
-void WalletConnectService::Init(const std::string& wc_uri,
-                                InitCallback callback) {
+void WalletConnectService::Connect(const std::string& wc_uri,
+                                   ConnectCallback callback) {
   auto data = ParseWalletConnectURI(wc_uri);
   if (!data) {
     std::move(callback).Run(false);
@@ -110,7 +109,7 @@ void WalletConnectService::Init(const std::string& wc_uri,
 
   websocket_client_ = std::make_unique<WebSocketAdapter>(
       base::BindOnce(&WalletConnectService::OnTunnelReady,
-                     base::Unretained(this)),
+                     base::Unretained(this), std::move(callback)),
       base::BindRepeating(&WalletConnectService::OnTunnelData,
                           base::Unretained(this)));
 
@@ -124,11 +123,10 @@ void WalletConnectService::Init(const std::string& wc_uri,
       /*auth_handler=*/mojo::NullRemote(),
       /*header_client=*/mojo::NullRemote(),
       /*throttling_profile_id=*/absl::nullopt);
-
-  std::move(callback).Run(true);
 }
 
-void WalletConnectService::OnTunnelReady(bool success) {
+void WalletConnectService::OnTunnelReady(ConnectCallback callback,
+                                         bool success) {
   if (success) {
     state_ = State::kConnected;
     // subscribe to handshae topic
@@ -149,6 +147,7 @@ void WalletConnectService::OnTunnelReady(bool success) {
       websocket_client_->Write(std::vector<uint8_t>(json.begin(), json.end()));
     }
   }
+  std::move(callback).Run(success);
 }
 
 void WalletConnectService::OnTunnelData(
@@ -185,7 +184,7 @@ void WalletConnectService::OnTunnelData(
     }
     std::array<uint8_t, 32> key;
     std::copy_n(key_vec.begin(), 32, key.begin());
-    Encryptor encryptor(key);
+    encryptor_ = std::make_unique<Encryptor>(key);
     auto ciphertext_value = base::JSONReader::Read(message->payload);
     if (!ciphertext_value) {
       return;
@@ -193,7 +192,7 @@ void WalletConnectService::OnTunnelData(
     auto ciphertext = types::EncryptionPayload::FromValue(*ciphertext_value);
     if (!ciphertext)
       return;
-    auto decrypted_payload = encryptor.Decrypt(*ciphertext);
+    auto decrypted_payload = encryptor_->Decrypt(*ciphertext);
     if (!decrypted_payload.has_value()) {
       LOG(ERROR) << decrypted_payload.error();
     }
@@ -227,73 +226,91 @@ void WalletConnectService::OnTunnelData(
         return;
       }
 
-      // construct approved session_params
-      types::SessionParams session_params;
-      session_params.approved = true;
-      session_params.chain_id = 1;
-      session_params.network_id = 0;
-      session_params.accounts.push_back(
-          "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
-      session_params.peer_id = client_id_;
-      session_params.rpc_url = absl::nullopt;
-      types::ClientMeta meta;
-      meta.name = "Brave Wallet";
-      session_params.peer_meta = std::move(meta);
+      peer_id_ = session_request->peer_id;
+      // set url from request
+      ethereum_provider_service_->SetRequestUrl(
+          GURL(session_request->peer_meta.url));
 
-      // put session_params into JsonRpcResponseSuccess
-      types::JsonRpcResponseSuccess response;
-      response.id = rpc_request->id;
-      response.jsonrpc = "2.0";
-      response.result = base::Value(session_params.ToValue());
-
-      std::string response_json;
-      if (!base::JSONWriter::Write(response.ToValue(), &response_json)) {
-        return;
-      }
-      LOG(ERROR) << "encrypting: " << response_json;
-      auto encrypted_payload = encryptor.Encrypt(
-          std::vector<uint8_t>(response_json.begin(), response_json.end()));
-      DCHECK(encrypted_payload.has_value());
-      std::string encrypted_response_json;
-      if (!base::JSONWriter::Write(encrypted_payload.value().ToValue(),
-                                   &encrypted_response_json)) {
-        return;
-      }
-      // put encrypted payload into socket message
-      types::SocketMessage socket_response;
-      socket_response.topic = session_request->peer_id;
-      socket_response.type = "pub";
-      socket_response.payload = encrypted_response_json;
-      socket_response.silent = true;
-
-      std::string socket_response_json;
-      if (!base::JSONWriter::Write(socket_response.ToValue(),
-                                   &socket_response_json)) {
-        return;
-      }
-      LOG(ERROR) << "send: " << socket_response_json;
-      websocket_client_->Write(std::vector<uint8_t>(
-          socket_response_json.begin(), socket_response_json.end()));
-      state_ = State::kSessionEstablished;
+      ethereum_provider_service_->Enable(
+          base::BindOnce(&WalletConnectService::OnRequestProcessed,
+                         base::Unretained(this), true, rpc_request->id));
     } else if (state_ == State::kSessionEstablished) {
       // Handle wallet request
       ethereum_provider_service_->Request(
           std::move(*rpc_request_value),
           base::BindOnce(&WalletConnectService::OnRequestProcessed,
-                         base::Unretained(this)));
-      LOG(ERROR) << *rpc_request_value;
+                         base::Unretained(this), false, rpc_request->id));
     }
   }
 }
 
 void WalletConnectService::OnRequestProcessed(
+    bool is_session_request,
+    double rpc_request_id,
     base::Value id,
     base::Value formed_response,
     const bool reject,
     const std::string& first_allowed_account,
     const bool update_bind_js_properties) {
-  LOG(ERROR) << id;
-  LOG(ERROR) << formed_response;
+  types::JsonRpcResponseSuccess response;
+  response.id = rpc_request_id;
+  response.jsonrpc = "2.0";
+  if (is_session_request) {
+    // construct approved session_params
+    types::SessionParams session_params;
+    session_params.approved = !reject;
+    session_params.chain_id = 1;
+    session_params.network_id = 0;
+    session_params.accounts.push_back(first_allowed_account);
+    session_params.peer_id = client_id_;
+    session_params.rpc_url = absl::nullopt;
+    types::ClientMeta meta;
+    meta.name = "Brave Wallet";
+    session_params.peer_meta = std::move(meta);
+
+    // put session_params into JsonRpcResponseSuccess
+    response.result = base::Value(session_params.ToValue());
+
+    SendSuccessMessage(response);
+    if (!reject)
+      state_ = State::kSessionEstablished;
+  } else {
+    LOG(ERROR) << formed_response;
+    response.result = std::move(formed_response);
+    SendSuccessMessage(response);
+  }
+}
+
+void WalletConnectService::SendSuccessMessage(
+    const types::JsonRpcResponseSuccess& response) {
+  std::string response_json;
+  if (!base::JSONWriter::Write(response.ToValue(), &response_json)) {
+    return;
+  }
+  LOG(ERROR) << "encrypting: " << response_json;
+  auto encrypted_payload = encryptor_->Encrypt(
+      std::vector<uint8_t>(response_json.begin(), response_json.end()));
+  DCHECK(encrypted_payload.has_value());
+  std::string encrypted_response_json;
+  if (!base::JSONWriter::Write(encrypted_payload.value().ToValue(),
+                               &encrypted_response_json)) {
+    return;
+  }
+  // put encrypted payload into socket message
+  types::SocketMessage socket_response;
+  socket_response.topic = peer_id_;
+  socket_response.type = "pub";
+  socket_response.payload = encrypted_response_json;
+  socket_response.silent = true;
+
+  std::string socket_response_json;
+  if (!base::JSONWriter::Write(socket_response.ToValue(),
+                               &socket_response_json)) {
+    return;
+  }
+  LOG(ERROR) << "send: " << socket_response_json;
+  websocket_client_->Write(std::vector<uint8_t>(socket_response_json.begin(),
+                                                socket_response_json.end()));
 }
 
 }  // namespace wallet_connect

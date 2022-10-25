@@ -20,6 +20,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -146,8 +147,13 @@ void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     std::move(callback).Run(false, std::vector<std::string>());
     return;
   }
+  absl::optional<GURL> request_url = absl::nullopt;
+  if (!request_url_.is_empty()) {
+    request_url = request_url_;
+  }
   permissions::BraveWalletPermissionContext::GetAllowedAccounts(
       *permission, content::RenderFrameHost::FromID(host_id_), accounts,
+      request_url,
       std::move(callback));
 }
 
@@ -176,8 +182,13 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
     return;
   }
 
+  absl::optional<GURL> request_url = absl::nullopt;
+  if (!request_url_.is_empty()) {
+    request_url = request_url_;
+  }
   permissions::BraveWalletPermissionContext::RequestPermissions(
       *permission, content::RenderFrameHost::FromID(host_id_), accounts,
+      request_url,
       base::BindOnce(&OnRequestPermissions, accounts, std::move(callback)));
 }
 
@@ -191,8 +202,13 @@ void BraveWalletProviderDelegateImpl::IsAccountAllowed(
     return;
   }
 
+  absl::optional<GURL> request_url = absl::nullopt;
+  if (!request_url_.is_empty()) {
+    request_url = request_url_;
+  }
   permissions::BraveWalletPermissionContext::GetAllowedAccounts(
       *permission, content::RenderFrameHost::FromID(host_id_), {account},
+      request_url,
       base::BindOnce(&OnIsAccountAllowed, account, std::move(callback)));
 }
 
@@ -211,7 +227,8 @@ bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
 
   return permissions::BraveWalletPermissionContext::IsPermissionDenied(
       *permission, web_contents->GetBrowserContext(),
-      url::Origin::Create(rfh->GetLastCommittedURL()));
+      url::Origin::Create(request_url_.is_empty() ? rfh->GetLastCommittedURL()
+                                                  : request_url_));
 }
 
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
@@ -244,6 +261,10 @@ bool BraveWalletProviderDelegateImpl::IsSolanaAccountConnected(
     return false;
 
   return tab_helper->IsSolanaAccountConnected(host_id_, account);
+}
+
+void BraveWalletProviderDelegateImpl::SetRequestUrl(const GURL& url) {
+  request_url_ = url;
 }
 
 void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {

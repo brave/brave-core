@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "url/gurl.h"
 
 namespace content {
 class Page;
@@ -55,6 +56,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void AddSolanaConnectedAccount(const std::string& account) override;
   void RemoveSolanaConnectedAccount(const std::string& account) override;
   bool IsSolanaAccountConnected(const std::string& account) override;
+  void SetRequestUrl(const GURL& url) override;
 
  private:
   // content::WebContentsObserver overrides
@@ -65,6 +67,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   const content::GlobalRenderFrameHostId host_id_;
+  // TODO: need to clear it when wallet connect disconnected
+  GURL request_url_;
   base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;
 };
 

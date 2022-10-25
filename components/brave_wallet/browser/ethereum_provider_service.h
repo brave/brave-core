@@ -188,6 +188,7 @@ class EthereumProviderService final
             SendCallback callback) override;
   void GetChainId(GetChainIdCallback callback) override;
   void IsLocked(IsLockedCallback callback) override;
+  void SetRequestUrl(const GURL& url) override;
 
   // mojom::JsonRpcServiceObserver
   void ChainChangedEvent(const std::string& chain_id,

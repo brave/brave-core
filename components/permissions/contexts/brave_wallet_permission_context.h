@@ -14,6 +14,7 @@
 #include "components/permissions/permission_context_base.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/request_type.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/origin.h"
 
@@ -54,6 +55,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses,
+      const absl::optional<GURL>& request_url,
       base::OnceCallback<
           void(const std::vector<blink::mojom::PermissionStatus>&)> callback);
   static bool HasRequestsInProgress(content::RenderFrameHost* rfh,
@@ -67,6 +69,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses,
+      const absl::optional<GURL>& request_url,
       base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
 
   // We will only check global setting and setting per origin since we won't

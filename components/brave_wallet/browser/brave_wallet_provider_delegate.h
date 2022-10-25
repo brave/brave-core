@@ -50,6 +50,8 @@ class BraveWalletProviderDelegate {
   virtual void AddSolanaConnectedAccount(const std::string& account) {}
   virtual void RemoveSolanaConnectedAccount(const std::string& account) {}
   virtual bool IsSolanaAccountConnected(const std::string& account);
+  // Used by native UI owned delegate(ex. Wallet Connect)
+  virtual void SetRequestUrl(const GURL& url) = 0;
 };
 
 }  // namespace brave_wallet

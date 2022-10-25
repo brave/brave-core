@@ -30,7 +30,6 @@ struct WalletConnectURIData {
 };
 
 interface WalletConnectService {
-  Init(string wc_uri) => (bool success);
-  // GetPendingSessionRequest
-  // NotifySessionRequestProcessed
+  Connect(string wc_uri) => (bool success);
+  // Disconnect()
 };

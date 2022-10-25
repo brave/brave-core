@@ -141,6 +141,10 @@ interface EthereumProvider {
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+
+  // This is used when dapps requests are not initiated from renderer
+  // (ex. Wallet Connect)
+  SetRequestUrl(url.mojom.Url url);
 };
 
 // https://github.com/solana-labs/solana-web3.js/blob/6482d0d/src/transaction.ts#L126

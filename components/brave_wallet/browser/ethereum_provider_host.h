@@ -36,6 +36,7 @@ class EthereumProviderHost final : public mojom::EthereumProvider {
             SendCallback callback) override;
   void GetChainId(GetChainIdCallback callback) override;
   void IsLocked(IsLockedCallback callback) override;
+  void SetRequestUrl(const GURL& url) override {}
 
   mojo::Remote<mojom::EthereumProvider> ethereum_provider_service_;
 };

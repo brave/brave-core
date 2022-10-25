@@ -159,6 +159,7 @@ void BraveWalletPermissionContext::RequestPermissions(
     blink::PermissionType permission,
     content::RenderFrameHost* rfh,
     const std::vector<std::string>& addresses,
+    const absl::optional<GURL>& request_url,
     base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
         callback) {
   if (!rfh) {
@@ -188,7 +189,9 @@ void BraveWalletPermissionContext::RequestPermissions(
   // parameter to be passes in.
   url::Origin origin;
   if (!brave_wallet::GetConcatOriginFromWalletAddresses(
-          rfh->GetLastCommittedOrigin(), addresses, &origin)) {
+          request_url.has_value() ? url::Origin::Create(*request_url)
+                                  : rfh->GetLastCommittedOrigin(),
+          addresses, &origin)) {
     std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
     return;
   }
@@ -204,6 +207,7 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
     blink::PermissionType permission,
     content::RenderFrameHost* rfh,
     const std::vector<std::string>& addresses,
+    const absl::optional<GURL>& request_url,
     base::OnceCallback<void(bool, const std::vector<std::string>&)> callback) {
   if (!rfh) {
     std::move(callback).Run(false, std::vector<std::string>());
@@ -212,7 +216,8 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
 
   // Fail if there is no last committed URL yet
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  if (web_contents->GetPrimaryMainFrame()->GetLastCommittedURL().is_empty()) {
+  if (!request_url &&
+      web_contents->GetPrimaryMainFrame()->GetLastCommittedURL().is_empty()) {
     std::move(callback).Run(true, std::vector<std::string>());
     return;
   }
@@ -228,7 +233,8 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
       PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
 
   std::vector<std::string> allowed_accounts;
-  url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
+  url::Origin origin = url::Origin::Create(
+      request_url.has_value() ? *request_url : rfh->GetLastCommittedURL());
   for (const auto& address : addresses) {
     url::Origin sub_request_origin;
     bool success = brave_wallet::GetSubRequestOrigin(
