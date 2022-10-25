@@ -5,8 +5,8 @@
 
 #include "brave/components/constants/pref_names.h"
 
-const char kManagedShieldsDisabledForUrls[] = "brave.managed_shields_disabled";
-const char kManagedShieldsEnabledForUrls[] = "brave.managed_shields_enabled";
+const char kManagedBraveShieldsDisabledForUrls[] = "brave.managed_shields_disabled";
+const char kManagedBraveShieldsEnabledForUrls[] = "brave.managed_shields_enabled";
 const char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
 // added to kAdsBlocked when being displayed.

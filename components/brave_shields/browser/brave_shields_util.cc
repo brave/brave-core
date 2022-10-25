@@ -573,15 +573,15 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                              : ControlType::BLOCK;
 }
 
-bool IsShieldsManaged(PrefService* prefs,
-                      HostContentSettingsMap* map,
-                      GURL url) {
+bool IsBraveShieldsManaged(PrefService* prefs,
+                           HostContentSettingsMap* map,
+                           GURL url) {
   DCHECK(prefs);
   DCHECK(map);
   content_settings::SettingInfo info;
   map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
-  return (prefs->IsManagedPreference(kManagedShieldsDisabledForUrls) ||
-          prefs->IsManagedPreference(kManagedShieldsEnabledForUrls)) &&
+  return (prefs->IsManagedPreference(kManagedBraveShieldsDisabledForUrls) ||
+          prefs->IsManagedPreference(kManagedBraveShieldsEnabledForUrls)) &&
          info.source == content_settings::SettingSource::SETTING_SOURCE_POLICY;
 }
 

@@ -33,9 +33,9 @@ const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
     {policy::key::kBraveWalletDisabled, brave_wallet::prefs::kDisabledByPolicy,
      base::Value::Type::BOOLEAN},
-    {policy::key::kShieldsDisabledForUrls, kManagedShieldsDisabledForUrls,
+    {policy::key::kBraveShieldsDisabledForUrls, kManagedBraveShieldsDisabledForUrls,
      base::Value::Type::LIST},
-    {policy::key::kShieldsEnabledForUrls, kManagedShieldsEnabledForUrls,
+    {policy::key::kBraveShieldsEnabledForUrls, kManagedBraveShieldsEnabledForUrls,
      base::Value::Type::LIST},
 #endif
 #if BUILDFLAG(ENABLE_TOR)

@@ -88,7 +88,7 @@ def AddBravePolicies(template_file_contents):
                      '''Wallet feature will be disabled.'''),
         },
         {
-            'name': 'ShieldsDisabledForUrls',
+            'name': 'BraveShieldsDisabledForUrls',
             'type': 'main',
             'schema': {
               'type': 'array',
@@ -109,7 +109,7 @@ def AddBravePolicies(template_file_contents):
                      '''Shields blocked.'''),
         },
         {
-            'name': 'ShieldsEnabledForUrls',
+            'name': 'BraveShieldsEnabledForUrls',
             'type': 'main',
             'schema': {
               'type': 'array',
