@@ -4,18 +4,16 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router'
 
 // types
 import {
   AddAccountNavTypes,
   BraveWallet,
-  PageState,
   SupportedTestNetworks,
   UserAssetInfoType,
-  WalletRoutes,
-  WalletState
+  WalletRoutes
 } from '../../../../constants/types'
 
 // Utils
@@ -41,6 +39,10 @@ import { getLocale } from '../../../../../common/locale'
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
+// selectors
+import { WalletSelectors } from '../../../../common/selectors'
+import { PageSelectors } from '../../../../page/selectors'
+
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
@@ -54,6 +56,12 @@ import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/b
 
 // Hooks
 import { useBalance, usePricing, useTransactionParser, useMultiChainBuyAssets } from '../../../../common/hooks'
+import {
+  useSafePageSelector,
+  useSafeWalletSelector,
+  useUnsafePageSelector,
+  useUnsafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -115,30 +123,30 @@ export const PortfolioAsset = (props: Props) => {
   // redux
   const dispatch = useDispatch()
 
-  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
-  const portfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.portfolioPriceHistory)
-  const selectedPortfolioTimeline = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPortfolioTimeline)
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const transactions = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactions)
-  const isFetchingPortfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFetchingPortfolioPriceHistory)
-  const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
-  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const coinMarketData = useSelector(({ wallet }: { wallet: WalletState }) => wallet.coinMarketData)
-  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
+  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+  const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
+  const selectedPortfolioTimeline = useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+  const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
+  const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+  const selectedNetworkFilter = useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
+  const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
+  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
 
-  const isLoading = useSelector(({ page }: { page: PageState }) => page.isFetchingPriceHistory)
-  const selectedAsset = useSelector(({ page }: { page: PageState }) => page.selectedAsset)
-  const selectedAssetCryptoPrice = useSelector(({ page }: { page: PageState }) => page.selectedAssetCryptoPrice)
-  const selectedAssetFiatPrice = useSelector(({ page }: { page: PageState }) => page.selectedAssetFiatPrice)
-  const selectedAssetPriceHistory = useSelector(({ page }: { page: PageState }) => page.selectedAssetPriceHistory)
-  const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
-  const isFetchingNFTMetadata = useSelector(({ page }: { page: PageState }) => page.isFetchingNFTMetadata)
-  const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
-  const selectedCoinMarket = useSelector(({ page }: { page: PageState }) => page.selectedCoinMarket)
-  const nftMetadataError = useSelector(({ page }: { page: PageState }) => page.nftMetadataError)
+  const isLoading = useSafePageSelector(PageSelectors.isFetchingPriceHistory)
+  const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
+  const selectedAssetCryptoPrice = useUnsafePageSelector(PageSelectors.selectedAssetCryptoPrice)
+  const selectedAssetFiatPrice = useUnsafePageSelector(PageSelectors.selectedAssetFiatPrice)
+  const selectedAssetPriceHistory = useUnsafePageSelector(PageSelectors.selectedAssetPriceHistory)
+  const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
+  const isFetchingNFTMetadata = useSafePageSelector(PageSelectors.isFetchingNFTMetadata)
+  const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
+  const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
+  const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
 
   // custom hooks
   const getAccountBalance = useBalance(networkList)

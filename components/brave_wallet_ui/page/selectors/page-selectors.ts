@@ -28,6 +28,8 @@ export const walletTermsAcknowledged = ({ page }: State) => page.walletTermsAckn
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const importWalletError = ({ page }: State) => page.importWalletError
 export const nftMetadata = ({ page }: State) => page.nftMetadata
+export const nftMetadataError = ({ page }: State) => page.nftMetadataError
+
 export const portfolioPriceHistory = ({ page }: State) => page.portfolioPriceHistory
 export const selectedAsset = ({ page }: State) => page.selectedAsset
 export const selectedAssetCryptoPrice = ({ page }: State) => page.selectedAssetCryptoPrice
