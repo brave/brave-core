@@ -74,8 +74,8 @@ function Home () {
     <>
       <Suggestions/>
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
-      {visibleChannelIds.map(channelId =>
-        <ChannelCard key={channelId} channelName={channelId} />
+      {visibleChannelIds.map(channelName =>
+        <ChannelCard key={channelName} channelName={channelName} />
       )}
       {!showingAllCategories && <LoadMoreButtonContainer>
         <Button onClick={() => setShowingAllCategories(true)}>

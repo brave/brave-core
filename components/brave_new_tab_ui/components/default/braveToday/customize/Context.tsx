@@ -118,12 +118,12 @@ export const useChannels = (options: { subscribedOnly: boolean } = { subscribedO
  * @param channelName The channel
  * @returns A getter & setter for whether the channel is subscribed
  */
-export const useChannelSubscribed = (channelId: string) => {
+export const useChannelSubscribed = (channelName: string) => {
   const { channels } = useBraveNews()
-  const subscribed = useMemo(() => channels[channelId]?.subscribedLocales.includes(api.locale) ?? false, [channels[channelId]])
+  const subscribed = useMemo(() => channels[channelName]?.subscribedLocales.includes(api.locale) ?? false, [channels[channelName]])
     const setSubscribed = React.useCallback((subscribed: boolean) => {
-    api.setChannelSubscribed(channelId, subscribed)
-  }, [channelId])
+    api.setChannelSubscribed(channelName, subscribed)
+  }, [channelName])
 
   return {
     subscribed,
