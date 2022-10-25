@@ -118,7 +118,15 @@ final public class PlaylistFolder: NSManagedObject, CRUD, Identifiable {
       playlistFolder.creatorLink = folder.creatorLink
       
       PlaylistFolder.reorderItems(context: context)
+      
+      // Issue #6243 The policy change is added to prevent merge conflicts
+      // Occasionally saving context will give error
+      // Fatal error: Error saving DB: Error Domain=NSCocoaErrorDomain Code=133020 "Could not merge changes."
+      // Merge policy should change be changed to mergeByPropertyObjectTrumpMergePolicyType to prevent this
+      let policy = context.mergePolicy
+      context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
       PlaylistFolder.saveContext(context)
+      context.mergePolicy = policy
       
       DispatchQueue.main.async {
         completion?(folderId)
