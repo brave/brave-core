@@ -9,7 +9,7 @@
 # display an additional confirmation infobar for P3A
 -All/PageSpecificSiteDataDialogBrowserTest.*/*
 
-# This test fails because of the following failed expectation in prerender_test_util.cc:
+# These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
 # kPrerender2 feature is disabled in Brave.
 -AccuracyTipBubbleViewPrerenderBrowserTest.*
@@ -126,7 +126,6 @@
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
 # https://github.com/brave/brave-browser/issues/11546 for additional
 # information.
-
 -DirectSocketsTcpApiTest.*
 -DirectSocketsUdpApiTest.*
 
@@ -927,6 +926,7 @@
 -WebAppLaunchHandlerDisabledBrowserTest.*
 -WebAppMoverBadPatternBrowsertest.*
 -WebAppOfflineDarkModeTest.*
+-WebAppTabStripBrowserTest.NavigationThrottle
 -WebAppTabStripBrowserTest.ReparentingPinsHomeTab
 -WebAppTabStripLinkCapturingBrowserTest.*
 -WebNavigationApiBackForwardCacheTest.*
