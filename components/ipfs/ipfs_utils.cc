@@ -445,47 +445,4 @@ std::string GetRegistryDomainFromIPNS(const GURL& url) {
       cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
-// gateway.io/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy ->
-// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
-// bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy.ipfs.gateway.io ->
-// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
-absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url) {
-  if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
-    return absl::nullopt;
-  }
-
-  std::vector<std::string> host_parts = base::SplitStringUsingSubstr(
-      url.host(), ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-
-  if (host_parts.size() > 2 && IsValidCID(host_parts.at(0)) &&
-      host_parts.at(1) == "ipfs") {
-    GURL final_url = GURL("ipfs://" + host_parts.at(0) + url.path());
-    GURL::Replacements replacements;
-    replacements.SetQueryStr(url.query_piece());
-    replacements.SetRefStr(url.ref_piece());
-    return final_url.ReplaceComponents(replacements);
-  }
-
-  std::vector<std::string> path_parts = base::SplitStringUsingSubstr(
-      url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  if (path_parts.size() >= 2 && path_parts.at(0) == "ipfs" &&
-      IsValidCID(path_parts.at(1))) {
-    std::string final_path;
-    if (path_parts.size() >= 3) {
-      std::vector<std::string> final_path_parts(path_parts.begin() + 2,
-                                                path_parts.end());
-      final_path = "/" + base::JoinString(final_path_parts, "/");
-    }
-
-    GURL final_url = GURL("ipfs://" + path_parts.at(1) + final_path);
-    GURL::Replacements replacements;
-    replacements.SetQueryStr(url.query_piece());
-    replacements.SetRefStr(url.ref_piece());
-    return final_url.ReplaceComponents(replacements);
-  }
-
-  return absl::nullopt;
-}
-
 }  // namespace ipfs
