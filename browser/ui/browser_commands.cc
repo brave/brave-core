@@ -11,6 +11,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/net/brave_query_filter.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -223,6 +224,13 @@ void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
 
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
   scw.WriteText(base::UTF8ToUTF16(final_url.spec()));
+}
+
+void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
+  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+  prefs->SetBoolean(
+      brave_tabs::kVerticalTabsShowTitleOnWindow,
+      !prefs->GetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow));
 }
 
 }  // namespace brave

@@ -25,6 +25,7 @@ class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
 
   // OpaqueBrowserFrameView overrides:
   void OnPaint(gfx::Canvas* canvas) override;
+  int NonClientHitTest(const gfx::Point& point) override;
 
  private:
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;

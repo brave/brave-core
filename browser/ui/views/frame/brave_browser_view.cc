@@ -502,7 +502,7 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   if (BrowserView::ShouldShowWindowTitle())
     return true;
 
-  if (tabs::features::ShouldShowVerticalTabs() && browser_->is_type_normal())
+  if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()))
     return true;
 
   return false;

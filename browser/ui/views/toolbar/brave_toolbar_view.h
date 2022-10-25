@@ -44,12 +44,15 @@ class BraveToolbarView : public ToolbarView,
   void ShowBookmarkBubble(const GURL& url,
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
+  void ViewHierarchyChanged(
+      const views::ViewHierarchyChangedDetails& details) override;
 
  private:
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetButtonBounds();
   void UpdateBookmarkVisibility();
+  void OnShowTitleBarOnVerticalTabsChanged();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
@@ -70,6 +73,9 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember show_bookmarks_button_;
 
   BooleanPrefMember location_bar_is_wide_;
+
+  BooleanPrefMember show_title_bar_on_vertical_tabs_;
+
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;
   // Tracks profile count to determine whether profile switcher should be shown.
