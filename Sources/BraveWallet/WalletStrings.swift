@@ -254,7 +254,7 @@ extension Strings {
       comment: "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\")"
     )
     public static let addAccountWithCoinTypeTitle = NSLocalizedString(
-      "wallet.addAccountTitle",
+      "wallet.addAccountWithCoinTypeTitle",
       tableName: "BraveWallet",
       bundle: .strings,
       value: "Add %@ Account",
