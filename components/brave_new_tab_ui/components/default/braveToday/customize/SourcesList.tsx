@@ -36,7 +36,7 @@ export default function SourcesList () {
       <Subtitle>{sourcesCount}</Subtitle>
     </Flex>
     <Flex direction="column">
-      {channels.map(c => <ChannelListEntry key={c.channelName} channelId={c.channelName} />)}
+      {channels.map(c => <ChannelListEntry key={c.channelName} channelName={c.channelName} />)}
       {subscribedPublisherIds.map((p) => (
         <FeedListEntry key={p} publisherId={p} />
       ))}

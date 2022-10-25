@@ -351,70 +351,6 @@
         Ad
       </message>
 
-      <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button">
-        Back to <ph name="BEGIN_BOLD">$1</ph>Dashboard<ph name="END_BOLD">$2</ph>
-      </message>
-      <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER" desc="Header for the brave news disabled placeholder">
-        Turn on Brave News, and never miss a story
-      </message>
-      <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE" desc="Subtitle for the brave news disabled placeholder">
-        Customized news feeds, from leading sources, delivered right to your browser. All 100% private.
-      </message>
-      <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON" desc="Label for the button to reenable Brave News from the disabled placeholder">
-        Turn on Brave News
-      </message>
-      <message name="IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL" desc="Label that displays in the searchbox when the user hasn't entered anything">
-        Search for news, site, topic or RSS feed
-      </message>
-      <message name="IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER" desc="Header for the channel section">
-        Channels
-      </message>
-      <message name="IDS_BRAVE_NEWS_SHOW_MORE_BUTTON" desc="Label for the button to show more items from a limited selection. For example, this might show more categories, or more suggested publishers">
-        Show more
-      </message>
-      <message name="IDS_BRAVE_NEWS_ALL_SOURCES_HEADER" desc="Header for the all sources section">
-        Sources
-      </message>
-      <message name="IDS_BRAVE_NEWS_FEEDS_HEADING" desc="The heading for the feeds contianer">
-        Following
-      </message>
-      <message name="IDS_BRAVE_NEWS_SOURCE_COUNT" desc="Label saying how many sources you currently have. [ICU Syntax]">
-        {FEED_COUNT, plural,
-          =1 {# source}
-          other {# sources}
-        }
-      </message>
-      <message name="IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING" desc="Label for the follow button to be display when following the feed">
-        Unfollow
-      </message>
-      <message name="IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING" desc="Label for the follow button when the publisher is not currently followed">
-        Follow
-      </message>
-      <message name="IDS_BRAVE_NEWS_DIRECT_SEARCH_BUTTON" desc="Label for the button which will search a Url for a feed">
-        Get feeds from <ph name="URL">$1<ex>https://example.com</ex></ph>
-      </message>
-      <message name="IDS_BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS" desc="Label displayed when there are no direct feed results">
-        No feeds found at <ph name="URL">$1<ex>https://example.com</ex></ph>
-      </message>
-      <message name="IDS_BRAVE_NEWS_SEARCH_RESULTS_NO_RESULTS" desc="Label displayed when there are no results">
-        There's nothing here :'(
-      </message>
-      <message name="IDS_BRAVE_NEWS_SEARCH_RESULTS_LOCAL_RESULTS" desc="Label displayed above results from the combined feed">
-        Results
-      </message>
-      <message name="IDS_BRAVE_NEWS_SEARCH_RESULTS_DIRECT_RESULTS" desc="Label displayed above direct RSS results">
-        Direct Results
-      </message>
-      <message name="IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT" desc="Message displayed when there are no results due to search query being too short">
-        Keep typing to search sources
-      </message>
-      <message name="IDS_BRAVE_NEWS_SUGGESTIONS_TITLE" desc="Title of the suggested sources section">
-        Suggestions
-      </message>
-      <message name="IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE" desc="Subtitle of the suggested sources section">
-        Some sources you might like. Suggestions are anonymous and matched only on your device.
-      </message>
-
       <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_TAB" desc="Clock title">Clock</message>
       <message name="IDS_BRAVE_NEW_TAB_TOP_SITES_TAB" desc="Top Sites title">Top Sites</message>
@@ -1068,6 +1004,7 @@
       <part file="speedreader_strings.grdp" />
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
+      <part file="brave_news_strings.grdp" />
       <part file="brave_shields_strings.grdp" />
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
