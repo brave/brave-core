@@ -14,7 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_vpn/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -76,8 +76,6 @@ class BraveVpnService :
 
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
-
-  using APIRequestResult = api_request_helper::APIRequestResult;
 
   std::string GetCurrentEnvironment() const;
   bool is_purchased_user() const {
@@ -194,14 +192,13 @@ class BraveVpnService :
   void ScheduleFetchRegionDataIfNeeded();
 
   void OnCreateSupportTicket(CreateSupportTicketCallback callback,
-                             APIRequestResult api_request_result);
+                             const std::string& ticket,
+                             bool success);
 
   void OnPreferenceChanged(const std::string& pref_name);
 
   BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-  using URLRequestCallback = base::OnceCallback<void(APIRequestResult)>;
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -209,15 +206,6 @@ class BraveVpnService :
   void InitP3A();
   void OnP3AInterval();
 
-  void OAuthRequest(
-      const GURL& url,
-      const std::string& method,
-      const std::string& post_data,
-      URLRequestCallback callback,
-      const base::flat_map<std::string, std::string>& headers = {});
-  void OnGetResponse(ResponseCallback callback, APIRequestResult request);
-  void OnGetSubscriberCredential(ResponseCallback callback,
-                                 APIRequestResult request);
   mojom::PurchasedState GetPurchasedStateSync() const;
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state);
   void SetCurrentEnvironment(const std::string& env);
@@ -253,7 +241,7 @@ class BraveVpnService :
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   absl::optional<mojom::PurchasedState> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
-  api_request_helper::APIRequestHelper api_request_helper_;
+  BraveVpnAPIRequest api_request_;
   std::string skus_credential_;
   base::RepeatingTimer p3a_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
