@@ -142,6 +142,16 @@ TEST_F(URLSanitizerServiceUnitTest, ClearURLS) {
       SanitizeURL(GURL("http://subpage.twitter.com/post/"
                        "?utm_content=removethis&e=&t=g&=end")),
       GURL("http://subpage.twitter.com/post/?utm_content=removethis&e=&=end"));
+
+  EXPECT_EQ(
+      SanitizeURL(GURL("file:///home/copy-clean-link.html?utm_source=web")),
+      GURL("file:///home/copy-clean-link.html?utm_source=web"));
+
+  EXPECT_EQ(SanitizeURL(GURL("data:text/html,foo?utm_source=web")),
+            GURL("data:text/html,foo?utm_source=web"));
+
+  EXPECT_EQ(SanitizeURL(GURL("ws://localhost:8080/?utm_source=web")),
+            GURL("ws://localhost:8080/?utm_source=web"));
 }
 
 }  // namespace brave

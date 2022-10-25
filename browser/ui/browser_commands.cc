@@ -203,6 +203,7 @@ void CopySanitizedURL(Browser* browser, const GURL& url) {
 // - Query filter
 // - URLSanitizerService
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
+  DCHECK(url.SchemeIsHTTPOrHTTPS());
   GURL final_url;
   // Apply debounce rules.
   auto* debounce_service =
