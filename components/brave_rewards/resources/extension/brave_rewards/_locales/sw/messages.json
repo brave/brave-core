@@ -398,12 +398,97 @@
     "message": "Una zawadi ambazo hazijatolewa kwa sababu huna fedha za kutosha",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Funga",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Endelea",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Pata Tokeni na Utoe Shukrani",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Pata tokeni kwa kutazama matangazo yanayoheshimu faragha na ufadhili tovuti na waundaji wa maudhui unaopenda kiotomatiki.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Hitilafu imetokea",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Zawadi za Brave hazipatikani",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Kwa bahati mbaya, kulikuwa na hitilafu wakati wa kujaribu kusanidi Zawadi za Brave. Tafadhali jaribu tena.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Kwa bahati mbaya, kulikuwa na hitilafu wakati wa kujaribu kuweka nchi yako. Tafadhali jaribu tena.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Usajili mpya wa Zawadi za Brave umelemazwa katika eneo lako kwa sasa. Hata hivyo, daima unaweza kujaribu tena baadaye. $link_begin$Jifunze zaidi$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Chagua nchi yako",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Asante!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Eneo lako la Zawadi za Brave limewekwa kuwa $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Chagua nchi yako ili tuweze kukuonyesha machaguo na matangazo yanayofaa kwa eneo lako. $link_begin$Sera ya Faragha$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Ili kuendelea kutumia Zawadi za Brave, chagua nchi yako ili tuweze kukuonyesha machaguo na matangazo yanayofaa kwa eneo lako. $link_begin$Sera ya Faragha$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Hifadhi",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Chagua nchi yako",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

@@ -52,6 +52,7 @@
 <translation id="7291143854620707672">Quản trị viên hồ sơ công việc có thể xóa mọi dữ liệu trên Brave được tạo trong quá trình sử dụng hồ sơ này (chẳng hạn như hoạt động tạo dấu trang, các trang web đã truy cập, mật khẩu và các tùy chọn cài đặt khác). <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Đã xảy ra lỗi hệ điều hành khi cài đặt. Hãy tải xuống Brave lại lần nữa.</translation>
 <translation id="2648689842065142443">Nếu các bạn dùng chung một thiết bị, thì bạn bè và gia đình có thể duyệt web một cách riêng biệt cũng như thiết lập Brave theo ý muốn</translation>
+<translation id="5926459996518749366">Brave đã chặn tệp lưu trữ này vì tệp này có thể ẩn chứa phần mềm độc hại</translation>
 <translation id="6384359666082467439">Chào mừng <ph name="ACCOUNT_FIRST_NAME"/> đến với Brave!</translation>
 <translation id="6791166902140255175">Thẻ Brave</translation>
 <translation id="8372880274820509128">Để bảo mật hơn, Brave sẽ mã hóa dữ liệu của bạn.</translation>
@@ -194,6 +195,7 @@
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> đã được thêm vào Brave</translation>
 <translation id="608006075545470555">Thêm Hồ sơ công việc vào trình duyệt này</translation>
 <translation id="5849446944780602366">Tùy chỉnh và kiểm soát Brave. Đã có bản cập nhật.</translation>
+<translation id="7433698744896946664">Cho phép tiện ích hiện các yêu cầu truy cập trong thanh công cụ của Brave</translation>
 <translation id="492209281555538239">Brave sẽ lưu mật khẩu này trong Tài khoản Brave của bạn. Bạn sẽ không phải nhớ mật khẩu này.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> nguy hiểm, do đó Brave đã chặn tệp.</translation>
 <translation id="7006260220514217183">Tính năng Duyệt web an toàn đang tắt. Bạn nên bật tính năng này trên Brave.</translation>
@@ -286,6 +288,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8678991866891573053">Brave đang khám phá các tính năng mới cho phép các trang web mang lại trải nghiệm duyệt web như nhau nhưng tiêu tốn ít dữ liệu hơn</translation>
 <translation id="3343095737966473035">Brave không phải là trình duyệt mặc định của bạn</translation>
 <translation id="5477319665405831211">Đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
+<translation id="2280238321454602884">Khi bật, Brave sẽ lấy lại bộ nhớ từ những thẻ mà bạn hiện không sử dụng. Việc này sẽ giải phóng tài nguyên của máy tính để thực hiện các tác vụ khác và giúp Brave luôn chạy nhanh. Các thẻ không hoạt động sẽ ở trạng thái trống và tự động tải lại khi bạn nhấp vào thẻ. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> hoặc <ph name="BEGIN_LINK_2"/>gửi ý kiến phản hồi<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Thao tác này sẽ xóa dữ liệu duyệt web của bạn khỏi thiết bị này. Để truy xuất dữ liệu của bạn sau, hãy đăng nhập vào Brave dưới dạng <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Trình cài đặt không thể tạo thư mục tạm thời. Vui lòng kiểm tra dung lượng ổ đĩa còn trống và quyền cài đặt phần mềm.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -314,6 +317,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="6914496861676471566">Tệp lưu trữ trình cài đặt bị hỏng hoặc không hợp lệ. Hãy tải xuống Brave lại lần nữa.</translation>
 <translation id="6431861494713261006">Không bắt buộc: Giúp cải thiện hiệu suất và các tính năng của ChromeOS bằng cách tự động gửi dữ liệu sử dụng và chẩn đoán cho Brave.</translation>
 <translation id="2097604701283463988">Brave đã lỗi thời</translation>
+<translation id="607365808648940765">Khi cần, Brave sẽ lấy lại bộ nhớ từ những thẻ mà bạn hiện không sử dụng. Bạn có thể thay đổi chế độ cài đặt này bất kỳ lúc nào trong phần cài đặt.</translation>
 <translation id="8550334526674375523">Hồ sơ công việc này hoàn toàn riêng biệt với hồ sơ cá nhân của bạn.</translation>
 <translation id="2452889775041290116">Cha mẹ bạn đã tắt tùy chọn "Quyền của các trang web, ứng dụng và tiện ích" đối với Brave. Bạn không được phép thêm <ph name="EXTENSION_TYPE_PARAMETER"/> này.</translation>
 <translation id="8502436661255886343">Để nhận các bản cập nhật Brave sau này, bạn cần có macOS 10.13 trở lên. Máy tính này đang sử dụng macOS 10.12.</translation>

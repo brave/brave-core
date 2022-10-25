@@ -85,10 +85,6 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="8303432794159193481">Dev App per Brave Browser</translation>
 <translation id="8292967014767479012">App Brave Brwoser</translation>
 <translation id="4743468424889072281">App di sviluppo di Brave Brwoser</translation>
-<translation id="239760341987199724">Imposta Brave come browser predefinito</translation>
-<translation id="1391855377994926460">Continua a navigare in velocità: fino a 6 volte più rapidamente sui principali siti di informazione.</translation>
-<translation id="9218430445555521422">Imposta di defult</translation>
-<translation id="3479552764303398839">Non adesso</translation>
 <translation id="732814027519296280">Vuoi migliorare ulteriormente la ricerca di Brave?</translation>
 <translation id="2677865600861971449">Partecipa al progetto Web Discovery per contribuire in forma anonima ad alcune ricerche e dati di navigazione e migliorare i risultati della ricerca Brave per tutto. Tutela la privacy. Nessuno sforzo. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Ulteriori informazioni</translation>
@@ -204,9 +200,10 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="6817415381278637662">Imposta Brave come browser predefinito per avere la protezione per la privacy di Brave su tutte le pagine che apri.</translation>
 <translation id="8722651357687610395">Imposta Brave come default</translation>
 <translation id="2370739752330685659">Forse più tardi</translation>
+<translation id="7537601449003285327">Aggiungi alla barra delle applicazioni</translation>
 <translation id="961012016278832836">Versione legacy di Microsoft Edge</translation>
 <translation id="6436994631426134065">Importata da <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Copia link pulito (solo URL principale)</translation>
+<translation id="7630214457764713113">Copia link pulito</translation>
 <translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
 <translation id="7179921470347911571">Rilancia Ora</translation>
 <translation id="4472575034687746823">Come iniziare</translation>
@@ -246,10 +243,17 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="3719826155360621982">Homepage</translation>
 <translation id="5448570825852364919">Pagina vuota</translation>
 <translation id="5919424224662539292">Personalizza l'immagine di sfondo e i widget che appaiono nella pagina della nuova scheda</translation>
+<translation id="7461924472993315131">Blocca</translation>
+<translation id="7506648566440714944">Brave è già aggiunto</translation>
+<translation id="3195845168740336657">Impostazioni delle Protezioni</translation>
+<translation id="754769152790647708">Stato delle Protezioni</translation>
+<translation id="3615717588724840230">I siti possono bloccare tracker, annunci e il fingerprinting grazie alle Protezioni</translation>
+<translation id="5690973901138662477">Protezioni attive</translation>
+<translation id="4697275813919189958">Protezioni non attive</translation>
 <translation id="6303294677342628402">Protezioni</translation>
 <translation id="7133511168130368997">Blocca tracker e annunci che ti seguono sul web.</translation>
 <translation id="2761825942249694703">Queste sono le impostazioni predefinite di Shields. Si applicano a tutti i siti web a meno che tu non modifichi qualcosa nel pannello Shields di un particolare sito. La modifica non influirà sulle tue impostazioni esistenti per sito.</translation>
-<translation id="1435116578479068303">In questo modo, la maggior parte degli annunci sui siti web verranno bloccati, ma non gli annunci privati Brave: li puoi gestire nelle impostazioni di <ph name="BEGIN_LINK"/>Ricompense Brave<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">In questo modo, la maggior parte degli annunci sui siti web verranno bloccati, ma non gli annunci privati Brave: li puoi gestire nelle impostazioni delle <ph name="BEGIN_LINK"/>Ricompense Brave<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">In questo modo, la maggior parte degli annunci sui siti web verranno bloccati.</translation>
 <translation id="4800195524776354947">Mostra il numero di oggetti bloccati sull'icona di Shields</translation>
 <translation id="5510493033031835532">Reindirizzamento automatico pagine AMP</translation>
@@ -259,7 +263,6 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="2133317862976486547">Blocco di tracker e annunci</translation>
 <translation id="4078738236287221428">Aggressivo</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
 <translation id="4824468494729001999">Blocco degli script</translation>
 <translation id="6531019308847917584">Blocca il fingerprinting</translation>
 <translation id="5533533363827555308">Rigido, potrebbe non far funzionare alcuni siti</translation>
@@ -269,14 +272,14 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="7390783310074170337">Visualizzazione predefinita</translation>
 <translation id="130615081792797568">Visualizzazione semplice</translation>
 <translation id="2360360976480535628">Visualizzazione avanzata</translation>
-<translation id="6486983549008741930">Applicazione di filtri ai contenuti</translation>
+<translation id="101592339984642584">Applicazione di filtri ai contenuti</translation>
 <translation id="8694564340481124390">Attiva i filtri personalizzati che bloccano i tracker e gli elementi indesiderati specifici dell’area geografica o della lingua.</translation>
-<translation id="6522618763902154348">Attiva i filtri personalizzati che bloccano i tracker e 
-    <ph name="BEGIN_LINK"/>gli elementi indesiderati<ph name="END_LINK"/> specifici dell’area geografica o della lingua.</translation>
+<translation id="4877657558909976793">Attiva i filtri personalizzati che bloccano i tracker e 
+    <ph name="BEGIN_LINK"/>gli elementi indesiderati<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Aggiungi liste di filtri personalizzati</translation>
 <translation id="1020877116991797978">Aggiungi delle liste aggiuntive create e tenute in ordine dalla tua community di fiducia.</translation>
 <translation id="7617831480435794399">Iscriviti solo a liste di soggetti di cui ti fidi. Dall’URL che inserisci Il tuo browser cercherà periodicamente degli aggiornamenti alle liste e per farlo rivelerà il tuo indirizzo IP al server.</translation>
-<translation id="2831397936251948638">Crea filtri personalizzati</translation>
+<translation id="8580328754808744073">Crea filtri personalizzati</translation>
 <translation id="4618274268052410139">Aggiungi i filtri personalizzati che hai creato, uno per riga, nel campo sottostante. Assicurati di usare la <ph name="BEGIN_LINK"/>sintassi del filtro Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Aggiungi</translation>
 <translation id="571950783952070673">URL della lista</translation>
@@ -292,6 +295,7 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="5438573563213942361">Liste personalizzate</translation>
 <translation id="4182731739150761577">Mostra tutta la lista</translation>
 <translation id="1340263054776016283">Inserisci l’URL della lista di filtri</translation>
+<translation id="8578397014396032341">Filtri dei contenuti</translation>
 <translation id="6821903322090655051">Ricompense Brave disabilitate</translation>
 <translation id="413570371620795359">Apri il pannello Ricompense per eseguire l’attivazione e iniziare</translation>
 <translation id="3849957491997306859">Rilevamento automatico</translation>
@@ -402,6 +406,8 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="5927916530277631319">Metodo per risolvere Unstoppable Domains</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulla privacy di Ethereum.</translation>
 <translation id="5248318250177143470">Metodo per risolvere Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Consenti ricerca off-chain di ENS</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulle implicazioni per la privacy della ricerca off-chain di ENS.</translation>
 <translation id="6241402707160226266">Finestra in Incognito con Tor</translation>
 <translation id="8762452230727230396">Tor nasconde il tuo indirizzo IP ai siti che visiti.</translation>
 <translation id="2959986444009520721">Utilizza i bridge</translation>

@@ -86,10 +86,6 @@
 <translation id="8303432794159193481">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
 <translation id="8292967014767479012">Brave  ब्राउज़र ऐप</translation>
 <translation id="4743468424889072281">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
-<translation id="239760341987199724">क्रोमियम को अपने डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
-<translation id="1391855377994926460">वेब तेज़ी से ब्राउज़ करना जारी रखें - प्रमुख समाचार साइटों पर 6 गुना तेज़ी से.</translation>
-<translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
-<translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="732814027519296280">Brave Search को और भी बेहतर बनाना चाहते हैं?</translation>
 <translation id="2677865600861971449">गुमनाम रूप से कुछ खोज &amp; ब्राउज़िंग डेटा, और सभी के लिए Brave Search  परिणामों में सुधार करें. गोपनीयता-संरक्षण. और बिना किसी कोशिश. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">ज़्यादा जानें</translation>
@@ -205,9 +201,10 @@
 <translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
+<translation id="7537601449003285327">टास्कबार में पिन करें</translation>
 <translation id="961012016278832836">Microsoft Edge की लेगसी</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> से इम्पोर्ट किया गया.</translation>
-<translation id="1506190932569739298">क्लीन लिंक (सिर्फ़ मुख्य URL) को कॉपी करें</translation>
+<translation id="7630214457764713113">क्लीन लिंक को कॉपी करें</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="4472575034687746823">आरंभ करें</translation>
@@ -280,10 +277,17 @@ Binance
 <translation id="3719826155360621982">होमपेज</translation>
 <translation id="5448570825852364919">खाली पेज</translation>
 <translation id="5919424224662539292">नए टैब पेज़ पर दिखाई देने वाली पृष्ठभूमि छवि और विजेट को कस्टमाइज़ करें</translation>
+<translation id="7461924472993315131">पिन करें</translation>
+<translation id="7506648566440714944">Brave पहले से ही पिन किया हुआ है</translation>
+<translation id="3195845168740336657">शील्ड की सेटिंग</translation>
+<translation id="754769152790647708">शील्ड का स्टेटस</translation>
+<translation id="3615717588724840230">साइट शील्ड का इस्तेमाल करके ट्रैकर, विज्ञापन और फ़िंगरप्रिंटिंग को ब्लॉक कर सकती हैं</translation>
+<translation id="5690973901138662477">शील्ड चालू हैं</translation>
+<translation id="4697275813919189958">शील्ड बंद हैं</translation>
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
 <translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
 <translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
-<translation id="1435116578479068303">यह वेबसाइट पर ज़्यादातर विज्ञापनों को ब्लॉक कर देगा, Brave निजी विज्ञापनों को नहीं — उन्हें <ph name="BEGIN_LINK"/>Brave रिवॉर्ड<ph name="END_LINK"/> सेटिंग में कंट्रोल किया जाता है.</translation>
+<translation id="1435116578479068303">इससे साइट पर ज़्यादातर विज्ञापन ब्लॉक हो जाएँगे, लेकिन Brave प्राइवेट विज्ञापन नहीं होंगे — उन्हें <ph name="BEGIN_LINK"/>Brave रिवॉर्ड<ph name="END_LINK"/> सेटिंग में कंट्रोल किया जाता है.</translation>
 <translation id="8452536890042542134">यह वेबसाइट पर ज़्यादातर आइकन को ब्लॉक कर देगा.</translation>
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
 <translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
@@ -293,7 +297,6 @@ Binance
 <translation id="2133317862976486547">ट्रैकर्स &amp; विज्ञापन ब्लॉक करना</translation>
 <translation id="4078738236287221428">एग्रेसिव</translation>
 <translation id="7740996059027112821">मानक</translation>
-<translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
 <translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
 <translation id="6531019308847917584">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
 <translation id="5533533363827555308">सख्त, साइटों को ब्रेक कर सकते हैं</translation>
@@ -303,14 +306,14 @@ Binance
 <translation id="7390783310074170337">डिफ़ॉल्ट व्यू</translation>
 <translation id="130615081792797568">सरल व्यू</translation>
 <translation id="2360360976480535628">उन्नत व्यू</translation>
-<translation id="6486983549008741930">कंटेंट फ़िल्टर करना</translation>
+<translation id="101592339984642584">कंटेंट फ़िल्टर करना</translation>
 <translation id="8694564340481124390">कस्टम फ़िल्टर की सुविधा चालू करें, जो क्षेत्र और भाषा से जुड़े ट्रैकर और अनचाही चीज़ों को ब्लॉक करती है.</translation>
-<translation id="6522618763902154348">कस्टम फ़िल्टर की सुविधा चालू करें, जो क्षेत्र और भाषा से जुड़े ट्रैकर और 
-<ph name="BEGIN_LINK"/>अनचाही चीज़ों<ph name="END_LINK"/> को ब्लॉक करती है.</translation>
+<translation id="4877657558909976793">उन कस्टम फ़िल्टर को चालू करें, जो क्षेत्र और भाषा से जुड़े ट्रैकर को और
+    <ph name="BEGIN_LINK"/>अनचाही चीज़ों<ph name="END_LINK"/> को ब्लॉक करते हैं.</translation>
 <translation id="3482656215021340727">कस्टम फ़िल्टर की लिस्ट जोड़ें</translation>
 <translation id="1020877116991797978">अपने भरोसेमंद समुदाय की ओर से बनाई और संभाली जा रही अतिरिक्त लिस्ट जोड़ें.</translation>
 <translation id="7617831480435794399">केवल उन संस्थाओं की लिस्ट की सदस्यता लें जिन पर आप भरोसा करते हैं. आपका ब्राउज़र समय-समय पर आपके द्वारा दर्ज किए गए URL से लिस्ट अपडेट की जांच करेगा, आपके IP पते को उनके सर्वर पर दिखाएगा.</translation>
-<translation id="2831397936251948638">कस्टम फ़िल्टर बनाएँ</translation>
+<translation id="8580328754808744073">कस्टम फ़िल्टर बनाएँ</translation>
 <translation id="4618274268052410139">नीचे फ़ील्ड में हर लाइन में एक-एक करके अपने बनाए हुए फ़िल्टर जोड़ें. <ph name="BEGIN_LINK"/>Adblock फ़िल्टर सिंटैक्स<ph name="END_LINK"/> का इस्तेमाल करना न भूलें.</translation>
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="571950783952070673">URL की लिस्ट</translation>
@@ -326,6 +329,7 @@ Binance
 <translation id="5438573563213942361">कस्टम लिस्ट</translation>
 <translation id="4182731739150761577">पूरी लिस्ट दिखाएँ</translation>
 <translation id="1340263054776016283">फ़िल्टर लिस्ट का URL डालें</translation>
+<translation id="8578397014396032341">कंटेंट फ़िल्टर</translation>
 <translation id="6821903322090655051">Brave Rewards बंद किए गए हैं</translation>
 <translation id="413570371620795359">इस चालू करके शुरू करने के लिए रिवॉर्ड पैनल खोलें</translation>
 <translation id="3849957491997306859">अपने-आप पहचान की गई</translation>
@@ -436,6 +440,8 @@ Binance
 <translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
 <translation id="2889554198027690581">Ethereum की गोपनीयता नीति के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
+<translation id="6421218422395686663">ENS ऑफ़चेन को खोजने की इजाज़त दें.</translation>
+<translation id="7831978744512353629">ENS ऑफ़चेन खोजने से जुड़े प्राइवेसी नियमों के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/>.</translation>
 <translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
 <translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
 <translation id="2959986444009520721">ब्रिज का इस्तेमाल करें</translation>

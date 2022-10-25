@@ -54,6 +54,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="7291143854620707672">L'administrateur du profil professionnel peut retirer toutes les données Brave générées durant l'utilisation de ce profil (comme la création de favoris, l'historique, les mots de passe et d'autres paramètres). <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Une erreur de système d'exploitation s'est produite pendant l'installation. Veuillez télécharger de nouveau Brave.</translation>
 <translation id="2648689842065142443">Si vous partagez un appareil avec vos proches, ceux-ci peuvent configurer Brave comme bon leur semble et naviguer sur le Web de façon autonome.</translation>
+<translation id="5926459996518749366">Brave a bloqué ce fichier d'archive, car il peut masquer des logiciels malveillants</translation>
 <translation id="6384359666082467439">Bienvenue dans Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Onglet Brave</translation>
 <translation id="8372880274820509128">Pour une sécurité accrue, Brave va chiffrer vos données.</translation>
@@ -196,6 +197,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="7861579472672677409">L'extension « <ph name="EXTENSION_NAME"/> » a été ajoutée à Brave</translation>
 <translation id="608006075545470555">Ajouter le profil professionnel à ce navigateur</translation>
 <translation id="5849446944780602366">Personnalisez et contrôlez Brave. Une mise à jour est disponible.</translation>
+<translation id="7433698744896946664">Autoriser l'extension à afficher les demandes d'accès dans la barre d'outils Brave</translation>
 <translation id="492209281555538239">Brave enregistrera ce mot de passe dans votre compte Brave. Vous n'aurez pas à le retenir.</translation>
 <translation id="4168372721886011198">Brave a bloqué le fichier <ph name="FILE_NAME"/>, car il est dangereux.</translation>
 <translation id="7006260220514217183">La navigation sécurisée est désactivée. Brave vous recommande de l'activer.</translation>
@@ -287,6 +289,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="8678991866891573053">Brave explore de nouvelles fonctionnalités qui permettent aux sites d'offrir la même expérience de navigateur tout en utilisant moins de vos données</translation>
 <translation id="3343095737966473035">Brave n'est pas votre navigateur par défaut</translation>
 <translation id="5477319665405831211">Synchroniser et personnaliser Brave sur vos appareils</translation>
+<translation id="2280238321454602884">Lorsque cette option est activée, Brave récupère la mémoire des onglets que vous n'utilisez pas activement. Cela libère les ressources de votre ordinateur pour d'autres tâches et maintient la rapidité de Brave. Les onglets inactifs apparaissent vides et s'actualisent automatiquement lorsque vous cliquez dessus. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> ou <ph name="BEGIN_LINK_2"/>envoyer des commentaires<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Cette action entraînera la suppression de vos données de navigation sur cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Le programme d'installation n'a pas pu créer de répertoire temporaire. Vérifiez que le disque a suffisamment d'espace libre et que vous disposez des autorisations nécessaires pour installer le logiciel.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -315,6 +318,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="6914496861676471566">L'archive du programme d'installation est corrompue ou n'est pas valide. Veuillez télécharger Brave à nouveau.</translation>
 <translation id="6431861494713261006">Facultatif : aidez-nous à améliorer les fonctionnalités ainsi que les performances de Brave OS en envoyant automatiquement les données de diagnostic et d'utilisation à Brave.</translation>
 <translation id="2097604701283463988">Brave n'est pas à jour</translation>
+<translation id="607365808648940765">Au besoin, Brave récupère la mémoire des onglets que vous n'utilisez pas activement. Vous pouvez changer cette option en tout temps dans les paramètres.</translation>
 <translation id="8550334526674375523">Ce profil professionnel est distinct de votre profil personnel.</translation>
 <translation id="2452889775041290116">Ton parent a désactivé le paramètre « Autorisations pour les sites, les applications et les extensions » dans Brave. L'activation de ce <ph name="EXTENSION_TYPE_PARAMETER"/> n'est pas autorisée.</translation>
 <translation id="8502436661255886343">Vous devez disposer de macOS 10.13 ou d'une version ultérieure pour recevoir les futures mises à jour de Brave. Or, c'est la version macOS 10.12 qui est installée sur cet ordinateur.</translation>

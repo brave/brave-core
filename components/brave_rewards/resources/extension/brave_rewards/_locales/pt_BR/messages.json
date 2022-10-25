@@ -398,12 +398,97 @@
     "message": "Você possui gorjetas pendentes em razão de fundos insuficientes",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Fechar",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Continuar",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Ganhe Tokens e Retribua",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Ganhe tokens assistindo à anúncios que respeitam a privacidade e apoie seus sites e criadores favoritos automaticamente.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Algo deu errado",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "As Recompensas Brave não estão disponíveis",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Infelizmente, houve um erro ao tentar configurar as Recompensas Brave. Tente novamente.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Infelizmente, houve um erro ao tentar definir seu país. Tente novamente.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Novos cadastros nas Recompensas Brave estão desativados na sua região no momento. Tente novamente mais tarde. $link_begin$Saiba mais$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Selecione seu país",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Obrigado!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Sua região das Recompensas Brave foi definida como $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Selecione seu país para que possamos mostrar a você as opções e os anúncios certos da sua região. $link_begin$Política de Privacidade$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Se quiser continuar usando as Recompensas Brave, selecione seu país para que possamos mostrar a você as opções e os anúncios certos da sua região. $link_begin$Política de Privacidade$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Salvar",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Selecione seu país",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

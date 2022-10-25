@@ -441,6 +441,7 @@
 <translation id="3435465986463792564">창이 많이 열렸나요? 여기에서 관리할 수 있습니다.</translation>
 <translation id="3443221991560634068">현재 페이지 새로고침</translation>
 <translation id="3444179773590444986">사이트의 어두운 테마에 관한 의견을 공유할까요?</translation>
+<translation id="7384339501748168186">Brave에서는 개인 정보 보호를 위해 이 입력란의 비밀번호를 자동 완성하지 않습니다.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{다운로드 1개 예약됨}other{다운로드 #개 예약됨}}</translation>
 <translation id="3474624961160222204"><ph name="NAME"/>(으)로 계속</translation>
 <translation id="3478363558367712427">검색엔진을 선택할 수 있습니다.</translation>
@@ -658,6 +659,7 @@
 <translation id="4763480195061959176">동영상</translation>
 <translation id="4766313118839197559">비밀번호가 이 기기의 비밀번호 관리자에 저장됩니다.</translation>
 <translation id="4766678251456904326">기기에 계정 추가</translation>
+<translation id="4787736314074622408"><ph name="ITEM_TITLE"/> 파일을 삭제하시겠습니까?</translation>
 <translation id="4791358705705538979">웹에서 결제와 같은 작업을 처리하도록 도와줍니다.</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Google Pay 결제 수단 및 주소는 암호로 암호화되지 않습니다.
@@ -726,6 +728,7 @@
 <translation id="4744980273298156620">곧 새 탭을 열 때 <ph name="SITE_NAME"/> 스토리가 표시됩니다. 내가 팔로우하는 사이트는 Brave 계정에 저장되며 디스커버 설정에서 관리할 수 있습니다.</translation>
 <translation id="5091249083535528968">확장된 사용 데이터</translation>
 <translation id="509429900233858213">오류가 발생했습니다.</translation>
+<translation id="5099845111805573968">데스크톱 사이트를 선택하면 사이트에 방문할 때마다 이 설정이 적용됩니다.</translation>
 <translation id="225414324447409614">사이트에서 사용자의 비밀번호를 도용하려고 하거나 사용자가 유해한 파일을 다운로드하는 경우, Brave에서 페이지 콘텐츠 일부를 비롯한 URL을 세이프 브라우징 서비스에 보낼 수 있습니다.</translation>
 <translation id="510275257476243843">1시간 남음</translation>
 <translation id="5115811374190515607">이동 위치: <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@
 <translation id="5958275228015807058">다운로드에서 파일 및 페이지를 찾아보세요.</translation>
 <translation id="5962718611393537961">탭하여 접기</translation>
 <translation id="5964869237734432770">이미지 설명 중지</translation>
+<translation id="9135546826883360971">선택사항이 Brave에 저장됩니다</translation>
 <translation id="5979084224081478209">비밀번호 확인</translation>
 <translation id="5995726099713306770">페이지를 다시 다운로드하시겠습니까?</translation>
 <translation id="6456271171669383967">계속 Brave 사용</translation>
@@ -920,6 +924,7 @@
 <translation id="6192907950379606605">이미지 설명 보기</translation>
 <translation id="8367262879301982880">비밀번호가 이 기기의 Brave 비밀번호 관리자에 저장됩니다.</translation>
 <translation id="620197886010707372">Google Play에서 <ph name="APPNAME"/> 앱을 여시겠습니까?</translation>
+<translation id="6202812185118613467">동기화를 시작하려면 다시 로그인하세요.</translation>
 <translation id="6203593061661911168">Wi-Fi에 연결되면 다운로드가 시작됩니다.</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/>이(가) 아닌가요?</translation>
 <translation id="6211386937064921208">페이지 미리보기입니다.</translation>
@@ -1051,6 +1056,7 @@
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, 탭, 선택됨</translation>
 <translation id="6828070228333235514">가격 추적 중지</translation>
+<translation id="6830728435402077660">안전하지 않음</translation>
 <translation id="6833996806551876956">개인정보 보호 샌드박스 무료 체험</translation>
 <translation id="6836206421467243968"><ph name="TITLE_OF_GROUP"/> 탭 그룹을 새 백그라운드 탭 그룹으로 복원합니다.</translation>
 <translation id="6846298663435243399">로드 중…</translation>
@@ -1351,7 +1357,7 @@
 <translation id="8460448946170646641">주요 개인 정보 보호 및 보안 제어 기능 검토</translation>
 <translation id="8461694314515752532">나만의 동기화 암호로 동기화된 데이터 암호화</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/>이(가) 인터넷에 연결되어 있는지 확인하세요.</translation>
-<translation id="8473863474539038330">주소 및 기타</translation>
+<translation id="5633907266617216186">주소 및 기타</translation>
 <translation id="8481921391193215807">사용 설정하면 사이트가 여기에 표시된 개인 정보 보호 기술을 이용해 콘텐츠와 서비스를 제공할 수 있습니다. 크로스 사이트 추적의 대안이 되는 기술 등이 있습니다. 시간이 지남에 따라 더 많은 무료 체험 기능이 포함될 수 있습니다.
 
 <ph name="BEGIN_LIST_ITEM1"/>광고주와 게시자는 FLoC을 사용할 수 있습니다.<ph name="END_LIST_ITEM1"/>

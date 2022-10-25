@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ml">
+<translation id="2359808026110333948">തുടരുക</translation>
 <translation id="4692623383562244444">സെര്‍ച് എഞ്ചിനുകള്‍</translation>
 <translation id="3377025655491224618">അദൃശ്യ ടാബ്</translation>
 <translation id="9148058034647219655">പുറത്തുകടക്കുക</translation>
@@ -46,7 +47,6 @@
 <translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
 <translation id="4472575034687746823">ആരംഭിക്കാം</translation>
-<translation id="2359808026110333948">തുടരുക</translation>
 <translation id="6896758677409633944">പകര്‍ത്തുക</translation>
 <translation id="7665369617277396874">അക്കൗണ്ട് ചേർക്കുക</translation>
 <translation id="3448492834076427715">അക്കൗണ്ട് അപ്‌ഡേറ്റ് ചെയ്യുക</translation>
@@ -89,4 +89,8 @@
 <translation id="4804818685124855865">വിച്ഛേദിക്കുക</translation>
 <translation id="7982789257301363584">നെറ്റ്വര്‍ക്ക്</translation>
 <translation id="5039804452771397117">അനുവദിക്കൂ</translation>
+<translation id="583281660410589416">അജ്ഞാതം</translation>
+<translation id="7352651011704765696">എന്തോ കുഴപ്പം സംഭവിച്ചു</translation>
+<translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
+<translation id="6040143037577758943">അവസാനിപ്പിക്കുക</translation>
 </translationbundle>

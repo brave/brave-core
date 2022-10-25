@@ -398,12 +398,97 @@
     "message": "由于资金不足，您的赏金待处理",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "关闭",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "继续",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "赚取代币并给予回馈",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "通过查看尊重隐私的广告来赚取代币和自动支持您最喜欢的网站和内容创作者。",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "出了点儿问题",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards 不可用",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "遗憾的是，尝试设置 Brave Rewards 时出错。请再试一次。",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "遗憾的是，在尝试设置您所在的国家或地区时出错。请再试一次。",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "您所在地区目前已禁用 Brave Rewards 的新注册。但是，您可以稍后再试。 $link_begin$了解更多信息$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "选择国家/地区",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "谢谢！",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "您的 Brave Rewards 区域已被设置为 $country$。",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "选择您所在的国家/地区，以便我们能够向您展示适合您所在地区的正确选项和广告。$link_begin$隐私政策$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "要继续使用 Brave Rewards，选择您所在的国家/地区，以便我们能够向您展示适合您所在地区的正确选项和广告。$link_begin$隐私政策$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "保存",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "选择国家/地区",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

@@ -398,12 +398,97 @@
     "message": "資金不足により保留されているチップがあります",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "閉じる",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "続ける",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "トークンを獲得して還元する",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのサイトやコンテンツクリエイターを自動的にサポートします。",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "エラーが発生しました",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Braveリワードをご利用いただけません",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Braveリワードの設定時にエラーが発生しました。もう一度お試しください。",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "国の設定時にエラーが発生しました。もう一度お試しください。",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "現在お住まいの地域では、Braveリワードの新規登録が無効化されています。後ほどもう一度お試しください。$link_begin$詳細はこちら$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "国を選択",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "ありがとうございます！",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Braveリワードの地域を$country$に設定しました。",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "国を選択すると、お住まいの地域に適したオプションと広告を表示することができます。$link_begin$プライバシーポリシー$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Braveリワードを引き続きご利用いただくために、お住まいの国を選択してください。その地域に合ったオプションや広告を表示することができます。$link_begin$プライバシーポリシー$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "保存",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "国を選択",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

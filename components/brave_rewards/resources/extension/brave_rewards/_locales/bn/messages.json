@@ -398,12 +398,97 @@
     "message": "অপর্যাপ্ত ফান্ডের জন্য আপনার পরামর্শ বাকি আছে",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "বন্ধ করুন",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "চালিয়ে যান",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "টোকেন উপার্জন করুন এবং ফিরিয়ে দিন",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখে টোকেনগুলি উপার্জন করুন এবং আপনার পছন্দসই সাইট এবং সামগ্রী নির্মাতাকে স্বয়ংক্রিয়ভাবে সমর্থন করুন।",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "কিছু সমস্যা হয়েছে",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave পুরস্কার উপলভ্য নয়",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "দুর্ভাগ্যবশত, Brave পুরস্কার সেট আপ করার সময় কোনো ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "দুর্ভাগ্যবশত, আপনার দেশ সেট করার চেষ্টায় কোনো ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Brave পুরস্কারের জন্য নতুন সাইন আপ বর্তমানে আপনার অঞ্চলে বন্ধ আছে। তবে, আপনি পরে আবার চেষ্টা করতে পারেন। $link_begin$আরও জানুন$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "আপনার দেশ নির্বাচন করুন",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "ধন্যবাদ!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "আপনার Brave পুরস্কার অঞ্চল $country$ সেট করা আছে।",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "আপনার দেশ নির্বাচন করুন যাতে আমরা আপনাকে আপনার অঞ্চলের জন্য সঠিক বিকল্প এবং বিজ্ঞাপন দেখাতে পারি। $link_begin$গোপনীয়তা নীতি$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Brave পুরস্কারের ব্যবহার চালিয়ে যেতে, আপনার দেশ নির্বাচন করুন যাতে আমরা আপনাকে আপনার অঞ্চলের জন্য সঠিক বিকল্প ও বিজ্ঞাপন দেখাতে পারি। $link_begin$গোপনীয়তা নীতি$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "সেভ করুন",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "আপনার দেশ নির্বাচন করুন",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

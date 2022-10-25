@@ -54,6 +54,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="7291143854620707672">Çdo e dhënë e Brave që krijohet gjatë përdorimit të këtij profili (si p.sh. krijimi i faqeshënuesve, historikut, fjalëkalimeve dhe cilësimeve të tjera) mund të hiqet nga administratori i profilit të punës. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Ndodhi një gabim në sistemin operativ gjatë instalimit. Shkarko përsëri Brave.</translation>
 <translation id="2648689842065142443">Nëse e ndan një pajisje, miqtë dhe familja mund të shfletojnë veçmas dhe ta konfigurojnë Brave pikërisht ashtu si dëshirojnë</translation>
+<translation id="5926459996518749366">Brave e bllokoi këtë skedar arkivi sepse ai mund të fshehë skedarë keqdashës</translation>
 <translation id="6384359666082467439">Mirë se vjen në Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Skeda Brave</translation>
 <translation id="8372880274820509128">Për më shumë siguri, Brave do t'i enkriptojë të dhënat e tua.</translation>
@@ -196,6 +197,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> është shtuar te Brave</translation>
 <translation id="608006075545470555">Shto profilin e punës në këtë shfletues</translation>
 <translation id="5849446944780602366">Personalizo dhe kontrollo Brave. Ofrohet përditësim.</translation>
+<translation id="7433698744896946664">Lejo që shtesat të shfaqin kërkesat për qasje në shiritin e veglave të Brave</translation>
 <translation id="492209281555538239">Brave do ta ruajë këtë fjalëkalim në llogarinë tënde të Brave. Nuk është nevoja ta mbash mend.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> është i rrezikshëm, prandaj Brave e ka bllokuar.</translation>
 <translation id="7006260220514217183">"Shfletimi i sigurt" është joaktiv. Brave rekomandon aktivizimin e tij.</translation>
@@ -287,6 +289,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="8678991866891573053">Brave po eksploron veçori të reja që u lejojnë sajteve të ofrojnë të njëjtën përvojë shfletimi duke përdorur më pak nga të dhënat e tua</translation>
 <translation id="3343095737966473035">Brave nuk është shfletuesi i parazgjedhur</translation>
 <translation id="5477319665405831211">Sinkronizo dhe personalizo Brave nëpër pajisjet e tua</translation>
+<translation id="2280238321454602884">Kur është aktiv, Brave rikuperon memorien nga skedat që ti nuk po i përdor në mënyrë aktive. Kjo liron burimet e kompjuterit për detyra të tjera dhe bën që Brave të jetë i shpejtë. Skedat joaktive shfaqen bosh dhe ringarkohen automatikisht kur klikon tek ato. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/> ose <ph name="BEGIN_LINK_2"/>dërgo komente<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Kjo do të fshijë të dhënat e shfletimit nga kjo pajisje. Për t'i marrë më vonë të dhënat, identifikohu te Brave si <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Instaluesi nuk mund të krijonte një direktori të përkohshme. Kontrollo për hapësirë të lirë në disk dhe për lejen për të instaluar softuerin.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -315,6 +318,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="6914496861676471566">Arkivi i instaluesit është i dëmtuar ose i pavlefshëm. Shkarkoje Brave përsëri.</translation>
 <translation id="6431861494713261006">Opsionale: Ndihmo në përmirësimin e veçorive dhe performancës së ChromeOS duke dërguar automatikisht te Brave të dhëna diagnostikuese dhe përdorimi.</translation>
 <translation id="2097604701283463988">Brave nuk është i përditësuar</translation>
+<translation id="607365808648940765">Sipas nevojës, Brave rikuperon memorien nga skedat që ti nuk po i përdor në mënyrë aktive. Këtë mund ta ndryshosh në çdo kohë te cilësimet.</translation>
 <translation id="8550334526674375523">Ky profil pune është plotësisht i veçuar nga profili yt personal.</translation>
 <translation id="2452889775041290116">Prindi yt ka çaktivizuar "Lejet për sajtet, aplikacionet dhe shtesat" për Brave. Nuk lejohet shtimi për këtë <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Për të marrë përditësimet e ardhshme të Brave, do të të duhet macOS 10.13 e lart. Ky kompjuter përdor macOS 10.12.</translation>

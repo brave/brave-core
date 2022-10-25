@@ -398,12 +398,97 @@
     "message": "ያለዎት ገንዘብ አነስተኛ በመሆኑ ምክንያት በሒደት ላይ ያሉ ፍንጮች አሉዎት ",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "ዝጋ",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "&#4672;&#4901;&#4621;",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "ማስመሰያዎች ያግኙ እና መልሶ መስጠት",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "ግላዊነት ን የሚያከብሩ ማስታወቂያዎች በማየት ማስመሰያዎች ያግኙ እና የሚወዷቸውን ጣቢያዎች እና የ ይዘት ፈጣሪዎች በራስ-ሰር ይደግፉ።",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "የሆነ ስህተት ተፈጥሯል ",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave ሽልማቶች አይገኝም",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "እንደ አለመታደል ሆኖ Brave ሽልማቶችን ለማዋቀር በመሞከር ላይ ሳለ ስህተት ነበር። እባክዎ ዳግም ይሞክሩ።",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "እንደ አለመታደል ሆኖ፣ አገርዎን ለማዋቀር በመሞከር ላይ ሳለ አንድ ስህተት ነበር። እባክዎ ዳግም ይሞክሩ።",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "ለ Brave ሽልማት አዲስ ምዝገባዎች በአሁኑ ጊዜ በክልልዎ ውስጥ ተሰናክለዋል። ነገር ግን፣ ሁልጊዜ በኋላ እንደገና መሞከር ይችላሉ። $link_begin$የበለጠ ለማወቅ$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "ሀገርዎን ይምረጡ",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "እናመሰግናለን!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "የእርስዎ Brave Rewards ክልል ወደ $country$ተቀናብሯል።",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "ለክልልዎ ትክክለኛ አማራጮችን እና ማስታወቂያዎችን እንድናሳይዎ ሀገርዎን ይምረጡ። $link_begin$የግላዊነት ፖሊሲ$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "የ Brave ሽልማቶችን መጠቀሙን ለመቀጠል፣ ለክልልዎ ትክክለኛ አማራጮችን እና ማስታወቂያዎችን እንድናሳይዎ ሀገርዎን ይምረጡ። $link_begin$Privacy Policy$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "አስቀምጥ",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "ሀገርዎን ይምረጡ",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

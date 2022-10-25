@@ -85,10 +85,6 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8303432794159193481">Aplikasi Pengembang Peramban Brave</translation>
 <translation id="8292967014767479012">Aplikasi Peramban Brave</translation>
 <translation id="4743468424889072281">Aplikasi Pengembangan Peramban Brave</translation>
-<translation id="239760341987199724">Setel Brave sebagai browser default</translation>
-<translation id="1391855377994926460">Terus menelusuri web dengan lebih cepat - hingga 6x lebih cepat pada situs berita utama.</translation>
-<translation id="9218430445555521422">Setel sebagai default</translation>
-<translation id="3479552764303398839">Jangan sekarang</translation>
 <translation id="732814027519296280">Ingin membuat Brave Search menjadi lebih baik?</translation>
 <translation id="2677865600861971449">Ikut serta dalam Proyek Penemuan Web untuk secara anonim menyumbangkan sejumlah penelusuran &amp; penjelajahan data, dan meningkatkan hasil Brave Search untuk semua. Menjaga privasi. Dan sangat mudah. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Pelajari lebih lanjut</translation>
@@ -204,9 +200,10 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="6817415381278637662">Tetapkan Brave sebagai peramban bawaan Anda untuk mendapatkan perlindungan privasi Brave pada setiap halaman web yang Anda buka.</translation>
 <translation id="8722651357687610395">Setel Brave sebagai peramban baku</translation>
 <translation id="2370739752330685659">Mungkin nanti</translation>
+<translation id="7537601449003285327">Pin to taskbar</translation>
 <translation id="961012016278832836">Microsoft Edge Lama</translation>
 <translation id="6436994631426134065">Diimpor dari <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Salin tautan bersih (hanya URL utama)</translation>
+<translation id="7630214457764713113">Salin tautan yang bersih</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
 <translation id="7179921470347911571">Luncurkan Ulang Sekarang</translation>
 <translation id="4472575034687746823">Memulai</translation>
@@ -246,10 +243,17 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3719826155360621982">Halaman beranda</translation>
 <translation id="5448570825852364919">Halaman kosong</translation>
 <translation id="5919424224662539292">Kustomisasi gambar latar dan widget yang muncul di halaman tab baru</translation>
+<translation id="7461924472993315131">Pasang Pin</translation>
+<translation id="7506648566440714944">Brave sudah ditandai</translation>
+<translation id="3195845168740336657">Pengaturan Perisai</translation>
+<translation id="754769152790647708">Status Perisai</translation>
+<translation id="3615717588724840230">Situs dapat memblokir pelacak, iklan, dan penyidik jari dengan menggunakan Perisai</translation>
+<translation id="5690973901138662477">Perisai Aktif</translation>
+<translation id="4697275813919189958">Perisai Non-Aktif</translation>
 <translation id="6303294677342628402">Perisai</translation>
 <translation id="7133511168130368997">Blokir pelacak dan iklan yang mengikuti Anda ke seluruh web.</translation>
 <translation id="2761825942249694703">Ini adalah pengaturan Perisai default. Mereka berlaku ke semua website kecuali bila Anda mengubah sesuatu di panel Perisai di situs tertentu. Mengubah pengaturan ini tidak akan memengaruhi pengaturan per-situs saat ini.</translation>
-<translation id="1435116578479068303">Ini akan memblokir sebagian besar iklan di situs web, bukan Iklan Privat Brave — hal ini dikendalikan di pengaturan <ph name="BEGIN_LINK"/>Imbalan Brave<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">Ini akan memblokir sebagian besar iklan pada situs web, bukan Iklan Privat Brave — hal ini dikendalikan di pengaturan <ph name="BEGIN_LINK"/>Imbalan Brave<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">Ini akan memblokir sebagian besar iklan di situs web.</translation>
 <translation id="4800195524776354947">Tampilkan jumlah objek yang diblokir pada ikon Perisai</translation>
 <translation id="5510493033031835532">Halaman AMP yang diarahkan otomatis</translation>
@@ -259,7 +263,6 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2133317862976486547">Pemblokiran pelacak &amp; iklan</translation>
 <translation id="4078738236287221428">Agresif</translation>
 <translation id="7740996059027112821">Standar</translation>
-<translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
 <translation id="4824468494729001999">Blokir skrip</translation>
 <translation id="6531019308847917584">Blokir penyidikjarian</translation>
 <translation id="5533533363827555308">Ketat, dapat merusak situs</translation>
@@ -269,14 +272,14 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7390783310074170337">Tampilan baku</translation>
 <translation id="130615081792797568">Tampilan sederhana</translation>
 <translation id="2360360976480535628">Tampilan lanjut</translation>
-<translation id="6486983549008741930">Penyaringan Konten</translation>
+<translation id="101592339984642584">Penyaringan konten</translation>
 <translation id="8694564340481124390">Aktifkan filter khusus yang memblokir pelacak serta gangguan regional dan berbahasa tertentu.</translation>
-<translation id="6522618763902154348">Aktifkan filter khusus yang memblokir pelacak serta
-    <ph name="BEGIN_LINK"/>Gangguan<ph name="END_LINK"/> regional dan berbahasa tertentu.</translation>
+<translation id="4877657558909976793">Mengaktifkan filter khusus yang memblokir pelacak dan 
+    <ph name="BEGIN_LINK"/>Pengganggu<ph name="END_LINK"/> untuk wilayah dan bahasa tertentu.</translation>
 <translation id="3482656215021340727">Tambahkan daftar filter khusus</translation>
 <translation id="1020877116991797978">Tambahkan daftar tambahan yang dibuat dan dikelola oleh komunitas tepercaya Anda.</translation>
 <translation id="7617831480435794399">Berlanggananlah hanya pada daftar dari entitas yang Anda percayai. Peramban Anda akan secara periodik memeriksa pembaruan daftar dari URL yang Anda tuliskan, mengungkapkan alamat IP Anda ke peladen mereka.</translation>
-<translation id="2831397936251948638">Buat Filter Khusus</translation>
+<translation id="8580328754808744073">Buat filter khusus</translation>
 <translation id="4618274268052410139">Tambahkan filter khusus yang Anda telah buat, satu per baris, pada bidang di bawah ini. Pastikanlah untuk menggunakan <ph name="BEGIN_LINK"/>sintaksis filter Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
 <translation id="571950783952070673">Daftar URL</translation>
@@ -292,6 +295,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5438573563213942361">Daftar khusus</translation>
 <translation id="4182731739150761577">Tampilkan daftar lengkap</translation>
 <translation id="1340263054776016283">Masukkan URL daftar filter</translation>
+<translation id="8578397014396032341">Filter Konten</translation>
 <translation id="6821903322090655051">Brave Rewards dinonaktifkan</translation>
 <translation id="413570371620795359">Buka panel Rewards untuk mengaktifkan dan memulai</translation>
 <translation id="3849957491997306859">Terdeteksi Otomatis</translation>
@@ -402,6 +406,8 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5927916530277631319">Metode untuk menelusuri Unstoppable Domains</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Pelajari Lebih Lanjut<ph name="END_LINK"/> tentang pertimbangan privasi Ethereum.</translation>
 <translation id="5248318250177143470">Metode untuk menelusuri Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Memungkinkan pencarian luar rantai ENS.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/> tentang pertimbangan privasi pencarian luar rantai ENS.</translation>
 <translation id="6241402707160226266">Jendela privat dengan Tor</translation>
 <translation id="8762452230727230396">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi.</translation>
 <translation id="2959986444009520721">Gunakan Jembatan</translation>

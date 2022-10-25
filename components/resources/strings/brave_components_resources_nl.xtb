@@ -88,9 +88,11 @@
 <translation id="1447534717041828517">Brave-nieuws knop weergeven in de werkbalk</translation>
 <translation id="370665806235115550">Bezig met laden...</translation>
 <translation id="4634933166298842522">Abonnementen beheren</translation>
-<translation id="3632460243282703117">Abonneren</translation>
-<translation id="4720556299488643018">Afmelden</translation>
-<translation id="5227905322248018544">Verbergen en nieuw meer laten zien</translation>
+<translation id="4108314971463891922">Volgen</translation>
+<translation id="3861486700625780712">Niet meer volgen</translation>
+<translation id="8909741410750517071">Volg deze bron met 1 klik.</translation>
+<translation id="1982678174789043774">Ontvang de nieuwste artikelen met Brave Nieuws.</translation>
+<translation id="7894417427965898400">Feeds beheren</translation>
 <translation id="780301667611848630">Nee, bedankt</translation>
 <translation id="9164544612367905452">Ophalen…</translation>
 <translation id="1276592121036104130">Nieuwe inhoud laden</translation>
@@ -102,6 +104,26 @@
 <translation id="5158129253322921540">Inhoud van <ph name="PUBLISHER_NAME"/> uitschakelen</translation>
 <translation id="3189348785087463371">Gepromote inhoud</translation>
 <translation id="4541978218358617681">Advertentie</translation>
+<translation id="6265592479622441247">Terug naar <ph name="BEGIN_BOLD"/>Dashboard<ph name="END_BOLD"/></translation>
+<translation id="8300751939969131609">Schakel Brave Nieuws in en mis nooit een verhaal</translation>
+<translation id="8117813824055029515">Aangepaste nieuwsfeeds van toonaangevende bronnen, direct in uw browser. Allemaal 100% privé.</translation>
+<translation id="1765217911817124376">Brave-nieuws inschakelen</translation>
+<translation id="7845637671472170434">Zoek naar nieuws, sites, onderwerpen of RSS-feeds</translation>
+<translation id="1498364270401875204">Kanalen</translation>
+<translation id="1472675084647422956">Meer weergeven</translation>
+<translation id="8032569120109842252">Volgend</translation>
+<translation id="7841646697467892441">{FEED_COUNT, plural,
+          =1 {# bron}
+          other {# bronnen}
+        }</translation>
+<translation id="6143382357119101833">Ontvang feeds van <ph name="URL"/></translation>
+<translation id="4515121482885046194">Geen feeds gevonden op <ph name="URL"/></translation>
+<translation id="8535964427132833909">Niets gevonden :'(</translation>
+<translation id="9036971622563146214">Resultaten</translation>
+<translation id="6727452620418483718">Directe resultaten</translation>
+<translation id="7697251281928908970">Blijf typen om bronnen te zoeken</translation>
+<translation id="4750394297954878236">Suggesties</translation>
+<translation id="7436846601026966360">Sommige bronnen zijn wellicht interessant voor u. Suggesties zijn anoniem en alleen gekoppeld op uw apparaat.</translation>
 <translation id="1776831331757823105">Klok</translation>
 <translation id="7791543448312431591">Toevoegen</translation>
 <translation id="7679334366167089823">Verdien tokens voor het bekijken van privacy-respecterende advertenties.</translation>
@@ -117,6 +139,7 @@
 <translation id="8820817407110198400">Bladwijzers</translation>
 <translation id="1644574205037202324">Geschiedenis</translation>
 <translation id="2702801445560668637">Leeslijst</translation>
+<translation id="4590997608186539865">Playlist</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8730621377337864115">Gereed</translation>
 <translation id="730042046912793465">Dit is een</translation>
@@ -125,10 +148,8 @@
 <translation id="4085423007106063912">Brave onthoudt nooit wat je doet in een privévenster. Websites die je bezoekt, worden niet in je geschiedenis weergeven. Cookies, formuliergegevens en websitegegevens verdwijnen wanneer je het venster sluit.</translation>
 <translation id="1700746046668116047">Houd er rekening mee dat je activiteit mogelijk nog steeds zichtbaar is voor je interprovider, passieve netwerkwaarnemers of je werkgever (als je een zakelijke pc of zakelijk netwerk gebruikt). Open een privévenster met Tor voor meer privacy.</translation>
 <translation id="8759753423332885148">Meer Leren</translation>
-<translation id="3546750666732517156">Privévenster met Tor connectiviteit</translation>
-<translation id="5383068818957293256">Brave herinnert zich nooit wat u doet in een privévenster. Met Tor-connectiviteit is uw IP-adres ook verborgen voor de sites die u bezoekt. Als uw persoonlijke veiligheid echter afhangt van uw anonimiteit, gebruikt u dan de Tor-browser.</translation>
-<translation id="3338507774653218581">Brave onthoudt nooit wat u doet in een privévenster. Met een Tor-verbinding hebt u twee extra voordelen: uw IP-adres wordt verborgen voor de websites die u bezoekt en uw websitebezoeken zijn niet zichtbaar voor passieve netwerkwaarnemers. Houd er rekening mee dat Tor het browsen kan vertragen en dat sommige website mogelijk niet meer werken.</translation>
-<translation id="8666930656222843375">Een privévenster met Tor maakt het moeilijker, maar niet onmogelijk, voor uw  ISP of werkgever (als u een zakelijke pc of zakelijk netwerk gebruikt) om te bekijken welke websites u bezoekt. Een privévenster met Tor zorgt er echter niet voor dat uw activiteit helemaal niet meer gevolgd kan worden. Als uw persoonlijke veiligheid alleen gegarandeerd kan worden als uw anoniem blijft, gebruikt dan de Tor-browser.</translation>
+<translation id="8611976753572844841">Privévenster met Tor-connectiviteit</translation>
+<translation id="1645589858096839236">Brave bewaart browse-activiteit van privévensters niet. Met Tor-activiteit wordt het moeilijker voor sites om uw echte IP-adres te zien en voor netwerkwaarnemers om te zien welke sites u bezoekt. Als uw persoonlijke veiligheid echter afhangt van uw anonimiteit, gebruikt u dan de Tor-browser.</translation>
 <translation id="7919374705736538787">Zoek Privé met</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Voor privé-zoekopdrachten zal Brave DuckDuckGo gebruiken voor zoekopdrachten met het Privévenster. DuckDuckGo houdt’ je zoekgeschiedenis niet bij. Dus je kan privé zoeken.</translation>
@@ -136,7 +157,7 @@
 <translation id="4371533307685765155">Zoek met DuckDuckGo.</translation>
 <translation id="548478195417408221">Maak privévensters meer privé</translation>
 <translation id="3294503279952534143">Dit privévenster is meer privé</translation>
-<translation id="4644024131266615376">met Tor Connectiviteit</translation>
+<translation id="6126226144537295436">met Tor-connectiviteit</translation>
 <translation id="8541421872680304667">Tor verbergt uw IP-adres voor de sites die u bezoekt, door uw handelen door verschillende Tor-servers te leiden voordat het uw bestemming bereikt. Tor kan het browsen vertragen en sommige sites werken mogelijk helemaal niet.</translation>
 <translation id="8897548669448660973">Het gebruik van privévensters verandert alleen wat Brave op jouw apparaat doet — het verandert het gedrag van iemand anders niet. Tor verbergt je IP-adres voor de sites die je bezoekt en maakt het iets moeilijker, maar niet onmogelijk, voor je internetprovider of werkgever om te zien welke sites je bezoekt. Open een privévenster met Tor vanuit het menu, of met [[ key ]].</translation>
 <translation id="6975708438781948564">Leer meer over Tor in Brave</translation>
@@ -164,6 +185,7 @@
 <translation id="9204006549413740506">Laatst bijgewerkt</translation>
 <translation id="6745592621698551453">Nu updaten</translation>
 <translation id="5334844597069022743">Bron bekijken</translation>
+<translation id="4720556299488643018">Afmelden</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
 <translation id="4105411033440701818">Let op: als u op 'Indienen' klikt, worden dit webadres, uw Brave-versienummer en uw IP-adres gedeeld met de ontwikkelaars van Brave. (Het IP-adres wordt niet opgeslagen.)</translation>
@@ -274,8 +296,8 @@
 <translation id="5028274575541726856">Fout: Brave Beloningen-profiel is gerapporteerd</translation>
 <translation id="2607420597216860026">Probeer het opnieuw nadat je de ID-verificatie hebt doorlopen van <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Fout: er is een geverifieerd account vereist om in te loggen</translation>
-<translation id="6650468331440842419">Hmm, het lijkt erop dat uw Brave-beloningenprofiel al verbonden was met een beheerrekening in een andere regio. Probeer opnieuw verbinding te maken met uw vorige beheerrekening of pas de regio van uw beheerrekening aan zodat deze overeenkomt met uw vorige rekening.</translation>
-<translation id="5955021799827127089">Fout: andere regio rekening</translation>
+<translation id="1859789048900659918">Hmm, het lijkt erop dat uw Brave Rewards-land niet overeenkomt met het land van het <ph name="PROVIDER"/>-account dat u probeert te koppelen.</translation>
+<translation id="8925428135452218262">Fout: landen komen niet overeen</translation>
 <translation id="5260522591743022748">Het lijkt erop dat Brave Beloningen al is geverifieerd met een ander <ph name="PROVIDER"/>-account. Probeer nog eens te verifiëren met uw vorige account.</translation>
 <translation id="5111921830714291902">Fout: ander account</translation>
 <translation id="1024520300696337331">Uw <ph name="PROVIDER"/>-account kan momenteel niet worden verbonden met uw Brave Rewards-profiel. Uw <ph name="PROVIDER"/>-account is geregistreerd in een land dat momenteel geen ondersteuning biedt aan Brave Rewards.</translation>
@@ -297,6 +319,8 @@
 <translation id="6682919029276027868">Voor uw huidige Brave-beloningen gelden echter beperkingen. Als u met een walletbeheerder verifieert, kunt u:</translation>
 <translation id="9064931634458501855">Zonder beperkingen tegoed toevoegen en opnemen</translation>
 <translation id="3222002542796906461">Ontvang uw beloningen direct in uw account</translation>
+<translation id="1233129511866436960">Meer informatie over regio's en ondersteuning</translation>
+<translation id="7329170127335794328">Momenteel niet beschikbaar in uw regio</translation>
 <translation id="8304979233901023264">Ik heb de <ph name="TOS_LINK_BEGIN"/>servicevoorwaarden<ph name="TOS_LINK_END"/> &amp; en het <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/> van Brave gelezen en ga ermee akkoord.</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="1892970806832316900">In behandeling tot <ph name="DATE"/></translation>
@@ -341,6 +365,7 @@
 <translation id="6161467863097205016">Sleutelinformatie seed:</translation>
 <translation id="5323604113525002127">We tonen de laatste [[numberOfLines]] regels van het logbestand. Als je het volledige logbestand wilt bekijken, kun je het hierboven downloaden.</translation>
 <translation id="7168491065836975228">Interne beloning</translation>
+<translation id="1992397118740194946">Niet ingesteld</translation>
 <translation id="758790787422117549">Persoonlijk ID</translation>
 <translation id="1919345977826869612">Advertenties</translation>
 <translation id="3671566813999349838">Bedrag</translation>
@@ -362,6 +387,7 @@
 <translation id="3798449238516105146">Versie</translation>
 <translation id="7180611975245234373">Vernieuwen</translation>
 <translation id="1456696701804096710">Opnieuw Tellen:</translation>
+<translation id="8118649457152178086">Rewards-land:</translation>
 <translation id="2152423226436243241">Automatische Bijdrage</translation>
 <translation id="2927922949538312364">Eenmalige fooi</translation>
 <translation id="3164105678355419142">Terugkerende fooi</translation>
@@ -647,9 +673,14 @@
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Ondersteuning voor Ethereum Name Service (ENS) inschakelen in Brave?</translation>
 <translation id="8328137586971750853">Brave maakt gebruik van Infura om Ethereum JSON-RPC-aanroepen tot het smart contract van Ethereum Name Service uit te voeren om opgevraagde .eth-domeinnamen op te lossen. Als u dit inschakelt, ziet Infura het .eth-domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Bekijk de <ph name="BEGIN_INFURA_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en het <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
+<translation id="807404806385418949">Ethereum Name Service-zoekopdrachten buiten blockchain</translation>
+<translation id="4049590838234508776">Ondersteuning voor Ethereum Name Service (ENS)-zoekopdrachten buiten blokchain inschakelen in Brave?</translation>
+<translation id="1769433806670482329">Brave gebruikt gateways buiten de blockchain om aan .eth-verzoeken voor het opvragen van domeinnamen te voldoen. Als u dit inschakelt, zien derde partijen welk .eth-domein u probeert te bezoeken, maar ze zullen geen andere domeinen zien. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Meer informatie<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="4047002754575891955">Doorgaan met zoekopdrachten buiten blockchain</translation>
 <translation id="7378412287463452336">Ga verder met de Infura-server</translation>
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Ingeschakeld</translation>
 <translation id="2468755552460246661">Domein geblokkeerd</translation>
 <translation id="6393849031898466746">Deze website houdt mogelijk je activiteiten bij op andere websites</translation>
 <translation id="983774928604730749">Brave heeft voorkomen dat de volgende site wordt geladen:</translation>
@@ -762,6 +793,8 @@
 <translation id="244362569344671266">Verdien tokens door het bekijken van Brave Private Ads en ondersteun automatisch makers van inhoud.</translation>
 <translation id="5095252080770652994">Voortgang</translation>
 <translation id="6278643716658443228">Instellingen voor beloningen</translation>
+<translation id="2862978891748913252">Selecteer uw land</translation>
+<translation id="3717922248131893262">Om Brave Rewards te blijven gebruiken, selecteert u uw land. Dan kunnen wij u de juiste opties en advertenties voor uw regio laten zien. <ph name="LINK_BEGIN"/>Privacybeleid<ph name="LINK_END"/></translation>
 <translation id="6777169449483742979">Je verdient tokens voor het bekijken van deze gesponsorde afbeelding.</translation>
 <translation id="5486114327664215175">Verdien tokens door deze afbeelding te bekijken en ondersteun makers van content.</translation>
 <translation id="2940863921746574646">Tokensaldo</translation>
@@ -809,9 +842,16 @@
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Neem een snelle tour<ph name="TOUR_LINK_END"/> of <ph name="LEARN_LINK_BEGIN"/>krijg meer<ph name="LEARN_LINK_END"/>informatie.</translation>
 <translation id="7465614181960492526">Tokens verdienen en terugschenken</translation>
 <translation id="2731539192954672606">Verdien tokens door privacy-respecterende advertenties te bekijken en steun automatisch uw favoriete sites en makers van inhoud.</translation>
+<translation id="5425006356459378415">Brave Rewards is niet beschikbaar</translation>
+<translation id="909076461795862330">Er heeft zich een probleem voorgedaan bij het instellen van Brave Rewards. Probeer het opnieuw.</translation>
+<translation id="3180990265682133881">Er heeft zich een probleem voorgedaan bij het instellen van uw land. Probeer het opnieuw.</translation>
+<translation id="2191603160848789187">Nieuwe aanmeldingen voor Brave Rewards zijn momenteel uitgeschakeld in uw regio. U kunt het later echter altijd opnieuw proberen. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_BEGIN"/></translation>
+<translation id="8764860730661377310">Uw Brave Rewards-regio is ingesteld op <ph name="COUNTRY"/>.</translation>
+<translation id="7068416025603720599">Selecteer uw land zodat we u de juiste opties en advertenties kunnen laten zien. <ph name="LINK_BEGIN"/>Privacybeleid<ph name="LINK_END"/></translation>
 <translation id="1275213816424141989">Misschien later</translation>
 <translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
+<translation id="4331886860862592203">Land selecteren</translation>
 <translation id="3115702351969988294">Hoe vaak wilt u advertenties zien?</translation>
 <translation id="7532131110478098401">(advertenties per uur)</translation>
 <translation id="2951964054390325080">Hoeveel maandelijkse steun wilt u geven aan uw favoriete makers?</translation>
@@ -1040,6 +1080,7 @@
 <translation id="2708402071160162126">WAARSCHUWING: deel je herstelzin nooit met anderen. Iedereen met deze zin kan voor altijd toegang krijgen tot jouw assets.</translation>
 <translation id="2416098547200943834">OPMERKING: privésleutel wordt geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">OPMERKING: privésleutel moet worden geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
+<translation id="42126664696688958">Exporteren</translation>
 <translation id="2902856457593699108">Sleutel weergeven</translation>
 <translation id="8033497299373164724">Sleutel verbergen</translation>
 <translation id="2702143907607790516">Fout bij het bijwerken van de accountnaam; probeer het opnieuw.</translation>
@@ -1050,10 +1091,8 @@
 <translation id="5398538976202345089">Niet-ondersteund netwerk</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Netwerk testen</translation>
-<translation id="4245123003308024264">Ropsten</translation>
-<translation id="2219337030359508039">Kovan</translation>
-<translation id="992469614838016642">Rinkeby</translation>
 <translation id="4022672158058543834">Goerli</translation>
+<translation id="6742767287935968736">Sepolia</translation>
 <translation id="1260818237399583903">Binance Smart Chain</translation>
 <translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
@@ -1242,8 +1281,9 @@
 <translation id="6169371176266800104">24 uur</translation>
 <translation id="7677692756188354224">Beurskapitalisatie</translation>
 <translation id="4430019312045809116">Volume</translation>
+<translation id="4312994183947987913">Kopen/Storten</translation>
 <translation id="5133421763709317473">Geen activa gevonden die overeenkomen met een zoekopdracht of filter</translation>
-<translation id="8813832913015888458">Dit activum wordt niet ondersteund door Brave-wallet</translation>
+<translation id="7383613643114466279">Dit activum wordt niet ondersteund door de Brave-wallet</translation>
 <translation id="6423985584914773314">Geen geldig FIL-adres</translation>
 <translation id="3898731124813934210">Kopen met Wyre</translation>
 <translation id="5522073372365069684">Kopen met Ramp</translation>
@@ -1256,6 +1296,26 @@
 <translation id="8528916244724490964">Alle netwerken</translation>
 <translation id="4038403584813842767">Saldo ↑</translation>
 <translation id="1695096446857675822">Saldo ↓</translation>
+<translation id="7198018180583855568">Alle accounts</translation>
+<translation id="6954150712710630841">Transactie ingediend</translation>
+<translation id="905855245798176174">De transactie is succesvol naar het netwerk verzonden en wacht op bevestiging</translation>
+<translation id="3183790760060544368"><ph name="VALUE"/> is teruggestort in uw wallet</translation>
+<translation id="4577432071459867390">Transactie mislukt</translation>
+<translation id="4359235192593147041">Transactie is mislukt vanwege een aanzienlijke prijsfluctuatie. Verhoog de risicotolerantie om transacties bij aanzienlijke prijsfluctuaties te laten slagen.</translation>
+<translation id="8584830404080597280">Nieuwe verhandeling</translation>
+<translation id="8065905913745172640">Nieuwe transactie</translation>
+<translation id="9079041000600020902">Fout weergeven</translation>
+<translation id="6257687515171395402">Ontvangstbewijs</translation>
+<translation id="7065228161830418508">Foutmelding</translation>
+<translation id="5711048370886541571">Sla de foutmelding op voor toekomstig gebruik.</translation>
+<translation id="4315561646577477669"><ph name="MAKER"/> verruild voor <ph name="TAKER"/></translation>
+<translation id="5896915466769225182">Transactie voltooid!</translation>
+<translation id="3541662075332902575">De transactie is succesvol opgeslagen in een blok. Om het risico op dubbele uitgaven te vermijden, raden wij u aan te wachten op blokbevestigingen.</translation>
+<translation id="1349457304183253101">Transactie wordt verwerkt</translation>
+<translation id="5132698868627864842">Wacht op bevestiging</translation>
+<translation id="5601436886921227795">Dapp-interactie</translation>
+<translation id="9104177294757104789"><ph name="VALUE"/> verzenden</translation>
+<translation id="4048336522751528394"><ph name="MAKER"/> verruilen voor <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="2816106784624007524">Gaslimiet moet een geheel getal zijn dat groter dan 0 is</translation>
 <translation id="3354376789153561654">Transactiegegevens 'naar' moeten worden vermeld</translation>
@@ -1280,6 +1340,45 @@
 <translation id="4719005063558335704">Accounts:</translation>
 <translation id="4337554812324118382">Gegevens:</translation>
 <translation id="569870799832027680">Programma-ID:</translation>
+<translation id="9071560809248786823">Lamports</translation>
+<translation id="6129953537138746214">Spatie</translation>
+<translation id="2333894833508885986">Beheerprogramma</translation>
+<translation id="673881072848521017">Basis</translation>
+<translation id="6602282658898162258">Seed</translation>
+<translation id="6985542807131223826">Autoriteit</translation>
+<translation id="938125553895090449">Nieuwe autoriteit</translation>
+<translation id="6309334520637986016">Van seed</translation>
+<translation id="7779353517712893336">Van beheerprogramma</translation>
+<translation id="3116904380055282595">Decimalen</translation>
+<translation id="2576809855031734288">Mint-autoriteit</translation>
+<translation id="3472592357259422295">Freeze-autoriteit</translation>
+<translation id="6965572321703653296">Autoriteitstype</translation>
+<translation id="21140452451144431">Aantal ondertekenaars</translation>
+<translation id="5108161910968957837">Van account</translation>
+<translation id="174345730328470349">Naar account</translation>
+<translation id="2687968143695057804">New Account</translation>
+<translation id="8274326034751772925">Toegewezen account</translation>
+<translation id="3287245755942479694">Gemaakt account</translation>
+<translation id="6559616978170662285">Basisaccount</translation>
+<translation id="3157085877070297608">Nonce-account</translation>
+<translation id="3052313599928914393">Nonce-autoriteit</translation>
+<translation id="2818177840313215015">Toegekend account</translation>
+<translation id="3332926854409491692">Rent sysvar</translation>
+<translation id="1338923714285924422">RecentBlockhashes sysvar</translation>
+<translation id="7718273517583726718">Mint geïnitialiseerd</translation>
+<translation id="1982396945501942785">Account geïnitialiseerd</translation>
+<translation id="4448996702733695148">Multisig-account geïnitialiseerd</translation>
+<translation id="8881659593032980372">Burned-account</translation>
+<translation id="5601061394286676366">Gesloten account</translation>
+<translation id="4100192671552260674">Bevroren account</translation>
+<translation id="1865659351831046902">Native-token-account</translation>
+<translation id="3430421677512658698">Token Mint</translation>
+<translation id="5371133472668945195">Mint</translation>
+<translation id="3591768665664470087">Ondertekenaars</translation>
+<translation id="2761935211528145049">Gemachtigde</translation>
+<translation id="5048094297412542354">Eigenaar/gemachtigde</translation>
+<translation id="6600221609132728151">Accounteigenaar/gemachtigde</translation>
+<translation id="1444051660240401461">Mint of account gewijzigd</translation>
 <translation id="7843211152394841558">Max. aantal nieuwe pogingen:</translation>
 <translation id="8496335570810457">Preflight-toezegging:</translation>
 <translation id="5100124500279922001">Preflight overslaan:</translation>
@@ -1289,6 +1388,7 @@
 <translation id="2095142195578664632">Hulp nodig? Bekijk</translation>
 <translation id="3253669416991680932">Deze hardware wallet ondersteunt deze handeling niet.</translation>
 <translation id="7457027586454688423">Voer het wachtwoord van uw Brave-wallet in</translation>
+<translation id="7553242001898162573">Voer uw wachtwoord in</translation>
 <translation id="2873714185189940594">De Rainbow Bridge-app openen?</translation>
 <translation id="2069777099181262239">Rainbow Bridge is een onafhankelijke service die u helpt activa over verschillende netwerken te migreren via bruggen en uw crypto op andere netwerken en DApp-ecosystemen te gebruiken. Er zijn risico's verbonden aan het overbruggen van activa naar andere netwerken.</translation>
 <translation id="7387899248733396663">Meer informatie over het gebruik van Rainbow Bridge</translation>
@@ -1395,6 +1495,9 @@
 <translation id="7657322905916621147">De herstelzin moet 12, 15, 18, 21 of 24 woorden lang zijn</translation>
 <translation id="5307206077701819797">Geen NFT's gevonden in uw wallet. U kunt NFT's toevoegen door te klikken op de knop '+ Zichtbare assets' onderaan het portfolio-tabblad</translation>
 <translation id="3528540388456395658">Geen NFT's gevonden die overeenkomen met een zoekopdracht of filter</translation>
+<translation id="5026874946691314267">Laat dit niet meer zien</translation>
+<translation id="434502623875309667">Adresoplossing vereist netwerkverzoeken buiten de blockchain. Doorgaan?</translation>
+<translation id="2779500703989728346">NFT</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1403,6 +1506,7 @@
 <translation id="6951743416068151209">Tor Proxy-URI</translation>
 <translation id="1671503397662036257">Tor-verbindingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialisatievoortgang</translation>
+<translation id="6303294677342628402">Schilden</translation>
 <translation id="8458987127502506209">Brave Schilden inschakelen</translation>
 <translation id="7509914170164691086">Shields zijn geactiveerd <ph name="LINK_BEFORE"/>voor<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Shields zijn gedeactiveerd <ph name="LINK_BEFORE"/>voor<ph name="LINK_AFTER"/></translation>
@@ -1436,7 +1540,6 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, advertenties en meer geblokkeerd</translation>
 <translation id="4292121526390005808">Geblokkeerde scripts</translation>
-<translation id="6303294677342628402">Schilden</translation>
 <translation id="264682546981571963">Heeft u genoeg van meldingen over toestemming voor cookies?</translation>
 <translation id="4986297793092101884">Brave blokkeert al cookies van derden. We kunnen ook de kennisgevingen over cookietoestemming blokkeren.</translation>
 <translation id="535688588637568715">Ja, kennisgevingen over cookietoestemming blokkeren</translation>
