@@ -52,7 +52,7 @@ fi
 cd $(dirname "$0")
 
 echo "Exporting strings from Xcode project..."
-(cd ../../ && xcodebuild -exportLocalizations) >>output.log 2>&1
+(cd ../../ && xcodebuild -exportLocalizations SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
 if [ $? != 0 ] ; then
   report_error 4 "ERROR: Failed to export strings from Xcode project, please see output.log"
 fi

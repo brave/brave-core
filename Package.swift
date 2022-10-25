@@ -392,7 +392,7 @@ let package = Package(
         .copy("blocking-summary-test.json"),
       ]
     ),
-    .target(name: "Strings", path: "App/l10n", exclude: ["tools", "Resources/Info.plist", "README.md"]),
+    .target(name: "Strings"),
     .target(name: "RuntimeWarnings"),
     .target(name: "BraveTalk", dependencies: ["Shared", "JitsiMeet"]),
     .testTarget(name: "BraveTalkTests", dependencies: ["BraveTalk", "Shared"]),
