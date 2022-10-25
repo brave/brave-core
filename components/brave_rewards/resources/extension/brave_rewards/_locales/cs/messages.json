@@ -398,12 +398,97 @@
     "message": "Vzhledem k nedostatečnému zůstatku máte nevyřízená spropitná",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Zavřít",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Continue",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Vydělejte tokeny a odvděčte se",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Vydělávejte zobrazováním reklam respektujících soukromí tokeny a podporujte automaticky své oblíbené weby a tvůrce obsahu.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Došlo k chybě",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards nejsou k dispozici",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Při pokusu o nastavení Brave Rewards došlo bohužel k chybě. Zkuste to prosím znovu.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Při pokusu o nastavení vaší země bohužel došlo k chybě. Zkuste to prosím znovu.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Nové registrace k Brave Rewards jsou ve vašem regionu momentálně vypnuty. Vždy to však můžete zkusit později. $link_begin$Zjistěte více$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Zvolte svou zemi",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Děkujeme!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Váš region Brave Rewards byl nastaven na $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Vyberte svou zemi, abychom vám mohli zobrazit správné možnosti a reklamy pro váš region. $link_begin$Ochrana osobních dat$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Chcete-li pokračovat v používání Brave Rewards, vyberte svou zemi, abychom vám mohli zobrazit správné možnosti a reklamy pro váš region. $link_begin$Ochrana osobních dat$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Uložit",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Zvolte svou zemi",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

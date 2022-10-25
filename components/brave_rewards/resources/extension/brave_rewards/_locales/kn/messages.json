@@ -398,12 +398,97 @@
     "message": "ಸಾಕಷ್ಟು ಹಣ ಇಲ್ಲದೇ ಇರುವುದರಿಂದ ನೀವು ಬಾಕಿಯಿರುವ ಸಲಹೆಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "ಮುಚ್ಚಿ",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "ಮುಂದುವರಿಸು",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ಹಿಂತಿರುಗಿ",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "ಗೌಪ್ಯತೆ-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ನಿಮ್ಮ ನೆಚ್ಚಿನ ಸೈಟ್‌ಗಳು ಮತ್ತು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸಿ.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "ಏನೋ ತಪ್ಪಾಗಿದೆ",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave ರಿವಾರ್ಡ್ಸ್ ಲಭ್ಯವಿಲ್ಲ",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "ದುರಾದೃಷ್ಟವಶಾತ್, Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಸೆಟಪ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವಾಗ ದೋಷವೊಂದು ಕಂಡುಬಂದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "ದುರದೃಷ್ಟವಶಾತ್, ನಿಮ್ಮ ದೇಶವನ್ನು ಹೊಂದಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವಾಗ ದೋಷ ಕಂಡುಬಂದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ Brave ರಿವಾರ್ಡ್ಸ್‌ಗೆ ಹೊಸ ಸೈನ್‍ಅಪ್‍ಗಳನ್ನು ಪ್ರಸ್ತುತ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಆದಾಗ್ಯೂ, ನೀವು ನಂತರದಲ್ಲಿ ಯಾವಾಗಲೂ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಬಹುದು. $link_begin$ಹೆಚ್ಚು ತಿಳಿಯಿರಿ$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "ಧನ್ಯವಾದಗಳು!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಪ್ರದೇಶವನ್ನು $country$ ಗೆ ಹೊಂದಿಸಲಾಗಿದೆ.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆಮಾಡಿ ಇದರಿಂದ ನಾವು ನಿಮ್ಮ ಪ್ರದೇಶಕ್ಕಾಗಿ ಸೂಕ್ತ ಆಯ್ಕೆಗಳು ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು ತೋರಿಸಬಹುದಾಗಿದೆ. $link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Brave ರಿವಾರ್ಡ್ಸ್ ಬಳಸುವುದನ್ನು ಮುಂದುವರೆಸಲು, ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆಮಾಡಿ ಇದರಿಂದ ನಾವು ನಿಮಗೆ ನಿಮ್ಮ ಪ್ರದೇಶಕ್ಕೆ ಸೂಕ್ತವಾದ ಆಯ್ಕೆಗಳು ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು ತೋರಿಸಬಹುದು. $link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "ಉಳಿಸು",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

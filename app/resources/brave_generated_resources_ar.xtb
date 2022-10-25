@@ -85,10 +85,6 @@
 <translation id="8303432794159193481">تطبيقات تطوير متصفح Brave</translation>
 <translation id="8292967014767479012">تطبيقات متصفح Brave</translation>
 <translation id="4743468424889072281">تطبيقات تطوير متصفح Brave</translation>
-<translation id="239760341987199724">‏تعيين Brave المتصفح التلقائي</translation>
-<translation id="1391855377994926460">استمتع بتصفّح الويب بسرعةٍ أكبر - حتى 6 مرات أكثر على مواقع الأخبار الرئيسية.</translation>
-<translation id="9218430445555521422">تعيين كافتراضي</translation>
-<translation id="3479552764303398839">ليس الآن</translation>
 <translation id="732814027519296280">هل تريد أن تجعل Brave Search أفضل؟</translation>
 <translation id="2677865600861971449">اشترك في Web Discovery Project للمساهمة بشكل مجهول في بعض عمليات البحث &amp; تصفح البيانات، وتحسين نتائج Brave Search للجميع. الحفاظ على الخصوصية. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">مزيد من المعلومات</translation>
@@ -204,9 +200,10 @@
 <translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="2370739752330685659">ربما لاحقًا</translation>
+<translation id="7537601449003285327">التثبيت على شريط المهام</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">تم الاستيراد من <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">نسخ الرابط النظيف (عنوان URL الرئيسي فقط)</translation>
+<translation id="7630214457764713113">نسخ الرابط الكامل</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
@@ -246,10 +243,17 @@
 <translation id="3719826155360621982">الصفحة الرئيسية</translation>
 <translation id="5448570825852364919">صفحة فارغة</translation>
 <translation id="5919424224662539292">قم بتخصيص صورة الخلفية وعناصر واجهة المستخدم التي تظهر في صفحة علامة التبويب الجديدة</translation>
+<translation id="7461924472993315131">تثبيت</translation>
+<translation id="7506648566440714944">يتم تثبيت Brave بالفعل</translation>
+<translation id="3195845168740336657">إعدادات الدروع</translation>
+<translation id="754769152790647708">حالة الدروع</translation>
+<translation id="3615717588724840230">يمكن للمواقع حظر أدوات التعقب والإعلانات ومسح البصمات باستخدام الدروع</translation>
+<translation id="5690973901138662477">تفعيل الدروع</translation>
+<translation id="4697275813919189958">تعطيل الدروع</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="7133511168130368997">حظر برامج التتبع والإعلانات التي تتابعك عبر شبكة الويب.</translation>
 <translation id="2761825942249694703">هذه هي إعدادات Shields الافتراضية. تنطبق على جميع مواقع الويب ما لم تقم بتغيير شيء ما في لوحة Shields على موقع معين. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع.</translation>
-<translation id="1435116578479068303">سيتسبب هذا في حظر معظم الإعلانات على مواقع الويب، وليست الإعلانات الخاصة بـ Brave — حيث يتم التحكم فيها في إعدادات<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">سيتسبب هذا في حظر معظم الإعلانات على مواقع الويب، وليست الإعلانات الخاصة بـ Brave؛ حيث يتم التحكم فيها في إعدادات<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">سيتسبب هذا في حظر معظم الإعلانات على مواقع الويب،</translation>
 <translation id="4800195524776354947">إظهار عدد العناصر المحظورة على أيقونة Shields</translation>
 <translation id="5510493033031835532">إعادة توجيه صفحات AMP تلقائيًا</translation>
@@ -259,7 +263,6 @@
 <translation id="2133317862976486547">حظر برامج التتبع &amp; الإعلانات</translation>
 <translation id="4078738236287221428">عدواني</translation>
 <translation id="7740996059027112821">قياسي</translation>
-<translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="4824468494729001999">حظر البرامج النصية</translation>
 <translation id="6531019308847917584">حجب مسح البصمة</translation>
 <translation id="5533533363827555308">صارم، قد يفصل المواقع</translation>
@@ -269,14 +272,14 @@
 <translation id="7390783310074170337">العرض الافتراضي</translation>
 <translation id="130615081792797568">عرض بسيط</translation>
 <translation id="2360360976480535628">عرض متقدم</translation>
-<translation id="6486983549008741930">تصفية المحتوى</translation>
+<translation id="101592339984642584">تصفية المحتوى</translation>
 <translation id="8694564340481124390">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب والمضايقات الإقليمية واللغوية.</translation>
-<translation id="6522618763902154348">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب 
-    <ph name="BEGIN_LINK"/>والمضايقات<ph name="END_LINK"/>الإقليمية واللغوية .</translation>
+<translation id="4877657558909976793">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب والمضايقات
+    <ph name="BEGIN_LINK"/>الإقليمية واللغوية<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">إضافة قوائم عوامل التصفية المخصصة</translation>
 <translation id="1020877116991797978">أضف قوائم إضافية أنشأها مجتمعك الموثوق واحتفظ بها.</translation>
 <translation id="7617831480435794399">لا تشترك إلا في قوائم من كيانات تثق بها. سيتحقق متصفحك دوريًّا من تحديثات القائمة من رابط URL تُدخله أنت، كاشفًا عن عنوان IP الخاص بك لهذا الخادم.</translation>
-<translation id="2831397936251948638">إنشاء عوامل تصفية مخصصة</translation>
+<translation id="8580328754808744073">إنشاء عوامل تصفية مخصصة</translation>
 <translation id="4618274268052410139">أضف عوامل تصفية مخصصة قمت بإنشائها، واحدة لكل سطر ، في الحقل أدناه. تأكد من استخدام بنية عامل تصفية<ph name="BEGIN_LINK"/>Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">إضافة</translation>
 <translation id="571950783952070673">قائمة URL</translation>
@@ -292,6 +295,7 @@
 <translation id="5438573563213942361">قوائم مخصصة</translation>
 <translation id="4182731739150761577">عرض القائمة بالكامل</translation>
 <translation id="1340263054776016283">أدخل عنوان URL لقائمة عامل التصفية</translation>
+<translation id="8578397014396032341">عوامل تصفية المحتوى</translation>
 <translation id="6821903322090655051">تم تعطيل Brave Rewards</translation>
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
 <translation id="3849957491997306859">يجري الكشف عنه بشكل تلقائي</translation>
@@ -402,6 +406,8 @@
 <translation id="5927916530277631319">طريقة لمعالجة النطاقات التي لا يمكن إيقافها</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>تعرّف على المزيد<ph name="END_LINK"/> حول اعتبارات خصوصية إيثريوم.</translation>
 <translation id="5248318250177143470">طريقة لمعالجة خدمة اسم إيثريوم (ENS)</translation>
+<translation id="6421218422395686663">السماح لبحث خدمة اسم إيثريوم (ENS) خارج السلسة.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>تعرّف على المزيد<ph name="END_LINK"/> حول اعتبارات خصوصية بحث خدمة اسم إيثريوم (ENS) خارج السلسلة.</translation>
 <translation id="6241402707160226266">نافذة خاصة مع متصفح Tor</translation>
 <translation id="8762452230727230396">يقوم متصفح Tor بإخفاء عنوان IP الخاص بك من المواقع التي تزورها.</translation>
 <translation id="2959986444009520721">استخدام الجسور</translation>

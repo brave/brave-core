@@ -398,12 +398,97 @@
     "message": "Имате чакащи бакшиши поради недостатъчно средства",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Затваряне",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Напред",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Печелете жетони и върнете обратно",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Печелете жетони, като гледате реклами, зачитащи поверителността, и автоматично подкрепяте любимите си сайтове и създатели на съдържание.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Нещо се обърка",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards не е достъпно",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "За съжаление възникна грешка при опит за настройка на Brave Rewards. Моля, опитайте отново.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "За съжаление възникна грешка при опит за задаване на Вашата държава. Моля, опитайте отново.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Новите регистрации за Brave Rewards в момента са деактивирани във Вашия регион. Винаги обаче можете да опитате отново по-късно. $link_begin$Научете повече$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Изберете Вашата държава",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Благодарим Ви!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Вашият регион в Brave Rewards е зададен на $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Изберете Вашата държава, за да можем да Ви покажем подходящите опции и реклами за Вашия регион. $link_begin$Политика за поверителност$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "За да продължите да използвате Brave Rewards, изберете Вашата държава, за да можем да Ви покажем подходящите опции и реклами за Вашия регион. $link_begin$Политика за поверителност$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Запазване",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Изберете Вашата държава",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

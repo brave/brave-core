@@ -2,7 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
 <translation id="7307834434086582547">Brave Shields engedélyezése/ letiltása</translation>
+<translation id="6945863270524203017">Heti adatvédelmi frissítéseket kaphat a nyomkövetők és hirdetések blokkolásáról.</translation>
+<translation id="4324735664183300693">Értesítések bekapcsolása</translation>
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
+<translation id="5153702175393349577">Következő jatt dátuma</translation>
+<translation id="8979401359137062629">Jegyzet:</translation>
+<translation id="7277134233385925078">Havi borravaló megadása</translation>
+<translation id="3765933240178364575">Egyszeri jatt összege</translation>
+<translation id="1101015459918930887">A jatt feldolgozása több percet is igénybe vehet</translation>
+<translation id="4088764345615745058">Egyéni borravalóösszeg</translation>
+<translation id="8759753423332885148">Bővebb információk.</translation>
+<translation id="3271043362279673449">Köszönjük a támogatás!</translation>
+<translation id="3312470408978098625">Az egyszeri borravalód el lett küldve.</translation>
+<translation id="9088057605518918276">Beállította a havi borravalót.</translation>
+<translation id="2978223787436054634">Tweetelj támogatásodról</translation>
+<translation id="1166682575529520472">Havonta</translation>
+<translation id="5906820630265272615">BAT alap</translation>
+<translation id="3586352807094428968">A Brave a borravaló 5%-át begyűjti kezelési költségként.</translation>
+<translation id="7723816962634734185">Egyéni összeg</translation>
+<translation id="1986030365413628297">pl. 12,75 BAT</translation>
+<translation id="5087864757604726239">vissza</translation>
+<translation id="6661699662755460155">csere</translation>
+<translation id="864162897141534043">Borravalót készülsz adni</translation>
+<translation id="7286679368056222644">A havi támogatás a következő lesz:</translation>
+<translation id="8195146845495346281">A jatt minimális összege 0,25 BAT</translation>
+<translation id="4647657427328119430">Nincs elég token.</translation>
+<translation id="2359808026110333948">Folytatás</translation>
+<translation id="4227681408214010862">Imádom, hogy a #Brave lehetővé teszi, hogy támogassam a tartalomkészítőket!. <ph name="NAME"/> épp most kapott tőlem jattot a #BAT használatával. Ha ellenőrzötté válik a https://creators.brave.com webhelyen a következő időpontig: <ph name="DATE"/>, a BAT az övé!</translation>
+<translation id="6231182869178328516"><ph name="NAME"/> épp most kapott tőlem jattot a Brave böngészőn keresztül. Nézd meg itt: https://brave.com/tips.</translation>
+<translation id="7172012963002631836">Hiba történt a borravaló küldése során.</translation>
+<translation id="8994556588732085585">Zárja be és nyissa meg újra jattolási transzparenst, hogy újra megpróbálja.</translation>
 <translation id="2278950434998763147">Bizonyos oldalakat biztonságos HTTPS-kapcsolat használatával nyit meg egyszerű HTTP helyett.</translation>
 <translation id="5510493033031835532">AMP-oldalak automatikus átirányítása</translation>
 <translation id="5197219128592971597">A weblapok eredeti (nem AMP) URL-címeinek felkeresése minden esetben, a Google gyorsított mobilweblap (AMP) változatai helyett</translation>
@@ -24,6 +53,8 @@
 <translation id="9148058034647219655">Kilépés</translation>
 <translation id="4022987104439075738">IPFS-átjáró</translation>
 <translation id="2688519859165248360">Egy IPFS gatewayen keresztül lehetővé teszi az IPFS forrásokhoz való eljutást</translation>
+<translation id="8047754398610073499">Cookie-khoz való hozzájárulással kapcsolatos értesítések letiltása</translation>
+<translation id="2621893359845808115">Blokkolja a webhelyek felugró ablakait, amelyek a cookie-k elfogadásáról/elutasításáról kérdezik a webhelyükön.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> ár (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
@@ -124,17 +155,11 @@
 <translation id="8826007068782654809">Köszönjük</translation>
 <translation id="6665366815203065060">Borravalót küldött neki:</translation>
 <translation id="5441565662498481293">Automatikusan borravalót küldesz ide:</translation>
-<translation id="1166682575529520472">Havonta</translation>
 <translation id="1628742278973105368">Az első havi borravalója ezen a dátumon lesz elküldve:</translation>
-<translation id="298349922412901215">MEGJEGYZÉS: Ez az alkotó még nem regisztrálta magát, hogy hozzájárulásokat kaphasson a Brave felhasználóitól. Próbálkozni fogunk a hozzájárulás elküldésével, amíg vissza nem igazolja magát, vagy amíg 90 nap el nem telik.</translation>
+<translation id="1642952941091001113">Ez az alkotó még nem regisztrálta magát, hogy hozzájárulásokat kaphasson a Brave felhasználóitól. Próbálkozni fogunk a hozzájárulás elküldésével, amíg vissza nem igazolja magát, vagy amíg 90 nap el nem telik.</translation>
 <translation id="635752162765375187">MEGJEGYZÉS: Ez az alkotó még nem konfigurálta, hogy borravalót fogadhasson az Ön Brave jutalmak letétkezelő pénztárca-szolgáltatójától. Minden borravaló, amelyet neki küld, függő állapotban marad, és a feldolgozására többször automatikusan kísérletet teszünk 90 napig.</translation>
 <translation id="1910721550319506122">Üdvözöljük!</translation>
-<translation id="3165726837666415756">Támogathatja ezt az oldalt borravaló küldésével. Így köszönheti meg a kiváló tartalmak készítését. Az ellenőrzött tartalomkészítők a hónap első hetében kapják meg a borravalóikat.</translation>
-<translation id="1704859330137112950">Amennyiben úgy dönt, havi rendszerességű hozzájárulást állíthat be az oldal rendszeres támogatása céljából.</translation>
-<translation id="245015745140252435">Juttatások összege</translation>
-<translation id="7873874596836611687">Jutalmak egyenlege:</translation>
-<translation id="2573313946367623146">jatt küldése</translation>
-<translation id="3250511771491660127">Tegye ezt meg havonta</translation>
+<translation id="5830114181292529917">Ezt a webhelyet jatt küldésével támogathatja. Ezzel köszönetet mondhat az általuk készített nagyszerű tartalmakért.</translation>
 <translation id="7658239707568436148">Elvetés</translation>
 <translation id="1201402288615127009">Tovább</translation>
 <translation id="8481779960444041069">A fokozott adatvédelemhez állítsa be a Brave-et alapértelmezett böngészőként</translation>
@@ -181,9 +206,6 @@
 <translation id="683765328936486920">YouTube-on</translation>
 <translation id="8969049974285901797">Twitchen</translation>
 <translation id="3101693828171454453">nincs elég <ph name="TOKEN"/></translation>
-<translation id="6940273954212603510">kérem</translation>
-<translation id="1036277985068412734">pénz hozzáadása</translation>
-<translation id="3492491948683276944">havi borravaló beállítása</translation>
 <translation id="8038539967102225446">Itt vannak a Brave Hirdetések!</translation>
 <translation id="222883304157347087">(ez a készülék)</translation>
 <translation id="4157741509680155021">KÉSZÜLÉKEK A fSZINKRONLÁNCON</translation>
@@ -403,10 +425,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="223536150967420869">Vásárolj</translation>
 <translation id="2956070106555335453">Összefoglalás</translation>
 <translation id="7465614181960492526">Szerezzen tokeneket és adjon vissza</translation>
-<translation id="244362569344671266">Szerezzen tokeneket Brave privát hirdetések nézésével, és támogassa automatikusan a tartalomkészítőket.</translation>
+<translation id="2731539192954672606">Szerezzen tokeneket adatvédelmet tiszteletben tartó hirdetések nézésével, és támogassa automatikusan kedvenc oldalait és tartalomkészítőit.</translation>
 <translation id="631124996535890460">A folytatással elfogadja a  <ph name="TERMS_OF_SERVICE"/> és az <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Adatvédelmi szabályzat</translation>
-<translation id="6318696841371191107">Nézzen körül</translation>
+<translation id="185034574799484512">Tegyünk egy gyors bemutatót</translation>
 <translation id="7930505144430343145">Üdvözli a Brave Rewards!</translation>
 <translation id="3477340970981564961">A Brave privát hirdetések tokenekkel jutalmaznak meg, amivel a hagyományos reklámokkal ellentétben, támogathatod a tartalomkészítőket, és közben személyes adataid rejtve maradnak.</translation>
 <translation id="6973095375773523904">Hol jelennek meg a hirdetések?</translation>
@@ -455,9 +477,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2222442600106681391">2 BAT</translation>
 <translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
-<translation id="8762169086048682708">10 BAT</translation>
-<translation id="4548973860489847866">0.00 BAT</translation>
-<translation id="4193129043743994339">0.00 USD</translation>
 <translation id="8792121506918889955">WebRTC IP kezelési szabályzat</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
 <translation id="1822560017823072927">Alapértelmezett publikus és privát interfészek</translation>
@@ -470,7 +489,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="4472575034687746823">Kezdő lépések</translation>
 <translation id="2759836790106646094">Készíts biztonsági mentést pénztárcádról most!</translation>
 <translation id="1078873179929044999">A következő lépésben egy 12 szavas helyreállítási kifejezést fog látni, amelyet arra használhat, hogy helyreállítsa az elsődleges kriptoszámláit. Mentse el biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a fiókjaihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
-<translation id="2359808026110333948">Folytatás</translation>
 <translation id="5488357322146334497">Üzenet</translation>
 <translation id="1904000155026201268">Megértettem, hogy ha elvesztem a helyreállítási kifejezést, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.</translation>
 <translation id="3933122286596948824">Helyreállítási kifejezés</translation>
@@ -865,4 +883,58 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="8423380132356660250">A <ph name="APP_NAME"/> alkalmazás megnyitása</translation>
 <translation id="168154537623654021">VPN-profil frissítése...</translation>
 <translation id="7457027586454688423">Adja meg Brave-pénztárcája jelszavát</translation>
+<translation id="6588595775439619209">Cookie-kkal kapcsolatos értesítések letiltása</translation>
+<translation id="264682546981571963">Fárasztják a cookie-használat beleegyező nyilatkozatai?</translation>
+<translation id="4986297793092101884">A Brave alapértelmezés szerint blokkolja a harmadik féltől származó cookie-kat. Letilthatjuk a cookie-khoz való hozzájárulással kapcsolatos értesítéseket is.</translation>
+<translation id="4784306439879850873">Ne feledje, hogy a Brave nem tudja megerősíteni, mi történik, ha aláír. Aláírással szinte bármelyik számláján lévő műveletre feljogosítja a kérvényező oldalt, vagy arra, hogy az Ön nevében járjon el, beleértve (de nem kizárólag) a számlája és kriptoeszközei feletti teljes rendelkezést. Csak akkor írjon alá, ha biztosan ezt szeretné, és megbízik a kérvényező oldalban.</translation>
+<translation id="3474375934783434676">Csak a saját felelősségére írjon alá</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/>/<ph name="SIZE"/></translation>
+<translation id="6450792191436242818">System Program (Rendszerprogram)</translation>
+<translation id="6252742184395380448">Config Program (Konfig. program)</translation>
+<translation id="5358970666412490132">Stake Program (Kockázati program)</translation>
+<translation id="346636227344244984">Vote Program (Szavazási program)</translation>
+<translation id="3538368258493053874">BPF Loader (betöltő program)</translation>
+<translation id="2334098351242742927">Ed25519 program</translation>
+<translation id="6421371987002247943">Tokenprogram</translation>
+<translation id="8780753288764281797">Secp256k1 program</translation>
+<translation id="8504640708321980506">Adatok</translation>
+<translation id="4771176409524282426">Fiók létrehozása</translation>
+<translation id="1755120947324658439">Hozzárendelés</translation>
+<translation id="7588707273764747927">Átutalás</translation>
+<translation id="5328067049293286962">Számla létrehozása kulcsszólánccal</translation>
+<translation id="1512366326138054636">Nonce-számla előlegezése</translation>
+<translation id="7042202638449257311">Nonce-számla lehívása</translation>
+<translation id="6586085653712983224">Nonce-számla inicializálása</translation>
+<translation id="8790312855368673743">Nonce-számla engedélyezése</translation>
+<translation id="5312748886432335174">Kiosztás</translation>
+<translation id="7678705217826797696">Kiosztás kulcsszólánccal</translation>
+<translation id="7436137523759921028">Hozzárendelés kulcsszólánccal</translation>
+<translation id="3360695936886670509">Átutalás kulcsszólánccal</translation>
+<translation id="7323636209143541483">Nonce-fiók fejlesztése</translation>
+<translation id="616021855350068202">Kiadás inicializálása</translation>
+<translation id="4377316227435786423">Számla inicializálása</translation>
+<translation id="7474306790151660826">Többaláírós tárca inicializálása</translation>
+<translation id="363258595406850968">Hatóság beállítása</translation>
+<translation id="2091563464450586155">Kiadási cél</translation>
+<translation id="1252941298291625577">Égetés</translation>
+<translation id="5211196599627796093">Számla zárolása</translation>
+<translation id="6988707241715050556">Számla befagyasztása</translation>
+<translation id="857250415816680832">Számla feloldása</translation>
+<translation id="5453172892735755262">A kijelöltek átvezetése</translation>
+<translation id="471669767157904431">A kijelöltek jóváhagyása</translation>
+<translation id="3530340583186873359">Kiadás a kijelöltekben</translation>
+<translation id="5068456869800056740">Kijelöltek égetése</translation>
+<translation id="3004830385467519189">2. számla inicializálása</translation>
+<translation id="8026488633670875516">Natív szinkronizálás</translation>
+<translation id="2024649614526778327">3. számla inicializálása</translation>
+<translation id="8382368767453083629">2. többaláírós tárca inicializálása</translation>
+<translation id="77243237706803459">2. kiadás inicializálása</translation>
+<translation id="583281660410589416">Ismeretlen</translation>
+<translation id="2862978891748913252">Válassza ki az országot</translation>
+<translation id="3832588024105436400">Válassza ki az országát, hogy a régiójának megfelelő lehetőségeket és hirdetéseket mutathassuk. <ph name="PRIVACY_POLICY"/></translation>
+<translation id="5666264859501108700">A Brave-jutalmakhoz beállított régiója: <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="3180990265682133881">Sajnos hiba történt az ország beállítása során. Kérjük, próbálja újra.</translation>
+<translation id="7352651011704765696">Valami hiba történt</translation>
+<translation id="7144878232160441200">Újra</translation>
+<translation id="6040143037577758943">Bezárás</translation>
 </translationbundle>

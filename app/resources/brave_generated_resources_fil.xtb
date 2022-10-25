@@ -85,10 +85,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="8303432794159193481">Brave Browser Dev Apps</translation>
 <translation id="8292967014767479012">Brave Browser Apps</translation>
 <translation id="4743468424889072281">Brave Browser Development Apps</translation>
-<translation id="239760341987199724">Itakda ang Brave bilang iyong default na browser</translation>
-<translation id="1391855377994926460">Patuloy na mag-browse sa web nang mas mabilis - mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
-<translation id="9218430445555521422">Itakda bilang default</translation>
-<translation id="3479552764303398839">Hindi ngayon</translation>
 <translation id="732814027519296280">Gusto mo bang gawing mas maganda ang Brave Search?</translation>
 <translation id="2677865600861971449">Sumali sa Web Discovery Project para anonymous na makapag-ambag sa ilang data sa paghahahanap at pag-browse, at pahusayin ang mga resulta ng Brave Search para sa lahat. Nagpapanatili ng privacy. At walang kahirap-hirap. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Matuto pa</translation>
@@ -204,9 +200,10 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6817415381278637662">Itakda ang Brave bilang default mong browser para makuha ang mga privacy protection ng Brave sa bawat web page na bubuksan mo.</translation>
 <translation id="8722651357687610395">Itakda ang Brave bilang default</translation>
 <translation id="2370739752330685659">Sa ibang pagkakataon siguro</translation>
+<translation id="7537601449003285327">I-pin sa taskbar</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Na-import mula sa <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Kopyahin ang clean link (main URL lang)</translation>
+<translation id="7630214457764713113">Kopyahin ang clean link</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="7179921470347911571">Muling Ilunsad Ngayon</translation>
 <translation id="4472575034687746823">Magsimula</translation>
@@ -246,10 +243,17 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="3719826155360621982">Homepage</translation>
 <translation id="5448570825852364919">Blangkong page</translation>
 <translation id="5919424224662539292">I-customize ang larawan at mga widget sa background na lumalabas sa bagong tab page</translation>
+<translation id="7461924472993315131">I-pin</translation>
+<translation id="7506648566440714944">Naka-pin na ang Brave</translation>
+<translation id="3195845168740336657">Mga setting ng Shields</translation>
+<translation id="754769152790647708">Status ng Shields</translation>
+<translation id="3615717588724840230">Maba-block ng mga site ang mga tracker, ad, fingerprinting gamit ang Shields</translation>
+<translation id="5690973901138662477">Naka-on ang Shields</translation>
+<translation id="4697275813919189958">Naka-off ang Shields</translation>
 <translation id="6303294677342628402">Mga Shield</translation>
 <translation id="7133511168130368997">I-block ang mga tracker at ad na sumusunod sa iyo sa web.</translation>
 <translation id="2761825942249694703">Ito ang mga default na setting ng Shields. Nalalapat ang mga ito sa lahat ng website maliban kung may babaguhin ka sa Shields panel sa isang partikular na site. Ang pagbago sa mga ito ay hindi makakaapekto sa kasalukuyan mong mga per-site na setting.</translation>
-<translation id="1435116578479068303">Iba-block nito ang karamihan ng mga ad sa mga website, pero hindi ang Brave Private Ads — nakokontrol ang mga iyon sa mga setting ng <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">Iba-block nito ang karamihan ng mga ad sa mga website, pero hindi ang Brave Private Ads — nakokontrol ang mga iyon sa mga setting ng <ph name="BEGIN_LINK"/>Mga Reward ng Brave<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">Iba-block nito ang karamihan ng mga ad sa mga website.</translation>
 <translation id="4800195524776354947">Ipakita ang bilang ng naka-block na item sa icon na Mga Shield</translation>
 <translation id="5510493033031835532">Mag-auto-redirect ng mga AMP page</translation>
@@ -259,7 +263,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="2133317862976486547">Mga tracker at ads blocking</translation>
 <translation id="4078738236287221428">Agresibo</translation>
 <translation id="7740996059027112821">Karaniwan</translation>
-<translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
 <translation id="4824468494729001999">I-block ang mga script</translation>
 <translation id="6531019308847917584">I-block ang fingerprinting</translation>
 <translation id="5533533363827555308">Istrikto, pwedeng makasira sa mga site</translation>
@@ -269,14 +272,14 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="7390783310074170337">Default na view</translation>
 <translation id="130615081792797568">Simpleng view</translation>
 <translation id="2360360976480535628">Advanced na view</translation>
-<translation id="6486983549008741930">Content Filtering</translation>
+<translation id="101592339984642584">Pag-filter ng content</translation>
 <translation id="8694564340481124390">Mag-enable ng mga custom filter na nagba-block ng mga tracker na partikular sa rehiyon at wika at mga annoyance.</translation>
-<translation id="6522618763902154348">Mag-enable ng mga custom filter na nagba-block ng mga tracker na partikular sa rehiyon at wika at 
+<translation id="4877657558909976793">Mag-enable ng mga custom na filter na nagba-block ng mga tracker na partikular sa rehiyon at wika at 
     <ph name="BEGIN_LINK"/>Mga Annoyance<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Magdagdag ng mga custom filter list</translation>
 <translation id="1020877116991797978">Magdagdag ng mga karagdagang listahang ginagawa at pinapangasiwaan ng iyong pinagkakatiwalaang komunidad.</translation>
 <translation id="7617831480435794399">Mag-subscribe lang sa mga listahan mula sa mga entity na pinagkakatiwalaan mo. Pana-panahong titingnan ng iyong browser kung may mga update sa listahan mula sa URL na inilagay mo, na nagpapakita ng IP address mo sa kanilang server.</translation>
-<translation id="2831397936251948638">Gumawa ng mga Custom filter</translation>
+<translation id="8580328754808744073">Gumawa ng mga custom na filter</translation>
 <translation id="4618274268052410139">Magdagdag ng mga custom filter na ginawa mo, isa kada linya, sa field sa ibaba. Tiyaking gamitin ang <ph name="BEGIN_LINK"/>Adblock filter syntax<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Idagdag</translation>
 <translation id="571950783952070673">URL ng Listahan</translation>
@@ -292,6 +295,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="5438573563213942361">Mga custom list</translation>
 <translation id="4182731739150761577">Ipakita ang buong list</translation>
 <translation id="1340263054776016283">Ilagay ang URL ng filter list</translation>
+<translation id="8578397014396032341">Mga Filter ng Content</translation>
 <translation id="6821903322090655051">Naka-disable ang Brave Rewards</translation>
 <translation id="413570371620795359">Buksan ang panel ng Mga Reward para i-enable at magsimula</translation>
 <translation id="3849957491997306859">Awtomatikong na-detect</translation>
@@ -402,6 +406,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Alamin Pa<ph name="END_LINK"/> ang tungkol sa mga konsiderasyon sa privacy sa Ethereum.</translation>
 <translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Payagan ang paghanap ng ENS offchain.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Matuto Pa<ph name="END_LINK"/> tungkol sa mga pagsasaalang-alang sa privacy ng paghanap ng ENS offchain.</translation>
 <translation id="6241402707160226266">Pribadong window na may Tor</translation>
 <translation id="8762452230727230396">Itinatago ng tor ang iyong IP address mula sa mga site na binibisita mo.</translation>
 <translation id="2959986444009520721">Gumamit ng mga Bridge</translation>

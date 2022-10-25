@@ -398,12 +398,97 @@
     "message": "Aveți bacșișuri în așteptare din cauza fondurilor insuficiente",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Închide",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Continuă",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Câștigați tokenuri și dăruiți",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Câștigați tokenuri vizualizând reclame care respectă confidențialitatea și susțineți automat site-urile și creatorii de conținut favoriți.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "A apărut o eroare",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Recompensele Brave nu sunt disponibile",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Din păcate, a apărut o eroare în timp ce încercam să configurăm Recompensele Brave. Încercați din nou.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Din păcate, a apărut o eroare când am încercat să vă configurăm țara. Încercați din nou.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Înscrierile noi pentru Recompense Brave sunt momentan dezactivate în regiunea dvs. Totuși, puteți reveni oricând cu o încercare. $link_begin$Aflați mai multe$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Selectați țara",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Mulțumim!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Regiunea pentru Recompensele Brave a fost setată la $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Selectați-vă țara ca să vă putem afișa opțiunile și anunțurile relevante pentru regiune. $link_begin$Politica de confidențialitate$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Pentru a utiliza în continuare Recompensele Brave, selectați țara ca să vă putem afișa opțiunile și anunțurile relevante pentru regiunea dvs. $link_begin$Politica de confidențialitate$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Salvează",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Selectați țara",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

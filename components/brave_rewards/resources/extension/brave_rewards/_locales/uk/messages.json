@@ -398,12 +398,97 @@
     "message": "У вас є несплати через недостатній залишок коштів ",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Закрити",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Продовжити",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Заробляйте токени та допомагайте іншим",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Заробляйте токени, переглядаючи рекламні оголошення, що не порушують вашу конфіденційність, та автоматично підтримуйте улюблені сайти та творців контенту.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Щось пішло не так",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Винагороди Brave недоступні",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Виникла помилка під час налаштування винагород Brave. Спробуйте знову.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Виникла помилка під час налаштувань країни. Спробуйте знову.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Нові реєстрації на винагороди Brave наразі вимкнено у вашому регіоні. Однак можна повторити спробу пізніше. $link_begin$Детальніше$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Виберіть свою країну",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Дякуємо!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Ваш регіон для винагород Brave: $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Виберіть свою країну, щоб ми могли показувати відповідні для вашого регіону опції та рекламу. $link_begin$Політика конфіденційності$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Для продовження використання винагород Brave виберіть свою країну, щоб ми могли показувати вам відповідні для вашого регіону опції та рекламу.$link_begin$Політика конфіденційності$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Зберегти",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Виберіть свою країну",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

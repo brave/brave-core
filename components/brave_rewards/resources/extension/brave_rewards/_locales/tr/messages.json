@@ -398,12 +398,97 @@
     "message": "Yetersiz fon nedeniyle bekleyen bahşişleriniz var",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Kapat",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Continue",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Jeton Kazanın ve Geri Verin",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Gizlilik kurallarına uyan reklamları görüntüleyerek jeton kazanın ve favori sitelerinizi ve içerik üreticilerini otomatik olarak destekleyin.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Bir şey yanlış gitti",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Ödülleri mevcut değil",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Ne yazık ki Brave Ödüllerini ayarlamaya çalışırken bir hata oluştu. Lütfen tekrar deneyin.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Ne yazık ki ülkenizi ayarlamaya çalışırken bir hata oluştu. Lütfen tekrar deneyin.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Brave Ödülleri için yeni kayıtlar şu anda bölgeniz için devre dışı. Yine de daha sonra tekrar deneyebilirsiniz. $link_begin$Daha fazla bilgi edinin$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Ülkenizi seçin",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Teşekkür ederiz!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Brave Ödülleri bölgeniz $country$ olarak ayarlandı.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Bölgenize göre doğru seçenekleri ve reklamları gösterebilmemiz için ülkenizi seçin. $link_begin$Gizlilik Politikası$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Brave Ödüllerini kullanmaya devam etmek için ülkenizi seçin, böylece size bölgeniz için doğru seçenekleri ve reklamları gösterebiliriz. $link_begin$Gizlilik Politikası$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Kaydet",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Ülkenizi seçin",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

@@ -398,12 +398,97 @@
     "message": "به‌دلیل سرمایه ناکافی، نکات معلقی دارید",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "بستن",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "ادامه",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "کسب توکن و برگرداندن",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "با مشاهده آگهی‌هایی که به حریم خصوصی احترام می‌گذارند، توکن کسب کنید و به‌طور خودکار از سایت‌ها و سازندگان محتوای دلخواهتان پشتیبانی کنید.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "مشکلی روی داد",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards در دسترس نمی‌باشد",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "متأسفانه هنگام تلاش برای راه‌اندازی Brave Rewards خطایی به وجود آمده است. لطفًا دوباره تلاش کنید.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "متأسفانه هنگام تلاش برای ثبت کشورتان خطایی به وجود آمده است. لطفًا دوباره تلاش کنید.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "در حال حاضر امکان ثبت نام جدید در Brave Rewards در منطقه شما وجود ندارد. در هر صورت، بعداً می‌توانید دوباره تلاش کنید. $link_begin$بیشتر بدانید$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "کشور خود را انتخاب کنید",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "متشکریم!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "منطقه Brave Rewards شما در $country$ثبت شده است.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "کشور خود را انتخاب کنید تا به شما گزینه‌های صحیح و آگهی‌های مربوط به منطقه‌تان را نشان دهیم. $link_begin$سیاست حفظ حریم شخصی$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "به‌منظور ادامه استفاده از Brave Rewards، کشور خود را انتخاب کنید تا به شما گزینه‌های صحیح و آگهی‌های مربوط به منطقه‌تان را نشان دهیم. $link_begin$سیاست حفظ حریم شخصی$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "ذخیره",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "کشور خود را انتخاب کنید",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

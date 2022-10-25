@@ -398,12 +398,97 @@
     "message": "Έχετε εκκρεμή φιλοδωρήματα λόγω ανεπαρκούς υπολοίπου",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Κλείσιμο",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Συνέχεια",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Κερδίστε token και ανταμείψτε",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Κερδίστε token προβάλλοντας διαφημίσεις που σέβονται το απόρρητο και υποστηρίξτε αυτόματα τους αγαπημένους σας ιστότοπους και δημιουργούς περιεχομένου.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Κάτι πήγε στραβά",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Οι Ανταμοιβές Brave δεν είναι διαθέσιμες",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Δυστυχώς, παρουσιάστηκε σφάλμα κατά την προσπάθεια ρύθμισης των Ανταμοιβών Brave. Προσπαθήστε ξανά.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Δυστυχώς, παρουσιάστηκε σφάλμα κατά την προσπάθεια ορισμού της χώρας σας. Προσπαθήστε ξανά.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Οι νέες εγγραφές για τις Ανταμοιβές Brave είναι απενεργοποιημένες προς το παρόν στην περιοχή σας. Ωστόσο, μπορείτε πάντα να προσπαθήσετε ξανά αργότερα.$link_begin$Μάθετε περισσότερα$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Επιλέξτε τη χώρα σας",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Σας ευχαριστούμε!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Η περιοχή σας για τις Ανταμοιβές Brave έχει οριστεί σε $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Επιλέξτε τη χώρα σας για να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας. $link_begin$Πολιτική απορρήτου$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Για να συνεχίσετε να χρησιμοποιείτε τις Ανταμοιβές Brave, επιλέξτε τη χώρα σας, έτσι ώστε να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας. $link_begin$Πολιτική απορρήτου$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Αποθήκευση",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Επιλέξτε τη χώρα σας",
     "description": ""
   },
   "onboardingSetupAdsHeader": {
@@ -585,7 +670,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Οι διαφημίσεις και τα κέρδη τώρα θα συνεχίσουν. Σας ευχαριστούμε που μας βοηθάτε να προστατεύσουμε τις Αταμοιβές Brave και τις διαφημίσεις με βάση το απόρρητο.",
+    "message": "Οι διαφημίσεις και τα κέρδη τώρα θα συνεχίσουν. Σας ευχαριστούμε που μας βοηθάτε να προστατεύσουμε τις Ανταμοιβές Brave και τις διαφημίσεις με βάση το απόρρητο.",
     "description": ""
   },
   "captchaContactSupport": {

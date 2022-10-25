@@ -398,12 +398,97 @@
     "message": "Mayroon kang mga nakabinbing tip dahil sa hindi sapat na pondo",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Isara",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Magpatuloy",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Makakuha ng Mga Token at Gumanti ng Tulong",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Makakuha ng mga token sa pamamagitan ng pagtingin sa mga ad na gumagalang sa privacy at awtomatikong suportahan ang iyong mga paboritong site at creator ng content.",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Nagkaproblema",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Hindi available ang Mga Reward ng Brave",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Sa kasamaang-palad, nagka-error habang sinusubukang i-set up ang Mga Reward ng Brave. Pakisubukan ulit.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Sa kasamaang-palad, nagka-error habang sinusubukang itakda ang iyong bansa. Pakisubukan ulit.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Kasalukuyang naka-disable sa iyong rehiyon ang mga bagong pag-sign up para sa Mga Reward ng Brave. Gayunpaman, puwede mong subukan ulit kahit kailan sa ibang pagkakataon. $link_begin$Matuto pa$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Piliin ang iyong bansa",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Salamat!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "Naitakda ang rehiyon ng iyong Mga Reward ng Brave sa $country$.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Piliin ang iyong bansa para maipakita namin sa iyo ang mga tamang opsyon at ad para sa rehiyon mo. $link_begin$Patakaran sa Privacy$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Para patuloy na gamitin ang Mga Reward ng Brave, piliin ang iyong bansa para maipakita namin sa iyo ang mga tamang opsyon at ad para sa rehiyon mo. $link_begin$Patakaran sa Privacy$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "I-save",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Piliin ang iyong bansa",
     "description": ""
   },
   "onboardingSetupAdsHeader": {

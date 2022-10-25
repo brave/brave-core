@@ -398,12 +398,97 @@
     "message": "Tens propines pendents perquè no hi ha prou fons",
     "description": ""
   },
+  "onboardingClose": {
+    "message": "Tanca",
+    "description": ""
+  },
+  "onboardingContinue": {
+    "message": "Continua",
+    "description": ""
+  },
   "onboardingEarnHeader": {
     "message": "Guanyey & Torneu Fitxes",
     "description": ""
   },
   "onboardingEarnText": {
     "message": "Guanyey fitxes mirant anuncis que respectin la privadesa i doneu suport als vostres llocs preferits i creadors de contingut automàticament. ",
+    "description": ""
+  },
+  "onboardingErrorHeader": {
+    "message": "Quelcom ha anat malament",
+    "description": ""
+  },
+  "onboardingErrorHeaderDisabled": {
+    "message": "Brave Rewards no està disponible",
+    "description": ""
+  },
+  "onboardingErrorText": {
+    "message": "Malauradament, s'ha produït un error en intentar configurar Brave Rewards. Torna-ho a provar.",
+    "description": ""
+  },
+  "onboardingErrorTextDeclareCountry": {
+    "message": "Malauradament, s'ha produït un error en intentar establir el teu  país. Torna-ho a provar.",
+    "description": ""
+  },
+  "onboardingErrorTextDisabled": {
+    "message": "Els nous registres per a reenviaments de Brave estan desactivats actualment a la vostra regió. No obstant això, sempre ho pots tornar a intentar més tard.$link_begin$Més infromació$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoHeader": {
+    "message": "Selecciona el teu país",
+    "description": ""
+  },
+  "onboardingGeoSuccessHeader": {
+    "message": "Gràcies!",
+    "description": ""
+  },
+  "onboardingGeoSuccessText": {
+    "message": "$country$ s'ha establert com a regió de Brave Rewards.",
+    "description": "",
+    "placeholders": {
+      "country": {
+        "content": "$1"
+      }
+    }
+  },
+  "onboardingGeoText": {
+    "message": "Selecciona el teu país perquè et mostrem les opcions i anuncis correctes per a la teva regió. $link_begin$Política de privadesa$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingGeoTextDeclareCountry": {
+    "message": "Per a continuar utilitzant Brave Rewards, selecciona el teu país per a mostrar-teles opcions i anuncis correctes per a la teva regió.$link_begin$Política de privadesa$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "onboardingSave": {
+    "message": "Desa",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Selecciona el teu país",
     "description": ""
   },
   "onboardingSetupAdsHeader": {
