@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 5c92c4f8324619454d88eb3d5d9cd5b127075e17..ddd2d71fd2479bbe4c58706d5accd1c7a1f9e605 100644
+index 17bce3e4035db69f6a52037ad1b91cce9f0b8db5..dc8414d0a33c9f30e02b2542b311ec069bd04734 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -377,6 +377,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -379,6 +379,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          if (mOptionalButton != null) {
              mOptionalButton.setBackgroundColorFilter(color);
          }
@@ -10,7 +10,7 @@ index 5c92c4f8324619454d88eb3d5d9cd5b127075e17..ddd2d71fd2479bbe4c58706d5accd1c7
      }
  
      private void updateModernLocationBarCorners() {
-@@ -538,6 +539,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -546,6 +547,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -18,7 +18,7 @@ index 5c92c4f8324619454d88eb3d5d9cd5b127075e17..ddd2d71fd2479bbe4c58706d5accd1c7
      }
  
      @Override
-@@ -991,6 +993,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -999,6 +1001,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * New Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
