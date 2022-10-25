@@ -55,7 +55,7 @@ fi
 
 echo "Importing translations into Xcode project..."
 for path in translated-xliffs/*.xliff ; do
-  (cd ../../ && xcodebuild -importLocalizations -localizationPath "l10n/tools/$path") >>output.log 2>&1
+  (cd ../../ && xcodebuild -importLocalizations -localizationPath "l10n/tools/$path" SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
 done
 if [ $? != 0 ] ; then
   report_error 5 "ERROR: Failed to import translations into Xcode project, please see output.log"

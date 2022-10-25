@@ -37,9 +37,6 @@
 		27FA21892837FB0100FA2C45 /* Shared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21882837FB0100FA2C45 /* Shared */; };
 		27FA218B2837FB0100FA2C45 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA218A2837FB0100FA2C45 /* Storage */; };
 		27FA21A42838019000FA2C45 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27FA21902838018E00FA2C45 /* InfoPlist.strings */; };
-		27FDCED82835B3D300E78FAD /* SharedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FDCED72835B3D300E78FAD /* SharedStrings.swift */; };
-		27FDCEDA2835B5AA00E78FAD /* BraveStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FDCED92835B5AA00E78FAD /* BraveStrings.swift */; };
-		27FDCEDC2835B66D00E78FAD /* WalletStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FDCEDB2835B66D00E78FAD /* WalletStrings.swift */; };
 		2F6931B7260CFB3700ECEB38 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */; };
 		2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		441A6360272445F9001492C3 /* StatDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441A635F272444DE001492C3 /* StatDataModel.swift */; };
@@ -132,67 +129,11 @@
 		270ECFC628381E270089B8B7 /* brave-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "brave-ios"; path = ..; sourceTree = "<group>"; };
 		271D0F3A284FDB12002BCF91 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = Shortcuts/it.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27262B4C28BEB3D800A2E526 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
-		272A00F42847B682009F1DC9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		273ACA2128492ECB008A58BB /* JitsiMeetSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = JitsiMeetSDK.xcframework; path = ../ThirdParty/JitsiMeet/JitsiMeetSDK.xcframework; sourceTree = "<group>"; };
 		273ACA2228492ECB008A58BB /* WebRTC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = WebRTC.xcframework; path = ../ThirdParty/JitsiMeet/WebRTC.xcframework; sourceTree = "<group>"; };
 		273DFB18284FDB1D007781AF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Shortcuts/ja.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27465DC3284FDB6F0056FDB2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Shortcuts/sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		275A4C39284FDB290016F5A8 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "Shortcuts/ko-KR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
-		276101FD287890A10039AB22 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		276101FF287890A10039AB22 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610201287890A10039AB22 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610202287890A10039AB22 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610203287890A10039AB22 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610204287890A10039AB22 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610205287890A10039AB22 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
-		27610206287890A10039AB22 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/BraveShared.strings"; sourceTree = "<group>"; };
-		27610207287890A10039AB22 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		27610208287890A10039AB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610209287890A10039AB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		2761020A287890A10039AB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2761020B287890A10039AB22 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		2761020C287890A10039AB22 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		2761020D287890A10039AB22 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2761020E287890A10039AB22 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		2761020F287890A10039AB22 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610210287890A10039AB22 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610211287890A10039AB22 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610212287890A10039AB22 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610213287890A10039AB22 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610214287890A10039AB22 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610215287890A10039AB22 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610216287890A10039AB22 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610217287890A10039AB22 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610218287890A10039AB22 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610219287890A10039AB22 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2761021A287890A10039AB22 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		2761021B287890A10039AB22 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		2761021C287890A10039AB22 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2761021D287890A10039AB22 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
-		2761021E287890A10039AB22 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/BraveShared.strings"; sourceTree = "<group>"; };
-		2761021F287890A10039AB22 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		27610220287890A10039AB22 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
-		27610221287890A10039AB22 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/BraveShared.strings"; sourceTree = "<group>"; };
-		27610222287890A10039AB22 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		27610223287890A10039AB22 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610224287890A10039AB22 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610225287890A10039AB22 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610226287890A10039AB22 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610227287890A10039AB22 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610228287890A10039AB22 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610229287890A10039AB22 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
-		2761022A287890A10039AB22 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/BraveShared.strings"; sourceTree = "<group>"; };
-		2761022B287890A10039AB22 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		2761022C287890A10039AB22 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		2761022D287890A10039AB22 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		2761022E287890A10039AB22 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2761022F287890A10039AB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610230287890A10039AB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610231287890A10039AB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		27610232287890A10039AB22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		27610233287890A10039AB22 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveWallet.strings; sourceTree = "<group>"; };
-		27610234287890A10039AB22 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveShared.strings; sourceTree = "<group>"; };
-		27610235287890A10039AB22 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
 		276FEA8B284FDB7A001A0718 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Shortcuts/tr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		277CA004284FDB34002E8470 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = Shortcuts/ms.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27995074284FDAE400BC2054 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Shortcuts/de.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -200,7 +141,6 @@
 		279DC775284FDB4000F4134D /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = Shortcuts/nb.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27A1AC1424884EB300344503 /* Enterprise.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Enterprise.xcconfig; sourceTree = "<group>"; };
 		27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenShortcutWidget.swift; sourceTree = "<group>"; };
-		27AAA14A283E89AF004C9B5E /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		27AC7CF724C759BE00441317 /* Enterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Enterprise.entitlements; sourceTree = "<group>"; };
 		27AD20C226851C5400889AA7 /* BraveCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraveCore.xcframework; path = "../node_modules/brave-core-ios/BraveCore.xcframework"; sourceTree = "<group>"; };
@@ -238,10 +178,6 @@
 		27FA21A32838019000FA2C45 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = "Supporting Files/zh.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		27FD0AFD284FDB06002A0789 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "Shortcuts/id-ID.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
 		27FDB77C284FDB9D00ACEB16 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "Shortcuts/zh-TW.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
-		27FDCE512835AE0800E78FAD /* l10n.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = l10n.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		27FDCED72835B3D300E78FAD /* SharedStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedStrings.swift; path = ../Sources/Shared/SharedStrings.swift; sourceTree = SOURCE_ROOT; };
-		27FDCED92835B5AA00E78FAD /* BraveStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BraveStrings.swift; path = ../Sources/BraveShared/BraveStrings.swift; sourceTree = SOURCE_ROOT; };
-		27FDCEDB2835B66D00E78FAD /* WalletStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletStrings.swift; path = ../Sources/BraveWallet/WalletStrings.swift; sourceTree = SOURCE_ROOT; };
 		2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrowserIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		2F6931B8260CFB3700ECEB38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -321,13 +257,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		27F443922135E11200296C58 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27FDCE4E2835AE0800E78FAD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -450,17 +379,6 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		276101FB287890A10039AB22 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				276101FC287890A10039AB22 /* BraveWallet.strings */,
-				276101FE287890A10039AB22 /* BraveShared.strings */,
-				27610200287890A10039AB22 /* Localizable.strings */,
-				27610232287890A10039AB22 /* Info.plist */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		27F443962135E11200296C58 /* ShareExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -469,43 +387,6 @@
 				59B6912121B695A400E9388E /* InfoPlist.strings */,
 			);
 			path = ShareExtension;
-			sourceTree = "<group>";
-		};
-		27FDCE522835AE0800E78FAD /* l10n */ = {
-			isa = PBXGroup;
-			children = (
-				272A00F42847B682009F1DC9 /* README.md */,
-				27AAA14A283E89AF004C9B5E /* Strings.swift */,
-				276101FB287890A10039AB22 /* Resources */,
-				27FDCE882835AF5400E78FAD /* BraveWallet */,
-				27FDCE852835AF3500E78FAD /* Shared */,
-				27FDCE842835AF2B00E78FAD /* BraveShared */,
-			);
-			path = l10n;
-			sourceTree = "<group>";
-		};
-		27FDCE842835AF2B00E78FAD /* BraveShared */ = {
-			isa = PBXGroup;
-			children = (
-				27FDCED92835B5AA00E78FAD /* BraveStrings.swift */,
-			);
-			name = BraveShared;
-			sourceTree = "<group>";
-		};
-		27FDCE852835AF3500E78FAD /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				27FDCED72835B3D300E78FAD /* SharedStrings.swift */,
-			);
-			name = Shared;
-			sourceTree = "<group>";
-		};
-		27FDCE882835AF5400E78FAD /* BraveWallet */ = {
-			isa = PBXGroup;
-			children = (
-				27FDCEDB2835B66D00E78FAD /* WalletStrings.swift */,
-			);
-			name = BraveWallet;
 			sourceTree = "<group>";
 		};
 		2F6931B5260CFB3700ECEB38 /* BrowserIntents */ = {
@@ -611,7 +492,6 @@
 				27F443962135E11200296C58 /* ShareExtension */,
 				2F6931B5260CFB3700ECEB38 /* BrowserIntents */,
 				CA0391B7271E1023000EB13C /* BraveWidgets */,
-				27FDCE522835AE0800E78FAD /* l10n */,
 				7B604FC11C496005006EEEC3 /* Frameworks */,
 				F84B21BF1A090F8100AAB793 /* Products */,
 			);
@@ -627,7 +507,6 @@
 				27F443952135E11200296C58 /* ShareExtension.appex */,
 				2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */,
 				CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */,
-				27FDCE512835AE0800E78FAD /* l10n.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -636,13 +515,6 @@
 
 /* Begin PBXHeadersBuildPhase section */
 		0A43293F21B1CB810041625B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27FDCE4C2835AE0800E78FAD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -670,24 +542,6 @@
 			productName = BraveShareTo;
 			productReference = 27F443952135E11200296C58 /* ShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
-		};
-		27FDCE502835AE0800E78FAD /* l10n */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 27FDCE5F2835AE0800E78FAD /* Build configuration list for PBXNativeTarget "l10n" */;
-			buildPhases = (
-				27FDCE4C2835AE0800E78FAD /* Headers */,
-				27FDCE4D2835AE0800E78FAD /* Sources */,
-				27FDCE4E2835AE0800E78FAD /* Frameworks */,
-				27FDCE4F2835AE0800E78FAD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = l10n;
-			productName = l10n;
-			productReference = 27FDCE512835AE0800E78FAD /* l10n.framework */;
-			productType = "com.apple.product-type.framework";
 		};
 		2F6931B3260CFB3700ECEB38 /* BrowserIntents */ = {
 			isa = PBXNativeTarget;
@@ -787,10 +641,6 @@
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1010;
 					};
-					27FDCE502835AE0800E78FAD = {
-						CreatedOnToolsVersion = 13.4;
-						LastSwiftMigration = 1340;
-					};
 					2F6931B3260CFB3700ECEB38 = {
 						CreatedOnToolsVersion = 12.2;
 					};
@@ -860,20 +710,12 @@
 				27F443942135E11200296C58 /* ShareExtension */,
 				2F6931B3260CFB3700ECEB38 /* BrowserIntents */,
 				CA0391B1271E1023000EB13C /* BraveWidgetsExtension */,
-				27FDCE502835AE0800E78FAD /* l10n */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		27F443932135E11200296C58 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27FDCE4F2835AE0800E78FAD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -958,16 +800,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27FDCE4D2835AE0800E78FAD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27FDCED82835B3D300E78FAD /* SharedStrings.swift in Sources */,
-				27FDCEDA2835B5AA00E78FAD /* BraveStrings.swift in Sources */,
-				27FDCEDC2835B66D00E78FAD /* WalletStrings.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		2F6931B0260CFB3700ECEB38 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1026,81 +858,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		276101FC287890A10039AB22 /* BraveWallet.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				276101FD287890A10039AB22 /* de */,
-				27610202287890A10039AB22 /* ja */,
-				27610205287890A10039AB22 /* zh-TW */,
-				27610208287890A10039AB22 /* en */,
-				2761020B287890A10039AB22 /* uk */,
-				2761020E287890A10039AB22 /* nb */,
-				27610211287890A10039AB22 /* es */,
-				27610214287890A10039AB22 /* it */,
-				27610217287890A10039AB22 /* ms */,
-				2761021A287890A10039AB22 /* sv */,
-				2761021D287890A10039AB22 /* ko-KR */,
-				27610220287890A10039AB22 /* id-ID */,
-				27610223287890A10039AB22 /* tr */,
-				27610226287890A10039AB22 /* pl */,
-				27610229287890A10039AB22 /* pt-BR */,
-				2761022C287890A10039AB22 /* ru */,
-				2761022F287890A10039AB22 /* fr */,
-				27610233287890A10039AB22 /* zh */,
-			);
-			name = BraveWallet.strings;
-			sourceTree = "<group>";
-		};
-		276101FE287890A10039AB22 /* BraveShared.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				276101FF287890A10039AB22 /* de */,
-				27610203287890A10039AB22 /* ja */,
-				27610206287890A10039AB22 /* zh-TW */,
-				27610209287890A10039AB22 /* en */,
-				2761020C287890A10039AB22 /* uk */,
-				2761020F287890A10039AB22 /* nb */,
-				27610212287890A10039AB22 /* es */,
-				27610215287890A10039AB22 /* it */,
-				27610218287890A10039AB22 /* ms */,
-				2761021B287890A10039AB22 /* sv */,
-				2761021E287890A10039AB22 /* ko-KR */,
-				27610221287890A10039AB22 /* id-ID */,
-				27610224287890A10039AB22 /* tr */,
-				27610227287890A10039AB22 /* pl */,
-				2761022A287890A10039AB22 /* pt-BR */,
-				2761022D287890A10039AB22 /* ru */,
-				27610230287890A10039AB22 /* fr */,
-				27610234287890A10039AB22 /* zh */,
-			);
-			name = BraveShared.strings;
-			sourceTree = "<group>";
-		};
-		27610200287890A10039AB22 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				27610201287890A10039AB22 /* de */,
-				27610204287890A10039AB22 /* ja */,
-				27610207287890A10039AB22 /* zh-TW */,
-				2761020A287890A10039AB22 /* en */,
-				2761020D287890A10039AB22 /* uk */,
-				27610210287890A10039AB22 /* nb */,
-				27610213287890A10039AB22 /* es */,
-				27610216287890A10039AB22 /* it */,
-				27610219287890A10039AB22 /* ms */,
-				2761021C287890A10039AB22 /* sv */,
-				2761021F287890A10039AB22 /* ko-KR */,
-				27610222287890A10039AB22 /* id-ID */,
-				27610225287890A10039AB22 /* tr */,
-				27610228287890A10039AB22 /* pl */,
-				2761022B287890A10039AB22 /* pt-BR */,
-				2761022E287890A10039AB22 /* ru */,
-				27610231287890A10039AB22 /* fr */,
-				27610235287890A10039AB22 /* zh */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1760,243 +1517,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Beta;
-		};
-		27FDCE592835AE0800E78FAD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = l10n/Resources/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brave.l10n;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG L10N_EXPORT";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		27FDCE5A2835AE0800E78FAD /* Dev */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = l10n/Resources/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brave.l10n;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				VALIDATE_PRODUCT = YES;
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Dev;
-		};
-		27FDCE5B2835AE0800E78FAD /* Enterprise */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = l10n/Resources/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brave.l10n;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				VALIDATE_PRODUCT = YES;
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Enterprise;
-		};
-		27FDCE5C2835AE0800E78FAD /* Release (AppStore) */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = l10n/Resources/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brave.l10n;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				VALIDATE_PRODUCT = YES;
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release (AppStore)";
-		};
-		27FDCE5D2835AE0800E78FAD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = l10n/Resources/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brave.l10n;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				VALIDATE_PRODUCT = YES;
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		27FDCE5E2835AE0800E78FAD /* Beta */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = l10n/Resources/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brave.l10n;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				VALIDATE_PRODUCT = YES;
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Beta;
 		};
@@ -2763,19 +2283,6 @@
 				27F443A22135E11200296C58 /* Release (AppStore) */,
 				27EEEDA72507CDF900024038 /* Release */,
 				27F443A32135E11200296C58 /* Beta */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		27FDCE5F2835AE0800E78FAD /* Build configuration list for PBXNativeTarget "l10n" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				27FDCE592835AE0800E78FAD /* Debug */,
-				27FDCE5A2835AE0800E78FAD /* Dev */,
-				27FDCE5B2835AE0800E78FAD /* Enterprise */,
-				27FDCE5C2835AE0800E78FAD /* Release (AppStore) */,
-				27FDCE5D2835AE0800E78FAD /* Release */,
-				27FDCE5E2835AE0800E78FAD /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

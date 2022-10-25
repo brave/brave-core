@@ -1,0 +1,3693 @@
+/* About settings section title */
+"About" = "關於";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "關於 Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "網站通常會透過 Cookie 和指令碼嘗試識別您和您使用的裝置，藉此掌握您的身分及瞭解您使用網路的情形，進而追蹤您在每個網站上的行為。\n\nBrave 會封鎖這些項目，讓您能在不受追蹤的情況下自在瀏覽。";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "這可讓您將影像儲存至您的相機膠卷。";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave 希望能存取您的相片";
+
+/* Button to add a bookmark */
+"AddBookmark" = "新增書籤";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "新增書籤";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "新增至我的最愛";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "新建資料夾";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "新增至我的最愛";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "新增書籤";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "廣告和追蹤器";
+
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "已封鎖追蹤器和廣告";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "已封鎖\n廣告";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "一律請求桌面網站";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "一律傳送";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "開啟";
+
+/* Label for the Face ID/Passcode item in Settings */
+"AuthenticationFaceIDPasscodeSetting" = "Face ID 和密碼";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "這會驗證您對 Brave 的存取權限";
+
+/* Label for the Passcode item in Settings */
+"AuthenticationPasscode" = "密碼";
+
+/* Label for the Touch ID/Passcode item in Settings */
+"AuthenticationTouchIDPasscodeSetting" = "Touch ID 和密碼";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "取消";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "%1$@ 要求取得使用者名稱和密碼。該網站顯示：%2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "登入";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ 要求取得使用者名稱和密碼。";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "密碼";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "請驗證";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "使用者名稱";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "自動重新導向 AMP 頁面";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "一律造訪原始 (非 AMP) 頁面 URL，而不開啟 Google 的 Accelerated Mobile Page 版本";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "拦截第三方 cookies";
+
+/* No comment provided by engineer. */
+"BlockAdsAndTracking" = "封鎖跨網站追蹤器";
+
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "禁止載入廣告、彈出式視窗和追蹤器。";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "封鎖所有 Cookie";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "封鎖所有";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "封鎖所有 Cookies 可能會讓有些網站不能正常工作。";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "要封鎖所有 Cookies 嗎？";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "無法設定偏好設定，請稍後再試。";
+
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "禁止網站儲存您的造訪記錄相關資訊。";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "封鎖監控";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "封鎖「切換至應用程式」通知";
+
+/* Brave panel individual toggle title */
+"BlockPhishing" = "封鎖網路釣魚";
+
+/* No comment provided by engineer. */
+"BlockPhishingAndMalware" = "封鎖網路釣魚和惡意軟體";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "封鎖彈出式視窗";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "封鎖指令碼";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)。";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "為 %lld 個分頁新增書籤";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "書籤資料夾";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "書籤資訊";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "書籤";
+
+/* title for bookmarks panel */
+"Bookmarks" = "書籤";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "匯出書籤";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "匯入書籤";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "書籤";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "名稱";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "地址";
+
+/* Button to show the brave panel */
+"BravePanel" = "Brave 面板";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "開啟";
+
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave 搜尋不會追蹤您、您的查詢內容或點擊項目。";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "稍後再說";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "支援獨立搜尋並提供更棒的隱私保護";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "試用 Brave 搜尋";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "關閉";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "進階控制項";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields 和隱私";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "封鎖廣告和其他討人厭的追蹤程式";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "深入了解";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "變更 Shields 全域預設";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "全域控制項";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "如果這個網站貌似無法正常運作，請嘗試關閉 Shields";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "關閉";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "開啟";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "點兩下即可切換 Brave Shields";
+
+/* Sync page title */
+"BraveSync" = "同步";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "同步 Internals";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "首先，您需要將 Brave 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "瀏覽器鎖定";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "以 Touch ID、Face ID 或系統密碼解鎖 Brave";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "繼續";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "尚未設定 ID 或密碼嗎？請開啟「設定」，接著輕觸「%@」。";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "我們已將 Brave 密碼簡化，現在您可以使用您在手機上使用的同一組 ID 或密碼來存取 Brave 了。";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "以您的 Apple Face ID、Touch ID 或密碼開啟 Brave";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "瀏覽記錄";
+
+/* Settings item for clearing the cache */
+"Cache" = "快取";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "將 Brave 設為預設瀏覽器的話，您所輕觸的每個連結都會在 Brave 的隱私保護下開啟。";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "設為預設瀏覽器";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "已經是預設瀏覽器了嗎？";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "略過";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "隱私不再遙不可及。";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "觀看影片";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "…隨時隨地播放。在背景播放、以子母畫面播放，甚至離線播放。當然，完全沒有廣告干擾。";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "將影片新增至播放清單…";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "在您的電腦或平板電腦上享有 Brave 隱私保護，並且讓各裝置上的書籤和擴充功能保持同步。";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "立即同步";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "隱私保護無所不在。";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "已收到分頁";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "取消";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "演算法";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "全部";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "位元";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "位元組";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "此憑證有效";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "常用資訊";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "常用名稱";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "國家或地區";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "衍生";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "網域元件";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "加密演算法";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "加密";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "指數";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "指紋";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "簽發者名稱";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "金鑰大小";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "金鑰用途";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "簽發位置";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "無";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "有效截止日期";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "有效開始日期";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "公司部門";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "公司";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "參數";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "公開金鑰資訊";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "公開金鑰";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "序號";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "使用 %2$@ 加密的 %1$@";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "使用 %2$@ 的 %1$@ 簽章";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "簽章演算法";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "簽章";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "州/省";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "街道地址";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "主體名稱";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "使用者 ID";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "有效日期";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "驗證";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "版本";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "包裝";
+
+/* No comment provided by engineer. */
+"ClearData" = "正在清除資料";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "清除隱私資料";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "取消";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "您確定嗎？";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "好";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "清除資料";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "是的，刪除";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "立即清除資料";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "取消";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "此操作會清除您的所有隱私資料，包括已同步裝置的記錄。";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "好";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "用戶端錯誤";
+
+/* Button title to close a menu. */
+"Close" = "關閉";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "確定要關閉所有開啟的分頁嗎？";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "關閉全部 %i 個分頁";
+
+/* Code words input help */
+"CodeWordInputHelp" = "將提供的同步鏈代碼字組輸入至以下表格。";
+
+/* Code words section title */
+"CodeWords" = "代碼詞";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "下載";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "分享";
+
+/* No comment provided by engineer. */
+"Confirm" = "確認";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "內容過濾";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容";
+
+/* Cookie settings option title */
+"CookieControl" = "Cookie 控制項";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Cookie 及網站資料";
+
+/* Copied action complete title */
+"Copied" = "已複製！";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "已複製到剪貼簿！";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "将应用信息复制到剪切板中。";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "複製圖片";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "複製連結";
+
+/* Copy codewords title */
+"CopyToClipboard" = "複製到剪貼簿";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "複製客服資訊";
+
+/* Create PDF share action. */
+"CreatePDF" = "建立 PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
+
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "新增";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "輸入搜尋網址，並將查詢內容改成「%1$s」。\n例如：https://youtube.com/search?q=%2$s \n(如果網站支援 OpenSearch，在您編輯此欄位時，畫面會顯示自動新增搜尋引擎的選項。)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "自動新增";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "刪除預設的自訂搜尋引擎，會自動切換預設引擎。";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "確定要刪除 %@ 嗎？";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "新增搜尋引擎";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "新搜尋引擎會顯示於快速搜尋列。";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "新增搜尋服務提供商？";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "無法新增自訂搜尋引擎，請稍後再試。";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "自訂搜尋引擎時發生錯誤";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "之前已新增一樣標題或網址的搜尋引擎。";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "輸入搜尋網址，並將查詢內容改成「%s」。 ";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "搜尋網址的查詢內容錯誤";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "複製的文字應該要是有效且安全的網址，並以「https://」開頭";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "請填寫標題和網址欄位。";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "自訂搜尋引擎";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "已新增搜尋引擎！";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "預計節省\n數據量";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "稍後再說";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "開啟設定";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "使用 Brave 開啟所有連結以保護隱私";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "dBrave Shields 會在您造訪網站時，封鎖網站上的追蹤程式和廣告，為您節省數據用量和寶貴時間";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "開啟「設定」，點選「預設瀏覽器應用程序」，然後選取「Brave」。";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "已針對 iOS %@ 最佳化。立即將 Brave 設為預設瀏覽器。";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Brave 網頁瀏覽器";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "關閉預設瀏覽器標註";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave 預設";
+
+/* No comment provided by engineer. */
+"Delete" = "刪除";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "這將會刪除內裡所有資料夾和書籤。你確定要繼續嗎？";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "刪除資料夾？";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "取消";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "登入資訊會永遠移除。";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "登入資訊會從所有連線的裝置上移除。";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "您確定嗎？";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "刪除";
+
+/* Sync device settings page title. */
+"Devices" = "同步鏈上的裝置";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "裝置 %1$@ (%2$@)";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "顯示";
+
+/* No comment provided by engineer. */
+"Done" = "完成";
+
+/* cookie settings option */
+"DontBlockCookies" = "不要封鎖 Cookie";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "不要傳送";
+
+/* A label representing the state of a filter list that is downloaded */
+"Downloaded" = "已下載";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "下載的檔案";
+
+/* A label representing the state of a filter list that is currently being downloaded */
+"Downloading" = "下載中";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "下載";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "下載的檔案將於此顯示。";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "複製已開啟的分頁";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "更早";
+
+/* No comment provided by engineer. */
+"Edit" = "編輯";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "編輯書籤";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "位置";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "編輯書籤";
+
+/* Button to edit a favorite */
+"EditFavorite" = "編輯我的最愛 ";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "編輯我的最愛";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "編輯資料夾";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "啟用下拉重新整理";
+
+/* Sync enter code words */
+"EnterCodeWords" = "輸入代碼詞";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "在下方輸入代碼詞";
+
+/* Description for new folder popup */
+"EnterFolderName" = "輸入資料夾名稱";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "嘗試重新輸入 URL，或開啟搜尋引擎並搜尋新的 URL。";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "以 Safari 開啟";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "重新載入";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "此伺服器無法證明它是 %@；您裝置的作業系統不信任其安全憑證。原因可能是設定錯誤，或攻擊者嘗試攔截您的連線。";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "攻擊者可能會嘗試從 %@ 竊取您的資訊 (例如密碼、訊息或信用卡資料)。";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "返回安全頁面";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "此網站無法提供安全連線";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "您的連線並非隱私瀏覽";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "隱藏詳細資訊";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "深入了解";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "更多詳細資訊";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "無法存取網際網路";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "您目前未上線。若要修正，請嘗試";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "檢查網路線、數據機和路由器";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "重新連線至 Wi-Fi";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "繼續前往 %@ (不安全)";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "預計節省\n時間";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ 將會打開外部應用程序";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "要允許連結切換應用程序嗎？";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "允許";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "不允許";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "我的最愛位於主畫面。這些書籤與其他裝置不同步。";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "我的最愛";
+
+/* No comment provided by engineer. */
+"Features" = "功能";
+
+/* A title on the content filtering screen that allows you to enable/disable filter lists */
+"FilterLists" = "篩選清單";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "其他熱門社群清單。請注意，啟用太多過濾器可能會導致瀏覽速度變慢。";
+
+/* Share action title */
+"FindInPage" = "在頁面中尋找";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "完成";
+
+/* Find %@ text in page. */
+"FindInPageFormat" = "找到「%@」";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "下一個頁面搜尋結果";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "上一個頁面搜尋結果";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "在頁面中尋找";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "尋找下一個";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "在此頁面上";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "尋找上一個";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "指紋識別法";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "封鎖指紋識別";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "使網站不易識別裝置的特徵。 ";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "允許所有連結在外部應用程式中開啟";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "強制貼上";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "糟糕！ 出問題了。 請再試一次。";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "錯誤";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "封鎖不安全的網站";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "當您有安全風險時，將您所造訪部分網頁的網址經模糊處理後傳送給 Google 安全瀏覽服務。";
+
+/* Grand camera access */
+"GrantCameraAccess" = "啟用相機";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "隱藏連結預覽";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "隱藏 Brave Rewards 圖示";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "未啟用 Brave Rewards 時隱藏 Brave Rewards 圖示";
+
+/* Title for history menu item */
+"HistortMenuItem" = "歷史記錄";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "清除歷史記錄";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "這會清除所有瀏覽記錄。";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "清除瀏覽記錄";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "這裡會顯示歷史記錄。";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "「僅限私密瀏覽」模式不會留下歷史記錄。";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "搜尋歷史記錄";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "歷史記錄";
+
+/* No comment provided by engineer. */
+"Home" = "主畫面";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "將連線升級為 HTTPS";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "盡量使用安全的 HTTPS 開啟網站，而不要使用 HTTP。";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "HTTPS 更新";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "個別控制項";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "付款要求的詳細資訊無效";
+
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "無效的同步代碼，請檢查並再試一次。";
+
+/* History tableview section header */
+"LastMonth" = "上個月";
+
+/* History tableview section header */
+"LastWeek" = "上週";
+
+/* No comment provided by engineer. */
+"learnMore" = "了解更多";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "已儲存的登入資訊將永久移除。";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "建立時間：%@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "詳細登入資訊";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "密碼";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "使用者名稱";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "網站";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "若要查看密碼，您必須先在裝置上設定密碼。";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "設定密碼";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "找不到登入資訊";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "登入資訊和密碼";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "已儲存的登入資訊";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "篩選";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "上次修改的時間：%@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "密碼";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "使用者名稱";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "網站";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "取消選取所有項目";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "找不到登入資訊";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "登入";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "全選";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "啟用背景音訊";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "複製";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "隱藏";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "開啟網站";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "顯示";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "月";
+
+/* The body of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationBody" = "輕觸即可免費領取代幣。";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "點選此處以瞭解詳細資訊。";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "這是您的第一則 Brave 廣告";
+
+/* Bookmark title / Device name */
+"Name" = "名稱";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "關閉";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "新建書籤";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "新建書籤";
+
+/* Title for new folder popup */
+"NewFolder" = "新建資料夾";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "新建資料夾";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "新建資料夾";
+
+/* New sync code button title */
+"NewSyncCode" = "啟動新的同步鏈接";
+
+/* New Tab title */
+"NewTab" = "新分頁";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "模式";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "深色模式會同時影響網站的呈現樣貌和一般的系統外觀。";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "開啟/關閉深色模式";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "深色模式";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "否";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "找不到相符的搜尋結果。";
+
+/* A label representing the state of a filter list that is not downloaded */
+"NotDownloaded" = "未下載";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"NotEnoughWordsDescription" = "請輸入所有詞語並重試。";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"NotEnoughWordsTitle" = "沒有足够詞語";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "自動將 NPR 連結重新導向其文字版本 (位址：text.npr.org)。";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Brave 支援";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "領取代幣";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "您使用 Brave 瀏覽期間，一共賺取了 %@。";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "做得很好！";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "隱藏贊助圖片";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "「贊助」是您可透過啟用 Brave Rewards 獲得的額外品牌背景。";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "深入了解贊助圖片";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "自動開啟鍵盤";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "背景圖片";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "圖片類型";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "預設圖片";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "贊助";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "新增分頁";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "顯示更多";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "查看這張贊助圖片，等同於支持內容創作者和發佈者。";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "開啟「獎勵」即表示您同意%@。";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "一邊瀏覽，一邊賺取點數，獎勵優質的內容創作者。";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Brave Ads 在這裡！";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave 會在時限內展示您的第一個廣告";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "你現在可以開始了。";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "我沒看到廣告";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "建立錢包時出了點問題。 請再試一次";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "確定";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "抱歉";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "開始瀏覽";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "加入";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "允許 Brave 查看我的剪貼簿，尋找相符的推薦代碼";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "您可能為了支持推薦者而下載 Brave。為偵測您的推薦者，Brave 會查看您的剪貼簿一次，尋找相符的推薦代碼。Brave 只會檢查代碼，不會傳輸其他任何個人資料。如果您不允許查看，您的推薦者將無法獲得 Brave 獎勵。";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "不允許查看";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "查看匿名推薦代碼";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "允許查看一次剪貼簿";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "點選「是」即代表您同意";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "服務條款";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "和";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "啟用 Brave Private Ads 後，瀏覽的所有廣告都是對發佈者和內容創作者的支持。";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "隱私政策";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
+
+/* Save button to save current selection */
+"OBSaveButton" = "儲存";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "選擇您預設的搜尋引擎";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "歡迎使用 Brave 瀏覽器";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "封鎖侵犯隱私的追蹤器，如此一來您就能在不被追蹤的情況下瀏覽網站。";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Brave Shields";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "讓我看看";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "開始";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "已封鎖 %1$@ 和其他 %2$lld 個廣告和追蹤器";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "在每個頁面上都能使用 Shields 查看 Brave 封鎖的所有不速之客。";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "輕觸即可查看 Brave Shields";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個廣告和追蹤器遭到封鎖";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "尋找「預設瀏覽器應用程式」";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "正在前往「設定」...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "封鎖追蹤器和廣告可讓網站的數據用量減少，載入速度加快。";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "體驗 Brave 的與眾不同：\n沒有廣告，沒有追蹤器，頁面載入速度大幅提升。";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "輸入網站名稱或 URL";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "歡迎使用 Brave";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "繼續";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "略過";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "(%@)";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "開啟全部 (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "開啟 Brave 獎勵設定";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "在「檔案」應用程式中開啟「下載」資料夾時發生不明錯誤。";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "在新分頁中打開圖像";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "以新的隱私分頁開啟";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "在新分頁中開啟";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "開啟設定";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "上次使用時間：%ld 天前";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "上次使用時間：上個月";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "上次使用時間：上週";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "上次使用時間：今天";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "上次使用時間：昨天";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "啟用同步分頁以檢視您其他裝置中的分頁。";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "要檢視您的裝置和啟用的同步類型，請加入同步鏈結";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "此同步鏈結中沒有裝置";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "如要開始，設定同步鏈結並在「同步設定」中切換「開啟的分頁」。";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "在「設定」中管理 Brave 要同步的項目。 ";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "您的其他裝置上沒有可顯示的進行中工作階段。";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "此空間顯示在其他裝置中開啟的 Brave 分頁。";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "上週 %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "今天 %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "昨天 %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "裝置";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "傳送至您的裝置";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "已傳送！";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "正在傳送…";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "傳送網頁";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "傳送至您的裝置";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "顯示同步設定";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "開始一個同步鏈結";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "啟用分頁同步";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "其他裝置的搜尋分頁";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "開啟的分頁";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "開啟網站";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "以私密新聞摘要提供今日熱門報導";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "News";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "保留任何影片/直播的離線播放清單";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "播放清單";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "直接在瀏覽器中展開私密視訊通話";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Talk";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "線上保護整體裝置安全";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "安全加密錢包，不需擴充功能";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Brave 功能";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "其他隱私設定";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "其他設定";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "預設網頁縮放比例";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "一旦網站的縮放比例有所變動，網站就會以清單的形式顯示在這裡。目前沒有任何網站的頁面經過放大或縮小。";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "未新增任何網站";
+
+/* Title of the Web-Page Zoom settings menu */
+"pagezoom.settings.menu-title" = "頁面縮放";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "其他所有網站";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "全部重設";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "重設網站縮放比例";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "特定頁面設定";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "頁面縮放設定";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "頁面縮放";
+
+/* Sync pair device settings section title */
+"Pair" = "配對";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "密碼";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "圖片由 %@ 提供";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "你想新增此影片至播放清單嗎？";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "新增至 Brave Playlist";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "播放選項";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "已停用。輕觸可啟用重新開始播放功能。";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "已啟用。輕觸可停用重新開始播放功能。";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "針對已經在播放中的項目，決定選取時要重新開始播放，或是從上次中斷處繼續播放。";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "重新開始播放";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "設定";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Brave 播放清單";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "刪除離線快取";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "此為直播影片或已達時間限制。請重新整理並重新開啟連結。";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "影片已到期";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "過期";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "加載資源時出現問題！";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "啟用後，主選單圖示上將顯示一個標章，表示頁面上的媒體可以新增至 Brave 播放清單。";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "顯示選單通知標章";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "移動...";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "您可以在瀏覽器中將項目新增至 Brave 播放清單";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "沒有可用項目";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "通知";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "確定";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "抱歉，嘗試顯示子母畫面時發生錯誤。";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "此選項會在播放清單開啟時啟用/停用自動播放功能。不過，載入清單中的下一部影片時，自動播放功能不會受到影響。";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "自動播放";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "關閉";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "開啟";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "僅使用 Wi-Fi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "離線使用新增影片及音頻檔案可能佔用裝置的大量儲存空間及手機使用數據";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "此選項會自動將您的播放清單項目保存在裝置上，以便您在沒有網路連線的情況下播放。";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "自動離線儲存";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "如果新增影片和音訊檔案以供離線使用，會佔用大量裝置儲存空間。請移除部分檔案，以釋出儲存空間。";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "儲存空間快要滿了";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "直播";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "在啟用後，您可以長按大多數影片/音訊檔案以將它們新增至播放清單。";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "啟用長按";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Playlist 媒體與離線數據";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "播放清單離線數據";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "重設";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "此選項將刪除播放清單及離線模式下儲存的所有影片。";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "抱歉，目前無法將該項目儲存為離線模式。";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "抱歉，發生錯誤";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "播放清單";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "播放清單";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "此資料夾已存在您的 Brave 播放清單中";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "抱歉";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "與您共用";
+
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "與您共用";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "此設定將在左側／右側之間更改影片清單的位置。";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "左";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "右";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "側邊欄位置";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "此選項將啟用／停用從上次停止播放時開始播放媒體（影片／音頻）的功能。";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "從上次停止播放的位置開始播放";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "停用 WebKit MediaSource API";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "網路相容性";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Brave 播放清單支援離線播放、子母畫面、連續播放和重複模式。";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "此媒體已在您的 Brave 播放清單";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "想把此媒體新至您的 Brave 播放清單嗎？";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "在 Brave 播放清單中開啟";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "移除";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "移除";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "這將刪除離線儲存的媒體。你確定要繼續嗎？";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "刪除離線數據";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "這將從清單刪除媒體項目。你確定要繼續嗎？";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "要從播放清單刪除媒體項目嗎？";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "重新開啟";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "已離線儲存";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "儲存以供離線播放";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "離線儲存中....";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "自動同步您的所有播放清單資料夾";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "自動同步播放清單資料夾";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "您可以在新分頁中開啟目前的項目，或透過系統分享選單來分享";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Brave 播放清單選單";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "在私人標籤中開啟";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "在新分頁中開啟";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "分享...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "抱歉";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "新增至 Brave 播放清單";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "開啟";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "新增至 Brave Playlist";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "檢視 Brave Playlist";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "在 Brave 瀏覽器的網址列旁邊新增一個播放清單按鈕 (看起來像 4 行附 + 符號)。此按鈕可讓您快速存取，以開啟播放清單，或者新增或移除媒體。";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "啟用快速存取按鈕";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "建立";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "編輯";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "編輯資料夾";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "編輯資料夾";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "抱歉，無法儲存您對此資料夾所做的變更";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "移動";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "目前資料夾";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "移動";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ 和另外 1 個項目";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld 個項目";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 個項目";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ 和另外 %2$lld 個項目";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "新建資料夾";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "新建資料夾";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "輕觸以選取影片";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "將影片新增至此資料夾中";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "已儲存";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "選取要將 %lld 個項目移至其中的資料夾";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "選取要將 1 個項目移入的資料夾";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld 個項目";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 個項目";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "無標題資料夾";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "新增至 Brave 播放清單按鈕";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "新增";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "刪除離線數據";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "删除播放清單";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "編輯";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "播放清單選單按鈕";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "立即新增播放清單";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "已啟動自動儲存功能，以便離線使用。換句話說，播放清單（包括共用的播放清單）增加的新項目會儲存至您的裝置，以供您離線檢視，而這些項目將能使用您的行動網路。\n\n可在播放清單設定中管理自動儲存，以供您離線使用。";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "設定";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "管理播放清單資料";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "重新命名";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "儲存離線數據";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "立即同步";
+
+/* Playlist menu item */
+"PlaylistMenuItem" = "播放清單";
+
+/* Description for closing a popover menu that is displayed. */
+"PopoverDefaultClose" = "關閉內容選單";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "關閉 Shields 選單";
+
+/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
+"PreviewActionAddToBookmarksActionTitle" = "新增至書籤";
+
+/* Label for preview action on Tab Tray Tab to close the current tab */
+"PreviewActionCloseTabActionTitle" = "關閉分頁";
+
+/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
+"PreviewActionCopyURLActionTitle" = "複製網址";
+
+/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
+"PreviewFormatAccessibilityLabel" = "預覽 %@";
+
+/* Settings privacy section title */
+"Privacy" = "隐私";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "有史以來清單";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "有史以來";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "追蹤器和廣告數量";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "網站";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "您所造訪網站上最常見的追蹤器和廣告";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "追蹤器和廣告最多的網站";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "%lld 個網站";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "%lld 個追蹤器和廣告";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "追蹤器和廣告";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "網站";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "所有通知";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "封鎖操作方";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "遭封鎖";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "清除隱私中心資料";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "要清除所有防護資料？";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "隱藏隱私中心小工具";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "上週";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** 在 **%2$lld** 個網站上遭 Brave 防護封鎖";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "最常見的追蹤器和廣告";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "造訪一些網站才能在此看到資料。";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "尚無資料可供顯示。";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "取得封鎖追蹤器和廣告的每週隱私最新消息。";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "開啟通知";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "回顧本週 Brave 如何在線上保護您。";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "每週隱私報告";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "開啟隱私中心";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "開啟隱私中心";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "隱私中心資料會儲存在本機，不會傳送至其他地方。";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "隱私中心";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "**%1$@** 每次造訪平均有 **%2$lld** 個追蹤器和廣告遭封鎖";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "追蹤器最多的網站";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "隱私中心會顯示防護封鎖的數量。設定不會影響新分頁上的防護計數器。防護資料不會計入隱私視窗。";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "顯示防護資料";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "設定僅適用於您已購買 VPN 訂閱的情況。";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "顯示 VPN 通知";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "重設防護已封鎖的所有項目數量。";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "清除防護資料";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "防護";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "電子郵件追蹤器";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "電子郵件追蹤器";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "定位 Ping";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "定位 Ping";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "追蹤器和廣告";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "追蹤器或廣告";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "Brave 防火牆 + VPN 通知";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "防火牆 + VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "總計";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "隱私政策";
+
+/* Private button title */
+"Private" = "隱私";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "隱私瀏覽";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "僅限隱私瀏覽";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "「僅限私人瀏覽」模式將關閉所有當前分頁，將您登出所有網站。";
+
+/* Private tab details */
+"PrivateTabBody" = "Brave 不會儲存隱私分頁，但這並不代表您在網路上為匿名狀態。您使用隱私分頁造訪的網站不會顯示在您的瀏覽記錄中，且一旦您關閉分頁，網站的 Cookie 也將一律刪除，也就是說，Brave 不會留下任何瀏覽記錄。不過，下載項目仍會儲存。即便使用隱私分頁，您的行動網路業者 (或是您所連線的 Wi-Fi 網路或 VPN 擁有者) 仍能看見您造訪哪些網站，而這些網站亦將取得您的公開 IP 位址。";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "使用隱私分頁只會變更 Brave 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位址。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會知道您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Brave 會捨棄那些將您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n將您連線至網際網路的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。這通常會是您的行動網路業者。如果您連線至 Wi-Fi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN，則是營運該 VPN 的一方。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及點選的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也無法保護您。";
+
+/* Private tab information link */
+"PrivateTabLink" = "深入了解隱私分頁。";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "隱私分頁";
+
+/* QR Code section title */
+"QRCode" = "QR 碼";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "快速搜尋引擎";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "為 Brave 評分";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "調大字體";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "亮度";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "顯示設定";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "轉換頁面時發生錯誤";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "文字";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "變更字型。";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "正在載入內容…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "載入原始頁面";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "頁面無法以閱讀檢視顯示。";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "閱讀模式";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "縮小字體";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "變更顏色主題。";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "清除";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "清除最近的搜尋";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "最近的搜尋資料";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "停用";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "啟用";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "我的最愛";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "隱藏";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "貼上並開始";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "於";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "已掃描";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "若要以 QR 碼搜尋，請對準方框中央的 QR 碼。";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "說明";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "掃描 QR 碼";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "最近的搜尋可讓您私人存取過去的搜尋。您要啟用最近的搜尋嗎？";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "最近的搜尋";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "顯示";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "顯示更多";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "搜尋建議";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "自動將 Reddit 連結重新導向舊版介面 (位址：old.reddit.com)。如要強制執行新版 Reddit 介面，請改為使用 new.reddit.com。";
+
+/* Action button for removing sync device. */
+"RemoveDevice" = "移除";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "移除我的最愛";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "回報故障網站";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "回報 Bug";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "讓 Brave 的開發人員知悉此網站無法在 Shields 中正常運作：";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "注意：此網址將與您的 Brave 版本號碼和 IP 位址一併提交 (不會留存記錄)。";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "提交";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "恢復的書籤";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "恢復的最愛";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "確定";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "否";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "很抱歉，Brave 之前當機了。是否要回復之前開啟的分頁？";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "哎呀，真抱歉。";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "有了 Brave Rewards，您可以查看來自 Brave Ads 網路的隱私保護廣告。無須追蹤器，無須減速，且您的資料也能絕對安全。";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "開啟 Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "按下畫面上的任何位置以繼續 Brave 聊天。";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "您現在可以開始免費通話了";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "如要開始免費通話，請開啟 Brave Rewards";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "開啟以立即支持內容創作者";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "使用 Brave Rewards 就能在瀏覽期間支持內容創作者。";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "您正在支持內容創作者";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "感謝您在瀏覽期間不忘支持內容創作者！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "舊版錢包轉帳";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "舊錢包轉帳已完成！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "地址格式錢包轉帳已延遲...";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "地址格式錢包轉帳進行中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "舊錢包轉帳失效";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "地址格式錢包轉帳狀態為等待中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "地址格式錢包轉帳完成！ 你的現有餘額可能需要幾分鐘後才會顯示在桌面 Brave 獎勵錢包中。";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "轉帳已完成！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "地址格式錢包轉帳已延遲，可能需要幾分鐘後才能恢復。";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "轉帳已延遲";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "地址格式錢包轉帳進行中，可能需要幾分鐘才能完成。";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "轉帳進行中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "地址格式錢包轉帳失效，無法完成";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "轉帳失效";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "地址格式錢包轉帳狀態為等待中，將盡快開始處理。";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "轉帳等待中";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "已完成！";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "已延遲";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "進行中";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "失效";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "等待中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "一次轉出現有代幣";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "按下即表示您同意 %1$@ 和 %2$@。可在設定中隨時取消。";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "這部裝置暫時無法轉出 Brave Rewards，請將現有錢包金額轉至桌面版錢包，以便保存。";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "啟用 Brave Private Ads，即可自動支持內容創作者和發佈者。Brave Private Ads 是回饋內容創作者並兼顧隱私的廣告。";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "啟用 Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "您正在支持這樣的內容創作者。";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "本月您支持的內容創作者人數。";
+
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "請在 2021 年 3 月 13 日前使用錢包轉帳。3 月 13 日後將無法再使用錢包轉帳。";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "這位創作者尚未通過驗證，不會納入您支持的創作者名單";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "已啟動轉帳程序。BAT 餘額可能需要幾分鐘後，才會顯示於桌面版 Brave Rewards 錢包。轉帳完成後，請查看桌面版 Rewards 摘要以瞭解詳細資訊。\n\n您可以關閉此視窗，在轉帳期間繼續使用 Brave。";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "已啟動餘額轉帳程序";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Brave Rewards 伺服器未回應，請稍後再試。";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "連線錯誤";
+
+/* Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "您可將 Brave Rewards 代幣餘額一次轉至現有 Brave Rewards 桌面版錢包。\n\n1. 在桌上型電腦上開啟 Brave 瀏覽器\n2. 瀏覽至 brave://rewards\n3. 按一下「QR 碼」\n4. 以裝置掃描 QR 碼";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "掃描一次性轉帳碼";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "錢包轉帳狀態";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "金額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "匿名";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "餘額資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "領取時間";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "領取 ID";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "確定要清除所有 Rewards 記錄嗎？";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "清除記錄";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "贊助金額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Brave 代幣";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "無";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "支持";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "使用者資金";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "已關閉自動贊助";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "自動贊助表空白";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "已完成";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "憑證";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "外部交易";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "失敗";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "資金不足";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "準備";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "保留";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Rewards 已關閉";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "開始";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "贊助";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "建立時間";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "裝置資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "已註冊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "註冊狀態";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "到期日";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "失效";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "关键信息栏";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "舊行銷活動";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "有餘額可供轉帳";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "舊版錢包資訊";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "顯示 %d 筆記錄";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "記錄";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "未註冊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "未支持";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "處理器";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "進行中";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "已驗證";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "損毀";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "已結束";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "超過";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "行銷活動";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "發佈者";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "發佈者";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "重試次數";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "自動贊助";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "一次性小費";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "定期小費";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "錢包、裝置和餘額資訊 (一律分享)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "基本資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "透過小費或自動贊助給予發佈者的任何贊助";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "內部資料存放區";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Rewards 資料庫";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Rewards 特定記錄";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "您已領取或尚待 Ads 或 Grants 處理的任何 BAT 行銷活動報酬";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "分享";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "分享 Rewards Internals";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "此頁面可能含有敏感資料。請視同您錢包的私密金鑰謹慎保管，切勿任意與他人共享。";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "警告";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "狀態";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "步驟";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "已支持";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Rewards Internals";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "總金額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "餘額總計";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "類型";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "有效";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "版本";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "錢包建立日期";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "錢包資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "錢包付款 ID";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "獎勵對象";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "儲存";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "已儲存的登入資訊";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "已儲存分頁";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "儲存圖片";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "儲存登入資訊";
+
+/* Scan sync code title */
+"Scan" = "掃瞄";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "我有同步代碼";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "已封鎖指令碼";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "搜尋書籤";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "%@ 搜尋";
+
+/* Title for default search engine picker. */
+"SearchEnginePickerNavTitle" = "預設搜尋引擎";
+
+/* Search engines section of settings */
+"SearchEngines" = "搜尋引擎";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "搜尋建議內容";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "開啟分頁及書籤與歷史記錄";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "清除搜尋";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "進入搜尋模式";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "搜尋輸入欄位";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "搜尋";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "新增自訂搜尋引擎";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "搜尋";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "顯示最近的搜尋";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "搜尋設定";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "顯示搜尋建議";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "%@ 提供的搜尋建議";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "切換至此分頁";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@ 搜尋";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "搜尋";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "搜尋建議";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "使用 Brave 搜尋";
+
+/* Settings security section title */
+"Security" = "安全";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "傳送當機報告協助 Brave 修正問題？";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "糟糕，Brave 當機了！";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "傳送報告";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "現在能夠在 iOS 將 Brave 設定為預設瀏覽器。請點選此處以開啟設定。";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "設定為預設瀏覽器";
+
+/* No comment provided by engineer. */
+"Settings" = "設定";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "手動";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "一天後";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "一個月後";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "一週後";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "關閉分頁";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "允許 Brave 自動關閉最近未檢視的分頁。";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "無法載入頁面。";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "許可證";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "設定";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "底部列";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "頂端列";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "分頁";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "分享連結";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "分享對象...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "分享對象...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "恭喜您達到此隱私里程碑。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "恭喜，您已加入獨家社團。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "恭喜，您已是大師等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "恭喜，您已是傳奇人物等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "恭喜，您已是達人等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "恭喜，您已是專家等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "恭喜，您已具有特別的地位。";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "平均節省的數據用量\n%@ MB";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "不再顯示";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "分享消息";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields 剛剛保護了您線上活動的隱私。";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "恭喜，您已具有特別的地位。";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "封鎖了 %ld 個追蹤程式和廣告！";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "不含廣告的影片會耗用較少數據量。";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "當您在此網站上觀看影片時，為您封鎖廣告。";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Brave Shields 全域預設";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "這些是 Shields 對新網站的預設設定。變更這些設定不會影響現有的個別網站設定。";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
+
+/* shields overview message */
+"ShieldsOverview" = "「網站防護」可控制您在造訪每個網站時，是否直接封鎖網站上的廣告與追踪器。若您希望在特定網站上顯示廣告，可以在這裡啟用廣告。";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "請注意：部分網站可能需要指令碼才能順利運作，所以此防護機制預設為關閉。";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "日";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "時";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "分";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "秒";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "新隱私分頁";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "新分頁";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "掃描 QR 碼";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "開啟 Brave News 並查閱今天的熱門新聞";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "在新標籤中開啟瀏覽器並刪除所有私人瀏覽器歷史資料";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "清除瀏覽器記錄";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "清除 Brave 瀏覽記錄";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "在新標籤中開啟瀏覽器並啟用 VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "啟用 VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "開啟 Brave 瀏覽器並啟用 VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "開啟新私人標籤";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "開啟新私人瀏覽器標籤";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "開啟新標籤";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "開啟新瀏覽器標籤";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "開啟 Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "開啟 Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "開始播放您在播放清單中的影片";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "開啟播放清單";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "開啟播放清單";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "開始使用 Brave 安全地搜尋 Web";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "開啟書籤網站";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "開啟歷史記錄網站";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "開啟網站";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "此選項將開啟 Brave 設定。若要變更各個 Siri 選項，請選取「Siri 與搜尋」功能表項目，然後自訂您的選擇。";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "開啟設定";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新分頁及清除瀏覽記錄";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "清除瀏覽器記錄";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "使用快速鍵透過 Siri - Voice Assistant 啟用 Brave VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "啟用 VPN";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新分頁及顯示 Brave News 摘要";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "開啟 Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "使用快速鍵透過 Siri - Voice Assistant 開啟新私人標籤";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "開啟新私人標籤";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "使用快速鍵透過 Siri - Voice Assistant 開啟新標籤";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "開啟新標籤";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "使用快速鍵即可透過 Siri 語音助理開啟播放清單";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "開啟播放清單";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Siri 快速鍵";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "顯示書籤捷徑";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "顯示書籤";
+
+/* Show code words instead */
+"ShowCodeWords" = "改為顯示代碼詞";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "顯示下載項目";
+
+/* Button to show the history list */
+"ShowHistory" = "顯示記錄";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "顯示記錄";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "僅限橫向";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "顯示連結預覽";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "顯示分頁";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "分頁列";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "感謝您讓 Brave 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "謝謝";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "防護";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
+
+/* Open search section of settings */
+"StandardTabSearch" = "標準分頁";
+
+/* Support section title */
+"Support" = "支援";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "阻止該網頁建立其他通知";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "隱藏通知";
+
+/* Sync settings section title */
+"Sync" = "同步";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "書籤";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "書籤匯入失敗";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "書籤匯入成功";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "管理要在裝置之間保持同步的資訊。這些設定只會影響這部裝置。";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "同步設定";
+
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "最新 Brave Sync 即將推出，屆時您的設定將會受到影響。敬請準備升級。";
+
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "無法移轉書籤，請稍後再試。";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "錯誤";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "部分書籤無法移轉，您可以重新手動新增。";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "書籤移轉";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "若要使用 Brave Sync，您必須先移轉現有書籤，改用新系統。此作業不會刪除書籤。";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "移轉";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "請先移轉";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "新增裝置";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "新增電腦";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Sync Chain 二維碼";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "在第二部行動裝置上，瀏覽到「設定」面板中的「同步」，並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n\n不妨將此代碼視為密碼。要是他人取得此代碼，將能讀取及修改您同步的資料。";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "輸入同步代碼";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "在裝置上，瀏覽到「設定」面板中的「同步」，並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n\n不妨將此代碼視為密碼。要是他人取得此代碼，將能讀取及修改您同步的資料。";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "輸入代碼字組";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "新增平板電腦或電話";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "選擇裝置類型";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "選擇您想要同步的裝置類型。";
+
+/* Computer device button title */
+"SyncComputerDevice" = "電腦";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "這是由其他裝置上版本過舊的 Brave 所產生的同步代碼。請在所有同步的裝置上更新 Brave，然後再試一次。";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "裝置與設定";
+
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "這組同步代碼已過期，請產生新的同步代碼並再試一次。";
+
+/* Generic Sync Error Description */
+"syncGenericError" = "抱歉，發生錯誤";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "已匯入的書籤";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "同步代理程式目前處於離線狀態或無法存取。請稍後再試。";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "同步通訊錯誤";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "這樣會與產生此 QR 碼的裝置分享您的 Brave 資料，可能包括您的密碼。請再次確認此 QR 碼是由您所擁有的裝置產生。您確定要這麼做嗎？";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "這樣會與產生這些代碼詞的裝置分享您的 Brave 資料，可能包括您的密碼。請再次確認這些代碼詞是由您所擁有的裝置產生。您確定要這麼做嗎？";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "警告";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "請檢查您的網絡連接並重試。";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "無法連接到 Sync ";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "所有裝置上的本地裝置資料將會保持不變。此同步鏈上的其他裝置則會保持同步。";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "從同步鏈中移除 %@？";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "移除裝置";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "裝置";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "目前同步的資料將被保留，但 Brave 同步快取中的所有資料將被刪除。您將需要啟動新的同步鏈以再次同步裝置資料。";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "刪除同步鏈接";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "移除 %@ 將會刪除此同步鏈。";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "從同步鏈中移除此裝置並不能清除先前從此裝置中已同步的資料。";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "從同步鏈中移除 %@？";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "移除此裝置";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "移除此裝置？";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "此裝置將會從同步群組中斷開連接，並且不能再接收或發送同步資料。所有現有資料將會保留在裝置中。";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "下方的裝置名單包括你同步鏈上的所有裝置。每個裝置都可以從任何其他裝置上進行管理。";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "我將會使用我的相機......";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "平板電腦或電話";
+
+/* This device cell */
+"SyncThisDevice" = "此裝置";
+
+/* Sync to existing device */
+"SyncToDevice" = "同步至裝置";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "使用現有同步的裝置開啟 Brave 設定並導向至設定 -> 同步。 選擇「新增裝置」並掃描螢幕上顯示的代碼。";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "無法同步此裝置";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "失敗";
+
+/* Sync Error Description */
+"syncValidForTooLongError" = "此程式碼無效。請確認您的裝置已正確設定時間和時區。";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "關閉";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "開啟或關閉隱私模式";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "隱私模式";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "關閉";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "開啟";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "導覽工具列";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "新增分頁";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "後退";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "前進";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "安全連線";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "選單";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "播放清單";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "閱讀檢視";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "新增至閱讀清單";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "重新載入";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "搜尋或輸入網址";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "分享";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "連線不安全";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "分頁列表";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "新增分頁";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "以三指左右滑動即可關閉分頁。";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "關閉分頁中";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "沒有分頁";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "分頁 %1$@ 至 %2$@，共 %3$@ 個";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "新分頁";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "搜尋分頁";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "分頁 %1$@，共 %2$@ 個";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "服務條款";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "使用條款";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "分享...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "與好友分享 Brave！";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "自動";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "暗";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "外觀";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "這些設定不適用於私密瀏覽模式。";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "亮";
+
+/* Name for app theme settings */
+"themesSettings" = "主題";
+
+/* No comment provided by engineer. */
+"Title" = "標題";
+
+/* History tableview section header */
+"Today" = "今天";
+
+/* The button title for adding a user RSS feed */
+"today.addSource" = "新增來源";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "新增";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "無法新增來源";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "很抱歉，系統無法辨識該摘要網址。";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "很抱歉，系統找不到該摘要網址。";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "很抱歉，該摘要網址沒有任何內容。";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "新增來源至 Brave News";
+
+/* No comment provided by engineer. */
+"today.allSources" = "所有來源";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "新上架內容";
+
+/* No comment provided by engineer. */
+"today.deals" = "優惠";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "刪除";
+
+/* No comment provided by engineer. */
+"today.disableAll" = "停用全部";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Brave News 將停止顯示來自 %@ 的內容";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "已停用";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "停用來自 %@ 的內容";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "嘗試開啟一些新聞來源";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "沒有可顯示的文章";
+
+/* No comment provided by engineer. */
+"today.enableAll" = "啟用全部";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "啟用來自 %@ 的內容";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Brave News 遇到了一些問題，請再試一次。";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "糟糕…";
+
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "匯入 OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "來源不安全 - 新增後需自行承擔風險";
+
+/* No comment provided by engineer. */
+"today.introCardBody" = "Brave News 支援廣告，在您的裝置上提供相配的全私密和匿名化廣告。";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "全新";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "使用透過我們私密 CDN 提供的數百個領先內容來源自訂摘要，以及來自您最愛的發行者的 RSS 摘要，使摘要最符合您的需求。";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Today 以完全保密的摘要形式，提供符合您個人喜好的熱門內容。";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "顯示 Brave News";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "深入了解您的資料";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "更多 Brave Offer";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "沒有網際網路連線";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "嘗試確認連線或重新連線至 Wi-Fi。";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "推廣內容";
+
+/* No comment provided by engineer. */
+"today.refresh" = "重新整理";
+
+/* No comment provided by engineer. */
+"today.resetSourceSettingsButtonTitle" = "將來源設定重設為預設";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "搜尋";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "摘要或網站網址";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "預設來源";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "來源與設定";
+
+/* No comment provided by engineer. */
+"today.sourceSearchPlaceholder" = "搜尋";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "開啟 Brave News";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "您的來源";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "已封鎖\n追蹤器";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "開啟搜尋建議？";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "無法加入同步群組。請檢查所輸入的詞語，然後再試一次。";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "無法連線";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "不支援的付款方式";
+
+/* Bookmark URL */
+"URL" = "網址";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "網址和搜尋內容";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "網站重新導向";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "用戶已取消";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "使用區域性廣告封鎖程式";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "關閉";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "登入您的 Uphold 帳戶時出現問題。請再試一次。";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "抱歉，發生錯誤";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "%1$@ 版 (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "瀏覽於 %@";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "購買";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxBlockAds" = "封鎖不需要的網路連線";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "使用 IKEv2 安全加密 VPN 通道";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFast" = "最高可支援 100 Mbps 的速度";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "選擇您的地理/國家/地區位置";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "讓您在線上保持匿名狀態";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoSellout" = "我們絕不會洩漏或販賣您的資訊";
+
+/* AppStore Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store 收據";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "應用程式版本";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "行動通訊業者";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave 不會追蹤您，也不會知道您使用應用程式的情形，因此不會得知您的 VPN 設定方式。請與我們分享所發生問題的相關資訊，我們會在最短時間內盡力解決問題。";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "無法傳送電子郵件。請檢查電子郵件設定。";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "請選取您願意提供的資訊。\n\n您主動提供的資訊越多，越有利於我們的支援人員協助您解決問題。";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "支援服務由 Guardian 團隊協助提供。";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN 主機名稱";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "問題";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "連線穩定性問題";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "沒有可用的網際網路連線";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "其他";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "無法連線至 VPN (其他錯誤)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "連線速度緩慢";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "網站無法運作";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "錯誤記錄";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "網路類型";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "平台";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "繼續寄送電子郵件";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "訂閱類型";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS 時區";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave Firewall + VPN 問題";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "啟用";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "無法連線至 App Store，請稍候再試。";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Store 錯誤";
+
+/* No comment provided by engineer. */
+"vpn.freeTrial" = "所有方案均包含 7 天免費試用期！";
+
+/* Disclaimer about free trial */
+"vpn.freeTrialDisclaimer" = "免費試用 7 天，7 天後將依方案價格計費。";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "所有訂閱都會自動續約，但可在續約前取消。";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "此設定檔可允許 VPN 自動連線，並隨時保障您裝置上的流量安全。此 VPN 連線會經過加密，並採用 Brave 智慧型防火牆的路由規則，有效封鎖潛在的有害與侵入式連線。";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "安裝 VPN 設定檔";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave 現在要開始安裝 VPN 設定檔。";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN 現已啟用";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "安裝 VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "免費試用";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "每月自動續約";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "按月訂閱";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "過期";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "全天候支援";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "確保所有連線安全無虞";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "技術提供：";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "系統會根據您所設定的時區，自動為您選取最靠近的伺服器區域。這項建議功能旨在確保網際網路的速度不受影響。";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "自動";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "無法切換伺服器，請稍後再試。";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "發生伺服器錯誤";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "伺服器區域";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN 區域已完成變更。";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "無法重設 VPN 組態，請稍後再試。";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "錯誤";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "還原";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "升級為 VPN 以保護您的連線，並封鎖無所不在的追蹤程式，捍衛個人隱私。";
+
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "變更位置";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "與技術支援人員聯絡";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "無法擷取伺服器清單，請稍後再試。";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN 支援";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "管理訂閱";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "重設組態";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "主機";
+
+/* Table cell title for vpn's server location */
+"vpn.settingsServerLocation" = "位置";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "伺服器";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "到期日";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "訂閱";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "狀態";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "已停用";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "已啟用";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "過期";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 已開啟";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "初始化 VPN 時發生問題。請再試一次，或嘗試在 VPN 設定頁面中重設組態。";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "錯誤";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "權限遭拒";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "錯誤";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款及隱私權政策。";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "重設組態";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "重設";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "按月訂閱";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "按年訂閱";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "每年自動續約，立即省下 %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "最超值";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "1 年";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "錢包建立日期";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "網頁內容";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "快取";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "Cookie";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "資料庫";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "本機儲存";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "正在載入網站資料...";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "管理網站資料";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "尚未儲存任何網站資料";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "全部移除";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "移除";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "移除 %ld 個項目";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "快速存取您喜愛的網站。";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "我的最愛";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "請開啟 Brave，以在此瀏覽您的最愛";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "搜尋";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Brave 在線上為您節省時間和保護隱私的方法摘要。";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "隱私統計資料";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "隱私統計資料";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "搜尋或輸入 URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "新分頁";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "播放清單";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "隱私分頁";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "在 Brave 中快速搜尋網頁或開啟新網頁。";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "捷徑";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Brave 在線上為您保護隱私的方法摘要。";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "隱私統計資料";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Brave 錢包";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "小工具";
+
+/* Word count title */
+"WordCount" = "字數：%i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "年";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "是";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "是的，刪除";
+
+/* History tableview section header */
+"Yesterday" = "昨天";
+

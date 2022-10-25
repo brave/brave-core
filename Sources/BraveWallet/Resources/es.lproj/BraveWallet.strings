@@ -1,0 +1,1188 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "Copia de seguridad";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "Introduce el nombre de la cuenta";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "Nombre de la cuenta";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "Detalle de la cuenta";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "Clave privada";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "Advertencia: Nunca compartas tu clave privada. Cualquiera que tenga acceso a esta clave puede apropiarse de tus activos para siempre.";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "¿Eliminar esta cuenta?";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "Eliminar cuenta";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "Cuentas";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "Activar el token %@";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "Añadir";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "Añadir activo personalizado";
+
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "Añadir red";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "Añadir red…";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "Error al añadir el token personalizado. Inténtalo de nuevo.";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "No se puede añadir el token personalizado";
+
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "Podrá usarse esta red en Cartera de Brave.";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "¿Permitir que este sitio añada una red?";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "Añadir red";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "¿Te gustaría importar este token?";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "Añadir el token sugerido";
+
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "Ajustes avanzados";
+
+/* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
+"wallet.amountAndFee" = "Cantidad + comisión";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "Importe + Gas";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "Importe en %@";
+
+/* The title of the button to approve adding a new network on a add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "Aprobar";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "Precio %1$@ (%2$@)";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "No se han encontrado activos";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "Activos";
+
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge es un servicio independiente que te ayuda a establecer puentes entre activos a través de las redes, así como a utilizar tus criptoactivos en otras redes y ecosistemas de aplicaciones descentralizadas. Usar puentes entre activos y otras redes conlleva algunos riesgos.";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "¿Abrir la aplicación de Rainbow Bridge?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Puente hacia Aurora";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "Más información sobre cómo usar Rainbow Bridge";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Descubre cómo reducir riesgos en Rainbow Bridge";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "No volver a mostrar";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "La cantidad de minutos que tardará la Cartera de Brave en bloquearse automáticamente";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "Bloquear automáticamente después de";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "Frase de recuperación";
+
+/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
+"wallet.backupRecoveryPhraseDisclaimer" = "He guardado una copia de la frase en un lugar seguro.";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "Apunta o copia esas palabras siguiendo el orden en el que aparecen a continuación, y guárdalas en un lugar seguro. Esa frase de recuperación será lo único que te permitirá volver a acceder a tu cuenta en caso de que olvides la contraseña, de que pierdas o te roben el dispositivo, o de que quieras cambiar de una cartera a otra.";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "Tu frase de recuperación";
+
+/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
+"wallet.backupRecoveryPhraseWarningPartOne" = "ADVERTENCIA:";
+
+/* The second part of the warning displayed on the backup recovery phrase page. */
+"wallet.backupRecoveryPhraseWarningPartTwo" = "Nunca compartas tu frase de recuperación. Cualquiera que tenga acceso a esta frase puede apropiarse de tus activos para siempre.";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "Hacer copia de seguridad de la cartera";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "Soy consciente de que, si pierdo la frase de recuperación, no podré acceder a mi cartera de criptomonedas.";
+
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "En el siguiente paso, verás una frase de recuperación compuesta por 12 palabras que podrás utilizar para recuperar tus cuentas de criptomonedas principales. Guárdala en un lugar seguro, ya que esa frase de recuperación será lo único que te permitirá volver a acceder a tu cuenta en caso de que olvides la contraseña, de que pierdas o te roben el dispositivo, o de que quieras cambiar de cartera.";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "Haz una copia de seguridad de tu cartera de criptomonedas";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "Haz una copia de seguridad de tu cartera para proteger tus criptoactivos y asegurarte de que nunca pierdas el acceso a ella.";
+
+/* The button title that enables the biometric unlock feature */
+"wallet.biometricsSetupEnableButtonTitle" = "Habilitar";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "Se ha producido un error al tratar de habilitar el desbloqueo biométrico. Vuelve a intentarlo más tarde.";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "Error al habilitar el desbloqueo biométrico.";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock */
+"wallet.biometricsSetupTitle" = "Desbloquea la Cartera de Brave con tu Face ID, Touch ID o contraseña.";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "El presupuesto incluye una tarifa de Brave del %@.";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "Comprar";
+
+/* The title of the button for users to click when they are ready to buy using Wyre payment */
+"wallet.buyButtonTitle" = "Continuar a Wyre";
+
+/* The description of a buy button on the buy/send/swap modal */
+"wallet.buyDescription" = "Compra criptomonedas con Apple Pay o tarjeta de crédito/débito a través de Wyre.";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "Fecha";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "Precio";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "Datos del precio ofrecidos por CoinGecko";
+
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "Ethereum";
+
+/* A description for Ethereum coin type. */
+"wallet.coinTypeEthereumDescription" = "Admite activos compatibles con EVM en la cadena de bloques de Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "Almacenar activo de FIL";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "Selecciona uno de los siguientes tipos de cuenta";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "Admite activos compatibles con SPL en la cadena de bloques de Solana";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "Desconocido";
+
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "Confirmar";
+
+/* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
+"wallet.confirmationViewAllowSpendSubtitle" = "Al conceder este permiso, das tu autorización para que esta aplicación retire tus %@ y automatice las transacciones por ti.";
+
+/* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\" */
+"wallet.confirmationViewAllowSpendTitle" = "¿Permitir que esta aplicación utilice tus %@?";
+
+/* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\". */
+"wallet.confirmationViewCurrentAllowance" = "Concesión actual";
+
+/* The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction. */
+"wallet.confirmationViewEditPermissions" = "Editar permisos";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "Detalles";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "Transacción";
+
+/* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "La cuenta de token asociada aún no existe. Se gastará una pequeña cantidad de SOL para crearla y añadirle fondos.";
+
+/* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
+"wallet.confirmationViewUnlimitedWarning" = "Se ha solicitado la aprobación de una concesión ilimitada";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "Confirmar transacciones";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "Confirmar transacción";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "Continuar";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "Dirección del contrato";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "Copiar dirección";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "Copiar";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "¿Crear una ahora?";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "No tienes cuenta de %@";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "Crear contraseña";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "Protege tus criptoactivos con una contraseña";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Cartera de Brave";
+
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "Bloquea las URL del explorador";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "Formato no válido: el ID de la cadena debe ser un número positivo.";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "Introduce el ID de la cadena";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "El ID de la cadena";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "Introduce el nombre de la cadena";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "El nombre de la cadena";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "Formato no válido: los decimales de divisa deben formar parte de un número positivo.";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "Introduce los decimales de divisa";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "Decimales de divisa de la cadena";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "Añadir una nueva red";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "Este campo no puede quedar en blanco.";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "URL de iconos";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "Dirección no válida.";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "URL de RPC";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "Redes personalizadas";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "Introduce el nombre de la divisa";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "Nombre de la divisa de la cadena";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "Introduce el símbolo de la divisa";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "Símbolo de la divisa de la cadena";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "Introduce la(s) URL";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "Personalizado";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@ quiere interactuar con Cartera de Brave";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "Esta página quiere interactuar con Cartera de Brave";
+
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Las aplicaciones descentralizadas que conectes con la cartera de Brave aparecerán aquí";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "Aplicaciones descentralizadas conectadas";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "General";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "Configuración de %@";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "Eliminará todos los permisos de conexión de cartera en %1$d %2$@";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "sitios web";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "sitio web";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "Todo";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1 d";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 día";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1 h";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 hora";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1 m";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 mes";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3 m";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 meses";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1 sem.";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 semana";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1 a";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 año";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "Decimales de precisión";
+
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "Advertencia: Es posible que la captura de pantalla con tu mensaje se almacene en la nube, en cuyo caso podrán acceder a ella todas las aplicaciones que tengan permiso para acceder a tus fotos. Desde Brave te recomendamos que no guardes la captura de pantalla y la elimines en cuanto puedas. ";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "Permitir";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "Desvelar";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "Esta dApp quiere leer este mensaje para responder a tu solicitud";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "Descifrar la solicitud";
+
+/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
+"wallet.defaultEthAccountName" = "Cuenta de Ethereum %lld";
+
+/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
+"wallet.defaultFilAccountName" = "Cuenta de Filecoin %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
+"wallet.defaultSecondaryEthAccountName" = "Cuenta secundaria de Ethereum %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
+"wallet.defaultSecondaryFilAccountName" = "Cuenta secundaria de Filecoin %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
+"wallet.defaultSecondarySolAccountName" = "Cuenta secundaria de Solana %lld";
+
+/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
+"wallet.defaultSolAccountName" = "Cuenta de Solana %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "Eliminar";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "Detalles";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "Editar red";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
+"wallet.editGasFeeButtonTitle" = "Editar";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "Editar gas";
+
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "La transacción no se puede propagar por la red si el valor nonce personalizado no es secuencial o presenta otros errores";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Nonce (valor de seguridad)";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Introduce el valor nonce personalizado";
+
+/* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
+"wallet.editPermissionsAllowanceHeader" = "Al permitir gastar el límite, das tu autorización para que %@ retire y utilice, como máximo, la siguiente suma:";
+
+/* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
+"wallet.editPermissionsApproveUnlimited" = "Ilimitada";
+
+/* The header text above the field to input a custom allowance value. */
+"wallet.editPermissionsCustomAllowanceHeader" = "Configura una concesión personalizada";
+
+/* The header text shown in the row that displays the proposed allowance value. */
+"wallet.editPermissionsProposedAllowanceHeader" = "Concesión propuesta";
+
+/* The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\". */
+"wallet.editPermissionsSetUnlimited" = "Configurar como ilimitada";
+
+/* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
+"wallet.editPermissionsTitle" = "Editar permisos";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "Conectar";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "Desvincular";
+
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "Revocar";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "Cambiar";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "Confiar";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "cuentas";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "cuenta";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ conectada(s)";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "Conexiones";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
+"wallet.editTransactionError" = "Comprueba la información que has introducido y vuelve a intentarlo.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "Volver";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "Editar activos visibles";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "Introduce el importe";
+
+/* A placeholder for the text field that users will input the custom token contract address */
+"wallet.enterContractAddress" = "Introduce la dirección del contrato";
+
+/* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsNavTitle" = "Habilitar biometría";
+
+/* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsTitle" = "Introduce la contraseña de tu cartera para habilitar la biometría de la cartera (solo se te pedirá esto una vez)";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "Introduce el nombre del token";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "Introduce el símbolo del token";
+
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "Error al añadir esta red.";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "Vuelve a intentarlo.";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "Error al importar la cuenta.";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "Error al eliminar la red.\nInténtalo de nuevo.";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "Límite de cantidad de gas";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "Tarifa base actual";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "Tarifa de gas";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "Personalizado";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "Aunque no sea una garantía, es muy probable que los mineros ejecuten tu transacción más rápido si pagas una tarifa más alta.";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "Alto";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "Bajo";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "Óptimo";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "Proporcionar";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "solicita la clave de cifrado público de tu cartera. Si das tu consentimiento para facilitar esta clave, el sitio podrá enviarte mensajes cifrados.";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "Una dApp solicita tu clave de cifrado público";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "Solicitud de clave de cifrado público";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "Ocultar clave privada";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "Contraseña original";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "Introduce, pega o importa el archivo o JSON que contenga la cadena de tu clave privada.";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "Puedes crear una cuenta secundaria importando tu clave privada.";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "Importar…";
+
+/* A placeholder on a text box for entering the users private key to import accounts */
+"wallet.importNonEthAccountPlaceholder" = "Introduce o pega tu clave privada.";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "Contraseña incorrecta";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "Información";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "No hay datos.";
+
+/* A label shown inside of a box when there is no input data for a given Solana transaction */
+"wallet.inputDataPlaceholderSolana" = "Tipo de función: %d";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "Saldo insuficiente";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "Fondos insuficientes";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "Fondos insuficientes para gas";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "Liquidez insuficiente";
+
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "Más información";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "Bloquear";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "cuentas";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "cuenta";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Eliminará todos los permisos de conexión de Cartera en todos los sitios web.";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Eliminar";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "¿Eliminar todos los permisos?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Eliminará todos los permisos de conexión de Cartera en este sitio web.";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "Cuentas de %@ conectadas";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Filtrar aplicaciones descentralizadas conectadas";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "Eliminar todo";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "Tarifa máxima";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "Tarifa máxima de prioridad";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Cartera de Brave";
+
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "Personalización de las redes de la cartera";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "Ya hay un ID de cadena igual";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "Nombre de la red";
+
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre. */
+"wallet.networkNotSupportedForBuyToken" = "No se admiten compras en la red seleccionada";
+
+/* The title of the section for secondary networks in the network selection view. */
+"wallet.networkSelectionSecondaryNetworks" = "Redes secundarias";
+
+/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\" */
+"wallet.networkSelectionTestnetAccessibilityLabel" = "Ver las redes de prueba de %@";
+
+/* The title of the to select a network from the available networks */
+"wallet.networkSelectionTitle" = "Seleccionar red";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "URL de la red";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "Comprueba las direcciones de tus cuentas permitidas (obligatorio)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "Conecta solo con los sitios en los que confíes.";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "Conectar con Cartera de Brave";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "Conectar";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "Siguiente";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "No hay cuentas";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "No hay activos";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "No se ha añadido ninguna red";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "No hay cuentas secundarias.";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "No hay transacciones";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "Otras acciones de la cartera";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "Las contraseñas deben tener 7 caracteres como mínimo e incluir, al menos, una letra, un número y un carácter especial.";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "Contraseña";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "La contraseña verificada no coincide";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "Pegar";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "Límite de precio por gas (GWEI)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "Precio por gas (GWEI)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "Límite de propina por gas (GWEI)";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "Portafolio";
+
+/* A title above a list of crypto accounts that are not imported */
+"wallet.primaryCryptoAccountsTitle" = "Cuentas de criptomonedas principales";
+
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Advertencia: Es posible que la captura de pantalla con tu clave privada se almacene en la nube, en cuyo caso podrán acceder a ella todas las aplicaciones que tengan permiso para acceder a tus fotos. Desde Brave te recomendamos que no guardes la captura de pantalla y la elimines en cuanto puedas. ";
+
+/* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
+"wallet.providerSelectionButtonTitle" = "Comprar con %@";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Advertencia: Es posible que la captura de pantalla con tu frase de recuperación se almacene en la nube, en cuyo caso podrán acceder a ella todas las aplicaciones que tengan permiso para acceder a tus fotos. Desde Brave te recomendamos que no guardes la captura de pantalla y la elimines en cuanto puedas. ";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "Actualizar el precio del mercado";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "Rechazar %d transacciones";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "Rechazar";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "Verifica que esto sea un nuevo activo personalizado, comprueba si tienes conexión a Internet y vuelve a intentarlo.";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "No se puede eliminar el token personalizado";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "Cambiar nombre";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "Verificar contraseña";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "Restaurar cartera";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "Restaurar";
+
+/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "¿Importada de carteras de criptomonedas antiguas de Brave?";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "Nueva contraseña";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "Frase de recuperación no válida";
+
+/* The placeholder on the mneomic/recovery phrase text field */
+"wallet.restoreWalletPhrasePlaceholder" = "Introduce tu frase de recuperación";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "Mostrar frase de recuperación";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "Introduce tu frase de recuperación para restaurar la cuenta de criptomonedas de tu cartera de Brave.";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "Restaurar cuenta de criptomonedas";
+
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "Guardar";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "Guardar código QR";
+
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Hemos detectado una captura de pantalla";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "Buscar activos";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "Importa la cuenta de tu cartera externa con una frase de inicialización independiente.";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsTitle" = "Cuentas secundarias";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "Seleccionar cuenta";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "Cuenta seleccionada";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "Red seleccionada";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "Enviar";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "Introduce el importe en %@ que deseas enviar";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "De";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "Enviar";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "No podemos efectuar tu transacción en este momento";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "A";
+
+/* The description of a send button on the buy/send/swap modal */
+"wallet.sendDescription" = "Envía criptomonedas o haz una transferencia de una cuenta a otra.";
+
+/* A placeholder of the address text field. */
+"wallet.sendToCryptoAddressPlaceholder" = "Introduce la dirección";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
+"wallet.sendWarningAddressInvalidChecksum" = "La dirección no ha superado la verificación (suma de comprobación no válida). Vuelve a intentarlo utilizando mayúsculas en vez de minúsculas.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "La dirección destinataria es la dirección de un contrato de token";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "La dirección destinataria es tu propia dirección";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
+"wallet.sendWarningAddressMissingChecksumInfo" = "Esta dirección no se puede verificar (falta la suma de comprobación). ¿Continuar?";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Dirección de ETH no válida";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
+"wallet.sendWarningSolAddressNotValid" = "No es una dirección de SOL válida";
+
+/* As in sent cryptocurrency from one asset to another */
+"wallet.sent" = "Enviado";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "Ajustes";
+
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "Divisa base predeterminada";
+
+/* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsFooter" = "Activa esta opción si quieres utilizar la biometría (Face ID / Touch ID) para desbloquear tu cartera";
+
+/* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsTitle" = "Permitir el desbloqueo por biometría";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "Redes";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Restablecer";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "Restablecer";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "Esta opción la usan, principalmente, los desarrolladores que gestionan servidores de pruebas locales";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "¿Seguro que quieres restablecer la información de la transacción y del nonce?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "Borrar transacciones puede ser útil para los desarrolladores o cuando se trata de eliminar el estado de un servidor local";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "Borrar información de transacción y nonce";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "Restablecer cartera";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "Esta acción es irreversible. Solo puedes recuperar el acceso a la cuenta en la que tienes tus criptoactivos con la frase de recuperación.";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "¿Seguro que quieres restablecer la Cartera de Brave?";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "Te damos la bienvenida";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "Empezar";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "Conserva criptoactivos bajo tu custodia y supervisa el rendimiento del portafolio, todo ello desde el navegador privado de Brave.";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "Te damos la bienvenida la nueva Cartera de Brave";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "Mostrar clave privada";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "Mostrar redes de prueba";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "Firmar";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "Se necesita tu firma";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "Firma solicitada";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "Omitir";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "Intercambiar";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "Importe que recibirás en %@ (estimación)";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "Introduce el importe en %@ que deseas intercambiar";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "De";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "Precio del mercado en %@";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "Tolerancia al deslizamiento";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "Intercambiar";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "A";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "Actualmente, Brave no admite intercambios en %@. Elige una cadena compatible.";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "Cadena no compatible";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Intercambia tokens y activos.";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "0x procesará la dirección de Ethereum y la dirección IP para llevar a cabo una transacción (y obtener presupuestos). 0x utilizará estos datos SOLO para procesar transacciones.";
+
+/* A disclaimer note shown on the Swap screen. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Brave usa 0x como agregador de intercambio descentralizado.";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "Límite de precio";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "Precio de mercado";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "Tipo de pedido";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "Intercambia los tokens seleccionados";
+
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "Cambiar";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "La red se cambiará por otra añadida con anterioridad";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "¿Permitir que este sitio cambie la red?";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "Cambiar red";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "Hoy";
+
+/* A title that will be displayed on top of the text field for users to input the custom token contract address */
+"wallet.tokenContractAddress" = "Dirección del contrato del token";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "Nombre del token";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "Símbolo del token";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "Total";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "Se han aprobado %1$@ %2$@";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "Borrar y reemplazar toda transacción incompleta";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "De momento, no es necesaria ninguna acción adicional. Simplemente, espera a que se borren las transacciones sin confirmar.";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "Estás intentando iniciar una transacción nueva, pese a que aún tienes transacciones anteriores sin confirmar. Se bloquearán todas las transacciones nuevas por este motivo.";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "Registro de transacciones";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%1$lld de %2$lld";
+
+/* The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022' */
+"wallet.transactionDetailsDateTitle" = "Fecha";
+
+/* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
+"wallet.transactionDetailsMarketPriceTitle" = "Precio del mercado";
+
+/* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
+"wallet.transactionDetailsNetworkTitle" = "Red";
+
+/* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
+"wallet.transactionDetailsStatusTitle" = "Estado";
+
+/* The title for the view displaying the details of a cryptocurrency transaction. */
+"wallet.transactionDetailsTitle" = "Detalles de transacción";
+
+/* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
+"wallet.transactionDetailsTransactionHashTitle" = "Hash de transacción";
+
+/* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
+"wallet.transactionDetailsTxFeeTitle" = "Tarifa de transacción";
+
+/* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
+"wallet.transactionFee" = "Comisión de la transacción";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "De: %1$@. Para: %2$@";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "Se han enviado %1$@ %2$@ (%3$@)";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "Aprobadas";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "Confirmada";
+
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "Anulada";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "Error";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "Rechazada";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "Enviada";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "Sin aprobar";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "Desconocido";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "Transacciones";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "Tarifa: %1$@ %2$@ (%3$@)";
+
+/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
+"wallet.transactionSwappedTitle" = "Se han intercambiado %1$@ %2$@ por %3$@ %4$@";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "Aprobar";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionUnknownApprovalTitle" = "Aprobadas";
+
+/* A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "Se han enviado %@";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "Error desconocido";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "Desbloquear";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletTitle" = "Introduce la contraseña para desbloquear la cartera";
+
+/* The button title to verify if the user has put all recovery words in the right order */
+"wallet.verifyButtonTitle" = "Verificar";
+
+/* The subtitle of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseSubtitle" = "Selecciona las palabras de tu frase de recuperación en el orden correcto.";
+
+/* The title of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseTitle" = "Verificar la frase de recuperación";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "Ver detalles";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "Detalles de la red";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "Ver en el explorador de bloques";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "Cartera";
+
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "Abre la cartera en pantalla completa";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "Bloqueado";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "Conectar";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "Conectado";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "Desconectada";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "Utiliza este panel para acceder de forma segura a Web3 y a todos tus criptoactivos.";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.walletPanelUnlockWallet" = "Desbloquear cartera";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
+"wallet.walletTypeNone" = "Ninguno";
+
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "¿Seguro?";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "Permitir que los sitios accedan a la API de proveedor de Ethereum";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "Permitir que los sitios accedan a la API de proveedor de Solana";
+
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "Cartera predeterminada de Ethereum";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "Cartera predeterminada de Solana";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Mostrar notificaciones de Web3";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "Gestionar las conexiones del sitio";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Preferencias de Web3";
+

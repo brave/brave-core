@@ -1,0 +1,1188 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "Säkerhetskopiera";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "Ange kontonamn";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "Kontonamn";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "Kontouppgifter";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "Privat nyckel";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "Varning: Dela aldrig din privata nyckel med någon. Den som har nyckeln kan ta ifrån dig dina tillgångar permanent.";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "Vill du ta bort kontot?";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "Ta bort konto";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "Konton";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "Aktivera %@-token";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "Lägg till";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "Lägg till anpassad tillgång";
+
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "Lägg till nätverk";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "Lägg till nätverk …";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "Det gick inte att lägga till anpassad token. Försök igen.";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "Kan inte lägga till anpassad token";
+
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "Detta gör att detta nätverk kan användas inom Brave Wallet.";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "Får den här webbplatsen lägga till ett nätverk?";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "Lägg till nätverk";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "Vill du importera denna token?";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "Lägg till föreslagen token";
+
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "Avancerade inställningar";
+
+/* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
+"wallet.amountAndFee" = "Belopp + avgift";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "Belopp + gas";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "Belopp i %@";
+
+/* The title of the button to approve adding a new network on a add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "Godkänn";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "%1$@-pris (%2$@)";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "Inga tillgångar hittades";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "Tillgångar";
+
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge är en oberoende tjänst som hjälper dig att överbrygga tillgångar mellan nätverk och använda din krypto på andra nätverk och DApp-ekosystem. Att överbrygga tillgångar till andra nätverk har vissa risker.";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "Öppna Rainbow Bridge-appen?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Överbrygga till Aurora";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "Läs mer om hur man använder Rainbow Bridge";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Läs mer om hur du minskar riskerna på Rainbow Bridge";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "Visa inte igen.";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "Väntetid i minuter innan Brave-plånboken låses automatiskt";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "Lås automatiskt efter";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "Återställningsfras";
+
+/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
+"wallet.backupRecoveryPhraseDisclaimer" = "Jag har sparat min fras på en säker plats.";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "Skriv ner eller kopiera de här orden i precis den ordning som visas nedan och spara dem på en säker plats. Återställningsfrasen är ditt enda sätt att få åtkomst till kontot om du skulle glömma lösenordet, din enhet skulle tappas bort eller stjälas eller du vill byta plånbok.";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "Din återställningsfras";
+
+/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
+"wallet.backupRecoveryPhraseWarningPartOne" = "VARNING:";
+
+/* The second part of the warning displayed on the backup recovery phrase page. */
+"wallet.backupRecoveryPhraseWarningPartTwo" = "Dela aldrig din återställningsfras med någon. Den som har frasen kan ta ifrån dig dina tillgångar permanent.";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "Reservplånbok";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "Jag är medveten om att jag inte kan komma åt min kryptoplånbok om jag tappar bort återställningsfrasen.";
+
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "I nästa steg ser du en 12-ordig återställningsfras som du kan återställa dina primära kryptokonton med. Spara den på en säker plats, för frasen är ditt enda sätt att få åtkomst till kontot om du skulle glömma lösenordet, din enhet skulle tappas bort eller stjälas eller du vill byta plånbok.";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "Säkerhetskopiera kryptoplånboken";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "Säkerhetskopiera plånboken nu för att skydda dina kryptotillgångar och se till att du aldrig förlorar åtkomst till dem.";
+
+/* The button title that enables the biometric unlock feature */
+"wallet.biometricsSetupEnableButtonTitle" = "Aktivera";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "Det gick inte att aktivera den biometriska upplåsningen. Försök igen senare.";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "Kunde inte aktivera biometrisk upplåsning.";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock */
+"wallet.biometricsSetupTitle" = "Lås upp Brave-plånboken med Face ID, Touch ID eller lösenord.";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "Kursen inkluderar en Brave-avgift på %@.";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "Köp";
+
+/* The title of the button for users to click when they are ready to buy using Wyre payment */
+"wallet.buyButtonTitle" = "Fortsätt till Wyre";
+
+/* The description of a buy button on the buy/send/swap modal */
+"wallet.buyDescription" = "Köp krypto med Apple Pay, kreditkort eller betalkort via Wyre.";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "Datum";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "Pris";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "Prisdata levererad av CoinGecko";
+
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "Ethereum";
+
+/* A description for Ethereum coin type. */
+"wallet.coinTypeEthereumDescription" = "Stöder EVM-kompatibla tillgångar på Ethereum-blockkedjan (ERC-20, ERC-721, ERC-1551, ERC-1155)";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "Lagra FIL-tillgång";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "Välj en av följande kontotyper";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "Stödjer SLP-kompatibla tillgångar på Solana-blockkedjan";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "Okänd";
+
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "Bekräfta";
+
+/* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
+"wallet.confirmationViewAllowSpendSubtitle" = "Genom att bevilja den här behörigheten tillåter du den här appen att ta ut dina %@ och automatisera transaktioner åt dig.";
+
+/* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\" */
+"wallet.confirmationViewAllowSpendTitle" = "Vill du tillåta denna app att spendera dina %@?";
+
+/* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\". */
+"wallet.confirmationViewCurrentAllowance" = "Aktuell ersättning";
+
+/* The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction. */
+"wallet.confirmationViewEditPermissions" = "Redigera behörigheter";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "Detaljer";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "Transaktion";
+
+/* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "Det tillhörande tokenkontot  finns inte ännu. Ett litet antal SOL kommer att spenderas för att skapa och finansiera det.";
+
+/* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
+"wallet.confirmationViewUnlimitedWarning" = "Obegränsat godkännande begärt";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "Bekräfta transaktioner";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "Bekräfta transaktion";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "Fortsätt";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "Kontraktsadress";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "Kopiera adress";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "Kopiera";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "Skapa ny nu?";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "Du har inte något %@-konto";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "Skapa lösenord";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "Säkra dina kryptotillgångar med ett lösenord";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Brave-plånbok";
+
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "Blockera utforskar-URL:er";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "Ogiltigt format – kedje-ID måste vara ett positivt tal.";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "Ange kedje-ID";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "Kedjans ID";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "Ange kedjans namn";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "Kedjans namn";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "Ogiltigt format – valutadecimaler måste vara ett positivt tal.";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "Ange valutadecimaler";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "Kedjans valutadecimaler";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "Lägg till nytt nätverk";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "Det här fältet kan inte vara tomt.";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "Ikon-URL:er";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "Ogiltig adress.";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "RPC-URL:er";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "Anpassade nätverk";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "Ange valutanamn";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "Kedjans valutanamn";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "Ange valutasymbol";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "Kedjans valutasymbol";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "Ange URL:er";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "Anpassad";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@ vill interagera med Brave Wallet";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "Den här sidan vill interagera med Brave Wallet";
+
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "DApps du ansluter till Brave Wallet visas här";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "Anslutna DApps";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "Allmänt";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "%@-inställningar";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "Det här tar bort alla Wallet-anslutningsbehörigheter för %1$d %2$@";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "webbplatser";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "hemsida";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "Alla";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1 d";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 dag";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1 t";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 timme";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1 mån";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 månad";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3 mån";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 månader";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1 v";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 vecka";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1 år";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 år";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "Precisionsdecimaler";
+
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "Varning: En skärmbild av ditt meddelande kan säkerhetskopieras till en molnfiltjänst och vara läsbart av alla program med åtkomst till foton. Brave rekommenderar att du inte sparar den här skärmbilden och tar bort den så snart som möjligt.";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "Tillåt";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "Avslöja";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "Denna DApp vill läsa detta meddelande för att slutföra din förfrågan";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "Dekryptera begäran";
+
+/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
+"wallet.defaultEthAccountName" = "Ethereum-konto %lld";
+
+/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
+"wallet.defaultFilAccountName" = "Filecoin-konto %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
+"wallet.defaultSecondaryEthAccountName" = "Sekundärt Ethereum-konto %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
+"wallet.defaultSecondaryFilAccountName" = "Sekundärt Filecoin-konto %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
+"wallet.defaultSecondarySolAccountName" = "Sekundärt Solana-konto %lld";
+
+/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
+"wallet.defaultSolAccountName" = "Solana-konto %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "Ta bort";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "Detaljer";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "Redigera nätverk";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
+"wallet.editGasFeeButtonTitle" = "Redigera";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "Ändra gas";
+
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "Transaktionen får inte spridas till nätverket om det anpassade nonce-värdet inte är sekventiellt eller har andra fel";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Nonce";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Ange anpassat nonce-värde";
+
+/* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
+"wallet.editPermissionsAllowanceHeader" = "Behörighet med spenderingsgräns gör det möjligt för %@ att ta ut och spendera upp till följande belopp:";
+
+/* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
+"wallet.editPermissionsApproveUnlimited" = "Obegränsad";
+
+/* The header text above the field to input a custom allowance value. */
+"wallet.editPermissionsCustomAllowanceHeader" = "Ange anpassad ersättning";
+
+/* The header text shown in the row that displays the proposed allowance value. */
+"wallet.editPermissionsProposedAllowanceHeader" = "Föreslagen ersättning";
+
+/* The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\". */
+"wallet.editPermissionsSetUnlimited" = "Ange obegränsad";
+
+/* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
+"wallet.editPermissionsTitle" = "Redigera behörigheter";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "Anslut";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "Koppla ifrån";
+
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "Återkalla";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "Växla";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "Lita på";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "konton";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "konto";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ ansluten";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "Anslutningar";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
+"wallet.editTransactionError" = "Kontrollera de värde du har matat in och försök igen.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "Gå tillbaka";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "Redigera synliga tillgångar";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "Ange belopp";
+
+/* A placeholder for the text field that users will input the custom token contract address */
+"wallet.enterContractAddress" = "Ange kontraktsadress";
+
+/* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsNavTitle" = "Aktivera biometri";
+
+/* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsTitle" = "Ange ditt plånbokslösenord för att aktivera biometri för plånbok (du kommer bara att bli ombedd att göra detta en gång)";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "Ange tokennamn";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "Ange tokensymbol";
+
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "Det gick inte att lägga till det här nätverket.";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "Försök igen.";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "Kunde inte importera kontot.";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "Det gick inte att ta bort nätverk.\nFörsök igen.";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "Gräns för gasbelopp";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "Nuvarande grundavgift";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "Gasavgift";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "Anpassad";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "Grävare prioriterar sannolikt (men inte garanterat) din transaktion tidigare om du betalar en högre avgift.";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "Hög";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "Låg";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "Optimal";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "Förse";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "begär din plånboks offentliga krypteringsnyckel. Om du samtycker till att tillhandahålla denna nyckel kan webbplatsen skriva krypterade meddelanden till dig.";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "En DApp begär att få din offentliga krypteringsnyckel";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "Begäran om offentlig krypteringsnyckel";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "Dölj privat nyckel";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "Ursprungslösenord";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "Ange, klistra in eller importera din privata nyckelsträngfil eller JSON.";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "Du kan skapa ett sekundärt konto genom att importera din privata nyckel.";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "Importera…";
+
+/* A placeholder on a text box for entering the users private key to import accounts */
+"wallet.importNonEthAccountPlaceholder" = "Skriv eller klistra in din privata nyckel";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "Felaktigt lösenord";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "Information";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "Inga data.";
+
+/* A label shown inside of a box when there is no input data for a given Solana transaction */
+"wallet.inputDataPlaceholderSolana" = "Funktionstyp: %d";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "Otillräckligt saldo";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "För lite pengar";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "För lite pengar till gas";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "Otillräcklig likviditet";
+
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "Lär dig mer";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "Lås";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "konton";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "konto";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Detta tar bort alla anslutningsbehörigheter för Wallet för alla webbplatser.";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Ta bort";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "Ta bort alla behörigheter?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Det här tar bort alla anslutningsbehörigheter för Wallet för den här webbplatsen.";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "Anslutna %@-konton";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Filtrera anslutna DApps";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "Ta bort alla";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "Högsta avgift";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "Högsta prioriteringsavgift";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Brave-plånbok";
+
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "Anpassning av plånboksnätverk";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "Kedje-ID finns redan";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "Nätverksnamn";
+
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre. */
+"wallet.networkNotSupportedForBuyToken" = "Köp stöds inte för det valda nätverket";
+
+/* The title of the section for secondary networks in the network selection view. */
+"wallet.networkSelectionSecondaryNetworks" = "Sekundära nätverk";
+
+/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\" */
+"wallet.networkSelectionTestnetAccessibilityLabel" = "Visa %@ testnätverk";
+
+/* The title of the to select a network from the available networks */
+"wallet.networkSelectionTitle" = "Välj nätverk";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "Nätverks-URL";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "Visa adresserna till dina tillåtna konton (obligatoriskt)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "Anslut bara till webbplatser du litar på";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "Anslut Brave Wallet";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "Anslut";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "Nästa";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "Inga konton";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "Inga tillgångar";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "Inga nätverk har lagts till";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "Inga sekundära konton.";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "Inga transaktioner";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "Andra plånboksåtgärder";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "Lösenord måste vara minst 7 tecken långt och innehålla minst en bokstav, en siffra och ett specialtecken.";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "Lösenord";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "Det bekräftade lösenordet matchar inte";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "Klistra in";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "Prisgräns per gas (Gwei)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "Pris per gas (Gwei)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "Dricksgräns per gas (Gwei)";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "Portfölj";
+
+/* A title above a list of crypto accounts that are not imported */
+"wallet.primaryCryptoAccountsTitle" = "Primära kryptokonton";
+
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Varning: En skärmbild av din privata nyckel kan säkerhetskopieras till en molnfiltjänst och kunna läsas av alla program med åtkomst till foton. Brave rekommenderar att du inte sparar den här skärmbilden och tar bort den så snart som möjligt.";
+
+/* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
+"wallet.providerSelectionButtonTitle" = "Köp med %@";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Varning: En skärmbild av din återställningsfras kan säkerhetskopieras till en molnfiltjänst och kunna läsas av alla program med åtkomst till foton. Brave rekommenderar att du inte sparar den här skärmbilden och tar bort den så snart som möjligt.";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "Uppdatera marknadspris";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "Avvisa %d transaktioner";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "Avvisa";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "Verifiera att det här är en ny anpassad tillgång, kontrollera din internetanslutning och försök igen.";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "Kan inte ta bort anpassad token";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "Byt namn";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "Bekräfta lösenord";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "Återställ plånbok";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "Återställ";
+
+/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "Vill du importera från äldre Brave-kryptoplånböcker?";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "Nytt lösenord";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "Ogiltig återställningsfras";
+
+/* The placeholder on the mneomic/recovery phrase text field */
+"wallet.restoreWalletPhrasePlaceholder" = "Ange din återställningsfras";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "Visa återställningsfras";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "Ange din återställningsfras för att återställa Brave-kryptoplånbokskontot.";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "Återställ kryptokonto";
+
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "Spara";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "Skanna QR-kod";
+
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Skärmbild har upptäckts";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "Sök efter tillgångar";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "Importera ditt externa plånbokskonto med en separat seedfras. ";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsTitle" = "Sekundära konton";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "Välj konto";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "Valda konton";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "Valt nätverk";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "Skicka";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "Ange %@-belopp att skicka";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "Från";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "Skicka";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "Vi kan inte genomföra din transaktion just nu";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "Till";
+
+/* The description of a send button on the buy/send/swap modal */
+"wallet.sendDescription" = "Skicka krypto eller för över från ett konto till ett annat.";
+
+/* A placeholder of the address text field. */
+"wallet.sendToCryptoAddressPlaceholder" = "Ange adress";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
+"wallet.sendWarningAddressInvalidChecksum" = "Adressen klarade inte verifieringen (ogiltig kontrollsumma). Försök igen och byt ut gemener mot versaler.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "Mottagaradressen är en tokens kontaktadress";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "Mottagaradressen är din egen adress";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
+"wallet.sendWarningAddressMissingChecksumInfo" = "Den här adressen kan inte verifieras (ingen kontrollsumma saknas). Fortsätta?";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Inte en giltig ETH-adress";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
+"wallet.sendWarningSolAddressNotValid" = "Ogiltig SOL-adress";
+
+/* As in sent cryptocurrency from one asset to another */
+"wallet.sent" = "Skickat";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "Inställningar";
+
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "Standardbasvaluta";
+
+/* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsFooter" = "Aktivera om du vill använda biometri (Face ID / Touch ID) för att låsa upp din plånbok";
+
+/* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsTitle" = "Tillåt biometriupplåsning";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "Nätverk";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Återställ";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "Återställ";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "Det här alternativet används främst av utvecklare som kör en lokal testserver";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "Är du säker på att du vill återställa transaktions- och nonce-information?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "Att rensa transaktioner kan vara användbart för utvecklare eller vid clearingtillstånd på en lokal server";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "Rensa transaktions- och nonce-information";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "Återställ plånbok";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "Det här går inte att ångra. Återställningsfrasen är ditt enda sätt att återfå kontoåtkomst till dina kryptotillgångar.";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "Vill du verkligen återställa Brave-plånboken?";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "Välkommen";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "Kom igång";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "Äg kryptotillgångar och ha koll på hur det går med din portfölj tack vare Brave-webbläsarens integritetsskydd.";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "Välkommen till den nya Brave-plånboken";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "Visa privat nyckel";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "Visa testnätverk";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "Signatur";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "Din signatur krävs";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "Signatur krävs";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "Hoppa över";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "Byt";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "Mottaget belopp i %@ (uppskattning)";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "Ange ett belopp i %@ att byta";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "Från";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "Marknadspris i %@";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "Slippagetolerans";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "Byt";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "Till";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "Brave stöder inte byten på %@ just nu. Välj en kedja som stöds.";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "Kedjan stöds inte";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Byt tokens och tillgångar.";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "0x bearbetar Ethereum- och IP-adressen för att genomföra en transaktion (vilket innefattar erhållande av kurser). 0x använder bara dessa data för att bearbeta transaktioner.";
+
+/* A disclaimer note shown on the Swap screen. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Brave använder 0x som DEX-aggregator.";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "Gräns";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "Marknad";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "Beställningstyp";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "Byt valda tokens";
+
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "Växla";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "Det här växlar nätverket till ett tidigare tillagt nätverk";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "Tillåter du den här webbplatsen att växla nätverk?";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "Växla nätverk";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "idag";
+
+/* A title that will be displayed on top of the text field for users to input the custom token contract address */
+"wallet.tokenContractAddress" = "Tokenkontraktsadress";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "Tokennamn";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "Tokensymbol";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "Totalt";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "Godkände %1$@ %2$@";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "Rensa och ersätt ofullständiga transaktioner";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "För närvarande krävs inga ytterligare åtgärder. Vänta bara tills de obekräftade transaktionerna har rensats.";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "Du försöker starta en ny transaktion men du har tidigare skickat transaktioner som inte har bekräftats. Detta kommer att blockera alla nya från att skickas.";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "Backlogg för transaktion";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%1$lld av %2$lld";
+
+/* The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022' */
+"wallet.transactionDetailsDateTitle" = "Datum";
+
+/* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
+"wallet.transactionDetailsMarketPriceTitle" = "Marknadspris";
+
+/* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
+"wallet.transactionDetailsNetworkTitle" = "Nätverk";
+
+/* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
+"wallet.transactionDetailsStatusTitle" = "Status";
+
+/* The title for the view displaying the details of a cryptocurrency transaction. */
+"wallet.transactionDetailsTitle" = "Transaktionsinformation";
+
+/* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
+"wallet.transactionDetailsTransactionHashTitle" = "Transaktionshash";
+
+/* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
+"wallet.transactionDetailsTxFeeTitle" = "Transaktionsavgift";
+
+/* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
+"wallet.transactionFee" = "Transaktionsavgift";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "Från: %1$@. Till: %2$@";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "Skickade %1$@ %2$@ (%3$@)";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "Godkänd";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "Bekräftad";
+
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "Fallit bort";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "Fel";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "Avvisad";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "Skickad";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "Inte godkänd";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "Okänd";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "Transaktioner";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "Avgift: %1$@ %2$@ (%3$@)";
+
+/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
+"wallet.transactionSwappedTitle" = "Bytte %1$@ %2$@ till %3$@ %4$@";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "Godkänn";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionUnknownApprovalTitle" = "Godkänd";
+
+/* A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "Skickade %@";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "Okänt fel";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "Lås upp";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletTitle" = "Ange lösenordet för att låsa upp plånboken";
+
+/* The button title to verify if the user has put all recovery words in the right order */
+"wallet.verifyButtonTitle" = "Verifiera";
+
+/* The subtitle of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseSubtitle" = "Välj återställningsfrasens ord i rätt ordning.";
+
+/* The title of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseTitle" = "Verifiera återställningsfras";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "Visa detaljer";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "Nätverksinformation";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "Visa i blockutforskare";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "Plånbok";
+
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "Öppna plånbok i helskärm";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "Blockerad";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "Anslut";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "Ansluten";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "Frånkopplad";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "Använd den här panelen för att komma åt web3 och alla dina kryptotillgångar på ett säkert sätt.";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.walletPanelUnlockWallet" = "Lås plånbok";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
+"wallet.walletTypeNone" = "Ingen";
+
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "Är du säker?";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "Tillåt webbplatser att komma åt Ethereum-leverantörens API";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "Tillåt webbplatser att komma åt Solana-leverantörens API";
+
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "Standardplånbok för Ethereum";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "Standardplånbok för Solana";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Visa Web3-aviseringar";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "Hantera webbplatsanslutningar";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Web3-inställningar";
+
