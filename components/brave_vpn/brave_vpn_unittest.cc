@@ -202,6 +202,10 @@ class BraveVPNServiceTest : public testing::Test {
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
+#if !BUILDFLAG(IS_ANDROID)
+    BraveVPNOSConnectionAPI::GetInstance()->set_local_prefs(
+        &local_pref_service_);
+#endif
     ResetVpnService();
   }
   void TearDown() override {
@@ -218,9 +222,6 @@ class BraveVPNServiceTest : public testing::Test {
         &profile_pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
-#if !BUILDFLAG(IS_ANDROID)
-    GetBraveVPNConnectionAPI()->set_local_prefs(&local_pref_service_);
-#endif
   }
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
     if (!skus_service_) {
