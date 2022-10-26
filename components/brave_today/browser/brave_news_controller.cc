@@ -332,11 +332,14 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
           return;
         }
 
+        auto source_url = publisher->site_url.is_valid()
+                              ? publisher->site_url
+                              : publisher->feed_source;
         favicon_base::IconTypeSet icon_types{
             favicon_base::IconType::kFavicon,
             favicon_base::IconType::kTouchIcon};
         controller->favicon_service_->GetRawFaviconForPageURL(
-            publisher->feed_source, icon_types,
+            source_url, icon_types,
 
             kDesiredFaviconSizePixels, true,
             base::BindOnce(
