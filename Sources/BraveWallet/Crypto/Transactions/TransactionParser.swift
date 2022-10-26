@@ -411,22 +411,20 @@ enum TransactionParser {
             }
             
             if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
-               let instructionValueString = formatter.decimalString(for: instructionLamports, decimals: 9),
-               let instructionValue = BDouble(instructionValueString),
+               let instructionLamportsValue = BDouble(instructionLamports),
                let fromPubkey = instruction.accountMetas[safe: 0]?.pubkey,
                let toPubkey = instruction.accountMetas[safe: 1]?.pubkey,
                fromPubkey != toPubkey { // only show lamports as transfered if the amount is going to a different pubKey
-              valueFromInstructions += instructionValue
+              valueFromInstructions += instructionLamportsValue
             }
           case .withdrawNonceAccount:
             if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
-               let instructionValueString = formatter.decimalString(for: instructionLamports, decimals: 9),
-               let instructionValue = BDouble(instructionValueString) {
+               let instructionLamportsValue = BDouble(instructionLamports) {
               if let nonceAccount = instruction.accountMetas[safe: 0]?.pubkey,
                  nonceAccount == fromAddress {
-                valueFromInstructions += instructionValue
+                valueFromInstructions += instructionLamportsValue
               } else if let toPubkey = instruction.accountMetas[safe: 1]?.pubkey, toPubkey == fromAddress {
-                valueFromInstructions -= instructionValue
+                valueFromInstructions -= instructionLamportsValue
               }
             }
           case .createAccount, .createAccountWithSeed:
@@ -435,27 +433,26 @@ enum TransactionParser {
               toAddress = toPubkey
             }
             if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
-               let instructionValueString = formatter.decimalString(for: instructionLamports, decimals: 9),
-               let instructionValue = BDouble(instructionValueString) {
+               let instructionLamportsValue = BDouble(instructionLamports) {
               if let fromPubkey = instruction.accountMetas[safe: 0]?.pubkey,
                  fromPubkey == fromAddress {
-                valueFromInstructions += instructionValue
+                valueFromInstructions += instructionLamportsValue
               }
             }
           default:
             if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
-               let instructionValueString = formatter.decimalString(for: instructionLamports, decimals: 9),
-               let instructionValue = BDouble(instructionValueString) {
-              valueFromInstructions += instructionValue
+               let instructionLamportsValue = BDouble(instructionLamports) {
+              valueFromInstructions += instructionLamportsValue
             }
           }
-          // Add lamports from the instructions to the transaction lamports value
           if let transactionLamports = transactionLamports,
-             let transactionValueString = formatter.decimalString(for: "\(transactionLamports)", decimals: 9),
-             let transactionValue = BDouble(transactionValueString) {
-            fromValue = (transactionValue + valueFromInstructions).decimalExpansion(precisionAfterDecimalPoint: Int(network.decimals)).trimmingTrailingZeros
+              let transactionLamportsValue = BDouble(exactly: transactionLamports) {
+            let transactionTotal = transactionLamportsValue + valueFromInstructions
+            fromValue = transactionTotal.decimalExpansion(precisionAfterDecimalPoint: Int(network.decimals)).trimmingTrailingZeros
+            if let transactionTotalFormatted = formatter.decimalString(for: "\(transactionTotal)", decimals: 9)?.trimmingTrailingZeros {
+              fromAmount = transactionTotalFormatted
+            }
           }
-          fromAmount = "\(fromValue) SOL"
         }
       }
       
