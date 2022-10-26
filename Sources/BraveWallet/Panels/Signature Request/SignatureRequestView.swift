@@ -128,14 +128,6 @@ struct SignatureRequestView: View {
     .navigationBarTitleDisplayMode(.inline)
     .foregroundColor(Color(.braveLabel))
     .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
-    .toolbar {
-      ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: { presentationMode.dismiss() }) {
-          Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveOrange))
-        }
-      }
-    }
   }
   
   private var isButtonsDisabled: Bool {
