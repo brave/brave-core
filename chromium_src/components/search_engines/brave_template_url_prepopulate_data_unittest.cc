@@ -149,6 +149,15 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
 }
 
 // Verifies default search provider for locale
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForArgentina) {
+  CheckForCountry('A', 'R', "Brave");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForBrazil) {
+  CheckForCountry('B', 'R', "Brave");
+}
+
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForUSA) {
   CheckForCountry('U', 'S', "Brave");
 }
