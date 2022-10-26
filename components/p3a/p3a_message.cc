@@ -7,11 +7,14 @@
 
 #include <algorithm>
 #include <array>
+#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/i18n/timezone.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -131,7 +134,7 @@ void MessageMetainfo::Init(PrefService* local_state,
                            std::string week_of_install) {
   platform = brave_stats::GetPlatformIdentifier();
   channel = brave_channel;
-  version = version_info::GetBraveVersionWithoutChromiumMajorVersion();
+  InitVersion();
 
   if (!week_of_install.empty()) {
     date_of_install = brave_stats::GetYMDAsDate(week_of_install);
@@ -151,6 +154,19 @@ void MessageMetainfo::Init(PrefService* local_state,
 
 void MessageMetainfo::Update() {
   date_of_survey = base::Time::Now();
+}
+
+void MessageMetainfo::InitVersion() {
+  std::string full_version =
+      version_info::GetBraveVersionWithoutChromiumMajorVersion();
+  std::vector<std::string> version_numbers = base::SplitString(
+      full_version, ".", base::WhitespaceHandling::TRIM_WHITESPACE,
+      base::SplitResult::SPLIT_WANT_ALL);
+  if (version_numbers.size() <= 2) {
+    version = full_version;
+  } else {
+    version = base::StrCat({version_numbers[0], ".", version_numbers[1]});
+  }
 }
 
 void MessageMetainfo::MaybeStripCountry() {

@@ -31,7 +31,6 @@ class MessageMetainfo {
 
   void Update();
 
-  void MaybeStripCountry();
 
   std::string platform;
   std::string version;
@@ -40,6 +39,14 @@ class MessageMetainfo {
   base::Time date_of_survey;
   int woi;  // Week of install. Remove this occasionally and extract from above.
   std::string country_code;
+
+ private:
+  // Used to report major/minor version numbers to reduce amount of STAR tags
+  void InitVersion();
+
+  // Ensures that country represent the big enough cohort that will not
+  // let anybody identify the sender.
+  void MaybeStripCountry();
 };
 
 base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
@@ -51,10 +58,6 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
 std::string GenerateP3AStarMessage(base::StringPiece metric_name,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta);
-
-// Ensures that country code represents a big enough cohort that
-// no one can identify the sender.
-void MaybeStripCountry(MessageMetainfo* meta);
 
 }  // namespace brave
 
