@@ -26,10 +26,7 @@
 #include "ui/views/window/dialog_delegate.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
-#if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_shell_integration.h"
-#include "brave/browser/brave_shell_integration_win.h"
-#endif
 #else  // BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "chrome/browser/shell_integration.h"
 #endif
@@ -166,7 +163,6 @@ bool BraveFirstRunDialog::Accept() {
   GetWidget()->Hide();
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
-#if BUILDFLAG(IS_WIN)
   base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
       ->StartSetAsDefault(base::BindOnce(
           [](bool pin_to_shortcut,
@@ -174,11 +170,10 @@ bool BraveFirstRunDialog::Accept() {
             if (pin_to_shortcut &&
                 state == shell_integration::DefaultWebClientState::IS_DEFAULT) {
               // Try to pin to taskbar when Brave is set as a default browser.
-              shell_integration::win::PinToTaskbar();
+              shell_integration::PinShortcut();
             }
           },
           pin_shortcut_checkbox_->GetChecked()));
-#endif
 #else
   shell_integration::SetAsDefaultBrowser();
 #endif
