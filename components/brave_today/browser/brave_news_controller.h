@@ -151,7 +151,6 @@ class BraveNewsController : public KeyedService,
 
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
-
 };
 
 }  // namespace brave_news

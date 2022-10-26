@@ -12,6 +12,7 @@ source_set("brave_news") {
     "//brave/components/brave_today/common:common",
     "//brave/components/brave_today/common:mojom",
     "//chrome/browser:browser",
+    "//chrome/browser/favicon:favicon",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content",
