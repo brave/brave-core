@@ -74,6 +74,11 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
     braveArgs.push('--gtest_filter=' + options.filter)
   }
 
+  // TEMP: testing
+  if (suite === 'brave_browser_tests') {
+    braveArgs.push('--gtest_filter=TabHoverCardBubbleViewBrowserTest.ChromeSchemeUrl')
+  }
+
   if (options.run_disabled_tests) {
     braveArgs.push('--gtest_also_run_disabled_tests')
   }
