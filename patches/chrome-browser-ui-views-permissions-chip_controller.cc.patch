@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/permissions/chip_controller.cc b/chrome/browser/ui/views/permissions/chip_controller.cc
-index e5eeb0e09089c14c839e3e57cf144f0a5c9403aa..eeb6418c5603e35a20fd0c3bd31c3194eb3a8fca 100644
+index 06465b2b66138f48b770594009a8f147ec2b8dd9..20cde58250fa14764731c9405c895572e3dfcdb8 100644
 --- a/chrome/browser/ui/views/permissions/chip_controller.cc
 +++ b/chrome/browser/ui/views/permissions/chip_controller.cc
-@@ -397,6 +397,7 @@ void ChipController::CollapsePrompt(bool allow_restart) {
+@@ -424,6 +424,7 @@ void ChipController::CollapsePrompt(bool allow_restart) {
  void ChipController::HideChip() {
    chip_->SetVisible(false);
    // When the chip is hidden the locationbar layout should be updated.
