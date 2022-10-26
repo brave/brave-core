@@ -1,0 +1,77 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/webui/settings/brave_importer_observer.h"
+
+#include <utility>
+
+#include "base/logging.h"
+#include "chrome/browser/importer/external_process_importer_host.h"
+
+namespace settings {
+
+BraveImporterObserver::BraveImporterObserver(
+    ExternalProcessImporterHost* importer_host,
+    const importer::SourceProfile& source_profile,
+    uint16_t imported_items,
+    ReportProgressCallback callback)
+    : source_profile_(source_profile),
+      imported_items_(imported_items),
+      callback_(std::move(callback)),
+      importer_host_(importer_host) {
+  DCHECK(importer_host);
+}
+
+BraveImporterObserver::~BraveImporterObserver() {
+  if (importer_host_)
+    importer_host_->set_observer(nullptr);
+}
+
+// importer::ImporterProgressObserver:
+void BraveImporterObserver::ImportStarted() {
+  if (import_started_called_)
+    return;
+  import_started_called_ = true;
+  base::Value::Dict data;
+  data.Set("importer_name", source_profile_.importer_name);
+  data.Set("importer_type", source_profile_.importer_type);
+  data.Set("items_to_import", imported_items_);
+  data.Set("event", "ImportStarted");
+  callback_.Run(base::Value(std::move(data)));
+}
+
+void BraveImporterObserver::ImportItemStarted(importer::ImportItem item) {
+  base::Value::Dict data;
+  data.Set("importer_name", source_profile_.importer_name);
+  data.Set("importer_type", source_profile_.importer_type);
+  data.Set("items_to_import", imported_items_);
+  data.Set("event", "ImportItemStarted");
+  data.Set("item", item);
+  callback_.Run(base::Value(std::move(data)));
+}
+
+void BraveImporterObserver::ImportItemEnded(importer::ImportItem item) {
+  base::Value::Dict data;
+  data.Set("importer_name", source_profile_.importer_name);
+  data.Set("importer_type", source_profile_.importer_type);
+  data.Set("items_to_import", imported_items_);
+  data.Set("event", "ImportItemEnded");
+  data.Set("item", item);
+  callback_.Run(base::Value(std::move(data)));
+}
+
+void BraveImporterObserver::ImportEnded() {
+  base::Value::Dict data;
+  data.Set("importer_name", source_profile_.importer_name);
+  data.Set("importer_type", source_profile_.importer_type);
+  data.Set("items_to_import", imported_items_);
+  data.Set("event", "ImportEnded");
+  callback_.Run(base::Value(std::move(data)));
+
+  if (importer_host_)
+    importer_host_->set_observer(nullptr);
+}
+
+}  // namespace settings

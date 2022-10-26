@@ -199,4 +199,13 @@ void BraveExternalProcessImporterHost::SetInstallExtensionCallbackForTesting(
   install_extension_callback_for_testing_ = std::move(callback);
 }
 
+void BraveExternalProcessImporterHost::NotifyImportEndedForTesting() {
+  ExternalProcessImporterHost::NotifyImportEnded();
+}
+
+importer::ImporterProgressObserver*
+BraveExternalProcessImporterHost::GetObserverForTesting() {
+  return observer_;
+}
+
 #endif

@@ -6,7 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_IMPORT_DATA_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_IMPORT_DATA_HANDLER_H_
 
+#include <memory>
+#include <unordered_map>
+
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/webui/settings/brave_importer_observer.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/webui/settings/import_data_handler.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -25,8 +29,6 @@ namespace settings {
 // new navigation start and tab is newly loaded for closing webui import dialog.
 // The reason why native tab modal dialog is used here is to avoid modifying
 // upstream import html/js source code.
-
-// NOTE: This is no-op class for other platforms except macOS.
 class BraveImportDataHandler : public ImportDataHandler,
                                       content::WebContentsObserver {
  public:
@@ -37,11 +39,15 @@ class BraveImportDataHandler : public ImportDataHandler,
   BraveImportDataHandler& operator=(const BraveImportDataHandler&) = delete;
 
  private:
-#if BUILDFLAG(IS_MAC)
   // ImportDataHandler overrides:
   void StartImport(const importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;
-
+  void StartImportImpl(const importer::SourceProfile& source_profile,
+                       uint16_t imported_items);
+  void NotifyImportProgress(const base::Value& info);
+#if BUILDFLAG(IS_MAC)
+  void CheckDiskAccess(const importer::SourceProfile& source_profile,
+                       uint16_t imported_items);
   void OnGetDiskAccessPermission(const importer::SourceProfile& source_profile,
                                  uint16_t imported_items,
                                  bool allowed);
@@ -50,9 +56,12 @@ class BraveImportDataHandler : public ImportDataHandler,
   void DidStopLoading() override;
 
   bool guide_dialog_is_requested_ = false;
-
-  base::WeakPtrFactory<BraveImportDataHandler> weak_factory_;
 #endif
+
+  std::unordered_map<base::FilePath,
+                     std::unique_ptr<settings::BraveImporterObserver>>
+      import_observers_;
+  base::WeakPtrFactory<BraveImportDataHandler> weak_factory_{this};
 };
 
 }  // namespace settings

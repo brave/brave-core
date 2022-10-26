@@ -26,6 +26,9 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   using MockedInstallCallback =
       base::RepeatingCallback<void(const std::string&)>;
 
+  importer::ImporterProgressObserver* GetObserverForTesting();
+  void NotifyImportEndedForTesting();
+
  private:
   friend class ExternalProcessImporterHost;
   friend class BraveExternalProcessImporterHostUnitTest;
