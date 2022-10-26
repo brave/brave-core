@@ -88,7 +88,7 @@ public enum NavigationPath: Equatable {
       bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false, isExternal: true)
       bvc.popToBVC()
     } else {
-      bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
     }
   }
 
@@ -109,9 +109,9 @@ public enum NavigationPath: Equatable {
         bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
       }
     case .newTab:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     case .newPrivateTab:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
     case .bookmarks:
       bvc.navigationHelper.openBookmarks()
     case .history:

@@ -1820,14 +1820,14 @@ public class BrowserViewController: UIViewController {
     // All private tabs closed and a new private tab is created
     if Preferences.Privacy.privateBrowsingOnly.value {
       tabManager.removeAll()
-      openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true, isExternal: true)
+      openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
       popToBVC()
     } else {
       braveCore.historyAPI.deleteAll { [weak self] in
         guard let self = self else { return }
 
         self.tabManager.clearTabHistory() {
-          self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: false, isExternal: true)
+          self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
           self.popToBVC()
         }
       }
@@ -2306,7 +2306,7 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
 
 extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool) {
-    openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
+    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
   }
 
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
@@ -2811,7 +2811,7 @@ extension BrowserViewController: TabManagerDelegate {
         title: Strings.newPrivateTabTitle,
         image: UIImage(systemName: "plus.square.fill.on.square.fill"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
-          self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
+          self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
         })
 
       if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar?.view.isHidden == true) || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
@@ -2825,7 +2825,7 @@ extension BrowserViewController: TabManagerDelegate {
       title: PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.newPrivateTabTitle : Strings.newTabTitle,
       image: PrivateBrowsingManager.shared.isPrivateBrowsing ? UIImage(systemName: "plus.square.fill.on.square.fill") : UIImage(systemName: "plus.square.on.square"),
       handler: UIAction.deferredActionHandler { [unowned self] _ in
-        self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
       })
 
     if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden) || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
