@@ -90,16 +90,21 @@ enum PublisherType {
   DIRECT_SOURCE,
 };
 
+struct LocaleInfo {
+  string locale;
+  uint32 rank;
+  array<string> channels;
+}
+
 struct Publisher {
   string publisher_id;
   PublisherType type;
   string publisher_name;
   string category_name;
-  array<string> channels;
   bool is_enabled;
 
-  // All the locales this publisher is available within.
-  array<string> locales;
+  // Information about the locales this source is in.
+  array<LocaleInfo> locales;
 
   // Only really used for direct feeds, though this information would
   // be useful for combined-source feeds so that the user doesn't add
