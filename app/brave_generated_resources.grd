@@ -173,7 +173,7 @@
           Report a Broken Site
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
-          Copy Clean link
+          Copy Clean Link
         </message>
       </if>
       <if expr="not use_titlecase">
