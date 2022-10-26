@@ -21,6 +21,10 @@
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/common/extension.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+
 namespace {
 
 // Records default values for some histograms because we want these stats to be
@@ -53,6 +57,14 @@ void RecordInitialP3AValues() {
 BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() = default;
 
 BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() = default;
+
+void BraveBrowserMainExtraParts::PreProfileInit() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Disable warnings related to Manifest V2 deprecation
+  extensions::Extension::
+      set_silence_deprecated_manifest_version_warnings_for_testing(true);
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+}
 
 void BraveBrowserMainExtraParts::PostBrowserStart() {
   g_brave_browser_process->StartBraveServices();
