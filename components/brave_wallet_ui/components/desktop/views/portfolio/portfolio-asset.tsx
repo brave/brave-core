@@ -4,18 +4,16 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router'
 
 // types
 import {
   AddAccountNavTypes,
   BraveWallet,
-  PageState,
   SupportedTestNetworks,
   UserAssetInfoType,
-  WalletRoutes,
-  WalletState
+  WalletRoutes
 } from '../../../../constants/types'
 
 // Utils
@@ -30,6 +28,7 @@ import {
   sendMessageToNftUiFrame,
   ToggleNftModal,
   UpdateLoadingMessage,
+  UpdateNFtMetadataErrorMessage,
   UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage,
@@ -39,6 +38,10 @@ import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 // actions
 import { WalletPageActions } from '../../../../page/actions'
+
+// selectors
+import { WalletSelectors } from '../../../../common/selectors'
+import { PageSelectors } from '../../../../page/selectors'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
@@ -53,6 +56,12 @@ import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/b
 
 // Hooks
 import { useBalance, usePricing, useTransactionParser, useMultiChainBuyAssets } from '../../../../common/hooks'
+import {
+  useSafePageSelector,
+  useSafeWalletSelector,
+  useUnsafePageSelector,
+  useUnsafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -113,33 +122,32 @@ export const PortfolioAsset = (props: Props) => {
   const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
   // redux
   const dispatch = useDispatch()
-  const {
-    defaultCurrencies,
-    userVisibleTokensInfo,
-    selectedNetwork,
-    portfolioPriceHistory,
-    selectedPortfolioTimeline,
-    accounts,
-    networkList,
-    transactions,
-    isFetchingPortfolioPriceHistory,
-    transactionSpotPrices,
-    selectedNetworkFilter,
-    coinMarketData,
-    fullTokenList
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  const {
-    isFetchingPriceHistory: isLoading,
-    selectedAsset,
-    selectedAssetCryptoPrice,
-    selectedAssetFiatPrice,
-    selectedAssetPriceHistory,
-    selectedTimeline,
-    isFetchingNFTMetadata,
-    nftMetadata,
-    selectedCoinMarket
-  } = useSelector(({ page }: { page: PageState }) => page)
+  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+  const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
+  const selectedPortfolioTimeline = useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+  const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
+  const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+  const selectedNetworkFilter = useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
+  const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
+  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
+
+  const isLoading = useSafePageSelector(PageSelectors.isFetchingPriceHistory)
+  const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
+  const selectedAssetCryptoPrice = useUnsafePageSelector(PageSelectors.selectedAssetCryptoPrice)
+  const selectedAssetFiatPrice = useUnsafePageSelector(PageSelectors.selectedAssetFiatPrice)
+  const selectedAssetPriceHistory = useUnsafePageSelector(PageSelectors.selectedAssetPriceHistory)
+  const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
+  const isFetchingNFTMetadata = useSafePageSelector(PageSelectors.isFetchingNFTMetadata)
+  const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
+  const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
+  const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
+
   // custom hooks
   const getAccountBalance = useBalance(networkList)
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
@@ -372,7 +380,9 @@ export const PortfolioAsset = (props: Props) => {
     setHoverPrice(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
   }, [defaultCurrencies.fiat])
 
-  const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
+  const onNftDetailsLoad = React.useCallback(() => {
+    setNftIframeLoaded(true)
+  }, [])
 
   const onOpenRainbowAppClick = React.useCallback(() => {
     chrome.tabs.create({ url: rainbowbridgeLink }, () => {
@@ -507,11 +517,25 @@ export const PortfolioAsset = (props: Props) => {
     if (nftMetadata && nftDetailsRef?.current) {
       const command: UpdateNFtMetadataMessage = {
         command: NftUiCommand.UpdateNFTMetadata,
-        payload: nftMetadata
+        payload: {
+          displayMode: 'details',
+          nftMetadata
+        }
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList])
+
+    if (nftMetadataError && nftDetailsRef?.current) {
+      const command: UpdateNFtMetadataErrorMessage = {
+        command: NftUiCommand.UpdateNFTMetadataError,
+        payload: {
+          displayMode: 'details',
+          error: nftMetadataError
+        }
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
@@ -674,9 +698,10 @@ export const PortfolioAsset = (props: Props) => {
         ref={nftDetailsRef}
         sandbox="allow-scripts allow-popups allow-same-origin"
         src='chrome-untrusted://nft-display'
+        allowFullScreen
       />
 
-      {showNftModal && nftMetadata &&
+      {showNftModal && nftMetadata?.imageURL &&
         <NftModal nftImageUrl={nftMetadata.imageURL} onClose={onCloseNftModal} />
       }
 

@@ -29,6 +29,7 @@ const defaultState: PageState = {
   selectedAsset: undefined,
   isFetchingNFTMetadata: true,
   nftMetadata: undefined,
+  nftMetadataError: undefined,
   selectedAssetFiatPrice: undefined,
   selectedAssetCryptoPrice: undefined,
   selectedAssetPriceHistory: [],
@@ -179,6 +180,13 @@ export const createPageReducer = (initialState: PageState) => {
     return {
       ...state,
       isFetchingNFTMetadata: payload
+    }
+  })
+
+  reducer.on(Actions.updateNftMetadataError, (state: PageState, payload: string | undefined) => {
+    return {
+      ...state,
+      nftMetadataError: payload
     }
   })
 

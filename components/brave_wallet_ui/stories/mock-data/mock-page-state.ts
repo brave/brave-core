@@ -10,6 +10,7 @@ import { mockedMnemonic } from './user-accounts'
 export const mockPageState: PageState = {
   isFetchingNFTMetadata: false,
   nftMetadata: mockNFTMetadata[0],
+  nftMetadataError: 'Something went wrong when fetching NFT details. Please try again later.',
   hasInitialized: false,
   importAccountError: false,
   importWalletError: {
