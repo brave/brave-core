@@ -184,12 +184,7 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
 }
 
 void BraveNewsController::GetChannels(GetChannelsCallback callback) {
-  publishers_controller_.GetLocale(base::BindOnce(
-      [](ChannelsController* channels_controller, GetChannelsCallback callback,
-         const std::string& locale) {
-        channels_controller->GetAllChannels(locale, std::move(callback));
-      },
-      base::Unretained(&channels_controller_), std::move(callback)));
+  channels_controller_.GetAllChannels(std::move(callback));
 }
 
 void BraveNewsController::SetChannelSubscribed(

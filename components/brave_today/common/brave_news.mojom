@@ -78,7 +78,7 @@ enum UserEnabled {
 
 struct Channel {
   string channel_name;
-  bool subscribed;
+  array<string> subscribed_locales;
 };
 
 enum PublisherType {

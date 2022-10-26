@@ -92,11 +92,18 @@ class BraveNewsApi {
   async setChannelSubscribed (channelId: string, subscribed: boolean) {
     // While we're waiting for the new channels to come back, speculatively
     // update them, so the UI has instant feedback.
+    let subscribedLocales = this.lastChannels[channelId]?.subscribedLocales ?? []
+    if (subscribedLocales.includes(channelId)) {
+      subscribedLocales = subscribedLocales.filter(l => l === api.locale)
+    } else {
+      subscribedLocales.push(api.locale)
+    }
+
     this.updateChannels({
       ...this.lastChannels,
       [channelId]: {
         ...this.lastChannels[channelId],
-        subscribed
+        subscribedLocales
       }
     })
 
