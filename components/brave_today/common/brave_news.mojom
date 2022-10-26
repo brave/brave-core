@@ -94,7 +94,7 @@ struct LocaleInfo {
   string locale;
   uint32 rank;
   array<string> channels;
-}
+};
 
 struct Publisher {
   string publisher_id;

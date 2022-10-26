@@ -19,6 +19,33 @@
 
 namespace brave_news {
 
+mojom::LocaleInfoPtr ParseLocaleInfo(const base::Value::Dict& publisher_dict,
+                                     const base::Value& locale_entry) {
+  auto result = mojom::LocaleInfo::New();
+
+  // TODO(fallaciousreasoining): Remove this branch after sources.global.json
+  // has been updated. https://github.com/brave/brave-browser/issues/26307
+  if (locale_entry.is_string()) {
+    result->locale = locale_entry.GetString();
+    result->rank = publisher_dict.FindInt("rank").value_or(0);
+    auto* channels_raw = publisher_dict.FindList("channels");
+    if (channels_raw) {
+      for (const auto& channel : *channels_raw)
+        result->channels.push_back(channel.GetString());
+    }
+
+    return result;
+  }
+
+  const auto& locale_dict = locale_entry.GetDict();
+  result->locale = *locale_dict.FindString("locale");
+  result->rank = locale_dict.FindInt("rank").value_or(0);
+
+  for (const auto& channel : *locale_dict.FindList("channels"))
+    result->channels.push_back(channel.GetString());
+  return result;
+}
+
 bool ParseCombinedPublisherList(const std::string& json,
                                 Publishers* publishers) {
   DCHECK(publishers);
@@ -41,13 +68,6 @@ bool ParseCombinedPublisherList(const std::string& json,
     publisher->publisher_name = *publisher_dict.FindString("publisher_name");
 
     publisher->category_name = *publisher_dict.FindString("category");
-    auto* channels_raw = publisher_dict.FindList("channels");
-    if (channels_raw) {
-      for (const auto& channel : *channels_raw) {
-        publisher->channels.push_back(channel.GetString());
-      }
-    }
-
     publisher->is_enabled = publisher_dict.FindBool("enabled").value_or(true);
     GURL feed_source(*publisher_dict.FindString("feed_url"));
     if (feed_source.is_valid()) {
@@ -56,10 +76,9 @@ bool ParseCombinedPublisherList(const std::string& json,
 
     auto* locales_raw = publisher_dict.FindList("locales");
     if (locales_raw) {
-      for (const auto& locale : *locales_raw) {
-        if (!locale.is_string())
-          continue;
-        publisher->locales.push_back(locale.GetString());
+      for (const auto& locale_raw : *locales_raw) {
+        publisher->locales.push_back(
+            ParseLocaleInfo(publisher_dict, locale_raw));
       }
     }
 
