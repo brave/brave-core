@@ -99,6 +99,9 @@
     window.ethereum._metamask.isUnlocked().then(result =>
       window.domAutomationController.send(result))
   }
+  function getIsConnected() {
+    window.domAutomationController.send(window.ethereum.isConnected())
+  }
 </script>
 
 <body>

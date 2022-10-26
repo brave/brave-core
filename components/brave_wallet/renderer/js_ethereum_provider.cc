@@ -408,15 +408,8 @@ void JSEthereumProvider::SendAsync(gin::Arguments* args) {
           isolate, true));
 }
 
-v8::Local<v8::Value> JSEthereumProvider::IsConnected(v8::Isolate* isolate) {
-  v8::HandleScope handle_scope(isolate);
-  v8::Local<v8::Context> context =
-      render_frame()->GetWebFrame()->MainWorldScriptContext();
-  v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
-  return v8::Boolean::New(isolate, is_connected_);
+bool JSEthereumProvider::IsConnected() {
+  return is_connected_;
 }
 
 v8::Local<v8::Promise> JSEthereumProvider::Request(v8::Isolate* isolate,

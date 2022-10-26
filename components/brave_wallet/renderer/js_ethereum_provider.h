@@ -70,7 +70,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   // Functions to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
                                  v8::Local<v8::Value> input);
-  v8::Local<v8::Value> IsConnected(v8::Isolate* isolate);
+  bool IsConnected();
   v8::Local<v8::Promise> Enable(v8::Isolate* isolate);
   v8::Local<v8::Promise> IsUnlocked(v8::Isolate* isolate);
   v8::Local<v8::Promise> SendMethod(gin::Arguments* args);
