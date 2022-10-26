@@ -175,6 +175,7 @@ interface BraveNewsController {
     => (bool is_valid_feed, bool is_duplicate, map<string, Publisher>? publishers);
   RemoveDirectFeed(string publisher_id);
   GetImageData(url.mojom.Url padded_image_url) => (array<uint8>? image_data);
+  GetFavIconData(string publisher_id) => (array<uint8>? image_data);
   SetPublisherPref(string publisher_id, UserEnabled new_status);
   ClearPrefs();
   IsFeedUpdateAvailable(string displayed_feed_hash)

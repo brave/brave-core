@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 
+#include <algorithm>
 #include <cmath>
 #include <memory>
 #include <string>
@@ -37,6 +38,8 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -77,10 +80,12 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
 BraveNewsController::BraveNewsController(
     PrefService* prefs,
+    favicon::FaviconService* favicon_service,
     brave_ads::AdsService* ads_service,
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : prefs_(prefs),
+      favicon_service_(favicon_service),
       ads_service_(ads_service),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
@@ -300,6 +305,48 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
             std::move(callback).Run(image_bytes);
           },
           std::move(callback), is_padded));
+}
+
+void BraveNewsController::GetFavIconData(const std::string& publisher_id,
+                                         GetFavIconDataCallback callback) {
+  GetPublishers(base::BindOnce(
+      [](BraveNewsController* controller, const std::string& publisher_id,
+         GetFavIconDataCallback callback, Publishers publishers) {
+        // If the publisher doesn't exist, there's nothing we can do.
+        const auto& it = publishers.find(publisher_id);
+        if (it == publishers.end()) {
+          std::move(callback).Run(absl::nullopt);
+          return;
+        }
+
+        // If we have a FavIcon url, use that.
+        const auto& publisher = it->second;
+        if (publisher->favicon_url) {
+          controller->GetImageData(publisher->favicon_url.value(),
+                                   std::move(callback));
+          return;
+        }
+
+        controller->favicon_service_->GetFaviconImageForPageURL(
+            publisher->feed_source.GetWithEmptyPath(),
+            base::BindOnce(
+                [](GetFavIconDataCallback callback,
+                   const favicon_base::FaviconImageResult& result) {
+                  auto bytes = result.image.As1xPNGBytes();
+                  if (bytes->size() == 0) {
+                    std::move(callback).Run(absl::nullopt);
+                    return;
+                  }
+
+                  std::vector<uint8_t> bytes_vec(
+                      bytes->front_as<uint8_t>(),
+                      bytes->front_as<uint8_t>() + bytes->size());
+                  std::move(callback).Run(bytes_vec);
+                },
+                std::move(callback)),
+            &controller->task_tracker_);
+      },
+      base::Unretained(this), publisher_id, std::move(callback)));
 }
 
 void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
