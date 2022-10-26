@@ -887,6 +887,10 @@
       <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Verify</message>
       <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Verifying is optional. However, by verifying, you will be able to withdraw your BAT earned from Brave Rewards to a custodial wallet directly.</message>
 
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE" desc="">Become a Brave Creator!</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2" desc="">Brave supports YouTube, Twitch, Vimeo and more!</message>
+
       <message name="IDS_BRAVE_UI_GEMINI_PROMO_TITLE" desc="">Link Rewards to Gemini!</message>
       <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO" desc="">Trade 50+ cryptos, including BAT, on Gemini. It&apos;s a secure platform to store your crypto. Plus, you can earn interest in US, HK, and SG.</message>
 
