@@ -48,6 +48,11 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
+namespace {
+// The favicon size we desire. The favicons are rendered at 24x24 pixels but
+// they look quite a bit nicer if we get a 48x48 pixel icon and downscale it.
+constexpr uint32_t kDesiredFaviconSizePixels = 48;
+}  // namespace
 
 bool IsPublisherEnabled(const mojom::Publisher* publisher) {
   if (!publisher)
@@ -327,17 +332,22 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
           return;
         }
 
-        controller->favicon_service_->GetFaviconImageForPageURL(
-            publisher->feed_source.GetWithEmptyPath(),
+        favicon_base::IconTypeSet icon_types{
+            favicon_base::IconType::kFavicon,
+            favicon_base::IconType::kTouchIcon};
+        controller->favicon_service_->GetRawFaviconForPageURL(
+            publisher->feed_source, icon_types,
+
+            kDesiredFaviconSizePixels, true,
             base::BindOnce(
                 [](GetFavIconDataCallback callback,
-                   const favicon_base::FaviconImageResult& result) {
-                  auto bytes = result.image.As1xPNGBytes();
-                  if (bytes->size() == 0) {
+                   const favicon_base::FaviconRawBitmapResult& result) {
+                  if (!result.is_valid()) {
                     std::move(callback).Run(absl::nullopt);
                     return;
                   }
 
+                  auto bytes = result.bitmap_data;
                   std::vector<uint8_t> bytes_vec(
                       bytes->front_as<uint8_t>(),
                       bytes->front_as<uint8_t>() + bytes->size());
