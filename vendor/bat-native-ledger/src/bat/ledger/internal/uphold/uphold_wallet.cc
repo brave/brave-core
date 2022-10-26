@@ -245,6 +245,7 @@ void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
     case mojom::Result::FLAGGED_WALLET:
     case mojom::Result::REGION_NOT_SUPPORTED:
     case mojom::Result::MISMATCHED_COUNTRIES:
+    case mojom::Result::PROVIDER_UNAVAILABLE:
       // Entering NOT_CONNECTED.
       ledger_->uphold()->DisconnectWallet("");
       ledger_->database()->SaveEventLog(

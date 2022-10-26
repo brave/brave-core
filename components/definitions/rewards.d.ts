@@ -67,6 +67,7 @@ declare namespace Rewards {
         | 'kycRequiredModal'
         | 'mismatchedCountriesModal'
         | 'mismatchedProviderAccountsModal'
+        | 'providerUnavailableModal'
         | 'regionNotSupportedModal'
         | 'show'
         | 'upholdBATNotAllowedModal'

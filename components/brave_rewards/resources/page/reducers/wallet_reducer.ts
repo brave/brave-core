@@ -204,6 +204,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
+      if (action.payload.result === 47) { // type::Result::PROVIDER_UNAVAILABLE
+        state.ui.modalRedirect = 'providerUnavailableModal'
+        break
+      }
+
       if (action.payload.result === 0) { // type::Result::LEDGER_OK
         chrome.send('brave_rewards.fetchBalance')
       }

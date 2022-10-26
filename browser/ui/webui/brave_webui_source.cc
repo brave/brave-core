@@ -588,6 +588,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "redirectModalMismatchedCountriesTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_COUNTRIES_TITLE},     // NOLINT
         { "redirectModalMismatchedProviderAccountsText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT},     // NOLINT
         { "redirectModalMismatchedProviderAccountsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE},     // NOLINT
+        { "redirectModalProviderUnavailableText1", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_1},     // NOLINT
+        { "redirectModalProviderUnavailableText2", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_2},     // NOLINT
+        { "redirectModalProviderUnavailableTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TITLE},      // NOLINT
         { "redirectModalRegionNotSupportedText1", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1},     // NOLINT
         { "redirectModalRegionNotSupportedText2", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2},     // NOLINT
         { "redirectModalRegionNotSupportedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE},     // NOLINT
