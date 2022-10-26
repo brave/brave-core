@@ -401,7 +401,7 @@ void BraveRenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 #endif
-  if (!params_.link_url.is_empty()) {
+  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
     absl::optional<size_t> link_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
     if (link_index.has_value()) {
