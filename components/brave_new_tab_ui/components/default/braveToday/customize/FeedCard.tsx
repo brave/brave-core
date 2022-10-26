@@ -41,14 +41,21 @@ const Card = styled('div').attrs<CardProps>(props => ({
   }
 `
 
-const CoverImage = styled('div') <{ backgroundImage: string }>`
+interface CoverImageProps {
+  backgroundImage: string
+}
+
+const CoverImage = styled('div').attrs<CoverImageProps>(props => ({
+  style: {
+    backgroundImage: `url('${props.backgroundImage}')`
+  }
+}))<CoverImageProps>`
   position: absolute;
   top: 15%; bottom: 15%; left: 15%; right: 15%;
   border-radius: 8px;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('${p => p.backgroundImage}');
 `
 
 const Name = styled.span`
