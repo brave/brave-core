@@ -64,6 +64,7 @@ import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoActi
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
@@ -669,7 +670,8 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
                 BooleanSupplier.class, JankTracker.class, Supplier.class,
                 OmniboxPedalDelegate.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                Callback.class, BackPressManager.class));
+                Callback.class, BackPressManager.class,
+                OmniboxSuggestionsDropdownScrollListener.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
