@@ -141,7 +141,7 @@
   </message>
 
   <!-- Settings / Pin shortcut-->
-  <if expr="is_win">
+  <if expr="enable_pin_shortcut">
     <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT">
       Pin to taskbar
     </message>

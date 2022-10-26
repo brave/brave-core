@@ -6,7 +6,7 @@
 <settings-animated-pages id="pages" section="getStarted">
   <div route-path="default">
     <settings-default-browser-page></settings-default-browser-page>
-<if expr="is_win">
+<if expr="enable_pin_shortcut">
     <settings-pin-shortcut-page></settings-pin-shortcut-page>
 </if>
     <div class="settings-box">$i18n{onStartup}</div>

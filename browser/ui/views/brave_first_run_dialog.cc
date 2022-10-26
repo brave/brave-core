@@ -25,10 +25,12 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/window/dialog_delegate.h"
 
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_shell_integration.h"
 #include "brave/browser/brave_shell_integration_win.h"
-#else
+#endif
+#else  // BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "chrome/browser/shell_integration.h"
 #endif
 
@@ -40,7 +42,7 @@ void ShowBraveFirstRunDialogViews(Profile* profile) {
   run_loop.Run();
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 class PinShortcutCheckbox : public views::Checkbox {
  public:
   METADATA_HEADER(PinShortcutCheckbox);
@@ -133,7 +135,7 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
   constexpr int kMaxWidth = 350;
   contents_label->SetMaximumWidth(kMaxWidth);
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   pin_shortcut_checkbox_ =
       AddChildView(std::make_unique<PinShortcutCheckbox>());
 #endif
@@ -143,7 +145,7 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
   constexpr int kTopPadding = 20;
   int kBottomPadding = 55;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   kBottomPadding -= pin_shortcut_checkbox_->GetPreferredSize().height();
 #endif
 
@@ -163,6 +165,7 @@ void BraveFirstRunDialog::Done() {
 bool BraveFirstRunDialog::Accept() {
   GetWidget()->Hide();
 
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #if BUILDFLAG(IS_WIN)
   base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
       ->StartSetAsDefault(base::BindOnce(
@@ -175,6 +178,7 @@ bool BraveFirstRunDialog::Accept() {
             }
           },
           pin_shortcut_checkbox_->GetChecked()));
+#endif
 #else
   shell_integration::SetAsDefaultBrowser();
 #endif
