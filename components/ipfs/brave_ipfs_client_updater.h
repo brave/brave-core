@@ -65,7 +65,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Linux)";
 #if defined(ARCH_CPU_ARM64)
-static const char kIpfsClientComponentId[] = "xxx";
+static const char kIpfsClientComponentId[] = "ixbyszacgeprddxftkoepcpnjtxrjbwn";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUzya2/7BsTiOU33qrn6",
     "L3miDi/Qe8l85PuXQnmLHa/YbKSZW9ObGPSrYc45FPuWitGU09rsrny88u7gZmOk",
