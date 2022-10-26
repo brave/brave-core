@@ -128,6 +128,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_federated",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_rewards/common",
   "//brave/components/brave_rewards/common/buildflags",
   "//brave/components/brave_search/browser",
   "//brave/components/brave_search/common",

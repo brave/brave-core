@@ -14,14 +14,13 @@ import android.content.Intent;
 import android.net.Uri;
 
 import org.chromium.base.ApplicationStatus;
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -116,7 +115,8 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                     if (braveActivity != null
                             && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                     Profile.getLastUsedRegularProfile())
-                            && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+                            && BraveRewardsNativeWorker.getInstance() != null
+                            && BraveRewardsNativeWorker.getInstance().IsSupported()) {
                         createNotification(context, intent);
                     }
                 } catch (IllegalStateException exc) {

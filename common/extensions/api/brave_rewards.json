@@ -356,6 +356,23 @@
         ]
       },
       {
+        "name": "isUnsupportedRegion",
+        "type": "function",
+        "description": "Whether the locale is unsupported for Brave Rewards",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "unsupportedRegion",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getLocale",
         "type": "function",
         "description": "Retrieves the current locale",

@@ -323,3 +323,9 @@ export const restartBrowser = () => action(types.RESTART_BROWSER)
 export const onPrefChanged = (key: string) => action(types.ON_PREF_CHANGED, {
   key
 })
+
+export const getIsUnsupportedRegion = () => action(types.GET_IS_UNSUPPORTED_REGION)
+
+export const onIsUnsupportedRegion = (isUnsupportedRegion: boolean) => action(types.ON_IS_UNSUPPORTED_REGION, {
+  isUnsupportedRegion
+})

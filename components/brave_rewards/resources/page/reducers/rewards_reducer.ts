@@ -484,6 +484,18 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getAdsData')
       break
     }
+    case types.GET_IS_UNSUPPORTED_REGION: {
+      chrome.send('brave_rewards.getIsUnsupportedRegion')
+      break
+    }
+    case types.ON_IS_UNSUPPORTED_REGION: {
+      const { isUnsupportedRegion } = action.payload
+      state = {
+        ...state,
+        isUnsupportedRegion
+      }
+      break
+    }
   }
 
   return state

@@ -78,6 +78,7 @@ export const defaultState: NewTab.State = {
     externalWallet: undefined,
     dismissedNotifications: [],
     rewardsEnabled: false,
+    isUnsupportedRegion: false,
     declaredCountry: '',
     enabledAds: false,
     needsBrowserUpgradeToServeAds: false,

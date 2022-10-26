@@ -7,12 +7,11 @@ package org.chromium.chrome.browser.ntp_background_images;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ObserverList;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -70,8 +69,9 @@ public class NTPBackgroundImagesBridge {
     }
 
     static public boolean enableSponsoredImages() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-        && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        return braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported()
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
     }
 
     static public NTPBackgroundImagesBridge getInstance(Profile profile)  {
