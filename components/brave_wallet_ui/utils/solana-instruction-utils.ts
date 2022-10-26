@@ -142,7 +142,7 @@ export const getSolanaTransactionInstructionParamsAndType = ({
   } as TypedSolanaInstructionWithParams
 }
 
-export const getTypedSolanaTxInstructions = (solTxData: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
+export const getTypedSolanaTxInstructions = (solTxData?: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
   const instructions: TypedSolanaInstructionWithParams[] = (solTxData?.instructions || []).map((instruction) => {
     return getSolanaTransactionInstructionParamsAndType(instruction)
   })
