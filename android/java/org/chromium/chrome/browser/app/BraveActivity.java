@@ -1531,7 +1531,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void showCrossPromotionalDialog() {
-        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
+        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment =
+                new CrossPromotionalModalDialogFragment();
         mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
