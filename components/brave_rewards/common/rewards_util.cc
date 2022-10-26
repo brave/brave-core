@@ -46,8 +46,7 @@ bool IsDisabledByFeature() {
 }
 
 bool IsOFACSanctionedRegion(const std::string& country_code) {
-  return brave_l10n::IsISOCountryCodeOFACSanctioned(country_code) ||
-         brave_l10n::IsUNM49CodeOFACSanctioned(country_code);
+  return brave_l10n::IsISOCountryCodeOFACSanctioned(country_code);
 }
 
 std::string CountryCodeFromCountryId(int country_id) {
