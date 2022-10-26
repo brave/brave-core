@@ -21,7 +21,9 @@ template <typename T>
 bool IsOnion(const T& obj) {
   constexpr const char kOnion[] = ".onion";
   return obj.Host().EndsWith(kOnion) && (obj.Protocol() == url::kHttpsScheme ||
-                                         obj.Protocol() == url::kHttpScheme);
+                                         obj.Protocol() == url::kHttpScheme ||
+                                         obj.Protocol() == url::kWsScheme ||
+                                         obj.Protocol() == url::kWssScheme);
 }
 
 }  // namespace

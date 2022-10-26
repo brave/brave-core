@@ -528,8 +528,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
-    const GURL resource_url =
-        embedded_test_server()->GetURL("example.com", "/logo.png");
     ASSERT_FALSE(content::ExecJs(contents, "fetch('https://example.com')"));
     EXPECT_TRUE(console_observer.messages().empty());
   }

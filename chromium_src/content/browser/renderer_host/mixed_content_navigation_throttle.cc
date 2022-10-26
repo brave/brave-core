@@ -17,7 +17,9 @@ bool MixedContentNavigationThrottle::DoesOriginSchemeRestrictMixedContent(
   constexpr const char kOnion[] = ".onion";
   if (base::EndsWith(origin.host(), kOnion) &&
       (origin.scheme() == url::kHttpsScheme ||
-       origin.scheme() == url::kHttpScheme)) {
+       origin.scheme() == url::kHttpScheme ||
+       origin.scheme() == url::kWsScheme ||
+       origin.scheme() == url::kWssScheme)) {
     return true;
   }
   return ::content::DoesOriginSchemeRestrictMixedContent(origin);

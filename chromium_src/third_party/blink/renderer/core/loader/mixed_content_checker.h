@@ -10,7 +10,7 @@
 
 // We are hiding IsMixedContent(const String& origin_protocol, const KURL&)
 // because we want to enforce mixed content checks on .onion origins.
-// Publically available protocol-only overload of this method allows to skip
+// Publicly available protocol-only overload of this method allows to skip
 // .onion specific checks which we don't want.
 
 #define UpgradeInsecureRequest                                              \
