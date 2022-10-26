@@ -58,14 +58,12 @@ import {
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
-import BalanceUpdater from './balanceUpdater'
 import { getCoinFromTxDataUnion, getNetworkInfo } from '../../utils/network-utils'
 import { isSolanaTransaction } from '../../utils/tx-utils'
 
 const handler = new AsyncActionHandler()
 
 const interactionNotifier = new InteractionNotifier()
-const balanceUpdater = new BalanceUpdater()
 
 function getWalletState (store: Store): WalletState {
   return store.getState().wallet
@@ -173,7 +171,6 @@ handler.on(WalletActions.keyringReset.getType(), async (store) => {
 
 handler.on(WalletActions.locked.getType(), async (store) => {
   interactionNotifier.stopWatchingForInteraction()
-  balanceUpdater.stopUpdatingBalances()
   await refreshWalletInfo(store)
 })
 
@@ -268,9 +265,6 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
     const currentNetwork = await store.dispatch(refreshNetworkInfo())
     await store.dispatch(refreshVisibleTokenInfo(currentNetwork))
     await store.dispatch(refreshBalances())
-    balanceUpdater.beginUpdatingBalances(15000, async () => {
-      await store.dispatch(refreshBalances())
-    })
     await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
   }
