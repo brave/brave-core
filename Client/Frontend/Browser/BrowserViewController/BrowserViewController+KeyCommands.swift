@@ -46,13 +46,13 @@ extension BrowserViewController {
   }
 
   @objc private func newTabKeyCommand() {
-    openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
   }
 
   @objc private func newPrivateTabKeyCommand() {
     // NOTE: We cannot and should not distinguish between "new-tab" and "new-private-tab"
     // when recording telemetry for key commands.
-    openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
+    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
   }
 
   @objc private func closeTabKeyCommand() {

@@ -606,7 +606,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+    self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
   }
 
   func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {

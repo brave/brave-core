@@ -66,7 +66,7 @@ public class QuickActions: NSObject {
   }
 
   fileprivate func handleOpenNewTab(withBrowserViewController bvc: BrowserViewController, isPrivate: Bool) {
-    bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
+    bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
   }
 
   fileprivate func dismissAlertPopupView() {
