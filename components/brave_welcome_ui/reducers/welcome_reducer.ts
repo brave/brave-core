@@ -45,7 +45,7 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
       // Regions approved for Brave Search will skip search welcome card
       // Regions not approved show the card- but without Brave Search
       const braveSearchApprovedRegion: boolean =
-          ['AT', 'ES', 'MX', 'US', 'CA', 'DE', 'FR', 'GB'].includes(loadTimeData.getString('countryString'))
+          ['AR', 'BR', 'AT', 'ES', 'MX', 'US', 'CA', 'DE', 'FR', 'GB'].includes(loadTimeData.getString('countryString'))
       state = {
         ...state,
         searchProviders: payload,
