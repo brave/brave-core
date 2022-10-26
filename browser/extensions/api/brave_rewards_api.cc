@@ -65,14 +65,30 @@ RewardsTabHelper* GetRewardsTabHelperForTabId(
   return RewardsTabHelper::FromWebContents(web_contents);
 }
 
+content::WebContents* WebContentsFromBrowserContext(
+    int tab_id,
+    content::BrowserContext* browser_context) {
+  content::WebContents* contents = nullptr;
+  extensions::ExtensionTabUtil::GetTabById(
+      tab_id, Profile::FromBrowserContext(browser_context), false, nullptr,
+      nullptr, &contents, nullptr);
+  return contents;
+}
+
+RewardsPanelCoordinator* GetPanelCoordinator(
+    content::WebContents* web_contents) {
+  DCHECK(web_contents);
+  auto* browser = chrome::FindBrowserWithWebContents(web_contents);
+  return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
+}
+
 RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
   DCHECK(function);
   auto* web_contents = function->GetSenderWebContents();
   if (!web_contents) {
     return nullptr;
   }
-  auto* browser = chrome::FindBrowserWithWebContents(web_contents);
-  return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
+  return GetPanelCoordinator(web_contents);
 }
 
 std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result) {
@@ -375,10 +391,9 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   }
 
   // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-          params->tab_id, Profile::FromBrowserContext(browser_context()), false,
-          nullptr, nullptr, &contents, nullptr)) {
+  content::WebContents* contents =
+      WebContentsFromBrowserContext(params->tab_id, browser_context());
+  if (!contents) {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
                             base::NumberToString(params->tab_id)));
   }
@@ -410,6 +425,25 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
     return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  // If the user clicks the tipping button before having opted into the Rewards,
+  // then the Rewards service would not have started the ledger process yet. We
+  // need to open the Rewards panel for the user to offer opting in.
+  if (!profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled)) {
+    // Get web contents for this tab
+    content::WebContents* contents =
+        WebContentsFromBrowserContext(params->tab_id, browser_context());
+    if (!contents) {
+      return RespondNow(Error(tabs_constants::kTabNotFoundError,
+                              base::NumberToString(params->tab_id)));
+    }
+    auto* coordinator = GetPanelCoordinator(contents);
+    if (!coordinator) {
+      return RespondNow(Error("Unable to open Rewards panel"));
+    }
+    coordinator->OpenRewardsPanel();
+    return RespondNow(NoArguments());
   }
 
   AddRef();
@@ -480,10 +514,9 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   }
 
   // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-          params->tab_id, Profile::FromBrowserContext(browser_context()), false,
-          nullptr, nullptr, &contents, nullptr)) {
+  content::WebContents* contents =
+      WebContentsFromBrowserContext(params->tab_id, browser_context());
+  if (!contents) {
     Release();
     return;
   }
