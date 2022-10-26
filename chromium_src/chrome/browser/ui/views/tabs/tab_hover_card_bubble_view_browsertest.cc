@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser.h"
