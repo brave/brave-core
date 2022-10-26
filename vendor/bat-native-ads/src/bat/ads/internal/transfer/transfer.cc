@@ -141,11 +141,11 @@ void Transfer::Cancel(const int32_t tab_id) {
     return;
   }
 
-  BLOG(1, "Cancelled ad transfer for creative instance id "
+  BLOG(1, "Canceled ad transfer for creative instance id "
               << last_clicked_ad_.creative_instance_id << " with tab id "
               << tab_id);
 
-  NotifyCancelledTransfer(last_clicked_ad_, tab_id);
+  NotifyCanceledTransfer(last_clicked_ad_, tab_id);
 }
 
 void Transfer::FailedToTransferAd(const AdInfo& ad) const {
@@ -167,10 +167,10 @@ void Transfer::NotifyDidTransferAd(const AdInfo& ad) const {
   }
 }
 
-void Transfer::NotifyCancelledTransfer(const AdInfo& ad,
-                                       const int32_t tab_id) const {
+void Transfer::NotifyCanceledTransfer(const AdInfo& ad,
+                                      const int32_t tab_id) const {
   for (TransferObserver& observer : observers_) {
-    observer.OnCancelledTransfer(ad, tab_id);
+    observer.OnCanceledTransfer(ad, tab_id);
   }
 }
 

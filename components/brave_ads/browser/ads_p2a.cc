@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 
+#include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
@@ -125,6 +126,8 @@ void SuspendP2AHistograms() {
     base::UmaHistogramExactLinear(question_name, INT_MAX,
                                   std::size(kIntervalBuckets) + 1);
   }
+
+  VLOG(1) << "P2A histograms suspended";
 }
 
 }  // namespace brave_ads

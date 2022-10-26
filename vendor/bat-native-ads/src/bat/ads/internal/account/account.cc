@@ -73,10 +73,12 @@ void Account::SetWallet(const std::string& id, const std::string& seed) {
     return;
   }
 
-  BLOG(1, "Successfully set wallet");
-
   const WalletInfo& wallet = GetWallet();
-  NotifyWalletDidUpdate(wallet);
+
+  if (wallet.WasUpdated(last_wallet_copy)) {
+    BLOG(1, "Successfully set wallet");
+    NotifyWalletDidUpdate(wallet);
+  }
 
   if (wallet.HasChanged(last_wallet_copy)) {
     WalletDidChange(wallet);

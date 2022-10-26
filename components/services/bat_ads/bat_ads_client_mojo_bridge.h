@@ -127,8 +127,6 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
            const std::string& message) override;
 
  private:
-  bool connected() const;
-
   mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
 };
 

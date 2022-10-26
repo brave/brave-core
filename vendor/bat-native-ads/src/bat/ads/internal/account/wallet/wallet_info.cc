@@ -11,8 +11,12 @@ bool WalletInfo::IsValid() const {
   return !id.empty() && !secret_key.empty();
 }
 
+bool WalletInfo::WasUpdated(const WalletInfo& other) const {
+  return *this != other;
+}
+
 bool WalletInfo::HasChanged(const WalletInfo& other) const {
-  return other.IsValid() && (*this != other);
+  return other.IsValid() && WasUpdated(other);
 }
 
 bool WalletInfo::operator==(const WalletInfo& other) const {
