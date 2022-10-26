@@ -25,7 +25,7 @@ class MessageMetainfo {
   ~MessageMetainfo();
 
   void Init(PrefService* local_state,
-            std::string channel,
+            std::string channel_type,
             std::string week_of_install);
 
   void Update();
@@ -41,6 +41,9 @@ class MessageMetainfo {
   std::string refcode;
 
  private:
+  // Used to report major/minor version numbers to reduce amount of STAR tags
+  void InitVersion();
+
   // Ensures that country/refcode represent the big enough cohort that will not
   // let anybody identify the sender.
   void MaybeStripRefcodeAndCountry();
