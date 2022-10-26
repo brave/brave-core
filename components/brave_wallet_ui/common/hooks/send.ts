@@ -210,6 +210,13 @@ export default function useSend () {
       return
     }
 
+    // If value is the same as the selectedAccounts Wallet Address
+    if (valueToLowerCase === selectedAccount.address.toLowerCase()) {
+      setAddressWarning('')
+      setAddressError(getLocale('braveWalletSameAddressError'))
+      return
+    }
+
     // Do nothing if value is an empty string
     if (toAddressOrUrl === '') {
       setAddressWarning('')
@@ -228,7 +235,7 @@ export default function useSend () {
     // Reset error and warning state back to normal
     setAddressWarning('')
     setAddressError('')
-  }, [selectedSendAsset])
+  }, [selectedSendAsset, selectedAccount.address])
 
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
