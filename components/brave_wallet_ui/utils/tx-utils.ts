@@ -25,6 +25,7 @@ import { getBalance } from './balance-utils'
 import { toProperCase } from './string-utils'
 import { makeNetworkAsset } from '../options/asset-options'
 import { findTokenByContractAddress } from './asset-utils'
+import { getNetworkFromTXDataUnion } from './network-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -45,6 +46,8 @@ type FileCoinTransactionInfo = BraveWallet.TransactionInfo & {
     filTxData: BraveWallet.FilTxData
   }
 }
+
+type TransactionInfoWithNetworkInfo = BraveWallet.TransactionInfo & { network: BraveWallet.NetworkInfo }
 
 export const sortTransactionByDate = (transactions: BraveWallet.TransactionInfo[], order: Order = 'ascending') => {
   return [...transactions].sort(function (x: BraveWallet.TransactionInfo, y: BraveWallet.TransactionInfo) {
@@ -785,4 +788,17 @@ export const getTransactionIntent = (
 
   return getLocale('braveWalletTransactionIntentSend')
     .replace('$1', valueWrapped.formatAsAsset(6, transactionNetwork.symbol))
+}
+
+export const addNetworkToTransaction = (
+  tx: BraveWallet.TransactionInfo,
+  networks: BraveWallet.NetworkInfo[],
+  defaultNetwork: BraveWallet.NetworkInfo
+): TransactionInfoWithNetworkInfo => {
+  (tx as TransactionInfoWithNetworkInfo).network = getNetworkFromTXDataUnion(
+    tx.txDataUnion,
+    networks,
+    defaultNetwork
+  )
+  return tx as TransactionInfoWithNetworkInfo
 }

@@ -78,6 +78,8 @@ export interface ParsedTransactionBase extends ParsedTransactionFees {
   erc721TokenId?: string
   isSwap?: boolean
   intent: string
+  originInfo?: BraveWallet.OriginInfo
+  network?: BraveWallet.NetworkInfo
 }
 
 export interface ParsedTransaction extends ParsedTransactionBase {
@@ -194,6 +196,7 @@ export function parseTransactionWithoutPrices ({
 
   // base tx
   const parsedTxBase: ParsedTransactionBase = {
+    originInfo: tx.originInfo,
     value,
     valueExact,
     hash: tx.txHash,
@@ -239,7 +242,8 @@ export function parseTransactionWithoutPrices ({
       tx,
       transactionNetwork,
       combinedTokensList
-    )
+    ),
+    network: transactionNetwork
   }
 
   return parsedTxBase
