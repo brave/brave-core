@@ -52,7 +52,7 @@ import AccountsAndTransactionsList from './components/accounts-and-transctions-l
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
 // Hooks
-import { useBalance, usePricing, useTransactionParser } from '../../../../common/hooks'
+import { useBalance, usePricing, useTransactionParser, useMultiChainBuyAssets } from '../../../../common/hooks'
 
 // Styled Components
 import {
@@ -76,7 +76,8 @@ import {
   TopRow,
   SubDivider,
   NotSupportedText,
-  MoreButton
+  MoreButton,
+  ButtonRow
 } from './style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import { CoinStats } from './components/coin-stats/coin-stats'
@@ -141,6 +142,7 @@ export const PortfolioAsset = (props: Props) => {
   } = useSelector(({ page }: { page: PageState }) => page)
   // custom hooks
   const getAccountBalance = useBalance(networkList)
+  const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
@@ -340,6 +342,10 @@ export const PortfolioAsset = (props: Props) => {
 
   const isNftAsset = selectedAssetFromParams?.isErc721 || selectedAssetFromParams?.isNft
 
+  const isSelectedAssetDepositSupported = React.useMemo(() => {
+    return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
+  }, [fullTokenList, selectedAsset?.symbol])
+
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
     history.push(WalletRoutes.AddAccountModal)
@@ -451,6 +457,14 @@ export const PortfolioAsset = (props: Props) => {
     }
   }, [])
 
+  const onSelectBuy = React.useCallback(() => {
+    history.push(`${WalletRoutes.FundWalletPageStart}/${selectedAsset?.symbol}`)
+  }, [selectedAsset?.symbol])
+
+  const onSelectDeposit = React.useCallback(() => {
+    history.push(`${WalletRoutes.DepositFundsPageStart}/${selectedAsset?.symbol}`)
+  }, [selectedAsset?.symbol])
+
   // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
@@ -513,6 +527,12 @@ export const PortfolioAsset = (props: Props) => {
     window.addEventListener('message', onMessageEventListener)
     return () => window.removeEventListener('message', onMessageEventListener)
   }, [onMessageEventListener])
+
+  React.useEffect(() => {
+    if (allAssetOptions.length === 0) {
+      getAllBuyOptionsAllChains()
+    }
+  }, [allAssetOptions.length])
 
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
@@ -602,13 +622,30 @@ export const PortfolioAsset = (props: Props) => {
           isDisabled={selectedAsset ? false : parseFloat(fullPortfolioFiatBalance) === 0}
         />
       }
-
-      {!isNftAsset && isSelectedAssetBridgeSupported &&
-        <BridgeToAuroraButton
-          onClick={onBridgeToAuroraButton}
-        >
-          {getLocale('braveWalletBridgeToAuroraButton')}
-        </BridgeToAuroraButton>
+      {!isNftAsset &&
+        <ButtonRow noMargin={true}>
+          {isReduxSelectedAssetBuySupported &&
+            <BridgeToAuroraButton
+              onClick={onSelectBuy}
+            >
+              {getLocale('braveWalletBuy')}
+            </BridgeToAuroraButton>
+          }
+          {isSelectedAssetDepositSupported &&
+            <BridgeToAuroraButton
+              onClick={onSelectDeposit}
+            >
+              {getLocale('braveWalletAccountsDeposit')}
+            </BridgeToAuroraButton>
+          }
+          {isSelectedAssetBridgeSupported &&
+            <BridgeToAuroraButton
+              onClick={onBridgeToAuroraButton}
+            >
+              {getLocale('braveWalletBridgeToAuroraButton')}
+            </BridgeToAuroraButton>
+          }
+        </ButtonRow>
       }
 
       {showBridgeToAuroraModal &&

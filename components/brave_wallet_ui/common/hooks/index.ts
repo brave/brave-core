@@ -17,6 +17,7 @@ import useAssetManagement from './assets-management'
 import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
+import { useMultiChainBuyAssets } from './use-multi-chain-buy-assets'
 import { useLib } from './useLib'
 
 export {
@@ -35,5 +36,6 @@ export {
   useSwap,
   useTokenInfo,
   useTransactionFeesParser,
-  useTransactionParser
+  useTransactionParser,
+  useMultiChainBuyAssets
 }

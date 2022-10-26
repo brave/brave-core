@@ -48,13 +48,13 @@ export const PriceText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const ButtonRow = styled.div`
+export const ButtonRow = styled.div<{ noMargin?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin: 20px 0px;
+  margin: ${(p) => p.noMargin ? '0px' : '20px 0px'};
 `
 
 export const BalanceRow = styled.div`
@@ -277,6 +277,7 @@ export const BridgeToAuroraButton = styled(WalletButton)`
   color: ${(p) => p.theme.palette.white};
   border: none;
   margin-bottom: 32px;
+  margin-right: 10px;
 `
 
 export const NotSupportedText = styled.span`

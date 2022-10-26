@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // utils
 import { getNetworkInfo } from '../../utils/network-utils'
@@ -15,7 +14,9 @@ import {
 } from '../../utils/asset-utils'
 
 // types
-import { BraveWallet, BuyOption, SupportedOnRampNetworks, WalletState } from '../../constants/types'
+import { BraveWallet, BuyOption, SupportedOnRampNetworks } from '../../constants/types'
+import { WalletSelectors } from '../selectors'
+import { PageSelectors } from '../../page/selectors'
 
 // options
 import { BuyOptions } from '../../options/buy-with-options'
@@ -23,11 +24,13 @@ import { BuyOptions } from '../../options/buy-with-options'
 // hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
+import { useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selector'
 
 export const useMultiChainBuyAssets = () => {
   // redux
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const selectedCurrency = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedCurrency)
+  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
+  const reduxSelectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
 
   // custom hooks
   const isMounted = useIsMounted()
@@ -124,6 +127,10 @@ export const useMultiChainBuyAssets = () => {
     buyAmount
   ])
 
+  const isReduxSelectedAssetBuySupported = React.useMemo(() => {
+    return options.allAssetOptions.some((asset) => asset.symbol.toLowerCase() === reduxSelectedAsset?.symbol.toLowerCase())
+  }, [options.allAssetOptions, reduxSelectedAsset?.symbol])
+
   return {
     allAssetOptions: options.allAssetOptions,
     rampAssetOptions: options.rampAssetOptions,
@@ -136,6 +143,7 @@ export const useMultiChainBuyAssets = () => {
     getAllBuyOptionsAllChains,
     buyAmount,
     setBuyAmount,
-    openBuyAssetLink
+    openBuyAssetLink,
+    isReduxSelectedAssetBuySupported
   }
 }
