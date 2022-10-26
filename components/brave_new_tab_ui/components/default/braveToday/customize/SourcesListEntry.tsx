@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '../../../Flex'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
-import { useLazyUnpaddedImageUrl } from '../useUnpaddedImageUrl'
+import { useFavicon } from '../useUnpaddedImageUrl'
 import { getTranslatedChannelName } from './ChannelCard'
 
 interface Props {
@@ -61,14 +61,10 @@ const ChannelNameText = styled.span`
   font-weight: 600;
 `
 
-function FavIcon (props: { src?: string }) {
-  const { url, setElementRef } = useLazyUnpaddedImageUrl(props.src, {
-    rootElement: document.getElementById('brave-news-configure'),
-    rootMargin: '0px 0px 100px 0px',
-    useCache: true
-  })
+function FavIcon (props: { publisherId: string }) {
+  const url = useFavicon(props.publisherId)
   const [error, setError] = React.useState(false)
-  return <FavIconContainer ref={setElementRef}>
+  return <FavIconContainer>
     {url && !error && <img src={url} onError={() => setError(true)} />}
   </FavIconContainer>
 }
@@ -79,7 +75,7 @@ export function FeedListEntry (props: Props) {
 
   return <Container direction="row" justify="space-between" align='center'>
     <Flex align='center' gap={8}>
-      <FavIcon src={publisher.faviconUrl?.url} />
+      <FavIcon publisherId={props.publisherId} />
       <Text>{publisher.publisherName}</Text>
     </Flex>
     <ToggleButton onClick={() => setFollowed(false)}>

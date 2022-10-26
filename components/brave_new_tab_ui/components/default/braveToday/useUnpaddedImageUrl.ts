@@ -16,6 +16,26 @@ interface Options {
 }
 
 const cache: { [url: string]: string } = {}
+export function useFavicon (publisherId: string) {
+  const [url, setUrl] = React.useState<string>();
+  React.useEffect(() => {
+    let cancelled = false
+    getBraveNewsController().getFavIconData(publisherId).then(({ imageData }) => {
+      if (cancelled) return
+      if (!imageData) return
+
+      const blob = new Blob([new Uint8Array(imageData)], { type: 'image/*'});
+      setUrl(URL.createObjectURL(blob));
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [publisherId]);
+
+  return url;
+}
+
 export function useUnpaddedImageUrl (paddedUrl: string | undefined, onLoaded?: () => any, useCache?: boolean) {
   const [unpaddedUrl, setUnpaddedUrl] = React.useState('')
 
