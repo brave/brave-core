@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '../../../Flex'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
-import { useFavicon } from '../useUnpaddedImageUrl'
+import { useLazyFavicon } from '../useUnpaddedImageUrl'
 import { getTranslatedChannelName } from './ChannelCard'
 
 interface Props {
@@ -62,9 +62,12 @@ const ChannelNameText = styled.span`
 `
 
 function FavIcon (props: { publisherId: string }) {
-  const url = useFavicon(props.publisherId)
+  const { url, setElementRef } = useLazyFavicon(props.publisherId, {
+    rootElement: document.getElementById('brave-news-configure'),
+    rootMargin: '200px 0px 200px 0px'
+  })
   const [error, setError] = React.useState(false)
-  return <FavIconContainer>
+  return <FavIconContainer ref={setElementRef}>
     {url && !error && <img src={url} onError={() => setError(true)} />}
   </FavIconContainer>
 }
