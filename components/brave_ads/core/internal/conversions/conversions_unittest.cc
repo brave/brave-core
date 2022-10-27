@@ -628,6 +628,100 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertClickedInlineContentAdWithVerifiableConversionWhenAdsAreDisabled) {  // NOLINT
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  resource::Conversions resource;
+  resource.Load();
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.advertiser_public_key =
+      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://brave.com/thankyou";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://brave.com/thankyou"},
+      "<html><meta name=\"ad-conversion-id\" content=\"abc123\"></html>",
+      resource.get());
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertClickedInlineContentAdWithVerifiableConversionWhenAdsAreEnabled) {  // NOLINT
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  resource::Conversions resource;
+  resource.Load();
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.advertiser_public_key =
+      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://brave.com/thankyou";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://brave.com/thankyou"},
+      "<html><meta name=\"ad-conversion-id\" content=\"abc123\"></html>",
+      resource.get());
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
 TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
