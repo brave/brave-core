@@ -104,6 +104,14 @@
     *** runMenuItemEnterAnimations(...);
 }
 
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.BraveQuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
+}
+
 -keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {
     public <init>(...);
 }

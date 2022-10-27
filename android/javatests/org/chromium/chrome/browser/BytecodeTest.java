@@ -442,6 +442,9 @@ public class BytecodeTest {
                 "extractUrlFromIntent", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoCoordinator",
                 "updateVisibility", true, void.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                "setWidgetEnabled", false, null));
     }
 
     @Test
