@@ -863,7 +863,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveSyncWorker.get();
         }
 
-        checkForNotificationData();
+        checkAndshowNotificationWarningDialog();
 
         if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
             RateUtils.getInstance(this).setPrefRateEnabled(true);
@@ -1229,16 +1229,28 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 BraveNotificationWarningDialog.newInstance(
                         BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_ACTIVITY);
         notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.setDismissListener(closeDialogListener);
         notificationWarningDialog.show(getSupportFragmentManager(),
                 BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 
-    private void checkForNotificationData() {
+    private BraveNotificationWarningDialog.DismissListener closeDialogListener =
+            new BraveNotificationWarningDialog.DismissListener() {
+                @Override
+                public void onDisMiss() {
+                    checkForNotificationData();
+                }
+            };
+
+    private void checkAndshowNotificationWarningDialog() {
         if (BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)) {
             showNotificationWarningDialog();
-            return;
+        } else {
+            checkForNotificationData();
         }
+    }
 
+    private void checkForNotificationData() {
         Intent notifIntent = getIntent();
         if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
             String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
@@ -1606,7 +1618,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 openNewOrSelectExistingTab(openUrl);
             }
         }
+<<<<<<< HEAD
         checkForNotificationData();
+=======
+        checkAndshowNotificationWarningDialog();
+>>>>>>> show notification permission dialog when geo button continue clicked
     }
 
     @Override

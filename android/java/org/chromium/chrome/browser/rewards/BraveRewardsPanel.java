@@ -94,6 +94,7 @@ import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -896,6 +897,21 @@ public class BraveRewardsPanel
         }));
     }
 
+    private void requestNotificationPermission() {
+        if (mActivity.shouldShowRequestPermissionRationale(
+                    PermissionConstants.NOTIFICATION_PERMISSION)
+                || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+            // other than android 13 redirect to
+            // setting page and for android 13 Last time don't allow selected in permission
+            // dialog, then enable through setting
+            BravePermissionUtils.notificationSettingPage(mAnchorView.getContext());
+        } else {
+            // 1st time request permission
+            ActivityCompat.requestPermissions(
+                    mActivity, new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+        }
+    }
+
     private void showDeclareGeoModal(String[] countries) {
         showBraveRewardsOnboardingModal();
         if (mBraveRewardsOnboardingModalView != null) {
@@ -984,9 +1000,15 @@ public class BraveRewardsPanel
             btnContinue.setOnClickListener((new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (countrySpinner != null) {
-                        mBraveRewardsNativeWorker.CreateRewardsWallet(
-                                sortedCountryMap.get(countrySpinner.getSelectedItem().toString()));
+                    if (BravePermissionUtils.hasPermission(mAnchorView.getContext(),
+                                PermissionConstants.NOTIFICATION_PERMISSION)) {
+                        if (countrySpinner != null) {
+                            mBraveRewardsNativeWorker.CreateRewardsWallet(sortedCountryMap.get(
+                                    countrySpinner.getSelectedItem().toString()));
+                        }
+                    } else {
+                        // else request notification permission
+                        requestNotificationPermission();
                     }
                 }
             }));

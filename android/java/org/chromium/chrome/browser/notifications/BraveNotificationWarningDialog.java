@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.notifications;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -45,6 +46,22 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     private TextView mTitleTextView;
     private TextView mDescriptionTextView;
     private Button mPrimaryButton;
+    private int mLaunchedFrom;
+
+    public interface DismissListener {
+        void onDisMiss();
+    }
+    private DismissListener mListener;
+    public void setDismissListener(DismissListener listener) {
+        mListener = listener;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mListener != null && mLaunchedFrom == FROM_LAUNCHED_BRAVE_ACTIVITY)
+            mListener.onDisMiss();
+    }
 
     public static BraveNotificationWarningDialog newInstance(int launchedFrom) {
         BraveNotificationWarningDialog fragment = new BraveNotificationWarningDialog();
@@ -108,10 +125,10 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
 
     private void updateTitleDescriptionText(View view) {
         if (getArguments() != null) {
-            int launchedFrom = getArguments().getInt(LAUNCHED_FROM);
-            if (launchedFrom == FROM_LAUNCHED_BRAVE_ACTIVITY) {
+            mLaunchedFrom = getArguments().getInt(LAUNCHED_FROM);
+            if (mLaunchedFrom == FROM_LAUNCHED_BRAVE_ACTIVITY) {
                 launchedFromBraveActivity(view);
-            } else if (launchedFrom == FROM_LAUNCHED_BRAVE_SETTINGS) {
+            } else if (mLaunchedFrom == FROM_LAUNCHED_BRAVE_SETTINGS) {
                 launchedFromBraveSettings(view);
                 view.findViewById(R.id.btn_not_now).setVisibility(View.GONE);
             }
