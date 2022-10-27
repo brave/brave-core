@@ -26,7 +26,7 @@ void SpeedreaderRenderFrameObserver::DidStartNavigation(
 void SpeedreaderRenderFrameObserver::DidClearWindowObject() {
   if (!is_speedreadable_url_ || !render_frame()->IsMainFrame())
     return;
-  SpeedreaderJSHandler::Install(render_frame());
+  SpeedreaderJSHandler::Install(weak_ptr_factory_.GetWeakPtr());
 }
 
 void SpeedreaderRenderFrameObserver::OnDestruct() {

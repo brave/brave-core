@@ -74,6 +74,8 @@ void JSEthereumProvider::SendResponse(
     bool force_json_response,
     base::Value formed_response,
     bool success) {
+  if (!render_frame())
+    return;
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -130,6 +132,9 @@ void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
 }
 
 bool JSEthereumProvider::EnsureConnected() {
+  if (!render_frame())
+    return false;
+
   if (!ethereum_provider_.is_bound()) {
     render_frame()->GetBrowserInterfaceBroker()->GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
@@ -510,6 +515,8 @@ v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked(v8::Isolate* isolate) {
 
 void JSEthereumProvider::FireEvent(const std::string& event,
                                    base::Value event_args) {
+  if (!render_frame())
+    return;
   base::Value::List args_list;
   args_list.Append(event);
   args_list.Append(std::move(event_args));
