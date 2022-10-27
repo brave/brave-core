@@ -161,6 +161,9 @@ public class ActivityShortcutManager: NSObject {
         newTabPageController.scrollToBraveNews()
       } else {
         let controller = BraveNewsSettingsViewController(dataSource: bvc.feedDataSource, ads: bvc.rewards.ads)
+        controller.newsSettingsDidDismiss = {
+          AppReviewManager.shared.isReviewRequired = true
+        }
         let container = UINavigationController(rootViewController: controller)
         bvc.present(container, animated: true)
       }

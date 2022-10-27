@@ -151,6 +151,8 @@ class BookmarkManager {
     } else {
       bookmarksAPI.createBookmark(withTitle: title ?? "", url: url)
     }
+    
+    AppReviewManager.shared.processSubCriteria(for: .numberOfBookmarks)
   }
 
   public func frc(parent: Bookmarkv2?) -> BookmarksV2FetchResultsController? {

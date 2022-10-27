@@ -19,6 +19,8 @@ public class BraveNewsSettingsViewController: TableViewController {
 
   private let feedDataSource: FeedDataSource
   private let ads: BraveAds?
+  
+  public var newsSettingsDidDismiss: (() -> Void)?
 
   public init(dataSource: FeedDataSource, ads: BraveAds?) {
     feedDataSource = dataSource
@@ -189,6 +191,11 @@ public class BraveNewsSettingsViewController: TableViewController {
   }
 
   @objc private func tappedDone() {
-    dismiss(animated: true)
+    dismiss(animated: true) {
+      if Preferences.Review.braveNewsCriteriaPassed.value {
+        self.newsSettingsDidDismiss?()
+        Preferences.Review.braveNewsCriteriaPassed.value = false
+      }
+    }
   }
 }

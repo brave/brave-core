@@ -65,10 +65,11 @@ extension Preferences {
   public final class Review {
     /// Application Launch Count (how many times the application has been launched)
     public static let launchCount = Option<Int>(key: "review.launch-count", default: 0)
-    /// Review Threshold (the total amount of launches needed for the next review to show up)
-    static let threshold = Option<Int>(key: "review.threshold", default: AppReview.firstThreshold)
-    /// Last Review Date
-    static let lastReviewDate = Option<Date?>(key: "review.last-date", default: nil)
+    public static let braveNewsCriteriaPassed = Option<Bool>(key: "review.brave-new.criteria", default: false)
+    public static let numberBookmarksAdded =  Option<Int>(key: "review.numberBookmarksAdded", default: 0)
+    public static let numberPlaylistItemsAdded =  Option<Int>(key: "review.numberPlaylistItemsAdded", default: 0)
+    public static let dateWalletConnectedToDapp =  Option<Date?>(key: "review.connect-dapp.wallet", default: nil)
+    public static let daysInUse = Option<[Date]>(key: "review.in-use", default: [])
   }
 
   final class BlockStats {
