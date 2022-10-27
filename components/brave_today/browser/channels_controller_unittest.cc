@@ -12,6 +12,7 @@
 
 #include "base/containers/contains.h"
 #include "base/run_loop.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
@@ -43,7 +44,10 @@ constexpr char kPublishersResponse[] = R"([
         "feed_url": "https://tp1.example.com/feed",
         "site_url": "https://tp1.example.com",
         "category": "One",
-        "channels": ["One", "Two", "Five"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["One", "Two", "Five"]
+        }],
         "enabled": false
     },
     {
@@ -52,7 +56,10 @@ constexpr char kPublishersResponse[] = R"([
         "feed_url": "https://tp2.example.com/feed",
         "site_url": "https://tp2.example.com",
         "category": "Two",
-        "channels": ["Two", "Five"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["Two", "Five"]
+        }],
         "enabled": true
     },
     {
@@ -61,7 +68,13 @@ constexpr char kPublishersResponse[] = R"([
         "feed_url": "https://tp3.example.com/feed",
         "site_url": "https://tp3.example.com",
         "category": "Four",
-        "channels": ["Two", "Four"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["One", "Four"],
+        }, {
+          "locale": "ja_JA",
+          "channels": ["One", "Five"],
+        }],
         "enabled": true
     }
 ])";
@@ -178,12 +191,16 @@ TEST_F(ChannelsControllerTest,
   auto channels = GetAllChannels();
   EXPECT_EQ(4u, channels.size());
   // In the en_US region, only the channel 'One' should be subscribed.
-  for (const auto& it : channels)
-    EXPECT_EQ(it.first == "One", base::Contains(it.second->subscribed_locales, "en_US"));
+  for (const auto& it : channels) {
+    EXPECT_EQ(it.first == "One",
+              base::Contains(it.second->subscribed_locales, "en_US"));
+  }
 
   // In the ja_JA region, only the channel 'Five' should be subscribed.
-  for (const auto& it : channels)
-    EXPECT_EQ(it.first == "Five", base::Contains(it.second->subscribed_locales, "ja_JA"));
+  for (const auto& it : channels) {
+    EXPECT_EQ(it.first == "Five",
+              base::Contains(it.second->subscribed_locales, "ja_JA"));
+  }
 }
 
 TEST_F(ChannelsControllerTest, CanToggleChannelSubscribed) {

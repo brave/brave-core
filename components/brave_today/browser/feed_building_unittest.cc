@@ -348,7 +348,8 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
   // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
-  // Publisher: NOT_MODIFIED, Channel: Not subscribed in any locale, Should not display.
+  // Publisher: NOT_MODIFIED, Channel: Not subscribed in any locale, Should not
+  // display.
   channel->subscribed_locales = {};
   EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
