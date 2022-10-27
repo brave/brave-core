@@ -320,9 +320,15 @@ public class BraveRewardsNativeWorker {
     }
 
     public void GetAllNotifications() {
-        synchronized(lock) {
-            BraveRewardsNativeWorkerJni.get().getAllNotifications(mNativeBraveRewardsNativeWorker);
-        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (lock) {
+                    BraveRewardsNativeWorkerJni.get().getAllNotifications(
+                            mNativeBraveRewardsNativeWorker);
+                }
+            }
+        });
     }
 
     public void DeleteNotification(String notification_id) {
