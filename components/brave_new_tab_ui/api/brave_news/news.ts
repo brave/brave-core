@@ -94,9 +94,9 @@ class BraveNewsApi {
     // update them, so the UI has instant feedback.
     let subscribedLocales = this.lastChannels[channelId]?.subscribedLocales ?? []
     if (subscribedLocales.includes(channelId)) {
-      subscribedLocales = subscribedLocales.filter(l => l === api.locale)
+      subscribedLocales = subscribedLocales.filter(l => l === this.locale)
     } else {
-      subscribedLocales.push(api.locale)
+      subscribedLocales.push(this.locale)
     }
 
     this.updateChannels({
@@ -108,7 +108,7 @@ class BraveNewsApi {
     })
 
     // Then, once we receive the actual update, apply it.
-    const { updated } = await this.controller.setChannelSubscribed(channelId, subscribed)
+    const { updated } = await this.controller.setChannelSubscribed(this.locale, channelId, subscribed)
     this.updateChannels({
       ...this.lastChannels,
       [channelId]: updated

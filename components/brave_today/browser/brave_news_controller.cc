@@ -188,19 +188,13 @@ void BraveNewsController::GetChannels(GetChannelsCallback callback) {
 }
 
 void BraveNewsController::SetChannelSubscribed(
+    const std::string& locale,
     const std::string& channel_id,
     bool subscribed,
     SetChannelSubscribedCallback callback) {
-  publishers_controller_.GetLocale(base::BindOnce(
-      [](ChannelsController* channels_controller, const std::string& channel_id,
-         bool subscribed, SetChannelSubscribedCallback callback,
-         const std::string& locale) {
-        auto result = channels_controller->SetChannelSubscribed(
-            locale, channel_id, subscribed);
-        std::move(callback).Run(std::move(result));
-      },
-      base::Unretained(&channels_controller_), channel_id, subscribed,
-      std::move(callback)));
+  auto result =
+      channels_controller_.SetChannelSubscribed(locale, channel_id, subscribed);
+  std::move(callback).Run(std::move(result));
 }
 
 void BraveNewsController::SubscribeToNewDirectFeed(

@@ -156,7 +156,7 @@ interface BraveNewsController {
   GetPublishers() => (map<string, Publisher> publishers);
   GetSuggestedPublisherIds() => (array<string> suggested_publisher_ids);
   GetChannels() => (map<string, Channel> channels);
-  SetChannelSubscribed(string channel_id, bool subscribed) => (Channel updated);
+  SetChannelSubscribed(string locale, string channel_id, bool subscribed) => (Channel updated);
   // Look at the incoming url and return results
   //  - if it's a feed url then return the feed item
   //  - if it's an html document url, then search for related feed items in the html
