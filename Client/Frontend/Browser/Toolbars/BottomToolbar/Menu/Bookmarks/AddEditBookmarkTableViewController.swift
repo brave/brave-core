@@ -6,6 +6,7 @@ import UIKit
 import CoreData
 import Data
 import Shared
+import BraveShared
 import os.log
 
 class AddEditBookmarkTableViewController: UITableViewController {
@@ -356,7 +357,11 @@ class AddEditBookmarkTableViewController: UITableViewController {
     if let nc = navigationController, nc.children.count > 1 {
       navigationController?.popViewController(animated: true)
     } else {
-      dismiss(animated: true)
+      dismiss(animated: true) {
+        // Handle App Rating
+        // Check for review condition after adding a bookmark
+        AppReviewManager.shared.handleAppReview(for: self)
+      }
     }
   }
 

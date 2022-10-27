@@ -6,6 +6,7 @@
 import Foundation
 import BraveUI
 import Shared
+import BraveShared
 import UIKit
 
 public class BraveNewsAddSourceResultsViewController: UITableViewController {
@@ -74,6 +75,7 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
     }
     sourcesAdded?(selectedLocations)
     dismiss(animated: true)
+    Preferences.Review.braveNewsCriteriaPassed.value = true
   }
 
   @objc private func tappedCancel() {

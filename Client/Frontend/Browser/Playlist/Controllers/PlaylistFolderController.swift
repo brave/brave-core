@@ -10,6 +10,7 @@ import CoreData
 import Data
 import SwiftUI
 import Shared
+import BraveShared
 import os.log
 
 private enum Section: Int, CaseIterable {
@@ -93,7 +94,11 @@ class PlaylistFolderController: UIViewController {
 
   @objc
   private func onDonePressed(_ button: UIBarButtonItem) {
-    self.dismiss(animated: true)
+    dismiss(animated: true) {
+      // Handle App Rating
+      // User finished viewing the playlist folder view.
+      AppReviewManager.shared.handleAppReview(for: self)
+    }
   }
   
   private func section(from rawValue: Int) -> Section? {

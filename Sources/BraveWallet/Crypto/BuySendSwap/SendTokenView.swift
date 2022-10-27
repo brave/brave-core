@@ -18,6 +18,8 @@ struct SendTokenView: View {
 
   @ScaledMetric private var length: CGFloat = 16.0
   
+  @Environment(\.appRatingRequestAction) private var appRatingRequest
+  
   var completion: ((_ success: Bool) -> Void)?
   var onDismiss: () -> Void
 
@@ -159,6 +161,9 @@ struct SendTokenView: View {
                   amount: sendTokenStore.sendAmount
                 ) { success, _ in
                   isShowingError = !success
+                  if success {
+                    appRatingRequest?()
+                  }
                   completion?(success)
                 }
               },

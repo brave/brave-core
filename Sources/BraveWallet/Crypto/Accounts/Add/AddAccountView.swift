@@ -21,7 +21,8 @@ struct AddAccountView: View {
   @State private var selectedCoin: BraveWallet.CoinType?
   @ScaledMetric(relativeTo: .body) private var privateKeyFieldHeight: CGFloat = 140.0
   @Environment(\.presentationMode) @Binding var presentationMode
-  
+  @Environment(\.appRatingRequestAction) private var appRatingRequest
+
   @ScaledMetric private var iconSize = 40.0
   private let maxIconSize: CGFloat = 80.0
   
@@ -36,6 +37,7 @@ struct AddAccountView: View {
       keyringStore.addPrimaryAccount(accountName, coin: coin) { success in
         if success {
           onCreate?()
+          appRatingRequest?()
           presentationMode.dismiss()
         }
       }
@@ -43,6 +45,7 @@ struct AddAccountView: View {
       let handler: (Bool, String) -> Void = { success, _ in
         if success {
           onCreate?()
+          appRatingRequest?()
           presentationMode.dismiss()
         } else {
           failedToImport = true

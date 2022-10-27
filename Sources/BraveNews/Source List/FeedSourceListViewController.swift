@@ -105,6 +105,7 @@ class FeedSourceListViewController: UITableViewController {
         title: Strings.BraveNews.enableAll, style: .default,
         handler: { [weak self] _ in
           self?.toggleCategory(enabled: true)
+          Preferences.Review.braveNewsCriteriaPassed.value = true
         }))
     alert.addAction(
       UIAlertAction(
@@ -183,6 +184,8 @@ extension FeedSourceListViewController {
       self.dataSource.toggleSource(source, enabled: isOn)
       // Update local state
       self.customizedSources[source.id] = isOn
+      
+      Preferences.Review.braveNewsCriteriaPassed.value = isOn
     }
     return cell
   }

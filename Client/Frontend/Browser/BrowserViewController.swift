@@ -64,6 +64,7 @@ public class BrowserViewController: UIViewController {
   private var setupTasksCompleted: Bool = false
 
   private var privateModeCancellable: AnyCancellable?
+  private var appReviewCancelable: AnyCancellable?
   var onPendingRequestUpdatedCancellable: AnyCancellable?
 
   /// Custom Search Engine
@@ -539,6 +540,10 @@ public class BrowserViewController: UIViewController {
       ContentBlockerManager.shared.startTimer()
       await AdBlockEngineManager.shared.startTimer()
     }
+    
+    // Eliminate the older usage days
+    // Used in App Rating criteria
+    AppReviewManager.shared.processMainCriteria(for: .daysInUse)
   }
 
   private func setupAdsNotificationHandler() {
@@ -840,14 +845,6 @@ public class BrowserViewController: UIViewController {
     let dropInteraction = UIDropInteraction(delegate: self)
     view.addInteraction(dropInteraction)
 
-    if AppConstants.buildChannel.isPublic && AppReview.shouldRequestReview() {
-      // Request Review when the main-queue is free or on the next cycle.
-      DispatchQueue.main.async {
-        guard let windowScene = self.currentScene else { return }
-        SKStoreReviewController.requestReview(in: windowScene)
-      }
-    }
-
     LegacyBookmarksHelper.restore_1_12_Bookmarks() {
       Logger.module.info("Bookmarks from old database were successfully restored")
     }
@@ -890,6 +887,18 @@ public class BrowserViewController: UIViewController {
           Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
         }
         self?.bottomBarKeyboardBackground.backgroundColor = self?.statusBarOverlay.backgroundColor
+      })
+    
+    appReviewCancelable = AppReviewManager.shared
+      .$isReviewRequired
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] isReviewRequired in
+        guard let self = self else { return }
+        if isReviewRequired {
+          // Handle App Rating
+          // User made changes to the Brave News sources (tapped close)
+          AppReviewManager.shared.handleAppReview(for: self)
+        }
       })
     
     Preferences.General.nightModeEnabled.objectWillChange
@@ -1907,8 +1916,13 @@ public class BrowserViewController: UIViewController {
       // We don't allow to have 2 same favorites.
       if !FavoritesHelper.isAlreadyAdded(url) {
         activities.append(
-          AddToFavoritesActivity() { [weak tab] in
+          AddToFavoritesActivity() { [weak self, weak tab] in
+            guard let self = self else { return }
+            
             FavoritesHelper.add(url: url, title: tab?.displayTitle)
+            // Handle App Rating
+            // Check for review condition after adding a favorite
+            AppReviewManager.shared.handleAppReview(for: self)
           })
       }
 

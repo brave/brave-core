@@ -21,6 +21,8 @@ public struct CryptoView: View {
 
   var openWalletURLAction: ((URL) -> Void)?
   
+  var appRatingRequestAction: (() -> Void)?
+  
   var faviconRenderer: WalletFaviconRenderer
 
   public init(
@@ -242,6 +244,11 @@ public struct CryptoView: View {
       \.openWalletURLAction,
       .init(action: { [openWalletURLAction] url in
         openWalletURLAction?(url)
+      }))
+    .environment(
+      \.appRatingRequestAction,
+      .init(action: { [appRatingRequestAction] in
+        appRatingRequestAction?()
       }))
     .environment(
       \.faviconRenderer,

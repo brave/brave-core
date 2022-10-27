@@ -16,6 +16,10 @@ public protocol BraveWalletDelegate: AnyObject {
   ///
   /// This will be called after the wallet UI is dismissed
   func openWalletURL(_ url: URL)
+  /// Requests App Review pop-up after send - swap and add account
+  ///
+  /// This will be called after the wallet UI is dismissed
+  func requestAppReview()
   /// Present Wallet with or without dismiss the Wallet Panel depends on the value of the `presentWalletWithContext`
   func walletPanel(_ panel: WalletPanelHostingController, presentWalletWithContext: PresentingContext, walletStore: WalletStore)
 }
@@ -72,6 +76,11 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
     rootView.openWalletURLAction = { [unowned self] url in
       (presentingViewController ?? self).dismiss(animated: true) {
         self.delegate?.openWalletURL(url)
+      }
+    }
+    rootView.appRatingRequestAction = { [unowned self] in
+      (presentingViewController ?? self).dismiss(animated: true) {
+        self.delegate?.requestAppReview()
       }
     }
     cancellable = walletStore.keyringStore.$defaultKeyring

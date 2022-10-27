@@ -455,7 +455,11 @@ class PlaylistListViewController: UIViewController {
 
   @objc
   private func onExit(_ button: UIBarButtonItem) {
-    dismiss(animated: true, completion: nil)
+    dismiss(animated: true) {
+      // Handle App Rating
+      // User finished viewing the playlist list view.
+      AppReviewManager.shared.handleAppReview(for: self)
+    }
   }
 
   @objc

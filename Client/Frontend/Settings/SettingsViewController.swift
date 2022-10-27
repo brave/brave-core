@@ -235,6 +235,9 @@ class SettingsViewController: TableViewController {
         text: Strings.BraveNews.braveNews,
         selection: {
           let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource, ads: self.rewards?.ads)
+          todaySettings.newsSettingsDidDismiss = {
+            AppReviewManager.shared.isReviewRequired = true
+          }
           self.navigationController?.pushViewController(todaySettings, animated: true)
         }, image: UIImage(named: "settings-brave-today", in: .module, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )

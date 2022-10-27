@@ -138,8 +138,14 @@ class NewTabPageViewController: UIViewController {
         }
         
         let host = UIHostingController(rootView: PrivacyReportsManager.prepareView())
-        host.rootView.onDismiss = { [weak host] in
-          host?.dismiss(animated: true)
+        host.rootView.onDismiss = { [weak self, weak host] in
+          host?.dismiss(animated: true) {
+            guard let self = self else { return }
+            
+            // Handle App Rating
+            // User finished viewing the privacy report (tapped close)
+            AppReviewManager.shared.handleAppReview(for: self)
+          }
         }
         
         host.rootView.openPrivacyReportsUrl = { [weak self] in
@@ -742,6 +748,9 @@ class NewTabPageViewController: UIViewController {
 
   @objc private func tappedBraveNewsSettings() {
     let controller = BraveNewsSettingsViewController(dataSource: feedDataSource, ads: rewards.ads)
+    controller.newsSettingsDidDismiss = {
+      AppReviewManager.shared.isReviewRequired = true
+    }
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
   }

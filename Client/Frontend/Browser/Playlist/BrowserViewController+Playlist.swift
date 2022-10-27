@@ -356,6 +356,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
             self.openInPlaylistActivityItem = (enabled: true, item: item)
             self.addToPlayListActivityItem = nil
 
+            AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
             PlaylistItem.addItem(item, cachedData: nil) { [weak self] in
               guard let self = self else { return }
               PlaylistManager.shared.autoDownload(item: item)
@@ -383,6 +384,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
       openInPlaylistActivityItem = (enabled: true, item: item)
       addToPlayListActivityItem = nil
 
+      AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
       PlaylistItem.addItem(item, cachedData: nil) { [weak self] in
         guard let self = self else { return }
         PlaylistManager.shared.autoDownload(item: item)

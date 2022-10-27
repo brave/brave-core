@@ -171,7 +171,8 @@ struct SwapCryptoView: View {
   @State private var isSwapDisclaimerVisible: Bool = false
 
   @Environment(\.openWalletURLAction) private var openWalletURL
-  
+  @Environment(\.appRatingRequestAction) private var appRatingRequest
+
   var completion: ((_ success: Bool) -> Void)?
   var onDismiss: () -> Void
 
@@ -407,6 +408,9 @@ struct SwapCryptoView: View {
             isLoading: swapTokensStore.isMakingTx,
             action: {
               swapTokensStore.prepareSwap { success in
+                if (success){
+                  appRatingRequest?()
+                }
                 completion?(success)
               }
             },
