@@ -45,14 +45,17 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
     new_tab_data.title = kTabTitle;
     new_tab_data.last_committed_url = GURL(kTabUrl);
     GetTabStrip(browser())->AddTabAt(1, new_tab_data);
-
+    EXPECT_TRUE(false) << "Before simulate hover tab\n";
     SimulateHoverTab(browser(), 1);
+    EXPECT_TRUE(false) << "After simulate hover tab\n";
   }
 
   bool VerifyUi() override {
+    EXPECT_TRUE(false) << "Entered VerifyUi\n";
     if (!DialogBrowserTest::VerifyUi())
       return false;
 
+    EXPECT_TRUE(false) << "VerifyUi 0x1\n";
     TabStrip* const tab_strip = GetTabStrip(browser());
     Tab* const tab = tab_strip->tab_at(1);
     if (!tab) {
@@ -60,14 +63,18 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
       return false;
     }
 
+    EXPECT_TRUE(false) << "VerifyUi 0x2\n";
     TabHoverCardBubbleView* const hover_card = GetHoverCard(tab_strip);
     if (!hover_card) {
       NOTREACHED();
       return false;
     }
 
+    EXPECT_TRUE(false) << "VerifyUi 0x3\n";
     EXPECT_EQ(kTabTitle, hover_card->GetTitleTextForTesting());
+    EXPECT_TRUE(false) << "VerifyUi 0x4\n";
     EXPECT_EQ(kTabDomain, hover_card->GetDomainTextForTesting());
+    EXPECT_TRUE(false) << "VerifyUi 0x5\n";
     return true;
   }
 };
