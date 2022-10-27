@@ -113,6 +113,9 @@ TEST_F(SuggestionsControllerTest, VisitedSourcesAreSuggested) {
   const auto& history = MakeQueryResults(
       {"https://example.com", "https://foo.com", "https://example.com"});
   auto suggestions = GetSuggestedPublisherIds(publishers, history);
+
+  // Publisher 1 & publisher 3 have been visited. However, P1 was visited more
+  // times, so we should suggest it first.
   EXPECT_EQ(2u, suggestions.size());
   EXPECT_EQ("1", suggestions[0]);
   EXPECT_EQ("3", suggestions[1]);
@@ -128,6 +131,9 @@ TEST_F(SuggestionsControllerTest, SubscribedVisitedSourcesAreNotSuggested) {
   const auto& history = MakeQueryResults(
       {"https://example.com", "https://foo.com", "https://example.com"});
   auto suggestions = GetSuggestedPublisherIds(publishers, history);
+
+  // Publisher 1 is subscribed, so we shouldn't suggest it. However, we've
+  // visited publisher 3, so we should suggest that.
   EXPECT_EQ(1u, suggestions.size());
   EXPECT_EQ("3", suggestions[0]);
 }
@@ -142,6 +148,9 @@ TEST_F(SuggestionsControllerTest, DisabledVisitedSourcesAreNotSuggested) {
   const auto& history = MakeQueryResults(
       {"https://example.com", "https://foo.com", "https://example.com"});
   auto suggestions = GetSuggestedPublisherIds(publishers, history);
+
+  // P1 was disabled, so we shouldn't suggest it. P3 was visited so it should be
+  // suggested.
   EXPECT_EQ(1u, suggestions.size());
   EXPECT_EQ("3", suggestions[0]);
 }
@@ -160,6 +169,9 @@ TEST_F(SuggestionsControllerTest, SimilarSourcesAreSuggested) {
                          {.publisher_id = "4", .score = 0.9}}}});
 
   auto suggestions = GetSuggestedPublisherIds(publishers, {});
+
+  // P1 is enabled so we should suggest sources similar to it. P4 is more
+  // similar to it than P2, so we should suggest it first.
   EXPECT_EQ(2u, suggestions.size());
   EXPECT_EQ("4", suggestions[0]);
   EXPECT_EQ("2", suggestions[1]);
@@ -179,6 +191,10 @@ TEST_F(SuggestionsControllerTest, SimilarToVisitedSourcesAreSuggested) {
                          {.publisher_id = "4", .score = 0.9}}}});
 
   auto suggestions = GetSuggestedPublisherIds(publishers, history);
+
+  // P1 has been visited and is not subscribed, so we should suggest it first.
+  // P4 and P2 are similar to P1 so they should be suggested too (P4 is more
+  // similar to P1, so suggest it first.)
   EXPECT_EQ(3u, suggestions.size());
   EXPECT_EQ("1", suggestions[0]);
   EXPECT_EQ("4", suggestions[1]);
@@ -199,11 +215,15 @@ TEST_F(SuggestionsControllerTest, VisitWeightingAltersSimilarToVisitWeighting) {
                        {"2", {{.publisher_id = "4", .score = 0.4}}}});
 
   auto suggestions = GetSuggestedPublisherIds(publishers, history);
+
+  // P1 has been visited many times, so sources similar to it should be ranked
+  // higher than sources similar to P2.
   EXPECT_EQ(4u, suggestions.size());
-  EXPECT_EQ("1", suggestions[0]);
-  EXPECT_EQ("2", suggestions[1]);
-  EXPECT_EQ("3", suggestions[2]);
-  EXPECT_EQ("4", suggestions[3]);
+  EXPECT_EQ("1", suggestions[0]);  // Visited many times
+  EXPECT_EQ("2", suggestions[1]);  // Visited, but just once
+  EXPECT_EQ("3",
+            suggestions[2]);  // Similar to P1 (which was visited many times).
+  EXPECT_EQ("4", suggestions[3]);  // Similar to P2 (which was visited once)
 }
 
 TEST_F(SuggestionsControllerTest,
@@ -226,9 +246,11 @@ TEST_F(SuggestionsControllerTest,
   EXPECT_EQ(3u, suggestions.size());
   // Note: Don't care about order here - we're going to be tweaking the weights
   // and we don't want the test to fail all the time.
-  EXPECT_TRUE(base::Contains(suggestions, "1"));
-  EXPECT_TRUE(base::Contains(suggestions, "2"));
-  EXPECT_TRUE(base::Contains(suggestions, "4"));
+  EXPECT_TRUE(base::Contains(suggestions, "1"));  // Visited
+  EXPECT_TRUE(
+      base::Contains(suggestions, "2"));  // Similar to P3 (which is subscribed)
+  EXPECT_TRUE(
+      base::Contains(suggestions, "4"));  // Similar to P1 (which was visited)
 }
 
 TEST_F(SuggestionsControllerTest, SourcesFromDifferentLocalesAreNotSuggested) {
