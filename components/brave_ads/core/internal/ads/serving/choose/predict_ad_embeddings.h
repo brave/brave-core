@@ -23,7 +23,7 @@
 namespace ads {
 
 template <typename T>
-absl::optional<T> PredictAdUsingEmbeddings(
+absl::optional<T> MaybePredictAdUsingEmbeddings(
     const targeting::UserModelInfo& user_model,
     const std::vector<T>& creative_ads) {
   DCHECK(!creative_ads.empty());

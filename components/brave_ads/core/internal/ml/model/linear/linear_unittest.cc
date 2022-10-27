@@ -16,26 +16,20 @@ namespace brave_ads::ml {
 
 class BatAdsLinearTest : public UnitTestBase {};
 
-std::vector<float> g_data_1 = {1.0, 0.0, 0.0};
-std::vector<float> g_data_2 = {0.0, 1.0, 0.0};
-std::vector<float> g_data_3 = {0.0, 0.0, 1.0};
-std::vector<float> g_data_4 = {0.0, 1.0, 2.0};
-std::vector<float> g_data_5 = {1.0, 1.0, 1.0};
-
 TEST_F(BatAdsLinearTest, ThreeClassesPredictionTest) {
   // Arrange
   const std::map<std::string, VectorData> weights = {
-      {"class_1", VectorData(g_data_1)},
-      {"class_2", VectorData(g_data_2)},
-      {"class_3", VectorData(g_data_3)}};
+      {"class_1", VectorData({1.0, 0.0, 0.0})},
+      {"class_2", VectorData({0.0, 1.0, 0.0})},
+      {"class_3", VectorData({0.0, 0.0, 1.0})}};
 
   const std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
 
   const model::Linear linear(weights, biases);
-  const VectorData class_1_vector_data(g_data_1);
-  const VectorData class_2_vector_data(g_data_2);
-  const VectorData class_3_vector_data(g_data_4);
+  const VectorData class_1_vector_data({1.0, 0.0, 0.0});
+  const VectorData class_2_vector_data({0.0, 1.0, 0.0});
+  const VectorData class_3_vector_data({0.0, 1.0, 2.0});
 
   // Act
   const PredictionMap predictions_1 = linear.Predict(class_1_vector_data);
@@ -56,15 +50,15 @@ TEST_F(BatAdsLinearTest, ThreeClassesPredictionTest) {
 TEST_F(BatAdsLinearTest, BiasesPredictionTest) {
   // Arrange
   const std::map<std::string, VectorData> weights = {
-      {"class_1", VectorData(g_data_1)},
-      {"class_2", VectorData(g_data_2)},
-      {"class_3", VectorData(g_data_3)}};
+      {"class_1", VectorData({1.0, 0.0, 0.0})},
+      {"class_2", VectorData({0.0, 1.0, 0.0})},
+      {"class_3", VectorData({0.0, 0.0, 1.0})}};
 
   const std::map<std::string, double> biases = {
       {"class_1", 0.5}, {"class_2", 0.25}, {"class_3", 1.0}};
 
   const model::Linear linear_biased(weights, biases);
-  const VectorData avg_vector(g_data_5);
+  const VectorData avg_vector({1.0, 1.0, 1.0});
 
   // Act
   const PredictionMap predictions = linear_biased.Predict(avg_vector);

@@ -121,7 +121,7 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test,
          const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
-        EXPECT_TRUE(!creative_ads.empty());
+        EXPECT_TRUE(creative_ads.empty());
       });
 }
 

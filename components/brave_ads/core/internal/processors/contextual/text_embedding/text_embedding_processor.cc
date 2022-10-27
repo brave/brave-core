@@ -53,7 +53,7 @@ void TextEmbedding::Process(const std::string& html) {
 
   const std::string text = SanitizeHtml(html);
   if (text.empty()) {
-    BLOG(1, "No text available for embedding");
+    BLOG(1, "Not enough words to embed text");
     return;
   }
 

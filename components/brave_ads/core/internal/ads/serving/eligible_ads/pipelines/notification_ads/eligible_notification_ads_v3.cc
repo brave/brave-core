@@ -94,7 +94,7 @@ void EligibleAdsV3::GetEligibleAds(
       // Fallback to prediction v2 if no embeddings are available
       creative_ad = PredictAd(user_model, ad_events, eligible_creative_ads);
     } else {
-      creative_ad = PredictAdUsingEmbeddings<CreativeNotificationAdInfo>(
+      creative_ad = MaybePredictAdUsingEmbeddings<CreativeNotificationAdInfo>(
           user_model, eligible_creative_ads);
     }
 
@@ -119,9 +119,18 @@ CreativeNotificationAdList EligibleAdsV3::FilterCreativeAds(
     return {};
   }
 
+  CreativeNotificationAdList filtered_creative_ads;
+
+  std::copy_if(creative_ads.cbegin(), creative_ads.cend(),
+               std::back_inserter(filtered_creative_ads),
+               [](const CreativeAdInfo& creative_ad) {
+                 return !creative_ad.embedding.empty();
+               });
+
   ExclusionRules exclusion_rules(ad_events, subdivision_targeting_,
                                  anti_targeting_resource_, browsing_history);
-  return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
+  return ApplyExclusionRules(filtered_creative_ads, last_served_ad_,
+                             &exclusion_rules);
 }
 
 }  // namespace ads::notification_ads
