@@ -107,6 +107,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   brave::ToggleVerticalTabStrip(browser());
+  browser_non_client_frame_view()->Layout();
 
 #if BUILDFLAG(IS_LINUX)
   browser()->profile()->GetPrefs()->SetBoolean(prefs::kUseCustomChromeFrame,

@@ -315,7 +315,7 @@ bool BraveBrowserView::GetTabStripVisible() const {
 
 #if BUILDFLAG(IS_WIN)
 bool BraveBrowserView::GetSupportsTitle() const {
-  if (tabs::features::ShouldShowVerticalTabs(browser()))
+  if (tabs::features::SupportsVerticalTabs(browser()))
     return true;
 
   return BrowserView::GetSupportsTitle();
