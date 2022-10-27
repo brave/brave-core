@@ -4,17 +4,21 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // utils
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { PageSelectors } from '../../selectors'
+
+// hooks
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
 
 // actions
 import { WalletPageActions } from '../../actions'
 
 // types
-import { PageState, WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // components
 import { BackButton } from '../../../components/shared'
@@ -37,8 +41,12 @@ export const BackupWallet = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
-  const mnemonic = useSelector(({ page }: { page: PageState }) => (page?.mnemonic || ''))
-  const recoveryPhrase = React.useMemo(() => (mnemonic || '').split(' '), [mnemonic])
+  const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
+  const recoveryPhrase = React.useMemo(() => {
+    return mnemonic
+      ? mnemonic.split(' ')
+      : []
+  }, [mnemonic])
 
   // state
   const [backupStep, setBackupStep] = React.useState<number>(0)
@@ -117,7 +125,11 @@ export const BackupWallet = (props: Props) => {
           onCancel={onCancel}
           isBackupTermsAccepted={backupTerms}
           isOnboarding={isOnboarding}
-          recoveryPhraseLength={recoveryPhrase.length}
+          recoveryPhraseLength={
+            recoveryPhrase.length > 0
+              ? recoveryPhrase.length
+              : 12
+          }
         />
       }
       {backupStep === 1 &&
