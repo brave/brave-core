@@ -18,16 +18,11 @@ import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
   getFormattedTransactionTransferedValue,
-  getGasFee,
   getTransactionErc721TokenId,
-  getTransactionGas,
-  getTransactionGasLimit,
   getTransactionNonce,
   getTransactionToAddress,
   findTransactionToken,
-  isEIP1559Transaction,
   isFilecoinTransaction,
-  isMissingGasLimit,
   isSendingToKnownTokenContractAddress,
   isSolanaTransaction,
   isSwapTransaction,
@@ -38,13 +33,16 @@ import {
   getTransactionApprovalTargetAddress,
   getIsTxApprovalUnlimited,
   isSolanaSplTransaction,
-  getTransactionTokenSymbol
+  getTransactionTokenSymbol,
+  parseTransactionFeesWithoutPrices,
+  isSolanaDappTransaction
 } from '../utils/tx-utils'
 
 // Options
 import { makeNetworkAsset } from '../options/asset-options'
 import { getBalance } from '../utils/balance-utils'
 import { getAddressLabel } from '../utils/account-utils'
+import { getCoinFromTxDataUnion } from './network-utils'
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -70,6 +68,7 @@ export interface ParsedTransactionBase extends ParsedTransactionFees {
   hasContractAddressError: boolean
   hash: string
   hasSameAddressError: boolean
+  id: string
   insufficientFunds?: boolean
   insufficientFundsForGas?: boolean
   intent: string
@@ -85,23 +84,30 @@ export interface ParsedTransactionBase extends ParsedTransactionFees {
   symbol: string
   value: string
   valueExact: string
-
+  weiValue: string
+  coinType: BraveWallet.CoinType
   isFilTransaction: boolean
   isSolanaTransaction: boolean
+  isSolanaDappTransaction: boolean
   isSPLTransaction: boolean
   accountAddress?: string
+  txType: BraveWallet.TransactionType
+  token?: BraveWallet.BlockchainToken
 }
 
 export interface ParsedTransaction extends ParsedTransactionBase {
   // Token approvals
   approvalTarget?: string
+  approvalTargetLabel?: string
   isApprovalUnlimited?: boolean
 
   // Swap
   sellToken?: BraveWallet.BlockchainToken
   sellAmount?: Amount
+  sellAmountWei?: Amount
   buyToken?: BraveWallet.BlockchainToken
   minBuyAmount?: Amount
+  minBuyAmountWei?: Amount
 
   // Solana Dapp Instructions
   instructions?: TypedSolanaInstructionWithParams[]
@@ -111,38 +117,6 @@ export interface ParsedTransactionWithFiatPrices extends ParsedTransaction, Pars
   fiatValue: Amount
   fiatTotal: Amount
   formattedNativeCurrencyTotal: string
-}
-
-export const parseTransactionFeesWithoutPrices = (
-  transactionInfo: BraveWallet.TransactionInfo,
-  solFeeEstimates?: SolFeeEstimates
-) => {
-  const gasLimit = getTransactionGasLimit(transactionInfo)
-  const {
-    gasPrice,
-    maxFeePerGas,
-    maxPriorityFeePerGas
-  } = getTransactionGas(transactionInfo)
-
-  const gasFee = getGasFee(transactionInfo, solFeeEstimates)
-
-  return {
-    gasLimit: Amount.normalize(gasLimit),
-    gasPrice: Amount.normalize(gasPrice),
-    maxFeePerGas: Amount.normalize(maxFeePerGas),
-    maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
-    gasFee,
-    isEIP1559Transaction: isEIP1559Transaction(transactionInfo),
-    isMissingGasLimit: isSolanaTransaction(transactionInfo)
-      ? undefined
-      : isMissingGasLimit(gasLimit),
-    gasPremium: isFilecoinTransaction(transactionInfo)
-      ? new Amount(transactionInfo.txDataUnion.filTxData.gasPremium).format()
-      : '',
-    gasFeeCap: isFilecoinTransaction(transactionInfo)
-      ? new Amount(transactionInfo.txDataUnion.filTxData.gasFeeCap).format()
-      : ''
-  }
 }
 
 export function parseTransactionWithoutPrices ({
@@ -170,7 +144,9 @@ export function parseTransactionWithoutPrices ({
     buyToken,
     sellToken,
     buyAmount,
-    sellAmount
+    sellAmount,
+    sellAmountWei,
+    buyAmountWei
   } = tx.txType === BraveWallet.TransactionType.ETHSwap
     ? getETHSwapTranasactionBuyAndSellTokens({
         nativeAsset,
@@ -181,18 +157,19 @@ export function parseTransactionWithoutPrices ({
         buyToken: undefined,
         sellToken: undefined,
         buyAmount: new Amount(''),
-        sellAmount: new Amount('')
+        sellAmount: new Amount(''),
+        sellAmountWei: new Amount(''),
+        buyAmountWei: new Amount('')
       }
 
   const {
     value,
     valueExact,
-    gweiValue
+    weiValue
   } = getFormattedTransactionTransferedValue({
     tx: tx,
     txNetwork: transactionNetwork,
     token,
-    buyToken,
     sellToken
   })
 
@@ -220,8 +197,14 @@ export function parseTransactionWithoutPrices ({
     BraveWallet.TransactionType.ERC721SafeTransferFrom
   ].includes(tx.txType) ? token : undefined
 
+  const approvalTarget = getTransactionApprovalTargetAddress(tx)
+
   return {
-    approvalTarget: getTransactionApprovalTargetAddress(tx),
+    accountAddress: account?.address,
+    approvalTarget,
+    approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
+    buyToken,
+    coinType: getCoinFromTxDataUnion(tx.txDataUnion),
     createdTime: tx.createdTime,
     decimals: transactionNetwork?.decimals ?? 18, // TODO: make function for this logic
     erc721BlockchainToken: erc721Token,
@@ -234,34 +217,39 @@ export function parseTransactionWithoutPrices ({
     hasContractAddressError: isSendingToKnownTokenContractAddress(tx, toAddress, combinedTokensList),
     hash: tx.txHash,
     hasSameAddressError: transactionHasSameAddressError(tx),
-    insufficientFunds: accountHasInsufficientFundsForTransaction({ account, accountNativeBalance, accountTokenBalance, gasFee, nativeAsset, tokensList: combinedTokensList, tx, transactionNetwork, transferedValue: gweiValue }),
+    id: tx.id,
+    instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
+    insufficientFunds: accountHasInsufficientFundsForTransaction({ account, accountNativeBalance, accountTokenBalance, gasFee, nativeAsset, tokensList: combinedTokensList, tx, transactionNetwork, transferedValue: weiValue }),
     insufficientFundsForGas: accountHasInsufficientFundsForGas({ accountNativeBalance, gasFee }),
     intent: getTransactionIntent(tx, transactionNetwork, combinedTokensList),
+    isApprovalUnlimited: getIsTxApprovalUnlimited(tx),
     isEIP1559Transaction,
+    isFilTransaction: isFilecoinTransaction(tx),
     isMissingGasLimit,
+    isSolanaDappTransaction: isSolanaDappTransaction(tx),
+    isSolanaTransaction: isSolanaTransaction(tx),
+    isSPLTransaction: isSolanaSplTransaction(tx),
     isSwap: isSwapTransaction(tx),
     maxFeePerGas,
     maxPriorityFeePerGas,
+    minBuyAmount: buyAmount,
+    minBuyAmountWei: buyAmountWei,
     network: transactionNetwork,
     nonce,
     originInfo: tx.originInfo,
     recipient: toAddress,
     recipientLabel: getAddressLabel(toAddress, accounts),
+    sellAmount,
+    sellAmountWei,
+    sellToken,
     sender: tx.fromAddress,
     senderLabel: getAddressLabel(tx.fromAddress, accounts),
     status: tx.txStatus,
     symbol: getTransactionTokenSymbol({ tx, txNetwork: transactionNetwork, sellToken, token }),
+    txType: tx.txType,
     value,
     valueExact,
-    buyToken,
-    instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
-    isApprovalUnlimited: getIsTxApprovalUnlimited(tx),
-    minBuyAmount: buyAmount,
-    sellAmount,
-    sellToken,
-    isFilTransaction: isFilecoinTransaction(tx),
-    isSolanaTransaction: isSolanaTransaction(tx),
-    isSPLTransaction: isSolanaSplTransaction(tx),
-    accountAddress: account?.address
+    weiValue,
+    token
   }
 }

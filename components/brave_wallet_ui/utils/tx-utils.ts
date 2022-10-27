@@ -27,6 +27,7 @@ import { makeNetworkAsset } from '../options/asset-options'
 import { findTokenByContractAddress } from './asset-utils'
 import { getNetworkFromTXDataUnion } from './network-utils'
 import { ParsedTransaction } from './transaction-parser'
+import { computeFiatAmount, findAssetPrice } from './pricing-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -289,10 +290,9 @@ export function getTransactionTransferedValue ({
   tx: BraveWallet.TransactionInfo
   token?: BraveWallet.BlockchainToken
   sellToken?: BraveWallet.BlockchainToken
-  buyToken?: BraveWallet.BlockchainToken
   txNetwork: BraveWallet.NetworkInfo
 }): {
-  gwei: Amount
+  wei: Amount
   normalized: Amount
 } {
   // ERC20 Approvals
@@ -302,10 +302,10 @@ export function getTransactionTransferedValue ({
     tx.txType === BraveWallet.TransactionType.ERC20Transfer
   ) {
     const [, amount] = tx.txArgs
-    const gwei = new Amount(amount)
+    const wei = new Amount(amount)
     return {
-      gwei,
-      normalized: gwei.divideByDecimals(token?.decimals ?? 18)
+      wei,
+      normalized: wei.divideByDecimals(token?.decimals ?? 18)
     }
   }
 
@@ -315,7 +315,7 @@ export function getTransactionTransferedValue ({
   ) {
     // can only send 1 ERC721 NFT at a time
     return {
-      gwei: new Amount('1').multiplyByDecimals(18),
+      wei: new Amount('1').multiplyByDecimals(18),
       normalized: new Amount('1')
     }
   }
@@ -324,10 +324,10 @@ export function getTransactionTransferedValue ({
   if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
     // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
     const [, sellAmountArg] = tx.txArgs
-    const gwei = new Amount(sellAmountArg || tx.txDataUnion.ethTxData1559?.baseData.value || '')
+    const wei = new Amount(sellAmountArg || tx.txDataUnion.ethTxData1559?.baseData.value || '')
     return {
-      gwei,
-      normalized: gwei.divideByDecimals(sellToken?.decimals ?? txNetwork.decimals)
+      wei,
+      normalized: wei.divideByDecimals(sellToken?.decimals ?? txNetwork.decimals)
     }
   }
 
@@ -344,44 +344,44 @@ export function getTransactionTransferedValue ({
       .plus(lamportsMovedFromInstructions)
 
     return {
-      gwei: transferedValue,
+      wei: transferedValue,
       normalized: transferedValue.divideByDecimals(txNetwork.decimals)
     }
   }
 
   if (isSolanaSplTransaction(tx)) {
-    const gwei = new Amount(tx.txDataUnion.solanaTxData.amount.toString() ?? '')
+    const wei = new Amount(tx.txDataUnion.solanaTxData.amount.toString() ?? '')
     return {
-      gwei,
-      normalized: gwei.divideByDecimals(token?.decimals ?? 9)
+      wei,
+      normalized: wei.divideByDecimals(token?.decimals ?? 9)
     }
   }
 
   if (isSolanaTransaction(tx)) {
-    const gwei = new Amount(tx.txDataUnion.solanaTxData.lamports.toString() ?? '')
+    const wei = new Amount(tx.txDataUnion.solanaTxData.lamports.toString() ?? '')
     return {
-      gwei,
-      normalized: gwei.divideByDecimals(token?.decimals ?? txNetwork.decimals)
+      wei,
+      normalized: wei.divideByDecimals(token?.decimals ?? txNetwork.decimals)
     }
   }
 
   if (isFilecoinTransaction(tx)) {
-    const gwei = new Amount(tx.txDataUnion.filTxData.value || '')
+    const wei = new Amount(tx.txDataUnion.filTxData.value || '')
     return {
-      gwei,
-      normalized: gwei.divideByDecimals(txNetwork.decimals)
+      wei,
+      normalized: wei.divideByDecimals(txNetwork.decimals)
     }
   }
 
   // Other
-  const gwei = new Amount(
+  const wei = new Amount(
     tx.txDataUnion.ethTxData1559?.baseData.value || // EVM (1559)
     tx.txDataUnion.ethTxData?.value || // EVM
     ''
   )
   return {
-    gwei,
-    normalized: gwei.divideByDecimals(txNetwork.decimals)
+    wei: wei,
+    normalized: wei.divideByDecimals(txNetwork.decimals)
   }
 }
 
@@ -438,24 +438,21 @@ export function getFormattedTransactionTransferedValue ({
   tx,
   txNetwork,
   token,
-  buyToken,
   sellToken
 }: {
   tx: BraveWallet.TransactionInfo
   txNetwork: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
   sellToken?: BraveWallet.BlockchainToken | undefined
-  buyToken?: BraveWallet.BlockchainToken | undefined
 }): {
   value: string
   valueExact: string
-  gweiValue: string
+  weiValue: string
 } {
-  const { normalized: transferedValue, gwei } = getTransactionTransferedValue({
+  const { normalized: transferedValue, wei } = getTransactionTransferedValue({
     tx,
     txNetwork,
     token,
-    buyToken,
     sellToken
   })
 
@@ -464,7 +461,7 @@ export function getFormattedTransactionTransferedValue ({
   return {
     value,
     valueExact,
-    gweiValue: gwei.value?.toString() || ''
+    weiValue: wei.value?.toString() || ''
   }
 }
 
@@ -683,7 +680,9 @@ export const getETHSwapTranasactionBuyAndSellTokens = ({
   buyToken: BraveWallet.BlockchainToken
   sellToken: BraveWallet.BlockchainToken
   buyAmount: Amount
+  buyAmountWei: Amount
   sellAmount: Amount
+  sellAmountWei: Amount
 } => {
   if (tx.txType !== BraveWallet.TransactionType.ETHSwap) {
     throw new Error(
@@ -712,14 +711,23 @@ export const getETHSwapTranasactionBuyAndSellTokens = ({
     ? nativeAsset
     : fillTokens[0]
 
-  const sellAmount = new Amount(
+  const sellAmountWei = new Amount(
     sellAmountArg || tx.txDataUnion.ethTxData1559?.baseData.value || ''
-  ).divideByDecimals(sellToken.decimals)
+  )
+  const sellAmount = sellAmountWei.divideByDecimals(sellToken.decimals)
 
-  const buyAmount = new Amount(minBuyAmountArg)
+  const buyAmountWei = new Amount(minBuyAmountArg)
+  const buyAmount = buyAmountWei
     .divideByDecimals(buyToken.decimals)
 
-  return { buyToken, sellToken, sellAmount, buyAmount }
+  return {
+    buyToken,
+    sellToken,
+    sellAmount,
+    buyAmount,
+    buyAmountWei,
+    sellAmountWei
+  }
 }
 
 export const getTransactionErc721TokenId = (
@@ -853,13 +861,382 @@ export const addAccountAddressToTransaction = <T extends BraveWallet.Transaction
   return tx as T & TransactionInfoWithAccountAddress
 }
 
-export const getTransactionApprovalTargetAddress = (tx: BraveWallet.TransactionInfo): string | undefined => {
+export const parseTransactionFeesWithoutPrices = (
+  transactionInfo: BraveWallet.TransactionInfo,
+  solFeeEstimates?: SolFeeEstimates
+) => {
+  const gasLimit = getTransactionGasLimit(transactionInfo)
+  const {
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas
+  } = getTransactionGas(transactionInfo)
+
+  const gasFee = getGasFee(transactionInfo, solFeeEstimates)
+
+  return {
+    gasLimit: Amount.normalize(gasLimit),
+    gasPrice: Amount.normalize(gasPrice),
+    maxFeePerGas: Amount.normalize(maxFeePerGas),
+    maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
+    gasFee,
+    isEIP1559Transaction: isEIP1559Transaction(transactionInfo),
+    isMissingGasLimit: isSolanaTransaction(transactionInfo)
+      ? undefined
+      : isMissingGasLimit(gasLimit),
+    gasPremium: isFilecoinTransaction(transactionInfo)
+      ? new Amount(transactionInfo.txDataUnion.filTxData.gasPremium).format()
+      : '',
+    gasFeeCap: isFilecoinTransaction(transactionInfo)
+      ? new Amount(transactionInfo.txDataUnion.filTxData.gasFeeCap).format()
+      : ''
+  }
+}
+
+export const getTransactionFiatValues = ({
+  networkSpotPrice,
+  solFeeEstimates,
+  spotPrices,
+  tokensList,
+  tx,
+  txNetwork,
+  token
+}: {
+  tx: BraveWallet.TransactionInfo
+  txNetwork: BraveWallet.NetworkInfo
+  solFeeEstimates: SolFeeEstimates | undefined
+  networkSpotPrice: string
+  spotPrices: BraveWallet.AssetPrice[]
+  tokensList: BraveWallet.BlockchainToken[]
+  token?: BraveWallet.BlockchainToken
+}): {
+  fiatValue: Amount
+  fiatTotal: Amount
+  formattedNativeCurrencyTotal: string
+  gasFeeFiat: string
+} => {
+  const gasFee = getGasFee(tx, solFeeEstimates)
+
+  // return
+  const gasFeeFiat = new Amount(gasFee)
+    .divideByDecimals(txNetwork.decimals)
+    .times(networkSpotPrice)
+    .formatAsFiat()
+
+  const { txType } = tx
+
+  const {
+    sellAmountWei,
+    sellToken
+  } = txType === BraveWallet.TransactionType.ETHSwap
+    ? getETHSwapTranasactionBuyAndSellTokens({
+        nativeAsset: makeNetworkAsset(txNetwork),
+        tokensList,
+        tx
+      })
+    : {
+      sellAmountWei: undefined,
+      sellToken: undefined
+    }
+
+  const {
+    wei: value,
+    normalized: normalizedValue
+  } = getTransactionTransferedValue({
+    tx,
+    txNetwork,
+    sellToken,
+    token
+  })
+
+  if (isSolanaDappTransaction(tx)) {
+    const transferedAmountFiat = computeFiatAmount(
+      spotPrices,
+      {
+        decimals: txNetwork.decimals,
+        symbol: txNetwork.symbol,
+        value: normalizedValue.value?.toString() || ''
+      }
+    )
+
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(transferedAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: transferedAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: transferedAmountFiat
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  if (txType === BraveWallet.TransactionType.ERC20Transfer) {
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const sendAmountFiat = normalizedValue.times(price)
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(sendAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sendAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: sendAmountFiat
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  if (
+    txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    // The owner of the ERC721 must not be confused with the
+    // caller (fromAddress).
+    const totalAmountFiat = gasFeeFiat
+
+    return {
+      gasFeeFiat,
+      fiatValue: Amount.zero(), // Display NFT values in the future
+      fiatTotal: new Amount(totalAmountFiat),
+      formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  // approve(address spender, uint256 amount) → bool
+  if (txType === BraveWallet.TransactionType.ERC20Approve) {
+    const totalAmountFiat = new Amount(gasFeeFiat)
+    return {
+      gasFeeFiat,
+      fiatValue: Amount.zero(),
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: Amount.zero()
+        .formatAsAsset(2, txNetwork.symbol)
+    }
+  }
+
+  if (isSolanaSplTransaction(tx)) {
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const sendAmountFiat = normalizedValue.times(price)
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(sendAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sendAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: sendAmountFiat.div(networkSpotPrice).formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
+  if (txType === BraveWallet.TransactionType.ETHSwap) {
+    const sellAmountFiat = computeFiatAmount(
+      spotPrices,
+      {
+        decimals: sellToken?.decimals ?? txNetwork.decimals,
+        symbol: sellToken?.symbol || '',
+        value: sellAmountWei?.format() || ''
+      }
+    )
+
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(sellAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sellAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: sellAmountFiat.div(networkSpotPrice).formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  // DEFAULT
+  const sendAmountFiat = computeFiatAmount(spotPrices, {
+    decimals: txNetwork.decimals,
+    symbol: txNetwork.symbol,
+    value: value.value?.toString() || ''
+  })
+
+  const totalAmountFiat = new Amount(gasFeeFiat)
+    .plus(sendAmountFiat)
+
+  return {
+    gasFeeFiat,
+    fiatValue: sendAmountFiat,
+    fiatTotal: totalAmountFiat,
+    formattedNativeCurrencyTotal: sendAmountFiat.div(networkSpotPrice).formatAsAsset(6, txNetwork.symbol)
+  }
+}
+
+export const getParsedTransactionFiatValues = ({
+  networkSpotPrice,
+  spotPrices,
+  tx
+}: {
+  tx: ParsedTransaction
+  networkSpotPrice: string
+  spotPrices: BraveWallet.AssetPrice[]
+}): {
+  fiatValue: Amount
+  fiatTotal: Amount
+  formattedNativeCurrencyTotal: string
+  gasFeeFiat: string
+} => {
+  const gasFee = tx.gasFee
+  const txNetwork = tx.network
+  const token = tx?.token
+
+  // return
+  const gasFeeFiat = new Amount(gasFee)
+    .divideByDecimals(txNetwork.decimals)
+    .times(networkSpotPrice)
+    .formatAsFiat()
+
+  const { txType } = tx
+
+  const {
+    sellAmountWei,
+    sellToken,
+    weiValue,
+    value
+  } = tx
+
+  const normalizedValueAmount = new Amount(value)
+
+  if (tx.isSolanaDappTransaction) {
+    const transferedAmountFiat = computeFiatAmount(
+      spotPrices,
+      {
+        decimals: txNetwork.decimals,
+        symbol: txNetwork.symbol,
+        value: weiValue || ''
+      }
+    )
+
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(transferedAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: transferedAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: transferedAmountFiat
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  if (txType === BraveWallet.TransactionType.ERC20Transfer) {
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const sendAmountFiat = normalizedValueAmount.times(price)
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(sendAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sendAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: sendAmountFiat
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  if (
+    txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    // The owner of the ERC721 must not be confused with the
+    // caller (fromAddress).
+    const totalAmountFiat = gasFeeFiat
+
+    return {
+      gasFeeFiat,
+      fiatValue: Amount.zero(), // Display NFT values in the future
+      fiatTotal: new Amount(totalAmountFiat),
+      formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  // approve(address spender, uint256 amount) → bool
+  if (txType === BraveWallet.TransactionType.ERC20Approve) {
+    const totalAmountFiat = new Amount(gasFeeFiat)
+    return {
+      gasFeeFiat,
+      fiatValue: Amount.zero(),
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: Amount.zero()
+        .formatAsAsset(2, txNetwork.symbol)
+    }
+  }
+
+  if (tx.isSPLTransaction) {
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const sendAmountFiat = normalizedValueAmount.times(price)
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(sendAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sendAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: sendAmountFiat.div(networkSpotPrice).formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
+  if (txType === BraveWallet.TransactionType.ETHSwap) {
+    const sellAmountFiat = computeFiatAmount(
+      spotPrices,
+      {
+        decimals: sellToken?.decimals ?? txNetwork.decimals,
+        symbol: sellToken?.symbol || '',
+        value: sellAmountWei?.format() || ''
+      }
+    )
+
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(sellAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sellAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: sellAmountFiat.div(networkSpotPrice).formatAsAsset(6, txNetwork.symbol)
+    }
+  }
+
+  // DEFAULT
+  const sendAmountFiat = computeFiatAmount(spotPrices, {
+    decimals: txNetwork.decimals,
+    symbol: txNetwork.symbol,
+    value: weiValue || ''
+  })
+
+  const totalAmountFiat = new Amount(gasFeeFiat)
+    .plus(sendAmountFiat)
+
+  return {
+    gasFeeFiat,
+    fiatValue: sendAmountFiat,
+    fiatTotal: totalAmountFiat,
+    formattedNativeCurrencyTotal: sendAmountFiat.div(networkSpotPrice).formatAsAsset(6, txNetwork.symbol)
+  }
+}
+
+export const getTransactionApprovalTargetAddress = (tx: BraveWallet.TransactionInfo): string => {
   if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
     const [spender] = tx.txArgs // (address spender, uint256 amount)
     return spender
   }
 
-  return undefined
+  return ''
 }
 
 export const getIsTxApprovalUnlimited = (tx: BraveWallet.TransactionInfo): boolean => {
@@ -901,4 +1278,17 @@ export function getTransactionTokenSymbol ({
   }
 
   return txNetwork.symbol
+}
+
+export const getLocaleKeyForTxStatus = (status: BraveWallet.TransactionStatus) => {
+  switch (status) {
+    case BraveWallet.TransactionStatus.Unapproved: return 'braveWalletTransactionStatusUnapproved'
+    case BraveWallet.TransactionStatus.Approved: return 'braveWalletTransactionStatusApproved'
+    case BraveWallet.TransactionStatus.Rejected: return 'braveWalletTransactionStatusRejected'
+    case BraveWallet.TransactionStatus.Submitted: return 'braveWalletTransactionStatusSubmitted'
+    case BraveWallet.TransactionStatus.Confirmed: return 'braveWalletTransactionStatusConfirmed'
+    case BraveWallet.TransactionStatus.Error: return 'braveWalletTransactionStatusError'
+    case BraveWallet.TransactionStatus.Dropped: return 'braveWalletTransactionStatusDropped'
+    default: return ''
+  }
 }
