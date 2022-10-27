@@ -38,6 +38,12 @@ Channels ChannelsController::GetChannelsFromPublishers(
   for (const auto& it : publishers) {
     for (const auto& locale_info : it.second->locales) {
       for (const auto& channel_id : locale_info->channels) {
+        if (!channels.contains(channel_id)) {
+          auto channel = mojom::Channel::New();
+          channel->channel_name = channel_id;
+          channels[channel_id] = std::move(channel);
+        }
+
         auto& channel = channels[channel_id];
 
         // We already know we're subscribed to this channel in this locale.
@@ -45,7 +51,6 @@ Channels ChannelsController::GetChannelsFromPublishers(
           continue;
         }
 
-        channel->channel_name = channel_id;
         auto subscribed_in_locale =
             channel_subscriptions
                 .FindBoolByDottedPath(locale_info->locale + "." + channel_id)
