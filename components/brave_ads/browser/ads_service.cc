@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
@@ -33,11 +33,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
                                 0);
 
-  registry->RegisterIntegerPref(
-      prefs::kSupportedCountryCodesSchemaVersion,
-      prefs::kSupportedCountryCodesSchemaVersionNumber);
-
-  registry->RegisterIntegerPref(prefs::kVersion, prefs::kCurrentVersionNumber);
+  registry->RegisterIntegerPref(prefs::kVersion, ads::kCurrentVersionNumber);
 
   registry->RegisterBooleanPref(ads::prefs::kEnabled, false);
 

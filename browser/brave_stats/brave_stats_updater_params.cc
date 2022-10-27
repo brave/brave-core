@@ -13,7 +13,7 @@
 #include "base/system/sys_info.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
