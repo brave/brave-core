@@ -343,10 +343,11 @@ import XCTest
     
     let (result, error) = await solProviderHelper.signTransaction(args: args)
     XCTAssertNil(error)
-    guard let result = result as? String, let serializedTx = MojoBase.Value(jsonString: result)?.listValue?.compactMap({ $0.intValue }) else {
+    guard let result = result as? [NSNumber] else {
       XCTFail("Unexpected result to signTransaction request")
       return
     }
+    let serializedTx = result.compactMap({ Int32($0.intValue) })
     XCTAssertEqual(serializedTx, kSerializedTx)
   }
   
@@ -410,11 +411,11 @@ import XCTest
     
     let (result, error) = await solProviderHelper.signAllTransactions(args: args)
     XCTAssertNil(error)
-    guard let result = result as? String,
-          let serializedTxs = MojoBase.Value(jsonString: result)?.listValue?.compactMap({ $0.listValue?.compactMap({ $0.intValue }) }) else {
+    guard let result = result as? [[NSNumber]] else {
       XCTFail("Unexpected result to signAllTransactions request")
       return
     }
+    let serializedTxs = result.compactMap({ $0.compactMap({ Int32($0.intValue) }) })
     XCTAssertEqual(serializedTxs, [kSerializedTx])
   }
   
