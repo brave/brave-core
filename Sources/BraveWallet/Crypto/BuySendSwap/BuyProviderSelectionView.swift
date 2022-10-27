@@ -64,6 +64,7 @@ struct BuyProviderSelectionView: View {
           }
           .padding(.vertical, 10)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
