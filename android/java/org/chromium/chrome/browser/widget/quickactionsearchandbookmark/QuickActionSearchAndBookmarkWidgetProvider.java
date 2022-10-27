@@ -23,8 +23,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
@@ -370,18 +371,34 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         }
 
         public static void writeWidgetTiles(List<WidgetTile> widgetTileList) {
+            JSONArray widgetTilesJsonArray = new JSONArray();
+            for (WidgetTile widgetTile : widgetTileList) {
+                if (widgetTile.toJSONObject() != null) {
+                    widgetTilesJsonArray.put(widgetTile.toJSONObject());
+                }
+            }
             SharedPreferencesManager.getInstance().writeString(
-                    TILES, new Gson().toJson(widgetTileList));
+                    TILES, widgetTilesJsonArray.toString());
             updateAppWidgets();
         }
 
         public static List<WidgetTile> readWidgetTiles() {
             String widgetTilesJson = SharedPreferencesManager.getInstance().readString(TILES, null);
-            if (widgetTilesJson != null) {
-                Type type = TypeToken.getParameterized(List.class, WidgetTile.class).getType();
-                return new Gson().fromJson(widgetTilesJson, type);
+            List<WidgetTile> widgetTileList = new ArrayList();
+            widgetTilesJson = "{\"widgetTiles\":" + widgetTilesJson + "}";
+            try {
+                JSONObject result = new JSONObject(widgetTilesJson);
+                JSONArray widgetTilesJsonArray = result.getJSONArray("widgetTiles");
+                for (int i = 0; i < widgetTilesJsonArray.length(); i++) {
+                    JSONObject widgetTileJsonObject = widgetTilesJsonArray.getJSONObject(i);
+                    WidgetTile widgetTile = new WidgetTile(widgetTileJsonObject.getString("title"),
+                            new GURL(widgetTileJsonObject.getString("gurl")));
+                    widgetTileList.add(widgetTile);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            return new ArrayList<>();
+            return widgetTileList;
         }
     }
 
@@ -413,6 +430,18 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         public void parseTile(Tile tile) {
             this.gurl = tile.getUrl();
             this.title = tile.getTitle();
+        }
+
+        public JSONObject toJSONObject() {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("title", getTitle());
+                jsonObject.put("gurl", getUrl());
+                return jsonObject;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override
