@@ -26,6 +26,7 @@ interface BraveNewsContext {
   subscribedPublisherIds: string[]
   // Publishers to suggest to the user.
   suggestedPublisherIds: string[]
+  updateSuggestedPublisherIds: () => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -36,7 +37,8 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   filteredPublisherIds: [],
   subscribedPublisherIds: [],
   channels: {},
-  suggestedPublisherIds: []
+  suggestedPublisherIds: [],
+  updateSuggestedPublisherIds: () => {}
 })
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
@@ -53,7 +55,7 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     return () => api.removeChannelsListener(handler)
   }, [])
 
-  const updateSuggestedPublishers = useCallback(async () => {
+  const updateSuggestedPublisherIds = useCallback(async () => {
     setSuggestedPublisherIds([])
     const { suggestedPublisherIds } = await api.controller.getSuggestedPublisherIds()
     setSuggestedPublisherIds(suggestedPublisherIds)
@@ -83,10 +85,6 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     sortedPublishers.filter(isPublisherEnabled).map(p => p.publisherId),
     [sortedPublishers])
 
-  React.useEffect(() => {
-    updateSuggestedPublishers()
-  }, [])
-
   const context = useMemo<BraveNewsContext>(() => ({
     customizePage,
     setCustomizePage,
@@ -95,8 +93,9 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     suggestedPublisherIds,
     sortedPublishers,
     filteredPublisherIds,
-    subscribedPublisherIds
-  }), [customizePage, channels, publishers])
+    subscribedPublisherIds,
+    updateSuggestedPublisherIds
+  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}
