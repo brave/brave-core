@@ -47,8 +47,6 @@ extern const char kBraveWalletP3ALastUnlockTime[] =
     "brave.wallet.p3a_last_unlock_time";
 extern const char kBraveWalletP3AUsedSecondDay[] =
     "brave.wallet.p3a_used_second_day";
-extern const char kBraveWalletWasOnboardingShown[] =
-    "brave.wallet.was_onboarding_shown";
 const char kBraveWalletKeyringEncryptionKeysMigrated[] =
     "brave.wallet.keyring_encryption_keys_migrated";
 

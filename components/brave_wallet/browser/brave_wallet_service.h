@@ -31,14 +31,9 @@ class PrefService;
 
 namespace brave_wallet {
 
-constexpr char kBraveWalletWeeklyHistogramName[] =
-    "Brave.Wallet.UsageDaysInWeek";
-constexpr char kBraveWalletMonthlyHistogramName[] =
-    "Brave.Wallet.UsageMonthly.2";
-constexpr char kBraveWalletNewUserReturningHistogramName[] =
-    "Brave.Wallet.NewUserReturning";
-constexpr char kBraveWalletOnboardingConvHistogramName[] =
-    "Brave.Wallet.OnboardingConversion";
+extern const char kBraveWalletWeeklyHistogramName[];
+extern const char kBraveWalletMonthlyHistogramName[];
+extern const char kBraveWalletNewUserReturningHistogramName[];
 
 class KeyringService;
 class JsonRpcService;
@@ -221,8 +216,6 @@ class BraveWalletService : public KeyedService,
 
   void RemovePrefListenersForTests();
 
-  void OnOnboardingShown() override;
-
   BraveWalletP3A* GetBraveWalletP3A();
 
  private:
@@ -258,7 +251,6 @@ class BraveWalletService : public KeyedService,
   void WriteStatsToHistogram(base::Time wallet_last_used,
                              base::Time first_p3a_report,
                              base::Time last_p3a_report,
-                             bool was_onboarding_shown,
                              unsigned use_days_in_week);
 
   void OnGetImportInfo(

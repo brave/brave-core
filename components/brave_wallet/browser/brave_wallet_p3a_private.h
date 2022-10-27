@@ -16,6 +16,8 @@ class BraveWalletP3APrivate : public mojom::BraveWalletP3A {
 
   void ReportEthereumProvider(
       mojom::EthereumProviderType provider_type) override;
+  void ReportOnboardingAction(
+      mojom::OnboardingAction onboarding_action) override;
 };
 
 }  // namespace brave_wallet

@@ -61,6 +61,5 @@ export const getNFTMetadata = createAction<BraveWallet.BlockchainToken>('getNFTM
 export const setIsFetchingNFTMetadata = createAction<boolean>('setIsFetchingNFTMetadata')
 export const updateNFTMetadata = createAction<NFTMetadataReturnType | undefined>('updateNFTMetadata')
 export const updateNftMetadataError = createAction<string | undefined>('updateNftMetadataError')
-export const onOnboardingShown = createAction('onOnboardingShown')
 export const agreeToWalletTerms = createAction('agreeToWalletTerms')
 export const selectCoinMarket = createAction<BraveWallet.CoinMarket | undefined>('selectCoinMarket')

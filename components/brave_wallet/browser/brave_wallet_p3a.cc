@@ -15,10 +15,18 @@
 
 namespace brave_wallet {
 
+const char kDefaultWalletHistogramName[] = "Brave.Wallet.DefaultWalletSetting";
+const char kDefaultSolanaWalletHistogramName[] =
+    "Brave.Wallet.DefaultSolanaWalletSetting";
+const char kKeyringCreatedHistogramName[] = "Brave.Wallet.KeyringCreated";
+const char kOnboardingConversionHistogramName[] =
+    "Brave.Wallet.OnboardingConversion.2";
+const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider";
+
 // Has the Wallet keyring been created?
 // 0) No, 1) Yes
 void RecordKeyringCreated(mojom::KeyringInfoPtr keyring_info) {
-  UMA_HISTOGRAM_BOOLEAN("Brave.Wallet.KeyringCreated",
+  UMA_HISTOGRAM_BOOLEAN(kKeyringCreatedHistogramName,
                         static_cast<int>(keyring_info->is_keyring_created));
 }
 
@@ -29,8 +37,8 @@ void RecordDefaultEthereumWalletSetting(PrefService* pref_service) {
   const int max_bucket =
       static_cast<int>(brave_wallet::mojom::DefaultWallet::kMaxValue);
   auto default_wallet = pref_service->GetInteger(kDefaultEthereumWallet);
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Wallet.DefaultWalletSetting",
-                             default_wallet, max_bucket);
+  UMA_HISTOGRAM_EXACT_LINEAR(kDefaultWalletHistogramName, default_wallet,
+                             max_bucket);
 }
 
 // What is the DefaultSolanaWalletSetting?
@@ -40,8 +48,8 @@ void RecordDefaultSolanaWalletSetting(PrefService* pref_service) {
   const int max_bucket =
       static_cast<int>(brave_wallet::mojom::DefaultWallet::kMaxValue);
   auto default_wallet = pref_service->GetInteger(kDefaultSolanaWallet);
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Wallet.DefaultSolanaWalletSetting",
-                             default_wallet, max_bucket);
+  UMA_HISTOGRAM_EXACT_LINEAR(kDefaultSolanaWalletHistogramName, default_wallet,
+                             max_bucket);
 }
 
 BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
@@ -59,6 +67,12 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
 
 BraveWalletP3A::~BraveWalletP3A() = default;
 
+mojo::PendingRemote<mojom::BraveWalletP3A> BraveWalletP3A::MakeRemote() {
+  mojo::PendingRemote<mojom::BraveWalletP3A> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
 void BraveWalletP3A::Bind(
     mojo::PendingReceiver<mojom::BraveWalletP3A> receiver) {
   receivers_.Add(this, std::move(receiver));
@@ -66,7 +80,13 @@ void BraveWalletP3A::Bind(
 
 void BraveWalletP3A::ReportEthereumProvider(
     mojom::EthereumProviderType provider_type) {
-  UMA_HISTOGRAM_ENUMERATION("Brave.Wallet.EthProvider", provider_type);
+  UMA_HISTOGRAM_ENUMERATION(kEthProviderHistogramName, provider_type);
+}
+
+void BraveWalletP3A::ReportOnboardingAction(
+    mojom::OnboardingAction onboarding_action) {
+  UMA_HISTOGRAM_ENUMERATION(kOnboardingConversionHistogramName,
+                            onboarding_action);
 }
 
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {

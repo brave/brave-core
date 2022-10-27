@@ -240,7 +240,8 @@ interface PageHandlerFactory {
                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                    pending_receiver<BraveWalletService> brave_wallet_service);
+                    pending_receiver<BraveWalletService> brave_wallet_service,
+                    pending_receiver<BraveWalletP3A> brave_wallet_p3a);
 
 };
 
@@ -1311,15 +1312,21 @@ interface BraveWalletService {
 
   // Resets the keyring and the related preferences
   Reset();
-
-  // Called when onboarding is shown (for analytics)
-  OnOnboardingShown();
 };
 
 // For reporting wallet related P3A metrics.
 interface BraveWalletP3A {
   // Called when the ethereum provider type is evaluated after page load.
   ReportEthereumProvider(EthereumProviderType provider_type);
+
+  // Called when a Wallet onboarding action is performed.
+  ReportOnboardingAction(OnboardingAction onboarding_action);
+};
+
+enum OnboardingAction {
+  Shown = 0,
+  CreatedWallet = 1,
+  RestoredWallet = 2
 };
 
 enum EthereumProviderType {

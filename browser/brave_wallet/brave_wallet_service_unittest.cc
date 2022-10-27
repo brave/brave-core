@@ -2178,30 +2178,4 @@ TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
       kBraveWalletNewUserReturningHistogramName, 1, 2);
 }
 
-TEST_F(BraveWalletServiceUnitTest, OnboardingConversionMetric) {
-  histogram_tester_->ExpectTotalCount(kBraveWalletOnboardingConvHistogramName,
-                                      0);
-
-  service_->OnOnboardingShown();
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
-                                       0, 1);
-
-  task_environment_.FastForwardBy(base::Days(1));
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
-                                       0, 2);
-
-  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
-                                       1, 1);
-
-  task_environment_.FastForwardBy(base::Days(1));
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
-                                       1, 2);
-}
-
 }  // namespace brave_wallet

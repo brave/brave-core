@@ -86,7 +86,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
     "Brave.Wallet.NewUserReturning",
-    "Brave.Wallet.OnboardingConversion",
+    "Brave.Wallet.OnboardingConversion.2",
     "Brave.Wallet.UsageDaysInWeek",
     "Brave.Wallet.UsageMonthly.2",
     "Brave.Welcome.InteractionStatus",

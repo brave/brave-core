@@ -104,7 +104,9 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
         filecoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
-        brave_wallet_service_receiver) {
+        brave_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
+        brave_wallet_p3a_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -130,8 +132,11 @@ void WalletPageUI::CreatePageHandler(
       profile, std::move(solana_tx_manager_proxy_receiver));
   brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
       profile, std::move(filecoin_tx_manager_proxy_receiver));
-  brave_wallet::BraveWalletServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_service_receiver));
+  brave_wallet::BraveWalletService* wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+  wallet_service->Bind(std::move(brave_wallet_service_receiver));
+  wallet_service->GetBraveWalletP3A()->Bind(
+      std::move(brave_wallet_p3a_receiver));
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {
