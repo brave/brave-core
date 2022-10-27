@@ -56,7 +56,7 @@ export default function Discover () {
 function Home () {
   const [showingAllCategories, setShowingAllCategories] = React.useState(false)
   const channels = useChannels()
-  const { filteredPublisherIds } = useBraveNews()
+  const { filteredPublisherIds, updateSuggestedPublisherIds } = useBraveNews()
 
   const visibleChannelIds = React.useMemo(() => channels
     // If we're showing all channels, there's no end to the slice.
@@ -66,6 +66,9 @@ function Home () {
       : DEFAULT_NUM_CATEGORIES)
     .map(c => c.channelName),
     [channels, showingAllCategories])
+
+  // When we mount this component, update the suggested publisher ids.
+  React.useEffect(() => { updateSuggestedPublisherIds() }, [])
 
   return (
     <>
