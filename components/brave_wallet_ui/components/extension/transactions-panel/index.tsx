@@ -32,7 +32,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   selectedAccountAddress: string
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }

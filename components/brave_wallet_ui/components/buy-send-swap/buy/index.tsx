@@ -81,6 +81,10 @@ export const Buy = ({
   }, [selectedAsset, wyreAssetOptions, rampAssetOptions, sardineAssetOptions])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
+    if (!selectedNetwork) {
+      return false
+    }
+
     // Test networks are not supported in buy tab
     if (SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())) {
       return false
@@ -93,6 +97,11 @@ export const Buy = ({
 
   // methods
   const onSubmitBuy = React.useCallback(async (buyOption: BraveWallet.OnRampProvider) => {
+    // Do nothing if selected network is not populated yet
+    if (!selectedNetwork) {
+      return
+    }
+
     const asset = buyOption === BraveWallet.OnRampProvider.kRamp
       ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
       : selectedAsset

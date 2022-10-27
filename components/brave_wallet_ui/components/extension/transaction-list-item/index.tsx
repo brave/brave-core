@@ -45,7 +45,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   transaction: BraveWallet.TransactionInfo
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }

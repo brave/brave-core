@@ -20,7 +20,8 @@ import {
 import Amount from '../../../../utils/amount'
 import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
-import { getTokensCoinType, getTokensNetwork } from '../../../../utils/network-utils'
+import { getTokensNetwork } from '../../../../utils/network-utils'
+import { getBalance } from '../../../../utils/balance-utils'
 import useExplorer from '../../../../common/hooks/explorer'
 import {
   CommandMessage,
@@ -55,7 +56,7 @@ import AccountsAndTransactionsList from './components/accounts-and-transctions-l
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
 // Hooks
-import { useBalance, usePricing, useTransactionParser, useMultiChainBuyAssets } from '../../../../common/hooks'
+import { usePricing, useTransactionParser, useMultiChainBuyAssets } from '../../../../common/hooks'
 import {
   useSafePageSelector,
   useSafeWalletSelector,
@@ -149,15 +150,13 @@ export const PortfolioAsset = (props: Props) => {
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
 
   // custom hooks
-  const getAccountBalance = useBalance(networkList)
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const tokensCoinType = getTokensCoinType(networkList, asset)
-    const amounts = accounts.filter((account) => account.coin === tokensCoinType).map((account) =>
-      getAccountBalance(account, asset))
+    const amounts = accounts.filter((account) => account.coin === asset.coin).map((account) =>
+      getBalance(account, asset))
 
     // If a user has not yet created a FIL or SOL account,
     // we return 0 until they create an account
@@ -170,7 +169,7 @@ export const PortfolioAsset = (props: Props) => {
         ? new Amount(a).plus(b).format()
         : ''
     })
-  }, [accounts, networkList, getAccountBalance])
+  }, [accounts])
 
   const tokensWithCoingeckoId = React.useMemo(() => {
     return fullTokenList.filter(token => token.coingeckoId !== '')
@@ -191,7 +190,7 @@ export const PortfolioAsset = (props: Props) => {
     if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
       return allAssets.filter((asset) =>
         asset.asset.chainId === selectedNetworkFilter.chainId &&
-        getTokensCoinType(networkList, asset.asset) === selectedNetworkFilter.coin
+        asset.asset.coin === selectedNetworkFilter.coin
       )
     }
     // Filter by all other assets by chainId's
@@ -293,6 +292,9 @@ export const PortfolioAsset = (props: Props) => {
   }, [portfolioPriceHistory, fullPortfolioFiatBalance])
 
   const transactionsByNetwork = React.useMemo(() => {
+    if (!selectedAssetsNetwork) {
+      return []
+    }
     const accountsByNetwork = accounts.filter((account) => account.coin === selectedAssetsNetwork.coin)
     return accountsByNetwork.map((account) => {
       return transactions[account.address]

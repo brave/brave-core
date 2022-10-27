@@ -403,10 +403,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 <>
                   <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
                   <TransactionFeeTooltipBody>
-                    {
-                      new Amount(transactionDetails.gasFee)
-                        .divideByDecimals(transactionsNetwork.decimals)
-                        .formatAsAsset(6, transactionsNetwork.symbol)
+                    {transactionsNetwork && new Amount(transactionDetails.gasFee)
+                      .divideByDecimals(transactionsNetwork.decimals)
+                      .formatAsAsset(6, transactionsNetwork.symbol)
                     }
                   </TransactionFeeTooltipBody>
                   <TransactionFeeTooltipBody>

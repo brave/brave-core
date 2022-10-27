@@ -550,7 +550,7 @@ function Container () {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
+            selectedNetwork={selectedNetwork}
             defaultNetworks={defaultNetworks}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
@@ -817,7 +817,6 @@ function Container () {
               <AssetsPanel
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
-                networkList={networkList}
                 onAddAsset={onAddAsset}
               />
             </ScrollContainer>

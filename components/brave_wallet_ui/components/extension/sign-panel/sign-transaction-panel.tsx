@@ -182,7 +182,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     <StyledWrapper>
 
       <TopRow>
-        <NetworkText>{selectedNetwork.chainName}</NetworkText>
+        <NetworkText>{selectedNetwork?.chainName ?? ''}</NetworkText>
         {signTransactionQueueInfo.queueLength > 1 &&
           <QueueStepRow>
             <QueueStepText>{signTransactionQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signTransactionQueueInfo.queueLength}</QueueStepText>

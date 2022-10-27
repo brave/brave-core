@@ -51,6 +51,10 @@ const WalletMorePopup = (props: Props) => {
   }, [])
 
   const onClickConnectedSites = React.useCallback(() => {
+    if (!selectedNetwork) {
+      return
+    }
+
     const route = selectedNetwork.coin === BraveWallet.CoinType.ETH ? 'ethereum' : 'solana'
     chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
       if (chrome.runtime.lastError) {
@@ -82,7 +86,7 @@ const WalletMorePopup = (props: Props) => {
         </PopupButton>
       }
 
-      {selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+      {selectedNetwork && selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
         <PopupButton onClick={onClickConnectedSites}>
           <ConnectedSitesIcon />
           <PopupButtonText>{getLocale('braveWalletWalletPopupConnectedSites')}</PopupButtonText>

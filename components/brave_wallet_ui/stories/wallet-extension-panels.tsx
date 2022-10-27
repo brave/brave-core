@@ -573,7 +573,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [selectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
@@ -796,7 +795,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           selectedAccount={selectedAccount}
                           userAssetList={mockAccountAssetOptions}
                           onAddAsset={onAddAsset}
-                          networkList={[selectedNetwork]}
                         />
                       }
                     </ScrollContainer>

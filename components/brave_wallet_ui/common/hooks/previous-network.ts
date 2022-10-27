@@ -28,9 +28,9 @@ export function usePrevNetwork () {
   const [prevNetwork, setPrevNetwork] = React.useState<BraveWallet.NetworkInfo>()
 
   React.useEffect(() => {
-    if ((selectedNetwork.coin === BraveWallet.CoinType.SOL && hasSolAccount) ||
-      (selectedNetwork.coin === BraveWallet.CoinType.FIL && hasFilAccount) ||
-      selectedNetwork.coin === BraveWallet.CoinType.ETH) {
+    if ((selectedNetwork?.coin === BraveWallet.CoinType.SOL && hasSolAccount) ||
+      (selectedNetwork?.coin === BraveWallet.CoinType.FIL && hasFilAccount) ||
+      selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
       setPrevNetwork(selectedNetwork)
     }
   }, [selectedNetwork, hasSolAccount, hasFilAccount])

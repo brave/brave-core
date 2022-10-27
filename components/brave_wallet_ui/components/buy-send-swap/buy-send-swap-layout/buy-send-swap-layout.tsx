@@ -29,13 +29,13 @@ import {
   HelpCenterLink
 } from './buy-send-swap-layout.style'
 
-export interface Props {
+interface Props {
   children?: React.ReactNode
   selectedTab: BuySendSwapTypes
   onChangeTab: (tab: BuySendSwapTypes) => () => void
   isBuyDisabled: boolean
   isSwapDisabled: boolean
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
 }
 
 const getTooltipLocaleKey = (optionId: string): string => {
@@ -71,7 +71,11 @@ export const BuySendSwapLayout = ({
               maxWidth='94px'
               isVisible={isDisabled}
               key={option.id}
-              text={getLocale(getTooltipLocaleKey(option.id)).replace('$1', selectedNetwork.chainName)}
+              text={
+                selectedNetwork
+                  ? getLocale(getTooltipLocaleKey(option.id)).replace('$1', selectedNetwork.chainName)
+                  : ''
+              }
             >
               <TabButton
                 isSelected={selectedTab === option.id}

@@ -24,7 +24,7 @@ import {
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import { getFilecoinKeyringIdFromNetwork, getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
+import { getFilecoinKeyringIdFromNetwork, getNetworkInfo, getNetworksByCoinType } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
@@ -333,12 +333,12 @@ export async function hasJupiterFeesForMint (mint: string): Promise<boolean> {
   return (await swapService.hasJupiterFeesForTokenMint(mint)).result
 }
 
-export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo) {
+export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const { braveWalletService } = getAPIProxy()
     const { wallet: { networkList } } = getState()
 
-    const getVisibleAssets = await Promise.all(networkList.map(async (network) => {
+    async function inner (network: BraveWallet.NetworkInfo) {
       // Creates a network's Native Asset if not returned
       const nativeAsset: BraveWallet.BlockchainToken = {
         contractAddress: '',
@@ -364,9 +364,13 @@ export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo
         logo: `chrome://erc-token-images/${token.logo}`
       })) as BraveWallet.BlockchainToken[]
       return tokenList.length === 0 ? [nativeAsset] : tokenList
-    }))
-    const visibleAssets = getVisibleAssets.flat(1)
-    await dispatch(WalletActions.setVisibleTokensInfo(visibleAssets))
+    }
+
+    const visibleAssets = targetNetwork
+      ? await inner(targetNetwork)
+      : await Promise.all(networkList.map(async (item) => await inner(item)))
+
+    await dispatch(WalletActions.setVisibleTokensInfo(visibleAssets.flat(1)))
   }
 }
 
@@ -551,23 +555,23 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const apiProxy = getAPIProxy()
     const { assetRatioService } = apiProxy
 
-    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo, selectedNetworkFilter, selectedAccountFilter, networkList } } = getState()
+    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo, selectedNetworkFilter, selectedAccountFilter } } = getState()
 
-    // By default we do not fetch Price history for Test Networks Tokens if
+    // By default, we do not fetch Price history for Test Networks Tokens if
     // Selected Network Filter is all
     const filteredTokenInfo = selectedNetworkFilter.chainId === AllNetworksOption.chainId
       ? userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
       // If chainId is Localhost we also do a check for coinType to only
-      // fetch Price History for for the correct tokens
+      // fetch Price History for the correct tokens
       : selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID
         ? userVisibleTokensInfo.filter((token) =>
           token.chainId === selectedNetworkFilter.chainId &&
-          getTokensCoinType(networkList, token) === selectedNetworkFilter.coin)
+          token.coin === selectedNetworkFilter.coin)
         // Fetch Price History for Tokens by Selected Network Filter's chainId
         : userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
 
     // If a selectedAccountFilter is selected, we only return the selectedAccountFilter
-    // in the the list.
+    // in the list.
     const accountsList = selectedAccountFilter.id === AllAccountsOption.id
       ? accounts
       : [selectedAccountFilter]
@@ -833,7 +837,9 @@ export async function sendEthTransaction (store: Store, payload: SendEthTransact
     // Check if network and keyring support EIP-1559.
     default:
       const { selectedAccount, selectedNetwork } = store.getState().wallet
-      isEIP1559 = hasEIP1559Support(selectedAccount, selectedNetwork)
+      isEIP1559 = selectedNetwork
+        ? hasEIP1559Support(selectedAccount, selectedNetwork)
+        : false
   }
 
   const { chainId } = await apiProxy.jsonRpcService.getChainId(BraveWallet.CoinType.ETH)

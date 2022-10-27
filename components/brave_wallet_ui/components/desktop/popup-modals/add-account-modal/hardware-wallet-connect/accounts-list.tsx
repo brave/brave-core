@@ -38,7 +38,7 @@ import Amount from '../../../../../utils/amount'
 interface Props {
   hardwareWallet: string
   accounts: BraveWallet.HardwareWalletAccount[]
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   preAddedHardwareWalletAccounts: WalletAccountType[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
@@ -222,7 +222,7 @@ export default function (props: Props) {
 
 interface AccountListItemProps {
   account: BraveWallet.HardwareWalletAccount
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   onSelect: () => void
   selected: boolean
   disabled: boolean
@@ -236,17 +236,17 @@ function AccountListItem (props: AccountListItemProps) {
   }, [account.address])
   const [balance, setBalance] = React.useState('')
 
-  React.useMemo(() => {
+  React.useEffect(() => {
+    if (!selectedNetwork) {
+      return
+    }
+
     getBalance(account.address, account.coin).then((result) => {
-      let amount = new Amount(result)
-      if (account.coin === BraveWallet.CoinType.SOL) {
-        amount = amount.divideByDecimals(9)
-      } else {
-        amount = amount.divideByDecimals(selectedNetwork.decimals)
-      }
+      const amount = new Amount(result)
+        .divideByDecimals(selectedNetwork.decimals)
       setBalance(amount.format())
     }).catch()
-  }, [account])
+  }, [account, selectedNetwork, getBalance])
 
   return (
     <HardwareWalletAccountListItem>

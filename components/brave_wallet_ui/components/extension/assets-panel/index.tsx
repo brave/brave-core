@@ -25,7 +25,6 @@ import { PortfolioAssetItem } from '../../desktop'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 export interface Props {
   userAssetList: BraveWallet.BlockchainToken[]
-  networkList: BraveWallet.NetworkInfo[]
   selectedAccount: WalletAccountType
   onAddAsset: () => void
 }
@@ -34,7 +33,6 @@ const AssetsPanel = (props: Props) => {
   const {
     userAssetList,
     selectedAccount,
-    networkList,
     onAddAsset
   } = props
 
@@ -58,7 +56,7 @@ const AssetsPanel = (props: Props) => {
         <PortfolioAssetItem
           action={onClickAsset(asset.symbol)}
           key={getAssetIdKey(asset)}
-          assetBalance={getBalance(networkList, selectedAccount, asset)}
+          assetBalance={getBalance(selectedAccount, asset)}
           token={asset}
           isPanel={true}
         />
