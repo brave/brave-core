@@ -49,6 +49,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/test/extension_test_message_listener.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -92,7 +93,9 @@ using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
-AdBlockServiceTest::AdBlockServiceTest() {
+AdBlockServiceTest::AdBlockServiceTest()
+    : ws_server_(net::SpawnedTestServer::TYPE_WS,
+                 net::GetWebSocketTestDataDirectory()) {
   brave_shields::SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
       kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
 }
@@ -647,6 +650,24 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
                          "installBlockingServiceWorker()"));
   // https://github.com/brave/brave-browser/issues/14087
   // EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, WebSocketBlocking) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateAdBlockInstanceWithRules("*$websocket");
+
+  ASSERT_TRUE(ws_server_.Start());
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  GURL ws_url = ws_server_.GetURL("echo-with-no-extension");
+
+  EXPECT_EQ(false, EvalJs(contents,
+                          base::StringPrintf("checkWebsocketConnection(\"%s\")",
+                                             ws_url.spec().c_str())));
 }
 
 // Load a page with an ad image which is matched on the regional blocker,
