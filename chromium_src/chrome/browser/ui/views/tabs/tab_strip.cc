@@ -23,6 +23,7 @@
   AddTab(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
 #define CompoundTabContainer BraveCompoundTabContainer
 #define TabContainerImpl BraveTabContainer
+#define TabHoverCardController BraveTabHoverCardController
 #define BRAVE_CALCULATE_INSERTION_INDEX                                       \
   if (tabs::features::ShouldShowVerticalTabs()) {                             \
     const int ideal_y =                                                       \
@@ -59,6 +60,7 @@
 
 #undef BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_CALCULATE_INSERTION_INDEX
+#undef TabHoverCardController
 #undef CompoundTabContainer
 #undef TabContainerImpl
 #undef AddTab
