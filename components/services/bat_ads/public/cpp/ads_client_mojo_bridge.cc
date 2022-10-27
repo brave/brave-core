@@ -9,17 +9,14 @@
 
 #include "base/bind.h"
 #include "base/callback.h"
-#include "base/logging.h"
 #include "base/time/time.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
-#include "url/gurl.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 
 namespace bat_ads {
 
-AdsClientMojoBridge::AdsClientMojoBridge(
-    ads::AdsClient* ads_client)
+AdsClientMojoBridge::AdsClientMojoBridge(ads::AdsClient* ads_client)
     : ads_client_(ads_client) {
   DCHECK(ads_client_);
 }
@@ -144,10 +141,9 @@ void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
       base::BindOnce(&AdsClientMojoBridge::OnURLRequest, std::move(callback)));
 }
 
-void AdsClientMojoBridge::Save(
-    const std::string& name,
-    const std::string& value,
-    SaveCallback callback) {
+void AdsClientMojoBridge::Save(const std::string& name,
+                               const std::string& value,
+                               SaveCallback callback) {
   ads_client_->Save(name, value, std::move(callback));
 }
 
@@ -207,75 +203,63 @@ void AdsClientMojoBridge::LogTrainingInstance(
   ads_client_->LogTrainingInstance(std::move(training_instance));
 }
 
-void AdsClientMojoBridge::GetBooleanPref(
-    const std::string& path,
-    GetBooleanPrefCallback callback) {
+void AdsClientMojoBridge::GetBooleanPref(const std::string& path,
+                                         GetBooleanPrefCallback callback) {
   std::move(callback).Run(ads_client_->GetBooleanPref(path));
 }
 
-void AdsClientMojoBridge::SetBooleanPref(
-    const std::string& path,
-    const bool value) {
+void AdsClientMojoBridge::SetBooleanPref(const std::string& path,
+                                         const bool value) {
   ads_client_->SetBooleanPref(path, value);
 }
 
-void AdsClientMojoBridge::GetIntegerPref(
-    const std::string& path,
-    GetIntegerPrefCallback callback) {
+void AdsClientMojoBridge::GetIntegerPref(const std::string& path,
+                                         GetIntegerPrefCallback callback) {
   std::move(callback).Run(ads_client_->GetIntegerPref(path));
 }
 
-void AdsClientMojoBridge::SetIntegerPref(
-    const std::string& path,
-    const int value) {
+void AdsClientMojoBridge::SetIntegerPref(const std::string& path,
+                                         const int value) {
   ads_client_->SetIntegerPref(path, value);
 }
 
-void AdsClientMojoBridge::GetDoublePref(
-    const std::string& path,
-    GetDoublePrefCallback callback) {
+void AdsClientMojoBridge::GetDoublePref(const std::string& path,
+                                        GetDoublePrefCallback callback) {
   std::move(callback).Run(ads_client_->GetDoublePref(path));
 }
 
-void AdsClientMojoBridge::SetDoublePref(
-    const std::string& path,
-    const double value) {
+void AdsClientMojoBridge::SetDoublePref(const std::string& path,
+                                        const double value) {
   ads_client_->SetDoublePref(path, value);
 }
 
-void AdsClientMojoBridge::GetStringPref(
-    const std::string& path,
-    GetStringPrefCallback callback) {
+void AdsClientMojoBridge::GetStringPref(const std::string& path,
+                                        GetStringPrefCallback callback) {
   std::move(callback).Run(ads_client_->GetStringPref(path));
 }
 
-void AdsClientMojoBridge::SetStringPref(
-    const std::string& path,
-    const std::string& value) {
+void AdsClientMojoBridge::SetStringPref(const std::string& path,
+                                        const std::string& value) {
   ads_client_->SetStringPref(path, value);
 }
 
-void AdsClientMojoBridge::GetInt64Pref(
-    const std::string& path,
-    GetInt64PrefCallback callback) {
+void AdsClientMojoBridge::GetInt64Pref(const std::string& path,
+                                       GetInt64PrefCallback callback) {
   std::move(callback).Run(ads_client_->GetInt64Pref(path));
 }
 
-void AdsClientMojoBridge::SetInt64Pref(
-    const std::string& path,
-    const int64_t value) {
+void AdsClientMojoBridge::SetInt64Pref(const std::string& path,
+                                       const int64_t value) {
   ads_client_->SetInt64Pref(path, value);
 }
 
-void AdsClientMojoBridge::GetUint64Pref(
-    const std::string& path,
-    GetUint64PrefCallback callback) {
+void AdsClientMojoBridge::GetUint64Pref(const std::string& path,
+                                        GetUint64PrefCallback callback) {
   std::move(callback).Run(ads_client_->GetUint64Pref(path));
 }
 
-void AdsClientMojoBridge::SetUint64Pref(
-    const std::string& path,
-    const uint64_t value) {
+void AdsClientMojoBridge::SetUint64Pref(const std::string& path,
+                                        const uint64_t value) {
   ads_client_->SetUint64Pref(path, value);
 }
 
@@ -311,8 +295,7 @@ void AdsClientMojoBridge::SetListPref(const std::string& path,
   ads_client_->SetListPref(path, std::move(value));
 }
 
-void AdsClientMojoBridge::ClearPref(
-    const std::string& path) {
+void AdsClientMojoBridge::ClearPref(const std::string& path) {
   ads_client_->ClearPref(path);
 }
 

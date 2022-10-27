@@ -11,8 +11,6 @@
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_content_value_util.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/category_content_info.h"
-#include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_item_value_util.h"
@@ -23,13 +21,10 @@
 #include "bat/ads/new_tab_page_ad_value_util.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace bat_ads {
 
@@ -49,20 +44,20 @@ BatAdsImpl::BatAdsImpl(
 
 BatAdsImpl::~BatAdsImpl() = default;
 
-void BatAdsImpl::Initialize(
-    InitializeCallback callback) {
-  auto* holder = new CallbackHolder<InitializeCallback>(AsWeakPtr(),
-      std::move(callback));
+void BatAdsImpl::Initialize(InitializeCallback callback) {
+  auto* holder =
+      new CallbackHolder<InitializeCallback>(AsWeakPtr(), std::move(callback));
 
-  ads_->Initialize(std::bind(BatAdsImpl::OnInitialize, holder, _1));
+  ads_->Initialize(
+      std::bind(BatAdsImpl::OnInitialize, holder, std::placeholders::_1));
 }
 
-void BatAdsImpl::Shutdown(
-    ShutdownCallback callback) {
-  auto* holder = new CallbackHolder<ShutdownCallback>(AsWeakPtr(),
-      std::move(callback));
+void BatAdsImpl::Shutdown(ShutdownCallback callback) {
+  auto* holder =
+      new CallbackHolder<ShutdownCallback>(AsWeakPtr(), std::move(callback));
 
-  auto shutdown_callback = std::bind(BatAdsImpl::OnShutdown, holder, _1);
+  auto shutdown_callback =
+      std::bind(BatAdsImpl::OnShutdown, holder, std::placeholders::_1);
   ads_->Shutdown(shutdown_callback);
 }
 
@@ -157,8 +152,8 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
   auto* holder = new CallbackHolder<MaybeServeNewTabPageAdCallback>(
       AsWeakPtr(), std::move(callback));
 
-  auto maybe_serve_new_tab_page_ad_callback =
-      std::bind(BatAdsImpl::OnMaybeServeNewTabPageAd, holder, _1);
+  auto maybe_serve_new_tab_page_ad_callback = std::bind(
+      BatAdsImpl::OnMaybeServeNewTabPageAd, holder, std::placeholders::_1);
   ads_->MaybeServeNewTabPageAd(maybe_serve_new_tab_page_ad_callback);
 }
 
@@ -189,7 +184,8 @@ void BatAdsImpl::MaybeServeInlineContentAd(
       AsWeakPtr(), std::move(callback));
 
   auto maybe_serve_inline_content_ads_callback =
-      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder, _1, _2);
+      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder,
+                std::placeholders::_1, std::placeholders::_2);
   ads_->MaybeServeInlineContentAd(dimensions,
                                   maybe_serve_inline_content_ads_callback);
 }
@@ -221,19 +217,19 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
       AsWeakPtr(), std::move(callback));
 
   auto purge_ad_events_for_type_callback =
-      std::bind(BatAdsImpl::OnPurgeOrphanedAdEventsForType, holder, _1);
+      std::bind(BatAdsImpl::OnPurgeOrphanedAdEventsForType, holder,
+                std::placeholders::_1);
 
   ads_->PurgeOrphanedAdEventsForType(ad_type,
                                      purge_ad_events_for_type_callback);
 }
 
-void BatAdsImpl::RemoveAllHistory(
-    RemoveAllHistoryCallback callback) {
-  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),
-      std::move(callback));
+void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(
+      AsWeakPtr(), std::move(callback));
 
   auto remove_all_history_callback =
-      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, _1);
+      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, std::placeholders::_1);
   ads_->RemoveAllHistory(remove_all_history_callback);
 }
 
@@ -257,15 +253,16 @@ void BatAdsImpl::GetStatementOfAccounts(
   auto* holder = new CallbackHolder<GetStatementOfAccountsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetStatementOfAccounts(
-      std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1));
+  ads_->GetStatementOfAccounts(std::bind(BatAdsImpl::OnGetStatementOfAccounts,
+                                         holder, std::placeholders::_1));
 }
 
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   auto* holder = new CallbackHolder<GetDiagnosticsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetDiagnostics(std::bind(BatAdsImpl::OnGetDiagnostics, holder, _1));
+  ads_->GetDiagnostics(
+      std::bind(BatAdsImpl::OnGetDiagnostics, holder, std::placeholders::_1));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(base::Value::Dict value,
