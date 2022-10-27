@@ -76,15 +76,19 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
-          case let .signTransaction(request):
+          case let .signTransaction(requests):
             SignTransactionView(
-              request: .signTransaction(request),
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              request: .signTransaction(requests),
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )
-          case let .signAllTransactions(request):
+          case let .signAllTransactions(requests):
             SignTransactionView(
-              request: .signAllTransactions(request),
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              request: .signAllTransactions(requests),
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )

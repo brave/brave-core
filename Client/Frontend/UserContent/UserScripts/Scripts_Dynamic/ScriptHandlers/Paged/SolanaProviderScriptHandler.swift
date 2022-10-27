@@ -261,7 +261,8 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
-    guard let encodedSerializedTx = JSONSerialization.jsObject(withNative: serializedTx) else {
+    let listMojoInt = serializedTx.map { MojoBase.Value(intValue: $0.int32Value) }
+    guard let encodedSerializedTx = MojoBase.Value(listValue: listMojoInt).jsonObject else {
       return (nil, buildErrorJson(status: .internalError, errorMessage: "Internal error"))
     }
     return (encodedSerializedTx, nil)
@@ -290,7 +291,13 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
-    guard let encodedSerializedTxs = JSONSerialization.jsObject(withNative: serializedTxs) else {
+    let encodedSerializedTxs = serializedTxs.compactMap {
+      let listMojoInt = $0.map { number in
+        MojoBase.Value(intValue: number.int32Value)
+      }
+      return MojoBase.Value(listValue: listMojoInt).jsonObject
+    }
+    guard !encodedSerializedTxs.isEmpty else {
       return (nil, buildErrorJson(status: .internalError, errorMessage: "Internal error"))
     }
     return (encodedSerializedTxs, nil)

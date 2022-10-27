@@ -91,6 +91,9 @@ struct WalletConstants {
   
   /// The link for users to open Aurora site
   static let auroraBridgeLink: URL? = URL(string: "https://rainbowbridge.app")
+  
+  /// The link for for users to learn more about sign transactions
+  static let signTransactionRiskLink: URL = URL(string: "https://support.brave.com/hc/en-us/articles/4409513799693")!
 }
 
 public struct WalletDebugFlags {
