@@ -150,12 +150,13 @@ class PlaylistService : public KeyedService,
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistRenderFrameObserverBrowserTest;
 
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ApiFunctions);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylist);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylistItem);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, MediaDownloadFailed);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ThumbnailFailed);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, RemoveAndRestoreLocalData);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylist);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylistItem);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaDownloadFailed);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ThumbnailFailed);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaRecoverTest);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, DeleteItem);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveAndRestoreLocalData);
 
   // KeyedService overrides:
   void Shutdown() override;

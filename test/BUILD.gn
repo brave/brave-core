@@ -319,6 +319,10 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (enable_playlist) {
+    deps += [ "//brave/browser/playlist/test:unit_tests" ]
+  }
+
   data = [ "data/" ]
 
   if (enable_custom_background) {
