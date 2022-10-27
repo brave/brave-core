@@ -255,6 +255,9 @@ extension BrowserViewController: TopToolbarDelegate {
     hideFavoritesController()
     updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
     updateTabsBarVisibility()
+    if isUsingBottomBar {
+      updateViewConstraints()
+    }
   }
 
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView) {
