@@ -48,18 +48,30 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
 
     SimulateHoverTab(browser(), 1);
   }
+
+  bool VerifyUi() override {
+    if (!DialogBrowserTest::VerifyUi())
+      return false;
+
+    TabStrip* const tab_strip = GetTabStrip(browser());
+    Tab* const tab = tab_strip->tab_at(1);
+    if (!tab) {
+      NOTREACHED();
+      return false;
+    }
+
+    TabHoverCardBubbleView* const hover_card = GetHoverCard(tab_strip);
+    if (!hover_card) {
+      NOTREACHED();
+      return false;
+    }
+
+    EXPECT_EQ(kTabTitle, hover_card->GetTitleTextForTesting());
+    EXPECT_EQ(kTabDomain, hover_card->GetDomainTextForTesting());
+    return true;
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest, ChromeSchemeUrl) {
-  ShowUi("default");
-
-  TabStrip* const tab_strip = GetTabStrip(browser());
-  Tab* const tab = tab_strip->tab_at(1);
-  ASSERT_NE(tab, nullptr);
-
-  TabHoverCardBubbleView* const hover_card = GetHoverCard(tab_strip);
-  ASSERT_NE(hover_card, nullptr);
-
-  EXPECT_EQ(kTabTitle, hover_card->GetTitleTextForTesting());
-  EXPECT_EQ(kTabDomain, hover_card->GetDomainTextForTesting());
+  ShowAndVerifyUi();
 }
