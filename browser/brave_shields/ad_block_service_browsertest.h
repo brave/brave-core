@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "net/test/spawned_test_server/spawned_test_server.h"
 
 class HostContentSettingsMap;
 
@@ -61,6 +62,8 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
 
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;
+
+  net::SpawnedTestServer ws_server_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_
