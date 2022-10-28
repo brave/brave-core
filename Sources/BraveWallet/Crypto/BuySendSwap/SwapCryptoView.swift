@@ -342,7 +342,7 @@ struct SwapCryptoView: View {
         .padding(.bottom, 15)
         .listRowBackground(Color(.clear))*/
       header: MarketPriceView(swapTokenStore: swapTokensStore)
-        .listRowBackground(Color.clear)
+        .listRowBackground(Color(UIColor.braveGroupedBackground))
         .resetListHeaderStyle()
         .padding(.horizontal)
         .padding(.bottom, 15),
@@ -471,7 +471,7 @@ struct SwapCryptoView: View {
             keyringStore: keyringStore,
             networkStore: networkStore
           )
-          .listRowBackground(Color.clear)
+          .listRowBackground(Color(UIColor.braveGroupedBackground))
           .resetListHeaderStyle()
         }
         if networkStore.isSwapSupported {

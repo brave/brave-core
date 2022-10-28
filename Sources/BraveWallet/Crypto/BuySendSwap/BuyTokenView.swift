@@ -26,7 +26,7 @@ struct BuyTokenView: View {
             keyringStore: keyringStore,
             networkStore: networkStore
           )
-          .listRowBackground(Color.clear)
+          .listRowBackground(Color(UIColor.braveGroupedBackground))
           .resetListHeaderStyle()
         }
         if buyTokenStore.isSelectedNetworkSupported {
