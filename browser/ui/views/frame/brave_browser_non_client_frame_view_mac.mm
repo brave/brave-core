@@ -22,13 +22,19 @@
 BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
     BrowserFrame* frame, BrowserView* browser_view)
     : BrowserNonClientFrameViewMac(frame, browser_view) {
-  frame_graphic_ = std::make_unique<BraveWindowFrameGraphic>(
-      browser_view->browser()->profile());
+  auto* browser = browser_view->browser();
+  frame_graphic_ =
+      std::make_unique<BraveWindowFrameGraphic>(browser->profile());
 
-  if (tabs::features::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs(browser)) {
+    auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+    show_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsEnabled, prefs,
+        base::BindRepeating(
+            &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility,
+            base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsShowTitleOnWindow,
-        browser_view->browser()->profile()->GetOriginalProfile()->GetPrefs(),
+        brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
         base::BindRepeating(
             &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility,
             base::Unretained(this)));

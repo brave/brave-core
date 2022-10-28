@@ -83,6 +83,7 @@ class VerticalTabStripRegionView : public views::View {
 
   State state_ = State::kExpanded;
 
+  BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
 
   base::OneShotTimer mouse_enter_timer_;

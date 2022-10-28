@@ -38,7 +38,14 @@ void TabDragController::Init(TabDragContext* source_context,
   TabDragControllerChromium::Init(source_context, source_view, dragging_views,
                                   mouse_offset, source_view_offset,
                                   initial_selection_model, event_source);
-  if (!tabs::features::ShouldShowVerticalTabs())
+  auto* widget = source_view->GetWidget()->GetTopLevelWidget();
+  DCHECK(widget);
+  const auto* browser =
+      BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow())
+          ->browser();
+  is_showing_vertical_tabs_ = tabs::features::ShouldShowVerticalTabs(browser);
+
+  if (!is_showing_vertical_tabs_)
     return;
 
   // Adjust coordinate for vertical mode.
@@ -52,7 +59,7 @@ void TabDragController::Init(TabDragContext* source_context,
 
 gfx::Point TabDragController::GetAttachedDragPoint(
     const gfx::Point& point_in_screen) {
-  if (!tabs::features::ShouldShowVerticalTabs())
+  if (!is_showing_vertical_tabs_)
     return TabDragControllerChromium::GetAttachedDragPoint(point_in_screen);
 
   DCHECK(attached_context_);  // The tab must be attached.
@@ -66,7 +73,7 @@ gfx::Point TabDragController::GetAttachedDragPoint(
 void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
                                      bool just_attached) {
   gfx::Point new_point_in_screen = point_in_screen;
-  if (tabs::features::ShouldShowVerticalTabs()) {
+  if (is_showing_vertical_tabs_) {
     // As MoveAttached() compare point_in_screen.x() and last_move_screen_loc_,
     // override x with y so that calculate offset for vertical mode.
     new_point_in_screen.set_x(new_point_in_screen.y());
@@ -79,7 +86,7 @@ absl::optional<tab_groups::TabGroupId>
 TabDragController::GetTabGroupForTargetIndex(const std::vector<int>& selected) {
   auto group_id =
       TabDragControllerChromium::GetTabGroupForTargetIndex(selected);
-  if (group_id.has_value() || !tabs::features::ShouldShowVerticalTabs())
+  if (group_id.has_value() || !is_showing_vertical_tabs_)
     return group_id;
 
   // We have corner cases where the chromium code can't handle.
@@ -128,7 +135,7 @@ TabDragController::Liveness TabDragController::GetLocalProcessWindow(
     const gfx::Point& screen_point,
     bool exclude_dragged_view,
     gfx::NativeWindow* window) {
-  if (tabs::features::ShouldShowVerticalTabs() && exclude_dragged_view) {
+  if (is_showing_vertical_tabs_ && exclude_dragged_view) {
     // In this case, we need to exclude a widget for vertical tab strip too.
     std::set<gfx::NativeWindow> exclude;
     auto* dragged_widget = attached_context_->GetWidget();

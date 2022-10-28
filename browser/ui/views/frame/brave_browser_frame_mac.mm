@@ -21,7 +21,7 @@ void BraveBrowserFrameMac::GetWindowFrameTitlebarHeight(
   // Don't override titlebar height if the browser supports vertical tab strip
   // so that it can overlay our client view. The visibility of title bar will be
   // controlled by BrowserNonClientFrameViewMac::UpdateWindowTitleVisibility.
-  if (browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(browser_))
     return;
 
   return BrowserFrameMac::GetWindowFrameTitlebarHeight(override_titlebar_height,

@@ -60,6 +60,9 @@ class TabDragController : public TabDragControllerChromium {
   Liveness GetLocalProcessWindow(const gfx::Point& screen_point,
                                  bool exclude_dragged_view,
                                  gfx::NativeWindow* window) override;
+
+ private:
+  bool is_showing_vertical_tabs_ = false;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_
