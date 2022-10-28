@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // utils
@@ -16,7 +16,7 @@ import {
 } from '../../../../utils/ordinal-utils'
 
 // routes
-import { PageState, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -32,7 +32,7 @@ import {
   TitleAndDescriptionContainer,
   PhraseCard,
   PhraseCardBody
-} from '../onboarding.style'
+} from '../../onboarding/onboarding.style'
 import {
   ErrorTextRow
 } from './verify-backup-recovery-phrase.style'
@@ -40,17 +40,19 @@ import {
 // components
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
-import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../selectors'
+import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import RecoveryPhrase from '../../onboarding/components/recovery-phrase/recovery-phrase'
 
-export const OnboardingVerifyRecoveryPhrase = () => {
+export const VerifyRecoveryPhrase = () => {
   // state
   const [nextStepEnabled, setNextStepEnabled] = React.useState(false)
   const [hasSelectedWords, setHasSelectedWords] = React.useState(false)
 
   // redux
   const dispatch = useDispatch()
-  const mnemonic = useSelector(({ page }: { page: PageState }) => page.mnemonic)
+  const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
 
   // routing
   const history = useHistory()
@@ -158,4 +160,4 @@ export const OnboardingVerifyRecoveryPhrase = () => {
   )
 }
 
-export default OnboardingVerifyRecoveryPhrase
+export default VerifyRecoveryPhrase

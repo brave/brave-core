@@ -42,7 +42,7 @@ import { CopiedToClipboardConfirmation } from '../../../../components/desktop/co
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { NavButton } from '../../../../components/extension'
 
-export const OnboardingBackupRecoveryPhrase = () => {
+export const BackupRecoveryPhrase = () => {
   // redux
   const mnemonic = useSelector(({ page }: { page: PageState }) => page.mnemonic)
 

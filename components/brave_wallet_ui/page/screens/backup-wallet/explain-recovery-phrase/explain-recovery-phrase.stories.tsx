@@ -6,16 +6,16 @@
 import * as React from 'react'
 
 import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase'
+import { RecoveryPhraseExplainer } from './explain-recovery-phrase'
 
-export const _OnboardingBeforeBackupRecoveryPhrase = () => {
+export const _BackupRecoveryPhraseExplainer = () => {
   return <WalletPageStory>
-    <OnboardingRecoveryPhraseExplainer />
+    <RecoveryPhraseExplainer />
   </WalletPageStory>
 }
 
-_OnboardingBeforeBackupRecoveryPhrase.story = {
+_BackupRecoveryPhraseExplainer.story = {
   name: 'Explain Backup Recovery Phrase'
 }
 
-export default _OnboardingBeforeBackupRecoveryPhrase
+export default _BackupRecoveryPhraseExplainer

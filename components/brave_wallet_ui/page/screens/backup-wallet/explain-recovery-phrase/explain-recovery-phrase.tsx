@@ -18,8 +18,8 @@ import ExamplePhrase from './images/example-recovery-phrase.svg'
 // components
 import { NavButton } from '../../../../components/extension'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { ArticleLinkBubble } from '../onboarding-success/components/article-link-bubble/article-link-bubble'
+import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
 
 // style
 import {
@@ -28,7 +28,7 @@ import {
   Description,
   NextButtonRow,
   MainWrapper
-} from '../onboarding.style'
+} from '../../onboarding/onboarding.style'
 import {
   BannerCard,
   WarningCircle,
@@ -47,7 +47,7 @@ const ImportantTextSegments = () => {
   </BannerText>
 }
 
-export const OnboardingRecoveryPhraseExplainer = () => {
+export const RecoveryPhraseExplainer = () => {
   // routing
   const history = useHistory()
 
@@ -102,4 +102,4 @@ export const OnboardingRecoveryPhraseExplainer = () => {
   )
 }
 
-export default OnboardingRecoveryPhraseExplainer
+export default RecoveryPhraseExplainer
