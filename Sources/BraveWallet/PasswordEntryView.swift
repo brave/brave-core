@@ -78,7 +78,15 @@ struct PasswordEntryField: View {
         .textContentType(.password)
         .font(.subheadline)
         .introspectTextField(customize: { tf in
-          tf.becomeFirstResponder()
+          if #unavailable(iOS 15) {
+            // Fix for animation issue when pushing view onto
+            // navigation stack with this field on iOS 14 - #6267
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+              tf.becomeFirstResponder()
+            }
+          } else {
+            tf.becomeFirstResponder()
+          }
         })
         .textFieldStyle(BraveValidatedTextFieldStyle(error: error))
       if shouldShowBiometrics, keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
