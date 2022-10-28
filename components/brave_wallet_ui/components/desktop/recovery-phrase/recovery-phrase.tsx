@@ -6,9 +6,9 @@
 import * as React from 'react'
 
 // utils
-import { getLocale } from '../../../../../../common/locale'
-import { ORDINALS } from '../../../../../utils/ordinal-utils'
-import { unbiasedRandom } from '../../../../../utils/random-utils'
+import { getLocale } from '../../../../common/locale'
+import { ORDINALS } from '../../../utils/ordinal-utils'
+import { unbiasedRandom } from '../../../utils/random-utils'
 
 // styles
 import {

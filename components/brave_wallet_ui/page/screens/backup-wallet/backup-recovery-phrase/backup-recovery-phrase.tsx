@@ -36,7 +36,7 @@ import {
 } from '../../onboarding/onboarding.style'
 
 // components
-import { RecoveryPhrase } from '../../onboarding/components/recovery-phrase/recovery-phrase'
+import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'

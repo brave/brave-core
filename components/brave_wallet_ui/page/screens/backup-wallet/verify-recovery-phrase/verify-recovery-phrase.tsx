@@ -43,7 +43,7 @@ import { NavButton } from '../../../../components/extension/buttons/nav-button/i
 import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../selectors'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
-import RecoveryPhrase from '../../onboarding/components/recovery-phrase/recovery-phrase'
+import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 
 export const VerifyRecoveryPhrase = () => {
   // state
