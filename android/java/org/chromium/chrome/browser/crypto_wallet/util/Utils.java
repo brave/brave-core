@@ -964,18 +964,6 @@ public class Utils {
         }
     }
 
-    public static BlockchainToken createEthereumBlockchainToken(String chainId) {
-        BlockchainToken eth = new BlockchainToken();
-        eth.name = "Ethereum";
-        eth.symbol = "ETH";
-        eth.contractAddress = "";
-        eth.logo = "eth.png";
-        eth.decimals = ETH_DEFAULT_DECIMALS;
-        eth.chainId = chainId;
-        eth.coin = CoinType.ETH;
-        return eth;
-    }
-
     /*
      * Java port of the same function in components/brave_wallet_ui/options/asset-options.ts.
      */
@@ -1022,6 +1010,7 @@ public class Utils {
         asset.contractAddress = "";
         asset.isErc20 = false;
         asset.isErc721 = false;
+        asset.isNft = false;
         asset.logo = logo;
         asset.decimals = network.decimals;
         asset.visible = true;
