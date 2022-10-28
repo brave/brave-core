@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { createAction } from 'redux-act'
+import { createAction } from '@reduxjs/toolkit'
 import {
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
@@ -83,7 +83,7 @@ export const setAllTokensList = createAction<BraveWallet.BlockchainToken[]>('set
 export const getAllTokensList = createAction('getAllTokensList')
 export const nativeAssetBalancesUpdated = createAction<GetNativeAssetBalancesPayload>('nativeAssetBalancesUpdated')
 export const tokenBalancesUpdated = createAction<GetBlockchainTokenBalanceReturnInfo>('tokenBalancesUpdated')
-export const pricesUpdated = createAction<GetPriceReturnInfo>('tokenBalancesUpdated')
+export const pricesUpdated = createAction<GetPriceReturnInfo>('pricesUpdated')
 export const portfolioPriceHistoryUpdated = createAction<PortfolioTokenHistoryAndInfo[][]>('portfolioPriceHistoryUpdated')
 export const selectPortfolioTimeline = createAction<BraveWallet.AssetPriceTimeframe>('selectPortfolioTimeline')
 export const portfolioTimelineUpdated = createAction<BraveWallet.AssetPriceTimeframe>('portfolioTimelineUpdated')
@@ -105,7 +105,7 @@ export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAc
 export const activeOriginChanged = createAction<BraveWallet.OriginInfo>('activeOriginChanged')
 export const refreshGasEstimates = createAction<BraveWallet.TransactionInfo>('refreshGasEstimates')
 export const setGasEstimates = createAction<BraveWallet.GasEstimation1559>('setGasEstimates')
-export const setSolFeeEstimates = createAction<SolFeeEstimates>('setEstimatedSolFee')
+export const setSolFeeEstimates = createAction<SolFeeEstimates>('setSolFeeEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const updateUnapprovedTransactionSpendAllowance = createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance')
 export const updateUnapprovedTransactionNonce = createAction<UpdateUnapprovedTransactionNonceType>('updateUnapprovedTransactionNonce')

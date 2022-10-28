@@ -124,7 +124,7 @@ const getAccountType = (info: AccountInfo) => {
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
 
-  reducer.on(WalletActions.initialized, (state: WalletState, payload: WalletInfo): WalletState => {
+  reducer.on(WalletActions.initialized.type, (state: WalletState, payload: WalletInfo): WalletState => {
     const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
       return {
         id: `${idx + 1}`,
@@ -155,56 +155,56 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.locked, (state): WalletState => {
+  reducer.on(WalletActions.locked.type, (state): WalletState => {
     return {
       ...state,
       isWalletLocked: true
     }
   })
 
-  reducer.on(WalletActions.hasIncorrectPassword, (state: WalletState, payload: boolean): WalletState => {
+  reducer.on(WalletActions.hasIncorrectPassword.type, (state: WalletState, payload: boolean): WalletState => {
     return {
       ...state,
       hasIncorrectPassword: payload
     }
   })
 
-  reducer.on(WalletActions.setSelectedAccount, (state: WalletState, payload: WalletAccountType): WalletState => {
+  reducer.on(WalletActions.setSelectedAccount.type, (state: WalletState, payload: WalletAccountType): WalletState => {
     return {
       ...state,
       selectedAccount: payload
     }
   })
 
-  reducer.on(WalletActions.setNetwork, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
+  reducer.on(WalletActions.setNetwork.type, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
     return {
       ...state,
       selectedNetwork: payload
     }
   })
 
-  reducer.on(WalletActions.setVisibleTokensInfo, (state: WalletState, payload: BraveWallet.BlockchainToken[]): WalletState => {
+  reducer.on(WalletActions.setVisibleTokensInfo.type, (state: WalletState, payload: BraveWallet.BlockchainToken[]): WalletState => {
     return {
       ...state,
       userVisibleTokensInfo: payload
     }
   })
 
-  reducer.on(WalletActions.setAllNetworks, (state: WalletState, payload: BraveWallet.NetworkInfo[]): WalletState => {
+  reducer.on(WalletActions.setAllNetworks.type, (state: WalletState, payload: BraveWallet.NetworkInfo[]): WalletState => {
     return {
       ...state,
       networkList: payload
     }
   })
 
-  reducer.on(WalletActions.setAllTokensList, (state: WalletState, payload: BraveWallet.BlockchainToken[]): WalletState => {
+  reducer.on(WalletActions.setAllTokensList.type, (state: WalletState, payload: BraveWallet.BlockchainToken[]): WalletState => {
     return {
       ...state,
       fullTokenList: payload
     }
   })
 
-  reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: WalletState, payload: GetNativeAssetBalancesPayload): WalletState => {
+  reducer.on(WalletActions.nativeAssetBalancesUpdated.type, (state: WalletState, payload: GetNativeAssetBalancesPayload): WalletState => {
     let accounts: WalletAccountType[] = [...state.accounts]
 
     accounts.forEach((account, accountIndex) => {
@@ -227,7 +227,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.tokenBalancesUpdated, (state: WalletState, payload: GetBlockchainTokenBalanceReturnInfo): WalletState => {
+  reducer.on(WalletActions.tokenBalancesUpdated.type, (state: WalletState, payload: GetBlockchainTokenBalanceReturnInfo): WalletState => {
     const visibleTokens = state.userVisibleTokensInfo
       .filter(asset => asset.contractAddress !== '')
 
@@ -254,14 +254,14 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.pricesUpdated, (state: WalletState, payload: GetPriceReturnInfo): WalletState => {
+  reducer.on(WalletActions.pricesUpdated.type, (state: WalletState, payload: GetPriceReturnInfo): WalletState => {
     return {
       ...state,
       transactionSpotPrices: payload.success ? payload.values : state.transactionSpotPrices
     }
   })
 
-  reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: WalletState, payload: PortfolioTokenHistoryAndInfo[][]): WalletState => {
+  reducer.on(WalletActions.portfolioPriceHistoryUpdated.type, (state: WalletState, payload: PortfolioTokenHistoryAndInfo[][]): WalletState => {
     const history = payload.map((infoArray) => {
       return infoArray.map((info) => {
         if (new Amount(info.balance).isPositive() && info.token.visible) {
@@ -299,7 +299,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.portfolioTimelineUpdated, (state: WalletState, payload: BraveWallet.AssetPriceTimeframe): WalletState => {
+  reducer.on(WalletActions.portfolioTimelineUpdated.type, (state: WalletState, payload: BraveWallet.AssetPriceTimeframe): WalletState => {
     return {
       ...state,
       isFetchingPortfolioPriceHistory: true,
@@ -307,7 +307,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.newUnapprovedTxAdded, (state: WalletState, payload: NewUnapprovedTxAdded): WalletState => {
+  reducer.on(WalletActions.newUnapprovedTxAdded.type, (state: WalletState, payload: NewUnapprovedTxAdded): WalletState => {
     const newState = {
       ...state,
       pendingTransactions: [
@@ -323,7 +323,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     return newState
   })
 
-  reducer.on(WalletActions.unapprovedTxUpdated, (state: WalletState, payload: UnapprovedTxUpdated): WalletState => {
+  reducer.on(WalletActions.unapprovedTxUpdated.type, (state: WalletState, payload: UnapprovedTxUpdated): WalletState => {
     const newState = { ...state }
 
     const index = state.pendingTransactions.findIndex(
@@ -341,7 +341,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     return newState
   })
 
-  reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload: TransactionStatusChanged): WalletState => {
+  reducer.on(WalletActions.transactionStatusChanged.type, (state: WalletState, payload: TransactionStatusChanged): WalletState => {
     const newPendingTransactions = state.pendingTransactions
       .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
       .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
@@ -370,7 +370,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.setAccountTransactions, (state: WalletState, payload: AccountTransactions): WalletState => {
+  reducer.on(WalletActions.setAccountTransactions.type, (state: WalletState, payload: AccountTransactions): WalletState => {
     const { accounts } = state
 
     const newPendingTransactions = accounts.map((account) => {
@@ -389,35 +389,35 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.addUserAssetError, (state: WalletState, payload: boolean): WalletState => {
+  reducer.on(WalletActions.addUserAssetError.type, (state: WalletState, payload: boolean): WalletState => {
     return {
       ...state,
       addUserAssetError: payload
     }
   })
 
-  reducer.on(WalletActions.defaultEthereumWalletUpdated, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
+  reducer.on(WalletActions.defaultEthereumWalletUpdated.type, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
     return {
       ...state,
       defaultEthereumWallet: payload
     }
   })
 
-  reducer.on(WalletActions.defaultSolanaWalletUpdated, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
+  reducer.on(WalletActions.defaultSolanaWalletUpdated.type, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
     return {
       ...state,
       defaultSolanaWallet: payload
     }
   })
 
-  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: BraveWallet.OriginInfo): WalletState => {
+  reducer.on(WalletActions.activeOriginChanged.type, (state: WalletState, payload: BraveWallet.OriginInfo): WalletState => {
     return {
       ...state,
       activeOrigin: payload
     }
   })
 
-  reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip1559Changed): WalletState => {
+  reducer.on(WalletActions.isEip1559Changed.type, (state: WalletState, payload: IsEip1559Changed): WalletState => {
     const selectedNetwork = state.networkList.find(
       network => network.chainId === payload.chainId
     ) || state.selectedNetwork
@@ -436,28 +436,28 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.setGasEstimates, (state: WalletState, payload: BraveWallet.GasEstimation1559): WalletState => {
+  reducer.on(WalletActions.setGasEstimates.type, (state: WalletState, payload: BraveWallet.GasEstimation1559): WalletState => {
     return {
       ...state,
       gasEstimates: payload
     }
   })
 
-  reducer.on(WalletActions.setSolFeeEstimates, (state: WalletState, payload: SolFeeEstimates): WalletState => {
+  reducer.on(WalletActions.setSolFeeEstimates.type, (state: WalletState, payload: SolFeeEstimates): WalletState => {
     return {
       ...state,
       solFeeEstimates: payload
     }
   })
 
-  reducer.on(WalletActions.setSitePermissions, (state: WalletState, payload: SitePermissionsPayloadType): WalletState => {
+  reducer.on(WalletActions.setSitePermissions.type, (state: WalletState, payload: SitePermissionsPayloadType): WalletState => {
     return {
       ...state,
       connectedAccounts: payload.accounts
     }
   })
 
-  reducer.on(WalletActions.queueNextTransaction, (state: WalletState): WalletState => {
+  reducer.on(WalletActions.queueNextTransaction.type, (state: WalletState): WalletState => {
     const pendingTransactions = state.pendingTransactions
 
     const index = pendingTransactions.findIndex(
@@ -474,14 +474,14 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.setMetaMaskInstalled, (state: WalletState, payload: boolean): WalletState => {
+  reducer.on(WalletActions.setMetaMaskInstalled.type, (state: WalletState, payload: boolean): WalletState => {
     return {
       ...state,
       isMetaMaskInstalled: payload
     }
   })
 
-  reducer.on(WalletActions.refreshAccountInfo, (state: WalletState, payload: WalletInfoBase): WalletState => {
+  reducer.on(WalletActions.refreshAccountInfo.type, (state: WalletState, payload: WalletInfoBase): WalletState => {
     const accounts = state.accounts
 
     const updatedAccounts = accounts.map(account => {
@@ -498,14 +498,14 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.defaultCurrenciesUpdated, (state: WalletState, payload: DefaultCurrencies): WalletState => {
+  reducer.on(WalletActions.defaultCurrenciesUpdated.type, (state: WalletState, payload: DefaultCurrencies): WalletState => {
     return {
       ...state,
       defaultCurrencies: payload
     }
   })
 
-  reducer.on(WalletActions.setTransactionProviderError, (state: WalletState, payload: SetTransactionProviderErrorType): WalletState => {
+  reducer.on(WalletActions.setTransactionProviderError.type, (state: WalletState, payload: SetTransactionProviderErrorType): WalletState => {
     return {
       ...state,
       transactionProviderErrorRegistry: {
@@ -515,21 +515,21 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.setSelectedCoin, (state: WalletState, payload: BraveWallet.CoinType): WalletState => {
+  reducer.on(WalletActions.setSelectedCoin.type, (state: WalletState, payload: BraveWallet.CoinType): WalletState => {
     return {
       ...state,
       selectedCoin: payload
     }
   })
 
-  reducer.on(WalletActions.setDefaultNetworks, (state: WalletState, payload: BraveWallet.NetworkInfo[]): WalletState => {
+  reducer.on(WalletActions.setDefaultNetworks.type, (state: WalletState, payload: BraveWallet.NetworkInfo[]): WalletState => {
     return {
       ...state,
       defaultNetworks: payload
     }
   })
 
-  reducer.on(WalletActions.setCoinMarkets, (state: WalletState, payload: GetCoinMarketsResponse): WalletState => {
+  reducer.on(WalletActions.setCoinMarkets.type, (state: WalletState, payload: GetCoinMarketsResponse): WalletState => {
     return {
       ...state,
       coinMarketData: payload.success ? payload.values.map(coin => {
@@ -540,14 +540,14 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.setDefaultAccounts, (state: WalletState, payload: BraveWallet.AccountInfo[]): WalletState => {
+  reducer.on(WalletActions.setDefaultAccounts.type, (state: WalletState, payload: BraveWallet.AccountInfo[]): WalletState => {
     return {
       ...state,
       defaultAccounts: payload
     }
   })
 
-  reducer.on(WalletActions.setSelectedNetworkFilter, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
+  reducer.on(WalletActions.setSelectedNetworkFilter.type, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
     return {
       ...state,
       isFetchingPortfolioPriceHistory: true,
@@ -555,42 +555,42 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.setShowTestNetworks, (state: WalletState, payload: boolean): WalletState => {
+  reducer.on(WalletActions.setShowTestNetworks.type, (state: WalletState, payload: boolean): WalletState => {
     return {
       ...state,
       isTestNetworksEnabled: payload
     }
   })
 
-  reducer.on(WalletActions.setOnRampCurrencies, (state: WalletState, payload: BraveWallet.OnRampCurrency[]): WalletState => {
+  reducer.on(WalletActions.setOnRampCurrencies.type, (state: WalletState, payload: BraveWallet.OnRampCurrency[]): WalletState => {
     return {
       ...state,
       onRampCurrencies: payload
     }
   })
 
-  reducer.on(WalletActions.selectCurrency, (state: WalletState, payload: BraveWallet.OnRampCurrency): WalletState => {
+  reducer.on(WalletActions.selectCurrency.type, (state: WalletState, payload: BraveWallet.OnRampCurrency): WalletState => {
     return {
       ...state,
       selectedCurrency: payload
     }
   })
 
-  reducer.on(WalletActions.setPasswordAttempts, (state: WalletState, payload: number): WalletState => {
+  reducer.on(WalletActions.setPasswordAttempts.type, (state: WalletState, payload: number): WalletState => {
     return {
       ...state,
       passwordAttempts: payload
     }
   })
 
-  reducer.on(WalletActions.setSelectedAssetFilterItem, (state: WalletState, payload: AssetFilterOption): WalletState => {
+  reducer.on(WalletActions.setSelectedAssetFilterItem.type, (state: WalletState, payload: AssetFilterOption): WalletState => {
     return {
       ...state,
       selectedAssetFilter: payload
     }
   })
 
-  reducer.on(WalletActions.setSelectedAccountFilterItem, (state: WalletState, payload: WalletAccountType): WalletState => {
+  reducer.on(WalletActions.setSelectedAccountFilterItem.type, (state: WalletState, payload: WalletAccountType): WalletState => {
     // We need to add a getPortfolioAccountFilter and setPortfolioAccountFilter pref to persist this value
     // https://github.com/brave/brave-browser/issues/25620
     return {

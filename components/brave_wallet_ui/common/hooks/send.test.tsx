@@ -62,7 +62,11 @@ const makeStoreWithActionSpies = (actionSpies: Array<{
         selectedSendAsset: mockSendAssetOptions[0],
         sendAmount: '',
         toAddress: '',
-        toAddressOrUrl: ''
+        toAddressOrUrl: '',
+        showEnsOffchainLookupOptions: false,
+        addressError: '',
+        addressWarning: '',
+        ensOffchainLookupOptions: undefined
       })
     })
   )
@@ -88,15 +92,15 @@ describe('useSend hook', () => {
 
     const store = makeStoreWithActionSpies([
       {
-        actionType: WalletActions.sendTransaction.getType(),
+        actionType: WalletActions.sendTransaction.type,
         spy: sendTransactionSpy
       },
       {
-        actionType: WalletActions.sendERC20Transfer.getType(),
+        actionType: WalletActions.sendERC20Transfer.type,
         spy: sendERC20TransferSpy
       },
       {
-        actionType: WalletActions.sendERC721TransferFrom.getType(),
+        actionType: WalletActions.sendERC721TransferFrom.type,
         spy: sendERC721TransferFromSpy
       }
     ])
@@ -144,15 +148,15 @@ describe('useSend hook', () => {
 
     const store = makeStoreWithActionSpies([
       {
-        actionType: WalletActions.sendTransaction.getType(),
+        actionType: WalletActions.sendTransaction.type,
         spy: sendTransactionSpy
       },
       {
-        actionType: WalletActions.sendERC20Transfer.getType(),
+        actionType: WalletActions.sendERC20Transfer.type,
         spy: sendERC20TransferSpy
       },
       {
-        actionType: WalletActions.sendERC721TransferFrom.getType(),
+        actionType: WalletActions.sendERC721TransferFrom.type,
         spy: sendERC721TransferFromSpy
       }
     ])
@@ -201,15 +205,15 @@ describe('useSend hook', () => {
 
     const store = makeStoreWithActionSpies([
       {
-        actionType: WalletActions.sendTransaction.getType(),
+        actionType: WalletActions.sendTransaction.type,
         spy: sendTransactionSpy
       },
       {
-        actionType: WalletActions.sendERC20Transfer.getType(),
+        actionType: WalletActions.sendERC20Transfer.type,
         spy: sendERC20TransferSpy
       },
       {
-        actionType: WalletActions.sendERC721TransferFrom.getType(),
+        actionType: WalletActions.sendERC721TransferFrom.type,
         spy: sendERC721TransferFromSpy
       }
     ])
@@ -263,15 +267,15 @@ describe('useSend hook', () => {
 
         const store = makeStoreWithActionSpies([
           {
-            actionType: WalletActions.sendTransaction.getType(),
+            actionType: WalletActions.sendTransaction.type,
             spy: sendTransactionSpy
           },
           {
-            actionType: WalletActions.sendERC20Transfer.getType(),
+            actionType: WalletActions.sendERC20Transfer.type,
             spy: sendERC20TransferSpy
           },
           {
-            actionType: WalletActions.sendERC721TransferFrom.getType(),
+            actionType: WalletActions.sendERC721TransferFrom.type,
             spy: sendERC721TransferFromSpy
           }
         ])
@@ -306,15 +310,15 @@ describe('useSend hook', () => {
 
         const store = makeStoreWithActionSpies([
           {
-            actionType: WalletActions.sendTransaction.getType(),
+            actionType: WalletActions.sendTransaction.type,
             spy: sendTransactionSpy
           },
           {
-            actionType: WalletActions.sendERC20Transfer.getType(),
+            actionType: WalletActions.sendERC20Transfer.type,
             spy: sendERC20TransferSpy
           },
           {
-            actionType: WalletActions.sendERC721TransferFrom.getType(),
+            actionType: WalletActions.sendERC721TransferFrom.type,
             spy: sendERC721TransferFromSpy
           }
         ])
