@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -24,12 +25,19 @@ BraveTabContainer::BraveTabContainer(
                        drag_context,
                        tab_slot_controller,
                        scroll_contents_view) {
+  auto* browser = tab_slot_controller_->GetBrowser();
+  if (!browser) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  if (!tabs::features::SupportsVerticalTabs(browser)) {
+    return;
+  }
+
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled,
-      tab_slot_controller_->GetBrowser()
-          ->profile()
-          ->GetOriginalProfile()
-          ->GetPrefs(),
+      browser->profile()->GetOriginalProfile()->GetPrefs(),
       base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
                           base::Unretained(this)));
 

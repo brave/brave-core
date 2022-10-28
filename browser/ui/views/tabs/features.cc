@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/features.h"
 
+#include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -29,13 +30,17 @@ const base::Feature kBraveVerticalTabs{"BraveVerticalTabs",
                                        base::FEATURE_DISABLED_BY_DEFAULT};
 
 bool SupportsVerticalTabs(const Browser* browser) {
-  DCHECK(browser);
+  if (!browser) {
+    // During unit tests, |browser| can be null.
+    CHECK_IS_TEST();
+    return false;
+  }
+
   return base::FeatureList::IsEnabled(features::kBraveVerticalTabs) &&
          browser->is_type_normal();
 }
 
 bool ShouldShowVerticalTabs(const Browser* browser) {
-  DCHECK(browser);
   if (!SupportsVerticalTabs(browser))
     return false;
 
@@ -44,8 +49,6 @@ bool ShouldShowVerticalTabs(const Browser* browser) {
 }
 
 bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
-  DCHECK(browser);
-
   if (!ShouldShowVerticalTabs(browser))
     return false;
 
