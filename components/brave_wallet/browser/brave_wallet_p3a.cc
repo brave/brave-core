@@ -7,11 +7,15 @@
 
 #include <utility>
 
+#include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_wallet {
 
@@ -22,6 +26,12 @@ const char kKeyringCreatedHistogramName[] = "Brave.Wallet.KeyringCreated";
 const char kOnboardingConversionHistogramName[] =
     "Brave.Wallet.OnboardingConversion.2";
 const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider";
+const char kEthTransactionSentHistogramName[] =
+    "Brave.Wallet.EthTransactionSent";
+const char kSolTransactionSentHistogramName[] =
+    "Brave.Wallet.SolTransactionSent";
+const char kFilTransactionSentHistogramName[] =
+    "Brave.Wallet.FilTransactionSent";
 
 // Has the Wallet keyring been created?
 // 0) No, 1) Yes
@@ -78,6 +88,12 @@ void BraveWalletP3A::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
+void BraveWalletP3A::Update() {
+  ReportTransactionSent(mojom::CoinType::ETH, false);
+  ReportTransactionSent(mojom::CoinType::FIL, false);
+  ReportTransactionSent(mojom::CoinType::SOL, false);
+}
+
 void BraveWalletP3A::ReportEthereumProvider(
     mojom::EthereumProviderType provider_type) {
   UMA_HISTOGRAM_ENUMERATION(kEthProviderHistogramName, provider_type);
@@ -87,6 +103,46 @@ void BraveWalletP3A::ReportOnboardingAction(
     mojom::OnboardingAction onboarding_action) {
   UMA_HISTOGRAM_ENUMERATION(kOnboardingConversionHistogramName,
                             onboarding_action);
+}
+
+void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
+                                           bool new_send) {
+  DictionaryPrefUpdate last_sent_time_update(
+      pref_service_, kBraveWalletLastTransactionSentTimeDict);
+  base::Value::Dict& last_sent_time_dict = last_sent_time_update->GetDict();
+
+  std::string coin_key = base::NumberToString(static_cast<int>(coin));
+
+  base::Time now = base::Time::Now();
+  base::Time last_sent_time = base::Time::FromDoubleT(
+      last_sent_time_dict.FindDouble(coin_key).value_or(0.0));
+
+  if (!new_send && last_sent_time.is_null()) {
+    // Don't report if a transaction was never sent.
+    return;
+  }
+  int answer = 0;
+  if (new_send || (now - last_sent_time) < base::Days(7)) {
+    answer = 1;
+  }
+  if (new_send) {
+    last_sent_time_dict.Set(coin_key, now.ToDoubleT());
+  }
+
+  const char* histogram_name;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      histogram_name = kEthTransactionSentHistogramName;
+      break;
+    case mojom::CoinType::SOL:
+      histogram_name = kSolTransactionSentHistogramName;
+      break;
+    case mojom::CoinType::FIL:
+      histogram_name = kFilTransactionSentHistogramName;
+      break;
+  }
+
+  base::UmaHistogramExactLinear(histogram_name, answer, 2);
 }
 
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {

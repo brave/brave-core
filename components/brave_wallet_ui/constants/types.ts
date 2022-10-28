@@ -841,3 +841,11 @@ export interface AccountButtonOptionsObjectType {
 }
 
 export type StringWithAutocomplete<T> = T | (string & Record<never, never>)
+
+export const P3ASendTransactionTypes = [
+  BraveWallet.TransactionType.ETHSend,
+  BraveWallet.TransactionType.ERC20Transfer,
+  BraveWallet.TransactionType.SolanaSystemTransfer,
+  BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+  BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+]

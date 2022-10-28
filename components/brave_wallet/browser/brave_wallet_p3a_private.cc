@@ -13,4 +13,7 @@ void BraveWalletP3APrivate::ReportEthereumProvider(
 void BraveWalletP3APrivate::ReportOnboardingAction(
     mojom::OnboardingAction onboarding_action) {}
 
+void BraveWalletP3APrivate::ReportTransactionSent(mojom::CoinType coin,
+                                                  bool new_send) {}
+
 }  // namespace brave_wallet

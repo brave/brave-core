@@ -861,6 +861,7 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
 
 void BraveWalletService::OnP3ATimerFired() {
   RecordWalletUsage(false);
+  brave_wallet_p3a_.Update();
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(

@@ -22,6 +22,9 @@ extern const char kDefaultSolanaWalletHistogramName[];
 extern const char kKeyringCreatedHistogramName[];
 extern const char kOnboardingConversionHistogramName[];
 extern const char kEthProviderHistogramName[];
+extern const char kEthTransactionSentHistogramName[];
+extern const char kSolTransactionSentHistogramName[];
+extern const char kFilTransactionSentHistogramName[];
 
 class BraveWalletService;
 class KeyringService;
@@ -42,10 +45,13 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   mojo::PendingRemote<mojom::BraveWalletP3A> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletP3A> receiver);
 
+  void Update();
+
   void ReportEthereumProvider(
       mojom::EthereumProviderType provider_type) override;
   void ReportOnboardingAction(
       mojom::OnboardingAction onboarding_action) override;
+  void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
 
   // KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override;

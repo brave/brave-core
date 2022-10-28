@@ -20,7 +20,8 @@ namespace brave_wallet {
 
 class BraveWalletP3AUnitTest : public testing::Test {
  public:
-  BraveWalletP3AUnitTest() {
+  BraveWalletP3AUnitTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
@@ -140,6 +141,33 @@ TEST_F(BraveWalletP3AUnitTest, ReportOnboardingAction) {
   wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::RestoredWallet);
   histogram_tester_->ExpectBucketCount(kOnboardingConversionHistogramName, 2,
                                        1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, TransactionSent) {
+  histogram_tester_->ExpectTotalCount(kEthTransactionSentHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kSolTransactionSentHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kFilTransactionSentHistogramName, 0);
+
+  BraveWalletP3A* wallet_p3a = wallet_service_->GetBraveWalletP3A();
+
+  wallet_p3a->ReportTransactionSent(mojom::CoinType::ETH, true);
+  histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 1);
+
+  wallet_p3a->ReportTransactionSent(mojom::CoinType::SOL, true);
+  histogram_tester_->ExpectUniqueSample(kSolTransactionSentHistogramName, 1, 1);
+
+  wallet_p3a->ReportTransactionSent(mojom::CoinType::FIL, true);
+  histogram_tester_->ExpectUniqueSample(kFilTransactionSentHistogramName, 1, 1);
+
+  task_environment_.FastForwardBy(base::Days(4));
+  histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 5);
+  histogram_tester_->ExpectUniqueSample(kSolTransactionSentHistogramName, 1, 5);
+  histogram_tester_->ExpectUniqueSample(kFilTransactionSentHistogramName, 1, 5);
+
+  task_environment_.FastForwardBy(base::Days(3));
+  histogram_tester_->ExpectBucketCount(kEthTransactionSentHistogramName, 0, 1);
+  histogram_tester_->ExpectBucketCount(kSolTransactionSentHistogramName, 0, 1);
+  histogram_tester_->ExpectBucketCount(kFilTransactionSentHistogramName, 0, 1);
 }
 
 }  // namespace brave_wallet

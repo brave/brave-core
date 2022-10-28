@@ -58,7 +58,7 @@ class WalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
-          brave_wallet_p3a_receiver) override;
+          brave_wallet_p3a) override;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

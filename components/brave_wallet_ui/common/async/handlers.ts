@@ -59,7 +59,7 @@ import {
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import { getCoinFromTxDataUnion, getNetworkInfo } from '../../utils/network-utils'
-import { isSolanaTransaction } from '../../utils/tx-utils'
+import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -435,9 +435,9 @@ handler.on(WalletActions.approveERC20Allowance.type, async (store: Store, payloa
 })
 
 handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
-  const apiProxy = getAPIProxy()
+  const { txService, braveWalletP3A } = getAPIProxy()
   const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
-  const result = await apiProxy.txService.approveTransaction(coin, txInfo.id)
+  const result = await txService.approveTransaction(coin, txInfo.id)
   const error = result.errorUnion.providerError ?? result.errorUnion.solanaProviderError
   if (error !== BraveWallet.ProviderError.kSuccess) {
     await store.dispatch(WalletActions.setTransactionProviderError({
@@ -447,6 +447,11 @@ handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: B
         message: result.errorMessage
       } as TransactionProviderError
     }))
+  } else {
+    const { selectedNetwork } = getWalletState(store)
+    if (shouldReportTransactionP3A(txInfo, selectedNetwork, coin)) {
+      braveWalletP3A.reportTransactionSent(coin, true)
+    }
   }
 
   await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
