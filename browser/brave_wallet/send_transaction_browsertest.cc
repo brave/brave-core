@@ -245,12 +245,20 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     json_rpc_service_->AddEthereumChainRequestCompleted(chain_id, true);
   }
 
-  void CallEthereumEnable() {
+  void CallEthereumEnable(bool is_repeat_call = false) {
+    base::RunLoop run_loop;
+    auto* tab_helper =
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
+    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
+
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
-    base::RunLoop().RunUntilIdle();
-    ASSERT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    if (!is_repeat_call) {
+      run_loop.Run();
+    }
+
+    // The bubble should be showing at this point. If it's a repeat call then
+    // the bubble should already be shown from the initial call.
+    ASSERT_TRUE(tab_helper->IsShowingBubble());
   }
 
   void UserGrantPermission(bool granted) {
@@ -791,7 +799,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SecondEnableCallFails) {
   CallEthereumEnable();
 
   // 2nd call should fail
-  CallEthereumEnable();
+  CallEthereumEnable(/*is_repeat_call*/ true);
   ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractBool(),
@@ -817,7 +825,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   CallEthereumEnable();
 
   // 2nd call should fail
-  CallEthereumEnable();
+  CallEthereumEnable(/*is_repeat_call*/ true);
   ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractBool(),

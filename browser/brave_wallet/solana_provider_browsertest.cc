@@ -396,12 +396,18 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void CallSolanaConnect(const content::ToRenderFrameHost& execution_target,
                          bool is_expect_bubble = true) {
+    base::RunLoop run_loop;
+    auto* tab_helper =
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
+    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
+
     ASSERT_TRUE(ExecJs(execution_target, "solanaConnect()"));
-    base::RunLoop().RunUntilIdle();
+
     if (is_expect_bubble) {
-      ASSERT_TRUE(
-          brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-              ->IsShowingBubble());
+      run_loop.Run();
+      ASSERT_TRUE(tab_helper->IsShowingBubble());
+    } else {
+      run_loop.RunUntilIdle();
     }
   }
 
