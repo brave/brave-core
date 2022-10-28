@@ -12,8 +12,7 @@
 BraveTabGroupHighlight::~BraveTabGroupHighlight() = default;
 
 SkPath BraveTabGroupHighlight::GetPath() const {
-  if (!tabs::features::ShouldShowVerticalTabs(
-          tab_group_views_->controller().GetBrowser()))
+  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupHighlight::GetPath();
 
   SkPath path;

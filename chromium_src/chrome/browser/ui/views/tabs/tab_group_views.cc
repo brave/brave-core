@@ -41,3 +41,7 @@
 #undef TabGroupHighlight
 #undef TabGroupUnderline
 #undef TabGroupHeader
+
+const Browser* TabGroupViews::GetBrowser() const {
+  return tab_slot_controller_->GetBrowser();
+}

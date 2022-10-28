@@ -13,8 +13,7 @@ BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
 void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
                                           views::View* trailing_view) {
   TabGroupUnderline::UpdateBounds(leading_view, trailing_view);
-  if (!tabs::features::ShouldShowVerticalTabs(
-          tab_group_views_->controller().GetBrowser()) ||
+  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()) ||
       !GetVisible()) {
     return;
   }
@@ -40,8 +39,7 @@ void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
 
 gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
     views::View* sibling_view) const {
-  if (!tabs::features::ShouldShowVerticalTabs(
-          tab_group_views_->controller().GetBrowser()))
+  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupUnderline::GetInsetsForUnderline(sibling_view);
 
   constexpr int kStrokeInsetForVerticalTabs = 4;
@@ -49,8 +47,7 @@ gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
 }
 
 SkPath BraveTabGroupUnderline::GetPath() const {
-  if (!tabs::features::ShouldShowVerticalTabs(
-          tab_group_views_->controller().GetBrowser()))
+  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupUnderline::GetPath();
 
   // In vertical tabs, underline is not actually "underline'. It's vertical line

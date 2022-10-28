@@ -42,7 +42,8 @@ void TabDragController::Init(TabDragContext* source_context,
   auto* widget = source_view->GetWidget()->GetTopLevelWidget();
   DCHECK(widget);
   const auto* browser =
-      static_cast<BraveBrowserFrame*>(widget)->browser_view()->browser();
+      BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow())
+          ->browser();
   is_showing_vertical_tabs_ = tabs::features::ShouldShowVerticalTabs(browser);
 
   if (!is_showing_vertical_tabs_)
