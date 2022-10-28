@@ -13,6 +13,13 @@
 #include "base/values.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 
+class PrefService;
+
+namespace base {
+class Time;
+class Value;
+}  // namespace base
+
 namespace brave_vpn {
 
 struct Hostname;
@@ -32,6 +39,13 @@ base::Value::Dict GetValueWithTicketInfos(const std::string& email,
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::Region> region_list);
+bool IsValidCredentialSummary(const base::Value& summary);
+bool HasValidSubscriberCredential(PrefService* local_prefs);
+std::string GetSubscriberCredential(PrefService* local_prefs);
+void SetSubscriberCredential(PrefService* local_prefs,
+                             const std::string& subscriber_credential,
+                             const base::Time& expiration_time);
+void ClearSubscriberCredential(PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

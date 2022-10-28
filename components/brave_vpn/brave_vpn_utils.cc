@@ -35,10 +35,10 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBraveVPNShowDNSPolicyWarningDialog,
                                 true);
 #endif
-  registry->RegisterStringPref(prefs::kBraveVPNEEnvironment,
+  registry->RegisterStringPref(prefs::kBraveVPNEnvironment,
                                skus::GetDefaultEnvironment());
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
-
+  registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
 }
 
