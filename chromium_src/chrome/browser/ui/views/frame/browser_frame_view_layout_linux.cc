@@ -16,8 +16,8 @@ int BrowserFrameViewLayoutLinux::NonClientTopHeight(bool restored) const {
     return OpaqueBrowserFrameViewLayout::NonClientTopHeight(restored);
   }
 
-  if (view_->browser_view()->browser()->is_type_normal() &&
-      tabs::features::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs(
+          view_->browser_view()->browser())) {
     if (!view_->ShouldShowCaptionButtons()) {
       // In this case, the window manager might be forcibly providing system
       // window title or it's in fullscreen mode. We shouldn't show title bar

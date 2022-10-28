@@ -25,7 +25,7 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 BraveTabStrip::~BraveTabStrip() = default;
 
 bool BraveTabStrip::ShouldDrawStrokes() const {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()))
     return false;
 
   if (!TabStrip::ShouldDrawStrokes())
@@ -57,7 +57,7 @@ void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
 }
 
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()))
     return SK_ColorTRANSPARENT;
 
   Profile* profile = controller()->GetProfile();

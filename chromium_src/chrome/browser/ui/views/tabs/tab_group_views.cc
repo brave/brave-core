@@ -15,7 +15,8 @@
 
 // TabGroupViews destructor is not virtual, so we can't override the method.
 #define BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS                 \
-  if (tabs::features::ShouldShowVerticalTabs()) {                              \
+  if (tabs::features::ShouldShowVerticalTabs(                                  \
+          tab_slot_controller_->GetBrowser())) {                               \
     std::vector<views::View*> children_in_same_group;                          \
     base::ranges::copy_if(                                                     \
         children, std::back_inserter(children_in_same_group),                  \
@@ -40,3 +41,7 @@
 #undef TabGroupHighlight
 #undef TabGroupUnderline
 #undef TabGroupHeader
+
+const Browser* TabGroupViews::GetBrowser() const {
+  return tab_slot_controller_->GetBrowser();
+}

@@ -8,13 +8,18 @@
 
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 
+class Browser;
+
 class BraveBrowserRootView : public BrowserRootView {
  public:
-  using BrowserRootView::BrowserRootView;
+  BraveBrowserRootView(BrowserView* browser_view, views::Widget* widget);
   ~BraveBrowserRootView() override;
 
   // BrowserRootView:
   bool OnMouseWheel(const ui::MouseWheelEvent& event) override;
+
+ private:
+  raw_ptr<Browser> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_ROOT_VIEW_H_

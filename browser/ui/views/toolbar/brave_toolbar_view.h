@@ -52,7 +52,7 @@ class BraveToolbarView : public ToolbarView,
   void ResetLocationBarBounds();
   void ResetButtonBounds();
   void UpdateBookmarkVisibility();
-  void OnShowTitleBarOnVerticalTabsChanged();
+  void UpdateHorizontalPadding();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
@@ -74,6 +74,7 @@ class BraveToolbarView : public ToolbarView,
 
   BooleanPrefMember location_bar_is_wide_;
 
+  BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
 
   // Whether this toolbar has been initialized.

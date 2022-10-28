@@ -174,13 +174,13 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
 #endif
 
-  const bool show_vertical_tabs =
-      browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs();
+  const bool supports_vertical_tabs =
+      tabs::features::SupportsVerticalTabs(browser_.get());
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
 
-  if (!show_vertical_tabs && !can_have_sidebar)
+  if (!supports_vertical_tabs && !can_have_sidebar)
     return;
 
   // Wrap chromium side panel with our sidebar container
@@ -190,7 +190,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
   unified_side_panel_ = sidebar_container_view_->side_panel();
-  if (show_vertical_tabs) {
+  if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         contents_container_->AddChildView(std::make_unique<views::View>());
   }
@@ -307,7 +307,7 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(browser()))
     return false;
 
   return BrowserView::GetTabStripVisible();
@@ -315,7 +315,7 @@ bool BraveBrowserView::GetTabStripVisible() const {
 
 #if BUILDFLAG(IS_WIN)
 bool BraveBrowserView::GetSupportsTitle() const {
-  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::SupportsVerticalTabs(browser()))
     return true;
 
   return BrowserView::GetSupportsTitle();
