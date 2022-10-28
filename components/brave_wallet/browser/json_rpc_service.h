@@ -282,6 +282,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& error_message)>;
   void GetIsEip1559(GetIsEip1559Callback callback);
 
+  using GetBlockByNumberCallback =
+      base::OnceCallback<void(base::Value result,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
+  // block_number can be kEthereumBlockTagLatest
+  void GetBlockByNumber(const std::string& block_number,
+                        GetBlockByNumberCallback callback);
+
   void GetERC721OwnerOf(const std::string& contract,
                         const std::string& token_id,
                         const std::string& chain_id,
@@ -490,6 +498,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                      APIRequestResult api_request_result);
   void OnGetIsEip1559(GetIsEip1559Callback callback,
                       APIRequestResult api_request_result);
+  void OnGetBlockByNumber(GetBlockByNumberCallback callback,
+                          APIRequestResult api_request_result);
 
   void MaybeUpdateIsEip1559(const std::string& chain_id);
   void UpdateIsEip1559(const std::string& chain_id,

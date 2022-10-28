@@ -9,6 +9,7 @@
   <message name="IDS_WALLET_EXPECTED_SINGLE_PARAMETER" desc="The text of the response for wallet_addEthereumChain call with empty parameters">Expected single, object parameter.</message>
   <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
   <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
+  <message name="IDS_WALLET_UNSUPPORTED_SUBSCRIPTION_TYPE" desc="The text of the response for eth_subscribe with an unsupported subscription type">Unsupported subscription type</message>
   <message name="IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR" desc="The text of response when an RPC method is not supported">This RPC method is not supported.</message>
   <message name="IDS_WALLET_PARSING_ERROR" desc="There was a parsing error">A response parsing error has occurred</message>
   <message name="IDS_WALLET_REQUEST_PROCESSING_ERROR" desc="There was a request processing error">A generic request processing error has occurred</message>
