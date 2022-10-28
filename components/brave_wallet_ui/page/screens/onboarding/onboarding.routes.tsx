@@ -12,10 +12,10 @@ import {
 } from 'react-router'
 
 // components
-import { OnboardingBackupRecoveryPhrase } from './backup-recovery-phrase/onboarding-backup-recovery-phrase'
+import { OnboardingBackupRecoveryPhrase } from '../backup-wallet/backup-recovery-phrase/onboarding-backup-recovery-phrase'
 import { OnboardingCreatePassword } from './create-password/onboarding-create-password'
-import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
-import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
+import { OnboardingRecoveryPhraseExplainer } from '../backup-wallet/explain-recovery-phrase/explain-recovery-phrase'
+import { OnboardingVerifyRecoveryPhrase } from '../backup-wallet/verify-recovery-phrase/verify-recovery-phrase'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'

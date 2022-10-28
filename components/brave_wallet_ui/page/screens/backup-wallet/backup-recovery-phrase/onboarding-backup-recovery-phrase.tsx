@@ -33,13 +33,13 @@ import {
   PhraseCardBody,
   PhraseCardBottomRow,
   PhraseCardTopRow
-} from '../onboarding.style'
+} from '../../onboarding/onboarding.style'
 
 // components
-import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
+import { RecoveryPhrase } from '../../onboarding/components/recovery-phrase/recovery-phrase'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { NavButton } from '../../../../components/extension'
 
 export const OnboardingBackupRecoveryPhrase = () => {
