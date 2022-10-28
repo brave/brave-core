@@ -146,7 +146,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
         SolanaTxData solTxData = txDataUnion.which() == TxDataUnion.Tag.SolanaTxData
                 ? txDataUnion.getSolanaTxData()
                 : null;
-        ;
         FilTxData filTxData = txDataUnion.which() == TxDataUnion.Tag.FilTxData
                 ? txDataUnion.getFilTxData()
                 : null;

@@ -419,30 +419,31 @@ public class TxFragment extends Fragment {
             SolanaTxData solanaTxData = TransactionUtils.safeSolData(mTxInfo.txDataUnion);
             if (solanaTxData != null && solanaTxData.sendOptions != null) {
                 SolanaSendTransactionOptions sendTxOptions = solanaTxData.sendOptions;
-                LinearLayout sendOptionsLl = view.findViewById(R.id.frag_tx_ll_send_options);
+                LinearLayout sendOptionsLinearLayout =
+                        view.findViewById(R.id.frag_tx_ll_send_options);
                 if (sendTxOptions.maxRetries != null) {
                     TextView tvLabel = AndroidUtils.makeHeaderTv(requireContext());
                     TextView tvVal = AndroidUtils.makeSubHeaderTv(requireContext());
                     tvLabel.setText(R.string.brave_wallet_solana_max_retries);
                     tvVal.setText(String.valueOf(sendTxOptions.maxRetries.maxRetries));
-                    sendOptionsLl.addView(tvLabel);
-                    sendOptionsLl.addView(tvVal);
+                    sendOptionsLinearLayout.addView(tvLabel);
+                    sendOptionsLinearLayout.addView(tvVal);
                 }
                 if (sendTxOptions.preflightCommitment != null) {
                     TextView tvLabel = AndroidUtils.makeHeaderTv(requireContext());
                     TextView tvVal = AndroidUtils.makeSubHeaderTv(requireContext());
                     tvLabel.setText(R.string.brave_wallet_solana_preflight_commitment);
                     tvVal.setText(sendTxOptions.preflightCommitment);
-                    sendOptionsLl.addView(tvLabel);
-                    sendOptionsLl.addView(tvVal);
+                    sendOptionsLinearLayout.addView(tvLabel);
+                    sendOptionsLinearLayout.addView(tvVal);
                 }
                 if (sendTxOptions.skipPreflight != null) {
                     TextView tvLabel = AndroidUtils.makeHeaderTv(requireContext());
                     TextView tvVal = AndroidUtils.makeSubHeaderTv(requireContext());
                     tvLabel.setText(R.string.brave_wallet_solana_skip_preflight);
                     tvVal.setText(String.valueOf(sendTxOptions.skipPreflight.skipPreflight));
-                    sendOptionsLl.addView(tvLabel);
-                    sendOptionsLl.addView(tvVal);
+                    sendOptionsLinearLayout.addView(tvLabel);
+                    sendOptionsLinearLayout.addView(tvVal);
                 }
             }
         }

@@ -171,55 +171,34 @@ public class SolanaInstructionPresenter {
 
     public String fromPubKey() {
         if (mFromPubKey != null) return mFromPubKey;
-        if (isAccountMetaPresent()) {
-            SolanaInstructionAccountParam[] accountParams =
-                    mSolanaInstruction.decodedData.accountParams;
-            for (int i = 0; i < accountParams.length; i++) {
-                if (accountParams[i].name.equalsIgnoreCase(WalletConstants.SOL_DAPP_FROM_ACCOUNT)) {
-                    if (mSolanaInstruction.accountMetas.length > i) {
-                        mFromPubKey = mSolanaInstruction.accountMetas[i].pubkey;
-                    }
-                    return mFromPubKey;
-                }
-            }
-        }
-        return null;
+        mFromPubKey = getPubKeyPerParamKey(WalletConstants.SOL_DAPP_FROM_ACCOUNT);
+        return mFromPubKey;
     }
 
     public String toPubKey() {
         if (mToPubKey != null) return mToPubKey;
-        if (isAccountMetaPresent()) {
-            SolanaInstructionAccountParam[] accountParams =
-                    mSolanaInstruction.decodedData.accountParams;
-            for (int i = 0; i < accountParams.length; i++) {
-                if (accountParams[i].name.equalsIgnoreCase(WalletConstants.SOL_DAPP_TO_ACCOUNT)) {
-                    if (mSolanaInstruction.accountMetas.length > i) {
-                        mToPubKey = mSolanaInstruction.accountMetas[i].pubkey;
-                    }
-                    return mToPubKey;
-                }
-            }
-        }
-        return null;
+        mToPubKey = getPubKeyPerParamKey(WalletConstants.SOL_DAPP_TO_ACCOUNT);
+        return mToPubKey;
     }
 
     // Returns the first found account pub key from accounts meta, corresponding to input "key" from
     // accountParams
     public String getPubKeyPerParamKey(String key) {
         if (TextUtils.isEmpty(key)) return null;
-        if (isDecodedDataPresent && mSolanaInstruction.decodedData.accountParams != null) {
+        String pubKey = null;
+        if (isAccountMetaPresent()) {
             SolanaInstructionAccountParam[] accountParams =
                     mSolanaInstruction.decodedData.accountParams;
             for (int i = 0; i < accountParams.length; i++) {
                 if (accountParams[i].name.equalsIgnoreCase(key)) {
                     if (mSolanaInstruction.accountMetas.length > i) {
-                        mToPubKey = mSolanaInstruction.accountMetas[i].pubkey;
+                        pubKey = mSolanaInstruction.accountMetas[i].pubkey;
                     }
-                    return mToPubKey;
+                    return pubKey;
                 }
             }
         }
-        return null;
+        return pubKey;
     }
 
     public SolanaInstruction getSolanaInstruction() {
