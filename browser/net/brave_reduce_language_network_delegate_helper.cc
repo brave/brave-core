@@ -34,7 +34,9 @@ const std::array<std::string, 5> kFakeQValues = {";q=0.5", ";q=0.6", ";q=0.7",
 static constexpr auto kFarbleAcceptLanguageExceptions =
     base::MakeFixedFlatSet<base::StringPiece>(
         {// https://github.com/brave/brave-browser/issues/25309
-         "ulta.com", "www.ulta.com"});
+         "ulta.com", "www.ulta.com",
+         // https://github.com/brave/brave-browser/issues/26325
+         "aeroplan.rewardops.com"});
 }  // namespace
 
 std::string FarbleAcceptLanguageHeader(
