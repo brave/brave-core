@@ -141,16 +141,29 @@
   </message>
 
   <!-- Settings / Pin shortcut-->
-  <if expr="is_win">
-    <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT">
-      Pin to taskbar
-    </message>
-    <message name="IDS_SETTINGS_PIN_SHORTCUT">
-      Pin
-    </message>
-    <message name="IDS_SETTINGS_SHORTCUT_PINNED">
-      Brave is already pinned
-    </message>
+  <if expr="enable_pin_shortcut">
+    <if expr="is_win">
+      <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT" desc="The label for pin to taskbar settings">
+        Pin to taskbar
+      </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for pin to taskbar button">
+        Pin
+      </message>
+      <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for pinned state description">
+        Brave is already pinned
+      </message>
+    </if>
+    <if expr="is_macosx">
+      <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT" desc="The label for keep in dock settings">
+        Keep in Dock
+      </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for dock button">
+        Dock
+      </message>
+      <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for docked state description">
+        Brave is already in Dock
+      </message>
+    </if>
   </if>
 
   <!-- Settings / Shields -->

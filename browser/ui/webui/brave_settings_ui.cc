@@ -14,6 +14,7 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
+#include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -37,7 +38,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
 #endif
 
@@ -70,7 +71,7 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
 #endif
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
 #endif
 }

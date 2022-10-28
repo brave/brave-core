@@ -10,6 +10,7 @@
 #include "base/i18n/rtl.h"
 #include "base/mac/scoped_nsobject.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/browser/brave_shell_integration.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -21,11 +22,13 @@
 
 @implementation FirstRunDialogViewController {
   BOOL _setAsDefaultBrowser;
+  NSButton* _dockCheckbox;
 }
 
 - (instancetype)initWithStatsCheckboxInitiallyChecked:(BOOL)checked {
   if ((self = [super init])) {
     _setAsDefaultBrowser = NO;
+    _dockCheckbox = nil;
   }
   return self;
 }
@@ -35,6 +38,7 @@
   constexpr int kPadding = 24;
   constexpr int kLabelSpacing = 16;
   constexpr int kTopPadding = 20;
+  constexpr int kCheckboxTopMargin = 20;
   constexpr int kButtonTopMargin = 40;
   constexpr int kButtonBottomMargin = 20;
   constexpr int kButtonHorizontalMargin = 20;
@@ -91,10 +95,22 @@
   [contentsLabel
       setFrame:NSMakeRect(0, 0, preferredSize.width, preferredSize.height)];
 
+  std::u16string dockCheckboxString =
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT);
+  base::i18n::AdjustStringForLocaleDirection(&dockCheckboxString);
+  _dockCheckbox = [[NSButton alloc] init];
+  [_dockCheckbox setButtonType:NSSwitchButton];
+  [_dockCheckbox setTitle:base::SysUTF16ToNSString(dockCheckboxString)];
+  [_dockCheckbox setFont:[NSFont systemFontOfSize:14.0
+                                           weight:NSFontWeightRegular]];
+  [_dockCheckbox sizeToFit];
+
   // It's time to calculate window's height as we can get all controls' final
   // heights.
   const int windowHeight = kTopPadding + NSHeight(headerLabel.frame) +
                            kLabelSpacing + NSHeight(contentsLabel.frame) +
+                           kCheckboxTopMargin + NSHeight(_dockCheckbox.frame) +
                            kButtonTopMargin + NSHeight(maybeLaterButton.frame) +
                            kButtonBottomMargin;
 
@@ -119,6 +135,7 @@
   [self.view setValue:backgroundColor forKey:@"backgroundColor"];
   [self.view addSubview:headerLabel];
   [self.view addSubview:contentsLabel];
+  [self.view addSubview:_dockCheckbox];
   [self.view addSubview:maybeLaterButton];
   [self.view addSubview:makeDefaultButton];
 
@@ -133,13 +150,19 @@
   frame.origin.y = NSMinY(headerLabel.frame) - kLabelSpacing - NSHeight(frame);
   [contentsLabel setFrame:frame];
 
+  frame = _dockCheckbox.frame;
+  frame.origin.x = kPadding;
+  frame.origin.y =
+      NSMinY(contentsLabel.frame) - kCheckboxTopMargin - NSHeight(frame);
+  [_dockCheckbox setFrame:frame];
+
   frame = makeDefaultButton.frame;
   frame.origin.x = dialogWidth - kButtonHorizontalMargin - NSWidth(frame);
   if (base::i18n::IsRTL()) {
     frame.origin.x = kButtonHorizontalMargin;
   }
   frame.origin.y =
-      NSMinY(contentsLabel.frame) - kButtonTopMargin - NSHeight(frame);
+      NSMinY(_dockCheckbox.frame) - kButtonTopMargin - NSHeight(frame);
   [makeDefaultButton setFrame:frame];
 
   frame = maybeLaterButton.frame;
@@ -167,6 +190,10 @@
 
 - (void)ok:(id)sender {
   _setAsDefaultBrowser = YES;
+  if ([_dockCheckbox state] == NSControlStateValueOn) {
+    shell_integration::PinShortcut();
+  }
+
   [[[self view] window] close];
   [NSApp stopModal];
 }

@@ -11,7 +11,7 @@ import '../default_browser_page/default_browser_page.js'
 import '../on_startup_page/on_startup_page.js'
 import {getTemplate} from './getting_started.html.js'
 
-// <if expr="is_win">
+// <if expr="enable_pin_shortcut">
 import '../pin_shortcut_page/pin_shortcut_page.js'
 // </if>
 

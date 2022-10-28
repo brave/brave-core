@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+
 # Provide our file list to chromium's settings page build
 # Since our components start in a different path, we'll do the first step (move them to
 # the generated preprocessed path via preprocess_if_expr, but let chromium handle the rest of the
@@ -44,7 +46,6 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.ts",
   "default_brave_shields_page/components/brave_adblock_editor.ts",
   "getting_started_page/getting_started.ts",
-  "pin_shortcut_page/pin_shortcut_page.ts",
   "social_blocking_page/social_blocking_page.ts",
 ]
 brave_settings_non_web_component_files = [
@@ -91,9 +92,16 @@ brave_settings_non_web_component_files = [
   "brave_wallet_page/brave_wallet_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
-  "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts",
   "brave_routes.ts",
 ]
+
+if (enable_pin_shortcut) {
+  brave_settings_web_component_files +=
+      [ "pin_shortcut_page/pin_shortcut_page.ts" ]
+  brave_settings_non_web_component_files +=
+      [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
+}
+
 brave_settings_icons_html_files = [ "brave_icons.html" ]
 brave_settings_ts_definitions = [
   "//brave/components/definitions/chrome_brave_theme.d.ts",

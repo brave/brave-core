@@ -1,4 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -159,7 +160,7 @@ source_set("ui") {
       "webui/speedreader/speedreader_panel_ui.h",
     ]
 
-    if (is_win) {
+    if (enable_pin_shortcut) {
       sources += [
         "webui/settings/pin_shortcut_handler.cc",
         "webui/settings/pin_shortcut_handler.h",
@@ -331,6 +332,7 @@ source_set("ui") {
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/browser/resources/federated_internals:resources",
+    "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/webui/brave_federated:mojo_bindings",
