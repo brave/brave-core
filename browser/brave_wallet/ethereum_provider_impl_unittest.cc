@@ -2224,7 +2224,7 @@ TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
   brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
 
   mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New(
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT", "", true, false,
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT", "", true, false, false,
       "BAT", 18, true, "", "", "0x1", mojom::CoinType::ETH);
   bool approved = false;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;

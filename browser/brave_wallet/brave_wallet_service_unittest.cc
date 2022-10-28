@@ -339,10 +339,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
     bat_token_->coin = mojom::CoinType::ETH;
 
     sol_token_ = mojom::BlockchainToken::New(
-        "", "Solana", "sol.png", false, false, "SOL", 9, true, "", "",
+        "", "Solana", "sol.png", false, false, false, "SOL", 9, true, "", "",
         mojom::kSolanaMainnet, mojom::CoinType::SOL);
     fil_token_ = mojom::BlockchainToken::New(
-        "", "Filecoin", "fil.png", false, false, "FIL", 18, true, "", "",
+        "", "Filecoin", "fil.png", false, false, false, "FIL", 18, true, "", "",
         mojom::kFilecoinMainnet, mojom::CoinType::FIL);
   }
 
@@ -798,7 +798,7 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
 
   for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
-        "", chain->symbol_name, "", false, false, chain->symbol,
+        "", chain->symbol_name, "", false, false, false, chain->symbol,
         chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
     std::vector<mojom::BlockchainTokenPtr> tokens;
     GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
@@ -1262,7 +1262,7 @@ TEST_F(BraveWalletServiceUnitTest,
   AddCustomNetwork(GetPrefs(), chain);
 
   auto native_asset = mojom::BlockchainToken::New(
-      "", "symbol_name", "https://url1.com", false, false, "symbol", 11, true,
+      "", "symbol_name", "https://url1.com", false, false, false, "symbol", 11, true,
       "", "", "0x5566", mojom::CoinType::ETH);
 
   bool success = false;
@@ -1596,11 +1596,11 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddPreloadingNetworks) {
 
   auto wtrtl = mojom::BlockchainToken::New(
       "0x6a31Aca4d2f7398F04d9B6ffae2D898d9A8e7938", "WTRTL",
-      "https://brave.com/logo.jpg", true, false, "WTRTL", 18, true, "", "",
+      "https://brave.com/logo.jpg", true, false, false, "WTRTL", 18, true, "", "",
       mojom::kFantomMainnetChainId, mojom::CoinType::ETH);
   for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
-        "", chain->symbol_name, "", false, false, chain->symbol,
+        "", chain->symbol_name, "", false, false, false, chain->symbol,
         chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
     std::vector<mojom::BlockchainTokenPtr> tokens;
     GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
@@ -1901,7 +1901,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",
-            "usdc.png", true, false, "USDC", 6, true, "", "", chain_id,
+            "usdc.png", true, false, false, "USDC", 6, true, "", "", chain_id,
             mojom::CoinType::ETH);
     ASSERT_EQ(usdc_from_blockchain_registry,
               GetRegistry()->GetTokenByAddress(
@@ -1909,16 +1909,16 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
                   "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
     mojom::BlockchainTokenPtr usdc_from_user_assets =
         mojom::BlockchainToken::New(
-            "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true,
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true, false,
             false, "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdc_from_request = mojom::BlockchainToken::New(
-        "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", true, false,
+        "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", true, false, false,
         "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
 
     mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
-        "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
+        "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false, false,
         "COLOR", 18, true, "", "", chain_id, mojom::CoinType::ETH);
 
     // Case 1: Suggested token does not exist (no entry with the same contract
@@ -1976,12 +1976,12 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr usdt_from_user_assets =
         mojom::BlockchainToken::New(
             "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
-            true, false, "USDT", 6, true, "", "", chain_id,
+            true, false, false, "USDT", 6, true, "", "", chain_id,
             mojom::CoinType::ETH);
     ASSERT_TRUE(service_->AddUserAsset(usdt_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
-        "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", true, false,
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", true, false, false,
         "USDT", 18, true, "", "", chain_id, mojom::CoinType::ETH);
     // Case 5: Suggested token exists in user asset list and is visible, does
     // not exist in BlockchainRegistry. Token should be in user asset list and
@@ -2018,13 +2018,13 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     // kUserRejectedRequest error.
     mojom::BlockchainTokenPtr busd = mojom::BlockchainToken::New(
         "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
-        false, "BUSD", 18, true, "", "", chain_id, mojom::CoinType::ETH);
+        false, false, "BUSD", 18, true, "", "", chain_id, mojom::CoinType::ETH);
     AddSuggestToken(busd.Clone(), busd.Clone(), false,
                     true /* run_switch_network */);
 
     // Test reject request.
     mojom::BlockchainTokenPtr brb_from_request = mojom::BlockchainToken::New(
-        "0x6B175474E89094C44Da98b954EedeAC495271d0A", "BRB", "", true, false,
+        "0x6B175474E89094C44Da98b954EedeAC495271d0A", "BRB", "", true, false, false,
         "BRB", 6, true, "", "", chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(service_->RemoveUserAsset(brb_from_request.Clone()));
     AddSuggestToken(brb_from_request.Clone(), brb_from_request.Clone(), false);
@@ -2038,7 +2038,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
 TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
   mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
-      true, false, "USDC", 6, true, "", "", mojom::kGoerliChainId,
+      true, false, false, "USDC", 6, true, "", "", mojom::kGoerliChainId,
       mojom::CoinType::ETH);
   ASSERT_TRUE(service_->AddUserAsset(usdc.Clone()));
   EXPECT_EQ(usdc, service_->GetUserAsset(usdc->contract_address, usdc->token_id,
@@ -2090,7 +2090,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
       base::BindLambdaForTesting([](bool, mojom::ByteArrayStringUnionPtr,
                                     const absl::optional<std::string>&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
-      "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
+      "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false, false,
       "COLOR", 18, true, "", "", "0x1", mojom::CoinType::ETH);
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 

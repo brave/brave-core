@@ -269,6 +269,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "logo": "bat.png",
       "is_erc20": true,
       "is_erc721": false,
+      "is_nft": false,
       "decimals": 18,
       "visible": true,
       "token_id": "",
@@ -278,7 +279,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-      "bat.png", true, false, "BAT", 18, true, "", "", "0x1",
+      "bat.png", true, false, false, "BAT", 18, true, "", "", "0x1",
       mojom::CoinType::ETH);
 
   mojom::BlockchainTokenPtr token = ValueToBlockchainToken(
@@ -297,6 +298,29 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   optional_value.Remove("coingecko_id");
   expected_token->logo = "";
   token = ValueToBlockchainToken(optional_value, "0x1", mojom::CoinType::ETH);
+  EXPECT_EQ(token, expected_token);
+
+
+  json_value = base::JSONReader::Read(R"({
+      "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+      "name": "Crypto Kitties",
+      "symbol": "CK",
+      "logo": "CryptoKitties-Kitty-13733.svg",
+      "is_erc20": false,
+      "is_erc721": true,
+      "is_nft": true,
+      "decimals": 0,
+      "visible": true
+  })");
+  ASSERT_TRUE(json_value);
+
+  expected_token = mojom::BlockchainToken::New(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
+      "CryptoKitties-Kitty-13733.svg", false, true, true, "CK", 0, true, "", "", "0x1",
+      mojom::CoinType::ETH);
+
+  token = ValueToBlockchainToken(
+      json_value->GetDict(), "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 }
 
