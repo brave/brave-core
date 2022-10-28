@@ -143,6 +143,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
+       <message name="IDS_TIP_AMOUNT_TEXT"  desc="Text for Tip amount">
+        Tip amount:
+      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
         Enable/Disable Brave Shields
       </message>
