@@ -37,6 +37,7 @@ import {
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
+import { stripERC20TokenImageURL } from '../../../../utils/string-utils'
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
@@ -536,6 +537,13 @@ export const PortfolioAsset = (props: Props) => {
         }
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+
+    // check if selectedAsset has an icon
+    if (selectedAsset && nftMetadata && stripERC20TokenImageURL(selectedAsset.logo) === '') {
+      const updatedAsset = { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
+      dispatch(WalletActions.removeUserAsset(selectedAsset))
+      dispatch(WalletActions.addUserAsset(updatedAsset))
     }
   }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError])
 
