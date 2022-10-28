@@ -4,6 +4,14 @@
     Brave Firewall + VPN
   </message>
 
+  <message name="IDS_BRAVE_VPN_CONNECTED_TOOLTIP" desc="Status tooltip label when VPN has connected to a region">
+    Brave Firewall + VPN: Connected
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DISCONNECTED_TOOLTIP" desc="Status tooltip label when VPN has disconnected">
+    Brave Firewall + VPN: Disconnected
+  </message>
+
   <message name="IDS_BRAVE_VPN_PANEL_NAME" desc="The name of VPN panel">
     Brave VPN Panel UI
   </message>
