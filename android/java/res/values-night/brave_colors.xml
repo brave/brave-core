@@ -44,6 +44,7 @@
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
 
     <!-- Text colors -->
+    <color name="brave_theme_subtitle_text">#C2C4CF</color>
     <color name="brave_theme_hint_text">#84889C</color>
 
     <!-- Set Default Browser colors -->

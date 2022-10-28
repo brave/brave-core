@@ -107,6 +107,10 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             this.subTitle = subTitle;
         }
 
+        public TwoLineItemText(String title) {
+            this.title = title;
+        }
+
         public String getTitle() {
             return title;
         }

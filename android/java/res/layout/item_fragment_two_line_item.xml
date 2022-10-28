@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/brave_wallet_day_night_text_color"
         android:textStyle="bold"
         tools:text="Demo" />
 
@@ -20,6 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="@color/brave_theme_hint_text"
+        android:textColor="@color/brave_theme_subtitle_text"
         tools:text="text" />
 </LinearLayout>

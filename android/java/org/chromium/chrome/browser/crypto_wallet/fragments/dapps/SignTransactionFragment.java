@@ -38,7 +38,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.FragmentNavigationItem
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemFragment;
-import org.chromium.chrome.browser.crypto_wallet.model.SolanaInstructionPresenter;
+import org.chromium.chrome.browser.crypto_wallet.presenters.SolanaInstructionPresenter;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;

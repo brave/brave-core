@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActiv
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.SolanaTransactionsGasHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -356,27 +357,40 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     getResources().getString(R.string.activate_erc20), parsedTx.getSymbol()));
         } else if (parsedTx.getIsSwap()) {
             txType.setText(getResources().getString(R.string.swap));
+        } else if (parsedTx.isSolanaDappTransaction) {
+            txType.setText(R.string.brave_wallet_approve_transaction);
         } else {
             txType.setText(getResources().getString(R.string.send));
         }
 
-        String amountText =
-                String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
-                        parsedTx.formatValueToDisplay(), parsedTx.getSymbol());
-        TextView fromTo = view.findViewById(R.id.from_to);
-        fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                mAccountName, parsedTx.getSender(), parsedTx.getRecipient()));
-        TextView amountAsset = view.findViewById(R.id.amount_asset);
         TextView amountFiat = view.findViewById(R.id.amount_fiat);
-        amountFiat.setText(
-                String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
-                        String.format(Locale.getDefault(), "%.2f", parsedTx.getFiatTotal())));
-        if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
-                || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-            amountText = Utils.tokenToString(parsedTx.getErc721BlockchainToken());
-            amountFiat.setVisibility(View.GONE); // Display NFT values in the future
+        TextView amountAsset = view.findViewById(R.id.amount_asset);
+        if (parsedTx.isSolanaDappTransaction) {
+            AndroidUtils.gone(amountFiat, amountAsset);
+        } else {
+            amountFiat.setText(
+                    String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
+                            String.format(Locale.getDefault(), "%.2f", parsedTx.getFiatTotal())));
+            String amountText =
+                    String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
+                            parsedTx.formatValueToDisplay(), parsedTx.getSymbol());
+
+            if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
+                    || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
+                amountText = Utils.tokenToString(parsedTx.getErc721BlockchainToken());
+                amountFiat.setVisibility(View.GONE); // Display NFT values in the future
+            }
+            amountAsset.setText(amountText);
         }
-        amountAsset.setText(amountText);
+
+        TextView fromTo = view.findViewById(R.id.from_to);
+        if (parsedTx.getSender() != null && !parsedTx.getSender().equals(parsedTx.getRecipient())) {
+            fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
+                    mAccountName, parsedTx.getSender(), "->", parsedTx.getRecipient()));
+        } else {
+            fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
+                    mAccountName, parsedTx.getSender(), "", ""));
+        }
         setupPager(view, selectedNetwork, accounts, assetPrices, fullTokenList,
                 nativeAssetsBalances, blockchainTokensBalances);
         return parsedTx;

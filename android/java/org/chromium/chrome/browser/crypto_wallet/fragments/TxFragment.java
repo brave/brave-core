@@ -25,20 +25,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.SolanaSendTransactionOptions;
+import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AdvanceTxSettingActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.presenters.Amount;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransactionFees;
+import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
@@ -64,6 +65,7 @@ public class TxFragment extends Fragment {
     // don't use them. It would be good to eventually migrate to observers everywhere.
     private boolean mUpdateTxObjectManually;
     public static final int START_ADVANCE_SETTING_ACTIVITY_CODE = 0;
+    private boolean mIsSolanaInstruction;
 
     public static TxFragment newInstance(TransactionInfo txInfo, NetworkInfo selectedNetwork,
             AccountInfo[] accounts, HashMap<String, Double> assetPrices,
@@ -99,6 +101,7 @@ public class TxFragment extends Fragment {
         mPreviousCheckedPriorityId = -1;
         mUpdateTxObjectManually = updateTxObjectManually;
         mSolanaEstimatedTxFee = solanaEstimatedTxFee;
+        mIsSolanaInstruction = TransactionUtils.isSolanaTx(txInfo);
     }
 
     @Override
@@ -116,7 +119,7 @@ public class TxFragment extends Fragment {
 
         View advanceSettingContainer = view.findViewById(R.id.fragment_tx_tv_advance_setting);
         advanceSettingContainer.setVisibility(
-                isAdvanceSettingEnabled(mSelectedNetwork) ? View.VISIBLE : View.INVISIBLE);
+                isAdvanceSettingEnabled(mSelectedNetwork) ? View.VISIBLE : View.GONE);
 
         advanceSettingContainer.setOnClickListener(v -> {
             Intent toAdvanceTxSetting =
@@ -407,27 +410,66 @@ public class TxFragment extends Fragment {
                 mAssetPrices, mSolanaEstimatedTxFee, mFullTokenList, mNativeAssetsBalances,
                 mBlockchainTokensBalances);
 
+        if (mIsSolanaInstruction) {
+            TextView gasTxTv = view.findViewById(R.id.frag_tx_tv_gas);
+            TextView totalHeading = view.findViewById(R.id.frag_tx_tv_total_heading);
+
+            gasTxTv.setText(R.string.brave_wallet_allow_spend_transaction_fee);
+            totalHeading.setText(R.string.brave_wallet_confirm_transaction_amount_fee);
+            SolanaTxData solanaTxData = TransactionUtils.safeSolData(mTxInfo.txDataUnion);
+            if (solanaTxData != null && solanaTxData.sendOptions != null) {
+                SolanaSendTransactionOptions sendTxOptions = solanaTxData.sendOptions;
+                LinearLayout sendOptionsLinearLayout =
+                        view.findViewById(R.id.frag_tx_ll_send_options);
+                if (sendTxOptions.maxRetries != null) {
+                    TextView tvLabel = AndroidUtils.makeHeaderTv(requireContext());
+                    TextView tvVal = AndroidUtils.makeSubHeaderTv(requireContext());
+                    tvLabel.setText(R.string.brave_wallet_solana_max_retries);
+                    tvVal.setText(String.valueOf(sendTxOptions.maxRetries.maxRetries));
+                    sendOptionsLinearLayout.addView(tvLabel);
+                    sendOptionsLinearLayout.addView(tvVal);
+                }
+                if (sendTxOptions.preflightCommitment != null) {
+                    TextView tvLabel = AndroidUtils.makeHeaderTv(requireContext());
+                    TextView tvVal = AndroidUtils.makeSubHeaderTv(requireContext());
+                    tvLabel.setText(R.string.brave_wallet_solana_preflight_commitment);
+                    tvVal.setText(sendTxOptions.preflightCommitment);
+                    sendOptionsLinearLayout.addView(tvLabel);
+                    sendOptionsLinearLayout.addView(tvVal);
+                }
+                if (sendTxOptions.skipPreflight != null) {
+                    TextView tvLabel = AndroidUtils.makeHeaderTv(requireContext());
+                    TextView tvVal = AndroidUtils.makeSubHeaderTv(requireContext());
+                    tvLabel.setText(R.string.brave_wallet_solana_skip_preflight);
+                    tvVal.setText(String.valueOf(sendTxOptions.skipPreflight.skipPreflight));
+                    sendOptionsLinearLayout.addView(tvLabel);
+                    sendOptionsLinearLayout.addView(tvVal);
+                }
+            }
+        }
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
         final double totalGas = mParsedTx.getGasFee();
-        gasFeeAmount.setText(String.format(
-                getResources().getString(R.string.crypto_wallet_gas_fee_amount),
-                String.format(Locale.getDefault(), "%.8f", totalGas), mSelectedNetwork.symbol));
+        String symbol =
+                mParsedTx.getSymbol() == null ? mParsedTx.getSymbol() : mSelectedNetwork.symbol;
+        gasFeeAmount.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
+                        String.format(Locale.getDefault(), "%.8f", totalGas), symbol));
 
         String valueAssetText = mParsedTx.formatValueToDisplay();
         TextView totalAmount = view.findViewById(R.id.total_amount);
-        totalAmount.setText(String.format(
-                getResources().getString(R.string.crypto_wallet_total_amount), valueAssetText,
-                mParsedTx.getSymbol(), String.format(Locale.getDefault(), "%.8f", totalGas),
-                mSelectedNetwork.symbol));
+        totalAmount.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_total_amount),
+                        valueAssetText, mParsedTx.getSymbol(),
+                        String.format(Locale.getDefault(), "%.8f", totalGas), symbol));
 
         TextView gasFeeAmountFiat = view.findViewById(R.id.gas_fee_amount_fiat);
         gasFeeAmountFiat.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
-                        String.format(Locale.getDefault(), "%.2f", mParsedTx.getGasFeeFiat())));
+                        new Amount(mParsedTx.getFiatTotal()).toStringFormat()));
         TextView totalAmountFiat = view.findViewById(R.id.total_amount_fiat);
         totalAmountFiat.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
-                        String.format(Locale.getDefault(), "%.2f", mParsedTx.getFiatTotal())));
+                        new Amount(mParsedTx.getFiatTotal()).toStringFormat()));
     }
 
     @Override

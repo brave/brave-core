@@ -16,6 +16,8 @@ import org.chromium.brave_wallet.mojom.SignTransactionRequest;
 import org.chromium.brave_wallet.mojom.SolanaSystemInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTokenInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
 
@@ -33,7 +35,39 @@ public class TransactionUtils {
             return CoinType.ETH;
     }
 
+    public static @StringRes int getTxType(TransactionInfo info) {
+        if (info == null) return R.string.wallet_details_function_type_other;
+        switch (info.txType) {
+            case TransactionType.ERC20_TRANSFER:
+                return R.string.wallet_details_function_type_erc20transfer;
+            case TransactionType.ERC20_APPROVE:
+                return R.string.wallet_details_function_type_erc20approve;
+            case TransactionType.ERC721_TRANSFER_FROM:
+                return R.string.wallet_details_function_type_erc721transfer;
+            case TransactionType.SOLANA_SYSTEM_TRANSFER:
+                return R.string.wallet_details_function_type_solana_system_transfer;
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER:
+                return R.string.wallet_details_function_type_spl_token_transfer;
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION:
+                return R.string
+                        .wallet_details_function_type_solana_spl_token_transfer_with_associated_token_account_creation;
+            case TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION:
+                return R.string.wallet_details_function_type_solana_dapp_sign_and_send;
+            case TransactionType.SOLANA_DAPP_SIGN_TRANSACTION:
+                return R.string.wallet_details_function_type_solana_dapp_sign;
+            default:
+                return R.string.wallet_details_function_type_other;
+        }
+    }
+
     // ---------- Solana ----------
+    public static boolean isSolanaTx(TransactionInfo transactionInfo) {
+        if (transactionInfo == null || transactionInfo.txDataUnion == null) return false;
+        return WalletConstants.SOLANA_TRANSACTION_TYPES.contains(transactionInfo.txType)
+                || transactionInfo.txType == TransactionType.OTHER
+                && safeSolData(transactionInfo.txDataUnion) != null;
+    }
+
     public static String getSolanaProgramIdName(String programId, Context context) {
         if (TextUtils.isEmpty(programId)) return "";
         switch (programId) {
@@ -58,7 +92,7 @@ public class TransactionUtils {
         }
     }
 
-    public static int getSolType(String programId, int instructionType) {
+    public static int getSolTxSubType(String programId, int instructionType) {
         if (TextUtils.isEmpty(programId)) return R.string.brave_wallet_unknown;
 
         switch (programId) {
@@ -75,7 +109,8 @@ public class TransactionUtils {
         if (TextUtils.isEmpty(programId)) return true;
         switch (programId) {
             case WalletConstants.SOL_INS_SYSTEM:
-            case WalletConstants.SOL_INS_TOKEN:
+            case WalletConstants.SOL_INS_VOTE:
+            case WalletConstants.SOL_INS_STAKE:
                 return false;
             default:
                 return true;
