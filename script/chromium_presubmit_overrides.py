@@ -3,75 +3,136 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-# This file is executed (not imported) in the context of src/PRESUBMIT.py, it
-# uses existing functions from a global scope to change them. This allows us to
-# alter root Chromium presubmit checks without introducing too much conflict.
+# This file is imported in the context of src/PRESUBMIT.py, it uses existing
+# functions from a global scope to change them. This allows us to alter root
+# Chromium presubmit checks without introducing too much conflict.
 
 import copy
+import inspect
+import re
+import sys
 
-import lib.chromium_presubmit_utils as chromium_presubmit_utils
 import override_utils
+import import_inline
 
-_BRAVE_DEFAULT_FILES_TO_SKIP = (r'win_build_output[\\/].*', )
+# pylint: disable=line-too-long,protected-access,unused-variable
+
+GLOBAL_CHECKS_KEY = 'global'
+CANNED_CHECKS_KEY = 'canned'
 
 
-# Modify depot_tools-bundled checks (Chromium calls them canned checks).
-# These modification will stay active across all PRESUBMIT.py files, i.e.
-# src/PRESUBMIT.py, src/brave/PRESUBMIT.py.
-def _modify_canned_checks(canned_checks):
-    # pylint: disable=unused-variable
+# Helper to load json5 presubmit config.
+def load_presubmit_config():
+    try:
+        json5_path = import_inline.join_src_dir('third_party', 'pyjson5',
+                                                'src')
+        sys.path.append(json5_path)
+        # pylint: disable=import-outside-toplevel,import-error
+        import json5
+        return json5.load(
+            open(
+                import_inline.join_src_dir('brave',
+                                           'chromium_presubmit_config.json5')))
+    finally:
+        # Restore sys.path to what it was before.
+        sys.path.remove(json5_path)
 
-    # Disable upstream-specific license check.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckLicense(*_, **__):
-        return []
 
-    # We don't use OWNERS files.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckOwnersFormat(*_, **__):
-        return []
+config = load_presubmit_config()
 
-    # We don't use OWNERS files.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckOwners(*_, **__):
-        return []
 
-    # We don't use AUTHORS file.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckAuthorizedAuthor(*_, **__):
-        return []
+# Empty check stub that does nothing and returns empty presubmit result.
+def noop_check(*_, **__):
+    return []
 
-    # We don't upload change to Chromium git.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckChangeWasUploaded(*_, **__):
-        return []
 
-    # We don't upload change to Chromium git.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckChangeHasBugField(*_, **__):
-        return []
+# Replaces existing PRESUBMIT check. Can be used with globals() scope or a class
+# scope (such as input_api.canned_checks). Doesn't fail if the Check is not
+# found, only prints a warning message."""
+def override_check(scope, name=None):
+    def decorator(new_func):
+        is_dict_scope = isinstance(scope, dict)
+        check_name = name or new_func.__name__
+        if is_dict_scope:
+            original_check = scope.get(check_name, None)
+        else:
+            original_check = getattr(scope, check_name, None)
 
-    # We don't upload change to Chromium git.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckTreeIsOpen(*_, **__):
-        return []
+        if not callable(original_check):
+            print(f'WARNING: {check_name} check to override not found.\n'
+                  'Please update chromium_presubmit_overrides.py!')
+
+            return noop_check
+
+        return override_utils.override_function(scope, name=name)(new_func)
+
+    return decorator
+
+
+# Returns first Check* method from the scope.
+def get_first_check_name(scope):
+    assert isinstance(scope, dict)
+    for key, value in scope.items():
+        if key.startswith('Check') and callable(value):
+            return key
+    raise LookupError('Check* method not found in scope')
+
+
+# Override src/PRESUBMIT.py checks.
+def override_global_checks(global_checks):
+    apply_generic_check_overrides(global_checks, GLOBAL_CHECKS_KEY)
 
     # Changes from upstream:
-    # 1. Generate PresubmitError instead of Warning on format issue.
-    # 2. Replace suggested command from upstream-specific to 'npm run format'.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def CheckPatchFormatted(original_check, input_api, output_api, *args,
-                            **kwargs):
+    # 1. Add 'brave/' prefix for header guard checks to properly validate
+    #    guards.
+    @override_check(global_checks)
+    def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
+        def AffectedSourceFiles(self, original_method, source_file):
+            def PrependBrave(affected_file):
+                affected_file = copy.copy(affected_file)
+                affected_file._path = f'brave/{affected_file._path}'
+                return affected_file
+
+            return [
+                PrependBrave(f) for f in filter(self.FilterSourceFile,
+                                                original_method(source_file))
+            ]
+
+        with override_utils.override_scope_function(input_api,
+                                                    AffectedSourceFiles):
+            return original_check(input_api, output_api, **kwargs)
+
+    # Changes from upstream:
+    # 1. Remove ^(chrome|components|content|extensions) filter to cover all
+    #    files in the repository, because brave/ structure is slightly
+    #    different.
+    @override_check(global_checks)
+    def CheckMPArchApiUsage(original_check, input_api, output_api, **kwargs):
+        def AffectedFiles(self, original_method, *args, **kwargs):
+            kwargs['file_filter'] = self.FilterSourceFile
+            return original_method(*args, **kwargs)
+
+        with override_utils.override_scope_function(input_api, AffectedFiles):
+            return original_check(input_api, output_api, **kwargs)
+
+
+# Override canned checks (depot_tools/presubmit_canned_checks.py).
+def override_canned_checks(canned_checks):
+    apply_generic_check_overrides(canned_checks, CANNED_CHECKS_KEY)
+
+    # Changes from upstream:
+    # 1. Replace suggested command from upstream-specific to 'npm run format'.
+    @override_check(canned_checks)
+    def CheckPatchFormatted(original_check, input_api, output_api, **kwargs):
         kwargs = {
             **kwargs,
             'bypass_warnings': False,
             'check_python': True,
-            'result_factory': output_api.PresubmitError,
         }
-        result = original_check(input_api, output_api, *args, **kwargs)
+        result = original_check(input_api, output_api, **kwargs)
         # If presubmit generates "Please run git cl format --js" message, we
-        # should replace the command with "npm run format -- --js". The order of
-        # these replacements ensure we do this properly.
+        # should replace the command with "npm run format -- --js". The
+        # order of these replacements ensure we do this properly.
         replacements = [
             (' format --', ' format -- --'),
             ('git cl format', 'npm run format'),
@@ -81,19 +142,18 @@ def _modify_canned_checks(canned_checks):
         ]
         for item in result:
             for replacement in replacements:
-                # pylint: disable=protected-access
                 item._message = item._message.replace(replacement[0],
                                                       replacement[1])
         return result
 
     # Changes from upstream:
-    # 1. Run lint only on *changed* files instead of getting *all* files from
-    #    the directory. Upstream does it to catch breakages in unmodified files,
-    #    but it's very resource intensive, moreover for our setup it covers all
-    #    files from vendor and other directories which we should ignore.
-    # 2. Set is_committing=True to force PresubmitErrors instead of Warnings.
-    @chromium_presubmit_utils.override_check(canned_checks)
-    def GetPylint(original_check, input_api, *args, **kwargs):
+    # 1. Run pylint only on *changed* files instead of getting *all* files
+    #    from the directory. Upstream does it to catch breakages in
+    #    unmodified files, but it's very resource intensive, moreover for
+    #    our setup it covers all files from vendor and other directories
+    #    which we should ignore.
+    @override_check(canned_checks)
+    def GetPylint(original_check, input_api, output_api, **kwargs):
         def _FetchAllFiles(_, input_api, files_to_check, files_to_skip):
             src_filter = lambda f: input_api.FilterSourceFile(
                 f, files_to_check=files_to_check, files_to_skip=files_to_skip)
@@ -104,125 +164,86 @@ def _modify_canned_checks(canned_checks):
 
         with override_utils.override_scope_function(input_api.canned_checks,
                                                     _FetchAllFiles):
-            with override_utils.override_scope_variable(
-                    input_api, 'is_committing', True):
-                return original_check(input_api, *args, **kwargs)
+            return original_check(input_api, output_api, **kwargs)
 
 
-# Override the first ever check defined in PRESUBMIT.py to make changes to
-# input_api before any real check is run.
-@chromium_presubmit_utils.override_check(
-    globals(), chromium_presubmit_utils.get_first_check_name(globals()))
-def OverriddenFirstCheck(original_check, input_api, output_api):
-    _modify_canned_checks(input_api.canned_checks)
-    input_api.DEFAULT_FILES_TO_SKIP += _BRAVE_DEFAULT_FILES_TO_SKIP
-    return original_check(input_api, output_api)
+# Overrides canned checks and installs per-check file filter.
+def modify_input_api(input_api):
+    override_canned_checks(input_api.canned_checks)
+    setup_per_check_file_filter(input_api)
+    input_api.DEFAULT_FILES_TO_SKIP += (*config['default_files_to_skip'], )
 
 
-# We don't use OWNERS files.
-@chromium_presubmit_utils.override_check(globals())
-def CheckSecurityOwners(*_, **__):
-    return []
+# Disables checks or forces presubmit errors for checks listed in the config.
+def apply_generic_check_overrides(scope, config_key):
+    for disabled_check in config['disabled_checks'][config_key]:
+        override_check(scope, name=disabled_check)(noop_check)
+
+    def force_presubmit_error_wrapper(original_check, input_api, output_api,
+                                      **kwargs):
+        with override_utils.override_scope_variable(output_api,
+                                                    'PresubmitPromptWarning',
+                                                    output_api.PresubmitError):
+            return original_check(input_api, output_api, **kwargs)
+
+    for force_error_check in config['checks_to_force_presubmit_errors'][
+            config_key]:
+        override_check(scope,
+                       name=force_error_check)(force_presubmit_error_wrapper)
 
 
-# This validates added strings with screenshot tests which we don't use.
-@chromium_presubmit_utils.override_check(globals())
-def CheckStrings(*_, **__):
-    return []
+# Wraps input_api.change.AffectedFiles method to manually filter files available
+# for a current check. The current check is found using the Python stack trace.
+def setup_per_check_file_filter(input_api):
+    check_function_re = re.compile(config['check_function_regex'])
+
+    def get_check_names(frame):
+        check_names = set()
+        while frame:
+            co_name = frame.f_code.co_name
+            if co_name == '_run_check_function':
+                break
+            if check_function_re.match(co_name):
+                check_names.add(co_name)
+            frame = frame.f_back
+        return check_names
+
+    per_check_files_to_skip = config['per_check_files_to_skip']
+
+    def get_files_to_skip(check_names):
+        files_to_skip = []
+        for check_name in check_names:
+            files_to_skip.extend(per_check_files_to_skip.get(check_name, []))
+        return files_to_skip
+
+    @override_utils.override_method(input_api.change)
+    def AffectedFiles(_self, original_method, *args, **kwargs):
+        files_to_skip = get_files_to_skip(
+            get_check_names(inspect.currentframe().f_back))
+        affected_files = input_api.change._affected_files
+        if files_to_skip:
+
+            def file_filter(affected_file):
+                local_path = affected_file.LocalPath().replace('\\', '/')
+                for file_to_skip in files_to_skip:
+                    if re.match(file_to_skip, local_path):
+                        return False
+                return True
+
+            affected_files = [*filter(file_filter, affected_files)]
+
+        with override_utils.override_scope_variable(input_api.change,
+                                                    '_affected_files',
+                                                    affected_files):
+            return original_method(*args, **kwargs)
 
 
-# Don't check upstream pydeps.
-@chromium_presubmit_utils.override_check(globals())
-def CheckPydepsNeedsUpdating(*_, **__):
-    return []
+def Apply(_globals):
+    override_global_checks(_globals)
 
-
-# Changes from upstream:
-# 1. Add 'brave/' prefix for header guard checks to properly validate guards.
-@chromium_presubmit_utils.override_check(globals())
-def CheckForIncludeGuards(original_check, input_api, output_api):
-    def AffectedSourceFiles(self, original_method, source_file):
-        def PrependBrave(affected_file):
-            # pylint: disable=protected-access
-            affected_file = copy.copy(affected_file)
-            affected_file._path = f'brave/{affected_file._path}'
-            return affected_file
-
-        return [
-            PrependBrave(f) for f in filter(self.FilterSourceFile,
-                                            original_method(source_file))
-        ]
-
-    with override_utils.override_scope_function(input_api,
-                                                AffectedSourceFiles):
-        return original_check(input_api, output_api)
-
-
-# Changes from upstream:
-# 1. Extend _KNOWN_TEST_DATA_AND_INVALID_JSON_FILE_PATTERNS with files to
-#    ignore.
-@chromium_presubmit_utils.override_check(globals())
-def CheckParseErrors(original_check, input_api, output_api):
-    # pylint: disable=undefined-variable
-    _KNOWN_TEST_DATA_AND_INVALID_JSON_FILE_PATTERNS.append(r'tsconfig\.json$')
-    return original_check(input_api, output_api)
-
-
-# Changes from upstream:
-# 1. Remove ^(chrome|components|content|extensions) filter to cover all files
-#    in the repository, because brave/ structure is slightly different.
-@chromium_presubmit_utils.override_check(globals())
-def CheckMPArchApiUsage(original_check, input_api, output_api):
-    def AffectedFiles(self, original_method, *args, **kwargs):
-        kwargs['file_filter'] = self.FilterSourceFile
-        return original_method(*args, **kwargs)
-
-    with override_utils.override_scope_function(input_api, AffectedFiles):
-        return original_check(input_api, output_api)
-
-
-# Changes from upstream:
-# 1. Skip chromium_src/ files.
-@chromium_presubmit_utils.override_check(globals())
-def CheckForRelativeIncludes(original_check, input_api, output_api):
-    def AffectedFiles(self, original_method, *args, **kwargs):
-        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
-            r'^chromium_src[\\/]', )
-        file_filter = lambda x: self.FilterSourceFile(
-            x, files_to_skip=files_to_skip)
-        kwargs['file_filter'] = file_filter
-        return original_method(*args, **kwargs)
-
-    with override_utils.override_scope_function(input_api, AffectedFiles):
-        return original_check(input_api, output_api)
-
-
-# Changes from upstream:
-# 1. Skip chromium_src/ files.
-@chromium_presubmit_utils.override_check(globals())
-def CheckForCcIncludes(original_check, input_api, output_api):
-    def AffectedFiles(self, original_method, *args, **kwargs):
-        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
-            r'^chromium_src[\\/]', )
-        file_filter = lambda x: self.FilterSourceFile(
-            x, files_to_skip=files_to_skip)
-        kwargs['file_filter'] = file_filter
-        return original_method(*args, **kwargs)
-
-    with override_utils.override_scope_function(input_api, AffectedFiles):
-        return original_check(input_api, output_api)
-
-
-# Changes from upstream:
-# 1. Ignore java files, currently a lot of DEPS issues.
-@chromium_presubmit_utils.override_check(globals())
-def CheckUnwantedDependencies(original_check, input_api, output_api):
-    def AffectedFiles(self, original_method, *args, **kwargs):
-        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r'.*\.java$', )
-        file_filter = lambda x: self.FilterSourceFile(
-            x, files_to_skip=files_to_skip)
-        kwargs['file_filter'] = file_filter
-        return original_method(*args, **kwargs)
-
-    with override_utils.override_scope_function(input_api, AffectedFiles):
-        return original_check(input_api, output_api)
+    # Override the first global check to modify input_api before any check is
+    # run.
+    @override_check(_globals, get_first_check_name(_globals))
+    def OverriddenFirstCheck(original_check, input_api, output_api, **kwargs):
+        modify_input_api(input_api)
+        return original_check(input_api, output_api, **kwargs)
