@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/color/brave_color_mixer.h"
 
-#include "base/logging.h"
-
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
