@@ -353,6 +353,16 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.fullTokenList = payload
       },
 
+      setCoinMarkets (state: WalletState, { payload }: PayloadAction<GetCoinMarketsResponse>) {
+        state.coinMarketData = payload.success
+          ? payload.values.map(coin => {
+              coin.image = coin.image.replace('https://assets.coingecko.com', ' https://assets.cgproxy.brave.com')
+              return coin
+            })
+          : []
+        state.isLoadingCoinMarketData = false
+      },
+
       setDefaultNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
         state.defaultNetworks = payload
       },
@@ -498,17 +508,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setCoinMarkets.type, (state: WalletState, payload: GetCoinMarketsResponse): WalletState => {
-    return {
-      ...state,
-      coinMarketData: payload.success ? payload.values.map(coin => {
-        coin.image = coin.image.replace('https://assets.coingecko.com', ' https://assets.cgproxy.brave.com')
-        return coin
-      }) : [],
-      isLoadingCoinMarketData: false
-    }
-  })
 
   reducer.on(WalletActions.setDefaultAccounts.type, (state: WalletState, payload: BraveWallet.AccountInfo[]): WalletState => {
     return {
