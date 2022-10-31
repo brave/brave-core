@@ -2,7 +2,7 @@ if (is_win) {
   action("brave_pack_policy_templates") {
     pack_policy_templates = "//components/policy:pack_policy_templates"
     deps = [ pack_policy_templates ]
-    script = "brave_make_policy_zip.py"
+    script = "pack_policy_templates.py"
     chrome_policy_templates_zip =
       get_label_info(pack_policy_templates, "root_out_dir") +
       "/policy_templates.zip"

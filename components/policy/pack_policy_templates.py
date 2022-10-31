@@ -12,7 +12,7 @@ from zipfile import ZipFile
 
 def main():
   chrome_policy_zip, dest_zip = _get_args()
-  _make_brave_policy_zip(chrome_policy_zip, dest_zip)
+  _pack_policy_templates(chrome_policy_zip, dest_zip)
 
 def _get_args():
   parser = argparse.ArgumentParser()
@@ -23,7 +23,7 @@ def _get_args():
   args = parser.parse_args()
   return args.chrome_policy_zip, args.dest_zip
 
-def _make_brave_policy_zip(chrome_policy_zip, dest_zip):
+def _pack_policy_templates(chrome_policy_zip, dest_zip):
   with TemporaryDirectory() as tmp_dir:
     with ZipFile(chrome_policy_zip) as src_zip:
       src_zip.extract('VERSION', tmp_dir)
