@@ -262,6 +262,12 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = selectedAccount
       },
 
+      pricesUpdated (state: WalletState, { payload }: PayloadAction<GetPriceReturnInfo>) {
+        if (payload.success) {
+          state.transactionSpotPrices = payload.values
+        }
+      },
+
       setAllNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
         state.networkList = payload
       },
@@ -352,13 +358,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.pricesUpdated.type, (state: WalletState, payload: GetPriceReturnInfo): WalletState => {
-    return {
-      ...state,
-      transactionSpotPrices: payload.success ? payload.values : state.transactionSpotPrices
-    }
-  })
 
   reducer.on(WalletActions.portfolioPriceHistoryUpdated.type, (state: WalletState, payload: PortfolioTokenHistoryAndInfo[][]): WalletState => {
     const history = payload.map((infoArray) => {
