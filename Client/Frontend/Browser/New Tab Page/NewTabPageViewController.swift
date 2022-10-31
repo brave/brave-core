@@ -14,6 +14,7 @@ import SnapKit
 import SwiftUI
 import BraveNews
 import Combine
+import DesignSystem
 
 /// The behavior for sizing sections when the user is in landscape orientation
 enum NTPLandscapeSizingBehavior {
@@ -105,6 +106,20 @@ class NewTabPageViewController: UIViewController {
   private var background: NewTabPageBackground
   private let backgroundView = NewTabPageBackgroundView()
   private let backgroundButtonsView = NewTabPageBackgroundButtonsView()
+  /// A gradient to display over background images to ensure visibility of
+  /// the NTP contents and sponsored logo
+  ///
+  /// Only should be displayed when the user has background images enabled
+  let gradientView = GradientView(
+    colors: [
+      UIColor(white: 0.0, alpha: 0.5),
+      UIColor(white: 0.0, alpha: 0.0),
+      UIColor(white: 0.0, alpha: 0.3),
+    ],
+    positions: [0, 0.5, 0.8],
+    startPoint: .zero,
+    endPoint: CGPoint(x: 0, y: 1)
+  )
 
   private let feedDataSource: FeedDataSource
   private let feedOverlayView = NewTabPageFeedOverlayView()
@@ -225,6 +240,7 @@ class NewTabPageViewController: UIViewController {
     super.viewDidLoad()
 
     view.addSubview(backgroundView)
+    view.insertSubview(gradientView, aboveSubview: backgroundView)
     view.addSubview(collectionView)
     view.addSubview(feedOverlayView)
 
@@ -249,6 +265,10 @@ class NewTabPageViewController: UIViewController {
     }
     feedOverlayView.snp.makeConstraints {
       $0.edges.equalToSuperview()
+    }
+    
+    gradientView.snp.makeConstraints {
+      $0.edges.equalTo(backgroundView)
     }
 
     sections.enumerated().forEach { (index, provider) in
@@ -276,6 +296,7 @@ class NewTabPageViewController: UIViewController {
     // Make sure that imageView has a frame calculated before we attempt
     // to use it.
     backgroundView.layoutIfNeeded()
+    
     calculateBackgroundCenterPoints()
   }
 
@@ -300,6 +321,13 @@ class NewTabPageViewController: UIViewController {
     super.willMove(toParent: parent)
 
     backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    if previousTraitCollection?.verticalSizeClass
+      != traitCollection.verticalSizeClass {
+      calculateBackgroundCenterPoints()
+    }
   }
 
   // MARK: - Background
@@ -347,88 +375,46 @@ class NewTabPageViewController: UIViewController {
       backgroundButtonsView.activeButton = .none
     }
 
-    backgroundView.gradientView.isHidden = background.backgroundImage == nil
+    gradientView.isHidden = background.backgroundImage == nil
     backgroundView.imageView.image = background.backgroundImage
-
-    guard let image = backgroundView.imageView.image else {
-      backgroundView.imageView.snp.removeConstraints()
-      backgroundView.imageConstraints = nil
-      return
-    }
-
-    let imageAspectRatio = image.size.width / image.size.height
-    let imageView = backgroundView.imageView
-
-    // Make sure it goes to the back
-    imageView.snp.remakeConstraints {
-      // Determines the height of the content
-      // `999` priority is required for landscape, since top/bottom constraints no longer the most important
-      //    using `1000` / `required` would cause constraint conflicts (with `centerY` in landscape), and
-      //    using `high` is not enough either.
-      $0.bottom.equalToSuperview().priority(ConstraintPriority(999))
-      $0.top.equalToSuperview().priority(ConstraintPriority(999))
-
-      // In portrait `top`/`bottom` is enough, however, when switching to landscape, those constraints
-      //  don't force centering, so this is used as a stronger constraint to center in landscape/portrait
-      let landscapeCenterConstraint = $0.top.equalTo(view.snp.centerY).priority(.high).constraint
-
-      // Width of the image view is determined by the forced height constraint and the literal image ratio
-      $0.width.equalTo(imageView.snp.height).multipliedBy(imageAspectRatio)
-
-      // These are required constraints to avoid a bad center pushing the image out of view.
-      // if a center of `-100` or `100000` is specified, these override to keep entire background covered by image.
-      // The left side cannot exceed `0` (or superview's left side), otherwise whitespace will be shown on left.
-      $0.left.lessThanOrEqualToSuperview()
-
-      // the right side cannot drop under `width` (or superview's right side), otherwise whitespace will be shown on right.
-      $0.right.greaterThanOrEqualToSuperview()
-
-      // Same as left / right above but necessary for landscape y centering (to prevent overflow)
-      $0.top.lessThanOrEqualToSuperview()
-      $0.bottom.greaterThanOrEqualToSuperview()
-
-      // If for some reason the image cannot fill full width (e.g. not a landscape image), then these constraints
-      //  will fail. A constraint will be broken, since cannot keep both left and right side's pinned
-      //  (due to the width multiplier being < 1
-
-      // Using `high` priority so that it will not be applied / broken  if out-of-bounds.
-      // Offset updated / calculated during view layout as views are not setup yet.
-      let portraitCenterConstraint = $0.left.equalTo(view.snp.centerX).priority(.high).constraint
-      self.backgroundView.imageConstraints = (portraitCenterConstraint, landscapeCenterConstraint)
-    }
-
-    // This is usually done in `viewDidLayoutSubviews`, one exception:
-    // First launch, intial image loads, NTP assets is being downloaded,
-    // after it downloods we replace current image with sponsored one
-    // and have to recalculate center points.
-    calculateBackgroundCenterPoints()
   }
 
   private func calculateBackgroundCenterPoints() {
-    guard let image = backgroundView.imageView.image else { return }
-
-    // Need to calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio
-    let sizeRatio = backgroundView.imageView.frame.size.width / image.size.width
-    let focal = background.currentBackground?.wallpaper.focalPoint
-    // Center as fallback
-    let x = focal?.x ?? image.size.width / 2
-    let y = focal?.y ?? image.size.height / 2
-    let portrait = view.frame.height > view.frame.width
-
-    // Center point of image is not center point of view.
-    // Take `0` for example, if specying `0`, setting centerX to 0, it is not attempting to place the left
-    //  side of the image to the middle (e.g. left justifying), it is instead trying to move the image view's
-    //  center to `0`, shifting the image _to_ the left, and making more of the image's right side visible.
-    // Therefore specifying `0` should take the imageView's left and pinning it to view's center.
-
-    // So basically the movement needs to be "inverted" (hence negation)
-    // In landscape, left / right are pegged to superview
-    let imageViewOffset = portrait ? sizeRatio * -x : 0
-    backgroundView.imageConstraints?.portraitCenter.update(offset: imageViewOffset)
-
-    // If potrait, top / bottom are just pegged to superview
-    let inset = portrait ? 0 : sizeRatio * -y
-    backgroundView.imageConstraints?.landscapeCenter.update(offset: inset)
+    
+    // Only iPhone portrait looking devices have their center of the image offset adjusted.
+    // In other cases the image is always centered.
+    guard let image = backgroundView.imageView.image,
+            traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular else {
+      // Reset the previously calculated offset.
+      backgroundView.updateImageXOffset(by: 0)
+      return
+    }
+    
+    // If no focal point provided we do nothing. The image is centered by default.
+    guard let focalX = background.currentBackground?.wallpaper.focalPoint?.x else {
+      return
+    }
+    
+    // Calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio.
+    // Most image calculations have to use this property to get coordinates right.
+    let sizeRatio = backgroundView.imageView.frame.size.height / image.size.height
+    
+    // How much the image should be offset according to the set focal point coordinate.
+    // We calculate it by looking how much to move the image away from the center of the image.
+    let focalXOffset = ((image.size.width / 2) - focalX) * sizeRatio
+    
+    // Amount of image space which is cropped on one side, not visible on the screen.
+    // We use this info to prevent going of out image bounds when updating the `x` offset.
+    let extraHorizontalSpaceOnOneSide = ((image.size.width * sizeRatio) - backgroundView.frame.width) / 2
+        
+    // The offset proposed by the focal point might be too far away from image's center
+    // resulting in not having anough image space to cover entire width of the view and leaving blank space.
+    // If the focal offset goes out of bounds we center it to the maximum amount we can where the entire
+    // image is able to cover the view.
+    let realisticXOffset = abs(focalXOffset) > extraHorizontalSpaceOnOneSide ?
+      extraHorizontalSpaceOnOneSide : focalXOffset
+    
+    backgroundView.updateImageXOffset(by: realisticXOffset)
   }
 
   private func reportSponsoredImageBackgroundEvent(_ event: Ads.NewTabPageAdEventType) {
