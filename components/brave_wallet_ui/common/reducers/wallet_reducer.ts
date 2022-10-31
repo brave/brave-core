@@ -411,6 +411,18 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         if (state.selectedPendingTransaction?.id === payload.txInfo.id) {
           state.selectedPendingTransaction = payload.txInfo
         }
+      },
+
+      queueNextTransaction (state: WalletState) {
+        const pendingTransactions = state.pendingTransactions
+
+        const index = pendingTransactions.findIndex(
+          (tx: BraveWallet.TransactionInfo) => tx.id === state.selectedPendingTransaction?.id
+        ) + 1
+
+        state.selectedPendingTransaction = pendingTransactions.length === index
+          ? pendingTransactions[0]
+          : pendingTransactions[index]
       }
     },
     extraReducers (builder) {
@@ -461,23 +473,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.queueNextTransaction.type, (state: WalletState): WalletState => {
-    const pendingTransactions = state.pendingTransactions
-
-    const index = pendingTransactions.findIndex(
-      (tx: BraveWallet.TransactionInfo) => tx.id === state.selectedPendingTransaction?.id
-    ) + 1
-
-    let newPendingTransaction = pendingTransactions[index]
-    if (pendingTransactions.length === index) {
-      newPendingTransaction = pendingTransactions[0]
-    }
-    return {
-      ...state,
-      selectedPendingTransaction: newPendingTransaction
-    }
-  })
 
   reducer.on(WalletActions.setMetaMaskInstalled.type, (state: WalletState, payload: boolean): WalletState => {
     return {
