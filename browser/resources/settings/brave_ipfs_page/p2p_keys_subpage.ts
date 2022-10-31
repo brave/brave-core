@@ -11,7 +11,7 @@ import './add_p2p_key_dialog.js'
 
 import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {BaseMixin} from '../base_mixin.js'
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
 import {getTemplate} from './p2p_keys_subpage.html.js'
@@ -25,8 +25,8 @@ import {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu
 */
 
 const SettingsBraveP2pKeysSubpageElementBase = 
-  I18nMixin(WebUIListenerMixin(BaseMixin(PolymerElement))) as {
-    new(): PolymerElement & WebUIListenerMixinInterface & I18nMixinInterface
+  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as {
+    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
   }
 
 export interface KeysListItem {

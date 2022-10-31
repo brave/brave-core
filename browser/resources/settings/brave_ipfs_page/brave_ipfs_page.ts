@@ -6,7 +6,7 @@
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {WebUIListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {Router, RouteObserverMixin} from '../router.js';
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
@@ -25,7 +25,7 @@ const IPFS_RESOLVE_METHOD_TYPES = {
   IPFS_DISABLED: 3
 }
 
-const SettingBraveIpfsPageElementBase = RouteObserverMixin(WebUIListenerMixin(PrefsMixin(PolymerElement)))
+const SettingBraveIpfsPageElementBase = RouteObserverMixin(WebUiListenerMixin(PrefsMixin(PolymerElement)))
 
 /**
  * 'settings-brave-default-extensions-page' is the settings page containing
