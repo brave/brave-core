@@ -245,6 +245,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = selectedAccount
       },
 
+      setAllNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
+        state.networkList = payload
+      },
+
       setNetwork (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) {
         state.selectedNetwork = payload
       },
@@ -305,13 +309,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setAllNetworks.type, (state: WalletState, payload: BraveWallet.NetworkInfo[]): WalletState => {
-    return {
-      ...state,
-      networkList: payload
-    }
-  })
 
   reducer.on(WalletActions.setAllTokensList.type, (state: WalletState, payload: BraveWallet.BlockchainToken[]): WalletState => {
     return {
