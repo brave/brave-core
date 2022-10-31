@@ -245,6 +245,22 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = selectedAccount
       },
 
+      isEip1559Changed (state: WalletState, { payload }: PayloadAction<IsEip1559Changed>) {
+        const networkToUpdate = state.networkList.find(network => network.chainId === payload.chainId)
+
+        if (networkToUpdate) {
+          networkToUpdate.isEip1559 = payload.isEip1559
+
+          if (state.selectedNetwork?.chainId === payload.chainId) {
+            state.selectedNetwork = networkToUpdate
+          }
+
+          state.networkList = state.networkList.map(network =>
+            network.chainId === payload.chainId ? networkToUpdate : network
+          )
+        }
+      },
+
       nativeAssetBalancesUpdated (state: WalletState, { payload }: PayloadAction<GetNativeAssetBalancesPayload>) {
         state.accounts.forEach((account, accountIndex) => {
           payload.balances[accountIndex].forEach((info, tokenIndex) => {
@@ -433,28 +449,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.isEip1559Changed.type, (state: WalletState, payload: IsEip1559Changed): WalletState => {
-    const networkToUpdate = state.networkList.find(network => network.chainId === payload.chainId)
-    if (!networkToUpdate) {
-      return state
-    }
-
-    const updatedNetwork: BraveWallet.NetworkInfo = {
-      ...networkToUpdate,
-      isEip1559: payload.isEip1559
-    }
-
-    return {
-      ...state,
-      selectedNetwork: state.selectedNetwork?.chainId === payload.chainId
-        ? updatedNetwork
-        : state.selectedNetwork,
-      networkList: state.networkList.map(
-        network => network.chainId === payload.chainId ? updatedNetwork : network
-      )
-    }
-  })
 
   reducer.on(WalletActions.setGasEstimates.type, (state: WalletState, payload: BraveWallet.GasEstimation1559): WalletState => {
     return {
