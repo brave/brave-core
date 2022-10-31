@@ -299,13 +299,15 @@ void BraveNewTabPageHandler::OnRemoveCustomImageBackground(
 
   auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
   background_pref.RemoveCustomImageFromList(file_name);
-  if (background_pref.GetType() == NTPBackgroundPrefs::Type::kCustomImage &&
-      absl::get<std::string>(background_pref.GetSelectedValue()) == file_name) {
+  if (background_pref.GetType() == NTPBackgroundPrefs::Type::kCustomImage) {
     if (auto custom_images = background_pref.GetCustomImageList();
-        !custom_images.empty()) {
+        !custom_images.empty() &&
+        absl::get<std::string>(background_pref.GetSelectedValue()) ==
+            file_name) {
+      // Reset to the next candidate after we've removed the chosen one.
       background_pref.SetSelectedValue(custom_images.front());
-    } else {
-      // Reset to default
+    } else if (custom_images.empty()) {
+      // Reset to default when there's no available custom images.
       background_pref.SetType(NTPBackgroundPrefs::Type::kBrave);
       background_pref.SetSelectedValue({});
       background_pref.SetShouldUseRandomValue(true);
