@@ -243,6 +243,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.accounts = accounts
         state.isWalletBackedUp = payload.isWalletBackedUp
         state.selectedAccount = selectedAccount
+      },
+
+      setSelectedAccount (state: WalletState, { payload }: PayloadAction<WalletAccountType>) {
+        state.selectedAccount = payload
       }
     },
     extraReducers (builder) {
@@ -293,13 +297,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setSelectedAccount.type, (state: WalletState, payload: WalletAccountType): WalletState => {
-    return {
-      ...state,
-      selectedAccount: payload
-    }
-  })
 
   reducer.on(WalletActions.setNetwork.type, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
     return {
