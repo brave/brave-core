@@ -195,9 +195,8 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     reducers: {
     },
     extraReducers (builder) {
-      builder.addCase(WalletAsyncActions.setSelectedNetworkFilter.type, (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) => {
-        state.isFetchingPortfolioPriceHistory = true
-        state.selectedNetworkFilter = payload
+      builder.addCase(WalletAsyncActions.locked.type, (state) => {
+        state.isWalletLocked = true
       })
 
       builder.addCase(WalletAsyncActions.setSelectedAccountFilterItem.type, (state: WalletState, { payload }: PayloadAction<WalletAccountType>) => {
@@ -205,6 +204,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         // https://github.com/brave/brave-browser/issues/25620
         state.isFetchingPortfolioPriceHistory = true
         state.selectedAccountFilter = payload
+      })
+
+      builder.addCase(WalletAsyncActions.setSelectedNetworkFilter.type, (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) => {
+        state.isFetchingPortfolioPriceHistory = true
+        state.selectedNetworkFilter = payload
       })
     }
   })
@@ -241,13 +245,6 @@ export const createWalletReducer = (initialState: WalletState) => {
       accounts,
       isWalletBackedUp: payload.isWalletBackedUp,
       selectedAccount
-    }
-  })
-
-  reducer.on(WalletActions.locked.type, (state): WalletState => {
-    return {
-      ...state,
-      isWalletLocked: true
     }
   })
 
