@@ -245,6 +245,23 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = selectedAccount
       },
 
+      nativeAssetBalancesUpdated (state: WalletState, { payload }: PayloadAction<GetNativeAssetBalancesPayload>) {
+        state.accounts.forEach((account, accountIndex) => {
+          payload.balances[accountIndex].forEach((info, tokenIndex) => {
+            if (info.error === BraveWallet.ProviderError.kSuccess) {
+              state.accounts[accountIndex].nativeBalanceRegistry[info.chainId] = Amount.normalize(info.balance)
+            }
+          })
+        })
+
+        // Refresh selectedAccount object
+        const selectedAccount = state.accounts.find(
+          account => account === state.selectedAccount
+        ) ?? state.selectedAccount
+
+        state.selectedAccount = selectedAccount
+      },
+
       setAllNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
         state.networkList = payload
       },
@@ -313,29 +330,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.nativeAssetBalancesUpdated.type, (state: WalletState, payload: GetNativeAssetBalancesPayload): WalletState => {
-    let accounts: WalletAccountType[] = [...state.accounts]
-
-    accounts.forEach((account, accountIndex) => {
-      payload.balances[accountIndex].forEach((info, tokenIndex) => {
-        if (info.error === BraveWallet.ProviderError.kSuccess) {
-          accounts[accountIndex].nativeBalanceRegistry[info.chainId] = Amount.normalize(info.balance)
-        }
-      })
-    })
-
-    // Refresh selectedAccount object
-    const selectedAccount = accounts.find(
-      account => account === state.selectedAccount
-    ) ?? state.selectedAccount
-
-    return {
-      ...state,
-      accounts,
-      selectedAccount
-    }
-  })
 
   reducer.on(WalletActions.tokenBalancesUpdated.type, (state: WalletState, payload: GetBlockchainTokenBalanceReturnInfo): WalletState => {
     const visibleTokens = state.userVisibleTokensInfo
