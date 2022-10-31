@@ -12,6 +12,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
+#include "chrome/browser/updater/browser_updater_helper_client_mac.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
