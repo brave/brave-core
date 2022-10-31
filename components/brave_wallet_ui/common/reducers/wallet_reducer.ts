@@ -315,6 +315,20 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         }
       },
 
+      setAccountTransactions (state: WalletState, { payload }: PayloadAction<AccountTransactions>) {
+        const newPendingTransactions = state.accounts.map((account) => {
+          return payload[account.address]
+        }).flat(1)
+
+        const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
+
+        const sortedTransactionList = sortTransactionByDate(filteredTransactions)
+
+        state.transactions = payload
+        state.pendingTransactions = sortedTransactionList
+        state.selectedPendingTransaction = sortedTransactionList[0]
+      },
+
       setAllNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
         state.networkList = payload
       },
@@ -419,25 +433,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setAccountTransactions.type, (state: WalletState, payload: AccountTransactions): WalletState => {
-    const { accounts } = state
-
-    const newPendingTransactions = accounts.map((account) => {
-      return payload[account.address]
-    }).flat(1)
-
-    const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
-
-    const sortedTransactionList = sortTransactionByDate(filteredTransactions)
-
-    return {
-      ...state,
-      transactions: payload,
-      pendingTransactions: sortedTransactionList,
-      selectedPendingTransaction: sortedTransactionList[0]
-    }
-  })
 
   reducer.on(WalletActions.isEip1559Changed.type, (state: WalletState, payload: IsEip1559Changed): WalletState => {
     const networkToUpdate = state.networkList.find(network => network.chainId === payload.chainId)
