@@ -197,6 +197,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.activeOrigin = payload
       },
 
+      addUserAssetError (state: WalletState, { payload }: PayloadAction<boolean>) {
+        state.addUserAssetError = payload
+      },
+
       initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
         const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
           return {
@@ -469,13 +473,6 @@ export const createWalletReducer = (initialState: WalletState) => {
       transactions: payload,
       pendingTransactions: sortedTransactionList,
       selectedPendingTransaction: sortedTransactionList[0]
-    }
-  })
-
-  reducer.on(WalletActions.addUserAssetError.type, (state: WalletState, payload: boolean): WalletState => {
-    return {
-      ...state,
-      addUserAssetError: payload
     }
   })
 
