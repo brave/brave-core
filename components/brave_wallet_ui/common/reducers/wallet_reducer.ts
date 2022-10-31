@@ -427,6 +427,15 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedPendingTransaction = pendingTransactions.length === index
           ? pendingTransactions[0]
           : pendingTransactions[index]
+      },
+
+      refreshAccountInfo (state: WalletState, { payload }: PayloadAction<WalletInfoBase>) {
+        state.accounts.forEach(account => {
+          const info = payload.accountInfos.find(info => account.address === info.address)
+          if (info) {
+            account.name = info.name
+          }
+        })
       }
     },
     extraReducers (builder) {
@@ -477,23 +486,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.refreshAccountInfo.type, (state: WalletState, payload: WalletInfoBase): WalletState => {
-    const accounts = state.accounts
-
-    const updatedAccounts = accounts.map(account => {
-      const info = payload.accountInfos.find(info => account.address === info.address)
-      if (info) {
-        account.name = info.name
-      }
-      return account
-    })
-
-    return {
-      ...state,
-      accounts: updatedAccounts
-    }
-  })
 
   reducer.on(WalletActions.setTransactionProviderError.type, (state: WalletState, payload: SetTransactionProviderErrorType): WalletState => {
     return {
