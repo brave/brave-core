@@ -109,9 +109,16 @@ extension WalletPanelHostingController: PopoverContentComponent {}
 
 extension BrowserViewController: BraveWalletDelegate {
   public func requestAppReview() {
-    // Handle App Rating
-    // User is either finished sending/swapping a crypto token or added an account to wallet.
-    AppReviewManager.shared.handleAppReview(for: self)
+    // wait for any dismissals, ex after adding an account/sending crypto/swapping crypto
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      var topMostViewController: UIViewController = self
+      while let presentedViewController = topMostViewController.presentedViewController {
+        topMostViewController = presentedViewController
+      }
+      // Handle App Rating
+      // User is either finished sending/swapping a crypto token or added an account to wallet.
+      AppReviewManager.shared.handleAppReview(for: topMostViewController)
+    }
   }
   
   public func openWalletURL(_ destinationURL: URL) {

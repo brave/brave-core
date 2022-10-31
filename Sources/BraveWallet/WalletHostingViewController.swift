@@ -79,9 +79,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
       }
     }
     rootView.appRatingRequestAction = { [unowned self] in
-      (presentingViewController ?? self).dismiss(animated: true) {
-        self.delegate?.requestAppReview()
-      }
+      self.delegate?.requestAppReview()
     }
     cancellable = walletStore.keyringStore.$defaultKeyring
       .dropFirst() // Drop initial value
