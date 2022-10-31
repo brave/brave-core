@@ -377,6 +377,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.solFeeEstimates = payload
       },
 
+      setTransactionProviderError (state: WalletState, { payload }: PayloadAction<SetTransactionProviderErrorType>) {
+        state.transactionProviderErrorRegistry[payload.transaction.id] = payload.providerError
+      },
+
       setVisibleTokensInfo (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
         state.userVisibleTokensInfo = payload
       },
@@ -486,16 +490,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setTransactionProviderError.type, (state: WalletState, payload: SetTransactionProviderErrorType): WalletState => {
-    return {
-      ...state,
-      transactionProviderErrorRegistry: {
-        ...state.transactionProviderErrorRegistry,
-        [payload.transaction.id]: payload.providerError
-      }
-    }
-  })
 
   reducer.on(WalletActions.setSelectedCoin.type, (state: WalletState, payload: BraveWallet.CoinType): WalletState => {
     return {
