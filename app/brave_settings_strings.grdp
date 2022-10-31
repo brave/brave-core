@@ -1002,7 +1002,8 @@
     Redirect IPFS resources to the configured IPFS gateway
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC" desc="The description for redirecting IPFS resources to the configured gateway">
-    Automatically uses the configured gateway for IPFS resolutions when an IPFS gateway resource is encountered.
+    Requests to IPFS resources, hosted on third-party IPFS gateways will be loaded via selected local or remote gateway.
+    Note: If local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL" desc="The text label for redirecting IPFS resources for DNSLink">
     Automatically redirect to IPFS pages via DNSLink when possible
