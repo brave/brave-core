@@ -19,17 +19,40 @@ import {
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
   SolFeeEstimates,
-  AssetFilterOption
+  AssetFilterOption,
+  ApproveERC20Params,
+  ER20TransferParams,
+  ERC721TransferFromParams,
+  SendTransactionParams,
+  SPLTransferFromParams
 } from '../../constants/types'
 import {
+  AddSitePermissionPayloadType,
+  ChainChangedEventPayloadType,
+  DefaultBaseCryptocurrencyChanged,
+  DefaultBaseCurrencyChanged,
+  DefaultEthereumWalletChanged,
+  DefaultSolanaWalletChanged,
+  GetCoinMarketPayload,
   GetCoinMarketsResponse,
   IsEip1559Changed,
   NewUnapprovedTxAdded,
+  RemoveSitePermissionPayloadType,
+  SelectedAccountChangedPayloadType,
   SetTransactionProviderErrorType,
+  SetUserAssetVisiblePayloadType,
   SitePermissionsPayloadType,
   TransactionStatusChanged,
-  UnapprovedTxUpdated
+  UnapprovedTxUpdated,
+  UnlockWalletPayloadType,
+  UpdateUnapprovedTransactionGasFieldsType,
+  UpdateUnapprovedTransactionNonceType,
+  UpdateUnapprovedTransactionSpendAllowanceType
 } from '../constants/action_types'
+import {
+  AddAccountPayloadType,
+  AddFilecoinAccountPayloadType
+} from '../../page/constants/action_types'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
@@ -42,6 +65,7 @@ import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
 import { AllAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
+import { createAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -100,6 +124,64 @@ const defaultState: WalletState = {
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
   passwordAttempts: 0
+}
+
+ // async actions
+export const WalletAsyncActions = {
+  initialize: createAction('initialize'),
+  lockWallet: createAction('lockWallet'), // keyringService.lock()
+  unlockWallet: createAction<UnlockWalletPayloadType>('unlockWallet'),
+  addFavoriteApp: createAction<BraveWallet.AppItem>('addFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
+  removeFavoriteApp: createAction<BraveWallet.AppItem>('removeFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
+  addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
+  removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
+  setUserAssetVisible: createAction<SetUserAssetVisiblePayloadType>('setUserAssetVisible'), // alias for ApiProxy.braveWalletService.setUserAssetVisible
+  selectAccount: createAction<WalletAccountType>('selectAccount'), // should use apiProxy - keyringService
+  selectNetwork: createAction<BraveWallet.NetworkInfo>('selectNetwork'), // should useLib
+  getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
+  chainChangedEvent: createAction<ChainChangedEventPayloadType>('chainChangedEvent'),
+  keyringCreated: createAction('keyringCreated'),
+  keyringRestored: createAction('keyringRestored'),
+  keyringReset: createAction('keyringReset'),
+  locked: createAction('locked'),
+  unlocked: createAction('unlocked'),
+  backedUp: createAction('backedUp'),
+  accountsChanged: createAction('accountsChanged'),
+  selectedAccountChanged: createAction<SelectedAccountChangedPayloadType>('selectedAccountChanged'),
+  getAllTokensList: createAction('getAllTokensList'),
+  selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>('selectPortfolioTimeline'),
+  sendTransaction: createAction<SendTransactionParams>('sendTransaction'),
+  sendERC20Transfer: createAction<ER20TransferParams>('sendERC20Transfer'),
+  sendSPLTransfer: createAction<SPLTransferFromParams>('sendSPLTransfer'),
+  sendERC721TransferFrom: createAction<ERC721TransferFromParams>('sendERC721TransferFrom'),
+  approveERC20Allowance: createAction<ApproveERC20Params>('approveERC20Allowance'),
+  transactionStatusChanged: createAction<TransactionStatusChanged>('transactionStatusChanged'),
+  approveTransaction: createAction<BraveWallet.TransactionInfo>('approveTransaction'),
+  rejectTransaction: createAction<BraveWallet.TransactionInfo>('rejectTransaction'),
+  rejectAllTransactions: createAction('rejectAllTransactions'),
+  refreshGasEstimates: createAction<BraveWallet.TransactionInfo>('refreshGasEstimates'),
+  updateUnapprovedTransactionGasFields: createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields'),
+  updateUnapprovedTransactionSpendAllowance: createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance'),
+  updateUnapprovedTransactionNonce: createAction<UpdateUnapprovedTransactionNonceType>('updateUnapprovedTransactionNonce'),
+  defaultEthereumWalletChanged: createAction<DefaultEthereumWalletChanged>('defaultEthereumWalletChanged'), // refreshWalletInfo
+  defaultSolanaWalletChanged: createAction<DefaultSolanaWalletChanged>('defaultSolanaWalletChanged'), // refreshWalletInfo
+  defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>('defaultBaseCurrencyChanged'), // refreshWalletInfo
+  defaultBaseCryptocurrencyChanged: createAction<DefaultBaseCryptocurrencyChanged>('defaultBaseCryptocurrencyChanged'), // refreshWalletInfo
+  removeSitePermission: createAction<RemoveSitePermissionPayloadType>('removeSitePermission'), // refreshWalletInfo
+  addSitePermission: createAction<AddSitePermissionPayloadType>('addSitePermission'), // refreshWalletInfo
+  refreshBalancesAndPrices: createAction('refreshBalancesAndPrices'),
+  retryTransaction: createAction<BraveWallet.TransactionInfo>('retryTransaction'),
+  cancelTransaction: createAction<BraveWallet.TransactionInfo>('cancelTransaction'),
+  speedupTransaction: createAction<BraveWallet.TransactionInfo>('speedupTransaction'),
+  expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
+  refreshBalancesAndPriceHistory: createAction('refreshBalancesAndPriceHistory'),
+  getCoinMarkets: createAction<GetCoinMarketPayload>('getCoinMarkets'),
+  setSelectedNetworkFilter: createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter'),
+  setSelectedAccountFilterItem: createAction<WalletAccountType>('setSelectedAccountFilterItem'),
+  addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
+  addFilecoinAccount: createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'), // alias for keyringService.addFilecoinAccount
+  getOnRampCurrencies: createAction('getOnRampCurrencies'),
+  autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
 }
 
 const getAccountType = (info: AccountInfo) => {
