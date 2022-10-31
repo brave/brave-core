@@ -193,6 +193,33 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
+      initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
+        const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
+          return {
+            id: `${idx + 1}`,
+            name: info.name,
+            address: info.address,
+            accountType: getAccountType(info),
+            deviceId: info.hardware ? info.hardware.deviceId : '',
+            tokenBalanceRegistry: {},
+            nativeBalanceRegistry: {},
+            coin: info.coin,
+            keyringId: info.keyringId
+          } as WalletAccountType
+        })
+        const selectedAccount = payload.selectedAccount
+          ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
+          : accounts[0]
+        state.hasInitialized = true
+        state.isWalletCreated = payload.isWalletCreated
+        state.isFilecoinEnabled = payload.isFilecoinEnabled
+        state.isSolanaEnabled = payload.isSolanaEnabled
+        state.isWalletLocked = payload.isWalletLocked
+        state.favoriteApps = payload.favoriteApps
+        state.accounts = accounts
+        state.isWalletBackedUp = payload.isWalletBackedUp
+        state.selectedAccount = selectedAccount
+      }
     },
     extraReducers (builder) {
       builder.addCase(WalletAsyncActions.locked.type, (state) => {
@@ -242,37 +269,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.initialized.type, (state: WalletState, payload: WalletInfo): WalletState => {
-    const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
-      return {
-        id: `${idx + 1}`,
-        name: info.name,
-        address: info.address,
-        accountType: getAccountType(info),
-        deviceId: info.hardware ? info.hardware.deviceId : '',
-        tokenBalanceRegistry: {},
-        nativeBalanceRegistry: {},
-        coin: info.coin,
-        keyringId: info.keyringId
-      } as WalletAccountType
-    })
-    const selectedAccount = payload.selectedAccount
-      ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
-      : accounts[0]
-    return {
-      ...state,
-      hasInitialized: true,
-      isWalletCreated: payload.isWalletCreated,
-      isFilecoinEnabled: payload.isFilecoinEnabled,
-      isSolanaEnabled: payload.isSolanaEnabled,
-      isWalletLocked: payload.isWalletLocked,
-      favoriteApps: payload.favoriteApps,
-      accounts,
-      isWalletBackedUp: payload.isWalletBackedUp,
-      selectedAccount
-    }
-  })
 
   reducer.on(WalletActions.hasIncorrectPassword.type, (state: WalletState, payload: boolean): WalletState => {
     return {
