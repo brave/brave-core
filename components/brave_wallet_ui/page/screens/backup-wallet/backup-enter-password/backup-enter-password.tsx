@@ -5,19 +5,27 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { WalletPageActions } from '../../../actions'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
 
+// hooks
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+
 // components
+import { PasswordInput } from '../../../../components/shared'
 import { NavButton } from '../../../../components/extension'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 // style
+import { VerticalSpacer } from '../../../../components/shared/style'
 import {
   StyledWrapper,
   Title,
@@ -25,12 +33,6 @@ import {
   NextButtonRow,
   MainWrapper
 } from '../../onboarding/onboarding.style'
-import { PasswordInput } from '../../../../components/shared'
-import { VerticalSpacer } from '../../../../components/shared/style'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
-import { useDispatch } from 'react-redux'
-import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
-import { WalletPageActions } from '../../../actions'
 
 export const BackupEnterPassword: React.FC = () => {
   // routing

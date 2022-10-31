@@ -17,6 +17,7 @@ import {
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
+import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -45,7 +46,6 @@ import { PageSelectors } from '../../../selectors'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 export const VerifyRecoveryPhrase = () => {
   // state

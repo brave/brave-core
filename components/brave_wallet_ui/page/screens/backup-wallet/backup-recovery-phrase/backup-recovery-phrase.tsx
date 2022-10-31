@@ -8,12 +8,15 @@ import { useLocation } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { PageSelectors } from '../../../selectors'
 
-// types
+// routes
 import { WalletRoutes } from '../../../../constants/types'
+import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // hooks
 import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-to-clipboard'
+import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 
 // styles
 import {
@@ -41,10 +44,7 @@ import { CenteredPageLayout } from '../../../../components/desktop/centered-page
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { NavButton } from '../../../../components/extension'
-import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../selectors'
-import StepsNavigation from '../../../../components/desktop/steps-navigation/steps-navigation'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
+import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 export const BackupRecoveryPhrase = () => {
   // routing

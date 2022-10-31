@@ -11,6 +11,7 @@ import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
+import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // images
 import ExamplePhrase from './images/example-recovery-phrase.svg'
@@ -20,6 +21,7 @@ import { NavButton } from '../../../../components/extension'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
+import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 // style
 import {
@@ -36,8 +38,6 @@ import {
   BannerText,
   CenteredRow
 } from './explain-recovery-phrase.style'
-import StepsNavigation from '../../../../components/desktop/steps-navigation/steps-navigation'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 const importantTextParts = splitStringForTag(getLocale('braveWalletRecoveryPhraseBackupWarningImportant'))
 
