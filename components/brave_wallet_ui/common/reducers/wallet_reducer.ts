@@ -209,6 +209,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.defaultEthereumWallet = payload
       },
 
+      defaultSolanaWalletUpdated (state: WalletState, { payload }: PayloadAction<BraveWallet.DefaultWallet>) {
+        state.defaultSolanaWallet = payload
+      },
+
       initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
         const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
           return {
@@ -481,13 +485,6 @@ export const createWalletReducer = (initialState: WalletState) => {
       transactions: payload,
       pendingTransactions: sortedTransactionList,
       selectedPendingTransaction: sortedTransactionList[0]
-    }
-  })
-
-  reducer.on(WalletActions.defaultSolanaWalletUpdated.type, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
-    return {
-      ...state,
-      defaultSolanaWallet: payload
     }
   })
 
