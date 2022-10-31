@@ -297,6 +297,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isFetchingPortfolioPriceHistory = sumOfHistory.length === 0
       },
 
+      portfolioTimelineUpdated (state: WalletState, { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>) {
+        state.isFetchingPortfolioPriceHistory = true
+        state.selectedPortfolioTimeline = payload
+      },
+
       pricesUpdated (state: WalletState, { payload }: PayloadAction<GetPriceReturnInfo>) {
         if (payload.success) {
           state.transactionSpotPrices = payload.values
@@ -393,14 +398,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.portfolioTimelineUpdated.type, (state: WalletState, payload: BraveWallet.AssetPriceTimeframe): WalletState => {
-    return {
-      ...state,
-      isFetchingPortfolioPriceHistory: true,
-      selectedPortfolioTimeline: payload
-    }
-  })
 
   reducer.on(WalletActions.newUnapprovedTxAdded.type, (state: WalletState, payload: NewUnapprovedTxAdded): WalletState => {
     const newState = {
