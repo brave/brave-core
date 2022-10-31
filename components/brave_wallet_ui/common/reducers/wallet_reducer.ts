@@ -210,6 +210,32 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isFetchingPortfolioPriceHistory = true
         state.selectedNetworkFilter = payload
       })
+
+      builder.addCase(WalletAsyncActions.transactionStatusChanged.type, (state: WalletState, { payload }: PayloadAction<TransactionStatusChanged>) => {
+        const newPendingTransactions = state.pendingTransactions
+          .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
+          .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
+
+        const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
+
+        const newTransactionEntries = Object.entries(state.transactions).map(([address, transactions]) => {
+          const hasTransaction = transactions.some(tx => tx.id === payload.txInfo.id)
+
+          return [
+            address,
+            hasTransaction
+              ? sortTransactionByDate([
+                ...transactions.filter(tx => tx.id !== payload.txInfo.id),
+                payload.txInfo
+              ])
+              : transactions
+          ]
+        })
+
+        state.pendingTransactions = sortedTransactionList
+        state.selectedPendingTransaction = sortedTransactionList[0]
+        state.transactions = Object.fromEntries(newTransactionEntries)
+      })
     }
   })
 }
@@ -425,35 +451,6 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
 
     return newState
-  })
-
-  reducer.on(WalletActions.transactionStatusChanged.type, (state: WalletState, payload: TransactionStatusChanged): WalletState => {
-    const newPendingTransactions = state.pendingTransactions
-      .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
-      .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
-
-    const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
-
-    const newTransactionEntries = Object.entries(state.transactions).map(([address, transactions]) => {
-      const hasTransaction = transactions.some(tx => tx.id === payload.txInfo.id)
-
-      return [
-        address,
-        hasTransaction
-          ? sortTransactionByDate([
-            ...transactions.filter(tx => tx.id !== payload.txInfo.id),
-            payload.txInfo
-          ])
-          : transactions
-      ]
-    })
-
-    return {
-      ...state,
-      pendingTransactions: sortedTransactionList,
-      selectedPendingTransaction: sortedTransactionList[0],
-      transactions: Object.fromEntries(newTransactionEntries)
-    }
   })
 
   reducer.on(WalletActions.setAccountTransactions.type, (state: WalletState, payload: AccountTransactions): WalletState => {
