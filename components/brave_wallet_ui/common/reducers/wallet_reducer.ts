@@ -365,6 +365,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = payload
       },
 
+      setSitePermissions (state: WalletState, { payload }: PayloadAction<SitePermissionsPayloadType>) {
+        state.connectedAccounts = payload.accounts
+      },
+
       setSolFeeEstimates (state: WalletState, { payload }: PayloadAction<SolFeeEstimates>) {
         state.solFeeEstimates = payload
       },
@@ -457,13 +461,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setSitePermissions.type, (state: WalletState, payload: SitePermissionsPayloadType): WalletState => {
-    return {
-      ...state,
-      connectedAccounts: payload.accounts
-    }
-  })
 
   reducer.on(WalletActions.queueNextTransaction.type, (state: WalletState): WalletState => {
     const pendingTransactions = state.pendingTransactions
