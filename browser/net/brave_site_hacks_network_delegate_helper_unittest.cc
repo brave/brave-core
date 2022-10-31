@@ -146,6 +146,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {
         std::make_shared<brave::BraveRequestInfo>(GURL(url));
     brave_request_info->initiator_url =
         GURL("https://example.net");  // cross-site
+    brave_request_info->method = "GET";
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
     EXPECT_EQ(rc, net::OK);
@@ -166,6 +167,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
     auto brave_request_info =
         std::make_shared<brave::BraveRequestInfo>(tracking_url);
     brave_request_info->initiator_url = GURL(initiator);
+    brave_request_info->method = "GET";
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
     EXPECT_EQ(rc, net::OK);
@@ -179,7 +181,24 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
         std::make_shared<brave::BraveRequestInfo>(tracking_url);
     brave_request_info->initiator_url =
         GURL("https://example.net");  // cross-site
+    brave_request_info->method = "GET";
     brave_request_info->internal_redirect = true;
+    brave_request_info->redirect_source =
+        GURL("https://example.org");  // cross-site
+    int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
+                                                     brave_request_info);
+    EXPECT_EQ(rc, net::OK);
+    // new_url should not be set
+    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  }
+
+  // POST requests
+  {
+    auto brave_request_info =
+        std::make_shared<brave::BraveRequestInfo>(tracking_url);
+    brave_request_info->initiator_url =
+        GURL("https://example.net");  // cross-site
+    brave_request_info->method = "POST";
     brave_request_info->redirect_source =
         GURL("https://example.org");  // cross-site
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
@@ -195,6 +214,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
         std::make_shared<brave::BraveRequestInfo>(tracking_url);
     brave_request_info->initiator_url =
         GURL("https://example.net");  // cross-site
+    brave_request_info->method = "GET";
     brave_request_info->redirect_source =
         GURL("https://sub.example.com");  // same-site
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
@@ -238,6 +258,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
         std::make_shared<brave::BraveRequestInfo>(GURL(pair.first));
     brave_request_info->initiator_url =
         GURL("https://example.net");  // cross-site
+    brave_request_info->method = "GET";
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
     EXPECT_EQ(rc, net::OK);
@@ -250,6 +271,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
         GURL("https://example.com/?fbclid=1"));
     brave_request_info->initiator_url =
         GURL("https://example.com");  // same-origin
+    brave_request_info->method = "GET";
     brave_request_info->redirect_source =
         GURL("https://example.net");  // cross-site
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
@@ -263,6 +285,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
     auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(
         GURL("https://example.com/?fbclid=2"));
     brave_request_info->initiator_url = GURL();
+    brave_request_info->method = "GET";
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
     EXPECT_EQ(rc, net::OK);
