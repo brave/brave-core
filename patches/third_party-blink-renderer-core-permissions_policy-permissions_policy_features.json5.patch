@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-index df0932fa4e504c44a65f07f9addf41f7d8fce3fa..b68affa9a4bdba0fbb813d5f1369252b89c2d2ec 100644
+index ea83a938002d6e7b714e5d240b9c1e6dd15677cb..ce0ee4b6bb3fdb4f9b1fa372f607c6a5ad65571e 100644
 --- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 +++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-@@ -405,5 +405,13 @@
-       permissions_policy_name: "local-fonts",
-       depends_on: ["FontAccess"],
+@@ -404,5 +404,13 @@
+       name: "WindowPlacement",
+       permissions_policy_name: "window-placement",
      },
 +    {
 +      name: "Ethereum",

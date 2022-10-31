@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 55d696abd490fa36909d1c8495bc88cc674f29d7..67e699ef526df3b2bbd800c3101a47e29e9f6a77 100644
+index 7ad5b69266db2fc5e54ad9c2c7aa7290b3ae9093..77691ebe40e7c673d837bc232ead4199a82a7c8a 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -89,6 +89,7 @@ if (build_with_internal_optimization_guide) {
+@@ -88,6 +88,7 @@ if (build_with_internal_optimization_guide) {
        [ "$root_out_dir/liboptimization_guide_internal.so" ]
  }
  
@@ -10,7 +10,7 @@ index 55d696abd490fa36909d1c8495bc88cc674f29d7..67e699ef526df3b2bbd800c3101a47e2
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -186,6 +187,7 @@ action("merge_rpm_dependencies") {
+@@ -185,6 +186,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -18,7 +18,7 @@ index 55d696abd490fa36909d1c8495bc88cc674f29d7..67e699ef526df3b2bbd800c3101a47e2
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -201,6 +203,7 @@ strip_binary("strip_chrome_management_service") {
+@@ -200,6 +202,7 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -26,7 +26,7 @@ index 55d696abd490fa36909d1c8495bc88cc674f29d7..67e699ef526df3b2bbd800c3101a47e2
  }
  
  strip_binary("strip_libEGL_shlib") {
-@@ -298,6 +301,7 @@ copy("common_packaging_files") {
+@@ -297,6 +300,7 @@ copy("common_packaging_files") {
    }
  
    sources += [ "//buildtools/third_party/eu-strip/bin/eu-strip" ]
@@ -34,15 +34,15 @@ index 55d696abd490fa36909d1c8495bc88cc674f29d7..67e699ef526df3b2bbd800c3101a47e2
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
-@@ -398,6 +402,7 @@ group("installer_deps") {
+@@ -397,6 +401,7 @@ group("installer_deps") {
      "//components/crash/core/app:chrome_crashpad_handler",
      "//sandbox/linux:chrome_sandbox",
    ]
 +  public_deps += brave_installer_deps
-   if (enable_nacl) {
+   if (package_nacl) {
      public_deps += [
        ":strip_nacl_helper",
-@@ -458,6 +463,9 @@ group("installer_deps") {
+@@ -457,6 +462,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -52,7 +52,7 @@ index 55d696abd490fa36909d1c8495bc88cc674f29d7..67e699ef526df3b2bbd800c3101a47e2
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -625,3 +633,6 @@ linux_package("beta") {
+@@ -624,3 +632,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

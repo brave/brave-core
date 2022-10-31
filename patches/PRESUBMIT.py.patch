@@ -1,9 +1,9 @@
 diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 0af3237b415598a695fc033aa55f4f459896f229..7db3f5dede3e75bd76b7a30d04f8f0817c055911 100644
+index eee9f97d92fdeca60985cb472d2a8aea9059314a..e6c734d87c61a57a8a11ae090fbf9cf9acc5e870 100644
 --- a/PRESUBMIT.py
 +++ b/PRESUBMIT.py
-@@ -6415,3 +6415,4 @@ Mockito.mock()/spy() cause issues with our Java optimizer. You have 3 options:
- """, error_locations))
+@@ -6600,3 +6600,4 @@ def CheckNoJsInIos(input_api, output_api):
+             'scripts on iOS.', error_paths))
  
      return results
 +import chromium_presubmit_overrides; chromium_presubmit_overrides.Apply(globals())

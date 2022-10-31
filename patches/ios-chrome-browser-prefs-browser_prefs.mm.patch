@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index c75644fa2ff3afcd6f21a606b1ff8b9acf3049c6..235cccd1b8d0e90c81fa6f6fb6dd3b3b2b587312 100644
+index bb087266b80c80aa377ec8a2eb85f5edcad79cb4..25c877d436c80d60e9979c2d6633a73fbd8fd468 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
 @@ -198,6 +198,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -18,9 +18,9 @@ index c75644fa2ff3afcd6f21a606b1ff8b9acf3049c6..235cccd1b8d0e90c81fa6f6fb6dd3b3b
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -375,4 +377,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
- 
-   // Added 09/2022
-   prefs->ClearPref(kDataSaverEnabled);
+@@ -387,4 +389,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+     if (!account_id.empty())
+       prefs->SetString(prefs::kGoogleServicesLastGaiaId, account_id);
+   }
 +  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
  }
