@@ -32,8 +32,6 @@ export const BackupWalletRoutes = () => {
   // redux
   const hasMnemonic = useSafePageSelector(PageSelectors.hasMnemonic)
 
-  alert(`has? ${hasMnemonic ? 'true' : 'false'}`)
-
   // render
   return (
     <Switch>
