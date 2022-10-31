@@ -1,8 +1,8 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index ada61ecbfe4b8d35752a6b08d712f8a69544dbf5..fb7665b5cbf91f2a4fc7866bc26379a1d15413af 100644
+index 138a27faa85c9fe58fb4adfe6dc8956ed56551fd..d6bb3e2930a236b1985d670a066b8f4ed26be5a0 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -515,6 +515,7 @@ base::Time CanonicalCookie::ValidateAndAdjustExpiryDate(
+@@ -516,6 +516,7 @@ base::Time CanonicalCookie::ValidateAndAdjustExpiryDate(
      // * network_handler.cc::MakeCookieFromProtocolValues
      fixed_creation_date = base::Time::Now();
    }

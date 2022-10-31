@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 3eff9bc639bb1db6dfd18b9f27955613a221be6b..07cccd4a7202be7e82af20ee7eb2fd9c678ae975 100644
+index 49421b0a40ce7779163a7cae50d2c1a8c23aeba4..b0f7af8e785074171fb698eb35b33ba193012c83 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1222,6 +1222,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1224,6 +1224,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,7 +11,7 @@ index 3eff9bc639bb1db6dfd18b9f27955613a221be6b..07cccd4a7202be7e82af20ee7eb2fd9c
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1592,6 +1594,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1595,6 +1597,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    registry->RegisterBooleanPref(prefs::kVirtualKeyboardResizesLayoutByDefault,
                                  false);
  #endif

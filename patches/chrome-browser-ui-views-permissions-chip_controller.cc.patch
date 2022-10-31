@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/permissions/chip_controller.cc b/chrome/browser/ui/views/permissions/chip_controller.cc
-index 06465b2b66138f48b770594009a8f147ec2b8dd9..20cde58250fa14764731c9405c895572e3dfcdb8 100644
+index db9bf2764a895fc90d99227108eb30f0bd174668..ea1a0ba5fae3ac1f6f56961c6a62b7db247769a1 100644
 --- a/chrome/browser/ui/views/permissions/chip_controller.cc
 +++ b/chrome/browser/ui/views/permissions/chip_controller.cc
 @@ -424,6 +424,7 @@ void ChipController::CollapsePrompt(bool allow_restart) {

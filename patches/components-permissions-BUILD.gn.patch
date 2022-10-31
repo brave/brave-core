@@ -1,8 +1,8 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 56b5e04fc69ffc86b385906cec4301f277bd7e55..15b3aed7e52b661ebb5aba9a873d0b0c80a9fc4a 100644
+index f40a7416de8f62cd277c21c564c856e24e5fdf9e..3f847ab4119ed07bf7b5cb70e0dd8afaab5ac542 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
-@@ -145,6 +145,7 @@ source_set("permissions") {
+@@ -143,6 +143,7 @@ source_set("permissions") {
        "contexts/geolocation_permission_context_mac.h",
      ]
    }

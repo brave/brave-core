@@ -1,8 +1,8 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index d00b8831fffc6d39b5b318529a92f117524b321b..ac157051097a4d4f74d5256944b20dfe8d9c985a 100644
+index f8d2e95c0d4b98dc7cc943085e221a2f227a4f9d..b8e44c6dd9df93da5344469c28cec5ddd99af721 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -46,6 +46,7 @@ config("compiler") {
+@@ -39,6 +39,7 @@ config("compiler") {
      # http://crbug.com/448386
      "-Wl,--exclude-libs=libvpx_assembly_arm.a",
    ]

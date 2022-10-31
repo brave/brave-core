@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 4dedb1fd0deed0e0315ca2d74321ce2a422b3b16..7b044bc1695ab1a7f549cffa307595515e3f7ac8 100644
+index 990beb02812bc093c60a7684e2425c9e57ce82e3..63c69dc3577e80d372a1445216f20e011bdeac8c 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -164,6 +164,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -165,6 +165,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      // PPAPI_BROKER has been deprecated. The content setting is not used or
      // called from UI, so we don't need a representation JS string.
      {ContentSettingsType::DEPRECATED_PPAPI_BROKER, nullptr},
@@ -10,7 +10,7 @@ index 4dedb1fd0deed0e0315ca2d74321ce2a422b3b16..7b044bc1695ab1a7f549cffa30759551
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -352,6 +353,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -353,6 +354,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {
