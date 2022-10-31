@@ -41,6 +41,7 @@ const Container = styled(Flex)`
 const FavIconContainer = styled.div`
   width: 24px;
   height: 24px;
+  flex-shrink: 0;
   border-radius: 100px;
 
   img {
