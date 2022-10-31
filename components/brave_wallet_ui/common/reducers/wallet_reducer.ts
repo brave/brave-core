@@ -365,6 +365,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = payload
       },
 
+      setSolFeeEstimates (state: WalletState, { payload }: PayloadAction<SolFeeEstimates>) {
+        state.solFeeEstimates = payload
+      },
+
       setVisibleTokensInfo (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
         state.userVisibleTokensInfo = payload
       },
@@ -453,13 +457,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setSolFeeEstimates.type, (state: WalletState, payload: SolFeeEstimates): WalletState => {
-    return {
-      ...state,
-      solFeeEstimates: payload
-    }
-  })
 
   reducer.on(WalletActions.setSitePermissions.type, (state: WalletState, payload: SitePermissionsPayloadType): WalletState => {
     return {
