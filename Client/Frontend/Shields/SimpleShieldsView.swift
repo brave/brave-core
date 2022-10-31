@@ -99,7 +99,7 @@ class SimpleShieldsView: UIView {
     }
 
     let shareButton = BraveButton().then {
-      $0.setImage(UIImage(named: "shields-share", in: .module, compatibleWith: nil)!.withRenderingMode(.alwaysTemplate), for: .normal)
+      $0.setImage(UIImage(sharedNamed: "shields-share")!.template, for: .normal)
       $0.hitTestSlop = UX.hitBoxEdgeInsets
       $0.imageEdgeInsets = .zero
       $0.titleEdgeInsets = .zero
