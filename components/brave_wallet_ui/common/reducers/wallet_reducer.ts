@@ -280,6 +280,28 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setVisibleTokensInfo (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
         state.userVisibleTokensInfo = payload
+      },
+
+      tokenBalancesUpdated (state: WalletState, { payload }: PayloadAction<GetBlockchainTokenBalanceReturnInfo>) {
+        const visibleTokens = state.userVisibleTokensInfo
+          .filter(asset => asset.contractAddress !== '')
+
+        state.accounts.forEach((account, accountIndex) => {
+          payload.balances[accountIndex]?.forEach((info, tokenIndex) => {
+            if (info.error === BraveWallet.ProviderError.kSuccess) {
+              const token = visibleTokens[tokenIndex]
+              const registryKey = createTokenBalanceRegistryKey(token)
+              state.accounts[accountIndex].tokenBalanceRegistry[registryKey] = Amount.normalize(info.balance)
+            }
+          })
+        })
+
+        // Refresh selectedAccount object
+        const selectedAccount = state.accounts.find(
+          account => account === state.selectedAccount
+        ) ?? state.selectedAccount
+
+        state.selectedAccount = selectedAccount
       }
     },
     extraReducers (builder) {
@@ -330,33 +352,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.tokenBalancesUpdated.type, (state: WalletState, payload: GetBlockchainTokenBalanceReturnInfo): WalletState => {
-    const visibleTokens = state.userVisibleTokensInfo
-      .filter(asset => asset.contractAddress !== '')
-
-    let accounts: WalletAccountType[] = [...state.accounts]
-    accounts.forEach((account, accountIndex) => {
-      payload.balances[accountIndex]?.forEach((info, tokenIndex) => {
-        if (info.error === BraveWallet.ProviderError.kSuccess) {
-          const token = visibleTokens[tokenIndex]
-          const registryKey = createTokenBalanceRegistryKey(token)
-          accounts[accountIndex].tokenBalanceRegistry[registryKey] = Amount.normalize(info.balance)
-        }
-      })
-    })
-
-    // Refresh selectedAccount object
-    const selectedAccount = accounts.find(
-      account => account === state.selectedAccount
-    ) ?? state.selectedAccount
-
-    return {
-      ...state,
-      accounts,
-      selectedAccount
-    }
-  })
 
   reducer.on(WalletActions.pricesUpdated.type, (state: WalletState, payload: GetPriceReturnInfo): WalletState => {
     return {
