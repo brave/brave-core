@@ -603,7 +603,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
-                boolean.class, ObservableSupplier.class, boolean.class));
+                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",

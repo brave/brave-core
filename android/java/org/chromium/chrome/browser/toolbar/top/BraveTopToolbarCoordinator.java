@@ -14,6 +14,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -67,6 +68,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             OfflineDownloader offlineDownloader, boolean initializeWithIncognitoColors,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
             boolean isStartSurfaceRefactorEnabled, ObservableSupplier<Integer> constraintsSupplier,
+            ObservableSupplier<Boolean> compositorInMotionSupplier,
+            BrowserStateBrowserControlsVisibilityDelegate
+                    browserStateBrowserControlsVisibilityDelegate,
             boolean shouldCreateLogoInStartToolbar) {
         super(controlContainer, toolbarStub, fullscreenToolbarStub, toolbarLayout,
                 toolbarDataProvider, tabController, userEducationHelper, buttonDataProviders,
@@ -80,6 +84,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
                 startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled, constraintsSupplier,
+                compositorInMotionSupplier, browserStateBrowserControlsVisibilityDelegate,
                 shouldCreateLogoInStartToolbar);
 
         mBraveToolbarLayout = toolbarLayout;
