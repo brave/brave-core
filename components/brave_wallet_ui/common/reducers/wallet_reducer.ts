@@ -68,7 +68,7 @@ import {
 import { AllAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
-import { createAction } from '@reduxjs/toolkit'
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -185,6 +185,22 @@ export const WalletAsyncActions = {
   addFilecoinAccount: createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'), // alias for keyringService.addFilecoinAccount
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
+}
+
+// slice
+export const createWalletSlice = (initialState: WalletState = defaultState) => {
+  return createSlice({
+    name: 'wallet',
+    initialState,
+    reducers: {
+    },
+    extraReducers (builder) {
+      builder.addCase(WalletAsyncActions.setSelectedNetworkFilter.type, (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) => {
+        state.isFetchingPortfolioPriceHistory = true
+        state.selectedNetworkFilter = payload
+      })
+    }
+  })
 }
 
 export const createWalletReducer = (initialState: WalletState) => {
@@ -613,14 +629,6 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       defaultAccounts: payload
-    }
-  })
-
-  reducer.on(WalletActions.setSelectedNetworkFilter.type, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
-    return {
-      ...state,
-      isFetchingPortfolioPriceHistory: true,
-      selectedNetworkFilter: payload
     }
   })
 
