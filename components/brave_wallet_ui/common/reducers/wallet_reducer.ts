@@ -357,6 +357,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.gasEstimates = payload
       },
 
+      setMetaMaskInstalled (state: WalletState, { payload }: PayloadAction<boolean>) {
+        state.isMetaMaskInstalled = payload
+      },
+
       setNetwork (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) {
         state.selectedNetwork = payload
       },
@@ -473,13 +477,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setMetaMaskInstalled.type, (state: WalletState, payload: boolean): WalletState => {
-    return {
-      ...state,
-      isMetaMaskInstalled: payload
-    }
-  })
 
   reducer.on(WalletActions.refreshAccountInfo.type, (state: WalletState, payload: WalletInfoBase): WalletState => {
     const accounts = state.accounts
