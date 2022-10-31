@@ -355,6 +355,20 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         ) ?? state.selectedAccount
 
         state.selectedAccount = selectedAccount
+      },
+
+      unapprovedTxUpdated (state: WalletState, { payload }: PayloadAction<UnapprovedTxUpdated>) {
+        const index = state.pendingTransactions.findIndex(
+          (tx: BraveWallet.TransactionInfo) => tx.id === payload.txInfo.id
+        )
+
+        if (index !== -1) {
+          state.pendingTransactions[index] = payload.txInfo
+        }
+
+        if (state.selectedPendingTransaction?.id === payload.txInfo.id) {
+          state.selectedPendingTransaction = payload.txInfo
+        }
       }
     },
     extraReducers (builder) {
@@ -405,24 +419,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.unapprovedTxUpdated.type, (state: WalletState, payload: UnapprovedTxUpdated): WalletState => {
-    const newState = { ...state }
-
-    const index = state.pendingTransactions.findIndex(
-      (tx: BraveWallet.TransactionInfo) => tx.id === payload.txInfo.id
-    )
-
-    if (index !== -1) {
-      newState.pendingTransactions[index] = payload.txInfo
-    }
-
-    if (state.selectedPendingTransaction?.id === payload.txInfo.id) {
-      newState.selectedPendingTransaction = payload.txInfo
-    }
-
-    return newState
-  })
 
   reducer.on(WalletActions.setAccountTransactions.type, (state: WalletState, payload: AccountTransactions): WalletState => {
     const { accounts } = state
