@@ -181,8 +181,7 @@ class EthTxManagerUnitTest : public testing::Test {
   void SetUp() override {
     base::FieldTrialParams parameters;
     parameters[features::kCreateDefaultSolanaAccount.name] = "false";
-    std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-        enabled_features;
+    std::vector<base::test::FeatureRefAndParams> enabled_features;
     enabled_features.emplace_back(
         brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 

@@ -20,7 +20,7 @@ class BatAdsSettingsTest : public UnitTestBase {};
 
 TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
@@ -43,7 +43,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
 
 TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
@@ -63,7 +63,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
 
 TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "-1";
   enabled_features.emplace_back(features::kServing, kParameters);
@@ -83,7 +83,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
 
 TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "11";
   enabled_features.emplace_back(features::kServing, kParameters);
