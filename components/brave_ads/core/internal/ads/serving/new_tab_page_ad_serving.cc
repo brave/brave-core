@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
@@ -63,8 +64,13 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
     return FailedToServeAd(std::move(callback));
   }
 
-  const targeting::UserModelInfo user_model = targeting::BuildUserModel();
+  targeting::BuildUserModel(base::BindOnce(&Serving::OnBuildUserModel,
+                                           weak_factory_.GetWeakPtr(),
+                                           std::move(callback)));
+}
 
+void Serving::OnBuildUserModel(MaybeServeNewTabPageAdCallback callback,
+                               const targeting::UserModelInfo& user_model) {
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model,

@@ -97,7 +97,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       if (creative_set_node.HasMember("embedding")) {
         std::vector<float> embedding;
         for (const auto& element : creative_set_node["embedding"].GetArray()) {
-          embedding.push_back(element.GetDouble());
+          embedding.push_back(static_cast<float>(element.GetDouble()));
         }
         creative_set.embedding = embedding;
       }

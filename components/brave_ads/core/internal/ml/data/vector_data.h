@@ -42,17 +42,16 @@ class VectorData final : public Data {
 
   // Mathematical vector operations
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
-  float ComputeSimilarity(const VectorData& v_other) const;
+  float ComputeSimilarity(const VectorData& other) const;
 
-  void AddElementWise(const VectorData& v_add);
+  void AddElementWise(const VectorData& other);
   void DivideByScalar(float scalar);
   void Normalize();
 
   int GetDimensionCount() const;
   int GetNonZeroElementCount() const;
-  float GetMagnitude() const;
+  double GetMagnitude() const;
 
-  const std::vector<float>& GetValuesForTesting() const;
   std::vector<float> GetAsFloatVector() const;
   std::string GetVectorAsString() const;
 

@@ -6,16 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_ELIGIBLE_ADS_PREDICTOR_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_ELIGIBLE_ADS_PREDICTOR_UTIL_H_
 
+#include <algorithm>
+#include <cstddef>
 #include <vector>
 
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/ad_predictor_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -167,26 +170,32 @@ std::vector<int> ComputeVoteRegistry(
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   DCHECK(!creative_ads.empty());
 
-  std::vector<int> vote_registry;
-  vote_registry.assign(creative_ads.size(), 0);
+  std::vector<int> vote_registry(creative_ads.size(), 0);
 
-  for (const auto& text_embedding : text_embedding_html_events) {
-    int max_index = 0;
-    float max_similarity = 0.0;
+  for (const auto& text_embedding_html_event : text_embedding_html_events) {
+    std::vector<float> similarity_scores;
+
     for (const auto& creative_ad : creative_ads) {
-      ml::VectorData ad_embedding(creative_ad.embedding);
-      const ml::VectorData page_text_embedding(text_embedding.embedding);
+      const ml::VectorData ad_embedding(creative_ad.embedding);
+      const ml::VectorData page_text_embedding(
+          text_embedding_html_event.embedding);
       const float similarity_score =
           ad_embedding.ComputeSimilarity(page_text_embedding);
 
-      if (similarity_score > max_similarity) {
-        max_index =
-            std::find(creative_ads.cbegin(), creative_ads.cend(), creative_ad) -
-            creative_ads.begin();
-        max_similarity = similarity_score;
-      }
+      similarity_scores.push_back(similarity_score);
     }
-    vote_registry[max_index]++;
+
+    auto iter = base::ranges::max_element(
+        similarity_scores.cbegin(), similarity_scores.cend(),
+        [](const auto& a, const auto& b) { return a < b; });
+
+    while (iter != similarity_scores.end()) {
+      size_t index = std::distance(similarity_scores.cbegin(), iter);
+      vote_registry[index]++;
+
+      iter =
+          base::ranges::find(std::next(iter), similarity_scores.cend(), *iter);
+    }
   }
 
   return vote_registry;

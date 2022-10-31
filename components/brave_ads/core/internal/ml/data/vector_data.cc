@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
+#include <cstddef>
 #include <limits>
 #include <numeric>
 #include <utility>
@@ -108,7 +109,8 @@ VectorData& VectorData::operator=(VectorData&& vector_data) noexcept {
 }
 
 double operator*(const VectorData& lhs, const VectorData& rhs) {
-  if (!lhs.storage_->DimensionCount() || !rhs.storage_->DimensionCount()) {
+  if ((lhs.storage_->DimensionCount() == 0) ||
+      (rhs.storage_->DimensionCount() == 0)) {
     return std::numeric_limits<double>::quiet_NaN();
   }
 
@@ -140,48 +142,49 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   return dot_product;
 }
 
-void VectorData::AddElementWise(const VectorData& v_add) {
-  if (!storage_->DimensionCount() || !v_add.storage_->DimensionCount()) {
+void VectorData::AddElementWise(const VectorData& other) {
+  if ((storage_->DimensionCount() == 0) ||
+      (other.storage_->DimensionCount() == 0)) {
     return;
   }
 
-  if (storage_->DimensionCount() != v_add.storage_->DimensionCount()) {
+  if (storage_->DimensionCount() != other.storage_->DimensionCount()) {
     return;
   }
 
-  size_t v_base_index = 0;
-  size_t v_add_index = 0;
-  while (v_base_index < storage_->GetSize() &&
-         v_add_index < v_add.storage_->GetSize()) {
-    if (storage_->GetPointAt(v_base_index) ==
-        v_add.storage_->GetPointAt(v_add_index)) {
-      storage_->values()[v_base_index] += v_add.storage_->values()[v_add_index];
-      ++v_base_index;
-      ++v_add_index;
+  size_t index = 0;
+  size_t other_index = 0;
+  while (index < storage_->GetSize() &&
+         other_index < other.storage_->GetSize()) {
+    if (storage_->GetPointAt(index) ==
+        other.storage_->GetPointAt(other_index)) {
+      storage_->values()[index] += other.storage_->values()[other_index];
+      ++index;
+      ++other_index;
     } else {
-      if (storage_->GetPointAt(v_base_index) <
-          v_add.storage_->GetPointAt(v_add_index)) {
-        ++v_base_index;
+      if (storage_->GetPointAt(index) <
+          other.storage_->GetPointAt(other_index)) {
+        ++index;
       } else {
-        ++v_add_index;
+        ++other_index;
       }
     }
   }
 }
 
 void VectorData::DivideByScalar(const float scalar) {
-  if (!storage_->DimensionCount()) {
+  if (storage_->DimensionCount() == 0) {
     return;
   }
 
-  size_t v_index = 0;
-  while (v_index < storage_->GetSize()) {
-    storage_->values()[v_index] /= scalar;
-    ++v_index;
+  size_t index = 0;
+  while (index < storage_->GetSize()) {
+    storage_->values()[index] /= scalar;
+    ++index;
   }
 }
 
-float VectorData::GetMagnitude() const {
+double VectorData::GetMagnitude() const {
   return sqrt(std::accumulate(storage_->values().cbegin(),
                               storage_->values().cend(), 0.0,
                               [](const double& lhs, float v) -> double {
@@ -193,14 +196,15 @@ void VectorData::Normalize() {
   const auto vector_length = GetMagnitude();
   if (vector_length > kMinimumVectorLength) {
     for (float& entry : storage_->values()) {
-      entry /= vector_length;
+      entry /= static_cast<float>(vector_length);
     }
   }
 }
 
-float VectorData::ComputeSimilarity(const VectorData& v_other) const {
-  DCHECK(this->GetDimensionCount() == v_other.GetDimensionCount());
-  return (*this * v_other) / (GetMagnitude() * v_other.GetMagnitude());
+float VectorData::ComputeSimilarity(const VectorData& other) const {
+  DCHECK(this->GetDimensionCount() == other.GetDimensionCount());
+  return static_cast<float>((*this * other) /
+                            (GetMagnitude() * other.GetMagnitude()));
 }
 
 int VectorData::GetDimensionCount() const {
@@ -212,19 +216,8 @@ int VectorData::GetNonZeroElementCount() const {
     return 0;
   }
 
-  int non_zero_count = 0;
-  size_t v_index = 0;
-  while (v_index < storage_->GetSize()) {
-    if (storage_->values()[v_index] != 0) {
-      non_zero_count++;
-    }
-    ++v_index;
-  }
-  return non_zero_count;
-}
-
-const std::vector<float>& VectorData::GetValuesForTesting() const {
-  return storage_->values();
+  return base::ranges::count_if(storage_->values(),
+                                [](float value) { return value != 0; });
 }
 
 std::vector<float> VectorData::GetAsFloatVector() const {
@@ -232,22 +225,20 @@ std::vector<float> VectorData::GetAsFloatVector() const {
 }
 
 std::string VectorData::GetVectorAsString() const {
-  if (!storage_->DimensionCount()) {
+  if (storage_->DimensionCount() == 0) {
     return {};
   }
 
-  const int storage_size = storage_->GetSize();
+  size_t storage_size = storage_->GetSize();
   if (storage_size == 0) {
     return {};
   }
 
-  int v_index = 0;
   std::vector<std::string> vector_as_string;
-  while (v_index < storage_size) {
-    vector_as_string.push_back(
-        base::NumberToString(storage_->values()[v_index]));
-    ++v_index;
+  for (size_t index = 0; index < storage_size; ++index) {
+    vector_as_string.push_back(base::NumberToString(storage_->values()[index]));
   }
+
   return base::JoinString(vector_as_string, " ");
 }
 

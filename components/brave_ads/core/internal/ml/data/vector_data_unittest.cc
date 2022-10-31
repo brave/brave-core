@@ -166,9 +166,9 @@ TEST_F(BatAdsVectorDataTest, AddElementWise) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v12.at(i), v1.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v21.at(i), v2.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v34.at(i), v3.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v12.at(i), v1.GetAsFloatVector().at(i), 0.001F);
+    EXPECT_NEAR(v21.at(i), v2.GetAsFloatVector().at(i), 0.001F);
+    EXPECT_NEAR(v34.at(i), v3.GetAsFloatVector().at(i), 0.001F);
   }
 }
 
@@ -192,10 +192,10 @@ TEST_F(BatAdsVectorDataTest, DivideByScalar) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v1d.at(i), v1.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v2d.at(i), v2.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v3d.at(i), v3.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v4d.at(i), v4.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v1d.at(i), v1.GetAsFloatVector().at(i), 0.001F);
+    EXPECT_NEAR(v2d.at(i), v2.GetAsFloatVector().at(i), 0.001F);
+    EXPECT_NEAR(v3d.at(i), v3.GetAsFloatVector().at(i), 0.001F);
+    EXPECT_NEAR(v4d.at(i), v4.GetAsFloatVector().at(i), 0.001F);
   }
 }
 
@@ -204,7 +204,7 @@ TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {
   dense_data_vector_5.Normalize();
   EXPECT_EQ(std::vector<float>(
                 {1.0 / 8.0, 3.0 / 8.0, 5.0 / 8.0, 5.0 / 8.0, 2.0 / 8.0}),
-            dense_data_vector_5.GetValuesForTesting());
+            dense_data_vector_5.GetAsFloatVector());
 }
 
 TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
@@ -215,12 +215,12 @@ TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
   sparse_data_vector_5.Normalize();
   EXPECT_EQ(std::vector<float>(
                 {1.0 / 4.0, 3.0 / 4.0, -2.0 / 4.0, -1.0 / 4.0, 1.0 / 4.0}),
-            sparse_data_vector_5.GetValuesForTesting());
+            sparse_data_vector_5.GetAsFloatVector());
 }
 
 TEST_F(BatAdsVectorDataTest, GetMagnitude) {
   const VectorData vector_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
-  const float magnitude = vector_1.GetMagnitude();
+  double magnitude = vector_1.GetMagnitude();
   EXPECT_EQ(magnitude, 4.0);
 }
 

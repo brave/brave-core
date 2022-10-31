@@ -1,22 +1,22 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v3.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v3.h"
 
 #include <memory>
 
-#include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
-#include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "gtest/gtest.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -61,14 +61,17 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
-      [=](const bool had_opportunity,
-          const CreativeNotificationAdList& creative_ads) {
-        // Assert
-        EXPECT_FALSE(had_opportunity);
-        EXPECT_TRUE(!creative_ads.empty());
+      base::BindOnce(
+          [](const CreativeNotificationAdInfo& creative_ad_1,
+             const bool had_opportunity,
+             const CreativeNotificationAdList& creative_ads) {
+            // Assert
+            EXPECT_FALSE(had_opportunity);
+            EXPECT_TRUE(!creative_ads.empty());
 
-        EXPECT_EQ(creative_ads.at(0).embedding, creative_ad_1.embedding);
-      });
+            EXPECT_EQ(creative_ads.at(0).embedding, creative_ad_1.embedding);
+          },
+          creative_ad_1));
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredEmbeddings) {
@@ -88,12 +91,12 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredEmbeddings) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}, {}),
-      [](const bool had_opportunity,
-         const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(!creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV3Test,
@@ -117,12 +120,12 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test,
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
-      [](const bool had_opportunity,
-         const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
@@ -133,12 +136,12 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
-      [](const bool had_opportunity,
-         const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 }  // namespace ads::notification_ads

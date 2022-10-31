@@ -18,23 +18,13 @@
 namespace brave_ads {
 
 template <typename T>
-double CalculateNormalizingConstant(
-    const CreativeAdPredictorMap<T>& creative_ad_predictors) {
-  double normalizing_constant = 0.0;
-
-  for (const auto& [segment, ad_predictor] : creative_ad_predictors) {
-    normalizing_constant += ad_predictor.score;
-  }
-}
-
-template <typename T>
 T CalculateNormalizingConstantBase(const std::vector<T> scores) {
-    T normalizing_constant = 0.0;
-    for (const auto& votes : scores) {
-      normalizing_constant += votes;
-    }
+  T normalizing_constant = 0.0;
+  for (const auto& votes : scores) {
+    normalizing_constant += votes;
+  }
 
-    return normalizing_constant;
+  return normalizing_constant;
 }
 
 template <typename T>

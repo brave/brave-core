@@ -1,18 +1,18 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v3.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v3.h"
 
 #include <memory>
 
-#include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
-#include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -53,12 +53,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test, GetAds) {
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"foo-bar3"}, {}, {"foo-bar1", "foo-bar2"}, {}),
       "200x100",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_TRUE(had_opportunity);
         EXPECT_TRUE(!creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV3Test, GetAdsForNoSegments) {
@@ -78,12 +78,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test, GetAdsForNoSegments) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}, {}), "200x100",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_TRUE(had_opportunity);
         EXPECT_TRUE(!creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV3Test,
@@ -95,12 +95,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test,
       targeting::BuildUserModel({"interest-foo", "interest-bar"}, {},
                                 {"intent-foo", "intent-bar"}, {}),
       "?x?",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
@@ -111,12 +111,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
       targeting::BuildUserModel({"interest-foo", "interest-bar"}, {},
                                 {"intent-foo", "intent-bar"}, {}),
       "200x100",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 }  // namespace ads::inline_content_ads

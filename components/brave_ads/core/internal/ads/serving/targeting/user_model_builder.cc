@@ -5,19 +5,24 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 
+#include <utility>
+
+#include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_model.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_model.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/features/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/features/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
 namespace brave_ads::targeting {
 
-UserModelInfo BuildUserModel() {
+void BuildUserModel(GetUserModelCallback callback) {
   UserModelInfo user_model;
 
   if (features::IsTextClassificationEnabled()) {
@@ -37,17 +42,27 @@ UserModelInfo BuildUserModel() {
   }
 
   if (features::IsTextEmbeddingEnabled()) {
-    GetTextEmbeddingHtmlEventsFromDatabase(
-      [](const bool success,
-         const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-        if (!success) return;
+    GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
+        &OnGetTextEmbeddingHtmlEvents, user_model, std::move(callback)));
+  } else {
+    std::move(callback).Run(user_model);
+  }
+}
 
-        const int text_embedding_html_event_count =
-            text_embedding_html_events.size();
-      });
+void OnGetTextEmbeddingHtmlEvents(
+    UserModelInfo user_model,
+    GetUserModelCallback callback,
+    bool success,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+  if (!success) {
+    BLOG(1, "Failed to get text embedding events");
+    std::move(callback).Run(user_model);
+    return;
   }
 
-  return user_model;
+  user_model.embeddings_history = text_embedding_html_events;
+
+  std::move(callback).Run(user_model);
 }
 
 }  // namespace brave_ads::targeting

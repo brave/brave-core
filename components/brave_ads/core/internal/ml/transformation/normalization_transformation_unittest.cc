@@ -42,7 +42,7 @@ TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
 
   std::vector<double> components;
   double s = 0.0;
-  for (const double x : norm_data->GetValuesForTesting()) {
+  for (const double x : norm_data->GetAsFloatVector()) {
     components.push_back(x);
     s += x * x;
   }
@@ -84,7 +84,7 @@ TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
   ASSERT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount, vector_data->GetValuesForTesting().size());
+  EXPECT_EQ(kExpectedElementCount, vector_data->GetAsFloatVector().size());
 }
 
 }  // namespace brave_ads::ml

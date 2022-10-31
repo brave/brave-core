@@ -6,13 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_H_
 
+#include "base/functional/callback.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+
 namespace brave_ads::targeting {
 
 struct UserModelInfo;
 
-using GetUserModelCallback = std::function<void(const UserModelInfo)>;
+using GetUserModelCallback =
+    base::OnceCallback<void(const targeting::UserModelInfo& user_model)>;
 
 void BuildUserModel(GetUserModelCallback callback);
+void OnGetTextEmbeddingHtmlEvents(
+    UserModelInfo user_model,
+    GetUserModelCallback callback,
+    bool success,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
 }  // namespace brave_ads::targeting
 

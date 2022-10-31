@@ -53,7 +53,7 @@ void TextEmbedding::Process(const std::string& html) {
 
   const std::string text = SanitizeHtml(html);
   if (text.empty()) {
-    BLOG(1, "Not enough words to embed text");
+    BLOG(1, "No text available for embedding");
     return;
   }
 
@@ -61,10 +61,10 @@ void TextEmbedding::Process(const std::string& html) {
       resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
       embedding_proc_pipeline->EmbedText(text);
-  std::vector<float> vector = text_embedding.embedding;
+  const std::vector<float> vector = text_embedding.embedding;
   if (*std::min_element(vector.begin(), vector.end()) == 0.0 &&
       *std::max_element(vector.begin(), vector.end()) == 0.0) {
-    BLOG(1, "Failed to embed text");
+    BLOG(1, "Not enough words to embed text");
     return;
   }
 

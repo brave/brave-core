@@ -18,7 +18,7 @@ UserModelInfo BuildUserModel(
   user_model.interest_segments = interest_segments;
   user_model.latent_interest_segments = latent_interest_segments;
   user_model.purchase_intent_segments = purchase_intent_segments;
-  user_model.text_embedding_html_events = text_embedding_html_events;
+  user_model.embeddings_history = text_embedding_html_events;
   return user_model;
 }
 

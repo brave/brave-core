@@ -59,7 +59,8 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing-software"}, {}, {}, {}),
+      targeting::BuildUserModel({"technology & computing-software"}, {}, {},
+                                {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -83,7 +84,8 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing-software"}, {}, {}, {}),
+      targeting::BuildUserModel({"technology & computing-software"}, {}, {},
+                                {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,

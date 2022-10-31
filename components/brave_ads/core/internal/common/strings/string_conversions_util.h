@@ -7,10 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_STRINGS_STRING_CONVERSIONS_UTIL_H_
 
 #include <string>
+#include <vector>
 
 namespace brave_ads {
 
 std::string BoolToString(bool value);
+
+std::vector<float> ConvertStringToVector(const std::string& string,
+                                         const std::string& delimiter);
+std::string ConvertVectorToString(const std::vector<float>& vector,
+                                  const std::string& delimiter);
 
 }  // namespace brave_ads
 

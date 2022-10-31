@@ -1,24 +1,26 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v3.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v3.h"
+
+#include <utility>
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
-#include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
-#include "bat/ads/internal/ads/serving/choose/predict_ad.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
-#include "bat/ads/internal/ads/serving/serving_features.h"
-#include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
-#include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/public/interfaces/ads.mojom-shared.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
 namespace ads::inline_content_ads {
 
@@ -28,7 +30,7 @@ EligibleAdsV3::EligibleAdsV3(
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 void EligibleAdsV3::GetForUserModel(
-    const targeting::UserModelInfo& user_model,
+    targeting::UserModelInfo user_model,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
@@ -36,21 +38,30 @@ void EligibleAdsV3::GetForUserModel(
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      [=](const bool success, const AdEventList& ad_events) {
-        if (!success) {
-          BLOG(1, "Failed to get ad events");
-          callback(/*had_opportunity*/ false, {});
-          return;
-        }
-
-        GetBrowsingHistory(user_model, ad_events, dimensions, callback);
-      });
+      base::BindOnce(&EligibleAdsV3::OnGetForUserModel, base::Unretained(this),
+                     std::move(user_model), dimensions, std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void EligibleAdsV3::OnGetForUserModel(
+    targeting::UserModelInfo user_model,
+    const std::string& dimensions,
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    const bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(1, "Failed to get ad events");
+    std::move(callback).Run(/*had_opportunity*/ false, {});
+    return;
+  }
+
+  GetBrowsingHistory(std::move(user_model), ad_events, dimensions,
+                     std::move(callback));
+}
+
 void EligibleAdsV3::GetBrowsingHistory(
-    const targeting::UserModelInfo& user_model,
+    targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
@@ -59,52 +70,62 @@ void EligibleAdsV3::GetBrowsingHistory(
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       max_count, days_ago,
       base::BindOnce(&EligibleAdsV3::GetEligibleAds, base::Unretained(this),
-                     user_model, ad_events, dimensions, callback));
+                     std::move(user_model), ad_events, dimensions,
+                     std::move(callback)));
 }
 
 void EligibleAdsV3::GetEligibleAds(
-    const targeting::UserModelInfo& user_model,
+    targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForDimensions(
-      dimensions,
-      [=](const bool success, const CreativeInlineContentAdList& creative_ads) {
-        if (!success) {
-          BLOG(1, "Failed to get ads");
-          callback(/*had_opportunity*/ false, {});
-          return;
-        }
+      dimensions, base::BindOnce(&EligibleAdsV3::OnGetEligibleAds,
+                                 base::Unretained(this), user_model, ad_events,
+                                 browsing_history, std::move(callback)));
+}
 
-        if (creative_ads.empty()) {
-          BLOG(1, "No eligible ads");
-          callback(/*had_opportunity*/ false, {});
-          return;
-        }
+void EligibleAdsV3::OnGetEligibleAds(
+    const targeting::UserModelInfo& user_model,
+    const AdEventList& ad_events,
+    const BrowsingHistoryList& browsing_history,
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    const bool success,
+    const CreativeInlineContentAdList& creative_ads) {
+  if (!success) {
+    BLOG(1, "Failed to get ads");
+    std::move(callback).Run(/*had_opportunity*/ false, {});
+    return;
+  }
 
-        const CreativeInlineContentAdList eligible_creative_ads =
-            FilterCreativeAds(creative_ads, ad_events, browsing_history);
-        if (eligible_creative_ads.empty()) {
-          BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-          callback(/*had_opportunity*/ true, {});
-          return;
-        }
+  if (creative_ads.empty()) {
+    BLOG(1, "No eligible ads");
+    std::move(callback).Run(/*had_opportunity*/ false, {});
+    return;
+  }
 
-        const absl::optional<CreativeInlineContentAdInfo> creative_ad =
-            PredictAd(user_model, ad_events, eligible_creative_ads);
-        if (!creative_ad) {
-          BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-          callback(/*had_opportunity*/ true, {});
-          return;
-        }
+  const CreativeInlineContentAdList eligible_creative_ads =
+      FilterCreativeAds(creative_ads, ad_events, browsing_history);
+  if (eligible_creative_ads.empty()) {
+    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+    std::move(callback).Run(/*had_opportunity*/ true, {});
+    return;
+  }
 
-        BLOG(1, eligible_creative_ads.size() << " eligible ads out of "
-                                             << creative_ads.size() << " ads");
+  const absl::optional<CreativeInlineContentAdInfo> creative_ad =
+      PredictAd(user_model, ad_events, eligible_creative_ads);
+  if (!creative_ad) {
+    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+    std::move(callback).Run(/*had_opportunity*/ true, {});
+    return;
+  }
 
-        callback(/*had_opportunity*/ true, {*creative_ad});
-      });
+  BLOG(1, eligible_creative_ads.size()
+              << " eligible ads out of " << creative_ads.size() << " ads");
+
+  std::move(callback).Run(/*had_opportunity*/ true, {*creative_ad});
 }
 
 CreativeInlineContentAdList EligibleAdsV3::FilterCreativeAds(

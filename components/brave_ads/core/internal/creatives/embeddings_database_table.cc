@@ -1,38 +1,30 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/creatives/embeddings_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/embeddings_database_table.h"
 
-#include <functional>
+#include <string>
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/database/database_bind_util.h"
-#include "bat/ads/internal/base/database/database_table_util.h"
-#include "bat/ads/internal/base/database/database_transaction_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
+#include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
 namespace ads::database::table {
 
 namespace {
 
 constexpr char kTableName[] = "embeddings";
-
-std::string ConvertVectorToString(std::vector<float> vector) {
-  size_t v_index = 0;
-  std::vector<std::string> vector_as_string;
-  while (v_index < vector.size()) {
-    vector_as_string.push_back(base::NumberToString(vector.at(v_index)));
-    ++v_index;
-  }
-  return base::JoinString(vector_as_string, " ");
-}
+constexpr char kDelimiter[] = " ";
 
 int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeAdList& creative_ads) {
@@ -43,9 +35,9 @@ int BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_set_id);
-    BindString(
-        command, index++,
-        base::ToLowerASCII(ConvertVectorToString(creative_ad.embedding)));
+    BindString(command, index++,
+               base::ToLowerASCII(
+                   ConvertVectorToString(creative_ad.embedding, kDelimiter)));
 
     count++;
   }
@@ -56,7 +48,7 @@ int BindParameters(mojom::DBCommandInfo* command,
 }  // namespace
 
 void Embeddings::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                              const CreativeAdList& creative_ads) {
+                                const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
   if (creative_ads.empty()) {
@@ -85,7 +77,7 @@ std::string Embeddings::GetTableName() const {
 }
 
 void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
-                       const int to_version) {
+                         const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
