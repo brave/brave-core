@@ -86,7 +86,7 @@ void BraveImportDataHandler::StartImportImpl(
   if (import_observers_.count(source_profile.source_path))
     import_observers_.erase(source_profile.source_path);
 
-  // Using weak pointers because it destoys itself when finshed.
+  // Using weak pointers because it destroys itself when finshed.
   auto* importer_host = new ExternalProcessImporterHost();
   import_observers_[source_profile.source_path] =
       std::make_unique<settings::BraveImporterObserver>(
