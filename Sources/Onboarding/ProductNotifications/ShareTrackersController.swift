@@ -244,7 +244,7 @@ private class ShareTrackersView: UIView {
     switch trackingType {
     case .trackerCountShare:
       actionButton.setTitle(Strings.ShieldEducation.shareTheNewsTitle, for: .normal)
-      actionButton.addTrailingImageIcon(image: UIImage(named: "shields-share", in: .module, compatibleWith: nil)!)
+      actionButton.addTrailingImageIcon(image: UIImage(sharedNamed: "shields-share")!)
     case .domainSpecificDataSaved:
       actionButton.setTitle(Strings.ShieldEducation.dontShowThisTitle, for: .normal)
     default:
