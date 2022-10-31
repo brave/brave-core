@@ -57,7 +57,7 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
                                        blink::PermissionType* out) {
   if (type == ContentSettingsType::BRAVE_ETHEREUM ||
       type == ContentSettingsType::BRAVE_SOLANA) {
-    *out = PermissionType::WINDOW_PLACEMENT;
+    *out = PermissionType::WINDOW_MANAGEMENT;
     return true;
   }
 
