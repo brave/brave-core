@@ -21,6 +21,7 @@ import BraveVPN
 import RuntimeWarnings
 import BraveNews
 import BraveTalk
+import Onboarding
 import os
 
 extension AppDelegate {
@@ -262,8 +263,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     Preferences.Review.launchCount.value += 1
 
     let isFirstLaunch = Preferences.General.isFirstLaunch.value
-    if Preferences.General.basicOnboardingCompleted.value == OnboardingState.undetermined.rawValue {
-      Preferences.General.basicOnboardingCompleted.value =
+    if Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.undetermined.rawValue {
+      Preferences.Onboarding.basicOnboardingCompleted.value =
         isFirstLaunch ? OnboardingState.unseen.rawValue : OnboardingState.completed.rawValue
     }
 

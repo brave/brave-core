@@ -17,7 +17,7 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
   
   static var shouldShowCallout: Bool {
     !Preferences.General.defaultBrowserCalloutDismissed.value &&
-    !Preferences.General.basicOnboardingDefaultBrowserSelected.value &&
+    !Preferences.Onboarding.basicOnboardingDefaultBrowserSelected.value &&
     AppConstants.buildChannel == .release
   }
   
