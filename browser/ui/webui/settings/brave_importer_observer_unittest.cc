@@ -15,8 +15,6 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace settings {
-
 class BraveImporterObserverUnitTest : public testing::Test {
  public:
   BraveImporterObserverUnitTest() {}
@@ -33,6 +31,7 @@ class BraveImporterObserverUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   base::Value expected_info_;
   int expected_calls_ = 0;
+  raw_ptr<BraveExternalProcessImporterHost> _ = nullptr;
 };
 
 TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
@@ -42,8 +41,8 @@ TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
   source_profile.importer_type = importer::TYPE_CHROME;
   source_profile.source_path = base::FilePath(FILE_PATH_LITERAL("test"));
   auto imported_items = importer::AUTOFILL_FORM_DATA | importer::PASSWORDS;
-  std::unique_ptr<settings::BraveImporterObserver> observer =
-      std::make_unique<settings::BraveImporterObserver>(
+  std::unique_ptr<BraveImporterObserver> observer =
+      std::make_unique<BraveImporterObserver>(
           importer_host, source_profile, imported_items,
           base::BindRepeating(
               &BraveImporterObserverUnitTest::NotifyImportProgress,
@@ -104,14 +103,40 @@ TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
 
   observer->ImportEnded();
   EXPECT_EQ(GetExpectedCalls(), 1);
+  EXPECT_EQ(observer->GetImporterHostForTesting(), nullptr);
   // The observer should be removed on ImportEnded event.
   EXPECT_EQ(importer_host->GetObserverForTesting(), nullptr);
-  // Checking the observer will be removed on destruction.
-  importer_host->set_observer(observer.get());
-  observer.reset();
-  EXPECT_EQ(importer_host->GetObserverForTesting(), nullptr);
+
+  // ImportEnded event should not be called anymore.
+  SetExpectedCalls(0);
+  EXPECT_EQ(GetExpectedCalls(), 0);
   // Destroy host.
   importer_host->NotifyImportEndedForTesting();
+  EXPECT_EQ(GetExpectedCalls(), 0);
 }
 
-}  // namespace settings
+TEST_F(BraveImporterObserverUnitTest, DestroyObserverEarly) {
+  auto* importer_host = new BraveExternalProcessImporterHost();
+  importer::SourceProfile source_profile;
+  source_profile.importer_name = u"importer_name";
+  source_profile.importer_type = importer::TYPE_CHROME;
+  source_profile.source_path = base::FilePath(FILE_PATH_LITERAL("test"));
+  auto imported_items = importer::AUTOFILL_FORM_DATA | importer::PASSWORDS;
+  std::unique_ptr<BraveImporterObserver> observer =
+      std::make_unique<BraveImporterObserver>(
+          importer_host, source_profile, imported_items,
+          base::BindRepeating(
+              &BraveImporterObserverUnitTest::NotifyImportProgress,
+              base::Unretained(this)));
+  importer_host->set_observer(observer.get());
+  EXPECT_EQ(importer_host->GetObserverForTesting(), observer.get());
+  EXPECT_EQ(GetExpectedCalls(), 0);
+  observer.reset();
+  EXPECT_EQ(importer_host->GetObserverForTesting(), nullptr);
+  // ImportEnded event should not be called anymore.
+  SetExpectedCalls(0);
+  EXPECT_EQ(GetExpectedCalls(), 0);
+  // Destroy host.
+  importer_host->NotifyImportEndedForTesting();
+  EXPECT_EQ(GetExpectedCalls(), 0);
+}

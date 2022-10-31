@@ -63,6 +63,9 @@ BraveImportDataHandler::~BraveImportDataHandler() = default;
 void BraveImportDataHandler::StartImport(
     const importer::SourceProfile& source_profile,
     uint16_t imported_items) {
+  if (!imported_items)
+    return;
+
 #if BUILDFLAG(IS_MAC)
   CheckDiskAccess(source_profile, imported_items);
 #else
@@ -80,8 +83,6 @@ void BraveImportDataHandler::StartImportImpl(
     ImportDataHandler::StartImport(source_profile, imported_items);
     return;
   }
-  if (!imported_items)
-    return;
   // If another import is already ongoing, let it finish silently.
   if (import_observers_.count(source_profile.source_path))
     import_observers_.erase(source_profile.source_path);
@@ -89,13 +90,10 @@ void BraveImportDataHandler::StartImportImpl(
   // Using weak pointers because it destroys itself when finshed.
   auto* importer_host = new ExternalProcessImporterHost();
   import_observers_[source_profile.source_path] =
-      std::make_unique<settings::BraveImporterObserver>(
+      std::make_unique<BraveImporterObserver>(
           importer_host, source_profile, imported_items,
           base::BindRepeating(&BraveImportDataHandler::NotifyImportProgress,
                               weak_factory_.GetWeakPtr()));
-  importer_host->set_observer(
-      import_observers_[source_profile.source_path].get());
-
   Profile* profile = Profile::FromWebUI(web_ui());
   importer_host->StartImportSettings(source_profile, profile, imported_items,
                                      new ProfileWriter(profile));

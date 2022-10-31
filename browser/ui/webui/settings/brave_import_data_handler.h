@@ -42,6 +42,7 @@ class BraveImportDataHandler : public ImportDataHandler,
   // ImportDataHandler overrides:
   void StartImport(const importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;
+
   void StartImportImpl(const importer::SourceProfile& source_profile,
                        uint16_t imported_items);
   void NotifyImportProgress(const base::Value& info);
@@ -58,8 +59,7 @@ class BraveImportDataHandler : public ImportDataHandler,
   bool guide_dialog_is_requested_ = false;
 #endif
 
-  std::unordered_map<base::FilePath,
-                     std::unique_ptr<settings::BraveImporterObserver>>
+  std::unordered_map<base::FilePath, std::unique_ptr<BraveImporterObserver>>
       import_observers_;
   base::WeakPtrFactory<BraveImportDataHandler> weak_factory_{this};
 };

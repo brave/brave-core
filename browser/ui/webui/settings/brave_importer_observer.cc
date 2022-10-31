@@ -10,8 +10,6 @@
 #include "base/logging.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 
-namespace settings {
-
 BraveImporterObserver::BraveImporterObserver(
     ExternalProcessImporterHost* importer_host,
     const importer::SourceProfile& source_profile,
@@ -22,6 +20,7 @@ BraveImporterObserver::BraveImporterObserver(
       callback_(std::move(callback)),
       importer_host_(importer_host) {
   DCHECK(importer_host);
+  importer_host->set_observer(this);
 }
 
 BraveImporterObserver::~BraveImporterObserver() {
@@ -69,9 +68,14 @@ void BraveImporterObserver::ImportEnded() {
   data.Set("items_to_import", imported_items_);
   data.Set("event", "ImportEnded");
   callback_.Run(base::Value(std::move(data)));
-
+  DCHECK(importer_host_);
   if (importer_host_)
     importer_host_->set_observer(nullptr);
+
+  importer_host_ = nullptr;
 }
 
-}  // namespace settings
+ExternalProcessImporterHost*
+BraveImporterObserver::GetImporterHostForTesting() {
+  return importer_host_.get();
+}

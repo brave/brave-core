@@ -13,8 +13,6 @@
 
 class ExternalProcessImporterHost;
 
-namespace settings {
-
 class BraveImporterObserver : public importer::ImporterProgressObserver {
  public:
   using ReportProgressCallback =
@@ -32,6 +30,9 @@ class BraveImporterObserver : public importer::ImporterProgressObserver {
   void ImportEnded() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveImporterObserverUnitTest, ImportEvents);
+
+  ExternalProcessImporterHost* GetImporterHostForTesting();
   importer::SourceProfile source_profile_;
   uint16_t imported_items_ = 0;
   ReportProgressCallback callback_;
@@ -42,7 +43,5 @@ class BraveImporterObserver : public importer::ImporterProgressObserver {
   // of deleting itself when import is complete.
   raw_ptr<ExternalProcessImporterHost> importer_host_;  // weak
 };
-
-}  // namespace settings
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_IMPORTER_OBSERVER_H_

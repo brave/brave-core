@@ -26,12 +26,12 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   using MockedInstallCallback =
       base::RepeatingCallback<void(const std::string&)>;
 
-  importer::ImporterProgressObserver* GetObserverForTesting();
-  void NotifyImportEndedForTesting();
-
  private:
   friend class ExternalProcessImporterHost;
   friend class BraveExternalProcessImporterHostUnitTest;
+
+  FRIEND_TEST_ALL_PREFIXES(BraveImporterObserverUnitTest, ImportEvents);
+  FRIEND_TEST_ALL_PREFIXES(BraveImporterObserverUnitTest, DestroyObserverEarly);
 
   ~BraveExternalProcessImporterHost() override;
   void OnExtensionInstalled(const std::string& extension_id,
@@ -45,6 +45,8 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   void DoNotLaunchImportForTesting();
   void SetInstallExtensionCallbackForTesting(MockedInstallCallback callback);
   void SetSettingsRemovedCallbackForTesting(base::RepeatingClosure callback);
+  void NotifyImportEndedForTesting();
+  importer::ImporterProgressObserver* GetObserverForTesting();
 
   // ExternalProcessImporterHost overrides:
   void NotifyImportEnded() override;
