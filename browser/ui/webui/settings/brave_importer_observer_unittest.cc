@@ -22,7 +22,8 @@ class BraveImporterObserverUnitTest : public testing::Test {
   void SetExpectedInfo(base::Value value) { expected_info_ = std::move(value); }
   void SetExpectedCalls(int value) { expected_calls_ = value; }
   int GetExpectedCalls() { return expected_calls_; }
-  void NotifyImportProgress(const base::Value& info) {
+  void NotifyImportProgress(const importer::SourceProfile& source_profile,
+                            const base::Value& info) {
     EXPECT_EQ(expected_info_, info);
     expected_calls_++;
   }

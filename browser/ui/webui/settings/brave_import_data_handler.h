@@ -45,7 +45,9 @@ class BraveImportDataHandler : public ImportDataHandler,
 
   void StartImportImpl(const importer::SourceProfile& source_profile,
                        uint16_t imported_items);
-  void NotifyImportProgress(const base::Value& info);
+  void NotifyImportProgress(const importer::SourceProfile& source_profile,
+                            const base::Value& info);
+  void OnImportEnded(const base::FilePath& source_path);
 #if BUILDFLAG(IS_MAC)
   void CheckDiskAccess(const importer::SourceProfile& source_profile,
                        uint16_t imported_items);

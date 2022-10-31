@@ -6,12 +6,14 @@
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 
 #include <memory>
+#include <string>
 #include <unordered_map>
 
 #include "brave/browser/ui/webui/settings/import_feature.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_task_traits.h"
 
 #if BUILDFLAG(IS_MAC)
 #include "base/files/file_path.h"
@@ -99,8 +101,21 @@ void BraveImportDataHandler::StartImportImpl(
                                      new ProfileWriter(profile));
 }
 
-void BraveImportDataHandler::NotifyImportProgress(const base::Value& info) {
+void BraveImportDataHandler::NotifyImportProgress(
+    const importer::SourceProfile& source_profile,
+    const base::Value& info) {
   FireWebUIListener("brave-import-data-status-changed", info);
+  const std::string* event = info.FindStringKey("event");
+  if (event && *event == "ImportEnded") {
+    content::GetUIThreadTaskRunner({})->PostTask(
+        FROM_HERE,
+        base::BindOnce(&BraveImportDataHandler::OnImportEnded,
+                       weak_factory_.GetWeakPtr(), source_profile.source_path));
+  }
+}
+
+void BraveImportDataHandler::OnImportEnded(const base::FilePath& source_path) {
+  import_observers_.erase(source_path);
 }
 
 #if BUILDFLAG(IS_MAC)
