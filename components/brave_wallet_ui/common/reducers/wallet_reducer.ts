@@ -59,7 +59,10 @@ import * as WalletActions from '../actions/wallet_actions'
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
-import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
+import {
+  createTokenBalanceRegistryKey,
+  getAccountType
+} from '../../utils/account-utils'
 
 // Options
 import { AllAssetsFilterOption } from '../../options/asset-filter-options'
@@ -182,13 +185,6 @@ export const WalletAsyncActions = {
   addFilecoinAccount: createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'), // alias for keyringService.addFilecoinAccount
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
-}
-
-const getAccountType = (info: AccountInfo) => {
-  if (info.hardware) {
-    return info.hardware.vendor
-  }
-  return info.isImported ? 'Secondary' : 'Primary'
 }
 
 export const createWalletReducer = (initialState: WalletState) => {
