@@ -10,21 +10,14 @@ import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
 
 // components
 import { WalletPageStory } from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { BackupWallet } from './backup-wallet'
+import { BackupWalletRoutes } from './backup-wallet.routes'
 
 export const _BackupWallet = () => {
-  const complete = () => {
-    alert('Wallet Setup Complete!!!')
-  }
-
   return (
     <WalletPageStory
       pageStateOverride={{ mnemonic: mockedMnemonic }}
     >
-      <BackupWallet
-        onCancel={complete}
-        isOnboarding={false}
-      />
+      <BackupWalletRoutes />
     </WalletPageStory>
   )
 }

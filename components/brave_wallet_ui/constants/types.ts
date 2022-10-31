@@ -668,8 +668,13 @@ export enum WalletRoutes {
   AddHardwareAccountModalStart = '/crypto/accounts/add-account/hardware',
   AddHardwareAccountModal = '/crypto/accounts/add-account/hardware/:accountTypeName?',
 
-  // wallet mangement
+  // wallet backup
   Backup = '/crypto/backup-wallet',
+  BackupExplainRecoveryPhrase = '/crypto/backup-wallet/explain-recovery-phrase',
+  BackupRecoveryPhrase = '/crypto/backup-wallet/backup-recovery-phrase',
+  BackupVerifyRecoveryPhrase = '/crypto/backup-wallet/verify-recovery-phrase',
+
+  // wallet mangement
   Restore = '/crypto/restore-wallet',
   Unlock = '/crypto/unlock',
 

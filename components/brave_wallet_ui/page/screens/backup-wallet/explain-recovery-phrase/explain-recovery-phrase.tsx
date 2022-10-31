@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 // utils
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
@@ -36,6 +36,8 @@ import {
   BannerText,
   CenteredRow
 } from './explain-recovery-phrase.style'
+import StepsNavigation from '../../../../components/desktop/steps-navigation/steps-navigation'
+import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 const importantTextParts = splitStringForTag(getLocale('braveWalletRecoveryPhraseBackupWarningImportant'))
 
@@ -50,10 +52,16 @@ const ImportantTextSegments = () => {
 export const RecoveryPhraseExplainer = () => {
   // routing
   const history = useHistory()
+  const { pathname } = useLocation()
+  const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
   // methods
   const skipToOnboardingSuccess = () => {
     history.push(WalletRoutes.OnboardingComplete)
+  }
+
+  const skipBackup = () => {
+    history.push(WalletRoutes.Portfolio)
   }
 
   // render
@@ -62,11 +70,22 @@ export const RecoveryPhraseExplainer = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingNewWalletStepsNavigation
-            preventGoBack
-            currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
-            onSkip={skipToOnboardingSuccess}
-          />
+          {isOnboarding &&
+            <OnboardingNewWalletStepsNavigation
+              preventGoBack
+              currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
+              onSkip={skipToOnboardingSuccess}
+            />
+          }
+          {!isOnboarding &&
+            <StepsNavigation
+              steps={WALLET_BACKUP_STEPS}
+              preventGoBack
+              currentStep={WalletRoutes.BackupExplainRecoveryPhrase}
+              preventSkipAhead
+              onSkip={skipBackup}
+            />
+          }
 
           <div>
             <Title>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}</Title>
@@ -92,7 +111,10 @@ export const RecoveryPhraseExplainer = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonGotIt')}
-              url={WalletRoutes.OnboardingBackupRecoveryPhrase}
+              url={isOnboarding
+                ? WalletRoutes.OnboardingBackupRecoveryPhrase
+                : WalletRoutes.BackupRecoveryPhrase
+              }
             />
           </NextButtonRow>
 

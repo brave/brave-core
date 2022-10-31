@@ -73,6 +73,8 @@ provideStrings({
   // Actions
   braveWalletClickToSwitch: 'Click to switch',
   braveWalletEnterYourPassword: 'Enter your password',
+  braveWalletEnterAPassswordToContinue: 'Enter a password to continue',
+  braveWalletEnterYourPasswordToStartBackup: 'Enter your Brave Wallet password to start backing up wallet.',
 
   // BuySendSwap
   braveWalletBuy: 'Buy',

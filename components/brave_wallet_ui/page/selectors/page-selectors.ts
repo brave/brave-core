@@ -18,6 +18,7 @@ export const isFetchingPriceHistory = ({ page }: State) => page.isFetchingPriceH
 export const isImportWalletsCheckComplete = ({ page }: State) => page.isImportWalletsCheckComplete
 export const isMetaMaskInitialized = ({ page }: State) => page.isMetaMaskInitialized
 export const mnemonic = ({ page }: State) => page.mnemonic
+export const hasMnemonic = ({ page }: State) => !!page.mnemonic
 export const selectedTimeline = ({ page }: State) => page.selectedTimeline
 export const setupStillInProgress = ({ page }: State) => page.setupStillInProgress
 export const showAddModal = ({ page }: State) => page.showAddModal
