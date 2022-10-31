@@ -335,7 +335,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Printing specific strings -->
-      <if expr="enable_basic_printing">
+      <if expr="enable_printing">
         <part file="printing_strings.grdp" />
       </if>
 
@@ -4568,30 +4568,30 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <if expr="reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
-            Run ChromeOS Flex diagnostic tests.
+            Run ChromeOS Flex diagnostic tests
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
-            Read ChromeOS Flex device information and device data.
+            Read ChromeOS Flex device information and device data
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
-            Read ChromeOS Flex device and component serial numbers.
+            Read ChromeOS Flex device and component serial numbers
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_NETWORK_INFORMATION" desc="Permission string for accessing network information.">
-            Read ChromeOS Flex network information.
+            Read ChromeOS Flex network information
           </message>
         </if>
         <if expr="not reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
-            Run ChromeOS diagnostic tests.
+            Run ChromeOS diagnostic tests
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
-            Read ChromeOS device information and device data.
+            Read ChromeOS device information and device data
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
-            Read ChromeOS device and component serial numbers.
+            Read ChromeOS device and component serial numbers
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_NETWORK_INFORMATION" desc="Permission string for accessing network information.">
-            Read ChromeOS network information.
+            Read ChromeOS network information
           </message>
         </if>
       </if>
@@ -4796,8 +4796,11 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_FOOTER_DESCRIPTION_EXTENSION_REQUESTS_ACESSS" desc="The description in the footer of the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
           Click this extension's icon to read &amp; change <ph name="HOST">$1<ex>google.com</ex></ph>
         </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_FOOTER_POLICY_LABEL_TEXT" desc="The text in the footer of the card that shows up on mouse hover of a toolbar action when extension was pinned by the administrator.">
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_FOOTER_POLICY_LABEL_PINNED_TEXT" desc="The text in the footer of the card that shows up on mouse hover of a toolbar action when extension was pinned by the administrator.">
           Pinned by your administrator
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_FOOTER_POLICY_LABEL_INSTALLED_TEXT" desc="The text in the footer of the card that shows up on mouse hover of a toolbar action when extension was installed by the administrator.">
+          Installed by your administrator
         </message>
 
         <if expr="not use_titlecase">
@@ -5174,6 +5177,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
         This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
+      </message>
+      <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE_LEARN_MORE" desc="Text read by screen readers for a link labeled 'Learn more' that links to a Help article about disabled extensions.">
+        Learn more about disabled extensions.
       </message>
       <message name="IDS_EXTENSIONS_DISABLE_DEVELOPER_MODE_TITLE" desc="Title of a dialog warning users they have development mode extensions running">
         Disable developer mode extensions
@@ -6895,6 +6901,35 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Customize Brave
       </message>
 
+      <!-- Bookmarks strings -->
+      <message name="IDS_BOOKMARKS_FOLDER_SORT" desc="Label for the active folder and sort type in the side panel.">
+        <ph name="FOLDER_TITLE">$1<ex>All Bookmarks</ex></ph> (<ph name="SORT_TYPE">$2<ex>Newest</ex>)</ph>
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_BY_TYPE" desc="Menu item label for selecting the bookmarks sort type.">
+        Sort by <ph name="SORT_TYPE">$1<ex>Newest</ex></ph>
+      </message>
+      <message name="IDS_BOOKMARKS_ALL_BOOKMARKS" desc="The name of the root bookmarks folder as displayed to the user">
+        All Bookmarks
+      </message>
+      <message name="IDS_BOOKMARKS_LABEL_TRACKED_PRODUCTS" desc="Label on a button within the bookmarks side panel for filtering bookmarks by price tracking data.">
+        Products
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_NEWEST" desc="Label for the newest-first bookmarks sort type">
+        Newest
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_OLDEST" desc="Label for the oldest-first bookmarks sort type">
+        Oldest
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_ALPHABETICALLY" desc="Label for the alphabetical bookmarks sort type">
+        A to Z
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_REVERSE_ALPHABETICALLY" desc="Label for the reverse alphabetical bookmarks sort type">
+        Z to A
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_MENU_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which opens the sort menu in the bookmarks side panel.">
+        Sort Options
+      </message>
+
       <!-- Read Anything strings -->
       <!-- TODO(crbug.com/1266555): Add final strings and make them translateable. -->
       <message name="IDS_READ_ANYTHING_TITLE" desc="Title of the Read Anything feature, which gives users an accessible reading experience." translateable="false">
@@ -7054,6 +7089,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_OFFLINE_BUTTON_LABEL" desc="Label for button which allows the user to retry connection.">
         Try again
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_ERROR_FILE_TYPE" desc="Error message displayed to user when they provided an invalid file format.">
+        Can't upload. Use an image in one of these formats: .jpg, .gif, .png, .bmp, .tif, or .webp
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_ERROR_FILE_SIZE" desc="Error message displayed to user when they provided a file that is too large to handle.">
+        Can't upload. Use an image smaller than 20MB.
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_ERROR_MULTIPLE_FILES" desc="Error message displayed to user when they provided multiple files.">
+        Can't search multiple images. Add one image at a time.
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_VALIDATION_ERROR_SCHEME" desc="Error message displayed when user provides URL with improper scheme">
+        Can't use this link. Check that your link starts with 'http://' or 'https://' to try again.
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_VALIDATION_ERROR_CONFORMANCE" desc="Error message displayed when user provides invalid URL">
+        Can't use this link. Check for typos or use another link to try again.
+      </message>
+      <message name="IDS_LENS_SEARCH_UPLOAD_DIALOG_ERROR_MULTIPLE_URLS" desc="Error message displayed to user when they provided multiple URLs.">
+        Can't search multiple images. Add one image at a time.
       </message>
       <message name="IDS_TOOLTIP_SAVE_CREDIT_CARD" desc="The tooltip for the icon that shows the save credit card bubble">
         Save card
@@ -8753,6 +8806,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <!-- Enhanced Safe Browsing CRX allowlist warning -->
         <message name="IDS_EXTENSIONS_SAFE_BROWSING_CRX_ALLOWLIST_WARNING" desc="A warning shown in 'chrome://extensions' when the extension is not included in the Enhanced Safe Browsing CRX allowlist.">
            This extension is not trusted by Enhanced Safe Browsing.
+        </message>
+        <message name="IDS_EXTENSIONS_SAFE_BROWSING_CRX_ALLOWLIST_WARNING_LEARN_MORE" desc="Text read by screen readers for a link labeled 'Learn more' that links to a Help article about Enhanced Safe Browsing.">
+          Learn more about Enhanced Safe Browsing.
+        </message>
+        <message name="IDS_EXTENSIONS_ACCESS_REQUESTS_LEARN_MORE" desc="Text read by screen readers for a link labeled 'Learn more' that links to a Help article about Extensions' access requests.">
+          Learn more about access requests.
         </message>
 
         <!-- Reset Profile Settings strings -->
@@ -12398,6 +12457,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
       <message name="IDS_RELAUNCH_REQUIRED_CANCEL_BUTTON" desc="The text in the cancel button that dismisses a dialog telling users the browser must be relaunched.">
         Got it
+      </message>
+    </if>
+
+    <!-- Idle timeout dialog. -->
+    <if expr="not is_android and not is_chromeos">
+      <message name="IDS_IDLE_TIMEOUT_INCOGNITO" desc="The text in the Idle Timeout dialog when there are Private windows open. This warns the user that Private windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {Your Private window won't reopen.}
+          other {Your # Private windows won't reopen.}}
       </message>
     </if>
 
