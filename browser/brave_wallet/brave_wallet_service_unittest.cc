@@ -1621,6 +1621,88 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddPreloadingNetworks) {
       kBraveWalletUserAssetsAddPreloadingNetworksMigrated));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsNFT) {
+  ASSERT_FALSE(GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated));
+
+  std::string json = R"({
+    "ethereum": {
+      "mainnet": [
+        {
+          "address": "",
+          "name": "Ethereum",
+          "symbol": "ETH",
+          "is_erc20": false,
+          "is_erc721": false,
+          "decimals": 18,
+          "visible": true
+        },
+        {
+          "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+          "name": "Basic Attention Token",
+          "symbol": "BAT",
+          "is_erc20": true,
+          "is_erc721": false,
+          "decimals": 18,
+          "visible": true
+        },
+        {
+          "address": "0x0D8775F648430679A709E98d2b0Cb6250d288888",
+          "name": "My NFT",
+          "symbol": "MN",
+          "is_erc20": false,
+          "is_erc721": true,
+          "token_id": 1,
+          "visible": false
+        }
+      ],
+      "0x89": [
+        {
+          "address": "",
+          "coingecko_id": "",
+          "decimals": 18,
+          "is_erc20": false,
+          "is_erc721": false,
+          "logo": "https://brave.com/logo.jpg",
+          "name": "MATIC",
+          "symbol": "MATIC",
+          "token_id": "",
+          "visible": true
+        }
+      ]
+    },
+    "solana": {
+      "mainnet": [
+        {
+          "address": "",
+          "coingecko_id": "",
+          "decimals": 9,
+          "is_erc20": false,
+          "is_erc721": false,
+          "logo": "https://brave.com/logo.jpg",
+          "name": "Solana",
+          "symbol": "SOL",
+          "visible": true
+        }
+      ]
+    }
+  })";
+  auto user_assets_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(user_assets_value);
+  GetPrefs()->Set(kBraveWalletUserAssets, *user_assets_value);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
+  BraveWalletService::MigrateUserAssetsAddIsNFT(GetPrefs());
+
+  base::ReplaceSubstringsAfterOffset(&json, 0, "\"is_erc721\": false",
+                                     R"("is_erc721": false, "is_nft": false)");
+  base::ReplaceSubstringsAfterOffset(&json, 0, "\"is_erc721\": true",
+                                     R"("is_erc721": true, "is_nft": true)");
+  user_assets_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(user_assets_value);
+  EXPECT_EQ(GetPrefs()->GetValue(kBraveWalletUserAssets), *user_assets_value);
+
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated));
+}
+
 TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {
   EXPECT_EQ(GetPrefs()->GetTime(kBraveWalletP3ALastReportTime),
             base::Time::Now());
