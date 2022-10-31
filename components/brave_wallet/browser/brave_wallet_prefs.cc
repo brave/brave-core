@@ -123,8 +123,7 @@ void RegisterProfilePrefsForMigration(
       kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
 
   // Added 10/2022
-  registry->RegisterBooleanPref(
-      kBraveWalletUserAssetsAddIsNFTMigrated, false);
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {

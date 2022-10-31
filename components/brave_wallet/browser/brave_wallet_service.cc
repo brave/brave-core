@@ -799,11 +799,12 @@ void BraveWalletService::MigrateUserAssetsAddIsNFT(PrefService* prefs) {
   for (auto user_asset_dict_per_cointype : user_assets_pref) {
     if (!user_asset_dict_per_cointype.second.is_dict())
       continue;
-    for (auto user_asset_list_per_chain : user_asset_dict_per_cointype.second.GetDict()) {
+    for (auto user_asset_list_per_chain :
+         user_asset_dict_per_cointype.second.GetDict()) {
       if (!user_asset_list_per_chain.second.is_list())
         continue;
       for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
-        auto* asset = user_asset.GetIfDict();;
+        auto* asset = user_asset.GetIfDict();
         if (!asset)
           continue;
 

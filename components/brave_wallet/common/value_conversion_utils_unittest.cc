@@ -300,7 +300,6 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   token = ValueToBlockchainToken(optional_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 
-
   json_value = base::JSONReader::Read(R"({
       "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
       "name": "Crypto Kitties",
@@ -316,11 +315,11 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
 
   expected_token = mojom::BlockchainToken::New(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
-      "CryptoKitties-Kitty-13733.svg", false, true, true, "CK", 0, true, "", "", "0x1",
-      mojom::CoinType::ETH);
+      "CryptoKitties-Kitty-13733.svg", false, true, true, "CK", 0, true, "", "",
+      "0x1", mojom::CoinType::ETH);
 
-  token = ValueToBlockchainToken(
-      json_value->GetDict(), "0x1", mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(json_value->GetDict(), "0x1",
+                                 mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 }
 
