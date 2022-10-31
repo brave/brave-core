@@ -7,7 +7,6 @@
 
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "bat/ads/pref_names.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_service.h"

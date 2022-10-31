@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

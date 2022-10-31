@@ -29,8 +29,8 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 

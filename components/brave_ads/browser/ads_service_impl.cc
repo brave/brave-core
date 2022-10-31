@@ -36,7 +36,6 @@
 #include "bat/ads/new_tab_page_ad_value_util.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
@@ -49,6 +48,7 @@
 #include "brave/components/brave_ads/browser/device_id.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/service_sandbox_type.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
@@ -879,12 +879,8 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 #endif
 
-  // TODO(https://github.com/brave/brave-browser/issues/22489): Temporary
-  // solution until we move all ads prefs to |components/brave_ads/pref_names|.
-  constexpr char kNotificationAdsPrefName[] =
-      "brave.brave_ads.notification_ads";
-
-  const auto& list = profile_->GetPrefs()->GetList(kNotificationAdsPrefName);
+  const auto& list =
+      profile_->GetPrefs()->GetList(ads::prefs::kNotificationAds);
 
   const base::circular_deque<ads::NotificationAdInfo> ads =
       ads::NotificationAdsFromValue(list);
@@ -893,7 +889,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
     CloseNotificationAd(ad.placement_id);
   }
 
-  profile_->GetPrefs()->SetList(kNotificationAdsPrefName, {});
+  profile_->GetPrefs()->SetList(ads::prefs::kNotificationAds, {});
 }
 
 void AdsServiceImpl::OnPrefetchNewTabPageAd(
@@ -1091,7 +1087,7 @@ void AdsServiceImpl::MigratePrefs() {
   }
 
   auto source_version = GetIntegerPref(prefs::kVersion);
-  auto dest_version = prefs::kCurrentVersionNumber;
+  auto dest_version = ads::kCurrentVersionNumber;
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences

@@ -15,7 +15,7 @@
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_json_reader.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads::notifications {
 

@@ -12,8 +12,8 @@
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/sys_info.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*

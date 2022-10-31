@@ -30,7 +30,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_value_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 

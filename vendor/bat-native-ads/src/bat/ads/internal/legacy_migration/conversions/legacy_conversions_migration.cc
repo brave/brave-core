@@ -16,7 +16,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads::conversions {
 
