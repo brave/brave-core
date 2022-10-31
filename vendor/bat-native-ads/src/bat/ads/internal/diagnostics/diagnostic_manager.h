@@ -31,7 +31,7 @@ class DiagnosticManager final {
 
   void SetEntry(std::unique_ptr<DiagnosticEntryInterface> entry);
 
-  void GetDiagnostics(const GetDiagnosticsCallback& callback) const;
+  void GetDiagnostics(GetDiagnosticsCallback callback) const;
 
  private:
   DiagnosticMap diagnostics_;

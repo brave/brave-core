@@ -164,9 +164,6 @@ class BatAdsImpl : public mojom::BatAds,
   static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
                          bool success);
 
-  static void OnGetDiagnostics(CallbackHolder<GetDiagnosticsCallback>* holder,
-                               absl::optional<base::Value::List> value);
-
   static void OnGetStatementOfAccounts(
       CallbackHolder<GetStatementOfAccountsCallback>* holder,
       ads::mojom::StatementInfoPtr statement);
@@ -182,10 +179,6 @@ class BatAdsImpl : public mojom::BatAds,
 
   static void OnPurgeOrphanedAdEventsForType(
       CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>* holder,
-      bool success);
-
-  static void OnRemoveAllHistory(
-      CallbackHolder<RemoveAllHistoryCallback>* holder,
       bool success);
 
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;

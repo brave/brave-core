@@ -58,9 +58,8 @@ void DiagnosticManager::SetEntry(
   diagnostics_[type] = std::move(entry);
 }
 
-void DiagnosticManager::GetDiagnostics(
-    const GetDiagnosticsCallback& callback) const {
-  callback(ToValue(diagnostics_));
+void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
+  std::move(callback).Run(ToValue(diagnostics_));
 }
 
 }  // namespace ads

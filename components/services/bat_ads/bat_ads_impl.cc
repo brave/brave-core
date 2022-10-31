@@ -225,12 +225,7 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
 }
 
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
-  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  auto remove_all_history_callback =
-      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, std::placeholders::_1);
-  ads_->RemoveAllHistory(remove_all_history_callback);
+  ads_->RemoveAllHistory(std::move(callback));
 }
 
 void BatAdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
@@ -258,11 +253,7 @@ void BatAdsImpl::GetStatementOfAccounts(
 }
 
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
-  auto* holder = new CallbackHolder<GetDiagnosticsCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ads_->GetDiagnostics(
-      std::bind(BatAdsImpl::OnGetDiagnostics, holder, std::placeholders::_1));
+  ads_->GetDiagnostics(std::move(callback));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(base::Value::Dict value,
@@ -380,34 +371,11 @@ void BatAdsImpl::OnPurgeOrphanedAdEventsForType(
   delete holder;
 }
 
-void BatAdsImpl::OnRemoveAllHistory(
-    CallbackHolder<RemoveAllHistoryCallback>* holder,
-    const bool success) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success);
-  }
-
-  delete holder;
-}
-
 void BatAdsImpl::OnGetStatementOfAccounts(
     CallbackHolder<GetStatementOfAccountsCallback>* holder,
     ads::mojom::StatementInfoPtr statement) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run(std::move(statement));
-  }
-
-  delete holder;
-}
-
-// static
-void BatAdsImpl::OnGetDiagnostics(
-    CallbackHolder<GetDiagnosticsCallback>* holder,
-    absl::optional<base::Value::List> value) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(value));
   }
 
   delete holder;

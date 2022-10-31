@@ -378,7 +378,7 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   ClientStateManager::GetInstance()->RemoveAllHistory();
 
-  callback(/*success*/ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
@@ -404,7 +404,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
-  DiagnosticManager::GetInstance()->GetDiagnostics(callback);
+  DiagnosticManager::GetInstance()->GetDiagnostics(std::move(callback));
 }
 
 AdContentLikeActionType AdsImpl::ToggleAdThumbUp(base::Value::Dict value) {
