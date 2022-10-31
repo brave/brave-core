@@ -11,25 +11,13 @@ import DesignSystem
 class NewTabPageBackgroundView: UIView {
   /// The image wallpaper if the user has background images enabled
   let imageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
+    $0.contentMode = .scaleAspectFill
+    $0.clipsToBounds = false
   }
-  /// Constraints generated on `imageView` for adjusting layout based on
-  /// orientation
-  var imageConstraints: (portraitCenter: Constraint, landscapeCenter: Constraint)?
-  /// A gradient to display over background images to ensure visibility of
-  /// the NTP contents and sponsored logo
-  ///
-  /// Only should be displayed when the user has background images enabled
-  let gradientView = GradientView(
-    colors: [
-      UIColor(white: 0.0, alpha: 0.5),
-      UIColor(white: 0.0, alpha: 0.0),
-      UIColor(white: 0.0, alpha: 0.3),
-    ],
-    positions: [0, 0.5, 0.8],
-    startPoint: .zero,
-    endPoint: CGPoint(x: 0, y: 1)
-  )
+  
+  func updateImageXOffset(by x: CGFloat) {
+    bounds = .init(x: -x, y: 0, width: bounds.width, height: bounds.height)
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -45,12 +33,8 @@ class NewTabPageBackgroundView: UIView {
     }
 
     addSubview(imageView)
-    addSubview(gradientView)
-
-    gradientView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.greaterThanOrEqualTo(700)
-      $0.bottom.equalToSuperview().priority(.low)
+    imageView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
   }
 
