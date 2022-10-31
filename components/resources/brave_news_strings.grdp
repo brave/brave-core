@@ -13,7 +13,7 @@
     Turn on Brave News
   </message>
   <message name="IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL" desc="Label that displays in the searchbox when the user hasn't entered anything">
-    Search for news, site, topic, or RSS feed
+    Search for site, topic, or RSS feed
   </message>
   <message name="IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER" desc="Header for the channel section">
     Channels
