@@ -29,8 +29,8 @@ _BRAVE_VALUES = {
             'namespace': 'BraveSoftware.Policies.Brave',
         },
     },
-    # The string 'Brave' is defined in bravesoftware.adml for ADMX, but ADM
-    # doesn't support external references, so we define this map here.
+    # The string 'Brave' is defined in brave.adml for ADMX, but ADM doesn't
+    # support external references, so we define this map here.
     'adm_category_path_strings': {
         'Brave:Cat_Brave': 'Brave'
     },
