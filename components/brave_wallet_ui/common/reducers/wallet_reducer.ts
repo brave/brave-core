@@ -262,6 +262,41 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = selectedAccount
       },
 
+      portfolioPriceHistoryUpdated (state: WalletState, { payload }: PayloadAction<PortfolioTokenHistoryAndInfo[][]>) {
+        const history = payload.map((infoArray) => {
+          return infoArray.map((info) => {
+            if (new Amount(info.balance).isPositive() && info.token.visible) {
+              return info.history.values.map((value) => {
+                return {
+                  date: value.date,
+                  price: new Amount(info.balance)
+                    .divideByDecimals(info.token.decimals)
+                    .times(value.price)
+                    .toNumber()
+                }
+              })
+            } else {
+              return []
+            }
+          })
+        })
+        const jointHistory = [].concat.apply([], [...history]).filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
+
+        // Since the Price History API sometimes will return a shorter
+        // array of history, this checks for the shortest array first to
+        // then map and reduce to it length
+        const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
+        const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
+          return {
+            date: mojoTimeDeltaToJSDate(token.date),
+            close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
+          }
+        }) : []
+
+        state.portfolioPriceHistory = sumOfHistory
+        state.isFetchingPortfolioPriceHistory = sumOfHistory.length === 0
+      },
+
       pricesUpdated (state: WalletState, { payload }: PayloadAction<GetPriceReturnInfo>) {
         if (payload.success) {
           state.transactionSpotPrices = payload.values
@@ -358,44 +393,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.portfolioPriceHistoryUpdated.type, (state: WalletState, payload: PortfolioTokenHistoryAndInfo[][]): WalletState => {
-    const history = payload.map((infoArray) => {
-      return infoArray.map((info) => {
-        if (new Amount(info.balance).isPositive() && info.token.visible) {
-          return info.history.values.map((value) => {
-            return {
-              date: value.date,
-              price: new Amount(info.balance)
-                .divideByDecimals(info.token.decimals)
-                .times(value.price)
-                .toNumber()
-            }
-          })
-        } else {
-          return []
-        }
-      })
-    })
-    const jointHistory = [].concat.apply([], [...history]).filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
-
-    // Since the Price History API sometimes will return a shorter
-    // array of history, this checks for the shortest array first to
-    // then map and reduce to it length
-    const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
-    const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
-      return {
-        date: mojoTimeDeltaToJSDate(token.date),
-        close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
-      }
-    }) : []
-
-    return {
-      ...state,
-      portfolioPriceHistory: sumOfHistory,
-      isFetchingPortfolioPriceHistory: sumOfHistory.length === 0
-    }
-  })
 
   reducer.on(WalletActions.portfolioTimelineUpdated.type, (state: WalletState, payload: BraveWallet.AssetPriceTimeframe): WalletState => {
     return {
