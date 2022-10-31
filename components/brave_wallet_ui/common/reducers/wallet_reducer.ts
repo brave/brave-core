@@ -213,6 +213,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.defaultSolanaWallet = payload
       },
 
+      hasIncorrectPassword (state: WalletState, { payload }: PayloadAction<boolean>) {
+        state.hasIncorrectPassword = payload
+      },
+
       initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
         const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
           return {
@@ -289,13 +293,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.hasIncorrectPassword.type, (state: WalletState, payload: boolean): WalletState => {
-    return {
-      ...state,
-      hasIncorrectPassword: payload
-    }
-  })
 
   reducer.on(WalletActions.setSelectedAccount.type, (state: WalletState, payload: WalletAccountType): WalletState => {
     return {
