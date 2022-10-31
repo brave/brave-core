@@ -53,11 +53,14 @@ bool IsBlobUrlValidForPartitionedOrigin(const url::Origin& origin,
 
 namespace storage {
 
-BlobURLStoreImpl::BlobURLStoreImpl(const blink::StorageKey& storage_key,
-                                   base::WeakPtr<BlobUrlRegistry> registry)
+BlobURLStoreImpl::BlobURLStoreImpl(
+    const blink::StorageKey& storage_key,
+    base::WeakPtr<BlobUrlRegistry> registry,
+    BlobURLValidityCheckBehavior validity_check_behavior)
     : BlobURLStoreImpl_ChromiumImpl::BlobURLStoreImpl_ChromiumImpl(
           storage_key,
-          std::move(registry)) {}
+          std::move(registry),
+          validity_check_behavior) {}
 
 void BlobURLStoreImpl::Register(
     mojo::PendingRemote<blink::mojom::Blob> blob,
