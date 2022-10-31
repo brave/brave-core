@@ -262,6 +262,13 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = selectedAccount
       },
 
+      newUnapprovedTxAdded (state: WalletState, { payload }: PayloadAction<NewUnapprovedTxAdded>) {
+        state.pendingTransactions.push(payload.txInfo)
+        if (state.pendingTransactions.length === 0) {
+          state.selectedPendingTransaction = payload.txInfo
+        }
+      },
+
       portfolioPriceHistoryUpdated (state: WalletState, { payload }: PayloadAction<PortfolioTokenHistoryAndInfo[][]>) {
         const history = payload.map((infoArray) => {
           return infoArray.map((info) => {
@@ -398,22 +405,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.newUnapprovedTxAdded.type, (state: WalletState, payload: NewUnapprovedTxAdded): WalletState => {
-    const newState = {
-      ...state,
-      pendingTransactions: [
-        ...state.pendingTransactions,
-        payload.txInfo
-      ]
-    }
-
-    if (state.pendingTransactions.length === 0) {
-      newState.selectedPendingTransaction = payload.txInfo
-    }
-
-    return newState
-  })
 
   reducer.on(WalletActions.unapprovedTxUpdated.type, (state: WalletState, payload: UnapprovedTxUpdated): WalletState => {
     const newState = { ...state }
