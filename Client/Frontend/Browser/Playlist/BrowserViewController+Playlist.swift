@@ -10,6 +10,7 @@ import BraveShared
 import BraveUI
 import UIKit
 import os.log
+import Onboarding
 
 extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSharingScriptHandlerDelegate {
 
@@ -267,7 +268,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
             icon: self.topToolbar.locationView.playlistButton.snapshot,
             from: self.topToolbar.locationView.playlistButton,
             on: popover,
-            browser: self)
+            controller: self)
           pulseAnimation.frame = pulseAnimation.frame.insetBy(dx: 10.0, dy: 12.0)
           
           pulseAnimation.animationViewPressed = {

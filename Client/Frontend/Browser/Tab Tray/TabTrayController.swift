@@ -10,6 +10,7 @@ import BraveShared
 import Combine
 import Data
 import SnapKit
+import BraveUI
 
 protocol TabTrayDelegate: AnyObject {
   /// Notifies the delegate that order of tabs on tab tray has changed.
@@ -149,7 +150,7 @@ class TabTrayController: LoadingViewController {
     $0.tintColor = .braveLabel
   }
 
-  let privateModeButton = PrivateModeButton().then {
+  let privateModeButton = SelectedInsetButton().then {
     $0.titleLabel?.font = .preferredFont(forTextStyle: .body)
     $0.titleLabel?.adjustsFontForContentSizeCategory = true
     $0.contentHorizontalAlignment = .left

@@ -8,6 +8,7 @@ import XCTest
 import Shared
 import Storage
 import WebKit
+import BraveShared
 @testable import Brave
 
 class ClientTests: XCTestCase {

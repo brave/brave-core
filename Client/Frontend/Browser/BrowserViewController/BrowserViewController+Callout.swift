@@ -10,6 +10,7 @@ import Shared
 import SwiftKeychainWrapper
 import SwiftUI
 import BraveVPN
+import Onboarding
 
 // MARK: - Callouts
 
@@ -37,7 +38,7 @@ extension BrowserViewController {
     }
 
     let onboardingNotCompleted =
-      Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue
+      Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue
 
     let showedPopup = Preferences.VPN.popupShowed
 
@@ -70,8 +71,6 @@ extension BrowserViewController {
     }
 
     let onboardingController = WelcomeViewController(
-      profile: nil,
-      rewards: nil,
       state: WelcomeViewCalloutState.defaultBrowserCallout(
         info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
           title: Strings.Callout.defaultBrowserCalloutTitle,
@@ -84,18 +83,23 @@ extension BrowserViewController {
             }
 
             Preferences.General.defaultBrowserCalloutDismissed.value = true
+            self?.isOnboardingOrFullScreenCalloutPresented = true
+
             UIApplication.shared.open(settingsUrl)
             self?.dismiss(animated: false)
           },
           secondaryAction: { [weak self] in
+            self?.isOnboardingOrFullScreenCalloutPresented = true
+
             self?.dismiss(animated: false)
           }
         )
       )
     )
 
-    present(onboardingController, animated: true)
-    isOnboardingOrFullScreenCalloutPresented = true
+    if !isOnboardingOrFullScreenCalloutPresented {
+      present(onboardingController, animated: true)
+    }
   }
 
   func presentBraveRewardsScreenCallout() {
@@ -106,9 +110,12 @@ extension BrowserViewController {
     }
 
     if BraveRewards.isAvailable, !Preferences.Rewards.rewardsToggledOnce.value {
-      let controller = OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards)
+      let controller = OnboardingRewardsAgreementViewController()
       controller.onOnboardingStateChanged = { [weak self] controller, state in
         self?.completeOnboarding(controller)
+      }
+      controller.onRewardsStatusChanged = { [weak self] status in
+        self?.rewards.isEnabled = status
       }
       present(controller, animated: true)
       isOnboardingOrFullScreenCalloutPresented = true

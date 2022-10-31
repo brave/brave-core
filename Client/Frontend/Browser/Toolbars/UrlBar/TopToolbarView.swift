@@ -9,6 +9,7 @@ import Data
 import Combine
 import UIKit
 import DesignSystem
+import BraveUI
 
 private struct TopToolbarViewUX {
   static let locationPadding: CGFloat = 8

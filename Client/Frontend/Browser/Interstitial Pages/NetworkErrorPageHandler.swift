@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 
 class NetworkErrorPageHandler: InterstitialPageHandler {
   func canHandle(error: NSError) -> Bool {

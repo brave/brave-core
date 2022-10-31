@@ -26,6 +26,7 @@ let package = Package(
     .library(name: "Strings", targets: ["Strings"]),
     .library(name: "BraveVPN", targets: ["BraveVPN"]),
     .library(name: "BraveNews", targets: ["BraveNews"]),
+    .library(name: "Onboarding", targets: ["Onboarding"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
@@ -79,6 +80,7 @@ let package = Package(
         "BraveWidgetsModels",
         "BraveVPN",
         "BraveNews",
+        "Onboarding",
         "CodableHelpers",
         "BraveTalk",
         .product(name: "Lottie", package: "lottie-ios"),
@@ -152,11 +154,6 @@ let package = Package(
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/spencer-moore_desert.jpg"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/spencer-moore_fern.jpg"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/spencer-moore_ocean.jpg"),
-        .copy("Frontend/Browser/Onboarding/onboarding-ads.json"),
-        .copy("Frontend/Browser/Onboarding/onboarding-rewards.json"),
-        .copy("Frontend/Browser/Onboarding/onboarding-shields.json"),
-        .copy("Frontend/Browser/Onboarding/Welcome/disconnect-entitylist.json"),
-        .copy("Frontend/Browser/BrowserViewController/ProductNotifications/blocking-summary.json"),
         .copy("Frontend/Sync/WebFilter/Bookmarks/Bookmarks.html"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSkusScript.js"),
@@ -331,6 +328,30 @@ let package = Package(
       ],
       resources: [
         .copy("Lottie Assets/brave-today-welcome-graphic.json"),
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "Onboarding",
+      dependencies: [
+        "BraveShared",
+        "Strings",
+        "SnapKit",
+        "Then",
+        "Data",
+        "BraveUI",
+        "DesignSystem",
+        "BraveCore",
+        "Fuzi",
+        "Storage",
+        .product(name: "Lottie", package: "lottie-ios")
+      ],
+      resources: [
+        .copy("LottieAssets/onboarding-ads.json"),
+        .copy("LottieAssets/onboarding-rewards.json"),
+        .copy("LottieAssets/onboarding-shields.json"),
+        .copy("Welcome/Resources/disconnect-entitylist.json"),
+        .copy("ProductNotifications/blocking-summary.json")
       ],
       plugins: ["LoggerPlugin"]
     ),

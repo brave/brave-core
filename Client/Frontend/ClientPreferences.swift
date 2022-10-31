@@ -89,19 +89,6 @@ extension Preferences {
     /// Controls whether or not to show the last visited bookmarks folder
     static let showLastVisitedBookmarksFolder = Option<Bool>(key: "general.bookmarks-show-last-visited-bookmarks-folder", default: true)
 
-    /// Whether or not new user onboarding has completed.
-    /// User skipping(tapping on skip) onboarding does NOT count as completed.
-    /// If user kills the app before completing onboarding, it should be treated as unfinished.
-    public static let basicOnboardingCompleted = Option<Int>(
-      key: "general.basic-onboarding-completed",
-      default: OnboardingState.undetermined.rawValue)
-    /// The time until the next on-boarding shows
-    static let basicOnboardingDefaultBrowserSelected = Option<Bool>(
-      key: "general.basic-onboarding-default-browser-selected",
-      default: false)
-
-    /// The progress the user has made with onboarding
-    public static let basicOnboardingProgress = Option<Int>(key: "general.basic-onboarding-progress", default: OnboardingProgress.none.rawValue)
     /// The preference for determining whether or not to show the adblock onboarding popup
     static let onboardingAdblockPopoverShown = Option<Bool>(key: "general.basic-onboarding-adblock-popover-shown", default: false)
 

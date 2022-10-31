@@ -8,6 +8,7 @@ import BraveUI
 import Shared
 import BraveCore
 import UIKit
+import Onboarding
 
 // MARK: - Onboarding
 
@@ -24,17 +25,15 @@ extension BrowserViewController {
 
     // 1. Existing user.
     // 2. User already completed onboarding.
-    if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
+    if Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
       return
     }
 
     // 1. User is brand new
     // 2. User hasn't completed onboarding
-    if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue,
+    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue,
        Preferences.General.isNewRetentionUser.value == true {
-      let onboardingController = WelcomeViewController(
-        profile: profile,
-        rewards: rewards)
+      let onboardingController = WelcomeViewController()
       onboardingController.modalPresentationStyle = .fullScreen
       parentController.present(onboardingController, animated: false)
       isOnboardingOrFullScreenCalloutPresented = true
@@ -43,7 +42,7 @@ extension BrowserViewController {
 
   private func addNTPTutorialPage() {
     let basicOnboardingNotCompleted =
-      Preferences.General.basicOnboardingProgress.value != OnboardingProgress.newTabPage.rawValue
+      Preferences.Onboarding.basicOnboardingProgress.value != OnboardingProgress.newTabPage.rawValue
     
     if basicOnboardingNotCompleted, showNTPEducation().isEnabled, let url = showNTPEducation().url {
       tabManager.addTab(
@@ -259,7 +258,7 @@ extension BrowserViewController {
       icon: topToolbar.locationView.shieldsButton.imageView?.image,
       from: topToolbar.locationView.shieldsButton,
       on: popover,
-      browser: self)
+      controller: self)
 
     pulseAnimationView.animationViewPressed = { [weak self] in
       popover.dismissPopover() {
@@ -291,7 +290,7 @@ extension BrowserViewController {
   }
 
   func completeOnboarding(_ controller: UIViewController) {
-    Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
     controller.dismiss(animated: true)
   }
 }

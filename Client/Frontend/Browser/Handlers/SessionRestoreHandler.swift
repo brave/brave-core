@@ -6,6 +6,7 @@ import Foundation
 import WebKit
 import GCDWebServers
 import Shared
+import BraveShared
 
 private let apostropheEncoded = "%27"
 

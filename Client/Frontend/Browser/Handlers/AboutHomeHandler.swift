@@ -5,6 +5,7 @@
 import BraveUI
 import Foundation
 import UIKit
+import BraveShared
 
 public class AboutHomeHandler: InternalSchemeResponse {
   public static let path = "about/home"
