@@ -353,6 +353,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.fullTokenList = payload
       },
 
+      setGasEstimates (state: WalletState, { payload }: PayloadAction<BraveWallet.GasEstimation1559>) {
+        state.gasEstimates = payload
+      },
+
       setNetwork (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) {
         state.selectedNetwork = payload
       },
@@ -449,13 +453,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setGasEstimates.type, (state: WalletState, payload: BraveWallet.GasEstimation1559): WalletState => {
-    return {
-      ...state,
-      gasEstimates: payload
-    }
-  })
 
   reducer.on(WalletActions.setSolFeeEstimates.type, (state: WalletState, payload: SolFeeEstimates): WalletState => {
     return {
