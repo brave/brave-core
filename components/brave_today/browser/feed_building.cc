@@ -248,6 +248,16 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
             << data->publisher_id << ": " << publisher->publisher_name;
     return false;
   }
+
+  // Direct publishers should be shown, even though they aren't in any locales,
+  // and their enabled status is |NOT_MODIFIED|.
+  if (publisher->type == brave_news::mojom::PublisherType::DIRECT_SOURCE) {
+    VLOG(2) << "Showing article for direct feed " << data->publisher_id << ": "
+            << publisher->publisher_name
+            << " because direct feeds are always shown.";
+    return true;
+  }
+
   if (publisher->user_enabled_status ==
       brave_news::mojom::UserEnabled::NOT_MODIFIED) {
     if (base::FeatureList::IsEnabled(
