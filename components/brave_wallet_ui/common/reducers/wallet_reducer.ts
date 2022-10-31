@@ -199,6 +199,13 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isFetchingPortfolioPriceHistory = true
         state.selectedNetworkFilter = payload
       })
+
+      builder.addCase(WalletAsyncActions.setSelectedAccountFilterItem.type, (state: WalletState, { payload }: PayloadAction<WalletAccountType>) => {
+        // We need to add a getPortfolioAccountFilter and setPortfolioAccountFilter pref to persist this value
+        // https://github.com/brave/brave-browser/issues/25620
+        state.isFetchingPortfolioPriceHistory = true
+        state.selectedAccountFilter = payload
+      })
     }
   })
 }
@@ -664,16 +671,6 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       selectedAssetFilter: payload
-    }
-  })
-
-  reducer.on(WalletActions.setSelectedAccountFilterItem.type, (state: WalletState, payload: WalletAccountType): WalletState => {
-    // We need to add a getPortfolioAccountFilter and setPortfolioAccountFilter pref to persist this value
-    // https://github.com/brave/brave-browser/issues/25620
-    return {
-      ...state,
-      isFetchingPortfolioPriceHistory: true,
-      selectedAccountFilter: payload
     }
   })
 
