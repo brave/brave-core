@@ -18,6 +18,10 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
+namespace content {
+class RenderFrameHost;
+}
+
 class BraveNewsTabHelper
     : public content::WebContentsUserData<BraveNewsTabHelper>,
       public content::WebContentsObserver,
@@ -54,6 +58,7 @@ class BraveNewsTabHelper
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
+  void DOMContentLoaded(content::RenderFrameHost* rfh) override;
 
   // brave_news::PublisherController::Observer:
   void OnPublishersUpdated(
