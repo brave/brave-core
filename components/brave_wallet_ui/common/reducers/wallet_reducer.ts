@@ -201,6 +201,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.addUserAssetError = payload
       },
 
+      defaultCurrenciesUpdated (state: WalletState, { payload }: PayloadAction<DefaultCurrencies>) {
+        state.defaultCurrencies = payload
+      },
+
       defaultEthereumWalletUpdated (state: WalletState, { payload }: PayloadAction<BraveWallet.DefaultWallet>) {
         state.defaultEthereumWallet = payload
       },
@@ -568,13 +572,6 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       accounts: updatedAccounts
-    }
-  })
-
-  reducer.on(WalletActions.defaultCurrenciesUpdated.type, (state: WalletState, payload: DefaultCurrencies): WalletState => {
-    return {
-      ...state,
-      defaultCurrencies: payload
     }
   })
 
