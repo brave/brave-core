@@ -1,8 +1,7 @@
-import json
 import unittest
+import writer_configuration
 
 def GetConfigurationForBuild(defines):
-    import writer_configuration
     base = writer_configuration.GetConfigurationForBuild({'_chromium'})
     return _merge_dicts(_BRAVE_VALUES, base)
 
@@ -20,7 +19,8 @@ _BRAVE_VALUES = {
             'reg_recommended_key_name':
                 'Software\\Policies\\BraveSoftware\\Brave\\Recommended',
             'mandatory_category_path': ['Brave:Cat_Brave', 'brave'],
-            'recommended_category_path': ['Brave:Cat_Brave', 'brave_recommended'],
+            'recommended_category_path': ['Brave:Cat_Brave',
+                                          'brave_recommended'],
             'category_path_strings': {
                 'brave': 'Brave',
                 'brave_recommended':
@@ -52,6 +52,7 @@ def _merge_dicts(src, dst):
 class MergeDictsTest(unittest.TestCase):
     def test_merge(self):
         self.assertEqual(
+            # We actually only care about 'brave' being in the result.
             {'brave': 'Brave', "googlechrome": "Google Chrome"},
             _merge_dicts({'brave': 'Brave'}, {"googlechrome": "Google Chrome"})
         )
