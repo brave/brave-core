@@ -92,10 +92,13 @@ class BraveNewsApi {
   async setChannelSubscribed (channelId: string, subscribed: boolean) {
     // While we're waiting for the new channels to come back, speculatively
     // update them, so the UI has instant feedback.
+    // This will be overwritten when the controller responds.
     let subscribedLocales = this.lastChannels[channelId]?.subscribedLocales ?? []
-    if (subscribedLocales.includes(channelId)) {
-      subscribedLocales = subscribedLocales.filter(l => l === this.locale)
+    if (subscribedLocales.includes(this.locale)) {
+      // Remove this locale from the list of subscribed locales.
+      subscribedLocales = subscribedLocales.filter(l => l !== this.locale)
     } else {
+      // Add this locale to the list of subscribed locales.
       subscribedLocales.push(this.locale)
     }
 
