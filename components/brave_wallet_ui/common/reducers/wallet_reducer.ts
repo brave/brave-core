@@ -193,6 +193,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
+      activeOriginChanged (state: WalletState, { payload }: PayloadAction<BraveWallet.OriginInfo>) {
+        state.activeOrigin = payload
+      },
+
       initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
         const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
           return {
@@ -486,13 +490,6 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       defaultSolanaWallet: payload
-    }
-  })
-
-  reducer.on(WalletActions.activeOriginChanged.type, (state: WalletState, payload: BraveWallet.OriginInfo): WalletState => {
-    return {
-      ...state,
-      activeOrigin: payload
     }
   })
 
