@@ -12,6 +12,12 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #endif
 
+#ifdef LaunchModeRecorder
+static_assert(false,
+              "Replace the use of OldLaunchModeRecorder with "
+              "LaunchModeRecorder, and remove this assert.");
+#endif  // #ifdef LaunchModeRecorder
+
 class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
  public:
   BraveStartupBrowserCreatorImpl(const base::FilePath& cur_dir,
@@ -25,7 +31,7 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
 
   void Launch(Profile* profile,
               chrome::startup::IsProcessStartup process_startup,
-              std::unique_ptr<LaunchModeRecorder> launch_mode_recorder);
+              std::unique_ptr<OldLaunchModeRecorder> launch_mode_recorder);
 };
 
 BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
@@ -52,7 +58,7 @@ BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
 void BraveStartupBrowserCreatorImpl::Launch(
     Profile* profile,
     chrome::startup::IsProcessStartup process_startup,
-    std::unique_ptr<LaunchModeRecorder> launch_mode_recorder) {
+    std::unique_ptr<OldLaunchModeRecorder> launch_mode_recorder) {
 #if BUILDFLAG(ENABLE_TOR)
   if (StartupBrowserCreatorImpl::command_line_.HasSwitch(switches::kTor)) {
     // Call StartupBrowserCreatorImpl::Launch() with the Tor profile so that if
