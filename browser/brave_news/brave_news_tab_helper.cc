@@ -142,7 +142,7 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   AvailableFeedsChanged();
 }
 
-void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost *rfh) {
+void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
   if (GetWebContents().GetPrimaryMainFrame() != rfh) {
     return;
   }
