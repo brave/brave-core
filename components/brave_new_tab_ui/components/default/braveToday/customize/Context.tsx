@@ -74,7 +74,8 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
   const filteredPublisherIds = useMemo(() =>
     sortedPublishers
-      .filter(p => p.type === PublisherType.DIRECT_SOURCE || p.locales.includes(api.locale))
+      .filter(p => p.type === PublisherType.DIRECT_SOURCE ||
+        p.locales.some(l => l.locale === api.locale))
       .map(p => p.publisherId),
     [sortedPublishers])
 
@@ -110,13 +111,18 @@ export const useBraveNews = () => {
 export const useChannels = (options: { subscribedOnly: boolean } = { subscribedOnly: false }) => {
   const { channels } = useBraveNews()
   return useMemo(() => Object.values(channels)
-    .filter(c => c.subscribed || !options.subscribedOnly), [channels, options.subscribedOnly])
+    .filter(c => c.subscribedLocales.length || !options.subscribedOnly), [channels, options.subscribedOnly])
 }
 
+/**
+ * Determines whether the channel is subscribed in the current locale.
+ * @param channelName The channel
+ * @returns A getter & setter for whether the channel is subscribed
+ */
 export const useChannelSubscribed = (channelId: string) => {
   const { channels } = useBraveNews()
-  const subscribed = useMemo(() => channels[channelId]?.subscribed ?? false, [channels[channelId]])
-  const setSubscribed = React.useCallback((subscribed: boolean) => {
+  const subscribed = useMemo(() => channels[channelId]?.subscribedLocales.includes(api.locale) ?? false, [channels[channelId]])
+    const setSubscribed = React.useCallback((subscribed: boolean) => {
     api.setChannelSubscribed(channelId, subscribed)
   }, [channelId])
 
