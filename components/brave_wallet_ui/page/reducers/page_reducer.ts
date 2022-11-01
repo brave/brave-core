@@ -109,6 +109,12 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
       walletCreated (state, { payload }: PayloadAction<WalletCreatedPayloadType>) {
         state.mnemonic = payload.mnemonic
         state.setupStillInProgress = true
+      },
+
+      walletSetupComplete (state: PageState, action?: PayloadAction<boolean>) {
+        // complete setup unless explicitly halted
+        state.setupStillInProgress = !action?.payload
+        state.mnemonic = undefined
       }
     }
   })
@@ -116,17 +122,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.walletSetupComplete.type, (state: PageState, payload?: boolean): PageState => {
-    // complete setup unless explicitly halted
-    const setupStillInProgress = !payload
-
-    return {
-      ...state,
-      mnemonic: undefined,
-      setupStillInProgress
-    }
-  })
 
   reducer.on(Actions.walletBackupComplete.type, (state: PageState) => {
     const newState = {
