@@ -94,6 +94,7 @@ mod ffi {
         OrderUnpaid,
         UnhandledVariant,
         OrderLocationMismatch,
+        OrderMisconfiguration,
         ItemCredentialsMissing,
         ItemCredentialsExpired,
         InvalidMerchantOrSku,

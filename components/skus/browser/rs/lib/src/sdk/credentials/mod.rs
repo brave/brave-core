@@ -40,6 +40,37 @@ where
         let expires_at = order.expires_at;
         for item in &order.items {
             match item.credential_type {
+                CredentialType::TimeLimitedV2 => {
+                    let expires_at = self
+                        .last_matching_time_limited_v2_credential(&item.id)
+                        .await?
+                        .map(|cred| cred.valid_to)
+                        .or(expires_at);
+                    if let Some(expires_at) = expires_at {
+                        // attempt to refresh credentials if we're within 5 days of expiry
+                        if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
+                            let refreshed = self.refresh_order_credentials(order_id).await;
+                            if refreshed.is_err() {
+                                continue;
+                            }
+                        }
+                    }
+
+                    if let Some(creds) = self.matching_time_limited_v2_credential(&item.id).await? {
+                        let unblinded_creds =
+                            creds.unblinded_creds.ok_or(InternalError::NotFound)?;
+                        let remaining_credential_count =
+                            unblinded_creds.into_iter().filter(|cred| !cred.spent).count();
+
+                        let active = remaining_credential_count > 0;
+                        return Ok(Some(CredentialSummary {
+                            order,
+                            remaining_credential_count, // number unspent
+                            expires_at,
+                            active,
+                        }));
+                    }
+                }
                 CredentialType::SingleUse => {
                     let wrapped_creds = self.client.get_single_use_item_creds(&item.id).await?;
                     if let Some(creds) = wrapped_creds {
@@ -90,7 +121,19 @@ where
                 }
             };
         } // for
-        return Err(InternalError::NotFound.into());
+        Err(InternalError::NotFound.into())
+    }
+
+    #[instrument]
+    pub async fn matching_time_limited_v2_credential(
+        &self,
+        item_id: &str,
+    ) -> Result<Option<TimeLimitedV2Credential>, SkusError> {
+        Ok(self.client.get_time_limited_v2_creds(item_id).await?.and_then(|tlv2| {
+            tlv2.unblinded_creds.unwrap_or_default().into_iter().find(|cred| {
+                Utc::now().naive_utc() < cred.valid_to && Utc::now().naive_utc() > cred.valid_from
+            })
+        }))
     }
 
     #[instrument]
@@ -103,6 +146,18 @@ where
                 Utc::now().naive_utc() < cred.expires_at && Utc::now().naive_utc() > cred.issued_at
             })
         }))
+    }
+
+    #[instrument]
+    pub async fn last_matching_time_limited_v2_credential(
+        &self,
+        item_id: &str,
+    ) -> Result<Option<TimeLimitedV2Credential>, SkusError> {
+        Ok(self
+            .client
+            .get_time_limited_v2_creds(item_id)
+            .await?
+            .and_then(|creds| creds.unblinded_creds.into_iter().flatten().last()))
     }
 
     #[instrument]
