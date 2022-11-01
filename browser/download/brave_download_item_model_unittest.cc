@@ -140,3 +140,13 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
     Mock::VerifyAndClearExpectations(&item());
   }
 }
+
+TEST_F(BraveDownloadItemModelTest, NoDownloadItem) {
+  // Test that we handle the scenario when DownloadItemModel doesn't have the
+  // DownloadItem (GetDownloadItem returns nullptr).
+  DownloadUIModel model;
+  BraveDownloadItemModel brave_model(&model);
+  bool is_secure = false;
+  EXPECT_STREQ(
+      "", base::UTF16ToUTF8(brave_model.GetOriginURLText(&is_secure)).c_str());
+}
