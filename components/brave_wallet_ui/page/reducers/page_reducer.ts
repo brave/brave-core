@@ -114,6 +114,16 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.importAccountError = payload
       },
 
+      setImportWalletError (state, { payload }: PayloadAction<ImportWalletErrorPayloadType>) {
+        const { hasError, errorMessage, incrementAttempts } = payload
+
+        state.importWalletError = { hasError, errorMessage }
+
+        if (incrementAttempts) {
+          state.importWalletAttempts = state.importWalletAttempts + 1
+        }
+      },
+
       setIsFetchingPriceHistory (state: PageState, { payload }: PayloadAction<boolean>) {
         state.isFetchingPriceHistory = payload
       },
@@ -159,18 +169,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setImportWalletError.type, (state: PageState, {
-    hasError,
-    errorMessage,
-    incrementAttempts
-  }: ImportWalletErrorPayloadType) => {
-    return {
-      ...state,
-      importWalletError: { hasError, errorMessage },
-      importWalletAttempts: incrementAttempts ? state.importWalletAttempts + 1 : state.importWalletAttempts
-    }
-  })
 
   reducer.on(Actions.setShowAddModal.type, (state: PageState, payload: boolean) => {
     return {
