@@ -102,6 +102,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
     name: 'page',
     initialState: initialState,
     reducers: {
+      recoveryWordsAvailable (state: PageState, { payload }: PayloadAction<RecoveryWordsAvailablePayloadType>) {
+        state.mnemonic = payload.mnemonic
+      },
+
       walletCreated (state, { payload }: PayloadAction<WalletCreatedPayloadType>) {
         state.mnemonic = payload.mnemonic
         state.setupStillInProgress = true
@@ -112,13 +116,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.recoveryWordsAvailable.type, (state: PageState, payload: RecoveryWordsAvailablePayloadType) => {
-    return {
-      ...state,
-      mnemonic: payload.mnemonic
-    }
-  })
 
   reducer.on(Actions.walletSetupComplete.type, (state: PageState, payload?: boolean): PageState => {
     // complete setup unless explicitly halted
