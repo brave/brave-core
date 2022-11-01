@@ -78,13 +78,9 @@ struct PasswordEntryField: View {
         .textContentType(.password)
         .font(.subheadline)
         .introspectTextField(customize: { tf in
-          if #unavailable(iOS 15) {
-            // Fix for animation issue when pushing view onto
-            // navigation stack with this field on iOS 14 - #6267
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-              tf.becomeFirstResponder()
-            }
-          } else {
+          // Fix for animation issue when pushing SwiftUI view onto navigation
+          // stack when trying to show keyboard immediately #6267 / #6297
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             tf.becomeFirstResponder()
           }
         })
