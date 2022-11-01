@@ -49,7 +49,6 @@ declare namespace Rewards {
     monthlyReport: MonthlyReport
     monthlyReportIds: string[]
     parameters: RewardsParameters
-    paymentId: string
     promotions: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
@@ -77,7 +76,6 @@ declare namespace Rewards {
       promosDismissed: {
         [key: string]: boolean
       }
-      walletRecoveryStatus: number | null
     }
   }
 
@@ -167,11 +165,6 @@ declare namespace Rewards {
   export interface PromotionResponse {
     result: number
     promotions: Promotion[]
-  }
-
-  export interface RecoverWallet {
-    result: Result
-    balance: number
   }
 
   export interface PromotionFinish {

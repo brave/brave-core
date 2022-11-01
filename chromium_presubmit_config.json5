@@ -182,7 +182,6 @@
       "vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/private_cdn/get_publisher/get_publisher\\.cc",
       "vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/delete_claim/delete_claim\\.cc",
       "vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/get_drain/get_drain\\.cc",
-      "vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/get_recover_wallet/get_recover_wallet\\.cc",
       "vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/get_wallet/get_wallet\\.cc",
       "vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/post_bat_loss/post_bat_loss\\.cc",
       "vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/post_clobbered_claims/post_clobbered_claims\\.cc",
@@ -225,7 +224,6 @@
       "vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold\\.cc",
       "vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_authorization\\.cc",
       "vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_transfer\\.cc",
-      "vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_recover\\.cc",
     ],
     "CheckSpamLogging": [
       "browser/brave_ads/notification_helper/notification_helper_impl_mac\\.mm",

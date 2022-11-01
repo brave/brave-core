@@ -39,8 +39,6 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
                void(RewardsService*,
                     const ledger::mojom::Result result,
                     const std::vector<ledger::mojom::PromotionPtr>& list));
-  MOCK_METHOD2(OnRecoverWallet,
-               void(RewardsService*, const ledger::mojom::Result));
   MOCK_METHOD3(OnPromotionFinished,
                void(RewardsService*,
                     const ledger::mojom::Result,

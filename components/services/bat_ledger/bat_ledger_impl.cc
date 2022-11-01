@@ -171,27 +171,6 @@ void BatLedgerImpl::AttestPromotion(
   ledger_->AttestPromotion(promotion_id, solution, std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnRecoverWallet(
-    CallbackHolder<RecoverWalletCallback>* holder,
-    ledger::mojom::Result result) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void BatLedgerImpl::RecoverWallet(
-    const std::string& pass_phrase,
-    RecoverWalletCallback callback) {
-  // deleted in OnRecoverWallet
-  auto* holder = new CallbackHolder<RecoverWalletCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->RecoverWallet(pass_phrase, std::bind(
-      BatLedgerImpl::OnRecoverWallet,
-      holder,
-      _1));
-}
-
 void BatLedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
   ledger_->SetPublisherMinVisitTime(duration_in_seconds);
 }
@@ -979,11 +958,6 @@ void BatLedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 
   ledger_->GetRewardsWallet(
       std::bind(BatLedgerImpl::OnGetRewardsWallet, holder, _1));
-}
-
-void BatLedgerImpl::GetRewardsWalletPassphrase(
-    GetRewardsWalletPassphraseCallback callback) {
-  std::move(callback).Run(ledger_->GetRewardsWalletPassphrase());
 }
 
 }  // namespace bat_ledger

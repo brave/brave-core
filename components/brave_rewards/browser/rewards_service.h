@@ -120,9 +120,6 @@ using GetEventLogsCallback =
 using GetRewardsWalletCallback =
     base::OnceCallback<void(ledger::mojom::RewardsWalletPtr wallet)>;
 
-using GetRewardsWalletPassphraseCallback =
-    base::OnceCallback<void(const std::string&)>;
-
 using OnTipCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
 class RewardsService : public KeyedService {
@@ -175,11 +172,9 @@ class RewardsService : public KeyedService {
   virtual void ClaimPromotion(
       const std::string& promotion_id,
       AttestPromotionCallback callback) = 0;
-  virtual void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      AttestPromotionCallback callback) = 0;
-  virtual void RecoverWallet(const std::string& passPhrase) = 0;
+  virtual void AttestPromotion(const std::string& promotion_id,
+                               const std::string& solution,
+                               AttestPromotionCallback callback) = 0;
   virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
@@ -357,9 +352,6 @@ class RewardsService : public KeyedService {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual void GetRewardsWalletPassphrase(
-      GetRewardsWalletPassphraseCallback callback) = 0;
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 

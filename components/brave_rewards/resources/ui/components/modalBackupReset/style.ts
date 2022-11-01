@@ -5,11 +5,6 @@ import { ComponentType } from 'react'
 import styled from 'styled-components'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 
-interface StyleProps {
-  isError?: boolean
-  error?: boolean
-}
-
 export const StyledContent = styled('div')<{}>`
   font-size: 14px;
   font-family: Poppins, sans-serif;
@@ -19,21 +14,10 @@ export const StyledContent = styled('div')<{}>`
   margin-bottom: 25px;
 `
 
-export const StyledImport = styled('label')<{}>`
-  color: #4c54d2;
-  cursor: pointer;
-`
-
 export const StyledDoneWrapper = styled('div')<{}>`
   display: flex;
   justify-content: center;
   margin-top: 40px;
-`
-
-export const StyledStatus = styled('div')<StyleProps>`
-  margin: ${p => p.isError ? 0 : -16}px 0 16px;
-  border-radius: 6px;
-  overflow: hidden;
 `
 
 export const StyledActionsWrapper = styled('div')<{}>`

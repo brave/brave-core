@@ -30,7 +30,6 @@ const char kTransactionVerificationFailure[] =
 const char kWalletConnected[] = "wallet_connected";
 const char kWalletCorrupted[] = "wallet_corrupted";
 const char kWalletDisconnected[] = "wallet_disconnected";
-const char kWalletRecovered[] = "wallet_recovered";
 const char kWalletStatusChange[] = "wallet_status_change";
 const char kWalletVerified[] = "wallet_verified";
 

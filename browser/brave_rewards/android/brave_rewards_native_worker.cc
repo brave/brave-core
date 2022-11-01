@@ -884,24 +884,6 @@ std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
     return json_args;
 }
 
-void BraveRewardsNativeWorker::RecoverWallet(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& pass_phrase) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->RecoverWallet(
-        base::android::ConvertJavaStringToUTF8(env, pass_phrase));
-  }
-}
-
-void BraveRewardsNativeWorker::OnRecoverWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnRecoverWallet(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
-}
-
 void BraveRewardsNativeWorker::RefreshPublisher(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& publisher_key) {

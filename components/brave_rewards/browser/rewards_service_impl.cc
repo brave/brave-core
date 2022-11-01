@@ -1336,26 +1336,6 @@ void RewardsServiceImpl::ClaimPromotion(
   bat_ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
 }
 
-void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->RecoverWallet(passPhrase, base::BindOnce(
-      &RewardsServiceImpl::OnRecoverWallet,
-      AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnRecoverWallet(const ledger::mojom::Result result) {
-  // Fetch balance after recovering wallet in order to initiate P3A
-  // stats collection
-  FetchBalance(base::DoNothing());
-
-  for (auto& observer : observers_) {
-    observer.OnRecoverWallet(this, result);
-  }
-}
-
 std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     const {
   std::vector<std::string> providers;
@@ -3031,15 +3011,6 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   }
 
   bat_ledger_->GetRewardsWallet(std::move(callback));
-}
-
-void RewardsServiceImpl::GetRewardsWalletPassphrase(
-    GetRewardsWalletPassphraseCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), "");
-  }
-
-  bat_ledger_->GetRewardsWalletPassphrase(std::move(callback));
 }
 
 bool RewardsServiceImpl::IsBitFlyerRegion() const {

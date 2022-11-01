@@ -21,7 +21,6 @@ export const reduxState: Rewards.ApplicationState = {
       disconnectWalletError: false,
       modalBackup: false,
       modalRedirect: 'hide',
-      walletRecoveryStatus: null,
       promosDismissed: {}
     },
     autoContributeList: [],
@@ -131,7 +130,6 @@ export const reduxState: Rewards.ApplicationState = {
       }
     },
     initializing: false,
-    paymentId: '',
     showOnboarding: false
   }
 }

@@ -12,12 +12,10 @@
 #include "bat/ledger/internal/endpoint/promotion/get_available/get_available.h"
 #include "bat/ledger/internal/endpoint/promotion/get_captcha/get_captcha.h"
 #include "bat/ledger/internal/endpoint/promotion/get_drain/get_drain.h"
-#include "bat/ledger/internal/endpoint/promotion/get_recover_wallet/get_recover_wallet.h"
 #include "bat/ledger/internal/endpoint/promotion/get_signed_creds/get_signed_creds.h"
 #include "bat/ledger/internal/endpoint/promotion/get_wallet/get_wallet.h"
 #include "bat/ledger/internal/endpoint/promotion/post_bat_loss/post_bat_loss.h"
 #include "bat/ledger/internal/endpoint/promotion/post_captcha/post_captcha.h"
-#include "bat/ledger/internal/endpoint/promotion/post_claim_brave/post_claim_brave.h"
 #include "bat/ledger/internal/endpoint/promotion/post_clobbered_claims/post_clobbered_claims.h"
 #include "bat/ledger/internal/endpoint/promotion/post_creds/post_creds.h"
 #include "bat/ledger/internal/endpoint/promotion/post_devicecheck/post_devicecheck.h"
@@ -49,8 +47,6 @@ class PromotionServer {
 
   promotion::PostBatLoss* post_bat_loss() const;
 
-  promotion::GetRecoverWallet* get_recover_wallet() const;
-
   promotion::GetWallet* get_wallet() const;
 
   promotion::PostCaptcha* post_captcha() const;
@@ -71,8 +67,6 @@ class PromotionServer {
 
   promotion::PostSuggestionsClaim* post_suggestions_claim() const;
 
-  promotion::PostClaimBrave* post_claim_brave() const;
-
   promotion::GetDrain* get_drain() const;
 
   promotion::DeleteClaim* delete_claim() const;
@@ -84,7 +78,6 @@ class PromotionServer {
   std::unique_ptr<promotion::GetSignedCreds> get_signed_creds_;
   std::unique_ptr<promotion::PostClobberedClaims> post_clobbered_claims_;
   std::unique_ptr<promotion::PostBatLoss> post_bat_loss_;
-  std::unique_ptr<promotion::GetRecoverWallet> get_recover_wallet_;
   std::unique_ptr<promotion::GetWallet> get_wallet_;
   std::unique_ptr<promotion::PostCaptcha> post_captcha_;
   std::unique_ptr<promotion::GetCaptcha> get_captcha_;
@@ -95,7 +88,6 @@ class PromotionServer {
   std::unique_ptr<promotion::PutDevicecheck> put_devicecheck_;
   std::unique_ptr<promotion::PostSuggestions> post_suggestions_;
   std::unique_ptr<promotion::PostSuggestionsClaim> post_suggestions_claim_;
-  std::unique_ptr<promotion::PostClaimBrave> post_claim_brave_;
   std::unique_ptr<promotion::GetDrain> get_drain_;
 };
 

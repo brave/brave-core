@@ -552,39 +552,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       }));
 }
 
-- (void)recoverWalletUsingPassphrase:(NSString*)passphrase
-                          completion:(void (^)(NSError* _Nullable))completion {
-  const auto __weak weakSelf = self;
-  // Results that can come from RecoverWallet():
-  //   - LEDGER_OK: Good to go
-  //   - LEDGER_ERROR: Recovery failed
-  ledger->RecoverWallet(base::SysNSStringToUTF8(passphrase), ^(
-                            const ledger::mojom::Result result) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    NSError* error = nil;
-    if (result != ledger::mojom::Result::LEDGER_OK) {
-      std::map<ledger::mojom::Result, std::string> errorDescriptions{
-          {ledger::mojom::Result::LEDGER_ERROR, "The recovery failed"},
-      };
-      NSDictionary* userInfo = @{};
-      const auto description = errorDescriptions[result];
-      if (description.length() > 0) {
-        userInfo =
-            @{NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)};
-      }
-      error = [NSError errorWithDomain:BraveLedgerErrorDomain
-                                  code:static_cast<NSInteger>(result)
-                              userInfo:userInfo];
-    }
-    if (completion) {
-      completion(error);
-    }
-  });
-}
-
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL))completion {
   ledger->HasSufficientBalanceToReconcile(completion);
 }
@@ -593,26 +560,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   ledger->GetPendingContributionsTotal(^(double total) {
     completion(total);
   });
-}
-
-- (void)linkBraveWalletToPaymentId:(NSString*)paymentId
-                        completion:(void (^)(LedgerResult result,
-                                             NSString* drainID))completion {
-  ledger->LinkRewardsWallet(
-      base::SysNSStringToUTF8(paymentId),
-      base::BindOnce(^(ledger::mojom::Result result, std::string drain_id) {
-        // The internal draining API now returns a success
-        // code when there are no tokens to drain. Since
-        // brave-ios expects a valid drain ID when the
-        // result is LEDGER_OK, to maintain backward
-        // compatibility convert the result to an error code
-        // when the drain ID is empty.
-        if (drain_id.empty()) {
-          result = ledger::mojom::Result::LEDGER_ERROR;
-        }
-        completion(static_cast<LedgerResult>(result),
-                   base::SysUTF8ToNSString(drain_id));
-      }));
 }
 
 - (void)drainStatusForDrainId:(NSString*)drainId

@@ -579,13 +579,6 @@ mojom::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
   return props;
 }
 
-void LedgerImpl::RecoverWallet(const std::string& pass_phrase,
-                               LegacyResultCallback callback) {
-  WhenReady([this, pass_phrase, callback]() {
-    wallet()->RecoverWallet(pass_phrase, callback);
-  });
-}
-
 void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
                                      mojom::PublisherExclude exclude,
                                      ResultCallback callback) {
@@ -950,26 +943,6 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
       }
     }
     callback(std::move(rewards_wallet));
-  });
-}
-
-std::string LedgerImpl::GetRewardsWalletPassphrase() {
-  if (!IsReady())
-    return "";
-
-  auto brave_wallet = wallet()->GetWallet();
-  if (!brave_wallet) {
-    return "";
-  }
-
-  return wallet()->GetWalletPassphrase(std::move(brave_wallet));
-}
-
-void LedgerImpl::LinkRewardsWallet(const std::string& destination_payment_id,
-                                   PostSuggestionsClaimCallback callback) {
-  WhenReady([this, destination_payment_id,
-             callback = std::move(callback)]() mutable {
-    wallet()->LinkRewardsWallet(destination_payment_id, std::move(callback));
   });
 }
 

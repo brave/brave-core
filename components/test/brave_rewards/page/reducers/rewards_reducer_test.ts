@@ -60,10 +60,8 @@ describe('rewards reducer', () => {
 
       it('import flow - existing state', () => {
         const initState: Rewards.State = defaultState()
-        initState.ui.walletRecoveryStatus = 1
 
         const expectedState: Rewards.State = defaultState()
-        expectedState.ui.walletRecoveryStatus = 1
 
         const assertion = reducers({
           rewardsData: initState

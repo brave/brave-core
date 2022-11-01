@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import ModalBackupRestore from './index'
+import ModalBackupReset from './index'
 import { TestThemeProvider } from 'brave-ui/theme'
 
-describe('ModalBackupRestore tests', () => {
+describe('ModalBackupReset tests', () => {
   const doNothing = () => { console.log('nothing') }
   const baseComponent = (props?: object) => (
     <TestThemeProvider>
-      <ModalBackupRestore
+      <ModalBackupReset
         id='modal'
         activeTabId={0}
         recoveryKey={''}

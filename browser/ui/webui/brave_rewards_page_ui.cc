@@ -99,7 +99,6 @@ class RewardsDOMHandler
   void GetAutoContributeProperties(const base::Value::List& args);
   void FetchPromotions(const base::Value::List& args);
   void ClaimPromotion(const base::Value::List& args);
-  void RecoverWallet(const base::Value::List& args);
   void GetReconcileStamp(const base::Value::List& args);
   void SaveSetting(const base::Value::List& args);
   void OnPublisherList(std::vector<ledger::mojom::PublisherInfoPtr> list);
@@ -192,10 +191,6 @@ class RewardsDOMHandler
 
   void CompleteReset(const base::Value::List& args);
 
-  void GetPaymentId(const base::Value::List& args);
-
-  void OnGetPaymentId(ledger::mojom::RewardsWalletPtr wallet);
-
   void GetOnboardingStatus(const base::Value::List& args);
   void EnableRewards(const base::Value::List& args);
   void GetExternalWalletProviders(const base::Value::List& args);
@@ -215,8 +210,6 @@ class RewardsDOMHandler
   void OnPromotionFinished(brave_rewards::RewardsService* rewards_service,
                            const ledger::mojom::Result result,
                            ledger::mojom::PromotionPtr promotion) override;
-  void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
-                       const ledger::mojom::Result result) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
                               std::string publisher_id,
                               bool excluded) override;
@@ -350,10 +343,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.claimPromotion",
       base::BindRepeating(&RewardsDOMHandler::ClaimPromotion,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.recoverWallet",
-      base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getReconcileStamp",
@@ -498,10 +487,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.completeReset",
       base::BindRepeating(&RewardsDOMHandler::CompleteReset,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.getPaymentId",
-      base::BindRepeating(&RewardsDOMHandler::GetPaymentId,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getOnboardingStatus",
@@ -841,26 +826,6 @@ void RewardsDOMHandler::OnPromotionFinished(
 
   CallJavascriptFunction("brave_rewards.promotionFinish",
                          base::Value(std::move(finish)));
-}
-
-void RewardsDOMHandler::RecoverWallet(const base::Value::List& args) {
-  CHECK_EQ(1U, args.size());
-  if (rewards_service_) {
-    AllowJavascript();
-    const std::string pass_phrase = args[0].GetString();
-    rewards_service_->RecoverWallet(pass_phrase);
-  }
-}
-
-void RewardsDOMHandler::OnRecoverWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  CallJavascriptFunction("brave_rewards.recoverWalletData",
-                         base::Value(static_cast<int>(result)));
 }
 
 void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {
@@ -2026,30 +1991,6 @@ void RewardsDOMHandler::OnCompleteReset(const bool success) {
   }
 
   CallJavascriptFunction("brave_rewards.completeReset", base::Value(success));
-}
-
-void RewardsDOMHandler::GetPaymentId(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  rewards_service_->GetRewardsWallet(base::BindOnce(
-      &RewardsDOMHandler::OnGetPaymentId, weak_factory_.GetWeakPtr()));
-}
-
-void RewardsDOMHandler::OnGetPaymentId(ledger::mojom::RewardsWalletPtr wallet) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  std::string payment_id;
-  if (wallet) {
-    payment_id = wallet->payment_id;
-  }
-
-  CallJavascriptFunction("brave_rewards.paymentId", base::Value(payment_id));
 }
 
 void RewardsDOMHandler::GetOnboardingStatus(const base::Value::List& args) {
