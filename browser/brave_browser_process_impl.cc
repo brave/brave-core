@@ -155,6 +155,15 @@ void BraveBrowserProcessImpl::Init() {
   InitSystemRequestHandlerCallback();
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+void BraveBrowserProcessImpl::StartTearDown() {
+  ad_block_service_.reset();
+  brave_stats_updater_.reset();
+  brave_referrals_service_.reset();
+  BrowserProcessImpl::StartTearDown();
+}
+#endif
+
 brave_component_updater::BraveComponent::Delegate*
 BraveBrowserProcessImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_)
