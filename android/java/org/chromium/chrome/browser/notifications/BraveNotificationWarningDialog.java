@@ -152,7 +152,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     private void launchedFromBraveSettings(View view) {
-        mPrimaryButton.setText(R.string.return_to_settings);
+        mPrimaryButton.setText(R.string.got_it);
 
         if (isBraveRewardsEnabled() && isPrivacyReportsEnabled()) {
             mTitleTextView.setText(R.string.notification_brave_dialog_header_both_rewards_privacy);
