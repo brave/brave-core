@@ -391,6 +391,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.onRampCurrencies = payload
       },
 
+      setPasswordAttempts (state: WalletState, { payload }: PayloadAction<number>) {
+        state.passwordAttempts = payload
+      },
+
       setSelectedAccount (state: WalletState, { payload }: PayloadAction<WalletAccountType>) {
         state.selectedAccount = payload
       },
@@ -524,13 +528,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setPasswordAttempts.type, (state: WalletState, payload: number): WalletState => {
-    return {
-      ...state,
-      passwordAttempts: payload
-    }
-  })
 
   reducer.on(WalletActions.setSelectedAssetFilterItem.type, (state: WalletState, payload: AssetFilterOption): WalletState => {
     return {
