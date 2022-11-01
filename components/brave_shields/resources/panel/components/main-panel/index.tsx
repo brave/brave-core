@@ -46,7 +46,14 @@ function MainPanel () {
       {braveShieldsBrokenText.afterTag}
     </S.Footnote>
   )
-
+  let managedFootnoteElement = (
+    <S.Footnote>
+      <S.ControlBox>
+        <S.ManagedIcon />
+        <S.ManagedText>{getLocale('braveShieldsManaged')}</S.ManagedText>
+      </S.ControlBox>
+    </S.Footnote>
+  )
   let advancedControlButtonElement = (isExpanded != null) && (
     <S.AdvancedControlsButton
       type="button"
@@ -139,9 +146,16 @@ function MainPanel () {
             />
           </S.StatusToggle>
         </S.ControlBox>
+        {!siteBlockInfo?.isBraveShieldsManaged &&
         <S.StatusFootnoteBox>
           {reportSiteOrFootnoteElement}
         </S.StatusFootnoteBox>
+        }
+        {siteBlockInfo?.isBraveShieldsManaged &&
+        <S.StatusFootnoteBox>
+          {managedFootnoteElement}
+        </S.StatusFootnoteBox>
+        }
       </S.StatusBox>
       {advancedControlButtonElement}
       { isExpanded &&

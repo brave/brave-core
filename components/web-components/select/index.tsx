@@ -8,6 +8,7 @@ interface BaseSelectProps {
   value?: ValueType
   onChange?: (value: ValueType) => unknown
   ariaLabel: string
+  disabled?: boolean
 }
 
 type SelectProps = React.PropsWithChildren<BaseSelectProps>
@@ -24,6 +25,7 @@ function Select (props: SelectProps) {
         value={props.value}
         onChange={handleChange}
         aria-label={props.ariaLabel}
+        disabled={props.disabled}
       >
         {props.children}
       </S.Select>
