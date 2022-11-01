@@ -7,6 +7,10 @@ import Foundation
 import BraveCore
 
 class AccountActivityStore: ObservableObject {
+  /// If we want to observe selected account changes (ex. in `WalletPanelView`).
+  /// In some cases, we do not want to update the account displayed when the
+  /// selected account changes (ex. when removing an account).
+  let observeAccountUpdates: Bool
   private(set) var account: BraveWallet.AccountInfo
   @Published private(set) var assets: [AssetViewModel] = []
   @Published var transactionSummaries: [TransactionSummary] = []
@@ -30,6 +34,7 @@ class AccountActivityStore: ObservableObject {
 
   init(
     account: BraveWallet.AccountInfo,
+    observeAccountUpdates: Bool,
     keyringService: BraveWalletKeyringService,
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
@@ -39,6 +44,7 @@ class AccountActivityStore: ObservableObject {
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   ) {
     self.account = account
+    self.observeAccountUpdates = observeAccountUpdates
     self.keyringService = keyringService
     self.walletService = walletService
     self.rpcService = rpcService
@@ -193,6 +199,7 @@ extension AccountActivityStore: BraveWalletKeyringServiceObserver {
   }
   
   func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
+    guard observeAccountUpdates else { return }
     keyringService.keyringInfo(coin.keyringId) { [self] keyringInfo in
       keyringService.selectedAccount(coin) { [self] accountAddress in
         account = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
