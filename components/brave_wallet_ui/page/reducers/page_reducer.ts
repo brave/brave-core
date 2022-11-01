@@ -3,20 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { createReducer } from 'redux-act'
+import { createAction, createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
 import {
   BraveWallet,
   PageState,
   NFTMetadataReturnType,
-  ImportAccountErrorType
+  ImportAccountErrorType,
+  UpdateAccountNamePayloadType
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
   SelectAssetPayloadType,
   ImportWalletErrorPayloadType,
-  ShowRecoveryPhrasePayload
+  ShowRecoveryPhrasePayload,
+  CreateWalletPayloadType,
+  ImportAccountFromJsonPayloadType,
+  ImportAccountPayloadType,
+  ImportFilecoinAccountPayloadType,
+  ImportFromExternalWalletPayloadType,
+  RemoveHardwareAccountPayloadType,
+  RemoveImportedAccountPayloadType,
+  RestoreWalletPayloadType,
+  UpdateSelectedAssetType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
@@ -44,6 +54,45 @@ const defaultState: PageState = {
   importWalletAttempts: 0,
   walletTermsAcknowledged: false,
   selectedCoinMarket: undefined
+}
+
+export const WalletPageAsyncActions = {
+  createWallet: createAction<CreateWalletPayloadType>('createWallet'),
+  restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
+  importAccount: createAction<ImportAccountPayloadType>('importAccount'),
+  importFilecoinAccount: createAction<ImportFilecoinAccountPayloadType>('importFilecoinAccount'),
+  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
+  removeImportedAccount: createAction<RemoveImportedAccountPayloadType>('removeImportedAccount'),
+  walletCreated: createAction<WalletCreatedPayloadType>('walletCreated'),
+  walletSetupComplete: createAction<boolean>('walletSetupComplete'),
+  showRecoveryPhrase: createAction<ShowRecoveryPhrasePayload>('showRecoveryPhrase'),
+  recoveryWordsAvailable: createAction<RecoveryWordsAvailablePayloadType>('recoveryWordsAvailable'),
+  walletBackupComplete: createAction('walletBackupComplete'),
+  hasMnemonicError: createAction<boolean>('hasMnemonicError'),
+  setShowAddModal: createAction<boolean>('setShowAddModal'),
+  setImportAccountError: createAction<ImportAccountErrorType>('setImportAccountError'),
+  setImportWalletError: createAction<ImportWalletErrorPayloadType>('setImportWalletError'),
+  updatePriceInfo: createAction<SelectAssetPayloadType>('updatePriceInfo'),
+  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
+  updateSelectedAsset: createAction<BraveWallet.BlockchainToken | undefined>('updateSelectedAsset'),
+  setIsFetchingPriceHistory: createAction<boolean>('setIsFetchingPriceHistory'),
+  setShowIsRestoring: createAction<boolean>('setShowIsRestoring'),
+  updateAccountName: createAction<UpdateAccountNamePayloadType>('updateAccountName'),
+  addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts'),
+  removeHardwareAccount: createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount'),
+  checkWalletsToImport: createAction('checkWalletsToImport'),
+  setCryptoWalletsInitialized: createAction<boolean>('setCryptoWalletsInitialized'),
+  setMetaMaskInitialized: createAction<boolean>('setMetaMaskInitialized'),
+  setImportWalletsCheckComplete: createAction<boolean>('setImportWalletsCheckComplete'),
+  importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
+  importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
+  openWalletSettings: createAction('openWalletSettings'),
+  getNFTMetadata: createAction<BraveWallet.BlockchainToken>('getNFTMetadata'),
+  setIsFetchingNFTMetadata: createAction<boolean>('setIsFetchingNFTMetadata'),
+  updateNFTMetadata: createAction<NFTMetadataReturnType | undefined>('updateNFTMetadata'),
+  onOnboardingShown: createAction('onOnboardingShown'),
+  agreeToWalletTerms: createAction('agreeToWalletTerms'),
+  selectCoinMarket: createAction<BraveWallet.CoinMarket | undefined>('selectCoinMarket')
 }
 
 export const createPageReducer = (initialState: PageState) => {
