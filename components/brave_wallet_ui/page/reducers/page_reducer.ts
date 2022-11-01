@@ -156,6 +156,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.nftMetadata = payload
       },
 
+      updateNftMetadataError (state, { payload }: PayloadAction<string | undefined>) {
+        state.nftMetadataError = payload
+      },
+
       updatePriceInfo (state: PageState, { payload }: PayloadAction<SelectAssetPayloadType>) {
         state.selectedAssetFiatPrice = payload.defaultFiatPrice
         state.selectedAssetCryptoPrice = payload.defaultCryptoPrice
@@ -189,13 +193,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.updateNftMetadataError.type, (state: PageState, payload: string | undefined) => {
-    return {
-      ...state,
-      nftMetadataError: payload
-    }
-  })
 
   reducer.on(Actions.setImportWalletsCheckComplete.type, (state: PageState, payload: boolean): PageState => {
     return {
