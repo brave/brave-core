@@ -61,14 +61,14 @@ absl::optional<base::Time> GetLastSeenAdvertiserTime(
 }
 
 void PurgeExpiredAdEvents() {
-  PurgeExpiredAdEvents([](const bool success) {
+  PurgeExpiredAdEvents(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(1, "Failed to purge expired ad events");
       return;
     }
 
     BLOG(6, "Successfully purged expired ad events");
-  });
+  }));
 }
 
 }  // namespace ads

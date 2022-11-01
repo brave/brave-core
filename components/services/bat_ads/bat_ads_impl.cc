@@ -211,17 +211,7 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
-
-  auto* holder = new CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  auto purge_ad_events_for_type_callback =
-      std::bind(BatAdsImpl::OnPurgeOrphanedAdEventsForType, holder,
-                std::placeholders::_1);
-
-  ads_->PurgeOrphanedAdEventsForType(ad_type,
-                                     purge_ad_events_for_type_callback);
+  ads_->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
 }
 
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
@@ -356,16 +346,6 @@ void BatAdsImpl::OnMaybeServeInlineContentAd(
 
     absl::optional<base::Value::Dict> dict = ads::InlineContentAdToValue(*ad);
     std::move(holder->get()).Run(dimensions, std::move(dict));
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::OnPurgeOrphanedAdEventsForType(
-    CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>* holder,
-    const bool success) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success);
   }
 
   delete holder;

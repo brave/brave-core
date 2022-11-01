@@ -47,6 +47,7 @@ class Transfer final : public TabManagerObserver {
  private:
   void TransferAd(int32_t tab_id, const std::vector<GURL>& redirect_chain);
   void OnTransferAd(int32_t tab_id, const std::vector<GURL>& redirect_chain);
+  void OnLogAdEvent(const AdInfo& ad, const bool success);
 
   void Cancel(int32_t tab_id);
 

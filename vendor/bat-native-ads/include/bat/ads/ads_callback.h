@@ -36,7 +36,8 @@ using GetStatementOfAccountsCallback =
 using GetDiagnosticsCallback =
     base::OnceCallback<void(absl::optional<base::Value::List> value)>;
 
-using PurgeOrphanedAdEventsForTypeCallback = std::function<void(const bool)>;
+using PurgeOrphanedAdEventsForTypeCallback =
+    base::OnceCallback<void(const bool)>;
 
 }  // namespace ads
 

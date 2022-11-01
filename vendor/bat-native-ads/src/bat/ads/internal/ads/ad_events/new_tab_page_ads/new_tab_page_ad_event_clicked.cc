@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
 
+#include "base/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -17,14 +18,15 @@ void AdEventClicked::FireEvent(const NewTabPageAdInfo& ad) {
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to log new tab page ad clicked event");
-      return;
-    }
+  LogAdEvent(ad, ConfirmationType::kClicked,
+             base::BindOnce([](const bool success) {
+               if (!success) {
+                 BLOG(1, "Failed to log new tab page ad clicked event");
+                 return;
+               }
 
-    BLOG(6, "Successfully logged new tab page ad clicked event");
-  });
+               BLOG(6, "Successfully logged new tab page ad clicked event");
+             }));
 }
 
 }  // namespace ads::new_tab_page_ads

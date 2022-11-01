@@ -363,16 +363,22 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
     PurgeOrphanedAdEventsForTypeCallback callback) {
   DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
 
-  PurgeOrphanedAdEvents(ad_type, [ad_type, callback](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
-      callback(/*success*/ false);
-      return;
-    }
+  PurgeOrphanedAdEvents(
+      ad_type,
+      base::BindOnce(
+          [](const mojom::AdType ad_type,
+             PurgeOrphanedAdEventsForTypeCallback callback,
+             const bool success) {
+            if (!success) {
+              BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
+              std::move(callback).Run(/*success*/ false);
+              return;
+            }
 
-    BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
-    callback(/*success*/ true);
-  });
+            BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
+            std::move(callback).Run(/*success*/ true);
+          },
+          ad_type, std::move(callback)));
 }
 
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {

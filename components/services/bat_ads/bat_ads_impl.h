@@ -177,10 +177,6 @@ class BatAdsImpl : public mojom::BatAds,
       CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
       const absl::optional<ads::NewTabPageAdInfo>& ad);
 
-  static void OnPurgeOrphanedAdEventsForType(
-      CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>* holder,
-      bool success);
-
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;
 };
