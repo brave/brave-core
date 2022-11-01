@@ -114,6 +114,14 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.showRecoveryPhrase = payload.show
       },
 
+      updatePriceInfo (state: PageState, { payload }: PayloadAction<SelectAssetPayloadType>) {
+        state.selectedAssetFiatPrice = payload.defaultFiatPrice
+        state.selectedAssetCryptoPrice = payload.defaultCryptoPrice
+        state.selectedAssetPriceHistory = payload.priceHistory?.values || []
+        state.selectedTimeline = payload.timeFrame
+        state.isFetchingPriceHistory = false
+      },
+
       updateSelectedAsset (state: PageState, { payload }: PayloadAction<BraveWallet.BlockchainToken | undefined>) {
         state.selectedAsset = payload
       },
@@ -139,18 +147,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.updatePriceInfo.type, (state: PageState, payload: SelectAssetPayloadType) => {
-    const history = payload.priceHistory ? payload.priceHistory.values : []
-    return {
-      ...state,
-      selectedAssetFiatPrice: payload.defaultFiatPrice,
-      selectedAssetCryptoPrice: payload.defaultCryptoPrice,
-      selectedAssetPriceHistory: history,
-      selectedTimeline: payload.timeFrame,
-      isFetchingPriceHistory: false
-    }
-  })
 
   reducer.on(Actions.setIsFetchingPriceHistory.type, (state: PageState, payload: boolean) => {
     return {
