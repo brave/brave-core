@@ -9,8 +9,7 @@ import {
   BraveWallet,
   PageState,
   NFTMetadataReturnType,
-  ImportAccountErrorType,
-  UpdateAccountNamePayloadType
+  ImportAccountErrorType
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
@@ -63,36 +62,14 @@ export const WalletPageAsyncActions = {
   importFilecoinAccount: createAction<ImportFilecoinAccountPayloadType>('importFilecoinAccount'),
   importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
   removeImportedAccount: createAction<RemoveImportedAccountPayloadType>('removeImportedAccount'),
-  walletCreated: createAction<WalletCreatedPayloadType>('walletCreated'),
-  walletSetupComplete: createAction<boolean>('walletSetupComplete'),
-  showRecoveryPhrase: createAction<ShowRecoveryPhrasePayload>('showRecoveryPhrase'),
-  recoveryWordsAvailable: createAction<RecoveryWordsAvailablePayloadType>('recoveryWordsAvailable'),
-  walletBackupComplete: createAction('walletBackupComplete'),
-  hasMnemonicError: createAction<boolean>('hasMnemonicError'),
-  setShowAddModal: createAction<boolean>('setShowAddModal'),
-  setImportAccountError: createAction<ImportAccountErrorType>('setImportAccountError'),
-  setImportWalletError: createAction<ImportWalletErrorPayloadType>('setImportWalletError'),
-  updatePriceInfo: createAction<SelectAssetPayloadType>('updatePriceInfo'),
   selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
-  updateSelectedAsset: createAction<BraveWallet.BlockchainToken | undefined>('updateSelectedAsset'),
-  setIsFetchingPriceHistory: createAction<boolean>('setIsFetchingPriceHistory'),
-  setShowIsRestoring: createAction<boolean>('setShowIsRestoring'),
-  updateAccountName: createAction<UpdateAccountNamePayloadType>('updateAccountName'),
   addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts'),
   removeHardwareAccount: createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount'),
   checkWalletsToImport: createAction('checkWalletsToImport'),
-  setCryptoWalletsInitialized: createAction<boolean>('setCryptoWalletsInitialized'),
-  setMetaMaskInitialized: createAction<boolean>('setMetaMaskInitialized'),
-  setImportWalletsCheckComplete: createAction<boolean>('setImportWalletsCheckComplete'),
   importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
   importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
   openWalletSettings: createAction('openWalletSettings'),
-  getNFTMetadata: createAction<BraveWallet.BlockchainToken>('getNFTMetadata'),
-  setIsFetchingNFTMetadata: createAction<boolean>('setIsFetchingNFTMetadata'),
-  updateNFTMetadata: createAction<NFTMetadataReturnType | undefined>('updateNFTMetadata'),
-  onOnboardingShown: createAction('onOnboardingShown'),
-  agreeToWalletTerms: createAction('agreeToWalletTerms'),
-  selectCoinMarket: createAction<BraveWallet.CoinMarket | undefined>('selectCoinMarket')
+  getNFTMetadata: createAction<BraveWallet.BlockchainToken>('getNFTMetadata')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
