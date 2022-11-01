@@ -102,6 +102,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
     name: 'page',
     initialState: initialState,
     reducers: {
+      agreeToWalletTerms (state) {
+        state.walletTermsAcknowledged = true
+      },
+
       hasMnemonicError (state: PageState, { payload }: PayloadAction<boolean>) {
         state.invalidMnemonic = payload
       },
@@ -197,13 +201,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.agreeToWalletTerms.type, (state: PageState): PageState => {
-    return {
-      ...state,
-      walletTermsAcknowledged: true
-    }
-  })
 
   reducer.on(Actions.selectCoinMarket.type, (state: PageState, payload: BraveWallet.CoinMarket) => {
     return {
