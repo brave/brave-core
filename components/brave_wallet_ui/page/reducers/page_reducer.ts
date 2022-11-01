@@ -114,6 +114,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.showRecoveryPhrase = payload.show
       },
 
+      updateSelectedAsset (state: PageState, { payload }: PayloadAction<BraveWallet.BlockchainToken | undefined>) {
+        state.selectedAsset = payload
+      },
+
       walletBackupComplete (state: PageState) {
         state.showRecoveryPhrase = false
         state.mnemonic = undefined
@@ -135,13 +139,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.updateSelectedAsset.type, (state: PageState, payload: BraveWallet.BlockchainToken) => {
-    return {
-      ...state,
-      selectedAsset: payload
-    }
-  })
 
   reducer.on(Actions.updatePriceInfo.type, (state: PageState, payload: SelectAssetPayloadType) => {
     const history = payload.priceHistory ? payload.priceHistory.values : []
