@@ -56,20 +56,20 @@ const defaultState: PageState = {
 }
 
 export const WalletPageAsyncActions = {
-  createWallet: createAction<CreateWalletPayloadType>('createWallet'),
-  restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
-  importAccount: createAction<ImportAccountPayloadType>('importAccount'),
-  importFilecoinAccount: createAction<ImportFilecoinAccountPayloadType>('importFilecoinAccount'),
-  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
-  removeImportedAccount: createAction<RemoveImportedAccountPayloadType>('removeImportedAccount'),
-  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
   addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts'),
-  removeHardwareAccount: createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount'),
   checkWalletsToImport: createAction('checkWalletsToImport'),
+  createWallet: createAction<CreateWalletPayloadType>('createWallet'),
+  getNFTMetadata: createAction<BraveWallet.BlockchainToken>('getNFTMetadata'),
+  importAccount: createAction<ImportAccountPayloadType>('importAccount'),
+  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
+  importFilecoinAccount: createAction<ImportFilecoinAccountPayloadType>('importFilecoinAccount'),
   importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
   importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
   openWalletSettings: createAction('openWalletSettings'),
-  getNFTMetadata: createAction<BraveWallet.BlockchainToken>('getNFTMetadata')
+  removeHardwareAccount: createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount'),
+  removeImportedAccount: createAction<RemoveImportedAccountPayloadType>('removeImportedAccount'),
+  restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
+  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
