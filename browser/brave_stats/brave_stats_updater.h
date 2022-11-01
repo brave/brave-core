@@ -12,7 +12,9 @@
 #include "base/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -109,6 +111,8 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::RepeatingClosure stats_preconditions_barrier_;
+  base::ScopedObservation<ProfileManager, ProfileManagerObserver>
+      profile_manager_observer_{this};
 
   scoped_refptr<network::SharedURLLoaderFactory> testing_url_loader_factory_;
   raw_ptr<PrefService> testing_profile_prefs_;

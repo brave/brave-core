@@ -112,7 +112,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
 
   // Track initial profile creation
   if (g_browser_process->profile_manager()) {
-    g_browser_process->profile_manager()->AddObserver(this);
+    profile_manager_observer_.Observe(g_browser_process->profile_manager());
     DCHECK_EQ(0U,
               g_browser_process->profile_manager()->GetLoadedProfiles().size());
   }
@@ -122,7 +122,7 @@ BraveStatsUpdater::~BraveStatsUpdater() = default;
 
 void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
   if (profile == ProfileManager::GetPrimaryUserProfile()) {
-    g_browser_process->profile_manager()->RemoveObserver(this);
+    profile_manager_observer_.Reset();
     Start();
   }
 }
