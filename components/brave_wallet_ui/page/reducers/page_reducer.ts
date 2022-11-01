@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { createAction, createReducer } from 'redux-act'
+import { createReducer } from 'redux-act'
+import { createAction, createSlice } from '@reduxjs/toolkit'
+
 import * as Actions from '../actions/wallet_page_actions'
 import {
   BraveWallet,
@@ -93,6 +95,15 @@ export const WalletPageAsyncActions = {
   onOnboardingShown: createAction('onOnboardingShown'),
   agreeToWalletTerms: createAction('agreeToWalletTerms'),
   selectCoinMarket: createAction<BraveWallet.CoinMarket | undefined>('selectCoinMarket')
+}
+
+export const createPageSlice = (initialState: PageState = defaultState) => {
+  return createSlice({
+    name: 'page',
+    initialState: initialState,
+    reducers: {
+    }
+  })
 }
 
 export const createPageReducer = (initialState: PageState) => {
