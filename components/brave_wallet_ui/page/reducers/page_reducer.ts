@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createReducer } from 'redux-act'
-import { createAction, createSlice } from '@reduxjs/toolkit'
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import * as Actions from '../actions/wallet_page_actions'
 import {
@@ -102,19 +102,16 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
     name: 'page',
     initialState: initialState,
     reducers: {
+      walletCreated (state, { payload }: PayloadAction<WalletCreatedPayloadType>) {
+        state.mnemonic = payload.mnemonic
+        state.setupStillInProgress = true
+      }
     }
   })
 }
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-  reducer.on(Actions.walletCreated.type, (state: PageState, payload: WalletCreatedPayloadType) => {
-    return {
-      ...state,
-      mnemonic: payload.mnemonic,
-      setupStillInProgress: true
-    }
-  })
 
   reducer.on(Actions.recoveryWordsAvailable.type, (state: PageState, payload: RecoveryWordsAvailablePayloadType) => {
     return {
