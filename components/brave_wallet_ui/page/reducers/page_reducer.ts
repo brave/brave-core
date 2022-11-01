@@ -6,7 +6,6 @@
 import { createReducer } from 'redux-act'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import * as Actions from '../actions/wallet_page_actions'
 import {
   BraveWallet,
   PageState,
@@ -114,6 +113,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.mnemonic = payload.mnemonic
       },
 
+      selectCoinMarket (state, { payload }: PayloadAction<BraveWallet.CoinMarket>) {
+        state.selectedCoinMarket = payload
+      },
+
       setCryptoWalletsInitialized (state, { payload }: PayloadAction<boolean>) {
         state.isCryptoWalletsInitialized = payload
       },
@@ -201,13 +204,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.selectCoinMarket.type, (state: PageState, payload: BraveWallet.CoinMarket) => {
-    return {
-      ...state,
-      selectedCoinMarket: payload
-    }
-  })
   return reducer
 }
 
