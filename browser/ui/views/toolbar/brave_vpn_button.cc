@@ -208,7 +208,7 @@ void BraveVPNButton::UpdateButtonState() {
 }
 
 bool BraveVPNButton::IsConnected() const {
-  return service_->is_connected();
+  return service_->IsConnected();
 }
 
 bool BraveVPNButton::IsPurchased() const {

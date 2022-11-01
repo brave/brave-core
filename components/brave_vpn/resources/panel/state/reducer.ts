@@ -75,6 +75,13 @@ reducer.on(Actions.connectionStateChanged, (state, payload): RootState => {
   }
 })
 
+reducer.on(Actions.selectedRegionChanged, (state, payload): RootState => {
+  return {
+    ...state,
+    currentRegion: payload.region
+  }
+})
+
 reducer.on(Actions.retryConnect, (state): RootState => {
   return {
     ...state,

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
@@ -20,6 +21,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/network_change_notifier.h"
 
 namespace brave_vpn {
 
@@ -113,5 +115,12 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed);
   RegisterVPNLocalStatePrefs(registry);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+bool IsNetworkAvailable() {
+  return net::NetworkChangeNotifier::GetConnectionType() !=
+         net::NetworkChangeNotifier::CONNECTION_NONE;
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_vpn

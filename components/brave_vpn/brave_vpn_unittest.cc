@@ -13,6 +13,7 @@
 #include "base/run_loop.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
@@ -133,20 +134,27 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
       std::move(purchased_callback_).Run();
   }
 #if !BUILDFLAG(IS_ANDROID)
-  void OnConnectionCreated() override {}
-  void OnConnectionRemoved() override {}
   void OnConnectionStateChanged(ConnectionState state) override {
     connection_state_ = state;
     if (connection_state_callback_)
       std::move(connection_state_callback_).Run();
   }
+  void OnSelectedRegionChanged(mojom::RegionPtr region) override {
+    if (selected_region_callback_)
+      std::move(selected_region_callback_).Run();
+  }
 #endif
   void WaitPurchasedStateChange(base::OnceClosure callback) {
     purchased_callback_ = std::move(callback);
   }
+#if !BUILDFLAG(IS_ANDROID)
   void WaitConnectionStateChange(base::OnceClosure callback) {
     connection_state_callback_ = std::move(callback);
   }
+  void WaitSelectedRegionStateChange(base::OnceClosure callback) {
+    selected_region_callback_ = std::move(callback);
+  }
+#endif
   mojo::PendingRemote<mojom::ServiceObserver> GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
@@ -166,6 +174,7 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
   absl::optional<ConnectionState> connection_state_;
   base::OnceClosure purchased_callback_;
   base::OnceClosure connection_state_callback_;
+  base::OnceClosure selected_region_callback_;
   mojo::Receiver<mojom::ServiceObserver> observer_receiver_{this};
 };
 
@@ -193,6 +202,10 @@ class BraveVPNServiceTest : public testing::Test {
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
+#if !BUILDFLAG(IS_ANDROID)
+    BraveVPNOSConnectionAPI::GetInstance()->set_local_prefs(
+        &local_pref_service_);
+#endif
     ResetVpnService();
   }
   void TearDown() override {
@@ -250,11 +263,17 @@ class BraveVPNServiceTest : public testing::Test {
 
   std::vector<mojom::Region>& regions() const { return service_->regions_; }
 
-  std::unique_ptr<Hostname>& hostname() { return service_->hostname_; }
+  std::unique_ptr<Hostname>& hostname() {
+    return GetBraveVPNConnectionAPI()->hostname_;
+  }
 
-  bool& cancel_connecting() { return service_->cancel_connecting_; }
+  bool& cancel_connecting() {
+    return GetBraveVPNConnectionAPI()->cancel_connecting_;
+  }
 
-  ConnectionState& connection_state() { return service_->connection_state_; }
+  ConnectionState& connection_state() {
+    return GetBraveVPNConnectionAPI()->connection_state_;
+  }
 
   void OnCredentialSummary(const std::string& domain,
                            const std::string& summary) {
@@ -262,10 +281,14 @@ class BraveVPNServiceTest : public testing::Test {
   }
 
   void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state) {
-    service_->UpdateAndNotifyConnectionStateChange(state);
+    GetBraveVPNConnectionAPI()->UpdateAndNotifyConnectionStateChange(state);
   }
-  void Suspend() { service_->OnSuspend(); }
-  void OnDNSChanged() { service_->OnDNSChanged(); }
+  void Suspend() { GetBraveVPNConnectionAPI()->OnSuspend(); }
+  void OnDNSChanged() { GetBraveVPNConnectionAPI()->OnDNSChanged(); }
+
+  void SetSelectedRegion(const std::string& region) {
+    service_->SetSelectedRegion(region);
+  }
 
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
@@ -280,38 +303,51 @@ class BraveVPNServiceTest : public testing::Test {
   void OnFetchHostnames(const std::string& region,
                         const std::string& hostnames,
                         bool success) {
-    service_->OnFetchHostnames(region, hostnames, success);
+    GetBraveVPNConnectionAPI()->OnFetchHostnames(region, hostnames, success);
   }
 
   std::string& skus_credential() { return service_->skus_credential_; }
 
-  bool& is_simulation() { return service_->is_simulation_; }
+  void SetSkusCredential(const std::string& credential) {
+    service_->skus_credential_ = credential;
+    GetBraveVPNConnectionAPI()->SetSkusCredential(credential);
+  }
 
-  bool& needs_connect() { return service_->needs_connect_; }
-  bool& reconnect_on_resume() { return service_->reconnect_on_resume_; }
+  bool& prevent_creation() {
+    return GetBraveVPNConnectionAPI()->prevent_creation_;
+  }
 
-  void Connect() { service_->Connect(); }
+  bool& needs_connect() { return GetBraveVPNConnectionAPI()->needs_connect_; }
+  bool& reconnect_on_resume() {
+    return GetBraveVPNConnectionAPI()->reconnect_on_resume_;
+  }
 
-  void Disconnect() { service_->Disconnect(); }
+  void Connect() { GetBraveVPNConnectionAPI()->Connect(); }
 
-  void CreateVPNConnection() { service_->CreateVPNConnection(); }
-  void OnCreated() { service_->OnCreated(); }
+  void Disconnect() { GetBraveVPNConnectionAPI()->Disconnect(); }
+
+  void CreateVPNConnection() {
+    GetBraveVPNConnectionAPI()->CreateVPNConnection();
+  }
+  void OnCreated() { GetBraveVPNConnectionAPI()->OnCreated(); }
   void LoadCachedRegionData() { service_->LoadCachedRegionData(); }
 
-  void OnConnected() { service_->OnConnected(); }
-  void OnConnectFailed() { service_->OnConnectFailed(); }
-  void OnDisconnected() { service_->OnDisconnected(); }
+  void OnConnected() { GetBraveVPNConnectionAPI()->OnConnected(); }
+  void OnConnectFailed() { GetBraveVPNConnectionAPI()->OnConnectFailed(); }
+  void OnDisconnected() { GetBraveVPNConnectionAPI()->OnDisconnected(); }
 
   const BraveVPNConnectionInfo& GetConnectionInfo() {
-    return service_->GetConnectionInfo();
+    return GetBraveVPNConnectionAPI()->connection_info();
   }
   void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
                                     bool success) {
-    service_->OnGetSubscriberCredentialV12(subscriber_credential, success);
+    GetBraveVPNConnectionAPI()->OnGetSubscriberCredentialV12(
+        subscriber_credential, success);
   }
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success) {
-    service_->OnGetProfileCredentials(profile_credential, success);
+    GetBraveVPNConnectionAPI()->OnGetProfileCredentials(profile_credential,
+                                                        success);
   }
 
   void OnPrepareCredentialsPresentation(
@@ -319,6 +355,11 @@ class BraveVPNServiceTest : public testing::Test {
       const std::string& credential_as_cookie) {
     service_->OnPrepareCredentialsPresentation(domain, credential_as_cookie);
   }
+
+  BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() {
+    return service_->GetBraveVPNConnectionAPI();
+  }
+
   void SetDeviceRegion(const std::string& name) {
     service_->SetDeviceRegion(name);
   }
@@ -707,21 +748,35 @@ TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
 }
 
 TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
   connection_state() = ConnectionState::CONNECTING;
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
-  EXPECT_EQ(ConnectionState::CONNECTED, connection_state());
+  {
+    base::RunLoop loop;
+    observer.WaitConnectionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+  EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+}
 
-  SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
-  connection_state() = ConnectionState::CONNECTING;
-  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
-  EXPECT_NE(ConnectionState::CONNECTED, connection_state());
+TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+
+  OnFetchRegionList(false, GetRegionsData(), true);
+  SetSelectedRegion("asia-sg");
+  base::RunLoop loop;
+  observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+  loop.Run();
 }
 
 TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
   // Having skus_credential is pre-requisite before try connecting.
-  skus_credential() = "test_credentials";
+  SetSkusCredential("test_credentials");
   // Check valid connection info is set when valid hostname and profile
   // credential are fetched.
   connection_state() = ConnectionState::CONNECTING;
@@ -729,7 +784,7 @@ TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
 
   // To prevent real os vpn entry creation.
-  is_simulation() = true;
+  prevent_creation() = true;
   OnGetProfileCredentials(GetProfileCredentialData(), true);
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
   EXPECT_TRUE(GetConnectionInfo().IsValid());
@@ -970,8 +1025,6 @@ TEST_F(BraveVPNServiceTest, ResumeAfterSuspend) {
             net::NetworkChangeNotifier::GetConnectionType());
   OnDNSChanged();
   EXPECT_TRUE(reconnect_on_resume());
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_UNKNOWN);
 
   mock_notifier.mock_network_change_notifier()->SetConnectionType(
       net::NetworkChangeNotifier::CONNECTION_ETHERNET);
