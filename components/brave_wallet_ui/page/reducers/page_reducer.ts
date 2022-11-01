@@ -83,11 +83,11 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.walletTermsAcknowledged = true
       },
 
-      hasMnemonicError (state: PageState, { payload }: PayloadAction<boolean>) {
+      hasMnemonicError (state, { payload }: PayloadAction<boolean>) {
         state.invalidMnemonic = payload
       },
 
-      recoveryWordsAvailable (state: PageState, { payload }: PayloadAction<RecoveryWordsAvailablePayloadType>) {
+      recoveryWordsAvailable (state, { payload }: PayloadAction<RecoveryWordsAvailablePayloadType>) {
         state.mnemonic = payload.mnemonic
       },
 
@@ -99,7 +99,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.isCryptoWalletsInitialized = payload
       },
 
-      setImportAccountError (state: PageState, { payload }: PayloadAction<ImportAccountErrorType>) {
+      setImportAccountError (state, { payload }: PayloadAction<ImportAccountErrorType>) {
         state.importAccountError = payload
       },
 
@@ -121,7 +121,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.isFetchingNFTMetadata = payload
       },
 
-      setIsFetchingPriceHistory (state: PageState, { payload }: PayloadAction<boolean>) {
+      setIsFetchingPriceHistory (state, { payload }: PayloadAction<boolean>) {
         state.isFetchingPriceHistory = payload
       },
 
@@ -133,11 +133,11 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.showAddModal = payload
       },
 
-      setShowIsRestoring (state: PageState, action: PayloadAction<boolean>) {
+      setShowIsRestoring (state, action: PayloadAction<boolean>) {
         state.showIsRestoring = action.payload
       },
 
-      showRecoveryPhrase (state: PageState, { payload }: PayloadAction<ShowRecoveryPhrasePayload>) {
+      showRecoveryPhrase (state, { payload }: PayloadAction<ShowRecoveryPhrasePayload>) {
         state.showRecoveryPhrase = payload.show
       },
 
@@ -149,7 +149,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.nftMetadataError = payload
       },
 
-      updatePriceInfo (state: PageState, { payload }: PayloadAction<SelectAssetPayloadType>) {
+      updatePriceInfo (state, { payload }: PayloadAction<SelectAssetPayloadType>) {
         state.selectedAssetFiatPrice = payload.defaultFiatPrice
         state.selectedAssetCryptoPrice = payload.defaultCryptoPrice
         state.selectedAssetPriceHistory = payload.priceHistory?.values || []
@@ -157,7 +157,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.isFetchingPriceHistory = false
       },
 
-      updateSelectedAsset (state: PageState, { payload }: PayloadAction<BraveWallet.BlockchainToken | undefined>) {
+      updateSelectedAsset (state, { payload }: PayloadAction<BraveWallet.BlockchainToken | undefined>) {
         state.selectedAsset = payload
       },
 
@@ -171,7 +171,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.setupStillInProgress = true
       },
 
-      walletSetupComplete (state: PageState, action?: PayloadAction<boolean>) {
+      walletSetupComplete (state, action?: PayloadAction<boolean>) {
         // complete setup unless explicitly halted
         state.setupStillInProgress = !action?.payload
         state.mnemonic = undefined
