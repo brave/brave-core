@@ -212,7 +212,7 @@ TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
           publisher->publisher_id, "Source", 10, "a minute ago")));
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
-  publisher->locales = {};
+  publisher->locales = std::vector<mojom::LocaleInfoPtr>();
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
   features.Reset();

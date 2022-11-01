@@ -70,10 +70,10 @@ constexpr char kPublishersResponse[] = R"([
         "category": "Four",
         "locales": [{
           "locale": "en_US",
-          "channels": ["One", "Four"],
+          "channels": ["One", "Four"]
         }, {
           "locale": "ja_JA",
-          "channels": ["One", "Five"],
+          "channels": ["One", "Five"]
         }],
         "enabled": true
     }
