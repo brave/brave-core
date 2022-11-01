@@ -119,6 +119,9 @@ void RegisterProfilePrefsForMigration(
   // Added 10/2022
   registry->RegisterBooleanPref(
       kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
+
+  // Added 10/2022
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -159,6 +162,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 06/22 to have native tokens for all preloading networks.
   BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(prefs);
+
+  // Added 10/22 to have is_nft set for existing ERC721 tokens.
+  BraveWalletService::MigrateUserAssetsAddIsNFT(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 

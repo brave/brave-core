@@ -146,11 +146,13 @@ export const AddCustomTokenForm = (props: Props) => {
       onAddCustomAsset(foundToken)
       onHideForm()
     } else {
+      const isErc721 = customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
         decimals: Number(tokenDecimals),
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
-        isErc721: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID,
+        isErc721: isErc721,
+        isNft: isErc721,
         name: tokenName,
         symbol: tokenSymbol,
         tokenId: tokenID ? new Amount(tokenID).toHex() : '',

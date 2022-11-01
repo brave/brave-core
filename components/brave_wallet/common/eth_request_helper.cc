@@ -649,7 +649,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
 
   *token = mojom::BlockchainToken::New(
       eth_addr.ToChecksumAddress(), *symbol /* name */, logo, true, false,
-      *symbol, decimals, true, "", "", chain_id, coin);
+      false, *symbol, decimals, true, "", "", chain_id, coin);
   return true;
 }
 

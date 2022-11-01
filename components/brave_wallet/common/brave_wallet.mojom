@@ -473,6 +473,7 @@ struct BlockchainToken {
   string logo;
   bool is_erc20;
   bool is_erc721;
+  bool is_nft;
   string symbol;
   int32 decimals;
   bool visible = true;
