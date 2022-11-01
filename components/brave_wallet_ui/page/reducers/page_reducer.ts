@@ -132,6 +132,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.isFetchingPriceHistory = payload
       },
 
+      setMetaMaskInitialized (state, { payload }: PayloadAction<boolean>) {
+        state.isMetaMaskInitialized = payload
+      },
+
       setShowAddModal (state, { payload }: PayloadAction<boolean>) {
         state.showAddModal = payload
       },
@@ -177,13 +181,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setMetaMaskInitialized.type, (state: PageState, payload: boolean) => {
-    return {
-      ...state,
-      isMetaMaskInitialized: payload
-    }
-  })
 
   reducer.on(Actions.updateNFTMetadata.type, (state: PageState, payload: NFTMetadataReturnType) => {
     return {
