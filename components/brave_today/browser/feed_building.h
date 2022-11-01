@@ -23,8 +23,7 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed,
-               PrefService* prefs,
-               const std::string& locale);
+               PrefService* prefs);
 
 // Exposed for testing
 bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,

@@ -24,13 +24,18 @@
 namespace brave_news {
 
 namespace {
+mojom::LocaleInfoPtr MakeLocaleInfo(const std::string& locale) {
+  return mojom::LocaleInfo::New(locale, 0, std::vector<std::string>());
+}
+
 Publishers MakePublishers(
     const std::vector<std::vector<std::string>>& publisher_locales) {
   Publishers result;
   size_t next_id = 1;
   for (const auto& locales : publisher_locales) {
     auto publisher = mojom::Publisher::New();
-    publisher->locales = locales;
+    for (const auto& locale : locales)
+      publisher->locales.push_back(MakeLocaleInfo(locale));
     publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
     result[std::to_string(next_id++)] = std::move(publisher);
   }

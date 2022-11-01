@@ -17,6 +17,7 @@
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_row.h"
@@ -35,7 +36,8 @@ Publishers MakePublishers(const std::vector<std::string>& publisher_urls) {
   size_t next_id = 1;
   for (const auto& url : publisher_urls) {
     auto publisher = mojom::Publisher::New();
-    publisher->locales = {"en_US"};
+    publisher->locales.push_back(
+        mojom::LocaleInfo::New("en_US", 0, std::vector<std::string>{}));
     publisher->site_url = GURL(url);
     publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
     result[std::to_string(next_id++)] = std::move(publisher);
