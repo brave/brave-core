@@ -128,6 +128,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         }
       },
 
+      setIsFetchingNFTMetadata (state, { payload }: PayloadAction<boolean>) {
+        state.isFetchingNFTMetadata = payload
+      },
+
       setIsFetchingPriceHistory (state: PageState, { payload }: PayloadAction<boolean>) {
         state.isFetchingPriceHistory = payload
       },
@@ -185,13 +189,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setIsFetchingNFTMetadata.type, (state: PageState, payload: boolean) => {
-    return {
-      ...state,
-      isFetchingNFTMetadata: payload
-    }
-  })
 
   reducer.on(Actions.updateNftMetadataError.type, (state: PageState, payload: string | undefined) => {
     return {
