@@ -48,7 +48,6 @@ TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
           base::BindRepeating(
               &BraveImporterObserverUnitTest::NotifyImportProgress,
               base::Unretained(this)));
-  importer_host->set_observer(observer.get());
   EXPECT_EQ(importer_host->GetObserverForTesting(), observer.get());
   EXPECT_EQ(GetExpectedCalls(), 0);
 
@@ -129,7 +128,6 @@ TEST_F(BraveImporterObserverUnitTest, DestroyObserverEarly) {
           base::BindRepeating(
               &BraveImporterObserverUnitTest::NotifyImportProgress,
               base::Unretained(this)));
-  importer_host->set_observer(observer.get());
   EXPECT_EQ(importer_host->GetObserverForTesting(), observer.get());
   EXPECT_EQ(GetExpectedCalls(), 0);
   observer.reset();

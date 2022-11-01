@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog_delegate.h"
 
 namespace content {
@@ -37,7 +38,7 @@ class FullDiskAccessConfirmDialogDelegate
   void OnAccepted() override;
   void OnLinkClicked(WindowOpenDisposition disposition) override;
 
-  Browser* browser_;
+  raw_ptr<Browser> browser_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_FULL_DISK_ACCESS_CONFIRM_DIALOG_DELEGATE_H_

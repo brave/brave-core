@@ -18,10 +18,10 @@ class BraveImporterObserver : public importer::ImporterProgressObserver {
   using ReportProgressCallback = base::RepeatingCallback<
       void(const importer::SourceProfile& source_profile, const base::Value&)>;
 
-  explicit BraveImporterObserver(ExternalProcessImporterHost* host,
-                                 const importer::SourceProfile& source_profile,
-                                 uint16_t imported_items,
-                                 ReportProgressCallback callback);
+  BraveImporterObserver(ExternalProcessImporterHost* host,
+                        const importer::SourceProfile& source_profile,
+                        uint16_t imported_items,
+                        ReportProgressCallback callback);
   ~BraveImporterObserver() override;
 
   void ImportStarted() override;
@@ -33,6 +33,7 @@ class BraveImporterObserver : public importer::ImporterProgressObserver {
   FRIEND_TEST_ALL_PREFIXES(BraveImporterObserverUnitTest, ImportEvents);
 
   ExternalProcessImporterHost* GetImporterHostForTesting();
+
   importer::SourceProfile source_profile_;
   uint16_t imported_items_ = 0;
   ReportProgressCallback callback_;
