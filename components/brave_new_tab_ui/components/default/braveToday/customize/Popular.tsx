@@ -10,6 +10,7 @@ import { useBraveNews } from './Context'
 import DiscoverSection from './DiscoverSection'
 import FeedCard from './FeedCard'
 import { getLocale } from '$web-common/locale'
+import { api } from '../../../../api/brave_news/news'
 
 const LoadMoreButtonContainer = styled.div`
   display: flex;
@@ -24,9 +25,20 @@ export default function Suggestions () {
   const { filteredPublisherIds, publishers } = useBraveNews()
   const [showAll, setShowAll] = React.useState(false)
   const popularPublisherIds = React.useMemo(() => filteredPublisherIds.map(id => publishers[id])
-    .filter(p => p.rank !== 0) // Rank of zero is unranked
-    .sort((a, b) => a.rank - b.rank)
-    .map(p => p.publisherId), [filteredPublisherIds, publishers])
+    .map(p => [p, p.locales.find(l => l.locale === api.locale)?.rank] as const)
+     // Filter out publishers which aren't in the current locale.
+    .filter(([p, pRank]) => pRank !== undefined)
+    .sort(([a, aRank], [b, bRank]) => {
+      // Neither source has a rank, sort alphabetically
+      if (!aRank && !bRank) {
+        return a.publisherName.localeCompare(b.publisherName)
+      }
+
+      // 0 is considered unranked, because mojo doesn't support optional
+      // primitives, so we want to sort 0 last.
+      return (aRank || Number.MAX_SAFE_INTEGER) - (bRank || Number.MAX_SAFE_INTEGER)
+    })
+    .map(([p]) => p.publisherId), [filteredPublisherIds, publishers])
 
   const popularPublishersTruncated = React.useMemo(() => showAll
     ? popularPublisherIds

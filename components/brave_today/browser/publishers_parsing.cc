@@ -27,6 +27,9 @@ mojom::LocaleInfoPtr ParseLocaleInfo(const base::Value::Dict& publisher_dict,
   // has been updated. https://github.com/brave/brave-browser/issues/26307
   if (locale_entry.is_string()) {
     result->locale = locale_entry.GetString();
+
+    // We consider '0' to be unranked, as mojo doesn't support nullable
+    // primitives.
     result->rank = publisher_dict.FindInt("rank").value_or(0);
     auto* channels_raw = publisher_dict.FindList("channels");
     if (channels_raw) {
@@ -112,10 +115,6 @@ bool ParseCombinedPublisherList(const std::string& json,
     if (background_color) {
       publisher->background_color = *background_color;
     }
-
-    // We consider '0' to be unranked, as mojo doesn't support nullable
-    // primitives.
-    publisher->rank = publisher_dict.FindInt("rank").value_or(0);
 
     // TODO(petemill): Validate
     publishers->insert_or_assign(publisher->publisher_id, std::move(publisher));
