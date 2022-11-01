@@ -89,6 +89,7 @@ describe('useSwap hook', () => {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/usdc.png',
       name: 'USD Coin',
       symbol: 'USDC',

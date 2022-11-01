@@ -288,7 +288,7 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
 
   return mojom::BlockchainToken::New(
       eth_addr.ToChecksumAddress(), *name, "" /* logo */, is_erc20, is_erc721,
-      *symbol, decimals, true, "", "", chain_id, coin);
+      is_erc721 /* is_nft */, *symbol, decimals, true, "", "", chain_id, coin);
 }
 
 bool ParseCoinMarkets(const std::string& json,

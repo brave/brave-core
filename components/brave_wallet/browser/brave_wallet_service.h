@@ -74,6 +74,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateUserAssetEthContractAddress(PrefService* prefs);
   static void MigrateMultichainUserAssets(PrefService* prefs);
   static void MigrateUserAssetsAddPreloadingNetworks(PrefService* prefs);
+  static void MigrateUserAssetsAddIsNFT(PrefService* prefs);
 
   static bool AddUserAsset(mojom::BlockchainTokenPtr token, PrefService* prefs);
   static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(

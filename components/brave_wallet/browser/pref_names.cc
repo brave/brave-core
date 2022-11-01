@@ -36,6 +36,8 @@ const char kBraveWalletUserAssetEthContractAddressMigrated[] =
     "brave.wallet.user.asset.eth_contract_address_migrated";
 const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
     "brave.wallet.user.assets.add_preloading_networks_migrated_2";
+const char kBraveWalletUserAssetsAddIsNFTMigrated[] =
+    "brave.wallet.user.assets.add_is_nft_migrated";
 const char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
     "brave.wallet.deprecated_ethereum_test_networks_migrated";
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";

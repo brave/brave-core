@@ -139,6 +139,7 @@ export const AddCustomTokenForm = (props: Props) => {
         decimals: Number(tokenDecimals),
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
         isErc721: false,
+        isNft: false,
         name: tokenName,
         symbol: tokenSymbol,
         tokenId: '',
