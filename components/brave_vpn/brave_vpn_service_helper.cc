@@ -155,9 +155,11 @@ std::vector<mojom::Region> ParseRegionList(
   return regions;
 }
 
-base::Value::Dict GetValueWithTicketInfos(const std::string& email,
-                                          const std::string& subject,
-                                          const std::string& body) {
+base::Value::Dict GetValueWithTicketInfos(
+    const std::string& email,
+    const std::string& subject,
+    const std::string& body,
+    const std::string& subscriber_credential) {
   base::Value::Dict dict;
 
   std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
@@ -173,7 +175,7 @@ base::Value::Dict GetValueWithTicketInfos(const std::string& email,
   dict.Set("partner-client-id", "com.brave.browser");
 
   // optional (but encouraged) fields
-  dict.Set("subscriber-credential", "");
+  dict.Set("subscriber-credential", subscriber_credential);
   dict.Set("payment-validation-method", "brave-premium");
   dict.Set("payment-validation-data", "");
 

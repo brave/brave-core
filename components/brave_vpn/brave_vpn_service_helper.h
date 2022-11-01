@@ -34,9 +34,11 @@ std::unique_ptr<Hostname> PickBestHostname(
 std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames);
 std::vector<mojom::Region> ParseRegionList(
     const base::Value::List& region_list);
-base::Value::Dict GetValueWithTicketInfos(const std::string& email,
-                                          const std::string& subject,
-                                          const std::string& body);
+base::Value::Dict GetValueWithTicketInfos(
+    const std::string& email,
+    const std::string& subject,
+    const std::string& body,
+    const std::string& subscriber_credential);
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::Region> region_list);

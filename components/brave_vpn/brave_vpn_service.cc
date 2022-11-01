@@ -459,8 +459,9 @@ void BraveVpnService::CreateSupportTicket(
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnCreateSupportTicket,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_.CreateSupportTicket(std::move(internal_callback), email, subject,
-                                   body);
+  api_request_.CreateSupportTicket(
+      std::move(internal_callback), email, subject, body,
+      ::brave_vpn::GetSubscriberCredential(local_prefs_));
 }
 
 void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
@@ -756,10 +757,11 @@ void BraveVpnService::ScheduleSubscriberCredentialRefresh() {
   if (!expiration_time)
     return;
 
+  auto expiration_time_delta = *expiration_time - base::Time::Now();
   VLOG(2) << "Schedule subscriber credential fetching after "
-          << *expiration_time - base::Time::Now();
+          << expiration_time_delta;
   subs_cred_refresh_timer_.Start(
-      FROM_HERE, *expiration_time - base::Time::Now(),
+      FROM_HERE, expiration_time_delta,
       base::BindOnce(&BraveVpnService::RefreshSubscriberCredential,
                      base::Unretained(this)));
 }
