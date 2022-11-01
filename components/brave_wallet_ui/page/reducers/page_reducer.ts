@@ -206,6 +206,7 @@ export const createPageReducer = (initialState: PageState) => {
   return reducer
 }
 
-const reducer = createPageReducer(defaultState)
-export const pageReducer = reducer
-export default reducer
+export const pageSlice = createPageSlice()
+export const pageReducer = pageSlice.reducer
+export const PageActions = { ...pageSlice.actions, ...WalletPageAsyncActions }
+export default pageReducer
