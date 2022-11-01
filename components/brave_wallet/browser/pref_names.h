@@ -41,6 +41,7 @@ extern const char kBraveWalletP3AFirstUnlockTime[];
 extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
 
+extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
 
 extern const char kBraveWalletLastTransactionSentTimeDict[];

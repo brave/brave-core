@@ -308,6 +308,30 @@ public class AsyncUtils {
         }
     }
 
+    public static class GetTxExtraInfoResponseContext extends SingleResponseBaseContext
+            implements Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[],
+                    HashMap<String, Double>, HashMap<String, HashMap<String, Double>>> {
+        public HashMap<String, Double> assetPrices;
+        public BlockchainToken[] tokenList;
+        public HashMap<String, Double> nativeAssetsBalances;
+        public HashMap<String, HashMap<String, Double>> blockchainTokensBalances;
+
+        public GetTxExtraInfoResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(HashMap<String, Double> assetPrices, BlockchainToken[] tokenList,
+                HashMap<String, Double> nativeAssetsBalances,
+                HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
+            this.assetPrices = assetPrices;
+            this.tokenList = tokenList;
+            this.nativeAssetsBalances = nativeAssetsBalances;
+            this.blockchainTokensBalances = blockchainTokensBalances;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
     public static class GetSolanaEstimatedTxFeeResponseContext extends SingleResponseBaseContext
             implements SolanaTxManagerProxy.GetEstimatedTxFee_Response {
         public Long fee;

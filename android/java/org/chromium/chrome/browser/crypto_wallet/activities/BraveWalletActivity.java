@@ -11,6 +11,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLE
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
 import android.os.Build;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +57,7 @@ import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.lang.IllegalArgumentException;
+import java.lang.Runnable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -214,6 +216,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 }
             });
         }
+        // Delay active wallet P3A report to avoid too many RPC calls at once
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.reportActiveWalletsForP3A(BraveWalletActivity.this);
+            }
+        }, 10000);
     }
 
     @Override

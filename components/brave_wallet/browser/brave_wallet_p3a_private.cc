@@ -16,4 +16,8 @@ void BraveWalletP3APrivate::ReportOnboardingAction(
 void BraveWalletP3APrivate::ReportTransactionSent(mojom::CoinType coin,
                                                   bool new_send) {}
 
+void BraveWalletP3APrivate::RecordActiveWalletCount(int count,
+                                                    mojom::CoinType coin_type) {
+}
+
 }  // namespace brave_wallet

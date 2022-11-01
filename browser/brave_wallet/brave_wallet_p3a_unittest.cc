@@ -170,4 +170,31 @@ TEST_F(BraveWalletP3AUnitTest, TransactionSent) {
   histogram_tester_->ExpectBucketCount(kFilTransactionSentHistogramName, 0, 1);
 }
 
+TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::ETH);
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::FIL);
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::SOL);
+
+  // Should not record zero to histogram if user never had an active account
+  histogram_tester_->ExpectTotalCount(kEthActiveAccountHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kFilActiveAccountHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kSolActiveAccountHistogramName, 0);
+
+  wallet_p3a_->RecordActiveWalletCount(3, mojom::CoinType::ETH);
+  wallet_p3a_->RecordActiveWalletCount(9, mojom::CoinType::FIL);
+  wallet_p3a_->RecordActiveWalletCount(7, mojom::CoinType::SOL);
+
+  histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 3, 1);
+  histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 5, 1);
+  histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 4, 1);
+
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::ETH);
+  wallet_p3a_->RecordActiveWalletCount(1, mojom::CoinType::FIL);
+  wallet_p3a_->RecordActiveWalletCount(2, mojom::CoinType::SOL);
+
+  histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 0, 1);
+  histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 1, 1);
+  histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 2, 1);
+}
+
 }  // namespace brave_wallet
