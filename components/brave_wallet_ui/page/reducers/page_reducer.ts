@@ -148,6 +148,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.showRecoveryPhrase = payload.show
       },
 
+      updateNFTMetadata (state, { payload }: PayloadAction<NFTMetadataReturnType>) {
+        state.nftMetadata = payload
+      },
+
       updatePriceInfo (state: PageState, { payload }: PayloadAction<SelectAssetPayloadType>) {
         state.selectedAssetFiatPrice = payload.defaultFiatPrice
         state.selectedAssetCryptoPrice = payload.defaultCryptoPrice
@@ -181,13 +185,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.updateNFTMetadata.type, (state: PageState, payload: NFTMetadataReturnType) => {
-    return {
-      ...state,
-      nftMetadata: payload
-    }
-  })
 
   reducer.on(Actions.setIsFetchingNFTMetadata.type, (state: PageState, payload: boolean) => {
     return {
