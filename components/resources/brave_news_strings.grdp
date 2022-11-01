@@ -3,6 +3,9 @@
   <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button">
     Back to <ph name="BEGIN_BOLD">$1</ph>Dashboard<ph name="END_BOLD">$2</ph>
   </message>
+  <message name="IDS_BRAVE_NEWS_BACK_BUTTON" desc="Label for the back button">
+    Back
+  </message>
   <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER" desc="Header for the brave news disabled placeholder">
     Turn on Brave News, and never miss a story
   </message>
@@ -18,8 +21,8 @@
   <message name="IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER" desc="Header for the channel section">
     Channels
   </message>
-  <message name="IDS_BRAVE_NEWS_SHOW_MORE_BUTTON" desc="Label for the button to show more items from a limited selection. For example, this might show more categories, or more suggested publishers">
-    Show more
+  <message name="IDS_BRAVE_NEWS_VIEW_ALL_BUTTON" desc="Label for the button to view all items in carousel. For example, this might show more suggested or popular publishers">
+    View All
   </message>
   <message name="IDS_BRAVE_NEWS_ALL_SOURCES_HEADER" desc="Header for the all sources section">
     Sources

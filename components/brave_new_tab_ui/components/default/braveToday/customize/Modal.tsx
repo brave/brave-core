@@ -12,7 +12,7 @@ const Configure = React.lazy(() => import('./Configure'))
 const Dialog = styled.dialog`
   border-radius: 8px;
   border: none;
-  width: min(100vw, 1092px);
+  width: min(100vw, 1049px);
   height: min(100vh, 712px);
   z-index: 1000;
   background: white;
@@ -31,8 +31,12 @@ export default function BraveNewsModal () {
   // Note: There's no attribute for open modal, so we need
   // to call showModal instead.
   React.useEffect(() => {
-    dialogRef.current?.showModal?.()
-  }, [customizePage, dialogRef])
+    if (shouldRender && !dialogRef.current?.open) {
+      dialogRef.current?.showModal?.()
+    } else if (!shouldRender && dialogRef.current?.open) {
+      dialogRef.current?.close?.()
+    }
+  }, [shouldRender, dialogRef])
 
   // Only render the dialog if it should be shown, since
   // it is a complex view.

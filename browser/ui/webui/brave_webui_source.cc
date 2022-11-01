@@ -207,12 +207,13 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "ad", IDS_BRAVE_TODAY_DISPLAY_AD_LABEL },
 
         { "braveNewsBackToDashboard", IDS_BRAVE_NEWS_BACK_TO_DASHBOARD },
+        { "braveNewsBackButton", IDS_BRAVE_NEWS_BACK_BUTTON },
         { "braveNewsDisabledPlaceholderHeader", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER },   // NOLINT
         { "braveNewsDisabledPlaceholderSubtitle", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE },  // NOLINT
         { "braveNewsDisabledPlaceholderEnableButton", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON },  // NOLINT
         { "braveNewsSearchPlaceholderLabel", IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},  // NOLINT
         { "braveNewsChannelsHeader", IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER},  // NOLINT
-        { "braveNewsShowMoreButton", IDS_BRAVE_NEWS_SHOW_MORE_BUTTON},
+        { "braveNewsViewAllButton", IDS_BRAVE_NEWS_VIEW_ALL_BUTTON},
         { "braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
         { "braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
         { "braveNewsFollowButtonFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},  // NOLINT

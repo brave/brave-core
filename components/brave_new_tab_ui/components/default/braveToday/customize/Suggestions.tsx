@@ -3,52 +3,35 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { getLocale } from '$web-common/locale'
 import * as React from 'react'
-import styled from 'styled-components'
-import Button from '$web-components/button'
+import Flex from '../../../Flex'
+import Carousel from './Carousel'
 import { useBraveNews } from './Context'
+import CustomizeLink from './CustomizeLink'
+import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'
 import FeedCard from './FeedCard'
-import { getLocale } from '$web-common/locale'
 
-const LoadMoreButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  grid-column: 2;
-`
+export function SuggestionsCarousel () {
+  const { suggestedPublisherIds, setCustomizePage } = useBraveNews()
 
-const Subtitle = styled.span`
-  font-weight: 400;
-  font-size: 12px;
-  color: var(--text2);
-`
+  return <Carousel
+    title={<Flex justify='space-between'>
+      {getLocale('braveNewsSuggestionsTitle')}
+      <CustomizeLink onClick={() => setCustomizePage('suggestions')}>
+        {getLocale('braveNewsViewAllButton')}
+      </CustomizeLink>
+    </Flex>}
+    subtitle={getLocale('braveNewsSuggestionsSubtitle')}
+    publisherIds={suggestedPublisherIds}/>
+}
 
-const DEFAULT_SUGGESTIONS_COUNT = 3
-
-export default function Suggestions () {
+export function SuggestionsPage () {
   const { suggestedPublisherIds } = useBraveNews()
-  const [showAll, setShowAll] = React.useState(false)
-  const filteredSuggestions = React.useMemo(() => suggestedPublisherIds
-    .slice(0, showAll ? undefined : DEFAULT_SUGGESTIONS_COUNT), [suggestedPublisherIds, showAll])
-
-  if (!filteredSuggestions.length) {
-    return null
-  }
-
-  return (
-    <DiscoverSection name={getLocale('braveNewsSuggestionsTitle')} subtitle={
-      <Subtitle>{getLocale('braveNewsSuggestionsSubtitle')}</Subtitle>
-    }>
-      {filteredSuggestions.map(s =>
-        <FeedCard key={s} publisherId={s} />)
-      }
-      {!showAll && suggestedPublisherIds.length > DEFAULT_SUGGESTIONS_COUNT &&
-      <LoadMoreButtonContainer>
-        <Button onClick={() => setShowAll(true)}>
-          {getLocale('braveNewsShowMoreButton')}
-        </Button>
-      </LoadMoreButtonContainer>}
+  return <CustomizePage title={getLocale('braveNewsSuggestionsTitle')}>
+    <DiscoverSection>
+      {suggestedPublisherIds.map(p => <FeedCard key={p} publisherId={p} />)}
     </DiscoverSection>
-  )
+  </CustomizePage>
 }
