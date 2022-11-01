@@ -141,6 +141,7 @@ base::Value::Dict GetEthNativeAssetFromChain(
   native_asset.Set("symbol", chain->symbol);
   native_asset.Set("is_erc20", false);
   native_asset.Set("is_erc721", false);
+  native_asset.Set("is_nft", false);
   native_asset.Set("decimals", chain->decimals);
   native_asset.Set("visible", true);
   return native_asset;
@@ -354,6 +355,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   value.Set("logo", token->logo);
   value.Set("is_erc20", token->is_erc20);
   value.Set("is_erc721", token->is_erc721);
+  value.Set("is_nft", token->is_nft);
   value.Set("decimals", token->decimals);
   value.Set("visible", true);
   value.Set("token_id", token->token_id);
@@ -777,6 +779,43 @@ void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
 }
 
 // static
+void BraveWalletService::MigrateUserAssetsAddIsNFT(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated))
+    return;
+
+  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
+    prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
+    return;
+  }
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
+  auto& user_assets_pref = update.Get()->GetDict();
+
+  for (auto user_asset_dict_per_cointype : user_assets_pref) {
+    if (!user_asset_dict_per_cointype.second.is_dict())
+      continue;
+    for (auto user_asset_list_per_chain :
+         user_asset_dict_per_cointype.second.GetDict()) {
+      if (!user_asset_list_per_chain.second.is_list())
+        continue;
+      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
+        auto* asset = user_asset.GetIfDict();
+        if (!asset)
+          continue;
+
+        auto is_erc721 = asset->FindBool("is_erc721");
+        if (is_erc721 && *is_erc721 == true) {
+          asset->Set("is_nft", true);
+        } else {
+          asset->Set("is_nft", false);
+        }
+      }
+    }
+  }
+  prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
+}
+
+// static
 base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   base::Value::Dict user_assets;
 
@@ -786,6 +825,7 @@ base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   bat.Set("symbol", "BAT");
   bat.Set("is_erc20", true);
   bat.Set("is_erc721", false);
+  bat.Set("is_nft", false);
   bat.Set("decimals", 18);
   bat.Set("visible", true);
   bat.Set("logo", "bat.png");
@@ -817,6 +857,7 @@ base::Value::Dict BraveWalletService::GetDefaultSolanaAssets() {
   sol.Set("decimals", 9);
   sol.Set("is_erc20", false);
   sol.Set("is_erc721", false);
+  sol.Set("is_nft", false);
   sol.Set("visible", true);
   sol.Set("logo", "sol.png");
 
@@ -841,6 +882,7 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
   fil.Set("decimals", 18);
   fil.Set("is_erc20", false);
   fil.Set("is_erc721", false);
+  fil.Set("is_nft", false);
   fil.Set("visible", true);
   fil.Set("logo", "fil.png");
 

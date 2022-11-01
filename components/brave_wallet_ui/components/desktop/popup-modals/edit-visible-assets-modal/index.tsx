@@ -82,6 +82,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       decimals: selectedNetwork.decimals,
       isErc20: false,
       isErc721: false,
+      isNft: false,
       logo: selectedNetwork.iconUrls[0] ?? '',
       name: selectedNetwork.symbolName,
       symbol: selectedNetwork.symbol,
