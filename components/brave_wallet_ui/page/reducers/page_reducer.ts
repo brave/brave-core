@@ -102,6 +102,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
     name: 'page',
     initialState: initialState,
     reducers: {
+      hasMnemonicError (state: PageState, { payload }: PayloadAction<boolean>) {
+        state.invalidMnemonic = payload
+      },
+
       recoveryWordsAvailable (state: PageState, { payload }: PayloadAction<RecoveryWordsAvailablePayloadType>) {
         state.mnemonic = payload.mnemonic
       },
@@ -131,13 +135,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.hasMnemonicError.type, (state: PageState, payload: boolean) => {
-    return {
-      ...state,
-      invalidMnemonic: payload
-    }
-  })
 
   reducer.on(Actions.updateSelectedAsset.type, (state: PageState, payload: BraveWallet.BlockchainToken) => {
     return {
