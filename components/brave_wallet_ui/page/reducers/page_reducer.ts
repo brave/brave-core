@@ -114,6 +114,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.isFetchingPriceHistory = payload
       },
 
+      setShowIsRestoring (state: PageState, action: PayloadAction<boolean>) {
+        state.showIsRestoring = action.payload
+      },
+
       showRecoveryPhrase (state: PageState, { payload }: PayloadAction<ShowRecoveryPhrasePayload>) {
         state.showRecoveryPhrase = payload.show
       },
@@ -151,13 +155,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setShowIsRestoring.type, (state: PageState, payload: boolean) => {
-    return {
-      ...state,
-      showIsRestoring: payload
-    }
-  })
 
   reducer.on(Actions.setImportAccountError.type, (state: PageState, payload: ImportAccountErrorType) => {
     return {
