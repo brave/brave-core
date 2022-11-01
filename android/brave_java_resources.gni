@@ -913,6 +913,7 @@ brave_java_resources = [
   "java/res/xml/brave_rewards_debug_preferences.xml",
   "java/res/xml/brave_rewards_preferences.xml",
   "java/res/xml/brave_search_engines_preferences.xml",
+  "java/res/xml/brave_solana_preferences.xml",
   "java/res/xml/brave_stats_preferences.xml",
   "java/res/xml/brave_theme_preferences.xml",
   "java/res/xml/brave_vpn_preferences.xml",
