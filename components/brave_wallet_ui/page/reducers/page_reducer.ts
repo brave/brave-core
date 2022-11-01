@@ -110,6 +110,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.mnemonic = payload.mnemonic
       },
 
+      setIsFetchingPriceHistory (state: PageState, { payload }: PayloadAction<boolean>) {
+        state.isFetchingPriceHistory = payload
+      },
+
       showRecoveryPhrase (state: PageState, { payload }: PayloadAction<ShowRecoveryPhrasePayload>) {
         state.showRecoveryPhrase = payload.show
       },
@@ -147,13 +151,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setIsFetchingPriceHistory.type, (state: PageState, payload: boolean) => {
-    return {
-      ...state,
-      isFetchingPriceHistory: payload
-    }
-  })
 
   reducer.on(Actions.setShowIsRestoring.type, (state: PageState, payload: boolean) => {
     return {
