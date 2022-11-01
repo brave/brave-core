@@ -506,10 +506,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   {
     content::WebContentsConsoleObserver console_observer(contents);
     console_observer.SetPattern(
-        "Mixed Content: The page at 'http://test.onion*/onion.html' was "
-        "loaded over HTTPS, but requested an insecure image "
-        "'http://not_upgradable_to_https.com/image.jpg'. This content should "
-        "also be served over HTTPS.");
+        "Mixed Content: The page at 'http://test.onion*/onion.html' was loaded "
+        "over HTTPS, but requested an insecure element "
+        "'http://auto_upgradable_to_https.com/image.jpg'. This request was "
+        "automatically upgraded to HTTPS*");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
     console_observer.Wait();
   }

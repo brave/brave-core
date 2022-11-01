@@ -22,7 +22,13 @@
                                                      const KURL& url);      \
                                                                             \
  public:                                                                    \
-  static void UpgradeInsecureRequest
+  static void UpgradeInsecureRequest(                                       \
+      ResourceRequest&,                                                     \
+      const FetchClientSettingsObject* fetch_client_settings_object,        \
+      ExecutionContext* execution_context_for_logging,                      \
+      mojom::RequestContextFrameType,                                       \
+      WebContentSettingsClient* settings_client);                           \
+  static void UpgradeInsecureRequest_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/loader/mixed_content_checker.h"
 

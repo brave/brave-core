@@ -5,14 +5,6 @@
 
 #include "third_party/blink/renderer/core/loader/mixed_content_checker.h"
 
-#define BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT              \
-  if (auto result = IsMixedContentForOnion(security_origin, url)) \
-    return *result;
-
-#include "src/third_party/blink/renderer/core/loader/mixed_content_checker.cc"
-
-#undef BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT
-
 namespace blink {
 
 namespace {
@@ -27,7 +19,21 @@ bool IsOnion(const T& obj) {
 }
 
 }  // namespace
+}  // namespace blink
 
+#define BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT              \
+  if (auto result = IsMixedContentForOnion(security_origin, url)) \
+    return *result;
+
+#define UpgradeInsecureRequest UpgradeInsecureRequest_ChromiumImpl
+
+#include "src/third_party/blink/renderer/core/loader/mixed_content_checker.cc"
+
+#undef UpgradeInsecureRequest
+
+#undef BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT
+
+namespace blink {
 // static
 absl::optional<bool> MixedContentChecker::IsMixedContentForOnion(
     const SecurityOrigin* security_origin,
@@ -43,6 +49,19 @@ absl::optional<bool> MixedContentChecker::IsMixedContentForOnion(
   // onion -> https: not blocked
   // onion -> http: blocked
   return IsMixedContent(url::kHttpsScheme, resource_url);
+}
+
+void MixedContentChecker::UpgradeInsecureRequest(
+    ResourceRequest& resource_request,
+    const FetchClientSettingsObject* fetch_client_settings_object,
+    ExecutionContext* execution_context_for_logging,
+    mojom::RequestContextFrameType frame_type,
+    WebContentSettingsClient* settings_client) {
+  if (IsOnion(resource_request.Url()))
+    return;
+  UpgradeInsecureRequest_ChromiumImpl(
+      resource_request, fetch_client_settings_object,
+      execution_context_for_logging, frame_type, settings_client);
 }
 
 }  // namespace blink
