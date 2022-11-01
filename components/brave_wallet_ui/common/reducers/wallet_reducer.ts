@@ -363,6 +363,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isLoadingCoinMarketData = false
       },
 
+      selectCurrency (state: WalletState, { payload }: PayloadAction<BraveWallet.OnRampCurrency>) {
+        state.selectedCurrency = payload
+      },
+
       setDefaultAccounts (state: WalletState, { payload }: PayloadAction<BraveWallet.AccountInfo[]>) {
         state.defaultAccounts = payload
       },
@@ -520,13 +524,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.selectCurrency.type, (state: WalletState, payload: BraveWallet.OnRampCurrency): WalletState => {
-    return {
-      ...state,
-      selectedCurrency: payload
-    }
-  })
 
   reducer.on(WalletActions.setPasswordAttempts.type, (state: WalletState, payload: number): WalletState => {
     return {
