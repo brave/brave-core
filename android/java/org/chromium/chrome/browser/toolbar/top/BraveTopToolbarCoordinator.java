@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewStub;
 
 import org.chromium.base.Callback;
@@ -127,5 +128,17 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
     public ObservableSupplier<Integer> getConstraintsProxy() {
         return mConstraintsProxy;
+    }
+
+    @Override
+    public void setTabSwitcherMode(
+            boolean inTabSwitcherMode, boolean showToolbar, boolean delayAnimation) {
+        super.setTabSwitcherMode(inTabSwitcherMode, showToolbar, delayAnimation);
+
+        if (mBraveToolbarLayout instanceof ToolbarPhone) {
+            mBraveToolbarLayout.setVisibility(
+                    ((ToolbarPhone) mBraveToolbarLayout).isInTabSwitcherMode() ? View.INVISIBLE
+                                                                               : View.VISIBLE);
+        }
     }
 }
