@@ -1,0 +1,21 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("unittests") {
+  if (!is_android) {
+    testonly = true
+
+    sources = [ "brave_importer_observer_unittest.cc" ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/browser/ui",
+      "//chrome/browser",
+      "//chrome/browser/ui",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}
