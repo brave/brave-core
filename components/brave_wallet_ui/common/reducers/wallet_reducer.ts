@@ -532,6 +532,7 @@ export const createWalletReducer = (initialState: WalletState) => {
   return createWalletSlice(initialState).reducer
 }
 
-const reducer = createWalletReducer(defaultState)
-
-export default reducer
+export const walletSlice = createWalletSlice()
+export const walletReducer = walletSlice.reducer
+export const WalletActions = { ...walletSlice.actions, ...WalletAsyncActions }
+export default walletReducer
