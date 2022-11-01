@@ -53,7 +53,6 @@ import {
   AddAccountPayloadType,
   AddFilecoinAccountPayloadType
 } from '../../page/constants/action_types'
-import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
@@ -399,6 +398,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = payload
       },
 
+      setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<AssetFilterOption>) {
+        state.selectedAssetFilter = payload
+      },
+
       setSelectedCoin (state: WalletState, { payload }: PayloadAction<BraveWallet.CoinType>) {
         state.selectedCoin = payload
       },
@@ -528,13 +531,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setSelectedAssetFilterItem.type, (state: WalletState, payload: AssetFilterOption): WalletState => {
-    return {
-      ...state,
-      selectedAssetFilter: payload
-    }
-  })
 
   return reducer
 }
