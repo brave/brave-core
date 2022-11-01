@@ -14,7 +14,7 @@ import { SwapExchangeProxy } from './address-labels'
 import { useTransactionParser } from './transaction-parser'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { combineReducers, createStore } from 'redux'
-import { createWalletReducer } from '../reducers/wallet_reducer'
+import { createWalletReducer } from '../reducers/wallet.slice'
 
 const customMockedWalletState = {
   ...mockWalletState,

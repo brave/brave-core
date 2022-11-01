@@ -4,7 +4,7 @@ import { renderHook, act } from '@testing-library/react-hooks'
 // Redux
 import { Provider } from 'react-redux'
 import { combineReducers, createStore } from 'redux'
-import { createWalletReducer } from '../reducers/wallet_reducer'
+import { createWalletReducer } from '../reducers/wallet.slice'
 import { createPageReducer } from '../../page/reducers/page_reducer'
 
 // Constants

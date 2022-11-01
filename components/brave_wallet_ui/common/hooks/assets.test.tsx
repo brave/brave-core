@@ -17,7 +17,7 @@ import { setMockedBuyAssets } from '../async/__mocks__/lib'
 import * as MockedLib from '../async/__mocks__/lib'
 import { LibContext } from '../context/lib.context'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
-import { createWalletReducer, createWalletSlice } from '../reducers/wallet_reducer'
+import { createWalletReducer, createWalletSlice } from '../reducers/wallet.slice'
 import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 
 const mockAccounts = [
