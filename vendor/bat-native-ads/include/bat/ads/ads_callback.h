@@ -31,7 +31,7 @@ using MaybeServeInlineContentAdCallback =
                        const absl::optional<InlineContentAdInfo>&)>;
 
 using GetStatementOfAccountsCallback =
-    std::function<void(mojom::StatementInfoPtr statement)>;
+    base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
 
 using GetDiagnosticsCallback =
     base::OnceCallback<void(absl::optional<base::Value::List> value)>;

@@ -466,7 +466,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->RemoveAllHistory(completion);
+  ads->RemoveAllHistory(base::BindOnce(^(const bool success) {
+    completion(success ? YES : NO);
+  }));
 }
 
 #pragma mark - Observers
@@ -665,7 +667,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return;
   }
   ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType),
-                                    completion);
+                                    base::BindOnce(^(const bool success) {
+                                      completion(success ? YES : NO);
+                                    }));
 }
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived,
@@ -674,21 +678,22 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetStatementOfAccounts(^(ads::mojom::StatementInfoPtr statement) {
-    if (!statement) {
-      completion(0, 0, nil);
-      return;
-    }
+  ads->GetStatementOfAccounts(
+      base::BindOnce(^(ads::mojom::StatementInfoPtr statement) {
+        if (!statement) {
+          completion(0, 0, nil);
+          return;
+        }
 
-    NSDate* nextPaymentDate = nil;
-    if (!statement->next_payment_date.is_null()) {
-      nextPaymentDate =
-          [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
-                                                    .ToDoubleT()];
-    }
-    completion(statement->ads_received_this_month,
-               statement->earnings_this_month, nextPaymentDate);
-  });
+        NSDate* nextPaymentDate = nil;
+        if (!statement->next_payment_date.is_null()) {
+          nextPaymentDate =
+              [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                        .ToDoubleT()];
+        }
+        completion(statement->ads_received_this_month,
+                   statement->earnings_this_month, nextPaymentDate);
+      }));
 }
 
 - (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId

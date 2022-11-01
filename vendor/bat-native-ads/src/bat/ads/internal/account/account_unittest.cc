@@ -5,7 +5,10 @@
 
 #include "bat/ads/internal/account/account.h"
 
+#include <utility>
+
 #include "absl/types/optional.h"
+#include "base/bind.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
@@ -548,11 +551,13 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_transactions, transactions);
-      });
+      base::BindOnce(
+          [](const TransactionList& expected_transactions, const bool success,
+             const TransactionList& transactions) {
+            ASSERT_TRUE(success);
+            EXPECT_EQ(expected_transactions, transactions);
+          },
+          std::move(expected_transactions)));
 }
 
 TEST_F(BatAdsAccountTest, DepositForNonCash) {
@@ -584,11 +589,13 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
 
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_transactions, transactions);
-      });
+      base::BindOnce(
+          [](const TransactionList& expected_transactions, const bool success,
+             const TransactionList& transactions) {
+            ASSERT_TRUE(success);
+            EXPECT_EQ(expected_transactions, transactions);
+          },
+          std::move(expected_transactions)));
 }
 
 TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
@@ -634,10 +641,11 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
 
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
-      [](const bool success, const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(transactions.empty());
-      });
+      base::BindOnce(
+          [](const bool success, const TransactionList& transactions) {
+            ASSERT_TRUE(success);
+            EXPECT_TRUE(transactions.empty());
+          }));
 }
 
 TEST_F(BatAdsAccountTest, GetStatement) {
@@ -681,7 +689,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   SaveTransactions(transactions);
 
   // Act
-  Account::GetStatement([](mojom::StatementInfoPtr statement) {
+  Account::GetStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
@@ -692,7 +700,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
-  });
+  }));
 
   // Assert
 }

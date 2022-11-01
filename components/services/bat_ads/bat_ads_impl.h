@@ -164,10 +164,6 @@ class BatAdsImpl : public mojom::BatAds,
   static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
                          bool success);
 
-  static void OnGetStatementOfAccounts(
-      CallbackHolder<GetStatementOfAccountsCallback>* holder,
-      ads::mojom::StatementInfoPtr statement);
-
   static void OnMaybeServeInlineContentAd(
       CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
       const std::string& dimensions,

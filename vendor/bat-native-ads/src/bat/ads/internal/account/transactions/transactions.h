@@ -9,6 +9,7 @@
 #include <functional>
 #include <string>
 
+#include "base/callback_forward.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 
 namespace base {
@@ -25,7 +26,8 @@ namespace transactions {
 using AddCallback =
     std::function<void(const bool, const TransactionInfo& transaction)>;
 
-using GetCallback = std::function<void(const bool, const TransactionList&)>;
+using GetCallback =
+    base::OnceCallback<void(const bool, const TransactionList&)>;
 
 using RemoveAllCallback = std::function<void(const bool)>;
 
@@ -37,7 +39,7 @@ TransactionInfo Add(const std::string& creative_instance_id,
 
 void GetForDateRange(base::Time from_time,
                      base::Time to_time,
-                     const GetCallback& callback);
+                     GetCallback callback);
 
 void RemoveAll(RemoveAllCallback callback);
 

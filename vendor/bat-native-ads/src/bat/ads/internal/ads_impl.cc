@@ -400,13 +400,11 @@ HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    callback(/*statement*/ nullptr);
+    std::move(callback).Run(/*statement*/ nullptr);
     return;
   }
 
-  Account::GetStatement([callback](mojom::StatementInfoPtr statement) {
-    callback(std::move(statement));
-  });
+  Account::GetStatement(std::move(callback));
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

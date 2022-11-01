@@ -211,6 +211,8 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   ads_->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
 }
 
@@ -235,11 +237,7 @@ void BatAdsImpl::GetHistory(const base::Time from_time,
 
 void BatAdsImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
-  auto* holder = new CallbackHolder<GetStatementOfAccountsCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ads_->GetStatementOfAccounts(std::bind(BatAdsImpl::OnGetStatementOfAccounts,
-                                         holder, std::placeholders::_1));
+  ads_->GetStatementOfAccounts(std::move(callback));
 }
 
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -346,16 +344,6 @@ void BatAdsImpl::OnMaybeServeInlineContentAd(
 
     absl::optional<base::Value::Dict> dict = ads::InlineContentAdToValue(*ad);
     std::move(holder->get()).Run(dimensions, std::move(dict));
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::OnGetStatementOfAccounts(
-    CallbackHolder<GetStatementOfAccountsCallback>* holder,
-    ads::mojom::StatementInfoPtr statement) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(statement));
   }
 
   delete holder;

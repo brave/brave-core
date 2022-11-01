@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/callback.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -66,12 +67,12 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return transaction;
 }
 
-void OnGetTransactions(const GetTransactionsCallback& callback,
+void OnGetTransactions(GetTransactionsCallback callback,
                        mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
-    callback(/*success*/ false, /*transactions*/ {});
+    std::move(callback).Run(/*success*/ false, /*transactions*/ {});
     return;
   }
 
@@ -82,7 +83,7 @@ void OnGetTransactions(const GetTransactionsCallback& callback,
     transactions.push_back(info);
   }
 
-  callback(/*success*/ true, transactions);
+  std::move(callback).Run(/*success*/ true, transactions);
 }
 
 void MigrateToV18(mojom::DBTransactionInfo* transaction) {
@@ -157,7 +158,8 @@ void Transactions::GetAll(GetTransactionsCallback callback) const {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetTransactions, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetTransactions, std::move(callback)));
 }
 
 void Transactions::GetForDateRange(const base::Time from_time,
@@ -196,7 +198,8 @@ void Transactions::GetForDateRange(const base::Time from_time,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetTransactions, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetTransactions, std::move(callback)));
 }
 
 void Transactions::Update(

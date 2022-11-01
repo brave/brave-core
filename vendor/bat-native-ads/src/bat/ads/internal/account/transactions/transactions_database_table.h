@@ -7,7 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_DATABASE_TABLE_H_
 
 #include <string>
+#include <utility>
 
+#include "base/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -21,7 +23,7 @@ class Time;
 namespace ads::database::table {
 
 using GetTransactionsCallback =
-    std::function<void(const bool, const TransactionList&)>;
+    base::OnceCallback<void(const bool, const TransactionList&)>;
 
 class Transactions final : public TableInterface {
  public:
