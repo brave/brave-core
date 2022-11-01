@@ -487,19 +487,19 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isWalletLocked = true
       })
 
-      builder.addCase(WalletAsyncActions.setSelectedAccountFilterItem.type, (state: WalletState, { payload }: PayloadAction<WalletAccountType>) => {
+      builder.addCase(WalletAsyncActions.setSelectedAccountFilterItem, (state, { payload }) => {
         // We need to add a getPortfolioAccountFilter and setPortfolioAccountFilter pref to persist this value
         // https://github.com/brave/brave-browser/issues/25620
         state.isFetchingPortfolioPriceHistory = true
         state.selectedAccountFilter = payload
       })
 
-      builder.addCase(WalletAsyncActions.setSelectedNetworkFilter.type, (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) => {
+      builder.addCase(WalletAsyncActions.setSelectedNetworkFilter, (state, { payload }) => {
         state.isFetchingPortfolioPriceHistory = true
         state.selectedNetworkFilter = payload
       })
 
-      builder.addCase(WalletAsyncActions.transactionStatusChanged.type, (state: WalletState, { payload }: PayloadAction<TransactionStatusChanged>) => {
+      builder.addCase(WalletAsyncActions.transactionStatusChanged, (state, { payload }) => {
         const newPendingTransactions = state.pendingTransactions
           .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
           .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
