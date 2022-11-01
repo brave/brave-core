@@ -132,6 +132,10 @@
     Your email address
   </message>
 
+  <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL_NOT_VALID" desc="Error label for email input on VPN support when text is not a valid email address">
+    Please enter a valid email address
+  </message>
+
   <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT" desc="Label above subject drop down on VPN support">
     Subject
   </message>
