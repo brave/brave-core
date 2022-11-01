@@ -19,7 +19,6 @@
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -229,6 +228,22 @@ std::string GetSubscriberCredential(PrefService* local_prefs) {
   const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
   DCHECK(cred);
   return *cred;
+}
+
+absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs) {
+  if (!HasValidSubscriberCredential(local_prefs))
+    return absl::nullopt;
+
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+
+  const base::Value* expiration_time_value =
+      sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
+
+  if (!expiration_time_value)
+    return absl::nullopt;
+
+  return base::ValueToTime(expiration_time_value);
 }
 
 void SetSubscriberCredential(PrefService* local_prefs,

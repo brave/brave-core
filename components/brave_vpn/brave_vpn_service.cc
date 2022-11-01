@@ -80,6 +80,8 @@ BraveVpnService::~BraveVpnService() = default;
 
 void BraveVpnService::CheckInitialState() {
   if (HasValidSubscriberCredential(local_prefs_)) {
+    ScheduleSubscriberCredentialRefresh();
+
 #if BUILDFLAG(IS_ANDROID)
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
     // Android has its own region data managing logic.
@@ -725,6 +727,10 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 
   SetSubscriberCredential(local_prefs_, subscriber_credential, expiration_time);
 
+  // Launch one-shot timer for refreshing subscriber_credential before it's
+  // expired.
+  ScheduleSubscriberCredentialRefresh();
+
 #if BUILDFLAG(IS_ANDROID)
   SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
 #else
@@ -740,6 +746,30 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
   ScheduleBackgroundRegionDataFetch();
   GetBraveVPNConnectionAPI()->CheckConnection();
 #endif
+}
+
+void BraveVpnService::ScheduleSubscriberCredentialRefresh() {
+  if (subs_cred_refresh_timer_.IsRunning())
+    subs_cred_refresh_timer_.Stop();
+
+  const auto expiration_time = GetExpirationTime(local_prefs_);
+  if (!expiration_time)
+    return;
+
+  VLOG(2) << "Schedule subscriber credential fetching after "
+          << *expiration_time - base::Time::Now();
+  subs_cred_refresh_timer_.Start(
+      FROM_HERE, *expiration_time - base::Time::Now(),
+      base::BindOnce(&BraveVpnService::RefreshSubscriberCredential,
+                     base::Unretained(this)));
+}
+
+void BraveVpnService::RefreshSubscriberCredential() {
+  VLOG(2) << "Refresh subscriber credential";
+
+  // Clear current credentials to get newer one.
+  ClearSubscriberCredential(local_prefs_);
+  ReloadPurchasedState();
 }
 
 // TODO(simonhong): Should move p3a to BraveVPNOSConnectionAPI?

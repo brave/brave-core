@@ -217,6 +217,8 @@ class BraveVpnService :
   void OnGetSubscriberCredentialV12(const base::Time& expiration_time,
                                     const std::string& subscriber_credential,
                                     bool success);
+  void ScheduleSubscriberCredentialRefresh();
+  void RefreshSubscriberCredential();
 
   // Check initial purchased/connected state.
   void CheckInitialState();
@@ -247,6 +249,7 @@ class BraveVpnService :
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   BraveVpnAPIRequest api_request_;
   base::RepeatingTimer p3a_timer_;
+  base::OneShotTimer subs_cred_refresh_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 
