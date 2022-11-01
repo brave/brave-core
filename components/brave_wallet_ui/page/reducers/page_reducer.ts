@@ -91,7 +91,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.mnemonic = payload.mnemonic
       },
 
-      selectCoinMarket (state, { payload }: PayloadAction<BraveWallet.CoinMarket>) {
+      selectCoinMarket (state, { payload }: PayloadAction<BraveWallet.CoinMarket | undefined>) {
         state.selectedCoinMarket = payload
       },
 
@@ -141,7 +141,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.showRecoveryPhrase = payload.show
       },
 
-      updateNFTMetadata (state, { payload }: PayloadAction<NFTMetadataReturnType>) {
+      updateNFTMetadata (state, { payload }: PayloadAction<NFTMetadataReturnType | undefined>) {
         state.nftMetadata = payload
       },
 
