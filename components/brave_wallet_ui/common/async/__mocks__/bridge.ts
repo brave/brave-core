@@ -5,7 +5,7 @@
 
 // redux
 import { createStore, combineReducers } from 'redux'
-import { createWalletReducer } from '../../reducers/wallet.slice'
+import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
 import { BraveWallet } from '../../../constants/types'

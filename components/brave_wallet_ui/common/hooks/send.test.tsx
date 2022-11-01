@@ -21,7 +21,7 @@ import useSend from './send'
 import { LibContext } from '../context/lib.context'
 
 import * as MockedLib from '../async/__mocks__/lib'
-import { createWalletReducer } from '../reducers/wallet.slice'
+import { createWalletReducer } from '../slices/wallet.slice'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { createSendCryptoReducer } from '../reducers/send_crypto_reducer'
 import { mockBasicAttentionToken, mockBinanceCoinErc20Token, mockEthToken, mockMoonCatNFT, mockNewAssetOptions } from '../../stories/mock-data/mock-asset-options'
