@@ -128,6 +128,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         }
       },
 
+      setImportWalletsCheckComplete (state, { payload }: PayloadAction<boolean>) {
+        state.isImportWalletsCheckComplete = payload
+      },
+
       setIsFetchingNFTMetadata (state, { payload }: PayloadAction<boolean>) {
         state.isFetchingNFTMetadata = payload
       },
@@ -193,13 +197,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setImportWalletsCheckComplete.type, (state: PageState, payload: boolean): PageState => {
-    return {
-      ...state,
-      isImportWalletsCheckComplete: payload
-    }
-  })
 
   reducer.on(Actions.agreeToWalletTerms.type, (state: PageState): PageState => {
     return {
