@@ -383,6 +383,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedNetwork = payload
       },
 
+      setOnRampCurrencies (state: WalletState, { payload }: PayloadAction<BraveWallet.OnRampCurrency[]>) {
+        state.onRampCurrencies = payload
+      },
+
       setSelectedAccount (state: WalletState, { payload }: PayloadAction<WalletAccountType>) {
         state.selectedAccount = payload
       },
@@ -516,13 +520,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
 export const createWalletReducer = (initialState: WalletState) => {
   const reducer = createReducer<WalletState>({}, initialState)
-
-  reducer.on(WalletActions.setOnRampCurrencies.type, (state: WalletState, payload: BraveWallet.OnRampCurrency[]): WalletState => {
-    return {
-      ...state,
-      onRampCurrencies: payload
-    }
-  })
 
   reducer.on(WalletActions.selectCurrency.type, (state: WalletState, payload: BraveWallet.OnRampCurrency): WalletState => {
     return {
