@@ -17,7 +17,7 @@ import { setMockedBuyAssets } from '../async/__mocks__/lib'
 import * as MockedLib from '../async/__mocks__/lib'
 import { LibContext } from '../context/lib.context'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
-import { createWalletReducer } from '../reducers/wallet_reducer'
+import { createWalletReducer, createWalletSlice } from '../slices/wallet.slice'
 import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 
 const mockAccounts = [
@@ -59,7 +59,7 @@ describe('useAssets hook', () => {
       () => useAssets(),
       renderHookOptionsWithCustomStore(
         createStore(combineReducers({
-          wallet: createWalletReducer({
+          wallet: createWalletSlice({
             ...mockWalletState,
             userVisibleTokensInfo: mockVisibleList,
             selectedAccount: mockAccounts[0],
@@ -67,7 +67,7 @@ describe('useAssets hook', () => {
             transactionSpotPrices: mockAssetPrices,
             selectedNetwork: mockNetwork,
             networkList: [mockNetwork]
-          })
+          }).reducer
         }))
       )
     )
