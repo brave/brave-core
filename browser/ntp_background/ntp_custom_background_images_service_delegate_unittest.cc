@@ -9,10 +9,12 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/ntp_background/constants.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -67,9 +69,13 @@ TEST_F(NTPCustomBackgroundImagesServiceDelegateUnitTest, MigrationSuccess) {
     ntp_prefs.SetSelectedValue(std::string());
 
     base::ScopedAllowBlockingForTesting allow_blocking_call;
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
+
     ASSERT_TRUE(base::CopyFile(
-        base::FilePath(
-            FILE_PATH_LITERAL("brave/test/data/ntp_background/background.jpg")),
+        test_data_dir.Append(
+            FILE_PATH_LITERAL("ntp_background/background.jpg")),
         profile().GetPath().AppendASCII(
             ntp_background_images::kSanitizedImageFileNameDeprecated)));
   }
