@@ -134,9 +134,9 @@ void BraveP3AStarRandomnessMeta::RequestServerInfo() {
       int saved_epoch = local_state_->GetInteger(kCurrentEpochPrefName);
       std::string saved_pk = local_state_->GetString(kCurrentPKPrefName);
 
-      rnd_server_info_.reset(new RandomnessServerInfo(
+      rnd_server_info_ = std::make_unique<RandomnessServerInfo>(
           static_cast<uint8_t>(saved_epoch), saved_next_epoch_time,
-          DecodeServerPublicKey(&saved_pk)));
+          DecodeServerPublicKey(&saved_pk));
       VLOG(2) << "BraveP3AStarRandomnessMeta: using cached server info";
       info_callback_.Run(rnd_server_info_.get());
       has_used_cached_info = true;
@@ -144,7 +144,7 @@ void BraveP3AStarRandomnessMeta::RequestServerInfo() {
     }
   }
 
-  rnd_server_info_.reset(nullptr);
+  rnd_server_info_ = nullptr;
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(config_->star_randomness_host + "/info");
 

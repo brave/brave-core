@@ -116,7 +116,7 @@ void BraveP3AStar::HandleRandomnessData(
 
   message_callback_.Run(
       histogram_name, epoch,
-      std::unique_ptr<std::string>(new std::string(final_msg)));
+      std::make_unique<std::string>(final_msg));
 }
 
 bool BraveP3AStar::ConstructFinalMessage(
