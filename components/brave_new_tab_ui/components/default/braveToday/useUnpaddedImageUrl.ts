@@ -1,3 +1,4 @@
+
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -5,7 +6,7 @@
 
 import * as React from 'react'
 import getBraveNewsController from '../../../api/brave_news'
-import { useVisible, VisibleOptions } from './useVisible'
+import { useVisible, VisibleOptions } from '$web-common/useVisible'
 
 interface Options {
   rootElement?: HTMLElement | null
