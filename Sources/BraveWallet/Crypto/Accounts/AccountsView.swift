@@ -89,7 +89,10 @@ struct AccountsView: View {
           if let account = selectedAccount {
             AccountActivityView(
               keyringStore: keyringStore,
-              activityStore: cryptoStore.accountActivityStore(for: account),
+              activityStore: cryptoStore.accountActivityStore(
+                for: account,
+                observeAccountUpdates: false
+              ),
               networkStore: cryptoStore.networkStore
             )
             .onDisappear {

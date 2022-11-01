@@ -195,12 +195,18 @@ public class CryptoStore: ObservableObject {
   }
   
   private var accountActivityStore: AccountActivityStore?
-  func accountActivityStore(for account: BraveWallet.AccountInfo) -> AccountActivityStore {
-    if let store = accountActivityStore, store.account.address == account.address {
+  func accountActivityStore(
+    for account: BraveWallet.AccountInfo,
+    observeAccountUpdates: Bool
+  ) -> AccountActivityStore {
+    if let store = accountActivityStore,
+       store.account.address == account.address,
+       store.observeAccountUpdates == observeAccountUpdates {
       return store
     }
     let store = AccountActivityStore(
       account: account,
+      observeAccountUpdates: observeAccountUpdates,
       keyringService: keyringService,
       walletService: walletService,
       rpcService: rpcService,

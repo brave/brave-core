@@ -123,7 +123,10 @@ public struct CryptoView: View {
               NavigationView {
                 AccountTransactionListView(
                   keyringStore: walletStore.keyringStore,
-                  activityStore: store.accountActivityStore(for: walletStore.keyringStore.selectedAccount),
+                  activityStore: store.accountActivityStore(
+                    for: walletStore.keyringStore.selectedAccount,
+                    observeAccountUpdates: true
+                  ),
                   networkStore: store.networkStore
                 )
                 .toolbar {
