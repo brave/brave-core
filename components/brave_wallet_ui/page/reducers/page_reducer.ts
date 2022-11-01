@@ -110,6 +110,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.mnemonic = payload.mnemonic
       },
 
+      setImportAccountError (state: PageState, { payload }: PayloadAction<ImportAccountErrorType>) {
+        state.importAccountError = payload
+      },
+
       setIsFetchingPriceHistory (state: PageState, { payload }: PayloadAction<boolean>) {
         state.isFetchingPriceHistory = payload
       },
@@ -155,13 +159,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setImportAccountError.type, (state: PageState, payload: ImportAccountErrorType) => {
-    return {
-      ...state,
-      importAccountError: payload
-    }
-  })
 
   reducer.on(Actions.setImportWalletError.type, (state: PageState, {
     hasError,
