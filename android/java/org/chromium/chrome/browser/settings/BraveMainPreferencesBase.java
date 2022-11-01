@@ -81,7 +81,6 @@ public class BraveMainPreferencesBase
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_BRAVE_WALLET = "brave_wallet";
     private static final String PREF_BRAVE_VPN = "brave_vpn";
-    private static final String PREF_HOMEPAGE = "homepage";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
     private static final String PREF_BRAVE_LANGUAGES = "brave_languages";
@@ -128,7 +127,7 @@ public class BraveMainPreferencesBase
         removePreferenceIfPresent(MainSettings.PREF_GOOGLE_SERVICES);
         removePreferenceIfPresent(PREF_LANGUAGES);
         removePreferenceIfPresent(PREF_BASICS_SECTION);
-        // removePreferenceIfPresent(PREF_HOMEPAGE);
+        // removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
 
         // removePreferenceIfPresent(PREF_USE_CUSTOM_TABS);
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
@@ -207,7 +206,10 @@ public class BraveMainPreferencesBase
         findPreference(PREF_GENERAL_SECTION).setOrder(++generalOrder);
 
         findPreference(PREF_BRAVE_SEARCH_ENGINES).setOrder(++generalOrder);
-        findPreference(PREF_HOMEPAGE).setOrder(++generalOrder);
+        Preference preference = findPreference(MainSettings.PREF_HOMEPAGE);
+        if (preference != null) {
+            preference.setOrder(++generalOrder);
+        }
         findPreference(PREF_PASSWORDS).setOrder(++generalOrder);
         findPreference(PREF_SYNC).setOrder(++generalOrder);
         findPreference(PREF_BRAVE_STATS).setOrder(++generalOrder);
@@ -261,7 +263,7 @@ public class BraveMainPreferencesBase
 
         // We don't have home button on top toolbar at the moment
         if (!DeviceFormFactor.isTablet() && !BottomToolbarConfiguration.isBottomToolbarEnabled()) {
-            removePreferenceIfPresent(PREF_HOMEPAGE);
+            removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
         }
     }
 
@@ -293,7 +295,7 @@ public class BraveMainPreferencesBase
         updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_addresses);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
-        updatePreferenceIcon(PREF_HOMEPAGE, R.drawable.ic_homepage);
+        updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);
     }
 
     private void updateSearchEnginePreference() {
@@ -322,7 +324,10 @@ public class BraveMainPreferencesBase
     private void overrideChromiumPreferences() {
         // Replace fragment.
         findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
-        findPreference(PREF_HOMEPAGE).setFragment(BraveHomepageSettings.class.getName());
+        Preference preference = findPreference(MainSettings.PREF_HOMEPAGE);
+        if (preference != null) {
+            preference.setFragment(BraveHomepageSettings.class.getName());
+        }
     }
 
     private void setPreferenceListeners() {
