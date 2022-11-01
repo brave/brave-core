@@ -110,6 +110,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.mnemonic = payload.mnemonic
       },
 
+      setCryptoWalletsInitialized (state, { payload }: PayloadAction<boolean>) {
+        state.isCryptoWalletsInitialized = payload
+      },
+
       setImportAccountError (state: PageState, { payload }: PayloadAction<ImportAccountErrorType>) {
         state.importAccountError = payload
       },
@@ -173,13 +177,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setCryptoWalletsInitialized.type, (state: PageState, payload: boolean): PageState => {
-    return {
-      ...state,
-      isCryptoWalletsInitialized: payload
-    }
-  })
 
   reducer.on(Actions.setMetaMaskInitialized.type, (state: PageState, payload: boolean) => {
     return {
