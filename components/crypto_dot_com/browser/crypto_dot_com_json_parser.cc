@@ -12,6 +12,29 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 
+namespace {
+
+absl::optional<double> ConvertValueToDouble(const base::Value* value) {
+  if (!value) {
+    return absl::nullopt;
+  }
+
+  if (value->is_double() || value->is_int()) {
+    return value->GetDouble();
+  }
+
+  if (value->is_string()) {
+    double result;
+    if (base::StringToDouble(value->GetString(), &result)) {
+      return result;
+    }
+  }
+
+  return absl::nullopt;
+}
+
+}  // namespace
+
 void CryptoDotComJSONParser::CalculateAssetVolume(
     const double v,
     const double h,
@@ -32,14 +55,22 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
-  const base::Value* result = response->FindKey("result");
-  const base::Value* data = result->FindKey("data");
+  const base::Value::Dict* response = records_v->GetDict().FindDict("response");
+  const base::Value::Dict* result =
+      response ? response->FindDict("result") : nullptr;
+  const base::Value::Dict* data = result ? result->FindDict("data") : nullptr;
+  if (!data && result) {
+    // Response can contain "data" as array.
+    const base::Value::List* data_list = result->FindList("data");
+    if (data_list && data_list->size() > 0) {
+      data = data_list->front().GetIfDict();
+    }
+  }
 
   if (!response || !result || !data) {
     // Empty values on failed response
@@ -48,27 +79,22 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
     return false;
   }
 
-  const base::Value* v = data->FindKey("v");
-  const base::Value* h = data->FindKey("h");
-  const base::Value* l = data->FindKey("l");
-  const base::Value* price = data->FindKey("a");
+  const absl::optional<double> v = ConvertValueToDouble(data->Find("v"));
+  const absl::optional<double> h = ConvertValueToDouble(data->Find("h"));
+  const absl::optional<double> l = ConvertValueToDouble(data->Find("l"));
+  const absl::optional<double> price = ConvertValueToDouble(data->Find("a"));
 
-  // Number could be double or int.
-  if (!(v && (v->is_double() || v->is_int())) ||
-      !(h && (h->is_double() || h->is_int())) ||
-      !(l && (l->is_double() || l->is_int())) ||
-      !(price && (price->is_double() || price->is_int()))) {
+  if (!v || !h || !l || !price) {
     info->insert({"volume", std::string()});
     info->insert({"price", std::string()});
     return false;
   }
 
   std::string volume;
-  CalculateAssetVolume(
-      v->GetDouble(), h->GetDouble(), l->GetDouble(), &volume);
+  CalculateAssetVolume(*v, *h, *l, &volume);
 
   info->insert({"volume", volume});
-  info->insert({"price", std::to_string(price->GetDouble())});
+  info->insert({"price", std::to_string(*price)});
 
   return true;
 }
@@ -83,53 +109,48 @@ bool CryptoDotComJSONParser::GetChartDataFromJSON(
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
+  const base::Value::Dict* response = records_v->GetDict().FindDict("response");
   if (!response) {
     return false;
   }
 
-  const base::Value* result = response->FindKey("result");
+  const base::Value::Dict* result = response->FindDict("result");
   if (!result) {
     return false;
   }
 
-  const base::Value* data_arr = result->FindKey("data");
-  if (!data_arr || !data_arr->is_list()) {
+  const base::Value::List* data_arr = result->FindList("data");
+  if (!data_arr) {
     return false;
   }
 
   bool success = true;
 
-  for (const base::Value& point : data_arr->GetList()) {
+  for (const base::Value& point : *data_arr) {
     std::map<std::string, std::string> data_point;
-    const base::Value* t = point.FindKey("t");
-    const base::Value* o = point.FindKey("o");
-    const base::Value* h = point.FindKey("h");
-    const base::Value* l = point.FindKey("l");
-    const base::Value* c = point.FindKey("c");
-    const base::Value* v = point.FindKey("v");
+    const absl::optional<double> t = ConvertValueToDouble(point.FindKey("t"));
+    const absl::optional<double> o = ConvertValueToDouble(point.FindKey("o"));
+    const absl::optional<double> h = ConvertValueToDouble(point.FindKey("h"));
+    const absl::optional<double> l = ConvertValueToDouble(point.FindKey("l"));
+    const absl::optional<double> c = ConvertValueToDouble(point.FindKey("c"));
+    const absl::optional<double> v = ConvertValueToDouble(point.FindKey("v"));
 
-    if (!(t && t->is_double()) ||
-        !(o && o->is_double()) ||
-        !(h && h->is_double()) ||
-        !(l && l->is_double()) ||
-        !(c && c->is_double()) ||
-        !(v && v->is_double())) {
+    if (!t || !o || !h || !l || !c || !v) {
       success = false;
       break;
     }
 
-    data_point.insert({"t", std::to_string(t->GetDouble())});
-    data_point.insert({"o", std::to_string(o->GetDouble())});
-    data_point.insert({"h", std::to_string(h->GetDouble())});
-    data_point.insert({"l", std::to_string(l->GetDouble())});
-    data_point.insert({"c", std::to_string(c->GetDouble())});
-    data_point.insert({"v", std::to_string(v->GetDouble())});
+    data_point.insert({"t", std::to_string(*t)});
+    data_point.insert({"o", std::to_string(*o)});
+    data_point.insert({"h", std::to_string(*h)});
+    data_point.insert({"l", std::to_string(*l)});
+    data_point.insert({"c", std::to_string(*c)});
+    data_point.insert({"v", std::to_string(*v)});
 
     data->push_back(data_point);
   }
@@ -147,27 +168,27 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
+  const base::Value::Dict* response = records_v->GetDict().FindDict("response");
   if (!response) {
     return false;
   }
 
-  const base::Value* result = response->FindKey("result");
+  const base::Value::Dict* result = response->FindDict("result");
   if (!result) {
     return false;
   }
 
-  const base::Value* instruments = result->FindKey("instruments");
-  if (!instruments || !instruments->is_list()) {
+  const base::Value::List* instruments = result->FindList("instruments");
+  if (!instruments) {
     return false;
   }
 
-  for (const base::Value& instrument : instruments->GetList()) {
+  for (const base::Value& instrument : *instruments) {
     std::map<std::string, std::string> instrument_data;
     const base::Value* pair = instrument.FindKey("instrument_name");
     const base::Value* quote = instrument.FindKey("quote_currency");
@@ -199,34 +220,29 @@ bool CryptoDotComJSONParser::GetRankingsFromJSON(
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
-  if (!response) {
-    return false;
-  }
-
-  const base::Value* result = response->FindKey("result");
-  if (!result) {
-    return false;
-  }
+  const base::Value::Dict* response = records_v->GetDict().FindDict("response");
+  const base::Value::Dict* result =
+      response ? response->FindDict("result") : nullptr;
 
   std::vector<std::map<std::string, std::string>> gainers;
   std::vector<std::map<std::string, std::string>> losers;
 
   // Both gainers and losers are part of the "gainers" list
-  const base::Value* rankings_list = result->FindKey("gainers");
-  if (!rankings_list || !rankings_list->is_list()) {
+  const base::Value::List* rankings_list =
+      result ? result->FindList("gainers") : nullptr;
+  if (!rankings_list) {
     // Gainers and losers should return empty on a bad response
     rankings->insert({"gainers", gainers});
     rankings->insert({"losers", losers});
     return false;
   }
 
-  for (const base::Value& ranking : rankings_list->GetList()) {
+  for (const base::Value& ranking : *rankings_list) {
     std::map<std::string, std::string> ranking_data;
     const base::Value* pair = ranking.FindKey("instrument_name");
     const base::Value* change = ranking.FindKey("percent_change");

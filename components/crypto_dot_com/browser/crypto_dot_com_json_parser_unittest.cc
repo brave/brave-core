@@ -12,12 +12,10 @@
 
 namespace {
 
-std::string GetValueFromStringMap(
-    const std::map<std::string, std::string>& map,
-    const std::string& key) {
+std::string GetValueFromStringMap(const std::map<std::string, std::string>& map,
+                                  const std::string& key) {
   std::string value;
-  std::map<std::string, std::string>::const_iterator it =
-      map.find(key);
+  std::map<std::string, std::string>::const_iterator it = map.find(key);
   if (it != map.end()) {
     value = it->second;
   }
@@ -25,12 +23,12 @@ std::string GetValueFromStringMap(
 }
 
 std::vector<std::map<std::string, std::string>> GetVectorFromStringRecordMap(
-    const std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>& map,
+    const std::map<std::string,
+                   std::vector<std::map<std::string, std::string>>>& map,
     const std::string& key) {
   std::vector<std::map<std::string, std::string>> value;
-  std::map<std::string, std::vector<
-      std::map<std::string, std::string>>>::const_iterator it =
+  std::map<std::string,
+           std::vector<std::map<std::string, std::string>>>::const_iterator it =
       map.find(key);
   if (it != map.end()) {
     value = it->second;
@@ -40,10 +38,11 @@ std::vector<std::map<std::string, std::string>> GetVectorFromStringRecordMap(
 
 typedef testing::Test CryptoDotComJSONParserTest;
 
+}  // namespace
+
 TEST_F(CryptoDotComJSONParserTest, GetTickerInfoFromJSON) {
-  CryptoDotComTickerInfo info;
-  ASSERT_TRUE(CryptoDotComJSONParser::GetTickerInfoFromJSON(R"(
-      {
+  const char* kTestCases[] = {
+      R"({
         "response": {
             "code": 0,
             "method": "public/get-ticker",
@@ -62,12 +61,58 @@ TEST_F(CryptoDotComJSONParserTest, GetTickerInfoFromJSON) {
                 }
             }
         }
-      })", &info));
+      })",
+      R"({
+        "response": {
+            "code": 0,
+            "method": "public/get-ticker",
+            "result": {
+                "instrument_name": "BTC_USDT",
+                "data": [{
+                    "i": "BTC_USDT",
+                    "b": 11760.03,
+                    "k": 11762.97,
+                    "a": 11759.2,
+                    "t": 1598254503038,
+                    "v": 786.863035,
+                    "h": 11773.98,
+                    "l": 11520.55,
+                    "c": 148.95
+                }]
+            }
+        }
+      })",
+      R"({
+        "response": {
+            "code": 0,
+            "method": "public/get-ticker",
+            "result": {
+                "instrument_name": "BTC_USDT",
+                "data": [{
+                    "i": "BTC_USDT",
+                    "b": "11760.03",
+                    "k": "11762.97",
+                    "a": "11759.2",
+                    "t": "1598254503038",
+                    "v": "786.863035",
+                    "h": "11773.98",
+                    "l": "11520.55",
+                    "c": "148.95"
+                }]
+            }
+        }
+      })",
+  };
+  for (const char* test_case : kTestCases) {
+    CryptoDotComTickerInfo info;
+    ASSERT_TRUE(
+        CryptoDotComJSONParser::GetTickerInfoFromJSON(test_case, &info));
 
-  std::string info_price = GetValueFromStringMap(info, "price");
-  std::string info_volume = GetValueFromStringMap(info, "volume");
-  ASSERT_EQ(info_price, "11759.200000");
-  ASSERT_EQ(info_volume, "9164802.287349");
+    std::string info_price = GetValueFromStringMap(info, "price");
+    std::string info_volume = GetValueFromStringMap(info, "volume");
+    ASSERT_EQ(info_price, "11759.200000");
+    ASSERT_EQ(info_volume, "9164802.287349");
+  }
 }
 
 TEST_F(CryptoDotComJSONParserTest, GetChartDataFromJSON) {
@@ -101,7 +146,8 @@ TEST_F(CryptoDotComJSONParserTest, GetChartDataFromJSON) {
                 ]
             }
         }
-      })", &data));
+      })",
+                                                           &data));
 
   std::map<std::string, std::string> first_point = data.front();
   std::map<std::string, std::string> last_point = data.back();
@@ -161,7 +207,8 @@ TEST_F(CryptoDotComJSONParserTest, GetPairsFromJSON) {
                 ]
             }
         }
-      })", &pairs));
+      })",
+                                                       &pairs));
 
   std::map<std::string, std::string> first_pair = pairs.front();
   std::map<std::string, std::string> last_pair = pairs.back();
@@ -210,7 +257,8 @@ TEST_F(CryptoDotComJSONParserTest, GetRankingsFromJSON) {
                 ]
             }
         }
-      })", &rankings));
+      })",
+                                                          &rankings));
 
   std::vector<std::map<std::string, std::string>> gainers =
       GetVectorFromStringRecordMap(rankings, "gainers");
@@ -237,4 +285,29 @@ TEST_F(CryptoDotComJSONParserTest, GetRankingsFromJSON) {
   ASSERT_EQ(price_l, "0.10");
 }
 
-}  // namespace
+TEST_F(CryptoDotComJSONParserTest, DontCrashGetTickerInfoFromJSON) {
+  CryptoDotComTickerInfo info;
+  EXPECT_FALSE(CryptoDotComJSONParser::GetTickerInfoFromJSON(R"({
+        "response": {
+            "code": 0,
+            "method": "public/get-ticker"
+        }
+      })",
+                                                             &info));
+  EXPECT_FALSE(CryptoDotComJSONParser::GetTickerInfoFromJSON(R"({
+        "response": {
+            "code": 0,
+            "method": "public/get-ticker",
+            "result": false
+        }
+      })",
+                                                             &info));
+  EXPECT_FALSE(CryptoDotComJSONParser::GetTickerInfoFromJSON(R"({
+        "response": {
+            "code": 0,
+            "method": "public/get-ticker",
+            "result": {}
+        }
+      })",
+                                                             &info));
+}
