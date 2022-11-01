@@ -54,19 +54,7 @@ const defaultState: WalletState = {
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
-  selectedNetwork: {
-    chainId: BraveWallet.MAINNET_CHAIN_ID,
-    chainName: 'Ethereum Mainnet',
-    activeRpcEndpointIndex: 0,
-    rpcEndpoints: [],
-    blockExplorerUrls: [],
-    iconUrls: [],
-    symbol: 'ETH',
-    symbolName: 'Ethereum',
-    decimals: 18,
-    coin: BraveWallet.CoinType.ETH,
-    isEip1559: true
-  },
+  selectedNetwork: undefined,
   accounts: [],
   userVisibleTokensInfo: [],
   transactions: {},
@@ -418,18 +406,21 @@ export const createWalletReducer = (initialState: WalletState) => {
   })
 
   reducer.on(WalletActions.isEip1559Changed.type, (state: WalletState, payload: IsEip1559Changed): WalletState => {
-    const selectedNetwork = state.networkList.find(
-      network => network.chainId === payload.chainId
-    ) || state.selectedNetwork
+    const networkToUpdate = state.networkList.find(network => network.chainId === payload.chainId)
+    if (!networkToUpdate) {
+      return state
+    }
 
     const updatedNetwork: BraveWallet.NetworkInfo = {
-      ...selectedNetwork,
+      ...networkToUpdate,
       isEip1559: payload.isEip1559
     }
 
     return {
       ...state,
-      selectedNetwork: updatedNetwork,
+      selectedNetwork: state.selectedNetwork?.chainId === payload.chainId
+        ? updatedNetwork
+        : state.selectedNetwork,
       networkList: state.networkList.map(
         network => network.chainId === payload.chainId ? updatedNetwork : network
       )

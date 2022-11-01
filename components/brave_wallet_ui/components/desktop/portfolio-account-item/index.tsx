@@ -43,7 +43,7 @@ interface Props {
   assetBalance: string
   assetTicker: string
   assetDecimals: number
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   name: string
   hideBalances?: boolean
 }

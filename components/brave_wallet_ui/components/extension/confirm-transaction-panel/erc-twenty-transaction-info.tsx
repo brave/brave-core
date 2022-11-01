@@ -44,7 +44,7 @@ export const Erc20ApproveTransactionInfo = ({ onToggleEditGas }: Erc20Transactio
     </SectionRow>
 
     <TransactionTypeText>
-      {new Amount(transactionDetails.gasFee)
+      {transactionsNetwork && new Amount(transactionDetails.gasFee)
         .divideByDecimals(transactionsNetwork.decimals)
         .formatAsAsset(6, transactionsNetwork.symbol)}
     </TransactionTypeText>

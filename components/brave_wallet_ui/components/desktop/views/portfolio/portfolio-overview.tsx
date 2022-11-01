@@ -19,7 +19,6 @@ import {
 import { getLocale } from '../../../../../common/locale'
 
 // Utils
-import { getTokensCoinType } from '../../../../utils/network-utils'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
@@ -81,10 +80,9 @@ export const PortfolioOverview = () => {
 
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const tokensCoinType = getTokensCoinType(networkList, asset)
     const amounts = accounts
-      .filter((account) => account.coin === tokensCoinType)
-      .map((account) => getBalance(networkList, account, asset))
+      .filter((account) => account.coin === asset.coin)
+      .map((account) => getBalance(account, asset))
 
     // If a user has not yet created a FIL or SOL account,
     // we return 0 until they create an account
@@ -111,7 +109,7 @@ export const PortfolioOverview = () => {
     if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
       return userVisibleTokensInfo.filter((token) =>
         token.chainId === selectedNetworkFilter.chainId &&
-        getTokensCoinType(networkList, token) === selectedNetworkFilter.coin
+        token.coin === selectedNetworkFilter.coin
       )
     }
     // Filter by all other assets by chainId's
@@ -136,7 +134,7 @@ export const PortfolioOverview = () => {
       asset: asset,
       assetBalance: selectedAccountFilter.id === AllAccountsOption.id
         ? fullAssetBalance(asset)
-        : getBalance(networkList, selectedAccountFilter, asset)
+        : getBalance(selectedAccountFilter, asset)
     }))
   }, [visibleTokensForFilteredAccount, selectedAccountFilter, networkList, fullAssetBalance])
 

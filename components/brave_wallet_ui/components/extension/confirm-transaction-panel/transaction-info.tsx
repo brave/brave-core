@@ -94,7 +94,7 @@ export const TransactionInfo = ({
           <SectionColumn>
             <TransactionTitle>Gas Premium</TransactionTitle>
             <TransactionTypeText>
-              {new Amount(transactionDetails.gasPremium)
+              {transactionsNetwork && new Amount(transactionDetails.gasPremium)
                 .divideByDecimals(transactionsNetwork.decimals)
                 .formatAsAsset(6, transactionsNetwork.symbol)}
             </TransactionTypeText>
@@ -105,7 +105,7 @@ export const TransactionInfo = ({
           <SectionColumn>
             <TransactionTitle>Gas Limit</TransactionTitle>
             <TransactionTypeText>
-              {new Amount(transactionDetails.gasLimit)
+              {transactionsNetwork && new Amount(transactionDetails.gasLimit)
                 .divideByDecimals(transactionsNetwork.decimals)
                 .formatAsAsset(6, transactionsNetwork.symbol)}
             </TransactionTypeText>
@@ -116,7 +116,7 @@ export const TransactionInfo = ({
           <SectionColumn>
             <TransactionTitle>Gas Fee Cap</TransactionTitle>
             <TransactionTypeText>
-              {new Amount(transactionDetails.gasFeeCap)
+              {transactionsNetwork && new Amount(transactionDetails.gasFeeCap)
                 .divideByDecimals(transactionsNetwork.decimals)
                 .formatAsAsset(6, transactionsNetwork.symbol)}
             </TransactionTypeText>
@@ -126,7 +126,7 @@ export const TransactionInfo = ({
     }
 
     <TransactionTypeText>
-      {new Amount(transactionDetails.gasFee)
+      {transactionsNetwork && new Amount(transactionDetails.gasFee)
         .divideByDecimals(transactionsNetwork.decimals)
         .formatAsAsset(6, transactionsNetwork.symbol)}
     </TransactionTypeText>
@@ -159,7 +159,7 @@ export const TransactionInfo = ({
     </TransactionTypeText>
     {!isFilecoinTransaction &&
       <TransactionTypeText>
-        + {new Amount(transactionDetails.gasFee)
+        + {transactionsNetwork && new Amount(transactionDetails.gasFee)
           .divideByDecimals(transactionsNetwork.decimals)
           .formatAsAsset(6, transactionsNetwork.symbol)}
       </TransactionTypeText>

@@ -45,7 +45,7 @@ import {
 export interface Props {
   accounts: WalletAccountType[]
   defaultNetworks: BraveWallet.NetworkInfo[]
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   signMessageData: BraveWallet.SignMessageRequest[]
   onSign: () => void
   onCancel: () => void
@@ -137,7 +137,7 @@ export const SignPanel = (props: Props) => {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{network.chainName}</NetworkText>
+        <NetworkText>{network?.chainName ?? ''}</NetworkText>
         {signMessageQueueInfo.queueLength > 1 &&
           <QueueStepRow>
             <QueueStepText>{signMessageQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signMessageQueueInfo.queueLength}</QueueStepText>

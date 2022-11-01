@@ -57,7 +57,7 @@ import { Tooltip } from '../../shared'
 
 export interface Props {
   transaction: BraveWallet.TransactionInfo
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   accounts: WalletAccountType[]
   visibleTokens: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
@@ -225,10 +225,9 @@ const TransactionDetailPanel = (props: Props) => {
           </DetailTitle>
           <BalanceColumn>
             <DetailTextDark>
-              {
-                new Amount(transactionDetails.gasFee)
-                  .divideByDecimals(transactionsNetwork.decimals)
-                  .formatAsAsset(6, transactionsNetwork.symbol)
+              {transactionsNetwork && new Amount(transactionDetails.gasFee)
+                .divideByDecimals(transactionsNetwork.decimals)
+                .formatAsAsset(6, transactionsNetwork.symbol)
               }
             </DetailTextDark>
             <DetailTextDark>
@@ -263,7 +262,7 @@ const TransactionDetailPanel = (props: Props) => {
           {getLocale('braveWalletTransactionDetailNetwork')}
         </DetailTitle>
         <DetailTextDark>
-          {transactionsNetwork.chainName}
+          {transactionsNetwork?.chainName ?? ''}
         </DetailTextDark>
       </DetailRow>
 

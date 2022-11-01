@@ -14,9 +14,10 @@ import {
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
-import { getTokensCoinType, getTokensNetwork } from '../../../../../../utils/network-utils'
+import { getTokensNetwork } from '../../../../../../utils/network-utils'
 import { findAccountByAddress } from '../../../../../../utils/account-utils'
 import { WalletSelectors } from '../../../../../../common/selectors'
+import { getBalance } from '../../../../../../utils/balance-utils'
 
 // Components
 import {
@@ -27,7 +28,6 @@ import {
 } from '../../../../'
 
 // Hooks
-import { useBalance } from '../../../../../../common/hooks'
 import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
 
 // Styled Components
@@ -84,14 +84,11 @@ export const AccountsAndTransactionsList = ({
     if (!selectedAsset) {
       return []
     }
-    const coinType = getTokensCoinType(networkList, selectedAsset)
-    return accounts.filter((account) => account.coin === coinType)
-  }, [networkList, accounts, selectedAsset])
-
-  const getBalance = useBalance(networkList)
+    return accounts.filter((account) => account.coin === selectedAsset.coin)
+  }, [accounts, selectedAsset])
 
   const accountsList = React.useMemo(() => {
-    if (selectedAsset?.isErc721) {
+    if (selectedAsset?.isErc721 && selectedAssetsNetwork) {
       return filteredAccountsByCoinType.filter((account) => Number(account.nativeBalanceRegistry[selectedAssetsNetwork.chainId] ?? 0) !== 0)
     }
     return filteredAccountsByCoinType

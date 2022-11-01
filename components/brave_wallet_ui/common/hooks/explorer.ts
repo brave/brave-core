@@ -44,9 +44,12 @@ export function buildExplorerUrl (
   }
 }
 
-export default function useExplorer (network: BraveWallet.NetworkInfo) {
+export default function useExplorer (network?: BraveWallet.NetworkInfo) {
   return React.useCallback(
     (type: BlockExplorerUrlTypes, value?: string, id?: string) => () => {
+      if (!network) {
+        return
+      }
       const explorerBaseURL = network.blockExplorerUrls[0]
       if (!explorerBaseURL || !value) {
         alert(getLocale('braveWalletTransactionExplorerMissing'))

@@ -5,7 +5,6 @@
 
 import useSwap from './swap'
 import useAssets from './assets'
-import useBalance from './balance'
 import useSend from './send'
 import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
 import useAddressLabels from './address-labels'
@@ -26,7 +25,6 @@ export {
   useAddressLabels,
   useAssetManagement,
   useAssets,
-  useBalance,
   useExplorer,
   useHasAccount,
   useIsMounted,

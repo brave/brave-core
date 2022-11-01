@@ -381,6 +381,7 @@ export default function useSend () {
     const amountBN = new Amount(sendAmount)
       .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
       .value // extract BigNumber object wrapped by Amount
+
     return amountBN && amountBN.decimalPlaces() > 0
       ? 'fromAmountDecimalsOverflow'
       : undefined
@@ -391,8 +392,8 @@ export default function useSend () {
     // We also check that coinType matches here because localhost
     // networks share the same chainId
     if (
-      selectedSendAsset?.chainId === selectedNetwork.chainId &&
-      selectedSendAsset?.coin === selectedNetwork.coin
+      selectedSendAsset?.chainId === selectedNetwork?.chainId &&
+      selectedSendAsset?.coin === selectedNetwork?.coin
     ) {
       return
     }

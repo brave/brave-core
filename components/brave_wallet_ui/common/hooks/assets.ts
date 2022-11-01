@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 
 // utils
 import { addLogoToToken, isSardineSupported } from '../../utils/asset-utils'
+import { getBalance } from '../../utils/balance-utils'
 
 // Constants
 import {
@@ -18,7 +19,6 @@ import {
 
 // Hooks
 import usePricing from './pricing'
-import useBalance from './balance'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
 
@@ -26,7 +26,6 @@ export function useAssets () {
   // redux
   const {
     selectedAccount,
-    networkList,
     selectedNetwork,
     userVisibleTokensInfo,
     transactionSpotPrices: spotPrices
@@ -36,7 +35,6 @@ export function useAssets () {
   const isMounted = useIsMounted()
   const { getBuyAssets } = useLib()
   const { computeFiatAmount } = usePricing(spotPrices)
-  const getBalance = useBalance(networkList)
 
   // state
   const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
@@ -45,7 +43,7 @@ export function useAssets () {
 
   // memos
   const assetsByNetwork = React.useMemo(() => {
-    if (!userVisibleTokensInfo) {
+    if (!userVisibleTokensInfo || !selectedNetwork) {
       return []
     }
     // We also filter by coinType here because localhost
@@ -77,6 +75,10 @@ export function useAssets () {
   }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
 
   const buyAssetOptions = React.useMemo(() => {
+    if (!selectedNetwork) {
+      return []
+    }
+
     const assetOptions = isSardineSupported()
       ? [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions]
       : [...rampAssetOptions, ...wyreAssetOptions]
@@ -87,6 +89,10 @@ export function useAssets () {
 
   // methods
   const getAllBuyOptionsCurrentNetwork = React.useCallback(async () => {
+    if (!selectedNetwork) {
+      return
+    }
+
     // Prevent calling getBuyAssets if the selectedNetwork is not supported.
     if (!BuySupportedChains.includes(selectedNetwork.chainId)) {
       return

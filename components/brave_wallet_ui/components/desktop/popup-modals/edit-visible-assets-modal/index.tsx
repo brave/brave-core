@@ -87,7 +87,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   // Memos
   const nativeAsset = React.useMemo(() => {
-    return {
+    return selectedNetwork && {
       contractAddress: '',
       decimals: selectedNetwork.decimals,
       isErc20: false,
@@ -125,7 +125,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       ? []
       : userVisibleTokensBySelectedNetwork.map((token) => token.contractAddress.toLowerCase())
 
-    const fullAssetsListPlusNativeToken = userVisibleContracts.includes('')
+    const fullAssetsListPlusNativeToken = userVisibleContracts.includes('') || !nativeAsset
       ? selectedNetworkList
       : [nativeAsset, ...selectedNetworkList]
 

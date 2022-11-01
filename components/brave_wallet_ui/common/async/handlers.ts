@@ -71,7 +71,7 @@ function getWalletState (store: Store): WalletState {
 
 async function refreshBalancesPricesAndHistory (store: Store) {
   const state = getWalletState(store)
-  await store.dispatch(refreshVisibleTokenInfo(state.selectedNetwork))
+  await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
   await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
@@ -143,8 +143,7 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
 }
 
 handler.on(WalletActions.refreshBalancesAndPrices.type, async (store: Store) => {
-  const state = getWalletState(store)
-  await store.dispatch(refreshVisibleTokenInfo(state.selectedNetwork))
+  await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
 })
@@ -262,8 +261,9 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
   store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
   // Fetch Balances and Prices
   if (!state.isWalletLocked && state.isWalletCreated) {
-    const currentNetwork = await store.dispatch(refreshNetworkInfo())
-    await store.dispatch(refreshVisibleTokenInfo(currentNetwork))
+    // FIXME - use return value of refreshNetworkInfo() in refreshVisibleTokenInfo()
+    await store.dispatch(refreshNetworkInfo())
+    await store.dispatch(refreshVisibleTokenInfo())
     await store.dispatch(refreshBalances())
     await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
@@ -449,7 +449,7 @@ handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: B
     }))
   } else {
     const { selectedNetwork } = getWalletState(store)
-    if (shouldReportTransactionP3A(txInfo, selectedNetwork, coin)) {
+    if (selectedNetwork && shouldReportTransactionP3A(txInfo, selectedNetwork, coin)) {
       braveWalletP3A.reportTransactionSent(coin, true)
     }
   }
@@ -488,7 +488,7 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
     return
   }
 
-  if (!hasEIP1559Support(selectedAccount, selectedNetwork)) {
+  if (selectedNetwork && !hasEIP1559Support(selectedAccount, selectedNetwork)) {
     return
   }
 
