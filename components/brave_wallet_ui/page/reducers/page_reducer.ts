@@ -128,6 +128,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.isFetchingPriceHistory = payload
       },
 
+      setShowAddModal (state, { payload }: PayloadAction<boolean>) {
+        state.showAddModal = payload
+      },
+
       setShowIsRestoring (state: PageState, action: PayloadAction<boolean>) {
         state.showIsRestoring = action.payload
       },
@@ -169,13 +173,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
 export const createPageReducer = (initialState: PageState) => {
   const reducer = createReducer<PageState>({}, initialState)
-
-  reducer.on(Actions.setShowAddModal.type, (state: PageState, payload: boolean) => {
-    return {
-      ...state,
-      showAddModal: payload
-    }
-  })
 
   reducer.on(Actions.setCryptoWalletsInitialized.type, (state: PageState, payload: boolean): PageState => {
     return {
