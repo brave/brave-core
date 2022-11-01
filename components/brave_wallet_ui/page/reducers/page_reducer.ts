@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { createReducer } from 'redux-act'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import {
@@ -203,7 +202,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 }
 
 export const createPageReducer = (initialState: PageState) => {
-  const reducer = createReducer<PageState>({}, initialState)
+  const { reducer } = createPageSlice(initialState)
   return reducer
 }
 
