@@ -9,7 +9,8 @@ import {
   BraveWallet,
   PageState,
   NFTMetadataReturnType,
-  ImportAccountErrorType
+  ImportAccountErrorType,
+  UpdateAccountNamePayloadType
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
@@ -69,7 +70,8 @@ export const WalletPageAsyncActions = {
   removeHardwareAccount: createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount'),
   removeImportedAccount: createAction<RemoveImportedAccountPayloadType>('removeImportedAccount'),
   restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
-  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset')
+  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
+  updateAccountName: createAction<UpdateAccountNamePayloadType>('updateAccountName')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
