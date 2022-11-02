@@ -13,16 +13,20 @@ import {
 } from '../../constants/types'
 
 // utils
+import { cacher } from '../../utils/query-cache-utils'
 import getAPIProxy from '../async/bridge'
 import WalletApiProxy from '../wallet_api_proxy'
+
+export type NetworkInfoWithId = BraveWallet.NetworkInfo & { id: string }
 
 export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIProxy()) {
   return createApi({
     baseQuery: () => {
       return { data: getProxy() }
     },
+    tagTypes: [...cacher.defaultTags, 'Network'],
     endpoints: (builder) => ({
-      getAllNetworks: builder.query<BraveWallet.NetworkInfo[], void>({
+      getAllNetworks: builder.query<NetworkInfoWithId[], void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
           const {
             jsonRpcService,
@@ -61,7 +65,7 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
           const { chainId: defaultEthChainId } = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
           const { chainIds: hiddenEthNetworkList } = await jsonRpcService.getHiddenNetworks(BraveWallet.CoinType.ETH)
 
-          const networkList = flattenedNetworkList.filter((network) => {
+          const networkList: NetworkInfoWithId[] = flattenedNetworkList.filter((network) => {
             if (!testNetworksEnabled) {
               return !SupportedTestNetworks.includes(network.chainId)
             }
@@ -71,13 +75,16 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
               network.chainId !== defaultEthChainId &&
               hiddenEthNetworkList.includes(network.chainId)
             )
-          })
+          }).map(net => ({
+            id: net.chainId,
+            ...net
+          }))
 
           return {
             data: networkList
           }
         },
-        providesTags: [] // TODO
+        providesTags: cacher.providesList('Network')
       })
     })
   })
