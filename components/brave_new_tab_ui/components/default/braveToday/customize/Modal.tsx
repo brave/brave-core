@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
+import LoadingComponent from '../../../loading'
 import { useBraveNews } from './Context'
 
 const Configure = React.lazy(() => import('./Configure'))
@@ -41,7 +42,7 @@ export default function BraveNewsModal () {
   // Only render the dialog if it should be shown, since
   // it is a complex view.
   return shouldRender ? <Dialog ref={dialogRef as any}>
-    <React.Suspense fallback={<span>Loading...</span>}>
+    <React.Suspense fallback={<LoadingComponent/>}>
       <Configure />
     </React.Suspense>
   </Dialog> : null
