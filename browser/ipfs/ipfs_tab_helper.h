@@ -52,6 +52,11 @@ class IPFSTabHelper : public content::WebContentsObserver,
     current_page_url_for_testing_ = url;
   }
 
+  void SetRediretCallbackForTesting(
+      base::RepeatingCallback<void(const GURL&)> callback) {
+    redirect_callback_for_testing_ = callback;
+  }
+
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
   FRIEND_TEST_ALL_PREFIXES(
@@ -78,6 +83,16 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, GatewayResolving);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           GatewayLikeUrlParsed_AutoRedirectEnabled);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           GatewayLikeUrlParsed_AutoRedirectDisabled);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      GatewayLikeUrlParsed_AutoRedirectDisabled_WithXIPFSPathHeader);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      GatewayLikeUrlParsed_AutoRedirectDisabled_WithDnsLink);
 
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
@@ -85,10 +100,12 @@ class IPFSTabHelper : public content::WebContentsObserver,
   GURL GetCurrentPageURL() const;
   bool CanResolveURL(const GURL& url) const;
   bool IsDNSLinkCheckEnabled() const;
-  void XIPFSPathLinkResolved(const GURL& ipfs);
+  bool IsAutoRedirectIPFSResourcesEnabled() const;
+  void IPFSResourceLinkResolved(const GURL& ipfs);
   void DNSLinkResolved(const GURL& ipfs);
   void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers);
   void UpdateDnsLinkButtonState();
+  absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
   GURL ResolveDNSLinkUrl(const GURL& url);
   GURL ResolveXIPFSPathUrl(const std::string& x_ipfs_path_header_value);
@@ -105,12 +122,16 @@ class IPFSTabHelper : public content::WebContentsObserver,
                             const std::string& host,
                             const absl::optional<std::string>& dnslink);
 
+  void LoadUrl(const GURL& gurl);
+
   PrefService* pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   GURL ipfs_resolved_url_;
   GURL current_page_url_for_testing_;
+  base::RepeatingCallback<void(const GURL&)> redirect_callback_for_testing_;
   std::unique_ptr<IPFSHostResolver> resolver_;
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};
+
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
