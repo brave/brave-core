@@ -29,13 +29,14 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
     tagTypes: [
       ...cacher.defaultTags,
       'Network',
-      'TestnetsEnabled'
+      'TestnetsEnabled',
+      'SelectedCoin'
     ],
-    endpoints: (builder) => ({
+    endpoints: ({ mutation, query }) => ({
       //
       // Networks
       //
-      getAllNetworks: builder.query<NetworkInfoWithId[], void>({
+      getAllNetworks: query<NetworkInfoWithId[], void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
           const apiProxy = baseQuery(undefined).data
 
@@ -47,7 +48,7 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
         },
         providesTags: cacher.providesList('Network')
       }),
-      getNetwork: builder.query<NetworkInfoWithId, string>({
+      getNetwork: query<NetworkInfoWithId, string>({
         async queryFn (chainId, api, extraOptions, baseQuery) {
           const apiProxy = baseQuery(undefined).data
 
@@ -61,7 +62,7 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
         },
         providesTags: cacher.cacheByIdArg('Network')
       }),
-      getIsTestNetworksEnabled: builder.query<boolean, void>({
+      getIsTestNetworksEnabled: query<boolean, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
           const { braveWalletService } = baseQuery(undefined).data
 
@@ -75,7 +76,18 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
         },
         providesTags: ['TestnetsEnabled']
       }),
-      isEip1559Changed: builder.mutation<{ id: string, isEip1559: boolean }, IsEip1559Changed>({
+      getSelectedCoin: query<BraveWallet.CoinType, void>({
+        async queryFn (arg, api, extraOptions, baseQuery) {
+          const apiProxy = baseQuery(undefined).data
+          const { braveWalletService } = apiProxy
+
+          const { coin } = await braveWalletService.getSelectedCoin()
+
+          return { data: coin }
+        },
+        providesTags: ['SelectedCoin']
+      }),
+      isEip1559Changed: mutation<{ id: string, isEip1559: boolean }, IsEip1559Changed>({
         async queryFn (arg) {
           const { chainId, isEip1559 } = arg
           // cache which chains are using EIP1559
