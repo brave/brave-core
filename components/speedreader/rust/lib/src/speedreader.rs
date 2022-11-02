@@ -3,7 +3,6 @@ use url::Url;
 
 pub use lol_html::OutputSink;
 
-use super::speedreader_heuristics::SpeedReaderHeuristics;
 use super::speedreader_readability::SpeedReaderReadability;
 
 #[derive(Error, Debug, PartialEq)]
@@ -50,24 +49,6 @@ impl From<std::str::Utf8Error> for SpeedReaderError {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
-#[repr(u8)]
-pub enum RewriterType {
-    Heuristics = 1,
-    Readability = 2,
-    Unknown = 3,
-}
-
-impl From<u8> for RewriterType {
-    fn from(r_type: u8) -> Self {
-        match r_type {
-            1 => RewriterType::Heuristics,
-            2 => RewriterType::Readability,
-            _ => RewriterType::Unknown,
-        }
-    }
-}
-
 pub trait SpeedReaderProcessor {
     fn set_min_out_length(&mut self, min_out_length: i32);
     fn set_theme(&mut self, theme: &str);
@@ -76,7 +57,6 @@ pub trait SpeedReaderProcessor {
     fn set_content_style(&mut self, style: &str);
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError>;
     fn end(&mut self) -> Result<(), SpeedReaderError>;
-    fn rewriter_type(&self) -> RewriterType;
 }
 
 #[derive(Default)]
@@ -87,15 +67,9 @@ impl SpeedReader {
         &'h self,
         article_url: &str,
         output_sink: O,
-        rewriter_type: RewriterType,
     ) -> Result<Box<dyn SpeedReaderProcessor + 'h>, SpeedReaderError> {
         if let Ok(url) = Url::parse(article_url) {
-            match rewriter_type {
-                RewriterType::Readability => {
-                    Ok(Box::new(SpeedReaderReadability::try_new(url, output_sink)?))
-                }
-                _ => Ok(Box::new(SpeedReaderHeuristics::try_new(url.as_str(), output_sink)?)),
-            }
+            Ok(Box::new(SpeedReaderReadability::try_new(url, output_sink)?))
         } else {
             Err(SpeedReaderError::BadURL(article_url.to_owned()))
         }

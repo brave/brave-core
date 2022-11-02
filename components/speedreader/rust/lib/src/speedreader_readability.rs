@@ -91,11 +91,6 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
             Err(SpeedReaderError::ProcessorClosed)
         }
     }
-
-    #[inline]
-    fn rewriter_type(&self) -> RewriterType {
-        RewriterType::Readability
-    }
 }
 
 impl<O: OutputSink> SpeedReaderReadability<O> {
