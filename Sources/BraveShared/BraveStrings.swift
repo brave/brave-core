@@ -4186,3 +4186,40 @@ extension Strings {
                     value: "Automatically redirects NPR links to their text-based version (at text.npr.org).",
                     comment: "Setting title for option to automatically redirect a url to another url")
 }
+
+// MARK: - Cookie consent notices
+extension Strings {
+  /// A title for a popup that notifies the user that we can block cookie consent notices
+  public static let blockCookieConsentNotices = NSLocalizedString(
+    "BlockCookieConsentNotices",
+    tableName: "BraveShared", bundle: .module,
+    value: "Block cookie consent notices",
+    comment: "A title for a toggle that allows user to block cookie consent notices"
+  )
+  
+  /// A title for a popup that notifies the user that we can block cookie consent notices
+  public static let blockCookieConsentNoticesPopupTitle = NSLocalizedString(
+    "BlockCookieConsentNoticesPopupTitle",
+    tableName: "BraveShared", bundle: .module,
+    value: "Tired of cookie consent notices?",
+    comment: "A title for a popup that notifies the user that we can block cookie consent notices"
+  )
+  /// A description for a popup that notifies the user that we can block cookie consent notices
+  public static let blockCookieConsentNoticesPopupDescription = NSLocalizedString(
+    "BlockCookieConsentNoticesPopupDescription", tableName: "BraveShared", bundle: .module,
+    value: "Brave already blocks third-party cookies. We can block cookie consent notices, too.",
+    comment: "A description for a popup that notifies the user that we can block cookie consent notices"
+  )
+  /// An action (button title) that enables cookie consent blocking and dismisses the popup.
+  public static let yesBlockCookieConsentNotices = NSLocalizedString(
+    "YesBlockCookieConsentNotices", tableName: "BraveShared", bundle: .module,
+    value: "Yes, block cookie consent notices",
+    comment: "An action (button title) that enables cookie consent blocking and dismisses the popup"
+  )
+  /// An action (button title) that does not block cookie consent notices and dismisses the popup
+  public static let noThanks = NSLocalizedString(
+    "NoThanks", tableName: "BraveShared", bundle: .module,
+    value: "No thanks",
+    comment: "An action (button title) that does not block cookie consent notices and dismisses the popup"
+  )
+}

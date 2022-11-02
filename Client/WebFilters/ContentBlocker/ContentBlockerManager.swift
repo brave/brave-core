@@ -61,8 +61,10 @@ final public class ContentBlockerManager: Sendable {
     
     var identifier: String {
       switch self {
-      case .general(let storedType): return ["stored-type", storedType.fileName].joined(separator: "-")
-      case .filterList(let uuid): return ["filter-list", uuid].joined(separator: "-")
+      case .general(let storedType):
+        return ["stored-type", storedType.fileName].joined(separator: "-")
+      case .filterList(let uuid):
+        return ["filter-list", uuid].joined(separator: "-")
       }
     }
   }

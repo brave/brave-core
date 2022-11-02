@@ -113,6 +113,10 @@ extension Preferences {
   }
 
   final public class FullScreenCallout {
+    /// Whether the block cookie consent notices callout is shown.
+    static let blockCookieConsentNoticesCalloutCompleted =
+      Option<Bool>(key: "fullScreenCallout.full-screen-cookie-consent-notices-callout-completed", default: false)
+    
     /// Whether the vpn callout is shown.
     static let vpnCalloutCompleted =
       Option<Bool>(key: "fullScreenCallout.full-screen-vpn-callout-completed", default: false)

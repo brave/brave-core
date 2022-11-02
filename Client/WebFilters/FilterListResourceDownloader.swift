@@ -115,6 +115,7 @@ public class FilterListResourceDownloader: ObservableObject {
       allFilterListSettings.append(setting)
     }
   }
+  
   /// A shared instance of this class
   ///
   /// - Warning: You need to wait for `DataController.shared.initializeOnce()` to be called before using this instance
@@ -159,6 +160,11 @@ public class FilterListResourceDownloader: ObservableObject {
     async let cachedFilterLists: Void = self.loadCachedFilterLists()
     async let cachedDefaultFilterList: Void = self.loadCachedDefaultFilterList()
     _ = await (cachedFilterLists, cachedDefaultFilterList)
+  }
+  
+  /// Tells us if the filter list is enabled for the given `UUID`
+  @MainActor public func isEnabled(filterListUUID uuid: String) -> Bool {
+    return settingsManager.isEnabled(forUUID: uuid)
   }
   
   private func loadCachedFilterLists() async {
@@ -231,11 +237,6 @@ public class FilterListResourceDownloader: ObservableObject {
     } else {
       return false
     }
-  }
-  
-  /// Tells us if the filter list is enabled for the given `UUID`
-  @MainActor public func isEnabled(filterListUUID uuid: String) -> Bool {
-    return settingsManager.isEnabled(forUUID: uuid)
   }
   
   /// Tells us if the filter list is enabled for the given `componentID`

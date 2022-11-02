@@ -77,7 +77,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
           cellReuseId: "SkipOnboardingCell"),
         .boolRow(
           title: "Skip Education Pop-ups",
-          detailText: "Flag for hide/show education pop-ups. Includes onboarding ad block notifications",
+          detailText: "Flag for hide/show education pop-ups. Includes onboarding ad block notifications and cookie consent notice blocking callout",
           toggleValue: Preferences.DebugFlag.skipEduPopups ?? false,
           valueChange: { [unowned self] _ in
             self.presentDebugFlagAlert()
@@ -156,6 +156,14 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
             }
           },
           cellReuseId: "DefaultBrowserCalloutCell"),
+        .boolRow(
+          title: "Cookie consent notice blocking callout shown",
+          detailText: "Flag determining if callout to show the cookie consent blocking callout was shown",
+          toggleValue: Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted.value,
+          valueChange: {
+            Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted.value = $0
+          },
+          cellReuseId: "CookieConsentNoticeBlockingCalloutCell"),
       ],
       footer: .title("These are the preferences that stored in preferences for determining the If certain elements are shown to user.")
     )
