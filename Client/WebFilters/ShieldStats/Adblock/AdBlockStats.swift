@@ -39,25 +39,91 @@ struct CosmeticFilterModel: Codable {
   }
 }
 
+/// An object that wraps around an `AdblockEngine` and caches some results
+public class CachedAdBlockEngine {
+  /// We cache the models so that they load faster when we need to poll information about the frame
+  private var cachedCosmeticFilterModels = FifoDict<URL, CosmeticFilterModel?>()
+  private var cachedShouldBlockResult = FifoDict<String, Bool>()
+  let engine: AdblockEngine
+  
+  /// Returns all the models for this frame URL
+  /// The results are cached per url, so you may call this method as many times for the same url without any performance implications.
+  func cosmeticFilterModel(forFrameURL frameURL: URL) throws -> CosmeticFilterModel? {
+    if let model = cachedCosmeticFilterModels.getElement(frameURL) {
+      return model
+    }
+    
+    let model = try engine.cosmeticFilterModel(forFrameURL: frameURL)
+    cachedCosmeticFilterModels.addElement(model, forKey: frameURL)
+    return model
+  }
+  
+  /// Return the selectors that need to be hidden given the frameURL, ids and classes
+  func selectorsForCosmeticRules(frameURL: URL, ids: [String], classes: [String]) throws -> [String] {
+    let model = try cosmeticFilterModel(forFrameURL: frameURL)
+    
+    let selectorsJSON = engine.stylesheetForCosmeticRulesIncluding(
+      classes: classes,
+      ids: ids,
+      exceptions: model?.exceptions ?? []
+    )
+    
+    guard let data = selectorsJSON.data(using: .utf8) else { return [] }
+    let decoder = JSONDecoder()
+    return try decoder.decode([String].self, from: data)
+  }
+  
+  /// Checks the general and regional engines to see if the request should be blocked
+  func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType) -> Bool {
+    let key = [requestURL.absoluteString, sourceURL.absoluteString, resourceType.rawValue].joined(separator: "_")
+    
+    if let cachedResult = cachedShouldBlockResult.getElement(key) {
+        return cachedResult
+    }
+    
+    let shouldBlock = engine.shouldBlock(
+      requestURL: requestURL,
+      sourceURL: sourceURL,
+      resourceType: resourceType
+    )
+    
+    cachedShouldBlockResult.addElement(shouldBlock, forKey: key)
+    return shouldBlock
+  }
+  
+  /// Clear the caches. Useful 
+  func clearCaches() {
+    cachedCosmeticFilterModels = FifoDict()
+    cachedShouldBlockResult = FifoDict()
+  }
+  
+  init(engine: AdblockEngine) {
+    self.engine = engine
+  }
+}
+
 public class AdBlockStats {
   public static let shared = AdBlockStats()
-
-  fileprivate var fifoCacheOfUrlsChecked = FifoDict<Bool>()
+  
+  /// We cache the user scripts so that they load faster on refreshes and back and forth
+  private var cachedFrameScriptTypes = FifoDict<URL, Set<UserScriptType>>()
 
   // Adblock engine for general adblock lists.
-  private(set) var engines: [AdblockEngine]
+  private(set) var cachedEngines: [CachedAdBlockEngine]
 
   /// The task that downloads all the files. Can be cancelled
   private var downloadTask: AnyCancellable?
 
   init() {
-    engines = []
+    cachedEngines = []
   }
 
   static let adblockSerialQueue = DispatchQueue(label: "com.brave.adblock-dispatch-queue")
   
-  func clearCaches() {
-    fifoCacheOfUrlsChecked = FifoDict<Bool>()
+  func clearCaches(clearEngineCaches: Bool = true) {
+    cachedFrameScriptTypes = FifoDict()
+    guard clearEngineCaches else { return }
+    cachedEngines.forEach({ $0.clearCaches() })
   }
   
   /// Checks the general and regional engines to see if the request should be blocked.
@@ -77,102 +143,66 @@ public class AdBlockStats {
   ///
   /// - Warning: This method needs to be synced on `AdBlockStatus.adblockSerialQueue`
   func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType) -> Bool {
-    let key = [requestURL.absoluteString, sourceURL.absoluteString, resourceType.rawValue].joined(separator: "_")
-    
-    if let cachedResult = fifoCacheOfUrlsChecked.getElement(key) {
-        return cachedResult
-    }
-    
-    let shouldBlock = engines.contains(where: { engine in
-      return engine.shouldBlock(
+    return cachedEngines.contains(where: { cachedEngine in
+      return cachedEngine.shouldBlock(
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: resourceType
       )
     })
-    
-    fifoCacheOfUrlsChecked.addElement(shouldBlock, forKey: key)
-    return shouldBlock
   }
   
   func set(engines: [AdblockEngine]) {
-    self.engines = engines
-    self.clearCaches()
+    self.cachedEngines = engines.map({ CachedAdBlockEngine(engine: $0) })
+    self.clearCaches(clearEngineCaches: false)
   }
   
-  func makeEngineScriptSouces(for url: URL) throws -> [String] {
-    return try engines.flatMap { engine -> [String] in
-      var results: [String] = []
-      let sources = try engine.makeEngineScriptSources(for: url)
-      
-      if let source = sources.cssInjectScript {
-        results.append(source)
-      }
-      
-      if let source = sources.generalScript {
-        results.append(source)
-      }
-      
-      return results
+  /// This returns all the user script types for the given frame
+  func makeEngineScriptTypes(frameURL: URL, isMainFrame: Bool) -> Set<UserScriptType> {
+    if let userScriptTypes = cachedFrameScriptTypes.getElement(frameURL) {
+      return userScriptTypes
     }
+    
+    // Grab the relevant models for this frame
+    let models = cosmeticFilterModels(forFrameURL: frameURL)
+    
+    // Add the selectors poller scripts for this frame
+    var userScriptTypes: Set<UserScriptType> = []
+    
+    // Add any engine scripts for this frame
+    for (index, model) in models.enumerated() {
+      let source = model.injectedScript
+      guard !source.isEmpty else { continue }
+      
+      let configuration = UserScriptType.EngineScriptConfiguration(
+        frameURL: frameURL, isMainFrame: isMainFrame, source: source, order: index,
+        isDeAMPEnabled: Preferences.Shields.autoRedirectAMPPages.value
+      )
+      
+      userScriptTypes.insert(.engineScript(configuration))
+    }
+    
+    cachedFrameScriptTypes.addElement(userScriptTypes, forKey: frameURL)
+    return userScriptTypes
+  }
+  
+  /// Returns all the models for this frame URL
+  func cosmeticFilterModels(forFrameURL frameURL: URL) -> [CosmeticFilterModel] {
+    return cachedEngines.compactMap({ cachedEngine -> CosmeticFilterModel? in
+      do {
+        return try cachedEngine.cosmeticFilterModel(forFrameURL: frameURL)
+      } catch {
+        assertionFailure(error.localizedDescription)
+        return nil
+      }
+    })
   }
 }
 
-extension AdblockEngine {
-  func makeEngineScriptSources(for url: URL) throws -> (cssInjectScript: String?, generalScript: String?) {
-    let rules = cosmeticResourcesForURL(url.absoluteString)
-    guard let data = rules.data(using: .utf8) else { return (nil, nil) }
-    let model = try JSONDecoder().decode(CosmeticFilterModel.self, from: data)
-    let cssRules = model.makeCSSRules()
-    let cssInjectScript: String?
-    let generalScript: String?
-    
-    if !cssRules.isEmpty {
-      cssInjectScript = """
-      (function() {
-        const head = document.head || document.getElementsByTagName('head')[0];
-        if (!head) {
-          return;
-        }
-        
-        const style = document.createElement('style');
-        style.type = 'text/css';
-      
-        const styles = atob("\(cssRules.toBase64())");
-        
-        if (style.styleSheet) {
-          style.styleSheet.cssText = styles;
-        } else {
-          style.appendChild(document.createTextNode(styles));
-        }
-
-        head.appendChild(style);
-      })();
-      """
-    } else {
-      cssInjectScript = nil
-    }
-    
-    if !model.injectedScript.isEmpty {
-      var injectedScriptSource = model.injectedScript
-      
-      injectedScriptSource = [
-        "(function(){",
-        /// This boolean is used by a script injected by cosmetic filters and enables that script via this boolean
-        /// The script is found here: https://github.com/brave/adblock-resources/blob/master/resources/de-amp.js
-        /// - Note: This script is only a smaller part (1 of 3) of de-amping:
-        /// The second part is handled by an inected script that redirects amp pages to their canonical links
-        /// The third part is handled by debouncing amp links and handled by debouncing rules
-        Preferences.Shields.autoRedirectAMPPages.value ? "const deAmpEnabled = true;" : "",
-        injectedScriptSource,
-        "})();"
-      ].joined(separator: "\n")
-      
-      generalScript = injectedScriptSource
-    } else {
-      generalScript = nil
-    }
-    
-    return (cssInjectScript, generalScript)
+private extension AdblockEngine {
+  func cosmeticFilterModel(forFrameURL frameURL: URL) throws -> CosmeticFilterModel? {
+    let rules = cosmeticResourcesForURL(frameURL.absoluteString)
+    guard let data = rules.data(using: .utf8) else { return nil }
+    return try JSONDecoder().decode(CosmeticFilterModel.self, from: data)
   }
 }
