@@ -20,11 +20,11 @@ import WalletApiProxy from '../wallet_api_proxy'
 export type NetworkInfoWithId = BraveWallet.NetworkInfo & { id: string }
 
 export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIProxy()) {
-  return createApi({
+  const walletApi = createApi({
     baseQuery: () => {
       return { data: getProxy() }
     },
-    tagTypes: [...cacher.defaultTags, 'Network'],
+    tagTypes: [...cacher.defaultTags, 'Network', 'TestnetsEnabled'],
     endpoints: (builder) => ({
       getAllNetworks: builder.query<NetworkInfoWithId[], void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
@@ -85,9 +85,25 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
           }
         },
         providesTags: cacher.providesList('Network')
+      }),
+      getIsTestNetworksEnabled: builder.query<boolean, void>({
+        async queryFn (arg, api, extraOptions, baseQuery) {
+          const { braveWalletService } = baseQuery(undefined).data
+
+          const {
+            isEnabled: testNetworksEnabled
+          } = await braveWalletService.getShowWalletTestNetworks()
+
+          return {
+            data: testNetworksEnabled
+          }
+        },
+        providesTags: ['TestnetsEnabled']
       })
     })
   })
+
+  return walletApi
 }
 
 export const walletApi = createWalletApi()
