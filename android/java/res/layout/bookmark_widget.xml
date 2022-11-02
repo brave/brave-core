@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+     
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bookmarks_list"
+    style="@style/DarkModeCompatibleVerticalScrolling"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/quick_action_search_and_bookmark_widget_background"
+    android:divider="@null"
+    android:drawSelectorOnTop="true"
+    android:listSelector="@drawable/bookmark_widget_list_selector"
+    android:alpha="0.9" />

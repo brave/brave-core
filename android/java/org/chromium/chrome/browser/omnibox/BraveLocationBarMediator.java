@@ -12,6 +12,7 @@ import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.BooleanSupplier;
@@ -163,12 +164,12 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     }
 
     private void openQRCodeDialog() {
-        if (BraveActivity.getBraveActivity() != null) {
+        if (mContext != null && mContext instanceof AppCompatActivity) {
             BraveLocationBarQRDialogFragment braveLocationBarQRDialogFragment =
                     BraveLocationBarQRDialogFragment.newInstance(this);
             braveLocationBarQRDialogFragment.setCancelable(false);
             braveLocationBarQRDialogFragment.show(
-                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
+                    ((AppCompatActivity) mContext).getSupportFragmentManager(),
                     "BraveLocationBarQRDialogFragment");
         }
     }

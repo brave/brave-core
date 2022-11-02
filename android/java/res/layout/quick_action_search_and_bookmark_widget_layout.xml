@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/quick_action_search_and_bookmark_widget_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutSearchWithBrave"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:background="@drawable/quick_action_search_and_bookmark_widget_search_bg"
+            tools:ignore="UseCompoundDrawables">
+            
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@mipmap/app_icon"
+                android:layout_gravity="center_vertical"
+                android:importantForAccessibility="no"/>
+
+            <TextView
+                android:id="@+id/tvSearchWithBrave"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:text="@string/search_with_brave"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_text_color"
+                tools:ignore="UseCompatTextViewDrawableXml" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivVoiceSearch"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/quick_action_search_and_bookmark_widget_search_bg"
+            android:contentDescription="@string/accessibility_toolbar_btn_mic"
+            android:padding="12dp"
+            android:src="@drawable/btn_mic"
+            android:tint="@color/quick_action_search_and_bookmark_widget_tint"
+            tools:ignore="UseAppTint" />
+
+        <ImageView
+            android:id="@+id/ivIncognito"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/quick_action_search_and_bookmark_widget_search_bg"
+            android:contentDescription="@string/button_new_incognito_tab"
+            android:padding="12dp"
+            android:src="@drawable/brave_menu_new_private_tab"
+            android:tint="@color/quick_action_search_and_bookmark_widget_tint"
+            tools:ignore="UseAppTint" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/BookmarkLayoutRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutRow1Bookmark1"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow1Bookmark1Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow1Bookmark1Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow1Bookmark2"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow1Bookmark2Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow1Bookmark2Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow1Bookmark3"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow1Bookmark3Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow1Bookmark3Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:gravity="center"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow1Bookmark4"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow1Bookmark4Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow1Bookmark4Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:gravity="center"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/BookmarkLayoutRow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutRow2Bookmark1"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow2Bookmark1Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow2Bookmark1Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow2Bookmark2"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow2Bookmark2Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow2Bookmark2Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow2Bookmark3"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow2Bookmark3Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow2Bookmark3Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow2Bookmark4"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow2Bookmark4Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow2Bookmark4Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/BookmarkLayoutRow3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutRow3Bookmark1"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow3Bookmark1Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow3Bookmark1Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow3Bookmark2"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow3Bookmark2Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow3Bookmark2Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:gravity="center"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow3Bookmark3"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow3Bookmark3Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow3Bookmark3Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow3Bookmark4"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow3Bookmark4Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow3Bookmark4Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/BookmarkLayoutRow4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutRow4Bookmark1"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow4Bookmark1Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow4Bookmark1Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:gravity="center"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow4Bookmark2"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow4Bookmark2Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow4Bookmark2Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow4Bookmark3"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow4Bookmark3Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow4Bookmark3Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:gravity="center"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layoutRow4Bookmark4"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/ivRow4Bookmark4Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+                android:contentDescription="@string/top_visited_site" />
+
+            <TextView
+                android:id="@+id/tvRow4Bookmark4Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -41,6 +41,7 @@
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
+    *** mTileGroup;
     public <init>(...);
     *** updateTilePlaceholderVisibility(...);
 }
@@ -101,6 +102,14 @@
     public <init>(...);
     *** getPopupPosition(...);
     *** runMenuItemEnterAnimations(...);
+}
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.BraveQuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {
