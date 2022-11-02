@@ -339,9 +339,7 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
             favicon_base::IconType::kFavicon,
             favicon_base::IconType::kTouchIcon};
         controller->favicon_service_->GetRawFaviconForPageURL(
-            source_url, icon_types,
-
-            kDesiredFaviconSizePixels, true,
+            source_url, icon_types, kDesiredFaviconSizePixels, true,
             base::BindOnce(
                 [](GetFavIconDataCallback callback,
                    const favicon_base::FaviconRawBitmapResult& result) {
@@ -354,7 +352,7 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
                   std::vector<uint8_t> bytes_vec(
                       bytes->front_as<uint8_t>(),
                       bytes->front_as<uint8_t>() + bytes->size());
-                  std::move(callback).Run(bytes_vec);
+                  std::move(callback).Run(std::move(bytes_vec));
                 },
                 std::move(callback)),
             &controller->task_tracker_);
