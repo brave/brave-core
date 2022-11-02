@@ -47,5 +47,5 @@ def _pack_policy_templates(chrome_policy_zip, dest_zip):
            arcname = relpath(filepath, tmp_dir).replace('chrome', 'brave')
            dest_zipfile.write(filepath, arcname=arcname)
 
-if '__main__' == __name__:
+if __name__ == '__main__':
   main()
