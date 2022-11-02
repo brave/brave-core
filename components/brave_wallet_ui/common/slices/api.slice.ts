@@ -135,5 +135,8 @@ export const {
   reducerPath: walletApiReducerPath,
   // hooks
   useGetAllNetworksQuery,
-  useLazyGetAllNetworksQuery
+  useGetIsTestNetworksEnabledQuery,
+  useIsEip1559ChangedMutation,
+  useLazyGetAllNetworksQuery,
+  useLazyGetIsTestNetworksEnabledQuery
 } = walletApi
