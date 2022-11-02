@@ -159,11 +159,6 @@ class BatAdsImpl : public mojom::BatAds,
     T callback_;
   };
 
-  static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
-                           bool success);
-  static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
-                         bool success);
-
   static void OnMaybeServeInlineContentAd(
       CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
       const std::string& dimensions,

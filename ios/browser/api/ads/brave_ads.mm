@@ -269,11 +269,11 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   adsClient = new AdsClientIOS(self);
   ads = ads::Ads::CreateInstance(adsClient);
-  ads->Initialize(^(const bool success) {
+  ads->Initialize(base::BindOnce(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
     [self registerAdsResources];
     completion(success);
-  });
+  }));
 }
 
 - (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
@@ -302,7 +302,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)shutdown:(nullable void (^)())completion {
   if ([self isAdsServiceRunning]) {
     dispatch_group_notify(self.prefsWriteGroup, dispatch_get_main_queue(), ^{
-      self->ads->Shutdown(^(bool) {
+      self->ads->Shutdown(base::BindOnce(^(bool) {
         if (self->ads != nil) {
           delete self->ads;
         }
@@ -322,7 +322,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         if (completion) {
           completion();
         }
-      });
+      }));
     });
   } else {
     if (completion) {
@@ -467,7 +467,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return;
   }
   ads->RemoveAllHistory(base::BindOnce(^(const bool success) {
-    completion(success ? YES : NO);
+    completion(success);
   }));
 }
 
@@ -668,7 +668,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
   ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType),
                                     base::BindOnce(^(const bool success) {
-                                      completion(success ? YES : NO);
+                                      completion(success);
                                     }));
 }
 

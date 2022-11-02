@@ -45,20 +45,11 @@ BatAdsImpl::BatAdsImpl(
 BatAdsImpl::~BatAdsImpl() = default;
 
 void BatAdsImpl::Initialize(InitializeCallback callback) {
-  auto* holder =
-      new CallbackHolder<InitializeCallback>(AsWeakPtr(), std::move(callback));
-
-  ads_->Initialize(
-      std::bind(BatAdsImpl::OnInitialize, holder, std::placeholders::_1));
+  ads_->Initialize(std::move(callback));
 }
 
 void BatAdsImpl::Shutdown(ShutdownCallback callback) {
-  auto* holder =
-      new CallbackHolder<ShutdownCallback>(AsWeakPtr(), std::move(callback));
-
-  auto shutdown_callback =
-      std::bind(BatAdsImpl::OnShutdown, holder, std::placeholders::_1);
-  ads_->Shutdown(shutdown_callback);
+  ads_->Shutdown(std::move(callback));
 }
 
 void BatAdsImpl::OnLocaleDidChange(const std::string& locale) {
@@ -295,24 +286,6 @@ void BatAdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void BatAdsImpl::OnInitialize(CallbackHolder<InitializeCallback>* holder,
-                              const bool success) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success);
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
-                            const bool success) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success);
-  }
-
-  delete holder;
-}
 
 // static
 void BatAdsImpl::OnMaybeServeNewTabPageAd(

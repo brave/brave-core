@@ -196,16 +196,15 @@ class AdsImpl final : public Ads,
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);
-  void OnCreateOrOpenDatabase(const InitializeCallback& callback, bool success);
-  void MigrateConversions(const InitializeCallback& callback);
-  void MigrateRewards(const InitializeCallback& callback);
-  void MigrateClientState(const InitializeCallback& callback);
-  void LoadClientState(const InitializeCallback& callback);
-  void MigrateConfirmationState(const InitializeCallback& callback);
-  void LoadConfirmationState(const InitializeCallback& callback);
-  void MigrateNotificationState(const InitializeCallback& callback);
+  void OnCreateOrOpenDatabase(InitializeCallback callback, bool success);
+  void OnMigrateConversions(InitializeCallback callback, bool success);
+  void OnMigrateRewards(InitializeCallback callback, bool success);
+  void OnMigrateClientState(InitializeCallback callback, bool success);
+  void OnLoadClientState(InitializeCallback callback, bool success);
+  void OnMigrateConfirmationState(InitializeCallback callback, bool success);
+  void OnLoadConfirmationState(InitializeCallback callback, bool success);
+  void OnMigrateNotificationState(InitializeCallback callback, bool success);
 
-  void SuccessfullyInitialized(const InitializeCallback& callback);
   bool IsInitialized() const;
 
   void Start();

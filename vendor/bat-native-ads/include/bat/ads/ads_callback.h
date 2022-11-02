@@ -18,8 +18,8 @@
 
 namespace ads {
 
-using InitializeCallback = std::function<void(const bool)>;
-using ShutdownCallback = std::function<void(const bool)>;
+using InitializeCallback = base::OnceCallback<void(const bool)>;
+using ShutdownCallback = base::OnceCallback<void(const bool)>;
 
 using RemoveAllHistoryCallback = base::OnceCallback<void(const bool)>;
 

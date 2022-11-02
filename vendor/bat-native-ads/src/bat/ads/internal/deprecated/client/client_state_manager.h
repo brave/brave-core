@@ -100,8 +100,10 @@ class ClientStateManager final {
  private:
   void Save();
 
-  void Load();
-  void OnLoaded(bool success, const std::string& json);
+  void Load(InitializeCallback callback);
+  void OnLoaded(InitializeCallback callback,
+                bool success,
+                const std::string& json);
 
   bool FromJson(const std::string& json);
 
@@ -110,8 +112,6 @@ class ClientStateManager final {
   bool is_mutated_ = false;
 
   bool is_initialized_ = false;
-
-  InitializeCallback callback_;
 };
 
 }  // namespace ads
