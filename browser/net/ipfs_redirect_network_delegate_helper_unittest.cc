@@ -286,7 +286,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
   GURL url(
       "https://cloudflare-ipfs.com/ipfs/"
-      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd/path/?a=b");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->browser_context = profile();
   request_info->ipfs_gateway_url = GetPublicGateway();
@@ -312,16 +312,15 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
   std::string location;
   EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                           &location));
-  GURL converted_url = GURL("https://dweb.link/test");
-  EXPECT_EQ(location, converted_url);
+  GURL converted_url =
+      GURL("ipfs://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd/path?a=b");
+  EXPECT_EQ(GURL(location), converted_url);
   EXPECT_EQ(allowed_unsafe_redirect_url, converted_url);
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest,
-       HeadersIPFSWorkWithNoRedirectHttps) {
-  GURL url(
-      "https://cloudflare-ipfs.com/ipfs/"
-      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+       HeadersIPFSWorkWithNoRedirect_NoHeader) {
+  GURL url("https://brave.com");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->browser_context = profile();
   request_info->ipfs_gateway_url = GetPublicGateway();
@@ -333,10 +332,10 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("x-ipfs-path", "/test");
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
+  orig_response_headers->AddHeader("x-ipfs-path", "/test");
 
   int rc = ipfs::OnHeadersReceived_IPFSRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -351,7 +350,8 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest,
   EXPECT_TRUE(allowed_unsafe_redirect_url.is_empty());
 }
 
-TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       HeadersIPFSWorkNoRedirect_WrongFormat) {
   GURL url(
       "https://cloudflare-ipfs.com/ipfs/"
       "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
@@ -365,7 +365,6 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("x-ipfs-path", "/test");
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
