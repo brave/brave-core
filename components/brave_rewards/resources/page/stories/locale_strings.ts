@@ -9,9 +9,9 @@ export const localeStrings = {
 
   appErrorTitle: 'Something went wrong',
   claim: 'Claim',
-  connectWalletChooseHeader: 'Choose a wallet service',
-  connectWalletChooseText: 'Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.',
-  connectWalletChooseNote: 'Note: Your transactions will be visible to the selected wallet service once you authorize; for instance, they will be able to see the recipient and amount of your tips.',
+  connectWalletChooseHeader: 'Choose an account provider',
+  connectWalletChooseText: 'If you already have a custodial account, you\'ll be prompted to connect it. If you don\'t, you\'ll get the chance to create one.',
+  connectWalletChooseNote: 'Note: Your transactions will be visible to the custodian once you authorize. For instance, they will be able to see the recipient and amount of your tips.',
   connectWalletInfoHeader: 'Verifying is optional',
   connectWalletInfoNote: 'Custodial wallet providers are required to verify the identity of anyone creating a wallet, including using a photo ID.',
   connectWalletInfoBraveNote: '$1Brave Software Inc.$2 does not process, store, or access any of the personal information when you establish an account with our custodial wallet partners.',
