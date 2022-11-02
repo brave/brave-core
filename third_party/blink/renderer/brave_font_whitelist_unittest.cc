@@ -44,10 +44,10 @@ TEST(BraveFontWhitelistTest, Platforms) {
 
 #if BUILDFLAG(IS_MAC)
   EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
-  EXPECT_EQ(allowed.size(), 285UL);
+  EXPECT_EQ(allowed.size(), 286UL);
 #elif BUILDFLAG(IS_WIN)
   EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
-  EXPECT_EQ(allowed.size(), 312UL);
+  EXPECT_EQ(allowed.size(), 313UL);
 #elif BUILDFLAG(IS_ANDROID)
   EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
   EXPECT_EQ(allowed.size(), 40UL);
