@@ -40,11 +40,9 @@ export default function useSearch (query: string) {
     const results = { publishers, direct: [] as FeedSearchResultItem[] }
     for (const result of directResults) {
       const publisherMatch = publishers.find(p => p.feedSource.url === result.feedUrl.url)
-      if (publisherMatch && !publishers.some(p => p.publisherId === publisherMatch.publisherId)) {
-        results.publishers.push(publisherMatch)
-      } else {
-        results.direct.push(result)
-      }
+      if (publisherMatch) continue
+
+      results.direct.push(result)
     }
     return {
       publisherIds: results.publishers.map(p => p.publisherId),
