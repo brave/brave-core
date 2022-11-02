@@ -213,18 +213,20 @@ void BraveVpnAPIRequest::GetSubscriberCredentialV12(
                {{"Brave-Payments-Environment", environment}});
 }
 
-void BraveVpnAPIRequest::CreateSupportTicket(ResponseCallback callback,
-                                             const std::string& email,
-                                             const std::string& subject,
-                                             const std::string& body) {
+void BraveVpnAPIRequest::CreateSupportTicket(
+    ResponseCallback callback,
+    const std::string& email,
+    const std::string& subject,
+    const std::string& body,
+    const std::string& subscriber_credential) {
   auto internal_callback =
       base::BindOnce(&BraveVpnAPIRequest::OnCreateSupportTicket,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  OAuthRequest(
-      GetURLWithPath(kVpnHost, kCreateSupportTicket), "POST",
-      CreateJSONRequestBody(GetValueWithTicketInfos(email, subject, body)),
-      std::move(internal_callback));
+  OAuthRequest(GetURLWithPath(kVpnHost, kCreateSupportTicket), "POST",
+               CreateJSONRequestBody(GetValueWithTicketInfos(
+                   email, subject, body, subscriber_credential)),
+               std::move(internal_callback));
 }
 
 void BraveVpnAPIRequest::OAuthRequest(

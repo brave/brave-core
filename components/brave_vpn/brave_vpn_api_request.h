@@ -71,7 +71,8 @@ class BraveVpnAPIRequest {
   void CreateSupportTicket(ResponseCallback callback,
                            const std::string& email,
                            const std::string& subject,
-                           const std::string& body);
+                           const std::string& body,
+                           const std::string& subscriber_credential);
 
  private:
   using URLRequestCallback = base::OnceCallback<void(APIRequestResult)>;
