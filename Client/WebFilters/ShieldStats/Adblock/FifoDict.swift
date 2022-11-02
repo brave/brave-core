@@ -3,13 +3,13 @@
 
 import Foundation
 
-class FifoDict<Element> {
+class FifoDict<Key: Hashable, Element> {
   var fifoArrayOfDicts: [NSMutableDictionary] = []
   let maxDicts = 5
   let maxItemsPerDict = 50
 
   // the url key is a combination of urls, the main doc url, and the url being checked
-  func addElement(_ element: Element?, forKey key: String) {
+  func addElement(_ element: Element?, forKey key: Key) {
     if fifoArrayOfDicts.count > maxItemsPerDict {
       fifoArrayOfDicts.removeFirst()
     }
@@ -27,7 +27,7 @@ class FifoDict<Element> {
     }
   }
 
-  func getElement(_ key: String) -> Element? {
+  func getElement(_ key: Key) -> Element? {
     for dict in fifoArrayOfDicts {
       if let item = dict[key] {
         return item as? Element

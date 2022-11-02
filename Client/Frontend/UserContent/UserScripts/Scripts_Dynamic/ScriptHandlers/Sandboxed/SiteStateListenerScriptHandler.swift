@@ -61,21 +61,56 @@ class SiteStateListenerScriptHandler: TabContentScript {
         return
       }
       
-      if let frameEvaluations = tab.frameEvaluations[frameURL] {
-        for frameEvaluation in frameEvaluations {
-          webView.evaluateSafeJavaScript(
-            functionName: frameEvaluation.source,
-            frame: frameEvaluation.frameInfo,
-            contentWorld: .cosmeticFiltersSandbox,
-            asFunction: false,
-            completion: { _, error in
-              guard let error = error else { return }
-              Logger.module.error("\(error.localizedDescription)")
-            }
+      if let frameInfo = tab.currentPageData?.framesInfo[frameURL] {
+        let models = AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL)
+        
+        let hideSelectors = models.reduce(Set<String>(), { partialResult, model in
+          return partialResult.union(model.hideSelectors)
+        })
+        
+        var styleSelectors: [String: Set<String>] = [:]
+        
+        for model in models {
+          for (key, values) in model.styleSelectors {
+            styleSelectors[key] = styleSelectors[key]?.union(Set(values)) ?? Set(values)
+          }
+        }
+        
+        let styleSelectorObjects = styleSelectors.map { selector, rules -> UserScriptType.SelectorsPollerSetup.StyleSelectorEntry in
+          UserScriptType.SelectorsPollerSetup.StyleSelectorEntry(
+            selector: selector, rules: rules
           )
         }
         
-        tab.frameEvaluations.removeValue(forKey: frameURL)
+        let setup = UserScriptType.SelectorsPollerSetup(
+          frameURL: frameURL,
+          genericHide: models.contains { $0.genericHide },
+          hideSelectors: hideSelectors,
+          styleSelectors: Set(styleSelectorObjects)
+        )
+        
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(setup)
+        let args = String(data: data, encoding: .utf8)!
+        let source = try ScriptFactory.shared.makeScriptSource(of: .selectorsPoller).replacingOccurrences(of: "$<args>", with: args)
+        let secureSource = CosmeticFiltersScriptHandler.secureScript(
+          handlerName: CosmeticFiltersScriptHandler.messageHandlerName,
+          securityToken: CosmeticFiltersScriptHandler.scriptId,
+          script: source
+        )
+        
+        webView.evaluateSafeJavaScript(
+          functionName: secureSource,
+          frame: frameInfo,
+          contentWorld: .defaultClient,
+          asFunction: false,
+          completion: { _, error in
+            guard let error = error else { return }
+            Logger.module.error("\(error.localizedDescription)")
+          }
+        )
+        
+        tab.currentPageData?.framesInfo.removeValue(forKey: frameURL)
       }
     } catch {
       assertionFailure("Invalid type of message. Fix the `Site.js` script")

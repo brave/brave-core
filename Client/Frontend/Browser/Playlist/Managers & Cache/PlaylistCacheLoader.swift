@@ -539,13 +539,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       decisionHandler(.cancel, preferences)
       return
     }
-    
-    // Ad-blocking checks
-    if let mainDocumentURL = navigationAction.request.mainDocumentURL {
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
-      webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = domainForMainFrame.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true)
-    }
 
     // Universal links do not work if the request originates from the app, manual handling is required.
     if let mainDocURL = navigationAction.request.mainDocumentURL,
@@ -563,12 +556,29 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       decisionHandler(.cancel, preferences)
       return
     }
-
-    let customUserScripts = UserScriptHelper.getUserScriptTypes(
-      for: navigationAction, options: .playlistCacheLoader
-    )
     
-    tab.setCustomUserScript(scripts: customUserScripts)
+    // Ad-blocking checks
+    if let mainDocumentURL = navigationAction.request.mainDocumentURL {
+      if mainDocumentURL != tab.currentPageData?.mainFrameURL {
+        // Clear the current page data if the page changes.
+        // Do this before anything else so that we have a clean slate.
+        tab.currentPageData = PageData(mainFrameURL: mainDocumentURL)
+      }
+      
+      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
+      webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = domainForMainFrame.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true)
+    }
+
+    if let requestURL = navigationAction.request.url,
+       let targetFrame = navigationAction.targetFrame,
+       let customUserScripts = tab.currentPageData?.makeUserScriptTypes(
+        forRequestURL: requestURL,
+        isForMainFrame: targetFrame.isMainFrame,
+        options: .playlistCacheLoader
+       ) {
+      tab.setCustomUserScript(scripts: customUserScripts)
+    }
 
     if ["http", "https", "data", "blob", "file"].contains(url.scheme) {
       if navigationAction.targetFrame?.isMainFrame == true {
@@ -630,6 +640,16 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       let internalURL = InternalURL(responseURL),
       internalURL.isSessionRestore {
       tab.shouldClassifyLoadsForAds = false
+    }
+    
+    // We also add subframe urls in case a frame upgraded to https
+    if let responseURL = responseURL,
+       let scriptTypes = tab.currentPageData?.makeUserScriptTypes(
+        forResponseURL: responseURL,
+        isForMainFrame: navigationResponse.isForMainFrame,
+        options: .playlistCacheLoader
+       ) {
+      tab.setCustomUserScript(scripts: scriptTypes)
     }
 
     var request: URLRequest?

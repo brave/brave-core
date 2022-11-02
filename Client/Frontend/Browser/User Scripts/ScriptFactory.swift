@@ -24,32 +24,69 @@ class ScriptFactory {
   }()
   
   /// This contains cahced script sources for a script type. Avoids reading from disk.
-  private var cachedScriptSources: [ScriptSourceType: String]
+  private var cachedScriptSources: FifoDict<ScriptSourceType, String>
   
   /// This contains cached altered scripts that are ready to be inected. Avoids replacing strings.
-  private var cachedDomainScriptsSources: [UserScriptType: WKUserScript]
+  private var cachedDomainScriptsSources: FifoDict<UserScriptType, WKUserScript>
   
   init() {
-    cachedScriptSources = [:]
-    cachedDomainScriptsSources = [:]
+    cachedScriptSources = FifoDict()
+    cachedDomainScriptsSources = FifoDict()
   }
   
   /// Clear some caches in case we need to.
   ///
   /// Should only really be called in a memory warning scenario.
   func clearCaches() {
-    cachedScriptSources = [:]
-    cachedDomainScriptsSources = [:]
+    cachedScriptSources = FifoDict()
+    cachedDomainScriptsSources = FifoDict()
   }
   
   /// Returns a script source by loading a file or returning cached data
-  private func makeScriptSource(of type: ScriptSourceType) throws -> String {
-    if let source = cachedScriptSources[type] {
+  func makeScriptSource(of type: ScriptSourceType) throws -> String {
+    if let source = cachedScriptSources.getElement(type) {
       return source
     } else {
       let source = try type.loadScript()
-      cachedScriptSources[type] = source
+      cachedScriptSources.addElement(source, forKey: type)
       return source
+    }
+  }
+  
+  /// Create a script for the given domain user script
+  private func makeScript(for domainUserScript: DomainUserScript) throws -> WKUserScript {
+    switch domainUserScript {
+    case .braveSearchHelper:
+      guard let script = BraveSearchScriptHandler.userScript else {
+        assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+        throw ScriptLoadFailure.notFound
+      }
+      
+      return script
+      
+    case .braveTalkHelper:
+      guard let script = BraveTalkScriptHandler.userScript else {
+        assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+        throw ScriptLoadFailure.notFound
+      }
+      
+      return script
+      
+    case .braveSkus:
+      guard let script = BraveSkusScriptHandler.userScript else {
+        assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+        throw ScriptLoadFailure.notFound
+      }
+      
+      return script
+      
+    case .bravePlaylistFolderSharingHelper:
+      guard let script = PlaylistFolderSharingScriptHandler.userScript else {
+        assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+        throw ScriptLoadFailure.notFound
+      }
+      
+      return script
     }
   }
   
@@ -60,11 +97,11 @@ class ScriptFactory {
   /// - On the modfied source file (per `UserScriptType`)
   func makeScript(for domainType: UserScriptType) throws -> WKUserScript {
     // First check for and return cached value
-    if let script = cachedDomainScriptsSources[domainType] {
+    if let script = cachedDomainScriptsSources.getElement(domainType) {
       return script
     }
     
-    var source = try makeScriptSource(of: domainType.sourceType)
+    let resultingScript: WKUserScript
     
     switch domainType {
     case .siteStateListener:
@@ -72,60 +109,47 @@ class ScriptFactory {
         assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
         throw ScriptLoadFailure.notFound
       }
-      cachedDomainScriptsSources[domainType] = script
-      return script
+      
+      resultingScript = script
       
     case .farblingProtection(let etld):
+      var source = try makeScriptSource(of: .farblingProtection)
       let randomConfiguration = RandomConfiguration(etld: etld)
       let fakeParams = try FarblingProtectionHelper.makeFarblingParams(from: randomConfiguration)
       source = source.replacingOccurrences(of: "$<farbling_protection_args>", with: fakeParams)
+      resultingScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
       
     case .nacl:
-      // No modifications needed
-      break
+      let source = try makeScriptSource(of: .nacl)
+      resultingScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
       
     case .domainUserScript(let domainUserScript):
-      switch domainUserScript {
-      case .braveSearchHelper:
-        guard let script = BraveSearchScriptHandler.userScript else {
-          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
-          throw ScriptLoadFailure.notFound
-        }
-        cachedDomainScriptsSources[domainType] = script
-        return script
-        
-      case .braveTalkHelper:
-        guard let script = BraveTalkScriptHandler.userScript else {
-          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
-          throw ScriptLoadFailure.notFound
-        }
-        cachedDomainScriptsSources[domainType] = script
-        return script
-        
-      case .braveSkus:
-        guard let script = BraveSkusScriptHandler.userScript else {
-          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
-          throw ScriptLoadFailure.notFound
-        }
-        cachedDomainScriptsSources[domainType] = script
-        return script
-        
-      case .bravePlaylistFolderSharingHelper:
-        guard let script = PlaylistFolderSharingScriptHandler.userScript else {
-          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
-          throw ScriptLoadFailure.notFound
-        }
-        cachedDomainScriptsSources[domainType] = script
-        return script
-        
-      case .youtubeAdblock:
-        // No modifications needed
-        break
+      resultingScript = try self.makeScript(for: domainUserScript)
+      
+    case .engineScript(let configuration):
+      let source = [
+        "(function(){",
+        /// This boolean is used by a script injected by cosmetic filters and enables that script via this boolean
+        /// The script is found here: https://github.com/brave/adblock-resources/blob/master/resources/de-amp.js
+        /// - Note: This script is only a smaller part (1 of 3) of de-amping:
+        /// The second part is handled by an inected script that redirects amp pages to their canonical links
+        /// The third part is handled by debouncing amp links and handled by debouncing rules
+        configuration.isDeAMPEnabled ? "const deAmpEnabled = true;" : "",
+        configuration.source,
+        "})();"
+      ].joined(separator: "\n")
+      
+      if configuration.isMainFrame {
+        resultingScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page)
+      } else {
+        var sourceWrapper = try makeScriptSource(of: .frameCheckWrapper)
+        sourceWrapper = sourceWrapper.replacingOccurrences(of: "$<scriplet>", with: source)
+        sourceWrapper = sourceWrapper.replacingOccurrences(of: "$<required_href>", with: configuration.frameURL.absoluteString)
+        resultingScript = WKUserScript(source: sourceWrapper, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
       }
     }
     
-    let userScript = WKUserScript.create(source: source, injectionTime: domainType.injectionTime, forMainFrameOnly: domainType.forMainFrameOnly, in: domainType.contentWorld)
-    cachedDomainScriptsSources[domainType] = userScript
-    return userScript
+    cachedDomainScriptsSources.addElement(resultingScript, forKey: domainType)
+    return resultingScript
   }
 }

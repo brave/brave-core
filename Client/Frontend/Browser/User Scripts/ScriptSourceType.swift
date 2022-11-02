@@ -9,30 +9,26 @@ import Foundation
 ///
 /// - Warning: Some of these scripts are not usable "as-is". Rather, you should be using `UserScriptType`.
 enum ScriptSourceType {
-  /// A script that informs iOS of site state changes
-  case siteStateListener
   /// A simple encryption library found here:
   /// https://www.npmjs.com/package/tweetnacl
   case nacl
   /// This script farbles certian system methods to output slightly randomized output.
   /// This script has a dependency on `nacl`.
   case farblingProtection
-  case braveSearchHelper
-  case braveTalkHelper
-  case braveSkus
-  case bravePlaylistFolderSharingHelper
-  case youtubeAdblock
+  /// This script wraps engine scripts and executes them for the correct frame
+  case frameCheckWrapper
+  /// A script that polls selectors from a frame and sends it to iOS which then returns the hidden elements
+  ///
+  /// This script is a modification of the android and desktop script found here:
+  /// https://github.com/brave/brave-core/blob/master/components/cosmetic_filters/resources/data/content_cosmetic.ts
+  case selectorsPoller
 
   var fileName: String {
     switch self {
-    case .siteStateListener: return "SiteStateListenerScript"
     case .nacl: return "nacl.min"
     case .farblingProtection: return "FarblingProtectionScript"
-    case .braveSearchHelper: return "BraveSearchScript"
-    case .braveTalkHelper: return "BraveTalkScript"
-    case .bravePlaylistFolderSharingHelper: return "PlaylistFolderSharingScript"
-    case .braveSkus: return "BraveSkusScript"
-    case .youtubeAdblock: return "YoutubeAdblock"
+    case .frameCheckWrapper: return "FrameCheckWrapper"
+    case .selectorsPoller: return "SelectorsPollerScript"
     }
   }
 
