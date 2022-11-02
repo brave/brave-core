@@ -118,6 +118,7 @@ class PlaylistViewController: UIViewController {
     }
 
     // Cancel all loading.
+    listController.stopLoadingSharedPlaylist()
     assetLoadingStateObservers.removeAll()
     assetStateObservers.removeAll()
 
@@ -168,11 +169,14 @@ class PlaylistViewController: UIViewController {
       setFolderSharingUrl(folderSharingUrl)
     } else if let initialItem = listController.initialItem,
       let item = PlaylistItem.getItem(uuid: initialItem.tagId) {
+      listController.loadingState = .fullyLoaded
       PlaylistManager.shared.currentFolder = item.playlistFolder
     } else if let url = Preferences.Playlist.lastPlayedItemUrl.value,
               let item = PlaylistItem.getItems(pageSrc: url).first {
+      listController.loadingState = .fullyLoaded
       PlaylistManager.shared.currentFolder = item.playlistFolder
     } else {
+      listController.loadingState = .fullyLoaded
       PlaylistManager.shared.currentFolder = nil
     }
 
@@ -200,67 +204,10 @@ class PlaylistViewController: UIViewController {
   
   func setFolderSharingUrl(_ folderSharingUrl: String) {
     self.folderSharingUrl = folderSharingUrl
+    
     if presentingViewController != nil || navigationController != nil || parent != nil {
       self.folderSharingUrl = nil
-
-      Task { @MainActor in
-        // Shared Folder already exists
-        if let existingFolder = PlaylistFolder.getSharedFolder(sharedFolderUrl: folderSharingUrl) {
-          PlaylistManager.shared.currentFolder = existingFolder
-          self.listController.loadingState = .fullyLoaded
-          return
-        }
-        
-        // Shared Folder doesn't exist
-        do {
-          self.playerView.setStaticImage(image: UIImage())
-          let model = try await PlaylistSharedFolderNetwork.fetchPlaylist(folderUrl: folderSharingUrl)
-          let folder = await PlaylistSharedFolderNetwork.createInMemoryStorage(for: model)
-          PlaylistManager.shared.currentFolder = folder
-          self.listController.loadingState = .partial
-          
-          if let folderImageUrl = model.folderImage {
-            Task { @MainActor in
-              let authManager = BasicAuthCredentialsManager(for: [folderImageUrl.absoluteString])
-              let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
-              defer { session.finishTasksAndInvalidate() }
-              
-              let (data, response) = try await NetworkManager(session: session).dataRequest(with: folderImageUrl)
-              if let response = response as? HTTPURLResponse, response.statusCode != 200 {
-                return
-              }
-              
-              if let image = UIImage(data: data, scale: UIScreen.main.scale) {
-                self.playerView.setStaticImage(image: image)
-              }
-            }
-          }
-          
-          Task { @MainActor in
-            let items = await PlaylistSharedFolderNetwork.fetchMediaItemInfo(item: model, viewForInvisibleWebView: self.view)
-            folder.playlistItems?.forEach({ playlistItem in
-              if let item = items.first(where: { $0.tagId == playlistItem.uuid }) {
-                playlistItem.name = item.name
-                playlistItem.pageTitle = item.pageTitle
-                playlistItem.pageSrc = item.pageSrc
-                playlistItem.duration = item.duration
-                playlistItem.mimeType = item.mimeType
-                playlistItem.mediaSrc = item.src
-                playlistItem.uuid = item.tagId
-                playlistItem.order = item.order
-              }
-            })
-            
-            self.listController.loadingState = .fullyLoaded
-          }
-        } catch {
-          if let error = error as? PlaylistSharedFolderNetwork.Status {
-            Logger.module.error("\(error.localizedDescription)")
-          } else {
-            Logger.module.error("Failed Fetching Playlist Shared Folder: \(error.localizedDescription)")
-          }
-        }
-      }
+      listController.loadSharedPlaylist(folderSharingUrl: folderSharingUrl)
     }
   }
 

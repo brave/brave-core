@@ -49,6 +49,7 @@ class PlaylistListViewController: UIViewController {
   private let playerView: VideoView
   private var observers = Set<AnyCancellable>()
   private var folderObserver: AnyCancellable?
+  private var sharedFolderLoadingTask: Task<Void, Error>?
   private(set) var autoPlayEnabled = Preferences.Playlist.firstLoadAutoPlay.value
   var playerController: AVPlayerViewController?
   var loadingState: LoadingState = .fullyLoaded {
@@ -206,6 +207,7 @@ class PlaylistListViewController: UIViewController {
     folderObserver = nil
     if isMovingFromParent || isBeingDismissed {
       delegate?.stopPlaying()
+      stopLoadingSharedPlaylist()
       PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
     }
   }
@@ -214,6 +216,11 @@ class PlaylistListViewController: UIViewController {
     super.viewDidLayoutSubviews()
 
     updateTableBackgroundView()
+  }
+  
+  deinit {
+    folderObserver = nil
+    stopLoadingSharedPlaylist()
   }
 
   // MARK: Internal
@@ -238,26 +245,25 @@ class PlaylistListViewController: UIViewController {
     // After reloading all data, update the background
     guard PlaylistManager.shared.numberOfAssets > 0 else {
       updateTableBackgroundView()
-      autoPlayEnabled = true
       return
     }
 
     // Otherwise prepare to play the first item
     updateTableBackgroundView()
     playerView.setControlsEnabled(true)
+    
+    // Shared folders are loading
+    if PlaylistManager.shared.currentFolder?.sharedFolderId != nil,
+       PlaylistManager.shared.currentFolder?.isPersistent == false {
+      autoPlayEnabled = false
+      return
+    }
 
     // If car play is active OR media is already playing, do nothing
     // We do nothing when CarPlay is active because the user shouldn't be using the phone anyway
     // But also because if the driver is controlling the audio, there will be a conflict
     // if both the driver is selecting an item, and auto-play happens.
     if PlaylistCarplayManager.shared.isCarPlayAvailable || (delegate?.currentPlaylistAsset != nil || delegate?.isPlaying ?? false) {
-      autoPlayEnabled = true
-      return
-    }
-    
-    // Shared folders are loading
-    if PlaylistManager.shared.currentFolder?.isPersistent == false {
-      autoPlayEnabled = true
       return
     }
 
@@ -280,7 +286,12 @@ class PlaylistListViewController: UIViewController {
       lastPlayedItemTime = initialItem != nil ? initialItemOffset : Preferences.Playlist.lastPlayedItemTime.value
     }
     
-    autoPlayEnabled = initialItem != nil ? true : Preferences.Playlist.firstLoadAutoPlay.value
+    autoPlayEnabled = initialItem != nil ? true : loadingState != .loading ? Preferences.Playlist.firstLoadAutoPlay.value : false
+    if !autoPlayEnabled {
+      delegate?.showStaticImage(image: nil)
+      delegate?.stopPlaying()
+      return
+    }
 
     // If there is no last played item, then just select the first item in the playlist
     // which will play it if auto-play is enabled.
@@ -288,7 +299,6 @@ class PlaylistListViewController: UIViewController {
       let index = PlaylistManager.shared.index(of: lastPlayedItemId)
     else {
       tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
-      autoPlayEnabled = true
       return
     }
 
@@ -364,8 +374,6 @@ class PlaylistListViewController: UIViewController {
         }
       }
     }
-
-    autoPlayEnabled = true
   }
 
   private func seekLastPlayedItem(at indexPath: IndexPath, lastPlayedItemId: String, lastPlayedTime: Double) {
@@ -663,6 +671,79 @@ extension PlaylistListViewController {
       at: IndexPath(row: activeItemIndex, section: 0),
       animated: false,
       scrollPosition: .none)
+  }
+  
+  func loadSharedPlaylist(folderSharingUrl: String) {
+    stopLoadingSharedPlaylist()
+    
+    sharedFolderLoadingTask = Task { @MainActor in
+      // Shared Folder already exists
+      if let existingFolder = PlaylistFolder.getSharedFolder(sharedFolderUrl: folderSharingUrl) {
+        PlaylistManager.shared.currentFolder = existingFolder
+        self.loadingState = .fullyLoaded
+        return
+      }
+      
+      // Shared Folder doesn't exist
+      do {
+        self.playerView.setStaticImage(image: UIImage())
+        let model = try await PlaylistSharedFolderNetwork.fetchPlaylist(folderUrl: folderSharingUrl)
+        let folder = await PlaylistSharedFolderNetwork.createInMemoryStorage(for: model)
+        PlaylistManager.shared.currentFolder = folder
+        self.loadingState = .partial
+        
+        if let folderImageUrl = model.folderImage {
+          let authManager = BasicAuthCredentialsManager(for: [folderImageUrl.absoluteString])
+          let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
+          
+          try await withTaskCancellationHandler {
+            defer { session.finishTasksAndInvalidate() }
+            
+            let (data, response) = try await NetworkManager(session: session).dataRequest(with: folderImageUrl)
+            if let response = response as? HTTPURLResponse, response.statusCode != 200 {
+              return
+            }
+            
+            if let image = UIImage(data: data, scale: UIScreen.main.scale) {
+              self.playerView.setStaticImage(image: image)
+            }
+          } onCancel: {
+            session.invalidateAndCancel()
+          }
+        }
+        
+        let items = try await PlaylistSharedFolderNetwork.fetchMediaItemInfo(item: model, viewForInvisibleWebView: self.view)
+        try folder.playlistItems?.forEach({ playlistItem in
+          try Task.checkCancellation()
+          
+          if let item = items.first(where: { $0.tagId == playlistItem.uuid }) {
+            playlistItem.name = item.name
+            playlistItem.pageTitle = item.pageTitle
+            playlistItem.pageSrc = item.pageSrc
+            playlistItem.duration = item.duration
+            playlistItem.mimeType = item.mimeType
+            playlistItem.mediaSrc = item.src
+            playlistItem.uuid = item.tagId
+            playlistItem.order = item.order
+          }
+        })
+        
+        self.loadingState = .fullyLoaded
+      } catch {
+        if let error = error as? PlaylistSharedFolderNetwork.Status {
+          Logger.module.error("\(error.localizedDescription)")
+        } else {
+          Logger.module.error("Failed Fetching Playlist Shared Folder: \(error.localizedDescription)")
+        }
+        
+        displayLoadingResourceError()
+      }
+    }
+  }
+  
+  func stopLoadingSharedPlaylist() {
+    sharedFolderLoadingTask?.cancel()
+    sharedFolderLoadingTask = nil
   }
 }
 
