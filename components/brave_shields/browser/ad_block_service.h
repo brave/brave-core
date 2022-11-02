@@ -30,6 +30,7 @@ class AdBlockServiceTest;
 class BraveAdBlockTPNetworkDelegateHelperTest;
 class DomainBlockTest;
 class EphemeralStorage1pDomainBlockBrowserTest;
+class HTTPSEverywhereServiceTest;
 class PerfPredictorTabHelperTest;
 class PrefChangeRegistrar;
 class PrefService;
@@ -137,6 +138,7 @@ class AdBlockService {
   friend class ::AdBlockServiceTest;
   friend class ::DomainBlockTest;
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
+  friend class ::HTTPSEverywhereServiceTest;
   friend class ::PerfPredictorTabHelperTest;
 
   static std::string g_ad_block_dat_file_version_;

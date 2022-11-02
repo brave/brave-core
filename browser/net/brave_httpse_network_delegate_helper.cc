@@ -54,7 +54,7 @@ int OnBeforeURLRequest_HttpsePreFileWork(
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   // Don't try to overwrite an already set URL by another delegate (adblock/tp)
-  if (!ctx->new_url_spec.empty()) {
+  if (!ctx->new_url_spec.empty() || !ctx->mock_data_url.empty()) {
     return net::OK;
   }
 
