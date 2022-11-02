@@ -65,7 +65,6 @@ interface BatLedger {
   FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> promotion);
   ClaimPromotion(string promotion_id, string payload) => (ledger.mojom.Result result, string response);
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
-  RecoverWallet(string passPhrase) => (ledger.mojom.Result result);
 
   SetPublisherMinVisitTime(int32 duration_in_seconds);
   SetPublisherMinVisits(int32 visits);
@@ -159,8 +158,6 @@ interface BatLedger {
   GetEventLogs() => (array<ledger.mojom.EventLog> logs);
 
   GetRewardsWallet() => (ledger.mojom.RewardsWallet? wallet);
-
-  GetRewardsWalletPassphrase() => (string passphrase);
 };
 
 interface BatLedgerClient {

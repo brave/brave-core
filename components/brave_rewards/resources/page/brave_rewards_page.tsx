@@ -60,10 +60,6 @@ function promotions (properties: Rewards.PromotionResponse) {
   actions.onPromotions(properties)
 }
 
-function recoverWalletData (result: number) {
-  actions.onRecoverWalletData(result)
-}
-
 function promotionClaimStarted (promotionId: string) {
   actions.onPromotionClaimStarted(promotionId)
 }
@@ -244,10 +240,6 @@ function completeReset (success: boolean) {
   actions.onCompleteReset(success)
 }
 
-function paymentId (paymentId: string) {
-  actions.onPaymentId(paymentId)
-}
-
 function onboardingStatus (result: { showOnboarding: boolean }) {
   actions.onOnboardingStatus(result.showOnboarding)
 }
@@ -274,7 +266,6 @@ Object.defineProperty(window, 'brave_rewards', {
   value: {
     rewardsParameters,
     promotions,
-    recoverWalletData,
     promotionClaimStarted,
     promotionFinish,
     reconcileStamp,
@@ -314,7 +305,6 @@ Object.defineProperty(window, 'brave_rewards', {
     countryCode,
     initialized,
     completeReset,
-    paymentId,
     onboardingStatus,
     enabledInlineTippingPlatforms,
     externalWalletLogin,

@@ -64,8 +64,4 @@
         android:key="qa_export_rewards_db"
         android:title="Export Rewards Database" />
 
-    <Preference
-        android:key="qa_restore_wallet"
-        android:title="Restore Wallet"/>
-
 </PreferenceScreen>

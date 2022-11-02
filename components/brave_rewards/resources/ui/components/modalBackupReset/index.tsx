@@ -7,11 +7,9 @@ import * as React from 'react'
 import { formatMessage } from '../../../shared/lib/locale_context'
 import {
   StyledContent,
-  StyledImport,
   StyledActionsWrapper,
   StyledDoneWrapper,
   StyledLink,
-  StyledStatus,
   ActionButton,
   StyledTitle,
   StyledTitleWrapper,
@@ -19,18 +17,15 @@ import {
   StyledText,
   StyledTextWrapper
 } from './style'
-import { TextArea, Modal, Button } from 'brave-ui/components'
+import { Modal, Button } from 'brave-ui/components'
 import { getLocale } from 'brave-ui/helpers'
-import { Alert, Tab } from '../'
-import ControlWrapper from 'brave-ui/components/formControls/controlWrapper'
+import { Tab } from '../'
 
 export interface Props {
   activeTabId: number
   onTabChange: (newTabId: number) => void
   onClose: () => void
-  onRestore: (key: string) => void
   onVerify?: () => void
-  onShowQRCode: () => void
   error?: React.ReactNode
   id?: string
   testId?: string
@@ -48,7 +43,7 @@ interface State {
   TODO
   - add error flow
  */
-export default class ModalBackupRestore extends React.PureComponent<Props, State> {
+export default class ModalBackupReset extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -57,40 +52,11 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     }
   }
 
-  onFileUpload = (inputFile: React.ChangeEvent<HTMLInputElement>) => {
-    const input: HTMLInputElement = inputFile.target
-    const self = this
-
-    if (!input.files) {
-      return
-    }
-
-    const reader = new FileReader()
-    reader.onload = function () {
-      if (reader.result) {
-        self.onRestore((reader.result.toString() || '').trim())
-      } else {
-        self.onRestore('')
-      }
-    }
-
-    try {
-      reader.readAsText(input.files[0])
-    } catch (e) {
-      self.onRestore('')
-    }
-  }
-
   setRecoveryKey = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({
       errorShown: false,
       recoveryKey: event.target.value
     })
-  }
-
-  onRestore = (key?: string) => {
-    key = typeof key === 'string' ? key : this.state.recoveryKey
-    this.props.onRestore(key)
   }
 
   componentWillReceiveProps (nextProps: Props) {
@@ -133,87 +99,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             onClick={onClose}
           />
         </StyledDoneWrapper>
-      </>
-    )
-  }
-
-  getRestore = () => {
-    const { error, onShowQRCode, onClose, funds } = this.props
-    const errorShown = error && this.state.errorShown
-
-    return (
-      <>
-        {
-          funds
-          ? <StyledStatus>
-              <Alert type={'warning'} colored={true} bg={true}>
-                {getLocale('rewardsRestoreWarning', { funds: funds })}
-              </Alert>
-            </StyledStatus>
-          : null
-        }
-        <ControlWrapper
-          text={
-            <>
-              {getLocale('rewardsRestoreText4')} <StyledImport
-                htmlFor={'recoverFile'}
-              >
-                {getLocale('import')}
-              </StyledImport>
-              <input
-                type='file'
-                id='recoverFile'
-                name='recoverFile'
-                style={{ display: 'none' }}
-                onChange={this.onFileUpload}
-              />
-            </>
-          }
-        >
-          <TextArea
-            id={'backup-recovery-key'}
-            fieldError={!!errorShown}
-            value={this.state.recoveryKey}
-            onChange={this.setRecoveryKey}
-          />
-        </ControlWrapper>
-        {
-          errorShown
-          ? <StyledStatus isError={true}>
-              <Alert type={'error'} colored={true} bg={true}>
-                {error}
-              </Alert>
-            </StyledStatus>
-          : null
-        }
-        <StyledTextWrapper>
-          <StyledText>
-            {getLocale('rewardsRestoreText3')}
-          </StyledText>
-        </StyledTextWrapper>
-        <StyledTextWrapper>
-          <StyledText>
-            <StyledLink onClick={onShowQRCode}>
-              {getLocale('rewardsViewQRCodeText1')}
-            </StyledLink> {getLocale('rewardsViewQRCodeText2')}
-          </StyledText>
-        </StyledTextWrapper>
-        <StyledActionsWrapper>
-          <ActionButton
-            level={'secondary'}
-            text={getLocale('cancel')}
-            size={'medium'}
-            type={'accent'}
-            onClick={onClose}
-          />
-          <ActionButton
-            level={'primary'}
-            type={'accent'}
-            text={getLocale('restore')}
-            size={'medium'}
-            onClick={this.onRestore}
-          />
-        </StyledActionsWrapper>
       </>
     )
   }
@@ -276,9 +161,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         return this.getBackup()
       }
       case 1: {
-        return this.getRestore()
-      }
-      case 2: {
         return this.getReset()
       }
     }
@@ -309,7 +191,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             tabIndexSelected={activeTabId}
             tabTitles={[
               getLocale('backup'),
-              getLocale('restore'),
               getLocale('reset')
             ]}
           />

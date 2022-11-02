@@ -246,9 +246,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual mojom::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
 
-  virtual void RecoverWallet(const std::string& pass_phrase,
-                             LegacyResultCallback callback) = 0;
-
   virtual void SetPublisherExclude(const std::string& publisher_id,
                                    mojom::PublisherExclude exclude,
                                    ResultCallback callback) = 0;
@@ -370,11 +367,6 @@ class LEDGER_EXPORT Ledger {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual std::string GetRewardsWalletPassphrase() = 0;
-
-  virtual void LinkRewardsWallet(const std::string& destination_payment_id,
-                                 PostSuggestionsClaimCallback callback) = 0;
 
   virtual void GetDrainStatus(const std::string& drain_id,
                               GetDrainCallback callback) = 0;

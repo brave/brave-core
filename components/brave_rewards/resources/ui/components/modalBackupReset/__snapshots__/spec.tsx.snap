@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
+exports[`ModalBackupReset tests basic tests matches the snapshot 1`] = `
 <div
   className="sc-dliRfk gLWpoT"
   id="modal"
