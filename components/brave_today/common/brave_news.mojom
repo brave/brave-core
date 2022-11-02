@@ -92,6 +92,10 @@ enum PublisherType {
 
 struct LocaleInfo {
   string locale;
+
+  // The ranking of the source.
+  // Mojo doesn't support nullable primitives, so we consider a rank of 0 to be
+  // unranked.
   uint32 rank;
   array<string> channels;
 };
