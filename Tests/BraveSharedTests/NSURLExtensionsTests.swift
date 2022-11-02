@@ -725,12 +725,6 @@ class NSURLExtensionsTests: XCTestCase {
   }
 
   func testTypedDisplayString() {
-    let testURL1 = URL(string: "https://www.youtube.com")
-    let testURL2 = URL(string: "http://google.com")
-    let testURL3 = URL(string: "www.brave.com")
-    let testURL4 = URL(string: "http://brave.com/foo/")
-    let testURL5 = URL(string: "http://brave.com/foo")
-
     func checkDisplayURLString(testURL: URL?, displayString: String) {
       if let actual = testURL?.typedDisplayString {
         XCTAssertEqual(actual, displayString)
@@ -738,12 +732,48 @@ class NSURLExtensionsTests: XCTestCase {
         XCTFail("Actual url is nil")
       }
     }
-
-    checkDisplayURLString(testURL: testURL1, displayString: "www.youtube.com")
-    checkDisplayURLString(testURL: testURL2, displayString: "google.com")
-    checkDisplayURLString(testURL: testURL3, displayString: "www.brave.com")
-    checkDisplayURLString(testURL: testURL4, displayString: "brave.com/foo")
-    checkDisplayURLString(testURL: testURL5, displayString: "brave.com/foo")
-
+    
+    let urlMap = [
+      URL(string: "https://www.youtube.com"): "www.youtube.com",
+      URL(string: "http://google.com"): "google.com",
+      URL(string: "www.brave.com"): "www.brave.com",
+      URL(string: "http://brave.com/foo/"): "brave.com/foo",
+      URL(string: "http://brave.com/foo"): "brave.com/foo",
+      URL(string: "blob://http://brave.com/foo"): "http://brave.com/foo",
+      URL(string: "file:///Users/brave/documents/foo.txt"): "/Users/brave/documents/foo.txt",
+      URL(string: "file://http://brave.com/foo.txt"): "http://brave.com/foo.txt"
+    ]
+    
+    urlMap.forEach {
+      checkDisplayURLString(testURL: $0, displayString: $1)
+    }
+  }
+  
+  func testDisplayString() {
+    func checkDisplayURLString(testURL: URL?, displayString: String) {
+      if let actual = testURL?.displayURL?.absoluteString {
+        XCTAssertEqual(actual, displayString)
+      } else {
+        XCTFail("Actual url is nil")
+      }
+    }
+    
+    let urlMap = [
+      URL(string: "https://www.youtube.com"): "https://www.youtube.com",
+      URL(string: "http://google.com"): "http://google.com",
+      URL(string: "www.brave.com"): "www.brave.com",
+      URL(string: "http://brave.com/foo/"): "http://brave.com/foo/",
+      URL(string: "http://brave.com/foo"): "http://brave.com/foo",
+      URL(string: "blob://http://brave.com/foo"): "blob://http//brave.com/foo",
+      URL(string: "blob://02C00302-CE62-4DAE-AD70-FDEE19594856"): "blob://02C00302-CE62-4DAE-AD70-FDEE19594856",
+      URL(string: "file:///Users/brave/documents/foo.txt"): "file://foo.txt",
+      URL(string: "file://http://brave.com/foo.txt"): "file://foo.txt",
+      URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=http%3A%2F%2Fbrave.com%2Ffoo"): "http://brave.com/foo",
+      URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876"): "blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876"
+    ]
+    
+    urlMap.forEach {
+      checkDisplayURLString(testURL: $0, displayString: $1)
+    }
   }
 }
