@@ -11,6 +11,7 @@ import {
   SupportedCoinTypes,
   SupportedTestNetworks
 } from '../../constants/types'
+import { IsEip1559Changed } from '../constants/action_types'
 
 // utils
 import { cacher } from '../../utils/query-cache-utils'
@@ -99,6 +100,26 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
           }
         },
         providesTags: ['TestnetsEnabled']
+      }),
+      isEip1559Changed: builder.mutation<{ id: string, isEip1559: boolean }, IsEip1559Changed>({
+        async queryFn (arg) {
+          const { chainId, isEip1559 } = arg
+          // cache which chains are using EIP1559
+          return {
+            data: { id: chainId, isEip1559 } // invalidate the cache of the network with this chainId
+          }
+        },
+        onQueryStarted ({ chainId, isEip1559 }, { dispatch }) {
+          // optimistic updates
+          // try manually updating the cached network with the updated isEip1559 value
+          dispatch(walletApi.util.updateQueryData('getAllNetworks', undefined, (draft) => {
+            const draftNet = draft.find(net => net.chainId === chainId)
+            if (draftNet) {
+              draftNet.isEip1559 = isEip1559
+            }
+          }))
+        },
+        invalidatesTags: cacher.invalidatesList('Network')
       })
     })
   })
