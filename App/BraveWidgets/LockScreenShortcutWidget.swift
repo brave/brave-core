@@ -64,6 +64,7 @@ struct LockScreenShortcutView: View {
           .font(.system(size: 20))
           .widgetLabel(entry.widgetShortcut.displayString)
           .accessibilityLabel(Text(entry.widgetShortcut.displayString))
+          .unredacted()
       )
       .widgetURL(URL(string: "brave://shortcut?path=\(entry.widgetShortcut.rawValue)"))
   }
