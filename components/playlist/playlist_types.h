@@ -36,6 +36,15 @@ struct PlaylistChangeParams {
 
   Type change_type = Type::kNone;
   std::string playlist_id;
+
+  bool operator==(const PlaylistChangeParams& rhs) const;
+
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const PlaylistChangeParams& change_params) {
+    return os << "{ "
+              << GetPlaylistChangeTypeAsString(change_params.change_type)
+              << " }";
+  }
 };
 
 struct PlaylistItemInfo {
