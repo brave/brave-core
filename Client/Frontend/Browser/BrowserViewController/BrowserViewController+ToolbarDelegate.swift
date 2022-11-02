@@ -208,10 +208,13 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func processAddressBar(text: String, visitType: VisitType, isBraveSearchPromotion: Bool = false) {
     if let fixupURL = URIFixup.getURL(text), !isBraveSearchPromotion {
-      // The user entered a URL, so use it.
-      finishEditingAndSubmit(fixupURL, visitType: visitType)
-
-      return
+      // Do not allow users to enter URLs with the following schemes.
+      // Instead, submit them to the search engine like Chrome-iOS does.
+      if !["file"].contains(fixupURL.scheme) {
+        // The user entered a URL, so use it.
+        finishEditingAndSubmit(fixupURL, visitType: visitType)
+        return
+      }
     }
 
     // We couldn't build a URL, so pass it on to the search engine.
