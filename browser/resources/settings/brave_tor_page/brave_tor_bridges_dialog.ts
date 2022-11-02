@@ -13,7 +13,7 @@ import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import { getTemplate } from './brave_tor_bridges_dialog.html.js'
+import {getTemplate} from './brave_tor_bridges_dialog.html.js'
 
 import {
   BraveTorBrowserProxy,
@@ -82,6 +82,8 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
       () => {
         this.requestCaptcha_()
       })
+
+    this.renewDisabled_ = true
     this.captchaResolve_ = ''
   }
 
@@ -91,20 +93,21 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
 
   private requestCaptcha_() {
     this.captchaResolve_ = ''
+    this.renewDisabled_ = true
     this.status_ = this.i18n('torRequestBridgeDialogWaiting')
     this.captcha_ = ''
 
     this.browserProxy_.requestBridgesCaptcha().then((result) => {
       this.captcha_ = result.captcha
       this.status_ = this.i18n('torRequestBridgeDialogSolve')
-      this.renewDisabled_ = false;
+      this.renewDisabled_ = false
     }, () => {
       this.status_ = this.i18n('torRequestBridgeDialogError')
       this.renewDisabled_ = false
     })
   }
 
-  private computeSubmitDisabled_(captchaResolve) {
+  private computeSubmitDisabled_(captchaResolve: String) {
     return captchaResolve.length === 0
   }
 }
