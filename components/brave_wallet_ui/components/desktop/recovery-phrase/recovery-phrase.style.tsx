@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // images
-import EyeOffSvg from '../../../../../assets/svg-icons/eye-off-icon.svg'
+import EyeOffSvg from '../../../assets/svg-icons/eye-off-icon.svg'
 import FrostedGlassRecoveryPhrase from './images/frosted-glass-recovery-phrase.png'
 
 export const RecoveryPhraseContainer = styled.div`

@@ -4,16 +4,19 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { PageSelectors } from '../../../selectors'
 
-// types
-import { PageState, WalletRoutes } from '../../../../constants/types'
+// routes
+import { WalletRoutes } from '../../../../constants/types'
+import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // hooks
 import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-to-clipboard'
+import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 
 // styles
 import {
@@ -33,18 +36,23 @@ import {
   PhraseCardBody,
   PhraseCardBottomRow,
   PhraseCardTopRow
-} from '../onboarding.style'
+} from '../../onboarding/onboarding.style'
 
 // components
-import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
+import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { NavButton } from '../../../../components/extension'
+import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
-export const OnboardingBackupRecoveryPhrase = () => {
+export const BackupRecoveryPhrase = () => {
+  // routing
+  const { pathname } = useLocation()
+  const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
+
   // redux
-  const mnemonic = useSelector(({ page }: { page: PageState }) => page.mnemonic)
+  const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
 
   // state
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
@@ -79,10 +87,19 @@ export const OnboardingBackupRecoveryPhrase = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingNewWalletStepsNavigation
-            goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
-            currentStep={WalletRoutes.OnboardingBackupRecoveryPhrase}
-          />
+          {isOnboarding &&
+            <OnboardingNewWalletStepsNavigation
+              goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
+              currentStep={WalletRoutes.OnboardingBackupRecoveryPhrase}
+            />
+          }
+          {!isOnboarding &&
+            <StepsNavigation
+              steps={WALLET_BACKUP_STEPS}
+              goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
+              currentStep={WalletRoutes.BackupRecoveryPhrase}
+            />
+          }
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletRecoveryPhraseBackupTitle')}</Title>
@@ -133,7 +150,10 @@ export const OnboardingBackupRecoveryPhrase = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonNext')}
-              url={WalletRoutes.OnboardingVerifyRecoveryPhrase}
+              url={isOnboarding
+                ? WalletRoutes.OnboardingVerifyRecoveryPhrase
+                : WalletRoutes.BackupVerifyRecoveryPhrase
+              }
             />
           </NextButtonRow>
 

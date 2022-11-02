@@ -4,8 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { useHistory, useLocation } from 'react-router'
 
 // utils
 import { getLocale, getLocaleWithTags } from '../../../../../common/locale'
@@ -16,7 +16,8 @@ import {
 } from '../../../../utils/ordinal-utils'
 
 // routes
-import { PageState, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
+import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -32,7 +33,7 @@ import {
   TitleAndDescriptionContainer,
   PhraseCard,
   PhraseCardBody
-} from '../onboarding.style'
+} from '../../onboarding/onboarding.style'
 import {
   ErrorTextRow
 } from './verify-backup-recovery-phrase.style'
@@ -40,20 +41,25 @@ import {
 // components
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
-import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../selectors'
+import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recovery-phrase'
+import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
-export const OnboardingVerifyRecoveryPhrase = () => {
+export const VerifyRecoveryPhrase = () => {
   // state
   const [nextStepEnabled, setNextStepEnabled] = React.useState(false)
   const [hasSelectedWords, setHasSelectedWords] = React.useState(false)
 
   // redux
   const dispatch = useDispatch()
-  const mnemonic = useSelector(({ page }: { page: PageState }) => page.mnemonic)
+  const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
 
   // routing
   const history = useHistory()
+  const { pathname } = useLocation()
+  const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
   // methods
   const onSelectedWordsUpdated = React.useCallback((words: any[], doesWordOrderMatch: boolean) => {
@@ -66,11 +72,20 @@ export const OnboardingVerifyRecoveryPhrase = () => {
     history.push(WalletRoutes.OnboardingComplete)
   }, [])
 
-  const onNextStep = React.useCallback(() => {
-    dispatch(WalletPageActions.walletSetupComplete(true))
-    dispatch(WalletPageActions.walletBackupComplete())
-    history.push(WalletRoutes.OnboardingComplete)
+  const onSkipBackup = React.useCallback(() => {
+    history.push(WalletRoutes.Portfolio)
   }, [])
+
+  const onNextStep = React.useCallback(() => {
+    if (isOnboarding) {
+      dispatch(WalletPageActions.walletSetupComplete(true))
+    }
+    dispatch(WalletPageActions.walletBackupComplete())
+    history.push(isOnboarding
+      ? WalletRoutes.OnboardingComplete
+      : WalletRoutes.Portfolio
+    )
+  }, [isOnboarding])
 
   // memos
   const recoveryPhrase = React.useMemo(() => {
@@ -89,11 +104,21 @@ export const OnboardingVerifyRecoveryPhrase = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingNewWalletStepsNavigation
-            goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
-            currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
-            onSkip={onSkip}
-          />
+          {isOnboarding &&
+            <OnboardingNewWalletStepsNavigation
+              goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
+              currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
+              onSkip={onSkip}
+            />
+          }
+          {!isOnboarding &&
+            <StepsNavigation
+              steps={WALLET_BACKUP_STEPS}
+              goBackUrl={WalletRoutes.BackupRecoveryPhrase}
+              currentStep={WalletRoutes.BackupVerifyRecoveryPhrase}
+              onSkip={onSkipBackup}
+            />
+          }
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
@@ -158,4 +183,4 @@ export const OnboardingVerifyRecoveryPhrase = () => {
   )
 }
 
-export default OnboardingVerifyRecoveryPhrase
+export default VerifyRecoveryPhrase

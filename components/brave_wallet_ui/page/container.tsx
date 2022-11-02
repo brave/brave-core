@@ -44,7 +44,7 @@ import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '.
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
-import { BackupWallet } from './screens/backup-wallet/backup-wallet'
+import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
@@ -112,11 +112,6 @@ export const Container = () => {
       history.push(WalletRoutes.Portfolio)
     }
   }, [inputValue, sessionRoute])
-
-  const onHideBackup = React.useCallback(() => {
-    dispatch(WalletPageActions.showRecoveryPhrase({ show: false }))
-    history.goBack()
-  }, [])
 
   const handlePasswordChanged = React.useCallback((value: string) => {
     setInputValue(value)
@@ -196,6 +191,16 @@ export const Container = () => {
     document.title = getWalletLocationTitle(walletLocation)
   }, [walletLocation])
 
+  React.useEffect(() => {
+    // clean recovery phrase if not backing up or onboarding on route change
+    if (
+      !walletLocation.includes(WalletRoutes.Backup) &&
+      !walletLocation.includes(WalletRoutes.Onboarding)
+    ) {
+      dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+    }
+  }, [walletLocation])
+
   // render
   if (!hasInitialized) {
     return <Skeleton />
@@ -253,12 +258,9 @@ export const Container = () => {
               }
 
               {!isWalletLocked &&
-                <Route path={WalletRoutes.Backup} exact={true}>
+                <Route path={WalletRoutes.Backup}>
                   <SimplePageWrapper>
-                    <BackupWallet
-                      isOnboarding={false}
-                      onCancel={onHideBackup}
-                    />
+                    <BackupWalletRoutes />
                   </SimplePageWrapper>
                 </Route>
               }

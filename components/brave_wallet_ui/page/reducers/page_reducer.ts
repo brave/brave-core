@@ -88,7 +88,9 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
       },
 
       recoveryWordsAvailable (state, { payload }: PayloadAction<RecoveryWordsAvailablePayloadType>) {
-        state.mnemonic = payload.mnemonic
+        if (state.mnemonic !== payload.mnemonic) {
+          state.mnemonic = payload.mnemonic
+        }
       },
 
       selectCoinMarket (state, { payload }: PayloadAction<BraveWallet.CoinMarket | undefined>) {
@@ -181,11 +183,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 }
 
 export const createPageReducer = (initialState: PageState) => {
-  const { reducer } = createPageSlice(initialState)
-  return reducer
+  return createPageSlice(initialState).reducer
 }
 
 export const pageSlice = createPageSlice()
 export const pageReducer = pageSlice.reducer
-export const PageActions = { ...pageSlice.actions, ...WalletPageAsyncActions }
+export const PageActions = { ...WalletPageAsyncActions, ...pageSlice.actions }
 export default pageReducer

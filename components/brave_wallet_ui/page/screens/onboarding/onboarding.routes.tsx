@@ -12,10 +12,10 @@ import {
 } from 'react-router'
 
 // components
-import { OnboardingBackupRecoveryPhrase } from './backup-recovery-phrase/onboarding-backup-recovery-phrase'
+import { BackupRecoveryPhrase } from '../backup-wallet/backup-recovery-phrase/backup-recovery-phrase'
 import { OnboardingCreatePassword } from './create-password/onboarding-create-password'
-import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
-import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
+import { RecoveryPhraseExplainer } from '../backup-wallet/explain-recovery-phrase/explain-recovery-phrase'
+import { VerifyRecoveryPhrase } from '../backup-wallet/verify-recovery-phrase/verify-recovery-phrase'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
@@ -107,15 +107,15 @@ export const OnboardingRoutes = () => {
       {!isWalletCreated && <Redirect to={WalletRoutes.OnboardingWelcome} />}
 
       <Route path={WalletRoutes.OnboardingExplainRecoveryPhrase} exact>
-        <OnboardingRecoveryPhraseExplainer />
+        <RecoveryPhraseExplainer />
       </Route>
 
       <Route path={WalletRoutes.OnboardingBackupRecoveryPhrase} exact>
-        <OnboardingBackupRecoveryPhrase />
+        <BackupRecoveryPhrase />
       </Route>
 
       <Route path={WalletRoutes.OnboardingVerifyRecoveryPhrase} exact>
-        <OnboardingVerifyRecoveryPhrase />
+        <VerifyRecoveryPhrase />
       </Route>
 
       <Route path={WalletRoutes.OnboardingComplete} exact>

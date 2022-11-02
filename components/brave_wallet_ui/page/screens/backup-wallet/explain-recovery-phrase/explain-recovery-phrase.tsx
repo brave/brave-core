@@ -4,13 +4,14 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 // utils
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
+import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // images
 import ExamplePhrase from './images/example-recovery-phrase.svg'
@@ -18,8 +19,9 @@ import ExamplePhrase from './images/example-recovery-phrase.svg'
 // components
 import { NavButton } from '../../../../components/extension'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { ArticleLinkBubble } from '../onboarding-success/components/article-link-bubble/article-link-bubble'
+import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
+import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 // style
 import {
@@ -28,7 +30,7 @@ import {
   Description,
   NextButtonRow,
   MainWrapper
-} from '../onboarding.style'
+} from '../../onboarding/onboarding.style'
 import {
   BannerCard,
   WarningCircle,
@@ -47,13 +49,19 @@ const ImportantTextSegments = () => {
   </BannerText>
 }
 
-export const OnboardingRecoveryPhraseExplainer = () => {
+export const RecoveryPhraseExplainer = () => {
   // routing
   const history = useHistory()
+  const { pathname } = useLocation()
+  const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
   // methods
   const skipToOnboardingSuccess = () => {
     history.push(WalletRoutes.OnboardingComplete)
+  }
+
+  const skipBackup = () => {
+    history.push(WalletRoutes.Portfolio)
   }
 
   // render
@@ -62,11 +70,22 @@ export const OnboardingRecoveryPhraseExplainer = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingNewWalletStepsNavigation
-            preventGoBack
-            currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
-            onSkip={skipToOnboardingSuccess}
-          />
+          {isOnboarding &&
+            <OnboardingNewWalletStepsNavigation
+              preventGoBack
+              currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
+              onSkip={skipToOnboardingSuccess}
+            />
+          }
+          {!isOnboarding &&
+            <StepsNavigation
+              steps={WALLET_BACKUP_STEPS}
+              preventGoBack
+              currentStep={WalletRoutes.BackupExplainRecoveryPhrase}
+              preventSkipAhead
+              onSkip={skipBackup}
+            />
+          }
 
           <div>
             <Title>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}</Title>
@@ -92,7 +111,10 @@ export const OnboardingRecoveryPhraseExplainer = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonGotIt')}
-              url={WalletRoutes.OnboardingBackupRecoveryPhrase}
+              url={isOnboarding
+                ? WalletRoutes.OnboardingBackupRecoveryPhrase
+                : WalletRoutes.BackupRecoveryPhrase
+              }
             />
           </NextButtonRow>
 
@@ -102,4 +124,4 @@ export const OnboardingRecoveryPhraseExplainer = () => {
   )
 }
 
-export default OnboardingRecoveryPhraseExplainer
+export default RecoveryPhraseExplainer
