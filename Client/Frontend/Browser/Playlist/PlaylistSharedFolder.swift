@@ -138,58 +138,68 @@ struct PlaylistSharedFolderNetwork {
     })
   }
   
-  static func fetchMediaItemInfo(item: PlaylistSharedFolderModel, viewForInvisibleWebView: UIView) async -> [PlaylistInfo] {
+  static func fetchMediaItemInfo(item: PlaylistSharedFolderModel, viewForInvisibleWebView: UIView) async throws -> [PlaylistInfo] {
     @Sendable @MainActor
-    func fetchTask(item: PlaylistInfo) async -> PlaylistInfo {
-      await withCheckedContinuation { continuation in
-        var webLoader: PlaylistWebLoader?
-        webLoader = PlaylistWebLoader(handler: { newItem in
-            if let newItem = newItem {
-              PlaylistManager.shared.getAssetDuration(item: newItem) { duration in
-                let item = PlaylistInfo(name: item.name,
-                                   src: newItem.src,
-                                   pageSrc: newItem.pageSrc,
-                                   pageTitle: item.pageTitle,
-                                   mimeType: newItem.mimeType,
-                                   duration: duration ?? newItem.duration,
-                                   detected: newItem.detected,
-                                   dateAdded: newItem.dateAdded,
-                                   tagId: item.tagId,
-                                   order: item.order)
-                
+    func fetchTask(item: PlaylistInfo) async throws -> PlaylistInfo {
+      var webLoader: PlaylistWebLoader?
+      return try await withTaskCancellationHandler {
+        try await withCheckedThrowingContinuation { continuation in
+          webLoader = PlaylistWebLoader(handler: { newItem in
+              if let newItem = newItem {
+                PlaylistManager.shared.getAssetDuration(item: newItem) { duration in
+                  let item = PlaylistInfo(name: item.name,
+                                     src: newItem.src,
+                                     pageSrc: newItem.pageSrc,
+                                     pageTitle: item.pageTitle,
+                                     mimeType: newItem.mimeType,
+                                     duration: duration ?? newItem.duration,
+                                     detected: newItem.detected,
+                                     dateAdded: newItem.dateAdded,
+                                     tagId: item.tagId,
+                                     order: item.order)
+                  
+                  // Destroy the web loader when the callback is complete.
+                  webLoader?.removeFromSuperview()
+                  webLoader = nil
+                  continuation.resume(returning: item)
+                }
+              } else {
                 // Destroy the web loader when the callback is complete.
                 webLoader?.removeFromSuperview()
                 webLoader = nil
                 continuation.resume(returning: item)
               }
-            } else {
-              // Destroy the web loader when the callback is complete.
-              webLoader?.removeFromSuperview()
-              webLoader = nil
-              continuation.resume(returning: item)
             }
+          ).then {
+            viewForInvisibleWebView.insertSubview($0, at: 0)
           }
-        ).then {
-          viewForInvisibleWebView.insertSubview($0, at: 0)
-        }
 
-        if let url = URL(string: item.pageSrc) {
-          webLoader?.load(url: url)
-        } else {
+          if let url = URL(string: item.pageSrc) {
+            webLoader?.load(url: url)
+          } else {
+            webLoader = nil
+          }
+        }
+      } onCancel: {
+        Task { @MainActor in
+          webLoader?.stop()
+          webLoader?.removeFromSuperview()
           webLoader = nil
         }
       }
     }
 
-    return await withTaskGroup(of: PlaylistInfo.self, returning: [PlaylistInfo].self) { group in
-      item.mediaItems.forEach { item in
+    return try await withThrowingTaskGroup(of: PlaylistInfo.self, returning: [PlaylistInfo].self) { group in
+      try item.mediaItems.forEach { item in
+        try Task.checkCancellation()
+        
         group.addTask {
-          return await fetchTask(item: item)
+          return try await fetchTask(item: item)
         }
       }
       
       var result = [PlaylistInfo]()
-      for await value in group {
+      for try await value in group {
         result.append(value)
       }
       return result

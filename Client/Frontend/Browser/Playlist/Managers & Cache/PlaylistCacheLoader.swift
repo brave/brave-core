@@ -338,11 +338,16 @@ class PlaylistWebLoader: UIView {
   }
 
   private weak var certStore: CertStore?
-  private var handler: (PlaylistInfo?) -> Void
+  private var handler: ((PlaylistInfo?) -> Void)?
 
   init(handler: @escaping (PlaylistInfo?) -> Void) {
-    self.handler = handler
     super.init(frame: .zero)
+    
+    self.handler = { [weak self] in
+      // Handler cannot be called more than once!
+      self?.handler = nil
+      handler($0)
+    }
 
     guard let webView = tab.webView else {
       handler(nil)
@@ -396,7 +401,7 @@ class PlaylistWebLoader: UIView {
     guard let webView = tab.webView else { return }
     webView.stopLoading()
     DispatchQueue.main.async {
-      self.handler(nil)
+      self.handler?(nil)
       webView.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
     }
   }
@@ -412,7 +417,7 @@ class PlaylistWebLoader: UIView {
       
       timeout = DispatchWorkItem(block: { [weak self] in
         guard let self = self else { return }
-        self.webLoader?.handler(nil)
+        self.webLoader?.handler?(nil)
         self.webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
         self.webLoader = nil
       })
@@ -436,7 +441,7 @@ class PlaylistWebLoader: UIView {
       else {
         timeout?.cancel()
         timeout = nil
-        webLoader?.handler(nil)
+        webLoader?.handler?(nil)
         webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
         webLoader = nil
         return
@@ -446,7 +451,7 @@ class PlaylistWebLoader: UIView {
       if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
         timeout?.cancel()
         timeout = nil
-        webLoader?.handler(nil)
+        webLoader?.handler?(nil)
         webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
         webLoader = nil
         return
@@ -459,7 +464,7 @@ class PlaylistWebLoader: UIView {
       if let url = URL(string: item.src), !AVURLAsset(url: url).isPlayable {
         timeout?.cancel()
         timeout = nil
-        webLoader?.handler(nil)
+        webLoader?.handler?(nil)
         webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
         webLoader = nil
         return
@@ -470,7 +475,7 @@ class PlaylistWebLoader: UIView {
 
         timeout?.cancel()
         timeout = nil
-        webLoader?.handler(item)
+        webLoader?.handler?(item)
         webLoader = nil
       }
 
@@ -516,7 +521,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
   }
 
   func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-    self.handler(nil)
+    self.handler?(nil)
   }
 
   func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
