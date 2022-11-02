@@ -10,11 +10,12 @@ import BraveShared
 struct FullScreenCalloutManager {
 
   enum FullScreenCalloutType {
-    case vpn, rewards, defaultBrowser
+    case vpn, rewards, defaultBrowser, blockCookieConsentNotices
 
     /// The number of days passed to show certain type of callout
     var period: Int {
       switch self {
+      case .blockCookieConsentNotices: return 0
       case .vpn: return 4
       case .rewards: return 8
       case .defaultBrowser: return 10
@@ -24,6 +25,7 @@ struct FullScreenCalloutManager {
     /// The preference value stored for complete state
     var preferenceValue: Preferences.Option<Bool> {
       switch self {
+      case .blockCookieConsentNotices: return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
       case .vpn: return Preferences.FullScreenCallout.vpnCalloutCompleted
       case .rewards: return Preferences.FullScreenCallout.rewardsCalloutCompleted
       case .defaultBrowser: return Preferences.DefaultBrowserIntro.completed

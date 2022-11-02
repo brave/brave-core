@@ -31,6 +31,7 @@ public struct BraveButtonSize {
 public struct BraveFilledButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
 
+  private let clipShape = RoundedRectangle(cornerRadius: 48, style: .continuous)
   public var size: BraveButtonSize
 
   public init(size: BraveButtonSize) {
@@ -52,8 +53,8 @@ public struct BraveFilledButtonStyle: ButtonStyle {
           }
         }
       )
-      .clipShape(Capsule())
-      .contentShape(Capsule())
+      .clipShape(clipShape)
+      .contentShape(clipShape)
       .animation(.linear(duration: 0.15), value: isEnabled)
   }
 }
