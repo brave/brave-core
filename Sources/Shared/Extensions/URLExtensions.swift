@@ -144,7 +144,7 @@ extension URL {
 
   public var displayURL: URL? {
     if self.absoluteString.starts(with: "blob:") {
-      return URL(string: "blob:")
+      return self.havingRemovedAuthorisationComponents()
     }
 
     if self.isFileURL {
@@ -157,6 +157,10 @@ extension URL {
 
     if let internalUrl = InternalURL(self), internalUrl.isErrorPage {
       return internalUrl.originalURLFromErrorPage?.displayURL
+    }
+    
+    if let internalUrl = InternalURL(self), internalUrl.isSessionRestore {
+      return internalUrl.extractedUrlParam?.displayURL
     }
 
     if !InternalURL.isValid(url: self) {
