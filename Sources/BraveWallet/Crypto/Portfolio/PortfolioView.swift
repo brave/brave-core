@@ -21,6 +21,10 @@ struct PortfolioView: View {
   @State private var dismissedBackupBannerThisSession: Bool = false
   @State private var isPresentingBackup: Bool = false
   @State private var isPresentingEditUserAssets: Bool = false
+  
+  @Environment(\.sizeCategory) private var sizeCategory
+  /// Reference to the collection view used to back the `List` on iOS 16+
+  @State private var collectionView: UICollectionView?
 
   private var isShowingBackupBanner: Bool {
     !keyringStore.defaultKeyring.isBackedUp && !dismissedBackupBannerThisSession
@@ -137,6 +141,15 @@ struct PortfolioView: View {
       withAnimation(nil) {
         tableInset = -tableView.layoutMargins.left
       }
+    }
+    .onChange(of: sizeCategory) { _ in
+      // Fix broken header when text size changes on iOS 16+
+      collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    .introspect(
+      selector: TargetViewSelector.ancestorOrSiblingContaining
+    ) { (collectionView: UICollectionView) in
+      self.collectionView = collectionView
     }
   }
 }
