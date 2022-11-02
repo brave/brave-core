@@ -3,11 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/base64.h"
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/https_everywhere_component_installer.h"
+#include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
@@ -49,6 +53,7 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForHTTPSEverywhereServiceThread();
+    WaitForAdBlockServiceThreads();
     ASSERT_TRUE(
       g_brave_browser_process->https_everywhere_service()->IsInitialized());
   }
@@ -93,6 +98,30 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
         g_brave_browser_process->https_everywhere_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
+
+  void WaitForAdBlockServiceThreads() {
+    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->ad_block_service()->GetTaskRunner()));
+    ASSERT_TRUE(tr_helper->Run());
+  }
+
+  std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
+      source_providers_;
+
+  void UpdateCustomAdBlockInstanceWithRules(const std::string& rules,
+                                            const std::string& resources) {
+    auto source_provider =
+        std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
+
+    brave_shields::AdBlockService* ad_block_service =
+        g_brave_browser_process->ad_block_service();
+    ad_block_service->UseCustomSourceProvidersForTest(source_provider.get(),
+                                                      source_provider.get());
+
+    source_providers_.push_back(std::move(source_provider));
+
+    WaitForAdBlockServiceThreads();
+  }
 };
 
 // Load a URL which has an HTTPSE rule and verify we rewrote it.
@@ -104,6 +133,55 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSite) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(GURL("https://www.digg.com/"), contents->GetLastCommittedURL());
+}
+
+// Load a URL which has an HTTPSE rule and an adblock redirect rule - verify
+// that the adblock rule takes precedence
+IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, PreferAdblockRedirect) {
+  ASSERT_TRUE(InstallHTTPSEverywhereExtension());
+
+  std::string frame_html =
+      "<html><script>"
+      "  const customResource = true;"
+      "</script></html>";
+
+  std::string resource_base64;
+  base::Base64Encode(frame_html, &resource_base64);
+
+  UpdateCustomAdBlockInstanceWithRules(
+      "www.digg.com$subdocument,redirect=custom-resource-html",
+      R"(
+      [
+        {
+          "name": "custom-resource-html",
+          "aliases": [],
+          "kind": {
+            "mime":"text/html"
+          },
+          "content": ")" +
+          resource_base64 + R"("
+        }
+      ])");
+
+  GURL url = embedded_test_server()->GetURL("a.com", "/iframe.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  GURL iframe_url = embedded_test_server()->GetURL("www.digg.com", "/");
+  const char kIframeID[] = "test";
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_TRUE(NavigateIframeToURL(contents, kIframeID, iframe_url));
+  content::RenderFrameHost* iframe_contents =
+      ChildFrameAt(contents->GetPrimaryMainFrame(), 0);
+  WaitForLoadStop(contents);
+
+  // The URL should not be modified
+  ASSERT_EQ(iframe_url, iframe_contents->GetLastCommittedURL());
+
+  // The `customResource` JS property should be defined
+  const GURL resource_url =
+      embedded_test_server()->GetURL("example.com", "/example.html");
+  ASSERT_EQ(true, EvalJs(iframe_contents, "customResource"));
 }
 
 // Load a URL which has no HTTPSE rule and verify we did not rewrite it.
