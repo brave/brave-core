@@ -9,10 +9,12 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/ntp_background/constants.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -34,10 +36,14 @@ class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
     file_manager_ = std::make_unique<CustomBackgroundFileManager>(profile());
 
     base::ScopedAllowBlockingForTesting allow_blocking_call;
-    ASSERT_TRUE(base::CopyFile(
-        base::FilePath(
-            FILE_PATH_LITERAL("brave/test/data/ntp_background/background.jpg")),
-        profile()->GetPath().AppendASCII(kTestImageName)));
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
+
+    ASSERT_TRUE(
+        base::CopyFile(test_data_dir.Append(
+                           FILE_PATH_LITERAL("ntp_background/background.jpg")),
+                       profile()->GetPath().AppendASCII(kTestImageName)));
 
     run_loop_ = std::make_unique<base::RunLoop>();
   }
