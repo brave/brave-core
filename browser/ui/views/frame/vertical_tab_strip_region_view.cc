@@ -12,6 +12,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -44,7 +45,7 @@ class ToggleButton : public views::Button {
     // text.
     // https://github.com/brave/brave-browser/issues/24717
     SetProperty(views::kSkipAccessibilityPaintChecks, true);
-    SetPreferredSize(gfx::Size{GetIconWidth(), GetIconWidth()});
+    SetPreferredSize(gfx::Size{tabs::kVerticalTabMinWidth, GetIconWidth()});
   }
   ~ToggleButton() override = default;
 
@@ -70,8 +71,7 @@ class ToggleButton : public views::Button {
 
     const int icon_inset = ui::TouchUiController::Get()->touch_ui() ? 10 : 9;
     gfx::Rect icon_bounds(gfx::Size(icon_width, height()));
-    if (expanded)
-      icon_bounds.set_x(width() - icon_width);
+    icon_bounds.set_x((width() - icon_width) / 2);
     icon_bounds.Inset(gfx::Insets::VH(icon_inset, icon_inset * 1.5));
 
     if (expanded) {
@@ -432,8 +432,7 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
   DCHECK_EQ(state, State::kCollapsed)
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
-  return {TabStyle::GetPinnedWidth() - TabStyle::GetTabOverlap(),
-          View::CalculatePreferredSize().height()};
+  return {tabs::kVerticalTabMinWidth, View::CalculatePreferredSize().height()};
 }
 
 BEGIN_METADATA(VerticalTabStripRegionView, views::View)
