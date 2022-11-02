@@ -151,10 +151,6 @@ void BraveVPNOSConnectionAPI::CheckConnection() {
   CheckConnectionImpl(target_vpn_entry_name_);
 }
 
-void BraveVPNOSConnectionAPI::SetSkusCredential(const std::string& credential) {
-  skus_credential_ = credential;
-}
-
 void BraveVPNOSConnectionAPI::ResetConnectionInfo() {
   VLOG(2) << __func__;
   connection_info_.Reset();
@@ -333,7 +329,7 @@ std::string BraveVPNOSConnectionAPI::GetSelectedRegion() const {
 }
 
 std::string BraveVPNOSConnectionAPI::GetCurrentEnvironment() const {
-  return local_prefs_->GetString(prefs::kBraveVPNEEnvironment);
+  return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
 
 void BraveVPNOSConnectionAPI::FetchHostnamesForRegion(const std::string& name) {
@@ -402,59 +398,19 @@ void BraveVPNOSConnectionAPI::ParseAndCacheHostnames(
           << hostname_->display_name << ", " << hostname_->is_offline << ", "
           << hostname_->capacity_score;
 
-  if (skus_credential_.empty()) {
-    VLOG(2) << __func__ << " : skus_credential is empty";
-    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-    return;
-  }
-
   if (!GetAPIRequest()) {
     CHECK_IS_TEST();
     return;
   }
 
-  // Get subscriber credentials and then get EAP credentials with it to create
-  // OS VPN entry.
-  VLOG(2) << __func__ << " : request subscriber credential:"
+  // Get profile credentials it to create OS VPN entry.
+  VLOG(2) << __func__ << " : request profile credential:"
           << GetBraveVPNPaymentsEnv(GetCurrentEnvironment());
-  GetAPIRequest()->GetSubscriberCredentialV12(
-      base::BindOnce(&BraveVPNOSConnectionAPI::OnGetSubscriberCredentialV12,
-                     base::Unretained(this)),
-      skus_credential_, GetBraveVPNPaymentsEnv(GetCurrentEnvironment()));
-}
 
-void BraveVPNOSConnectionAPI::OnGetSubscriberCredentialV12(
-    const std::string& subscriber_credential,
-    bool success) {
-  if (cancel_connecting_) {
-    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
-    cancel_connecting_ = false;
-    return;
-  }
-
-  if (!success) {
-    VLOG(2) << __func__ << " : failed to get subscriber credential";
-    if (subscriber_credential == kTokenNoLongerValid) {
-      for (auto& obs : observers_)
-        obs.OnGetInvalidToken();
-    }
-    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-    return;
-  }
-
-  VLOG(2) << __func__ << " : received subscriber credential";
-
-  if (!GetAPIRequest()) {
-    CHECK_IS_TEST();
-    return;
-  }
-
-  // TODO(bsclifton): consider storing `subscriber_credential` for
-  // support ticket use-case (see `CreateSupportTicket`).
   GetAPIRequest()->GetProfileCredentials(
       base::BindOnce(&BraveVPNOSConnectionAPI::OnGetProfileCredentials,
                      base::Unretained(this)),
-      subscriber_credential, hostname_->hostname);
+      GetSubscriberCredential(local_prefs_), hostname_->hostname);
 }
 
 void BraveVPNOSConnectionAPI::OnGetProfileCredentials(

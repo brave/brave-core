@@ -12,7 +12,6 @@ namespace switches {
 
 // Use for simulation instead of calling os platform apis.
 constexpr char kBraveVPNSimulation[] = "brave-vpn-simulate";
-constexpr char kBraveVPNTestMonthlyPass[] = "brave-vpn-test-monthly-pass";
 
 }  // namespace switches
 

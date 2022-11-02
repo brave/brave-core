@@ -100,6 +100,9 @@ constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
 constexpr int kP3AIntervalHours = 24;
 
+constexpr char kSubscriberCredentialKey[] = "credential";
+constexpr char kSubscriberCredentialExpirationKey[] = "expiration";
+
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kTokenNoLongerValid[] = "Token No Longer Valid";
 #endif  // !BUILDFLAG(IS_ANDROID)
