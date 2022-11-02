@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -34,7 +35,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final CryptoSharedData mSharedData;
     private final CryptoSharedActions mCryptoActions;
     private final MediatorLiveData<Pair<String, NetworkInfo[]>> _mPairChainAndNetwork;
-    private MediatorLiveData<NetworkInfo> _mNeedToCreateAccountForNetwork;
+    private final MediatorLiveData<NetworkInfo> _mNeedToCreateAccountForNetwork;
     private final MediatorLiveData<NetworkInfo> _mDefaultNetwork;
     private final MediatorLiveData<Triple<String, NetworkInfo, NetworkInfo[]>>
             _mChainNetworkAllNetwork;
@@ -209,6 +210,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
                     mCryptoActions.updateCoinType();
                     init();
                 });
+    }
+
+    public void getNetwork(@CoinType.EnumType int coin, Callbacks.Callback1<NetworkInfo> callback) {
+        mJsonRpcService.getNetwork(coin, networkInfo -> { callback.call(networkInfo); });
     }
 
     public void clearCreateAccountState() {
