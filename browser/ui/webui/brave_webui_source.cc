@@ -247,6 +247,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsChannel-Top Sources", IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES},
         { "braveNewsChannel-Weather", IDS_BRAVE_NEWS_CHANNEL_WEATHER},
         { "braveNewsChannel-World News", IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS},
+        { "braveNewsPopularTitle", IDS_BRAVE_NEWS_POPULAR_TITLE},
+
 
         { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },
