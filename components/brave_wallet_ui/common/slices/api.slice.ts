@@ -22,6 +22,7 @@ export type NetworkInfoWithId = BraveWallet.NetworkInfo & { id: string }
 
 export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIProxy()) {
   const walletApi = createApi({
+    reducerPath: 'walletApi',
     baseQuery: () => {
       return { data: getProxy() }
     },
