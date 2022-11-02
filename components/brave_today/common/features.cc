@@ -10,22 +10,23 @@
 namespace brave_today {
 namespace features {
 
-const base::Feature kBraveNewsFeature{"BraveNews",
-                                      base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveNewsFeature, "BraveNews", base::FEATURE_ENABLED_BY_DEFAULT);
 
-const base::Feature kBraveNewsV2Feature {
-  "BraveNewsV2",
+BASE_FEATURE(kBraveNewsV2Feature,
+             "BraveNewsV2",
 #if BUILDFLAG(IS_ANDROID)
-      base::FEATURE_DISABLED_BY_DEFAULT
+             base::FEATURE_DISABLED_BY_DEFAULT
 #else
-      base::FEATURE_ENABLED_BY_DEFAULT
+             base::FEATURE_ENABLED_BY_DEFAULT
 #endif
-};
+);
 
-const base::Feature kBraveNewsCardPeekFeature{"BraveNewsCardPeek",
-                                              base::FEATURE_ENABLED_BY_DEFAULT};
-const base::Feature kBraveNewsSubscribeButtonFeature{
-    "BraveNewsSubscribeButton", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveNewsCardPeekFeature,
+             "BraveNewsCardPeek",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveNewsSubscribeButtonFeature,
+             "BraveNewsSubscribeButton",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace brave_today

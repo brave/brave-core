@@ -12,7 +12,7 @@ namespace brave_federated {
 
 namespace features {
 
-extern const base::Feature kFederatedLearning;
+BASE_DECLARE_FEATURE(kFederatedLearning);
 
 bool IsFederatedLearningEnabled();
 

@@ -25,25 +25,30 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSplitHostCacheByNetworkIsolationKey, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
-const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
-                                           base::FEATURE_ENABLED_BY_DEFAULT};
-const base::Feature kBraveEphemeralStorageKeepAlive{
-    "BraveEphemeralStorageKeepAlive", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveEphemeralStorage,
+             "EphemeralStorage",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveEphemeralStorageKeepAlive,
+             "BraveEphemeralStorageKeepAlive",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<int> kBraveEphemeralStorageKeepAliveTimeInSeconds = {
     &kBraveEphemeralStorageKeepAlive,
     "BraveEphemeralStorageKeepAliveTimeInSeconds", 30};
 
-const base::Feature kBraveFirstPartyEphemeralStorage{
-    "BraveFirstPartyEphemeralStorage", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveFirstPartyEphemeralStorage,
+             "BraveFirstPartyEphemeralStorage",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Partition Blob storage in ephemeral context.
-const base::Feature kBravePartitionBlobStorage{
-    "BravePartitionBlobStorage", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBravePartitionBlobStorage,
+             "BravePartitionBlobStorage",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Partition HSTS state storage by top frame site.
-const base::Feature kBravePartitionHSTS{"BravePartitionHSTS",
-                                        base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBravePartitionHSTS,
+             "BravePartitionHSTS",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace net

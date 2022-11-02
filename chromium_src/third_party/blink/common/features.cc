@@ -37,34 +37,42 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 // Allow certain client hints in request header.
-const base::Feature kAllowCertainClientHints{"AllowCertainClientHints",
-                                             base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kAllowCertainClientHints,
+             "AllowCertainClientHints",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
-const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
-                                         base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kFileSystemAccessAPI,
+             "FileSystemAccessAPI",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
-const base::Feature kNavigatorConnectionAttribute{
-    "NavigatorConnectionAttribute", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kNavigatorConnectionAttribute,
+             "NavigatorConnectionAttribute",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enable blink::MemoryCache partitioning for non SameSite requests.
-const base::Feature kPartitionBlinkMemoryCache{
-    "PartitionBlinkMemoryCache", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kPartitionBlinkMemoryCache,
+             "PartitionBlinkMemoryCache",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable WebSockets connection pool limit per eTLD+1 for each renderer.
-const base::Feature kRestrictWebSocketsPool{"RestrictWebSocketsPool",
-                                            base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kRestrictWebSocketsPool,
+             "RestrictWebSocketsPool",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables protection against fingerprinting on screen dimensions.
-const base::Feature kBraveBlockScreenFingerprinting{
-    "BraveBlockScreenFingerprinting", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveBlockScreenFingerprinting,
+             "BraveBlockScreenFingerprinting",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables HTTPS-Only Mode in Private Windows with Tor by default.
-const base::Feature kBraveTorWindowsHttpsOnly{"BraveTorWindowsHttpsOnly",
-                                              base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveTorWindowsHttpsOnly,
+             "BraveTorWindowsHttpsOnly",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables protection against fingerprinting via high-resolution time stamps.
-const base::Feature kBraveRoundTimeStamps{"BraveRoundTimeStamps",
-                                          base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveRoundTimeStamps,
+             "BraveRoundTimeStamps",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace blink

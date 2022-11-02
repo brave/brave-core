@@ -10,9 +10,9 @@
 #include "base/metrics/field_trial_params.h"
 
 namespace speedreader {
-extern const base::Feature kSpeedreaderFeature;
+BASE_DECLARE_FEATURE(kSpeedreaderFeature);
 extern const base::FeatureParam<int> kSpeedreaderMinOutLengthParam;
-extern const base::Feature kSpeedreaderPanelV2;
+BASE_DECLARE_FEATURE(kSpeedreaderPanelV2);
 }  // namespace speedreader
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_COMMON_FEATURES_H_

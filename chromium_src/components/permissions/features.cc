@@ -11,8 +11,9 @@ namespace permissions {
 namespace features {
 
 // Enables the option of an automatic permission expiration time.
-const base::Feature kPermissionLifetime{"PermissionLifetime",
-                                        base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kPermissionLifetime,
+             "PermissionLifetime",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPermissionOnDeviceNotificationPredictions,

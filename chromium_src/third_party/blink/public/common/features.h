@@ -11,14 +11,14 @@
 namespace blink {
 namespace features {
 
-BLINK_COMMON_EXPORT extern const base::Feature kAllowCertainClientHints;
-BLINK_COMMON_EXPORT extern const base::Feature kFileSystemAccessAPI;
-BLINK_COMMON_EXPORT extern const base::Feature kNavigatorConnectionAttribute;
-BLINK_COMMON_EXPORT extern const base::Feature kPartitionBlinkMemoryCache;
-BLINK_COMMON_EXPORT extern const base::Feature kRestrictWebSocketsPool;
-BLINK_COMMON_EXPORT extern const base::Feature kBraveBlockScreenFingerprinting;
-BLINK_COMMON_EXPORT extern const base::Feature kBraveTorWindowsHttpsOnly;
-BLINK_COMMON_EXPORT extern const base::Feature kBraveRoundTimeStamps;
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kAllowCertainClientHints);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kFileSystemAccessAPI);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kNavigatorConnectionAttribute);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kPartitionBlinkMemoryCache);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictWebSocketsPool);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveBlockScreenFingerprinting);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveTorWindowsHttpsOnly);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveRoundTimeStamps);
 
 }  // namespace features
 }  // namespace blink

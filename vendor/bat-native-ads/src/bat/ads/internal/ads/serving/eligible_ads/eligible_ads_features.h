@@ -11,7 +11,7 @@
 
 namespace ads::features {
 
-extern const base::Feature kEligibleAds;
+BASE_DECLARE_FEATURE(kEligibleAds);
 
 bool IsEligibleAdsEnabled();
 

@@ -13,22 +13,22 @@
 
 namespace brave_shields {
 namespace features {
-extern const base::Feature kBraveAdblockDefault1pBlocking;
-extern const base::Feature kBraveAdblockCnameUncloaking;
-extern const base::Feature kBraveAdblockCollapseBlockedElements;
-extern const base::Feature kBraveAdblockCookieListDefault;
-extern const base::Feature kBraveAdblockCookieListOptIn;
-extern const base::Feature kBraveAdblockCosmeticFiltering;
-extern const base::Feature kBraveAdblockCosmeticFilteringChildFrames;
-extern const base::Feature kBraveAdblockCspRules;
-extern const base::Feature kBraveDomainBlock;
-extern const base::Feature kBraveDomainBlock1PES;
-extern const base::Feature kBraveExtensionNetworkBlocking;
-extern const base::Feature kBraveReduceLanguage;
-extern const base::Feature kBraveDarkModeBlock;
-extern const base::Feature kCosmeticFilteringSyncLoad;
-extern const base::Feature kCosmeticFilteringExtraPerfMetrics;
-extern const base::Feature kCosmeticFilteringJsPerformance;
+BASE_DECLARE_FEATURE(kBraveAdblockDefault1pBlocking);
+BASE_DECLARE_FEATURE(kBraveAdblockCnameUncloaking);
+BASE_DECLARE_FEATURE(kBraveAdblockCollapseBlockedElements);
+BASE_DECLARE_FEATURE(kBraveAdblockCookieListDefault);
+BASE_DECLARE_FEATURE(kBraveAdblockCookieListOptIn);
+BASE_DECLARE_FEATURE(kBraveAdblockCosmeticFiltering);
+BASE_DECLARE_FEATURE(kBraveAdblockCosmeticFilteringChildFrames);
+BASE_DECLARE_FEATURE(kBraveAdblockCspRules);
+BASE_DECLARE_FEATURE(kBraveDomainBlock);
+BASE_DECLARE_FEATURE(kBraveDomainBlock1PES);
+BASE_DECLARE_FEATURE(kBraveExtensionNetworkBlocking);
+BASE_DECLARE_FEATURE(kBraveReduceLanguage);
+BASE_DECLARE_FEATURE(kBraveDarkModeBlock);
+BASE_DECLARE_FEATURE(kCosmeticFilteringSyncLoad);
+BASE_DECLARE_FEATURE(kCosmeticFilteringExtraPerfMetrics);
+BASE_DECLARE_FEATURE(kCosmeticFilteringJsPerformance);
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;
 extern const base::FeatureParam<std::string>

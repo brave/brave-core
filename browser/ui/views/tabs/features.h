@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/compiler_specific.h"
+#include "base/feature_list.h"
 
 namespace base {
 struct LOGICALLY_CONST Feature;
@@ -20,7 +21,7 @@ class BrowserFrame;
 namespace tabs {
 namespace features {
 
-extern const base::Feature kBraveVerticalTabs;
+BASE_DECLARE_FEATURE(kBraveVerticalTabs);
 
 // Returns true if the current |browser| might ever support vertical tabs.
 bool SupportsVerticalTabs(const Browser* browser);

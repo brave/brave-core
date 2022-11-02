@@ -18,8 +18,9 @@ const double kDefaultEpsilonValue = 0.25;
 
 }  // namespace
 
-const base::Feature kEpsilonGreedyBandit{kFeatureName,
-                                         base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kEpsilonGreedyBandit,
+             kFeatureName,
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsEpsilonGreedyBanditEnabled() {
   return base::FeatureList::IsEnabled(kEpsilonGreedyBandit);

@@ -10,8 +10,8 @@
 
 namespace ntp_background_images {
 namespace features {
-extern const base::Feature kBraveNTPBrandedWallpaperDemo;
-extern const base::Feature kBraveNTPSuperReferralWallpaper;
+BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperDemo);
+BASE_DECLARE_FEATURE(kBraveNTPSuperReferralWallpaper);
 }  // namespace features
 }  // namespace ntp_background_images
 

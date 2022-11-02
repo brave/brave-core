@@ -26,8 +26,9 @@
 namespace tabs {
 namespace features {
 
-const base::Feature kBraveVerticalTabs{"BraveVerticalTabs",
-                                       base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveVerticalTabs,
+             "BraveVerticalTabs",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool SupportsVerticalTabs(const Browser* browser) {
   if (!browser) {

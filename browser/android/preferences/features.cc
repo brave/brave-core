@@ -11,8 +11,9 @@
 namespace preferences {
 namespace features {
 
-const base::Feature kBraveBackgroundVideoPlayback{
-    "BraveBackgroundVideoPlayback", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveBackgroundVideoPlayback,
+             "BraveBackgroundVideoPlayback",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace preferences

@@ -10,8 +10,9 @@
 namespace ethereum_remote_client {
 namespace features {
 
-const base::Feature kCryptoWalletsForNewInstallsFeature{
-    "CryptoWalletsForNewInstallsFeature", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kCryptoWalletsForNewInstallsFeature,
+             "CryptoWalletsForNewInstallsFeature",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace ethereum_remote_client

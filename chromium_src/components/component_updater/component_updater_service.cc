@@ -7,8 +7,9 @@
 #include "components/update_client/update_client.h"
 
 namespace {
-const base::Feature kEnforceCRX3PublisherProof{
-    "EnforceCRX3PublisherProof", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kEnforceCRX3PublisherProof,
+             "EnforceCRX3PublisherProof",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 crx_file::VerifierFormat GetVerifierFormat() {
   if (base::FeatureList::IsEnabled(kEnforceCRX3PublisherProof))
