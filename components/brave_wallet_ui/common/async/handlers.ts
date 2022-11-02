@@ -317,6 +317,17 @@ handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveW
   store.dispatch(WalletActions.addUserAssetError(!result.success))
 })
 
+handler.on(WalletActions.updateUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
+  const { braveWalletService } = getAPIProxy()
+  const deleteResult = await braveWalletService.removeUserAsset(payload)
+  if (deleteResult.success) {
+    const addResult = await braveWalletService.addUserAsset(payload)
+    if (addResult.success) {
+      refreshBalancesPricesAndHistory(store)
+    }
+  }
+})
+
 handler.on(WalletActions.removeUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
   const { braveWalletService } = getAPIProxy()
   await braveWalletService.removeUserAsset(payload)

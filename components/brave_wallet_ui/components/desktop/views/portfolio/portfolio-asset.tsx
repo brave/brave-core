@@ -540,10 +540,9 @@ export const PortfolioAsset = (props: Props) => {
     }
 
     // check if selectedAsset has an icon
-    if (selectedAsset && nftMetadata && stripERC20TokenImageURL(selectedAsset.logo) === '') {
-      const updatedAsset = { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
-      dispatch(WalletActions.removeUserAsset(selectedAsset))
-      dispatch(WalletActions.addUserAsset(updatedAsset))
+    if (selectedAsset && nftMetadata?.imageURL && stripERC20TokenImageURL(selectedAsset.logo) === '') {
+      // update asset logo
+      dispatch(WalletActions.updateUserAsset({ ...selectedAsset, logo: nftMetadata?.imageURL || '' }))
     }
   }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError])
 
