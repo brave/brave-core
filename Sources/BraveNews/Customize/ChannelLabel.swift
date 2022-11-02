@@ -65,27 +65,27 @@ struct ChannelLabel: View {
 }
 
 private let channelGlyphMap: [String: String] = [
-  "Health": "brave.list.bullet.and.heart",
+  "Health": "brave.heart.and.hands",
   "Home": "brave.house",
   "Crypto": "brave.bitcoinsign",
   "Technology": "brave.desktop.and.phone",
   "Entertainment": "brave.star",
-  //  "Top News": "",
-  //  "Culture": "",
-  "Travel": "brave.globe.and.mappin",
+  "Top News": "brave.trophy",
+  "Culture": "brave.book.alt",
+  "Travel": "brave.mappin",
   "Business": "brave.building.2",
   "Sports": "brave.basketball",
-  //  "Gaming": "",
-  "Science": "brave.rocket",
+  "Gaming": "brave.gamecontroller",
+  "Science": "brave.erlenmeyerflask",
   "Fashion": "brave.tshirt",
   "Food": "brave.bread.and.carrot",
-  //  "Weather": "",
-  //  "Top Sources": "",
+  "Weather": "brave.moon.cloud",
+  "Top Sources": "brave.newspaper",
   "Brave": "brave.logo",
-  //  "Politics": "",
-  "Fun": "brave.smile.bubble",
+  "Politics": "brave.building.columns",
+  "Fun": "brave.face.smiling",
   "Cars": "brave.car",
-//  "World News": "",
+  "World News": "brave.globe",
 ]
 
 #if DEBUG
