@@ -133,6 +133,7 @@ class TabLocationView: UIView {
     urlTextField.backgroundColor = .clear
     urlTextField.clipsToBounds = true
     urlTextField.textColor = .braveLabel
+    urlTextField.isEnabled = false
     // Remove the default drop interaction from the URL text field so that our
     // custom drop interaction on the BVC can accept dropped URLs.
     if let dropInteraction = urlTextField.textDropInteraction {
