@@ -45,7 +45,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
 
-// This exculdes some settings in main settings screen.
+// This excludes some settings in main settings screen.
 public class BraveMainPreferencesBase
         extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
     // sections
@@ -92,6 +92,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_DOWNLOADS = "brave_downloads";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
+    private Preference mVpnCalloutPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -194,10 +195,14 @@ public class BraveMainPreferencesBase
         if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
                 && BraveVpnUtils.isBraveVpnFeatureEnable()
                 && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
-            VpnCalloutPreference vpnCalloutPreference = new VpnCalloutPreference(getActivity());
-            vpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
-            vpnCalloutPreference.setOrder(firstSectionOrder);
-            getPreferenceScreen().addPreference(vpnCalloutPreference);
+            if (getActivity() != null && mVpnCalloutPreference == null) {
+                mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
+            }
+            if (mVpnCalloutPreference != null) {
+                mVpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
+                mVpnCalloutPreference.setOrder(firstSectionOrder);
+                getPreferenceScreen().addPreference(mVpnCalloutPreference);
+            }
         }
 
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
