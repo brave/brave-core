@@ -1,4 +1,3 @@
-
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -19,7 +18,7 @@ interface Options {
 
 const cache: { [url: string]: string } = {}
 function useFavicon (publisherId: string | undefined) {
-  const [url, setUrl] = React.useState<string>()
+  const [url, setUrl] = React.useState<string>(cache[publisherId!])
   React.useEffect(() => {
     if (!publisherId) {
       return
