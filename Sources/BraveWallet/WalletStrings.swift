@@ -3221,5 +3221,33 @@ extension Strings {
       value: "Details",
       comment: "The title on top of a separater, and the transaction details will be displayed below the separater."
     )
+    public static let signMessageRequestUnknownUnicodeWarning = NSLocalizedString(
+      "wallet.signMessageRequestUnknownUnicodeWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Non-ASCII characters detected!",
+      comment: "A warning message to tell users that the sign request message contains non-ascii characters."
+    )
+    public static let signMessageConsecutiveNewlineWarning = NSLocalizedString(
+      "wallet.signMessageRequestUnknownUnicodeWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Consecutive newline characters detected!",
+      comment: "A warning message to tell users that the sign request message contains consecutive new-line characters."
+    )
+    public static let signMessageShowUnknownUnicode = NSLocalizedString(
+      "wallet.signMessageRequestUnknownUnicodeWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Show encoded message",
+      comment: "The title of the button that users can click to display the sign request message in ASCII encoding."
+    )
+    public static let signMessageShowOriginalMessage = NSLocalizedString(
+      "wallet.signMessageRequestUnknownUnicodeWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "View original message",
+      comment: "The title of the button that users can click to display the sign request message as its original content."
+    )
   }
 }
