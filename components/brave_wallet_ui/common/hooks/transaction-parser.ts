@@ -23,7 +23,10 @@ import { SwapExchangeProxy } from '../constants/registry'
 // Utils
 import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
-import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
+import {
+  getTypedSolanaTxInstructions,
+  TypedSolanaInstructionWithParams
+} from '../../utils/solana-instruction-utils'
 import {
   findTransactionAccount,
   findTransactionToken,
@@ -175,9 +178,6 @@ export function useTransactionParser (
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransaction => {
     const {
       txArgs,
-      txDataUnion: {
-        solanaTxData: solTxData
-      },
       fromAddress,
       txType
     } = transactionInfo
@@ -241,6 +241,7 @@ export function useTransactionParser (
       | 'erc721TokenId'
       | 'hash'
       | 'id'
+      | 'instructions'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
@@ -275,8 +276,9 @@ export function useTransactionParser (
       }),
       erc721BlockchainToken: erc721Token,
       erc721TokenId,
-      id: transactionInfo.id,
       hash: transactionInfo.txHash,
+      id: transactionInfo.id,
+      instructions: getTypedSolanaTxInstructions(transactionInfo.txDataUnion.solanaTxData),
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
@@ -299,8 +301,6 @@ export function useTransactionParser (
 
     switch (true) {
       case txBase.isSolanaDappTransaction: {
-        const instructions = solTxData ? getTypedSolanaTxInstructions(solTxData) : []
-
         const transferedAmountFiat = selectedNetwork
           ? computeFiatAmount(
               normalizedTransferredValueExact,
@@ -332,7 +332,6 @@ export function useTransactionParser (
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
           isSwap: txType === BraveWallet.TransactionType.SolanaSwap,
-          instructions,
           intent: txType === BraveWallet.TransactionType.SolanaSwap
             ? getLocale('braveWalletSwap')
             : getLocale('braveWalletTransactionIntentDappInteraction'),
@@ -652,6 +651,7 @@ export function parseTransactionWithoutPrices ({
     erc721TokenId: getTransactionErc721TokenId(tx),
     hash: tx.txHash,
     id: tx.id,
+    instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
