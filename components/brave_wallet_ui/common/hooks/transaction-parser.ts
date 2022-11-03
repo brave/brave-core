@@ -11,6 +11,7 @@ import {
   BraveWallet,
   SolFeeEstimates,
   TimeDelta,
+  WalletAccountType,
   WalletState
 } from '../../constants/types'
 import {
@@ -271,6 +272,10 @@ export function useTransactionParser (
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
+    const txBase = {
+
+    }
+
     switch (true) {
       case txType === BraveWallet.TransactionType.SolanaDappSignTransaction:
       case txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction:
@@ -352,6 +357,7 @@ export function useTransactionParser (
           .plus(transferedAmountFiat)
 
         const parsedTx: ParsedTransaction = {
+          ...txBase,
           hash: transactionInfo.txHash,
           nonce,
           createdTime: transactionInfo.createdTime,
@@ -418,6 +424,7 @@ export function useTransactionParser (
           .divideByDecimals(token?.decimals ?? 18)
 
         return {
+          ...txBase,
           hash: transactionInfo.txHash,
           nonce,
           createdTime: transactionInfo.createdTime,
@@ -463,6 +470,7 @@ export function useTransactionParser (
         const erc721TokenId = tokenID && `#${Amount.normalize(tokenID)}`
 
         return {
+          ...txBase,
           hash: transactionInfo.txHash,
           nonce,
           createdTime: transactionInfo.createdTime,
@@ -503,6 +511,7 @@ export function useTransactionParser (
         const amountWrapped = new Amount(amount)
 
         return {
+          ...txBase,
           hash: transactionInfo.txHash,
           nonce,
           createdTime: transactionInfo.createdTime,
@@ -555,6 +564,7 @@ export function useTransactionParser (
           .divideByDecimals(token?.decimals ?? 9)
 
         return {
+          ...txBase,
           hash: transactionInfo.txHash,
           nonce,
           createdTime: transactionInfo.createdTime,
@@ -630,6 +640,7 @@ export function useTransactionParser (
           : Amount.empty()
 
         return {
+          ...txBase,
           hash: transactionInfo.txHash,
           nonce,
           createdTime: transactionInfo.createdTime,
@@ -678,6 +689,7 @@ export function useTransactionParser (
           : Amount.empty()
 
         return {
+          ...txBase,
           hash: transactionInfo.txHash,
           nonce,
           createdTime: transactionInfo.createdTime,
@@ -716,4 +728,24 @@ export function useTransactionParser (
     spotPrices,
     findToken
   ])
+}
+
+export function parseTransactionWithoutPrices ({
+  accounts,
+  fullTokenList,
+  tx,
+  transactionNetwork,
+  userVisibleTokensList,
+  solFeeEstimates
+}: {
+  accounts: WalletAccountType[]
+  fullTokenList: BraveWallet.BlockchainToken[]
+  solFeeEstimates?: SolFeeEstimates
+  tx: BraveWallet.TransactionInfo
+  transactionNetwork: BraveWallet.NetworkInfo
+  userVisibleTokensList: BraveWallet.BlockchainToken[]
+}): ParsedTransaction {
+  return {
+
+  } as ParsedTransaction
 }
