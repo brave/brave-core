@@ -263,7 +263,7 @@ extension BrowserViewController {
 
     rewardsObserver.walletInitalized = { [weak self] result in
       guard let self = self, let client = self.deviceCheckClient else { return }
-      if result == .ledgerOk || result == .walletCreated, !DeviceCheckClient.isDeviceEnrolled() {
+      if result == .ledgerOk, !DeviceCheckClient.isDeviceEnrolled() {
         ledger.setupDeviceCheckEnrollment(client) {}
         self.updateRewardsButtonState()
       }
