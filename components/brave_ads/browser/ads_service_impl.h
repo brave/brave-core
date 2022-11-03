@@ -125,6 +125,8 @@ class AdsServiceImpl : public AdsService,
   void OnInitializeBasePathDirectory(bool success);
   void Initialize();
   void InitializeDatabase();
+
+  bool ShouldRewardUser() const;
   void InitializeRewardsWallet();
   void OnInitializeRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
   void InitializeBatAds();
