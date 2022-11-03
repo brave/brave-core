@@ -24,10 +24,12 @@ import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import {
+  getToAddressesFromSolanaTransaction,
   getTransactionNonce,
   isFilecoinTransaction,
   isSolanaDappTransaction,
-  isSolanaTransaction
+  isSolanaTransaction,
+  SolanaTransactionInfo
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
 
@@ -307,10 +309,6 @@ export function useTransactionParser (
             case 'TransferWithSeed': {
               const { fromPubkey, toPubkey } = params as Solana.TransferParams | Solana.TransferWithSeedParams
 
-              if (!to) {
-                to = toPubkey.toString() ?? ''
-              }
-
               // only show lamports as transfered if the amount is going to a different pubKey
               if (!toPubkey.equals(fromPubkey)) {
                 return acc.plus(lamportsAmount)
@@ -320,10 +318,6 @@ export function useTransactionParser (
 
             case 'WithdrawNonceAccount': {
               const { noncePubkey, toPubkey } = params as Solana.WithdrawNonceParams
-
-              if (!to) {
-                to = toPubkey.toString() ?? ''
-              }
 
               if (noncePubkey.equals(new Solana.PublicKey(fromAddress))) {
                 return acc.plus(lamportsAmount)
@@ -338,10 +332,7 @@ export function useTransactionParser (
 
             case 'Create':
             case 'CreateWithSeed': {
-              const { fromPubkey, newAccountPubkey } = params as Solana.CreateAccountParams | Solana.CreateAccountWithSeedParams
-              if (!to) {
-                to = newAccountPubkey.toString() ?? ''
-              }
+              const { fromPubkey } = params as Solana.CreateAccountParams | Solana.CreateAccountWithSeedParams
 
               if (fromPubkey.toString() === fromAddress) {
                 return acc.plus(lamportsAmount)
@@ -349,14 +340,13 @@ export function useTransactionParser (
 
               return acc
             }
-            case 'Unknown': {
-              if (!to) {
-                to = solTxData?.instructions[0]?.accountMetas[0]?.pubkey.toString() ?? ''
-              }
-            }
+
+            case 'Unknown':
             default: return acc.plus(lamportsAmount)
           }
         }, new Amount(0)) ?? 0
+
+        to = getToAddressesFromSolanaTransaction(transactionInfo as SolanaTransactionInfo)[0]
 
         const transferedValue = selectedNetwork
           ? new Amount(value)

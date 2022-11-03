@@ -1,7 +1,20 @@
-import { BraveWallet, P3ASendTransactionTypes, SupportedTestNetworks } from '../constants/types'
-import { getLocale } from '../../common/locale'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+// types
+import {
+  BraveWallet,
+  P3ASendTransactionTypes,
+  SupportedTestNetworks
+} from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
+
+// utils
+import { getLocale } from '../../common/locale'
 import { loadTimeData } from '../../common/loadTimeData'
+import { getTypedSolanaTxInstructions } from './solana-instruction-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -11,7 +24,7 @@ type FileCoinTransactionInfo = BraveWallet.TransactionInfo & {
   }
 }
 
-type SolanaTransactionInfo = BraveWallet.TransactionInfo & {
+export type SolanaTransactionInfo = BraveWallet.TransactionInfo & {
   txDataUnion: {
     solanaTxData: BraveWallet.SolanaTxData
   }
@@ -79,4 +92,41 @@ export function isSolanaDappTransaction (tx: BraveWallet.TransactionInfo): tx is
 
 export function isFilecoinTransaction (tx: BraveWallet.TransactionInfo): tx is FileCoinTransactionInfo {
   return tx.txDataUnion.filTxData !== undefined
+}
+
+export const getToAddressesFromSolanaTransaction = (
+  tx: SolanaTransactionInfo
+) => {
+  const { solanaTxData } = tx.txDataUnion
+  const instructions = getTypedSolanaTxInstructions(solanaTxData)
+  const to = solanaTxData?.toWalletAddress ?? ''
+
+  if (to) {
+    return [to]
+  }
+
+  const addresses = instructions.map((instruction) => {
+    switch (instruction.type) {
+      case 'Transfer':
+      case 'TransferWithSeed':
+      case 'WithdrawNonceAccount': {
+        const { toPubkey } = instruction.params
+        return toPubkey.toString() ?? ''
+      }
+
+      case 'Create':
+      case 'CreateWithSeed': {
+        const { newAccountPubkey } = instruction.params
+        return newAccountPubkey.toString() ?? ''
+      }
+
+      case 'Unknown': {
+        return solanaTxData?.instructions[0]?.accountMetas[0]?.pubkey.toString() ?? ''
+      }
+
+      default: return to ?? ''
+    }
+  })
+
+  return [...new Set(addresses.filter(a => !!a))] // unique, non empty addresses
 }
