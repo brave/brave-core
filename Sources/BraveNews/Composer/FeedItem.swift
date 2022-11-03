@@ -43,7 +43,7 @@ extension FeedItem {
     public var localeDetails: [LocaleDetails]?
     
     func rank(of locale: String) -> Int {
-      localeDetails?.first(where: { $0.locale == locale })?.rank ?? -1
+      localeDetails?.first(where: { $0.locale == locale })?.rank ?? Int.max
     }
     
     enum CodingKeys: String, CodingKey {
