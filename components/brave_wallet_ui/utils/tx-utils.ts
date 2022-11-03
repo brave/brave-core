@@ -386,6 +386,18 @@ export function getTransactionTransferedValue ({
     }
   }
 
+  // ERC721
+  if (
+    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    // can only send 1 ERC721 NFT at a time
+    return {
+      wei: new Amount('1').multiplyByDecimals(18),
+      normalized: new Amount('1')
+    }
+  }
+
   // Filecoin Txs
   // to.toLowerCase() === SwapExchangeProxy:
   // ETHSend

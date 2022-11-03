@@ -450,6 +450,14 @@ export function useTransactionParser (
         // caller (fromAddress).
         const [owner, toAddress, tokenID] = txArgs
 
+        const {
+          normalized: valueWrapped
+        } = getTransactionTransferedValue({
+          tx: transactionInfo,
+          txNetwork: transactionNetwork,
+          token
+        })
+
         const totalAmountFiat = gasFeeFiat
 
         const insufficientNativeFunds = accountNativeBalance !== ''
@@ -470,8 +478,8 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: '1', // Can only send 1 erc721 at a time
-          valueExact: '1',
+          value: valueWrapped.format(6),
+          valueExact: valueWrapped.format(),
           symbol: token?.symbol ?? '',
           decimals: 0,
           insufficientFundsForGasError: insufficientNativeFunds,
