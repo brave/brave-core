@@ -588,9 +588,10 @@ export function useTransactionParser (
         const [fillPath, , minBuyAmountArg] = txArgs
 
         const {
-          wei: sellAmountWeiBN,
-          normalized: sellAmountBN
-        } = getTransactionTransferredValue({
+          normalizedTransferredValue,
+          normalizedTransferredValueExact,
+          weiTransferredValue
+        } = getFormattedTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -613,7 +614,7 @@ export function useTransactionParser (
 
         const sellAmountFiat = sellToken
           ? computeFiatAmount(
-              sellAmountWeiBN.format(),
+              weiTransferredValue,
               sellToken.symbol,
               sellToken.decimals
             )
@@ -632,7 +633,7 @@ export function useTransactionParser (
 
         const sellTokenBalance = getBalance(account, sellToken)
         const insufficientTokenFunds = sellTokenBalance !== ''
-          ? sellAmountWeiBN.gt(sellTokenBalance)
+          ? new Amount(weiTransferredValue).gt(sellTokenBalance)
           : undefined
 
         return {
@@ -647,15 +648,15 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sellAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: sellAmountBN.format(6),
-          valueExact: sellAmountBN.format(),
+          value: normalizedTransferredValue,
+          valueExact: normalizedTransferredValueExact,
           symbol: sellToken?.symbol ?? '',
           decimals: sellToken?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
           intent: getLocale('braveWalletTransactionIntentSwap')
-            .replace('$1', sellAmountBN.formatAsAsset(6, sellToken?.symbol))
+            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, sellToken?.symbol))
             .replace('$2', buyAmount.formatAsAsset(6, buyToken.symbol)),
           ...feeDetails
         } as ParsedTransaction
