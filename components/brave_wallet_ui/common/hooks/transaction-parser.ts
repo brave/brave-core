@@ -38,6 +38,7 @@ import { getBalance } from '../../utils/balance-utils'
 import { getAddressLabel } from '../../utils/account-utils'
 import { toProperCase } from '../../utils/string-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
+import { findTokenByContractAddress } from '../../utils/asset-utils'
 
 // Hooks
 import usePricing from './pricing'
@@ -198,9 +199,8 @@ export function useTransactionParser (
   )
   const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice, solFeeEstimates)
 
-  const findToken = React.useCallback((contractAddress: string) => {
-    const checkVisibleList = visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
-    return checkVisibleList ?? (fullTokenList?.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase()))
+  const combinedTokensList = React.useMemo(() => {
+    return visibleTokens.concat(fullTokenList)
   }, [visibleTokens, fullTokenList])
 
   /**
@@ -276,8 +276,8 @@ export function useTransactionParser (
     const nonce = getTransactionNonce(transactionInfo)
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const token = isSPLTransaction
-      ? findToken(solTxData?.splTokenMintAddress ?? '')
-      : findToken(getTransactionInteractionAddress(transactionInfo))
+      ? findTokenByContractAddress(solTxData?.splTokenMintAddress ?? '', combinedTokensList)
+      : findTokenByContractAddress(getTransactionInteractionAddress(transactionInfo), combinedTokensList)
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
@@ -597,7 +597,7 @@ export function useTransactionParser (
           .map(address =>
             address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
               ? nativeAsset
-              : findToken(address) || nativeAsset)
+              : findTokenByContractAddress(address, combinedTokensList) || nativeAsset)
           .filter(Boolean) as BraveWallet.BlockchainToken[]
 
         const sellToken = fillTokens.length === 1
@@ -713,8 +713,7 @@ export function useTransactionParser (
   }, [
     selectedNetwork,
     accounts,
-    spotPrices,
-    findToken
+    spotPrices
   ])
 }
 
