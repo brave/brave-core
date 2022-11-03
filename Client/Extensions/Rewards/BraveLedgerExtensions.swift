@@ -124,15 +124,15 @@ extension BraveLedger {
         })
     }
   }
-
-  var paymentId: String? {
-    var id: String?
-    rewardsInternalInfo { info in
-      id = info?.paymentId
+  
+  @MainActor private func fetchPaymentId() async -> String? {
+    await withCheckedContinuation { c in
+      rewardsInternalInfo { info in
+        c.resume(returning: info?.paymentId)
+      }
     }
-    return id
   }
-
+  
   public func setupDeviceCheckEnrollment(_ client: DeviceCheckClient, completion: @escaping () -> Void) {
     // Enroll in DeviceCheck
     client.generateToken { [weak self] (token, error) in
@@ -142,9 +142,13 @@ extension BraveLedger {
         completion()
         return
       }
-      let paymentId = self.paymentId ?? ""
       Task { @MainActor in
         do {
+          guard let paymentId = await self.fetchPaymentId(), !paymentId.isEmpty else {
+            // No wallet to register
+            completion()
+            return
+          }
           let registration = try client.generateEnrollment(paymentId: paymentId, token: token)
           try await client.registerDevice(enrollment: registration)
         } catch {
@@ -155,8 +159,8 @@ extension BraveLedger {
     }
   }
 
-  public func claimPromotion(_ promotion: Ledger.Promotion) async -> Bool {
-    guard let paymentId = self.paymentId else {
+  @MainActor public func claimPromotion(_ promotion: Ledger.Promotion) async -> Bool {
+    guard let paymentId = await fetchPaymentId() else {
       return false
     }
     let deviceCheck = DeviceCheckClient()
