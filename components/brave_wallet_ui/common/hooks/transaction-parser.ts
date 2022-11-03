@@ -27,10 +27,11 @@ import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '
 import {
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
+  getFormattedTransactionTransferredValue,
   getTransactionBaseValue,
   getTransactionNonce,
   getTransactionToAddress,
-  getTransactionTransferedValue,
+  getTransactionTransferredValue,
   isFilecoinTransaction,
   isSolanaDappTransaction,
   isSolanaSplTransaction,
@@ -326,15 +327,20 @@ export function useTransactionParser (
         const instructions = solTxData ? getTypedSolanaTxInstructions(solTxData) : []
 
         const {
-          normalized: transferedValue
-        } = getTransactionTransferedValue({
+          normalizedTransferredValue: transferedValue,
+          normalizedTransferredValueExact: transferedValueExact
+        } = getFormattedTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
         })
 
         const transferedAmountFiat = selectedNetwork
-          ? computeFiatAmount(transferedValue.format(), selectedNetwork.symbol, selectedNetwork.decimals)
+          ? computeFiatAmount(
+              transferedValueExact,
+              selectedNetwork.symbol,
+              selectedNetwork.decimals
+            )
           : Amount.empty()
 
         const totalAmountFiat = new Amount(gasFeeFiat)
@@ -354,12 +360,12 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: transferedValue.format(6),
-          valueExact: transferedValue.format(),
+          value: transferedValue,
+          valueExact: transferedValue,
           symbol: selectedNetwork?.symbol ?? '',
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
-            ? transferedValue.plus(gasFee).gt(accountNativeBalance)
+            ? new Amount(transferedValue).plus(gasFee).gt(accountNativeBalance)
             : undefined,
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
@@ -380,7 +386,7 @@ export function useTransactionParser (
         const [address, amount] = txArgs
         const {
           normalized: valueWrapped
-        } = getTransactionTransferedValue({
+        } = getTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -437,7 +443,7 @@ export function useTransactionParser (
 
         const {
           normalized: valueWrapped
-        } = getTransactionTransferedValue({
+        } = getTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -486,7 +492,7 @@ export function useTransactionParser (
         const {
           wei: amountWrapped,
           normalized: normalizedAmount
-        } = getTransactionTransferedValue({
+        } = getTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -528,7 +534,7 @@ export function useTransactionParser (
         const {
           wei: amountWrapped,
           normalized: normalizedAmount
-        } = getTransactionTransferedValue({
+        } = getTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -581,7 +587,7 @@ export function useTransactionParser (
         const {
           wei: sellAmountWeiBN,
           normalized: sellAmountBN
-        } = getTransactionTransferedValue({
+        } = getTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -659,7 +665,7 @@ export function useTransactionParser (
       default: {
         const {
           normalized: valueWrapped
-        } = getTransactionTransferedValue({
+        } = getTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork
         })

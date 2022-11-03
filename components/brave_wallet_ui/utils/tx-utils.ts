@@ -350,7 +350,7 @@ export function getTransactionBaseValue (tx: BraveWallet.TransactionInfo) {
   return tx.txDataUnion.ethTxData1559?.baseData.value || ''
 }
 
-export function getTransactionTransferedValue ({
+export function getTransactionTransferredValue ({
   tx,
   txNetwork,
   token,
@@ -446,5 +446,20 @@ export function getTransactionTransferedValue ({
   return {
     wei: wei,
     normalized: wei.divideByDecimals(txNetwork.decimals)
+  }
+}
+
+export function getFormattedTransactionTransferredValue (
+  args: Parameters<typeof getTransactionTransferredValue>[0]
+): {
+  normalizedTransferredValue: string
+  normalizedTransferredValueExact: string
+  weiTransferredValue: string
+} {
+  const { normalized, wei } = getTransactionTransferredValue(args)
+  return {
+    normalizedTransferredValue: normalized.format(6),
+    normalizedTransferredValueExact: normalized.format(),
+    weiTransferredValue: wei.value?.toString() || ''
   }
 }
