@@ -11,6 +11,8 @@ import Data
 
 extension BrowserViewController {
   func presentCookieNotificationBlockingCalloutIfNeeded() {
+    if Preferences.DebugFlag.skipEduPopups == true { return }
+    
     // Don't show this if we already enabled the setting
     guard !FilterListResourceDownloader.shared.isEnabled(for: FilterList.cookieConsentNoticesComponentID) else { return }
     // Don't show this if we are presenting another popup already
