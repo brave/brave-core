@@ -1251,3 +1251,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SecureContextOnly) {
   main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
 }
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SolanaWeb3OnIsolatedWorld) {
+  ASSERT_TRUE(ExecJs(web_contents(browser()), "Object.freeze = ()=>{}"));
+  auto result = EvalJs(web_contents(browser()), ConnectScript(""),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+}
