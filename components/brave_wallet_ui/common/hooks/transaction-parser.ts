@@ -30,6 +30,7 @@ import {
   getETHSwapTranasactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
   getTransactionBaseValue,
+  getTransactionGas,
   getTransactionGasLimit,
   getTransactionNonce,
   getTransactionToAddress,
@@ -132,14 +133,16 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
   }, [])
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
-    const { txDataUnion: { ethTxData1559: txData, filTxData } } = transactionInfo
+    const { txDataUnion: { filTxData } } = transactionInfo
 
     const isFilTransaction = filTxData !== undefined
     const isSolanaTxn = isSolanaTransaction(transactionInfo)
     const gasLimit = getTransactionGasLimit(transactionInfo)
-    const gasPrice = txData?.baseData.gasPrice || ''
-    const maxFeePerGas = txData?.maxFeePerGas || ''
-    const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''
+    const {
+      gasPrice,
+      maxFeePerGas,
+      maxPriorityFeePerGas
+    } = getTransactionGas(transactionInfo)
     const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
 
     // [FIXME] - Extract actual fees used in the Solana transaction, instead of

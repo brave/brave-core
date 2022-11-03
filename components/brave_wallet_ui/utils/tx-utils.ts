@@ -476,3 +476,11 @@ export function getTransactionGasLimit (transaction: BraveWallet.TransactionInfo
     ? transaction.txDataUnion.filTxData.gasLimit
     : transaction.txDataUnion.ethTxData1559?.baseData.gasLimit || ''
 }
+
+export function getTransactionGas (transaction: BraveWallet.TransactionInfo): { gasPrice: string, maxFeePerGas: any, maxPriorityFeePerGas: any } {
+  return {
+    gasPrice: transaction.txDataUnion.ethTxData1559?.baseData.gasPrice || '',
+    maxFeePerGas: transaction.txDataUnion.ethTxData1559?.maxFeePerGas || '',
+    maxPriorityFeePerGas: transaction.txDataUnion.ethTxData1559?.maxPriorityFeePerGas || ''
+  }
+}
