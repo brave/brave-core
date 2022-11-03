@@ -267,14 +267,16 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
       // it belongs to are subscribed to.
       for (const auto& locale_info : publisher->locales) {
         for (const auto& channel_id : locale_info->channels) {
-          const auto& channel = channels.at(channel_id);
-          if (base::Contains(channel->subscribed_locales,
-                             locale_info->locale)) {
-            VLOG(2) << "Showing article because publisher "
-                    << data->publisher_id << ": " << publisher->publisher_name
-                    << " is in channel " << locale_info->locale << "."
-                    << channel_id << " which is subscribed to.";
-            return true;
+          if (channels.contains(channel_id)) {
+            const auto& channel = channels.at(channel_id);
+            if (base::Contains(channel->subscribed_locales,
+                               locale_info->locale)) {
+              VLOG(2) << "Showing article because publisher "
+                      << data->publisher_id << ": " << publisher->publisher_name
+                      << " is in channel " << locale_info->locale << "."
+                      << channel_id << " which is subscribed to.";
+              return true;
+            }
           }
         }
       }
