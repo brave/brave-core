@@ -164,7 +164,7 @@ const UseMutationObserver = () => {
   selectorsPollingIntervalId = undefined
 
   if (!cosmeticObserver) {
-    cosmeticObserver = new MutationObserver(handleMutations)
+    cosmeticObserver = new MutationObserver(handleMutations as MutationCallback)
   }
 
   const observerConfig = {
@@ -176,13 +176,17 @@ const UseMutationObserver = () => {
 }
 
 const UseSelectorsPolling = () => {
+  const mutations = cosmeticObserver?.takeRecords()
   cosmeticObserver?.disconnect()
+  if (mutations) {
+    handleMutations(mutations)
+  }
   selectorsPollingIntervalId = window.setInterval(querySelectors,
                                                  selectorsPollingIntervalMs)
   window.setTimeout(UseMutationObserver, returnToMutationObserverIntervalMs)
 }
 
-const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
+const handleMutations = (mutations: MutationRecord[]) => {
   // Callback to c++ renderer process
   // @ts-expect-error
   const eventId: number | undefined = cf_worker.onHandleMutationsBegin?.()
