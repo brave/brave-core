@@ -32,6 +32,7 @@ import {
   getTransactionApprovalTargetAddress,
   getTransactionBaseValue,
   getTransactionDecimals,
+  getTransactionErc721TokenId,
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
@@ -264,6 +265,7 @@ export function useTransactionParser (
       BraveWallet.TransactionType.ERC721SafeTransferFrom
     ].includes(transactionInfo.txType) ? token : undefined
 
+    const erc721TokenId = getTransactionErc721TokenId(transactionInfo)
     const approvalTarget = getTransactionApprovalTargetAddress(transactionInfo)
 
     const txBase: Pick<
@@ -275,6 +277,7 @@ export function useTransactionParser (
       | 'createdTime'
       | 'decimals'
       | 'erc721BlockchainToken'
+      | 'erc721TokenId'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
@@ -304,6 +307,7 @@ export function useTransactionParser (
         token
       }),
       erc721BlockchainToken: erc721Token,
+      erc721TokenId,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
@@ -414,15 +418,13 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.ERC721SafeTransferFrom: {
         // The owner of the ERC721 must not be confused with the
         // caller (fromAddress).
-        const [owner, toAddress, tokenID] = txArgs
+        const [owner, toAddress] = txArgs
 
         const totalAmountFiat = gasFeeFiat
 
         const insufficientNativeFunds = accountNativeBalance !== ''
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
-
-        const erc721TokenId = tokenID && `#${Amount.normalize(tokenID)}`
 
         return {
           ...txBase,
@@ -438,7 +440,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
-          erc721TokenId,
           contractAddressError: checkForContractAddressError(toAddress),
           sameAddressError: checkForSameAddressError(toAddress, owner),
           intent: getLocale('braveWalletTransactionIntentSend')
@@ -693,6 +694,7 @@ export function parseTransactionWithoutPrices ({
       token
     }),
     erc721BlockchainToken: erc721Token,
+    erc721TokenId: getTransactionErc721TokenId(tx),
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),

@@ -616,3 +616,16 @@ export function getTransactionDecimals ({
     default: return 18
   }
 }
+
+export const getTransactionErc721TokenId = (
+  tx: BraveWallet.TransactionInfo
+): string | undefined => {
+  if ([
+    BraveWallet.TransactionType.ERC721TransferFrom,
+    BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ].includes(tx.txType)) {
+    const [, , tokenID] = tx.txArgs // (address owner, address to, uint256 tokenId)
+    return tokenID && `#${Amount.normalize(tokenID)}`
+  }
+  return undefined
+}
