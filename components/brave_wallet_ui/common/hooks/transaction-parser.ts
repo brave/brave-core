@@ -118,9 +118,6 @@ export interface ParsedTransaction extends ParsedTransactionFees {
 
 export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkInfo, networkSpotPrice?: string, solFeeEstimates?: SolFeeEstimates) {
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
-    const { txDataUnion: { filTxData } } = transactionInfo
-
-    const isFilTransaction = filTxData !== undefined
     const gasLimit = getTransactionGasLimit(transactionInfo)
     const {
       gasPrice,
@@ -149,8 +146,12 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
       missingGasLimitError: isTransactionGasLimitMissing(transactionInfo)
         ? getLocale('braveWalletMissingGasLimitError')
         : undefined,
-      gasPremium: isFilTransaction ? new Amount(filTxData.gasPremium).format() : '',
-      gasFeeCap: isFilTransaction ? new Amount(filTxData.gasFeeCap).format() : ''
+      gasPremium: isFilecoinTransaction(transactionInfo)
+        ? new Amount(transactionInfo.txDataUnion.filTxData.gasPremium).format()
+        : '',
+      gasFeeCap: isFilecoinTransaction(transactionInfo)
+        ? new Amount(transactionInfo.txDataUnion.filTxData.gasFeeCap).format()
+        : ''
     }
   }, [selectedNetwork, networkSpotPrice])
 }
