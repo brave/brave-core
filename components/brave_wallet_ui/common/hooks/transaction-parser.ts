@@ -36,6 +36,7 @@ import {
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
+  isSendingToKnownTokenContractAddress,
   isSolanaDappTransaction,
   isSolanaSplTransaction,
   isSolanaTransaction,
@@ -170,27 +171,6 @@ export function useTransactionParser (
   }, [visibleTokens, fullTokenList])
 
   /**
-   * Checks if a given address is a known contract address from our token
-   * registry.
-   *
-   * @remarks
-   *
-   * This function must only be used for the following transaction types:
-   *  - ERC20Transfer
-   *  - ERC721TransferFrom
-   *  - ERC721SafeTransferFrom
-   *
-   * @param to - The address to check
-   * @returns Localized string describing the error, or undefined in case of
-   * no error.
-   */
-  const checkForContractAddressError = (to: string): string | undefined => {
-    return fullTokenList?.some(token => token.contractAddress.toLowerCase() === to.toLowerCase())
-      ? getLocale('braveWalletContractAddressError')
-      : undefined
-  }
-
-  /**
    * Checks if a given set of sender and recipient addresses are the
    * same.
    *
@@ -275,6 +255,7 @@ export function useTransactionParser (
       | 'buyToken'
       | 'coinType'
       | 'createdTime'
+      | 'contractAddressError'
       | 'decimals'
       | 'erc721BlockchainToken'
       | 'erc721TokenId'
@@ -299,6 +280,9 @@ export function useTransactionParser (
       buyToken,
       coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
       createdTime: transactionInfo.createdTime,
+      contractAddressError: isSendingToKnownTokenContractAddress(transactionInfo, combinedTokensList)
+        ? getLocale('braveWalletContractAddressError')
+        : undefined,
       decimals: getTransactionDecimals({
         tx: transactionInfo,
         network: transactionNetwork,
@@ -403,7 +387,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
-          contractAddressError: checkForContractAddressError(address),
           sameAddressError: checkForSameAddressError(address, fromAddress),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)),
@@ -440,7 +423,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
-          contractAddressError: checkForContractAddressError(toAddress),
           sameAddressError: checkForSameAddressError(toAddress, owner),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`),
@@ -509,7 +491,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
-          contractAddressError: checkForContractAddressError(solTxData?.toWalletAddress ?? ''),
           sameAddressError: checkForSameAddressError(solTxData?.toWalletAddress ?? '', fromAddress),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)),
@@ -686,6 +667,9 @@ export function parseTransactionWithoutPrices ({
     buyToken,
     coinType: getCoinFromTxDataUnion(tx.txDataUnion),
     createdTime: tx.createdTime,
+    contractAddressError: isSendingToKnownTokenContractAddress(tx, combinedTokensList)
+      ? getLocale('braveWalletContractAddressError')
+      : undefined,
     decimals: getTransactionDecimals({
       tx,
       network: transactionNetwork,

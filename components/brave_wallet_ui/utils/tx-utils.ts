@@ -15,6 +15,7 @@ import {
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
+import { SwapExchangeProxy } from '../common/constants/registry'
 
 // utils
 import { getLocale } from '../../common/locale'
@@ -628,4 +629,40 @@ export const getTransactionErc721TokenId = (
     return tokenID && `#${Amount.normalize(tokenID)}`
   }
   return undefined
+}
+
+function isKnownTokenContractAddress (
+  address: string,
+  fullTokenList: BraveWallet.BlockchainToken[]
+) {
+  return fullTokenList?.some(token =>
+    token.contractAddress.toLowerCase() === address.toLowerCase()
+  )
+}
+
+/**
+ * Checks if a given address is a known contract address from our token registry.
+ *
+ * @param fullTokenList - A list of Erc & SPL tokens to check against
+ * @param to - The address to check
+ * @returns `true` if the to address is a known erc & SPL token contract address, `false` otherwise
+*/
+export const isSendingToKnownTokenContractAddress = (
+  tx: BraveWallet.TransactionInfo,
+  fullTokenList: BraveWallet.BlockchainToken[]
+): boolean => {
+  const { txType } = tx
+
+  const to = getTransactionToAddress(tx)
+
+  if (
+    to === SwapExchangeProxy ||
+    txType === BraveWallet.TransactionType.ERC20Approve ||
+    txType === BraveWallet.TransactionType.ETHSend ||
+    txType === BraveWallet.TransactionType.Other
+  ) {
+    return false
+  }
+
+  return isKnownTokenContractAddress(to, fullTokenList)
 }
