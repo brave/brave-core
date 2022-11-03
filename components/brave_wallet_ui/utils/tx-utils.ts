@@ -10,12 +10,14 @@ import {
   SupportedTestNetworks
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
+import { NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
 
 // utils
 import { getLocale } from '../../common/locale'
 import { loadTimeData } from '../../common/loadTimeData'
 import { getTypedSolanaTxInstructions } from './solana-instruction-utils'
 import { findTokenByContractAddress } from './asset-utils'
+import Amount from './amount'
 
 type Order = 'ascending' | 'descending'
 
@@ -209,4 +211,74 @@ export const findTransactionToken = (
     getTransactionInteractionAddress(tx), // tx interacts with the contract address
     tokensList
   )
+}
+
+export const getETHSwapTranasactionBuyAndSellTokens = ({
+  nativeAsset,
+  tokensList,
+  tx
+}: {
+  tx: BraveWallet.TransactionInfo
+  nativeAsset?: BraveWallet.BlockchainToken
+  tokensList: BraveWallet.BlockchainToken[]
+}): {
+  buyToken?: BraveWallet.BlockchainToken
+  sellToken?: BraveWallet.BlockchainToken
+  buyAmount: Amount
+  buyAmountWei: Amount
+  sellAmount: Amount
+  sellAmountWei: Amount
+} => {
+  if (tx.txType !== BraveWallet.TransactionType.ETHSwap) {
+    return {
+      buyToken: undefined,
+      sellToken: undefined,
+      buyAmount: new Amount(''),
+      sellAmount: new Amount(''),
+      sellAmountWei: new Amount(''),
+      buyAmountWei: new Amount('')
+    }
+  }
+
+  // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
+  const [fillPath, sellAmountArg, minBuyAmountArg] = tx.txArgs
+
+  const fillContracts = fillPath
+    .slice(2)
+    .match(/.{1,40}/g)
+
+  const fillTokens: BraveWallet.BlockchainToken[] = (fillContracts || [])
+    .map(path => '0x' + path)
+    .map(address =>
+      address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
+        ? nativeAsset
+        : findTokenByContractAddress(address, tokensList) || nativeAsset
+    ).filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
+
+  const sellToken = fillTokens.length === 1
+    ? nativeAsset
+    : fillTokens[0]
+
+  const sellAmountWei = new Amount(sellToken
+    ? sellAmountArg || tx.txDataUnion.ethTxData1559?.baseData.value || ''
+    : ''
+  )
+
+  const sellAmount = sellToken
+    ? sellAmountWei.divideByDecimals(sellToken.decimals)
+    : Amount.empty()
+
+  const buyToken = fillTokens[fillTokens.length - 1]
+  const buyAmountWei = new Amount(minBuyAmountArg)
+  const buyAmount = buyAmountWei
+    .divideByDecimals(buyToken.decimals)
+
+  return {
+    buyToken,
+    sellToken,
+    sellAmount,
+    buyAmount,
+    buyAmountWei,
+    sellAmountWei
+  }
 }

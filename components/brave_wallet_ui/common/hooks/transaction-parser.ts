@@ -27,6 +27,7 @@ import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import {
   findTransactionToken,
+  getETHSwapTranasactionBuyAndSellTokens,
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
@@ -101,8 +102,10 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   // Swap
   sellToken?: BraveWallet.BlockchainToken
   sellAmount?: Amount
+  sellAmountWei?: Amount
   buyToken?: BraveWallet.BlockchainToken
   minBuyAmount?: Amount
+  minBuyAmountWei?: Amount
 
   // Solana Dapp Instructions
   instructions?: TypedSolanaInstructionWithParams[]
@@ -282,24 +285,49 @@ export function useTransactionParser (
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
+    const {
+      buyToken,
+      sellToken,
+      buyAmount,
+      sellAmount,
+      sellAmountWei,
+      buyAmountWei
+    } = getETHSwapTranasactionBuyAndSellTokens({
+      nativeAsset,
+      tokensList: combinedTokensList,
+      tx: transactionInfo
+    })
+
     const txBase: Pick<
       ParsedTransaction,
+      | 'buyToken'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
       | 'isSolanaTransaction'
+      | 'minBuyAmount'
+      | 'minBuyAmountWei'
       | 'nonce'
       | 'recipient'
       | 'recipientLabel'
+      | 'sellAmount'
+      | 'sellAmountWei'
+      | 'sellToken'
       | 'token'
     > = {
+      buyToken,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
       isSolanaTransaction: isSolanaTxn,
+      minBuyAmount: buyAmount,
+      minBuyAmountWei: buyAmountWei,
       nonce,
       recipient: to,
       recipientLabel: getAddressLabel(to, accounts),
+      sellAmount,
+      sellAmountWei,
+      sellToken,
       token
     }
 
@@ -655,10 +683,6 @@ export function useTransactionParser (
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
-          sellToken,
-          sellAmount: sellAmountBN,
-          buyToken,
-          minBuyAmount: buyAmount,
           intent: getLocale('braveWalletTransactionIntentSwap')
             .replace('$1', sellAmountBN.formatAsAsset(6, sellToken?.symbol))
             .replace('$2', buyAmount.formatAsAsset(6, buyToken.symbol)),
@@ -738,15 +762,34 @@ export function parseTransactionWithoutPrices ({
   const to = getTransactionToAddress(tx)
   const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
   const token = findTransactionToken(tx, combinedTokensList)
+  const nativeAsset = makeNetworkAsset(transactionNetwork)
+  const {
+    buyToken,
+    sellToken,
+    buyAmount,
+    sellAmount,
+    sellAmountWei,
+    buyAmountWei
+  } = getETHSwapTranasactionBuyAndSellTokens({
+    nativeAsset,
+    tokensList: combinedTokensList,
+    tx
+  })
 
   return {
+    buyToken,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
     isSolanaTransaction: isSolanaTransaction(tx),
+    minBuyAmount: buyAmount,
+    minBuyAmountWei: buyAmountWei,
     nonce: getTransactionNonce(tx),
     recipient: to,
     recipientLabel: getAddressLabel(to, accounts),
+    sellAmount,
+    sellAmountWei,
+    sellToken,
     token
   } as ParsedTransaction
 }
