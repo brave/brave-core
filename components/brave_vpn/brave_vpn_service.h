@@ -95,7 +95,6 @@ class BraveVpnService :
   void Connect() override;
   void Disconnect() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
-  void GetDeviceRegion(GetDeviceRegionCallback callback) override;
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
   void SetSelectedRegion(mojom::RegionPtr region) override;
   void GetProductUrls(GetProductUrlsCallback callback) override;
@@ -168,7 +167,6 @@ class BraveVpnService :
   friend class ::BraveBrowserCommandControllerTest;
 
   // BraveVPNOSConnectionAPI::Observer overrides:
-  void OnGetInvalidToken() override;
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
 
   void LoadCachedRegionData();
@@ -216,6 +214,14 @@ class BraveVpnService :
   void OnPrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& credential_as_cookie);
+  void OnGetSubscriberCredentialV12(const base::Time& expiration_time,
+                                    const std::string& subscriber_credential,
+                                    bool success);
+  void ScheduleSubscriberCredentialRefresh();
+  void RefreshSubscriberCredential();
+
+  // Check initial purchased/connected state.
+  void CheckInitialState();
 
 #if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::Region> regions_;
@@ -242,8 +248,8 @@ class BraveVpnService :
   absl::optional<mojom::PurchasedState> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   BraveVpnAPIRequest api_request_;
-  std::string skus_credential_;
   base::RepeatingTimer p3a_timer_;
+  base::OneShotTimer subs_cred_refresh_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 

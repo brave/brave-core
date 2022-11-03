@@ -35,7 +35,6 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnGetInvalidToken() = 0;
     virtual void OnConnectionStateChanged(mojom::ConnectionState state) = 0;
 
    protected:
@@ -74,7 +73,6 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
   void ToggleConnection();
   void RemoveVPNConnection();
   void CheckConnection();
-  void SetSkusCredential(const std::string& credential);
   void ResetConnectionInfo();
   std::string GetHostname() const;
 
@@ -121,8 +119,6 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
                         bool success);
   void ParseAndCacheHostnames(const std::string& region,
                               const base::Value::List& hostnames_value);
-  void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
-                                    bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
 
@@ -134,7 +130,6 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
   bool reconnect_on_resume_ = false;
   bool prevent_creation_ = false;
   std::string target_vpn_entry_name_;
-  std::string skus_credential_;
   mojom::ConnectionState connection_state_ =
       mojom::ConnectionState::DISCONNECTED;
   BraveVPNConnectionInfo connection_info_;
