@@ -8,6 +8,7 @@ import BraveShared
 import SwiftKeychainWrapper
 import Data
 import BraveCore
+import Growth
 import os.log
 
 public class Migration {
@@ -266,6 +267,25 @@ fileprivate extension Preferences {
           Option<Bool>(key: "migration.xcglogger-file-removal-completed", default: false)
   }
 
+  /// Migrate a given key from `Prefs` into a specific option
+  class func migrate<T>(keyPrefix: String, key: String, to option: Preferences.Option<T>, transform: ((T) -> T)? = nil) {
+    let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
+    let profileKey = "\(keyPrefix)\(key)"
+    // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
+    // as casting to T if T is Optional even if the key doesnt exist.
+    let value = userDefaults?.object(forKey: profileKey)
+    if value != nil, let value = value as? T {
+      if let transform = transform {
+        option.value = transform(value)
+      } else {
+        option.value = value
+      }
+      userDefaults?.removeObject(forKey: profileKey)
+    } else {
+      Logger.module.info("Could not migrate legacy pref with key: \"\(profileKey)\".")
+    }
+  }
+  
   /// Migrate the users preferences from prior versions of the app (<2.0)
   class func migratePreferences(keyPrefix: String) {
     if Preferences.Migration.completed.value {
@@ -332,8 +352,23 @@ fileprivate extension Preferences {
     migrate(key: "fingerprintprotection_on", to: Preferences.Shields.fingerprintingProtection)
     migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
 
-    // BraveShared
-    migrateBraveShared(keyPrefix: keyPrefix)
+    // DAU
+    migrate(key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
+    migrate(key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
+
+    // URP
+    migrate(key: "urpDateCheckPrefsKey", to: Preferences.URP.nextCheckDate)
+    migrate(key: "urpRetryCountdownPrefsKey", to: Preferences.URP.retryCountdown)
+    migrate(key: "downloadIdPrefsKey", to: Preferences.URP.downloadId)
+    migrate(key: "referralCodePrefsKey", to: Preferences.URP.referralCode)
+    migrate(key: "referralCodeDeleteTimePrefsKey", to: Preferences.URP.referralCodeDeleteDate)
+
+    // Block Stats
+    migrate(key: "adblock", to: Preferences.BlockStats.adsCount)
+    migrate(key: "tracking_protection", to: Preferences.BlockStats.trackersCount)
+    migrate(key: "httpse", to: Preferences.BlockStats.httpsUpgradeCount)
+    migrate(key: "fp_protection", to: Preferences.BlockStats.fingerprintingCount)
+    migrate(key: "safebrowsing", to: Preferences.BlockStats.phishingCount)
 
     // On 1.6 lastLaunchInfo is used to check if it's first app launch or not.
     // This needs to be translated to our new preference.

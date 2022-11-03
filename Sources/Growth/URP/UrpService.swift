@@ -3,6 +3,7 @@
 import Foundation
 import SafariServices
 import Shared
+import BraveShared
 import SwiftyJSON
 import os.log
 

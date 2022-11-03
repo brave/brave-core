@@ -18,6 +18,7 @@ import BraveShared
 import Shared
 import Data
 import SwiftUI
+import Growth
 
 // MARK: - PlaylistListViewController
 

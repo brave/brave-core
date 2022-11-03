@@ -3,8 +3,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
-@testable import BraveShared
 import Shared
+import BraveShared
+@testable import Growth
 
 extension DAU {
   fileprivate convenience init() {

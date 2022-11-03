@@ -7,7 +7,7 @@ import XCTest
 import Shared
 import BraveShared
 import BraveVPN
-@testable import Brave
+@testable import Growth
 
 class AppReviewManagerTests: XCTestCase {
   

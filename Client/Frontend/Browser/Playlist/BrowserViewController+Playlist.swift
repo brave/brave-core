@@ -9,6 +9,7 @@ import Shared
 import BraveShared
 import BraveUI
 import UIKit
+import Growth
 import os.log
 import Onboarding
 
