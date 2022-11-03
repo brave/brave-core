@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/downloads/downloads_ui.cc b/chrome/browser/ui/webui/downloads/downloads_ui.cc
-index ff71b60684d095b66916313294f13d7205efedcd..80a9ac66efa1c61f93f418c8a5000ed76bc14e9a 100644
+index f96d0d06003e76b1340f53ae4403128302f49ab5..90ed13c5a36622d02dda6df9c97dd292c6ac63ed 100644
 --- a/chrome/browser/ui/webui/downloads/downloads_ui.cc
 +++ b/chrome/browser/ui/webui/downloads/downloads_ui.cc
 @@ -59,6 +59,7 @@ namespace {
