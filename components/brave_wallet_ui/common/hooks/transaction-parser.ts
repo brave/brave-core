@@ -31,6 +31,7 @@ import {
   getFormattedTransactionTransferredValue,
   getTransactionApprovalTargetAddress,
   getTransactionBaseValue,
+  getTransactionDecimals,
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
@@ -78,7 +79,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   value: string
   valueExact: string
   symbol: string
-  decimals: number
+  decimals: number // network decimals
   insufficientFundsForGasError?: boolean
   insufficientFundsError?: boolean
   contractAddressError?: string
@@ -272,6 +273,7 @@ export function useTransactionParser (
       | 'buyToken'
       | 'coinType'
       | 'createdTime'
+      | 'decimals'
       | 'erc721BlockchainToken'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
@@ -294,6 +296,13 @@ export function useTransactionParser (
       buyToken,
       coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
       createdTime: transactionInfo.createdTime,
+      decimals: getTransactionDecimals({
+        tx: transactionInfo,
+        network: transactionNetwork,
+        sellToken,
+        erc721Token,
+        token
+      }),
       erc721BlockchainToken: erc721Token,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
@@ -341,7 +350,6 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: selectedNetwork?.symbol ?? '',
-          decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
             ? new Amount(normalizedTransferredValue).plus(gasFee).gt(accountNativeBalance)
             : undefined,
@@ -389,7 +397,6 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
-          decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(address),
@@ -429,7 +436,6 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
-          decimals: 0,
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
           erc721TokenId,
@@ -461,7 +467,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
-          decimals: token?.decimals ?? 18,
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
@@ -501,7 +506,6 @@ export function useTransactionParser (
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
-          decimals: token?.decimals ?? 9,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(solTxData?.toWalletAddress ?? ''),
@@ -567,7 +571,6 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: sellToken?.symbol ?? '',
-          decimals: sellToken?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
@@ -604,7 +607,6 @@ export function useTransactionParser (
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
           symbol: selectedNetwork?.symbol ?? '',
-          decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
             ? new Amount(baseValue)
               .plus(gasFee)
@@ -683,6 +685,13 @@ export function parseTransactionWithoutPrices ({
     buyToken,
     coinType: getCoinFromTxDataUnion(tx.txDataUnion),
     createdTime: tx.createdTime,
+    decimals: getTransactionDecimals({
+      tx,
+      network: transactionNetwork,
+      sellToken,
+      erc721Token,
+      token
+    }),
     erc721BlockchainToken: erc721Token,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),

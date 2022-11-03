@@ -22,6 +22,7 @@ import { loadTimeData } from '../../common/loadTimeData'
 import { getTypedSolanaTxInstructions, SolanaParamsWithLamports, TypedSolanaInstructionWithParams } from './solana-instruction-utils'
 import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
+import { getCoinFromTxDataUnion } from './network-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -577,4 +578,41 @@ export const getTransactionApprovalTargetAddress = (tx: BraveWallet.TransactionI
   }
 
   return ''
+}
+
+export function getTransactionDecimals ({
+  tx,
+  erc721Token,
+  network,
+  sellToken,
+  token
+}: {
+  tx: BraveWallet.TransactionInfo
+  network?: BraveWallet.NetworkInfo
+  sellToken?: BraveWallet.BlockchainToken
+  erc721Token?: BraveWallet.BlockchainToken
+  token?: BraveWallet.BlockchainToken
+}) {
+  if (sellToken) {
+    return sellToken.decimals
+  }
+
+  if (erc721Token) {
+    return 0
+  }
+
+  if (token) {
+    return token.decimals
+  }
+
+  if (network) {
+    return network.decimals
+  }
+
+  switch (getCoinFromTxDataUnion(tx.txDataUnion)) {
+    case BraveWallet.CoinType.SOL: return 9
+    case BraveWallet.CoinType.ETH: return 18
+    case BraveWallet.CoinType.FIL: return 18
+    default: return 18
+  }
 }
