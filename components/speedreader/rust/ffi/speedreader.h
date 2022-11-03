@@ -32,16 +32,12 @@
 
 namespace speedreader {
 
-using RewriterType = C_CRewriterType;
-
 class SPEEDREADER_EXPORT Rewriter {
  public:
   /// Create a buffering `Rewriter`. Output will be accumulated internally,
   /// retrievable via `GetOutput`. Expected to only be instantiated by
   /// `SpeedReader`.
-  Rewriter(C_SpeedReader* speedreader,
-           const std::string& url,
-           RewriterType rewriter_type);
+  Rewriter(C_SpeedReader* speedreader, const std::string& url);
 
   /// Create a streaming `Rewriter`. Provided callback will be called with every
   /// new chunk of output available. Output availability is not strictly related
@@ -49,7 +45,6 @@ class SPEEDREADER_EXPORT Rewriter {
   /// `SpeedReader`.
   Rewriter(C_SpeedReader* speedreader,
            const std::string& url,
-           RewriterType rewriter_type,
            void (*output_sink)(const char*, size_t, void*),
            void* output_sink_user_data);
   ~Rewriter();
@@ -99,16 +94,9 @@ class SPEEDREADER_EXPORT SpeedReader {
   /// `Rewriter` instance.
   std::unique_ptr<Rewriter> MakeRewriter(const std::string& url);
 
-  /// Create a buffering `Rewriter` wih a specific `RewriterType`. Output will
-  /// be accumulated by the `Rewriter` instance. Using `RewriterUnknown` for
-  /// `RewriterType` is equivalent to skipping the parameter.
-  std::unique_ptr<Rewriter> MakeRewriter(const std::string& url,
-                                         RewriterType rewriter_type);
-
   /// Create a `Rewriter` that calls provided callback with every new chunk of
   /// output available.
   std::unique_ptr<Rewriter> MakeRewriter(const std::string& url,
-                                         RewriterType rewriter_type,
                                          void (*output_sink)(const char*,
                                                              size_t,
                                                              void*),

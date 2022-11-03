@@ -43,8 +43,7 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
                           const std::string& font = {},
                           const std::string& font_size = {},
                           const std::string& content_style = {}) {
-    auto rewriter = speedreader_.MakeRewriter(
-        "https://test.com", RewriterType::RewriterReadability);
+    auto rewriter = speedreader_.MakeRewriter("https://test.com");
     rewriter->SetMinOutLength(100);
     rewriter->SetTheme(theme);
     rewriter->SetFontFamily(font);
