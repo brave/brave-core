@@ -715,7 +715,6 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
           return !base::PathExists(media_path);
         }));
       }));
-
   // Restore local media for the item.
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
