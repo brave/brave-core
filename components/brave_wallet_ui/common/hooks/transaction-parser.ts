@@ -31,7 +31,6 @@ import {
   getTransactionBaseValue,
   getTransactionNonce,
   getTransactionToAddress,
-  getTransactionTransferredValue,
   isFilecoinTransaction,
   isSolanaDappTransaction,
   isSolanaSplTransaction,
@@ -668,10 +667,12 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.Other:
       default: {
         const {
-          normalized: valueWrapped
-        } = getTransactionTransferredValue({
+          normalizedTransferredValue,
+          normalizedTransferredValueExact
+        } = getFormattedTransactionTransferredValue({
           tx: transactionInfo,
-          txNetwork: transactionNetwork
+          txNetwork: transactionNetwork,
+          token
         })
 
         const sendAmountFiat = selectedNetwork
@@ -693,8 +694,8 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: valueWrapped.format(6),
-          valueExact: valueWrapped.format(),
+          value: normalizedTransferredValue,
+          valueExact: normalizedTransferredValueExact,
           symbol: selectedNetwork?.symbol ?? '',
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
@@ -707,7 +708,7 @@ export function useTransactionParser (
             : undefined,
           isSwap: to.toLowerCase() === SwapExchangeProxy,
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', valueWrapped.formatAsAsset(6, selectedNetwork?.symbol)),
+            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, selectedNetwork?.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }
