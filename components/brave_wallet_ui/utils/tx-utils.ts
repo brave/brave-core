@@ -436,6 +436,7 @@ export function getTransactionTransferedValue ({
     }
   }
 
+  // Solana
   // Filecoin Txs
   // to.toLowerCase() === SwapExchangeProxy:
   // ETHSend
