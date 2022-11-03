@@ -11,11 +11,38 @@
 
 #include <utility>
 
+#include "brave/browser/brave_shell_integration_win.h"
 #include "brave/browser/default_protocol_handler_utils_win.h"
 #include "chrome/installer/util/shell_util.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/brave_shell_integration_mac.h"
+#endif
+
 namespace shell_integration {
+
+void PinShortcut(Profile* profile,
+                 base::OnceCallback<void(bool)> result_callback) {
+#if BUILDFLAG(IS_WIN)
+  win::PinToTaskbar(profile, std::move(result_callback));
+#elif BUILDFLAG(IS_MAC)
+  // Mac doesn't support profile specific icon in dock.
+  mac::AddIconToDock(std::move(result_callback));
+#elif BUILDFLAG(IS_LINUX)
+  NOTREACHED() << "Not supported on linux yet.";
+#endif
+}
+
+void IsShortcutPinned(base::OnceCallback<void(bool)> result_callback) {
+#if BUILDFLAG(IS_WIN)
+  win::IsShortcutPinned(std::move(result_callback));
+#elif BUILDFLAG(IS_MAC)
+  mac::IsIconAddedToDock(std::move(result_callback));
+#elif BUILDFLAG(IS_LINUX)
+  NOTREACHED() << "Not supported on linux yet.";
+#endif
+}
 
 BraveDefaultBrowserWorker::BraveDefaultBrowserWorker() = default;
 BraveDefaultBrowserWorker::~BraveDefaultBrowserWorker() = default;

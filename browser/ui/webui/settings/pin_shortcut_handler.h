@@ -27,12 +27,10 @@ class PinShortcutHandler : public settings::SettingsPageUIHandler {
   void HandlePinShortcut(const base::Value::List& args);
   void NotifyShortcutPinStateChangeToPage(bool pinned);
 
-#if BUILDFLAG(IS_WIN)
   void OnPinShortcut(bool pinned);
   void OnCheckShortcutPinState(bool pinned);
 
   base::WeakPtrFactory<PinShortcutHandler> weak_factory_{this};
-#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_PIN_SHORTCUT_HANDLER_H_

@@ -1,3 +1,4 @@
+import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//chrome/browser/resources/settings/settings.gni")
 
 settings_namespace_rewrites = [
@@ -15,7 +16,7 @@ settings_namespace_rewrites = [
   "settings.Router|Router",
 ]
 
-if (is_win) {
+if (enable_pin_shortcut) {
   settings_namespace_rewrites += [
     "settings.PinShortcutPageBrowserProxyImpl|PinShortcutPageBrowserProxyImpl",
   ]
