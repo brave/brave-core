@@ -101,7 +101,7 @@ const std::vector<uint8_t> kMessageToSign = {
 constexpr char OnAccountChangedScript[] =
     R"(async function disconnect() {await window.braveSolana.disconnect()}
        window.braveSolana.on('accountChanged', (result) => {
-        if (typeof result === "object" && result !== null)
+        if (result instanceof Object)
           window.domAutomationController.send(result.toString())
         else
           window.domAutomationController.send(result)
@@ -1250,11 +1250,4 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SecureContextOnly) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
-}
-
-IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SolanaWeb3OnIsolatedWorld) {
-  ASSERT_TRUE(ExecJs(web_contents(browser()), "Object.freeze = ()=>{}"));
-  auto result = EvalJs(web_contents(browser()), ConnectScript(""),
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
 }

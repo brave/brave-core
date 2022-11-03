@@ -11,7 +11,7 @@
 #include "base/feature_list.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/blink.h"
@@ -101,8 +101,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
       web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana") &&
       dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
-        dynamic_params.allow_overwrite_window_solana_provider, render_frame(),
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+        dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }
 }
 
