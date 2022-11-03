@@ -28,7 +28,8 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3AUploadIntervalSeconds =
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ADoNotRandomizeUploadInterval =
     base::SysUTF8ToNSString(brave::switches::kP3ADoNotRandomizeUploadInterval);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ATypicalRotationIntervalSeconds =
-    base::SysUTF8ToNSString(brave::switches::kP3ARotationIntervalSeconds);
+    base::SysUTF8ToNSString(
+        brave::switches::kP3ATypicalRotationIntervalSeconds);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AUploadServerURL =
     base::SysUTF8ToNSString(brave::switches::kP3AUploadServerUrl);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AIgnoreServerErrors =
