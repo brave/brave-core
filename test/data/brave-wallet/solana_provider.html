@@ -11,7 +11,7 @@
 
   function registerAccountChanged() {
     window.braveSolana.on('accountChanged', result => {
-        if (result instanceof Object) {
+        if (typeof result === 'object' && result !== null) {
           accountChangedResult = result.toString()
         } else {
           accountChangedResult = ''
