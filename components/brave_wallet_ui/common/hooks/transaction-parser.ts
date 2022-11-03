@@ -31,6 +31,7 @@ import {
   getFormattedTransactionTransferredValue,
   getTransactionBaseValue,
   getTransactionGas,
+  getTransactionGasFee,
   getTransactionGasLimit,
   getTransactionNonce,
   getTransactionToAddress,
@@ -148,15 +149,7 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
 
     // [FIXME] - Extract actual fees used in the Solana transaction, instead of
     //   populating current estimates.
-    const gasFee = isSolanaTxn
-      ? new Amount(solFeeEstimates?.fee.toString() ?? '').format()
-      : isEIP1559Tx
-        ? new Amount(maxFeePerGas)
-          .times(gasLimit)
-          .format()
-        : new Amount(gasPrice)
-          .times(gasLimit)
-          .format()
+    const gasFee = getTransactionGasFee(transactionInfo, solFeeEstimates)
 
     return {
       gasLimit: Amount.normalize(gasLimit),

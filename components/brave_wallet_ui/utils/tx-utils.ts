@@ -9,6 +9,7 @@ import * as Solana from '@solana/web3.js'
 import {
   BraveWallet,
   P3ASendTransactionTypes,
+  SolFeeEstimates,
   SupportedTestNetworks,
   WalletAccountType
 } from '../constants/types'
@@ -494,4 +495,32 @@ export function getTransactionGas (transaction: BraveWallet.TransactionInfo): { 
 export const isEIP1559Transaction = (transaction: BraveWallet.TransactionInfo): transaction is EIP1559TransactionInfo => {
   const { maxFeePerGas, maxPriorityFeePerGas } = getTransactionGas(transaction)
   return maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
+}
+
+/**
+ * @param transaction the transaction to check
+ * @param solFeeEstimates [FIXME] - Extract actual fees used in the Solana transaction, instead of populating current estimates.
+ * @returns string value of the gas fee
+ */
+export const getTransactionGasFee = (
+  transaction: BraveWallet.TransactionInfo,
+  solFeeEstimates: SolFeeEstimates | undefined
+): string => {
+  const { maxFeePerGas, gasPrice } = getTransactionGas(transaction)
+  const gasLimit = getTransactionGasLimit(transaction)
+
+  if (isSolanaTransaction(transaction)) {
+    return new Amount(solFeeEstimates?.fee.toString() ?? '')
+      .format()
+  }
+
+  if (isEIP1559Transaction(transaction)) {
+    return new Amount(maxFeePerGas)
+      .times(gasLimit)
+      .format()
+  }
+
+  return new Amount(gasPrice)
+    .times(gasLimit)
+    .format()
 }
