@@ -524,3 +524,18 @@ export const getTransactionGasFee = (
     .times(gasLimit)
     .format()
 }
+
+/**
+ * Checks if a given transaction has an empty or zero-value gas limit
+ *
+ * @param tx - The transaction to check for a missing gas limit
+ * @returns `true`, if the gas limit is missing, `false` otherwise
+*/
+export const isTransactionGasLimitMissing = (tx: BraveWallet.TransactionInfo): boolean => {
+  if (isSolanaTransaction(tx)) {
+    return false
+  }
+
+  const gasLimit = getTransactionGasLimit(tx)
+  return (gasLimit === '' || Amount.normalize(gasLimit) === '0')
+}
