@@ -103,10 +103,10 @@ def AddBravePolicies(template_file_contents):
             },
             'example_value': ['https://brave.com'],
             'id': 4,
-            'caption': '''Blocks Brave Shields for urls.''',
+            'caption': '''Disables Brave Shields for urls.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
-                     '''Shields blocked.'''),
+                     '''Shields disabled.'''),
         },
         {
             'name': 'BraveShieldsEnabledForUrls',
@@ -124,10 +124,10 @@ def AddBravePolicies(template_file_contents):
             },
             'example_value': ['https://brave.com'],
             'id': 5,
-            'caption': '''Allows Brave Shields for urls.''',
+            'caption': '''Enables Brave Shields for urls.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
-                     '''Shields allowed.'''),
+                     '''Shields enabled.'''),
         },
     ]
 
