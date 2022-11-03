@@ -64,8 +64,10 @@ void SkusUrlLoaderImpl::BeginFetch(
     headers[lines.front()] = lines.back();
   }
   Request(static_cast<std::string>(req.method),
-          GURL(static_cast<std::string>(req.url)), std::string(),
-          "application/json", true,
+          GURL(static_cast<std::string>(req.url)),
+          // pass along request body
+          std::string(req.body.begin(), req.body.end()), "application/json",
+          true,
           base::BindOnce(&SkusUrlLoaderImpl::OnFetchComplete,
                          base::Unretained(this), std::move(callback),
                          std::move(ctx)),
