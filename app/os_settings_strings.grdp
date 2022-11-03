@@ -3219,6 +3219,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_VERIFY_BUTTON" desc="Label for the button to get the Chromebook to verify that it can connect with their phone.">
     Verify
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_BUTTON_A11Y_LABEL" desc="Accessibility label of the button that begins the setup process to link this Chromebook to one of the user's phones.">
+    Set up phone
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_VERIFY_BUTTON_A11Y_LABEL" desc="Accessibility label of the button to get the Chromebook to verify that it can connect with their phone.">
+    Verify phone
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_ITEM_HEADING" desc="Heading for settings item that allows the user to connect their phone to their Chromebook.">
     Android phone
   </message>
@@ -4258,6 +4264,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TO_BROWSER_SETTINGS_DESCRIPTION" desc="In notifications OS Settings subpage, explanatory text for website notifications link.">
     For browser notifications, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave browser Settings<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_APP_BADGING_TOGGLE_LABEL" desc="The label for the app badging toggle in the App Notifications page of OS Settings.">
+    App badging
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Google Play Store
