@@ -169,7 +169,6 @@ export function useTransactionParser (
       : '',
     [selectedNetwork, findAssetPrice]
   )
-  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice, solFeeEstimates)
 
   const combinedTokensList = React.useMemo(() => {
     return visibleTokens.concat(fullTokenList)
@@ -182,8 +181,22 @@ export function useTransactionParser (
       txType
     } = transactionInfo
 
-    const feeDetails = parseTransactionFees(transactionInfo)
-    const { gasFeeFiat, gasFee } = feeDetails
+    const {
+      gasFee,
+      gasFeeCap,
+      gasLimit,
+      gasPremium,
+      gasPrice,
+      isMissingGasLimit,
+      maxFeePerGas,
+      isEIP1559Transaction,
+      maxPriorityFeePerGas
+    } = parseTransactionFeesWithoutPrices(transactionInfo, solFeeEstimates)
+    const gasFeeFiat = getGasFeeFiatValue({
+      gasFee,
+      networkSpotPrice,
+      txNetwork: transactionNetwork
+    })
 
     const isFilTransaction = isFilecoinTransaction(transactionInfo)
     const isSolanaTxn = isSolanaTransaction(transactionInfo)
@@ -234,18 +247,29 @@ export function useTransactionParser (
       | 'approvalTargetLabel'
       | 'buyToken'
       | 'coinType'
-      | 'createdTime'
       | 'contractAddressError'
+      | 'createdTime'
       | 'decimals'
       | 'erc721BlockchainToken'
       | 'erc721TokenId'
+      | 'gasFee'
+      | 'gasFeeCap'
+      | 'gasFeeFiat'
+      | 'gasLimit'
+      | 'missingGasLimitError'
+      | 'gasPremium'
+      | 'gasPrice'
       | 'hash'
       | 'id'
+      | 'isEIP1559Transaction'
       | 'instructions'
+      | 'insufficientFundsForGasError'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
       | 'isSolanaTransaction'
+      | 'maxFeePerGas'
+      | 'maxPriorityFeePerGas'
       | 'minBuyAmount'
       | 'minBuyAmountWei'
       | 'nonce'
@@ -276,8 +300,20 @@ export function useTransactionParser (
       }),
       erc721BlockchainToken: erc721Token,
       erc721TokenId,
+      gasFeeFiat,
+      gasFee,
+      gasFeeCap,
+      gasLimit,
+      gasPremium,
+      gasPrice,
+      maxFeePerGas,
+      maxPriorityFeePerGas,
+      missingGasLimitError: isMissingGasLimit
+        ? getLocale('braveWalletMissingGasLimitError')
+        : undefined,
       hash: transactionInfo.txHash,
       id: transactionInfo.id,
+      isEIP1559Transaction,
       instructions: getTypedSolanaTxInstructions(transactionInfo.txDataUnion.solanaTxData),
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
@@ -288,9 +324,7 @@ export function useTransactionParser (
       nonce,
       recipient: to,
       recipientLabel: getAddressLabel(to, accounts),
-      sameAddressError: transactionHasSameAddressError(transactionInfo)
-        ? getLocale('braveWalletSameAddressError')
-        : undefined,
+      sameAddressError: transactionHasSameAddressError(transactionInfo) ? getLocale('braveWalletSameAddressError') : undefined,
       sellAmount,
       sellAmountWei,
       sellToken,
@@ -334,8 +368,7 @@ export function useTransactionParser (
           isSwap: txType === BraveWallet.TransactionType.SolanaSwap,
           intent: txType === BraveWallet.TransactionType.SolanaSwap
             ? getLocale('braveWalletSwap')
-            : getLocale('braveWalletTransactionIntentDappInteraction'),
-          ...feeDetails
+            : getLocale('braveWalletTransactionIntentDappInteraction')
         }
 
         return parsedTx
@@ -373,8 +406,7 @@ export function useTransactionParser (
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)),
-          ...feeDetails
+            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
         } as ParsedTransaction
       }
 
@@ -403,8 +435,7 @@ export function useTransactionParser (
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`),
-          ...feeDetails
+            .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`)
         } as ParsedTransaction
       }
 
@@ -428,8 +459,7 @@ export function useTransactionParser (
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
-          intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? '',
-          ...feeDetails
+          intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
         } as ParsedTransaction
       }
 
@@ -465,8 +495,7 @@ export function useTransactionParser (
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)),
-          ...feeDetails
+            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
         } as ParsedTransaction
       }
 
@@ -529,8 +558,7 @@ export function useTransactionParser (
           isSwap: true,
           intent: getLocale('braveWalletTransactionIntentSwap')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, sellToken?.symbol))
-            .replace('$2', buyAmount.formatAsAsset(6, buyToken.symbol)),
-          ...feeDetails
+            .replace('$2', buyAmount.formatAsAsset(6, buyToken.symbol))
         } as ParsedTransaction
       }
 
@@ -569,8 +597,7 @@ export function useTransactionParser (
             : undefined,
           isSwap: to.toLowerCase() === SwapExchangeProxy,
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, selectedNetwork?.symbol)),
-          ...feeDetails
+            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, selectedNetwork?.symbol))
         } as ParsedTransaction
       }
     }
@@ -631,7 +658,28 @@ export function parseTransactionWithoutPrices ({
 
   const approvalTarget = getTransactionApprovalTargetAddress(tx)
 
+  const {
+    gasFee,
+    gasFeeCap,
+    gasLimit,
+    gasPremium,
+    gasPrice,
+    isMissingGasLimit,
+    maxFeePerGas,
+    maxPriorityFeePerGas
+  } = parseTransactionFeesWithoutPrices(tx, solFeeEstimates)
+
   return {
+    gasFee,
+    gasLimit,
+    gasPrice,
+    gasFeeCap,
+    gasPremium,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    missingGasLimitError: isMissingGasLimit
+      ? getLocale('braveWalletMissingGasLimitError')
+      : undefined,
     approvalTarget,
     approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
     buyToken,
