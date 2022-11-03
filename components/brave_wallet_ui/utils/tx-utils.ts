@@ -48,3 +48,7 @@ export function shouldReportTransactionP3A (txInfo: BraveWallet.TransactionInfo,
   }
   return false
 }
+
+export const getTransactionNonce = (tx: BraveWallet.TransactionInfo): string => {
+  return tx.txDataUnion?.ethTxData1559?.baseData.nonce || ''
+}

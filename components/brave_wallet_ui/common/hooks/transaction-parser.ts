@@ -23,7 +23,10 @@ import {
 import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
-import { isSolanaTransaction } from '../../utils/tx-utils'
+import {
+  getTransactionNonce,
+  isSolanaTransaction
+} from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
 
 // Hooks
@@ -266,14 +269,14 @@ export function useTransactionParser (
       : isFilTransaction ? filTxData.to ?? ''
         : txData?.baseData.to || ''
 
-    const nonce = txData?.baseData.nonce || ''
+    const nonce = getTransactionNonce(transactionInfo)
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const token = isSPLTransaction ? findToken(solTxData?.splTokenMintAddress ?? '') : findToken(to)
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
-    const txBase = {
-
+    const txBase: Pick<ParsedTransaction, 'nonce'> = {
+      nonce
     }
 
     switch (true) {
@@ -359,7 +362,6 @@ export function useTransactionParser (
         const parsedTx: ParsedTransaction = {
           ...txBase,
           hash: transactionInfo.txHash,
-          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -426,7 +428,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -472,7 +473,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress, // The caller, which may not be the owner
@@ -513,7 +513,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -566,7 +565,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -642,7 +640,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -691,7 +688,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -745,7 +741,8 @@ export function parseTransactionWithoutPrices ({
   transactionNetwork: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
 }): ParsedTransaction {
+  const nonce = getTransactionNonce(tx)
   return {
-
+    nonce
   } as ParsedTransaction
 }
