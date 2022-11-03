@@ -44,6 +44,7 @@ import { getAddressLabel } from '../../utils/account-utils'
 import { toProperCase } from '../../utils/string-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { findTokenByContractAddress } from '../../utils/asset-utils'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 
 // Hooks
 import usePricing from './pricing'
@@ -91,6 +92,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   isSolanaDappTransaction: boolean
   isSolanaSPLTransaction: boolean
   isFilecoinTransaction: boolean
+  coinType: BraveWallet.CoinType
 
   // Tokens
   token?: BraveWallet.BlockchainToken
@@ -268,6 +270,7 @@ export function useTransactionParser (
       | 'approvalTarget'
       | 'approvalTargetLabel'
       | 'buyToken'
+      | 'coinType'
       | 'erc721BlockchainToken'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
@@ -288,6 +291,7 @@ export function useTransactionParser (
       approvalTarget,
       approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
       buyToken,
+      coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
       erc721BlockchainToken: erc721Token,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
@@ -682,6 +686,7 @@ export function parseTransactionWithoutPrices ({
     approvalTarget,
     approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
     buyToken,
+    coinType: getCoinFromTxDataUnion(tx.txDataUnion),
     erc721BlockchainToken: erc721Token,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
