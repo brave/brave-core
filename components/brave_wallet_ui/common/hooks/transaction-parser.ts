@@ -266,6 +266,17 @@ export function useTransactionParser (
       tx: transactionInfo
     })
 
+    const {
+      normalizedTransferredValue,
+      normalizedTransferredValueExact,
+      weiTransferredValue
+    } = getFormattedTransactionTransferredValue({
+      tx: transactionInfo,
+      txNetwork: transactionNetwork,
+      token,
+      sellToken
+    })
+
     const txBase: Pick<
       ParsedTransaction,
       | 'buyToken'
@@ -282,6 +293,8 @@ export function useTransactionParser (
       | 'sellAmountWei'
       | 'sellToken'
       | 'token'
+      | 'value'
+      | 'valueExact'
     > = {
       buyToken,
       isFilecoinTransaction: isFilTransaction,
@@ -296,25 +309,18 @@ export function useTransactionParser (
       sellAmount,
       sellAmountWei,
       sellToken,
-      token
+      token,
+      value: normalizedTransferredValue,
+      valueExact: normalizedTransferredValueExact
     }
 
     switch (true) {
       case txBase.isSolanaDappTransaction: {
         const instructions = solTxData ? getTypedSolanaTxInstructions(solTxData) : []
 
-        const {
-          normalizedTransferredValue: transferedValue,
-          normalizedTransferredValueExact: transferedValueExact
-        } = getFormattedTransactionTransferredValue({
-          tx: transactionInfo,
-          txNetwork: transactionNetwork,
-          token
-        })
-
         const transferedAmountFiat = selectedNetwork
           ? computeFiatAmount(
-              transferedValueExact,
+              normalizedTransferredValueExact,
               selectedNetwork.symbol,
               selectedNetwork.decimals
             )
@@ -337,12 +343,10 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: transferedValue,
-          valueExact: transferedValue,
           symbol: selectedNetwork?.symbol ?? '',
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
-            ? new Amount(transferedValue).plus(gasFee).gt(accountNativeBalance)
+            ? new Amount(normalizedTransferredValue).plus(gasFee).gt(accountNativeBalance)
             : undefined,
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
@@ -361,14 +365,6 @@ export function useTransactionParser (
       // transfer(address recipient, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Transfer: {
         const [address, amount] = txArgs
-        const {
-          normalizedTransferredValue,
-          normalizedTransferredValueExact
-        } = getFormattedTransactionTransferredValue({
-          tx: transactionInfo,
-          txNetwork: transactionNetwork,
-          token
-        })
         const price = findAssetPrice(token?.symbol ?? '')
         const sendAmountFiat = new Amount(amount)
           .divideByDecimals(token?.decimals ?? 18)
@@ -396,8 +392,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
@@ -418,14 +412,6 @@ export function useTransactionParser (
         // The owner of the ERC721 must not be confused with the
         // caller (fromAddress).
         const [owner, toAddress, tokenID] = txArgs
-        const {
-          normalizedTransferredValue,
-          normalizedTransferredValueExact
-        } = getFormattedTransactionTransferredValue({
-          tx: transactionInfo,
-          txNetwork: transactionNetwork,
-          token
-        })
 
         const totalAmountFiat = gasFeeFiat
 
@@ -447,8 +433,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
           decimals: 0,
           insufficientFundsForGasError: insufficientNativeFunds,
@@ -467,16 +451,6 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.ERC20Approve: {
         const [address] = txArgs
 
-        const {
-          normalizedTransferredValue,
-          normalizedTransferredValueExact,
-          weiTransferredValue
-        } = getFormattedTransactionTransferredValue({
-          tx: transactionInfo,
-          txNetwork: transactionNetwork,
-          token
-        })
-
         const totalAmountFiat = new Amount(gasFeeFiat)
         const insufficientNativeFunds = accountNativeBalance !== ''
           ? new Amount(gasFee).gt(accountNativeBalance)
@@ -493,8 +467,6 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
-          value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
@@ -510,16 +482,6 @@ export function useTransactionParser (
 
       case txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer:
       case txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation: {
-        const {
-          normalizedTransferredValue,
-          normalizedTransferredValueExact,
-          weiTransferredValue
-        } = getFormattedTransactionTransferredValue({
-          tx: transactionInfo,
-          txNetwork: transactionNetwork,
-          token
-        })
-
         const price = findAssetPrice(token?.symbol ?? '')
         const sendAmountFiat = new Amount(normalizedTransferredValue)
           .times(price)
@@ -563,16 +525,6 @@ export function useTransactionParser (
       // args: (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
       case txType === BraveWallet.TransactionType.ETHSwap: {
         const [fillPath, , minBuyAmountArg] = txArgs
-
-        const {
-          normalizedTransferredValue,
-          normalizedTransferredValueExact,
-          weiTransferredValue
-        } = getFormattedTransactionTransferredValue({
-          tx: transactionInfo,
-          txNetwork: transactionNetwork,
-          token
-        })
 
         const fillContracts = fillPath
           .slice(2)
@@ -625,8 +577,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sellAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact,
           symbol: sellToken?.symbol ?? '',
           decimals: sellToken?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
@@ -644,15 +594,6 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.SolanaSystemTransfer:
       case txType === BraveWallet.TransactionType.Other:
       default: {
-        const {
-          normalizedTransferredValue,
-          normalizedTransferredValueExact
-        } = getFormattedTransactionTransferredValue({
-          tx: transactionInfo,
-          txNetwork: transactionNetwork,
-          token
-        })
-
         const sendAmountFiat = selectedNetwork
           ? computeFiatAmount(baseValue, selectedNetwork.symbol, selectedNetwork.decimals)
           : Amount.empty()
@@ -717,6 +658,7 @@ export function parseTransactionWithoutPrices ({
   const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
   const token = findTransactionToken(tx, combinedTokensList)
   const nativeAsset = makeNetworkAsset(transactionNetwork)
+
   const {
     buyToken,
     sellToken,
@@ -728,6 +670,16 @@ export function parseTransactionWithoutPrices ({
     nativeAsset,
     tokensList: combinedTokensList,
     tx
+  })
+
+  const {
+    normalizedTransferredValue,
+    normalizedTransferredValueExact
+  } = getFormattedTransactionTransferredValue({
+    tx: tx,
+    txNetwork: transactionNetwork,
+    token,
+    sellToken
   })
 
   return {
@@ -744,6 +696,8 @@ export function parseTransactionWithoutPrices ({
     sellAmount,
     sellAmountWei,
     sellToken,
-    token
+    token,
+    value: normalizedTransferredValue,
+    valueExact: normalizedTransferredValueExact
   } as ParsedTransaction
 }
