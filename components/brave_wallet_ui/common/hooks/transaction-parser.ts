@@ -28,6 +28,7 @@ import {
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
   getLamportsMovedFromInstructions,
+  getTransactionBaseValue,
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
@@ -254,9 +255,7 @@ export function useTransactionParser (
     const {
       txArgs,
       txDataUnion: {
-        ethTxData1559: txData,
-        solanaTxData: solTxData,
-        filTxData
+        solanaTxData: solTxData
       },
       fromAddress,
       txType
@@ -267,15 +266,8 @@ export function useTransactionParser (
 
     const isFilTransaction = isFilecoinTransaction(transactionInfo)
     const isSolanaTxn = isSolanaTransaction(transactionInfo)
-
     const isSPLTransaction = isSolanaSplTransaction(transactionInfo)
-
-    const value =
-      isSPLTransaction ? solTxData?.amount.toString() ?? ''
-        : isSolanaTxn ? solTxData?.lamports.toString() ?? ''
-          : isFilTransaction ? filTxData?.value || ''
-            : txData?.baseData.value || ''
-
+    const baseValue = getTransactionBaseValue(transactionInfo)
     const to = getTransactionToAddress(transactionInfo)
     const nonce = getTransactionNonce(transactionInfo)
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
@@ -339,7 +331,7 @@ export function useTransactionParser (
         )
 
         const transferedValue = selectedNetwork
-          ? new Amount(value)
+          ? new Amount(baseValue)
             .divideByDecimals(selectedNetwork.decimals)
             .plus(lamportsMovedFromInstructions)
             .format()
@@ -532,7 +524,7 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer:
       case txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation: {
         const price = findAssetPrice(token?.symbol ?? '')
-        const sendAmountFiat = new Amount(value)
+        const sendAmountFiat = new Amount(baseValue)
           .divideByDecimals(token?.decimals ?? 9)
           .times(price)
 
@@ -543,10 +535,10 @@ export function useTransactionParser (
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
         const insufficientTokenFunds = accountTokenBalance !== ''
-          ? new Amount(value).gt(accountTokenBalance)
+          ? new Amount(baseValue).gt(accountTokenBalance)
           : undefined
 
-        const valueWrapped = new Amount(value)
+        const valueWrapped = new Amount(baseValue)
           .divideByDecimals(token?.decimals ?? 9)
 
         return {
@@ -592,7 +584,7 @@ export function useTransactionParser (
         const sellToken = fillTokens.length === 1
           ? nativeAsset
           : fillTokens[0]
-        const sellAmountWeiBN = new Amount(sellAmountArg || value)
+        const sellAmountWeiBN = new Amount(sellAmountArg || baseValue)
         const sellAmountFiat = sellToken
           ? computeFiatAmount(
               sellAmountWeiBN.format(),
@@ -654,14 +646,14 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.Other:
       default: {
         const sendAmountFiat = selectedNetwork
-          ? computeFiatAmount(value, selectedNetwork.symbol, selectedNetwork.decimals)
+          ? computeFiatAmount(baseValue, selectedNetwork.symbol, selectedNetwork.decimals)
           : Amount.empty()
 
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
 
         const valueWrapped = selectedNetwork
-          ? new Amount(value).divideByDecimals(selectedNetwork.decimals)
+          ? new Amount(baseValue).divideByDecimals(selectedNetwork.decimals)
           : Amount.empty()
 
         return {
@@ -681,7 +673,7 @@ export function useTransactionParser (
           symbol: selectedNetwork?.symbol ?? '',
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
-            ? new Amount(value)
+            ? new Amount(baseValue)
               .plus(gasFee)
               .gt(accountNativeBalance)
             : undefined,

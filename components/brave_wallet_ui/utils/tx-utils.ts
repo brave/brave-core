@@ -333,3 +333,19 @@ export function getLamportsMovedFromInstructions (
     }
   }, new Amount(0)) ?? 0
 }
+
+export function getTransactionBaseValue (tx: BraveWallet.TransactionInfo) {
+  if (isSolanaSplTransaction(tx)) {
+    return tx.txDataUnion.solanaTxData.amount.toString() ?? ''
+  }
+
+  if (isSolanaTransaction(tx)) {
+    return tx.txDataUnion.solanaTxData.lamports.toString() ?? ''
+  }
+
+  if (isFilecoinTransaction(tx)) {
+    return tx.txDataUnion.filTxData.value || ''
+  }
+
+  return tx.txDataUnion.ethTxData1559?.baseData.value || ''
+}
