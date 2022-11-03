@@ -398,6 +398,19 @@ export function getTransactionTransferedValue ({
     }
   }
 
+  // ETH Swap
+  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
+    // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
+    const [, sellAmountArg] = tx.txArgs
+    const wei = new Amount(sellAmountArg || getTransactionBaseValue(tx))
+    return {
+      wei,
+      normalized: sellToken
+        ? wei.divideByDecimals(sellToken.decimals ?? txNetwork.decimals)
+        : Amount.empty()
+    }
+  }
+
   // Filecoin Txs
   // to.toLowerCase() === SwapExchangeProxy:
   // ETHSend

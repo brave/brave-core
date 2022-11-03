@@ -586,7 +586,17 @@ export function useTransactionParser (
 
       // args: (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
       case txType === BraveWallet.TransactionType.ETHSwap: {
-        const [fillPath, sellAmountArg, minBuyAmountArg] = txArgs
+        const [fillPath, , minBuyAmountArg] = txArgs
+
+        const {
+          wei: sellAmountWeiBN,
+          normalized: sellAmountBN
+        } = getTransactionTransferedValue({
+          tx: transactionInfo,
+          txNetwork: transactionNetwork,
+          token
+        })
+
         const fillContracts = fillPath
           .slice(2)
           .match(/.{1,40}/g)
@@ -601,7 +611,7 @@ export function useTransactionParser (
         const sellToken = fillTokens.length === 1
           ? nativeAsset
           : fillTokens[0]
-        const sellAmountWeiBN = new Amount(sellAmountArg || baseValue)
+
         const sellAmountFiat = sellToken
           ? computeFiatAmount(
               sellAmountWeiBN.format(),
@@ -625,11 +635,6 @@ export function useTransactionParser (
         const insufficientTokenFunds = sellTokenBalance !== ''
           ? sellAmountWeiBN.gt(sellTokenBalance)
           : undefined
-
-        const sellAmountBN = sellToken
-          ? sellAmountWeiBN
-            .divideByDecimals(sellToken.decimals)
-          : Amount.empty()
 
         return {
           ...txBase,
