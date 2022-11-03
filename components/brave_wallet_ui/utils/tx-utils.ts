@@ -569,3 +569,12 @@ export const parseTransactionFeesWithoutPrices = (
       : ''
   }
 }
+
+export const getTransactionApprovalTargetAddress = (tx: BraveWallet.TransactionInfo): string => {
+  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
+    const [spender] = tx.txArgs // (address spender, uint256 amount)
+    return spender
+  }
+
+  return ''
+}

@@ -29,6 +29,7 @@ import {
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
+  getTransactionApprovalTargetAddress,
   getTransactionBaseValue,
   getTransactionNonce,
   getTransactionToAddress,
@@ -260,8 +261,12 @@ export function useTransactionParser (
       BraveWallet.TransactionType.ERC721SafeTransferFrom
     ].includes(transactionInfo.txType) ? token : undefined
 
+    const approvalTarget = getTransactionApprovalTargetAddress(transactionInfo)
+
     const txBase: Pick<
       ParsedTransaction,
+      | 'approvalTarget'
+      | 'approvalTargetLabel'
       | 'buyToken'
       | 'erc721BlockchainToken'
       | 'isFilecoinTransaction'
@@ -280,6 +285,8 @@ export function useTransactionParser (
       | 'value'
       | 'valueExact'
     > = {
+      approvalTarget,
+      approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
       buyToken,
       erc721BlockchainToken: erc721Token,
       isFilecoinTransaction: isFilTransaction,
@@ -453,8 +460,6 @@ export function useTransactionParser (
             .formatAsAsset(2, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
-          approvalTarget: address,
-          approvalTargetLabel: getAddressLabel(address, accounts),
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
@@ -671,7 +676,11 @@ export function parseTransactionWithoutPrices ({
     BraveWallet.TransactionType.ERC721SafeTransferFrom
   ].includes(tx.txType) ? token : undefined
 
+  const approvalTarget = getTransactionApprovalTargetAddress(tx)
+
   return {
+    approvalTarget,
+    approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
     buyToken,
     erc721BlockchainToken: erc721Token,
     isFilecoinTransaction: isFilecoinTransaction(tx),
