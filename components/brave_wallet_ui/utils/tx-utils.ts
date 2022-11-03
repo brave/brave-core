@@ -539,3 +539,33 @@ export const isTransactionGasLimitMissing = (tx: BraveWallet.TransactionInfo): b
   const gasLimit = getTransactionGasLimit(tx)
   return (gasLimit === '' || Amount.normalize(gasLimit) === '0')
 }
+
+export const parseTransactionFeesWithoutPrices = (
+  tx: BraveWallet.TransactionInfo,
+  solFeeEstimates?: SolFeeEstimates
+) => {
+  const gasLimit = getTransactionGasLimit(tx)
+  const {
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas
+  } = getTransactionGas(tx)
+
+  const gasFee = getTransactionGasFee(tx, solFeeEstimates)
+
+  return {
+    gasLimit: Amount.normalize(gasLimit),
+    gasPrice: Amount.normalize(gasPrice),
+    maxFeePerGas: Amount.normalize(maxFeePerGas),
+    maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
+    gasFee,
+    isEIP1559Transaction: isEIP1559Transaction(tx),
+    isMissingGasLimit: isTransactionGasLimitMissing(tx),
+    gasPremium: isFilecoinTransaction(tx)
+      ? new Amount(tx.txDataUnion.filTxData.gasPremium).format()
+      : '',
+    gasFeeCap: isFilecoinTransaction(tx)
+      ? new Amount(tx.txDataUnion.filTxData.gasFeeCap).format()
+      : ''
+  }
+}

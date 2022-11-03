@@ -30,17 +30,13 @@ import {
   getETHSwapTranasactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
   getTransactionBaseValue,
-  getTransactionGas,
-  getTransactionGasFee,
-  getTransactionGasLimit,
   getTransactionNonce,
   getTransactionToAddress,
-  isEIP1559Transaction,
   isFilecoinTransaction,
-  isTransactionGasLimitMissing,
   isSolanaDappTransaction,
   isSolanaSplTransaction,
-  isSolanaTransaction
+  isSolanaTransaction,
+  parseTransactionFeesWithoutPrices
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
 import { getAddressLabel } from '../../utils/account-utils'
@@ -118,40 +114,22 @@ export interface ParsedTransaction extends ParsedTransactionFees {
 
 export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkInfo, networkSpotPrice?: string, solFeeEstimates?: SolFeeEstimates) {
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
-    const gasLimit = getTransactionGasLimit(transactionInfo)
-    const {
-      gasPrice,
-      maxFeePerGas,
-      maxPriorityFeePerGas
-    } = getTransactionGas(transactionInfo)
-    const isEIP1559Tx = isEIP1559Transaction(transactionInfo)
-
-    // [FIXME] - Extract actual fees used in the Solana transaction, instead of
-    //   populating current estimates.
-    const gasFee = getTransactionGasFee(transactionInfo, solFeeEstimates)
+    const txFeesBase = parseTransactionFeesWithoutPrices(
+      transactionInfo,
+      solFeeEstimates
+    )
 
     return {
-      gasLimit: Amount.normalize(gasLimit),
-      gasPrice: Amount.normalize(gasPrice),
-      maxFeePerGas: Amount.normalize(maxFeePerGas),
-      maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
-      gasFee,
+      ...txFeesBase,
       gasFeeFiat: selectedNetwork && networkSpotPrice
-        ? new Amount(gasFee)
+        ? new Amount(txFeesBase.gasFee)
           .divideByDecimals(selectedNetwork.decimals)
           .times(networkSpotPrice)
           .formatAsFiat()
         : '',
-      isEIP1559Transaction: isEIP1559Tx,
-      missingGasLimitError: isTransactionGasLimitMissing(transactionInfo)
+      missingGasLimitError: txFeesBase.isMissingGasLimit
         ? getLocale('braveWalletMissingGasLimitError')
-        : undefined,
-      gasPremium: isFilecoinTransaction(transactionInfo)
-        ? new Amount(transactionInfo.txDataUnion.filTxData.gasPremium).format()
-        : '',
-      gasFeeCap: isFilecoinTransaction(transactionInfo)
-        ? new Amount(transactionInfo.txDataUnion.filTxData.gasFeeCap).format()
-        : ''
+        : undefined
     }
   }, [selectedNetwork, networkSpotPrice])
 }
