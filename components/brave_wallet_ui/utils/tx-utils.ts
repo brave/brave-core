@@ -183,3 +183,10 @@ export function getTransactionInteractionAddress (tx: BraveWallet.TransactionInf
     '' // Other
   )
 }
+
+export function isSolanaSplTransaction (tx: BraveWallet.TransactionInfo): tx is SolanaTransactionInfo {
+  return (
+    tx.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+    tx.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+  )
+}

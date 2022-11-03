@@ -31,6 +31,7 @@ import {
   getTransactionToAddress,
   isFilecoinTransaction,
   isSolanaDappTransaction,
+  isSolanaSplTransaction,
   isSolanaTransaction
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
@@ -85,6 +86,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   // Tx type flags
   isSolanaTransaction: boolean
   isSolanaDappTransaction: boolean
+  isSolanaSPLTransaction: boolean
   isFilecoinTransaction: boolean
 
   // Token approvals
@@ -262,9 +264,7 @@ export function useTransactionParser (
     const isFilTransaction = isFilecoinTransaction(transactionInfo)
     const isSolanaTxn = isSolanaTransaction(transactionInfo)
 
-    const isSPLTransaction =
-      txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
-      txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    const isSPLTransaction = isSolanaSplTransaction(transactionInfo)
 
     const value =
       isSPLTransaction ? solTxData?.amount.toString() ?? ''
@@ -285,6 +285,7 @@ export function useTransactionParser (
       ParsedTransaction,
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
+      | 'isSolanaSPLTransaction'
       | 'isSolanaTransaction'
       | 'nonce'
       | 'recipient'
@@ -292,6 +293,7 @@ export function useTransactionParser (
     > = {
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
+      isSolanaSPLTransaction: isSPLTransaction,
       isSolanaTransaction: isSolanaTxn,
       nonce,
       recipient: to,
