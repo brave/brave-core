@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/application_context/BUILD.gn b/ios/chrome/browser/application_context/BUILD.gn
+index d1733fed5fad2736a13a3478faa24e7ae1cf5417..841883bd81828799ffc89c649e9e4e3b83d5df96 100644
+--- a/ios/chrome/browser/application_context/BUILD.gn
++++ b/ios/chrome/browser/application_context/BUILD.gn
+@@ -9,6 +9,7 @@ source_set("application_context") {
+     "application_context.mm",
+   ]
+   deps = [ "//base" ]
++  public_deps += [ "//brave/ios/browser:chromium_src" ]
+ }
+ 
+ source_set("application_context_impl") {
