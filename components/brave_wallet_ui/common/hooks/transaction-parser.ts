@@ -25,6 +25,7 @@ import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import {
+  findTransactionAccount,
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
@@ -270,7 +271,7 @@ export function useTransactionParser (
     const baseValue = getTransactionBaseValue(transactionInfo)
     const to = getTransactionToAddress(transactionInfo)
     const nonce = getTransactionNonce(transactionInfo)
-    const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
+    const account = findTransactionAccount(accounts, transactionInfo)
     const token = findTransactionToken(transactionInfo, combinedTokensList)
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)

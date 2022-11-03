@@ -9,7 +9,8 @@ import * as Solana from '@solana/web3.js'
 import {
   BraveWallet,
   P3ASendTransactionTypes,
-  SupportedTestNetworks
+  SupportedTestNetworks,
+  WalletAccountType
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
@@ -462,4 +463,10 @@ export function getFormattedTransactionTransferredValue (
     normalizedTransferredValueExact: normalized.format(),
     weiTransferredValue: wei.value?.toString() || ''
   }
+}
+
+export function findTransactionAccount <T extends WalletAccountType | BraveWallet.AccountInfo> (accounts: T[], transaction: BraveWallet.TransactionInfo): T | undefined {
+  return accounts.find((account) =>
+    account.address.toLowerCase() === transaction.fromAddress.toLowerCase()
+  )
 }
