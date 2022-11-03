@@ -59,8 +59,8 @@ export const getTransactionStatusString = (statusId: number) => {
   }
 }
 
-export function isSolanaTransaction (transaction: BraveWallet.TransactionInfo) {
-  const { txType, txDataUnion: { solanaTxData } } = transaction
+export function isSolanaTransaction (tx: BraveWallet.TransactionInfo): tx is SolanaTransactionInfo {
+  const { txType, txDataUnion: { solanaTxData } } = tx
   return SolanaTransactionTypes.includes(txType) ||
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
 }
@@ -129,4 +129,57 @@ export const getToAddressesFromSolanaTransaction = (
   })
 
   return [...new Set(addresses.filter(a => !!a))] // unique, non empty addresses
+}
+
+export function getTransactionToAddress (tx: BraveWallet.TransactionInfo): string {
+  if (isSolanaDappTransaction(tx)) {
+    return getToAddressesFromSolanaTransaction(tx)[0] ?? ''
+  }
+
+  if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
+    const [recipient] = tx.txArgs // (address recipient, uint256 amount)
+    return recipient
+  }
+
+  if (
+    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    const [, toAddress] = tx.txArgs // (address owner, address to, uint256 tokenId)
+    return toAddress
+  }
+
+  if (
+    tx.txType === BraveWallet.TransactionType.ERC20Approve ||
+    BraveWallet.TransactionType.ETHSwap
+  ) {
+    return tx.txDataUnion?.ethTxData1559?.baseData.to || ''
+  }
+
+  if (isSolanaTransaction(tx)) {
+    return tx.txDataUnion.solanaTxData?.toWalletAddress ?? ''
+  }
+
+  if (isFilecoinTransaction(tx)) {
+    return tx.txDataUnion.filTxData.to
+  }
+
+  // ETHSend & unknown
+  return tx.txDataUnion.ethTxData1559?.baseData.to || ''
+}
+
+export function getTransactionInteractionAddress (tx: BraveWallet.TransactionInfo): string {
+  if (isSolanaTransaction(tx)) {
+    return tx.txDataUnion.solanaTxData.toWalletAddress ?? ''
+  }
+
+  if (isFilecoinTransaction(tx)) {
+    return tx.txDataUnion.filTxData.to ?? ''
+  }
+
+  return (
+    tx.txDataUnion.ethTxData1559?.baseData.to || // EVM (1559)
+    tx.txDataUnion.ethTxData?.to || // EVM
+    '' // Other
+  )
 }

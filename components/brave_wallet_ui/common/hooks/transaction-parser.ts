@@ -26,12 +26,12 @@ import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import {
-  getToAddressesFromSolanaTransaction,
+  getTransactionInteractionAddress,
   getTransactionNonce,
+  getTransactionToAddress,
   isFilecoinTransaction,
   isSolanaDappTransaction,
-  isSolanaTransaction,
-  SolanaTransactionInfo
+  isSolanaTransaction
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
 import { getAddressLabel } from '../../utils/account-utils'
@@ -272,27 +272,30 @@ export function useTransactionParser (
           : isFilTransaction ? filTxData?.value || ''
             : txData?.baseData.value || ''
 
-    let to = isSolanaTxn ? solTxData?.toWalletAddress ?? ''
-      : isFilTransaction ? filTxData?.to ?? ''
-        : txData?.baseData.to || ''
-
+    const to = getTransactionToAddress(transactionInfo)
     const nonce = getTransactionNonce(transactionInfo)
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
-    const token = isSPLTransaction ? findToken(solTxData?.splTokenMintAddress ?? '') : findToken(to)
+    const token = isSPLTransaction
+      ? findToken(solTxData?.splTokenMintAddress ?? '')
+      : findToken(getTransactionInteractionAddress(transactionInfo))
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
     const txBase: Pick<
       ParsedTransaction,
-      | 'nonce'
+      | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaTransaction'
-      | 'isFilecoinTransaction'
+      | 'nonce'
+      | 'recipient'
+      | 'recipientLabel'
     > = {
-      nonce,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
-      isSolanaTransaction: isSolanaTxn
+      isSolanaTransaction: isSolanaTxn,
+      nonce,
+      recipient: to,
+      recipientLabel: getAddressLabel(to, accounts)
     }
 
     switch (true) {
@@ -343,8 +346,6 @@ export function useTransactionParser (
             default: return acc.plus(lamportsAmount)
           }
         }, new Amount(0)) ?? 0
-
-        to = getToAddressesFromSolanaTransaction(transactionInfo as SolanaTransactionInfo)[0]
 
         const transferedValue = selectedNetwork
           ? new Amount(value)
@@ -433,8 +434,6 @@ export function useTransactionParser (
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
-          recipient: address,
-          recipientLabel: getAddressLabel(address, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -478,8 +477,6 @@ export function useTransactionParser (
           status: transactionInfo.txStatus,
           sender: fromAddress, // The caller, which may not be the owner
           senderLabel: getAddressLabel(fromAddress, accounts),
-          recipient: toAddress,
-          recipientLabel: getAddressLabel(toAddress, accounts),
           fiatValue: Amount.zero(), // Display NFT values in the future
           fiatTotal: new Amount(totalAmountFiat),
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
@@ -518,8 +515,6 @@ export function useTransactionParser (
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
-          recipient: to,
-          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: Amount.zero(),
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
@@ -570,8 +565,6 @@ export function useTransactionParser (
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
-          recipient: to,
-          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -645,8 +638,6 @@ export function useTransactionParser (
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
-          recipient: to,
-          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: sellAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sellAmountFiat
@@ -693,8 +684,6 @@ export function useTransactionParser (
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
-          recipient: to,
-          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -742,10 +731,13 @@ export function parseTransactionWithoutPrices ({
   transactionNetwork: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
 }): ParsedTransaction {
+  const to = getTransactionToAddress(tx)
   return {
-    nonce: getTransactionNonce(tx),
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
-    isSolanaTransaction: isSolanaTransaction(tx)
+    isSolanaTransaction: isSolanaTransaction(tx),
+    nonce: getTransactionNonce(tx),
+    recipient: to,
+    recipientLabel: getAddressLabel(to, accounts)
   } as ParsedTransaction
 }
