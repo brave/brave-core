@@ -8,7 +8,6 @@
 
 import configparser
 import errno
-import glob
 import argparse
 import os
 import re
