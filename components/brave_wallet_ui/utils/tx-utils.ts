@@ -411,6 +411,22 @@ export function getTransactionTransferedValue ({
     }
   }
 
+  // Solana Dapp Transactions
+  if (isSolanaDappTransaction(tx)) {
+    const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
+      getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData) || [],
+      tx.fromAddress
+    )
+
+    const transferedValue = new Amount(getTransactionBaseValue(tx))
+      .plus(lamportsMovedFromInstructions)
+
+    return {
+      wei: transferedValue,
+      normalized: transferedValue.divideByDecimals(txNetwork.decimals)
+    }
+  }
+
   // Filecoin Txs
   // to.toLowerCase() === SwapExchangeProxy:
   // ETHSend

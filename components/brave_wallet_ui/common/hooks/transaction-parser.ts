@@ -27,7 +27,6 @@ import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '
 import {
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
-  getLamportsMovedFromInstructions,
   getTransactionBaseValue,
   getTransactionNonce,
   getTransactionToAddress,
@@ -326,20 +325,16 @@ export function useTransactionParser (
       case txBase.isSolanaDappTransaction: {
         const instructions = solTxData ? getTypedSolanaTxInstructions(solTxData) : []
 
-        const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
-          instructions,
-          transactionInfo.fromAddress
-        )
-
-        const transferedValue = selectedNetwork
-          ? new Amount(baseValue)
-            .divideByDecimals(selectedNetwork.decimals)
-            .plus(lamportsMovedFromInstructions)
-            .format()
-          : ''
+        const {
+          normalized: transferedValue
+        } = getTransactionTransferedValue({
+          tx: transactionInfo,
+          txNetwork: transactionNetwork,
+          token
+        })
 
         const transferedAmountFiat = selectedNetwork
-          ? computeFiatAmount(transferedValue, selectedNetwork.symbol, selectedNetwork.decimals)
+          ? computeFiatAmount(transferedValue.format(), selectedNetwork.symbol, selectedNetwork.decimals)
           : Amount.empty()
 
         const totalAmountFiat = new Amount(gasFeeFiat)
@@ -359,22 +354,12 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: selectedNetwork
-            ? new Amount(transferedValue)
-              .divideByDecimals(selectedNetwork.decimals)
-              .format(6)
-            : '',
-          valueExact: selectedNetwork
-            ? new Amount(transferedValue)
-              .divideByDecimals(selectedNetwork.decimals)
-              .format()
-            : '',
+          value: transferedValue.format(6),
+          valueExact: transferedValue.format(),
           symbol: selectedNetwork?.symbol ?? '',
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
-            ? new Amount(transferedValue)
-              .plus(gasFee)
-              .gt(accountNativeBalance)
+            ? transferedValue.plus(gasFee).gt(accountNativeBalance)
             : undefined,
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
