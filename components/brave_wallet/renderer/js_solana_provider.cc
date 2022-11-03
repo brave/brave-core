@@ -57,8 +57,10 @@ constexpr char kSolanaProviderSript[] = "solana_provider.js";
 
 }  // namespace
 
-JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
+JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame,
+                                   int world_id)
     : RenderFrameObserver(render_frame),
+      world_id_(world_id),
       v8_value_converter_(content::V8ValueConverter::Create()) {
   if (g_provider_script->empty()) {
     *g_provider_script = LoadDataResource(
@@ -103,7 +105,8 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
 
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
-                               content::RenderFrame* render_frame) {
+                               content::RenderFrame* render_frame,
+                               int world_id) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -124,7 +127,7 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
 
   // v8 will manage the lifetime of JSSolanaProvider
   gin::Handle<JSSolanaProvider> provider =
-      gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
+      gin::CreateHandle(isolate, new JSSolanaProvider(render_frame, world_id));
   if (provider.IsEmpty())
     return;
   v8::Local<v8::Value> provider_value = provider.ToV8();
@@ -890,9 +893,13 @@ bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
                     "return solanaWeb3; })()"});
 
   solana_web3_module_.Reset(
-      isolate, render_frame()->GetWebFrame()->ExecuteScriptAndReturnValue(
-                   blink::WebScriptSource(
-                       blink::WebString::FromUTF8(solana_web3_module_str))));
+      isolate,
+      render_frame()->GetWebFrame()->ExecuteScriptInIsolatedWorldAndReturnValue(
+          world_id_,
+          blink::WebScriptSource(
+              blink::WebString::FromUTF8(solana_web3_module_str)),
+          blink::BackForwardCacheAware::kAllow));
+
   // loading SolanaWeb3 module failed
   if (solana_web3_module_.IsEmpty())
     return false;
@@ -911,20 +918,26 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     return v8::Undefined(isolate);
   }
 
-  v8::Local<v8::Value> public_key_module;
-  CHECK(GetProperty(context, solana_web3_module_.Get(isolate), kPublicKeyModule)
-            .ToLocal(&public_key_module));
+  v8::Local<v8::Value> solana_web3_module = solana_web3_module_.Get(isolate);
+  v8::Local<v8::Context> isolated_context =
+      solana_web3_module.As<v8::Object>()->GetCreationContextChecked();
+  v8::MaybeLocal<v8::Value> public_key;
+  {
+    v8::Context::Scope isolated_context_scope(isolated_context);
+    v8::Local<v8::Value> public_key_module;
+    CHECK(GetProperty(isolated_context, solana_web3_module, kPublicKeyModule)
+              .ToLocal(&public_key_module));
 
-  const base::Value base58_str_value(base58_str);
-  v8::Local<v8::Value> args[] = {
-      v8_value_converter_->ToV8Value(base58_str_value, context)};
+    const base::Value base58_str_value(base58_str);
+    v8::Local<v8::Value> args[] = {
+        v8_value_converter_->ToV8Value(base58_str_value, isolated_context)};
 
-  v8::MaybeLocal<v8::Value> public_key =
-      public_key_module.As<v8::Object>()->CallAsConstructor(
-          context, sizeof(args) / sizeof(args[0]), args);
+    public_key = public_key_module.As<v8::Object>()->CallAsConstructor(
+        isolated_context, sizeof(args) / sizeof(args[0]), args);
 
-  if (public_key.IsEmpty()) {
-    return v8::Undefined(isolate);
+    if (public_key.IsEmpty()) {
+      return v8::Undefined(isolate);
+    }
   }
 
   return public_key.ToLocalChecked();
@@ -945,25 +958,32 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     return v8::Undefined(isolate);
   }
 
-  v8::Local<v8::Value> transaction_module;
-  CHECK(
-      GetProperty(context, solana_web3_module_.Get(isolate), kTransactionModule)
-          .ToLocal(&transaction_module));
+  v8::Local<v8::Value> solana_web3_module = solana_web3_module_.Get(isolate);
+  v8::Local<v8::Context> isolated_context =
+      solana_web3_module.As<v8::Object>()->GetCreationContextChecked();
+  v8::MaybeLocal<v8::Value> transaction;
+  {
+    v8::Context::Scope isolated_context_scope(isolated_context);
+    v8::Local<v8::Value> transaction_module;
+    CHECK(GetProperty(isolated_context, solana_web3_module, kTransactionModule)
+              .ToLocal(&transaction_module));
 
-  const base::Value serialized_tx_value(serialized_tx);
-  v8::Local<v8::ArrayBuffer> serialized_tx_array_buffer =
-      v8_value_converter_->ToV8Value(serialized_tx_value, context)
-          .As<v8::ArrayBuffer>();
-  std::vector<v8::Local<v8::Value>> args;
-  args.push_back(v8::Uint8Array::New(serialized_tx_array_buffer, 0,
-                                     serialized_tx_array_buffer->ByteLength()));
+    const base::Value serialized_tx_value(serialized_tx);
+    v8::Local<v8::ArrayBuffer> serialized_tx_array_buffer =
+        v8_value_converter_->ToV8Value(serialized_tx_value, isolated_context)
+            .As<v8::ArrayBuffer>();
+    std::vector<v8::Local<v8::Value>> args;
+    args.push_back(
+        v8::Uint8Array::New(serialized_tx_array_buffer, 0,
+                            serialized_tx_array_buffer->ByteLength()));
 
-  v8::MaybeLocal<v8::Value> transaction =
-      CallMethodOfObject(render_frame()->GetWebFrame(), transaction_module,
-                         kTransactionFrom, std::move(args));
+    transaction =
+        CallMethodOfObject(render_frame()->GetWebFrame(), transaction_module,
+                           kTransactionFrom, std::move(args));
 
-  if (transaction.IsEmpty()) {
-    return v8::Undefined(isolate);
+    if (transaction.IsEmpty()) {
+      return v8::Undefined(isolate);
+    }
   }
 
   return transaction.ToLocalChecked();

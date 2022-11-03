@@ -42,7 +42,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   };
 
   static void Install(bool allow_overwrite_window_solana,
-                      content::RenderFrame* render_frame);
+                      content::RenderFrame* render_frame,
+                      int world_id);
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
@@ -53,7 +54,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   void AccountChangedEvent(const absl::optional<std::string>& account) override;
 
  private:
-  explicit JSSolanaProvider(content::RenderFrame* render_frame);
+  explicit JSSolanaProvider(content::RenderFrame* render_frame, int world_id);
 
   // RenderFrameObserver implementation.
   void OnDestruct() override {}
@@ -177,6 +178,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       const std::vector<uint8_t> serialized_tx);
 
   v8::Global<v8::Value> solana_web3_module_;
+  // isolated world for running solanaWeb3 script
+  int world_id_;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;

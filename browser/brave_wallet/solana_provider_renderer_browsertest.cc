@@ -101,7 +101,7 @@ const std::vector<uint8_t> kMessageToSign = {
 constexpr char OnAccountChangedScript[] =
     R"(async function disconnect() {await window.braveSolana.disconnect()}
        window.braveSolana.on('accountChanged', (result) => {
-        if (result instanceof Object)
+        if (typeof result === "object" && result !== null)
           window.domAutomationController.send(result.toString())
         else
           window.domAutomationController.send(result)
