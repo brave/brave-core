@@ -30,6 +30,7 @@ import {
   getETHSwapTranasactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
   getTransactionBaseValue,
+  getTransactionGasLimit,
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
@@ -135,11 +136,7 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
 
     const isFilTransaction = filTxData !== undefined
     const isSolanaTxn = isSolanaTransaction(transactionInfo)
-
-    const gasLimit = isFilTransaction
-      ? filTxData.gasLimit
-      : txData?.baseData.gasLimit || ''
-
+    const gasLimit = getTransactionGasLimit(transactionInfo)
     const gasPrice = txData?.baseData.gasPrice || ''
     const maxFeePerGas = txData?.maxFeePerGas || ''
     const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''

@@ -470,3 +470,9 @@ export function findTransactionAccount <T extends WalletAccountType | BraveWalle
     account.address.toLowerCase() === transaction.fromAddress.toLowerCase()
   )
 }
+
+export function getTransactionGasLimit (transaction: BraveWallet.TransactionInfo) {
+  return isFilecoinTransaction(transaction)
+    ? transaction.txDataUnion.filTxData.gasLimit
+    : transaction.txDataUnion.ethTxData1559?.baseData.gasLimit || ''
+}
