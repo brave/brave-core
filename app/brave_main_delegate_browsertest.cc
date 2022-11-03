@@ -150,7 +150,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::internal::kOmniboxAction,
     &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
     &lens::features::kLensStandalone,
-    &lens::features::kLensUnifiedSidePanelFooter,
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
