@@ -259,6 +259,7 @@ export function useTransactionParser (
       | 'decimals'
       | 'erc721BlockchainToken'
       | 'erc721TokenId'
+      | 'hash'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
@@ -292,6 +293,7 @@ export function useTransactionParser (
       }),
       erc721BlockchainToken: erc721Token,
       erc721TokenId,
+      hash: transactionInfo.txHash,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
@@ -326,7 +328,6 @@ export function useTransactionParser (
 
         const parsedTx: ParsedTransaction = {
           ...txBase,
-          hash: transactionInfo.txHash,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -375,7 +376,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          hash: transactionInfo.txHash,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -411,7 +411,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          hash: transactionInfo.txHash,
           status: transactionInfo.txStatus,
           sender: fromAddress, // The caller, which may not be the owner
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -441,7 +440,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          hash: transactionInfo.txHash,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -477,7 +475,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          hash: transactionInfo.txHash,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -543,7 +540,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          hash: transactionInfo.txHash,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -577,7 +573,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          hash: transactionInfo.txHash,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -679,6 +674,7 @@ export function parseTransactionWithoutPrices ({
     }),
     erc721BlockchainToken: erc721Token,
     erc721TokenId: getTransactionErc721TokenId(tx),
+    hash: tx.txHash,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
