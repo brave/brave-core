@@ -7,6 +7,7 @@
 
 #include "base/metrics/user_metrics.h"
 #include "base/path_service.h"
+#include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
@@ -64,7 +65,9 @@ void BraveWebMainParts::PreCreateThreads() {
   CHECK(base::PathService::Get(ios::FILE_LOCAL_STATE, &local_state_path));
   application_context_.reset(new ApplicationContextImpl(
       local_state_task_runner.get(), *base::CommandLine::ForCurrentProcess(),
-      l10n_util::GetLocaleOverride()));
+      l10n_util::GetLocaleOverride(),
+      base::SysNSStringToUTF8(
+          [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode])));
   DCHECK_EQ(application_context_.get(), GetApplicationContext());
 
   // Initialize local state.
