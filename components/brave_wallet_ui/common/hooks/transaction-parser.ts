@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import * as Solana from '@solana/web3.js'
+import { useSelector } from 'react-redux'
 
 // Constants
 import {
@@ -18,6 +19,7 @@ import {
   MAX_UINT256,
   NATIVE_ASSET_CONTRACT_ADDRESS_0X
 } from '../constants/magics'
+import { SwapExchangeProxy } from '../constants/registry'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -32,15 +34,12 @@ import {
   SolanaTransactionInfo
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
+import { getAddressLabel } from '../../utils/account-utils'
+import { toProperCase } from '../../utils/string-utils'
+import { makeNetworkAsset } from '../../options/asset-options'
 
 // Hooks
 import usePricing from './pricing'
-import useAddressLabels, { SwapExchangeProxy } from './address-labels'
-
-// Options
-import { makeNetworkAsset } from '../../options/asset-options'
-import { useSelector } from 'react-redux'
-import { toProperCase } from '../../utils/string-utils'
 
 type SolanaParamsWithLamports = Solana.CreateAccountParams | Solana.CreateAccountWithSeedParams | Solana.TransferParams | Solana.TransferWithSeedParams | Solana.WithdrawNonceParams
 
@@ -188,7 +187,6 @@ export function useTransactionParser (
     [selectedNetwork]
   )
   const { findAssetPrice, computeFiatAmount } = usePricing(spotPrices)
-  const { getAddressLabel } = useAddressLabels(accounts)
 
   const networkSpotPrice = React.useMemo(
     () => selectedNetwork
@@ -368,9 +366,9 @@ export function useTransactionParser (
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress),
+          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: to,
-          recipientLabel: getAddressLabel(to),
+          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: transferedAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: transferedAmountFiat
@@ -434,9 +432,9 @@ export function useTransactionParser (
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress),
+          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: address,
-          recipientLabel: getAddressLabel(address),
+          recipientLabel: getAddressLabel(address, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -479,9 +477,9 @@ export function useTransactionParser (
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress, // The caller, which may not be the owner
-          senderLabel: getAddressLabel(fromAddress),
+          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: toAddress,
-          recipientLabel: getAddressLabel(toAddress),
+          recipientLabel: getAddressLabel(toAddress, accounts),
           fiatValue: Amount.zero(), // Display NFT values in the future
           fiatTotal: new Amount(totalAmountFiat),
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
@@ -519,9 +517,9 @@ export function useTransactionParser (
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress),
+          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: to,
-          recipientLabel: getAddressLabel(to),
+          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: Amount.zero(),
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
@@ -535,7 +533,7 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
-          approvalTargetLabel: getAddressLabel(address),
+          approvalTargetLabel: getAddressLabel(address, accounts),
           isApprovalUnlimited: amountWrapped.eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
@@ -571,9 +569,9 @@ export function useTransactionParser (
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress),
+          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: to,
-          recipientLabel: getAddressLabel(to),
+          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -646,9 +644,9 @@ export function useTransactionParser (
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress),
+          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: to,
-          recipientLabel: getAddressLabel(to),
+          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: sellAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sellAmountFiat
@@ -694,9 +692,9 @@ export function useTransactionParser (
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress),
+          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: to,
-          recipientLabel: getAddressLabel(to),
+          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat

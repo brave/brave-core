@@ -19,7 +19,7 @@ import Amount from '../../../utils/amount'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
-import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
+import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
