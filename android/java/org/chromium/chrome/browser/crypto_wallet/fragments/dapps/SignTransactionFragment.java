@@ -25,9 +25,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
-import org.chromium.brave_wallet.mojom.SolanaAccountMeta;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.chrome.R;
@@ -77,13 +78,12 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
     private int mTxRequestNumber;
     private SignTransactionRequest mSignTransactionRequest;
     private SignAllTransactionsRequest mSignAllTransactionsRequest;
+    private Button mBtnCounterNext;
+    private List<SolanaTxData> mTxDatas;
     private final View.OnClickListener onNextTxClick = v -> {
         incrementCounter();
         updateSignDataAndDetails();
     };
-
-    private Button mBtnCounterNext;
-    private List<SolanaTxData> mTxDatas;
 
     public static SignTransactionFragment newInstance(ActivityType activityType) {
         SignTransactionFragment fragment = new SignTransactionFragment();
@@ -142,8 +142,6 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         assert getArguments() != null;
         mActivityType = (ActivityType) getArguments().getSerializable(PARAM_ACITITY_TYPE);
         updateTxPanelPerStep();
-        updateAccount();
-        updateNetwork();
         fetchSignRequestData();
         Spanned associatedSPLTokenAccountInfo =
                 Utils.createSpanForSurroundedPhrase(requireContext(), R.string.learn_more, (v) -> {
@@ -165,6 +163,9 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
             return;
         }
         int size = 0;
+        String fromAddress = null;
+        @CoinType.EnumType
+        int coin = CoinType.ETH;
         switch (mActivityType) {
             case SIGN_TRANSACTION:
                 if (mTxRequestNumber >= mSignTransactionRequests.size()) {
@@ -173,6 +174,8 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 mSignTransactionRequest = mSignTransactionRequests.get(mTxRequestNumber);
                 size = mSignTransactionRequests.size();
                 mTxDatas = Arrays.asList(TransactionUtils.safeSolData(mSignTransactionRequest));
+                coin = mSignTransactionRequest.coin;
+                fromAddress = mSignTransactionRequest.fromAddress;
                 break;
             case SIGN_ALL_TRANSACTIONS:
                 if (mTxRequestNumber >= mSignAllTransactionRequests.size()) {
@@ -181,6 +184,8 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 mSignAllTransactionsRequest = mSignAllTransactionRequests.get(mTxRequestNumber);
                 size = mSignAllTransactionRequests.size();
                 mTxDatas = TransactionUtils.safeSolData(mSignAllTransactionsRequest);
+                coin = mSignAllTransactionsRequest.coin;
+                fromAddress = mSignAllTransactionsRequest.fromAddress;
                 break;
             default: // Do nothing
         }
@@ -196,6 +201,8 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         mTvTxCounter.setText(
                 getString(R.string.brave_wallet_queue_of, (mTxRequestNumber + 1), size));
         updateActionState(mTxRequestNumber == 0);
+        updateAccount(fromAddress);
+        updateNetwork(coin);
     }
 
     private void updateSignDetails() {
@@ -316,27 +323,27 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         }
     }
 
-    private void updateAccount() {
+    private void updateAccount(String fromAddress) {
+        if (fromAddress == null) return;
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            activity.getWalletModel()
-                    .getKeyringModel()
-                    .getSelectedAccountOrAccountPerOrigin()
-                    .observe(getViewLifecycleOwner(), accountInfo -> {
-                        if (accountInfo == null) return;
-                        Utils.setBlockiesBitmapResource(
-                                mExecutor, mHandler, mAccountImage, accountInfo.address, true);
-                        String accountText = accountInfo.name + "\n" + accountInfo.address;
-                        mAccountName.setText(accountText);
-                    });
+            activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
+                if (fromAddress == null) return;
+                AccountInfo accountInfo = Utils.findAccount(accountInfos, fromAddress);
+                String accountText =
+                        (accountInfo != null ? accountInfo.name + "\n" : "") + fromAddress;
+                Utils.setBlockiesBitmapResource(
+                        mExecutor, mHandler, mAccountImage, fromAddress, true);
+                mAccountName.setText(accountText);
+            });
         }
     }
 
-    private void updateNetwork() {
+    private void updateNetwork(@CoinType.EnumType int coin) {
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            activity.getWalletModel().getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
-                    getViewLifecycleOwner(), networkInfo -> {
+            activity.getWalletModel().getCryptoModel().getNetworkModel().getNetwork(
+                    coin, networkInfo -> {
                         if (networkInfo == null) return;
                         mNetworkName.setText(networkInfo.chainName);
                     });

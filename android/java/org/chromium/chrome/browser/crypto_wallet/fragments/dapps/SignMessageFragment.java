@@ -23,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
@@ -88,7 +89,6 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
 
     private void initComponents() {
         fillSignMessageInfo(true);
-        updateAccount();
     }
 
     private void fillSignMessageInfo(boolean init) {
@@ -118,23 +118,21 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                         Utils.geteTLD(new GURL(mCurrentSignMessageRequest.originInfo.originSpec),
                                 mCurrentSignMessageRequest.originInfo.eTldPlusOne));
             }
+            updateAccount(mCurrentSignMessageRequest.address);
             updateNetwork(mCurrentSignMessageRequest.coin);
         });
     }
 
-    private void updateAccount() {
+    private void updateAccount(String address) {
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            activity.getWalletModel()
-                    .getKeyringModel()
-                    .getSelectedAccountOrAccountPerOrigin()
-                    .observe(getViewLifecycleOwner(), accountInfo -> {
-                        if (accountInfo == null) return;
-                        Utils.setBlockiesBitmapResource(
-                                mExecutor, mHandler, mAccountImage, accountInfo.address, true);
-                        String accountText = accountInfo.name + "\n" + accountInfo.address;
-                        mAccountName.setText(accountText);
-                    });
+            activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
+                if (address == null) return;
+                AccountInfo accountInfo = Utils.findAccount(accountInfos, address);
+                String accountText = (accountInfo != null ? accountInfo.name + "\n" : "") + address;
+                Utils.setBlockiesBitmapResource(mExecutor, mHandler, mAccountImage, address, true);
+                mAccountName.setText(accountText);
+            });
         }
     }
 
