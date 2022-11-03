@@ -33,6 +33,7 @@ class EmptyStateOverlayView: UIView {
     $0.textAlignment = .center
     $0.textColor = .braveLabel
     $0.numberOfLines = 0
+    $0.setContentHuggingPriority(.required, for: .horizontal)
   }
   
   private let descriptionLabel = UILabel().then {
@@ -103,6 +104,7 @@ class EmptyStateOverlayView: UIView {
     containerView.snp.remakeConstraints {
       $0.centerX.equalToSuperview()
       $0.centerY.equalToSuperview().offset(heightOffset)
+      $0.width.equalToSuperview().multipliedBy(0.75)
     }
   }
   
@@ -116,7 +118,7 @@ class EmptyStateOverlayView: UIView {
       $0.centerX.equalToSuperview()
       $0.centerY.equalToSuperview().offset(heightOffset)
       $0.width.equalToSuperview().multipliedBy(0.75)
-      $0.size.lessThanOrEqualToSuperview()
+      $0.height.lessThanOrEqualToSuperview()
     }
     
     if let icon = details.icon {
@@ -127,7 +129,7 @@ class EmptyStateOverlayView: UIView {
         $0.size.equalTo(45)
        }
       
-      containerView.setCustomSpacing(25, after: iconImageView)
+      containerView.setCustomSpacing(20, after: iconImageView)
     }
     
     if let title = details.title {
@@ -139,7 +141,7 @@ class EmptyStateOverlayView: UIView {
     if let description = details.description {
       descriptionLabel.text = description
       containerView.addArrangedSubview(descriptionLabel)
-      containerView.setCustomSpacing(35, after: descriptionLabel)
+      containerView.setCustomSpacing(25, after: descriptionLabel)
     }
     
     if let buttonText = details.buttonText {
