@@ -25,6 +25,7 @@ import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import {
   getTransactionNonce,
+  isFilecoinTransaction,
   isSolanaDappTransaction,
   isSolanaTransaction
 } from '../../utils/tx-utils'
@@ -83,6 +84,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   // Tx type flags
   isSolanaTransaction: boolean
   isSolanaDappTransaction: boolean
+  isFilecoinTransaction: boolean
 
   // Token approvals
   approvalTarget?: string
@@ -257,7 +259,7 @@ export function useTransactionParser (
     const feeDetails = parseTransactionFees(transactionInfo)
     const { gasFeeFiat, gasFee } = feeDetails
 
-    const isFilTransaction = filTxData !== undefined
+    const isFilTransaction = isFilecoinTransaction(transactionInfo)
     const isSolanaTxn = isSolanaTransaction(transactionInfo)
 
     const isSPLTransaction =
@@ -267,11 +269,11 @@ export function useTransactionParser (
     const value =
       isSPLTransaction ? solTxData?.amount.toString() ?? ''
         : isSolanaTxn ? solTxData?.lamports.toString() ?? ''
-          : isFilTransaction ? filTxData.value || ''
+          : isFilTransaction ? filTxData?.value || ''
             : txData?.baseData.value || ''
 
     let to = isSolanaTxn ? solTxData?.toWalletAddress ?? ''
-      : isFilTransaction ? filTxData.to ?? ''
+      : isFilTransaction ? filTxData?.to ?? ''
         : txData?.baseData.to || ''
 
     const nonce = getTransactionNonce(transactionInfo)
@@ -285,8 +287,10 @@ export function useTransactionParser (
       | 'nonce'
       | 'isSolanaDappTransaction'
       | 'isSolanaTransaction'
+      | 'isFilecoinTransaction'
     > = {
       nonce,
+      isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaTransaction: isSolanaTxn
     }
@@ -752,6 +756,7 @@ export function parseTransactionWithoutPrices ({
 }): ParsedTransaction {
   return {
     nonce: getTransactionNonce(tx),
+    isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaTransaction: isSolanaTransaction(tx)
   } as ParsedTransaction

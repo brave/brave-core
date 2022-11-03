@@ -5,6 +5,12 @@ import { loadTimeData } from '../../common/loadTimeData'
 
 type Order = 'ascending' | 'descending'
 
+type FileCoinTransactionInfo = BraveWallet.TransactionInfo & {
+  txDataUnion: {
+    filTxData: BraveWallet.FilTxData
+  }
+}
+
 type SolanaTransactionInfo = BraveWallet.TransactionInfo & {
   txDataUnion: {
     solanaTxData: BraveWallet.SolanaTxData
@@ -69,4 +75,8 @@ export function isSolanaDappTransaction (tx: BraveWallet.TransactionInfo): tx is
       BraveWallet.TransactionType.Other
     ].includes(tx.txType)
   )
+}
+
+export function isFilecoinTransaction (tx: BraveWallet.TransactionInfo): tx is FileCoinTransactionInfo {
+  return tx.txDataUnion.filTxData !== undefined
 }
