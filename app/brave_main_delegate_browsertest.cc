@@ -27,6 +27,8 @@
 #include "components/permissions/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
+#include "components/segmentation_platform/public/features.h"
+#include "components/send_tab_to_self/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
@@ -38,6 +40,7 @@
 #include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "android_webview/common/aw_features.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/browser/browser_features.h"
@@ -81,6 +84,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
+#if BUILDFLAG(IS_ANDROID)
+    &android_webview::features::kWebViewClientHintsControllerDelegate,
+#endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
@@ -147,6 +153,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
+    &net::features::kSamePartyAttributeEnabled,
     &network::features::kTrustTokens,
     &network_time::kNetworkTimeServiceQuerying,
     &optimization_guide::features::kOptimizationHints,
@@ -160,6 +167,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxSettings3,
+    &segmentation_platform::features::kSegmentationPlatformFeature,
+    &send_tab_to_self::kSendTabToSelfSigninPromo,
+    &shared_highlighting::kIOSSharedHighlightingV2,
     &shared_highlighting::kSharedHighlightingAmp,
 #if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
