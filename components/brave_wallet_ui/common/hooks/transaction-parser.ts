@@ -175,11 +175,7 @@ export function useTransactionParser (
   }, [visibleTokens, fullTokenList])
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransaction => {
-    const {
-      txArgs,
-      fromAddress,
-      txType
-    } = transactionInfo
+    const { txArgs, txType } = transactionInfo
 
     const {
       gasFee,
@@ -279,6 +275,8 @@ export function useTransactionParser (
       | 'sellAmount'
       | 'sellAmountWei'
       | 'sellToken'
+      | 'sender'
+      | 'senderLabel'
       | 'token'
       | 'value'
       | 'valueExact'
@@ -328,6 +326,8 @@ export function useTransactionParser (
       sellAmount,
       sellAmountWei,
       sellToken,
+      sender: transactionInfo.fromAddress,
+      senderLabel: getAddressLabel(transactionInfo.fromAddress, accounts),
       token,
       value: normalizedTransferredValue,
       valueExact: normalizedTransferredValueExact
@@ -349,8 +349,6 @@ export function useTransactionParser (
         const parsedTx: ParsedTransaction = {
           ...txBase,
           status: transactionInfo.txStatus,
-          sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress, accounts),
           recipient: to,
           recipientLabel: getAddressLabel(to, accounts),
           fiatValue: transferedAmountFiat,
@@ -395,8 +393,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           status: transactionInfo.txStatus,
-          sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -423,9 +419,7 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          status: transactionInfo.txStatus,
-          sender: fromAddress, // The caller, which may not be the owner
-          senderLabel: getAddressLabel(fromAddress, accounts),
+          status: transactionInfo.txStatus, // The caller, which may not be the owner
           fiatValue: Amount.zero(), // Display NFT values in the future
           fiatTotal: new Amount(totalAmountFiat),
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
@@ -449,8 +443,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           status: transactionInfo.txStatus,
-          sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress, accounts),
           fiatValue: Amount.zero(),
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
@@ -482,8 +474,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           status: transactionInfo.txStatus,
-          sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -545,8 +535,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           status: transactionInfo.txStatus,
-          sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress, accounts),
           fiatValue: sellAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sellAmountFiat
@@ -577,8 +565,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           status: transactionInfo.txStatus,
-          sender: fromAddress,
-          senderLabel: getAddressLabel(fromAddress, accounts),
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -715,6 +701,8 @@ export function parseTransactionWithoutPrices ({
     sellAmount,
     sellAmountWei,
     sellToken,
+    sender: tx.fromAddress,
+    senderLabel: getAddressLabel(tx.fromAddress, accounts),
     token,
     value: normalizedTransferredValue,
     valueExact: normalizedTransferredValueExact
