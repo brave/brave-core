@@ -491,9 +491,10 @@ export function useTransactionParser (
         const [address] = txArgs
 
         const {
-          wei: amountWrapped,
-          normalized: normalizedAmount
-        } = getTransactionTransferredValue({
+          normalizedTransferredValue,
+          normalizedTransferredValueExact,
+          weiTransferredValue
+        } = getFormattedTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -515,13 +516,13 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
-          value: normalizedAmount.format(6),
-          valueExact: normalizedAmount.format(),
+          value: normalizedTransferredValue,
+          valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address, accounts),
-          isApprovalUnlimited: amountWrapped.eq(MAX_UINT256),
+          isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
           sameAddressError: checkForSameAddressError(address, fromAddress),
