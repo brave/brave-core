@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as Solana from '@solana/web3.js'
 import { useSelector } from 'react-redux'
 
 // Constants
@@ -28,6 +27,7 @@ import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '
 import {
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
+  getLamportsMovedFromInstructions,
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
@@ -43,8 +43,6 @@ import { findTokenByContractAddress } from '../../utils/asset-utils'
 
 // Hooks
 import usePricing from './pricing'
-
-type SolanaParamsWithLamports = Solana.CreateAccountParams | Solana.CreateAccountWithSeedParams | Solana.TransferParams | Solana.TransferWithSeedParams | Solana.WithdrawNonceParams
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -335,50 +333,10 @@ export function useTransactionParser (
       case txBase.isSolanaDappTransaction: {
         const instructions = solTxData ? getTypedSolanaTxInstructions(solTxData) : []
 
-        const lamportsMovedFromInstructions = instructions.reduce((acc, { type, params }) => {
-          const lamportsAmount = (params as SolanaParamsWithLamports)?.lamports?.toString() ?? '0'
-
-          switch (type) {
-            case 'Transfer':
-            case 'TransferWithSeed': {
-              const { fromPubkey, toPubkey } = params as Solana.TransferParams | Solana.TransferWithSeedParams
-
-              // only show lamports as transfered if the amount is going to a different pubKey
-              if (!toPubkey.equals(fromPubkey)) {
-                return acc.plus(lamportsAmount)
-              }
-              return acc
-            }
-
-            case 'WithdrawNonceAccount': {
-              const { noncePubkey, toPubkey } = params as Solana.WithdrawNonceParams
-
-              if (noncePubkey.equals(new Solana.PublicKey(fromAddress))) {
-                return acc.plus(lamportsAmount)
-              }
-
-              if (toPubkey.equals(new Solana.PublicKey(fromAddress))) {
-                return acc.minus(lamportsAmount)
-              }
-
-              return acc
-            }
-
-            case 'Create':
-            case 'CreateWithSeed': {
-              const { fromPubkey } = params as Solana.CreateAccountParams | Solana.CreateAccountWithSeedParams
-
-              if (fromPubkey.toString() === fromAddress) {
-                return acc.plus(lamportsAmount)
-              }
-
-              return acc
-            }
-
-            case 'Unknown':
-            default: return acc.plus(lamportsAmount)
-          }
-        }, new Amount(0)) ?? 0
+        const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
+          instructions,
+          transactionInfo.fromAddress
+        )
 
         const transferedValue = selectedNetwork
           ? new Amount(value)

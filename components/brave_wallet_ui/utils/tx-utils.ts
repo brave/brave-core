@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import * as Solana from '@solana/web3.js'
+
 // types
 import {
   BraveWallet,
@@ -15,7 +17,7 @@ import { NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
 // utils
 import { getLocale } from '../../common/locale'
 import { loadTimeData } from '../../common/loadTimeData'
-import { getTypedSolanaTxInstructions } from './solana-instruction-utils'
+import { getTypedSolanaTxInstructions, SolanaParamsWithLamports, TypedSolanaInstructionWithParams } from './solana-instruction-utils'
 import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
 
@@ -281,4 +283,53 @@ export const getETHSwapTranasactionBuyAndSellTokens = ({
     buyAmountWei,
     sellAmountWei
   }
+}
+
+export function getLamportsMovedFromInstructions (
+  instructions: TypedSolanaInstructionWithParams[],
+  fromAddress: string
+) {
+  return instructions.reduce((acc, instruction) => {
+    const lamportsAmount = (instruction.params as SolanaParamsWithLamports)?.lamports?.toString() ?? '0'
+
+    switch (instruction.type) {
+      case 'Transfer':
+      case 'TransferWithSeed': {
+        const { fromPubkey, toPubkey } = instruction.params
+
+        // only show lamports as transfered if the amount is going to a different pubKey
+        if (!toPubkey.equals(fromPubkey)) {
+          return acc.plus(lamportsAmount)
+        }
+        return acc
+      }
+
+      case 'WithdrawNonceAccount': {
+        const { noncePubkey, toPubkey } = instruction.params
+
+        if (noncePubkey.equals(new Solana.PublicKey(fromAddress))) {
+          return acc.plus(lamportsAmount)
+        }
+
+        if (toPubkey.equals(new Solana.PublicKey(fromAddress))) {
+          return acc.minus(lamportsAmount)
+        }
+
+        return acc
+      }
+
+      case 'Create':
+      case 'CreateWithSeed': {
+        const { fromPubkey } = instruction.params
+
+        if (fromPubkey.toString() === fromAddress) {
+          return acc.plus(lamportsAmount)
+        }
+
+        return acc
+      }
+
+      default: return acc.plus(lamportsAmount)
+    }
+  }, new Amount(0)) ?? 0
 }
