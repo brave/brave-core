@@ -19,6 +19,7 @@ static_library("content") {
 
   deps = [
     "//base",
+    "//brave/components/brave_wallet/common:common",
     "//brave/components/decentralized_dns/core",
     "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",

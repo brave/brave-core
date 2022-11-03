@@ -197,7 +197,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteENS) {
   ASSERT_FALSE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
   local_state()->SetInteger(
       decentralized_dns::kENSResolveMethod,
-      static_cast<int>(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+      static_cast<int>(decentralized_dns::ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(decentralized_dns::IsENSResolveMethodEthereum(local_state()));
   ASSERT_TRUE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
 }
@@ -317,7 +317,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   ASSERT_TRUE(
-      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ENABLED));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
 
@@ -325,7 +325,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
   ASSERT_FALSE(
-      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ENABLED));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
 
@@ -333,7 +333,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   ASSERT_FALSE(
-      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ENABLED));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
 }

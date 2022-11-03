@@ -180,6 +180,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void SnsGetSolAddr(const std::string& domain,
                      SnsGetSolAddrCallback callback) override;
 
+  using SnsResolveHostCallback =
+      base::OnceCallback<void(const GURL& url,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void SnsResolveHost(const std::string& domain,
+                      SnsResolveHostCallback callback);
+
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
                   bool silent = false);
@@ -481,6 +488,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       SnsResolverTask* task,
       absl::optional<SnsResolverTaskResult> task_result,
       absl::optional<SnsResolverTaskError> error);
+  void OnSnsResolveHostTaskDone(
+      SnsResolverTask* task,
+      absl::optional<SnsResolverTaskResult> task_result,
+      absl::optional<SnsResolverTaskError> error);
   void OnEnsGetEthAddr(EnsGetEthAddrCallback callback,
                        APIRequestResult api_request_result);
   void OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
@@ -592,6 +603,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       ens_get_content_hash_tasks_;
 
   SnsResolverTaskContainer<SnsGetSolAddrCallback> sns_get_sol_addr_tasks_;
+  SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;

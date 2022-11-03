@@ -67,13 +67,8 @@ void EnsOffchainLookupOptInPage::CommandReceived(const std::string& command) {
 
 void EnsOffchainLookupOptInPage::PopulateInterstitialStrings(
     base::Value::Dict& load_time_data) {
-  const std::vector<std::u16string> message_params = {
-      u"<a "
-      u"href='https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup'"
-      u"target='_blank' rel='noopener noreferrer'>",
-
-      u"</a>",
-  };
+  std::u16string learn_more_link =
+      u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
 
   load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                      IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_TITLE));
@@ -83,7 +78,7 @@ void EnsOffchainLookupOptInPage::PopulateInterstitialStrings(
                      base::ReplaceStringPlaceholders(
                          brave_l10n::GetLocalizedResourceUTF16String(
                              IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PRIMARY_PARAGRAPH),
-                         message_params, nullptr));
+                         {learn_more_link}, nullptr));
 
   load_time_data.Set("primaryButtonText",
                      brave_l10n::GetLocalizedResourceUTF16String(
