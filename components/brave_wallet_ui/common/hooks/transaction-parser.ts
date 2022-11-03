@@ -68,6 +68,7 @@ interface ParsedTransactionFees {
 
 export interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
+  id: string
   hash: string
   nonce: string
   createdTime: TimeDelta
@@ -239,6 +240,7 @@ export function useTransactionParser (
       | 'erc721BlockchainToken'
       | 'erc721TokenId'
       | 'hash'
+      | 'id'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
@@ -273,6 +275,7 @@ export function useTransactionParser (
       }),
       erc721BlockchainToken: erc721Token,
       erc721TokenId,
+      id: transactionInfo.id,
       hash: transactionInfo.txHash,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
@@ -648,6 +651,7 @@ export function parseTransactionWithoutPrices ({
     erc721BlockchainToken: erc721Token,
     erc721TokenId: getTransactionErc721TokenId(tx),
     hash: tx.txHash,
+    id: tx.id,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
