@@ -31,6 +31,7 @@ import {
   getTransactionBaseValue,
   getTransactionNonce,
   getTransactionToAddress,
+  getTransactionTransferedValue,
   isFilecoinTransaction,
   isSolanaDappTransaction,
   isSolanaSplTransaction,
@@ -645,16 +646,19 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.SolanaSystemTransfer:
       case txType === BraveWallet.TransactionType.Other:
       default: {
+        const {
+          normalized: valueWrapped
+        } = getTransactionTransferedValue({
+          tx: transactionInfo,
+          txNetwork: transactionNetwork
+        })
+
         const sendAmountFiat = selectedNetwork
           ? computeFiatAmount(baseValue, selectedNetwork.symbol, selectedNetwork.decimals)
           : Amount.empty()
 
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
-
-        const valueWrapped = selectedNetwork
-          ? new Amount(baseValue).divideByDecimals(selectedNetwork.decimals)
-          : Amount.empty()
 
         return {
           ...txBase,

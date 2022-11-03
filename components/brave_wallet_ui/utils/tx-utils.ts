@@ -349,3 +349,37 @@ export function getTransactionBaseValue (tx: BraveWallet.TransactionInfo) {
 
   return tx.txDataUnion.ethTxData1559?.baseData.value || ''
 }
+
+export function getTransactionTransferedValue ({
+  tx,
+  txNetwork,
+  token,
+  sellToken
+}: {
+  tx: BraveWallet.TransactionInfo
+  token?: BraveWallet.BlockchainToken
+  sellToken?: BraveWallet.BlockchainToken
+  txNetwork?: BraveWallet.NetworkInfo
+}): {
+  wei: Amount
+  normalized: Amount
+} {
+  // Can't compute value with network decimals if no network was provided
+  if (!txNetwork) {
+    return {
+      normalized: Amount.empty(),
+      wei: Amount.empty()
+    }
+  }
+
+  // Filecoin Txs
+  // to.toLowerCase() === SwapExchangeProxy:
+  // ETHSend
+  // SolanaSystemTransfer
+  // Other
+  const wei = new Amount(getTransactionBaseValue(tx))
+  return {
+    wei: wei,
+    normalized: wei.divideByDecimals(txNetwork.decimals)
+  }
+}
