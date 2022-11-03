@@ -1,12 +1,12 @@
 diff --git a/google_apis/google_api_keys.cc b/google_apis/google_api_keys.cc
-index fe69503e07f0991aebacc3f9e12cb680d592c5f8..50d072c431e0e9c0148bc2454b6a36bf123eeb0c 100644
+index ca4572f5fa484fe334ce7f9f8c1821be4b6ed6e0..7c542a0c157485b36444eabc364d7bc98d5f6a86 100644
 --- a/google_apis/google_api_keys.cc
 +++ b/google_apis/google_api_keys.cc
-@@ -209,6 +209,7 @@ class APIKeyCache {
+@@ -216,6 +216,7 @@ class APIKeyCache {
  #if BUILDFLAG(SUPPORT_EXTERNAL_GOOGLE_API_KEY)
    void set_api_key(const std::string& api_key) { api_key_ = api_key; }
  #endif
 +  void set_api_key_for_testing(const std::string& api_key) { api_key_ = api_key; }
    std::string api_key_non_stable() const { return api_key_non_stable_; }
    std::string api_key_remoting() const { return api_key_remoting_; }
-   std::string api_key_sharing() const { return api_key_sharing_; }
+ #if BUILDFLAG(IS_CHROMEOS_ASH)

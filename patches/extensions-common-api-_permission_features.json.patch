@@ -1,5 +1,5 @@
 diff --git a/extensions/common/api/_permission_features.json b/extensions/common/api/_permission_features.json
-index 8ea8fa8b7a675cf04e8444b2a9daff40249cbdd4..cdbb8bd808aeaaa38712c4a4be06e6034baf8325 100644
+index f69bdd43d7c2f2be54df55514dff687fb6b63321..d6a88a53f9c87b9b70d9d2f811a15e4f74c99685 100644
 --- a/extensions/common/api/_permission_features.json
 +++ b/extensions/common/api/_permission_features.json
 @@ -314,6 +314,7 @@
@@ -7,22 +7,14 @@ index 8ea8fa8b7a675cf04e8444b2a9daff40249cbdd4..cdbb8bd808aeaaa38712c4a4be06e603
        "extension_types": ["extension"],
        "allowlist": [
 +        "21070F3D60711361C1210B870439BE49B5D995F4",  // Ethereum Remote Client extension
-         "496B6890097EB6E19809ADEADD095A8721FBB2E0",  // FIDO U2F APIs
-         "AD8ED80B705E1818AAD4684F9FF62B43D6D79620",  // FIDO U2F APIs (dev)
-         "E24F1786D842E91E74C27929B0B3715A4689A473",  // CryptoToken
-@@ -658,6 +659,7 @@
+         "D7CD4B3956B1F6E970E4AFCBCD4094B1EF4D07B9",  // http://crbug.com/710541
+         "D4EFCCC0CC612380762758BB96C7997224BD6395",  // http://crbug.com/710541
+         "4839A26B29CD1BD021B2E126EF6D28C9CB84018B",  // http://crbug.com/710541
+@@ -662,6 +663,7 @@
        "channel": "stable",
        "extension_types": ["extension"],
        "allowlist": [
 +        "21070F3D60711361C1210B870439BE49B5D995F4",  // Ethereum Remote Client extension
-         "496B6890097EB6E19809ADEADD095A8721FBB2E0",  // FIDO U2F APIs
-         "AD8ED80B705E1818AAD4684F9FF62B43D6D79620",  // FIDO U2F APIs (dev)
-         "E24F1786D842E91E74C27929B0B3715A4689A473",  // CryptoToken
-@@ -680,6 +682,7 @@
-       "channel": "stable",
-       "extension_types": ["extension"],
-       "allowlist": [
-+        "21070F3D60711361C1210B870439BE49B5D995F4",  // Ethereum Remote Client extension
-         "496B6890097EB6E19809ADEADD095A8721FBB2E0",  // FIDO U2F APIs
-         "AD8ED80B705E1818AAD4684F9FF62B43D6D79620",  // FIDO U2F APIs (dev)
-         "E24F1786D842E91E74C27929B0B3715A4689A473",  // CryptoToken
+         "D7CD4B3956B1F6E970E4AFCBCD4094B1EF4D07B9",  // http://crbug.com/710541
+         "D4EFCCC0CC612380762758BB96C7997224BD6395",  // http://crbug.com/710541
+         "4839A26B29CD1BD021B2E126EF6D28C9CB84018B",  // http://crbug.com/710541
