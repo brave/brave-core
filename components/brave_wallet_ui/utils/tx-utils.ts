@@ -666,3 +666,53 @@ export const isSendingToKnownTokenContractAddress = (
 
   return isKnownTokenContractAddress(to, fullTokenList)
 }
+
+/**
+ * Checks if a given transaction's sender and recipient addresses
+ * are the same.
+ *
+ * @param tx - The transaction to check
+*/
+export const transactionHasSameAddressError = (
+  tx: BraveWallet.TransactionInfo
+): boolean => {
+  const { txArgs, txType, fromAddress: from } = tx
+
+  // transfer(address recipient, uint256 amount) → bool
+  if (txType === BraveWallet.TransactionType.ERC20Transfer) {
+    const [recipient] = txArgs // (address recipient, uint256 amount)
+    return recipient.toLowerCase() === from.toLowerCase()
+  }
+
+  // transferFrom(address owner, address to, uint256 tokenId)
+  if (
+    txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    // The owner of the ERC721 must not be confused with the caller (fromAddress).
+    const [owner, toAddress] = txArgs // (address owner, address to, uint256 tokenId)
+    return toAddress.toLowerCase() === owner.toLowerCase()
+  }
+
+  // approve(address spender, uint256 amount) → bool
+  if (txType === BraveWallet.TransactionType.ERC20Approve) {
+    const [spender] = txArgs // (address spender, uint256 amount)
+    return spender.toLowerCase() === from.toLowerCase()
+  }
+
+  if (isSolanaSplTransaction(tx)) {
+    return (tx.txDataUnion.solanaTxData.toWalletAddress ?? '')
+      .toLowerCase() === from.toLowerCase()
+  }
+
+  if (
+    BraveWallet.TransactionType.ETHSend ||
+    BraveWallet.TransactionType.ETHSwap ||
+    BraveWallet.TransactionType.Other
+  ) {
+    return false
+  }
+
+  // unknown
+  return getTransactionToAddress(tx).toLowerCase() === from.toLowerCase()
+}

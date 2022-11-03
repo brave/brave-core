@@ -40,7 +40,8 @@ import {
   isSolanaDappTransaction,
   isSolanaSplTransaction,
   isSolanaTransaction,
-  parseTransactionFeesWithoutPrices
+  parseTransactionFeesWithoutPrices,
+  transactionHasSameAddressError
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
 import { getAddressLabel } from '../../utils/account-utils'
@@ -170,28 +171,6 @@ export function useTransactionParser (
     return visibleTokens.concat(fullTokenList)
   }, [visibleTokens, fullTokenList])
 
-  /**
-   * Checks if a given set of sender and recipient addresses are the
-   * same.
-   *
-   * @remarks
-   *
-   * This function must only be used for the following transaction types:
-   *  - ERC20Transfer
-   *  - ERC721TransferFrom
-   *  - ERC721SafeTransferFrom
-   *  - ERC20Approve
-   *  - ETHSend
-   *
-   * @param to - The recipient address
-   * @param from - The sender address
-   */
-  const checkForSameAddressError = (to: string, from: string): string | undefined => {
-    return to.toLowerCase() === from.toLowerCase()
-      ? getLocale('braveWalletSameAddressError')
-      : undefined
-  }
-
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransaction => {
     const {
       txArgs,
@@ -269,6 +248,7 @@ export function useTransactionParser (
       | 'nonce'
       | 'recipient'
       | 'recipientLabel'
+      | 'sameAddressError'
       | 'sellAmount'
       | 'sellAmountWei'
       | 'sellToken'
@@ -303,6 +283,9 @@ export function useTransactionParser (
       nonce,
       recipient: to,
       recipientLabel: getAddressLabel(to, accounts),
+      sameAddressError: transactionHasSameAddressError(transactionInfo)
+        ? getLocale('braveWalletSameAddressError')
+        : undefined,
       sellAmount,
       sellAmountWei,
       sellToken,
@@ -358,7 +341,7 @@ export function useTransactionParser (
 
       // transfer(address recipient, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Transfer: {
-        const [address, amount] = txArgs
+        const [, amount] = txArgs
         const price = findAssetPrice(token?.symbol ?? '')
         const sendAmountFiat = new Amount(amount)
           .divideByDecimals(token?.decimals ?? 18)
@@ -387,7 +370,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
-          sameAddressError: checkForSameAddressError(address, fromAddress),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)),
           ...feeDetails
@@ -399,10 +381,6 @@ export function useTransactionParser (
 
       // safeTransferFrom(address owner, address to, uint256 tokenId)
       case txType === BraveWallet.TransactionType.ERC721SafeTransferFrom: {
-        // The owner of the ERC721 must not be confused with the
-        // caller (fromAddress).
-        const [owner, toAddress] = txArgs
-
         const totalAmountFiat = gasFeeFiat
 
         const insufficientNativeFunds = accountNativeBalance !== ''
@@ -422,7 +400,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
-          sameAddressError: checkForSameAddressError(toAddress, owner),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`),
           ...feeDetails
@@ -431,8 +408,6 @@ export function useTransactionParser (
 
       // approve(address spender, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Approve: {
-        const [address] = txArgs
-
         const totalAmountFiat = new Amount(gasFeeFiat)
         const insufficientNativeFunds = accountNativeBalance !== ''
           ? new Amount(gasFee).gt(accountNativeBalance)
@@ -451,7 +426,6 @@ export function useTransactionParser (
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
-          sameAddressError: checkForSameAddressError(address, fromAddress),
           intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? '',
           ...feeDetails
         } as ParsedTransaction
@@ -488,7 +462,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
-          sameAddressError: checkForSameAddressError(solTxData?.toWalletAddress ?? '', fromAddress),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)),
           ...feeDetails
@@ -684,6 +657,9 @@ export function parseTransactionWithoutPrices ({
     nonce: getTransactionNonce(tx),
     recipient: to,
     recipientLabel: getAddressLabel(to, accounts),
+    sameAddressError: transactionHasSameAddressError(tx)
+      ? getLocale('braveWalletSameAddressError')
+      : undefined,
     sellAmount,
     sellAmountWei,
     sellToken,
