@@ -441,10 +441,10 @@ export function useTransactionParser (
         // The owner of the ERC721 must not be confused with the
         // caller (fromAddress).
         const [owner, toAddress, tokenID] = txArgs
-
         const {
-          normalized: valueWrapped
-        } = getTransactionTransferredValue({
+          normalizedTransferredValue,
+          normalizedTransferredValueExact
+        } = getFormattedTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -470,8 +470,8 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: valueWrapped.format(6),
-          valueExact: valueWrapped.format(),
+          value: normalizedTransferredValue,
+          valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
           decimals: 0,
           insufficientFundsForGasError: insufficientNativeFunds,
