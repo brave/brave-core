@@ -5,6 +5,12 @@ import { loadTimeData } from '../../common/loadTimeData'
 
 type Order = 'ascending' | 'descending'
 
+type SolanaTransactionInfo = BraveWallet.TransactionInfo & {
+  txDataUnion: {
+    solanaTxData: BraveWallet.SolanaTxData
+  }
+}
+
 export const sortTransactionByDate = (transactions: BraveWallet.TransactionInfo[], order: Order = 'ascending') => {
   return [...transactions].sort(function (x: BraveWallet.TransactionInfo, y: BraveWallet.TransactionInfo) {
     return order === 'ascending'
@@ -51,4 +57,16 @@ export function shouldReportTransactionP3A (txInfo: BraveWallet.TransactionInfo,
 
 export const getTransactionNonce = (tx: BraveWallet.TransactionInfo): string => {
   return tx.txDataUnion?.ethTxData1559?.baseData.nonce || ''
+}
+
+export function isSolanaDappTransaction (tx: BraveWallet.TransactionInfo): tx is SolanaTransactionInfo {
+  return (
+    tx.txDataUnion.solanaTxData !== undefined &&
+    [
+      BraveWallet.TransactionType.SolanaDappSignTransaction,
+      BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+      BraveWallet.TransactionType.SolanaSwap,
+      BraveWallet.TransactionType.Other
+    ].includes(tx.txType)
+  )
 }

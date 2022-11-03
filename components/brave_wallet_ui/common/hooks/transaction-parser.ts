@@ -25,6 +25,7 @@ import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import {
   getTransactionNonce,
+  isSolanaDappTransaction,
   isSolanaTransaction
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
@@ -78,6 +79,10 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   erc721TokenId?: string
   isSwap?: boolean
   intent: string
+
+  // Tx type flags
+  isSolanaTransaction: boolean
+  isSolanaDappTransaction: boolean
 
   // Token approvals
   approvalTarget?: string
@@ -275,15 +280,19 @@ export function useTransactionParser (
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
-    const txBase: Pick<ParsedTransaction, 'nonce'> = {
-      nonce
+    const txBase: Pick<
+      ParsedTransaction,
+      | 'nonce'
+      | 'isSolanaDappTransaction'
+      | 'isSolanaTransaction'
+    > = {
+      nonce,
+      isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
+      isSolanaTransaction: isSolanaTxn
     }
 
     switch (true) {
-      case txType === BraveWallet.TransactionType.SolanaDappSignTransaction:
-      case txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction:
-      case txType === BraveWallet.TransactionType.SolanaSwap:
-      case txType === BraveWallet.TransactionType.Other && solTxData !== undefined: {
+      case txBase.isSolanaDappTransaction: {
         const instructions = solTxData ? getTypedSolanaTxInstructions(solTxData) : []
 
         const lamportsMovedFromInstructions = instructions.reduce((acc, { type, params }) => {
@@ -741,8 +750,9 @@ export function parseTransactionWithoutPrices ({
   transactionNetwork: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
 }): ParsedTransaction {
-  const nonce = getTransactionNonce(tx)
   return {
-    nonce
+    nonce: getTransactionNonce(tx),
+    isSolanaDappTransaction: isSolanaTransaction(tx),
+    isSolanaTransaction: isSolanaTransaction(tx)
   } as ParsedTransaction
 }
