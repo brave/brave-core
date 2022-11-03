@@ -81,7 +81,6 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   insufficientFundsError?: boolean
   contractAddressError?: string
   sameAddressError?: string
-  erc721BlockchainToken?: BraveWallet.BlockchainToken
   erc721TokenId?: string
   isSwap?: boolean
   intent: string
@@ -94,6 +93,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
 
   // Tokens
   token?: BraveWallet.BlockchainToken
+  erc721BlockchainToken?: BraveWallet.BlockchainToken
 
   // Token approvals
   approvalTarget?: string
@@ -255,9 +255,15 @@ export function useTransactionParser (
       sellToken
     })
 
+    const erc721Token = [
+      BraveWallet.TransactionType.ERC721TransferFrom,
+      BraveWallet.TransactionType.ERC721SafeTransferFrom
+    ].includes(transactionInfo.txType) ? token : undefined
+
     const txBase: Pick<
       ParsedTransaction,
       | 'buyToken'
+      | 'erc721BlockchainToken'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
@@ -275,6 +281,7 @@ export function useTransactionParser (
       | 'valueExact'
     > = {
       buyToken,
+      erc721BlockchainToken: erc721Token,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
@@ -415,7 +422,6 @@ export function useTransactionParser (
           decimals: 0,
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
-          erc721BlockchainToken: token,
           erc721TokenId,
           contractAddressError: checkForContractAddressError(toAddress),
           sameAddressError: checkForSameAddressError(toAddress, owner),
@@ -654,14 +660,20 @@ export function parseTransactionWithoutPrices ({
     normalizedTransferredValue,
     normalizedTransferredValueExact
   } = getFormattedTransactionTransferredValue({
-    tx: tx,
+    tx,
     txNetwork: transactionNetwork,
     token,
     sellToken
   })
 
+  const erc721Token = [
+    BraveWallet.TransactionType.ERC721TransferFrom,
+    BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ].includes(tx.txType) ? token : undefined
+
   return {
     buyToken,
+    erc721BlockchainToken: erc721Token,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
