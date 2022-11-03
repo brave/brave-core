@@ -3229,21 +3229,21 @@ extension Strings {
       comment: "A warning message to tell users that the sign request message contains non-ascii characters."
     )
     public static let signMessageConsecutiveNewlineWarning = NSLocalizedString(
-      "wallet.signMessageRequestUnknownUnicodeWarning",
+      "wallet.signMessageConsecutiveNewlineWarning",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Consecutive newline characters detected!",
       comment: "A warning message to tell users that the sign request message contains consecutive new-line characters."
     )
     public static let signMessageShowUnknownUnicode = NSLocalizedString(
-      "wallet.signMessageRequestUnknownUnicodeWarning",
+      "wallet.signMessageShowUnknownUnicode",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Show encoded message",
       comment: "The title of the button that users can click to display the sign request message in ASCII encoding."
     )
     public static let signMessageShowOriginalMessage = NSLocalizedString(
-      "wallet.signMessageRequestUnknownUnicodeWarning",
+      "wallet.signMessageShowOriginalMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "View original message",
