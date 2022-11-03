@@ -271,6 +271,7 @@ export function useTransactionParser (
       | 'approvalTargetLabel'
       | 'buyToken'
       | 'coinType'
+      | 'createdTime'
       | 'erc721BlockchainToken'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
@@ -292,6 +293,7 @@ export function useTransactionParser (
       approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
       buyToken,
       coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
+      createdTime: transactionInfo.createdTime,
       erc721BlockchainToken: erc721Token,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
@@ -328,7 +330,6 @@ export function useTransactionParser (
         const parsedTx: ParsedTransaction = {
           ...txBase,
           hash: transactionInfo.txHash,
-          createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -379,7 +380,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -420,7 +420,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress, // The caller, which may not be the owner
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -454,7 +453,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -492,7 +490,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -561,7 +558,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -597,7 +593,6 @@ export function useTransactionParser (
         return {
           ...txBase,
           hash: transactionInfo.txHash,
-          createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
           senderLabel: getAddressLabel(fromAddress, accounts),
@@ -687,6 +682,7 @@ export function parseTransactionWithoutPrices ({
     approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
     buyToken,
     coinType: getCoinFromTxDataUnion(tx.txDataUnion),
+    createdTime: tx.createdTime,
     erc721BlockchainToken: erc721Token,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
