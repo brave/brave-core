@@ -385,8 +385,9 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.ERC20Transfer: {
         const [address, amount] = txArgs
         const {
-          normalized: valueWrapped
-        } = getTransactionTransferredValue({
+          normalizedTransferredValue,
+          normalizedTransferredValueExact
+        } = getFormattedTransactionTransferredValue({
           tx: transactionInfo,
           txNetwork: transactionNetwork,
           token
@@ -418,8 +419,8 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: valueWrapped.format(6),
-          valueExact: valueWrapped.format(),
+          value: normalizedTransferredValue,
+          valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
@@ -427,7 +428,7 @@ export function useTransactionParser (
           contractAddressError: checkForContractAddressError(address),
           sameAddressError: checkForSameAddressError(address, fromAddress),
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', valueWrapped.formatAsAsset(6, token?.symbol)),
+            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }
