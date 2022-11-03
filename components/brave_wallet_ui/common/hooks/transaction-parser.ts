@@ -525,9 +525,17 @@ export function useTransactionParser (
 
       case txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer:
       case txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation: {
+        const {
+          wei: amountWrapped,
+          normalized: normalizedAmount
+        } = getTransactionTransferedValue({
+          tx: transactionInfo,
+          txNetwork: transactionNetwork,
+          token
+        })
+
         const price = findAssetPrice(token?.symbol ?? '')
-        const sendAmountFiat = new Amount(baseValue)
-          .divideByDecimals(token?.decimals ?? 9)
+        const sendAmountFiat = normalizedAmount
           .times(price)
 
         const totalAmountFiat = new Amount(gasFeeFiat)
@@ -537,11 +545,8 @@ export function useTransactionParser (
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
         const insufficientTokenFunds = accountTokenBalance !== ''
-          ? new Amount(baseValue).gt(accountTokenBalance)
+          ? amountWrapped.gt(accountTokenBalance)
           : undefined
-
-        const valueWrapped = new Amount(baseValue)
-          .divideByDecimals(token?.decimals ?? 9)
 
         return {
           ...txBase,
@@ -555,8 +560,8 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          value: valueWrapped.format(6),
-          valueExact: valueWrapped.format(),
+          value: normalizedAmount.format(6),
+          valueExact: normalizedAmount.format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 9,
           insufficientFundsError: insufficientTokenFunds,
@@ -564,7 +569,7 @@ export function useTransactionParser (
           contractAddressError: checkForContractAddressError(solTxData?.toWalletAddress ?? ''),
           sameAddressError: checkForSameAddressError(solTxData?.toWalletAddress ?? '', fromAddress),
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', valueWrapped.formatAsAsset(6, token?.symbol)),
+            .replace('$1', normalizedAmount.formatAsAsset(6, token?.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }

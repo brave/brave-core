@@ -427,6 +427,15 @@ export function getTransactionTransferedValue ({
     }
   }
 
+  // Solana SPL
+  if (isSolanaSplTransaction(tx)) {
+    const wei = new Amount(getTransactionBaseValue(tx))
+    return {
+      wei,
+      normalized: wei.divideByDecimals(token?.decimals ?? 9)
+    }
+  }
+
   // Filecoin Txs
   // to.toLowerCase() === SwapExchangeProxy:
   // ETHSend
