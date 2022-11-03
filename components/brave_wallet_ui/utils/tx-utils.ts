@@ -372,6 +372,20 @@ export function getTransactionTransferedValue ({
     }
   }
 
+  // ERC20 Approvals
+  // ERC20 Transfers
+  if (
+    tx.txType === BraveWallet.TransactionType.ERC20Approve ||
+    tx.txType === BraveWallet.TransactionType.ERC20Transfer
+  ) {
+    const [, amount] = tx.txArgs
+    const wei = new Amount(amount)
+    return {
+      wei,
+      normalized: wei.divideByDecimals(token?.decimals ?? 18)
+    }
+  }
+
   // Filecoin Txs
   // to.toLowerCase() === SwapExchangeProxy:
   // ETHSend

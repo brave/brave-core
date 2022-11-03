@@ -393,6 +393,13 @@ export function useTransactionParser (
       // transfer(address recipient, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Transfer: {
         const [address, amount] = txArgs
+        const {
+          normalized: valueWrapped
+        } = getTransactionTransferedValue({
+          tx: transactionInfo,
+          txNetwork: transactionNetwork,
+          token
+        })
         const price = findAssetPrice(token?.symbol ?? '')
         const sendAmountFiat = new Amount(amount)
           .divideByDecimals(token?.decimals ?? 18)
@@ -407,9 +414,6 @@ export function useTransactionParser (
         const insufficientTokenFunds = accountTokenBalance !== ''
           ? new Amount(amount).gt(accountTokenBalance)
           : undefined
-
-        const valueWrapped = new Amount(amount)
-          .divideByDecimals(token?.decimals ?? 18)
 
         return {
           ...txBase,
@@ -484,13 +488,21 @@ export function useTransactionParser (
 
       // approve(address spender, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Approve: {
-        const [address, amount] = txArgs
+        const [address] = txArgs
+
+        const {
+          wei: amountWrapped,
+          normalized: normalizedAmount
+        } = getTransactionTransferedValue({
+          tx: transactionInfo,
+          txNetwork: transactionNetwork,
+          token
+        })
+
         const totalAmountFiat = new Amount(gasFeeFiat)
         const insufficientNativeFunds = accountNativeBalance !== ''
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
-
-        const amountWrapped = new Amount(amount)
 
         return {
           ...txBase,
@@ -503,12 +515,8 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
-          value: amountWrapped
-            .divideByDecimals(token?.decimals ?? 18)
-            .format(6),
-          valueExact: amountWrapped
-            .divideByDecimals(token?.decimals ?? 18)
-            .format(),
+          value: normalizedAmount.format(6),
+          valueExact: normalizedAmount.format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
