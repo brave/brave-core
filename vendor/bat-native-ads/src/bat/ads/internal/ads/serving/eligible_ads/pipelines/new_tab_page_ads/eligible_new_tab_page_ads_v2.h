@@ -11,6 +11,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 
@@ -34,20 +35,35 @@ class EligibleAdsV2 final : public EligibleAdsBase {
                 resource::AntiTargeting* anti_targeting);
 
   void GetForUserModel(
-      const targeting::UserModelInfo& user_model,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
+      targeting::UserModelInfo user_model,
+      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback) override;
 
  private:
+  void OnGetForUserModel(
+      targeting::UserModelInfo user_model,
+      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
+      const bool success,
+      const AdEventList& ad_events);
+
   void GetBrowsingHistory(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
+      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback);
 
   void GetEligibleAds(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
-      const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback,
+      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
       const BrowsingHistoryList& browsing_history);
+
+  void OnGetAllAds(
+      targeting::UserModelInfo user_model,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
+      const bool success,
+      const SegmentList& /*segments*/,
+      const CreativeNewTabPageAdList& creative_ads);
 
   CreativeNewTabPageAdList FilterCreativeAds(
       const CreativeNewTabPageAdList& creative_ads,

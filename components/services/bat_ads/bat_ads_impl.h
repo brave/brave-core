@@ -164,10 +164,6 @@ class BatAdsImpl : public mojom::BatAds,
       const std::string& dimensions,
       const absl::optional<ads::InlineContentAdInfo>& ad);
 
-  static void OnMaybeServeNewTabPageAd(
-      CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-      const absl::optional<ads::NewTabPageAdInfo>& ad);
-
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;
 };

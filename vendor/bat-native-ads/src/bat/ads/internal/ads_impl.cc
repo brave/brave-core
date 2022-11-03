@@ -298,11 +298,11 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/*ads*/ absl::nullopt);
+    std::move(callback).Run(/*ads*/ absl::nullopt);
     return;
   }
 
-  new_tab_page_ad_->MaybeServe(callback);
+  new_tab_page_ad_->MaybeServe(std::move(callback));
 }
 
 void AdsImpl::TriggerNewTabPageAdEvent(

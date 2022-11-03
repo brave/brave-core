@@ -9,6 +9,7 @@
 #include <functional>
 #include <string>
 
+#include "base/callback.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -18,6 +19,9 @@ namespace ads::database::table {
 
 using GetAdEventsCallback = std::function<void(const bool, const AdEventList&)>;
 
+using GetAdEventsOnceCallback =
+    base::OnceCallback<void(const bool, const AdEventList&)>;
+
 class AdEvents final : public TableInterface {
  public:
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
@@ -26,6 +30,9 @@ class AdEvents final : public TableInterface {
              const GetAdEventsCallback& callback) const;
 
   void GetAll(const GetAdEventsCallback& callback) const;
+
+  void GetForType(mojom::AdType ad_type,
+                  GetAdEventsOnceCallback callback) const;
 
   void GetForType(mojom::AdType ad_type,
                   const GetAdEventsCallback& callback) const;

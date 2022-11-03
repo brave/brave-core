@@ -140,12 +140,18 @@ void BatAdsImpl::TriggerNotificationAdEvent(
 
 void BatAdsImpl::MaybeServeNewTabPageAd(
     MaybeServeNewTabPageAdCallback callback) {
-  auto* holder = new CallbackHolder<MaybeServeNewTabPageAdCallback>(
-      AsWeakPtr(), std::move(callback));
+  ads_->MaybeServeNewTabPageAd(base::BindOnce(
+      [](MaybeServeNewTabPageAdCallback callback,
+         const absl::optional<ads::NewTabPageAdInfo>& ad) {
+        if (!ad) {
+          std::move(callback).Run(/*ad*/ absl::nullopt);
+          return;
+        }
 
-  auto maybe_serve_new_tab_page_ad_callback = std::bind(
-      BatAdsImpl::OnMaybeServeNewTabPageAd, holder, std::placeholders::_1);
-  ads_->MaybeServeNewTabPageAd(maybe_serve_new_tab_page_ad_callback);
+        absl::optional<base::Value::Dict> dict = ads::NewTabPageAdToValue(*ad);
+        std::move(callback).Run(std::move(dict));
+      },
+      std::move(callback)));
 }
 
 void BatAdsImpl::TriggerNewTabPageAdEvent(
@@ -286,24 +292,6 @@ void BatAdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-// static
-void BatAdsImpl::OnMaybeServeNewTabPageAd(
-    CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-    const absl::optional<ads::NewTabPageAdInfo>& ad) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    if (!ad) {
-      std::move(holder->get()).Run(/*ad*/ absl::nullopt);
-      return;
-    }
-
-    absl::optional<base::Value::Dict> dict = ads::NewTabPageAdToValue(*ad);
-    std::move(holder->get()).Run(std::move(dict));
-  }
-
-  delete holder;
-}
 
 void BatAdsImpl::OnMaybeServeInlineContentAd(
     CallbackHolder<MaybeServeInlineContentAdCallback>* holder,

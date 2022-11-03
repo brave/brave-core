@@ -6,7 +6,9 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v1.h"
 
 #include <memory>
+#include <utility>
 
+#include "base/bind.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
@@ -54,16 +56,19 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNewTabPageAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
@@ -75,16 +80,19 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNewTabPageAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
@@ -96,16 +104,19 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"finance-banking"}, {}, {}),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNewTabPageAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
@@ -127,18 +138,21 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1,
-                                                          creative_ad_3};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1,
+                                                    creative_ad_3};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNewTabPageAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
@@ -150,16 +164,18 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      {},
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      {}, base::BindOnce(
+              [](const CreativeNewTabPageAdList& expected_creative_ads,
+                 const bool had_opportunity,
+                 const CreativeNewTabPageAdList& creative_ads) {
+                // Assert
+                EXPECT_TRUE(had_opportunity);
+                EXPECT_EQ(expected_creative_ads, creative_ads);
+              },
+              std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
@@ -173,12 +189,12 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"UNMATCHED"}, {}, {}),
-      [](const bool had_opportunity,
-         const CreativeNewTabPageAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeNewTabPageAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
@@ -188,12 +204,12 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
-      [](const bool had_opportunity,
-         const CreativeNewTabPageAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeNewTabPageAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
@@ -214,17 +230,20 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 
   // Act
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNewTabPageAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
@@ -246,17 +265,20 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   // Act
   const ScopedPacingRandomNumberSetter scoped_setter(0.3);
 
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNewTabPageAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
@@ -281,17 +303,20 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNewTabPageAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 }  // namespace ads::new_tab_page_ads
