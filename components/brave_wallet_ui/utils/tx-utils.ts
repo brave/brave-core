@@ -24,6 +24,12 @@ import Amount from './amount'
 
 type Order = 'ascending' | 'descending'
 
+type EIP1559TransactionInfo = BraveWallet.TransactionInfo & {
+  txDataUnion: {
+    ethTxData1559: BraveWallet.TxData1559
+  }
+}
+
 type FileCoinTransactionInfo = BraveWallet.TransactionInfo & {
   txDataUnion: {
     filTxData: BraveWallet.FilTxData
@@ -483,4 +489,9 @@ export function getTransactionGas (transaction: BraveWallet.TransactionInfo): { 
     maxFeePerGas: transaction.txDataUnion.ethTxData1559?.maxFeePerGas || '',
     maxPriorityFeePerGas: transaction.txDataUnion.ethTxData1559?.maxPriorityFeePerGas || ''
   }
+}
+
+export const isEIP1559Transaction = (transaction: BraveWallet.TransactionInfo): transaction is EIP1559TransactionInfo => {
+  const { maxFeePerGas, maxPriorityFeePerGas } = getTransactionGas(transaction)
+  return maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
 }

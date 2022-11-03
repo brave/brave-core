@@ -34,6 +34,7 @@ import {
   getTransactionGasLimit,
   getTransactionNonce,
   getTransactionToAddress,
+  isEIP1559Transaction,
   isFilecoinTransaction,
   isSolanaDappTransaction,
   isSolanaSplTransaction,
@@ -143,13 +144,13 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
       maxFeePerGas,
       maxPriorityFeePerGas
     } = getTransactionGas(transactionInfo)
-    const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
+    const isEIP1559Tx = isEIP1559Transaction(transactionInfo)
 
     // [FIXME] - Extract actual fees used in the Solana transaction, instead of
     //   populating current estimates.
     const gasFee = isSolanaTxn
       ? new Amount(solFeeEstimates?.fee.toString() ?? '').format()
-      : isEIP1559Transaction
+      : isEIP1559Tx
         ? new Amount(maxFeePerGas)
           .times(gasLimit)
           .format()
@@ -169,7 +170,7 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
           .times(networkSpotPrice)
           .formatAsFiat()
         : '',
-      isEIP1559Transaction,
+      isEIP1559Transaction: isEIP1559Tx,
       missingGasLimitError: isSolanaTxn
         ? undefined
         : checkForMissingGasLimitError(gasLimit),
