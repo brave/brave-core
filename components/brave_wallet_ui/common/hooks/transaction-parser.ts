@@ -32,6 +32,7 @@ import {
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
+  getGasFeeFiatValue,
   getTransactionApprovalTargetAddress,
   getTransactionBaseValue,
   getTransactionDecimals,
@@ -132,12 +133,11 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
 
     return {
       ...txFeesBase,
-      gasFeeFiat: selectedNetwork && networkSpotPrice
-        ? new Amount(txFeesBase.gasFee)
-          .divideByDecimals(selectedNetwork.decimals)
-          .times(networkSpotPrice)
-          .formatAsFiat()
-        : '',
+      gasFeeFiat: getGasFeeFiatValue({
+        gasFee: txFeesBase.gasFee,
+        networkSpotPrice,
+        txNetwork: selectedNetwork
+      }),
       missingGasLimitError: txFeesBase.isMissingGasLimit
         ? getLocale('braveWalletMissingGasLimitError')
         : undefined

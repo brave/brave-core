@@ -716,3 +716,22 @@ export const transactionHasSameAddressError = (
   // unknown
   return getTransactionToAddress(tx).toLowerCase() === from.toLowerCase()
 }
+
+export function getGasFeeFiatValue ({
+  gasFee,
+  networkSpotPrice,
+  txNetwork
+}: {
+  gasFee: string
+  networkSpotPrice?: string
+  txNetwork?: BraveWallet.NetworkInfo
+}) {
+  if (!txNetwork || !networkSpotPrice) {
+    return ''
+  }
+
+  return new Amount(gasFee)
+    .divideByDecimals(txNetwork.decimals)
+    .times(networkSpotPrice)
+    .formatAsFiat()
+}
