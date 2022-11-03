@@ -54,6 +54,18 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   void AccountChangedEvent(const absl::optional<std::string>& account) override;
 
  private:
+  class SolanaWeb3Module {
+   public:
+    explicit SolanaWeb3Module(v8::Isolate* isolate, v8::Local<v8::Value> mod);
+    ~SolanaWeb3Module();
+    bool IsEmpty();
+    v8::Local<v8::Value> Get(v8::Local<v8::Context> context);
+    v8::Local<v8::Context> GetContext(v8::Isolate* isolate);
+
+   private:
+    v8::Global<v8::Value> mod_;
+  };
+
   explicit JSSolanaProvider(content::RenderFrame* render_frame, int world_id);
 
   // RenderFrameObserver implementation.
@@ -177,7 +189,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       v8::Local<v8::Context> context,
       const std::vector<uint8_t> serialized_tx);
 
-  v8::Global<v8::Value> solana_web3_module_;
+  std::unique_ptr<SolanaWeb3Module> solana_web3_module_;
   // isolated world for running solanaWeb3 script
   int world_id_;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;

@@ -57,6 +57,23 @@ constexpr char kSolanaProviderSript[] = "solana_provider.js";
 
 }  // namespace
 
+JSSolanaProvider::SolanaWeb3Module::SolanaWeb3Module(v8::Isolate* isolate,
+                                                     v8::Local<v8::Value> mod)
+    : mod_(isolate, mod) {}
+JSSolanaProvider::SolanaWeb3Module::~SolanaWeb3Module() = default;
+bool JSSolanaProvider::SolanaWeb3Module::IsEmpty() {
+  return mod_.IsEmpty();
+}
+v8::Local<v8::Value> JSSolanaProvider::SolanaWeb3Module::Get(
+    v8::Local<v8::Context> context) {
+  DCHECK(context == GetContext(context->GetIsolate()));
+  return mod_.Get(context->GetIsolate());
+}
+v8::Local<v8::Context> JSSolanaProvider::SolanaWeb3Module::GetContext(
+    v8::Isolate* isolate) {
+  return mod_.Get(isolate).As<v8::Object>()->GetCreationContextChecked();
+}
+
 JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame,
                                    int world_id)
     : RenderFrameObserver(render_frame),
@@ -885,14 +902,14 @@ mojom::SolanaSignTransactionParamPtr JSSolanaProvider::GetSignTransactionParam(
 bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
   if (!render_frame())
     return false;
-  if (!solana_web3_module_.IsEmpty())
+  if (solana_web3_module_ && !solana_web3_module_->IsEmpty())
     return true;
 
   std::string solana_web3_module_str =
       base::StrCat({"(function() {", *g_provider_solana_web3_script,
                     "return solanaWeb3; })()"});
 
-  solana_web3_module_.Reset(
+  solana_web3_module_ = std::make_unique<SolanaWeb3Module>(
       isolate,
       render_frame()->GetWebFrame()->ExecuteScriptInIsolatedWorldAndReturnValue(
           world_id_,
@@ -901,7 +918,7 @@ bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
           blink::BackForwardCacheAware::kAllow));
 
   // loading SolanaWeb3 module failed
-  if (solana_web3_module_.IsEmpty())
+  if (solana_web3_module_->IsEmpty())
     return false;
   return true;
 }
@@ -918,14 +935,15 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     return v8::Undefined(isolate);
   }
 
-  v8::Local<v8::Value> solana_web3_module = solana_web3_module_.Get(isolate);
   v8::Local<v8::Context> isolated_context =
-      solana_web3_module.As<v8::Object>()->GetCreationContextChecked();
+      solana_web3_module_->GetContext(isolate);
   v8::MaybeLocal<v8::Value> public_key;
   {
     v8::Context::Scope isolated_context_scope(isolated_context);
     v8::Local<v8::Value> public_key_module;
-    CHECK(GetProperty(isolated_context, solana_web3_module, kPublicKeyModule)
+    CHECK(GetProperty(isolated_context,
+                      solana_web3_module_->Get(isolated_context),
+                      kPublicKeyModule)
               .ToLocal(&public_key_module));
 
     const base::Value base58_str_value(base58_str);
@@ -958,14 +976,15 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     return v8::Undefined(isolate);
   }
 
-  v8::Local<v8::Value> solana_web3_module = solana_web3_module_.Get(isolate);
   v8::Local<v8::Context> isolated_context =
-      solana_web3_module.As<v8::Object>()->GetCreationContextChecked();
+      solana_web3_module_->GetContext(isolate);
   v8::MaybeLocal<v8::Value> transaction;
   {
     v8::Context::Scope isolated_context_scope(isolated_context);
     v8::Local<v8::Value> transaction_module;
-    CHECK(GetProperty(isolated_context, solana_web3_module, kTransactionModule)
+    CHECK(GetProperty(isolated_context,
+                      solana_web3_module_->Get(isolated_context),
+                      kTransactionModule)
               .ToLocal(&transaction_module));
 
     const base::Value serialized_tx_value(serialized_tx);
