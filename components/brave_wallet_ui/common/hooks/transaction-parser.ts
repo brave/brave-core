@@ -26,7 +26,7 @@ import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import {
-  getTransactionInteractionAddress,
+  findTransactionToken,
   getTransactionNonce,
   getTransactionToAddress,
   isFilecoinTransaction,
@@ -89,6 +89,9 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   isSolanaDappTransaction: boolean
   isSolanaSPLTransaction: boolean
   isFilecoinTransaction: boolean
+
+  // Tokens
+  token?: BraveWallet.BlockchainToken
 
   // Token approvals
   approvalTarget?: string
@@ -275,9 +278,7 @@ export function useTransactionParser (
     const to = getTransactionToAddress(transactionInfo)
     const nonce = getTransactionNonce(transactionInfo)
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
-    const token = isSPLTransaction
-      ? findTokenByContractAddress(solTxData?.splTokenMintAddress ?? '', combinedTokensList)
-      : findTokenByContractAddress(getTransactionInteractionAddress(transactionInfo), combinedTokensList)
+    const token = findTransactionToken(transactionInfo, combinedTokensList)
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
@@ -290,6 +291,7 @@ export function useTransactionParser (
       | 'nonce'
       | 'recipient'
       | 'recipientLabel'
+      | 'token'
     > = {
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
@@ -297,7 +299,8 @@ export function useTransactionParser (
       isSolanaTransaction: isSolanaTxn,
       nonce,
       recipient: to,
-      recipientLabel: getAddressLabel(to, accounts)
+      recipientLabel: getAddressLabel(to, accounts),
+      token
     }
 
     switch (true) {
@@ -733,12 +736,17 @@ export function parseTransactionWithoutPrices ({
   userVisibleTokensList: BraveWallet.BlockchainToken[]
 }): ParsedTransaction {
   const to = getTransactionToAddress(tx)
+  const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
+  const token = findTransactionToken(tx, combinedTokensList)
+
   return {
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
+    isSolanaSPLTransaction: isSolanaSplTransaction(tx),
     isSolanaTransaction: isSolanaTransaction(tx),
     nonce: getTransactionNonce(tx),
     recipient: to,
-    recipientLabel: getAddressLabel(to, accounts)
+    recipientLabel: getAddressLabel(to, accounts),
+    token
   } as ParsedTransaction
 }

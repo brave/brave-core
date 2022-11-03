@@ -15,6 +15,7 @@ import { SolanaTransactionTypes } from '../common/constants/solana'
 import { getLocale } from '../../common/locale'
 import { loadTimeData } from '../../common/loadTimeData'
 import { getTypedSolanaTxInstructions } from './solana-instruction-utils'
+import { findTokenByContractAddress } from './asset-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -188,5 +189,24 @@ export function isSolanaSplTransaction (tx: BraveWallet.TransactionInfo): tx is 
   return (
     tx.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
     tx.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+  )
+}
+
+export const findTransactionToken = (
+  tx: BraveWallet.TransactionInfo,
+  tokensList: BraveWallet.BlockchainToken[]
+) => {
+  // Solana SPL
+  if (isSolanaSplTransaction(tx)) {
+    return findTokenByContractAddress(
+      tx.txDataUnion.solanaTxData.splTokenMintAddress ?? '',
+      tokensList
+    )
+  }
+
+  // Solana, Filcoin & EVM
+  return findTokenByContractAddress(
+    getTransactionInteractionAddress(tx), // tx interacts with the contract address
+    tokensList
   )
 }
