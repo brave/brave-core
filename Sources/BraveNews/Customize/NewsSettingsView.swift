@@ -107,17 +107,15 @@ private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
   }
 }
 
-public class NewsSettingsViewController: UIViewController {
-  private let hostingController: UIHostingController<NewsSettingsView>
+public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
+  private let dataSource: FeedDataSource
   private let searchDelegate = SearchDelegate()
-  private var cancellable: AnyCancellable?
+  private var cancellables: Set<AnyCancellable> = []
   public var viewDidDisappear: (() -> Void)?
   
   public init(dataSource: FeedDataSource) {
-    hostingController = .init(
-      rootView: NewsSettingsView(dataSource: dataSource, searchDelegate: searchDelegate)
-    )
-    super.init(nibName: nil, bundle: nil)
+    self.dataSource = dataSource
+    super.init(rootView: NewsSettingsView(dataSource: dataSource, searchDelegate: searchDelegate))
   }
   
   public override func viewDidLoad() {
@@ -140,18 +138,21 @@ public class NewsSettingsViewController: UIViewController {
       navigationItem.preferredSearchBarPlacement = .stacked
     }
     
-    addChild(hostingController)
-    view.addSubview(hostingController.view)
-    hostingController.didMove(toParent: self)
-    hostingController.view.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    
-    cancellable = Preferences.BraveNews.isEnabled.$value
+    // Hide the search bar when Brave News is off
+    Preferences.BraveNews.isEnabled.$value
       .sink { [weak self] isEnabled in
         guard let self else { return }
         self.navigationItem.searchController = isEnabled ? self.searchController : nil
       }
+      .store(in: &cancellables)
+    
+    // Hide the toolbar when search overlay is visible
+    searchDelegate.$query
+      .sink { [weak self] query in
+        guard let self else { return }
+        self.navigationController?.setToolbarHidden(!query.isEmpty, animated: false)
+      }
+      .store(in: &cancellables)
   }
   
   private lazy var searchController = UISearchController(searchResultsController: nil).then {
@@ -172,17 +173,25 @@ public class NewsSettingsViewController: UIViewController {
     fatalError()
   }
   
-  public override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    viewDidDisappear?()
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setToolbarHidden(false, animated: animated)
+  }
+  
+  public override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    if navigationController?.isBeingDismissed == false { // Gesture dismiss
+      navigationController?.setToolbarHidden(true, animated: animated)
+    }
   }
 }
 
-private struct NewsSettingsView: View {
+public struct NewsSettingsView: View {
   @ObservedObject var dataSource: FeedDataSource
-  @ObservedObject var searchDelegate: SearchDelegate
+  @ObservedObject fileprivate var searchDelegate: SearchDelegate
   @ObservedObject private var isNewsEnabled = Preferences.BraveNews.isEnabled
   @State private var searchResults: SearchResults?
+  @State private var isShowingAddSource: Bool = false
   
   var showBraveNewsToggle: some View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
@@ -281,6 +290,32 @@ private struct NewsSettingsView: View {
         )
       }
     })
+    .toolbar {
+      ToolbarItemGroup(placement: .bottomBar) {
+        Spacer()
+        Menu {
+          Button {
+            isShowingAddSource = true
+          } label: {
+            Label("Add Source", systemImage: "plus")
+          }
+        } label: {
+          Image(systemName: "ellipsis")
+        }
+      }
+    }
+    .sheet(isPresented: $isShowingAddSource) {
+      BraveNewsAddSourceView(dataSource: dataSource)
+    }
+  }
+}
+
+struct BraveNewsAddSourceView: UIViewControllerRepresentable {
+  var dataSource: FeedDataSource
+  func makeUIViewController(context: Context) -> UINavigationController {
+    UINavigationController(rootViewController: BraveNewsAddSourceViewController(dataSource: dataSource))
+  }
+  func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
   }
 }
 
