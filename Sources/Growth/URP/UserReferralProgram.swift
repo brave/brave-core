@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 import WebKit
 import os.log
 
@@ -60,7 +61,7 @@ public class UserReferralProgram {
     let referralBlock: (ReferralData?, UrpError?) -> Void = { [weak self] referral, error in
       guard let self = self else { return }
 
-      if error == BraveShared.UrpError.endpointError {
+      if error == Growth.UrpError.endpointError {
         UrpLog.log("URP look up had endpoint error, will retry on next launch.")
         self.referralLookupRetry.timer?.invalidate()
         self.referralLookupRetry.timer = nil

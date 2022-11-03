@@ -12,17 +12,17 @@ import UIKit
 import BraveVPN
 
 /// Singleton Manager handles App Review Criteria
-class AppReviewManager: ObservableObject {
+public class AppReviewManager: ObservableObject {
   
   /// A main criteria that should be satisfied before checking sub-criteria
-  enum AppReviewMainCriteriaType: CaseIterable {
+  public enum AppReviewMainCriteriaType: CaseIterable {
     case launchCount
     case daysInUse
     case sessionCrash
   }
   
   /// A sub-criteria that should be satisfied if all main criterias are valid
-  enum AppReviewSubCriteriaType: CaseIterable {
+  public enum AppReviewSubCriteriaType: CaseIterable {
     case numberOfBookmarks
     case paidVPNSubscription
     case walletConnectedDapp
@@ -30,7 +30,7 @@ class AppReviewManager: ObservableObject {
     case syncEnabledWithTabSync
   }
     
-  @Published var isReviewRequired = false
+  @Published public var isReviewRequired = false
   
   private let launchCountLimit = 5
   private let bookmarksCountLimit = 5
@@ -41,13 +41,13 @@ class AppReviewManager: ObservableObject {
   
   // MARK: Lifecycle
   
-  static var shared = AppReviewManager()
+  public static var shared = AppReviewManager()
   
   // MARK: Review Handler Methods
   
   /// Method that handles If App Rating should be requested and request if condition is sucessful
   /// - Parameter currentScene: Current Scene where App Rating will be asked
-  func handleAppReview(for controller: UIViewController) {
+  public func handleAppReview(for controller: UIViewController) {
     if shouldRequestReview() {
       if AppConstants.buildChannel.isPublic {
         // Request Review when the main-queue is free or on the next cycle.
@@ -68,7 +68,7 @@ class AppReviewManager: ObservableObject {
   
   /// Method for handling changes to main criteria inside the various parts in application
   /// - Parameter mainCriteria: Type of the main Criteria
-  func processMainCriteria(for mainCriteria: AppReviewMainCriteriaType) {
+  public func processMainCriteria(for mainCriteria: AppReviewMainCriteriaType) {
     switch mainCriteria {
     case .daysInUse:
       var daysInUse = Preferences.Review.daysInUse.value
@@ -84,7 +84,7 @@ class AppReviewManager: ObservableObject {
   
   /// Method for handling changes to sub criteria inside the various parts in application
   /// - Parameter subCriteria: Type of the sub Criteria
-  func processSubCriteria(for subCriteria: AppReviewSubCriteriaType) {
+  public func processSubCriteria(for subCriteria: AppReviewSubCriteriaType) {
     switch subCriteria {
     case .walletConnectedDapp:
       // Saving when a user is connected its wallet to a Dapp

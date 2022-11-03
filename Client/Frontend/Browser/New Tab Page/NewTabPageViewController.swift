@@ -15,6 +15,7 @@ import SwiftUI
 import BraveNews
 import Combine
 import DesignSystem
+import Growth
 
 /// The behavior for sizing sections when the user is in landscape orientation
 enum NTPLandscapeSizingBehavior {

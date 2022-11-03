@@ -12,6 +12,7 @@ import Shared
 import BraveShared
 import Data
 import os.log
+import Growth
 
 extension WalletStore {
   /// Creates a WalletStore based on whether or not the user is in Private Mode
@@ -117,7 +118,7 @@ extension BrowserViewController: BraveWalletDelegate {
       }
       // Handle App Rating
       // User is either finished sending/swapping a crypto token or added an account to wallet.
-      AppReviewManager.shared.handleAppReview(for: topMostViewController)
+      AppReviewManager.shared.handleAppReview(for: self)
     }
   }
   

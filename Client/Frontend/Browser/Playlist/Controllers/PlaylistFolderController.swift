@@ -12,6 +12,7 @@ import SwiftUI
 import Shared
 import BraveShared
 import os.log
+import Growth
 
 private enum Section: Int, CaseIterable {
   case savedItems

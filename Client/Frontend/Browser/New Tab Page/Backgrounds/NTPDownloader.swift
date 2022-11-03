@@ -6,6 +6,7 @@ import Foundation
 import Shared
 import BraveShared
 import BraveCore
+import Growth
 import os.log
 
 protocol NTPDownloaderDelegate: AnyObject {

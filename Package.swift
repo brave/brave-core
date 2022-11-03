@@ -28,6 +28,7 @@ let package = Package(
     .library(name: "BraveNews", targets: ["BraveNews"]),
     .library(name: "Onboarding", targets: ["Onboarding"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
+    .library(name: "Growth", targets: ["Growth"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"])
@@ -81,6 +82,7 @@ let package = Package(
         "BraveVPN",
         "BraveNews",
         "Onboarding",
+        "Growth",
         "CodableHelpers",
         "BraveTalk",
         .product(name: "Lottie", package: "lottie-ios"),
@@ -226,6 +228,11 @@ let package = Package(
         .copy("Certificates/ISRGRootCA_X2.cer"),
         .copy("Certificates/SFSRootCAG2.cer"),
       ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "Growth",
+      dependencies: ["BraveVPN", "Shared", "BraveShared", "Strings", "SnapKit"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -418,6 +425,7 @@ let package = Package(
     .target(name: "RuntimeWarnings"),
     .target(name: "BraveTalk", dependencies: ["Shared", "JitsiMeet"]),
     .testTarget(name: "BraveTalkTests", dependencies: ["BraveTalk", "Shared"]),
+    .testTarget(name: "GrowthTests", dependencies: ["Growth", "Shared", "BraveShared", "BraveVPN"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
   ],

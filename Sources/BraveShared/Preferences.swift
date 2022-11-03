@@ -27,28 +27,6 @@ public class Preferences {
 }
 
 extension Preferences {
-  public final class DAU {
-    public static let lastLaunchInfo = Option<[Int?]?>(key: "dau.last-launch-info", default: nil)
-    static let weekOfInstallation = Option<String?>(key: "dau.week-of-installation", default: nil)
-    // On old codebase we checked existence of `dau_stat` to determine whether it's first server ping.
-    // We need to translate that to use the new `firstPingParam` preference.
-    static let firstPingParam: Option<Bool> =
-      Option<Bool>(key: "dau.first-ping", default: Preferences.DAU.lastLaunchInfo.value == nil)
-    /// Date of installation, this preference is removed after 14 days of usage.
-    public static let installationDate = Option<Date?>(key: "dau.installation-date", default: nil)
-    /// The app launch date after retention
-    public static let appRetentionLaunchDate = Option<Date?>(key: "dau.app-retention-launch-date", default: nil)
-  }
-  public final class URP {
-    static let nextCheckDate = Option<TimeInterval?>(key: "urp.next-check-date", default: nil)
-    static let retryCountdown = Option<Int?>(key: "urp.retry-countdown", default: nil)
-    static let downloadId = Option<String?>(key: "urp.referral.download-id", default: nil)
-    public static let referralCode = Option<String?>(key: "urp.referral.code", default: nil)
-    static let referralCodeDeleteDate = Option<TimeInterval?>(key: "urp.referral.delete-date", default: nil)
-    /// Whether the ref code lookup has still yet to occur
-    public static let referralLookupOutstanding = Option<Bool?>(key: "urp.referral.lookkup-completed", default: nil)
-  }
-
   public final class NTP {
     public static let ntpCheckDate = Option<TimeInterval?>(key: "ntp.next-check-date", default: nil)
   }
@@ -72,14 +50,14 @@ extension Preferences {
     public static let daysInUse = Option<[Date]>(key: "review.in-use", default: [])
   }
 
-  final class BlockStats {
-    static let adsCount = Option<Int>(key: "stats.adblock", default: 0)
-    static let trackersCount = Option<Int>(key: "stats.tracking", default: 0)
+  public final class BlockStats {
+    public static let adsCount = Option<Int>(key: "stats.adblock", default: 0)
+    public static let trackersCount = Option<Int>(key: "stats.tracking", default: 0)
     static let scriptsCount = Option<Int>(key: "stats.scripts", default: 0)
     static let imagesCount = Option<Int>(key: "stats.images", default: 0)
-    static let phishingCount = Option<Int>(key: "stats.phishing", default: 0)
-    static let httpsUpgradeCount = Option<Int>(key: "stats.http-upgrade", default: 0)
-    static let fingerprintingCount = Option<Int>(key: "stats.fingerprinting", default: 0)
+    public static let phishingCount = Option<Int>(key: "stats.phishing", default: 0)
+    public static let httpsUpgradeCount = Option<Int>(key: "stats.http-upgrade", default: 0)
+    public static let fingerprintingCount = Option<Int>(key: "stats.fingerprinting", default: 0)
   }
   public final class BlockFileVersion {
     public static let adblock = Option<String?>(key: "blockfile.adblock", default: nil)
@@ -181,6 +159,45 @@ extension Preferences {
     /// Each key is a `BraveCoreSwitch`
     public static let switchValues = Option<[String: String]>(key: "brave-core.switches.values", default: [:])
   }
+  
+  public final class AppState {
+    /// A flag for determining if the app exited with user interaction in the previous session
+    ///
+    /// Value should only be checked on launch
+    public static let backgroundedCleanly = Option<Bool>(key: "appstate.backgrounded-cleanly", default: true)
+    
+    /// A cached value for the last folder path we got for filter lists
+    ///
+    /// This is a useful setting because it take too long for filter lists to load during launch
+    /// and therefore we can try to load them right away and have them ready on the first tab load
+    public static let lastDefaultFilterListFolderPath =
+      Option<String?>(key: "caching.last-default-filter-list-folder-path", default: nil)
+  }
+  
+  public final class Chromium {
+    /// The boolean determine Bookmark Migration is finished on client side
+    public static let syncV2BookmarksMigrationCompleted = Option<Bool>(key: "chromium.migration.bookmarks", default: false)
+    /// The boolean determine History Migration is finished on client side
+    public static let syncV2HistoryMigrationCompleted = Option<Bool>(key: "chromium.migration.history", default: false)
+    /// The boolean determine Password Migration is finished on client side
+    public static let syncV2PasswordMigrationCompleted = Option<Bool>(key: "chromium.migration.password", default: false)
+    /// The boolean determine Password Migration is started on client side
+    public static let syncV2PasswordMigrationStarted = Option<Bool>(key: "chromium.migration.password.started", default: false)
+    /// The count of how many times migration is performed on client side - the value increases with every fail attempt and after 3 tries migration marked as successful
+    public static let syncV2ObjectMigrationCount = Option<Int>(key: "chromium.migration.attempt.count", default: 0)
+    /// Whether the device is in sync chain
+    public static let syncEnabled = Option<Bool>(key: "chromium.sync.enabled", default: false)
+    /// The sync type bookmarks enabled for the device in sync chain
+    public static let syncBookmarksEnabled = Option<Bool>(key: "chromium.sync.syncBookmarksEnabled", default: true)
+    /// The sync type history enabled for the device in sync chain
+    public static let syncHistoryEnabled = Option<Bool>(key: "chromium.sync.syncHistoryEnabled", default: false)
+    /// The sync type passwords enabled the device in sync chain
+    public static let syncPasswordsEnabled = Option<Bool>(key: "chromium.sync.syncPasswordsEnabled", default: false)
+    /// The sync type open tabs enabled the device in sync chain
+    public static let syncOpenTabsEnabled = Option<Bool>(key: "chromium.sync.openTabsEnabled", default: false)
+    /// Node Id for last bookmark folder
+    public static let lastBookmarksFolderNodeId = Option<Int?>(key: "chromium.last.bookmark.folder.node.id", default: nil)
+  }
 }
 
 extension Preferences {
@@ -258,45 +275,3 @@ extension Data: UserDefaultsEncodable {}
 extension Date: UserDefaultsEncodable {}
 extension Array: UserDefaultsEncodable where Element: UserDefaultsEncodable {}
 extension Dictionary: UserDefaultsEncodable where Key: StringProtocol, Value: UserDefaultsEncodable {}
-
-extension Preferences {
-  /// Migrate a given key from `Prefs` into a specific option
-  public class func migrate<T>(keyPrefix: String, key: String, to option: Preferences.Option<T>, transform: ((T) -> T)? = nil) {
-    let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
-
-    let profileKey = "\(keyPrefix)\(key)"
-    // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
-    // as casting to T if T is Optional even if the key doesnt exist.
-    let value = userDefaults?.object(forKey: profileKey)
-    if value != nil, let value = value as? T {
-      if let transform = transform {
-        option.value = transform(value)
-      } else {
-        option.value = value
-      }
-      userDefaults?.removeObject(forKey: profileKey)
-    } else {
-      Logger.module.info("Could not migrate legacy pref with key: \"\(profileKey)\".")
-    }
-  }
-
-  public class func migrateBraveShared(keyPrefix: String) {
-    // DAU
-    migrate(keyPrefix: keyPrefix, key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
-    migrate(keyPrefix: keyPrefix, key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
-
-    // URP
-    migrate(keyPrefix: keyPrefix, key: "urpDateCheckPrefsKey", to: Preferences.URP.nextCheckDate)
-    migrate(keyPrefix: keyPrefix, key: "urpRetryCountdownPrefsKey", to: Preferences.URP.retryCountdown)
-    migrate(keyPrefix: keyPrefix, key: "downloadIdPrefsKey", to: Preferences.URP.downloadId)
-    migrate(keyPrefix: keyPrefix, key: "referralCodePrefsKey", to: Preferences.URP.referralCode)
-    migrate(keyPrefix: keyPrefix, key: "referralCodeDeleteTimePrefsKey", to: Preferences.URP.referralCodeDeleteDate)
-
-    // Block Stats
-    migrate(keyPrefix: keyPrefix, key: "adblock", to: Preferences.BlockStats.adsCount)
-    migrate(keyPrefix: keyPrefix, key: "tracking_protection", to: Preferences.BlockStats.trackersCount)
-    migrate(keyPrefix: keyPrefix, key: "httpse", to: Preferences.BlockStats.httpsUpgradeCount)
-    migrate(keyPrefix: keyPrefix, key: "fp_protection", to: Preferences.BlockStats.fingerprintingCount)
-    migrate(keyPrefix: keyPrefix, key: "safebrowsing", to: Preferences.BlockStats.phishingCount)
-  }
-}
