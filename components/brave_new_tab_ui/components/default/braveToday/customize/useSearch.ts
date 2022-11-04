@@ -39,10 +39,15 @@ export default function useSearch (query: string) {
         p.feedSource?.url?.toLocaleLowerCase().includes(lowerQuery)))
     const results = { publishers, direct: [] as FeedSearchResultItem[] }
     for (const result of directResults) {
-      const publisherMatch = publishers.find(p => p.feedSource.url === result.feedUrl.url)
+      // If we have any publisher with this feed url, we should prefer showing
+      // that to creating a new direct feed.
+      // Note: We should only add the publisher to the list of publisher matches
+      // if it isn't already matching. The canonical case here is
+      // news.com (redirects to cnet.com), so we should show the cnet.com feed.
+      const publisherMatch = context.sortedPublishers.find(p => p.feedSource.url === result.feedUrl.url)
       if (!publisherMatch) {
         results.direct.push(result)
-      } else if (!publishers.some(p => p.publisherId === publisherMatch.publisherId)) {
+      } else if (!results.publishers.some(p => p.publisherId === publisherMatch.publisherId)) {
         results.publishers.push(publisherMatch)
       }
     }

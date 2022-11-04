@@ -87,13 +87,13 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item) {
 using ParseFeedCallback = base::OnceCallback<void(absl::optional<FeedData>)>;
 void ParseFeedDataOffMainThread(const GURL& feed_url,
                                 const std::string& charset,
-                                const std::string& body_content,
+                                std::string body_content,
                                 ParseFeedCallback callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
           [](const GURL& feed_url, const std::string& charset,
-             const std::string& body_content) -> absl::optional<FeedData> {
+             std::string body_content) -> absl::optional<FeedData> {
             std::string result;
             // Ensure the body is encoded as UTF-8.
             if (!base::ConvertToUtf8AndNormalize(body_content, charset,
@@ -112,7 +112,7 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
             }
             return data;
           },
-          feed_url, charset, body_content),
+          feed_url, charset, std::move(body_content)),
       std::move(callback));
 }
 
@@ -231,7 +231,7 @@ void DirectFeedController::FindFeeds(
 
             // Response is valid, but still might not be a feed
             ParseFeedDataOffMainThread(
-                feed_url, charset, std::move(body_content),
+                feed_url, charset, body_content,
                 base::BindOnce(
                     [](const GURL& feed_url, const GURL& final_url,
                        const std::string& mime_type,
