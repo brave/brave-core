@@ -291,6 +291,7 @@ export function useTransactionParser (
       | 'sender'
       | 'senderLabel'
       | 'status'
+      | 'symbol'
       | 'token'
       | 'value'
       | 'valueExact'
@@ -344,6 +345,12 @@ export function useTransactionParser (
       sender: transactionInfo.fromAddress,
       senderLabel: getAddressLabel(transactionInfo.fromAddress, accounts),
       status: transactionInfo.txStatus,
+      symbol: getTransactionTokenSymbol({
+        tx: transactionInfo,
+        txNetwork: transactionNetwork,
+        token,
+        sellToken
+      }),
       token,
       value: normalizedTransferredValue,
       valueExact: normalizedTransferredValueExact
@@ -371,11 +378,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: getTransactionTokenSymbol({
-            tx: transactionInfo,
-            txNetwork: transactionNetwork,
-            token
-          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
@@ -410,11 +412,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: getTransactionTokenSymbol({
-            tx: transactionInfo,
-            txNetwork: transactionNetwork,
-            token
-          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
@@ -439,11 +436,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: getTransactionTokenSymbol({
-            tx: transactionInfo,
-            txNetwork: transactionNetwork,
-            token
-          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`)
@@ -463,11 +455,6 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
-          symbol: getTransactionTokenSymbol({
-            tx: transactionInfo,
-            txNetwork: transactionNetwork,
-            token
-          }),
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
@@ -495,11 +482,6 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
-          symbol: getTransactionTokenSymbol({
-            tx: transactionInfo,
-            txNetwork: transactionNetwork,
-            token
-          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
@@ -551,11 +533,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sellAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: getTransactionTokenSymbol({
-            tx: transactionInfo,
-            txNetwork: transactionNetwork,
-            sellToken
-          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
           intent: getLocale('braveWalletTransactionIntentSwap')
@@ -585,11 +562,6 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
-          symbol: getTransactionTokenSymbol({
-            tx: transactionInfo,
-            txNetwork: transactionNetwork,
-            token
-          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
@@ -732,6 +704,12 @@ export function parseTransactionWithoutPrices ({
     sender: tx.fromAddress,
     senderLabel: getAddressLabel(tx.fromAddress, accounts),
     status: tx.txStatus,
+    symbol: getTransactionTokenSymbol({
+      tx,
+      txNetwork: transactionNetwork,
+      token,
+      sellToken
+    }),
     token,
     value: normalizedTransferredValue,
     valueExact: normalizedTransferredValueExact
