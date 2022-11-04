@@ -754,7 +754,18 @@ export const accountHasInsufficientFundsForTransaction = ({
   tokensList: BraveWallet.BlockchainToken[]
   tx: BraveWallet.TransactionInfo
 }): boolean => {
-  const { txType } = tx
+  const { txType, txArgs } = tx
+
+  // ERC20
+  if (txType === BraveWallet.TransactionType.ERC20Approve) {
+    return false // can approve for more tokens than you own
+  }
+
+  if (txType === BraveWallet.TransactionType.ERC20Transfer) {
+    const [, amount] = txArgs // (address recipient, uint256 amount)
+    return accountTokenBalance !== '' && new Amount(amount)
+      .gt(accountTokenBalance)
+  }
 
   // ERC721
   if (

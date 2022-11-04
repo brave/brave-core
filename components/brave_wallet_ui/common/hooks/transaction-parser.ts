@@ -387,9 +387,6 @@ export function useTransactionParser (
         const insufficientNativeFunds = accountNativeBalance !== ''
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
-        const insufficientTokenFunds = accountTokenBalance !== ''
-          ? new Amount(amount).gt(accountTokenBalance)
-          : undefined
 
         return {
           ...txBase,
@@ -400,7 +397,15 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
-          insufficientFundsError: insufficientTokenFunds,
+          insufficientFundsError: accountHasInsufficientFundsForTransaction({
+            accountNativeBalance,
+            accountTokenBalance,
+            gasFee,
+            tokensList: combinedTokensList,
+            tx: transactionInfo,
+            account,
+            nativeAsset
+          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
@@ -459,7 +464,15 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
-          insufficientFundsError: false,
+          insufficientFundsError: accountHasInsufficientFundsForTransaction({
+            accountNativeBalance,
+            accountTokenBalance,
+            gasFee,
+            tokensList: combinedTokensList,
+            tx: transactionInfo,
+            account,
+            nativeAsset
+          }),
           intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
         } as ParsedTransaction
       }
