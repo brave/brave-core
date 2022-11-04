@@ -18,7 +18,7 @@ struct AssetSearchView: View {
   
   var body: some View {
     NavigationView {
-      TokenList(tokens: allTokens.filter { !$0.isErc721 || cryptoStore.networkStore.selectedChain.isNativeAsset($0) }) { token in
+      TokenList(tokens: allTokens) { token in
         NavigationLink(
           destination: AssetDetailView(
             assetDetailStore: cryptoStore.assetDetailStore(for: token),
@@ -51,7 +51,14 @@ struct AssetSearchView: View {
         cryptoStore.networkStore.selectedChainId,
         coin: cryptoStore.networkStore.selectedChain.coin
       ) { tokens in
-        self.allTokens = ([cryptoStore.networkStore.selectedChain.nativeToken] + tokens).sorted(by: { $0.symbol < $1.symbol })
+        if WalletDebugFlags.isNFTEnabled {
+          self.allTokens = ([cryptoStore.networkStore.selectedChain.nativeToken] + tokens).sorted(by: { $0.symbol < $1.symbol })
+        } else {
+          let tokens = ([cryptoStore.networkStore.selectedChain.nativeToken] + tokens).sorted(by: { $0.symbol < $1.symbol })
+          self.allTokens = tokens.filter {
+            !$0.isErc721 || cryptoStore.networkStore.selectedChain.isNativeAsset($0)
+          }
+        }
       }
     }
   }
