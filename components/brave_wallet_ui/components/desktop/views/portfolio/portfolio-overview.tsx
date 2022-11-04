@@ -16,9 +16,10 @@ import {
   SupportedTestNetworks,
   WalletRoutes
 } from '../../../../constants/types'
-import { getLocale } from '../../../../../common/locale'
+import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
 
 // Utils
+import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
@@ -179,7 +180,9 @@ export const PortfolioOverview = () => {
   // state
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
-  const [showChart, setShowChart] = React.useState<boolean>(false)
+  const [showChart, setShowChart] = React.useState<boolean>(
+    window.localStorage.getItem(LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN) === 'true'
+  )
 
   // methods
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
@@ -206,6 +209,16 @@ export const PortfolioOverview = () => {
   const onToggleHideBalances = React.useCallback(() => {
     setHideBalances(prev => !prev)
   }, [])
+
+  const onToggleShowChart = () => {
+    setShowChart(prev => {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
+        prev ? 'false' : 'true'
+      )
+      return !prev
+    })
+  }
 
   // effects
   React.useEffect(() => {
@@ -247,7 +260,7 @@ export const PortfolioOverview = () => {
             <ChartControlBar
               disabled={!showChart}
               onSelectTimeframe={onChangeTimeline}
-              onDisabledChanged={() => setShowChart(prev => !prev)}
+              onDisabledChanged={onToggleShowChart}
               selectedTimeline={selectedPortfolioTimeline}
               timelineOptions={ChartTimelineOptions}
             />
