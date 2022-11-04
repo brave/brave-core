@@ -14,6 +14,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +28,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
@@ -45,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,6 +169,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         String fromAddress = null;
         @CoinType.EnumType
         int coin = CoinType.ETH;
+        OriginInfo originInfo = null;
         switch (mActivityType) {
             case SIGN_TRANSACTION:
                 if (mTxRequestNumber >= mSignTransactionRequests.size()) {
@@ -176,6 +180,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 mTxDatas = Arrays.asList(TransactionUtils.safeSolData(mSignTransactionRequest));
                 coin = mSignTransactionRequest.coin;
                 fromAddress = mSignTransactionRequest.fromAddress;
+                originInfo = mSignTransactionRequest.originInfo;
                 break;
             case SIGN_ALL_TRANSACTIONS:
                 if (mTxRequestNumber >= mSignAllTransactionRequests.size()) {
@@ -186,6 +191,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 mTxDatas = TransactionUtils.safeSolData(mSignAllTransactionsRequest);
                 coin = mSignAllTransactionsRequest.coin;
                 fromAddress = mSignAllTransactionsRequest.fromAddress;
+                originInfo = mSignAllTransactionsRequest.originInfo;
                 break;
             default: // Do nothing
         }
@@ -203,6 +209,11 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         updateActionState(mTxRequestNumber == 0);
         updateAccount(fromAddress);
         updateNetwork(coin);
+        if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
+            mWebSite.setVisibility(View.VISIBLE);
+            mWebSite.setText(
+                    Utils.geteTLD(new GURL(originInfo.originSpec), originInfo.eTldPlusOne));
+        }
     }
 
     private void updateSignDetails() {
