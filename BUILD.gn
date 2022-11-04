@@ -379,6 +379,12 @@ create_dist_template("create_native_symbols_dist") {
   deps = [ "app/$current_os:symbol_dist_resources" ]
 }
 
+create_dist_template("create_native_symbols_dist_7z") {
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
+  dir_inputs = [ "$brave_product_name.pdb.syms" ]
+  deps = [ "app/$current_os:symbol_dist_resources" ]
+}
+
 create_dist_template("create_symbols_dist") {
   if (is_android) {
     output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
@@ -388,7 +394,10 @@ create_dist_template("create_symbols_dist") {
 
   deps = [ "app/$current_os:symbol_dist_resources" ]
   if (brave_debug_symbol_level == 2 && is_win) {
-    deps += [ ":create_native_symbols_dist" ]
+    deps += [
+      ":create_native_symbols_dist",
+      ":create_native_symbols_dist_7z",
+    ]
   }
 
   dir_inputs = [ "$brave_product_name.breakpad.syms" ]
