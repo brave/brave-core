@@ -991,6 +991,25 @@ export const getTransactionFiatValues = ({
     txNetwork
   })
 
+  // ERC721 TransferFrom
+  if (
+    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    // The owner of the ERC721 must not be confused with the
+    // caller (fromAddress).
+    const totalAmountFiat = gasFeeFiat
+
+    return {
+      gasFeeFiat,
+      fiatValue: Amount.zero(), // Display NFT values in the future
+      fiatTotal: new Amount(totalAmountFiat),
+      formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork?.symbol)
+    }
+  }
+
   // ERC20 Approve
   if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
     return {

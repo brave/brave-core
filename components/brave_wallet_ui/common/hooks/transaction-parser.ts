@@ -272,15 +272,26 @@ export function useTransactionParser (
 
       // safeTransferFrom(address owner, address to, uint256 tokenId)
       case txType === BraveWallet.TransactionType.ERC721SafeTransferFrom: {
-        const totalAmountFiat = gasFeeFiat
+        const {
+          fiatTotal,
+          fiatValue,
+          formattedNativeCurrencyTotal
+        } = getTransactionFiatValues({
+          gasFee,
+          networkSpotPrice,
+          normalizedTransferredValue,
+          spotPrices,
+          tx,
+          sellToken,
+          token,
+          txNetwork: selectedNetwork
+        })
 
         return {
           ...txBase,
-          fiatValue: Amount.zero(), // Display NFT values in the future
-          fiatTotal: new Amount(totalAmountFiat),
-          formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
-            .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol)
+          fiatValue,
+          fiatTotal,
+          formattedNativeCurrencyTotal
         } as ParsedTransaction
       }
 
