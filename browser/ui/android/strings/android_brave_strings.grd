@@ -2877,6 +2877,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SETTINGS_ETHEREUM_TITLE" desc="Title for Ethereum section in site settings" translateable="false">
       Ethereum
     </message>
+    <message name="IDS_SETTINGS_SOLANA_TITLE" desc="Title for Solana section in site settings" translateable="false">
+      Solana
+    </message>
     <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
       Show Top Sites
     </message>
