@@ -87,6 +87,10 @@ constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
 constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
 constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
+constexpr char kSupportTicketEmailKey[] = "email";
+constexpr char kSupportTicketSubjectKey[] = "subject";
+constexpr char kSupportTicketSupportTicketKey[] = "support-ticket";
+constexpr char kSupportTicketPartnerClientIdKey[] = "partner-client-id";
 
 constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";

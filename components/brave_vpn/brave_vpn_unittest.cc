@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/base64.h"
 #include "base/callback_forward.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
@@ -13,6 +14,7 @@
 #include "base/run_loop.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
@@ -587,6 +589,29 @@ TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
       },
       loop.QuitClosure()));
   loop.Run();
+}
+
+TEST_F(BraveVPNServiceTest, TicketInfoTest) {
+  base::Value::Dict ticket_value =
+      GetValueWithTicketInfos("brave-vpn@brave.com", "It's cool feature",
+                              "Love the Brave VPN!", "credential");
+
+  // Check ticket dict has four required fields.
+  EXPECT_TRUE(ticket_value.FindString(kSupportTicketEmailKey));
+  EXPECT_TRUE(ticket_value.FindString(kSupportTicketSubjectKey));
+  EXPECT_TRUE(ticket_value.FindString(kSupportTicketPartnerClientIdKey));
+  const auto support_ticket_encoded =
+      *ticket_value.FindString(kSupportTicketSupportTicketKey);
+  EXPECT_TRUE(!support_ticket_encoded.empty());
+
+  // Check body contents
+  std::string support_ticket_decoded;
+  EXPECT_TRUE(
+      base::Base64Decode(support_ticket_encoded, &support_ticket_decoded));
+  const std::string expected_support_ticket =
+      "Love the Brave VPN!\n\nsubscriber-credential: "
+      "credential\npayment-validation-method: brave-premium";
+  EXPECT_EQ(expected_support_ticket, support_ticket_decoded);
 }
 
 #if !BUILDFLAG(IS_ANDROID)

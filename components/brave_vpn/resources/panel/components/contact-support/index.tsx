@@ -114,7 +114,7 @@ function ContactSupport (props: Props) {
     }
     // Handle is valid, submit data
     setIsSubmitting(true)
-    const fullIssueBody = formData.problemBody + '\n' +
+    const fullIssueBody = `Message: \n${formData.problemBody}\n\n` +
       (formData.shareOsVersion ? `OS: ${supportData?.osVersion}\n` : '') +
       (formData.shareAppVersion ? `App version: ${supportData?.appVersion}\n` : '') +
       (formData.shareHostname ? `Hostname: ${supportData?.hostname}\n` : '')
