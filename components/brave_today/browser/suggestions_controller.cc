@@ -179,9 +179,13 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
   base::flat_map<std::string, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
+    std::vector<std::string> locales;
+    for (const auto& locale_info : publisher->locales)
+      locales.push_back(locale_info->locale);
+
     // If this publisher isn't available in the current locale we don't want
     // it to affect our suggestions.
-    if (!base::Contains(publisher->locales, locale_)) {
+    if (!base::Contains(locales, locale_)) {
       continue;
     }
 

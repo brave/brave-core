@@ -17,6 +17,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -264,13 +265,17 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
             brave_today::features::kBraveNewsV2Feature)) {
       // If the publisher is NOT_MODIFIED then display it if any of the channels
       // it belongs to are subscribed to.
-      for (const auto& channel_id : publisher->channels) {
-        const auto& channel = channels.at(channel_id);
-        if (channel->subscribed) {
-          VLOG(2) << "Showing article because publisher " << data->publisher_id
-                  << ": " << publisher->publisher_name << " is in channel "
-                  << channel_id << " which is subscribed to.";
-          return true;
+      for (const auto& locale_info : publisher->locales) {
+        for (const auto& channel_id : locale_info->channels) {
+          const auto& channel = channels.at(channel_id);
+          if (base::Contains(channel->subscribed_locales,
+                             locale_info->locale)) {
+            VLOG(2) << "Showing article because publisher "
+                    << data->publisher_id << ": " << publisher->publisher_name
+                    << " is in channel " << locale_info->locale << "."
+                    << channel_id << " which is subscribed to.";
+            return true;
+          }
         }
       }
 
@@ -296,10 +301,9 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed,
-               PrefService* prefs,
-               const std::string& locale) {
+               PrefService* prefs) {
   Channels channels =
-      ChannelsController::GetChannelsFromPublishers(locale, *publishers, prefs);
+      ChannelsController::GetChannelsFromPublishers(*publishers, prefs);
 
   std::list<mojom::ArticlePtr> articles;
   std::list<mojom::PromotedArticlePtr> promoted_articles;

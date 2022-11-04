@@ -25,9 +25,10 @@ namespace brave_news {
 namespace {
 bool HasAnyLocale(const base::flat_set<std::string>& locales,
                   const mojom::Publisher* publisher) {
-  return base::ranges::any_of(
-      publisher->locales,
-      [&locales](const auto& locale) { return locales.contains(locale); });
+  return base::ranges::any_of(publisher->locales,
+                              [&locales](const auto& locale_info) {
+                                return locales.contains(locale_info->locale);
+                              });
 }
 
 absl::optional<std::string> GetBestMissingLocale(
@@ -40,8 +41,8 @@ absl::optional<std::string> GetBestMissingLocale(
     if (HasAnyLocale(locales, publisher))
       continue;
 
-    for (const auto& locale : publisher->locales)
-      missing_locale_counts[locale]++;
+    for (const auto& locale_info : publisher->locales)
+      missing_locale_counts[locale_info->locale]++;
   }
 
   if (missing_locale_counts.empty())
@@ -58,7 +59,8 @@ absl::optional<std::string> GetBestMissingLocale(
 base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers) {
   base::flat_set<std::string> result;
   for (const auto& [_, publisher] : publishers) {
-    result.insert(publisher->locales.begin(), publisher->locales.end());
+    for (const auto& locale_info : publisher->locales)
+      result.insert(locale_info->locale);
   }
   return result;
 }
