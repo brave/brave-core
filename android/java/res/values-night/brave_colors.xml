@@ -60,6 +60,12 @@
     <!-- <color name="turn_on_button">#737ADE</color> -->
     <color name="news_text_color">@android:color/white</color>
     <color name="news_time_color">#9CD2D5CF</color>
+    <color name="news_settings_title_color">#F0F2FF</color>
+    <color name="news_settings_subtitle_color">#C2C4CF</color>
+    <color name="news_settings_divider_color">#1AFFFFFF</color>
+    <color name="news_settings_icon_bg_color">#0DFFFFFF</color>
+    <color name="news_settings_following_count_color">#D9F0F2FF</color>
+    <color name="news_settings_following_count_bg_color">#1AFFFFFF</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
