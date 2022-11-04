@@ -28,6 +28,7 @@ import {
   TypedSolanaInstructionWithParams
 } from '../../utils/solana-instruction-utils'
 import {
+  accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
   findTransactionAccount,
   findTransactionToken,
@@ -330,6 +331,10 @@ export function useTransactionParser (
       isEIP1559Transaction,
       instructions: getTypedSolanaTxInstructions(transactionInfo.txDataUnion.solanaTxData),
       insufficientFundsError,
+      insufficientFundsForGasError: accountHasInsufficientFundsForGas({
+        accountNativeBalance,
+        gasFee
+      }),
       intent: getTransactionIntent({
         normalizedTransferredValue,
         tx: transactionInfo,
@@ -390,9 +395,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          insufficientFundsForGasError: accountNativeBalance !== ''
-            ? new Amount(gasFee).gt(accountNativeBalance)
-            : undefined,
           isSwap: txType === BraveWallet.TransactionType.SolanaSwap
         }
 
@@ -410,18 +412,13 @@ export function useTransactionParser (
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
 
-        const insufficientNativeFunds = accountNativeBalance !== ''
-          ? new Amount(gasFee).gt(accountNativeBalance)
-          : undefined
-
         return {
           ...txBase,
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol),
-          insufficientFundsForGasError: insufficientNativeFunds
+            .formatAsAsset(6, selectedNetwork?.symbol)
         } as ParsedTransaction
       }
 
@@ -432,27 +429,19 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.ERC721SafeTransferFrom: {
         const totalAmountFiat = gasFeeFiat
 
-        const insufficientNativeFunds = accountNativeBalance !== ''
-          ? new Amount(gasFee).gt(accountNativeBalance)
-          : undefined
-
         return {
           ...txBase,
           fiatValue: Amount.zero(), // Display NFT values in the future
           fiatTotal: new Amount(totalAmountFiat),
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol),
-          insufficientFundsForGasError: insufficientNativeFunds
+            .formatAsAsset(6, selectedNetwork?.symbol)
         } as ParsedTransaction
       }
 
       // approve(address spender, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Approve: {
         const totalAmountFiat = new Amount(gasFeeFiat)
-        const insufficientNativeFunds = accountNativeBalance !== ''
-          ? new Amount(gasFee).gt(accountNativeBalance)
-          : undefined
 
         return {
           ...txBase,
@@ -460,8 +449,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
-          isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
-          insufficientFundsForGasError: insufficientNativeFunds
+          isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256)
         } as ParsedTransaction
       }
 
@@ -473,10 +461,6 @@ export function useTransactionParser (
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
 
-        const insufficientNativeFunds = accountNativeBalance !== ''
-          ? new Amount(gasFee).gt(accountNativeBalance)
-          : undefined
-
         return {
           ...txBase,
           fiatValue: sendAmountFiat,
@@ -485,8 +469,7 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact,
-          insufficientFundsForGasError: insufficientNativeFunds
+          valueExact: normalizedTransferredValueExact
         } as ParsedTransaction
       }
 
@@ -520,10 +503,6 @@ export function useTransactionParser (
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sellAmountFiat)
 
-        const insufficientNativeFunds = accountNativeBalance !== ''
-          ? new Amount(gasFee).gt(accountNativeBalance)
-          : undefined
-
         return {
           ...txBase,
           fiatValue: sellAmountFiat,
@@ -531,7 +510,6 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sellAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true
         } as ParsedTransaction
       }
@@ -557,9 +535,6 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
-          insufficientFundsForGasError: accountNativeBalance !== ''
-            ? new Amount(gasFee).gt(accountNativeBalance)
-            : undefined,
           isSwap: to.toLowerCase() === SwapExchangeProxy
         } as ParsedTransaction
       }
@@ -680,6 +655,10 @@ export function parseTransactionWithoutPrices ({
     id: tx.id,
     instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
     insufficientFundsError,
+    insufficientFundsForGasError: accountHasInsufficientFundsForGas({
+      accountNativeBalance,
+      gasFee
+    }),
     intent: getTransactionIntent({
       normalizedTransferredValue,
       tx,

@@ -927,3 +927,13 @@ export const getTransactionIntent = ({
     )
   )
 }
+
+export const accountHasInsufficientFundsForGas = ({
+  accountNativeBalance,
+  gasFee
+}: {
+  accountNativeBalance: string
+  gasFee: string
+}): boolean => {
+  return accountNativeBalance !== '' && new Amount(gasFee).gt(accountNativeBalance)
+}
