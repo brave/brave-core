@@ -848,3 +848,26 @@ export function getTransactionTokenSymbol ({
 
   return txNetwork?.symbol || ''
 }
+
+export const getTransactionIntent = ({
+  token,
+  tokensList,
+  transactionNetwork,
+  normalizedTransferredValue,
+  tx
+}: {
+  token?: BraveWallet.BlockchainToken
+  tokensList: BraveWallet.BlockchainToken[]
+  transactionNetwork?: BraveWallet.NetworkInfo
+  normalizedTransferredValue: string
+  tx: BraveWallet.TransactionInfo
+}): string => {
+  // default / other
+  return getLocale('braveWalletTransactionIntentSend').replace(
+    '$1',
+    new Amount(normalizedTransferredValue).formatAsAsset(
+      6,
+      transactionNetwork?.symbol
+    )
+  )
+}

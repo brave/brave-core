@@ -38,6 +38,7 @@ import {
   getTransactionBaseValue,
   getTransactionDecimals,
   getTransactionErc721TokenId,
+  getTransactionIntent,
   getTransactionNonce,
   getTransactionToAddress,
   getTransactionTokenSymbol,
@@ -566,8 +567,13 @@ export function useTransactionParser (
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
           isSwap: to.toLowerCase() === SwapExchangeProxy,
-          intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, selectedNetwork?.symbol))
+          intent: getTransactionIntent({
+            normalizedTransferredValue,
+            tokensList: combinedTokensList,
+            transactionNetwork,
+            tx: transactionInfo,
+            token
+          })
         } as ParsedTransaction
       }
     }
