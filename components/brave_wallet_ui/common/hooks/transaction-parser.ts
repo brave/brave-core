@@ -40,6 +40,7 @@ import {
   getTransactionErc721TokenId,
   getTransactionNonce,
   getTransactionToAddress,
+  getTransactionTokenSymbol,
   isFilecoinTransaction,
   isSendingToKnownTokenContractAddress,
   isSolanaDappTransaction,
@@ -561,7 +562,11 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
-          symbol: selectedNetwork?.symbol ?? '',
+          symbol: getTransactionTokenSymbol({
+            tx: transactionInfo,
+            txNetwork: transactionNetwork,
+            token
+          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,

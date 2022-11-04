@@ -816,3 +816,17 @@ export const accountHasInsufficientFundsForTransaction = ({
     .plus(gasFee)
     .gt(accountNativeBalance)
 }
+
+export function getTransactionTokenSymbol ({
+  tx,
+  txNetwork,
+  sellToken,
+  token
+}: {
+  tx: BraveWallet.TransactionInfo
+  txNetwork?: BraveWallet.NetworkInfo
+  token?: BraveWallet.BlockchainToken
+  sellToken?: BraveWallet.BlockchainToken
+}): string {
+  return txNetwork?.symbol || ''
+}
