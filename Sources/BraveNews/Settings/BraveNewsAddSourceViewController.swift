@@ -134,7 +134,7 @@ public class BraveNewsAddSourceViewController: UITableViewController {
     }
   }
 
-  private enum FindFeedsError: Error {
+  enum FindFeedsError: Error, Identifiable {
     /// An error occured while attempting to download the page
     case dataTaskError(Error)
     /// The data was either not received or is in the incorrect format
@@ -155,6 +155,10 @@ public class BraveNewsAddSourceViewController: UITableViewController {
       case .noFeedsFound:
         return Strings.BraveNews.addSourceNoFeedsFoundMessage
       }
+    }
+    
+    var id: String {
+      localizedDescription
     }
   }
 
