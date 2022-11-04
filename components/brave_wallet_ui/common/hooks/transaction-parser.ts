@@ -52,7 +52,6 @@ import {
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
 import { getAddressLabel } from '../../utils/account-utils'
-import { toProperCase } from '../../utils/string-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { findTokenByContractAddress } from '../../utils/asset-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
@@ -458,7 +457,12 @@ export function useTransactionParser (
             .formatAsAsset(2, selectedNetwork?.symbol),
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
-          intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
+          intent: getTransactionIntent({
+            normalizedTransferredValue,
+            tx: transactionInfo,
+            token,
+            transactionNetwork
+          })
         } as ParsedTransaction
       }
 

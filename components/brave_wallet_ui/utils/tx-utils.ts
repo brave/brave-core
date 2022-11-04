@@ -25,6 +25,7 @@ import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
 import { getCoinFromTxDataUnion } from './network-utils'
 import { getBalance } from './balance-utils'
+import { toProperCase } from './string-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -868,6 +869,11 @@ export const getTransactionIntent = ({
   transactionNetwork?: BraveWallet.NetworkInfo
   tx: BraveWallet.TransactionInfo
 }): string => {
+  // ERC20 Approve
+  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
+    return toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
+  }
+
   // SPL
   if (isSolanaSplTransaction(tx)) {
     return getLocale('braveWalletTransactionIntentSend')
