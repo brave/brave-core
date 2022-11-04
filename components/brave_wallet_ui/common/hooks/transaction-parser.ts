@@ -406,7 +406,11 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: token?.symbol ?? '',
+          symbol: getTransactionTokenSymbol({
+            tx: transactionInfo,
+            txNetwork: transactionNetwork,
+            token
+          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
@@ -431,7 +435,11 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: token?.symbol ?? '',
+          symbol: getTransactionTokenSymbol({
+            tx: transactionInfo,
+            txNetwork: transactionNetwork,
+            token
+          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`)
@@ -451,15 +459,18 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
-          symbol: token?.symbol ?? '',
+          symbol: getTransactionTokenSymbol({
+            tx: transactionInfo,
+            txNetwork: transactionNetwork,
+            token
+          }),
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
         } as ParsedTransaction
       }
 
-      case txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer:
-      case txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation: {
+      case isSPLTransaction: {
         const price = findAssetPrice(token?.symbol ?? '')
         const sendAmountFiat = new Amount(normalizedTransferredValue)
           .times(price)
@@ -480,7 +491,11 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
-          symbol: token?.symbol ?? '',
+          symbol: getTransactionTokenSymbol({
+            tx: transactionInfo,
+            txNetwork: transactionNetwork,
+            token
+          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))

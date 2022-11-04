@@ -828,5 +828,15 @@ export function getTransactionTokenSymbol ({
   token?: BraveWallet.BlockchainToken
   sellToken?: BraveWallet.BlockchainToken
 }): string {
+  if (
+    tx.txType === BraveWallet.TransactionType.ERC20Approve ||
+    tx.txType === BraveWallet.TransactionType.ERC20Transfer ||
+    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom ||
+    isSolanaSplTransaction(tx)
+  ) {
+    return token?.symbol || ''
+  }
+
   return txNetwork?.symbol || ''
 }
