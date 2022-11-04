@@ -8,12 +8,6 @@ import BraveCore
 import BraveShared
 import Strings
 
-extension BraveWallet.NetworkInfo {
-  var shortChainName: String {
-    chainName.split(separator: " ").first?.capitalized ?? chainName
-  }
-}
-
 struct NetworkPicker: View {
   
   struct Style: Equatable {
@@ -68,7 +62,7 @@ struct NetworkPicker: View {
       networkSelectionStore = .init(networkStore: networkStore)
     }) {
       HStack {
-        Text(networkStore.selectedChain.shortChainName)
+        Text(networkStore.selectedChain.chainName)
           .fontWeight(.bold)
         Image(systemName: "chevron.down.circle")
       }

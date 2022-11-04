@@ -422,21 +422,14 @@ struct WalletPanelView: View {
           )
         }
         VStack {
-          if sizeCategory.isAccessibilityCategory {
-            VStack {
+          HStack {
+            VStack(alignment: .leading) {
+              networkPickerButton
               if !isConnectHidden {
                 connectButton
               }
-              networkPickerButton
             }
-          } else {
-            HStack {
-              if !isConnectHidden {
-                connectButton
-              }
-              Spacer()
-              networkPickerButton
-            }
+            Spacer()
           }
           VStack(spacing: 12) {
             Button {

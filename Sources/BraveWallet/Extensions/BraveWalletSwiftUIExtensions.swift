@@ -24,6 +24,10 @@ extension BraveWallet.NetworkInfo: Identifiable {
   public var id: String {
     chainId
   }
+  
+  var shortChainName: String {
+    chainName.split(separator: " ").first?.capitalized ?? chainName
+  }
 
   public var nativeToken: BraveWallet.BlockchainToken {
     .init(
