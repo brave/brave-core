@@ -4,6 +4,12 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+
+// icons
+import EyeOnIcon from '../../../assets/svg-icons/eye-on-icon.svg'
+import EyeOffIcon from '../../../assets/svg-icons/eye-off-icon.svg'
+
+// styles
 import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
@@ -15,6 +21,7 @@ export const StyledWrapper = styled.div`
   box-sizing: border-box;
   border-radius: 12px;
   padding: 8px;
+  background: none;
   --selected-color: ${p => p.theme.palette.white};
   @media (prefers-color-scheme: dark) {
     --selected-color: ${p => p.theme.color.background02};
@@ -48,10 +55,26 @@ export const ButtonText = styled.span<{ isSelected?: boolean, disabled?: boolean
   };
 `
 
-export const Dot = styled.div<{ isSelected?: boolean }>`
-  width: 6px;
-  height: 6px;
-  border-radius: 100%;
-  margin-right: 6px;
-  background-color: ${p => p.isSelected ? 'var(--selected-color)' : p.theme.color.disabled};
+export const ToggleVisibilityButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding-left: 4px;
+  padding-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const ToggleVisibilityIcon = styled.div<{
+  isVisible: boolean
+}>`
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.color.text02};
+  -webkit-mask-image: url(${(p) => !p.isVisible ? EyeOffIcon : EyeOnIcon});
+  mask-image: url(${(p) => !p.isVisible ? EyeOffIcon : EyeOnIcon});
+  mask-size: contain;
+  mask-repeat: no-repeat;
 `
