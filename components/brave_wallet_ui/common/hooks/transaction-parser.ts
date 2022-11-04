@@ -286,14 +286,26 @@ export function useTransactionParser (
 
       // approve(address spender, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Approve: {
-        const totalAmountFiat = new Amount(gasFeeFiat)
+        const {
+          fiatTotal,
+          fiatValue,
+          formattedNativeCurrencyTotal
+        } = getTransactionFiatValues({
+          gasFee,
+          networkSpotPrice,
+          normalizedTransferredValue,
+          spotPrices,
+          tx,
+          sellToken,
+          token,
+          txNetwork: selectedNetwork
+        })
 
         return {
           ...txBase,
-          fiatValue: Amount.zero(),
-          fiatTotal: totalAmountFiat,
-          formattedNativeCurrencyTotal: Amount.zero()
-            .formatAsAsset(2, selectedNetwork?.symbol)
+          fiatValue,
+          fiatTotal,
+          formattedNativeCurrencyTotal
         } as ParsedTransaction
       }
 

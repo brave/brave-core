@@ -991,6 +991,17 @@ export const getTransactionFiatValues = ({
     txNetwork
   })
 
+  // ERC20 Approve
+  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
+    return {
+      gasFeeFiat,
+      fiatValue: Amount.zero(),
+      fiatTotal: new Amount(gasFeeFiat),
+      formattedNativeCurrencyTotal: Amount.zero()
+        .formatAsAsset(2, txNetwork?.symbol)
+    }
+  }
+
   // SPL
   if (isSolanaSplTransaction(tx)) {
     const price = findAssetPrice(spotPrices, token?.symbol ?? '')
