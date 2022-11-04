@@ -358,9 +358,15 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: selectedNetwork?.symbol ?? '',
-          insufficientFundsError: accountNativeBalance !== ''
-            ? new Amount(normalizedTransferredValue).plus(gasFee).gt(accountNativeBalance)
-            : undefined,
+          insufficientFundsError: accountHasInsufficientFundsForTransaction({
+            accountNativeBalance,
+            accountTokenBalance,
+            gasFee,
+            tokensList: combinedTokensList,
+            tx: transactionInfo,
+            account,
+            nativeAsset
+          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,

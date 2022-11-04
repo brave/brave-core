@@ -756,6 +756,20 @@ export const accountHasInsufficientFundsForTransaction = ({
 }): boolean => {
   const { txType, txArgs } = tx
 
+  if (isSolanaDappTransaction(tx)) {
+    const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
+      getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData) || [],
+      tx.fromAddress
+    )
+
+    const transferedValue = new Amount(getTransactionBaseValue(tx))
+      .plus(lamportsMovedFromInstructions)
+
+    return accountNativeBalance !== '' && transferedValue
+      .plus(gasFee)
+      .gt(accountNativeBalance)
+  }
+
   // ERC20
   if (txType === BraveWallet.TransactionType.ERC20Approve) {
     return false // can approve for more tokens than you own
