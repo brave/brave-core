@@ -26,6 +26,7 @@ import Amount from './amount'
 import { getCoinFromTxDataUnion } from './network-utils'
 import { getBalance } from './balance-utils'
 import { toProperCase } from './string-utils'
+import { computeFiatAmount } from './pricing-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -956,4 +957,55 @@ export const isSwapTransaction = (tx: BraveWallet.TransactionInfo) => {
     BraveWallet.TransactionType.ETHSwap,
     BraveWallet.TransactionType.SolanaSwap
   ].includes(tx.txType)
+}
+
+export const getTransactionFiatValues = ({
+  networkSpotPrice,
+  spotPrices,
+  token,
+  gasFee,
+  tx,
+  txNetwork,
+  sellAmountWei,
+  sellToken,
+  normalizedTransferredValue
+}: {
+  networkSpotPrice: string
+  spotPrices: BraveWallet.AssetPrice[]
+  token?: BraveWallet.BlockchainToken
+  tx: BraveWallet.TransactionInfo
+  txNetwork?: BraveWallet.NetworkInfo
+  sellAmountWei?: Amount
+  sellToken?: BraveWallet.BlockchainToken
+  gasFee: string
+  normalizedTransferredValue: string
+}): {
+  fiatValue: Amount
+  fiatTotal: Amount
+  formattedNativeCurrencyTotal: string
+  gasFeeFiat: string
+} => {
+  const gasFeeFiat = getGasFeeFiatValue({
+    gasFee,
+    networkSpotPrice,
+    txNetwork
+  })
+
+  // DEFAULT
+  const sendAmountFiat = txNetwork
+    ? computeFiatAmount(spotPrices, {
+      decimals: txNetwork.decimals,
+      symbol: txNetwork.symbol,
+      value: getTransactionBaseValue(tx) || ''
+    })
+    : Amount.empty()
+
+  return {
+    gasFeeFiat,
+    fiatValue: sendAmountFiat,
+    fiatTotal: new Amount(gasFeeFiat)
+      .plus(sendAmountFiat),
+    formattedNativeCurrencyTotal: sendAmountFiat.div(networkSpotPrice)
+      .formatAsAsset(6, txNetwork?.symbol)
+  }
 }

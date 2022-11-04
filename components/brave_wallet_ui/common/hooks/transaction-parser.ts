@@ -34,9 +34,9 @@ import {
   getGasFeeFiatValue,
   getIsTxApprovalUnlimited,
   getTransactionApprovalTargetAddress,
-  getTransactionBaseValue,
   getTransactionDecimals,
   getTransactionErc721TokenId,
+  getTransactionFiatValues,
   getTransactionIntent,
   getTransactionNonce,
   getTransactionToAddress,
@@ -186,7 +186,6 @@ export function useTransactionParser (
     })
 
     const isSPLTransaction = isSolanaSplTransaction(tx)
-    const baseValue = getTransactionBaseValue(tx)
     const to = getTransactionToAddress(tx)
     const token = findTransactionToken(tx, combinedTokensList)
 
@@ -363,20 +362,26 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.SolanaSystemTransfer:
       case txType === BraveWallet.TransactionType.Other:
       default: {
-        const sendAmountFiat = selectedNetwork
-          ? computeFiatAmount(baseValue, selectedNetwork.symbol, selectedNetwork.decimals)
-          : Amount.empty()
-
-        const totalAmountFiat = new Amount(gasFeeFiat)
-          .plus(sendAmountFiat)
+        const {
+          fiatTotal,
+          fiatValue,
+          formattedNativeCurrencyTotal
+        } = getTransactionFiatValues({
+          gasFee,
+          networkSpotPrice,
+          normalizedTransferredValue,
+          spotPrices,
+          tx,
+          txNetwork: selectedNetwork,
+          sellToken,
+          token
+        })
 
         return {
           ...txBase,
-          fiatValue: sendAmountFiat,
-          fiatTotal: totalAmountFiat,
-          formattedNativeCurrencyTotal: sendAmountFiat
-            .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol)
+          fiatValue,
+          fiatTotal,
+          formattedNativeCurrencyTotal
         } as ParsedTransaction
       }
     }
