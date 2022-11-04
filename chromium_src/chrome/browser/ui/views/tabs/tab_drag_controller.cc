@@ -65,7 +65,6 @@ void TabDragController::Init(TabDragContext* source_context,
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
-  last_move_screen_loc_ = start_point_in_screen_.y();
 }
 
 gfx::Point TabDragController::GetAttachedDragPoint(
