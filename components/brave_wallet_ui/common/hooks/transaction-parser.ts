@@ -46,6 +46,7 @@ import {
   isSolanaDappTransaction,
   isSolanaSplTransaction,
   isSolanaTransaction,
+  isSwapTransaction,
   parseTransactionFeesWithoutPrices,
   transactionHasSameAddressError
 } from '../../utils/tx-utils'
@@ -278,6 +279,7 @@ export function useTransactionParser (
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
       | 'isSolanaTransaction'
+      | 'isSwap'
       | 'maxFeePerGas'
       | 'maxPriorityFeePerGas'
       | 'minBuyAmount'
@@ -350,6 +352,7 @@ export function useTransactionParser (
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
       isSolanaTransaction: isSolanaTxn,
+      isSwap: isSwapTransaction(transactionInfo),
       minBuyAmount: buyAmount,
       minBuyAmountWei: buyAmountWei,
       nonce,
@@ -394,8 +397,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol),
-          isSwap: txType === BraveWallet.TransactionType.SolanaSwap
+            .formatAsAsset(6, selectedNetwork?.symbol)
         }
 
         return parsedTx
@@ -508,8 +510,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sellAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol),
-          isSwap: true
+            .formatAsAsset(6, selectedNetwork?.symbol)
         } as ParsedTransaction
       }
 
@@ -533,8 +534,7 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact,
-          isSwap: to.toLowerCase() === SwapExchangeProxy
+          valueExact: normalizedTransferredValueExact
         } as ParsedTransaction
       }
     }
@@ -675,6 +675,7 @@ export function parseTransactionWithoutPrices ({
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
     isSolanaTransaction: isSolanaTransaction(tx),
+    isSwap: isSwapTransaction(tx),
     minBuyAmount: buyAmount,
     minBuyAmountWei: buyAmountWei,
     nonce: getTransactionNonce(tx),

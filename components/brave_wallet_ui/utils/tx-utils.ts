@@ -946,3 +946,14 @@ export const getIsTxApprovalUnlimited = (tx: BraveWallet.TransactionInfo): boole
 
   return false
 }
+
+export const isSwapTransaction = (tx: BraveWallet.TransactionInfo) => {
+  if (getTransactionToAddress(tx).toLowerCase() === SwapExchangeProxy) {
+    return true
+  }
+
+  return [
+    BraveWallet.TransactionType.ETHSwap,
+    BraveWallet.TransactionType.SolanaSwap
+  ].includes(tx.txType)
+}
