@@ -111,6 +111,8 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
       base::BindOnce(&SolanaProviderImpl::ContinueConnect,
                      weak_factory_.GetWeakPtr(), is_eagerly_connect, *account,
                      std::move(callback)));
+  // To show wallet icon on android if wallet is unlocked
+  delegate_->WalletInteractionDetected();
 }
 
 void SolanaProviderImpl::Disconnect() {

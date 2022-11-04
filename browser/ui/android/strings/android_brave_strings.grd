@@ -2232,6 +2232,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AMOUNT_PLUS_GAS" desc="Brave crypto wallet total amount plus gas cost for a transaction">
       Amount + Gas
     </message>
+    <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_FEE" desc="Confirm transaction panel total fee label">
+      Amount + fee
+    </message>
     <message name="IDS_TRANSACTION" desc="Brave crypto wallet transaction title">
       Transaction
     </message>
@@ -2260,7 +2263,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Apps
     </message> -->
     <message name="IDS_CRYPTO_WALLET_FROM_TO" desc="From address -> to address" translateable="false">
-      <ph name="FROM_NAME">%1$s<ex>Account1</ex></ph>\n <ph name="FROM_ADDRESS">%2$s<ex>0xabcd...</ex></ph> ->\n<ph name="TO">%3$s<ex>0xabcd...</ex></ph>
+      <ph name="FROM_NAME">%1$s<ex>Account1</ex></ph>\n <ph name="FROM_ADDRESS">%2$s<ex>0xabcd...</ex></ph> <ph name="SEPARATOR">%3$s<ex>-></ex></ph>\n<ph name="TO">%4$s<ex>0xabcd...</ex></ph>
     </message>
     <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET" desc="Amount Asset" translateable="false">
       <ph name="AMOUNT">%1$s<ex>0.0001</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph>
@@ -2356,22 +2359,28 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Other
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20TRANSFER" desc="Brave wallet function type ERC20Transfer" translateable="false">
-      ERC20Transfer
+      ERC20 Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC721TRANSFER" desc="Brave wallet function type ERC721Transfer" translateable="false">
-      ERC721Transfer
+      ERC721 Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20APPROVE" desc="Brave wallet function type ERC20Approve" translateable="false">
-      ERC20Approve
+      ERC20 Approve
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_SYSTEM_TRANSFER" desc="Brave wallet function type SOLANA_SYSTEM_TRANSFER" translateable="false">
-      SolanaSystemTransfer
+      Solana System Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SPL_TOKEN_TRANSFER" desc="Brave wallet function type SPL_TOKEN_TRANSFER" translateable="false">
-      SPLTokenTransfer
+      SPL Token Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" desc="Brave wallet function type SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" translateable="false">
-      SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+      Solana SPL Token Transfer with Associated Token Account Creation
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_DAPP_SIGN_AND_SEND" desc="Brave wallet function type SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION" translateable="false">
+      Solana Dapp Sign And Send Transaction
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_DAPP_SIGN" desc="Title for solana dapp sign transaction function type">
+      Solana Dapp Sign Transaction
     </message>
     <message name="IDS_WALLET_TX_INFO_SENT" desc="Brave wallet sent assets tx history">
       <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="CRYPTO_VALUE">%2$s<ex>0.0444</ex></ph> <ph name="ASSET">%3$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%4$s<ex>10.00</ex></ph>) - <ph name="DATE">%5$s<ex>2021-11-12 08:38pm</ex></ph>
@@ -3027,6 +3036,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm transaction queue of">
       <ph name="CURRENT"><ex>1</ex>%1$d</ph> of <ph name="SIZE"><ex>3</ex>%2$d</ph>
     </message>
+    <message name="IDS_BRAVE_WALLET_APPROVE_TRANSACTION" desc="Title message when dApp transaction approval is requested">
+      Approve transaction
+    </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System program">
       System Program
     </message>
@@ -3053,6 +3065,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_DATA_TEXT" desc="Data title text">
       Data
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_PROGAM_ID" desc="Program id title text for transactions">
+      Program ID
     </message>
     <message name="IDS_BRAVE_WALLET_TX_CREATE_ACCOUNT" desc="Transaction subtype of create account">
      Create account
@@ -3176,6 +3191,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_CLOSE_TEXT" desc="Declare geo success modal action text">
       Close
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TRANSACTION_FEE" desc="Allow spend panel transaction fee label">
+      Transaction fee
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">
+      Max Retries:
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">
+      Preflight Commitment:
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">
+      Skip Preflight:
     </message>
   </messages>
   </release>
