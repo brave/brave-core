@@ -1,5 +1,5 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index 8acf3c385f2e1d8144b17171728a06a4be4c82d9..f64710b7b5f808af43e343681e5e174a37a233dc 100755
+index 677c63364f472a576565ce4f36c26d2185f77687..dfcebe8c1459096f9746578bf7441ec6e063b153 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:
@@ -10,7 +10,7 @@ index 8acf3c385f2e1d8144b17171728a06a4be4c82d9..f64710b7b5f808af43e343681e5e174a
  
  
  # Paths from the root of the tree to directories to skip.
-@@ -378,6 +379,7 @@ SPECIAL_CASES = {
+@@ -381,6 +382,7 @@ SPECIAL_CASES = {
          "License File": "/third_party/selenium-atoms/LICENSE.closure",
      },
  }
@@ -18,7 +18,7 @@ index 8acf3c385f2e1d8144b17171728a06a4be4c82d9..f64710b7b5f808af43e343681e5e174a
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -571,7 +573,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -574,7 +576,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index 8acf3c385f2e1d8144b17171728a06a4be4c82d9..f64710b7b5f808af43e343681e5e174a
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -782,7 +785,8 @@ def GenerateCredits(file_template_file,
+@@ -785,7 +788,8 @@ def GenerateCredits(file_template_file,
    for path in third_party_dirs:
      try:
        metadata = ParseDir(path, _REPOSITORY_ROOT)
