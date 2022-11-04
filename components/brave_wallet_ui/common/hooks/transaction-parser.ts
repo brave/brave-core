@@ -347,8 +347,6 @@ export function useTransactionParser (
 
         const parsedTx: ParsedTransaction = {
           ...txBase,
-          recipient: to,
-          recipientLabel: getAddressLabel(to, accounts),
           fiatValue: transferedAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: transferedAmountFiat
@@ -424,9 +422,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol),
-          value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact
+            .formatAsAsset(6, selectedNetwork?.symbol)
         } as ParsedTransaction
       }
 
@@ -488,9 +484,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol),
-          value: normalizedTransferredValue,
-          valueExact: normalizedTransferredValueExact
+            .formatAsAsset(6, selectedNetwork?.symbol)
         } as ParsedTransaction
       }
     }
