@@ -160,7 +160,7 @@ export function useTransactionParser (
     () => selectedNetwork && makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
   )
-  const { findAssetPrice, computeFiatAmount } = usePricing(spotPrices)
+  const { findAssetPrice } = usePricing(spotPrices)
 
   const networkSpotPrice = React.useMemo(
     () => selectedNetwork
@@ -223,24 +223,27 @@ export function useTransactionParser (
 
     switch (true) {
       case txBase.isSolanaDappTransaction: {
-        const transferedAmountFiat = selectedNetwork
-          ? computeFiatAmount(
-              normalizedTransferredValueExact,
-              selectedNetwork.symbol,
-              selectedNetwork.decimals
-            )
-          : Amount.empty()
-
-        const totalAmountFiat = new Amount(gasFeeFiat)
-          .plus(transferedAmountFiat)
+        const {
+          fiatTotal,
+          fiatValue,
+          formattedNativeCurrencyTotal
+        } = getTransactionFiatValues({
+          gasFee,
+          networkSpotPrice,
+          normalizedTransferredValue,
+          spotPrices,
+          tx,
+          sellToken,
+          token,
+          txNetwork: selectedNetwork,
+          transferredValueWei: normalizedTransferredValueExact
+        })
 
         const parsedTx: ParsedTransaction = {
           ...txBase,
-          fiatValue: transferedAmountFiat,
-          fiatTotal: totalAmountFiat,
-          formattedNativeCurrencyTotal: transferedAmountFiat
-            .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol)
+          fiatValue,
+          fiatTotal,
+          formattedNativeCurrencyTotal
         }
 
         return parsedTx

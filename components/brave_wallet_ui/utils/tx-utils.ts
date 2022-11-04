@@ -960,25 +960,27 @@ export const isSwapTransaction = (tx: BraveWallet.TransactionInfo) => {
 }
 
 export const getTransactionFiatValues = ({
-  networkSpotPrice,
-  spotPrices,
-  token,
   gasFee,
-  tx,
-  txNetwork,
+  networkSpotPrice,
+  normalizedTransferredValue,
   sellAmountWei,
   sellToken,
-  normalizedTransferredValue
+  spotPrices,
+  token,
+  transferredValueWei,
+  tx,
+  txNetwork
 }: {
+  gasFee: string
   networkSpotPrice: string
-  spotPrices: BraveWallet.AssetPrice[]
-  token?: BraveWallet.BlockchainToken
-  tx: BraveWallet.TransactionInfo
-  txNetwork?: BraveWallet.NetworkInfo
+  normalizedTransferredValue: string
   sellAmountWei?: string
   sellToken?: BraveWallet.BlockchainToken
-  gasFee: string
-  normalizedTransferredValue: string
+  spotPrices: BraveWallet.AssetPrice[]
+  token?: BraveWallet.BlockchainToken
+  transferredValueWei?: string
+  tx: BraveWallet.TransactionInfo
+  txNetwork?: BraveWallet.NetworkInfo
 }): {
   fiatValue: Amount
   fiatTotal: Amount
@@ -990,6 +992,32 @@ export const getTransactionFiatValues = ({
     networkSpotPrice,
     txNetwork
   })
+
+  // Solana Dapps
+  if (isSolanaDappTransaction(tx)) {
+    const transferedAmountFiat = txNetwork
+      ? computeFiatAmount(
+        spotPrices,
+        {
+          decimals: txNetwork.decimals,
+          symbol: txNetwork.symbol,
+          value: transferredValueWei || ''
+        }
+      )
+    : Amount.empty()
+
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(transferedAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: transferedAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: transferedAmountFiat
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork?.symbol)
+    }
+  }
 
   // ERC20 Transfer
   if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
