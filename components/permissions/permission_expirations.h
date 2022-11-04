@@ -76,7 +76,7 @@ class PermissionExpirations {
   void ReadExpirationsFromPrefs();
   ExpiringPermissions ParseExpiringPermissions(
       const base::Value& expiring_permissions_val);
-  base::Value ExpiringPermissionsToValue(
+  base::Value::List ExpiringPermissionsToList(
       const ExpiringPermissions& expiring_permissions) const;
 
   PrefService* const prefs_ = nullptr;
