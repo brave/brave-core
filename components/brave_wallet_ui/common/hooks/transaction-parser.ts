@@ -547,7 +547,11 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sellAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: sellToken?.symbol ?? '',
+          symbol: getTransactionTokenSymbol({
+            tx: transactionInfo,
+            txNetwork: transactionNetwork,
+            sellToken
+          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
           intent: getLocale('braveWalletTransactionIntentSwap')

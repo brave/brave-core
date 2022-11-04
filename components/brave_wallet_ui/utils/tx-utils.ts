@@ -828,6 +828,10 @@ export function getTransactionTokenSymbol ({
   token?: BraveWallet.BlockchainToken
   sellToken?: BraveWallet.BlockchainToken
 }): string {
+  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
+    return sellToken?.symbol || ''
+  }
+
   if (
     tx.txType === BraveWallet.TransactionType.ERC20Approve ||
     tx.txType === BraveWallet.TransactionType.ERC20Transfer ||
