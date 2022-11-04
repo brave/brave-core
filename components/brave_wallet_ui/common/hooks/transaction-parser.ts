@@ -273,6 +273,7 @@ export function useTransactionParser (
       | 'instructions'
       | 'insufficientFundsError'
       | 'insufficientFundsForGasError'
+      | 'intent'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
@@ -329,6 +330,17 @@ export function useTransactionParser (
       isEIP1559Transaction,
       instructions: getTypedSolanaTxInstructions(transactionInfo.txDataUnion.solanaTxData),
       insufficientFundsError,
+      intent: getTransactionIntent({
+        normalizedTransferredValue,
+        tx: transactionInfo,
+        buyAmount,
+        buyToken,
+        erc721TokenId,
+        sellAmount,
+        sellToken,
+        token,
+        transactionNetwork
+      }),
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
@@ -381,11 +393,7 @@ export function useTransactionParser (
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
-          isSwap: txType === BraveWallet.TransactionType.SolanaSwap,
-          intent: getTransactionIntent({
-            normalizedTransferredValue,
-            tx: transactionInfo
-          })
+          isSwap: txType === BraveWallet.TransactionType.SolanaSwap
         }
 
         return parsedTx
@@ -413,14 +421,7 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          insufficientFundsForGasError: insufficientNativeFunds,
-          intent: getTransactionIntent({
-            normalizedTransferredValue,
-            tx: transactionInfo,
-            token,
-            transactionNetwork,
-            erc721TokenId
-          })
+          insufficientFundsForGasError: insufficientNativeFunds
         } as ParsedTransaction
       }
 
@@ -442,14 +443,7 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          insufficientFundsForGasError: insufficientNativeFunds,
-          intent: getTransactionIntent({
-            normalizedTransferredValue,
-            tx: transactionInfo,
-            token,
-            transactionNetwork,
-            erc721TokenId
-          })
+          insufficientFundsForGasError: insufficientNativeFunds
         } as ParsedTransaction
       }
 
@@ -467,13 +461,7 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork?.symbol),
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
-          insufficientFundsForGasError: insufficientNativeFunds,
-          intent: getTransactionIntent({
-            normalizedTransferredValue,
-            tx: transactionInfo,
-            token,
-            transactionNetwork
-          })
+          insufficientFundsForGasError: insufficientNativeFunds
         } as ParsedTransaction
       }
 
@@ -498,19 +486,13 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
-          insufficientFundsForGasError: insufficientNativeFunds,
-          intent: getTransactionIntent({
-            normalizedTransferredValue,
-            tx: transactionInfo,
-            token,
-            transactionNetwork
-          })
+          insufficientFundsForGasError: insufficientNativeFunds
         } as ParsedTransaction
       }
 
       // args: (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
       case txType === BraveWallet.TransactionType.ETHSwap: {
-        const [fillPath, , minBuyAmountArg] = txArgs
+        const [fillPath] = txArgs
 
         const fillContracts = fillPath
           .slice(2)
@@ -535,10 +517,6 @@ export function useTransactionParser (
             )
           : Amount.empty()
 
-        const buyToken = fillTokens[fillTokens.length - 1]
-        const buyAmount = new Amount(minBuyAmountArg)
-          .divideByDecimals(buyToken.decimals)
-
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sellAmountFiat)
 
@@ -554,16 +532,7 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           insufficientFundsForGasError: insufficientNativeFunds,
-          isSwap: true,
-          intent: getTransactionIntent({
-            normalizedTransferredValue,
-            tx: transactionInfo,
-            transactionNetwork,
-            buyAmount,
-            buyToken,
-            sellAmount,
-            sellToken
-          })
+          isSwap: true
         } as ParsedTransaction
       }
 
@@ -591,13 +560,7 @@ export function useTransactionParser (
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
-          isSwap: to.toLowerCase() === SwapExchangeProxy,
-          intent: getTransactionIntent({
-            normalizedTransferredValue,
-            transactionNetwork,
-            tx: transactionInfo,
-            token
-          })
+          isSwap: to.toLowerCase() === SwapExchangeProxy
         } as ParsedTransaction
       }
     }
@@ -683,6 +646,8 @@ export function parseTransactionWithoutPrices ({
     nativeAsset
   })
 
+  const erc721TokenId = getTransactionErc721TokenId(tx)
+
   return {
     gasFee,
     gasLimit,
@@ -710,11 +675,22 @@ export function parseTransactionWithoutPrices ({
       token
     }),
     erc721BlockchainToken: erc721Token,
-    erc721TokenId: getTransactionErc721TokenId(tx),
+    erc721TokenId,
     hash: tx.txHash,
     id: tx.id,
     instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
     insufficientFundsError,
+    intent: getTransactionIntent({
+      normalizedTransferredValue,
+      tx,
+      buyAmount,
+      buyToken,
+      erc721TokenId,
+      sellAmount,
+      sellToken,
+      token,
+      transactionNetwork
+    }),
     isEIP1559Transaction,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
