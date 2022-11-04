@@ -24,6 +24,7 @@ import { getTypedSolanaTxInstructions, SolanaParamsWithLamports, TypedSolanaInst
 import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
 import { getCoinFromTxDataUnion } from './network-utils'
+import { getBalance } from './balance-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -734,4 +735,31 @@ export function getGasFeeFiatValue ({
     .divideByDecimals(txNetwork.decimals)
     .times(networkSpotPrice)
     .formatAsFiat()
+}
+
+export const accountHasInsufficientFundsForTransaction = ({
+  account,
+  accountNativeBalance,
+  accountTokenBalance,
+  gasFee,
+  nativeAsset,
+  tokensList,
+  tx,
+  transferedValue
+}: {
+  account?: WalletAccountType
+  accountNativeBalance: string
+  accountTokenBalance: string
+  gasFee: string
+  nativeAsset?: BraveWallet.BlockchainToken
+  tokensList: BraveWallet.BlockchainToken[]
+  tx: BraveWallet.TransactionInfo
+  transferedValue: string
+}): boolean => {
+  // ETHSend
+  // SolanaSystemTransfer
+  // Other
+  return accountNativeBalance !== '' && new Amount(transferedValue)
+    .plus(gasFee)
+    .gt(accountNativeBalance)
 }

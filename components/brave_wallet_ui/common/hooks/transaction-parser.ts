@@ -28,6 +28,7 @@ import {
   TypedSolanaInstructionWithParams
 } from '../../utils/solana-instruction-utils'
 import {
+  accountHasInsufficientFundsForTransaction,
   findTransactionAccount,
   findTransactionToken,
   getETHSwapTranasactionBuyAndSellTokens,
@@ -573,11 +574,16 @@ export function useTransactionParser (
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
           symbol: selectedNetwork?.symbol ?? '',
-          insufficientFundsError: accountNativeBalance !== ''
-            ? new Amount(baseValue)
-              .plus(gasFee)
-              .gt(accountNativeBalance)
-            : undefined,
+          insufficientFundsError: accountHasInsufficientFundsForTransaction({
+            accountNativeBalance,
+            accountTokenBalance,
+            gasFee,
+            tokensList: combinedTokensList,
+            transferedValue: normalizedTransferredValue,
+            tx: transactionInfo,
+            account,
+            nativeAsset
+          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
