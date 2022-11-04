@@ -382,9 +382,10 @@ export function useTransactionParser (
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
           isSwap: txType === BraveWallet.TransactionType.SolanaSwap,
-          intent: txType === BraveWallet.TransactionType.SolanaSwap
-            ? getLocale('braveWalletSwap')
-            : getLocale('braveWalletTransactionIntentDappInteraction')
+          intent: getTransactionIntent({
+            normalizedTransferredValue,
+            tx: transactionInfo
+          })
         }
 
         return parsedTx

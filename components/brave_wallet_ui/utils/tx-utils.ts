@@ -895,6 +895,13 @@ export const getTransactionIntent = ({
     )
   }
 
+  // Solana Dapps
+  if (isSolanaDappTransaction(tx)) {
+    return tx.txType === BraveWallet.TransactionType.SolanaSwap
+      ? getLocale('braveWalletSwap')
+      : getLocale('braveWalletTransactionIntentDappInteraction')
+  }
+
   // SPL
   if (isSolanaSplTransaction(tx)) {
     return getLocale('braveWalletTransactionIntentSend')
