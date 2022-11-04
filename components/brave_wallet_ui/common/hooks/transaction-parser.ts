@@ -174,7 +174,7 @@ export function useTransactionParser (
   }, [visibleTokens, fullTokenList])
 
   return React.useCallback((tx: BraveWallet.TransactionInfo): ParsedTransaction => {
-    const { txArgs, txType } = tx
+    const { txType } = tx
 
     const { gasFee } = parseTransactionFeesWithoutPrices(tx, solFeeEstimates)
     const gasFeeFiat = getGasFeeFiatValue({
@@ -248,22 +248,26 @@ export function useTransactionParser (
 
       // transfer(address recipient, uint256 amount) → bool
       case txType === BraveWallet.TransactionType.ERC20Transfer: {
-        const [, amount] = txArgs
-        const price = findAssetPrice(token?.symbol ?? '')
-        const sendAmountFiat = new Amount(amount)
-          .divideByDecimals(token?.decimals ?? 18)
-          .times(price)
-
-        const totalAmountFiat = new Amount(gasFeeFiat)
-          .plus(sendAmountFiat)
+        const {
+          fiatTotal,
+          fiatValue,
+          formattedNativeCurrencyTotal
+        } = getTransactionFiatValues({
+          gasFee,
+          networkSpotPrice,
+          normalizedTransferredValue,
+          spotPrices,
+          tx,
+          sellToken,
+          token,
+          txNetwork: selectedNetwork
+        })
 
         return {
           ...txBase,
-          fiatValue: sendAmountFiat,
-          fiatTotal: totalAmountFiat,
-          formattedNativeCurrencyTotal: sendAmountFiat
-            .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol)
+          fiatValue,
+          fiatTotal,
+          formattedNativeCurrencyTotal
         } as ParsedTransaction
       }
 
