@@ -238,6 +238,16 @@ export function useTransactionParser (
     const erc721TokenId = getTransactionErc721TokenId(transactionInfo)
     const approvalTarget = getTransactionApprovalTargetAddress(transactionInfo)
 
+    const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+      accountNativeBalance,
+      accountTokenBalance,
+      gasFee,
+      tokensList: combinedTokensList,
+      tx: transactionInfo,
+      account,
+      nativeAsset
+    })
+
     const txBase: Pick<
       ParsedTransaction,
       | 'approvalTarget'
@@ -260,6 +270,7 @@ export function useTransactionParser (
       | 'id'
       | 'isEIP1559Transaction'
       | 'instructions'
+      | 'insufficientFundsError'
       | 'insufficientFundsForGasError'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
@@ -314,6 +325,7 @@ export function useTransactionParser (
       id: transactionInfo.id,
       isEIP1559Transaction,
       instructions: getTypedSolanaTxInstructions(transactionInfo.txDataUnion.solanaTxData),
+      insufficientFundsError,
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
@@ -358,15 +370,6 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: selectedNetwork?.symbol ?? '',
-          insufficientFundsError: accountHasInsufficientFundsForTransaction({
-            accountNativeBalance,
-            accountTokenBalance,
-            gasFee,
-            tokensList: combinedTokensList,
-            tx: transactionInfo,
-            account,
-            nativeAsset
-          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
@@ -403,15 +406,6 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
-          insufficientFundsError: accountHasInsufficientFundsForTransaction({
-            accountNativeBalance,
-            accountTokenBalance,
-            gasFee,
-            tokensList: combinedTokensList,
-            tx: transactionInfo,
-            account,
-            nativeAsset
-          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
@@ -439,15 +433,6 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
           insufficientFundsForGasError: insufficientNativeFunds,
-          insufficientFundsError: accountHasInsufficientFundsForTransaction({
-            accountNativeBalance,
-            accountTokenBalance,
-            gasFee,
-            tokensList: combinedTokensList,
-            tx: transactionInfo,
-            account,
-            nativeAsset
-          }),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`)
         } as ParsedTransaction
@@ -470,15 +455,6 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256),
           insufficientFundsForGasError: insufficientNativeFunds,
-          insufficientFundsError: accountHasInsufficientFundsForTransaction({
-            accountNativeBalance,
-            accountTokenBalance,
-            gasFee,
-            tokensList: combinedTokensList,
-            tx: transactionInfo,
-            account,
-            nativeAsset
-          }),
           intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
         } as ParsedTransaction
       }
@@ -507,15 +483,6 @@ export function useTransactionParser (
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
           symbol: token?.symbol ?? '',
-          insufficientFundsError: accountHasInsufficientFundsForTransaction({
-            accountNativeBalance,
-            accountTokenBalance,
-            gasFee,
-            tokensList: combinedTokensList,
-            tx: transactionInfo,
-            account,
-            nativeAsset
-          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
@@ -569,15 +536,6 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: sellToken?.symbol ?? '',
-          insufficientFundsError: accountHasInsufficientFundsForTransaction({
-            accountNativeBalance,
-            accountTokenBalance,
-            gasFee,
-            tokensList: combinedTokensList,
-            tx: transactionInfo,
-            account,
-            nativeAsset
-          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
           intent: getLocale('braveWalletTransactionIntentSwap')
@@ -609,15 +567,6 @@ export function useTransactionParser (
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
           symbol: selectedNetwork?.symbol ?? '',
-          insufficientFundsError: accountHasInsufficientFundsForTransaction({
-            accountNativeBalance,
-            accountTokenBalance,
-            gasFee,
-            tokensList: combinedTokensList,
-            tx: transactionInfo,
-            account,
-            nativeAsset
-          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
@@ -653,6 +602,9 @@ export function parseTransactionWithoutPrices ({
   const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
   const token = findTransactionToken(tx, combinedTokensList)
   const nativeAsset = makeNetworkAsset(transactionNetwork)
+  const account = findTransactionAccount(accounts, tx)
+  const accountNativeBalance = getBalance(account, nativeAsset)
+  const accountTokenBalance = getBalance(account, token)
 
   const {
     buyToken,
@@ -695,6 +647,16 @@ export function parseTransactionWithoutPrices ({
     maxPriorityFeePerGas
   } = parseTransactionFeesWithoutPrices(tx, solFeeEstimates)
 
+  const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+    accountNativeBalance,
+    accountTokenBalance,
+    gasFee,
+    tokensList: combinedTokensList,
+    tx,
+    account,
+    nativeAsset
+  })
+
   return {
     gasFee,
     gasLimit,
@@ -726,6 +688,7 @@ export function parseTransactionWithoutPrices ({
     hash: tx.txHash,
     id: tx.id,
     instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
+    insufficientFundsError,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
