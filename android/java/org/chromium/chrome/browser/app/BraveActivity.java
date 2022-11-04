@@ -802,7 +802,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();

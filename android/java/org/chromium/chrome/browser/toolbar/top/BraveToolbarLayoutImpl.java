@@ -50,6 +50,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -75,6 +76,7 @@ import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindo
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ConfigurationChangedObserver;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
@@ -220,7 +222,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.close();
         }
-        if (mPlaylistPageHandler != null) {
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                && mPlaylistPageHandler != null) {
             mPlaylistPageHandler.close();
         }
         super.destroy();
@@ -363,9 +367,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onConnectionError(MojoException e) {
         mCookieListOptInPageAndroidHandler = null;
-        mPlaylistPageHandler = null;
         initCookieListOptInPageAndroidHandler();
-        initPlaylistPageHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            mPlaylistPageHandler = null;
+            initPlaylistPageHandler();
+        }
     }
 
     private void initCookieListOptInPageAndroidHandler() {
@@ -391,7 +397,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
         initCookieListOptInPageAndroidHandler();
-        initPlaylistPageHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            initPlaylistPageHandler();
+        }
         mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
@@ -478,23 +486,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                         + 1);
                         maybeShowCookieConsentTooltip();
                     }
-                    if (!url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
+
+                    if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                            && !url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
                             && !UrlUtilities.isNTPUrl(url.getSpec())
                             && mPlaylistPageHandler != null) {
-                        // org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
-                        // contentUrl.url = "https://www.youtube.com/watch?v=WETz6EaohrM";
-                        // mPlaylistPageHandler.addMediaFilesFromPageToPlaylist("default",
-                        // contentUrl);
-
-                        // mPlaylistPageHandler.getPlaylist("default", pl -> {
-                        //     Log.e("NTP", "mPlaylistPageHandler 4");
-                        //     PlaylistItem playlistItem = pl.items[0];
-                        //     Log.e("NTP",
-                        //             playlistItem.name + " : " + playlistItem.pageSource.url + " :
-                        //             "
-                        //                     + playlistItem.mediaPath.url + " : "
-                        //                     + playlistItem.thumbnailPath.url);
-                        // });
+                        // TODO DEEP : find contents from the page and show the playlist button
                     }
                 }
 
