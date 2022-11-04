@@ -25,7 +25,6 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
 
   int tabId = 0;
   TabAndroid* tab = TabAndroid::FromWebContents(web_contents);
-  // DCHECK(tab);
   if (tab) {
     tabId = tab->GetAndroidId();
   }

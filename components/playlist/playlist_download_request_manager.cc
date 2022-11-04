@@ -68,42 +68,25 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents() {
-  LOG(ERROR) << "NTP"
-             << "CreateWebContents 1";
   if (!web_contents_) {
-    LOG(ERROR) << "NTP"
-               << "CreateWebContents 2";
     // |web_contents_| is created on demand.
     content::WebContents::CreateParams create_params(context_, nullptr);
     web_contents_ = content::WebContents::Create(create_params);
   }
-
-  LOG(ERROR) << "NTP"
-             << "CreateWebContents 3";
   Observe(web_contents_.get());
 }
 
 void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
-  LOG(ERROR) << "NTP"
-             << "GetMediaFilesFromPage 1";
   web_contents_destroy_timer_.reset();
-  LOG(ERROR) << "NTP"
-             << "GetMediaFilesFromPage 2";
 
   if (!ReadyToRunMediaDetectorScript()) {
-    LOG(ERROR) << "NTP"
-               << "GetMediaFilesFromPage 3";
     pending_requests_.push_back(std::move(request));
     if (media_detector_script_.empty())
       media_detector_component_manager_->RegisterIfNeeded();
     return;
   }
-  LOG(ERROR) << "NTP"
-             << "GetMediaFilesFromPage 4";
 
   RunMediaDetector(std::move(request));
-  LOG(ERROR) << "NTP"
-             << "GetMediaFilesFromPage 5";
 }
 
 void PlaylistDownloadRequestManager::OnScriptReady(const std::string& script) {
@@ -122,51 +105,31 @@ void PlaylistDownloadRequestManager::FetchPendingRequest() {
 }
 
 void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
-  LOG(ERROR) << "NTP"
-             << "RunMediaDetector 1";
   DCHECK(PlaylistJavaScriptWorldIdIsSet());
 
   DCHECK_GE(in_progress_urls_count_, 0);
   in_progress_urls_count_++;
-  LOG(ERROR) << "NTP"
-             << "RunMediaDetector 2";
 
   DCHECK(callback_for_current_request_.is_null());
   callback_for_current_request_ = std::move(request.callback);
-  LOG(ERROR) << "NTP"
-             << "RunMediaDetector 3";
 
   if (absl::holds_alternative<std::string>(request.url_or_contents)) {
-    LOG(ERROR) << "NTP"
-               << "RunMediaDetector 4";
     CreateWebContents();
     GURL url(absl::get<std::string>(request.url_or_contents));
-    LOG(ERROR) << "NTP"
-               << "RunMediaDetector 8";
     DCHECK(url.is_valid());
     DCHECK(web_contents_);
-    LOG(ERROR) << "NTP"
-               << "RunMediaDetector 9";
     web_contents_->GetController().LoadURLWithParams(
         content::NavigationController::LoadURLParams(url));
-    LOG(ERROR) << "NTP"
-               << "RunMediaDetector 10";
   } else {
-    LOG(ERROR) << "NTP"
-               << "RunMediaDetector 5";
     auto weak_contents =
         absl::get<base::WeakPtr<content::WebContents>>(request.url_or_contents);
     if (!weak_contents) {
       FetchPendingRequest();
       return;
     }
-    LOG(ERROR) << "NTP"
-               << "RunMediaDetector 6";
 
     GetMedia(weak_contents.get());
   }
-  LOG(ERROR) << "NTP"
-             << "RunMediaDetector 7";
 }
 
 bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
@@ -187,29 +150,19 @@ void PlaylistDownloadRequestManager::DidFinishLoad(
 
 void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
   DCHECK(contents && contents->GetPrimaryMainFrame());
-  LOG(ERROR) << "NTP"
-             << "GetMedia 1";
 
   contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script_),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
       g_playlist_javascript_world_id);
-  LOG(ERROR) << "NTP"
-             << "GetMedia 2";
 }
 
 void PlaylistDownloadRequestManager::OnGetMedia(
     base::WeakPtr<content::WebContents> contents,
     base::Value value) {
-  LOG(ERROR) << "NTP"
-             << "OnGetMedia 1";
   ProcessFoundMedia(contents, std::move(value));
-  LOG(ERROR) << "NTP"
-             << "OnGetMedia 2";
   FetchPendingRequest();
-  LOG(ERROR) << "NTP"
-             << "OnGetMedia 3";
 }
 
 void PlaylistDownloadRequestManager::ProcessFoundMedia(
