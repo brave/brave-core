@@ -871,6 +871,19 @@ export const getTransactionIntent = ({
   transactionNetwork?: BraveWallet.NetworkInfo
   tx: BraveWallet.TransactionInfo
 }): string => {
+  // ERC20 Approve
+  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
+    return toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
+  }
+
+  // ERC20 Transfer
+  if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
+    return getLocale('braveWalletTransactionIntentSend').replace(
+      '$1',
+      new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)
+    )
+  }
+
   // ERC 721
   if (
     tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
@@ -880,11 +893,6 @@ export const getTransactionIntent = ({
       '$1',
       `${token?.symbol ?? ''} ${erc721TokenId}`
     )
-  }
-
-  // ERC20 Approve
-  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
-    return toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''
   }
 
   // SPL
