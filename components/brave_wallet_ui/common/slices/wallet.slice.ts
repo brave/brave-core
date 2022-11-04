@@ -270,7 +270,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
         // Refresh selectedAccount object
         const selectedAccount = state.accounts.find(
-          account => account === state.selectedAccount
+          account => account.address.toLowerCase() === state.selectedAccount.address.toLowerCase()
         ) ?? state.selectedAccount
 
         state.selectedAccount = selectedAccount
@@ -441,7 +441,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
         // Refresh selectedAccount object
         const selectedAccount = state.accounts.find(
-          account => account === state.selectedAccount
+          account => account.address.toLowerCase() === state.selectedAccount.address.toLowerCase()
         ) ?? state.selectedAccount
 
         state.selectedAccount = selectedAccount
