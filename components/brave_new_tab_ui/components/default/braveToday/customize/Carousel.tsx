@@ -123,6 +123,10 @@ export default function Carousel (props: Props) {
     })
   }, [])
 
+  if (!props.publisherIds.length) {
+    return null
+  }
+
   return (
     <Container direction='column'>
       <Flex direction='row' gap={8} align='center'>
