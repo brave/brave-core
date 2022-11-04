@@ -176,10 +176,10 @@ base::Value::Dict GetValueWithTicketInfos(
   base::Base64Encode(body_trimmed, &body_encoded);
 
   // required fields
-  dict.Set("email", email_trimmed);
-  dict.Set("subject", subject_trimmed);
-  dict.Set("support-ticket", body_encoded);
-  dict.Set("partner-client-id", "com.brave.browser");
+  dict.Set(kSupportTicketEmailKey, email_trimmed);
+  dict.Set(kSupportTicketSubjectKey, subject_trimmed);
+  dict.Set(kSupportTicketSupportTicketKey, body_encoded);
+  dict.Set(kSupportTicketPartnerClientIdKey, "com.brave.browser");
 
   return dict;
 }
