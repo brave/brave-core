@@ -756,6 +756,14 @@ export const accountHasInsufficientFundsForTransaction = ({
 }): boolean => {
   const { txType } = tx
 
+  // ERC721
+  if (
+    txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    return false
+  }
+
   // SPL
   if (isSolanaSplTransaction(tx)) {
     return accountTokenBalance !== '' && new Amount(getTransactionBaseValue(tx))

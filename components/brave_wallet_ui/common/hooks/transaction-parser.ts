@@ -428,7 +428,15 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: token?.symbol ?? '',
           insufficientFundsForGasError: insufficientNativeFunds,
-          insufficientFundsError: false,
+          insufficientFundsError: accountHasInsufficientFundsForTransaction({
+            accountNativeBalance,
+            accountTokenBalance,
+            gasFee,
+            tokensList: combinedTokensList,
+            tx: transactionInfo,
+            account,
+            nativeAsset
+          }),
           intent: getLocale('braveWalletTransactionIntentSend')
             .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`)
         } as ParsedTransaction
