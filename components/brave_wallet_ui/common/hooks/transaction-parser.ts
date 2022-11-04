@@ -528,11 +528,6 @@ export function useTransactionParser (
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
 
-        const sellTokenBalance = getBalance(account, sellToken)
-        const insufficientTokenFunds = sellTokenBalance !== ''
-          ? new Amount(weiTransferredValue).gt(sellTokenBalance)
-          : undefined
-
         return {
           ...txBase,
           status: transactionInfo.txStatus,
@@ -542,7 +537,16 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           symbol: sellToken?.symbol ?? '',
-          insufficientFundsError: insufficientTokenFunds,
+          insufficientFundsError: accountHasInsufficientFundsForTransaction({
+            accountNativeBalance,
+            accountTokenBalance,
+            gasFee,
+            tokensList: combinedTokensList,
+            transferedValue: normalizedTransferredValue,
+            tx: transactionInfo,
+            account,
+            nativeAsset
+          }),
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
           intent: getLocale('braveWalletTransactionIntentSwap')

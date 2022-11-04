@@ -756,6 +756,22 @@ export const accountHasInsufficientFundsForTransaction = ({
   tx: BraveWallet.TransactionInfo
   transferedValue: string
 }): boolean => {
+  const { txType } = tx
+
+  // Eth Swap
+  if (txType === BraveWallet.TransactionType.ETHSwap) {
+    const {
+      sellToken,
+      sellAmountWei
+    } = getETHSwapTranasactionBuyAndSellTokens({
+      nativeAsset,
+      tokensList,
+      tx
+    })
+    const sellTokenBalance = getBalance(account, sellToken)
+
+    return sellTokenBalance !== '' && sellAmountWei.gt(sellTokenBalance)
+  }
   // ETHSend
   // SolanaSystemTransfer
   // Other
