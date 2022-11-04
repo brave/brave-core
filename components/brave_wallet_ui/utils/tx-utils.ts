@@ -26,7 +26,7 @@ import Amount from './amount'
 import { getCoinFromTxDataUnion } from './network-utils'
 import { getBalance } from './balance-utils'
 import { toProperCase } from './string-utils'
-import { computeFiatAmount } from './pricing-utils'
+import { computeFiatAmount, findAssetPrice } from './pricing-utils'
 
 type Order = 'ascending' | 'descending'
 
@@ -990,6 +990,21 @@ export const getTransactionFiatValues = ({
     networkSpotPrice,
     txNetwork
   })
+
+  // SPL
+  if (isSolanaSplTransaction(tx)) {
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const sendAmountFiat = new Amount(normalizedTransferredValue).times(price)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sendAmountFiat,
+      fiatTotal: new Amount(gasFeeFiat).plus(sendAmountFiat),
+      formattedNativeCurrencyTotal: sendAmountFiat
+        .div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork?.symbol)
+    }
+  }
 
   // ETH SWAP
   if (tx.txType === BraveWallet.TransactionType.ETHSwap) {

@@ -298,20 +298,26 @@ export function useTransactionParser (
       }
 
       case isSPLTransaction: {
-        const price = findAssetPrice(token?.symbol ?? '')
-        const sendAmountFiat = new Amount(normalizedTransferredValue)
-          .times(price)
-
-        const totalAmountFiat = new Amount(gasFeeFiat)
-          .plus(sendAmountFiat)
+        const {
+          fiatTotal,
+          fiatValue,
+          formattedNativeCurrencyTotal
+        } = getTransactionFiatValues({
+          gasFee,
+          networkSpotPrice,
+          normalizedTransferredValue,
+          spotPrices,
+          tx,
+          sellToken,
+          token,
+          txNetwork: selectedNetwork
+        })
 
         return {
           ...txBase,
-          fiatValue: sendAmountFiat,
-          fiatTotal: totalAmountFiat,
-          formattedNativeCurrencyTotal: sendAmountFiat
-            .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol)
+          fiatValue,
+          fiatTotal,
+          formattedNativeCurrencyTotal
         } as ParsedTransaction
       }
 
