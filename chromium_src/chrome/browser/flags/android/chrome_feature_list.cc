@@ -20,6 +20,7 @@
     &brave_search_conversion::features::kOmniboxBanner,      \
     &brave_today::features::kBraveNewsFeature,               \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,\
+    &brave_today::features::kBraveNewsV2Feature,             \
     &brave_wallet::features::kNativeBraveWalletFeature,      \
     &brave_wallet::features::kBraveWalletSolanaFeature,      \
     &brave_wallet::features::kBraveWalletSnsFeature,         \
