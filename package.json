@@ -373,5 +373,8 @@
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4",
     "webtorrent": "^0.114.0"
+  },
+  "overrides": {
+    "loader-utils": "2.0.3"
   }
 }
