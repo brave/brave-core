@@ -185,22 +185,19 @@ public actor AdBlockEngineManager: Sendable {
             resultString = "not compiled"
           }
           
-          let sourceDebugString =
-          """
-          {
-          order: \(resourceWithVersion.order)
-          fileName: \(resourceWithVersion.fileURL.lastPathComponent)
-          source: \(sourceString)
-          version: \(resourceWithVersion.version ?? "nil")
-          type: \(type)
-          result: \(resultString)
-          }
-          """
+          let sourceDebugString = [
+            "order: \(resourceWithVersion.order)",
+            "fileName: \(resourceWithVersion.fileURL.lastPathComponent)",
+            "source: \(sourceString)",
+            "version: \(resourceWithVersion.version ?? "nil")",
+            "type: \(type)",
+            "result: \(resultString)",
+          ].joined(separator: ", ")
           
-          return sourceDebugString
-        }
+          return ["{", sourceDebugString, "}"].joined()
+        }.joined(separator: ", ")
 
-      log.debug("Loaded \(self.enabledResources.count, privacy: .public) (total) engine resources:\n\(resourcesString, privacy: .public)")
+      log.debug("Loaded \(self.enabledResources.count, privacy: .public) (total) engine resources: \(resourcesString, privacy: .public)")
     }
     #endif
   }

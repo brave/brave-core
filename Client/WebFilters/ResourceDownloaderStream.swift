@@ -6,7 +6,7 @@
 import Foundation
 
 /// An endless sequence iterator for the given resource
-final class ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol {
+struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol {
   /// An object representing the download
   struct DownloadResult: Equatable {
     let date: Date
@@ -17,6 +17,7 @@ final class ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProt
   private let resource: ResourceDownloader.Resource
   private let resourceDownloader: ResourceDownloader
   private let fetchInterval: TimeInterval
+  private var firstLoad = true
   
   init(resource: ResourceDownloader.Resource, resourceDownloader: ResourceDownloader, fetchInterval: TimeInterval) {
     self.resource = resource
@@ -27,7 +28,23 @@ final class ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProt
   /// Returns the next downloaded value if it has changed since last time it was downloaded. Will return a cached result as an initial value.
   ///
   /// - Note: Only throws `CancellationError` error. Downloading errors are returned as a `Result` object
-  func next() async throws -> Element? {
+  mutating func next() async throws -> Element? {
+    if firstLoad {
+      // On a first load, we return the result so that they are available right away.
+      // After that we wait only for changes while sleeping
+      do {
+        self.firstLoad = false
+        let result = try await resourceDownloader.download(resource: resource)
+        
+        switch result {
+        case .downloaded(let url, let date), .notModified(let url, let date):
+          return .success(DownloadResult(date: date, fileURL: url))
+        }
+      } catch {
+        return .failure(error)
+      }
+    }
+    
     // Keep fetching new data until we get a new result
     while true {
       try await Task.sleep(seconds: fetchInterval)

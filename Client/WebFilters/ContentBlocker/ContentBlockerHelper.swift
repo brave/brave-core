@@ -116,19 +116,15 @@ class ContentBlockerHelper {
         ruleTypeString = "filterList(\(uuid))"
       }
       
-      let rulesDebugString =
-      """
-      {
-      ruleType: \(ruleTypeString)
-      sourceType: \(ruleTypeWithSourceType.sourceType)
-      }
-      """
+      let rulesDebugString = [
+        "ruleType: \(ruleTypeString)",
+        "sourceType: \(ruleTypeWithSourceType.sourceType)"
+      ].joined(separator: ", ")
       
-      return rulesDebugString
-    }
+      return ["{", rulesDebugString, "}"].joined()
+    }.joined(separator: ", ")
     
-    log.debug("ContentBlockerHelper")
-    log.debug("loaded \(self.loadedRuleTypeWithSourceTypes.count, privacy: .public) tab rules:\n\(rulesString, privacy: .public)")
+    log.debug("Loaded \(self.loadedRuleTypeWithSourceTypes.count, privacy: .public) tab rules: \(rulesString, privacy: .public)")
     #endif
   }
 }

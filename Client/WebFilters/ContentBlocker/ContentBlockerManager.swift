@@ -455,21 +455,18 @@ final public class ContentBlockerManager: Sendable {
           resultString = "nil"
         }
         
-        let resourcesDebugString =
-        """
-        {
-        identifier: \(identifier)
-        fileName: \(compiledResource.url.lastPathComponent)
-        source: \(sourceString)
-        version: \(versionString)
-        result: \(resultString)
-        }
-        """
+        let resourcesDebugString = [
+          "identifier: \(identifier)",
+          "fileName: \(compiledResource.url.lastPathComponent)",
+          "source: \(sourceString)",
+          "version: \(versionString)",
+          "result: \(resultString)"
+        ].joined(separator: ", ")
         
-        return resourcesDebugString
-      }
+        return ["{", resourcesDebugString, "}"].joined()
+      }.joined(separator: ", ")
 
-    Self.log.debug("Compiled \(resources.count, privacy: .public) additional block list resources: \n\(resourcesString, privacy: .public))")
+    Self.log.debug("Compiled \(resources.count, privacy: .public) additional block list resources: \(resourcesString, privacy: .public))")
   }
   #endif
 }
