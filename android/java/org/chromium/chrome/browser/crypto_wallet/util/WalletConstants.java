@@ -1,7 +1,7 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.chrome.R;
+import org.chromium.brave_wallet.mojom.TransactionType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,8 +68,22 @@ public final class WalletConstants {
             BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID);
 
     // Solana
-    public static final String SOL_LAMPORTS = "lamports";
     public static final String SOL = "SOL";
+    public static final String SOL_LAMPORTS = "lamports";
+    public static final String SOL_DAPP_FROM_ACCOUNT = "from_account";
+    public static final String SOL_DAPP_TO_ACCOUNT = "to_account";
+    public static final String SOL_DAPP_NONCE_ACCOUNT = "nonce_account";
+    public static final String SOL_DAPP_NEW_ACCOUNT = "new_account";
+
+    public static List<Integer> SOLANA_TRANSACTION_TYPES = Arrays.asList(
+            TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
+            TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
+            TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
+            TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION);
+
+    public static List<Integer> SOLANA_DAPPS_TRANSACTION_TYPES =
+            Arrays.asList(TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
+                    TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION);
 
     // Solana instruction types
     public static final String SOL_INS_SYSTEM = BraveWalletConstants.SOLANA_SYSTEM_PROGRAM_ID;

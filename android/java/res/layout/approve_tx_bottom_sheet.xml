@@ -159,26 +159,32 @@
         app:tabIndicatorColor="@null"
         app:tabSelectedTextColor="@color/tab_color"
         app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
-        app:tabTextColor="@color/wallet_text_color" />
+        app:tabTextColor="@color/wallet_text_color"
+        app:layout_constraintBottom_toTopOf="@id/navigation_view_pager"/>
+
+    <org.chromium.chrome.browser.crypto_wallet.model.TxNonSwipeableViewPager
+        android:id="@+id/navigation_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_default="spread"
+        app:layout_constraintTop_toBottomOf="@id/tabs"
+        app:layout_constraintHeight_min="240dp"
+        app:layout_constraintBottom_toTopOf="@id/actions_container"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <LinearLayout
+        android:id="@+id/actions_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabs">
-
-        <org.chromium.chrome.browser.crypto_wallet.model.TxNonSwipeableViewPager
-            android:id="@+id/navigation_view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_constraintTop_toBottomOf="@id/navigation_view_pager">
 
         <Button
             android:id="@+id/btn_reject_transactions"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAllCaps="false"
@@ -189,7 +195,7 @@
             android:id="@+id/approve_tx_bottom_sheet_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginVertical="6dp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton

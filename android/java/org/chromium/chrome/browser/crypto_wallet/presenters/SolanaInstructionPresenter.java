@@ -1,6 +1,12 @@
-package org.chromium.chrome.browser.crypto_wallet.model;
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.crypto_wallet.presenters;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SolanaAccountMeta;
@@ -9,7 +15,6 @@ import org.chromium.brave_wallet.mojom.SolanaInstructionAccountParam;
 import org.chromium.brave_wallet.mojom.SolanaInstructionParam;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
-import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemDivider;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemHeader;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemText;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
@@ -26,6 +31,9 @@ public class SolanaInstructionPresenter {
     public boolean mIsUnknown;
     private boolean isDecodedDataPresent;
     private SolanaInstruction mSolanaInstruction;
+    private Integer mInstructionType;
+    private String mFromPubKey;
+    private String mToPubKey;
 
     public SolanaInstructionPresenter(SolanaInstruction solanaInstruction) {
         assert solanaInstruction != null : "solanaInstruction is null";
@@ -74,7 +82,7 @@ public class SolanaInstructionPresenter {
                 TransactionUtils.getSolanaProgramIdName(mSolanaInstruction.programId, context)
                         + " - "
                         + context.getString(
-                                TransactionUtils.getSolType(mSolanaInstruction.programId,
+                                TransactionUtils.getSolTxSubType(mSolanaInstruction.programId,
                                         mSolanaInstruction.decodedData != null
                                                 ? mSolanaInstruction.decodedData.instructionType
                                                 : -1)),
@@ -87,10 +95,14 @@ public class SolanaInstructionPresenter {
         twoLineItems.addAll(solanaInstructionPresenter.accountDataToList());
 
         if (shouldShowRawData()) {
-            // add data field also
+            // Add data and program id field also
             twoLineItems.add(
                     new TwoLineItemHeader(context.getString(R.string.brave_wallet_data_text)));
             twoLineItems.addAll(solanaInstructionPresenter.dataToList());
+
+            twoLineItems.add(
+                    new TwoLineItemHeader(context.getString(R.string.brave_wallet_tx_progam_id)));
+            twoLineItems.addAll(solanaInstructionPresenter.programIdToList());
         }
         twoLineItems.addAll(solanaInstructionPresenter.accountParamDataToList());
         return twoLineItems;
@@ -128,16 +140,82 @@ public class SolanaInstructionPresenter {
         return twoLineItemDataSources;
     }
 
+    public List<TwoLineItemText> programIdToList() {
+        return Arrays.asList(new TwoLineItemText(null, mSolanaInstruction.programId));
+    }
+
     public List<TwoLineItemText> dataToList() {
         return Arrays.asList(new TwoLineItemText(null, Arrays.toString(mSolanaInstruction.data)));
+    }
+
+    // Get lamport from decoded data params
+    public String getLamportAmount() {
+        if (isDecodedDataPresent && mSolanaInstruction.decodedData.params != null) {
+            for (SolanaInstructionParam instructionParam : mSolanaInstruction.decodedData.params) {
+                if (instructionParam.name.equalsIgnoreCase(WalletConstants.SOL_LAMPORTS)) {
+                    return instructionParam.value;
+                }
+            }
+        }
+        return "0";
+    }
+
+    public Integer getInstructionType() {
+        if (mInstructionType != null) return mInstructionType;
+        if (isDecodedDataPresent) {
+            mInstructionType = mSolanaInstruction.decodedData.instructionType;
+            return mInstructionType;
+        }
+        return null;
+    }
+
+    public String fromPubKey() {
+        if (mFromPubKey != null) return mFromPubKey;
+        mFromPubKey = getPubKeyPerParamKey(WalletConstants.SOL_DAPP_FROM_ACCOUNT);
+        return mFromPubKey;
+    }
+
+    public String toPubKey() {
+        if (mToPubKey != null) return mToPubKey;
+        mToPubKey = getPubKeyPerParamKey(WalletConstants.SOL_DAPP_TO_ACCOUNT);
+        return mToPubKey;
+    }
+
+    // Returns the first found account pub key from accounts meta, corresponding to input "key" from
+    // accountParams
+    public String getPubKeyPerParamKey(String key) {
+        if (TextUtils.isEmpty(key)) return null;
+        String pubKey = null;
+        if (isAccountMetaPresent()) {
+            SolanaInstructionAccountParam[] accountParams =
+                    mSolanaInstruction.decodedData.accountParams;
+            for (int i = 0; i < accountParams.length; i++) {
+                if (accountParams[i].name.equalsIgnoreCase(key)) {
+                    if (mSolanaInstruction.accountMetas.length > i) {
+                        pubKey = mSolanaInstruction.accountMetas[i].pubkey;
+                    }
+                    return pubKey;
+                }
+            }
+        }
+        return pubKey;
     }
 
     public SolanaInstruction getSolanaInstruction() {
         return mSolanaInstruction;
     }
 
+    public boolean isTokenInstruction() {
+        return mSolanaInstruction.programId.equals(WalletConstants.SOL_INS_TOKEN);
+    }
+
     public boolean shouldShowRawData() {
         return mIsUnknown || mSolanaInstruction.decodedData == null;
+    }
+
+    private boolean isAccountMetaPresent() {
+        return isDecodedDataPresent && mSolanaInstruction.decodedData.accountParams != null
+                && mSolanaInstruction.accountMetas != null;
     }
 
     public static class SolanaInstructionAccountPresenter {
