@@ -14,7 +14,7 @@ import {
   WalletAccountType
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
-import { NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
+import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
 import { SwapExchangeProxy } from '../common/constants/registry'
 
 // utils
@@ -936,4 +936,13 @@ export const accountHasInsufficientFundsForGas = ({
   gasFee: string
 }): boolean => {
   return accountNativeBalance !== '' && new Amount(gasFee).gt(accountNativeBalance)
+}
+
+export const getIsTxApprovalUnlimited = (tx: BraveWallet.TransactionInfo): boolean => {
+  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
+    const [, amount] = tx.txArgs // (address spender, uint256 amount)
+    return new Amount(amount).eq(MAX_UINT256)
+  }
+
+  return false
 }

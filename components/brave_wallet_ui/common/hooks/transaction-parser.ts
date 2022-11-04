@@ -14,10 +14,7 @@ import {
   WalletAccountType,
   WalletState
 } from '../../constants/types'
-import {
-  MAX_UINT256,
-  NATIVE_ASSET_CONTRACT_ADDRESS_0X
-} from '../constants/magics'
+import { NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magics'
 import { SwapExchangeProxy } from '../constants/registry'
 
 // Utils
@@ -35,6 +32,7 @@ import {
   getETHSwapTranasactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
   getGasFeeFiatValue,
+  getIsTxApprovalUnlimited,
   getTransactionApprovalTargetAddress,
   getTransactionBaseValue,
   getTransactionDecimals,
@@ -275,6 +273,7 @@ export function useTransactionParser (
       | 'insufficientFundsError'
       | 'insufficientFundsForGasError'
       | 'intent'
+      | 'isApprovalUnlimited'
       | 'isFilecoinTransaction'
       | 'isSolanaDappTransaction'
       | 'isSolanaSPLTransaction'
@@ -346,6 +345,7 @@ export function useTransactionParser (
         token,
         transactionNetwork
       }),
+      isApprovalUnlimited: getIsTxApprovalUnlimited(transactionInfo),
       isFilecoinTransaction: isFilTransaction,
       isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
       isSolanaSPLTransaction: isSPLTransaction,
@@ -448,8 +448,7 @@ export function useTransactionParser (
           fiatValue: Amount.zero(),
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
-            .formatAsAsset(2, selectedNetwork?.symbol),
-          isApprovalUnlimited: new Amount(weiTransferredValue).eq(MAX_UINT256)
+            .formatAsAsset(2, selectedNetwork?.symbol)
         } as ParsedTransaction
       }
 
@@ -670,6 +669,7 @@ export function parseTransactionWithoutPrices ({
       token,
       transactionNetwork
     }),
+    isApprovalUnlimited: getIsTxApprovalUnlimited(tx),
     isEIP1559Transaction,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
