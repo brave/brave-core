@@ -644,7 +644,8 @@ export function parseTransactionWithoutPrices ({
     gasPrice,
     isMissingGasLimit,
     maxFeePerGas,
-    maxPriorityFeePerGas
+    maxPriorityFeePerGas,
+    isEIP1559Transaction
   } = parseTransactionFeesWithoutPrices(tx, solFeeEstimates)
 
   const insufficientFundsError = accountHasInsufficientFundsForTransaction({
@@ -689,6 +690,7 @@ export function parseTransactionWithoutPrices ({
     id: tx.id,
     instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
     insufficientFundsError,
+    isEIP1559Transaction,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSolanaDappTransaction: isSolanaTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
