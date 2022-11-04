@@ -14,6 +14,7 @@
   addFilecoinAccount,
   addSitePermission,
   addUserAsset,
+  updateUserAsset,
   addUserAssetError,
   approveERC20Allowance,
   approveTransaction,
