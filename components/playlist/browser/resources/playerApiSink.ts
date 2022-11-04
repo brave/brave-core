@@ -8,7 +8,7 @@ import { PlayerMessagePayload } from './api/playerApi'
 
 import { types } from './constants/playlist_types'
 
-export default function startReceiving () {
+export default function startReceivingAPIRequest () {
   window.onmessage = (e) => {
       if (e.origin !== 'chrome-untrusted://playlist') {
         console.error(`Invalid origin: ${e.origin}`)

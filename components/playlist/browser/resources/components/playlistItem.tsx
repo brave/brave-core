@@ -27,10 +27,10 @@ export default class PlaylistItem extends React.PureComponent<Props, {}> {
   render () {
     let { id, name, thumbnailUrl, onClick } = this.props
     return (
-        <div>
-            <h3>{name}</h3>
+        <div className='playlist-item'>
+            <h3 className='playlist-item-name'>{name}</h3>
             <a href='#' onClick={() => { onClick(id) }}>
-              <StyledThumbnail showDefaultThumbnail={!thumbnailUrl} data-id={id} src={thumbnailUrl}/>
+              <StyledThumbnail className='playlist-item-thumbnail' showDefaultThumbnail={!thumbnailUrl} data-id={id} src={thumbnailUrl}/>
             </a>
         </div>
     )

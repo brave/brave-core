@@ -13,13 +13,21 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/mojom/playlist.mojo
 const playerReducer: Reducer<Playlist.PlayerState|undefined> =
     (state: Playlist.PlayerState|undefined, action) => {
       if (state === undefined) {
-        state = { currentItem: undefined }
+        state = { currentItem: undefined, playing: false }
       }
 
       switch (action.type) {
         case types.PLAYLIST_ITEM_SELECTED:
           const playlistItem = action.payload as PlaylistMojo.PlaylistItem
           state = { ...state, currentItem: playlistItem }
+          break
+
+        case types.PLAYER_STARTED_PLAYING_ITEM:
+          state = { ...state, playing: true }
+          break
+
+        case types.PLAYER_STOPPED_PLAYING_ITEM:
+          state = { ...state, playing: false }
           break
       }
       return state

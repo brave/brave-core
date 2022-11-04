@@ -13,10 +13,12 @@ declare namespace Playlist {
   export interface State {
     lists : PlaylistMojo.Playlist[]
     currentList: PlaylistMojo.Playlist|undefined
+    lastPlayerState: PlayerState|undefined
   }
 
   export interface PlayerState {
     currentItem: PlaylistMojo.PlaylistItem|undefined
+    playing: boolean
   }
 }
 

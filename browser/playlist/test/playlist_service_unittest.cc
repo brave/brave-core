@@ -680,7 +680,6 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
                 service->GetPlaylistItemDirPath(item->id)));
           }
         }));
-
     service->RemoveObserverForTest(&observer);
   }
 

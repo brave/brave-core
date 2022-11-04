@@ -10,5 +10,11 @@ export const enum types {
 
   PLAYLIST_ITEM_SELECTED = '@@playlist/PLAYLIST_ITEM_SELECTED',
 
+  PLAYLIST_PLAYER_STATE_CHANGED = '@@playlist/PLAYLIST_PLAYER_STATE_CHANGED',
+
+  PLAYER_STARTED_PLAYING_ITEM = '@@playlist/PLAYER_STARTED_PLAYING_ITEM',
+
+  PLAYER_STOPPED_PLAYING_ITEM = '@@playlist/PLAYER_STOPPED_PLAYING_ITEM',
+
   // TODO(sko) Need more actions for each events
 }

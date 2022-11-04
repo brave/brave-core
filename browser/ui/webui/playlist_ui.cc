@@ -44,7 +44,8 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::MediaSrc,
         std::string("media-src 'self' chrome-untrusted://playlist-data "
-                    "https://*.googlevideo.com;"));
+                    "https://*.googlevideo.com "
+                    "http://127.0.0.1:*;"));
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::StyleSrc,
         std::string("style-src chrome-untrusted://resources "

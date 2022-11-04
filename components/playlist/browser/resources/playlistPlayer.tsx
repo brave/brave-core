@@ -15,7 +15,7 @@ import DarkTheme from 'brave-ui/theme/brave-dark'
 import store from './store'
 
 import Player from './components/player'
-import startReceiving from './playerApiSink'
+import startReceivingAPIRequest from './playerApiSink'
 
 function initialize () {
   render(
@@ -30,6 +30,6 @@ function initialize () {
     document.getElementById('root'))
 }
 
-startReceiving()
+startReceivingAPIRequest()
 
 document.addEventListener('DOMContentLoaded', initialize)

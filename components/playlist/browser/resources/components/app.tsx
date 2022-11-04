@@ -5,7 +5,6 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
 
 import { Playlist } from 'components/definitions/playlist'
 
@@ -14,6 +13,7 @@ import { CloseCircleOIcon } from 'brave-ui/components/icons'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
 import PlaylistItem from './playlistItem'
 import PlaylistSelect from './playlistSelect'
+import VideoFrame from './videoFrame'
 
 // Utils
 import * as playlistActions from '../actions/playlist_action_creators'
@@ -33,13 +33,6 @@ interface State {
   playlist?: PlaylistMojo.Playlist
   experimentalUrl: string
 }
-
-const StyledVideoFrame = styled.iframe`
-  // 16:9 aspect ratio
-  width: 100vw;
-  height: 56vw;
-  border: none;
-`
 
 export class PlaylistPage extends React.Component<Props, State> {
   constructor (props: Props) {
@@ -119,8 +112,8 @@ export class PlaylistPage extends React.Component<Props, State> {
                     thumbnailUrl={this.getImgSrc(item)}/>
             )
           },
-          { content: (<span>{item.cached ? 'Cached' : 'Not cached'}</span>) },
-          { content: (<button style={this.lazyTextButtonStyle} onClick={() => this.onClickDataButton(item.id)}>{item.cached ? 'Remove cache' : 'Cache'}</button>) },
+          { content: (<span className='playlist-item-cached-state'>{item.cached ? 'Cached' : 'Not cached'}</span>) },
+          { content: (<button className='playlist-item-cache-btn' style={this.lazyTextButtonStyle} onClick={() => this.onClickDataButton(item.id)}>{item.cached ? 'Remove cache' : 'Cache'}</button>) },
           { content: (<button style={this.lazyButtonStyle} onClick={() => this.onClickRemoveItemButton(item.id)}><CloseCircleOIcon /></button>) }
         ]
       }
@@ -218,7 +211,7 @@ export class PlaylistPage extends React.Component<Props, State> {
           </Table>
         </div>
 
-        <StyledVideoFrame id="player" src="chrome-untrusted://playlist-player" allow="autoplay" scrolling='no' sandbox='allow-scripts allow-same-origin'/>
+        <VideoFrame playing={!!this.props.playlistData.lastPlayerState?.playing} />
 
         <div>
           <h1>Experimental</h1>

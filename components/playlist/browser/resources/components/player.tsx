@@ -12,9 +12,12 @@ import { Playlist } from 'components/definitions/playlist'
 import * as playlistActions from '../actions/playlist_action_creators'
 import * as PlaylistMojo from 'gen/brave/components/playlist/mojom/playlist.mojom.m.js'
 
-interface Props {
+import { getAllActions } from '../api/getAllActions'
+
+export interface Props {
   actions: any
   currentItem?: PlaylistMojo.PlaylistItem
+  playing?: boolean
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -22,7 +25,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 })
 
 const mapStateToProps = (state: Playlist.ApplicationState) => ({
-  currentItem: state.playerState?.currentItem
+  currentItem: state.playerState?.currentItem,
+  playing: state.playerState?.playing
 })
 
 const StyledVideo = styled.video`
@@ -30,9 +34,21 @@ const StyledVideo = styled.video`
   height: 100vh;
 `
 
-function Player ({ currentItem }: Props) {
+function Player ({ currentItem, playing }: Props) {
+  // Route changes in props to parent frame.
+  React.useEffect(() => {
+    window.parent.postMessage({
+      currentItem,
+      playing
+    }, 'chrome-untrusted://playlist')
+  })
+
   return (
-    <StyledVideo autoPlay controls id="player" src={currentItem?.mediaPath.url}/>
+    <StyledVideo id="player" autoPlay controls
+      onPlay={() => getAllActions().playerStartedPlayingItem(currentItem) }
+      onPause={() => getAllActions().playerStoppedPlayingItem(currentItem) }
+      onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem) }
+      src={currentItem?.mediaPath.url}/>
   )
 }
 

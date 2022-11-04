@@ -12,10 +12,13 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
-    "playlist_browsertest.cc",
     "playlist_download_request_manager_browsertests.cc",
     "playlist_render_frame_observer_browsertest.cc",
   ]
+
+  if (!is_android) {
+    sources += [ "playlist_browsertest.cc" ]
+  }
 
   deps = [
     "//base",

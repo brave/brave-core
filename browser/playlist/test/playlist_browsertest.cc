@@ -5,21 +5,25 @@
 
 #include <memory>
 
+#include "base/path_service.h"
+#include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/constants/brave_paths.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/playlist/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/browser/playlist_download_request_manager.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/chrome_test_utils.h"
-#include "content/public/test/browser_test.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
 #include "chrome/test/base/in_process_browser_test.h"
-#endif
-
-namespace playlist {
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/browser_test.h"
 
 class PlaylistBrowserTest : public PlatformBrowserTest {
  public:
@@ -28,22 +32,72 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
   ~PlaylistBrowserTest() override = default;
 
-  PlaylistService* GetPlaylistService() {
-    return PlaylistServiceFactory::GetInstance()->GetForBrowserContext(
-        chrome_test_utils::GetProfile(this));
+  GURL GetURL(const std::string& path) {
+    return embedded_test_server()->GetURL(path);
   }
 
-  PrefService* GetPrefs() {
-    return chrome_test_utils::GetProfile(this)->GetPrefs();
+  content::WebContents* GetActiveWebContents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  void WaitUntil(base::RepeatingCallback<bool()> condition) {
+    if (condition.Run())
+      return;
+
+    base::RepeatingTimer scheduler;
+    scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                    base::BindLambdaForTesting([this, &condition]() {
+                      if (condition.Run())
+                        run_loop_->Quit();
+                    }));
+    Run();
+  }
+
+  void Run() {
+    run_loop_ = std::make_unique<base::RunLoop>();
+    run_loop_->Run();
+  }
+
+  // PlatformBrowserTest:
+  void SetUpOnMainThread() override {
+    PlatformBrowserTest::SetUpOnMainThread();
+
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
+
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(embedded_test_server()->Start());
+
+    auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
+        browser()->profile());
+    service->download_request_manager_->media_detector_component_manager()
+        ->SetUseLocalScriptForTesting();
   }
 
  private:
+  std::unique_ptr<base::RunLoop> run_loop_;
+
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_AddItemsToList) {
-  // TODO(sko) Test the actual UI, once the spec and the implementation for it
-  // are done https://github.com/brave/brave-browser/issues/25829.
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GetURL("/playlist/site_with_video.html")));
+
+  chrome::AddTabAt(browser(), {}, -1, true /*foreground*/);
+  ASSERT_TRUE(
+      content::NavigateToURL(GetActiveWebContents(), GURL(kPlaylistURL)));
+
+  ASSERT_TRUE(content::ExecJs(
+      GetActiveWebContents(),
+      "document.querySelector('#download-from-open-tabs-btn').click();"));
+
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return content::EvalJs(GetActiveWebContents(),
+                           "!!document.querySelector('.playlist-item');")
+        .ExtractBool();
+  }));
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_RemoveItemFromList) {
@@ -152,4 +206,57 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveAndRestoreLocalData) {
   }
 }
 
-}  // namespace playlist
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
+  // Create an item and wait for it to be cached.
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GetURL("/playlist/site_with_video.html")));
+
+  chrome::AddTabAt(browser(), {}, -1, true /*foreground*/);
+  ASSERT_TRUE(
+      content::NavigateToURL(GetActiveWebContents(), GURL(kPlaylistURL)));
+
+  ASSERT_TRUE(content::ExecJs(
+      GetActiveWebContents(),
+      "document.querySelector('#download-from-open-tabs-btn').click();"));
+
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    auto result = content::EvalJs(GetActiveWebContents(),
+                                  R"-js(
+          const item = document.querySelector('.playlist-item');
+          item && item.parentElement.parentElement
+              .querySelector('.playlist-item-cached-state').textContent == 'Cached';
+        )-js");
+
+    return !result.value.is_none() && result.ExtractBool();
+  }));
+
+  // Remove cache
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+                              R"-js(
+          const item = document.querySelector('.playlist-item');
+          item.parentElement.parentElement.querySelector('.playlist-item-cache-btn').click();
+        )-js"));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    auto result = content::EvalJs(GetActiveWebContents(),
+                                  R"-js(
+          const item = document.querySelector('.playlist-item');
+          item && item.parentElement.parentElement
+              .querySelector('.playlist-item-cached-state').textContent != 'Cached';
+       )-js");
+
+    return !result.value.is_none() && result.ExtractBool();
+  }));
+
+  // Try playing the item
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+                              R"-js(
+          document.querySelector('.playlist-item-thumbnail').click();
+        )-js"));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return content::EvalJs(GetActiveWebContents(),
+                           R"-js(
+          document.querySelector('#player').getAttribute('data-playing') === 'true';
+        )-js")
+        .ExtractBool();
+  }));
+}
