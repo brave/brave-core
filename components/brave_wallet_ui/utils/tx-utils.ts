@@ -828,6 +828,10 @@ export function getTransactionTokenSymbol ({
   token?: BraveWallet.BlockchainToken
   sellToken?: BraveWallet.BlockchainToken
 }): string {
+  if (isSolanaDappTransaction(tx)) {
+    return txNetwork?.symbol ?? ''
+  }
+
   if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
     return sellToken?.symbol || ''
   }

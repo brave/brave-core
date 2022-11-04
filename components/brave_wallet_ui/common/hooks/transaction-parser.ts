@@ -371,7 +371,11 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
-          symbol: selectedNetwork?.symbol ?? '',
+          symbol: getTransactionTokenSymbol({
+            tx: transactionInfo,
+            txNetwork: transactionNetwork,
+            token
+          }),
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
