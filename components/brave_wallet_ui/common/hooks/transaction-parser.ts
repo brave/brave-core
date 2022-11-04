@@ -484,8 +484,12 @@ export function useTransactionParser (
           value: normalizedTransferredValue,
           valueExact: normalizedTransferredValueExact,
           insufficientFundsForGasError: insufficientNativeFunds,
-          intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol))
+          intent: getTransactionIntent({
+            normalizedTransferredValue,
+            tx: transactionInfo,
+            token,
+            transactionNetwork
+          })
         } as ParsedTransaction
       }
 

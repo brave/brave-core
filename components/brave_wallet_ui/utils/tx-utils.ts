@@ -868,6 +868,15 @@ export const getTransactionIntent = ({
   transactionNetwork?: BraveWallet.NetworkInfo
   tx: BraveWallet.TransactionInfo
 }): string => {
+  // SPL
+  if (isSolanaSplTransaction(tx)) {
+    return getLocale('braveWalletTransactionIntentSend')
+      .replace(
+        '$1',
+        new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol)
+      )
+  }
+
   // ETHSwap
   if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
     return getLocale('braveWalletTransactionIntentSwap')
