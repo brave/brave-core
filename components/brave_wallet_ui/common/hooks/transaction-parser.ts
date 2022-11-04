@@ -176,8 +176,8 @@ export function useTransactionParser (
     return visibleTokens.concat(fullTokenList)
   }, [visibleTokens, fullTokenList])
 
-  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransaction => {
-    const { txArgs, txType } = transactionInfo
+  return React.useCallback((tx: BraveWallet.TransactionInfo): ParsedTransaction => {
+    const { txArgs, txType } = tx
 
     const {
       gasFee,
@@ -189,21 +189,21 @@ export function useTransactionParser (
       maxFeePerGas,
       isEIP1559Transaction,
       maxPriorityFeePerGas
-    } = parseTransactionFeesWithoutPrices(transactionInfo, solFeeEstimates)
+    } = parseTransactionFeesWithoutPrices(tx, solFeeEstimates)
     const gasFeeFiat = getGasFeeFiatValue({
       gasFee,
       networkSpotPrice,
       txNetwork: transactionNetwork
     })
 
-    const isFilTransaction = isFilecoinTransaction(transactionInfo)
-    const isSolanaTxn = isSolanaTransaction(transactionInfo)
-    const isSPLTransaction = isSolanaSplTransaction(transactionInfo)
-    const baseValue = getTransactionBaseValue(transactionInfo)
-    const to = getTransactionToAddress(transactionInfo)
-    const nonce = getTransactionNonce(transactionInfo)
-    const account = findTransactionAccount(accounts, transactionInfo)
-    const token = findTransactionToken(transactionInfo, combinedTokensList)
+    const isFilTransaction = isFilecoinTransaction(tx)
+    const isSolanaTxn = isSolanaTransaction(tx)
+    const isSPLTransaction = isSolanaSplTransaction(tx)
+    const baseValue = getTransactionBaseValue(tx)
+    const to = getTransactionToAddress(tx)
+    const nonce = getTransactionNonce(tx)
+    const account = findTransactionAccount(accounts, tx)
+    const token = findTransactionToken(tx, combinedTokensList)
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
@@ -217,7 +217,7 @@ export function useTransactionParser (
     } = getETHSwapTranasactionBuyAndSellTokens({
       nativeAsset,
       tokensList: combinedTokensList,
-      tx: transactionInfo
+      tx
     })
 
     const {
@@ -225,7 +225,7 @@ export function useTransactionParser (
       normalizedTransferredValueExact,
       weiTransferredValue
     } = getFormattedTransactionTransferredValue({
-      tx: transactionInfo,
+      tx,
       txNetwork: transactionNetwork,
       token,
       sellToken
@@ -234,17 +234,17 @@ export function useTransactionParser (
     const erc721Token = [
       BraveWallet.TransactionType.ERC721TransferFrom,
       BraveWallet.TransactionType.ERC721SafeTransferFrom
-    ].includes(transactionInfo.txType) ? token : undefined
+    ].includes(tx.txType) ? token : undefined
 
-    const erc721TokenId = getTransactionErc721TokenId(transactionInfo)
-    const approvalTarget = getTransactionApprovalTargetAddress(transactionInfo)
+    const erc721TokenId = getTransactionErc721TokenId(tx)
+    const approvalTarget = getTransactionApprovalTargetAddress(tx)
 
     const insufficientFundsError = accountHasInsufficientFundsForTransaction({
       accountNativeBalance,
       accountTokenBalance,
       gasFee,
       tokensList: combinedTokensList,
-      tx: transactionInfo,
+      tx,
       account,
       nativeAsset
     })
@@ -258,13 +258,13 @@ export function useTransactionParser (
       approvalTarget,
       approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
       buyToken,
-      coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
-      createdTime: transactionInfo.createdTime,
-      contractAddressError: isSendingToKnownTokenContractAddress(transactionInfo, combinedTokensList)
+      coinType: getCoinFromTxDataUnion(tx.txDataUnion),
+      createdTime: tx.createdTime,
+      contractAddressError: isSendingToKnownTokenContractAddress(tx, combinedTokensList)
         ? getLocale('braveWalletContractAddressError')
         : undefined,
       decimals: getTransactionDecimals({
-        tx: transactionInfo,
+        tx,
         network: transactionNetwork,
         sellToken,
         erc721Token,
@@ -283,10 +283,10 @@ export function useTransactionParser (
       missingGasLimitError: isMissingGasLimit
         ? getLocale('braveWalletMissingGasLimitError')
         : undefined,
-      hash: transactionInfo.txHash,
-      id: transactionInfo.id,
+      hash: tx.txHash,
+      id: tx.id,
       isEIP1559Transaction,
-      instructions: getTypedSolanaTxInstructions(transactionInfo.txDataUnion.solanaTxData),
+      instructions: getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData),
       insufficientFundsError,
       insufficientFundsForGasError: accountHasInsufficientFundsForGas({
         accountNativeBalance,
@@ -294,7 +294,7 @@ export function useTransactionParser (
       }),
       intent: getTransactionIntent({
         normalizedTransferredValue,
-        tx: transactionInfo,
+        tx,
         buyAmount,
         buyToken,
         erc721TokenId,
@@ -303,26 +303,26 @@ export function useTransactionParser (
         token,
         transactionNetwork
       }),
-      isApprovalUnlimited: getIsTxApprovalUnlimited(transactionInfo),
+      isApprovalUnlimited: getIsTxApprovalUnlimited(tx),
       isFilecoinTransaction: isFilTransaction,
-      isSolanaDappTransaction: isSolanaDappTransaction(transactionInfo),
+      isSolanaDappTransaction: isSolanaDappTransaction(tx),
       isSolanaSPLTransaction: isSPLTransaction,
       isSolanaTransaction: isSolanaTxn,
-      isSwap: isSwapTransaction(transactionInfo),
+      isSwap: isSwapTransaction(tx),
       minBuyAmount: buyAmount,
       minBuyAmountWei: buyAmountWei,
       nonce,
       recipient: to,
       recipientLabel: getAddressLabel(to, accounts),
-      sameAddressError: transactionHasSameAddressError(transactionInfo) ? getLocale('braveWalletSameAddressError') : undefined,
+      sameAddressError: transactionHasSameAddressError(tx) ? getLocale('braveWalletSameAddressError') : undefined,
       sellAmount,
       sellAmountWei,
       sellToken,
-      sender: transactionInfo.fromAddress,
-      senderLabel: getAddressLabel(transactionInfo.fromAddress, accounts),
-      status: transactionInfo.txStatus,
+      sender: tx.fromAddress,
+      senderLabel: getAddressLabel(tx.fromAddress, accounts),
+      status: tx.txStatus,
       symbol: getTransactionTokenSymbol({
-        tx: transactionInfo,
+        tx,
         txNetwork: transactionNetwork,
         token,
         sellToken
