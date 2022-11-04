@@ -850,18 +850,31 @@ export function getTransactionTokenSymbol ({
 }
 
 export const getTransactionIntent = ({
-  token,
-  tokensList,
-  transactionNetwork,
+  buyAmount,
+  buyToken,
   normalizedTransferredValue,
+  sellAmount,
+  sellToken,
+  token,
+  transactionNetwork,
   tx
 }: {
-  token?: BraveWallet.BlockchainToken
-  tokensList: BraveWallet.BlockchainToken[]
-  transactionNetwork?: BraveWallet.NetworkInfo
+  buyAmount?: Amount
+  buyToken?: BraveWallet.BlockchainToken
   normalizedTransferredValue: string
+  sellAmount?: Amount
+  sellToken?: BraveWallet.BlockchainToken
+  token?: BraveWallet.BlockchainToken
+  transactionNetwork?: BraveWallet.NetworkInfo
   tx: BraveWallet.TransactionInfo
 }): string => {
+  // ETHSwap
+  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
+    return getLocale('braveWalletTransactionIntentSwap')
+      .replace('$1', sellAmount?.formatAsAsset(6, sellToken?.symbol) ?? '')
+      .replace('$2', buyAmount?.formatAsAsset(6, buyToken?.symbol) ?? '')
+  }
+
   // default / other
   return getLocale('braveWalletTransactionIntentSend').replace(
     '$1',

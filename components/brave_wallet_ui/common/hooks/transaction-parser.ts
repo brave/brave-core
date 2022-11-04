@@ -536,9 +536,15 @@ export function useTransactionParser (
             .formatAsAsset(6, selectedNetwork?.symbol),
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
-          intent: getLocale('braveWalletTransactionIntentSwap')
-            .replace('$1', new Amount(normalizedTransferredValue).formatAsAsset(6, sellToken?.symbol))
-            .replace('$2', buyAmount.formatAsAsset(6, buyToken.symbol))
+          intent: getTransactionIntent({
+            normalizedTransferredValue,
+            tx: transactionInfo,
+            transactionNetwork,
+            buyAmount,
+            buyToken,
+            sellAmount,
+            sellToken
+          })
         } as ParsedTransaction
       }
 
@@ -569,7 +575,6 @@ export function useTransactionParser (
           isSwap: to.toLowerCase() === SwapExchangeProxy,
           intent: getTransactionIntent({
             normalizedTransferredValue,
-            tokensList: combinedTokensList,
             transactionNetwork,
             tx: transactionInfo,
             token
