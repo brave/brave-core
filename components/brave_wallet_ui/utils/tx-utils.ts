@@ -853,6 +853,7 @@ export function getTransactionTokenSymbol ({
 export const getTransactionIntent = ({
   buyAmount,
   buyToken,
+  erc721TokenId,
   normalizedTransferredValue,
   sellAmount,
   sellToken,
@@ -862,6 +863,7 @@ export const getTransactionIntent = ({
 }: {
   buyAmount?: Amount
   buyToken?: BraveWallet.BlockchainToken
+  erc721TokenId?: string
   normalizedTransferredValue: string
   sellAmount?: Amount
   sellToken?: BraveWallet.BlockchainToken
@@ -869,6 +871,17 @@ export const getTransactionIntent = ({
   transactionNetwork?: BraveWallet.NetworkInfo
   tx: BraveWallet.TransactionInfo
 }): string => {
+  // ERC 721
+  if (
+    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ) {
+    return getLocale('braveWalletTransactionIntentSend').replace(
+      '$1',
+      `${token?.symbol ?? ''} ${erc721TokenId}`
+    )
+  }
+
   // ERC20 Approve
   if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
     return toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? ''

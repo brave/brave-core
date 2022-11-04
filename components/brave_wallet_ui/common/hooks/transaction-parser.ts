@@ -437,8 +437,13 @@ export function useTransactionParser (
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork?.symbol),
           insufficientFundsForGasError: insufficientNativeFunds,
-          intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`)
+          intent: getTransactionIntent({
+            normalizedTransferredValue,
+            tx: transactionInfo,
+            token,
+            transactionNetwork,
+            erc721TokenId
+          })
         } as ParsedTransaction
       }
 
