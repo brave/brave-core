@@ -15,9 +15,11 @@ import android.widget.TextView;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 
 public class DAppsMessageFragment extends BaseDAppsFragment {
     private SignMessageRequest mCurrentSignMessageRequest;
+    private boolean mUnicodeEscapeVersion;
 
     public DAppsMessageFragment(SignMessageRequest currentSignMessageRequest) {
         mCurrentSignMessageRequest = currentSignMessageRequest;
@@ -30,6 +32,23 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
         View view = inflater.inflate(R.layout.fragment_dapps_message, container, false);
         TextView signMessageText = view.findViewById(R.id.sign_message_text);
         signMessageText.setText(mCurrentSignMessageRequest.message);
+        mUnicodeEscapeVersion = false;
+        if (Validations.hasUnicode(mCurrentSignMessageRequest.message)) {
+            view.findViewById(R.id.non_ascii_warning_layout).setVisibility(View.VISIBLE);
+            TextView warningLinkText = view.findViewById(R.id.non_ascii_warning_text_link);
+            warningLinkText.setOnClickListener(v -> {
+                if (!mUnicodeEscapeVersion) {
+                    warningLinkText.setText(getString(R.string.wallet_non_ascii_characters_ascii));
+                    signMessageText.setText(
+                            Validations.unicodeEscape(mCurrentSignMessageRequest.message));
+                } else {
+                    warningLinkText.setText(
+                            getString(R.string.wallet_non_ascii_characters_original));
+                    signMessageText.setText(mCurrentSignMessageRequest.message);
+                }
+                mUnicodeEscapeVersion = !mUnicodeEscapeVersion;
+            });
+        }
 
         return view;
     }
