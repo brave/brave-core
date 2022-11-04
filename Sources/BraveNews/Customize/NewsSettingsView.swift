@@ -199,6 +199,7 @@ public struct NewsSettingsView: View {
   @ObservedObject private var isNewsEnabled = Preferences.BraveNews.isEnabled
   @State private var searchResults: SearchResults?
   @State private var isShowingAddSource: Bool = false
+//  @State private var findFeedsError: FindFeedsError?
   
   var showBraveNewsToggle: some View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
@@ -215,65 +216,67 @@ public struct NewsSettingsView: View {
     .toggleStyle(SwitchToggleStyle(tint: Color(.braveOrange)))
   }
   
-  public var body: some View {
+  // Xcode typechecker struggled when these were inside of `body`
+  @ViewBuilder var destinations: some View {
     let totalFollowCount = dataSource.followedSources.count + dataSource.followedChannels.count
+    NavigationLink {
+      SourceListContainerView(dataSource: dataSource)
+    } label: {
+      DestinationLabel(
+        image: Image(braveSystemName: "brave.crown"),
+        title: "Popular Sources", // TODO: Localize
+        subtitle: "Currently trending sources" // TODO: Localize
+      )
+    }
+    NavigationLink {
+      SourceSuggestionsContainerView(dataSource: dataSource)
+    } label: {
+      DestinationLabel(
+        image: Image(braveSystemName: "brave.star"),
+        title: "Suggested", // TODO: Localize
+        subtitle: "Our curated list of sources"
+      )
+    }
+    if !dataSource.channels.isEmpty {
+      NavigationLink {
+        ChannelListContainerView(dataSource: dataSource)
+      } label: {
+        DestinationLabel(
+          image: Image(braveSystemName: "brave.newspaper"),
+          title: "Channels", // TODO: Localize
+          subtitle: "Follow topics relevant to you" // TODO: Localize
+        )
+      }
+    }
+    if totalFollowCount > 0 {
+      NavigationLink {
+        FollowingListContainerView(dataSource: dataSource)
+      } label: {
+        DestinationLabel(
+          image: Image(braveSystemName: "brave.heart"),
+          title: {
+            HStack {
+              Text("Following") // TODO: Localize
+              Text(NSNumber(value: totalFollowCount), formatter: NumberFormatter())
+                .font(.caption)
+                .padding(.vertical, 1)
+                .padding(.horizontal, 6)
+                .background(Capsule().stroke(Color(.secondaryButtonTint), lineWidth: 1))
+                .foregroundColor(Color(.secondaryBraveLabel))
+            }
+          },
+          subtitle: "Manage your following list" // TODO: Localize
+        )
+      }
+    }
+  }
+  
+  public var body: some View {
     List {
       Section {
         if isNewsEnabled.value {
-          NavigationLink {
-            SourceListContainerView(dataSource: dataSource)
-          } label: {
-            DestinationLabel(
-              image: Image(braveSystemName: "brave.crown"),
-              title: "Popular Sources", // TODO: Localize
-              subtitle: "Currently trending sources" // TODO: Localize
-            )
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          NavigationLink {
-            SourceSuggestionsContainerView(dataSource: dataSource)
-          } label: {
-            DestinationLabel(
-              image: Image(braveSystemName: "brave.star"),
-              title: "Suggested", // TODO: Localize
-              subtitle: "Our curated list of sources"
-            )
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          if !dataSource.channels.isEmpty {
-            NavigationLink {
-              ChannelListContainerView(dataSource: dataSource)
-            } label: {
-              DestinationLabel(
-                image: Image(braveSystemName: "brave.newspaper"),
-                title: "Channels", // TODO: Localize
-                subtitle: "Follow topics relevant to you" // TODO: Localize
-              )
-            }
+          destinations
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          }
-          if totalFollowCount > 0 {
-            NavigationLink {
-              FollowingListContainerView(dataSource: dataSource)
-            } label: {
-              DestinationLabel(
-                image: Image(braveSystemName: "brave.heart"),
-                title: {
-                  HStack {
-                    Text("Following") // TODO: Localize
-                    Text(NSNumber(value: totalFollowCount), formatter: NumberFormatter())
-                      .font(.caption)
-                      .padding(.vertical, 1)
-                      .padding(.horizontal, 6)
-                      .background(Capsule().stroke(Color(.secondaryButtonTint), lineWidth: 1))
-                      .foregroundColor(Color(.secondaryBraveLabel))
-                  }
-                },
-                subtitle: "Manage your following list" // TODO: Localize
-              )
-            }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          }
         }
       } header: {
         showBraveNewsToggle
@@ -283,7 +286,6 @@ public struct NewsSettingsView: View {
       }
     }
     .animation(.default, value: searchDelegate.isEditing)
-    .listStyle(.insetGrouped)
     .listBackgroundColor(Color(.braveGroupedBackground))
     .navigationTitle("Brave News") // DNT?
     .navigationBarTitleDisplayMode(.inline)
@@ -306,17 +308,104 @@ public struct NewsSettingsView: View {
           Button {
             isShowingAddSource = true
           } label: {
-            Label("Add Source", systemImage: "plus")
+            Label("Import OPML…", systemImage: "square.and.arrow.down")
           }
         } label: {
           Image(systemName: "ellipsis")
         }
       }
     }
-    .sheet(isPresented: $isShowingAddSource) {
-      BraveNewsAddSourceView(dataSource: dataSource)
-        .ignoresSafeArea()
+    .opmlImporter(isPresented: $isShowingAddSource, dataSource: dataSource)
+  }
+}
+
+private struct OPMLImporterViewModifier: ViewModifier {
+  @Binding var isPresented: Bool
+  var dataSource: FeedDataSource
+  @State private var opmlParsedResult: OPMLParsedResult?
+  @State private var importError: BraveNewsAddSourceViewController.FindFeedsError? // TODO: Take this out
+  
+  func body(content: Content) -> some View {
+    content
+      .fileImporter(
+        isPresented: $isPresented,
+        allowedContentTypes: [.init("public.opml")!],
+        onCompletion: { result in
+          switch result {
+          case .success(let url):
+            importOPML(from: url)
+          case .failure:
+            break
+          }
+        }
+      )
+      .sheet(item: $opmlParsedResult) { result in
+        UIKitController(
+          UINavigationController(
+            rootViewController:
+              BraveNewsAddSourceResultsViewController(
+                dataSource: dataSource,
+                searchedURL: result.url,
+                rssFeedLocations: result.locations,
+                sourcesAdded: nil
+              )
+          )
+        )
+      }
+      .alert(item: $importError) { error in
+        Alert(
+          title: Text(Strings.BraveNews.addSourceFailureTitle),
+          message: Text(error.localizedDescription),
+          dismissButton: .default(Text(Strings.OKString))
+        )
+      }
+  }
+  
+  private struct OPMLParsedResult: Hashable, Identifiable {
+    var url: URL
+    var locations: [RSSFeedLocation]
+    var id: String {
+      url.absoluteString
     }
+  }
+  
+  private func rssLocationFromOPMLOutline(_ outline: OPML.Outline) -> RSSFeedLocation? {
+    guard let url = outline.xmlUrl?.asURL else { return nil }
+    return .init(title: outline.text, url: url)
+  }
+  
+  private func importOPML(from url: URL) {
+    guard url.isFileURL, let data = try? Data(contentsOf: url) else {
+      isPresented = false
+      importError = .noFeedsFound
+      return
+    }
+    DispatchQueue.global(qos: .userInitiated).async {
+      let opml = OPMLParser.parse(data: data)
+      DispatchQueue.main.async {
+        guard let opml = opml else {
+          isPresented = false
+          importError = .invalidData
+          return
+        }
+        let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
+        if locations.isEmpty {
+          isPresented = false
+          importError = .noFeedsFound
+          return
+        }
+        opmlParsedResult = .init(url: url, locations: locations)
+      }
+    }
+  }
+}
+
+extension View {
+  func opmlImporter(
+    isPresented: Binding<Bool>,
+    dataSource: FeedDataSource
+  ) -> some View {
+    modifier(OPMLImporterViewModifier(isPresented: isPresented, dataSource: dataSource))
   }
 }
 
