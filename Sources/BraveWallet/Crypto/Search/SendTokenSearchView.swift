@@ -14,8 +14,18 @@ struct SendTokenSearchView: View {
   
   var network: BraveWallet.NetworkInfo
   
+  private var allTokens: [BraveWallet.BlockchainToken] {
+    if WalletDebugFlags.isNFTEnabled {
+      return sendTokenStore.userAssets
+    } else {
+      return sendTokenStore.userAssets.filter {
+        !$0.isErc721 || network.isNativeAsset($0)
+      }
+    }
+  }
+  
   var body: some View {
-    TokenList(tokens: sendTokenStore.userAssets.filter { !$0.isErc721 || network.isNativeAsset($0) }) { token in
+    TokenList(tokens: allTokens) { token in
       Button(action: {
         sendTokenStore.selectedSendToken = token
         presentationMode.dismiss()

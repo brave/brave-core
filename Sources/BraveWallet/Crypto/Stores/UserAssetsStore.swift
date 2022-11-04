@@ -82,7 +82,11 @@ public class UserAssetsStore: ObservableObject {
     walletService.userAssets(network.chainId, coin: network.coin) { [self] userAssets in
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
       blockchainRegistry.allTokens(network.chainId, coin: network.coin) { [self] registryTokens in
-        allTokens = registryTokens + [network.nativeToken]
+        if WalletDebugFlags.isNFTEnabled {
+          allTokens = registryTokens + [network.nativeToken]
+        } else {
+          allTokens = registryTokens.filter { !$0.isErc721 } + [network.nativeToken]
+        }
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
             walletService: walletService,
