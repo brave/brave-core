@@ -14,7 +14,6 @@ import {
   WalletAccountType,
   WalletState
 } from '../../constants/types'
-import { SwapExchangeProxy } from '../constants/registry'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -156,10 +155,6 @@ export function useTransactionParser (
     solFeeEstimates
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const selectedNetwork = transactionNetwork || reduxSelectedNetwork
-  const nativeAsset = React.useMemo(
-    () => selectedNetwork && makeNetworkAsset(selectedNetwork),
-    [selectedNetwork]
-  )
   const { findAssetPrice } = usePricing(spotPrices)
 
   const networkSpotPrice = React.useMemo(
@@ -169,33 +164,23 @@ export function useTransactionParser (
     [selectedNetwork, findAssetPrice]
   )
 
-  const combinedTokensList = React.useMemo(() => {
-    return visibleTokens.concat(fullTokenList)
-  }, [visibleTokens, fullTokenList])
-
   return React.useCallback((tx: BraveWallet.TransactionInfo): ParsedTransaction => {
-    const { txType } = tx
-
-    const { gasFee } = parseTransactionFeesWithoutPrices(tx, solFeeEstimates)
-    const gasFeeFiat = getGasFeeFiatValue({
+    const {
+      token,
       gasFee,
-      networkSpotPrice,
-      txNetwork: transactionNetwork
-    })
-
-    const isSPLTransaction = isSolanaSplTransaction(tx)
-    const to = getTransactionToAddress(tx)
-    const token = findTransactionToken(tx, combinedTokensList)
-
-    const { sellToken } = getETHSwapTranasactionBuyAndSellTokens({
-      nativeAsset,
-      tokensList: combinedTokensList,
-      tx
+      sellToken,
+      ...txBase
+    } = parseTransactionWithoutPrices({
+      accounts,
+      fullTokenList,
+      transactionNetwork: selectedNetwork,
+      tx,
+      userVisibleTokensList: visibleTokens,
+      solFeeEstimates
     })
 
     const {
       normalizedTransferredValue,
-      normalizedTransferredValueExact,
       weiTransferredValue
     } = getFormattedTransactionTransferredValue({
       tx,
@@ -204,206 +189,22 @@ export function useTransactionParser (
       sellToken
     })
 
-    const txBase: Omit<
-      ParsedTransaction,
-      | 'fiatTotal'
-      | 'fiatValue'
-      | 'formattedNativeCurrencyTotal'
-    > = {
-      ...parseTransactionWithoutPrices({
-        accounts,
-        fullTokenList,
-        transactionNetwork: selectedNetwork,
+    return {
+      token,
+      gasFee,
+      sellToken,
+      ...txBase,
+      ...getTransactionFiatValues({
+        gasFee,
+        networkSpotPrice,
+        normalizedTransferredValue,
+        spotPrices,
         tx,
-        userVisibleTokensList: visibleTokens,
-        solFeeEstimates
-      }),
-      gasFeeFiat
-    }
-
-    switch (true) {
-      case txBase.isSolanaDappTransaction: {
-        const {
-          fiatTotal,
-          fiatValue,
-          formattedNativeCurrencyTotal
-        } = getTransactionFiatValues({
-          gasFee,
-          networkSpotPrice,
-          normalizedTransferredValue,
-          spotPrices,
-          tx,
-          sellToken,
-          token,
-          txNetwork: selectedNetwork,
-          transferredValueWei: normalizedTransferredValueExact
-        })
-
-        const parsedTx: ParsedTransaction = {
-          ...txBase,
-          fiatValue,
-          fiatTotal,
-          formattedNativeCurrencyTotal
-        }
-
-        return parsedTx
-      }
-
-      // transfer(address recipient, uint256 amount) → bool
-      case txType === BraveWallet.TransactionType.ERC20Transfer: {
-        const {
-          fiatTotal,
-          fiatValue,
-          formattedNativeCurrencyTotal
-        } = getTransactionFiatValues({
-          gasFee,
-          networkSpotPrice,
-          normalizedTransferredValue,
-          spotPrices,
-          tx,
-          sellToken,
-          token,
-          txNetwork: selectedNetwork
-        })
-
-        return {
-          ...txBase,
-          fiatValue,
-          fiatTotal,
-          formattedNativeCurrencyTotal
-        } as ParsedTransaction
-      }
-
-      // transferFrom(address owner, address to, uint256 tokenId)
-      case txType === BraveWallet.TransactionType.ERC721TransferFrom:
-
-      // safeTransferFrom(address owner, address to, uint256 tokenId)
-      case txType === BraveWallet.TransactionType.ERC721SafeTransferFrom: {
-        const {
-          fiatTotal,
-          fiatValue,
-          formattedNativeCurrencyTotal
-        } = getTransactionFiatValues({
-          gasFee,
-          networkSpotPrice,
-          normalizedTransferredValue,
-          spotPrices,
-          tx,
-          sellToken,
-          token,
-          txNetwork: selectedNetwork
-        })
-
-        return {
-          ...txBase,
-          fiatValue,
-          fiatTotal,
-          formattedNativeCurrencyTotal
-        } as ParsedTransaction
-      }
-
-      // approve(address spender, uint256 amount) → bool
-      case txType === BraveWallet.TransactionType.ERC20Approve: {
-        const {
-          fiatTotal,
-          fiatValue,
-          formattedNativeCurrencyTotal
-        } = getTransactionFiatValues({
-          gasFee,
-          networkSpotPrice,
-          normalizedTransferredValue,
-          spotPrices,
-          tx,
-          sellToken,
-          token,
-          txNetwork: selectedNetwork
-        })
-
-        return {
-          ...txBase,
-          fiatValue,
-          fiatTotal,
-          formattedNativeCurrencyTotal
-        } as ParsedTransaction
-      }
-
-      case isSPLTransaction: {
-        const {
-          fiatTotal,
-          fiatValue,
-          formattedNativeCurrencyTotal
-        } = getTransactionFiatValues({
-          gasFee,
-          networkSpotPrice,
-          normalizedTransferredValue,
-          spotPrices,
-          tx,
-          sellToken,
-          token,
-          txNetwork: selectedNetwork
-        })
-
-        return {
-          ...txBase,
-          fiatValue,
-          fiatTotal,
-          formattedNativeCurrencyTotal
-        } as ParsedTransaction
-      }
-
-      // args: (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
-      case txType === BraveWallet.TransactionType.ETHSwap: {
-        const {
-          fiatTotal,
-          fiatValue,
-          formattedNativeCurrencyTotal
-        } = getTransactionFiatValues({
-          gasFee,
-          networkSpotPrice,
-          normalizedTransferredValue,
-          spotPrices,
-          tx,
-          sellAmountWei: weiTransferredValue,
-          sellToken,
-          token,
-          txNetwork: selectedNetwork
-        })
-
-        return {
-          ...txBase,
-          fiatValue,
-          fiatTotal,
-          formattedNativeCurrencyTotal
-        } as ParsedTransaction
-      }
-
-      case to.toLowerCase() === SwapExchangeProxy:
-      case txType === BraveWallet.TransactionType.ETHSend:
-      case txType === BraveWallet.TransactionType.SolanaSystemTransfer:
-      case txType === BraveWallet.TransactionType.Other:
-      default: {
-        const {
-          fiatTotal,
-          fiatValue,
-          formattedNativeCurrencyTotal
-        } = getTransactionFiatValues({
-          gasFee,
-          networkSpotPrice,
-          normalizedTransferredValue,
-          spotPrices,
-          tx,
-          txNetwork: selectedNetwork,
-          sellToken,
-          token
-        })
-
-        return {
-          ...txBase,
-          fiatValue,
-          fiatTotal,
-          formattedNativeCurrencyTotal
-        } as ParsedTransaction
-      }
+        sellToken,
+        token,
+        txNetwork: selectedNetwork,
+        transferredValueWei: weiTransferredValue
+      })
     }
   }, [
     selectedNetwork,
