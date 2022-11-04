@@ -6,6 +6,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 
 #include <string>
+#include <utility>
 
 #include "absl/types/optional.h"
 #include "base/bind.h"
@@ -26,14 +27,14 @@ bool HasMigrated() {
       prefs::kHasMigratedRewardsState);
 }
 
-void FailedToMigrate(const InitializeCallback& callback) {
-  callback(/*success*/ false);
+void FailedToMigrate(InitializeCallback callback) {
+  std::move(callback).Run(/*success*/ false);
 }
 
-void SuccessfullyMigrated(const InitializeCallback& callback) {
+void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedRewardsState, true);
-  callback(/*success*/ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 void OnMigrate(InitializeCallback callback,
@@ -41,7 +42,7 @@ void OnMigrate(InitializeCallback callback,
                const std::string& json) {
   if (!success) {
     // Confirmations state does not exist
-    SuccessfullyMigrated(callback);
+    SuccessfullyMigrated(std::move(callback));
     return;
   }
 
@@ -53,39 +54,39 @@ void OnMigrate(InitializeCallback callback,
       BuildTransactionsFromJson(json);
   if (!transactions) {
     BLOG(0, "Failed to parse rewards state");
-    FailedToMigrate(callback);
+    FailedToMigrate(std::move(callback));
     return;
   }
 
   database::table::Transactions database_table;
-  database_table.Save(
-      *transactions,
-      base::BindOnce(
-          [](const InitializeCallback& callback, const bool success) {
-            if (!success) {
-              BLOG(0, "Failed to save rewards state");
-              FailedToMigrate(callback);
-              return;
-            }
+  database_table.Save(*transactions,
+                      base::BindOnce(
+                          [](InitializeCallback callback, const bool success) {
+                            if (!success) {
+                              BLOG(0, "Failed to save rewards state");
+                              FailedToMigrate(std::move(callback));
+                              return;
+                            }
 
-            BLOG(3, "Successfully migrated rewards state");
-            SuccessfullyMigrated(callback);
-          },
-          callback));
+                            BLOG(3, "Successfully migrated rewards state");
+                            SuccessfullyMigrated(std::move(callback));
+                          },
+                          std::move(callback)));
 }
 
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/*success*/ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
   BLOG(3, "Loading confirmations state");
 
-  AdsClientHelper::GetInstance()->Load(kConfirmationStateFilename,
-                                       base::BindOnce(&OnMigrate, callback));
+  AdsClientHelper::GetInstance()->Load(
+      kConfirmationStateFilename,
+      base::BindOnce(&OnMigrate, std::move(callback)));
 }
 
 }  // namespace ads::rewards

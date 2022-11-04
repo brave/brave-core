@@ -137,9 +137,7 @@ const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
 }
 
 void ClientStateManager::Initialize(InitializeCallback callback) {
-  callback_ = std::move(callback);
-
-  Load();
+  Load(std::move(callback));
 }
 
 void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
@@ -537,15 +535,18 @@ void ClientStateManager::Save() {
                                        base::BindOnce(&OnSaved));
 }
 
-void ClientStateManager::Load() {
+void ClientStateManager::Load(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
   AdsClientHelper::GetInstance()->Load(
       kClientStateFilename,
-      base::BindOnce(&ClientStateManager::OnLoaded, base::Unretained(this)));
+      base::BindOnce(&ClientStateManager::OnLoaded, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
+void ClientStateManager::OnLoaded(InitializeCallback callback,
+                                  const bool success,
+                                  const std::string& json) {
   if (!success) {
     BLOG(3, "Client state does not exist, creating default state");
 
@@ -559,7 +560,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
 
       BLOG(3, "Failed to parse client state: " << json);
 
-      callback_(/*success*/ false);
+      std::move(callback).Run(/*success*/ false);
       return;
     }
 
@@ -573,7 +574,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
     BLOG(9, "Client state is mutated");
   }
 
-  callback_(/*success */ true);
+  std::move(callback).Run(/*success */ true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

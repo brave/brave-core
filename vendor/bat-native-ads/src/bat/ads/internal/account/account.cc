@@ -126,15 +126,13 @@ void Account::Deposit(const std::string& creative_instance_id,
 }
 
 // static
-void Account::GetStatement(const GetStatementCallback& callback) {
+void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!ShouldRewardUser()) {
-    callback(/*statement*/ nullptr);
+    std::move(callback).Run(/*statement*/ nullptr);
     return;
   }
 
-  return BuildStatement([callback](mojom::StatementInfoPtr statement) {
-    callback(std::move(statement));
-  });
+  return BuildStatement(std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -269,11 +269,11 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   adsClient = new AdsClientIOS(self);
   ads = ads::Ads::CreateInstance(adsClient);
-  ads->Initialize(^(const bool success) {
+  ads->Initialize(base::BindOnce(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
     [self registerAdsResources];
     completion(success);
-  });
+  }));
 }
 
 - (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
@@ -302,7 +302,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)shutdown:(nullable void (^)())completion {
   if ([self isAdsServiceRunning]) {
     dispatch_group_notify(self.prefsWriteGroup, dispatch_get_main_queue(), ^{
-      self->ads->Shutdown(^(bool) {
+      self->ads->Shutdown(base::BindOnce(^(bool) {
         if (self->ads != nil) {
           delete self->ads;
         }
@@ -322,7 +322,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         if (completion) {
           completion();
         }
-      });
+      }));
     });
   } else {
     if (completion) {
@@ -466,7 +466,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->RemoveAllHistory(completion);
+  ads->RemoveAllHistory(base::BindOnce(^(const bool success) {
+    completion(success);
+  }));
 }
 
 #pragma mark - Observers
@@ -665,7 +667,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return;
   }
   ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType),
-                                    completion);
+                                    base::BindOnce(^(const bool success) {
+                                      completion(success);
+                                    }));
 }
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived,
@@ -674,21 +678,22 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetStatementOfAccounts(^(ads::mojom::StatementInfoPtr statement) {
-    if (!statement) {
-      completion(0, 0, nil);
-      return;
-    }
+  ads->GetStatementOfAccounts(
+      base::BindOnce(^(ads::mojom::StatementInfoPtr statement) {
+        if (!statement) {
+          completion(0, 0, nil);
+          return;
+        }
 
-    NSDate* nextPaymentDate = nil;
-    if (!statement->next_payment_date.is_null()) {
-      nextPaymentDate =
-          [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
-                                                    .ToDoubleT()];
-    }
-    completion(statement->ads_received_this_month,
-               statement->earnings_this_month, nextPaymentDate);
-  });
+        NSDate* nextPaymentDate = nil;
+        if (!statement->next_payment_date.is_null()) {
+          nextPaymentDate =
+              [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                        .ToDoubleT()];
+        }
+        completion(statement->ads_received_this_month,
+                   statement->earnings_this_month, nextPaymentDate);
+      }));
 }
 
 - (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId

@@ -117,19 +117,23 @@ void Transfer::OnTransferAd(const int32_t tab_id,
     return;
   }
 
-  LogAdEvent(ad, ConfirmationType::kTransferred, [=](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to log transferred ad event");
-      FailedToTransferAd(ad);
-      return;
-    }
+  LogAdEvent(
+      ad, ConfirmationType::kTransferred,
+      base::BindOnce(&Transfer::OnLogAdEvent, base::Unretained(this), ad));
+}
 
-    BLOG(6, "Successfully logged transferred ad event");
+void Transfer::OnLogAdEvent(const AdInfo& ad, const bool success) {
+  if (!success) {
+    BLOG(1, "Failed to log transferred ad event");
+    FailedToTransferAd(ad);
+    return;
+  }
 
-    BLOG(1, "Transferred ad for " << ad.target_url);
+  BLOG(6, "Successfully logged transferred ad event");
 
-    NotifyDidTransferAd(ad);
-  });
+  BLOG(1, "Transferred ad for " << ad.target_url);
+
+  NotifyDidTransferAd(ad);
 }
 
 void Transfer::Cancel(const int32_t tab_id) {

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/account_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
@@ -67,11 +68,11 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
     ASSERT_TRUE(success);
 
     const database::table::Transactions database_table;
-    database_table.GetAll(
+    database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
           ASSERT_TRUE(success);
           EXPECT_TRUE(transactions.empty());
-        });
+        }));
 
     const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
@@ -91,11 +92,11 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
     ASSERT_TRUE(success);
 
     const database::table::Transactions database_table;
-    database_table.GetAll(
+    database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
           ASSERT_TRUE(success);
           EXPECT_TRUE(transactions.empty());
-        });
+        }));
 
     const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/transactions/transactions.h"
 
+#include <utility>
+
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -28,15 +30,17 @@ TEST_F(BatAdsTransactionsTest, Add) {
       });
 
   // Assert
-  const TransactionList expected_transactions = {transaction};
+  TransactionList expected_transactions = {transaction};
 
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_transactions, transactions);
-      });
+      base::BindOnce(
+          [](const TransactionList& expected_transactions, const bool success,
+             const TransactionList& transactions) {
+            ASSERT_TRUE(success);
+            EXPECT_EQ(expected_transactions, transactions);
+          },
+          std::move(expected_transactions)));
 }
 
 TEST_F(BatAdsTransactionsTest, GetForDateRange) {
@@ -62,15 +66,17 @@ TEST_F(BatAdsTransactionsTest, GetForDateRange) {
   SaveTransactions(transactions);
 
   // Act
-  const TransactionList expected_transactions = {transaction_2, transaction_3};
+  TransactionList expected_transactions = {transaction_2, transaction_3};
 
   transactions::GetForDateRange(
       Now(), DistantFuture(),
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_transactions, transactions);
-      });
+      base::BindOnce(
+          [](const TransactionList& expected_transactions, const bool success,
+             const TransactionList& transactions) {
+            ASSERT_TRUE(success);
+            EXPECT_EQ(expected_transactions, transactions);
+          },
+          std::move(expected_transactions)));
 
   // Assert
 }
@@ -95,10 +101,11 @@ TEST_F(BatAdsTransactionsTest, RemoveAll) {
   // Assert
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
-      [](const bool success, const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(transactions.empty());
-      });
+      base::BindOnce(
+          [](const bool success, const TransactionList& transactions) {
+            ASSERT_TRUE(success);
+            EXPECT_TRUE(transactions.empty());
+          }));
 }
 
 }  // namespace ads
