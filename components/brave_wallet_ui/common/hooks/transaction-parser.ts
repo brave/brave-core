@@ -84,6 +84,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   formattedNativeCurrencyTotal: string
   value: string
   valueExact: string
+  weiTransferredValue: string
   symbol: string
   decimals: number // network decimals
   insufficientFundsForGasError?: boolean
@@ -169,6 +170,8 @@ export function useTransactionParser (
       token,
       gasFee,
       sellToken,
+      weiTransferredValue,
+      value: normalizedTransferredValue,
       ...txBase
     } = parseTransactionWithoutPrices({
       accounts,
@@ -179,20 +182,12 @@ export function useTransactionParser (
       solFeeEstimates
     })
 
-    const {
-      normalizedTransferredValue,
-      weiTransferredValue
-    } = getFormattedTransactionTransferredValue({
-      tx,
-      txNetwork: transactionNetwork,
-      token,
-      sellToken
-    })
-
     return {
       token,
       gasFee,
       sellToken,
+      weiTransferredValue,
+      value: normalizedTransferredValue,
       ...txBase,
       ...getTransactionFiatValues({
         gasFee,
@@ -227,7 +222,14 @@ export function parseTransactionWithoutPrices ({
   tx: BraveWallet.TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
-}): ParsedTransaction {
+}): Omit<
+  ParsedTransaction,
+  | 'fiatValue'
+  | 'fiatTotal'
+  | 'formattedNativeCurrencyTotal'
+  | 'normalizedTransferredValue'
+  | 'gasFeeFiat'
+> {
   const to = getTransactionToAddress(tx)
   const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
   const token = findTransactionToken(tx, combinedTokensList)
@@ -251,7 +253,8 @@ export function parseTransactionWithoutPrices ({
 
   const {
     normalizedTransferredValue,
-    normalizedTransferredValueExact
+    normalizedTransferredValueExact,
+    weiTransferredValue
   } = getFormattedTransactionTransferredValue({
     tx,
     txNetwork: transactionNetwork,
@@ -366,6 +369,7 @@ export function parseTransactionWithoutPrices ({
     }),
     token,
     value: normalizedTransferredValue,
-    valueExact: normalizedTransferredValueExact
-  } as ParsedTransaction
+    valueExact: normalizedTransferredValueExact,
+    weiTransferredValue
+  }
 }
