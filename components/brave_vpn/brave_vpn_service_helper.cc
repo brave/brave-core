@@ -163,21 +163,23 @@ base::Value::Dict GetValueWithTicketInfos(
   base::Value::Dict dict;
 
   std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
+
+  // add subscriber credential to the email body.
+  std::string body_with_credential =
+      body + "\n\nsubscriber-credential: " + subscriber_credential +
+      "\npayment-validation-method: brave-premium";
+
   base::TrimWhitespaceASCII(email, base::TRIM_ALL, &email_trimmed);
   base::TrimWhitespaceASCII(subject, base::TRIM_ALL, &subject_trimmed);
-  base::TrimWhitespaceASCII(body, base::TRIM_ALL, &body_trimmed);
+  base::TrimWhitespaceASCII(body_with_credential, base::TRIM_ALL,
+                            &body_trimmed);
   base::Base64Encode(body_trimmed, &body_encoded);
 
   // required fields
-  dict.Set("email", email_trimmed);
-  dict.Set("subject", subject_trimmed);
-  dict.Set("support-ticket", body_encoded);
-  dict.Set("partner-client-id", "com.brave.browser");
-
-  // optional (but encouraged) fields
-  dict.Set("subscriber-credential", subscriber_credential);
-  dict.Set("payment-validation-method", "brave-premium");
-  dict.Set("payment-validation-data", "");
+  dict.Set(kSupportTicketEmailKey, email_trimmed);
+  dict.Set(kSupportTicketSubjectKey, subject_trimmed);
+  dict.Set(kSupportTicketSupportTicketKey, body_encoded);
+  dict.Set(kSupportTicketPartnerClientIdKey, "com.brave.browser");
 
   return dict;
 }
