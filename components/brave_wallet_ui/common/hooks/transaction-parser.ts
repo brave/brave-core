@@ -289,6 +289,7 @@ export function useTransactionParser (
       | 'sellToken'
       | 'sender'
       | 'senderLabel'
+      | 'status'
       | 'token'
       | 'value'
       | 'valueExact'
@@ -341,6 +342,7 @@ export function useTransactionParser (
       sellToken,
       sender: transactionInfo.fromAddress,
       senderLabel: getAddressLabel(transactionInfo.fromAddress, accounts),
+      status: transactionInfo.txStatus,
       token,
       value: normalizedTransferredValue,
       valueExact: normalizedTransferredValueExact
@@ -361,7 +363,6 @@ export function useTransactionParser (
 
         const parsedTx: ParsedTransaction = {
           ...txBase,
-          status: transactionInfo.txStatus,
           recipient: to,
           recipientLabel: getAddressLabel(to, accounts),
           fiatValue: transferedAmountFiat,
@@ -399,7 +400,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          status: transactionInfo.txStatus,
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -425,7 +425,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          status: transactionInfo.txStatus, // The caller, which may not be the owner
           fiatValue: Amount.zero(), // Display NFT values in the future
           fiatTotal: new Amount(totalAmountFiat),
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
@@ -447,7 +446,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          status: transactionInfo.txStatus,
           fiatValue: Amount.zero(),
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
@@ -474,7 +472,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          status: transactionInfo.txStatus,
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -529,7 +526,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          status: transactionInfo.txStatus,
           fiatValue: sellAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sellAmountFiat
@@ -558,7 +554,6 @@ export function useTransactionParser (
 
         return {
           ...txBase,
-          status: transactionInfo.txStatus,
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
@@ -708,6 +703,7 @@ export function parseTransactionWithoutPrices ({
     sellToken,
     sender: tx.fromAddress,
     senderLabel: getAddressLabel(tx.fromAddress, accounts),
+    status: tx.txStatus,
     token,
     value: normalizedTransferredValue,
     valueExact: normalizedTransferredValueExact
