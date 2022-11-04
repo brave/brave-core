@@ -12,6 +12,8 @@ import Modal from './Modal'
 // Leave possibility for more pages open.
 type NewsPage = null
   | 'news'
+  | 'suggestions'
+  | 'popular'
 
 interface BraveNewsContext {
   customizePage: NewsPage
