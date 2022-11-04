@@ -184,6 +184,13 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       navigationController?.setToolbarHidden(true, animated: animated)
     }
   }
+  
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    if navigationController?.isBeingDismissed == true {
+      viewDidDisappear?()
+    }
+  }
 }
 
 public struct NewsSettingsView: View {
