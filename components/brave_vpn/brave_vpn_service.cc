@@ -29,6 +29,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/bind.h"
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -98,7 +99,6 @@ void BraveVpnService::CheckInitialState() {
     }
 
     ScheduleBackgroundRegionDataFetch();
-    GetBraveVPNConnectionAPI()->CheckConnection();
 #endif
   } else {
     ClearSubscriberCredential(local_prefs_);
@@ -135,7 +135,7 @@ void BraveVpnService::ScheduleBackgroundRegionDataFetch() {
 
 void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  VLOG(2) << __func__;
+  VLOG(2) << __func__ << " " << state;
 
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.
@@ -474,6 +474,11 @@ void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
 }
 
 BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() const {
+  if (mock_connection_api_) {
+    CHECK_IS_TEST();
+    return mock_connection_api_;
+  }
+
   if (is_simulation_)
     return BraveVPNOSConnectionAPI::GetInstanceForTest();
   return BraveVPNOSConnectionAPI::GetInstance();
@@ -745,7 +750,6 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
   }
 
   ScheduleBackgroundRegionDataFetch();
-  GetBraveVPNConnectionAPI()->CheckConnection();
 #endif
 }
 
@@ -842,9 +846,15 @@ void BraveVpnService::SetPurchasedState(const std::string& env,
   }
 
   purchased_state_ = state;
+  VLOG(2) << __func__ << " " << state;
 
   for (const auto& obs : observers_)
     obs->OnPurchasedStateChanged(purchased_state_.value());
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (state == PurchasedState::PURCHASED)
+    GetBraveVPNConnectionAPI()->CheckConnection();
+#endif
 }
 
 void BraveVpnService::SetCurrentEnvironment(const std::string& env) {
