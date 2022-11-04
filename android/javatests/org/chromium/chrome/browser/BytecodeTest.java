@@ -704,8 +704,9 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
                 "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoCoordinator",
-                "org/chromium/chrome/browser/logo/BraveLogoCoordinator", Callback.class,
-                LogoView.class, boolean.class, Callback.class, Runnable.class, boolean.class));
+                "org/chromium/chrome/browser/logo/BraveLogoCoordinator", Context.class,
+                Callback.class, LogoView.class, boolean.class, Callback.class, Runnable.class,
+                boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
