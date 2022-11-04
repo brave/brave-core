@@ -11,6 +11,7 @@ import UIKit
 import Storage
 import SnapKit
 import BraveUI
+import SafariServices
 
 public enum OnboardingRewardsState {
   case skipped
@@ -51,13 +52,17 @@ public class OnboardingRewardsAgreementViewController: UIViewController {
     contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
 
     contentView.onTermsOfServicePressed = { [weak self] in
-      guard let self = self else { return }
-      self.present(OnboardingWebViewController(url: .termsOfService), animated: true, completion: nil)
+      let vc = SFSafariViewController(url: BraveUX.braveTermsOfUseURL, configuration: .init())
+      vc.modalPresentationStyle = .currentContext
+
+      self?.present(vc, animated: true)
     }
 
     contentView.onPrivacyPolicyPressed = { [weak self] in
-      guard let self = self else { return }
-      self.present(OnboardingWebViewController(url: .privacyPolicy), animated: true, completion: nil)
+      let vc = SFSafariViewController(url: BraveUX.bravePrivacyURL, configuration: .init())
+      vc.modalPresentationStyle = .currentContext
+
+      self?.present(vc, animated: true)
     }
   }
 
