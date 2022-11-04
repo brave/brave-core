@@ -744,8 +744,7 @@ export const accountHasInsufficientFundsForTransaction = ({
   gasFee,
   nativeAsset,
   tokensList,
-  tx,
-  transferedValue
+  tx
 }: {
   account?: WalletAccountType
   accountNativeBalance: string
@@ -754,9 +753,14 @@ export const accountHasInsufficientFundsForTransaction = ({
   nativeAsset?: BraveWallet.BlockchainToken
   tokensList: BraveWallet.BlockchainToken[]
   tx: BraveWallet.TransactionInfo
-  transferedValue: string
 }): boolean => {
   const { txType } = tx
+
+  // SPL
+  if (isSolanaSplTransaction(tx)) {
+    return accountTokenBalance !== '' && new Amount(getTransactionBaseValue(tx))
+      .gt(accountTokenBalance)
+  }
 
   // Eth Swap
   if (txType === BraveWallet.TransactionType.ETHSwap) {
@@ -775,7 +779,7 @@ export const accountHasInsufficientFundsForTransaction = ({
   // ETHSend
   // SolanaSystemTransfer
   // Other
-  return accountNativeBalance !== '' && new Amount(transferedValue)
+  return accountNativeBalance !== '' && new Amount(getTransactionBaseValue(tx))
     .plus(gasFee)
     .gt(accountNativeBalance)
 }
