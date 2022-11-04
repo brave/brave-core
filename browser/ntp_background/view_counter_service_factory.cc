@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -82,6 +83,9 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
         nullptr,
 #endif
         ads_service, profile->GetPrefs(), g_browser_process->local_state(),
+        std::make_unique<NTPP3AHelperImpl>(
+            g_browser_process->local_state(),
+            g_brave_browser_process->brave_p3a_service()),
         is_supported_locale);
   }
 

@@ -9,6 +9,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/p3a.h"
@@ -121,6 +122,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_vpn::RegisterLocalStatePrefs(registry);
   skus::RegisterLocalStatePrefs(registry);
 #endif
+
+  ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave
