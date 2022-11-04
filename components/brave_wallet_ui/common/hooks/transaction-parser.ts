@@ -14,7 +14,6 @@ import {
   WalletAccountType,
   WalletState
 } from '../../constants/types'
-import { NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magics'
 import { SwapExchangeProxy } from '../constants/registry'
 
 // Utils
@@ -52,7 +51,6 @@ import {
 import { getBalance } from '../../utils/balance-utils'
 import { getAddressLabel } from '../../utils/account-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
-import { findTokenByContractAddress } from '../../utils/asset-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 
 // Hooks
@@ -319,41 +317,27 @@ export function useTransactionParser (
 
       // args: (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
       case txType === BraveWallet.TransactionType.ETHSwap: {
-        const [fillPath] = txArgs
-
-        const fillContracts = fillPath
-          .slice(2)
-          .match(/.{1,40}/g)
-        const fillTokens = (fillContracts || [])
-          .map(path => '0x' + path)
-          .map(address =>
-            address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
-              ? nativeAsset
-              : findTokenByContractAddress(address, combinedTokensList) || nativeAsset)
-          .filter(Boolean) as BraveWallet.BlockchainToken[]
-
-        const sellToken = fillTokens.length === 1
-          ? nativeAsset
-          : fillTokens[0]
-
-        const sellAmountFiat = sellToken
-          ? computeFiatAmount(
-              weiTransferredValue,
-              sellToken.symbol,
-              sellToken.decimals
-            )
-          : Amount.empty()
-
-        const totalAmountFiat = new Amount(gasFeeFiat)
-          .plus(sellAmountFiat)
+        const {
+          fiatTotal,
+          fiatValue,
+          formattedNativeCurrencyTotal
+        } = getTransactionFiatValues({
+          gasFee,
+          networkSpotPrice,
+          normalizedTransferredValue,
+          spotPrices,
+          tx,
+          sellAmountWei: weiTransferredValue,
+          sellToken,
+          token,
+          txNetwork: selectedNetwork
+        })
 
         return {
           ...txBase,
-          fiatValue: sellAmountFiat,
-          fiatTotal: totalAmountFiat,
-          formattedNativeCurrencyTotal: sellAmountFiat
-            .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork?.symbol)
+          fiatValue,
+          fiatTotal,
+          formattedNativeCurrencyTotal
         } as ParsedTransaction
       }
 

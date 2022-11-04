@@ -975,7 +975,7 @@ export const getTransactionFiatValues = ({
   token?: BraveWallet.BlockchainToken
   tx: BraveWallet.TransactionInfo
   txNetwork?: BraveWallet.NetworkInfo
-  sellAmountWei?: Amount
+  sellAmountWei?: string
   sellToken?: BraveWallet.BlockchainToken
   gasFee: string
   normalizedTransferredValue: string
@@ -990,6 +990,31 @@ export const getTransactionFiatValues = ({
     networkSpotPrice,
     txNetwork
   })
+
+  // ETH SWAP
+  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
+    const sellAmountFiat = sellToken && sellAmountWei
+      ? computeFiatAmount(
+          spotPrices,
+          {
+            decimals: sellToken.decimals,
+            symbol: sellToken.symbol,
+            value: sellAmountWei
+          }
+        )
+      : Amount.empty()
+
+    const totalAmountFiat = new Amount(gasFeeFiat)
+      .plus(sellAmountFiat)
+
+    return {
+      gasFeeFiat,
+      fiatValue: sellAmountFiat,
+      fiatTotal: totalAmountFiat,
+      formattedNativeCurrencyTotal: sellAmountFiat.div(networkSpotPrice)
+        .formatAsAsset(6, txNetwork?.symbol)
+    }
+  }
 
   // DEFAULT
   const sendAmountFiat = txNetwork
