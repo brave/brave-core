@@ -383,6 +383,12 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
+  if (IsMouseHovered()) {
+    // On Windows, when mouse moves into the area which intersects with web
+    // view, OnMouseExited() is invoked even mouse is on this view.
+    return;
+  }
+
   mouse_enter_timer_.Stop();
   if (state_ == State::kFloating)
     SetState(State::kCollapsed);
