@@ -322,6 +322,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSites.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSitesListAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSitesPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletSolanaConnectedSites.java",
+  "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletSolanaConnectedSitesPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveTileView.java",
