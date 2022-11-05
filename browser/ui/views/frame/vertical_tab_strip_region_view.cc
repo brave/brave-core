@@ -400,6 +400,7 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   bool overflowed =
+      tabs::features::ShouldShowVerticalTabs(browser_) &&
       scroll_view_->GetMaxHeight() < scroll_view_->contents()->height();
   region_view_->new_tab_button()->SetVisible(!overflowed);
   new_tab_button_->SetVisible(overflowed);

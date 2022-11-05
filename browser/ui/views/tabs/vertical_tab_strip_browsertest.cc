@@ -8,8 +8,11 @@
 #include "brave/browser/ui/views/tabs/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
@@ -140,4 +143,29 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
             0);
   EXPECT_TRUE(IsWindowTitleViewVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
+  EXPECT_TRUE(
+      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+
+  brave::ToggleVerticalTabStrip(browser());
+  browser_non_client_frame_view()->Layout();
+
+  // When there are too many tabs so it overflows, the original new tab button
+  // will be hidden and vertical tabstrip region view will show it's own new tab
+  // button at the bottom.
+  while (!browser_view()
+              ->tab_strip_region_view()
+              ->new_tab_button()
+              ->GetVisible()) {
+    chrome::AddTabAt(browser(), {}, -1, true);
+  }
+
+  // When turning on horizontal tabstrip, the original new tab button should be
+  // visible.
+  brave::ToggleVerticalTabStrip(browser());
+  browser_non_client_frame_view()->Layout();
+  EXPECT_TRUE(
+      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
 }
