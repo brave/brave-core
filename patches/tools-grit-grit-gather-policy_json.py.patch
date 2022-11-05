@@ -1,11 +1,10 @@
 diff --git a/tools/grit/grit/gather/policy_json.py b/tools/grit/grit/gather/policy_json.py
-index 3837d69e1794ba49b36b441f6f5a61b982430621..2b0be13ff344219798b32583b7567afe583fe8b9 100644
+index dc50b9f5e68e2616810e9f451c2dbdaf94a0fe8e..a3c4b800412f3e8229b72401f28128764beed87c 100644
 --- a/tools/grit/grit/gather/policy_json.py
 +++ b/tools/grit/grit/gather/policy_json.py
-@@ -328,5 +328,6 @@ class PolicyJson(skeleton_gatherer.SkeletonGatherer):
-         'frame_name': 'Google Chrome Frame',
-         'os_name': 'Google Chrome OS',
+@@ -330,3 +330,5 @@ class PolicyJson(skeleton_gatherer.SkeletonGatherer):
        }
-+      self._config = {'build': 'brave', 'app_name': 'Brave', 'frame_name': 'Brave Frame', 'os_name': 'Google Chrome OS'}
      else:
        raise Exception('Unknown build')
++
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/grit/grit/gather/policy_json.py", globals(), locals())
