@@ -6,7 +6,7 @@ import override_utils
 
 @override_utils.override_function(globals())
 def GetConfigurationForBuild(original_function, defines):
-    base = original_function({'_chromium'})
+    base = original_function(defines)
     return _merge_dicts(_BRAVE_VALUES, base)
 
 _BRAVE_VALUES = {
