@@ -4,7 +4,6 @@
 # found in the LICENSE file.
 
 import override_utils
-import unittest
 
 @override_utils.override_function(globals())
 def GetConfigurationForBuild(original_function, defines):
@@ -54,14 +53,3 @@ def _merge_dicts(src, dst):
         result[k] = \
             _merge_dicts(v, dst.get(k, {})) if isinstance(v, dict) else v
     return result
-
-class MergeDictsTest(unittest.TestCase):
-    def test_merge(self):
-        self.assertEqual(
-            # We actually only care about 'brave' being in the result.
-            {'brave': 'Brave', "googlechrome": "Google Chrome"},
-            _merge_dicts({'brave': 'Brave'}, {"googlechrome": "Google Chrome"})
-        )
-
-if __name__ == '__main__':
-    unittest.main()
