@@ -10,9 +10,8 @@
 
 namespace settings {
 
-BASE_FEATURE(kParallelImports,
-             "ParallelImports",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+const base::Feature kParallelImports{"ParallelImports",
+                                     base::FEATURE_ENABLED_BY_DEFAULT};
 
 // Temporary flag to keep old way until
 // https://github.com/brave/brave-core/pull/15637 landed.
