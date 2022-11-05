@@ -3,11 +3,12 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import override_utils
 import unittest
-import writer_configuration
 
-def GetConfigurationForBuild(defines):
-    base = writer_configuration.GetConfigurationForBuild({'_chromium'})
+@override_utils.override_function(globals())
+def GetConfigurationForBuild(original_function, defines):
+    base = original_function({'_chromium'})
     return _merge_dicts(_BRAVE_VALUES, base)
 
 _BRAVE_VALUES = {
