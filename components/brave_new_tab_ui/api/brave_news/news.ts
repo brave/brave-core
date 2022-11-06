@@ -171,4 +171,5 @@ class BraveNewsApi {
   }
 }
 
-export const api = new BraveNewsApi()
+export const api = new BraveNewsApi();
+(window as any).api = api
