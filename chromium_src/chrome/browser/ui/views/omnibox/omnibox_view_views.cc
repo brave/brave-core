@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_contents_view.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -70,7 +71,9 @@ int GetSearchEnginesID() {
   if (model()->CurrentTextIsURL() && !GetSelectedText().empty())         \
     BraveUpdateContextMenu(menu_contents, \
                            controller()->GetLocationBarModel()->GetURL()
+#define OmniboxPopupContentsView BraveOmniboxPopupContentsView
 #include "src/chrome/browser/ui/views/omnibox/omnibox_view_views.cc"
+#undef OmniboxPopupContentsView
 #undef IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH
 #define IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH GetSearchEnginesID()
 
