@@ -3237,6 +3237,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_QUICK_ACTION_SEARCH" desc="Description for Brave QuickActionSearchAndBookmarkWidget preview">
       Brave quick action search
     </message>
+    <message name="IDS_BRAVE_PLAYLIST" desc="Playlist menu item text">
+      Playlist
+    </message>
   </messages>
   </release>
 </grit>
