@@ -784,21 +784,7 @@
                   "walletProviderRegions": {
                     "type": "object",
                     "additionalProperties": {
-                      "type": "object",
-                      "properties": {
-                        "allow": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "block": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        }
-                      }
+                      "type": "any"
                     }
                   }
                 }
