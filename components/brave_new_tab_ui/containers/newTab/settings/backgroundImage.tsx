@@ -28,6 +28,7 @@ import { defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsFo
 import SponsoredImageToggle from './sponsoredImagesToggle'
 
 import { RANDOM_SOLID_COLOR_VALUE, RANDOM_GRADIENT_COLOR_VALUE, MAX_CUSTOM_IMAGE_BACKGROUNDS } from 'gen/brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.m.js'
+import BackgroundImageTiles from './backgroundImageTiles'
 
 interface Props {
   newTabData: NewTab.State
@@ -88,15 +89,18 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
     this.setState({ location: Location.GRADIENT_COLORS })
   }
 
-  renderUploadButton = (onClick: () => void, checked: boolean, showTitle: boolean) => {
+  renderUploadButton = (onClick: () => void, checked: boolean, showTitle: boolean, sampleImages?: NewTab.ImageBackground[]) => {
     return (
       <StyledCustomBackgroundOption onClick={onClick}>
         <StyledSelectionBorder selected={checked}>
           <StyledUploadIconContainer selected={checked}>
-            <UploadIcon />
-            <StyledUploadLabel>
-              {getLocale('customBackgroundImageOptionUploadLabel')}
-            </StyledUploadLabel>
+            { sampleImages?.length
+              ? <BackgroundImageTiles images={sampleImages}/>
+              : (<>
+                  <UploadIcon />
+                  <StyledUploadLabel> {getLocale('customBackgroundImageOptionUploadLabel')} </StyledUploadLabel>
+                </>)
+            }
           </StyledUploadIconContainer>
         </StyledSelectionBorder>
         {showTitle && (
@@ -145,7 +149,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             </SettingsRow>
             {showBackgroundImage && featureCustomBackgroundEnabled && (
               <StyledCustomBackgroundSettings>
-                {this.renderUploadButton(this.onClickCustomBackground, usingCustomImageBackground, /* showTitle= */ true)}
+                {this.renderUploadButton(this.onClickCustomBackground, usingCustomImageBackground, /* showTitle= */ true, this.props.newTabData.customImageBackgrounds)}
                 <StyledCustomBackgroundOption
                   onClick={this.onClickBraveBackground}
                 >
