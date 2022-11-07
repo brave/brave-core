@@ -108,7 +108,6 @@ const defaultState: WalletState = {
   gasEstimates: undefined,
   connectedAccounts: [],
   isMetaMaskInstalled: false,
-  selectedCoin: BraveWallet.CoinType.ETH,
   defaultCurrencies: {
     fiat: '',
     crypto: ''
@@ -399,10 +398,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<AssetFilterOption>) {
         state.selectedAssetFilter = payload
-      },
-
-      setSelectedCoin (state: WalletState, { payload }: PayloadAction<BraveWallet.CoinType>) {
-        state.selectedCoin = payload
       },
 
       setSitePermissions (state: WalletState, { payload }: PayloadAction<SitePermissionsPayloadType>) {

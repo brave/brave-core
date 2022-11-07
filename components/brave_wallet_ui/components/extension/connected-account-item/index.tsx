@@ -34,6 +34,7 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
 
 export interface Props {
   account: WalletAccountType
@@ -48,9 +49,11 @@ const SitePermissionAccountItem = (props: Props) => {
   const {
     selectedAccount,
     connectedAccounts,
-    activeOrigin,
-    selectedCoin
+    activeOrigin
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // api
+  const { data: selectedCoin } = useGetSelectedCoinQuery()
 
   // memos
   const orb = React.useMemo(() => {

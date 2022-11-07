@@ -244,7 +244,6 @@ export interface WalletState {
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
-  selectedCoin: BraveWallet.CoinType
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]

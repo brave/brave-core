@@ -26,7 +26,9 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
 
 // Hooks
-import { useExplorer, usePricing, useIsMounted } from '../../../common/hooks'
+import { useExplorer, usePricing } from '../../../common/hooks'
+import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
+import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // types
 import {
@@ -83,9 +85,11 @@ export const ConnectedPanel = (props: Props) => {
     activeOrigin: originInfo,
     selectedAccount,
     selectedNetwork,
-    selectedCoin,
     connectedAccounts
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // api
+  const { data: selectedCoin } = useGetSelectedCoinQuery()
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
@@ -97,9 +101,9 @@ export const ConnectedPanel = (props: Props) => {
   const selectedAccountName = selectedAccount?.name || ''
 
   // custom hooks
+  const { braveWalletService } = useApiProxy()
   const { computeFiatAmount } = usePricing(spotPrices)
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
-  const isMounted = useIsMounted()
 
   // methods
   const navigate = React.useCallback((path: PanelTypes) => () => {
@@ -137,31 +141,45 @@ export const ConnectedPanel = (props: Props) => {
 
   // effects
   React.useEffect(() => {
-    const checkPermission = async () => {
-      const braveWalletService = getWalletPanelApiProxy().braveWalletService
-      await braveWalletService.isPermissionDenied(selectedCoin, originInfo.origin)
-        .then(result => {
-          if (isMounted) {
-            setIsPermissionDenied(result.denied)
-          }
-        })
-        .catch(e => console.log(e))
-    }
-    checkPermission()
-    if (selectedAccount && selectedCoin === BraveWallet.CoinType.SOL) {
-      const isSolanaAccountConnected = async () => {
-        const apiProxy = getWalletPanelApiProxy()
-        await apiProxy.panelHandler.isSolanaAccountConnected(selectedAccount.address)
+    let subscribed = true
+
+    if (selectedCoin) {
+      (async () => {
+        await braveWalletService.isPermissionDenied(selectedCoin, originInfo.origin)
           .then(result => {
-            if (isMounted) {
+            if (subscribed) {
+              setIsPermissionDenied(result.denied)
+            }
+          })
+          .catch(e => console.log(e))
+      })()
+    }
+
+    return () => {
+      subscribed = false
+    }
+  }, [braveWalletService, selectedCoin, originInfo.origin])
+
+  React.useEffect(() => {
+    let subscribed = true
+
+    if (selectedAccount?.address && selectedCoin === BraveWallet.CoinType.SOL) {
+      (async () => {
+        const { panelHandler } = getWalletPanelApiProxy()
+        await panelHandler.isSolanaAccountConnected(selectedAccount?.address)
+          .then(result => {
+            if (subscribed) {
               setIsSolanaConnected(result.connected)
             }
           })
           .catch(e => console.log(e))
-      }
-      isSolanaAccountConnected()
+      })()
     }
-  }, [selectedAccount, selectedCoin, isMounted, originInfo])
+
+    return () => {
+      subscribed = false
+    }
+  }, [selectedAccount?.address])
 
   // memos
   const bg = React.useMemo(() => {
