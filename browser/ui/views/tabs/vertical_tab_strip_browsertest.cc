@@ -16,6 +16,8 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
+#include "ui/views/layout/flex_layout.h"
+#include "ui/views/layout/layout_manager.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/views/frame/glass_browser_frame_view.h"
@@ -32,6 +34,21 @@
 #if defined(USE_AURA)
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
 #endif
+
+namespace {
+
+class TallLayoutManager : public views::FlexLayout {
+ public:
+  using FlexLayout::FlexLayout;
+  ~TallLayoutManager() override = default;
+
+  // views::FlexLayout:
+  gfx::Size GetMinimumSize(const views::View* host) const override {
+    return {300, 1000};
+  }
+};
+
+}  // namespace
 
 class VerticalTabStripBrowserTest : public InProcessBrowserTest {
  public:
@@ -168,4 +185,17 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
   browser_non_client_frame_view()->Layout();
   EXPECT_TRUE(
       browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
+  brave::ToggleVerticalTabStrip(browser());
+  browser_non_client_frame_view()->Layout();
+
+  // TabStripRegionView's mih height shouldn't affect that of browser window.
+  const auto min_size = browser_view()->GetMinimumSize();
+  auto* layout = browser_view()->tab_strip_region_view()->SetLayoutManager(
+      std::make_unique<TallLayoutManager>());
+  layout->SetOrientation(views::LayoutOrientation::kVertical);
+  browser_view()->tab_strip_region_view()->layout_manager_ = layout;
+  EXPECT_EQ(min_size.height(), browser_view()->GetMinimumSize().height());
 }
