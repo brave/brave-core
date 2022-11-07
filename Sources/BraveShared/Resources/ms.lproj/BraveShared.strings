@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Gagal menetapkan keutamaan. Sila cuba lagi.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Sekat notis persetujuan kuki";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave sudah menyekat kuki pihak ketiga. Kami juga boleh menyekat notis persetujuan kuki.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Bosan dengan notis persetujuan kuki?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Menghalang laman web daripada menyimpan maklumat tentang lawatan anda sebelum ini.";
 
@@ -1035,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Perkataan Tidak Cukup";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "Tidak, terima kasih";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Mengubah hala pautan NPR secara automatik kepada versi berasaskan teks mereka (di text.npr.org).";
@@ -3511,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Sokongan VPN";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Pautkan pembelian ke akaun Brave anda";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Pautkan pembelian App Store anda ke akaun Brave anda untuk menggunakan VPN Brave pada peranti lain.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Urus Langganan";
 
@@ -3690,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Ya, sekat notis persetujuan kuki";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Ya, Padamkan";

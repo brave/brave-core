@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Die Einstellung konnte nicht festgelegt werden. Bitte versuchen Sie es erneut.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Cookie-Einwilligungshinweise blockieren";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave blockiert bereits Cookies von Drittanbietern. Wir können auch Cookie-Einwilligungshinweise blockieren.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Keine Lust mehr auf Cookie-Einwilligungshinweise?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Verhindert, dass Webseiten Informationen über Ihre vorherigen Besuche speichern.";
 
@@ -1036,6 +1045,9 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Nicht genug Wörter";
 
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "Kein Interesse";
+
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Leitet NPR-Links automatisch auf ihre textbasierte Version um (auf text.npr.org).";
 
@@ -1287,6 +1299,9 @@
 
 /* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
 "opentabs.openTabsItemLastSyncedYesterdayTitle" = "Gestern um %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Geräte";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "An mein Gerät senden";
@@ -3172,6 +3187,9 @@
 /* No comment provided by engineer. */
 "today.allSources" = "Alle Quellen";
 
+/* The name of the feature */
+"today.braveToday" = "Brave-Nachrichten";
+
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Neue Inhalte verfügbar";
 
@@ -3505,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN-Support";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Kauf mit Ihrem Brave-Konto verknüpfen";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Verknüpfen Sie Ihren Kauf im App Store mit Ihrem Brave-Konto, um Brave VPN auf anderen Geräten zu nutzen.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Abonnement verwalten";
 
@@ -3684,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Ja, Cookie-Einwilligungshinweise blockieren";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Ja, löschen";

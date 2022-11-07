@@ -11,7 +11,16 @@
 "5ixvGX-xcI3h9" = "Terdapat ${count} pilihan yang sepadan dengan ‘Iklan Disekat’.";
 
 /* (No Comment) */
+"7Ds8rk" = "Konfigurasi Kegemaran Skrin Kunci";
+
+/* (No Comment) */
 "7JYzOv" = "Jenis";
+
+/* (No Comment) */
+"7MuqiB" = "Pintasan";
+
+/* (No Comment) */
+"8pcZ6L" = "Widget Kegemaran Skrin Kunci";
 
 /* (No Comment) */
 "8vyYRy" = "#3";
@@ -38,13 +47,25 @@
 "e13lS3-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
 
 /* (No Comment) */
+"e13lS3-FGO5qW" = "Sebagai pengesahan, betulkah anda inginkan ‘Senarai Main Brave’?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Sebagai pengesahan, betulkah anda inginkan ‘Dompet Brave’?";
+
+/* (No Comment) */
 "e13lS3-nthxSL" = "Sebagai pengesahan, betulkah anda inginkan 'Muat Turun'?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Sebagai pengesahan, betulkah anda inginkan ‘Imbas Kod QR’?";
 
 /* (No Comment) */
 "e13lS3-VBH4G6" = "Sebagai pengesahan, betulkah anda inginkan 'Sejarah'?";
 
 /* (No Comment) */
 "e13lS3-vs094F" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Peribadi Baharu'?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Sebagai pengesahan, betulkah anda inginkan ‘Carian’?";
 
 /* (No Comment) */
 "EUS9FL" = "Pintasan Widget";
@@ -54,6 +75,12 @@
 
 /* (No Comment) */
 "gpCwrM" = "Konfigurasi Stat";
+
+/* (No Comment) */
+"hssb67" = "Konfigurasi Widget Pintasan";
+
+/* (No Comment) */
+"iB2TOM" = "Entri Kegemaran";
 
 /* (No Comment) */
 "joEZJM" = "#2";
@@ -68,7 +95,16 @@
 "L1fziM-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
 
 /* (No Comment) */
+"L1fziM-FGO5qW" = "Terdapat ${count} pilihan yang sepadan dengan ‘Senarai Main Brave’.";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Terdapat ${count} pilihan yang sepadan dengan ‘Dompet Brave’.";
+
+/* (No Comment) */
 "L1fziM-nthxSL" = "Terdapat ${count} pilihan yang sepadan dengan ‘Muat Turun’.";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Terdapat ${count} pilihan yang sepadan dengan ‘Imbas Kod QR’.";
 
 /* (No Comment) */
 "L1fziM-VBH4G6" = "Terdapat ${count} pilihan yang sepadan dengan ‘Sejarah’.";
@@ -77,7 +113,13 @@
 "L1fziM-vs094F" = "Terdapat ${count} pilihan yang sepadan dengan ‘Tab Peribadi Baharu’.";
 
 /* (No Comment) */
+"L1fziM-Y7TWy8" = "Terdapat ${count} pilihan yang sepadan dengan ‘Carian’.";
+
+/* (No Comment) */
 "nthxSL" = "Muat Turun";
+
+/* (No Comment) */
+"nXONef" = "Kegemaran";
 
 /* (No Comment) */
 "qKrzyX" = "Imbas Kod QR";
@@ -89,13 +131,25 @@
 "r2EI05-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
 
 /* (No Comment) */
+"r2EI05-FGO5qW" = "Sebagai pengesahan, betulkah anda inginkan ‘Senarai Main Brave’?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Sebagai pengesahan, betulkah anda inginkan ‘Dompet Brave’?";
+
+/* (No Comment) */
 "r2EI05-nthxSL" = "Sebagai pengesahan, betulkah anda inginkan 'Muat Turun'?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Sebagai pengesahan, betulkah anda inginkan ‘Imbas Kod QR’?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Sebagai pengesahan, betulkah anda inginkan 'Sejarah'?";
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Peribadi Baharu'?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Sebagai pengesahan, betulkah anda inginkan ‘Carian’?";
 
 /* (No Comment) */
 "sdOBtj-tYwiRd" = "Sebagai pengesahan, betulkah anda inginkan 'Anggaran Masa Dijimatkan'?";
@@ -113,13 +167,25 @@
 "tNCrcE-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
 
 /* (No Comment) */
+"tNCrcE-FGO5qW" = "Terdapat ${count} pilihan yang sepadan dengan ‘Senarai Main Brave’.";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Terdapat ${count} pilihan yang sepadan dengan ‘Dompet Brave’.";
+
+/* (No Comment) */
 "tNCrcE-nthxSL" = "Terdapat ${count} pilihan yang sepadan dengan ‘Muat Turun’.";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Terdapat ${count} pilihan yang sepadan dengan ‘Imbas Kod QR’.";
 
 /* (No Comment) */
 "tNCrcE-VBH4G6" = "Terdapat ${count} pilihan yang sepadan dengan ‘Sejarah’.";
 
 /* (No Comment) */
 "tNCrcE-vs094F" = "Terdapat ${count} pilihan yang sepadan dengan ‘Tab Peribadi Baharu’.";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Terdapat ${count} pilihan yang sepadan dengan ‘Carian’.";
 
 /* (No Comment) */
 "tVvJ9c" = "Widget Konfigurasi Stat";
@@ -131,13 +197,25 @@
 "TxuMja-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
 
 /* (No Comment) */
+"TxuMja-FGO5qW" = "Terdapat ${count} pilihan yang sepadan dengan ‘Senarai Main Brave’.";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Terdapat ${count} pilihan yang sepadan dengan ‘Dompet Brave’.";
+
+/* (No Comment) */
 "TxuMja-nthxSL" = "Terdapat ${count} pilihan yang sepadan dengan ‘Muat Turun’.";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Terdapat ${count} pilihan yang sepadan dengan ‘Imbas Kod QR’.";
 
 /* (No Comment) */
 "TxuMja-VBH4G6" = "Terdapat ${count} pilihan yang sepadan dengan ‘Sejarah’.";
 
 /* (No Comment) */
 "TxuMja-vs094F" = "Terdapat ${count} pilihan yang sepadan dengan ‘Tab Peribadi Baharu’.";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Terdapat ${count} pilihan yang sepadan dengan ‘Carian’.";
 
 /* (No Comment) */
 "tYwiRd" = "Anggaran Masa Dijimatkan";
@@ -155,6 +233,9 @@
 "xcI3h9" = "Iklan Disekat";
 
 /* (No Comment) */
+"XkwBGY" = "Konfigurasi Pintasan Skrin Kunci";
+
+/* (No Comment) */
 "Y7TWy8" = "Carian";
 
 /* (No Comment) */
@@ -164,7 +245,16 @@
 "YQiQuz-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
 
 /* (No Comment) */
+"YQiQuz-FGO5qW" = "Sebagai pengesahan, betulkah anda inginkan ‘Senarai Main Brave’?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Sebagai pengesahan, betulkah anda inginkan ‘Dompet Brave’?";
+
+/* (No Comment) */
 "YQiQuz-nthxSL" = "Sebagai pengesahan, betulkah anda inginkan 'Muat Turun'?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Sebagai pengesahan, betulkah anda inginkan ‘Imbas Kod QR’?";
 
 /* (No Comment) */
 "YQiQuz-VBH4G6" = "Sebagai pengesahan, betulkah anda inginkan 'Sejarah'?";
@@ -173,16 +263,8 @@
 "YQiQuz-vs094F" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Peribadi Baharu'?";
 
 /* (No Comment) */
-"ziTvSZ" = "Shortcuts Widget Configuration";
+"YQiQuz-Y7TWy8" = "Sebagai pengesahan, betulkah anda inginkan ‘Carian’?";
 
 /* (No Comment) */
-"hssb67" = "Shortcut Widget Configuration";
+"ziTvSZ" = "Konfigurasi Widget Pintasan";
 
-/* (No Comment) */
-"XkwBGY" = "Lock Screen Shortcut Configuration";
-
-/* (No Comment) */
-"8pcZ6L" = "Lock Screen Favorite Widget";
-
-/* (No Comment) */
-"7Ds8rk" = "Lock Screen Favorite Configuration";

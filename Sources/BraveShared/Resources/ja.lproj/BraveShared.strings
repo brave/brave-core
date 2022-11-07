@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Cookieの同意通知をブロック";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Braveはすでにサードパーティーのクッキーをブロックしています。クッキーの同意通知もブロックすることができます。";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Cookieの同意通知にうんざりしていませんか？";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "ウェブサイトにあなたの訪問履歴が保存されないようにします。";
 
@@ -170,7 +179,13 @@
 "BravePanel" = "Brave パネル";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Braveリワード";
+
+/* No comment provided by engineer. */
 "BraveRewardsOpen" = "開く";
+
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Braveリワード";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "Brave検索はあなたの個人情報、クエリ、クリックした内容を追跡しません。";
@@ -967,6 +982,9 @@
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "タップしてTAPポイントを受け取る";
 
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Braveリワード💵🎁";
+
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "詳しくはこちら";
 
@@ -1026,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "ワードが足りません";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "利用しない";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPRのリンクをテキストベースのバージョン (text.npr.org) に自動でリダイレクトします。";
@@ -1138,6 +1159,9 @@
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailsAnd" = "、";
 
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Braveリワード";
+
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Braveプライベート広告を受け入れることで、広告を見るだけでウェブサイトやコンテンツクリエイターを支援することができます。";
 
@@ -1146,6 +1170,9 @@
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "プライバシーポリシー";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Braveリワード";
 
 /* Save button to save current selection */
 "OBSaveButton" = "保存する";
@@ -3160,6 +3187,9 @@
 /* No comment provided by engineer. */
 "today.allSources" = "全てのソース";
 
+/* The name of the feature */
+"today.braveToday" = "Braveニュース";
+
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "利用可能な新しいコンテンツ";
 
@@ -3493,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPNサポート";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Braveアカウントに購入情報をリンク";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでBrave VPNを利用できます。";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "購読の管理";
 
@@ -3672,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "はい";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "はい、Cookieの同意通知をブロックします。";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "はい、削除します";

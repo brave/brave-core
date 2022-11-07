@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Échec de la configuration de la préférence, réessayez.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Bloquer les avis de consentement aux cookies";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave bloque déjà les cookies tiers. Nous pouvons également bloquer les avis de consentement aux cookies.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Vous en avez marre des avis de consentement aux cookies ?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Empêche les sites de stocker des informations sur vos visites précédentes.";
 
@@ -170,7 +179,13 @@
 "BravePanel" = "Panneau Brave";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Récompenses Brave";
+
+/* No comment provided by engineer. */
 "BraveRewardsOpen" = "Ouvrir";
+
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Récompenses Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "Le moteur de recherche Brave Search ne vous suit pas à la trace, et ne surveille pas vos requêtes ni vos clics.";
@@ -228,6 +243,9 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Pour pouvoir commencer, vous devez avoir installé Brave sur tous les appareils que vous souhaitez synchroniser. Pour les associer, lancez une chaîne de synchronisation que vous utiliserez pour associer tous vos appareils en toute sécurité.";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Setting to enable the browser lock privacy feature */
 "BrowserLock" = "Verrouillage du navigateur";
@@ -964,6 +982,9 @@
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Appuyez ici pour récupérer vos jetons gratuits.";
 
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Récompenses Brave 💵🎁";
+
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Appuyez ici pour en savoir plus.";
 
@@ -1023,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Nombre de mots insuffisant";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "Non merci";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Redirection automatique des liens NPR vers leur version texte (à l'adresse text.npr.org).";
@@ -1135,6 +1159,9 @@
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailsAnd" = "et la";
 
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Récompenses Brave";
+
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "En optant pour les publicités privées Brave, vous soutiendrez les diffuseurs et les créateurs de contenu à chaque fois que vous visionnez une publicité.";
 
@@ -1143,6 +1170,9 @@
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Politique de confidentialité";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Récompenses Brave";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Enregistrer";
@@ -3157,6 +3187,9 @@
 /* No comment provided by engineer. */
 "today.allSources" = "Toutes les sources";
 
+/* The name of the feature */
+"today.braveToday" = "Actualités Brave";
+
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Nouveau contenu disponible";
 
@@ -3490,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Assistance VPN";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Associer cet achat à votre compte Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Associez votre achat sur l'App Store à votre compte Brave pour utiliser le VPN Brave sur d'autres appareils.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Gérer mon abonnement";
 
@@ -3669,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Oui";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Oui, bloquer les avis de consentement aux cookies";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Oui, supprimer";

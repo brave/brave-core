@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Error al establecer la preferencia. Inténtalo de nuevo.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Bloquear avisos de consentimiento de cookies";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave ya bloquea las cookies de terceros. También podemos bloquear los avisos de consentimiento de cookies.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "¿Ya te aburren los avisos de consentimiento de cookies?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Impide que los sitios web almacenen información sobre lo que has visitado con anterioridad.";
 
@@ -973,6 +982,9 @@
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Toca para reclamar tus tokens gratuitos.";
 
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Recompensas de Brave 💵🎁";
+
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Toca aquí para obtener más información.";
 
@@ -1032,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "No hay suficientes palabras";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "No, gracias";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Redirige enlaces NPR de forma automática a sus versiones textuales (en text.npr.org).";
@@ -2197,6 +2212,9 @@
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Apoya a los creadores y editores de contenido de forma automática al activar Brave Private Ads. Brave Private Ads son anuncios que respetan la privacidad y que retribuyen a los creadores de contenido.";
 
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Habilitar Recompensas de Brave";
+
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Estás ayudando a apoyar a los creadores de contenido como este.";
 
@@ -3169,6 +3187,9 @@
 /* No comment provided by engineer. */
 "today.allSources" = "Todas las fuentes";
 
+/* The name of the feature */
+"today.braveToday" = "Noticias de Brave";
+
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Nuevo contenido disponible";
 
@@ -3502,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Asistencia con la VPN";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Vincular la compra con tu cuenta de Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Vincula la compra que has hecho en el App Store con tu cuenta de Brave para usar la VPN de Brave en otros dispositivos.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Gestionar la suscripción";
 
@@ -3681,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Sí";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Sí, bloquear los avisos de consentimiento de cookies";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Sí, eliminar";

@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Tercih ayarlanamadı. Lütfen yeniden deneyin.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Çerez onay bildirimlerini engelle";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave, üçüncü taraf çerezlerini zaten engelliyor. Çerez onay bildirimlerini de engelleyebiliriz.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Çerez onay bildirimlerinden bıktınız mı?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Web sitelerinin önceki ziyaretleriniz hakkında bilgi depolamasını engeller.";
 
@@ -1035,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Yeterli Sözcük Yok";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "Hayır, teşekkürler";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPR bağlantıları otomatik olarak metin tabanlı sürümlerine (text.npr.org adresindeki) yönlendirir.";
@@ -3511,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN Desteği";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Satın alımı Brave hesabınıza bağlayın";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Brave VPN'i ve diğer cihazlarda kullanmak için App Store satın alımınızı Brave hesabınıza bağlayın";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Aboneliği Yönet";
 
@@ -3690,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Evet";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Evet, çerez onay bildirimlerini engelle";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Evet, Sil";

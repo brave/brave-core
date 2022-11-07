@@ -11,7 +11,16 @@
 "5ixvGX-xcI3h9" = "Do „Zablokowane reklamy” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"7Ds8rk" = "Konfiguracja elementów ulubionych na zablokowanym ekranie";
+
+/* (No Comment) */
 "7JYzOv" = "Typ";
+
+/* (No Comment) */
+"7MuqiB" = "Skrót";
+
+/* (No Comment) */
+"8pcZ6L" = "Widżet elementów ulubionych na zablokowanym ekranie";
 
 /* (No Comment) */
 "8vyYRy" = "#3";
@@ -38,13 +47,25 @@
 "e13lS3-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
 
 /* (No Comment) */
+"e13lS3-FGO5qW" = "Czy na pewno masz na myśli „Lista odtwarzania Brave”?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Czy na pewno masz na myśli „Portfel Brave”?";
+
+/* (No Comment) */
 "e13lS3-nthxSL" = "Czy na pewno masz na myśli „Pobrania”?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Czy na pewno masz na myśli „Skanuj kod QR”?";
 
 /* (No Comment) */
 "e13lS3-VBH4G6" = "Czy na pewno masz na myśli „Historia”?";
 
 /* (No Comment) */
 "e13lS3-vs094F" = "Czy na pewno masz na myśli „Nowa karta w trybie prywatnym”?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Czy na pewno masz na myśli „Wyszukiwanie”?";
 
 /* (No Comment) */
 "EUS9FL" = "Skrót jako widget";
@@ -54,6 +75,12 @@
 
 /* (No Comment) */
 "gpCwrM" = "Konfiguracja statystyk";
+
+/* (No Comment) */
+"hssb67" = "Konfiguracja widżetu skrótów";
+
+/* (No Comment) */
+"iB2TOM" = "Wpis w ulubionych";
 
 /* (No Comment) */
 "joEZJM" = "#2";
@@ -68,7 +95,16 @@
 "L1fziM-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"L1fziM-FGO5qW" = "Do „Lista odtwarzania Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Do „Portfel Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
 "L1fziM-nthxSL" = "Do „Pobrania” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Do „Skanuj kod QR” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
 "L1fziM-VBH4G6" = "Do „Historia” pasuje następująca liczba opcji: ${count}";
@@ -77,7 +113,13 @@
 "L1fziM-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"L1fziM-Y7TWy8" = "Do „Wyszukiwanie” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
 "nthxSL" = "Pobrane";
+
+/* (No Comment) */
+"nXONef" = "Ulubione";
 
 /* (No Comment) */
 "qKrzyX" = "Skanuj kod QR";
@@ -89,13 +131,25 @@
 "r2EI05-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
 
 /* (No Comment) */
+"r2EI05-FGO5qW" = "Czy na pewno masz na myśli „Lista odtwarzania Brave”?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Czy na pewno masz na myśli „Portfel Brave”?";
+
+/* (No Comment) */
 "r2EI05-nthxSL" = "Czy na pewno masz na myśli „Pobrania”?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Czy na pewno masz na myśli „Skanuj kod QR”?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Czy na pewno masz na myśli „Historia”?";
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Czy na pewno masz na myśli „Nowa karta w trybie prywatnym”?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Czy na pewno masz na myśli „Wyszukiwanie”?";
 
 /* (No Comment) */
 "sdOBtj-tYwiRd" = "Czy na pewno masz na myśli „Szacowany zaoszczędzony czas”?";
@@ -113,13 +167,25 @@
 "tNCrcE-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"tNCrcE-FGO5qW" = "Do „Lista odtwarzania Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Do „Portfel Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
 "tNCrcE-nthxSL" = "Do „Pobrania” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Do „Skanuj kod QR” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
 "tNCrcE-VBH4G6" = "Do „Historia” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
 "tNCrcE-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Do „Wyszukiwanie” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
 "tVvJ9c" = "Widget konfiguracji statystyk";
@@ -131,13 +197,25 @@
 "TxuMja-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"TxuMja-FGO5qW" = "Do „Lista odtwarzania Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Do „Portfel Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
 "TxuMja-nthxSL" = "Do „Pobrania” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Do „Skanuj kod QR” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
 "TxuMja-VBH4G6" = "Do „Historia” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
 "TxuMja-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Do „Wyszukiwanie” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
 "tYwiRd" = "Zaoszczędzony czas";
@@ -155,6 +233,9 @@
 "xcI3h9" = "Zablokowane reklamy";
 
 /* (No Comment) */
+"XkwBGY" = "Konfiguracja skrótów na zablokowanym ekranie";
+
+/* (No Comment) */
 "Y7TWy8" = "Szukaj";
 
 /* (No Comment) */
@@ -164,7 +245,16 @@
 "YQiQuz-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
 
 /* (No Comment) */
+"YQiQuz-FGO5qW" = "Czy na pewno masz na myśli „Lista odtwarzania Brave”?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Czy na pewno masz na myśli „Portfel Brave”?";
+
+/* (No Comment) */
 "YQiQuz-nthxSL" = "Czy na pewno masz na myśli „Pobrania”?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Czy na pewno masz na myśli „Skanuj kod QR”?";
 
 /* (No Comment) */
 "YQiQuz-VBH4G6" = "Czy na pewno masz na myśli „Historia”?";
@@ -173,16 +263,8 @@
 "YQiQuz-vs094F" = "Czy na pewno masz na myśli „Nowa karta w trybie prywatnym”?";
 
 /* (No Comment) */
-"ziTvSZ" = "Shortcuts Widget Configuration";
+"YQiQuz-Y7TWy8" = "Czy na pewno masz na myśli „Wyszukiwanie”?";
 
 /* (No Comment) */
-"hssb67" = "Shortcut Widget Configuration";
+"ziTvSZ" = "Konfiguracja widżetu skrótów";
 
-/* (No Comment) */
-"XkwBGY" = "Lock Screen Shortcut Configuration";
-
-/* (No Comment) */
-"8pcZ6L" = "Lock Screen Favorite Widget";
-
-/* (No Comment) */
-"7Ds8rk" = "Lock Screen Favorite Configuration";
