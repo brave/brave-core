@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
@@ -30,6 +31,7 @@
 namespace {
 
 static constexpr webui::LocalizedString kStrings[] = {
+    {"aboutRewardsText", IDS_REWARDS_PANEL_ABOUT_REWARDS_TEXT},
     {"attention", IDS_REWARDS_PANEL_ATTENTION},
     {"cancel", IDS_REWARDS_PANEL_CANCEL},
     {"captchaContactSupport", IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT},
@@ -41,6 +43,10 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"captchaSolvedText", IDS_REWARDS_CAPTCHA_SOLVED_TEXT},
     {"captchaSolvedTitle", IDS_REWARDS_CAPTCHA_SOLVED_TITLE},
     {"changeAmount", IDS_REWARDS_PANEL_CHANGE_AMOUNT},
+    {"connectAccount", IDS_REWARDS_PANEL_CONNECT_ACCOUNT},
+    {"connectAccountText", IDS_REWARDS_PANEL_CONNECT_ACCOUNT_TEXT},
+    {"connectAccountNoProviders",
+     IDS_REWARDS_PANEL_CONNECT_ACCOUNT_NO_PROVIDERS},
     {"grantCaptchaAmountAds", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_ADS},
     {"grantCaptchaAmountUGP", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_UGP},
     {"grantCaptchaErrorText", IDS_REWARDS_GRANT_CAPTCHA_ERROR_TEXT},
@@ -53,7 +59,12 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"grantCaptchaPassedTitleAds", IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_ADS},
     {"grantCaptchaPassedTitleUGP", IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_UGP},
     {"grantCaptchaTitle", IDS_REWARDS_GRANT_CAPTCHA_TITLE},
+    {"headerTextAdsDisabled", IDS_REWARDS_PANEL_HEADER_TEXT_ADS_DISABLED},
+    {"headerTextAdsEnabled", IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED},
+    {"headerTitle", IDS_REWARDS_PANEL_HEADER_TITLE},
     {"includeInAutoContribute", IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE},
+    {"learnMore", IDS_REWARDS_PANEL_LEARN_MORE},
+    {"learnMoreAboutBAT", IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT},
     {"monthlyTip", IDS_REWARDS_PANEL_MONTHLY_TIP},
     {"notificationAddFunds", IDS_REWARDS_NOTIFICATION_ADD_FUNDS},
     {"notificationAddFundsText", IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TEXT},
@@ -193,6 +204,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"rewardsPaymentCompleted", IDS_REWARDS_PAYMENT_COMPLETED},
     {"rewardsPaymentPending", IDS_REWARDS_PAYMENT_PENDING},
     {"rewardsPaymentProcessing", IDS_REWARDS_PAYMENT_PROCESSING},
+    {"rewardsSettings", IDS_REWARDS_PANEL_REWARDS_SETTINGS},
     {"sendTip", IDS_REWARDS_PANEL_SEND_TIP},
     {"set", IDS_REWARDS_PANEL_SET},
     {"summary", IDS_REWARDS_PANEL_SUMMARY},
@@ -223,6 +235,11 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
     panel_coordinator_ =
         brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
   }
+
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString(
+      "publisherCountText", IDS_REWARDS_PANEL_PUBLISHER_COUNT_TEXT);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
 
   auto* source = content::WebUIDataSource::Create(kBraveRewardsPanelHost);
   source->AddLocalizedStrings(kStrings);

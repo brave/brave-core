@@ -95,3 +95,29 @@ export function externalWalletFromExtensionData (
     }
   }
 }
+
+export interface ExternalWalletProviderRegionInfo {
+  allow: string[]
+  block: string[]
+}
+
+export function isExternalWalletProviderAllowed (
+  countryCode: string,
+  regionInfo: ExternalWalletProviderRegionInfo | null
+) {
+  if (!regionInfo) {
+    regionInfo = { allow: [], block: [] }
+  }
+  const { allow, block } = regionInfo
+  if (allow.length > 0) {
+    return allow.includes(countryCode)
+  }
+  if (block.length > 0) {
+    return !block.includes(countryCode)
+  }
+  // If region info is invalid (i.e. both the allow list and the block list are
+  // empty) optimistically assume that our region data is incorrect and allow
+  // the user to attempt to connect a wallet. If the region is not allowed, the
+  // process should fail on the server.
+  return true
+}

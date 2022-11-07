@@ -435,6 +435,13 @@ void LedgerImpl::GetActivityInfoList(uint32_t start,
   });
 }
 
+void LedgerImpl::GetPublishersVisitedCount(
+    base::OnceCallback<void(int)> callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    database()->GetPublishersVisitedCount(std::move(callback));
+  });
+}
+
 void LedgerImpl::GetExcludedList(PublisherInfoListCallback callback) {
   WhenReady([this, callback]() { database()->GetExcludedList(callback); });
 }

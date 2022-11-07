@@ -414,6 +414,11 @@ void BatLedgerImpl::GetActivityInfoList(
       std::bind(BatLedgerImpl::OnGetActivityInfoList, holder, _1));
 }
 
+void BatLedgerImpl::GetPublishersVisitedCount(
+    GetPublishersVisitedCountCallback callback) {
+  ledger_->GetPublishersVisitedCount(std::move(callback));
+}
+
 // static
 void BatLedgerImpl::OnGetExcludedList(
     CallbackHolder<GetExcludedListCallback>* holder,

@@ -181,6 +181,9 @@ class LEDGER_EXPORT Ledger {
                                    mojom::ActivityInfoFilterPtr filter,
                                    PublisherInfoListCallback callback) = 0;
 
+  virtual void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) = 0;
+
   virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
 
   virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;

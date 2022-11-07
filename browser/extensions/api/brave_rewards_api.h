@@ -236,6 +236,19 @@ class BraveRewardsGetUserVersionFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetPublishersVisitedCountFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublishersVisitedCount", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublishersVisitedCountFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void Callback(int count);
+};
+
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReport", UNKNOWN)
@@ -452,6 +465,17 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
  private:
   void OnBalance(const ledger::mojom::Result result,
                  ledger::mojom::BalancePtr balance);
+};
+
+class BraveRewardsGetExternalWalletProvidersFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getExternalWalletProviders", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetExternalWalletProvidersFunction() override;
+
+  ResponseAction Run() override;
 };
 
 class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {

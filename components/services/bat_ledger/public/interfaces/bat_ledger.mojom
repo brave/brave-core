@@ -101,6 +101,8 @@ interface BatLedger {
   GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
       (array<ledger.mojom.PublisherInfo> list);
 
+  GetPublishersVisitedCount() => (int32 count);
+
   GetExcludedList() => (array<ledger.mojom.PublisherInfo> list);
 
   RefreshPublisher(string publisher_key) => (ledger.mojom.PublisherStatus status);

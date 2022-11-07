@@ -133,6 +133,9 @@ class LedgerImpl : public Ledger {
                            mojom::ActivityInfoFilterPtr filter,
                            PublisherInfoListCallback callback) override;
 
+  void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) override;
+
   void GetExcludedList(PublisherInfoListCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) override;

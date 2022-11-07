@@ -42,14 +42,19 @@ function createHost (): Host {
     requestedView: null,
     rewardsEnabled: true,
     settings: {
+      adsEnabled: true,
       adsPerHour: 3,
       autoContributeEnabled: true,
       autoContributeAmount: 5
     },
     options: {
-      autoContributeAmounts: [1, 5, 10, 15]
+      autoContributeAmounts: [1, 5, 10, 15],
+      externalWalletRegions: new Map([
+        ['uphold', { allow: ['US'], block: [] }],
+        ['gemini', { allow: [], block: ['US'] }]
+      ])
     },
-    grantCaptchaInfo: {
+    grantCaptchaInfo: null && {
       id: '123',
       imageURL: grantCaptchaImageURL,
       hint: 'square',
@@ -64,7 +69,7 @@ function createHost (): Host {
         type: 'ads'
       }
     },
-    adaptiveCaptchaInfo: {
+    adaptiveCaptchaInfo: null && {
       url: '',
       status: 'pending'
     },
@@ -94,7 +99,7 @@ function createHost (): Host {
       supportedWalletProviders: []
     },
     publisherRefreshing: false,
-    externalWallet: {
+    externalWallet: null && {
       provider: 'uphold',
       username: 'brave123',
       status: mojom.WalletStatus.kConnected,
@@ -113,9 +118,11 @@ function createHost (): Host {
         id: '1',
         timeStamp: Date.now() - 100
       }
-    ],
+    ] && [],
     availableCountries: ['US'],
-    declaredCountry: ''
+    declaredCountry: 'US',
+    userVersion: '2.5',
+    publishersVisitedCount: 4
   })
 
   return {
@@ -124,6 +131,10 @@ function createHost (): Host {
     addListener: stateManager.addListener,
 
     getString: locale.getString,
+
+    async getPluralString (key: string, count: number) {
+      return locale.getString(key).replace('$1', count)
+    },
 
     refreshPublisherStatus () {
       console.log('refreshPublisherStatus')
@@ -142,6 +153,15 @@ function createHost (): Host {
         settings: {
           ...stateManager.getState().settings,
           autoContributeAmount: amount
+        }
+      })
+    },
+
+    setAdsEnabled (adsEnabled) {
+      stateManager.update({
+        settings: {
+          ...stateManager.getState().settings,
+          adsEnabled
         }
       })
     },
@@ -270,7 +290,9 @@ function createHost (): Host {
 export function MainPanel () {
   const [host] = React.useState(() => createHost())
   return (
-    <App host={host} />
+    <div className='brave-theme-dark'>
+      <App host={host} />
+    </div>
   )
 }
 

@@ -144,6 +144,9 @@ class RewardsServiceImpl : public RewardsService,
                            ledger::mojom::ActivityInfoFilterPtr filter,
                            GetPublisherInfoListCallback callback) override;
 
+  void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) override;
+
   void GetExcludedList(GetPublisherInfoListCallback callback) override;
 
   void OnGetPublisherInfoList(

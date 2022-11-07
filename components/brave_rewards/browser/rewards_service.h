@@ -159,6 +159,13 @@ class RewardsService : public KeyedService {
                                    const uint32_t limit,
                                    ledger::mojom::ActivityInfoFilterPtr filter,
                                    GetPublisherInfoListCallback callback) = 0;
+
+  // Returns a count of publishers that a user has visited. This value is
+  // displayed to unverified users to indicate the level of support they are
+  // providing to the creator community.
+  virtual void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) = 0;
+
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
 
   using FetchPromotionsCallback =

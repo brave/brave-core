@@ -84,6 +84,7 @@ declare namespace chrome.braveRewards {
   const getAvailableCountries: (callback: (countries: string[]) => void) => void
   const getDeclaredCountry: (callback: (country: string) => void) => void
   const getUserVersion: (callback: (version: string) => void) => void
+  const getPublishersVisitedCount: (callback: (count: number) => void) => void
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
@@ -150,6 +151,8 @@ declare namespace chrome.braveRewards {
   }
 
   const getExternalWallet: (callback: (wallet?: RewardsExtension.ExternalWallet) => void) => {}
+
+  const getExternalWalletProviders: (callback: (providers: string[]) => void) => void
 
   const disconnectWallet: () => {}
 

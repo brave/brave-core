@@ -342,5 +342,40 @@ void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
+void DatabaseActivityInfo::GetPublishersVisitedCount(
+    base::OnceCallback<void(int)> callback) {
+  auto transaction = mojom::DBTransaction::New();
+
+  std::string query = base::StringPrintf(
+      "SELECT COUNT(DISTINCT ai.publisher_id) "
+      "FROM %s AS ai INNER JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = ai.publisher_id "
+      "WHERE ai.reconcile_stamp = ? AND spi.status > 1",
+      kTableName);
+
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
+  command->command = query;
+  BindInt64(command.get(), 0, ledger_->state()->GetReconcileStamp());
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT_TYPE};
+  transaction->commands.push_back(std::move(command));
+
+  auto on_read = [](base::OnceCallback<void(int)> callback,
+                    mojom::DBCommandResponsePtr response) {
+    if (!response ||
+        response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
+        response->result->get_records().size() != 1) {
+      std::move(callback).Run(0);
+      return;
+    }
+
+    auto* record = response->result->get_records()[0].get();
+    std::move(callback).Run(GetIntColumn(record, 0));
+  };
+
+  ledger_->RunDBTransaction(std::move(transaction),
+                            base::BindOnce(on_read, std::move(callback)));
+}
+
 }  // namespace database
 }  // namespace ledger

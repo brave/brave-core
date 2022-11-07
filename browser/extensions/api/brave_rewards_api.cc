@@ -608,6 +608,7 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     data.Set("monthlyTipChoices", base::Value::List());
     data.Set("autoContributeChoices", base::Value::List());
     data.Set("payoutStatus", base::Value::Dict());
+    data.Set("walletProviderRegions", base::Value::Dict());
     return Respond(OneArgument(base::Value(std::move(data))));
   }
 
@@ -629,6 +630,23 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     payout_status.Set(key, value);
   }
   data.Set("payoutStatus", std::move(payout_status));
+
+  base::Value::Dict provider_regions;
+  for (const auto& [provider, regions] : parameters->wallet_provider_regions) {
+    base::Value::List allow;
+    for (const auto& country : regions->allow) {
+      allow.Append(country);
+    }
+    base::Value::List block;
+    for (const auto& country : regions->block) {
+      block.Append(country);
+    }
+    base::Value::Dict regions_dict;
+    regions_dict.Set("allow", std::move(allow));
+    regions_dict.Set("block", std::move(block));
+    provider_regions.Set(provider, std::move(regions_dict));
+  }
+  data.Set("walletProviderRegions", std::move(provider_regions));
 
   Respond(OneArgument(base::Value(std::move(data))));
 }
@@ -707,6 +725,27 @@ ExtensionFunction::ResponseAction BraveRewardsGetUserVersionFunction::Run() {
   base::Version version(prefs->GetString(::brave_rewards::prefs::kUserVersion));
   return RespondNow(OneArgument(
       base::Value(version.IsValid() ? version.GetString() : std::string())));
+}
+
+BraveRewardsGetPublishersVisitedCountFunction::
+    ~BraveRewardsGetPublishersVisitedCountFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetPublishersVisitedCountFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(OneArgument(base::Value(0)));
+  }
+
+  rewards_service->GetPublishersVisitedCount(base::BindOnce(
+      &BraveRewardsGetPublishersVisitedCountFunction::Callback, this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetPublishersVisitedCountFunction::Callback(int count) {
+  Respond(OneArgument(base::Value(count)));
 }
 
 BraveRewardsGetBalanceReportFunction::~BraveRewardsGetBalanceReportFunction() =
@@ -1161,6 +1200,22 @@ void BraveRewardsFetchBalanceFunction::OnBalance(
   }
 
   Respond(OneArgument(base::Value(std::move(balance_value))));
+}
+
+BraveRewardsGetExternalWalletProvidersFunction::
+    ~BraveRewardsGetExternalWalletProvidersFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetExternalWalletProvidersFunction::Run() {
+  base::Value::List providers;
+
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  if (auto* rewards_service = RewardsServiceFactory::GetForProfile(profile)) {
+    for (auto& provider : rewards_service->GetExternalWalletProviders()) {
+      providers.Append(provider);
+    }
+  }
+  return RespondNow(OneArgument(base::Value(std::move(providers))));
 }
 
 BraveRewardsGetExternalWalletFunction::

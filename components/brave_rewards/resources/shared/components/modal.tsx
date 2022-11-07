@@ -59,10 +59,35 @@ interface ModalProps {
 }
 
 export function Modal (props: ModalProps) {
+  // Attach a ResizeObserver for the modal content container. When the content
+  // size changes, set a CSS variable "--modal-content-size" on the document
+  // body. This is primarily used by browser "bubbles" in order to automatically
+  // adjust the height of the bubble when a modal is displayed.
+  const resizeObserver = React.useMemo(() => {
+    return new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.borderBoxSize.length > 0) {
+          document.body.style.setProperty(
+            '--modal-content-block-size',
+            `${entry.borderBoxSize[0].blockSize}px`)
+        }
+      }
+    })
+  }, [])
+
+  const onMountUnmount = (elem: HTMLElement | null) => {
+    if (elem) {
+      resizeObserver.observe(elem)
+    } else {
+      resizeObserver.disconnect()
+      document.body.style.removeProperty('--modal-content-block-size')
+    }
+  }
+
   return (
     <style.root>
       <style.topSpacer />
-      <style.content>
+      <style.content ref={onMountUnmount}>
         {props.children}
       </style.content>
       <style.bottomSpacer />

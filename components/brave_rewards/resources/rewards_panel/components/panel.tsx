@@ -6,7 +6,9 @@ import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
+import { compareVersionStrings } from '../../shared/lib/version_string'
 import { WalletCard } from '../../shared/components/wallet_card'
+import { LimitedView } from './limited_view'
 import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
@@ -16,6 +18,9 @@ type ActiveView = 'tip' | 'summary'
 export function Panel () {
   const host = React.useContext(HostContext)
 
+  const [rewardsEnabled, setRewardsEnabled] =
+    React.useState(host.state.rewardsEnabled)
+  const [userVersion, setUserVersion] = React.useState(host.state.userVersion)
   const [balance, setBalance] = React.useState(host.state.balance)
   const [settings, setSettings] = React.useState(host.state.settings)
   const [externalWallet, setExternalWallet] =
@@ -34,6 +39,8 @@ export function Panel () {
     publisherInfo ? 'tip' : 'summary')
 
   useHostListener(host, (state) => {
+    setRewardsEnabled(state.rewardsEnabled)
+    setUserVersion(state.userVersion)
     setBalance(state.balance)
     setSettings(state.settings)
     setExternalWallet(state.externalWallet)
@@ -45,12 +52,29 @@ export function Panel () {
   })
 
   const walletProvider = externalWallet ? externalWallet.provider : null
+
   const providerPayoutStatus = getProviderPayoutStatus(
     payoutStatus, walletProvider)
 
-  return (
-    <div>
-      <div className='rewards-panel' data-test-id='rewards-panel'>
+  function shouldShowFullView () {
+    if (externalWallet) {
+      return true
+    }
+
+    if (!rewardsEnabled) {
+      return false
+    }
+
+    if (!userVersion) {
+      return true
+    }
+
+    return compareVersionStrings(userVersion, '2.5') < 0
+  }
+
+  function renderFull () {
+    return (
+      <>
         <WalletCard
           balance={balance}
           externalWallet={externalWallet}
@@ -72,6 +96,14 @@ export function Panel () {
           onActiveViewChange={setActiveView}
           onSettingsClick={host.openRewardsSettings}
         />
+      </>
+    )
+  }
+
+  return (
+    <div>
+      <div className='rewards-panel' data-test-id='rewards-panel'>
+        {shouldShowFullView() ? renderFull() : <LimitedView />}
       </div>
       <PanelOverlays />
     </div>

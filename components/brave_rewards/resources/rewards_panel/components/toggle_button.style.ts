@@ -7,9 +7,9 @@ import styled from 'styled-components'
 export const root = styled.div`
   button {
     position: relative;
-    height: 24px;
-    width: 48px;
-    background: #E1E2F6;
+    height: var(--toggle-button-height, 24px);
+    width: var(--toggle-button-width, 48px);
+    background: #DADCE8;
     border: none;
     border-radius: 32px;
     margin: 0;
@@ -17,29 +17,31 @@ export const root = styled.div`
     vertical-align: middle;
     cursor: pointer;
 
+    --toggle-handle-margin: 3px;
+    --toggle-handle-size: calc(var(--toggle-button-height, 24px) - 6px);
+
     .brave-theme-dark & {
-      background: #7679B1;
+      background: #84889C;
+    }
+
+    &.checked {
+      background: #4C54D2;
     }
   }
 `
 
 export const handle = styled.div`
   position: absolute;
-  top: 2px;
-  left: 2px;
-  background-color: rgba(0, 0, 0, .3);
-  height: 20px;
-  width: 20px;
+  top: var(--toggle-handle-margin);
+  left: var(--toggle-handle-margin);
+  background: #fff;
+  height: var(--toggle-handle-size);
+  width: var(--toggle-handle-size);
   border-radius: 50%;
   transition: all .3s ease;
 
-  &.checked {
+  button.checked & {
     right: 0;
-    left: calc(100% - 22px);
-    background-color: var(--brave-color-brandBatInteracting);
-
-    .brave-theme-dark & {
-      background-color: #4436E1;
-    }
+    left: calc(100% - var(--toggle-handle-size) - var(--toggle-handle-margin));
   }
 `

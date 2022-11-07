@@ -780,6 +780,26 @@
                     "additionalProperties": {
                       "type": "string"
                     }
+                  },
+                  "walletProviderRegions": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "allow": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "block": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -857,6 +877,23 @@
               {
                 "name": "version",
                 "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPublishersVisitedCount",
+        "type": "function",
+        "description": "Returns the number of publisher sites that a user has visited",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "count",
+                "type": "number"
               }
             ]
           }
@@ -1356,6 +1393,26 @@
                   "wallets": {
                     "type": "any"
                   }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getExternalWalletProviders",
+        "type": "function",
+        "description": "Returns the supported external wallet providers for the current profile",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "providers",
+                "type": "array",
+                "items": {
+                  "type": "string"
                 }
               }
             ]

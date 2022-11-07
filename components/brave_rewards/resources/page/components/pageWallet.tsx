@@ -16,7 +16,8 @@ import { LayoutKind } from '../lib/layout_context'
 import {
   ExternalWallet,
   ExternalWalletProvider,
-  lookupExternalWalletProviderName
+  lookupExternalWalletProviderName,
+  isExternalWalletProviderAllowed
 } from '../../shared/lib/external_wallet'
 
 import { Provider } from '../../ui/components/profile'
@@ -538,20 +539,8 @@ class PageWallet extends React.Component<Props, State> {
 
   isWalletProviderEnabled = (walletProvider: string) => {
     const { currentCountryCode, parameters } = this.props.rewardsData
-    const regions = parameters.walletProviderRegions[walletProvider]
-
-    if (!regions) {
-      return true
-    }
-
-    const { allow, block } = regions
-
-    if (allow.length === 0 && block.length === 0) {
-      return true
-    }
-
-    return allow.includes(currentCountryCode) ||
-      block.length !== 0 && !block.includes(currentCountryCode)
+    const regions = parameters.walletProviderRegions[walletProvider] || null
+    return isExternalWalletProviderAllowed(currentCountryCode, regions)
   }
 
   generateExternalWalletProviderList = (walletProviders: string[]) => {

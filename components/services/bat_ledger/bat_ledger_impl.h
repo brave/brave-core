@@ -140,6 +140,9 @@ class BatLedgerImpl :
                            ledger::mojom::ActivityInfoFilterPtr filter,
                            GetActivityInfoListCallback callback) override;
 
+  void GetPublishersVisitedCount(
+      GetPublishersVisitedCountCallback callback) override;
+
   void GetExcludedList(GetExcludedListCallback callback) override;
 
   void UpdateMediaDuration(

@@ -12,6 +12,7 @@ import { NewTabLink } from '../../shared/components/new_tab_link'
 import { GeminiIcon } from '../../shared/components/icons/gemini_icon'
 import { UpholdIcon } from '../../shared/components/icons/uphold_icon'
 import { BitflyerIcon } from '../../shared/components/icons/bitflyer_icon'
+import { supportedWalletRegionsURL } from '../../shared/lib/rewards_urls'
 
 import connectWalletGraphic from '../assets/connect_wallet.svg'
 
@@ -162,9 +163,7 @@ export function ConnectWalletModal (props: Props) {
             })
           }
           <style.learnMoreLink>
-            <NewTabLink
-              href={'https://support.brave.com/hc/en-us/articles/6539887971469'}
-            >
+            <NewTabLink href={supportedWalletRegionsURL}>
               {getString('connectWalletLearnMore')}
             </NewTabLink>
           </style.learnMoreLink>

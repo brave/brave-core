@@ -3,6 +3,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from 'gen/brave/components/brave_rewards/common/brave_rewards_panel.mojom.m.js'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 
 import { Host, GrantCaptchaStatus } from './interfaces'
 import { GrantInfo } from '../../shared/lib/grant_info'
@@ -309,6 +310,15 @@ export function createHost (): Host {
       loadPanelData().catch(console.error)
     })
 
+    chrome.braveRewards.onAdsEnabled.addListener((adsEnabled: boolean) => {
+      stateManager.update({
+        settings: {
+          ...stateManager.getState().settings,
+          adsEnabled
+        }
+      })
+    })
+
     apiAdapter.onGrantsUpdated(updateGrants)
 
     // Update the balance when a grant has been processed, when tips have been
@@ -333,6 +343,12 @@ export function createHost (): Host {
       }),
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
+      }),
+      apiAdapter.getUserVersion().then((userVersion) => {
+        stateManager.update({ userVersion })
+      }),
+      apiAdapter.getPublishersVisitedCount().then((publishersVisitedCount) => {
+        stateManager.update({ publishersVisitedCount })
       }),
       apiAdapter.getDeclaredCountry().then((declaredCountry) => {
         stateManager.update({ declaredCountry })
@@ -397,6 +413,10 @@ export function createHost (): Host {
 
     getString,
 
+    getPluralString (key: string, count: number) {
+      return PluralStringProxyImpl.getInstance().getPluralString(key, count)
+    },
+
     enableRewards (country: string) {
       return apiAdapter.createRewardsWallet(country)
     },
@@ -450,6 +470,10 @@ export function createHost (): Host {
           autoContributeAmount: amount
         }
       })
+    },
+
+    setAdsEnabled (adsEnabled) {
+      chrome.braveRewards.updatePrefs({ adsEnabled })
     },
 
     setAdsPerHour (adsPerHour) {

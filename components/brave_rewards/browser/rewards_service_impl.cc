@@ -718,6 +718,14 @@ void RewardsServiceImpl::GetActivityInfoList(
                      std::move(callback)));
 }
 
+void RewardsServiceImpl::GetPublishersVisitedCount(
+    base::OnceCallback<void(int)> callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), 0);
+  }
+  bat_ledger_->GetPublishersVisitedCount(std::move(callback));
+}
+
 void RewardsServiceImpl::GetExcludedList(
     GetPublisherInfoListCallback callback) {
   if (!Connected()) {

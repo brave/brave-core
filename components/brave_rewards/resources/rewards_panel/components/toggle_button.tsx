@@ -18,8 +18,11 @@ export function ToggleButton (props: Props) {
 
   return (
     <style.root>
-      <button onClick={toggleChecked}>
-        <style.handle className={props.checked ? 'checked' : ''} />
+      <button
+        onClick={toggleChecked}
+        className={props.checked ? 'checked' : ''}
+      >
+        <style.handle />
       </button>
     </style.root>
   )

@@ -190,6 +190,42 @@
   <message name="IDS_REWARDS_PANEL_CANCEL" desc="">
     Cancel
   </message>
+  <message name="IDS_REWARDS_PANEL_ABOUT_REWARDS_TEXT" desc="">
+    Using Brave Rewards helps support content creators, and lets you earn BAT.
+  </message>
+  <message name="IDS_REWARDS_PANEL_CONNECT_ACCOUNT" desc="">
+    Connect account
+  </message>
+  <message name="IDS_REWARDS_PANEL_CONNECT_ACCOUNT_TEXT" desc="">
+    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning BAT?<ph name="BOLD_END">$2</ph> Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.
+  </message>
+  <message name="IDS_REWARDS_PANEL_CONNECT_ACCOUNT_NO_PROVIDERS" desc="">
+    To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.
+  </message>
+  <message name="IDS_REWARDS_PANEL_LEARN_MORE" desc="">
+    Learn more
+  </message>
+  <message name="IDS_REWARDS_PANEL_PUBLISHER_COUNT_TEXT" desc="">
+    {PUBLISHER_COUNT, plural,
+      =1 {You’ve visited # creator supported by users like you this month}
+      other {You’ve visited # creators supported by users like you this month}
+    }
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TITLE" desc="">
+    Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED" desc="">
+    You are helping support content creators
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_DISABLED" desc="">
+    Turn on to help support content creators
+  </message>
+  <message name="IDS_REWARDS_PANEL_REWARDS_SETTINGS" desc="">
+    Rewards settings
+  </message>
+  <message name="IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT" desc="">
+    Learn more about BAT
+  </message>
 
   <!-- Rewards grant captcha modal -->
   <message name="IDS_REWARDS_GRANT_CAPTCHA_TITLE" desc="">
