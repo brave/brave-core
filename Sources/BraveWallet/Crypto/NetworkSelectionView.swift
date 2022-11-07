@@ -25,6 +25,27 @@ struct NetworkSelectionView: View {
     self.store = networkSelectionStore
   }
   
+  private var selectedNetwork: NetworkPresentation.Network {
+    switch store.mode {
+    case .select:
+      return .network(networkStore.selectedChain)
+    case .filter:
+      switch networkStore.networkFilter {
+      case .allNetworks:
+        return .allNetworks
+      case let .network(network):
+        return .network(network)
+      }
+    }
+  }
+  
+  private var navigationTitle: String {
+    switch store.mode {
+    case .select: return Strings.Wallet.networkSelectionTitle
+    case .filter: return Strings.Wallet.networkFilterTitle
+    }
+  }
+  
   var body: some View {
     List {
       Section {
@@ -32,7 +53,7 @@ struct NetworkSelectionView: View {
           Button(action: { selectNetwork(presentation.network) }) {
             NetworkRowView(
               presentation: presentation,
-              selectedNetwork: networkStore.selectedChain,
+              selectedNetwork: selectedNetwork,
               detailTappedHandler: {
                 store.detailNetwork = presentation
               }
@@ -45,7 +66,7 @@ struct NetworkSelectionView: View {
           Button(action: { selectNetwork(presentation.network) }) {
             NetworkRowView(
               presentation: presentation,
-              selectedNetwork: networkStore.selectedChain
+              selectedNetwork: selectedNetwork
             )
           }
         }
@@ -55,7 +76,7 @@ struct NetworkSelectionView: View {
     }
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .navigationTitle(Strings.Wallet.networkSelectionTitle)
+    .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
@@ -78,9 +99,10 @@ struct NetworkSelectionView: View {
           if let detailNetwork = store.detailNetwork {
             NetworkSelectionDetailView(
               networks: detailNetwork.subNetworks,
-              selectedNetwork: networkStore.selectedChain,
+              selectedNetwork: selectedNetwork,
+              navigationTitle: navigationTitle,
               selectedNetworkHandler: { network in
-                selectNetwork(network)
+                selectNetwork(.network(network))
               }
             )
           }
@@ -125,9 +147,9 @@ struct NetworkSelectionView: View {
     )
   }
   
-  private func selectNetwork(_ network: BraveWallet.NetworkInfo) {
+  private func selectNetwork(_ presentation: NetworkPresentation.Network) {
     Task { @MainActor in
-      if await store.selectNetwork(network: network) {
+      if await store.selectNetwork(presentation) {
         presentationMode.dismiss()
       }
     }
@@ -136,15 +158,15 @@ struct NetworkSelectionView: View {
 
 private struct NetworkRowView: View {
 
-  var presentation: NetworkSelectionStore.NetworkPresentation
-  var selectedNetwork: BraveWallet.NetworkInfo
+  var presentation: NetworkPresentation
+  var selectedNetwork: NetworkPresentation.Network
   var detailTappedHandler: (() -> Void)?
 
   @ScaledMetric private var length: CGFloat = 30
   
   init(
-    presentation: NetworkSelectionStore.NetworkPresentation,
-    selectedNetwork: BraveWallet.NetworkInfo,
+    presentation: NetworkPresentation,
+    selectedNetwork: NetworkPresentation.Network,
     detailTappedHandler: (() -> Void)? = nil
   ) {
     self.presentation = presentation
@@ -153,7 +175,12 @@ private struct NetworkRowView: View {
   }
   
   private var isSelected: Bool {
-    presentation.network == selectedNetwork || presentation.subNetworks.contains(selectedNetwork)
+    if presentation.network == selectedNetwork {
+      return true
+    } else if case .network(let selectedNetwork) = self.selectedNetwork {
+      return presentation.subNetworks.contains(selectedNetwork)
+    }
+    return false
   }
 
   @ViewBuilder private var checkmark: some View {
@@ -165,20 +192,33 @@ private struct NetworkRowView: View {
   private var showShortChainName: Bool {
     presentation.isPrimaryNetwork && !presentation.subNetworks.isEmpty
   }
+  
+  private var networkName: String {
+    switch presentation.network {
+    case .allNetworks:
+      return Strings.Wallet.allNetworksTitle
+    case let .network(network):
+      return showShortChainName ? network.shortChainName : network.chainName
+    }
+  }
 
   var body: some View {
     HStack {
       HStack {
         checkmark
-        NetworkIcon(network: presentation.network)
+        if case let .network(network) = presentation.network {
+          NetworkIcon(network: network)
+        }
         VStack(alignment: .leading, spacing: 0) {
-          Text(showShortChainName ? presentation.network.shortChainName : presentation.network.chainName)
-          if presentation.subNetworks.contains(selectedNetwork) {
+          Text(networkName)
+          if case .network(let selectedNetwork) = self.selectedNetwork,
+             presentation.subNetworks.contains(selectedNetwork) {
             Text(selectedNetwork.chainName)
               .foregroundColor(Color(.secondaryBraveLabel))
               .font(.footnote)
           }
         }
+        .frame(minHeight: length) // maintain height for All Networks row w/o icon
         Spacer()
       }
       .accessibilityElement(children: .combine)
@@ -193,7 +233,7 @@ private struct NetworkRowView: View {
         .accessibilityLabel(
           Text(String.localizedStringWithFormat(
             Strings.Wallet.networkSelectionTestnetAccessibilityLabel,
-            presentation.network.shortChainName)
+            networkName)
           )
         )
       }
@@ -212,27 +252,27 @@ struct NetworkRowView_Previews: PreviewProvider {
     Group {
       NetworkRowView(
         presentation: .init(
-          network: .mockSolana,
+          network: .network(.mockSolana),
           subNetworks: [.mockSolana],
           isPrimaryNetwork: true
         ),
-        selectedNetwork: .mockSolana
+        selectedNetwork: .network(.mockSolana)
       )
       NetworkRowView(
         presentation: .init(
-          network: .mockMainnet,
+          network: .network(.mockMainnet),
           subNetworks: [.mockMainnet, .mockGoerli, .mockSepolia],
           isPrimaryNetwork: true
         ),
-        selectedNetwork: .mockMainnet
+        selectedNetwork: .network(.mockMainnet)
       )
       NetworkRowView(
         presentation: .init(
-          network: .mockPolygon,
+          network: .network(.mockPolygon),
           subNetworks: [],
           isPrimaryNetwork: false
         ),
-        selectedNetwork: .mockMainnet
+        selectedNetwork: .network(.mockMainnet)
       )
     }
     .previewLayout(.sizeThatFits)
@@ -245,7 +285,8 @@ struct NetworkRowView_Previews: PreviewProvider {
 private struct NetworkSelectionDetailView: View {
   
   var networks: [BraveWallet.NetworkInfo]
-  var selectedNetwork: BraveWallet.NetworkInfo
+  var selectedNetwork: NetworkPresentation.Network
+  let navigationTitle: String
   var selectedNetworkHandler: (BraveWallet.NetworkInfo) -> Void
   
   var body: some View {
@@ -253,7 +294,7 @@ private struct NetworkSelectionDetailView: View {
       ForEach(networks) { network in
         Button(action: { selectedNetworkHandler(network) }) {
           NetworkSelectionDetailRow(
-            isSelected: selectedNetwork == network,
+            isSelected: isSelected(network),
             network: network
           )
           .contentShape(Rectangle())
@@ -262,8 +303,15 @@ private struct NetworkSelectionDetailView: View {
     }
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .navigationTitle(networks.first?.shortChainName ?? Strings.Wallet.networkSelectionTitle)
+    .navigationTitle(networks.first?.shortChainName ?? navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
+  }
+  
+  private func isSelected(_ network: BraveWallet.NetworkInfo) -> Bool {
+    if case let .network(selectedNetwork) = self.selectedNetwork {
+      return network == selectedNetwork
+    }
+    return false
   }
 }
 
@@ -273,7 +321,8 @@ struct NetworkSelectionDetailView_Previews: PreviewProvider {
     NavigationView {
       NetworkSelectionDetailView(
         networks: [.mockMainnet, .mockGoerli, .mockSepolia],
-        selectedNetwork: .mockMainnet,
+        selectedNetwork: .network(.mockMainnet),
+        navigationTitle: Strings.Wallet.networkFilterTitle,
         selectedNetworkHandler: { _ in }
       )
     }
