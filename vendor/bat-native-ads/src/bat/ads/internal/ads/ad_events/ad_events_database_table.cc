@@ -64,12 +64,12 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return ad_event;
 }
 
-void OnGetAdEvents(const GetAdEventsCallback& callback,
+void OnGetAdEvents(GetAdEventsCallback callback,
                    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    callback(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, {});
     return;
   }
 
@@ -80,7 +80,7 @@ void OnGetAdEvents(const GetAdEventsCallback& callback,
     ad_events.push_back(ad_event);
   }
 
-  callback(/*success*/ true, ad_events);
+  std::move(callback).Run(/*success*/ true, ad_events);
 }
 
 void RunTransaction(const std::string& query, GetAdEventsCallback callback) {
@@ -105,53 +105,8 @@ void RunTransaction(const std::string& query, GetAdEventsCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAdEvents, callback));
-}
-
-void OnGetAdEventsOnce(GetAdEventsOnceCallback callback,
-                       mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get ad events");
-    std::move(callback).Run(/*success*/ false, {});
-    return;
-  }
-
-  AdEventList ad_events;
-
-  for (const auto& record : response->result->get_records()) {
-    const AdEventInfo ad_event = GetFromRecord(record.get());
-    ad_events.push_back(ad_event);
-  }
-
-  std::move(callback).Run(/*success*/ true, ad_events);
-}
-
-void RunTransaction(const std::string& query,
-                    GetAdEventsOnceCallback callback) {
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->command = query;
-
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // uuid
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // type
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // confirmation
-                                                             // type
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // creative_instance_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE   // created_at
-  };
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  transaction->commands.push_back(std::move(command));
-
-  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetAdEventsOnce, std::move(callback)));
+      base::BindOnce(&OnGetAdEvents, std::move(callback)));
 }
 
 void MigrateToV5(mojom::DBTransactionInfo* transaction) {
@@ -241,7 +196,7 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 }
 
 void AdEvents::GetIf(const std::string& condition,
-                     const GetAdEventsCallback& callback) const {
+                     const GetAdEventsCallbackDeprecated& callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -257,10 +212,15 @@ void AdEvents::GetIf(const std::string& condition,
       "ORDER BY timestamp DESC ",
       GetTableName().c_str(), condition.c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(
+      query,
+      base::BindOnce(
+          [](const GetAdEventsCallbackDeprecated& callback, const bool success,
+             const AdEventList& ad_events) { callback(success, ad_events); },
+          callback));
 }
 
-void AdEvents::GetAll(const GetAdEventsCallback& callback) const {
+void AdEvents::GetAll(const GetAdEventsCallbackDeprecated& callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -275,35 +235,26 @@ void AdEvents::GetAll(const GetAdEventsCallback& callback) const {
       "ORDER BY timestamp DESC",
       GetTableName().c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(
+      query,
+      base::BindOnce(
+          [](const GetAdEventsCallbackDeprecated& callback, const bool success,
+             const AdEventList& ad_events) { callback(success, ad_events); },
+          callback));
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
-                          const GetAdEventsCallback& callback) const {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
-
-  const std::string ad_type_as_string = AdType(ad_type).ToString();
-
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "ae.uuid, "
-      "ae.type, "
-      "ae.confirmation_type, "
-      "ae.campaign_id, "
-      "ae.creative_set_id, "
-      "ae.creative_instance_id, "
-      "ae.advertiser_id, "
-      "ae.timestamp "
-      "FROM %s AS ae "
-      "WHERE type = '%s' "
-      "ORDER BY timestamp DESC",
-      GetTableName().c_str(), ad_type_as_string.c_str());
-
-  RunTransaction(query, callback);
+                          const GetAdEventsCallbackDeprecated& callback) const {
+  GetForType(ad_type, base::BindOnce(
+                          [](const GetAdEventsCallbackDeprecated& callback,
+                             const bool success, const AdEventList& ad_events) {
+                            callback(success, ad_events);
+                          },
+                          callback));
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
-                          GetAdEventsOnceCallback callback) const {
+                          GetAdEventsCallback callback) const {
   DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
 
   const std::string ad_type_as_string = AdType(ad_type).ToString();

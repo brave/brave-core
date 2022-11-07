@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"

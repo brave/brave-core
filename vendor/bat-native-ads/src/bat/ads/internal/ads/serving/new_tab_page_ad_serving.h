@@ -55,7 +55,7 @@ class Serving final {
  private:
   void OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
                          const targeting::UserModelInfo& user_model,
-                         const bool had_opportunity,
+                         bool had_opportunity,
                          const CreativeNewTabPageAdList& creative_ads);
 
   bool IsSupported() const;

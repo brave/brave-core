@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v1.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -40,11 +41,11 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel({"technology & computing-computing"}, {}, {}),
-      [](const bool had_opportunity,
-         const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
-      });
+      }));
 
   // Assert
 }

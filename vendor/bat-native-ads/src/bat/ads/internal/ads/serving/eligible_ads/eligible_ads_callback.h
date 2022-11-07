@@ -13,11 +13,7 @@
 namespace ads {
 
 template <typename T>
-using GetEligibleAdsCallback = std::function<void(const bool, const T&)>;
-
-template <typename T>
-using GetEligibleAdsOnceCallback =
-    base::OnceCallback<void(const bool, const T&)>;
+using GetEligibleAdsCallback = base::OnceCallback<void(const bool, const T&)>;
 
 }  // namespace ads
 

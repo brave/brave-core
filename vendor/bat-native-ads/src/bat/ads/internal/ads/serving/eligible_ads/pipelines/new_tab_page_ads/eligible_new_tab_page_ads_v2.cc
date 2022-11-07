@@ -30,7 +30,7 @@ EligibleAdsV2::EligibleAdsV2(
 
 void EligibleAdsV2::GetForUserModel(
     targeting::UserModelInfo user_model,
-    GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback) {
+    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads");
 
   const database::table::AdEvents database_table;
@@ -44,7 +44,7 @@ void EligibleAdsV2::GetForUserModel(
 
 void EligibleAdsV2::OnGetForUserModel(
     targeting::UserModelInfo user_model,
-    GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
+    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -59,7 +59,7 @@ void EligibleAdsV2::OnGetForUserModel(
 void EligibleAdsV2::GetBrowsingHistory(
     targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback) {
+    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   const int max_count = features::GetBrowsingHistoryMaxCount();
   const int days_ago = features::GetBrowsingHistoryDaysAgo();
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
@@ -71,20 +71,20 @@ void EligibleAdsV2::GetBrowsingHistory(
 void EligibleAdsV2::GetEligibleAds(
     targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
+    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeNewTabPageAds database_table;
 
   database_table.GetAll(base::BindOnce(
-      &EligibleAdsV2::OnGetAllAds, base::Unretained(this),
+      &EligibleAdsV2::OnGetEligibleAds, base::Unretained(this),
       std::move(user_model), ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleAdsV2::OnGetAllAds(
-    targeting::UserModelInfo user_model,
+void EligibleAdsV2::OnGetEligibleAds(
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
+    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {

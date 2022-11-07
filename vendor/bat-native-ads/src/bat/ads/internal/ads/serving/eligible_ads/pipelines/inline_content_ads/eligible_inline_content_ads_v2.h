@@ -35,38 +35,38 @@ class EligibleAdsV2 final : public EligibleAdsBase {
   EligibleAdsV2(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
 
-  void GetForUserModel(targeting::UserModelInfo user_model,
-                       const std::string& dimensions,
-                       GetEligibleAdsOnceCallback<CreativeInlineContentAdList>
-                           callback) override;
+  void GetForUserModel(
+      targeting::UserModelInfo user_model,
+      const std::string& dimensions,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
   void OnGetForUserModel(
       targeting::UserModelInfo user_model,
       const std::string& dimensions,
-      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
-      const bool success,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
       targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback);
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
 
   void GetEligibleAds(
       targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
       const BrowsingHistoryList& browsing_history);
 
   void OnGetEligibleAds(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
-      const bool success,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      bool success,
       const CreativeInlineContentAdList& creative_ads);
 
   CreativeInlineContentAdList FilterCreativeAds(

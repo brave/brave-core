@@ -36,66 +36,65 @@ class EligibleAdsV1 final : public EligibleAdsBase {
 
   void GetForUserModel(
       targeting::UserModelInfo user_model,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback) override;
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
 
  private:
   void OnGetForUserModel(
       targeting::UserModelInfo user_model,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
-      const bool success,
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
       targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback);
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
-  void GetEligibleAds(
-      targeting::UserModelInfo user_model,
-      const AdEventList& ad_events,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
-      const BrowsingHistoryList& browsing_history);
+  void GetEligibleAds(targeting::UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+                      const BrowsingHistoryList& browsing_history);
 
   void GetForChildSegments(
       targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback);
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
   void OnGetForChildSegments(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
-      const bool success,
-      const SegmentList& /*segments*/,
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      bool success,
+      const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
 
   void GetForParentSegments(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback);
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
   void OnGetForParentSegments(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
-      const bool success,
-      const SegmentList& /*segments*/,
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      bool success,
+      const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
 
   void GetForUntargeted(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback);
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
   void OnGetForUntargeted(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsOnceCallback<CreativeNewTabPageAdList> callback,
-      const bool success,
-      const SegmentList& /*segments*/,
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      bool success,
+      const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
 
   CreativeNewTabPageAdList FilterCreativeAds(

@@ -58,7 +58,7 @@ class Serving final {
   void OnGetForUserModel(const targeting::UserModelInfo& user_model,
                          const std::string& dimensions,
                          MaybeServeInlineContentAdCallback callback,
-                         const bool had_opportunity,
+                         bool had_opportunity,
                          const CreativeInlineContentAdList& creative_ads);
 
   bool IsSupported() const;

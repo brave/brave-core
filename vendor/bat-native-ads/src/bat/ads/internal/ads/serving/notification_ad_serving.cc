@@ -107,31 +107,35 @@ void Serving::MaybeServeAd() {
 
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
-      user_model, [=](const bool had_opportunity,
-                      const CreativeNotificationAdList& creative_ads) {
-        if (had_opportunity) {
-          const SegmentList segments =
-              targeting::GetTopChildSegments(user_model);
-          NotifyOpportunityAroseToServeNotificationAd(segments);
-        }
-
-        if (creative_ads.empty()) {
-          BLOG(1, "Notification ad not served: No eligible ads found");
-          FailedToServeAd();
-          return;
-        }
-
-        BLOG(1, "Found " << creative_ads.size() << " eligible ads");
-
-        const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeNotificationAdInfo& creative_ad = creative_ads.at(rand);
-
-        const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-        ServeAd(ad);
-      });
+      user_model, base::BindOnce(&Serving::OnGetForUserModel,
+                                 base::Unretained(this), user_model));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Serving::OnGetForUserModel(
+    const targeting::UserModelInfo& user_model,
+    const bool had_opportunity,
+    const CreativeNotificationAdList& creative_ads) {
+  if (had_opportunity) {
+    const SegmentList segments = targeting::GetTopChildSegments(user_model);
+    NotifyOpportunityAroseToServeNotificationAd(segments);
+  }
+
+  if (creative_ads.empty()) {
+    BLOG(1, "Notification ad not served: No eligible ads found");
+    FailedToServeAd();
+    return;
+  }
+
+  BLOG(1, "Found " << creative_ads.size() << " eligible ads");
+
+  const int rand = base::RandInt(0, creative_ads.size() - 1);
+  const CreativeNotificationAdInfo& creative_ad = creative_ads.at(rand);
+
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+  ServeAd(ad);
+}
 
 bool Serving::IsSupported() const {
   return static_cast<bool>(eligible_ads_);

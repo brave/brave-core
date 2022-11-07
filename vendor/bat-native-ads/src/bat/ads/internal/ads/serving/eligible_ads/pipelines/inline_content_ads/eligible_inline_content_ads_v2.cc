@@ -32,7 +32,7 @@ EligibleAdsV2::EligibleAdsV2(
 void EligibleAdsV2::GetForUserModel(
     targeting::UserModelInfo user_model,
     const std::string& dimensions,
-    GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback) {
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
   const database::table::AdEvents database_table;
@@ -47,7 +47,7 @@ void EligibleAdsV2::GetForUserModel(
 void EligibleAdsV2::OnGetForUserModel(
     targeting::UserModelInfo user_model,
     const std::string& dimensions,
-    GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -64,7 +64,7 @@ void EligibleAdsV2::GetBrowsingHistory(
     targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
-    GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback) {
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   const int max_count = features::GetBrowsingHistoryMaxCount();
   const int days_ago = features::GetBrowsingHistoryDaysAgo();
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
@@ -78,7 +78,7 @@ void EligibleAdsV2::GetEligibleAds(
     targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
-    GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForDimensions(
@@ -92,7 +92,7 @@ void EligibleAdsV2::OnGetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {

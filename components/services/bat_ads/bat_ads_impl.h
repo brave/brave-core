@@ -14,7 +14,6 @@
 #include "base/values.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 

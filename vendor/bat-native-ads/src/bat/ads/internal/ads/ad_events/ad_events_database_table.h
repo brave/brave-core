@@ -17,9 +17,10 @@
 
 namespace ads::database::table {
 
-using GetAdEventsCallback = std::function<void(const bool, const AdEventList&)>;
+using GetAdEventsCallbackDeprecated =
+    std::function<void(const bool, const AdEventList&)>;
 
-using GetAdEventsOnceCallback =
+using GetAdEventsCallback =
     base::OnceCallback<void(const bool, const AdEventList&)>;
 
 class AdEvents final : public TableInterface {
@@ -27,15 +28,14 @@ class AdEvents final : public TableInterface {
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
   void GetIf(const std::string& condition,
-             const GetAdEventsCallback& callback) const;
+             const GetAdEventsCallbackDeprecated& callback) const;
 
-  void GetAll(const GetAdEventsCallback& callback) const;
-
-  void GetForType(mojom::AdType ad_type,
-                  GetAdEventsOnceCallback callback) const;
+  void GetAll(const GetAdEventsCallbackDeprecated& callback) const;
 
   void GetForType(mojom::AdType ad_type,
-                  const GetAdEventsCallback& callback) const;
+                  const GetAdEventsCallbackDeprecated& callback) const;
+
+  void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
   void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;
