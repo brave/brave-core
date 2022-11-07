@@ -2,11 +2,9 @@
 
 import optparse
 import sys
-import glob
 import os
-import shutil
 import gn_helpers
-from lib.util import scoped_cwd, make_zip
+from lib.util import scoped_cwd, make_zip, make_7z
 
 
 sys.path.append(os.path.join(os.path.dirname(__file__),
@@ -41,7 +39,12 @@ def main():
     base_dir = options.base_dir
 
     with scoped_cwd(base_dir):
-        make_zip(output, inputs, dir_inputs)
+        if output.endswith('.zip'):
+            make_zip(output, inputs, dir_inputs)
+        elif output.endswith('.7z'):
+            make_7z(output, inputs, dir_inputs)
+        else:
+            assert False, "Invalid archive type: " + output
 
 
 if __name__ == '__main__':
