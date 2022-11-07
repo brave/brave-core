@@ -319,6 +319,17 @@ extension BrowserViewController: WKNavigationDelegate {
 
     if navigationAction.targetFrame?.isMainFrame == true,
       BraveSearchManager.isValidURL(url) {
+
+      // Add Brave Search headers if Rewards is enabled
+      if !isPrivateBrowsing && rewards.isEnabled && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil {
+        decisionHandler(.cancel, preferences)
+
+        var modifiedRequest = URLRequest(url: url)
+        modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
+        tab?.loadRequest(modifiedRequest)
+        return
+      }
+
       // We fetch cookies to determine if backup search was enabled on the website.
       let profile = self.profile
       webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
