@@ -85,7 +85,7 @@ where
     #[instrument]
     pub async fn submit_order_credentials_to_sign(&self, order_id: &str) -> Result<(), SkusError> {
         event!(Level::DEBUG, "submit order creds for signing");
-        let order = match self.client.get_order(order_id).await {
+        let mut order = match self.client.get_order(order_id).await {
             Ok(Some(order)) => order,
             _ => self.refresh_order(order_id).await?,
         };
@@ -97,12 +97,23 @@ where
         for item in order.items {
             match item.credential_type {
                 CredentialType::TimeLimitedV2 => {
+                    // if the order has no order metadata, attempt to refresh first
+                    if order.metadata.is_none() {
+                        order = self.refresh_order(order_id).await?;
+                        event!(Level::DEBUG, order=?order, "fetched order, no metadata");
+                    }
+
                     let mut num_creds: usize = 0;
                     if let Some(ref metadata) = order.metadata {
-                        let num_intervals = metadata.num_intervals.ok_or(InternalError::OrderMisconfiguration)?;
-                        let num_per_interval = metadata.num_per_interval.ok_or(InternalError::OrderMisconfiguration)?;
+                        let num_intervals =
+                            metadata.num_intervals.ok_or(InternalError::OrderMisconfiguration)?;
+                        let num_per_interval = metadata
+                            .num_per_interval
+                            .ok_or(InternalError::OrderMisconfiguration)?;
                         num_creds = num_intervals * num_per_interval;
                     }
+
+                    event!(Level::DEBUG, num_creds=?num_creds, "num_creds");
 
                     let blinded_creds: Vec<BlindedToken> =
                         match self.client.get_time_limited_v2_creds(&item.id).await? {
@@ -253,8 +264,13 @@ where
     #[instrument]
     pub async fn refresh_order_credentials(&self, order_id: &str) -> Result<(), SkusError> {
         let order = self.fetch_order(order_id).await?;
+
         if let Some(local_order) = self.client.get_order(order_id).await? {
-            if order.last_paid_at != local_order.last_paid_at {
+            // if we have no credentials at all for the order (prior to generated state)
+            // or the last_paid_at is different from the fetched order (resubscribe)
+            if !self.client.has_credentials(order_id).await?
+                || order.last_paid_at != local_order.last_paid_at
+            {
                 self.fetch_order_credentials(order_id).await?;
                 // store the latest retrieved order information after we've successfully fetched
                 self.client.upsert_order(&order).await?;

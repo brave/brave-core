@@ -15,6 +15,7 @@ pub trait StorageClient {
     async fn replace_promotions(&self, promotions: &[Promotion]) -> Result<(), InternalError>;
     async fn get_orders(&self) -> Result<Option<Vec<Order>>, InternalError>;
     async fn get_order(&self, order_id: &str) -> Result<Option<Order>, InternalError>;
+    async fn has_credentials(&self, order_id: &str) -> Result<bool, InternalError>;
     async fn upsert_order(&self, order: &Order) -> Result<(), InternalError>;
     async fn delete_item_creds(&self, item_id: &str) -> Result<(), InternalError>;
     #[cfg(feature = "e2e_test")]
