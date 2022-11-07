@@ -219,8 +219,8 @@ group("create_dist") {
 
   if (is_win) {
     deps += [
-      "build/win:create_signed_installer",
-      "components/policy:pack_policy_templates",
+      "//brave/build/win:create_signed_installer",
+      "//brave/components/policy:pack_policy_templates",
     ]
 
     if (build_omaha) {
