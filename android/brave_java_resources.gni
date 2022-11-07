@@ -644,6 +644,7 @@ brave_java_resources = [
   "java/res/drawable/ic_wallet_arrow.xml",
   "java/res/drawable/ic_wallet_lock.xml",
   "java/res/drawable/ic_wallet_settings.xml",
+  "java/res/drawable/ic_warning.xml",
   "java/res/drawable/ic_warning_circle.xml",
   "java/res/drawable/ic_warning_red.xml",
   "java/res/drawable/ic_web.xml",
