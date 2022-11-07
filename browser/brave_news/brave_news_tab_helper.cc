@@ -138,14 +138,18 @@ void BraveNewsTabHelper::AvailableFeedsChanged() {
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   // Invalidate all weak pointers - we're on a new page now.
   weak_ptr_factory_.InvalidateWeakPtrs();
-
   rss_page_feeds_.clear();
+  AvailableFeedsChanged();
+}
+
+void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
+  if (GetWebContents().GetPrimaryMainFrame() != rfh) {
+    return;
+  }
   feed::FetchRssLinks(GetWebContents().GetLastCommittedURL(), &GetWebContents(),
                       base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
                                      weak_ptr_factory_.GetWeakPtr(),
                                      GetWebContents().GetLastCommittedURL()));
-
-  AvailableFeedsChanged();
 }
 
 void BraveNewsTabHelper::OnPublishersUpdated(
