@@ -11,6 +11,7 @@ import DesignSystem
 import Strings
 import BraveShared
 import BraveUI
+import Introspect
 
 struct AssetDetailView: View {
   @ObservedObject var assetDetailStore: AssetDetailStore
@@ -21,6 +22,10 @@ struct AssetDetailView: View {
   @State private var isShowingAddAccount: Bool = false
   @State private var transactionDetails: TransactionDetailsStore?
   @State private var isShowingAuroraBridgeAlert: Bool = false
+  
+  @Environment(\.sizeCategory) private var sizeCategory
+  /// Reference to the collection view used to back the `List` on iOS 16+
+  @State private var collectionView: UICollectionView?
 
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
@@ -134,6 +139,15 @@ struct AssetDetailView: View {
     }
     .introspectTableView { tableView in
       tableInset = -tableView.layoutMargins.left
+    }
+    .onChange(of: sizeCategory) { _ in
+      // Fix broken header when text size changes on iOS 16+
+      collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    .introspect(
+      selector: TargetViewSelector.ancestorOrSiblingContaining
+    ) { (collectionView: UICollectionView) in
+      self.collectionView = collectionView
     }
     .background(
       Color.clear
