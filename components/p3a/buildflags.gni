@@ -4,6 +4,6 @@ declare_args() {
   p3a_creative_upload_url = "https://p3a-creative.brave.com/"
   p2a_json_upload_url = "https://p2a-json.brave.com/"
   p3a_star_upload_url = "https://p3a-star.brave.com/"
-  p2a_star_upload_url = "https://p2a-star.brave.com/"
+  p2a_star_upload_url = ""
   star_randomness_host = "https://star-randomness.brave.com"
 }

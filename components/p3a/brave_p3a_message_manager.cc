@@ -40,18 +40,18 @@ BraveP3AMessageManager::BraveP3AMessageManager(PrefService* local_state,
 
   // Init log stores.
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    json_log_stores_[log_type].reset(
-        new BraveP3AMetricLogStore(this, local_state_, false, log_type));
+    json_log_stores_[log_type] = std::make_unique<BraveP3AMetricLogStore>(
+        this, local_state_, false, log_type);
     json_log_stores_[log_type]->LoadPersistedUnsentLogs();
   }
-  star_prep_log_store_.reset(new BraveP3AMetricLogStore(
-      this, local_state_, true, MetricLogType::kTypical));
+  star_prep_log_store_ = std::make_unique<BraveP3AMetricLogStore>(
+      this, local_state_, true, MetricLogType::kTypical);
   star_prep_log_store_->LoadPersistedUnsentLogs();
-  star_send_log_store_.reset(
-      new BraveP3AStarLogStore(local_state_, kMaxEpochsToRetain));
+  star_send_log_store_ =
+      std::make_unique<BraveP3AStarLogStore>(local_state_, kMaxEpochsToRetain);
 }
 
-BraveP3AMessageManager::~BraveP3AMessageManager() {}
+BraveP3AMessageManager::~BraveP3AMessageManager() = default;
 
 void BraveP3AMessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
   BraveP3AMetricLogStore::RegisterPrefs(registry);
@@ -63,45 +63,45 @@ void BraveP3AMessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
 void BraveP3AMessageManager::Init(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   // Init other components.
-  uploader_.reset(new BraveP3AUploader(
+  uploader_ = std::make_unique<BraveP3AUploader>(
       url_loader_factory,
       base::BindRepeating(&BraveP3AMessageManager::OnLogUploadComplete,
                           base::Unretained(this)),
-      config_));
+      config_);
 
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    json_upload_schedulers_[log_type].reset(new BraveP3AScheduler(
+    json_upload_schedulers_[log_type] = std::make_unique<BraveP3AScheduler>(
         base::BindRepeating(&BraveP3AMessageManager::StartScheduledUpload,
                             base::Unretained(this), false, log_type),
-        config_->randomize_upload_interval, config_->average_upload_interval));
+        config_->randomize_upload_interval, config_->average_upload_interval);
     json_upload_schedulers_[log_type]->Start();
   }
-  star_prep_scheduler_.reset(new BraveP3AScheduler(
+  star_prep_scheduler_ = std::make_unique<BraveP3AScheduler>(
       base::BindRepeating(&BraveP3AMessageManager::StartScheduledStarPrep,
                           base::Unretained(this)),
-      config_->randomize_upload_interval, config_->average_upload_interval));
-  star_upload_scheduler_.reset(new BraveP3AScheduler(
+      config_->randomize_upload_interval, config_->average_upload_interval);
+  star_upload_scheduler_ = std::make_unique<BraveP3AScheduler>(
       base::BindRepeating(&BraveP3AMessageManager::StartScheduledUpload,
                           base::Unretained(this), true,
                           MetricLogType::kTypical),
-      config_->randomize_upload_interval, config_->average_upload_interval));
+      config_->randomize_upload_interval, config_->average_upload_interval);
 
   star_upload_scheduler_->Start();
 
-  rotation_scheduler_.reset(new BraveP3ARotationScheduler(
+  rotation_scheduler_ = std::make_unique<BraveP3ARotationScheduler>(
       local_state_, config_,
       base::BindRepeating(&BraveP3AMessageManager::DoJsonRotation,
                           base::Unretained(this)),
       base::BindRepeating(&BraveP3AMessageManager::DoStarRotation,
-                          base::Unretained(this))));
+                          base::Unretained(this)));
 
-  star_manager_.reset(new BraveP3AStar(
+  star_manager_ = std::make_unique<BraveP3AStar>(
       local_state_, url_loader_factory,
       base::BindRepeating(&BraveP3AMessageManager::OnNewStarMessage,
                           base::Unretained(this)),
       base::BindRepeating(&BraveP3AMessageManager::OnRandomnessServerInfoReady,
                           base::Unretained(this)),
-      config_));
+      config_);
 }
 
 void BraveP3AMessageManager::UpdateMetricValue(base::StringPiece histogram_name,
