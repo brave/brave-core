@@ -40,6 +40,9 @@ class BraveRewardsNativeWorker
 
   void Destroy(JNIEnv* env);
 
+  bool IsSupported(JNIEnv* env);
+  bool IsSupportedSkipRegionCheck(JNIEnv* env);
+
   std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result);
 
   void CreateRewardsWallet(
@@ -153,9 +156,6 @@ class BraveRewardsNativeWorker
 
   void DisconnectWallet(JNIEnv* env);
 
-  void RecoverWallet(JNIEnv* env,
-                     const base::android::JavaParamRef<jstring>& pass_phrase);
-
   void RefreshPublisher(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher_key);
@@ -236,9 +236,6 @@ class BraveRewardsNativeWorker
   void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
                           const ledger::mojom::Result result,
                           const std::string& wallet_type) override;
-
-  void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
-                       const ledger::mojom::Result result) override;
 
   void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
                           const std::string& publisher_key);

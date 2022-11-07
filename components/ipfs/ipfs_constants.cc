@@ -20,6 +20,7 @@ const char kShutdownPath[] = "/api/v0/shutdown";
 const char kIPFSScheme[] = "ipfs";
 const char kIPNSScheme[] = "ipns";
 const char kDefaultIPFSGateway[] = "https://dweb.link";
+const char kDefaultIPFSNFTGateway[] = "https://nftstorage.link";
 const char kDefaultIPFSLocalGateway[] = "http://localhost";
 const char kIPFSSettingsURL[] = "brave://settings/ipfs";
 const char kIPFSLearnMorePrivacyURL[] =

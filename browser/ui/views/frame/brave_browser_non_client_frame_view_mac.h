@@ -34,6 +34,7 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 
+  BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
 };
 

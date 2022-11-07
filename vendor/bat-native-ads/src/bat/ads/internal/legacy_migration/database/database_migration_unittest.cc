@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/bind.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
@@ -37,11 +38,15 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
 
   // Act
-  LogAdEvent(ad_event, [=](const bool success) {
-    EXPECT_TRUE(success) << "Failed to migrate database from schema version "
-                         << GetSchemaVersion() << " to schema version "
-                         << database::kVersion;
-  });
+  LogAdEvent(ad_event,
+             base::BindOnce(
+                 [](const int schema_version, const bool success) {
+                   EXPECT_TRUE(success)
+                       << "Failed to migrate database from schema version "
+                       << schema_version << " to schema version "
+                       << database::kVersion;
+                 },
+                 GetSchemaVersion()));
 
   // Assert
 }

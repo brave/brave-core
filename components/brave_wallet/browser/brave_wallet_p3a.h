@@ -17,6 +17,18 @@ class PrefService;
 
 namespace brave_wallet {
 
+extern const char kDefaultWalletHistogramName[];
+extern const char kDefaultSolanaWalletHistogramName[];
+extern const char kKeyringCreatedHistogramName[];
+extern const char kOnboardingConversionHistogramName[];
+extern const char kEthProviderHistogramName[];
+extern const char kEthTransactionSentHistogramName[];
+extern const char kSolTransactionSentHistogramName[];
+extern const char kFilTransactionSentHistogramName[];
+extern const char kEthActiveAccountHistogramName[];
+extern const char kSolActiveAccountHistogramName[];
+extern const char kFilActiveAccountHistogramName[];
+
 class BraveWalletService;
 class KeyringService;
 
@@ -33,10 +45,19 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   BraveWalletP3A(const BraveWalletP3A&) = delete;
   BraveWalletP3A& operator=(BraveWalletP3A&) = delete;
 
+  mojo::PendingRemote<mojom::BraveWalletP3A> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletP3A> receiver);
+
+  void Update();
+
+  void AddObservers();
 
   void ReportEthereumProvider(
       mojom::EthereumProviderType provider_type) override;
+  void ReportOnboardingAction(
+      mojom::OnboardingAction onboarding_action) override;
+  void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
+  void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
 
   // KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override;

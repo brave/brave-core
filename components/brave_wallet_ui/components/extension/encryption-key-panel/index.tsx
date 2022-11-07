@@ -31,7 +31,7 @@ import { TabRow, URLText } from '../shared-panel-styles'
 export interface Props {
   panelType: 'request' | 'read'
   accounts: WalletAccountType[]
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   encryptionKeyPayload: BraveWallet.GetEncryptionPublicKeyRequest
   eTldPlusOne: string
   decryptPayload: BraveWallet.DecryptRequest
@@ -71,7 +71,7 @@ function EncryptionKeyPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{selectedNetwork.chainName}</NetworkText>
+        <NetworkText>{selectedNetwork?.chainName ?? ''}</NetworkText>
       </TopRow>
       <AccountCircle orb={orb} />
       <AccountNameText>{reduceAccountDisplayName(foundAccountName ?? '', 14)}</AccountNameText>

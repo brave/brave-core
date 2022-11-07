@@ -12,6 +12,8 @@ import Modal from './Modal'
 // Leave possibility for more pages open.
 type NewsPage = null
   | 'news'
+  | 'suggestions'
+  | 'popular'
 
 interface BraveNewsContext {
   customizePage: NewsPage
@@ -26,6 +28,7 @@ interface BraveNewsContext {
   subscribedPublisherIds: string[]
   // Publishers to suggest to the user.
   suggestedPublisherIds: string[]
+  updateSuggestedPublisherIds: () => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -36,7 +39,8 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   filteredPublisherIds: [],
   subscribedPublisherIds: [],
   channels: {},
-  suggestedPublisherIds: []
+  suggestedPublisherIds: [],
+  updateSuggestedPublisherIds: () => {}
 })
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
@@ -53,7 +57,7 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     return () => api.removeChannelsListener(handler)
   }, [])
 
-  const updateSuggestedPublishers = useCallback(async () => {
+  const updateSuggestedPublisherIds = useCallback(async () => {
     setSuggestedPublisherIds([])
     const { suggestedPublisherIds } = await api.controller.getSuggestedPublisherIds()
     setSuggestedPublisherIds(suggestedPublisherIds)
@@ -74,17 +78,14 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
   const filteredPublisherIds = useMemo(() =>
     sortedPublishers
-      .filter(p => p.type === PublisherType.DIRECT_SOURCE || p.locales.includes(api.locale))
+      .filter(p => p.type === PublisherType.DIRECT_SOURCE ||
+        p.locales.some(l => l.locale === api.locale))
       .map(p => p.publisherId),
     [sortedPublishers])
 
   const subscribedPublisherIds = useMemo(() =>
     sortedPublishers.filter(isPublisherEnabled).map(p => p.publisherId),
     [sortedPublishers])
-
-  React.useEffect(() => {
-    updateSuggestedPublishers()
-  }, [])
 
   const context = useMemo<BraveNewsContext>(() => ({
     customizePage,
@@ -94,8 +95,9 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     suggestedPublisherIds,
     sortedPublishers,
     filteredPublisherIds,
-    subscribedPublisherIds
-  }), [customizePage, channels, publishers])
+    subscribedPublisherIds,
+    updateSuggestedPublisherIds
+  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}
@@ -110,12 +112,17 @@ export const useBraveNews = () => {
 export const useChannels = (options: { subscribedOnly: boolean } = { subscribedOnly: false }) => {
   const { channels } = useBraveNews()
   return useMemo(() => Object.values(channels)
-    .filter(c => c.subscribed || !options.subscribedOnly), [channels, options.subscribedOnly])
+    .filter(c => c.subscribedLocales.length || !options.subscribedOnly), [channels, options.subscribedOnly])
 }
 
+/**
+ * Determines whether the channel is subscribed in the current locale.
+ * @param channelName The channel
+ * @returns A getter & setter for whether the channel is subscribed
+ */
 export const useChannelSubscribed = (channelName: string) => {
   const { channels } = useBraveNews()
-  const subscribed = useMemo(() => channels[channelName]?.subscribed ?? false, [channels[channelName]])
+  const subscribed = useMemo(() => channels[channelName]?.subscribedLocales.includes(api.locale) ?? false, [channels[channelName]])
   const setSubscribed = React.useCallback((subscribed: boolean) => {
     api.setChannelSubscribed(channelName, subscribed)
   }, [channelName])

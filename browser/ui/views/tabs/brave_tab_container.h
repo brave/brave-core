@@ -34,7 +34,11 @@ class BraveTabContainer : public TabContainerImpl {
   void OnTabCloseAnimationCompleted(Tab* tab) override;
 
  private:
+  void UpdateLayoutOrientation();
+
   base::flat_set<Tab*> closing_tabs_;
+
+  BooleanPrefMember show_vertical_tabs_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

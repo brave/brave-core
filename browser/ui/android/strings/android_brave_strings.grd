@@ -143,6 +143,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
+       <message name="IDS_TIP_AMOUNT_TEXT"  desc="Text for Tip amount">
+        Tip amount:
+      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
         Enable/Disable Brave Shields
       </message>
@@ -2232,6 +2235,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AMOUNT_PLUS_GAS" desc="Brave crypto wallet total amount plus gas cost for a transaction">
       Amount + Gas
     </message>
+    <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_FEE" desc="Confirm transaction panel total fee label">
+      Amount + fee
+    </message>
     <message name="IDS_TRANSACTION" desc="Brave crypto wallet transaction title">
       Transaction
     </message>
@@ -2260,7 +2266,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Apps
     </message> -->
     <message name="IDS_CRYPTO_WALLET_FROM_TO" desc="From address -> to address" translateable="false">
-      <ph name="FROM_NAME">%1$s<ex>Account1</ex></ph>\n <ph name="FROM_ADDRESS">%2$s<ex>0xabcd...</ex></ph> ->\n<ph name="TO">%3$s<ex>0xabcd...</ex></ph>
+      <ph name="FROM_NAME">%1$s<ex>Account1</ex></ph>\n <ph name="FROM_ADDRESS">%2$s<ex>0xabcd...</ex></ph> <ph name="SEPARATOR">%3$s<ex>-></ex></ph>\n<ph name="TO">%4$s<ex>0xabcd...</ex></ph>
     </message>
     <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET" desc="Amount Asset" translateable="false">
       <ph name="AMOUNT">%1$s<ex>0.0001</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph>
@@ -2356,22 +2362,28 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Other
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20TRANSFER" desc="Brave wallet function type ERC20Transfer" translateable="false">
-      ERC20Transfer
+      ERC20 Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC721TRANSFER" desc="Brave wallet function type ERC721Transfer" translateable="false">
-      ERC721Transfer
+      ERC721 Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20APPROVE" desc="Brave wallet function type ERC20Approve" translateable="false">
-      ERC20Approve
+      ERC20 Approve
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_SYSTEM_TRANSFER" desc="Brave wallet function type SOLANA_SYSTEM_TRANSFER" translateable="false">
-      SolanaSystemTransfer
+      Solana System Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SPL_TOKEN_TRANSFER" desc="Brave wallet function type SPL_TOKEN_TRANSFER" translateable="false">
-      SPLTokenTransfer
+      SPL Token Transfer
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" desc="Brave wallet function type SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" translateable="false">
-      SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+      Solana SPL Token Transfer with Associated Token Account Creation
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_DAPP_SIGN_AND_SEND" desc="Brave wallet function type SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION" translateable="false">
+      Solana Dapp Sign And Send Transaction
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_DAPP_SIGN" desc="Title for solana dapp sign transaction function type">
+      Solana Dapp Sign Transaction
     </message>
     <message name="IDS_WALLET_TX_INFO_SENT" desc="Brave wallet sent assets tx history">
       <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="CRYPTO_VALUE">%2$s<ex>0.0444</ex></ph> <ph name="ASSET">%3$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%4$s<ex>10.00</ex></ph>) - <ph name="DATE">%5$s<ex>2021-11-12 08:38pm</ex></ph>
@@ -2868,6 +2880,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SETTINGS_ETHEREUM_TITLE" desc="Title for Ethereum section in site settings" translateable="false">
       Ethereum
     </message>
+    <message name="IDS_SETTINGS_SOLANA_TITLE" desc="Title for Solana section in site settings" translateable="false">
+      Solana
+    </message>
     <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
       Show Top Sites
     </message>
@@ -3027,6 +3042,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm transaction queue of">
       <ph name="CURRENT"><ex>1</ex>%1$d</ph> of <ph name="SIZE"><ex>3</ex>%2$d</ph>
     </message>
+    <message name="IDS_BRAVE_WALLET_APPROVE_TRANSACTION" desc="Title message when dApp transaction approval is requested">
+      Approve transaction
+    </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System program">
       System Program
     </message>
@@ -3053,6 +3071,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_DATA_TEXT" desc="Data title text">
       Data
+    </message>
+    <message name="IDS_BRAVE_WALLET_TX_PROGAM_ID" desc="Program id title text for transactions">
+      Program ID
     </message>
     <message name="IDS_BRAVE_WALLET_TX_CREATE_ACCOUNT" desc="Transaction subtype of create account">
      Create account
@@ -3176,6 +3197,57 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_CLOSE_TEXT" desc="Declare geo success modal action text">
       Close
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TRANSACTION_FEE" desc="Allow spend panel transaction fee label">
+      Transaction fee
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">
+      Max Retries:
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">
+      Preflight Commitment:
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">
+      Skip Preflight:
+    </message>
+    <message name="IDS_TOP_VISITED_SITE" desc="Content description of ImageView of tile in QuickActionSearchAndBookmarkWidget">
+      Top Visited Site
+    </message>
+    <message name="IDS_SEARCH_WITH_BRAVE" desc="String used in QuickActionSearchAndBookmarkWidget's search bar">
+      Search with Brave
+    </message>
+    <message name="IDS_SEARCH_WITH_SEARCH_ENGINE" desc="Dynamic string used in QuickActionSearchAndBookmarkWidget's search bar. Placeholder is replaced by default search engine.">
+      Search with <ph name="DEFAULT_SEARCH_ENGINE">%1$s</ph>
+    </message>
+    <message name="IDS_HOME_SCREEN_WIDGET" desc="Home scren widget option in settings">
+      Home screen widget
+    </message>
+    <message name="IDS_WIDGET_ADDED_TO_HOME_SCREEN" desc="Toast message to display that widget has been successfully added to the home screen">
+      Widget added to the home screen
+    </message>
+    <message name="IDS_TRY_BRAVE_SEARCH_WIDGET" desc="Title of Brave search widget promo">
+      Try the Brave search widget
+    </message>
+    <message name="IDS_TRY_BRAVE_SEARCH_WIDGET_DESCRIPTION" desc="Description of Brave search widget promo">
+      Access private, independent search right from your home screen.
+    </message>
+    <message name="IDS_ADD_WIDGET" desc="Add widget button text">
+      Add widget
+    </message>
+    <message name="IDS_BRAVE_QUICK_ACTION_SEARCH" desc="Description for Brave QuickActionSearchAndBookmarkWidget preview">
+      Brave quick action search
+    </message>
+    <message name="IDS_USE_BRAVE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
+      Use Brave Translate
+    </message>
+    <message name="IDS_WALLET_NON_ASCII_CHARACTERS" desc="A warning about Non-ASCII characters detected in a message">
+      NON-ASCII characters detected!
+    </message>
+    <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ORIGINAL" desc="A title to view an original message if Unicode characters detected">
+      View original message
+    </message>
+    <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ASCII" desc="A title to view an ASCII message if Unicode characters detected">
+      View message in ASCII encoding
     </message>
   </messages>
   </release>

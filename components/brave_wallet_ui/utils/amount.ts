@@ -241,7 +241,9 @@ export default class Amount {
 
     if (this.value === undefined || this.value.isNaN()) {
       return ''
-    } else if (this.value.decimalPlaces() < 2 || this.value.isGreaterThanOrEqualTo(10)) {
+    } else if (
+        this.value.decimalPlaces() < 2 || this.value.isGreaterThanOrEqualTo(10)
+    ) {
       decimals = 2
       value = this.value.toNumber()
     } else if (this.value.isGreaterThanOrEqualTo(1)) {

@@ -31,6 +31,10 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
     return;
   }
 
+  if (ctx->method != "GET") {
+    return;
+  }
+
   if (ctx->redirect_source.is_valid()) {
     if (ctx->internal_redirect) {
       // Ignore internal redirects since we trigger them.

@@ -10,7 +10,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 // utils
 import { createSendCryptoReducer, PendingCryptoSendState } from '../../common/reducers/send_crypto_reducer'
-import { createWalletReducer } from '../../common/reducers/wallet_reducer'
+import { createWalletReducer } from '../../common/slices/wallet.slice'
 import { createPageReducer } from '../../page/reducers/page_reducer'
 import { AccountsTabState, createAccountsTabReducer } from '../../page/reducers/accounts-tab-reducer'
 

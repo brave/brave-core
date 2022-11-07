@@ -118,7 +118,7 @@ void URLSanitizerService::UpdateMatchers(
 }
 
 GURL URLSanitizerService::SanitizeURL(const GURL& initial_url) {
-  if (matchers_.empty())
+  if (matchers_.empty() || !initial_url.SchemeIsHTTPOrHTTPS())
     return initial_url;
   GURL url = initial_url;
   for (const auto& it : matchers_) {

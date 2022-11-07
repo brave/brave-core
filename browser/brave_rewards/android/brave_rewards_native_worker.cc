@@ -24,6 +24,7 @@
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/url_data_source.h"
@@ -67,6 +68,18 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
     }
   }
   delete this;
+}
+
+bool BraveRewardsNativeWorker::IsSupported(JNIEnv* env) {
+  return brave_rewards::IsSupported(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
+      brave_rewards::IsSupportedOptions::kNone);
+}
+
+bool BraveRewardsNativeWorker::IsSupportedSkipRegionCheck(JNIEnv* env) {
+  return brave_rewards::IsSupported(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
+      brave_rewards::IsSupportedOptions::kSkipRegionCheck);
 }
 
 std::string BraveRewardsNativeWorker::StringifyResult(
@@ -869,24 +882,6 @@ std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
     }
     base::JSONWriter::Write(dict, &json_args);
     return json_args;
-}
-
-void BraveRewardsNativeWorker::RecoverWallet(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& pass_phrase) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->RecoverWallet(
-        base::android::ConvertJavaStringToUTF8(env, pass_phrase));
-  }
-}
-
-void BraveRewardsNativeWorker::OnRecoverWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnRecoverWallet(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
 }
 
 void BraveRewardsNativeWorker::RefreshPublisher(

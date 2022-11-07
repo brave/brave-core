@@ -163,6 +163,17 @@ void BraveBrowser::ResetTryToCloseWindow() {
   Browser::ResetTryToCloseWindow();
 }
 
+void BraveBrowser::UpdateTargetURL(content::WebContents* source,
+                                   const GURL& url) {
+  GURL target_url = url;
+  if (url.SchemeIs(content::kChromeUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kBraveUIScheme);
+    target_url = target_url.ReplaceComponents(replacements);
+  }
+  Browser::UpdateTargetURL(source, target_url);
+}
+
 bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
   if (g_suppress_dialog_for_testing)
     return false;

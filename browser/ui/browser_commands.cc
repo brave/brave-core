@@ -203,6 +203,7 @@ void CopySanitizedURL(Browser* browser, const GURL& url) {
 // - Query filter
 // - URLSanitizerService
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
+  DCHECK(url.SchemeIsHTTPOrHTTPS());
   GURL final_url;
   // Apply debounce rules.
   auto* debounce_service =
@@ -231,6 +232,12 @@ void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
   prefs->SetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow,
       !prefs->GetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow));
+}
+
+void ToggleVerticalTabStrip(Browser* browser) {
+  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled,
+                    !prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
 }
 
 }  // namespace brave

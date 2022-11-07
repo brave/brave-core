@@ -71,18 +71,18 @@ if (is_win) {
   # another tool, Zucchini, as a drop-in replacement.
   if (build_delta_installer) {
     copy("copy_zucchini_binary_as_courgette") {
-      zucchini_toolchain = ""
-      if (target_cpu == "x86") {
-        # 32 bit Zucchini runs into memory allocation errors when virtual memory
-        # utilization is high. Using the 64 bit version fixes this.
-        zucchini_toolchain = "(//build/toolchain/win:win_clang_x64)"
-      }
-      zucchini_dep = "//components/zucchini:zucchini" + zucchini_toolchain
+      # 32 bit Zucchini runs into memory allocation errors when virtual memory
+      # utilization is high. Using the 64 bit version fixes this. The obvious
+      # way of doing this would be to depend on zucchini($host_toolchain). But
+      # on Windows, host_toolchain on an x64 system is actually win_clang_x86 -
+      # see BUILDCONFIG.gn. The following line works around this and is
+      # resilient to upstream changes:
+      zucchini_toolchain = string_replace(host_toolchain, target_cpu, host_cpu)
+      zucchini = "//components/zucchini:zucchini(" + zucchini_toolchain + ")"
 
       visibility = [ ":mini_installer_dependencies" ]
-      deps = [ zucchini_dep ]
-      sources =
-          [ get_label_info(zucchini_dep, "root_out_dir") + "/zucchini.exe" ]
+      deps = [ zucchini ]
+      sources = [ get_label_info(zucchini, "root_out_dir") + "/zucchini.exe" ]
       outputs = [ "$root_out_dir/$last_chrome_installer/courgette.exe" ]
     }
   }

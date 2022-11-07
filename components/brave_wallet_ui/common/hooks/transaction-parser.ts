@@ -23,11 +23,11 @@ import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 import { isSolanaTransaction } from '../../utils/tx-utils'
+import { getBalance } from '../../utils/balance-utils'
 
 // Hooks
 import usePricing from './pricing'
 import useAddressLabels, { SwapExchangeProxy } from './address-labels'
-import useBalance from './balance'
 
 // Options
 import { makeNetworkAsset } from '../../options/asset-options'
@@ -90,7 +90,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   instructions?: TypedSolanaInstructionWithParams[]
 }
 
-export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkInfo, networkSpotPrice: string, solFeeEstimates?: SolFeeEstimates) {
+export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkInfo, networkSpotPrice?: string, solFeeEstimates?: SolFeeEstimates) {
   /**
    * Checks if a given gasLimit is empty or zero-value, and returns an
    * appropriate localized error string.
@@ -142,10 +142,12 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
       maxFeePerGas: Amount.normalize(maxFeePerGas),
       maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
       gasFee,
-      gasFeeFiat: new Amount(gasFee)
-        .divideByDecimals(selectedNetwork.decimals)
-        .times(networkSpotPrice)
-        .formatAsFiat(),
+      gasFeeFiat: selectedNetwork && networkSpotPrice
+        ? new Amount(gasFee)
+          .divideByDecimals(selectedNetwork.decimals)
+          .times(networkSpotPrice)
+          .formatAsFiat()
+        : '',
       isEIP1559Transaction,
       missingGasLimitError: isSolanaTxn
         ? undefined
@@ -169,15 +171,16 @@ export function useTransactionParser (
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const selectedNetwork = transactionNetwork || reduxSelectedNetwork
   const nativeAsset = React.useMemo(
-    () => makeNetworkAsset(selectedNetwork),
+    () => selectedNetwork && makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
   )
   const { findAssetPrice, computeFiatAmount } = usePricing(spotPrices)
-  const getBalance = useBalance([selectedNetwork])
   const { getAddressLabel } = useAddressLabels(accounts)
 
   const networkSpotPrice = React.useMemo(
-    () => findAssetPrice(selectedNetwork.symbol),
+    () => selectedNetwork
+      ? findAssetPrice(selectedNetwork.symbol)
+      : '',
     [selectedNetwork, findAssetPrice]
   )
   const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice, solFeeEstimates)
@@ -334,12 +337,16 @@ export function useTransactionParser (
           }
         }, new Amount(0)) ?? 0
 
-        const transferedValue = new Amount(value)
-          .divideByDecimals(selectedNetwork.decimals)
-          .plus(lamportsMovedFromInstructions)
-          .format()
+        const transferedValue = selectedNetwork
+          ? new Amount(value)
+            .divideByDecimals(selectedNetwork.decimals)
+            .plus(lamportsMovedFromInstructions)
+            .format()
+          : ''
 
-        const transferedAmountFiat = computeFiatAmount(transferedValue, selectedNetwork.symbol, selectedNetwork.decimals)
+        const transferedAmountFiat = selectedNetwork
+          ? computeFiatAmount(transferedValue, selectedNetwork.symbol, selectedNetwork.decimals)
+          : Amount.empty()
 
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(transferedAmountFiat)
@@ -357,14 +364,18 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: transferedAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork.symbol),
-          value: new Amount(transferedValue)
-            .divideByDecimals(selectedNetwork.decimals)
-            .format(6),
-          valueExact: new Amount(transferedValue)
-            .divideByDecimals(selectedNetwork.decimals)
-            .format(),
-          symbol: selectedNetwork.symbol,
+            .formatAsAsset(6, selectedNetwork?.symbol),
+          value: selectedNetwork
+            ? new Amount(transferedValue)
+              .divideByDecimals(selectedNetwork.decimals)
+              .format(6)
+            : '',
+          valueExact: selectedNetwork
+            ? new Amount(transferedValue)
+              .divideByDecimals(selectedNetwork.decimals)
+              .format()
+            : '',
+          symbol: selectedNetwork?.symbol ?? '',
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
             ? new Amount(transferedValue)
@@ -419,7 +430,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork.symbol),
+            .formatAsAsset(6, selectedNetwork?.symbol),
           value: valueWrapped.format(6),
           valueExact: valueWrapped.format(),
           symbol: token?.symbol ?? '',
@@ -464,7 +475,7 @@ export function useTransactionParser (
           fiatTotal: new Amount(totalAmountFiat),
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork.symbol),
+            .formatAsAsset(6, selectedNetwork?.symbol),
           value: '1', // Can only send 1 erc721 at a time
           valueExact: '1',
           symbol: token?.symbol ?? '',
@@ -503,7 +514,7 @@ export function useTransactionParser (
           fiatValue: Amount.zero(),
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
-            .formatAsAsset(2, selectedNetwork.symbol),
+            .formatAsAsset(2, selectedNetwork?.symbol),
           value: amountWrapped
             .divideByDecimals(token?.decimals ?? 18)
             .format(6),
@@ -556,7 +567,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork.symbol),
+            .formatAsAsset(6, selectedNetwork?.symbol),
           value: valueWrapped.format(6),
           valueExact: valueWrapped.format(),
           symbol: token?.symbol ?? '',
@@ -577,22 +588,25 @@ export function useTransactionParser (
         const fillContracts = fillPath
           .slice(2)
           .match(/.{1,40}/g)
-        const fillTokens: BraveWallet.BlockchainToken[] = (fillContracts || [])
+        const fillTokens = (fillContracts || [])
           .map(path => '0x' + path)
           .map(address =>
             address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
               ? nativeAsset
               : findToken(address) || nativeAsset)
+          .filter(Boolean) as BraveWallet.BlockchainToken[]
 
         const sellToken = fillTokens.length === 1
           ? nativeAsset
           : fillTokens[0]
         const sellAmountWeiBN = new Amount(sellAmountArg || value)
-        const sellAmountFiat = computeFiatAmount(
-          sellAmountWeiBN.format(),
-          sellToken.symbol,
-          sellToken.decimals
-        )
+        const sellAmountFiat = sellToken
+          ? computeFiatAmount(
+              sellAmountWeiBN.format(),
+              sellToken.symbol,
+              sellToken.decimals
+            )
+          : Amount.empty()
 
         const buyToken = fillTokens[fillTokens.length - 1]
         const buyAmount = new Amount(minBuyAmountArg)
@@ -610,8 +624,10 @@ export function useTransactionParser (
           ? sellAmountWeiBN.gt(sellTokenBalance)
           : undefined
 
-        const sellAmountBN = sellAmountWeiBN
-          .divideByDecimals(sellToken.decimals)
+        const sellAmountBN = sellToken
+          ? sellAmountWeiBN
+            .divideByDecimals(sellToken.decimals)
+          : Amount.empty()
 
         return {
           hash: transactionInfo.txHash,
@@ -626,11 +642,11 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sellAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork.symbol),
+            .formatAsAsset(6, selectedNetwork?.symbol),
           value: sellAmountBN.format(6),
           valueExact: sellAmountBN.format(),
-          symbol: sellToken.symbol,
-          decimals: sellToken.decimals,
+          symbol: sellToken?.symbol ?? '',
+          decimals: sellToken?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
@@ -639,7 +655,7 @@ export function useTransactionParser (
           buyToken,
           minBuyAmount: buyAmount,
           intent: getLocale('braveWalletTransactionIntentSwap')
-            .replace('$1', sellAmountBN.formatAsAsset(6, sellToken.symbol))
+            .replace('$1', sellAmountBN.formatAsAsset(6, sellToken?.symbol))
             .replace('$2', buyAmount.formatAsAsset(6, buyToken.symbol)),
           ...feeDetails
         } as ParsedTransaction
@@ -650,13 +666,16 @@ export function useTransactionParser (
       case txType === BraveWallet.TransactionType.SolanaSystemTransfer:
       case txType === BraveWallet.TransactionType.Other:
       default: {
-        const sendAmountFiat = computeFiatAmount(value, selectedNetwork.symbol, selectedNetwork.decimals)
+        const sendAmountFiat = selectedNetwork
+          ? computeFiatAmount(value, selectedNetwork.symbol, selectedNetwork.decimals)
+          : Amount.empty()
 
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
 
-        const valueWrapped = new Amount(value)
-          .divideByDecimals(selectedNetwork.decimals)
+        const valueWrapped = selectedNetwork
+          ? new Amount(value).divideByDecimals(selectedNetwork.decimals)
+          : Amount.empty()
 
         return {
           hash: transactionInfo.txHash,
@@ -671,10 +690,10 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
-            .formatAsAsset(6, selectedNetwork.symbol),
+            .formatAsAsset(6, selectedNetwork?.symbol),
           value: valueWrapped.format(6),
           valueExact: valueWrapped.format(),
-          symbol: selectedNetwork.symbol,
+          symbol: selectedNetwork?.symbol ?? '',
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
             ? new Amount(value)
@@ -686,7 +705,7 @@ export function useTransactionParser (
             : undefined,
           isSwap: to.toLowerCase() === SwapExchangeProxy,
           intent: getLocale('braveWalletTransactionIntentSend')
-            .replace('$1', valueWrapped.formatAsAsset(6, selectedNetwork.symbol)),
+            .replace('$1', valueWrapped.formatAsAsset(6, selectedNetwork?.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }
@@ -695,7 +714,6 @@ export function useTransactionParser (
     selectedNetwork,
     accounts,
     spotPrices,
-    findToken,
-    getBalance
+    findToken
   ])
 }

@@ -128,6 +128,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
  private:
   // BrowserProcessImpl overrides:
   void Init() override;
+#if !BUILDFLAG(IS_ANDROID)
+  void StartTearDown() override;
+#endif
 
   void CreateProfileManager();
 

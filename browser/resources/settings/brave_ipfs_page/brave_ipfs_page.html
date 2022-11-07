@@ -46,6 +46,18 @@
         $i18n{ipfsChangeGatewayButtonLabel}
       </cr-button>
     </div>
+    <div class="settings-box">
+      <div class="flex cr-padded-text">
+        <div>$i18n{ipfsNftPublicGatewayDesc}</div>
+        <div class="secondary" id="defaultNFTIPFSGateway">
+          {{prefs.brave.ipfs.public_nft_gateway_address.value}}
+        </div>
+      </div>
+      <cr-button id="changeIPFSNFTGateway"
+          on-click="onChangeIPFSNFTGatewayDialogTapped_">
+        $i18n{ipfsChangeGatewayButtonLabel}
+      </cr-button>
+    </div>
     <settings-toggle-button id="ipfsAutoGatewayFallbackEnabled"
         class="cr-row"
         pref="{{prefs.brave.ipfs.auto_fallback_to_gateway}}"
@@ -127,7 +139,11 @@
     </template>
   </settings-animated-pages>
   <template is="dom-if" if="[[showChangeIPFSGatewayDialog_]]" restamp>
-    <change-ipfs-gateway-dialog prefs="{{prefs}}" on-close="onChangeIPFSGatewayDialogClosed_">
+    <change-ipfs-gateway-dialog pref="{{prefs.brave.ipfs.public_gateway_address}}" prefs="{{prefs}}" on-close="onChangeIPFSGatewayDialogClosed_">
+    </change-ipfs-gateway-dialog>
+  </template>
+  <template is="dom-if" if="[[showChangeIPFSNFTGatewayDialog_]]" restamp>
+    <change-ipfs-gateway-dialog pref="{{prefs.brave.ipfs.public_nft_gateway_address}}" prefs="{{prefs}}" on-close="onChangeIPFSNFTGatewayDialogClosed_">
     </change-ipfs-gateway-dialog>
   </template>
 </template>

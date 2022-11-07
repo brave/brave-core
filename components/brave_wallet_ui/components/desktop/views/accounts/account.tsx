@@ -23,6 +23,7 @@ import {
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { getBalance } from '../../../../utils/balance-utils'
 
 // Styled Components
 import {
@@ -51,7 +52,6 @@ import { AccountListItemOptionButton } from '../../account-list-item/account-lis
 import { AccountButtonOptions } from '../../../../options/account-list-button-options'
 
 // Hooks
-import { useBalance } from '../../../../common/hooks/balance'
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 
 // Actions
@@ -77,7 +77,6 @@ export const Account = ({
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
-  const getBalance = useBalance(networkList)
   const scrollIntoView = useScrollIntoView()
 
   // memos
@@ -126,7 +125,7 @@ export const Account = ({
     () =>
       accountsTokensList.filter(({ isErc721 }) => isErc721)
         .filter((token) => getBalance(selectedAccount, token) !== '0'),
-    [accountsTokensList, selectedAccount, getBalance]
+    [accountsTokensList, selectedAccount]
   )
 
   const funigbleTokens = React.useMemo(

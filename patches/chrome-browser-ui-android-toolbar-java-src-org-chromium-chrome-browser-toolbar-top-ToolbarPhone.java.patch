@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..2b9a24df8a72d90baf06cc2e5972b6481d7d9147 100644
+index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..a30a7730653420930d60ea6d2069480c7d1cd862 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -377,6 +377,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -26,7 +26,15 @@ index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..2b9a24df8a72d90baf06cc2e5972b648
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (mOptimizationsEnabled && isInTabSwitcherMode()) return;
  
-@@ -1973,6 +1976,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -1282,6 +1285,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+             canvas.restore();
+         }
+ 
++        BraveToolbarLayout.class.cast(this).drawAnimationOverlay(mToolbarButtonsContainer, canvas);
+         // Draw the tab stack button and associated text if necessary.
+         if (mTabSwitcherAnimationTabStackDrawable != null && mToggleTabStackButton != null
+                 && mUrlExpansionFraction != 1f) {
+@@ -1973,6 +1977,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

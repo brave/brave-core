@@ -141,6 +141,7 @@ base::Value::Dict GetEthNativeAssetFromChain(
   native_asset.Set("symbol", chain->symbol);
   native_asset.Set("is_erc20", false);
   native_asset.Set("is_erc721", false);
+  native_asset.Set("is_nft", false);
   native_asset.Set("decimals", chain->decimals);
   native_asset.Set("visible", true);
   return native_asset;
@@ -149,6 +150,11 @@ base::Value::Dict GetEthNativeAssetFromChain(
 }  // namespace
 
 namespace brave_wallet {
+
+const char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageDaysInWeek";
+const char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly.2";
+const char kBraveWalletNewUserReturningHistogramName[] =
+    "Brave.Wallet.NewUserReturning";
 
 BraveWalletService::BraveWalletService(
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
@@ -354,6 +360,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   value.Set("logo", token->logo);
   value.Set("is_erc20", token->is_erc20);
   value.Set("is_erc721", token->is_erc721);
+  value.Set("is_nft", token->is_nft);
   value.Set("decimals", token->decimals);
   value.Set("visible", true);
   value.Set("token_id", token->token_id);
@@ -777,6 +784,43 @@ void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
 }
 
 // static
+void BraveWalletService::MigrateUserAssetsAddIsNFT(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated))
+    return;
+
+  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
+    prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
+    return;
+  }
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
+  auto& user_assets_pref = update.Get()->GetDict();
+
+  for (auto user_asset_dict_per_cointype : user_assets_pref) {
+    if (!user_asset_dict_per_cointype.second.is_dict())
+      continue;
+    for (auto user_asset_list_per_chain :
+         user_asset_dict_per_cointype.second.GetDict()) {
+      if (!user_asset_list_per_chain.second.is_list())
+        continue;
+      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
+        auto* asset = user_asset.GetIfDict();
+        if (!asset)
+          continue;
+
+        auto is_erc721 = asset->FindBool("is_erc721");
+        if (is_erc721 && *is_erc721 == true) {
+          asset->Set("is_nft", true);
+        } else {
+          asset->Set("is_nft", false);
+        }
+      }
+    }
+  }
+  prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
+}
+
+// static
 base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   base::Value::Dict user_assets;
 
@@ -786,6 +830,7 @@ base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   bat.Set("symbol", "BAT");
   bat.Set("is_erc20", true);
   bat.Set("is_erc721", false);
+  bat.Set("is_nft", false);
   bat.Set("decimals", 18);
   bat.Set("visible", true);
   bat.Set("logo", "bat.png");
@@ -817,6 +862,7 @@ base::Value::Dict BraveWalletService::GetDefaultSolanaAssets() {
   sol.Set("decimals", 9);
   sol.Set("is_erc20", false);
   sol.Set("is_erc721", false);
+  sol.Set("is_nft", false);
   sol.Set("visible", true);
   sol.Set("logo", "sol.png");
 
@@ -841,6 +887,7 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
   fil.Set("decimals", 18);
   fil.Set("is_erc20", false);
   fil.Set("is_erc721", false);
+  fil.Set("is_nft", false);
   fil.Set("visible", true);
   fil.Set("logo", "fil.png");
 
@@ -856,16 +903,12 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
 
 void BraveWalletService::OnP3ATimerFired() {
   RecordWalletUsage(false);
+  brave_wallet_p3a_.Update();
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
     const std::string& pref_name) {
   RecordWalletUsage(true);
-}
-
-void BraveWalletService::OnOnboardingShown() {
-  prefs_->SetBoolean(kBraveWalletWasOnboardingShown, true);
-  RecordWalletUsage(false);
 }
 
 BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
@@ -877,8 +920,6 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
   base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
   base::Time first_p3a_report = prefs_->GetTime(kBraveWalletP3AFirstReportTime);
   base::Time last_p3a_report = prefs_->GetTime(kBraveWalletP3ALastReportTime);
-  bool was_onboarding_shown =
-      prefs_->GetBoolean(kBraveWalletWasOnboardingShown);
 
   VLOG(1) << "Wallet P3A: first report: " << first_p3a_report
           << " last_report: " << last_p3a_report;
@@ -891,7 +932,7 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
   }
 
   WriteStatsToHistogram(wallet_last_used, first_p3a_report, last_p3a_report,
-                        was_onboarding_shown, weekly_store.GetWeeklySum());
+                        weekly_store.GetWeeklySum());
 
   prefs_->SetTime(kBraveWalletP3ALastReportTime, base::Time::Now());
   if (first_p3a_report.is_null())
@@ -915,7 +956,6 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
 void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
                                                base::Time first_p3a_report,
                                                base::Time last_p3a_report,
-                                               bool was_onboarding_shown,
                                                unsigned use_days_in_week) {
   base::Time::Exploded now_exp;
   base::Time::Exploded last_report_exp;
@@ -948,11 +988,6 @@ void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
   } else {
     VLOG(1) << "Wallet P3A: Need 7 days of reports before recording "
                "daily/weekly, skipping";
-  }
-
-  if (was_onboarding_shown) {
-    UMA_HISTOGRAM_BOOLEAN(kBraveWalletOnboardingConvHistogramName,
-                          !wallet_last_used.is_null());
   }
 }
 

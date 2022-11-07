@@ -59,7 +59,7 @@ import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
-import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork } from '../common/hooks'
+import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork, useBalanceUpdater } from '../common/hooks'
 import { getUniqueAssets } from '../utils/asset-utils'
 import { isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
@@ -130,6 +130,8 @@ function Container () {
 
   const [selectedBuyAsset, setSelectedBuyAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
+  // hooks
+  useBalanceUpdater()
   const swap = useSwap()
   const {
     filteredAssetList,
@@ -548,7 +550,7 @@ function Container () {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
+            selectedNetwork={selectedNetwork}
             defaultNetworks={defaultNetworks}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
@@ -815,7 +817,6 @@ function Container () {
               <AssetsPanel
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
-                networkList={networkList}
                 onAddAsset={onAddAsset}
               />
             </ScrollContainer>

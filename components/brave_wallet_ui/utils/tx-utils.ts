@@ -1,6 +1,7 @@
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, P3ASendTransactionTypes, SupportedTestNetworks } from '../constants/types'
 import { getLocale } from '../../common/locale'
 import { SolanaTransactionTypes } from '../common/constants/solana'
+import { loadTimeData } from '../../common/loadTimeData'
 
 type Order = 'ascending' | 'descending'
 
@@ -37,4 +38,13 @@ export function isSolanaTransaction (transaction: BraveWallet.TransactionInfo) {
   const { txType, txDataUnion: { solanaTxData } } = transaction
   return SolanaTransactionTypes.includes(txType) ||
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
+}
+
+export function shouldReportTransactionP3A (txInfo: BraveWallet.TransactionInfo, network: BraveWallet.NetworkInfo, coin: BraveWallet.CoinType) {
+  if (P3ASendTransactionTypes.includes(txInfo.txType) ||
+    (coin === BraveWallet.CoinType.FIL && txInfo.txType === BraveWallet.TransactionType.Other)) {
+    const countTestNetworks = loadTimeData.getBoolean(BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY)
+    return countTestNetworks || !SupportedTestNetworks.includes(network.chainId)
+  }
+  return false
 }

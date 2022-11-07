@@ -19,6 +19,7 @@ import { ProviderRedirectModal } from './provider_redirect_modal'
 import { GrantList } from './grant_list'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
 import { BatIcon } from '../../shared/components/icons/bat_icon'
+import { UnsupportedRegionNotice } from './unsupported_region_notice'
 
 import * as style from './settings.style'
 
@@ -56,6 +57,7 @@ export function Settings () {
   }
 
   React.useEffect(() => {
+    actions.getIsUnsupportedRegion()
     const date = new Date()
     actions.getBalanceReport(date.getMonth() + 1, date.getFullYear())
     actions.getTipTable()
@@ -137,6 +139,22 @@ export function Settings () {
     )
   }
 
+  const renderUnsupportedRegionNotice = () => {
+    return (
+      <div>
+        <style.unsupportedRegionNoticeTitle>
+          <style.title>
+            <BatIcon />
+            {getString('braveRewards')}
+          </style.title>
+        </style.unsupportedRegionNoticeTitle>
+        <style.unsupportedRegionNotice>
+          <UnsupportedRegionNotice />
+        </style.unsupportedRegionNotice>
+      </div>
+    )
+  }
+
   const renderOnboarding = () => {
     const onEnable = () => {
       actions.enableRewards()
@@ -154,6 +172,10 @@ export function Settings () {
     // determined.
     if (rewardsData.showOnboarding === null) {
       return null
+    }
+
+    if (rewardsData.isUnsupportedRegion) {
+      return renderUnsupportedRegionNotice()
     }
 
     if (rewardsData.showOnboarding) {

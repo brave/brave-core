@@ -128,6 +128,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_federated",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_rewards/common",
   "//brave/components/brave_rewards/common/buildflags",
   "//brave/components/brave_search/browser",
   "//brave/components/brave_search/common",
@@ -219,6 +220,8 @@ if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_browser_main_parts_mac.h",
     "//brave/browser/brave_browser_main_parts_mac.mm",
+    "//brave/browser/brave_shell_integration_mac.h",
+    "//brave/browser/brave_shell_integration_mac.mm",
   ]
 }
 

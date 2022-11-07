@@ -30,7 +30,7 @@ export const Modal = styled.div<{ width?: string, height?: string }>`
   max-width: ${p => p.width ? p.width : '580px'};
   min-height: ${p => p.height ? p.height : '580px'};
   max-height: ${p => p.height ? p.height : '580px'};
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: transparent;
   border-radius: 8px;
   @media screen and (max-width: 600px) {
     min-width: 480px;

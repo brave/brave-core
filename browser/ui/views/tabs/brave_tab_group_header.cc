@@ -8,6 +8,7 @@
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
+#include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/label.h"
 
@@ -20,8 +21,10 @@ BraveTabGroupHeader::~BraveTabGroupHeader() = default;
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
-  if (!tabs::features::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return;
+  }
 
   title_chip_->SetX(GetLeftPaddingForVerticalTabs());
 }

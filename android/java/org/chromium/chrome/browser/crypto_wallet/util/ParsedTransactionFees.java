@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOLANA_TRANSACTION_TYPES;
+
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -104,11 +106,7 @@ public class ParsedTransactionFees {
                 : null;
         FilTxData filTxData = null; // TODO: add with FIL
         final int networkDecimals = selectedNetwork.decimals;
-        final boolean isSolTransaction = txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER
-                || txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
-                || txInfo.txType
-                        == TransactionType
-                                   .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
+        final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isFilTransaction = filTxData != null;
         final String gasLimit = isFilTransaction ? filTxData.gasLimit
                                                  : (txData != null ? txData.baseData.gasLimit : "");

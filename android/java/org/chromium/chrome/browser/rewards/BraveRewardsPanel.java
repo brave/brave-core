@@ -67,7 +67,6 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -90,7 +89,6 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -773,14 +771,14 @@ public class BraveRewardsPanel
         String rewardsCountryCode = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                             .getString(BravePref.DECLARED_GEO);
         if (mPopupView != null && PackageUtils.isFirstInstall(mActivity)
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && mBraveRewardsNativeWorker.IsSupported()
                 && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())) {
             showBraveRewardsOnboardingModal();
             BraveRewardsHelper.updateBraveRewardsAppOpenCount();
         } else if (mPopupView != null && !PackageUtils.isFirstInstall(mActivity)
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && mBraveRewardsNativeWorker.IsSupported()
                 && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
                 && TextUtils.isEmpty(rewardsCountryCode)) {
             mBraveRewardsNativeWorker.getAvailableCountries();
@@ -788,7 +786,7 @@ public class BraveRewardsPanel
     }
 
     private void checkForRewardsOnboarding() {
-        if (mPopupView != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+        if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()
                 && (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()
                         || BraveRewardsHelper.shouldShowDeclareGeoModal())) {
             if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
@@ -1154,8 +1152,7 @@ public class BraveRewardsPanel
                         if (mBraveRewardsOnboardingView != null) {
                             mBraveRewardsOnboardingView.setVisibility(View.GONE);
 
-                            if (mPopupView != null
-                                    && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                            if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()
                                     && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                                     && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                             Profile.getLastUsedRegularProfile())) {

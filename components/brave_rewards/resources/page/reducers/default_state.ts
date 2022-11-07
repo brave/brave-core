@@ -17,7 +17,6 @@ export function defaultState (): Rewards.State {
       disconnectWalletError: false,
       modalBackup: false,
       modalRedirect: 'hide',
-      walletRecoveryStatus: null,
       promosDismissed: {}
     },
     autoContributeList: [],
@@ -71,7 +70,7 @@ export function defaultState (): Rewards.State {
       }
     },
     initializing: true,
-    paymentId: '',
-    showOnboarding: null
+    showOnboarding: null,
+    isUnsupportedRegion: false
   }
 }

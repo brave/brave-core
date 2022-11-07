@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/base64.h"
 #include "base/callback_forward.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
@@ -13,6 +14,7 @@
 #include "base/run_loop.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
@@ -34,6 +36,7 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -202,6 +205,10 @@ class BraveVPNServiceTest : public testing::Test {
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
+#if !BUILDFLAG(IS_ANDROID)
+    BraveVPNOSConnectionAPI::GetInstance()->set_local_prefs(
+        &local_pref_service_);
+#endif
     ResetVpnService();
   }
   void TearDown() override {
@@ -218,9 +225,6 @@ class BraveVPNServiceTest : public testing::Test {
         &profile_pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
-#if !BUILDFLAG(IS_ANDROID)
-    GetBraveVPNConnectionAPI()->set_local_prefs(&local_pref_service_);
-#endif
   }
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
     if (!skus_service_) {
@@ -305,13 +309,6 @@ class BraveVPNServiceTest : public testing::Test {
     GetBraveVPNConnectionAPI()->OnFetchHostnames(region, hostnames, success);
   }
 
-  std::string& skus_credential() { return service_->skus_credential_; }
-
-  void SetSkusCredential(const std::string& credential) {
-    service_->skus_credential_ = credential;
-    GetBraveVPNConnectionAPI()->SetSkusCredential(credential);
-  }
-
   bool& prevent_creation() {
     return GetBraveVPNConnectionAPI()->prevent_creation_;
   }
@@ -340,8 +337,8 @@ class BraveVPNServiceTest : public testing::Test {
   }
   void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
                                     bool success) {
-    GetBraveVPNConnectionAPI()->OnGetSubscriberCredentialV12(
-        subscriber_credential, success);
+    service_->OnGetSubscriberCredentialV12(base::Time::Now(),
+                                           subscriber_credential, success);
   }
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success) {
@@ -369,6 +366,9 @@ class BraveVPNServiceTest : public testing::Test {
     service_->test_timezone_ = timezone;
   }
 
+  void SetMockConnectionAPI(BraveVPNOSConnectionAPI* api) {
+    service_->set_mock_brave_vpn_connection_api(api);
+  }
 #endif
   void RecordP3A(bool new_usage) { service_->RecordP3A(new_usage); }
 
@@ -533,6 +533,11 @@ class BraveVPNServiceTest : public testing::Test {
       )";
   }
 
+  void SetValidSubscriberCredential() {
+    SetSubscriberCredential(&local_pref_service_, "subscriber_credential",
+                            base::Time::Now() + base::Seconds(10));
+  }
+
   std::string SetupTestingStoreForEnv(const std::string& env,
                                       bool active_subscription = true) {
     std::string domain = skus::GetDomain("vpn", env);
@@ -588,6 +593,29 @@ TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
       },
       loop.QuitClosure()));
   loop.Run();
+}
+
+TEST_F(BraveVPNServiceTest, TicketInfoTest) {
+  base::Value::Dict ticket_value =
+      GetValueWithTicketInfos("brave-vpn@brave.com", "It's cool feature",
+                              "Love the Brave VPN!", "credential");
+
+  // Check ticket dict has four required fields.
+  EXPECT_TRUE(ticket_value.FindString(kSupportTicketEmailKey));
+  EXPECT_TRUE(ticket_value.FindString(kSupportTicketSubjectKey));
+  EXPECT_TRUE(ticket_value.FindString(kSupportTicketPartnerClientIdKey));
+  const auto support_ticket_encoded =
+      *ticket_value.FindString(kSupportTicketSupportTicketKey);
+  EXPECT_TRUE(!support_ticket_encoded.empty());
+
+  // Check body contents
+  std::string support_ticket_decoded;
+  EXPECT_TRUE(
+      base::Base64Decode(support_ticket_encoded, &support_ticket_decoded));
+  const std::string expected_support_ticket =
+      "Love the Brave VPN!\n\nsubscriber-credential: "
+      "credential\npayment-validation-method: brave-premium";
+  EXPECT_EQ(expected_support_ticket, support_ticket_decoded);
 }
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -661,10 +689,12 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   // Reached to purchased state when valid credential, region data
   // and timezone info.
   SetPurchasedState(env, PurchasedState::LOADING);
-  OnCredentialSummary(domain, R"({ "active": true } )");
+  OnCredentialSummary(
+      domain, R"({ "active": true, "remaining_credential_count": 1 } )");
   EXPECT_TRUE(regions().empty());
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
-  OnPrepareCredentialsPresentation(domain, "credential=abcdefghijk");
+  OnPrepareCredentialsPresentation(
+      domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
   OnFetchRegionList(false, GetRegionsData(), true);
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
@@ -679,7 +709,8 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
 
   // Treat not purchased when empty.
   SetPurchasedState(env, PurchasedState::LOADING);
-  OnPrepareCredentialsPresentation(domain, "credential=");
+  OnPrepareCredentialsPresentation(
+      domain, "credential=; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   // Treat failed when invalid.
@@ -687,11 +718,10 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   OnPrepareCredentialsPresentation(domain, "");
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
 
-  // Treat as purchased state early when service has region data already.
-  EXPECT_FALSE(regions().empty());
+  // Treat failed when cookie doesn't have expired date.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnPrepareCredentialsPresentation(domain, "credential=abcdefghijk");
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
 }
 
 TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
@@ -735,12 +765,6 @@ TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
 
   cancel_connecting() = true;
   connection_state() = ConnectionState::CONNECTING;
-  OnGetSubscriberCredentialV12("", true);
-  EXPECT_FALSE(cancel_connecting());
-  EXPECT_EQ(ConnectionState::DISCONNECTED, connection_state());
-
-  cancel_connecting() = true;
-  connection_state() = ConnectionState::CONNECTING;
   OnGetProfileCredentials("", true);
   EXPECT_FALSE(cancel_connecting());
   EXPECT_EQ(ConnectionState::DISCONNECTED, connection_state());
@@ -773,9 +797,21 @@ TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {
   loop.Run();
 }
 
+// Check SetSelectedRegion is called when default device region is set.
+// We use default device region as an initial selected region.
+TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateWithDeviceRegionTest) {
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+
+  OnFetchRegionList(false, GetRegionsData(), true);
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  base::RunLoop loop;
+  observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+  loop.Run();
+}
+
 TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
-  // Having skus_credential is pre-requisite before try connecting.
-  SetSkusCredential("test_credentials");
   // Check valid connection info is set when valid hostname and profile
   // credential are fetched.
   connection_state() = ConnectionState::CONNECTING;
@@ -1038,8 +1074,8 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   // Purchased state is not checked for fresh user.
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
-  // Dirty region list prefs to pretend it's already cached.
-  local_pref_service_.SetList(prefs::kBraveVPNRegionList, {});
+  // Set valid subscriber credential to pretend it's purchased user.
+  SetValidSubscriberCredential();
   ResetVpnService();
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
 }
@@ -1047,13 +1083,43 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
 TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  cancel_connecting() = false;
-  connection_state() = ConnectionState::CONNECTING;
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   OnGetSubscriberCredentialV12("Token No Longer Valid", false);
   EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
-  EXPECT_FALSE(cancel_connecting());
-  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
+}
+
+class MockBraveVPNOSConnectionAPI : public BraveVPNOSConnectionAPI {
+ public:
+  MockBraveVPNOSConnectionAPI() = default;
+  ~MockBraveVPNOSConnectionAPI() override = default;
+
+  MOCK_METHOD(void,
+              CreateVPNConnectionImpl,
+              (const BraveVPNConnectionInfo& info),
+              (override));
+  MOCK_METHOD(void,
+              RemoveVPNConnectionImpl,
+              (const std::string& name),
+              (override));
+  MOCK_METHOD(void, ConnectImpl, (const std::string& name), (override));
+  MOCK_METHOD(void, DisconnectImpl, (const std::string& name), (override));
+  MOCK_METHOD(void, CheckConnectionImpl, (const std::string& name), (override));
+};
+
+// Test connection check is asked only when purchased state.
+TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterPurchased) {
+  MockBraveVPNOSConnectionAPI api;
+  SetMockConnectionAPI(&api);
+  std::string env = skus::GetDefaultEnvironment();
+
+  EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(0);
+  SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+  testing::Mock::VerifyAndClearExpectations(&api);
+  EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(1);
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  testing::Mock::VerifyAndClearExpectations(&api);
+
+  SetMockConnectionAPI(nullptr);
 }
 #endif
 

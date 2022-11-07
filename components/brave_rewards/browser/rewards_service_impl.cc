@@ -36,10 +36,10 @@
 #include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/public/ledger_database.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
@@ -1334,26 +1334,6 @@ void RewardsServiceImpl::ClaimPromotion(
       std::move(callback));
 
   bat_ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
-}
-
-void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->RecoverWallet(passPhrase, base::BindOnce(
-      &RewardsServiceImpl::OnRecoverWallet,
-      AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnRecoverWallet(const ledger::mojom::Result result) {
-  // Fetch balance after recovering wallet in order to initiate P3A
-  // stats collection
-  FetchBalance(base::DoNothing());
-
-  for (auto& observer : observers_) {
-    observer.OnRecoverWallet(this, result);
-  }
 }
 
 std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
@@ -3031,15 +3011,6 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   }
 
   bat_ledger_->GetRewardsWallet(std::move(callback));
-}
-
-void RewardsServiceImpl::GetRewardsWalletPassphrase(
-    GetRewardsWalletPassphraseCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), "");
-  }
-
-  bat_ledger_->GetRewardsWalletPassphrase(std::move(callback));
 }
 
 bool RewardsServiceImpl::IsBitFlyerRegion() const {

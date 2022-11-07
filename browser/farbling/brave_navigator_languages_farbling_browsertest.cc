@@ -260,12 +260,15 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   std::string domain_b = "b.test";
   std::string domain_d = "d.test";
   std::string domain_x = "www.ulta.com";
+  std::string domain_y = "aeroplan.rewardops.com";
   GURL url_b = https_server_.GetURL(
       domain_b, "/reduce-language/page-with-subresources.html");
   GURL url_d = https_server_.GetURL(
       domain_d, "/reduce-language/page-with-subresources.html");
   GURL url_x = https_server_.GetURL(
       domain_x, "/reduce-language/page-with-subresources.html");
+  GURL url_y = https_server_.GetURL(
+      domain_y, "/reduce-language/page-with-subresources.html");
   SetAcceptLanguages("la,es,en");
 
   // Farbling level: off
@@ -326,4 +329,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   BlockFingerprinting(domain_x);
   SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.9,la;q=0.8");
   NavigateToURLUntilLoadStop(url_x);
+  BlockFingerprinting(domain_y);
+  NavigateToURLUntilLoadStop(url_y);
 }

@@ -5,7 +5,6 @@
 
 import useSwap from './swap'
 import useAssets from './assets'
-import useBalance from './balance'
 import useSend from './send'
 import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
 import useAddressLabels from './address-labels'
@@ -18,13 +17,14 @@ import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
 import useTokenRegistry from './useTokenRegistry'
+import { useMultiChainBuyAssets } from './use-multi-chain-buy-assets'
+import useBalanceUpdater from './use-balance-updater'
 import { useLib } from './useLib'
 
 export {
   useAddressLabels,
   useAssetManagement,
   useAssets,
-  useBalance,
   useExplorer,
   useHasAccount,
   useIsMounted,
@@ -37,5 +37,7 @@ export {
   useTokenInfo,
   useTransactionFeesParser,
   useTransactionParser,
-  useTokenRegistry
+  useTokenRegistry,
+  useMultiChainBuyAssets,
+  useBalanceUpdater
 }

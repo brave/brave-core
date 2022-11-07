@@ -221,7 +221,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
     )
   }, [savedAccounts])
 
-  const selectedAccountTypesDefaultNetwork: BraveWallet.NetworkInfo = React.useMemo(() => {
+  const selectedAccountTypesDefaultNetwork = React.useMemo(() => {
     return defaultNetworks.find((network: BraveWallet.NetworkInfo) => network.coin === selectedAccountType.coin) ?? selectedNetwork
   }, [defaultNetworks, selectedAccountType, selectedNetwork])
 

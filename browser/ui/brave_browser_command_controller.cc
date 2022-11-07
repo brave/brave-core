@@ -133,7 +133,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   // to a normal window in this case.
   const bool is_guest_session = browser_->profile()->IsGuestSession();
   if (!is_guest_session) {
-    if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
+    // If Rewards is not supported due to OFAC sanctions we still want to show
+    // the menu item.
+    if (brave_rewards::IsSupported(
+            browser_->profile()->GetPrefs(),
+            brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
       UpdateCommandForBraveRewards();
     }
     if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {

@@ -731,6 +731,17 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsUnlocked) {
                   .ExtractBool());
 }
 
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsConnected) {
+  RestoreWallet();
+  GURL url =
+      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsConnected()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+}
+
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
                        EthSendTransactionEIP1559Tx) {
   SetNetworkForTesting("0x1");  // mainnet
@@ -802,32 +813,6 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   // But now user should still be able to resolve the first call
   UserGrantPermission(true);
   ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractBool(),
-            true);
-}
-
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
-                       EnsurePropertiesCantBeDeleted) {
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_TRUE(WaitForLoadStop(web_contents()));
-  ASSERT_EQ(EvalJs(web_contents(), "ensurePropertiesCantBeDeleted()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractBool(),
-            true);
-}
-
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
-                       EnsurePropertiesCantBeDeletedNoOverwrite) {
-  brave_wallet_service_->SetDefaultEthereumWallet(
-      mojom::DefaultWallet::BraveWallet);
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_TRUE(WaitForLoadStop(web_contents()));
-  ASSERT_EQ(EvalJs(web_contents(), "ensurePropertiesCantBeDeleted()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractBool(),
             true);

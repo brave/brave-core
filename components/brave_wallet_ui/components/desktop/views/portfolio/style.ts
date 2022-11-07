@@ -50,13 +50,13 @@ export const PriceText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const ButtonRow = styled.div`
+export const ButtonRow = styled.div<{ noMargin?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin: 20px 0px;
+  margin: ${(p) => p.noMargin ? '0px' : '20px 0px'};
 `
 
 export const BalanceRow = styled.div`
@@ -237,10 +237,12 @@ export const FilterTokenRow = styled.div`
 
 export const NftDetails = styled.iframe<{ visible?: boolean }>`
   width: 100%;
-  min-height: ${p => p.visible ? '490px' : '0px'};
+  min-height: ${p => p.visible ? '440px' : '0px'};
   height: ${p => p.visible ? 'auto' : '0px'};
   border: none;
   visibility: ${p => p.visible ? 'visible' : 'hidden'};
+  margin-bottom: 50px;
+  margin-top: 16px;
 `
 
 export const BridgeToAuroraButton = styled(WalletButton)`
@@ -262,6 +264,7 @@ export const BridgeToAuroraButton = styled(WalletButton)`
   color: ${(p) => p.theme.palette.white};
   border: none;
   margin-bottom: 32px;
+  margin-right: 10px;
 `
 
 export const NotSupportedText = styled.span`

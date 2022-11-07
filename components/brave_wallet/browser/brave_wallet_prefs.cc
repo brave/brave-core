@@ -69,6 +69,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
                                 false);
@@ -84,7 +85,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
                                        kBraveWalletP3ALastUnlockTime,
                                        kBraveWalletP3AUsedSecondDay, nullptr);
-  registry->RegisterBooleanPref(kBraveWalletWasOnboardingShown, false);
+  registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -121,6 +122,9 @@ void RegisterProfilePrefsForMigration(
   // Added 10/2022
   registry->RegisterBooleanPref(
       kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
+
+  // Added 10/2022
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -161,6 +165,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 06/22 to have native tokens for all preloading networks.
   BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(prefs);
+
+  // Added 10/22 to have is_nft set for existing ERC721 tokens.
+  BraveWalletService::MigrateUserAssetsAddIsNFT(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 

@@ -69,6 +69,7 @@ declare namespace chrome.settingsPrivate {
 
 declare namespace chrome.braveRewards {
   const isSupported: (callback: (supported: boolean) => void) => {}
+  const isUnsupportedRegion: (callback: (unsupportedRegion: boolean) => void) => {}
 
   interface RewardsWallet {
     paymentId: string

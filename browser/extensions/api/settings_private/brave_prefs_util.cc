@@ -5,9 +5,9 @@
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
-#include "bat/ads/pref_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -287,6 +287,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kIPFSAutoFallbackToGateway] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kIPFSPublicGatewayAddress] =
+      settings_api::PrefType::PREF_TYPE_STRING;
+  (*s_brave_allowlist)[kIPFSPublicNFTGatewayAddress] =
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[kIPFSAutoRedirectGateway] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

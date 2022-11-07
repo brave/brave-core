@@ -4,7 +4,6 @@
 
 import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
-import { getCurrentBalanceReport } from './utils'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -20,25 +19,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.parameters = action.payload.properties
       break
     }
-    case types.RECOVER_WALLET: {
-      let key = action.payload.key
-      key = key.trim()
-
-      if (!key || key.length === 0) {
-        let ui = state.ui
-        ui.walletRecoveryStatus = 0
-
-        state = {
-          ...state,
-          ui
-        }
-
-        break
-      }
-
-      chrome.send('brave_rewards.recoverWallet', [key])
-      break
-    }
     case types.ON_EXTERNAL_WALLET_PROVIDER_LIST: {
       if (!action.payload.list) {
         break
@@ -46,27 +26,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
 
       state = { ...state }
       state.externalWalletProviderList = action.payload.list
-      break
-    }
-    case types.ON_RECOVER_WALLET_DATA: {
-      state = { ...state }
-      const result = action.payload.result
-      let ui = state.ui
-
-      // TODO NZ check why enum can't be used inside Rewards namespace
-      ui.walletRecoveryStatus = result
-      if (result === 0) {
-        chrome.send('brave_rewards.fetchPromotions')
-        chrome.send('brave_rewards.fetchBalance')
-        chrome.send('brave_rewards.getPaymentId')
-        getCurrentBalanceReport()
-        ui.modalBackup = false
-      }
-
-      state = {
-        ...state,
-        ui
-      }
       break
     }
     case types.GET_BALANCE_REPORT: {
@@ -201,6 +160,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
 
       if (action.payload.result === 46) { // type::Result::MISMATCHED_COUNTRIES
         state.ui.modalRedirect = 'mismatchedCountriesModal'
+        break
+      }
+
+      if (action.payload.result === 47) { // type::Result::PROVIDER_UNAVAILABLE
+        state.ui.modalRedirect = 'providerUnavailableModal'
         break
       }
 

@@ -361,7 +361,7 @@
     Unfortunately, there was an error while trying to set your country. Please try again.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DISABLED" desc="">
-    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_BEGIN">$2</ph>
+    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_HEADER" desc="">
     Select your country
@@ -502,6 +502,23 @@
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE" desc="">
     <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.
+  </message>
+
+  <!-- Rewards unsupported region notice -->
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER" desc="">
+    Sorry, Brave Rewards is not available
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER" desc="">
+    Unfortunately, it looks like you’re in a region where Brave Rewards is not available.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE" desc="">
+    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1" desc="">
+    Don’t worry.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2" desc="">
+    You can still browse privately!
   </message>
 
 </grit-part>

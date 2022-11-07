@@ -22,5 +22,8 @@ public class BraveMostVisitedTilesMediatorClassAdapter extends BraveClassVisitor
         makePublicMethod(sMostVisitedTilesMediatorClassName, "updateTilePlaceholderVisibility");
         addMethodAnnotation(sBraveMostVisitedTilesMediatorClassName,
                 "updateTilePlaceholderVisibility", "Ljava/lang/Override;");
+
+        deleteField(sBraveMostVisitedTilesMediatorClassName, "mTileGroup");
+        makeProtectedField(sMostVisitedTilesMediatorClassName, "mTileGroup");
     }
 }

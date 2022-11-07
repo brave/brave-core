@@ -174,7 +174,7 @@ export const ConfirmTransactionPanel = ({
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{transactionsNetwork.chainName}</NetworkText>
+        <NetworkText>{transactionsNetwork?.chainName ?? ''}</NetworkText>
         {isERC20Approve &&
           <AddressAndOrb>
             <Tooltip

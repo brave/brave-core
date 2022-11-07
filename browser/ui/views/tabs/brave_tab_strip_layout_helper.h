@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace gfx {
@@ -20,6 +21,9 @@ class TabWidthConstraints;
 struct TabLayoutConstants;
 
 namespace tabs {
+
+constexpr int kVerticalTabMinWidth = SidebarButtonView::kSidebarButtonSize;
+constexpr int kVerticalTabHeight = SidebarButtonView::kSidebarButtonSize;
 
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,

@@ -23,7 +23,7 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 #include "bat/ads/internal/creatives/segments_database_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 

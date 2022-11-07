@@ -157,9 +157,9 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   for (const std::string& method :
        {"connect", "disconnect", "signAndSendTransaction", "signMessage",
         "request", "signTransaction", "signAllTransactions"}) {
-    SetOwnPropertyNonWritable(
-        context, provider_value->ToObject(context).ToLocalChecked(),
-        gin::StringToV8(isolate, method));
+    SetOwnPropertyWritable(context,
+                           provider_value->ToObject(context).ToLocalChecked(),
+                           gin::StringToV8(isolate, method), false);
   }
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
@@ -191,6 +191,8 @@ const char* JSSolanaProvider::GetTypeName() {
 
 void JSSolanaProvider::AccountChangedEvent(
     const absl::optional<std::string>& account) {
+  if (!render_frame())
+    return;
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
@@ -216,6 +218,8 @@ void JSSolanaProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
 }
 
 bool JSSolanaProvider::EnsureConnected() {
+  if (!render_frame())
+    return false;
   if (!solana_provider_.is_bound()) {
     render_frame()->GetBrowserInterfaceBroker()->GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
@@ -552,6 +556,8 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
 void JSSolanaProvider::FireEvent(
     const std::string& event,
     std::vector<v8::Local<v8::Value>>&& event_args) {
+  if (!render_frame())
+    return;
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();
   std::vector<v8::Local<v8::Value>> args;
@@ -790,6 +796,8 @@ void JSSolanaProvider::SendResponse(
 
 absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
     v8::Local<v8::Value> transaction) {
+  if (!render_frame())
+    return absl::nullopt;
   v8::Isolate* isolate = blink::MainThreadIsolate();
 
   v8::MaybeLocal<v8::Value> serialized_msg = CallMethodOfObject(
@@ -807,6 +815,8 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
 
 absl::optional<std::vector<mojom::SignaturePubkeyPairPtr>>
 JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
+  if (!render_frame())
+    return absl::nullopt;
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
 
@@ -870,6 +880,8 @@ mojom::SolanaSignTransactionParamPtr JSSolanaProvider::GetSignTransactionParam(
 }
 
 bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
+  if (!render_frame())
+    return false;
   if (!solana_web3_module_.IsEmpty())
     return true;
 
@@ -922,6 +934,9 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     v8::Local<v8::Context> context,
     const std::vector<uint8_t> serialized_tx) {
   v8::Isolate* isolate = context->GetIsolate();
+  if (!render_frame())
+    return v8::Undefined(isolate);
+
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);

@@ -67,6 +67,10 @@ Result ParseBody(const std::string& body) {
     // HTTP 400: bitFlyer, Gemini, Uphold
     BLOG(0, "Mismatched countries!");
     return base::unexpected(Error::kMismatchedCountries);
+  } else if (message->find("is temporarily unavailable") != std::string::npos) {
+    // HTTP 400: bitFlyer, Gemini, Uphold
+    BLOG(0, "Provider unavailable!");
+    return base::unexpected(Error::kProviderUnavailable);
   } else {
     // bitFlyer, Gemini, Uphold
     BLOG(0, "Unknown message!");
@@ -110,6 +114,8 @@ mojom::Result PostConnect::ToLegacyResult(const Result& result) {
         return mojom::Result::FLAGGED_WALLET;
       case Error::kMismatchedCountries:  // HTTP 400
         return mojom::Result::MISMATCHED_COUNTRIES;
+      case Error::kProviderUnavailable:  // HTTP 400
+        return mojom::Result::PROVIDER_UNAVAILABLE;
       case Error::kRegionNotSupported:  // HTTP 400
         return mojom::Result::REGION_NOT_SUPPORTED;
       case Error::kUnknownMessage:  // HTTP 400, HTTP 403

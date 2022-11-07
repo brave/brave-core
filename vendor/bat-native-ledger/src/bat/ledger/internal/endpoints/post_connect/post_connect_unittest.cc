@@ -106,13 +106,13 @@ INSTANTIATE_TEST_SUITE_P(
   PostConnect,
   Values(
     PostConnectParamType{
-      "00_HTTP_200_success",
+      "HTTP_200_success",
       net::HTTP_OK,
       "",
       {}
     },
     PostConnectParamType{
-      "01_HTTP_400_flagged_wallet",
+      "HTTP_400_flagged_wallet",
       net::HTTP_BAD_REQUEST,
       R"(
         {
@@ -123,7 +123,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kFlaggedWallet)
     },
     PostConnectParamType{
-      "02_HTTP_400_mismatched_countries",
+      "HTTP_400_mismatched_countries",
       net::HTTP_BAD_REQUEST,
       R"(
         {
@@ -134,7 +134,18 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kMismatchedCountries)
     },
     PostConnectParamType{
-      "03_HTTP_400_region_not_supported",
+      "HTTP_400_provider_unavailable",
+      net::HTTP_BAD_REQUEST,
+      R"(
+        {
+          "message": "Error validating Connecting Brave Rewards to Uphold is temporarily unavailable. Please try again later",
+          "code": 400
+        }
+      )",
+      base::unexpected(Error::kProviderUnavailable)
+    },
+    PostConnectParamType{
+      "HTTP_400_region_not_supported",
       net::HTTP_BAD_REQUEST,
       R"(
         {
@@ -145,7 +156,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kRegionNotSupported)
     },
     PostConnectParamType{
-      "04_HTTP_400_unknown_message",
+      "HTTP_400_unknown_message",
       net::HTTP_BAD_REQUEST,
       R"(
         {
@@ -156,7 +167,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kUnknownMessage)
     },
     PostConnectParamType{
-      "05_HTTP_403_kyc_required",
+      "HTTP_403_kyc_required",
       net::HTTP_FORBIDDEN,
       R"(
         {
@@ -167,7 +178,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kKycRequired)
     },
     PostConnectParamType{
-      "06_HTTP_403_mismatched_provider_accounts",
+      "HTTP_403_mismatched_provider_accounts",
       net::HTTP_FORBIDDEN,
       R"(
         {
@@ -178,7 +189,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kMismatchedProviderAccounts)
     },
     PostConnectParamType{
-      "07_HTTP_403_request_signature_verification_failure",
+      "HTTP_403_request_signature_verification_failure",
       net::HTTP_FORBIDDEN,
       R"(
         {
@@ -189,7 +200,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kRequestSignatureVerificationFailure)
     },
     PostConnectParamType{
-      "08_HTTP_403_transaction_verification_failure",
+      "HTTP_403_transaction_verification_failure",
       net::HTTP_FORBIDDEN,
       R"(
         {
@@ -200,7 +211,7 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kTransactionVerificationFailure)
     },
     PostConnectParamType{
-      "09_HTTP_403_unknown_message",
+      "HTTP_403_unknown_message",
       net::HTTP_FORBIDDEN,
       R"(
         {
@@ -211,25 +222,25 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kUnknownMessage)
     },
     PostConnectParamType{
-      "10_HTTP_404_kyc_required",
+      "HTTP_404_kyc_required",
       net::HTTP_NOT_FOUND,
       "",
       base::unexpected(Error::kKycRequired)
     },
     PostConnectParamType{
-      "11_HTTP_409_device_limit_reached",
+      "HTTP_409_device_limit_reached",
       net::HTTP_CONFLICT,
       "",
       base::unexpected(Error::kDeviceLimitReached)
     },
     PostConnectParamType{
-      "12_HTTP_500_unexpected_error",
+      "HTTP_500_unexpected_error",
       net::HTTP_INTERNAL_SERVER_ERROR,
       "",
       base::unexpected(Error::kUnexpectedError)
     },
     PostConnectParamType{
-      "13_HTTP_503_unexpected_status_code",
+      "HTTP_503_unexpected_status_code",
       net::HTTP_SERVICE_UNAVAILABLE,
       "",
       base::unexpected(Error::kUnexpectedStatusCode)

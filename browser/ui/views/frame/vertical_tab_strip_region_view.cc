@@ -12,6 +12,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -44,7 +45,7 @@ class ToggleButton : public views::Button {
     // text.
     // https://github.com/brave/brave-browser/issues/24717
     SetProperty(views::kSkipAccessibilityPaintChecks, true);
-    SetPreferredSize(gfx::Size{GetIconWidth(), GetIconWidth()});
+    SetPreferredSize(gfx::Size{tabs::kVerticalTabMinWidth, GetIconWidth()});
   }
   ~ToggleButton() override = default;
 
@@ -70,8 +71,7 @@ class ToggleButton : public views::Button {
 
     const int icon_inset = ui::TouchUiController::Get()->touch_ui() ? 10 : 9;
     gfx::Rect icon_bounds(gfx::Size(icon_width, height()));
-    if (expanded)
-      icon_bounds.set_x(width() - icon_width);
+    icon_bounds.set_x((width() - icon_width) / 2);
     icon_bounds.Inset(gfx::Insets::VH(icon_inset, icon_inset * 1.5));
 
     if (expanded) {
@@ -266,14 +266,18 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   new_tab_button_->SetAccessibleName(
       l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
 
+  auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
+  show_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsEnabled, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::UpdateLayout,
+                          base::Unretained(this), false));
+  UpdateLayout();
+
   collapsed_pref_.Init(
-      brave_tabs::kVerticalTabsCollapsed,
-      browser_->profile()->GetOriginalProfile()->GetPrefs(),
+      brave_tabs::kVerticalTabsCollapsed, prefs,
       base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
                           base::Unretained(this)));
   OnCollapsedPrefChanged();
-
-  UpdateLayout();
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
@@ -347,7 +351,7 @@ void VerticalTabStripRegionView::Layout() {
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
-  if (tabs::features::ShouldShowVerticalTabs() && !in_destruction) {
+  if (tabs::features::ShouldShowVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
       original_parent_of_region_view_->RemoveChildView(region_view_);
@@ -363,6 +367,8 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
     region_view_->layout_manager_->SetOrientation(
         views::LayoutOrientation::kHorizontal);
   }
+
+  PreferredSizeChanged();
   Layout();
 }
 
@@ -377,6 +383,12 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
+  if (IsMouseHovered()) {
+    // On Windows, when mouse moves into the area which intersects with web
+    // view, OnMouseExited() is invoked even mouse is on this view.
+    return;
+  }
+
   mouse_enter_timer_.Stop();
   if (state_ == State::kFloating)
     SetState(State::kCollapsed);
@@ -394,13 +406,15 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   bool overflowed =
+      tabs::features::ShouldShowVerticalTabs(browser_) &&
       scroll_view_->GetMaxHeight() < scroll_view_->contents()->height();
   region_view_->new_tab_button()->SetVisible(!overflowed);
   new_tab_button_->SetVisible(overflowed);
 }
 
 void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
-  const bool is_vertical_tabs = tabs::features::ShouldShowVerticalTabs();
+  const bool is_vertical_tabs =
+      tabs::features::ShouldShowVerticalTabs(browser_);
   if (auto* tab_search_button = region_view_->tab_search_button())
     tab_search_button->SetVisible(!is_vertical_tabs);
 }
@@ -411,7 +425,7 @@ void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
 
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     State state) const {
-  if (!tabs::features::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs(browser_))
     return {};
 
   if (IsTabFullscreen())
@@ -425,8 +439,7 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
   DCHECK_EQ(state, State::kCollapsed)
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
-  return {TabStyle::GetPinnedWidth() - TabStyle::GetTabOverlap(),
-          View::CalculatePreferredSize().height()};
+  return {tabs::kVerticalTabMinWidth, View::CalculatePreferredSize().height()};
 }
 
 BEGIN_METADATA(VerticalTabStripRegionView, views::View)

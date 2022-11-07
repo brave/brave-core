@@ -88,12 +88,27 @@ export const auroraSupportedContractAddresses = [
 ].map(contractAddress => contractAddress.toLowerCase())
 
 export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
-  token.logo = token.logo?.startsWith('ipfs://')
+  const newLogo = token.logo?.startsWith('ipfs://')
     ? httpifyIpfsUrl(token.logo)
     : token.logo?.startsWith('data:image/')
       ? token.logo
       : `chrome://erc-token-images/${token.logo}`
-  return token
+
+  if (token.logo === newLogo) {
+    // nothing to change
+    return token
+  }
+
+  try {
+    token.logo = newLogo
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      logo: newLogo
+    }
+  }
 }
 
 export const getNativeTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) => {

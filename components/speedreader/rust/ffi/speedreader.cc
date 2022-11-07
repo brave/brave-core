@@ -24,31 +24,21 @@ SpeedReader::~SpeedReader() {
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(const std::string& url) {
-  return std::make_unique<Rewriter>(raw_, url, RewriterType::RewriterUnknown);
+  return std::make_unique<Rewriter>(raw_, url);
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
     const std::string& url,
-    RewriterType rewriter_type) {
-  return std::make_unique<Rewriter>(raw_, url, rewriter_type);
-}
-
-std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
-    const std::string& url,
-    RewriterType rewriter_type,
     void (*output_sink)(const char*, size_t, void*),
     void* output_sink_user_data) {
-  return std::make_unique<Rewriter>(raw_, url, rewriter_type, output_sink,
+  return std::make_unique<Rewriter>(raw_, url, output_sink,
                                     output_sink_user_data);
 }
 
-Rewriter::Rewriter(C_SpeedReader* speedreader,
-                   const std::string& url,
-                   RewriterType rewriter_type)
+Rewriter::Rewriter(C_SpeedReader* speedreader, const std::string& url)
     : Rewriter(
           speedreader,
           url,
-          rewriter_type,
           [](const char* chunk, size_t chunk_len, void* user_data) {
             std::string* out = static_cast<std::string*>(user_data);
             out->append(chunk, chunk_len);
@@ -57,7 +47,6 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
 
 Rewriter::Rewriter(C_SpeedReader* speedreader,
                    const std::string& url,
-                   RewriterType rewriter_type,
                    void (*output_sink)(const char*, size_t, void*),
                    void* output_sink_user_data)
     : output_(""),
@@ -67,8 +56,7 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
                         url.c_str(),
                         url.length(),
                         output_sink,
-                        output_sink_user_data,
-                        rewriter_type)) {}
+                        output_sink_user_data)) {}
 
 Rewriter::~Rewriter() {
   if (!ended_) {

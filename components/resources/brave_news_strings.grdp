@@ -3,6 +3,9 @@
   <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button">
     Back to <ph name="BEGIN_BOLD">$1</ph>Dashboard<ph name="END_BOLD">$2</ph>
   </message>
+  <message name="IDS_BRAVE_NEWS_BACK_BUTTON" desc="Label for the back button">
+    Back
+  </message>
   <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER" desc="Header for the brave news disabled placeholder">
     Turn on Brave News, and never miss a story
   </message>
@@ -13,13 +16,13 @@
     Turn on Brave News
   </message>
   <message name="IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL" desc="Label that displays in the searchbox when the user hasn't entered anything">
-    Search for news, site, topic or RSS feed
+    Search for site, topic, or RSS feed
   </message>
   <message name="IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER" desc="Header for the channel section">
     Channels
   </message>
-  <message name="IDS_BRAVE_NEWS_SHOW_MORE_BUTTON" desc="Label for the button to show more items from a limited selection. For example, this might show more categories, or more suggested publishers">
-    Show more
+  <message name="IDS_BRAVE_NEWS_VIEW_ALL_BUTTON" desc="Label for the button to view all items in carousel. For example, this might show more suggested or popular publishers">
+    View All
   </message>
   <message name="IDS_BRAVE_NEWS_ALL_SOURCES_HEADER" desc="Header for the all sources section">
     Sources
@@ -59,6 +62,9 @@
   </message>
   <message name="IDS_BRAVE_NEWS_SUGGESTIONS_TITLE" desc="Title of the suggested sources section">
     Suggestions
+  </message>
+  <message name="IDS_BRAVE_NEWS_POPULAR_TITLE" desc="Title of the popular sources section">
+    Popular
   </message>
   <message name="IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE" desc="Subtitle of the suggested sources section">
     Some sources you might like. Suggestions are anonymous and matched only on your device.

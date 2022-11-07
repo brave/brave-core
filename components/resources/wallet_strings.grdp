@@ -718,4 +718,7 @@
   <message name="IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE" desc="Title for NFT tab in add asset tabs">NFT</message>
   <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET" desc="Text for when zero transactions are currently availble for viewing">No transactions yet</message>
   <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION" desc="Explaination of why the transaction list is empty, and what to expect after the first transaction is available">After your first transaction you will be able to view it here.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_FETCHING_ERROR" desc="Error message displayed when nft metadata is not successfully fetched">Something went wrong when fetching NFT details. Please try again later.</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_A_PASSSWORD_TO_CONTINUE" desc="Prompt to enter a password before continuing">Enter a password to continue</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP" desc="Password prompt description for backing up wallet">Enter your Brave Wallet password to start backing up wallet.</message>
 </grit-part>

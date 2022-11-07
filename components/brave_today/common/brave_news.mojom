@@ -78,7 +78,7 @@ enum UserEnabled {
 
 struct Channel {
   string channel_name;
-  bool subscribed;
+  array<string> subscribed_locales;
 };
 
 enum PublisherType {
@@ -90,16 +90,25 @@ enum PublisherType {
   DIRECT_SOURCE,
 };
 
+struct LocaleInfo {
+  string locale;
+
+  // The ranking of the source.
+  // Mojo doesn't support nullable primitives, so we consider a rank of 0 to be
+  // unranked.
+  uint32 rank;
+  array<string> channels;
+};
+
 struct Publisher {
   string publisher_id;
   PublisherType type;
   string publisher_name;
   string category_name;
-  array<string> channels;
   bool is_enabled;
 
-  // All the locales this publisher is available within.
-  array<string> locales;
+  // Information about the locales this source is in.
+  array<LocaleInfo> locales;
 
   // Only really used for direct feeds, though this information would
   // be useful for combined-source feeds so that the user doesn't add
@@ -151,7 +160,7 @@ interface BraveNewsController {
   GetPublishers() => (map<string, Publisher> publishers);
   GetSuggestedPublisherIds() => (array<string> suggested_publisher_ids);
   GetChannels() => (map<string, Channel> channels);
-  SetChannelSubscribed(string channel_id, bool subscribed) => (Channel updated);
+  SetChannelSubscribed(string locale, string channel_id, bool subscribed) => (Channel updated);
   // Look at the incoming url and return results
   //  - if it's a feed url then return the feed item
   //  - if it's an html document url, then search for related feed items in the html
@@ -166,6 +175,7 @@ interface BraveNewsController {
     => (bool is_valid_feed, bool is_duplicate, map<string, Publisher>? publishers);
   RemoveDirectFeed(string publisher_id);
   GetImageData(url.mojom.Url padded_image_url) => (array<uint8>? image_data);
+  GetFavIconData(string publisher_id) => (array<uint8>? image_data);
   SetPublisherPref(string publisher_id, UserEnabled new_status);
   ClearPrefs();
   IsFeedUpdateAvailable(string displayed_feed_hash)

@@ -337,6 +337,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                 boolean isErc721 = tokenId != null && !tokenId.trim().isEmpty();
                 token.isErc20 = !isErc721;
                 token.isErc721 = isErc721;
+                token.isNft = isErc721;
                 token.symbol = tokenSymbolEdit.getText().toString();
                 token.decimals = mSelectedNetwork.decimals;
                 token.chainId = mSelectedNetwork.chainId;

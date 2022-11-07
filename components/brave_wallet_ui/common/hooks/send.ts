@@ -210,6 +210,13 @@ export default function useSend () {
       return
     }
 
+    // If value is the same as the selectedAccounts Wallet Address
+    if (valueToLowerCase === selectedAccount.address.toLowerCase()) {
+      setAddressWarning('')
+      setAddressError(getLocale('braveWalletSameAddressError'))
+      return
+    }
+
     // Do nothing if value is an empty string
     if (toAddressOrUrl === '') {
       setAddressWarning('')
@@ -228,7 +235,7 @@ export default function useSend () {
     // Reset error and warning state back to normal
     setAddressWarning('')
     setAddressError('')
-  }, [selectedSendAsset])
+  }, [selectedSendAsset, selectedAccount.address])
 
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -374,6 +381,7 @@ export default function useSend () {
     const amountBN = new Amount(sendAmount)
       .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
       .value // extract BigNumber object wrapped by Amount
+
     return amountBN && amountBN.decimalPlaces() > 0
       ? 'fromAmountDecimalsOverflow'
       : undefined
@@ -384,8 +392,8 @@ export default function useSend () {
     // We also check that coinType matches here because localhost
     // networks share the same chainId
     if (
-      selectedSendAsset?.chainId === selectedNetwork.chainId &&
-      selectedSendAsset?.coin === selectedNetwork.coin
+      selectedSendAsset?.chainId === selectedNetwork?.chainId &&
+      selectedSendAsset?.coin === selectedNetwork?.coin
     ) {
       return
     }

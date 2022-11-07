@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/features.h"
 
+#include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -28,19 +29,27 @@ namespace features {
 const base::Feature kBraveVerticalTabs{"BraveVerticalTabs",
                                        base::FEATURE_DISABLED_BY_DEFAULT};
 
-bool ShouldShowVerticalTabs() {
-  // TODO(sangwoo.ko) This should consider pref too.
-  // https://github.com/brave/brave-browser/issues/23467
-  return base::FeatureList::IsEnabled(features::kBraveVerticalTabs);
+bool SupportsVerticalTabs(const Browser* browser) {
+  if (!browser) {
+    // During unit tests, |browser| can be null.
+    CHECK_IS_TEST();
+    return false;
+  }
+
+  return base::FeatureList::IsEnabled(features::kBraveVerticalTabs) &&
+         browser->is_type_normal();
+}
+
+bool ShouldShowVerticalTabs(const Browser* browser) {
+  if (!SupportsVerticalTabs(browser))
+    return false;
+
+  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsEnabled);
 }
 
 bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
-  DCHECK(browser);
-
-  if (!ShouldShowVerticalTabs())
-    return false;
-
-  if (!browser->is_type_normal())
+  if (!ShouldShowVerticalTabs(browser))
     return false;
 
   return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(

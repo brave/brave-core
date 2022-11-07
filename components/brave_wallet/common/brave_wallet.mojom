@@ -223,7 +223,8 @@ interface PanelHandlerFactory {
                      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                     pending_receiver<BraveWalletService> brave_wallet_service);
+                     pending_receiver<BraveWalletService> brave_wallet_service,
+                     pending_receiver<BraveWalletP3A> brave_wallet_p3a);
 };
 
 interface PageHandlerFactory {
@@ -240,7 +241,8 @@ interface PageHandlerFactory {
                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                    pending_receiver<BraveWalletService> brave_wallet_service);
+                    pending_receiver<BraveWalletService> brave_wallet_service,
+                    pending_receiver<BraveWalletP3A> brave_wallet_p3a);
 
 };
 
@@ -407,6 +409,9 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
+const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
+const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
+
 enum FilecoinAddressProtocol {
   SECP256K1 = 1, // Represents the address SECP256K1 protocol
   BLS = 3 // Represents the address BLS protocol
@@ -473,6 +478,7 @@ struct BlockchainToken {
   string logo;
   bool is_erc20;
   bool is_erc721;
+  bool is_nft;
   string symbol;
   int32 decimals;
   bool visible = true;
@@ -1311,15 +1317,27 @@ interface BraveWalletService {
 
   // Resets the keyring and the related preferences
   Reset();
-
-  // Called when onboarding is shown (for analytics)
-  OnOnboardingShown();
 };
 
 // For reporting wallet related P3A metrics.
 interface BraveWalletP3A {
   // Called when the ethereum provider type is evaluated after page load.
   ReportEthereumProvider(EthereumProviderType provider_type);
+
+  // Called when a Wallet onboarding action is performed.
+  ReportOnboardingAction(OnboardingAction onboarding_action);
+
+  // Called when a mainnet transaction is sent.
+  ReportTransactionSent(CoinType coin, bool new_send);
+
+  // Called to report an active wallet count for P3A
+  RecordActiveWalletCount(int32 count, CoinType coin_type);
+};
+
+enum OnboardingAction {
+  Shown = 0,
+  CreatedWallet = 1,
+  RestoredWallet = 2
 };
 
 enum EthereumProviderType {

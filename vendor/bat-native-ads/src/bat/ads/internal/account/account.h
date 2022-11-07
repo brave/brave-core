@@ -11,6 +11,7 @@
 #include <string>
 
 #include "base/observer_list.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate.h"
@@ -18,7 +19,6 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
-#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
 namespace ads {
 
@@ -36,8 +36,6 @@ class Wallet;
 struct IssuersInfo;
 struct TransactionInfo;
 struct WalletInfo;
-
-using GetStatementCallback = std::function<void(mojom::StatementInfoPtr)>;
 
 class Account final : public PrefManagerObserver,
                       public ConfirmationsDelegate,
@@ -65,7 +63,7 @@ class Account final : public PrefManagerObserver,
                const AdType& ad_type,
                const ConfirmationType& confirmation_type) const;
 
-  static void GetStatement(const GetStatementCallback& callback);
+  static void GetStatement(GetStatementOfAccountsCallback callback);
 
   void Process() const;
 

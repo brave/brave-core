@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/search_result_ads/search_result_ad_event_served.h"
 
+#include "base/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -17,14 +18,15 @@ void AdEventServed::FireEvent(const SearchResultAdInfo& ad) {
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kServed, [](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to log search result ad served event");
-      return;
-    }
+  LogAdEvent(ad, ConfirmationType::kServed,
+             base::BindOnce([](const bool success) {
+               if (!success) {
+                 BLOG(1, "Failed to log search result ad served event");
+                 return;
+               }
 
-    BLOG(6, "Successfully logged search result ad served event");
-  });
+               BLOG(6, "Successfully logged search result ad served event");
+             }));
 }
 
 }  // namespace ads::search_result_ads

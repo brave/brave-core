@@ -14,6 +14,8 @@ namespace brave_tabs {
 enum TabHoverMode { TOOLTIP = 0, CARD = 1, CARD_WITH_PREVIEW = 2 };
 
 extern const char kTabHoverMode[];
+
+extern const char kVerticalTabsEnabled[];
 extern const char kVerticalTabsCollapsed[];
 extern const char kVerticalTabsShowTitleOnWindow[];
 

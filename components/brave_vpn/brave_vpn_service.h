@@ -14,7 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_vpn/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -77,8 +77,6 @@ class BraveVpnService :
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
-  using APIRequestResult = api_request_helper::APIRequestResult;
-
   std::string GetCurrentEnvironment() const;
   bool is_purchased_user() const {
     return purchased_state_ == mojom::PurchasedState::PURCHASED;
@@ -97,7 +95,6 @@ class BraveVpnService :
   void Connect() override;
   void Disconnect() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
-  void GetDeviceRegion(GetDeviceRegionCallback callback) override;
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
   void SetSelectedRegion(mojom::RegionPtr region) override;
   void GetProductUrls(GetProductUrlsCallback callback) override;
@@ -170,7 +167,6 @@ class BraveVpnService :
   friend class ::BraveBrowserCommandControllerTest;
 
   // BraveVPNOSConnectionAPI::Observer overrides:
-  void OnGetInvalidToken() override;
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
 
   void LoadCachedRegionData();
@@ -194,14 +190,17 @@ class BraveVpnService :
   void ScheduleFetchRegionDataIfNeeded();
 
   void OnCreateSupportTicket(CreateSupportTicketCallback callback,
-                             APIRequestResult api_request_result);
+                             const std::string& ticket,
+                             bool success);
 
   void OnPreferenceChanged(const std::string& pref_name);
 
   BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
-#endif  // !BUILDFLAG(IS_ANDROID)
 
-  using URLRequestCallback = base::OnceCallback<void(APIRequestResult)>;
+  void set_mock_brave_vpn_connection_api(BraveVPNOSConnectionAPI* api) {
+    mock_connection_api_ = api;
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -209,15 +208,6 @@ class BraveVpnService :
   void InitP3A();
   void OnP3AInterval();
 
-  void OAuthRequest(
-      const GURL& url,
-      const std::string& method,
-      const std::string& post_data,
-      URLRequestCallback callback,
-      const base::flat_map<std::string, std::string>& headers = {});
-  void OnGetResponse(ResponseCallback callback, APIRequestResult request);
-  void OnGetSubscriberCredential(ResponseCallback callback,
-                                 APIRequestResult request);
   mojom::PurchasedState GetPurchasedStateSync() const;
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state);
   void SetCurrentEnvironment(const std::string& env);
@@ -228,6 +218,14 @@ class BraveVpnService :
   void OnPrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& credential_as_cookie);
+  void OnGetSubscriberCredentialV12(const base::Time& expiration_time,
+                                    const std::string& subscriber_credential,
+                                    bool success);
+  void ScheduleSubscriberCredentialRefresh();
+  void RefreshSubscriberCredential();
+
+  // Check initial purchased/connected state.
+  void CheckInitialState();
 
 #if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::Region> regions_;
@@ -239,6 +237,7 @@ class BraveVpnService :
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
+  raw_ptr<BraveVPNOSConnectionAPI> mock_connection_api_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -253,9 +252,9 @@ class BraveVpnService :
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   absl::optional<mojom::PurchasedState> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
-  api_request_helper::APIRequestHelper api_request_helper_;
-  std::string skus_credential_;
+  BraveVpnAPIRequest api_request_;
   base::RepeatingTimer p3a_timer_;
+  base::OneShotTimer subs_cred_refresh_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 

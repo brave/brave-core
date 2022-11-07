@@ -17,6 +17,7 @@
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
+#include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
@@ -97,27 +98,37 @@ std::string GetFeedJson() {
     )";
 }
 
+std::vector<mojom::LocaleInfoPtr> CreateLocales(
+    const std::vector<std::string>& locales,
+    const std::vector<std::string>& channels) {
+  std::vector<mojom::LocaleInfoPtr> result;
+  for (const auto& locale : locales) {
+    auto info = mojom::LocaleInfo::New();
+    info->locale = locale;
+    info->channels = channels;
+    result.push_back(std::move(info));
+  }
+  return result;
+}
+
 void PopulatePublishers(Publishers* publisher_list) {
   auto publisher1 = mojom::Publisher::New(
       "111", mojom::PublisherType::COMBINED_SOURCE, "First Publisher",
-      "Top News", std::vector<std::string>{"Top News"}, true,
-      std::vector<std::string>{"en_US"}, GURL("https://www.example.com"),
-      absl::nullopt, absl::nullopt, absl::nullopt,
-      GURL("https://first-publisher.com/feed.xml"),
+      "Top News", true, CreateLocales({"en_US"}, {"Top News"}),
+      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
+      absl::nullopt, GURL("https://first-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher2 = mojom::Publisher::New(
       "222", mojom::PublisherType::COMBINED_SOURCE, "Second Publisher",
-      "Top News", std::vector<std::string>{"Top News"}, true,
-      std::vector<std::string>{"en_US"}, GURL("https://www.example.com"),
-      absl::nullopt, absl::nullopt, absl::nullopt,
-      GURL("https://second-publisher.com/feed.xml"),
+      "Top News", true, CreateLocales({"en_US"}, {"Top News"}),
+      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
+      absl::nullopt, GURL("https://second-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher3 = mojom::Publisher::New(
       "333", mojom::PublisherType::COMBINED_SOURCE, "Third Publisher",
-      "Top News", std::vector<std::string>{"Top News"}, true,
-      std::vector<std::string>{"en_US"}, GURL("https://www.example.com"),
-      absl::nullopt, absl::nullopt, absl::nullopt,
-      GURL("https://third-publisher.com/feed.xml"),
+      "Top News", true, CreateLocales({"en_US"}, {"Top News"}),
+      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
+      absl::nullopt, GURL("https://third-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   publisher_list->insert_or_assign(publisher1->publisher_id,
                                    std::move(publisher1));
@@ -154,7 +165,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   mojom::Feed feed;
 
   ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
-                        profile_.GetPrefs(), "en_US"));
+                        profile_.GetPrefs()));
   ASSERT_EQ(feed.pages.size(), 1u);
   // Validate featured article is top news
   ASSERT_TRUE(feed.featured_item->is_article());
@@ -177,6 +188,36 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   ASSERT_EQ(feed.pages[0]->items[2]->items.size(), 1u);
   ASSERT_EQ(feed.pages[0]->items[2]->items[0]->get_article()->data->url,
             "https://www.example.com/an-article/");
+}
+
+TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
+  // Enable the BraveNewsV2 Feature.
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
+
+  Channels channels;
+  Publishers publisher_list;
+  PopulatePublishers(&publisher_list);
+  auto* publisher = publisher_list["111"].get();
+  publisher->type = mojom::PublisherType::DIRECT_SOURCE;
+  publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
+
+  auto feed_item = mojom::FeedItem::NewArticle(
+      mojom::Article::New(mojom::FeedItemMetadata::New(
+          "Technology", base::Time::Now(), "Title", "Description",
+          GURL("https://example.com/article"),
+          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
+          mojom::Image::NewPaddedImageUrl(
+              GURL("https://example.com/article/image")),
+          publisher->publisher_id, "Source", 10, "a minute ago")));
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  publisher->locales = std::vector<mojom::LocaleInfoPtr>();
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  features.Reset();
+  features.InitAndDisableFeature(brave_today::features::kBraveNewsV2Feature);
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
 TEST_F(BraveNewsFeedBuildingTest, RemovesDefaultOffItems) {
@@ -291,7 +332,8 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
 
   Channels channels;
   channels.insert(
-      {"Top News", brave_news::mojom::Channel::New("Top News", true)});
+      {"Top News", brave_news::mojom::Channel::New(
+                       "Top News", std::vector<std::string>{"en_US"})});
   auto* channel = channels["Top News"].get();
 
   auto feed_item = mojom::FeedItem::NewArticle(
@@ -306,8 +348,9 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
   // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
-  // Publisher: NOT_MODIFIED, Channel: Not subscribed, Should not display.
-  channel->subscribed = false;
+  // Publisher: NOT_MODIFIED, Channel: Not subscribed in any locale, Should not
+  // display.
+  channel->subscribed_locales = {};
   EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
   // Publisher: ENABLED, Channel: Not subscribed, Should display.
@@ -318,8 +361,8 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
   publisher->user_enabled_status = mojom::UserEnabled::DISABLED;
   EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
-  // Publisher: DISABLED, Channel: Subscribed, Should not display.
-  channel->subscribed = true;
+  // Publisher: DISABLED, Channel: Subscribed in en_US, Should not display.
+  channel->subscribed_locales = {"en_US"};
   EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 

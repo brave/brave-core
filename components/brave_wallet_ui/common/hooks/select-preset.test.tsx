@@ -8,7 +8,7 @@ import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { mockERC20Token, mockAccount } from '../constants/mocks'
 // Reducers
 import { createPageReducer } from '../../page/reducers/page_reducer'
-import { createWalletReducer } from '../reducers/wallet_reducer'
+import { createWalletReducer } from '../slices/wallet.slice'
 // Hooks
 import usePreset from './select-preset'
 

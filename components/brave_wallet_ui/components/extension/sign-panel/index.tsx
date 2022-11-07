@@ -2,7 +2,6 @@ import * as React from 'react'
 
 // Types
 import { BraveWallet, WalletAccountType } from '../../../constants/types'
-import { SignMessagePayload } from '../../../panel/constants/action_types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -46,7 +45,7 @@ import {
 export interface Props {
   accounts: WalletAccountType[]
   defaultNetworks: BraveWallet.NetworkInfo[]
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   signMessageData: BraveWallet.SignMessageRequest[]
   onSign: () => void
   onCancel: () => void
@@ -81,7 +80,7 @@ export const SignPanel = (props: Props) => {
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
-  const [selectedQueueData, setSelectedQueueData] = React.useState<SignMessagePayload>(signMessageData[0])
+  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
   // memos
@@ -138,7 +137,7 @@ export const SignPanel = (props: Props) => {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{network.chainName}</NetworkText>
+        <NetworkText>{network?.chainName ?? ''}</NetworkText>
         {signMessageQueueInfo.queueLength > 1 &&
           <QueueStepRow>
             <QueueStepText>{signMessageQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signMessageQueueInfo.queueLength}</QueueStepText>

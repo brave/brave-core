@@ -25,13 +25,12 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -119,11 +118,12 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
 
     public static boolean shouldShowRewardsOnboardingModalOnDay4() {
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (!hasRewardsOnboardingModalShown()
                 && (getNextRewardsOnboardingModalDate() > 0
                         && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
-                && shouldShowBraveRewardsOnboardingModal()
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+                && shouldShowBraveRewardsOnboardingModal() && braveRewardsNativeWorker != null
+                && braveRewardsNativeWorker.IsSupported()) {
             if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                 setRewardsOnboardingModalShown(true);
                 return false;

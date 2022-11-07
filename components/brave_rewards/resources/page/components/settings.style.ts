@@ -41,6 +41,36 @@ export const onboarding = styled.div`
   }
 `
 
+export const unsupportedRegionNoticeTitle = styled.div`
+  display: none;
+
+  .layout-narrow & {
+    display: block;
+  }
+`
+
+export const unsupportedRegionNotice = styled.div`
+  margin: 0 auto;
+  width: 600px;
+  background-color: var(--brave-palette-white);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: auto 220px;
+  border-radius: 16px;
+  padding: 64px 16px 313px 16px;
+
+  .layout-narrow & {
+    width: 100%;
+    max-width: 600px;
+    min-width: 320px;
+    margin-top: -12px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 99px;
+    border-radius: 8px;
+  }
+`
+
 export const content = styled.div`
   margin: 0 auto;
   max-width: 1024px;

@@ -17,11 +17,10 @@ import android.view.MenuItem;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.developer.BraveRewardsDebugPreferences;
 
@@ -53,7 +52,8 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onResume() {
         super.onResume();
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.IsSupported()
                 || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             if (getPreferenceScreen() == null) return;
             Preference braveRewardsDebugPreference =

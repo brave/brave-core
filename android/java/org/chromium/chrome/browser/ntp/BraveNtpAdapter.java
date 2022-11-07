@@ -305,10 +305,13 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             newsViewHolder.linearLayout.removeAllViews();
             int newsPosition =
                     position - getStatsCount() - getTopSitesCount() - 1 - getNewContentCount();
-            FeedItemsCard newsItem = mNewsItems.get(newsPosition);
-            if (mBraveNewsController != null) {
-                new CardBuilderFeedCard(mBraveNewsController, mGlide, newsViewHolder.linearLayout,
-                        mActivity, newsPosition, newsItem, newsItem.getCardType());
+            if (newsPosition < mNewsItems.size()) {
+                FeedItemsCard newsItem = mNewsItems.get(newsPosition);
+                if (mBraveNewsController != null) {
+                    new CardBuilderFeedCard(mBraveNewsController, mGlide,
+                            newsViewHolder.linearLayout, mActivity, newsPosition, newsItem,
+                            newsItem.getCardType());
+                }
             }
         }
     }

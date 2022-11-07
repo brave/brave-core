@@ -49,6 +49,7 @@ public class BraveClassAdapter {
         chain = new BraveMostVisitedTilesMediatorClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
+        chain = new BraveQuickActionSearchWidgetProviderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BravePartnerBookmarksDelegateImplClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);

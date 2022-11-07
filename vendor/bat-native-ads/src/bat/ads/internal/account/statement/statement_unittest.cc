@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -33,7 +34,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
+  BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
@@ -44,7 +45,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
     expected_statement->ads_received_this_month = 2;
 
     EXPECT_EQ(expected_statement, statement);
-  });
+  }));
 
   // Assert
 }
@@ -94,7 +95,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
+  BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
@@ -105,7 +106,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
-  });
+  }));
 
   // Assert
 }
@@ -145,7 +146,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
+  BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
@@ -156,7 +157,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
-  });
+  }));
 
   // Assert
 }
@@ -166,7 +167,7 @@ TEST_F(BatAdsStatementTest, GetForNoTransactions) {
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
+  BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
@@ -177,7 +178,7 @@ TEST_F(BatAdsStatementTest, GetForNoTransactions) {
     expected_statement->ads_received_this_month = 0;
 
     EXPECT_EQ(expected_statement, statement);
-  });
+  }));
 
   // Assert
 }

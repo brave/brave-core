@@ -20,7 +20,13 @@ class BraveTab;
 
 #define ActiveStateChanged virtual ActiveStateChanged
 #define GetGroupColor virtual GetGroupColor
+#define UpdateIconVisibility virtual UpdateIconVisibility
+#define ShouldRenderAsNormalTab virtual ShouldRenderAsNormalTab
+
 #include "src/chrome/browser/ui/views/tabs/tab.h"
+
+#undef ShouldRenderAsNormalTab
+#undef UpdateIconVisibility
 #undef GetGroupColor
 #undef ActiveStateChanged
 #undef GetWidthOfLargestSelectableRegion

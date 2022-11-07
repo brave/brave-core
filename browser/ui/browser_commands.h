@@ -32,7 +32,7 @@ void CopySanitizedURL(Browser* browser, const GURL& url);
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
 
 void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
-
+void ToggleVerticalTabStrip(Browser* browser);
 }  // namespace brave
 
 

@@ -30,7 +30,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_value_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 
@@ -307,25 +307,20 @@ bool ConfirmationStateManager::HasInstance() {
 }
 
 void ConfirmationStateManager::Initialize(InitializeCallback callback) {
-  callback_ = std::move(callback);
+  BLOG(3, "Loading confirmations state");
 
-  Load();
+  AdsClientHelper::GetInstance()->Load(
+      kConfirmationStateFilename,
+      base::BindOnce(&ConfirmationStateManager::OnLoaded,
+                     base::Unretained(this), std::move(callback)));
 }
 
 bool ConfirmationStateManager::IsInitialized() const {
   return is_initialized_;
 }
 
-void ConfirmationStateManager::Load() {
-  BLOG(3, "Loading confirmations state");
-
-  AdsClientHelper::GetInstance()->Load(
-      kConfirmationStateFilename,
-      base::BindOnce(&ConfirmationStateManager::OnLoaded,
-                     base::Unretained(this)));
-}
-
-void ConfirmationStateManager::OnLoaded(const bool success,
+void ConfirmationStateManager::OnLoaded(InitializeCallback callback,
+                                        const bool success,
                                         const std::string& json) {
   if (!success) {
     BLOG(3, "Confirmations state does not exist, creating default state");
@@ -339,7 +334,7 @@ void ConfirmationStateManager::OnLoaded(const bool success,
 
       BLOG(3, "Failed to parse confirmations state: " << json);
 
-      callback_(/*success*/ false);
+      std::move(callback).Run(/*success*/ false);
       return;
     }
 
@@ -353,7 +348,7 @@ void ConfirmationStateManager::OnLoaded(const bool success,
     BLOG(9, "Confirmation state is mutated");
   }
 
-  callback_(/*success*/ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 void ConfirmationStateManager::Save() {

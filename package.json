@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.47.16",
+  "version": "1.47.51",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -262,7 +262,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "107.0.5304.62",
+        "tag": "107.0.5304.91",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }
@@ -350,6 +350,7 @@
     "@ledgerhq/hw-app-eth": "6.24.1",
     "@ledgerhq/hw-app-solana": "6.27.1",
     "@ledgerhq/hw-transport-webhid": "6.24.1",
+    "@reduxjs/toolkit": "1.8.6",
     "@solana/web3.js": "1.47.1",
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
@@ -372,5 +373,8 @@
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4",
     "webtorrent": "^0.114.0"
+  },
+  "overrides": {
+    "loader-utils": "2.0.3"
   }
 }

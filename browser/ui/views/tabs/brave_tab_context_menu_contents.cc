@@ -51,6 +51,9 @@ void BraveTabContextMenuContents::RunMenuAt(
 }
 
 bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
+  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
+    return tabs::features::ShouldShowVerticalTabs(controller_->browser());
+
   if (command_id == BraveTabMenuModel::CommandShowTitleBar) {
     return tabs::features::ShouldShowWindowTitleForVerticalTabs(
         controller_->browser());
@@ -69,8 +72,11 @@ bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
 }
 
 bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
+  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
+    return tabs::features::SupportsVerticalTabs(controller_->browser());
+
   if (command_id == BraveTabMenuModel::CommandShowTitleBar)
-    return tabs::features::ShouldShowVerticalTabs();
+    return tabs::features::ShouldShowVerticalTabs(controller_->browser());
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 }
@@ -115,6 +121,7 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       }
       break;
     case BraveTabMenuModel::CommandShowTitleBar:
+    case BraveTabMenuModel::CommandShowVerticalTabs:
       return true;
     default:
       NOTREACHED();
@@ -132,6 +139,11 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandBookmarkAllTabs:
       chrome::BookmarkAllTabs(browser_);
       return;
+    case BraveTabMenuModel::CommandShowVerticalTabs: {
+      brave::ToggleVerticalTabStrip(browser_);
+      BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();
+      return;
+    }
     case BraveTabMenuModel::CommandShowTitleBar: {
       brave::ToggleWindowTitleVisibilityForVerticalTabs(browser_);
       BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();

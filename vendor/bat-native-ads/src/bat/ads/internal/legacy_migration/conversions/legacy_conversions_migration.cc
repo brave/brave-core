@@ -6,6 +6,7 @@
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 
 #include <string>
+#include <utility>
 
 #include "absl/types/optional.h"
 #include "base/bind.h"
@@ -16,7 +17,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads::conversions {
 
@@ -34,14 +35,14 @@ bool HasMigrated() {
       prefs::kHasMigratedConversionState);
 }
 
-void FailedToMigrate(const InitializeCallback& callback) {
-  callback(/*success*/ false);
+void FailedToMigrate(InitializeCallback callback) {
+  std::move(callback).Run(/*success*/ false);
 }
 
-void SuccessfullyMigrated(const InitializeCallback& callback) {
+void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedConversionState, true);
-  callback(/*success*/ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
@@ -121,7 +122,7 @@ void OnMigrate(InitializeCallback callback,
                const std::string& json) {
   if (!success) {
     // Conversion state does not exist
-    SuccessfullyMigrated(callback);
+    SuccessfullyMigrated(std::move(callback));
     return;
   }
 
@@ -129,7 +130,7 @@ void OnMigrate(InitializeCallback callback,
       FromJson(json);
   if (!conversion_queue_items) {
     BLOG(0, "Failed to parse conversion state");
-    FailedToMigrate(callback);
+    FailedToMigrate(std::move(callback));
     return;
   }
 
@@ -141,31 +142,31 @@ void OnMigrate(InitializeCallback callback,
   conversion_queue.Save(
       *conversion_queue_items,
       base::BindOnce(
-          [](const InitializeCallback& callback, const bool success) {
+          [](InitializeCallback callback, const bool success) {
             if (!success) {
               BLOG(0, "Failed to save conversion state");
-              FailedToMigrate(callback);
+              FailedToMigrate(std::move(callback));
               return;
             }
 
             BLOG(3, "Successfully migrated conversion state");
-            SuccessfullyMigrated(callback);
+            SuccessfullyMigrated(std::move(callback));
           },
-          callback));
+          std::move(callback)));
 }
 
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/*success*/ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
   BLOG(3, "Loading conversion state");
 
-  AdsClientHelper::GetInstance()->Load(kFilename,
-                                       base::BindOnce(&OnMigrate, callback));
+  AdsClientHelper::GetInstance()->Load(
+      kFilename, base::BindOnce(&OnMigrate, std::move(callback)));
 }
 
 }  // namespace ads::conversions

@@ -204,7 +204,7 @@ BraveReferralsService::BraveReferralsService(PrefService* pref_service,
       weak_factory_(this) {
   // Track initial profile creation
   if (g_browser_process->profile_manager()) {
-    g_browser_process->profile_manager()->AddObserver(this);
+    profile_manager_observer_.Observe(g_browser_process->profile_manager());
     DCHECK_EQ(0U,
               g_browser_process->profile_manager()->GetLoadedProfiles().size());
   }
@@ -214,7 +214,7 @@ BraveReferralsService::~BraveReferralsService() = default;
 
 void BraveReferralsService::OnProfileAdded(Profile* profile) {
   if (profile == ProfileManager::GetPrimaryUserProfile()) {
-    g_browser_process->profile_manager()->RemoveObserver(this);
+    profile_manager_observer_.Reset();
     Start();
   }
 }

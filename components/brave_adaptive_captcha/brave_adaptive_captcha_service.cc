@@ -155,12 +155,6 @@ void BraveAdaptiveCaptchaService::ClearScheduledCaptcha() {
   prefs_->SetBoolean(prefs::kScheduledCaptchaPaused, false);
 }
 
-void BraveAdaptiveCaptchaService::OnRecoverWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
-  ClearScheduledCaptcha();
-}
-
 void BraveAdaptiveCaptchaService::OnCompleteReset(const bool success) {
   ClearScheduledCaptcha();
 }

@@ -8,8 +8,12 @@
 #include "brave/browser/ui/views/tabs/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 
@@ -84,13 +88,36 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
+  // Pre-conditions
+  // The default orientation is horizontal.
+  ASSERT_FALSE(tabs::features::ShouldShowVerticalTabs(browser()));
+  ASSERT_EQ(browser_view()->GetWidget(),
+            browser_view()->tabstrip()->GetWidget());
+
+  // Show vertical tab strip. This will move tabstrip to its own widget.
+  brave::ToggleVerticalTabStrip(browser());
+  EXPECT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
+  EXPECT_NE(browser_view()->GetWidget(),
+            browser_view()->tabstrip()->GetWidget());
+
+  // Hide vertical tab strip and restore to the horizontal tabstrip.
+  brave::ToggleVerticalTabStrip(browser());
+  EXPECT_FALSE(tabs::features::ShouldShowVerticalTabs(browser()));
+  EXPECT_EQ(browser_view()->GetWidget(),
+            browser_view()->tabstrip()->GetWidget());
+}
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
+  brave::ToggleVerticalTabStrip(browser());
+  browser_non_client_frame_view()->Layout();
+
 #if BUILDFLAG(IS_LINUX)
   browser()->profile()->GetPrefs()->SetBoolean(prefs::kUseCustomChromeFrame,
                                                true);
 #endif
   // Pre-condition: Window title is "visible" by default on vertical tabs
-  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs());
+  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
   ASSERT_TRUE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
   ASSERT_TRUE(browser_view()->ShouldShowWindowTitle());
   ASSERT_TRUE(IsWindowTitleViewVisible());
@@ -116,4 +143,29 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
             0);
   EXPECT_TRUE(IsWindowTitleViewVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
+  EXPECT_TRUE(
+      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+
+  brave::ToggleVerticalTabStrip(browser());
+  browser_non_client_frame_view()->Layout();
+
+  // When there are too many tabs so it overflows, the original new tab button
+  // will be hidden and vertical tabstrip region view will show it's own new tab
+  // button at the bottom.
+  while (!browser_view()
+              ->tab_strip_region_view()
+              ->new_tab_button()
+              ->GetVisible()) {
+    chrome::AddTabAt(browser(), {}, -1, true);
+  }
+
+  // When turning on horizontal tabstrip, the original new tab button should be
+  // visible.
+  brave::ToggleVerticalTabStrip(browser());
+  browser_non_client_frame_view()->Layout();
+  EXPECT_TRUE(
+      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
 }

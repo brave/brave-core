@@ -97,6 +97,7 @@ test("brave_unit_tests") {
     "//brave/browser/download/brave_download_item_model_unittest.cc",
     "//brave/browser/ntp_background/ntp_p3a_helper_impl_unittest.cc",
     "//brave/browser/profiles/profile_util_unittest.cc",
+    "//brave/chromium_src/chrome/browser/favicon/favicon_utils_unittest.cc",
     "//brave/chromium_src/chrome/browser/history/history_utils_unittest.cc",
     "//brave/chromium_src/chrome/browser/lookalikes/lookalike_url_navigation_throttle_unittest.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
@@ -261,6 +262,7 @@ test("brave_unit_tests") {
     "//brave/vendor/brave_base",
     "//chrome:dependencies",
     "//chrome/app:command_ids",
+    "//chrome/browser/favicon",
     "//chrome/test:test_support",
     "//components/assist_ranker",
     "//components/assist_ranker/proto",
@@ -317,6 +319,10 @@ test("brave_unit_tests") {
       "//brave/browser/ui/sidebar:unit_tests",
       "//brave/components/sidebar:unit_tests",
     ]
+  }
+
+  if (enable_playlist) {
+    deps += [ "//brave/browser/playlist/test:unit_tests" ]
   }
 
   data = [ "data/" ]
@@ -381,6 +387,7 @@ test("brave_unit_tests") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/ui/color:unit_tests",
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
+      "//brave/browser/ui/webui/settings:unittests",
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/browser:utils",
@@ -474,6 +481,7 @@ test("brave_unit_tests") {
       "//brave/browser/extensions/api/brave_extensions_api_client_unittest.cc",
       "//brave/browser/extensions/chrome_content_verifier_delegate_unittest.cc",
       "//brave/browser/extensions/install_verifier_unittest.cc",
+      "//brave/browser/extensions/mv2_warning_unittest.cc",
       "//brave/chromium_src/extensions/browser/sandboxed_unpacker_unittest.cc",
       "//brave/common/importer/chrome_importer_utils_unittest.cc",
       "//chrome/browser/extensions/extension_service_test_base.cc",
@@ -810,8 +818,8 @@ test("brave_browser_tests") {
     "//brave/browser",
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_news:browser_tests",
-    "//brave/browser/brave_rewards:browser_tests",
     "//brave/browser/brave_rewards/rewards_panel",
+    "//brave/browser/brave_rewards/test:browser_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:browser_tests",
     "//brave/browser/brave_wallet:tab_helper",

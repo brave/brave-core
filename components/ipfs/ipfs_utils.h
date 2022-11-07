@@ -46,6 +46,7 @@ bool ResolveIPFSURI(PrefService* prefs,
                     GURL* resolved_url);
 void SetIPFSDefaultGatewayForTest(const GURL& url);
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
+GURL GetDefaultNFTIPFSGateway(PrefService* prefs);
 GURL GetDefaultIPFSGateway(PrefService* prefs);
 GURL GetAPIServer(version_info::Channel channel);
 GURL ResolveWebUIFilesLocation(const std::string& directory,
@@ -66,6 +67,7 @@ bool IsIpfsResolveMethodDisabled(PrefService* prefs);
 bool IsIpfsResolveMethodAsk(PrefService* prefs);
 std::string GetRegistryDomainFromIPNS(const GURL& url);
 bool IsValidCIDOrDomain(const std::string& value);
+absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url);
 
 }  // namespace ipfs
 

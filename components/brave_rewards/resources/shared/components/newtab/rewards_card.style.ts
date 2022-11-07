@@ -43,6 +43,10 @@ export const cardHeaderText = styled.div`
   margin-top: 2px;
 `
 
+export const unsupportedRegionCard = styled.div`
+  margin-top: 24px;
+`
+
 export const rewardsOptIn = styled.div`
   margin-top: 11px;
   margin-bottom: 16px;

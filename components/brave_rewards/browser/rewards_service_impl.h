@@ -140,11 +140,9 @@ class RewardsServiceImpl : public RewardsService,
   void ClaimPromotion(
       const std::string& promotion_id,
       AttestPromotionCallback callback) override;
-  void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      AttestPromotionCallback callback) override;
-  void RecoverWallet(const std::string& passPhrase) override;
+  void AttestPromotion(const std::string& promotion_id,
+                       const std::string& solution,
+                       AttestPromotionCallback callback) override;
   void GetActivityInfoList(const uint32_t start,
                            const uint32_t limit,
                            ledger::mojom::ActivityInfoFilterPtr filter,
@@ -337,9 +335,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
-  void GetRewardsWalletPassphrase(
-      GetRewardsWalletPassphraseCallback callback) override;
-
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();
@@ -453,8 +448,6 @@ class RewardsServiceImpl : public RewardsService,
       const bool token_received,
       const std::string& token,
       const bool attestation_passed);
-
-  void OnRecoverWallet(const ledger::mojom::Result result);
 
   // ledger::LedgerClient
   void OnReconcileComplete(

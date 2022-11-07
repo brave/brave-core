@@ -8,12 +8,10 @@
 
 #include <string>
 
-#include "base/values.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
+#include "build/build_config.h"
 
 class PrefRegistrySimple;
 class PrefService;
-class GURL;
 namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
@@ -26,9 +24,6 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterAndroidProfilePrefs(PrefRegistrySimple* registry);
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag();
-GURL GetURLWithPath(const std::string& host, const std::string& path);
-std::string CreateJSONRequestBody(base::ValueView node);
 
 #if !BUILDFLAG(IS_ANDROID)
 bool IsNetworkAvailable();

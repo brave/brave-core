@@ -8,9 +8,8 @@ import { BraveWallet, WalletAccountType } from '../constants/types'
 
 // utils
 import { createTokenBalanceRegistryKey } from './account-utils'
-import { getTokensCoinType } from './network-utils'
 
-export const getBalance = (networks: BraveWallet.NetworkInfo[], account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
+export const getBalance = (account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
   if (!account || !token) {
     return ''
   }
@@ -19,7 +18,6 @@ export const getBalance = (networks: BraveWallet.NetworkInfo[], account?: Wallet
     return ''
   }
 
-  const tokensCoinType = getTokensCoinType(networks, token)
   // Return native asset balance
   if (
     token.contractAddress === '' &&
@@ -27,7 +25,7 @@ export const getBalance = (networks: BraveWallet.NetworkInfo[], account?: Wallet
 
     // Since all coinTypes share the same chainId for localHost networks,
     // we want to make sure we return the right balance for that token.
-    account.coin === tokensCoinType
+    account.coin === token.coin
   ) {
     return (account.nativeBalanceRegistry || {})[token.chainId || ''] || ''
   }

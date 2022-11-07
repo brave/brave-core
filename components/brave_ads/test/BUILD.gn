@@ -449,6 +449,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/browser",
     "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_ads/browser:browser",
+    "//brave/components/brave_ads/common",
     "//brave/components/brave_rewards/browser:browser",
     "//brave/components/brave_rewards/common:common",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",

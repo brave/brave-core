@@ -368,14 +368,14 @@ void Conversions::AddItemToQueue(
   conversion_ad_event.created_at = base::Time::Now();
   conversion_ad_event.confirmation_type = ConfirmationType::kConversion;
 
-  LogAdEvent(conversion_ad_event, [](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to log conversion event");
-      return;
-    }
+  LogAdEvent(conversion_ad_event, base::BindOnce([](const bool success) {
+               if (!success) {
+                 BLOG(1, "Failed to log conversion event");
+                 return;
+               }
 
-    BLOG(6, "Successfully logged conversion event");
-  });
+               BLOG(6, "Successfully logged conversion event");
+             }));
 
   ConversionQueueItemInfo conversion_queue_item;
   conversion_queue_item.campaign_id = ad_event.campaign_id;

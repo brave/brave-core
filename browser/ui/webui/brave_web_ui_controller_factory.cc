@@ -115,8 +115,13 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
+             // Additionally, if Rewards aren't supported because of the OFAC
+             // sanctions we want to show the page with an appropriate error
+             // message.
              // Guest session will just show an error page.
-             brave_rewards::IsSupported(profile->GetPrefs())) {
+             brave_rewards::IsSupported(
+                 profile->GetPrefs(),
+                 brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost &&
              brave_rewards::IsSupportedForProfile(profile)) {
@@ -219,7 +224,10 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   if (profile) {
-    if (!brave_rewards::IsSupportedForProfile(profile)) {
+    if (!brave_rewards::IsSupportedForProfile(
+            profile, url.host_piece() == kRewardsPageHost
+                         ? brave_rewards::IsSupportedOptions::kSkipRegionCheck
+                         : brave_rewards::IsSupportedOptions::kNone)) {
       return true;
     }
 #if BUILDFLAG(IS_ANDROID)

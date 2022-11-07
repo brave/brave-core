@@ -6,16 +6,21 @@
 import * as React from 'react'
 
 // components
-import { Image, LoadingOverlay, LoadIcon } from './nft-content-styles'
+import { Image, LoadingOverlay, LoadIcon, ImageWrapper } from './nft-content-styles'
 import { NftDetails } from '../nft-details/nft-details'
 
-// utils
+// types
 import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
+import { DisplayMode } from '../../nft-ui-messages'
+
+import Placeholder from '../../../assets/svg-icons/placeholdr-image.svg'
 
 interface Props {
   isLoading?: boolean
+  displayMode?: DisplayMode
   selectedAsset?: BraveWallet.BlockchainToken
   nftMetadata?: NFTMetadataReturnType
+  nftMetadataError?: string
   tokenNetwork?: BraveWallet.NetworkInfo
   imageUrl?: string
 }
@@ -24,11 +29,12 @@ export const NftContent = (props: Props) => {
   const {
     isLoading,
     selectedAsset,
-    imageUrl
+    imageUrl,
+    displayMode
   } = props
 
   const url = React.useMemo(() => {
-    return imageUrl?.replace('chrome://image?', '')
+    return imageUrl ? imageUrl?.replace('chrome://image?', '') : Placeholder
   }, [imageUrl])
 
   if (isLoading) {
@@ -41,12 +47,14 @@ export const NftContent = (props: Props) => {
 
   return (
     <>
-      {imageUrl &&
-        <Image
-          src={url}
-        />
+      {url && displayMode === 'icon' &&
+        <ImageWrapper>
+          <Image
+            src={url}
+          />
+        </ImageWrapper>
       }
-      {selectedAsset &&
+      {selectedAsset && displayMode === 'details' &&
         <NftDetails
           {...props}
           selectedAsset={selectedAsset}

@@ -7,13 +7,18 @@
 
 #include "brave/browser/ui/views/tabs/features.h"
 
+BraveBrowserRootView::BraveBrowserRootView(BrowserView* browser_view,
+                                           views::Widget* widget)
+    : BrowserRootView(browser_view, widget),
+      browser_(browser_view->browser()) {}
+
 BraveBrowserRootView::~BraveBrowserRootView() = default;
 
 bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
   // Bypass BrowserRootView::OnMouseWheel() to avoid tab cycling feature.
   // As vertical tabs are always in a scroll view, we should prefer scrolling
   // to tab cycling.
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(browser_))
     return RootView::OnMouseWheel(event);
 
   return BrowserRootView::OnMouseWheel(event);

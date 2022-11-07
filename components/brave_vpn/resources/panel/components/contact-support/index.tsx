@@ -91,12 +91,13 @@ function ContactSupport (props: Props) {
   )
 
   const isValid = React.useMemo(() => {
-    return !supportData &&
+    return (
       !!formData.problemBody &&
       !!formData.contactEmail &&
       emailAddressIsValid &&
       !!formData.problemSubject
-  }, [formData, supportData, emailAddressIsValid])
+    )
+  }, [formData, emailAddressIsValid])
 
   // Reset error states when data changes
   React.useEffect(() => {
@@ -114,7 +115,7 @@ function ContactSupport (props: Props) {
     }
     // Handle is valid, submit data
     setIsSubmitting(true)
-    const fullIssueBody = formData.problemBody + '\n' +
+    const fullIssueBody = `Message: \n${formData.problemBody}\n\n` +
       (formData.shareOsVersion ? `OS: ${supportData?.osVersion}\n` : '') +
       (formData.shareAppVersion ? `App version: ${supportData?.appVersion}\n` : '') +
       (formData.shareHostname ? `Hostname: ${supportData?.hostname}\n` : '')
@@ -262,8 +263,6 @@ function ContactSupport (props: Props) {
             {getLocale('braveVpnSupportSubmit')}
           </Button>
         </S.Form>
-
-        {/* TODO(petemill): show an error if remoteSubmissionError has value */}
       </S.PanelContent>
     </S.Box>
   )

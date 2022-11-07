@@ -9,6 +9,7 @@ import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,
+  OnboardingAction,
   NFTMetadataReturnType,
   UpdateAccountNamePayloadType,
   WalletState
@@ -84,13 +85,13 @@ async function importFromExternalWallet (
   }
 }
 
-handler.on(WalletPageActions.createWallet.getType(), async (store: Store, payload: CreateWalletPayloadType) => {
+handler.on(WalletPageActions.createWallet.type, async (store: Store, payload: CreateWalletPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
   const result = await keyringService.createWallet(payload.password)
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
-handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, payload: RestoreWalletPayloadType) => {
+handler.on(WalletPageActions.restoreWallet.type, async (store: Store, payload: RestoreWalletPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
   const result = await keyringService.restoreWallet(payload.mnemonic, payload.password, payload.isLegacy)
   if (!result.isValidMnemonic) {
@@ -102,10 +103,13 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
   if (payload?.completeWalletSetup) {
     store.dispatch(WalletPageActions.walletSetupComplete(payload.completeWalletSetup))
+  } else {
+    const braveWalletP3A = getWalletPageApiProxy().braveWalletP3A
+    await braveWalletP3A.reportOnboardingAction(OnboardingAction.RESTORED_WALLET)
   }
 })
 
-handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, {
+handler.on(WalletPageActions.showRecoveryPhrase.type, async (store: Store, {
   password,
   show
 }: ShowRecoveryPhrasePayload) => {
@@ -119,12 +123,12 @@ handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, 
   store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
 })
 
-handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
+handler.on(WalletPageActions.walletBackupComplete.type, async (store) => {
   const keyringService = getWalletPageApiProxy().keyringService
   keyringService.notifyWalletBackupComplete()
 })
 
-handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload: UpdateSelectedAssetType) => {
+handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: UpdateSelectedAssetType) => {
   store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
   const assetRatioService = getWalletPageApiProxy().assetRatioService
@@ -145,7 +149,7 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload
   }
 })
 
-handler.on(WalletPageActions.importAccount.getType(), async (store: Store, payload: ImportAccountPayloadType) => {
+handler.on(WalletPageActions.importAccount.type, async (store: Store, payload: ImportAccountPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
   const result = await keyringService.importAccount(payload.accountName, payload.privateKey, payload.coin)
   if (result.success) {
@@ -156,7 +160,7 @@ handler.on(WalletPageActions.importAccount.getType(), async (store: Store, paylo
   }
 })
 
-handler.on(WalletPageActions.importFilecoinAccount.getType(), async (store: Store, payload: ImportFilecoinAccountPayloadType) => {
+handler.on(WalletPageActions.importFilecoinAccount.type, async (store: Store, payload: ImportFilecoinAccountPayloadType) => {
   const { keyringService } = getWalletPageApiProxy()
   const result = await keyringService.importFilecoinAccount(payload.accountName, payload.privateKey, payload.network)
 
@@ -168,7 +172,7 @@ handler.on(WalletPageActions.importFilecoinAccount.getType(), async (store: Stor
   }
 })
 
-handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
+handler.on(WalletPageActions.importAccountFromJson.type, async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
   const result = await keyringService.importAccountFromJson(payload.accountName, payload.password, payload.json)
   if (result.success) {
@@ -179,7 +183,7 @@ handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Stor
   }
 })
 
-handler.on(WalletPageActions.removeImportedAccount.getType(), async (
+handler.on(WalletPageActions.removeImportedAccount.type, async (
   store: Store,
   payload: RemoveImportedAccountPayloadType
 ) => {
@@ -191,7 +195,7 @@ handler.on(WalletPageActions.removeImportedAccount.getType(), async (
   )
 })
 
-handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, payload: UpdateAccountNamePayloadType) => {
+handler.on(WalletPageActions.updateAccountName.type, async (store: Store, payload: UpdateAccountNamePayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
   const hardwareAccount = await findHardwareAccountInfo(payload.address)
   if (hardwareAccount && hardwareAccount.hardware) {
@@ -205,13 +209,13 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, p
   return result.success
 })
 
-handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store, accounts: BraveWallet.HardwareWalletAccount[]) => {
+handler.on(WalletPageActions.addHardwareAccounts.type, async (store: Store, accounts: BraveWallet.HardwareWalletAccount[]) => {
   const keyringService = getWalletPageApiProxy().keyringService
   keyringService.addHardwareAccounts(accounts)
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
-handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
+handler.on(WalletPageActions.removeHardwareAccount.type, async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
   const { keyringService } = getWalletPageApiProxy()
   const { success } = await keyringService.removeHardwareAccount(
     payload.address,
@@ -224,7 +228,7 @@ handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Stor
   }
 })
 
-handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
+handler.on(WalletPageActions.checkWalletsToImport.type, async (store) => {
   store.dispatch(WalletPageActions.setImportWalletsCheckComplete(false))
   const braveWalletService = getWalletPageApiProxy().braveWalletService
   const cwResult =
@@ -238,7 +242,7 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
   store.dispatch(WalletPageActions.setImportWalletsCheckComplete(true))
 })
 
-handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
+handler.on(WalletPageActions.importFromCryptoWallets.type, async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
   const results: ImportWalletErrorPayloadType = await importFromExternalWallet(
     BraveWallet.ExternalWalletType.CryptoWallets,
     payload
@@ -246,7 +250,7 @@ handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: St
   store.dispatch(WalletPageActions.setImportWalletError(results))
 })
 
-handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
+handler.on(WalletPageActions.importFromMetaMask.type, async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
   const results: ImportWalletErrorPayloadType = await importFromExternalWallet(
     BraveWallet.ExternalWalletType.MetaMask,
     payload
@@ -254,12 +258,12 @@ handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, 
   store.dispatch(WalletPageActions.setImportWalletError(results))
 })
 
-handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store: Store, payload: NewUnapprovedTxAdded) => {
+handler.on(WalletActions.newUnapprovedTxAdded.type, async (store: Store, payload: NewUnapprovedTxAdded) => {
   const pageHandler = getWalletPageApiProxy().pageHandler
   pageHandler.showApprovePanelUI()
 })
 
-handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
+handler.on(WalletPageActions.openWalletSettings.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
@@ -267,7 +271,7 @@ handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
   })
 })
 
-handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: BraveWallet.BlockchainToken) => {
+handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWallet.BlockchainToken) => {
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(true))
   const jsonRpcService = getWalletPageApiProxy().jsonRpcService
   const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
@@ -280,6 +284,7 @@ handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: Br
       tokenType: 'ERC721', // getNFTMetadata currently supports only ERC721 standard. When other standards are supported, this value should be dynamic
       tokenID: payload.tokenId,
       imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
+      imageMimeType: 'image/*',
       floorFiatPrice: '',
       floorCryptoPrice: '',
       contractInformation: {
@@ -293,15 +298,11 @@ handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: Br
       }
     }
     store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
+    store.dispatch(WalletPageActions.updateNftMetadataError(undefined))
   } else {
-    console.error(result.errorMessage)
+    store.dispatch(WalletPageActions.updateNftMetadataError(result.errorMessage))
   }
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
-})
-
-handler.on(WalletPageActions.onOnboardingShown.getType(), async (store: Store) => {
-  const braveWalletService = getWalletPageApiProxy().braveWalletService
-  await braveWalletService.onOnboardingShown()
 })
 
 export default handler.middleware

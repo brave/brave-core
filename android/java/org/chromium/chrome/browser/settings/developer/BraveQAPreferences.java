@@ -64,7 +64,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final String QA_ADS_PER_HOUR = "qa_ads_per_hour";
     private static final String QA_IMPORT_REWARDS_DB = "qa_import_rewards_db";
     private static final String QA_EXPORT_REWARDS_DB = "qa_export_rewards_db";
-    private static final String QA_RESTORE_WALLET = "qa_restore_wallet";
 
     private static final int CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE = STORAGE_PERMISSION_IMPORT_REQUEST_CODE + 1;
 
@@ -79,7 +78,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mDebugNTP;
     private ChromeSwitchPreference mVlogRewards;
     private Preference mCommandLine;
-    private Preference mRestoreWallet;
 
     private Preference mImportRewardsDb;
     private Preference mExportRewardsDb;
@@ -140,53 +138,10 @@ public class BraveQAPreferences extends BravePreferenceFragment
         mExportRewardsDb = findPreference(QA_EXPORT_REWARDS_DB);
         setRewardsDbClickListeners();
 
-        mRestoreWallet = findPreference(QA_RESTORE_WALLET);
-        setRestoreClickListener();
-
         mCommandLine = findPreference(PREF_QA_COMMAND_LINE);
         setCommandLineClickListener();
 
         checkQACode();
-    }
-
-    private void setRestoreClickListener() {
-        if (mRestoreWallet != null) {
-            mRestoreWallet.setOnPreferenceClickListener(preference -> {
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE);
-                View view = inflater.inflate(R.layout.qa_code_check, null);
-                EditText input = (EditText) view.findViewById(R.id.qa_code);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-
-                DialogInterface.OnClickListener onClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == AlertDialog.BUTTON_POSITIVE) {
-                            String restorePhrase = input.getText().toString();
-                            if (!restorePhrase.isEmpty()) {
-                                BraveRewardsNativeWorker.getInstance().RecoverWallet(
-                                    restorePhrase);
-                            }
-                        }
-                    }
-                };
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(
-                        getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
-                AlertDialog.Builder alertDialog =
-                    alert.setTitle("Enter Wallet restore phrase")
-                    .setView(view)
-                    .setPositiveButton(R.string.ok, onClickListener)
-                    .setNegativeButton(R.string.cancel, onClickListener)
-                    .setCancelable(false);
-                Dialog dialog = alertDialog.create();
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.show();
-
-                return true;
-            });
-        }
     }
 
     private void setRewardsDbClickListeners() {
@@ -427,14 +382,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {}
-
-    @Override
-    public void OnRecoverWallet(int errorCode) {
-        Context context = ContextUtils.getApplicationContext();
-        String msg =
-            (0 == errorCode) ? "Wallet is successfully restored" : "Wallet recovery failed";
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

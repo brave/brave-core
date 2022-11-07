@@ -1,3 +1,4 @@
+import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
@@ -14,6 +15,7 @@ brave_grit("brave_generated_resources_grit") {
     "enable_sidebar=$enable_sidebar",
     "enable_speedreader=$enable_speedreader",
     "enable_brave_vpn=$enable_brave_vpn",
+    "enable_pin_shortcut=$enable_pin_shortcut",
   ]
   source = "brave_generated_resources.grd"
   output_dir = "$root_gen_dir/brave"

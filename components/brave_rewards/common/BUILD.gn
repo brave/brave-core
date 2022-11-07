@@ -27,6 +27,7 @@ static_library("common") {
   deps = [
     ":features",
     "//base",
+    "//brave/components/l10n/common",
     "//components/prefs",
     "//third_party/abseil-cpp:absl",
   ]

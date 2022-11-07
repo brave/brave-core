@@ -6,15 +6,16 @@
 #ifndef BRAVE_COMPONENTS_IPFS_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_IPFS_PREF_NAMES_H_
 
-extern const char kIPFSResolveMethod[];
-extern const char kIPFSBinaryPath[];
 extern const char kIPFSAutoFallbackToGateway[];
-extern const char kIPFSAutoRedirectGateway[];
 extern const char kIPFSAutoRedirectDNSLink[];
-extern const char kIPFSInfobarCount[];
+extern const char kIPFSAutoRedirectGateway[];
+extern const char kIPFSBinaryPath[];
 extern const char kIPFSEnabled[];
-extern const char kIPFSPublicGatewayAddress[];
+extern const char kIPFSInfobarCount[];
 extern const char kIPFSLocalNodeUsed[];
+extern const char kIPFSPublicGatewayAddress[];
+extern const char kIPFSPublicNFTGatewayAddress[];
+extern const char kIPFSResolveMethod[];
 extern const char kIpfsStorageMax[];
 
 #endif  // BRAVE_COMPONENTS_IPFS_PREF_NAMES_H_

@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 
@@ -33,6 +34,7 @@ class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
   void OnDestruct() override;
 
   bool is_speedreadable_url_ = false;
+  base::WeakPtrFactory<SpeedreaderRenderFrameObserver> weak_ptr_factory_{this};
 };
 
 }  // namespace speedreader

@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { useSelector } from 'react-redux'
-import { BraveWallet, WalletState } from '../../constants/types'
-
-// Hooks
-import useBalance from './balance'
+import { BraveWallet } from '../../constants/types'
 
 // Utils
 import Amount from '../../utils/amount'
+import { getBalance } from '../../utils/balance-utils'
+
+import { WalletSelectors } from '../selectors'
+import { useUnsafeWalletSelector } from './use-safe-selector'
 
 export default function usePreset (
   {
@@ -22,9 +22,7 @@ export default function usePreset (
   }
 ) {
   // redux
-  const { selectedAccount, networkList } = useSelector((state: { wallet: WalletState }) => state.wallet)
-
-  const getBalance = useBalance(networkList)
+  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
 
   return (percent: number) => {
     if (!asset) {

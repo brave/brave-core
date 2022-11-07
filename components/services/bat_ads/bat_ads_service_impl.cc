@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "bat/ads/build_channel.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
@@ -25,8 +26,7 @@ void BatAdsServiceImpl::Create(
     mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
     CreateCallback callback) {
   associated_receivers_.Add(
-      std::make_unique<BatAdsImpl>(std::move(client_info)),
-      std::move(bat_ads));
+      std::make_unique<BatAdsImpl>(std::move(client_info)), std::move(bat_ads));
 
   std::move(callback).Run();
 }
