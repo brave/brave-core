@@ -25,3 +25,25 @@ source_set("unit_tests") {
     ]
   }
 }
+
+source_set("browser_tests") {
+  if (enable_extensions) {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "web_discovery_browsertest.cc" ]
+    deps = [
+      "//brave/components/search_engines",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support",
+      "//components/infobars/content",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}

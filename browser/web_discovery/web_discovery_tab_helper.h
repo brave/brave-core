@@ -10,7 +10,6 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 class PrefService;
-class TemplateURLService;
 
 class WebDiscoveryTabHelper
     : public content::WebContentsObserver,
@@ -24,8 +23,9 @@ class WebDiscoveryTabHelper
   WebDiscoveryTabHelper& operator=(const WebDiscoveryTabHelper&) = delete;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryTest, InfobarAddedTest);
+
   friend class content::WebContentsUserData<WebDiscoveryTabHelper>;
-  friend class WebDiscoveryDialogTest;
 
   explicit WebDiscoveryTabHelper(content::WebContents* contents);
 
@@ -33,7 +33,7 @@ class WebDiscoveryTabHelper
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
 
-  bool IsBraveSearchDefault(TemplateURLService* template_service);
+  void ShowInfoBar(PrefService* prefs);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

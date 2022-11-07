@@ -847,6 +847,7 @@ test("brave_browser_tests") {
     "//brave/browser/ui/tabs",
     "//brave/browser/ui/tabs/test:browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",
+    "//brave/browser/web_discovery:browser_tests",
     "//brave/browser/widevine:browser_tests",
     "//brave/common",
     "//brave/components/adblock_rust_ffi",

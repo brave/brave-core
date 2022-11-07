@@ -65,6 +65,7 @@ extern const char kDefaultBrowserPromptEnabled[];
 
 // Web discovery project
 extern const char kWebDiscoveryEnabled[];
+extern const char kWebDiscoveryCTAState[];
 extern const char kDontAskEnableWebDiscovery[];  // Deprecated.
 extern const char kBraveSearchVisitCount[];      // Deprecated.
 

@@ -74,6 +74,7 @@ const char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
 
 const char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+const char kWebDiscoveryCTAState[] = "brave.web_discovery.cta_state";
 const char kDontAskEnableWebDiscovery[] = "brave.dont_ask_enable_web_discovery";
 const char kBraveSearchVisitCount[] = "brave.brave_search_visit_count";
 

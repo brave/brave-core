@@ -26,7 +26,7 @@ const char kSpeedreaderLearnMoreUrl[] =
     "360045031392-What-is-SpeedReader";
 const char kWebDiscoveryLearnMoreUrl[] =
     "https://brave.com/privacy/browser/#web-discovery-project";
-const char kBraveSearchUrl[] = "https://search.brave.com/";
+const char kBraveSearchHost[] = "search.brave.com";
 const char kWidevineLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360023851591-How-do-I-view-DRM-protected-content-";
