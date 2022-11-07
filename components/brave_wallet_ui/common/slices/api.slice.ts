@@ -80,6 +80,14 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
         },
         providesTags: ['SelectedCoin']
       }),
+      setSelectedCoin: mutation<BraveWallet.CoinType, BraveWallet.CoinType>({
+        queryFn (coinTypeArg, api, extraOptions, baseQuery) {
+          const { braveWalletService } = baseQuery(undefined).data
+          braveWalletService.setSelectedCoin(coinTypeArg)
+          return { data: coinTypeArg }
+        },
+        invalidatesTags: ['SelectedCoin']
+      }),
       isEip1559Changed: mutation<{ id: string, isEip1559: boolean }, IsEip1559Changed>({
         async queryFn (arg) {
           const { chainId, isEip1559 } = arg
@@ -124,6 +132,7 @@ export const {
   useIsEip1559ChangedMutation,
   useLazyGetAllNetworksQuery,
   useLazyGetIsTestNetworksEnabledQuery,
+  useSetSelectedCoinMutation,
   useGetSelectedCoinQuery
 } = walletApi
 
