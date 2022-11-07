@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/views/omnibox/brave_rounded_omnibox_results_frame.h"
 
+#include <memory>
+#include <utility>
+
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
