@@ -35,6 +35,7 @@ import {
   SecondaryNetworkText,
   ClickAwayArea
 } from './style'
+import { useGetIsTestNetworksEnabledQuery } from '../../../common/slices/api.slice'
 
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
@@ -49,7 +50,9 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
   const reduxNetworkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const isTestNetworksEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isTestNetworksEnabled)
+
+  // api
+  const { data: isTestNetworksEnabled } = useGetIsTestNetworksEnabledQuery()
 
   // memos
   const networkList: BraveWallet.NetworkInfo[] = React.useMemo(() => {

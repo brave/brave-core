@@ -709,7 +709,6 @@ export function refreshFullNetworkList () {
 
     // Get isTestNetworkEnabled
     const isTestNetworksEnabled = await braveWalletService.getShowWalletTestNetworks()
-    dispatch(WalletActions.setShowTestNetworks(isTestNetworksEnabled.isEnabled))
 
     // Get All Networks
     const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
