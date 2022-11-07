@@ -192,6 +192,11 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       return false
     }
 
+    // Any token with a tokenId should be considered a custom token.
+    if (token.tokenId !== '') {
+      return true
+    }
+
     return !fullTokenListAllChains
       .some(each => each.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
   }, [fullTokenListAllChains])
@@ -218,9 +223,14 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
         if (token.isErc721) setTokenContractAddress(token.contractAddress)
         setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
       }
-    } else {
-      setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
+      return
     }
+    if (token.isErc721 || token.isNft) {
+      setShowAddCustomToken(true)
+      setTokenContractAddress(token.contractAddress)
+      return
+    }
+    setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
   }, [isUserToken, updatedTokensList, addOrRemoveTokenFromList])
 
   const toggleShowAddCustomToken = () => setShowAddCustomToken(prev => !prev)
