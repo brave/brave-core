@@ -244,4 +244,6 @@
     <color name="search_widget_promo_add_widget_text_color">#FFFFFF</color>
     <color name="search_widget_promo_not_now_text_color">#4C54D2</color>
     <color name="search_widget_promo_bg_color">#FFFFFF</color>
+
+    <color name="notification_button_color">#423EEE</color>
 </resources>
