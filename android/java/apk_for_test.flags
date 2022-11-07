@@ -463,6 +463,15 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController {
+    *** wrapDialogDismissalCallback(...);
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialogController {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
     *** mLocationBarMediator;
     public <init>(...);

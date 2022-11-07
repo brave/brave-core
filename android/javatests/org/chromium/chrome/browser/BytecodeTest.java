@@ -442,6 +442,9 @@ public class BytecodeTest {
                 "extractUrlFromIntent", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoCoordinator",
                 "updateVisibility", true, void.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
+                "wrapDialogDismissalCallback", true, Callback.class, Callback.class));
     }
 
     @Test
@@ -691,6 +694,10 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoCoordinator",
                 "org/chromium/chrome/browser/logo/BraveLogoCoordinator", Callback.class,
                 LogoView.class, boolean.class, Callback.class, Runnable.class, boolean.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
+                "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
+                Context.class, ModalDialogManager.class));
     }
 
     @Test
