@@ -89,6 +89,13 @@ type SolanaInstructionParams =
 
 export type SolanaInstructionParamKeys = keyof SolanaInstructionParams
 
+export type SolanaParamsWithLamports =
+  | Solana.CreateAccountParams
+  | Solana.CreateAccountWithSeedParams
+  | Solana.TransferParams
+  | Solana.TransferWithSeedParams
+  | Solana.WithdrawNonceParams
+
 export const getSolanaTransactionInstructionParamsAndType = ({
   accountMetas,
   data,
@@ -135,7 +142,7 @@ export const getSolanaTransactionInstructionParamsAndType = ({
   } as TypedSolanaInstructionWithParams
 }
 
-export const getTypedSolanaTxInstructions = (solTxData: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
+export const getTypedSolanaTxInstructions = (solTxData?: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
   const instructions: TypedSolanaInstructionWithParams[] = (solTxData?.instructions || []).map((instruction) => {
     return getSolanaTransactionInstructionParamsAndType(instruction)
   })
