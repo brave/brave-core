@@ -164,7 +164,7 @@ def make_zip(zip_file_path, files, dirs):
 def make_7z(archive_file_path, files, dirs):
     safe_unlink(archive_file_path)
     files += dirs
-    execute([get_lzma_exec(), 'a', '-t7z', archive_file_path] + files)
+    execute([get_lzma_exec(), 'a', '-t7z', '-mx7', archive_file_path] + files)
 
 
 def rm_rf(path):
