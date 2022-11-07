@@ -11,10 +11,12 @@ struct FilterList: Decodable, Identifiable {
     case uuid, title, componentId, description = "desc", urlString = "url"
   }
   
-  public static let mobileAnnoyancesComponentID = "ldbgldhcahahpffloggbbmjllggnkenk"
+  /// The component ID of the "Fanboy's Mobile Notifications List"
+  /// This is a special filter list that is enabled by default
+  public static let mobileAnnoyancesComponentID = "bfpgedeaaibpoidldhjcknekahbikncb"
   /// The component id of the cookie consent notices filter list.
   /// This is a special filter list that has more accessible UI to control it
-  public static let cookieConsentNoticesComponentID = "lfgnenkkneohplacnfabidofpgcdpofm"
+  public static let cookieConsentNoticesComponentID = "cdbbhgbmjhfnhnmgeddbliobbofkgdhe"
   
   let uuid: String
   let title: String
