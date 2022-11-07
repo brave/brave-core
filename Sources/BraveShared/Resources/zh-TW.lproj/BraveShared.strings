@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "無法設定偏好設定，請稍後再試。";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "封鎖 Cookie 同意通知";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave 已經封鎖了第三方 Cookie。我們也可以封鎖 Cookie 同意通知。";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "不想再收到 Cookie 同意通知了嗎？";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "禁止網站儲存您的造訪記錄相關資訊。";
 
@@ -973,6 +982,9 @@
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "輕觸即可免費領取代幣。";
 
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "點選此處以瞭解詳細資訊。";
 
@@ -1032,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "沒有足够詞語";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "不用了，謝謝";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "自動將 NPR 連結重新導向其文字版本 (位址：text.npr.org)。";
@@ -3172,6 +3187,9 @@
 /* No comment provided by engineer. */
 "today.allSources" = "所有來源";
 
+/* The name of the feature */
+"today.braveToday" = "Brave News";
+
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "新上架內容";
 
@@ -3505,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN 支援";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "將購買交易連結至您的 Brave 帳戶";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "將您的 App Store 購買交易連結至 Brave 帳戶，以便在其他裝置上使用 Brave VPN。";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "管理訂閱";
 
@@ -3684,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "是";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "是，封鎖 Cookie 同意通知";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "是的，刪除";

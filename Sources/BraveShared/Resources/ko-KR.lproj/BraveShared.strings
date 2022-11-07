@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "환경 설정을 설정하는 데 실패했습니다. 다시 시도하십시오.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "쿠키 동의 문구 차단";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "쿠키 동의 문구를 보면 지치시지요?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "웹사이트에 이전 방문에 대한 정보가 저장되지 않도록 차단합니다.";
 
@@ -170,7 +179,13 @@
 "BravePanel" = "Brave 패널";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
 "BraveRewardsOpen" = "열기";
+
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "Brave 검색은 사용자의 신원이나 검색어, 클릭 활동을 추적하지 않습니다.";
@@ -640,6 +655,9 @@
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "파일 다운로드";
 
+/* A label representing the state of a filter list that is currently being downloaded */
+"Downloading" = "다운로드 중";
+
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "다운로드";
 
@@ -964,6 +982,9 @@
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "무료 토큰을 받으려면 탭하세요.";
 
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "자세히 알아보려면 여기를 탭하세요.";
 
@@ -1023,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "단어가 충분하지 않음";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "아니요";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPR 링크를 텍스트 기반 버전(text.npr.org)으로 자동 리디렉션합니다.";
@@ -1135,6 +1159,9 @@
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailsAnd" = "및";
 
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Brave Private Ads를 선택하면 광고를 보고 게시자와 콘텐츠 제작자를 지원할 수 있습니다.";
 
@@ -1143,6 +1170,9 @@
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "개인정보 취급방침";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "저장";
@@ -2082,6 +2112,9 @@
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Brave Rewards를 이용하면 Brave Ads 네트워크에서 프라이버시 보장 광고를 볼 수 있습니다. 트래커가 없어 느려지지 않습니다. 그리고 데이터가 완벽히 안전하게 보호됩니다.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Rewards 켜기";
 
 /* Body for successful Brave Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessBody" = "Brave Talk로 계속하려면 화면의 아무데나 클릭하세요.";
@@ -3490,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN 지원";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "구매한 항목을 Brave 계정에 연결";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "다른 기기에서도 Brave VPN을 사용하려면 App Store 구매 항목을 Brave 계정에 연결하세요.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "구독 관리";
 
@@ -3669,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "예";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "예, 쿠키 동의 문구 차단";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "예, 삭제합니다.";

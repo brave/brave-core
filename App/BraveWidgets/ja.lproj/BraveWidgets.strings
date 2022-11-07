@@ -11,7 +11,16 @@
 "5ixvGX-xcI3h9" = "‘ブロック済の広告’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"7Ds8rk" = "ロック画面のお気に入り設定";
+
+/* (No Comment) */
 "7JYzOv" = "タイプ";
+
+/* (No Comment) */
+"7MuqiB" = "ショートカット";
+
+/* (No Comment) */
+"8pcZ6L" = "ロック画面のお気に入りウィジェット";
 
 /* (No Comment) */
 "8vyYRy" = "#3";
@@ -38,13 +47,25 @@
 "e13lS3-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
 
 /* (No Comment) */
+"e13lS3-FGO5qW" = "'Braveプレイリスト' をお探しですか？";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "'Braveウォレット' をお探しですか？";
+
+/* (No Comment) */
 "e13lS3-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "'QRコードをスキャン' をお探しですか？";
 
 /* (No Comment) */
 "e13lS3-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
 
 /* (No Comment) */
 "e13lS3-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "'検索' をお探しですか？";
 
 /* (No Comment) */
 "EUS9FL" = "ウィジェットショートカット";
@@ -54,6 +75,12 @@
 
 /* (No Comment) */
 "gpCwrM" = "統計の設定";
+
+/* (No Comment) */
+"hssb67" = "ショートカットウィジェットの設定";
+
+/* (No Comment) */
+"iB2TOM" = "お気に入りのエントリー";
 
 /* (No Comment) */
 "joEZJM" = "#2";
@@ -68,7 +95,16 @@
 "L1fziM-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"L1fziM-FGO5qW" = "‘Braveプレイリスト’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "‘Braveウォレット’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "L1fziM-nthxSL" = "‘ダウンロード’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "‘QRコードをスキャン’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "L1fziM-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
@@ -77,7 +113,13 @@
 "L1fziM-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"L1fziM-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "nthxSL" = "ダウンロード";
+
+/* (No Comment) */
+"nXONef" = "お気に入り";
 
 /* (No Comment) */
 "qKrzyX" = "QRコードをスキャン";
@@ -89,13 +131,25 @@
 "r2EI05-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
 
 /* (No Comment) */
+"r2EI05-FGO5qW" = "'Braveプレイリスト' をお探しですか？";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "'Braveウォレット' をお探しですか？";
+
+/* (No Comment) */
 "r2EI05-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "'QRコードをスキャン' をお探しですか？";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
 
 /* (No Comment) */
 "r2EI05-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "'検索' をお探しですか？";
 
 /* (No Comment) */
 "sdOBtj-tYwiRd" = "確認ですが、‘節約された時間（推定）’ を探していましたか？";
@@ -113,13 +167,25 @@
 "tNCrcE-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"tNCrcE-FGO5qW" = "‘Braveプレイリスト’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "‘Braveウォレット’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "tNCrcE-nthxSL" = "‘ダウンロード’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "‘QRコードをスキャン’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "tNCrcE-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "tNCrcE-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "tVvJ9c" = "統計の設定ウィジェット";
@@ -131,13 +197,25 @@
 "TxuMja-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"TxuMja-FGO5qW" = "‘Braveプレイリスト’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "‘Braveウォレット’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "TxuMja-nthxSL" = "‘ダウンロード’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "‘QRコードをスキャン’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "TxuMja-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "TxuMja-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "tYwiRd" = "節約された時間（推定）";
@@ -155,6 +233,9 @@
 "xcI3h9" = "ブロック済の広告";
 
 /* (No Comment) */
+"XkwBGY" = "ロック画面のショートカット設定";
+
+/* (No Comment) */
 "Y7TWy8" = "検索";
 
 /* (No Comment) */
@@ -164,7 +245,16 @@
 "YQiQuz-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
 
 /* (No Comment) */
+"YQiQuz-FGO5qW" = "'Braveプレイリスト' をお探しですか？";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "'Braveプレイリスト' をお探しですか？";
+
+/* (No Comment) */
 "YQiQuz-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "'QRコードをスキャン' をお探しですか？";
 
 /* (No Comment) */
 "YQiQuz-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
@@ -173,16 +263,8 @@
 "YQiQuz-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
 
 /* (No Comment) */
-"ziTvSZ" = "Shortcuts Widget Configuration";
+"YQiQuz-Y7TWy8" = "'検索' をお探しですか？";
 
 /* (No Comment) */
-"hssb67" = "Shortcut Widget Configuration";
+"ziTvSZ" = "ショートカットウィジェットの設定";
 
-/* (No Comment) */
-"XkwBGY" = "Lock Screen Shortcut Configuration";
-
-/* (No Comment) */
-"8pcZ6L" = "Lock Screen Favorite Widget";
-
-/* (No Comment) */
-"7Ds8rk" = "Lock Screen Favorite Configuration";

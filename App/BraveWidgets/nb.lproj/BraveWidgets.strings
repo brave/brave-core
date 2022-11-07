@@ -11,7 +11,16 @@
 "5ixvGX-xcI3h9" = "${count} alternativer matcher med 'Annonser blokkert'.";
 
 /* (No Comment) */
+"7Ds8rk" = "Konfigurasjon av låseskjermfavoritt";
+
+/* (No Comment) */
 "7JYzOv" = "Type";
+
+/* (No Comment) */
+"7MuqiB" = "Snarvei";
+
+/* (No Comment) */
+"8pcZ6L" = "Widget for låseskjermfavoritt";
 
 /* (No Comment) */
 "8vyYRy" = "#3";
@@ -38,13 +47,25 @@
 "e13lS3-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
+"e13lS3-FGO5qW" = "Bare for å være sikker, ser du etter «Brave-spilleliste»?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Bare for å være sikker, ser du etter «Brave-lommebok»?";
+
+/* (No Comment) */
 "e13lS3-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Bare for å være sikker, ser du etter «Skann QR-kode»?";
 
 /* (No Comment) */
 "e13lS3-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
 
 /* (No Comment) */
 "e13lS3-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
 
 /* (No Comment) */
 "EUS9FL" = "Widget-snarvei";
@@ -54,6 +75,12 @@
 
 /* (No Comment) */
 "gpCwrM" = "Konfigurering av statistikk";
+
+/* (No Comment) */
+"hssb67" = "Konfigurasjon av widget-snarvei";
+
+/* (No Comment) */
+"iB2TOM" = "Favorittoppføring";
 
 /* (No Comment) */
 "joEZJM" = "#2";
@@ -68,7 +95,16 @@
 "L1fziM-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
+"L1fziM-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Brave-spilleliste».";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Brave-lommebok».";
+
+/* (No Comment) */
 "L1fziM-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Det er ${count} alternativer som samsvarer med «Skann QR-kode».";
 
 /* (No Comment) */
 "L1fziM-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
@@ -77,7 +113,13 @@
 "L1fziM-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
+"L1fziM-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
+
+/* (No Comment) */
 "nthxSL" = "Nedlastinger";
+
+/* (No Comment) */
+"nXONef" = "Angi som favoritt";
 
 /* (No Comment) */
 "qKrzyX" = "Skann QR-kode";
@@ -89,13 +131,25 @@
 "r2EI05-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
+"r2EI05-FGO5qW" = "Bare for å være sikker, ser du etter «Brave-spilleliste»?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Bare for å være sikker, ser du etter «Brave-lommebok»?";
+
+/* (No Comment) */
 "r2EI05-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Bare for å være sikker, ser du etter «Skann QR-kode»?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
 
 /* (No Comment) */
 "sdOBtj-tYwiRd" = "Bare som en bekreftelse – du ville ha 'Ansl. tid spart'?";
@@ -113,13 +167,25 @@
 "tNCrcE-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
+"tNCrcE-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Brave-spilleliste».";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Brave-lommebok».";
+
+/* (No Comment) */
 "tNCrcE-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Det er ${count} alternativer som samsvarer med «Skann QR-kode».";
 
 /* (No Comment) */
 "tNCrcE-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
 "tNCrcE-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
 
 /* (No Comment) */
 "tVvJ9c" = "Widget for statistikkonfig.";
@@ -131,13 +197,25 @@
 "TxuMja-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
+"TxuMja-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Brave-spilleliste».";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Brave-lommebok».";
+
+/* (No Comment) */
 "TxuMja-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Det er ${count} alternativer som samsvarer med «Skann QR-kode».";
 
 /* (No Comment) */
 "TxuMja-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
 "TxuMja-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
 
 /* (No Comment) */
 "tYwiRd" = "Ansl. tid spart";
@@ -155,6 +233,9 @@
 "xcI3h9" = "Blokkerte annonser";
 
 /* (No Comment) */
+"XkwBGY" = "Konfigurasjon av låseskjerm-snarvei";
+
+/* (No Comment) */
 "Y7TWy8" = "Søk";
 
 /* (No Comment) */
@@ -164,7 +245,16 @@
 "YQiQuz-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
+"YQiQuz-FGO5qW" = "Bare for å være sikker, ser du etter «Brave-spilleliste»?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Bare for å være sikker, ser du etter «Brave-lommebok»?";
+
+/* (No Comment) */
 "YQiQuz-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Bare for å være sikker, ser du etter «Skann QR-kode»?";
 
 /* (No Comment) */
 "YQiQuz-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
@@ -173,16 +263,8 @@
 "YQiQuz-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
-"ziTvSZ" = "Shortcuts Widget Configuration";
+"YQiQuz-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
 
 /* (No Comment) */
-"hssb67" = "Shortcut Widget Configuration";
+"ziTvSZ" = "Konfigurasjon av widget-snarveier";
 
-/* (No Comment) */
-"XkwBGY" = "Lock Screen Shortcut Configuration";
-
-/* (No Comment) */
-"8pcZ6L" = "Lock Screen Favorite Widget";
-
-/* (No Comment) */
-"7Ds8rk" = "Lock Screen Favorite Configuration";

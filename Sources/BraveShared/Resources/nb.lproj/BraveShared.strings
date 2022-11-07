@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Alternativet kan ikke endres. Prøv senere.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Blokker samtykkemeldinger om informasjonskapsler";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave blokkerer allerede informasjonskapsler fra tredjeparter. Vi kan også blokkere samtykkemeldinger om informasjonskapsler.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Lei av samtykkemeldinger om informasjonskapsler?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Forhindrer at nettsteder lagrer informasjon om dine tidligere besøk.";
 
@@ -1035,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Ikke nok ord";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "Nei takk";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Videresender automatisk NPR-linker til den tekstbaserte versjonen (på tekst.npr.org).";
@@ -3511,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN-kundestøtte";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Koble kjøpet til Brave-kontoen din";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Koble App Store-kjøpet til Brave-kontoen din for å bruke Brave VPN på andre enheter.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Administrer abonnement";
 
@@ -3690,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Ja, blokker samtykkemeldinger om informasjonskapsler";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Ja, slett";

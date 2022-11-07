@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Ustawienie preferencji nie powiodło się. Spróbuj ponownie.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Blokuj powiadomienia o wyrażeniu zgody na pliki cookie";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave już blokuje pliki cookie innych firm. Możemy również blokować powiadomienia o wyrażeniu zgody na pliki cookie.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Masz dość powiadomień o wyrażeniu zgody na pliki cookie?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Zapobiega przechowywaniu przez strony internetowe informacji o Twoich poprzednich wizytach.";
 
@@ -170,7 +179,13 @@
 "BravePanel" = "Panel Brave";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Nagrody Brave";
+
+/* No comment provided by engineer. */
 "BraveRewardsOpen" = "Otwórz";
+
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Nagrody Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "Wyszukiwanie Brave nie śledzi Ciebie, Twwoich wyszukiwań i kliknięć.";
@@ -967,6 +982,9 @@
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Dotknij, aby otrzymać bezpłatne tokeny.";
 
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Nagrody Brave 💵🎁";
+
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Dotknij tutaj, aby dowiedzieć się więcej.";
 
@@ -1026,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Niewystarczająca liczba słów";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "Nie, dziękuję";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Automatyczne przekierowanie linków NPR do ich wersji tekstowej (pod adresem text.npr.org).";
@@ -1138,6 +1159,9 @@
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailsAnd" = "i";
 
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Nagrody Brave";
+
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Wybór Brave Private Ads wspiera wydawców i twórców treści dzięki każdej odsłonie reklam.";
 
@@ -1146,6 +1170,9 @@
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Polityka prywatności";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Nagrody Brave";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Zapisz";
@@ -3160,6 +3187,9 @@
 /* No comment provided by engineer. */
 "today.allSources" = "Wszystkie kanały";
 
+/* The name of the feature */
+"today.braveToday" = "Aktualności Brave";
+
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Dostępne są nowe treści";
 
@@ -3493,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Obsługa techniczna VPN";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Połącz zakup ze swoim kontem Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Połącz zakup w sklepie App Store ze swoim kontem Brave, aby używać funkcji Brave VPN na innych urządzeniach.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Zarządzaj subskrypcją";
 
@@ -3672,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Tak";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Tak, blokuj powiadomienia o wyrażeniu zgody na pliki cookie";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Tak, usuń";

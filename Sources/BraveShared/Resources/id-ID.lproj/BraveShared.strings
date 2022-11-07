@@ -112,6 +112,15 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Gagal mengatur preferensi. Coba lagi.";
 
+/* A title for a toggle that allows user to block cookie consent notices */
+"BlockCookieConsentNotices" = "Memblokir pemberitahuan izin kuki";
+
+/* A description for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupDescription" = "Brave sudah memblokir kuki pihak ketiga. Kami juga dapat memblokir pemberitahuan persetujuan kuki.";
+
+/* A title for a popup that notifies the user that we can block cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Bosan dengan pemberitahuan persetujuan kuki?";
+
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Mencegah situs web menyimpan informasi tentang kunjungan Anda sebelumnya.";
 
@@ -170,7 +179,13 @@
 "BravePanel" = "Panel Brave";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Imbalan Brave";
+
+/* No comment provided by engineer. */
 "BraveRewardsOpen" = "Buka";
+
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Imbalan Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "Pencarian Brave tidak melacak Anda, pertanyaan Anda, atau klik Anda.";
@@ -228,6 +243,9 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk memulai, Anda perlu memasang Brave di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Obrolan Brave";
 
 /* Setting to enable the browser lock privacy feature */
 "BrowserLock" = "Kunci Peramban";
@@ -964,6 +982,9 @@
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Ketuk untuk mengklaim token gratis Anda.";
 
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Imbalan Brave 💵🎁";
+
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Ketuk di sini untuk mempelajari selengkapnya.";
 
@@ -1023,6 +1044,9 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Kata Tidak Cukup";
+
+/* An action (button title) that does not block cookie consent notices and dismisses the popup */
+"NoThanks" = "Tidak, terima kasih";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Mengarahkan ulang tautan NPR secara otomatis ke versi berbasis teks mereka (di text.npr.org).";
@@ -1135,6 +1159,9 @@
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailsAnd" = "dan";
 
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Imbalan Brave";
+
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Memilih untuk menggunakan Brave Private Ads akan mendukung penerbit dan pembuat konten melalui setiap iklan yang dilihat.";
 
@@ -1143,6 +1170,9 @@
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Kebijakan Privasi";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Imbalan Brave";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Simpan";
@@ -2082,6 +2112,9 @@
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Dengan Brave Rewards, Anda dapat melihat iklan yang menghormati privasi dari jaringan Brave Ads. Tanpa pelacak. Tanpa hambatan. Dan data Anda akan tetap aman sepenuhnya.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Aktifkan Imbalan";
 
 /* Body for successful Brave Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessBody" = "Klik di mana saja pada layar untuk melanjutkan ke Brave Talk.";
@@ -3154,6 +3187,9 @@
 /* No comment provided by engineer. */
 "today.allSources" = "Semua Sumber";
 
+/* The name of the feature */
+"today.braveToday" = "Berita Brave";
+
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Konten Baru Telah Tersedia";
 
@@ -3487,6 +3523,12 @@
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Dukungan VPN";
 
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Tautkan pembelian ke akun Brave Anda";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Tautkan pembelian Toko Aplikasi Anda ke akun Brave Anda untuk menggunakan VPN Brave pada perangkat lain.";
+
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Kelola Langganan";
 
@@ -3652,6 +3694,9 @@
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Statistik Kerahasiaan";
 
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Dompet Brave";
+
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Tombol";
 
@@ -3663,6 +3708,9 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";
+
+/* An action (button title) that enables cookie consent blocking and dismisses the popup */
+"YesBlockCookieConsentNotices" = "Ya, blokir pemberitahuan persetujuan kuki";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Ya, Hapus";
