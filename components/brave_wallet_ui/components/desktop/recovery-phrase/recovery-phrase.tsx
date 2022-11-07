@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { ORDINALS } from '../../../utils/ordinal-utils'
+import { formatOrdinals } from '../../../utils/ordinal-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
 
 // styles
@@ -157,7 +157,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
 
             {isWordSelected && verificationIndices &&
               <RecoveryBubbleBadge>
-                {ORDINALS[verificationIndices[wordIndex]] || ''}
+                {formatOrdinals(verificationIndices[wordIndex] + 1)}
               </RecoveryBubbleBadge>
             }
 
