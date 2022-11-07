@@ -49,6 +49,13 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
 
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->method = "POST";
+  
+  if (resource_request->url.is_empty()) {
+    // If the upload URL is empty, ignore the request and act as if it
+    // succeeded.
+    upload_callback_.Run(true, 0, is_star, log_type);
+    return;
+  }
 
   url_loaders_[log_type] = network::SimpleURLLoader::Create(
       std::move(resource_request),
