@@ -16,6 +16,8 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
 import { LibContext } from '../common/context/lib.context'
 import * as Lib from '../common/async/lib'
+import { ApiProxyContext } from '../common/context/api-proxy.context'
+import getAPIProxy from '../common/async/bridge'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -30,9 +32,11 @@ function App () {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <LibContext.Provider value={Lib}>
-            <Container />
-          </LibContext.Provider>
+          <ApiProxyContext.Provider value={getAPIProxy()}>
+            <LibContext.Provider value={Lib}>
+              <Container />
+            </LibContext.Provider>
+          </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
       }
     </Provider>
