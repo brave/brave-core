@@ -137,6 +137,28 @@ where
     }
 
     #[instrument]
+    async fn has_credentials(&self, order_id: &str) -> Result<bool, InternalError> {
+        let mut result: bool = false;
+        let mut store = self.get_store()?;
+        let state: KVState = store.get_state()?;
+        event!(Level::DEBUG, has_credentials = ?!state.credentials.is_none(), "does order have credentials");
+
+        if let Some(credentials) = state.credentials {
+            // get the order
+            if let Some(order) = state.orders.and_then(|mut orders| orders.remove(order_id)) {
+                if let Some(item) = order.items.into_iter().next() {
+                    if credentials.items.get(&item.id).is_none() {
+                        return Ok(false); // one item does not have credentials
+                    }
+                }
+                result = true;
+            }
+        }
+        // credentials structure is null, or order is not present
+        Ok(result)
+    }
+
+    #[instrument]
     async fn upsert_order(&self, order: &Order) -> Result<(), InternalError> {
         let mut store = self.get_store()?;
         let mut state: KVState = store.get_state()?;
