@@ -25,12 +25,13 @@ if (should_generate_breakpad_symbols) {
     }
 
     args = [
+      "--installer-config=" +
+          rebase_path("//chrome/installer/mini_installer/chrome.release"),
       "--symbols-dir=" + rebase_path(symbols_dir),
       "--build-dir=" + rebase_path(root_out_dir),
       "--dump-syms-path=" + dump_syms_path,
       "--verbose",
       "--clear",
-      rebase_path(root_out_dir),
     ]
 
     if (brave_debug_symbol_level == 2) {
