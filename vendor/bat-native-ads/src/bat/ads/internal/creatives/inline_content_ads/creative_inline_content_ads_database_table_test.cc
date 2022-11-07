@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -41,11 +42,11 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   const database::table::CreativeInlineContentAds creative_ads;
   creative_ads.GetForSegmentsAndDimensions(
       segments, "200x100",
-      [](const bool success, const SegmentList& /*segments*/,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool success, const SegmentList& /*segments*/,
+                        const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_ads.size());
-      });
+      }));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
@@ -58,10 +59,11 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   const database::table::CreativeInlineContentAds creative_ads;
   creative_ads.GetForDimensions(
       "200x100",
-      [](const bool success, const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool success,
+                        const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_ads.size());
-      });
+      }));
 }
 
 }  // namespace ads

@@ -35,24 +35,39 @@ class EligibleAdsV2 final : public EligibleAdsBase {
   EligibleAdsV2(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
 
-  void GetForUserModel(
-      const targeting::UserModelInfo& user_model,
-      const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback) override;
+  void GetForUserModel(targeting::UserModelInfo user_model,
+                       const std::string& dimensions,
+                       GetEligibleAdsOnceCallback<CreativeInlineContentAdList>
+                           callback) override;
 
  private:
+  void OnGetForUserModel(
+      targeting::UserModelInfo user_model,
+      const std::string& dimensions,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+      const bool success,
+      const AdEventList& ad_events);
+
   void GetBrowsingHistory(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback);
 
   void GetEligibleAds(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
       const BrowsingHistoryList& browsing_history);
+
+  void OnGetEligibleAds(
+      const targeting::UserModelInfo& user_model,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+      const bool success,
+      const CreativeInlineContentAdList& creative_ads);
 
   CreativeInlineContentAdList FilterCreativeAds(
       const CreativeInlineContentAdList& creative_ads,

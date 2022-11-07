@@ -40,9 +40,9 @@ class EligibleAdsBase {
   virtual ~EligibleAdsBase();
 
   virtual void GetForUserModel(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback) = 0;
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback) = 0;
 
   void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 

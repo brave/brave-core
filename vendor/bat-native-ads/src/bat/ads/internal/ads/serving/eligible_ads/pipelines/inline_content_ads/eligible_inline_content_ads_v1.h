@@ -13,6 +13,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 
@@ -35,44 +36,78 @@ class EligibleAdsV1 final : public EligibleAdsBase {
   EligibleAdsV1(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
 
-  void GetForUserModel(
-      const targeting::UserModelInfo& user_model,
-      const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback) override;
+  void GetForUserModel(targeting::UserModelInfo user_model,
+                       const std::string& dimensions,
+                       GetEligibleAdsOnceCallback<CreativeInlineContentAdList>
+                           callback) override;
 
  private:
+  void OnGetForUserModel(
+      targeting::UserModelInfo user_model,
+      const std::string& dimensions,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+      const bool success,
+      const AdEventList& ad_events);
+
   void GetBrowsingHistory(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback);
 
   void GetEligibleAds(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,
-      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
       const BrowsingHistoryList& browsing_history);
 
   void GetForChildSegments(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback);
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback);
+
+  void OnGetForChildSegments(
+      targeting::UserModelInfo user_model,
+      const std::string& dimensions,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+      const bool success,
+      const SegmentList& /*segments*/,
+      const CreativeInlineContentAdList& creative_ads);
 
   void GetForParentSegments(
       const targeting::UserModelInfo& user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback);
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback);
+
+  void OnGetForParentSegments(
+      const std::string& dimensions,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+      const bool success,
+      const SegmentList& /*segments*/,
+      const CreativeInlineContentAdList& creative_ads);
 
   void GetForUntargeted(
       const std::string& dimensions,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback);
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback);
+
+  void OnGetForUntargeted(
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsOnceCallback<CreativeInlineContentAdList> callback,
+      const bool success,
+      const SegmentList& /*segments*/,
+      const CreativeInlineContentAdList& creative_ads);
 
   CreativeInlineContentAdList FilterCreativeAds(
       const CreativeInlineContentAdList& creative_ads,

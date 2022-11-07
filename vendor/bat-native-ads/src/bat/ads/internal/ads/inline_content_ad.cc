@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/inline_content_ad.h"
 
+#include <utility>
+
 #include "absl/types/optional.h"
 #include "base/check.h"
 #include "bat/ads/confirmation_type.h"
@@ -45,14 +47,9 @@ InlineContentAd::~InlineContentAd() {
   serving_->RemoveObserver(this);
 }
 
-void InlineContentAd::MaybeServe(
-    const std::string& dimensions,
-    const MaybeServeInlineContentAdCallback& callback) {
-  serving_->MaybeServeAd(
-      dimensions, [callback](const std::string& dimensions,
-                             const absl::optional<InlineContentAdInfo>& ad) {
-        callback(dimensions, ad);
-      });
+void InlineContentAd::MaybeServe(const std::string& dimensions,
+                                 MaybeServeInlineContentAdCallback callback) {
+  serving_->MaybeServeAd(dimensions, std::move(callback));
 }
 
 void InlineContentAd::TriggerEvent(

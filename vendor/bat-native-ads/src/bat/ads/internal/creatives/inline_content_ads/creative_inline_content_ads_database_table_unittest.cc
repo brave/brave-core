@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
+#include <utility>
+
+#include "base/bind.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -95,15 +98,16 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
+  CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll([&expected_creative_ads](
-                              const bool success,
-                              const SegmentList& /*segments*/,
-                              const CreativeInlineContentAdList& creative_ads) {
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-  });
+  database_table_->GetAll(base::BindOnce(
+      [](const CreativeInlineContentAdList& expected_creative_ads,
+         const bool success, const SegmentList& /*segments*/,
+         const CreativeInlineContentAdList& creative_ads) {
+        EXPECT_TRUE(success);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+      },
+      std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -190,15 +194,16 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
+  CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll([&expected_creative_ads](
-                              const bool success,
-                              const SegmentList& /*segments*/,
-                              const CreativeInlineContentAdList& creative_ads) {
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-  });
+  database_table_->GetAll(base::BindOnce(
+      [](const CreativeInlineContentAdList& expected_creative_ads,
+         const bool success, const SegmentList& /*segments*/,
+         const CreativeInlineContentAdList& creative_ads) {
+        EXPECT_TRUE(success);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+      },
+      std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -237,15 +242,16 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
+  CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll([&expected_creative_ads](
-                              const bool success,
-                              const SegmentList& /*segments*/,
-                              const CreativeInlineContentAdList& creative_ads) {
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-  });
+  database_table_->GetAll(base::BindOnce(
+      [](const CreativeInlineContentAdList& expected_creative_ads,
+         const bool success, const SegmentList& /*segments*/,
+         const CreativeInlineContentAdList& creative_ads) {
+        EXPECT_TRUE(success);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+      },
+      std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -307,15 +313,16 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
+  CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll([&expected_creative_ads](
-                              const bool success,
-                              const SegmentList& /*segments*/,
-                              const CreativeInlineContentAdList& creative_ads) {
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-  });
+  database_table_->GetAll(base::BindOnce(
+      [](const CreativeInlineContentAdList& expected_creative_ads,
+         const bool success, const SegmentList& /*segments*/,
+         const CreativeInlineContentAdList& creative_ads) {
+        EXPECT_TRUE(success);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+      },
+      std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -458,18 +465,20 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads;
+  CreativeInlineContentAdList expected_creative_ads;
 
   const SegmentList segments;
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_ads](
-          const bool success, const SegmentList& /*segments*/,
-          const CreativeInlineContentAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool success, const SegmentList& /*segments*/,
+             const CreativeInlineContentAdList& creative_ads) {
+            EXPECT_TRUE(success);
+            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -507,18 +516,20 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads;
+  CreativeInlineContentAdList expected_creative_ads;
 
   const SegmentList segments = {"technology & computing"};
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_ads](
-          const bool success, const SegmentList& /*segments*/,
-          const CreativeInlineContentAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool success, const SegmentList& /*segments*/,
+             const CreativeInlineContentAdList& creative_ads) {
+            EXPECT_TRUE(success);
+            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -613,12 +624,14 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_ads](
-          const bool success, const SegmentList& /*segments*/,
-          const CreativeInlineContentAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool success, const SegmentList& /*segments*/,
+             const CreativeInlineContentAdList& creative_ads) {
+            EXPECT_TRUE(success);
+            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -688,12 +701,14 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_ads](
-          const bool success, const SegmentList& /*segments*/,
-          const CreativeInlineContentAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool success, const SegmentList& /*segments*/,
+             const CreativeInlineContentAdList& creative_ads) {
+            EXPECT_TRUE(success);
+            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -762,12 +777,14 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_ads](
-          const bool success, const SegmentList& /*segments*/,
-          const CreativeInlineContentAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool success, const SegmentList& /*segments*/,
+             const CreativeInlineContentAdList& creative_ads) {
+            EXPECT_TRUE(success);
+            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, TableName) {

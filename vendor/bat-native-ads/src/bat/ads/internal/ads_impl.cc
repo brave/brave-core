@@ -329,11 +329,11 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsInitialized()) {
-    callback(dimensions, absl::nullopt);
+    std::move(callback).Run(dimensions, absl::nullopt);
     return;
   }
 
-  inline_content_ad_->MaybeServe(dimensions, callback);
+  inline_content_ad_->MaybeServe(dimensions, std::move(callback));
 }
 
 void AdsImpl::TriggerInlineContentAdEvent(

@@ -5,7 +5,7 @@
 
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
-#include <functional>
+#include <utility>
 
 #include "base/check.h"
 #include "bat/ads/ad_content_info.h"
@@ -177,14 +177,22 @@ void BatAdsImpl::TriggerPromotedContentAdEvent(
 void BatAdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
-  auto* holder = new CallbackHolder<MaybeServeInlineContentAdCallback>(
-      AsWeakPtr(), std::move(callback));
+  ads_->MaybeServeInlineContentAd(
+      dimensions, base::BindOnce(
+                      [](MaybeServeInlineContentAdCallback callback,
+                         const std::string& dimensions,
+                         const absl::optional<ads::InlineContentAdInfo>& ad) {
+                        if (!ad) {
+                          std::move(callback).Run(dimensions,
+                                                  /*ads*/ absl::nullopt);
+                          return;
+                        }
 
-  auto maybe_serve_inline_content_ads_callback =
-      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder,
-                std::placeholders::_1, std::placeholders::_2);
-  ads_->MaybeServeInlineContentAd(dimensions,
-                                  maybe_serve_inline_content_ads_callback);
+                        absl::optional<base::Value::Dict> dict =
+                            ads::InlineContentAdToValue(*ad);
+                        std::move(callback).Run(dimensions, std::move(dict));
+                      },
+                      std::move(callback)));
 }
 
 void BatAdsImpl::TriggerInlineContentAdEvent(
@@ -289,25 +297,6 @@ void BatAdsImpl::ToggleFlaggedAd(base::Value::Dict value,
 
 void BatAdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
   ads_->OnDidUpdateResourceComponent(id);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void BatAdsImpl::OnMaybeServeInlineContentAd(
-    CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
-    const std::string& dimensions,
-    const absl::optional<ads::InlineContentAdInfo>& ad) {
-  if (holder->is_valid()) {
-    if (!ad) {
-      std::move(holder->get()).Run(dimensions, /*ads*/ absl::nullopt);
-      return;
-    }
-
-    absl::optional<base::Value::Dict> dict = ads::InlineContentAdToValue(*ad);
-    std::move(holder->get()).Run(dimensions, std::move(dict));
-  }
-
-  delete holder;
 }
 
 }  // namespace bat_ads
