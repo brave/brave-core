@@ -52,11 +52,39 @@ OBJC_EXPORT const BraveCoreSwitchKey
 /// Expected value: A number (in seconds)
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyP3AExpressRotationIntervalSeconds NS_SWIFT_NAME(p3aExpressRotationIntervalSeconds);  // NOLINT
-/// Overrides the P3A cloud backend URL.
+/// Overrides the P3A JSON backend URL.
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitchKey
-    BraveCoreSwitchKeyP3AUploadServerURL NS_SWIFT_NAME(p3aUploadServerURL);
+    BraveCoreSwitchKeyP3AJsonUploadServerURL NS_SWIFT_NAME(p3aJsonUploadServerURL);
+/// Overrides the P3A Creative JSON backend URL.
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP3ACreativeUploadServerURL NS_SWIFT_NAME(p3aCreativeUploadServerURL);
+/// Overrides the P2A JSON backend URL.
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP2AJsonUploadServerURL NS_SWIFT_NAME(p2aJsonUploadServerURL);
+/// Overrides the P3A STAR backend URL.
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP3AStarUploadServerURL NS_SWIFT_NAME(p3aStarUploadServerURL);
+/// Overrides the P2A STAR backend URL.
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP2AStarUploadServerURL NS_SWIFT_NAME(p2aStarUploadServerURL);
+/// Overrides the P3A "disable star attestation" setting.
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP3ADisableStarAttestation NS_SWIFT_NAME(p3aDisableStarAttestation);
+/// Overrides the P3A STAR randomness host.
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP3AStarRandomnessHost NS_SWIFT_NAME(p3aStarRandomnessHost);
 /// Do not try to resent values even if a cloud returned an HTTP error, just
 /// continue the normal process.
 OBJC_EXPORT const BraveCoreSwitchKey

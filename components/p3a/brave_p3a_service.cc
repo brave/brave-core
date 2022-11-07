@@ -80,8 +80,8 @@ BraveP3AService::BraveP3AService(PrefService* local_state,
                                  std::string week_of_install)
     : local_state_(local_state), config_(new BraveP3AConfig()) {
   config_->LoadFromCommandLine();
-  message_manager_.reset(new BraveP3AMessageManager(
-      local_state, config_.get(), this, channel, week_of_install));
+  message_manager_ = std::make_unique<BraveP3AMessageManager>(
+      local_state, config_.get(), this, channel, week_of_install);
 }
 
 BraveP3AService::~BraveP3AService() = default;
@@ -246,7 +246,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
   }
 
   // Special handling of P2A histograms.
-  if (base::StartsWith(histogram_name, "Brave.P2A.",
+  if (base::StartsWith(histogram_name, "Brave.P2A",
                        base::CompareCase::SENSITIVE)) {
     // We need the bucket count to make proper perturbation.
     // All P2A metrics should be implemented as linear histograms.

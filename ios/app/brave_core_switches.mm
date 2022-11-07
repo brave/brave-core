@@ -33,8 +33,22 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3ATypicalRotationIntervalSeconds =
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AExpressRotationIntervalSeconds =
     base::SysUTF8ToNSString(
         brave::switches::kP3AExpressRotationIntervalSeconds);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP3AUploadServerURL =
-    base::SysUTF8ToNSString(brave::switches::kP3AUploadServerUrl);
+
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AJsonUploadServerURL =
+    base::SysUTF8ToNSString(brave::switches::kP3AJsonUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3ACreativeUploadServerURL =
+    base::SysUTF8ToNSString(brave::switches::kP3ACreativeUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP2AJsonUploadServerURL =
+    base::SysUTF8ToNSString(brave::switches::kP2AJsonUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AStarUploadServerURL =
+    base::SysUTF8ToNSString(brave::switches::kP3AStarUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP2AStarUploadServerURL =
+    base::SysUTF8ToNSString(brave::switches::kP2AStarUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3ADisableStarAttestation =
+    base::SysUTF8ToNSString(brave::switches::kP3ADisableStarAttestation);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AStarRandomnessHost =
+    base::SysUTF8ToNSString(brave::switches::kP3AStarRandomnessHost);
+
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AIgnoreServerErrors =
     base::SysUTF8ToNSString(brave::switches::kP3AIgnoreServerErrors);
 
