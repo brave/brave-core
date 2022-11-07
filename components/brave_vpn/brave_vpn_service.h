@@ -196,6 +196,10 @@ class BraveVpnService :
   void OnPreferenceChanged(const std::string& pref_name);
 
   BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
+
+  void set_mock_brave_vpn_connection_api(BraveVPNOSConnectionAPI* api) {
+    mock_connection_api_ = api;
+  }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   // KeyedService overrides:
@@ -233,6 +237,7 @@ class BraveVpnService :
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
+  raw_ptr<BraveVPNOSConnectionAPI> mock_connection_api_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)

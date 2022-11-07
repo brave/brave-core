@@ -133,6 +133,7 @@ source_set("unit_tests") {
       "//net:test_support",
       "//services/data_decoder/public/cpp:test_support",
       "//services/network:test_support",
+      "//testing/gmock",
       "//testing/gtest",
       "//third_party/abseil-cpp:absl",
     ]

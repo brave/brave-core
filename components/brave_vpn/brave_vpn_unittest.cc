@@ -34,6 +34,7 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -363,6 +364,9 @@ class BraveVPNServiceTest : public testing::Test {
     service_->test_timezone_ = timezone;
   }
 
+  void SetMockConnectionAPI(BraveVPNOSConnectionAPI* api) {
+    service_->set_mock_brave_vpn_connection_api(api);
+  }
 #endif
   void RecordP3A(bool new_usage) { service_->RecordP3A(new_usage); }
 
@@ -1057,6 +1061,40 @@ TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   OnGetSubscriberCredentialV12("Token No Longer Valid", false);
   EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+}
+
+class MockBraveVPNOSConnectionAPI : public BraveVPNOSConnectionAPI {
+ public:
+  MockBraveVPNOSConnectionAPI() = default;
+  ~MockBraveVPNOSConnectionAPI() override = default;
+
+  MOCK_METHOD(void,
+              CreateVPNConnectionImpl,
+              (const BraveVPNConnectionInfo& info),
+              (override));
+  MOCK_METHOD(void,
+              RemoveVPNConnectionImpl,
+              (const std::string& name),
+              (override));
+  MOCK_METHOD(void, ConnectImpl, (const std::string& name), (override));
+  MOCK_METHOD(void, DisconnectImpl, (const std::string& name), (override));
+  MOCK_METHOD(void, CheckConnectionImpl, (const std::string& name), (override));
+};
+
+// Test connection check is asked only when purchased state.
+TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterPurchased) {
+  MockBraveVPNOSConnectionAPI api;
+  SetMockConnectionAPI(&api);
+  std::string env = skus::GetDefaultEnvironment();
+
+  EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(0);
+  SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+  testing::Mock::VerifyAndClearExpectations(&api);
+  EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(1);
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  testing::Mock::VerifyAndClearExpectations(&api);
+
+  SetMockConnectionAPI(nullptr);
 }
 #endif
 
