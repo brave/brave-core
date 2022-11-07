@@ -121,14 +121,14 @@ export const AddNftForm = (props: Props) => {
 
     if (foundTokenInfoByContractAddress) {
       if (foundTokenInfoByContractAddress.isErc721) {
-        let token = foundTokenInfoByContractAddress
+        let token = { ...foundTokenInfoByContractAddress }
         token.tokenId = tokenID ? new Amount(tokenID).toHex() : ''
         token.chainId = customAssetsNetwork.chainId
         onAddCustomAsset(token)
         onHideForm()
         return
       }
-      let foundToken = foundTokenInfoByContractAddress
+      let foundToken = { ...foundTokenInfoByContractAddress }
       foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
       foundToken.chainId = customAssetsNetwork.chainId
       onAddCustomAsset(foundToken)
