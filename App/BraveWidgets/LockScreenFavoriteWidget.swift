@@ -94,13 +94,15 @@ private struct LockScreenFavoriteView: View {
     } else {
       Image(braveSystemName: "brave.logo")
         .imageScale(.large)
-        .font(.system(size: 26))
+        .font(.system(size: 24))
         .foregroundColor(Color.black)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
           Color(white: 0.9)
-            .clipShape(Circle())
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .padding(12)
         )
+        .background(Color.black)
     }
   }
 }
