@@ -6,7 +6,6 @@
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -33,8 +32,9 @@ bool ShouldCreateWebDiscoveryTabHelper(content::WebContents* contents) {
   auto* prefs = user_prefs::UserPrefs::Get(context);
   if (!prefs)
     return false;
-  return !prefs->GetBoolean(kDontAskEnableWebDiscovery) &&
-         prefs->GetInteger(kBraveSearchVisitCount) < 20;
+
+  // TODO(simonhong): Check proper condition for infobar.
+  return false;
 }
 
 }  // namespace
@@ -78,33 +78,8 @@ void WebDiscoveryTabHelper::DidFinishLoad(
   if (!prefs)
     return;
 
-  if (!NeedVisitCountHandling(prefs, service))
-    return;
-
-  IncreaseBraveSearchVisitCount(prefs);
-
-  if (ShouldShowWebDiscoveryDialog(prefs))
-    brave::ShowWebDiscoveryDialog(browser, web_contents());
-}
-
-bool WebDiscoveryTabHelper::NeedVisitCountHandling(
-    PrefService* prefs,
-    TemplateURLService* template_service) {
-  DCHECK(prefs && template_service);
-
-  if (prefs->GetBoolean(kDontAskEnableWebDiscovery))
-    return false;
-
-  if (!IsBraveSearchDefault(template_service))
-    return false;
-
-  if (prefs->GetBoolean(kWebDiscoveryEnabled))
-    return false;
-
-  if (prefs->GetInteger(kBraveSearchVisitCount) >= 20)
-    return false;
-
-  return true;
+  // TODO(simonhong): Handling new conditions for infobar.
+  NOTIMPLEMENTED();
 }
 
 bool WebDiscoveryTabHelper::IsBraveSearchDefault(
@@ -116,24 +91,6 @@ bool WebDiscoveryTabHelper::IsBraveSearchDefault(
     return false;
   return template_url->prepopulate_id() ==
          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE;
-}
-
-bool WebDiscoveryTabHelper::ShouldShowWebDiscoveryDialog(PrefService* prefs) {
-  DCHECK(prefs);
-
-  const int visit_count = prefs->GetInteger(kBraveSearchVisitCount);
-  return (visit_count == 3 || visit_count == 10 || visit_count == 20);
-}
-
-void WebDiscoveryTabHelper::IncreaseBraveSearchVisitCount(PrefService* prefs) {
-  DCHECK(prefs);
-
-  const int visit_count = prefs->GetInteger(kBraveSearchVisitCount) + 1;
-  // Don't need to increase anymore. We don't show again after 20th visit.
-  if (visit_count > 20)
-    return;
-
-  prefs->SetInteger(kBraveSearchVisitCount, visit_count);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper);

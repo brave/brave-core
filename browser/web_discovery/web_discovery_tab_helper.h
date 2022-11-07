@@ -33,11 +33,7 @@ class WebDiscoveryTabHelper
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
 
-  bool NeedVisitCountHandling(PrefService* prefs,
-                              TemplateURLService* template_service);
   bool IsBraveSearchDefault(TemplateURLService* template_service);
-  bool ShouldShowWebDiscoveryDialog(PrefService* prefs);
-  void IncreaseBraveSearchVisitCount(PrefService* prefs);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

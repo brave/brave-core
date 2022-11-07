@@ -59,20 +59,8 @@ class WebDiscoveryDialogTest : public testing::Test {
     service()->SetUserSelectedDefaultSearchProvider(google.get());
   }
 
-  bool ShouldShowWebDiscoveryDialog() {
-    return tab_helper()->ShouldShowWebDiscoveryDialog(prefs());
-  }
-
   bool IsBraveSearchDefault() {
     return tab_helper()->IsBraveSearchDefault(service());
-  }
-
-  bool NeedVisitCountHandling() {
-    return tab_helper()->NeedVisitCountHandling(prefs(), service());
-  }
-
-  void IncreaseBraveSearchVisitCount() {
-    return tab_helper()->IncreaseBraveSearchVisitCount(prefs());
   }
 
   TemplateURLServiceTestUtil* test_util() { return test_util_.get(); }
@@ -88,91 +76,9 @@ class WebDiscoveryDialogTest : public testing::Test {
 };
 
 TEST_F(WebDiscoveryDialogTest, InitialDataTest) {
-  EXPECT_EQ(0, prefs()->GetInteger(kBraveSearchVisitCount));
-  EXPECT_FALSE(prefs()->GetBoolean(kDontAskEnableWebDiscovery));
   EXPECT_FALSE(prefs()->GetBoolean(kWebDiscoveryEnabled));
 
   // Tab helper can be created by default.
-  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents());
-  EXPECT_TRUE(tab_helper());
-}
-
-TEST_F(WebDiscoveryDialogTest, IncreaseBraveSearchVisitCountTest) {
-  // Count will not grow more than 20.
-  EXPECT_EQ(0, prefs()->GetInteger(kBraveSearchVisitCount));
-  IncreaseBraveSearchVisitCount();
-  IncreaseBraveSearchVisitCount();
-  EXPECT_EQ(2, prefs()->GetInteger(kBraveSearchVisitCount));
-
-  prefs()->SetInteger(kBraveSearchVisitCount, 19);
-  IncreaseBraveSearchVisitCount();
-  EXPECT_EQ(20, prefs()->GetInteger(kBraveSearchVisitCount));
-
-  IncreaseBraveSearchVisitCount();
-  IncreaseBraveSearchVisitCount();
-  EXPECT_EQ(20, prefs()->GetInteger(kBraveSearchVisitCount));
-}
-
-TEST_F(WebDiscoveryDialogTest, ShouldShowWebDiscoveryDialogTest) {
-  // Create tab helper.
-  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents());
-  ASSERT_TRUE(tab_helper());
-
-  // Set non-brave as a default search provider.
-  SetNonBraveSearchAsDefaultProvider();
-  EXPECT_FALSE(IsBraveSearchDefault());
-  EXPECT_FALSE(NeedVisitCountHandling());
-
-  // Set brave search as a default provider.
-  SetBraveSearchAsDefaultProvider();
-  EXPECT_TRUE(NeedVisitCountHandling());
-
-  prefs()->SetBoolean(kWebDiscoveryEnabled, true);
-  EXPECT_FALSE(NeedVisitCountHandling());
-
-  prefs()->SetBoolean(kWebDiscoveryEnabled, false);
-  prefs()->SetBoolean(kDontAskEnableWebDiscovery, true);
-  EXPECT_FALSE(NeedVisitCountHandling());
-
-  prefs()->SetBoolean(kWebDiscoveryEnabled, false);
-  prefs()->SetBoolean(kDontAskEnableWebDiscovery, false);
-  EXPECT_TRUE(NeedVisitCountHandling());
-
-  // After reaching 20 visit count, we don't need to handling count any more.
-  prefs()->SetInteger(kBraveSearchVisitCount, 20);
-  EXPECT_FALSE(NeedVisitCountHandling());
-
-  // Check dialog is shown for 3rd, 10th and 20th visit.
-  prefs()->SetInteger(kBraveSearchVisitCount, 1);
-  EXPECT_FALSE(ShouldShowWebDiscoveryDialog());
-
-  prefs()->SetInteger(kBraveSearchVisitCount, 3);
-  EXPECT_TRUE(ShouldShowWebDiscoveryDialog());
-
-  prefs()->SetInteger(kBraveSearchVisitCount, 5);
-  EXPECT_FALSE(ShouldShowWebDiscoveryDialog());
-
-  prefs()->SetInteger(kBraveSearchVisitCount, 10);
-  EXPECT_TRUE(ShouldShowWebDiscoveryDialog());
-
-  prefs()->SetInteger(kBraveSearchVisitCount, 20);
-  EXPECT_TRUE(ShouldShowWebDiscoveryDialog());
-}
-
-TEST_F(WebDiscoveryDialogTest, ShouldCreateTabHelperTest) {
-  // We don't need tab helper after user set "don't ask again" checkbox.
-  prefs()->SetBoolean(kDontAskEnableWebDiscovery, true);
-  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents());
-  EXPECT_FALSE(tab_helper());
-  prefs()->SetBoolean(kDontAskEnableWebDiscovery, false);
-
-  // Don't need tab helper if user visited 20 times.
-  prefs()->SetInteger(kBraveSearchVisitCount, 20);
-  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents());
-  EXPECT_FALSE(tab_helper());
-
-  // Created visit cound is less than 20.
-  prefs()->SetInteger(kBraveSearchVisitCount, 10);
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents());
   EXPECT_TRUE(tab_helper());
 }
