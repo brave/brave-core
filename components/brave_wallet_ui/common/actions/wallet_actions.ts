@@ -84,7 +84,6 @@
   setSelectedAssetFilterItem,
   setSelectedCoin,
   setSelectedNetworkFilter,
-  setShowTestNetworks,
   setSitePermissions,
   setSolFeeEstimates,
   setTransactionProviderError,

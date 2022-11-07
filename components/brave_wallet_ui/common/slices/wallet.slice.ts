@@ -72,7 +72,6 @@ const defaultState: WalletState = {
   hasInitialized: false,
   isFilecoinEnabled: false,
   isSolanaEnabled: false,
-  isTestNetworksEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -404,10 +403,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setSelectedCoin (state: WalletState, { payload }: PayloadAction<BraveWallet.CoinType>) {
         state.selectedCoin = payload
-      },
-
-      setShowTestNetworks (state: WalletState, { payload }: PayloadAction<boolean>) {
-        state.isTestNetworksEnabled = payload
       },
 
       setSitePermissions (state: WalletState, { payload }: PayloadAction<SitePermissionsPayloadType>) {

@@ -336,7 +336,6 @@ export const mockWalletState: WalletState = {
   ],
   transactionProviderErrorRegistry: {},
   defaultNetworks: [mockNetwork],
-  isTestNetworksEnabled: true,
   selectedCoin: BraveWallet.CoinType.ETH,
   selectedNetworkFilter: AllNetworksOption,
   selectedAssetFilter: AllAssetsFilterOption,
