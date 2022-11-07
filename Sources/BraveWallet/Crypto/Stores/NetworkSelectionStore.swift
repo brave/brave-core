@@ -7,25 +7,50 @@ import BraveCore
 import BraveShared
 import SwiftUI
 
-class NetworkSelectionStore: ObservableObject {
-  
-  struct NetworkPresentation: Equatable, Hashable, Identifiable {
-    var id: String { network.id }
-    let network: BraveWallet.NetworkInfo
-    let subNetworks: [BraveWallet.NetworkInfo]
-    let isPrimaryNetwork: Bool
-    
-    init(
-      network: BraveWallet.NetworkInfo,
-      subNetworks: [BraveWallet.NetworkInfo],
-      isPrimaryNetwork: Bool
-    ) {
-      self.network = network
-      self.subNetworks = subNetworks
-      self.isPrimaryNetwork = isPrimaryNetwork
-    }
+struct NetworkPresentation: Equatable, Hashable, Identifiable {
+  enum Network: Equatable, Hashable {
+    case allNetworks
+    case network(BraveWallet.NetworkInfo)
   }
   
+  var id: String {
+    switch network {
+    case .allNetworks: return "allNetworks"
+    case let .network(network): return network.id
+    }
+  }
+  let network: Network
+  let subNetworks: [BraveWallet.NetworkInfo]
+  let isPrimaryNetwork: Bool
+  
+  init(
+    network: Network,
+    subNetworks: [BraveWallet.NetworkInfo],
+    isPrimaryNetwork: Bool
+  ) {
+    self.network = network
+    self.subNetworks = subNetworks
+    self.isPrimaryNetwork = isPrimaryNetwork
+  }
+  
+  static let allNetworks: Self = .init(
+    network: .allNetworks,
+    subNetworks: [],
+    isPrimaryNetwork: true
+  )
+}
+
+class NetworkSelectionStore: ObservableObject {
+  
+  enum Mode: Equatable {
+    case select
+    case filter
+    
+    var isSelectMode: Bool { self == .select }
+    var isFilterMode: Bool { self == .filter }
+  }
+  
+  let mode: Mode
   var networkStore: NetworkStore
   
   @Published private(set) var primaryNetworks: [NetworkPresentation] = []
@@ -41,8 +66,10 @@ class NetworkSelectionStore: ObservableObject {
   @Published var isPresentingAddAccount: Bool = false
   
   init(
+    mode: Mode = .select,
     networkStore: NetworkStore
   ) {
+    self.mode = mode
     self.networkStore = networkStore
   }
   
@@ -65,16 +92,21 @@ class NetworkSelectionStore: ObservableObject {
       }
     }
     
-    self.primaryNetworks = networkStore.allChains
+    var primaryNetworks = networkStore.allChains
       .filter { WalletConstants.primaryNetworkChainIds.contains($0.chainId) }
       .map { network in
         let subNetworks = subNetworks(network)
         return NetworkPresentation(
-          network: network,
+          network: .network(network),
           subNetworks: subNetworks.count > 1 ? subNetworks : [],
           isPrimaryNetwork: true
         )
       }
+    if mode == .filter {
+      // users can filter by 'All Networks' but cannot select 'All Networks'
+      primaryNetworks.insert(.allNetworks, at: 0)
+    }
+    self.primaryNetworks = primaryNetworks
 
     self.secondaryNetworks = networkStore.allChains
       .filter {
@@ -83,23 +115,35 @@ class NetworkSelectionStore: ObservableObject {
       }
       .map { network in
         NetworkPresentation(
-          network: network,
+          network: .network(network),
           subNetworks: [],
           isPrimaryNetwork: false
         )
       }
   }
   
-  @MainActor func selectNetwork(network: BraveWallet.NetworkInfo) async -> Bool {
-    detailNetwork = nil
+  @MainActor func selectNetwork(_ network: NetworkPresentation.Network) async -> Bool {
+    switch mode {
+    case .select:
+      guard case let .network(network) = network else { return false }
+      detailNetwork = nil
 
-    let error = await networkStore.setSelectedChain(network)
-    switch error {
-    case .selectedChainHasNoAccounts:
-      isPresentingNextNetworkAlert = true
-      nextNetwork = network
-      return false
-    default:
+      let error = await networkStore.setSelectedChain(network)
+      switch error {
+      case .selectedChainHasNoAccounts:
+        isPresentingNextNetworkAlert = true
+        nextNetwork = network
+        return false
+      default:
+        return true
+      }
+    case .filter:
+      switch network {
+      case .allNetworks:
+        networkStore.networkFilter = .allNetworks
+      case let .network(network):
+        networkStore.networkFilter = .network(network)
+      }
       return true
     }
   }

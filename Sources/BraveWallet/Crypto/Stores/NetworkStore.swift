@@ -27,6 +27,12 @@ public class NetworkStore: ObservableObject {
     allChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init()
   }
   
+  enum NetworkFilter: Equatable {
+    case allNetworks
+    case network(BraveWallet.NetworkInfo)
+  }
+  @Published var networkFilter: NetworkFilter = .allNetworks
+  
   @Published private(set) var isSwapSupported: Bool = true
 
   private let keyringService: BraveWalletKeyringService
