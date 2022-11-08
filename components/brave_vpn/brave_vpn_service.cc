@@ -101,7 +101,16 @@ void BraveVpnService::CheckInitialState() {
     ScheduleBackgroundRegionDataFetch();
 #endif
   } else {
-    ClearSubscriberCredential(local_prefs_);
+    // Try to reload purchased state if cached credential is not valid because
+    // it could be invalidated when not running.
+    if (HasSubscriberCredential(local_prefs_)) {
+      VLOG(2) << __func__ << " "
+              << "Try to reload purchased as invalid credential is stored.";
+      ClearSubscriberCredential(local_prefs_);
+      ReloadPurchasedState();
+    } else {
+      ClearSubscriberCredential(local_prefs_);
+    }
   }
 }
 
