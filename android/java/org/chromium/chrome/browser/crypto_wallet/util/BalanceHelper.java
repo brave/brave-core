@@ -149,7 +149,8 @@ public class BalanceHelper {
                 final String tokenKey = Utils.tokenToString(context.userAsset);
                 final int decimals = (context.userAsset.decimals != 0 || context.userAsset.isErc721)
                         ? context.userAsset.decimals
-                        : selectedNetwork.decimals;
+                        : (context.userAsset.coin == CoinType.SOL ? context.decimals
+                                                                  : selectedNetwork.decimals);
                 Double tokenBalance =
                         (context.error == ProviderError.SUCCESS && context.balance != null
                                 && !context.balance.isEmpty())

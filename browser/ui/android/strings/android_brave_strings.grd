@@ -3249,6 +3249,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ASCII" desc="A title to view an ASCII message if Unicode characters detected">
       View message in ASCII encoding
     </message>
+    <message name="IDS_WALLET_ADD_SOLANA_NFT_CHECKBOX" desc="A title for a Solana NFT custom assets checkbox" translateable="false">
+      NFT
+    </message>
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
+      Token address
+    </message>
   </messages>
   </release>
 </grit>

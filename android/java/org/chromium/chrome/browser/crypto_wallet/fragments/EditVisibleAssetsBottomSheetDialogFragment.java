@@ -293,17 +293,37 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         dialog.setContentView(R.layout.brave_wallet_add_custom_asset);
         dialog.show();
 
-        LinearLayout advancedSection = dialog.findViewById(R.id.advanced_section);
         TextView advancedTitle = dialog.findViewById(R.id.advanced_title);
-        advancedTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (advancedSection.getVisibility() == View.GONE)
-                    advancedSection.setVisibility(View.VISIBLE);
-                else
-                    advancedSection.setVisibility(View.GONE);
+        CheckBox isNft = dialog.findViewById(R.id.nft_check);
+        if (mSelectedNetwork.coin == CoinType.ETH) {
+            LinearLayout advancedSection = dialog.findViewById(R.id.advanced_section);
+            advancedTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (advancedSection.getVisibility() == View.GONE)
+                        advancedSection.setVisibility(View.VISIBLE);
+                    else
+                        advancedSection.setVisibility(View.GONE);
+                }
+            });
+        } else {
+            advancedTitle.setVisibility(View.GONE);
+            dialog.findViewById(R.id.advanced_section_separator).setVisibility(View.GONE);
+            if (mSelectedNetwork.coin == CoinType.SOL) {
+                isNft.setVisibility(View.VISIBLE);
+                isNft.setOnClickListener(v -> {
+                    boolean isNftChecked = isNft.isChecked();
+                    dialog.findViewById(R.id.token_decimals_title)
+                            .setVisibility(isNftChecked ? View.GONE : View.VISIBLE);
+                    dialog.findViewById(R.id.token_decimals)
+                            .setVisibility(isNftChecked ? View.GONE : View.VISIBLE);
+                    ((TextView) dialog.findViewById(R.id.token_contract_address_title))
+                            .setText(getString(isNftChecked
+                                            ? R.string.wallet_add_custom_asset_token_address
+                                            : R.string.wallet_add_custom_asset_token_contract_address));
+                });
             }
-        });
+        }
 
         Button cancel = dialog.findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -345,6 +365,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                 try {
                     token.decimals = Integer.valueOf(tokenDecimalsEdit.getText().toString());
                 } catch (NumberFormatException exc) {
+                }
+                if (mSelectedNetwork.coin == CoinType.SOL) {
+                    token.isNft = isNft.isChecked();
+                    if (token.isNft) {
+                        token.decimals = 0;
+                    }
                 }
                 token.visible = true;
 
@@ -437,7 +463,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             }
 
             if (tokenName.isEmpty() || tokenSymbol.isEmpty()
-                    || tokenDecimalsEdit.getText().toString().isEmpty()) {
+                    || mSelectedNetwork.coin == CoinType.ETH
+                            && tokenDecimalsEdit.getText().toString().isEmpty()) {
                 return;
             }
 
