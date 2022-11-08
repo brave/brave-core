@@ -2971,6 +2971,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ASCII" desc="A title to view an ASCII message if Unicode characters detected">
       View message in ASCII encoding
     </message>
+    <message name="IDS_USE_BRAVE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
+      Use Brave Translate
+    </message>
   </messages>
   </release>
 </grit>
