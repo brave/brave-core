@@ -90,9 +90,13 @@ class ErrorPageHelper {
   }
 
   func loadPage(_ error: NSError, forUrl url: URL, inWebView webView: WKWebView) {
-    guard var components = URLComponents(string: "\(InternalURL.baseUrl)/\(ErrorPageHandler.path)"), let webViewUrl = webView.url else {
+    guard var components = URLComponents(string: "\(InternalURL.baseUrl)/\(ErrorPageHandler.path)") else {
       return
     }
+    
+    // In rare cases the web view's url might be nil, like when opening a non existing website via share menu.
+    // In this case we fall back to the failing url.
+    let webViewUrl = webView.url ?? url
 
     // Page has failed to load again, just return and keep showing the existing error page.
     if let internalUrl = InternalURL(webViewUrl), internalUrl.originalURLFromErrorPage == url {
