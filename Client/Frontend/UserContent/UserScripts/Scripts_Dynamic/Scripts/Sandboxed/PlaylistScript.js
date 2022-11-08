@@ -115,7 +115,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           if (node.src && node.src !== "") {
             if ((node.closest('video') === target) || (node.closest('audio') === target)) {
               tagNode(target);
-              sendMessaage(name, node, target, type, detected);
+              sendMessage(name, node, target, type, detected);
             }
           }
         });
