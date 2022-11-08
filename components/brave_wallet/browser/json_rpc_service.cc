@@ -1360,14 +1360,14 @@ void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                    SnsGetSolAddrCallback callback) {
   if (!base::FeatureList::IsEnabled(features::kBraveWalletSnsFeature)) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
+        "", mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
+        "", mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -1381,7 +1381,7 @@ void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                    mojom::CoinType::SOL);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
+        "", mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -1407,15 +1407,15 @@ void JsonRpcService::OnSnsGetSolAddrTaskDone(
   }
 
   std::string address;
-  mojom::ProviderError error =
-      task_error ? task_error->error : mojom::ProviderError::kSuccess;
+  mojom::SolanaProviderError error =
+      task_error ? task_error->error : mojom::SolanaProviderError::kSuccess;
   std::string error_message = task_error ? task_error->error_message : "";
 
   if (task_result) {
     if (task_result->resolved_address.IsValid()) {
       address = task_result->resolved_address.ToBase58();
     } else {
-      error = mojom::ProviderError::kInvalidParams;
+      error = mojom::SolanaProviderError::kInvalidParams;
       error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
     }
   }

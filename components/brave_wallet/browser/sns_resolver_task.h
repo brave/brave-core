@@ -25,10 +25,6 @@ using SnsNamehash = std::array<uint8_t, 32>;
 
 SnsNamehash GetHashedName(const std::string& name);
 
-absl::optional<SolanaAddress> GetNameAccountKey(
-    const SnsNamehash& hashed_name,
-    const absl::optional<SolanaAddress>& parent);
-
 absl::optional<SolanaAddress> GetMintAddress(
     const SolanaAddress& domain_address);
 absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
@@ -53,27 +49,28 @@ struct NameRegistryState {
 };
 
 struct SnsResolverTaskResult {
-  SnsResolverTaskResult();
+  SnsResolverTaskResult() = default;
   explicit SnsResolverTaskResult(SolanaAddress address);
-  SnsResolverTaskResult(const SnsResolverTaskResult&);
-  SnsResolverTaskResult(SnsResolverTaskResult&&);
-  SnsResolverTaskResult& operator=(const SnsResolverTaskResult&);
-  SnsResolverTaskResult& operator=(SnsResolverTaskResult&&);
-  ~SnsResolverTaskResult();
+  SnsResolverTaskResult(const SnsResolverTaskResult&) = default;
+  SnsResolverTaskResult(SnsResolverTaskResult&&) = default;
+  SnsResolverTaskResult& operator=(const SnsResolverTaskResult&) = default;
+  SnsResolverTaskResult& operator=(SnsResolverTaskResult&&) = default;
+  ~SnsResolverTaskResult() = default;
 
   SolanaAddress resolved_address;
 };
 
 struct SnsResolverTaskError {
-  SnsResolverTaskError();
-  SnsResolverTaskError(mojom::ProviderError error, std::string error_message);
-  SnsResolverTaskError(const SnsResolverTaskError&);
-  SnsResolverTaskError(SnsResolverTaskError&&);
-  SnsResolverTaskError& operator=(const SnsResolverTaskError&);
-  SnsResolverTaskError& operator=(SnsResolverTaskError&&);
-  ~SnsResolverTaskError();
+  SnsResolverTaskError() = default;
+  SnsResolverTaskError(mojom::SolanaProviderError error,
+                       std::string error_message);
+  SnsResolverTaskError(const SnsResolverTaskError&) = default;
+  SnsResolverTaskError(SnsResolverTaskError&&) = default;
+  SnsResolverTaskError& operator=(const SnsResolverTaskError&) = default;
+  SnsResolverTaskError& operator=(SnsResolverTaskError&&) = default;
+  ~SnsResolverTaskError() = default;
 
-  mojom::ProviderError error;
+  mojom::SolanaProviderError error;
   std::string error_message;
 };
 
@@ -157,7 +154,7 @@ class SnsResolverTaskContainer {
  public:
   SnsResolverTaskContainer() = default;
   SnsResolverTaskContainer(const SnsResolverTaskContainer&) = delete;
-  SnsResolverTaskContainer(SnsResolverTaskContainer&&) = delete;
+  SnsResolverTaskContainer& operator=(const SnsResolverTaskContainer&) = delete;
   ~SnsResolverTaskContainer() = default;
 
   void AddTask(std::unique_ptr<SnsResolverTask> task, ResultCallback cb) {

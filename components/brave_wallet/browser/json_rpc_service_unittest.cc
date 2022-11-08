@@ -58,6 +58,7 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition.h"
@@ -5788,7 +5789,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   // Has nft for domain. Return nft owner.
   base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
   EXPECT_CALL(callback, Run(NftOwnerAddress().ToBase58(),
-                            mojom::ProviderError::kSuccess, ""));
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5796,7 +5797,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   // HTTP error while checking nft mint. Fail resolution.
   mint_address_handler_->FailWithTimeout();
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
@@ -5806,7 +5807,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   // HTTP error while checking nft owner. Fail resolution.
   get_program_accounts_handler_->FailWithTimeout();
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
@@ -5816,7 +5817,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   // Domain detokenized. Fallback to domain/SOL owner.
   mint_address_handler_->data() = GetAccountInfoHandler::MakeMintData(0);
   EXPECT_CALL(callback, Run(SolRecordAddress().ToBase58(),
-                            mojom::ProviderError::kSuccess, ""));
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5829,7 +5830,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
   // No nft, no SOL record. Return domain owner address.
   base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
-                            mojom::ProviderError::kSuccess, ""));
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5837,7 +5838,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
   // HTTP error for domain key account. Fail resolution.
   domain_address_handler_->FailWithTimeout();
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
@@ -5847,8 +5848,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
   // No domain key account. Fail resolution.
   domain_address_handler_->Disable();
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInvalidParams,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+              Run("", mojom::SolanaProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5862,7 +5863,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   // No nft, has sol record. Return address from SOL record.
   base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
   EXPECT_CALL(callback, Run(SolRecordAddress().ToBase58(),
-                            mojom::ProviderError::kSuccess, ""));
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5870,7 +5871,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   // Bad signature. Fallback to owner address.
   sol_record_address_handler_->data()[170] ^= 123;
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
-                            mojom::ProviderError::kSuccess, ""));
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5879,7 +5880,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   // HTTP error for SOL record key account. Fail resolution.
   sol_record_address_handler_->FailWithTimeout();
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
@@ -5889,7 +5890,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   // No SOL record account. Fallback to owner address.
   sol_record_address_handler_->Disable();
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
-                            mojom::ProviderError::kSuccess, ""));
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);

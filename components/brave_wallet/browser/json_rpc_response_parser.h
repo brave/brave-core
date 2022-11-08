@@ -84,8 +84,6 @@ namespace solana {
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();
-base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
-ConverterForGetProrgamAccounts();
 
 }  // namespace solana
 
