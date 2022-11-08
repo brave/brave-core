@@ -211,7 +211,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         prefs::kSidePanelHorizontalAlignment,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                             base::Unretained(this)));
-    UpdateSideBarHorizontalAlignment();
   }
 }
 
@@ -266,6 +265,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
+  UpdateSideBarHorizontalAlignment();
   return sidebar_container_view_;
 }
 
