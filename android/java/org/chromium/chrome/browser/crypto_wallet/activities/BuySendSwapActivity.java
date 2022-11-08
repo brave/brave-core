@@ -932,9 +932,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 mCurrentBlockchainToken.contractAddress);
                     }
                 } else if (mSelectedAccount.coin == CoinType.SOL) {
-                    int decimals = mCurrentBlockchainToken.decimals != 0
-                            ? mCurrentBlockchainToken.decimals
-                            : mSelectedNetwork.decimals;
                     mSendModel.sendSolanaToken(mCurrentBlockchainToken, mSelectedAccount.address,
                             to, Utils.toDecimalLamport(value, mCurrentBlockchainToken.decimals),
                             (success, txMetaId, errorMessage) -> {
