@@ -104,7 +104,11 @@ struct PortfolioView: View {
               .frame(maxWidth: .infinity)
           }
           .sheet(isPresented: $isPresentingEditUserAssets) {
-            EditUserAssetsView(userAssetsStore: portfolioStore.userAssetsStore) {
+            EditUserAssetsView(
+              networkStore: networkStore,
+              keyringStore: keyringStore,
+              userAssetsStore: portfolioStore.userAssetsStore
+            ) {
               portfolioStore.update()
             }
           }

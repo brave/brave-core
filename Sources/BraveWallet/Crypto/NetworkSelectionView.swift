@@ -36,6 +36,8 @@ struct NetworkSelectionView: View {
       case let .network(network):
         return .network(network)
       }
+    case .formSelection:
+      return .network(store.networkSelectionInForm ?? .init())
     }
   }
   
@@ -43,6 +45,7 @@ struct NetworkSelectionView: View {
     switch store.mode {
     case .select: return Strings.Wallet.networkSelectionTitle
     case .filter: return Strings.Wallet.networkFilterTitle
+    case .formSelection: return Strings.Wallet.networkSelectionTitle
     }
   }
   

@@ -236,7 +236,7 @@ import BraveShared
     
     let store = NetworkSelectionStore(networkStore: networkStore)
     let success = await store.selectNetwork(.network(.mockGoerli))
-    XCTAssertTrue(success, "Expected success for selecting Ropsten because we have ethereum accounts.")
+    XCTAssertTrue(success, "Expected success for selecting Goerli because we have ethereum accounts.")
     XCTAssertNil(store.detailNetwork, "Expected to reset detail network to nil to pop detail view")
   }
   
@@ -274,6 +274,22 @@ import BraveShared
     let success = await store.selectNetwork(.network(.mockMainnet))
     XCTAssertTrue(success, "Expected success for selecting Ethereum Mainnet.")
     XCTAssertEqual(networkStore.networkFilter, .network(.mockMainnet))
+  }
+  
+  func testSelectedNetworkFormSelectionMode() async {
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    
+    let networkStore = NetworkStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      swapService: swapService
+    )
+    
+    let store = NetworkSelectionStore(mode: .formSelection, networkStore: networkStore)
+    let success = await store.selectNetwork(.network(.mockGoerli))
+    XCTAssertTrue(success, "Expected success for selecting Goerli")
+    XCTAssertEqual(store.networkSelectionInForm, .mockGoerli)
   }
   
   func testSelectNetworkFilterModeAllNetworks() async {

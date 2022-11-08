@@ -408,7 +408,7 @@ struct SwapCryptoView: View {
             isLoading: swapTokensStore.isMakingTx,
             action: {
               swapTokensStore.prepareSwap { success in
-                if (success){
+                if success {
                   appRatingRequest?()
                 }
                 completion?(success)

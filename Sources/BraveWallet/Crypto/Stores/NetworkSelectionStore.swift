@@ -45,6 +45,7 @@ class NetworkSelectionStore: ObservableObject {
   enum Mode: Equatable {
     case select
     case filter
+    case formSelection
     
     var isSelectMode: Bool { self == .select }
     var isFilterMode: Bool { self == .filter }
@@ -64,6 +65,8 @@ class NetworkSelectionStore: ObservableObject {
   @Published var nextNetwork: BraveWallet.NetworkInfo?
   /// If we are prompting the user to create a new account for the `nextNetwork.coin` type
   @Published var isPresentingAddAccount: Bool = false
+  /// The network the user wishes to choose for adding a custom asset
+  @Published var networkSelectionInForm: BraveWallet.NetworkInfo?
   
   init(
     mode: Mode = .select,
@@ -145,6 +148,14 @@ class NetworkSelectionStore: ObservableObject {
         networkStore.networkFilter = .network(network)
       }
       return true
+    case .formSelection:
+      switch network {
+      case let .network(network):
+        networkSelectionInForm = network
+        return true
+      default:
+        return false
+      }
     }
   }
   
