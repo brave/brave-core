@@ -93,7 +93,16 @@ class IPFSTabHelper : public content::WebContentsObserver,
   FRIEND_TEST_ALL_PREFIXES(
       IpfsTabHelperUnitTest,
       GatewayLikeUrlParsed_AutoRedirectDisabled_WithDnsLink);
-
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, GatewayIPNS_Redirect);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           GatewayIPNS_NoRedirect_WhenNoDnsLinkRecord);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, GatewayIPNS_ResolveUrl);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           GatewayIPNS_Redirect_LibP2PKey);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           GatewayIPNS_Redirect_LibP2PKey_NoAutoRedirect);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           GatewayIPNS_No_Redirect_WhenNoDnsLink);
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
@@ -102,7 +111,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   bool IsDNSLinkCheckEnabled() const;
   bool IsAutoRedirectIPFSResourcesEnabled() const;
   void IPFSResourceLinkResolved(const GURL& ipfs);
-  void DNSLinkResolved(const GURL& ipfs);
+  void DNSLinkResolved(const GURL& ipfs, bool is_gateway_url);
   void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers);
   void UpdateDnsLinkButtonState();
   absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
@@ -117,8 +126,13 @@ class IPFSTabHelper : public content::WebContentsObserver,
       content::NavigationHandle* navigation_handle) override;
   void UpdateLocationBar();
 
-  void CheckDNSLinkRecord(absl::optional<std::string> x_ipfs_path_header);
-  void HostResolvedCallback(absl::optional<std::string> x_ipfs_path_header,
+  void CheckDNSLinkRecord(const GURL& gurl,
+                          bool is_gateway_url,
+                          absl::optional<std::string> x_ipfs_path_header);
+  void HostResolvedCallback(const GURL& current,
+                            const GURL& url,
+                            bool is_gateway_url,
+                            absl::optional<std::string> x_ipfs_path_header,
                             const std::string& host,
                             const absl::optional<std::string>& dnslink);
 
