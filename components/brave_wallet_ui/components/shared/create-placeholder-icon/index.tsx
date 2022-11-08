@@ -10,7 +10,8 @@ import {
   isRemoteImageURL,
   isValidIconExtension,
   httpifyIpfsUrl,
-  isIpfs
+  isIpfs,
+  isDataURL
 } from '../../../utils/string-utils'
 
 // Styled components
@@ -53,18 +54,17 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     const tokenImageURL = stripERC20TokenImageURL(asset.logo)
     const isRemoteURL = isRemoteImageURL(tokenImageURL)
-    const isDataURL = asset.logo.startsWith('chrome://erc-token-images/')
     const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
 
     const isValidIcon = React.useMemo(() => {
-      if (isRemoteURL || isDataURL) {
+      if (isRemoteURL || isDataURL(asset.logo)) {
         return tokenImageURL?.includes('data:image/') || isIpfs(tokenImageURL) ? true : isValidIconExtension(new URL(asset.logo).pathname)
       }
       if (isStorybook) {
         return true
       }
       return false
-    }, [isRemoteURL, isDataURL, tokenImageURL, asset.logo, isStorybook])
+    }, [isRemoteURL, tokenImageURL, asset.logo, isStorybook])
 
     const needsPlaceholder = isNativeAsset
       ? (tokenImageURL === '' || !isValidIcon) && networkLogo === ''

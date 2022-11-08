@@ -26,6 +26,8 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
 
 export const isIpfs = (url?: string) => url?.startsWith('ipfs://')
 
+export const isDataURL = (url?: string) => url?.startsWith('chrome://erc-token-images/')
+
 /**
  * Wyre currently supports the following chains:
  *  bitcoin, ethereum, avalanche(X & C), stellar, algorand, matic, flow
