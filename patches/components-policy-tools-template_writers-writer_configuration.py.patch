@@ -1,0 +1,9 @@
+diff --git a/components/policy/tools/template_writers/writer_configuration.py b/components/policy/tools/template_writers/writer_configuration.py
+index 259e467fee3e9280c512db87ab8f48ed09c20ed3..1e6b41f7853e1a5062c6a9e9c527da9c06e6a9d6 100755
+--- a/components/policy/tools/template_writers/writer_configuration.py
++++ b/components/policy/tools/template_writers/writer_configuration.py
+@@ -131,3 +131,4 @@ def GetConfigurationForBuild(defines):
+     config['mac_bundle_id'] = defines['mac_bundle_id']
+   config['android_webview_restriction_prefix'] = 'com.android.browser:'
+   return config
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/components/policy/tools/template_writers/writer_configuration.py", globals(), locals())
