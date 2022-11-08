@@ -16,6 +16,8 @@ import { useNewTabPref } from '../../../../hooks/usePref'
 import { useBraveNews } from './Context'
 import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
+import { SuggestionsPage } from './Suggestions'
+import { PopularPage } from './Popular'
 
 const Grid = styled.div`
   width: 100%;
@@ -104,17 +106,21 @@ const Content = styled.div`
 
 export default function Configure () {
   const [enabled, setEnabled] = useNewTabPref('isBraveTodayOptedIn')
-  const { setCustomizePage } = useBraveNews()
+  const { setCustomizePage, customizePage } = useBraveNews()
 
   let content: JSX.Element
   if (!enabled) {
     content = <DisabledPlaceholder enableBraveNews={() => setEnabled(true)} />
+  } else if (customizePage === 'suggestions') {
+    content = <SuggestionsPage/>
+  } else if (customizePage === 'popular') {
+    content = <PopularPage />
   } else {
     content = <Discover />
   }
 
   return (
-    <Grid>
+    <Grid id='brave-news-configure'>
       <BackButtonContainer>
         <Button onClick={() => setCustomizePage(null)}>
           {BackArrow}

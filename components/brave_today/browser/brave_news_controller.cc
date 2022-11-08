@@ -101,7 +101,6 @@ BraveNewsController::BraveNewsController(
                        &api_request_helper_,
                        prefs_),
       suggestions_controller_(prefs_,
-                              &channels_controller_,
                               &publishers_controller_,
                               &api_request_helper_,
                               history_service),

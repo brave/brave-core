@@ -207,12 +207,13 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "ad", IDS_BRAVE_TODAY_DISPLAY_AD_LABEL },
 
         { "braveNewsBackToDashboard", IDS_BRAVE_NEWS_BACK_TO_DASHBOARD },
+        { "braveNewsBackButton", IDS_BRAVE_NEWS_BACK_BUTTON },
         { "braveNewsDisabledPlaceholderHeader", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER },   // NOLINT
         { "braveNewsDisabledPlaceholderSubtitle", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE },  // NOLINT
         { "braveNewsDisabledPlaceholderEnableButton", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON },  // NOLINT
         { "braveNewsSearchPlaceholderLabel", IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},  // NOLINT
         { "braveNewsChannelsHeader", IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER},  // NOLINT
-        { "braveNewsShowMoreButton", IDS_BRAVE_NEWS_SHOW_MORE_BUTTON},
+        { "braveNewsViewAllButton", IDS_BRAVE_NEWS_VIEW_ALL_BUTTON},
         { "braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
         { "braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
         { "braveNewsFollowButtonFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},  // NOLINT
@@ -225,6 +226,30 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsSearchQueryTooShort", IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT},  // NOLINT
         { "braveNewsSuggestionsTitle", IDS_BRAVE_NEWS_SUGGESTIONS_TITLE},
         { "braveNewsSuggestionsSubtitle", IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE},
+        // Brave News Channels
+        { "braveNewsChannel-Brave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},
+        { "braveNewsChannel-Business", IDS_BRAVE_NEWS_CHANNEL_BUSINESS},
+        { "braveNewsChannel-Cars", IDS_BRAVE_NEWS_CHANNEL_CARS},
+        { "braveNewsChannel-Crypto", IDS_BRAVE_NEWS_CHANNEL_CRYPTO},
+        { "braveNewsChannel-Culture", IDS_BRAVE_NEWS_CHANNEL_CULTURE},
+        { "braveNewsChannel-Entertainment", IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT}, // NOLINT
+        { "braveNewsChannel-Fashion", IDS_BRAVE_NEWS_CHANNEL_FASHION},
+        { "braveNewsChannel-Food", IDS_BRAVE_NEWS_CHANNEL_FOOD},
+        { "braveNewsChannel-Fun", IDS_BRAVE_NEWS_CHANNEL_FUN},
+        { "braveNewsChannel-Gaming", IDS_BRAVE_NEWS_CHANNEL_GAMING},
+        { "braveNewsChannel-Health", IDS_BRAVE_NEWS_CHANNEL_HEALTH},
+        { "braveNewsChannel-Home", IDS_BRAVE_NEWS_CHANNEL_HOME},
+        { "braveNewsChannel-Politics", IDS_BRAVE_NEWS_CHANNEL_POLITICS},
+        { "braveNewsChannel-Science", IDS_BRAVE_NEWS_CHANNEL_SCIENCE},
+        { "braveNewsChannel-Sports", IDS_BRAVE_NEWS_CHANNEL_SPORTS},
+        { "braveNewsChannel-Travel", IDS_BRAVE_NEWS_CHANNEL_TRAVEL},
+        { "braveNewsChannel-Technology", IDS_BRAVE_NEWS_CHANNEL_TECHNOLOGY},
+        { "braveNewsChannel-Top News", IDS_BRAVE_NEWS_CHANNEL_TOP_NEWS},
+        { "braveNewsChannel-Top Sources", IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES},
+        { "braveNewsChannel-Weather", IDS_BRAVE_NEWS_CHANNEL_WEATHER},
+        { "braveNewsChannel-World News", IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS},
+        { "braveNewsPopularTitle", IDS_BRAVE_NEWS_POPULAR_TITLE},
+
 
         { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },

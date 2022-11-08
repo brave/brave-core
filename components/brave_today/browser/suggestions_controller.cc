@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "base/barrier_callback.h"
 #include "base/bind.h"
@@ -22,7 +23,6 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/urls.h"
@@ -122,9 +122,15 @@ SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
     const auto& similarity_list = it.second.GetList();
     for (const auto& similarity : similarity_list) {
       const auto& dict = similarity.GetDict();
+      auto* source = dict.FindString("source");
+      if (!source) {
+        VLOG(1) << "Found similarity with no publisher id: "
+                << dict.DebugString();
+        continue;
+      }
+      auto score = dict.FindDouble("score").value_or(0);
       similarities[for_publisher].push_back(
-          {.publisher_id = *dict.FindString("source"),
-           .score = dict.FindDouble("score").value()});
+          {.publisher_id = *source, .score = score});
     }
   }
 
@@ -134,12 +140,10 @@ SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
 }  // namespace
 SuggestionsController::SuggestionsController(
     PrefService* prefs,
-    ChannelsController* channels_controller,
     PublishersController* publishers_controller,
     api_request_helper::APIRequestHelper* api_request_helper,
     history::HistoryService* history_service)
     : prefs_(prefs),
-      channels_controller_(channels_controller),
       publishers_controller_(publishers_controller),
       api_request_helper_(api_request_helper),
       history_service_(history_service),
@@ -160,10 +164,18 @@ void SuggestionsController::GetSuggestedPublisherIds(
               options.SetRecentDayRange(14);
               controller->history_service_->QueryHistory(
                   std::u16string(), options,
-                  base::BindOnce(&SuggestionsController::
-                                     GetSuggestedPublisherIdsWithHistory,
-                                 base::Unretained(controller),
-                                 std::move(publishers), std::move(callback)),
+                  base::BindOnce(
+                      [](SuggestionsController* controller,
+                         Publishers publishers,
+                         GetSuggestedPublisherIdsCallback callback,
+                         history::QueryResults results) {
+                        auto result =
+                            controller->GetSuggestedPublisherIdsWithHistory(
+                                publishers, results);
+                        std::move(callback).Run(std::move(result));
+                      },
+                      base::Unretained(controller), std::move(publishers),
+                      std::move(callback)),
                   &controller->task_tracker_);
             },
             base::Unretained(controller), std::move(callback)));
@@ -171,10 +183,10 @@ void SuggestionsController::GetSuggestedPublisherIds(
       base::Unretained(this), std::move(callback)));
 }
 
-void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
-    Publishers publishers,
-    GetSuggestedPublisherIdsCallback callback,
-    history::QueryResults history) {
+std::vector<std::string>
+SuggestionsController::GetSuggestedPublisherIdsWithHistory(
+    const Publishers& publishers,
+    const history::QueryResults& history) {
   const auto visit_weightings = GetVisitWeightings(publishers, history);
   base::flat_map<std::string, double> scores;
 
@@ -192,15 +204,15 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const bool explicitly_enabled =
         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
     const auto visited_score = GetVisitWeighting(publisher, visit_weightings);
-    const bool visited = visited_score != 0;
 
-    if (!explicitly_enabled) {
+    if (!explicitly_enabled &&
+        publisher->user_enabled_status != mojom::UserEnabled::DISABLED) {
       scores[publisher_id] += visited_score;
     }
 
     // Only consider similar sources if we have visited this one or it has been
     // explicitly enabled.
-    if (!visited && !explicitly_enabled) {
+    if (visited_score == 0 && !explicitly_enabled) {
       continue;
     }
 
@@ -219,17 +231,17 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
         continue;
       }
 
-      // TODO(fallaciousreasoning): Should |visit_score| be multiplied by the
-      // visit weight for the original source?
-      auto visit_score = visited
-                             ? ProjectToRange(info.score, kSimilarVisitedMin,
-                                              kSimilarVisitedMax)
-                             : 0;
-      auto subscribed_score =
+      // Weight this visited score, based on the visited score of the source
+      // this one is similar to.
+      auto similar_visited_score =
+          visited_score *
+          ProjectToRange(info.score, kSimilarVisitedMin, kSimilarVisitedMax);
+      auto similar_subscribed_score =
           explicitly_enabled ? ProjectToRange(info.score, kSimilarSubscribedMin,
                                               kSimilarSubscribedMax)
                              : 0;
-      scores[info.publisher_id] += visit_score + subscribed_score;
+      scores[info.publisher_id] +=
+          similar_visited_score + similar_subscribed_score;
     }
   }
 
@@ -247,7 +259,7 @@ void SuggestionsController::GetSuggestedPublisherIdsWithHistory(
               return scores.at(a_id) > scores.at(b_id);
             });
 
-  std::move(callback).Run(std::move(result));
+  return result;
 }
 
 void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {

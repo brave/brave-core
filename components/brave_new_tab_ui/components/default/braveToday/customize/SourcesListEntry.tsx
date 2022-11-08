@@ -7,8 +7,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '../../../Flex'
-import { useGetUnpaddedImage } from '../cards/CardImage'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
+import { useLazyUnpaddedImageUrl } from '../useUnpaddedImageUrl'
+import { getTranslatedChannelName } from './ChannelCard'
 
 interface Props {
   publisherId: string
@@ -61,9 +62,13 @@ const ChannelNameText = styled.span`
 `
 
 function FavIcon (props: { src?: string }) {
-  const url = useGetUnpaddedImage(props.src, undefined, /* useCache= */true)
+  const { url, setElementRef } = useLazyUnpaddedImageUrl(props.src, {
+    rootElement: document.getElementById('brave-news-configure'),
+    rootMargin: '0px 0px 100px 0px',
+    useCache: true
+  })
   const [error, setError] = React.useState(false)
-  return <FavIconContainer>
+  return <FavIconContainer ref={setElementRef}>
     {url && !error && <img src={url} onError={() => setError(true)} />}
   </FavIconContainer>
 }
@@ -83,11 +88,11 @@ export function FeedListEntry (props: Props) {
   </Container>
 }
 
-export function ChannelListEntry (props: { channelId: string }) {
-  const { setSubscribed } = useChannelSubscribed(props.channelId)
+export function ChannelListEntry (props: { channelName: string }) {
+  const { setSubscribed } = useChannelSubscribed(props.channelName)
 
   return <Container direction="row" justify='space-between' align='center'>
-    <ChannelNameText>{props.channelId}</ChannelNameText>
+    <ChannelNameText>{getTranslatedChannelName(props.channelName)}</ChannelNameText>
     <ToggleButton onClick={() => setSubscribed(false)}>
       {getLocale('braveNewsFollowButtonFollowing')}
     </ToggleButton>

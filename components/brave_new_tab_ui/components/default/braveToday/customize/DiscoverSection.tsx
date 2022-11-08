@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import Flex from '../../../Flex'
 
 interface Props {
-  name: string
+  name?: string
   subtitle?: React.ReactNode
   children?: React.ReactNode
 }
@@ -36,9 +36,9 @@ const ItemsContainer = styled.div`
 
 export default function DiscoverSection (props: Props) {
   return <Container direction='column'>
-    <Flex direction='row' gap={8} align='center'>
+    {props.name && <Flex direction='row' gap={8} align='center'>
       <Header>{props.name}</Header>
-    </Flex>
+    </Flex>}
     {props.subtitle && <Subtitle>
       {props.subtitle}
     </Subtitle>}
