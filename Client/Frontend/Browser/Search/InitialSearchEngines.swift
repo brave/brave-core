@@ -81,7 +81,7 @@ class InitialSearchEngines {
     engines.filter { !$0.id.excludedFromOnboarding(for: locale) }
   }
 
-  static let braveSearchDefaultRegions = ["US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX"]
+  static let braveSearchDefaultRegions = ["US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR"]
   static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
   static let ecosiaDefaultRegions = [
     "AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
