@@ -13,7 +13,7 @@ import os
 
 from os.path import join, exists, relpath
 from tempfile import TemporaryDirectory
-from zipfile import ZipFile
+from zipfile import ZipFile, ZIP_DEFLATED
 
 def main():
   chrome_policy_zip, dest_zip = _get_args()
@@ -41,7 +41,7 @@ def _pack_policy_templates(chrome_policy_zip, dest_zip):
     assert exists(join(tmp_dir, 'windows/admx/chrome.admx'))
     assert exists(join(tmp_dir, 'windows/admx/en-US/chrome.adml'))
 
-    with ZipFile(dest_zip, 'w') as dest_zipfile:
+    with ZipFile(dest_zip, 'w', ZIP_DEFLATED) as dest_zipfile:
       for dirpath, _, filenames in os.walk(tmp_dir):
         for filename in filenames:
           filepath = join(dirpath, filename)
