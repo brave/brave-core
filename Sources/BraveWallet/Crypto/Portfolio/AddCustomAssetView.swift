@@ -9,23 +9,61 @@ import Strings
 import BraveUI
 
 struct AddCustomAssetView: View {
+  @ObservedObject var networkStore: NetworkStore
+  var keyringStore: KeyringStore
   @ObservedObject var userAssetStore: UserAssetsStore
   @Environment(\.presentationMode) @Binding private var presentationMode
+  
+  @ObservedObject private var networkSelectionStore: NetworkSelectionStore
 
   @State private var nameInput = ""
   @State private var addressInput = ""
   @State private var symbolInput = ""
   @State private var decimalsInput = ""
+  @State private var logo = ""
+  @State private var coingeckoId = ""
   @State private var showError = false
+  @State private var showAdvanced = false
+  @State private var isPresentingNetworkSelection = false
+  
+  init(
+    networkStore: NetworkStore,
+    keyringStore: KeyringStore,
+    userAssetStore: UserAssetsStore
+  ) {
+    self.networkStore = networkStore
+    self.keyringStore = keyringStore
+    self.userAssetStore = userAssetStore
+    self.networkSelectionStore = .init(mode: .formSelection, networkStore: networkStore)
+  }
 
   var body: some View {
     NavigationView {
       Form {
         Section(
+          header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
+        ) {
+          HStack {
+            Button(action: {
+              isPresentingNetworkSelection = true
+            }) {
+              Text(networkSelectionStore.networkSelectionInForm?.chainName ?? Strings.Wallet.customTokenNetworkButtonTitle)
+                .foregroundColor(networkSelectionStore.networkSelectionInForm == nil ? .gray.opacity(0.6) : Color(.braveLabel))
+            }
+            .disabled(userAssetStore.isSearchingToken)
+            Spacer()
+            Image(systemName: "chevron.down.circle")
+              .foregroundColor(Color(.braveBlurple))
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenName))
         ) {
           HStack {
             TextField(Strings.Wallet.enterTokenName, text: $nameInput)
+              .autocapitalization(.none)
+              .autocorrectionDisabled()
               .disabled(userAssetStore.isSearchingToken)
             if userAssetStore.isSearchingToken && nameInput.isEmpty {
               ProgressView()
@@ -54,6 +92,8 @@ struct AddCustomAssetView: View {
                 }
               }
             }
+            .autocapitalization(.none)
+            .autocorrectionDisabled()
             .disabled(userAssetStore.isSearchingToken)
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
@@ -62,6 +102,8 @@ struct AddCustomAssetView: View {
         ) {
           HStack {
             TextField(Strings.Wallet.enterTokenSymbol, text: $symbolInput)
+              .autocapitalization(.none)
+              .autocorrectionDisabled()
               .disabled(userAssetStore.isSearchingToken)
             if userAssetStore.isSearchingToken && symbolInput.isEmpty {
               ProgressView()
@@ -81,6 +123,67 @@ struct AddCustomAssetView: View {
             }
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        Section {
+          Button(
+            action: {
+              withAnimation(.easeInOut(duration: 0.25)) {
+                showAdvanced.toggle()
+              }
+            }
+          ) {
+            VStack {
+              HStack {
+                Text(Strings.Wallet.addCustomTokenAdvanced)
+                  .foregroundColor(.gray)
+                Spacer()
+                Image("wallet-dismiss", bundle: .module)
+                  .renderingMode(.template)
+                  .resizable()
+                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .frame(width: 12, height: 6)
+                  .rotationEffect(.degrees(showAdvanced ? 180 : 0))
+                  .animation(.default, value: showAdvanced)
+              }
+              .contentShape(Rectangle())
+              Divider()
+            }
+          }
+          .buttonStyle(.plain)
+          .accessibilityLabel(Strings.Wallet.addCustomTokenAdvanced)
+          .accessibility(addTraits: .isButton)
+          .listRowBackground(Color(UIColor.braveGroupedBackground))
+          .resetListHeaderStyle()
+        }
+        if showAdvanced {
+          Section(
+            header: WalletListHeaderView(title: Text(Strings.Wallet.addCustomTokenIconURL))
+          ) {
+            HStack {
+              TextField(Strings.Wallet.enterTokenIconURL, text: $logo)
+                .autocapitalization(.none)
+                .autocorrectionDisabled()
+                .disabled(userAssetStore.isSearchingToken)
+              if userAssetStore.isSearchingToken && decimalsInput.isEmpty {
+                ProgressView()
+              }
+            }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
+          Section(
+            header: WalletListHeaderView(title: Text(Strings.Wallet.addCustomTokenCoingeckoId))
+          ) {
+            HStack {
+              TextField(Strings.Wallet.enterTokenCoingeckoId, text: $coingeckoId)
+                .autocapitalization(.none)
+                .autocorrectionDisabled()
+                .disabled(userAssetStore.isSearchingToken)
+              if userAssetStore.isSearchingToken && decimalsInput.isEmpty {
+                ProgressView()
+              }
+            }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
         }
       }
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
@@ -112,6 +215,24 @@ struct AddCustomAssetView: View {
           dismissButton: .default(Text(Strings.OKString))
         )
       }
+      .background(
+        Color.clear
+          .sheet(
+            isPresented: $isPresentingNetworkSelection
+          ) {
+            if let networkSelectionStore = networkSelectionStore {
+              NavigationView {
+                NetworkSelectionView(
+                  keyringStore: keyringStore,
+                  networkStore: networkStore,
+                  networkSelectionStore: networkSelectionStore
+                )
+              }
+              .accentColor(Color(.braveOrange))
+              .navigationViewStyle(.stack)
+            }
+          }
+      )
     }
   }
 
@@ -124,7 +245,10 @@ struct AddCustomAssetView: View {
       address: addressInput,
       name: nameInput,
       symbol: symbolInput,
-      decimals: Int(decimalsInput) ?? 18
+      decimals: Int(decimalsInput) ?? Int((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
+      network: networkSelectionStore.networkSelectionInForm ?? networkStore.selectedChain,
+      logo: logo,
+      coingeckoId: coingeckoId
     ) { [self] success in
       if success {
         presentationMode.dismiss()
@@ -139,6 +263,8 @@ struct AddCustomAssetView: View {
 struct AddCustomAssetView_Previews: PreviewProvider {
   static var previews: some View {
     AddCustomAssetView(
+      networkStore: .previewStore,
+      keyringStore: .previewStore,
       userAssetStore: .previewStore
     )
   }

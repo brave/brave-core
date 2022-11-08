@@ -38,6 +38,8 @@ private struct EditTokenView: View {
 }
 
 struct EditUserAssetsView: View {
+  var networkStore: NetworkStore
+  var keyringStore: KeyringStore
   @ObservedObject var userAssetsStore: UserAssetsStore
   var assetsUpdated: () -> Void
 
@@ -146,7 +148,11 @@ struct EditUserAssetsView: View {
         }
       }
       .sheet(isPresented: $isAddingCustomAsset) {
-        AddCustomAssetView(userAssetStore: userAssetsStore)
+        AddCustomAssetView(
+          networkStore: networkStore,
+          keyringStore: keyringStore,
+          userAssetStore: userAssetsStore
+        )
       }
       .alert(isPresented: $isPresentingAssetRemovalError) {
         Alert(
