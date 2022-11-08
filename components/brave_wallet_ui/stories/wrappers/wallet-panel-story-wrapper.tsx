@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 
-import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -28,6 +27,14 @@ import * as Lib from '../../common/async/__mocks__/lib'
 import { mockWalletState } from '../mock-data/mock-wallet-state'
 import { mockSendCryptoState } from '../mock-data/send-crypto-state'
 import { mockPanelState } from '../mock-data/mock-panel-state'
+import { ApiProxyContext } from '../../common/context/api-proxy.context'
+import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
+import { configureStore } from '@reduxjs/toolkit'
+import { walletApi } from '../../common/slices/api.slice'
+import { createPageReducer } from '../../page/reducers/page_reducer'
+import { mockPageState } from '../mock-data/mock-page-state'
+
+const mockedProxy = getMockedAPIProxy()
 
 export interface WalletPanelStoryProps {
   walletStateOverride?: Partial<WalletState>
@@ -41,17 +48,23 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
 }) => {
   // redux
   const store = React.useMemo(() => {
-    return createStore(combineReducers({
-      wallet: createWalletReducer({
-        ...mockWalletState,
-        ...(walletStateOverride || {})
-      }),
-      panel: createPanelReducer({
-        ...mockPanelState,
-        ...(panelStateOverride || {})
-      }),
-      sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-    }))
+    return configureStore({
+      reducer: {
+        wallet: createWalletReducer({
+          ...mockWalletState,
+          ...(walletStateOverride || {})
+        }),
+        panel: createPanelReducer({
+          ...mockPanelState,
+          ...(panelStateOverride || {})
+        }),
+        page: createPageReducer(mockPageState),
+        [walletApi.reducerPath]: walletApi.reducer,
+        sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+      },
+      devTools: true,
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(walletApi.middleware)
+    })
   }, [walletStateOverride, panelStateOverride])
 
   React.useEffect(() => {
@@ -62,9 +75,11 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
   return (
     <MemoryRouter initialEntries={['/']}>
       <Provider store={store}>
-        <LibContext.Provider value={Lib as any}>
-          {children}
-        </LibContext.Provider>
+        <ApiProxyContext.Provider value={mockedProxy}>
+          <LibContext.Provider value={Lib as any}>
+            {children}
+          </LibContext.Provider>
+        </ApiProxyContext.Provider>
       </Provider>
     </MemoryRouter>
   )
