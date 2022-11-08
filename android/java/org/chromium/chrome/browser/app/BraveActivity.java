@@ -1239,7 +1239,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private BraveNotificationWarningDialog.DismissListener closeDialogListener =
             new BraveNotificationWarningDialog.DismissListener() {
                 @Override
-                public void onDisMiss() {
+                public void onDismiss() {
                     checkForNotificationData();
                 }
             };

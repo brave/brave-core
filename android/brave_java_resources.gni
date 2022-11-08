@@ -502,6 +502,7 @@ brave_java_resources = [
   "java/res/drawable/ic_baseline_more_vert_24.xml",
   "java/res/drawable/ic_basic_check.xml",
   "java/res/drawable/ic_bat_logo.xml",
+  "java/res/drawable/ic_bell_icon.xml",
   "java/res/drawable/ic_bg.xml",
   "java/res/drawable/ic_bg_video_playback.xml",
   "java/res/drawable/ic_brave.xml",

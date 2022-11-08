@@ -91,6 +91,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -901,13 +902,22 @@ public class BraveRewardsPanel
                 || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
             // other than android 13 redirect to
             // setting page and for android 13 Last time don't allow selected in permission
-            // dialog, then enable through setting
-            BravePermissionUtils.notificationSettingPage(mAnchorView.getContext());
+            // dialog, then enable through setting, this done through this dialog
+            showNotificationWarningDialog();
         } else {
             // 1st time request permission
             ActivityCompat.requestPermissions(
                     mActivity, new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
         }
+    }
+
+    private void showNotificationWarningDialog() {
+        BraveNotificationWarningDialog notificationWarningDialog =
+                BraveNotificationWarningDialog.newInstance(
+                        BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_PANEL);
+        notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.show(mActivity.getSupportFragmentManager(),
+                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 
     private void showDeclareGeoModal(String[] countries) {

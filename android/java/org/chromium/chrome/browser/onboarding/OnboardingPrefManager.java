@@ -160,7 +160,7 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public boolean isBraveRewardsEnabled() {
+    public boolean isBraveAdsEnabled() {
         return mSharedPreferences.getBoolean(BraveRewardsPreferences.PREF_ADS_SWITCH, false);
     }
 
