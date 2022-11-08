@@ -52,7 +52,9 @@
   return [[BraveHistogramsController alloc] initWithBrowserState:_browserState];
 }
 
-void UmaHistogramExactLinear(NSString* name, int sample, int exclusive_max) {
+void UmaHistogramExactLinear(NSString* name,
+                             NSInteger sample,
+                             NSInteger exclusive_max) {
   base::UmaHistogramExactLinear(base::SysNSStringToUTF8(name), sample,
                                 exclusive_max);
 }
@@ -61,14 +63,14 @@ void UmaHistogramBoolean(NSString* name, bool sample) {
   base::UmaHistogramBoolean(base::SysNSStringToUTF8(name), sample);
 }
 
-void UmaHistogramPercentage(NSString* name, int percent) {
+void UmaHistogramPercentage(NSString* name, NSInteger percent) {
   base::UmaHistogramPercentage(base::SysNSStringToUTF8(name), percent);
 }
 
 void UmaHistogramCustomCounts(NSString* name,
-                              int sample,
-                              int min,
-                              int exclusive_max,
+                              NSInteger sample,
+                              NSInteger min,
+                              NSInteger exclusive_max,
                               size_t buckets) {
   base::UmaHistogramCustomCounts(base::SysNSStringToUTF8(name), sample, min,
                                  exclusive_max, buckets);
@@ -98,15 +100,15 @@ void UmaHistogramLongTimes(NSString* name, NSTimeInterval sample) {
                               base::Seconds(sample));
 }
 
-void UmaHistogramMemoryKB(NSString* name, int sample) {
+void UmaHistogramMemoryKB(NSString* name, NSInteger sample) {
   base::UmaHistogramMemoryKB(base::SysNSStringToUTF8(name), sample);
 }
 
-void UmaHistogramMemoryMB(NSString* name, int sample) {
+void UmaHistogramMemoryMB(NSString* name, NSInteger sample) {
   base::UmaHistogramMemoryMB(base::SysNSStringToUTF8(name), sample);
 }
 
-void UmaHistogramMemoryLargeMB(NSString* name, int sample) {
+void UmaHistogramMemoryLargeMB(NSString* name, NSInteger sample) {
   base::UmaHistogramMemoryLargeMB(base::SysNSStringToUTF8(name), sample);
 }
 

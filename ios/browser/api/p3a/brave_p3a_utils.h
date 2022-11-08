@@ -28,18 +28,18 @@ OBJC_EXPORT
 /// |exclusive_max| should be 101 or less. If you need to capture a larger
 /// range, we recommend the use of the COUNT histograms below.
 OBJC_EXPORT void UmaHistogramExactLinear(NSString* name,
-                                         int sample,
-                                         int exclusiveMax);
+                                         NSInteger sample,
+                                         NSInteger exclusiveMax);
 /// For adding boolean sample to histogram.
 OBJC_EXPORT void UmaHistogramBoolean(NSString* name, bool sample);
 /// For adding histogram sample denoting a percentage.
 /// Percents are integers between 1 and 100, inclusively.
-OBJC_EXPORT void UmaHistogramPercentage(NSString* name, int percent);
+OBJC_EXPORT void UmaHistogramPercentage(NSString* name, NSInteger percent);
 /// For adding counts histogram.
 OBJC_EXPORT void UmaHistogramCustomCounts(NSString* name,
-                                          int sample,
-                                          int min,
-                                          int exclusiveMax,
+                                          NSInteger sample,
+                                          NSInteger min,
+                                          NSInteger exclusiveMax,
                                           size_t buckets);
 /// For histograms storing times. It uses milliseconds granularity.
 OBJC_EXPORT void UmaHistogramCustomTimes(NSString* name,
@@ -55,11 +55,11 @@ OBJC_EXPORT void UmaHistogramMediumTimes(NSString* name, NSTimeInterval sample);
 OBJC_EXPORT void UmaHistogramLongTimes(NSString* name, NSTimeInterval sample);
 /// For recording memory related histograms.
 /// Used to measure common KB-granularity memory stats. Range is up to 500M.
-OBJC_EXPORT void UmaHistogramMemoryKB(NSString* name, int sample);
+OBJC_EXPORT void UmaHistogramMemoryKB(NSString* name, NSInteger sample);
 /// Used to measure common MB-granularity memory stats. Range is up to ~1G.
-OBJC_EXPORT void UmaHistogramMemoryMB(NSString* name, int sample);
+OBJC_EXPORT void UmaHistogramMemoryMB(NSString* name, NSInteger sample);
 /// Used to measure common MB-granularity memory stats. Range is up to ~64G.
-OBJC_EXPORT void UmaHistogramMemoryLargeMB(NSString* name, int sample);
+OBJC_EXPORT void UmaHistogramMemoryLargeMB(NSString* name, NSInteger sample);
 
 NS_ASSUME_NONNULL_END
 
