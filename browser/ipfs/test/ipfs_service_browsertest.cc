@@ -1189,7 +1189,7 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(
     IpfsServiceBrowserTest,
-    TopLevelAutoRedirectsOn_DoNotRedirectFromGatewayLikeUrl_NoXIpfsPathHeader) {
+    TopLevelAutoRedirectsOn_RedirectFromGatewayLikeUrl_NoXIpfsPathHeader) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
@@ -1200,15 +1200,23 @@ IN_PROC_BROWSER_TEST_F(
   GURL gateway = GetURL("b.com", "/");
   SetIPFSDefaultGatewayForTest(gateway);
 
-  auto tab_url =
-      GetURL("a.com",
-             "/ipfs/"
-             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq");
+  auto tab_url = GetURL("a.com",
+                        "/ipfs/"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq/simple.html?a=b");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(contents->GetURL(), tab_url);
+  base::RunLoop run_loop;
+  while (
+      contents->GetURL() !=
+      GetURL(
+          "b.com",
+          "/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/"
+          "simple.html?a=b")) {
+    run_loop.RunUntilIdle();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(

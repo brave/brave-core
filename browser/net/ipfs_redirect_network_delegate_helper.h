@@ -18,13 +18,6 @@ int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
 
-int OnHeadersReceived_IPFSRedirectWork(
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-    GURL* allowed_unsafe_redirect_url,
-    const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
-
 }  // namespace ipfs
 
 #endif  // BRAVE_BROWSER_NET_IPFS_REDIRECT_NETWORK_DELEGATE_HELPER_H_
