@@ -207,6 +207,12 @@ void MdTextButton::SetLoading(bool loading) {
   UpdateColors();
 }
 
+void MdTextButton::UpdateBackgroundColor() {
+  if (kind_ != kOld)
+    return;
+  MdTextButtonBase::UpdateBackgroundColor();
+}
+
 void MdTextButton::UpdateOldColorsForBrave() {
   if (GetProminent()) {
     return;
