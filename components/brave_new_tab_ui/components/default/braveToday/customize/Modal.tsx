@@ -11,6 +11,7 @@ import { useBraveNews } from './Context'
 const Configure = React.lazy(() => import('./Configure'))
 
 const Dialog = styled.dialog`
+  font-family: ${p => p.theme.fontFamily.body};
   border-radius: 8px;
   border: none;
   width: min(100vw, 1049px);
