@@ -11,13 +11,12 @@ import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
-import store from './store'
+import store, { walletPanelApiProxy } from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
 import { LibContext } from '../common/context/lib.context'
 import * as Lib from '../common/async/lib'
 import { ApiProxyContext } from '../common/context/api-proxy.context'
-import getAPIProxy from '../common/async/bridge'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -32,7 +31,7 @@ function App () {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <ApiProxyContext.Provider value={getAPIProxy()}>
+          <ApiProxyContext.Provider value={walletPanelApiProxy}>
             <LibContext.Provider value={Lib}>
               <Container />
             </LibContext.Provider>
