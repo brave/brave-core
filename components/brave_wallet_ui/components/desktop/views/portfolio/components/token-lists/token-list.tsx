@@ -111,7 +111,7 @@ export const TokenLists = ({
       let fungible = []
       let nonFungible = []
       for (const token of filteredAssetList) {
-        if (token.asset.isErc721) {
+        if (token.asset.isErc721 || token.asset.isNft) {
           nonFungible.push(token)
         } else {
           fungible.push(token)
