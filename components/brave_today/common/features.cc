@@ -12,8 +12,16 @@ namespace features {
 
 const base::Feature kBraveNewsFeature{"BraveNews",
                                       base::FEATURE_ENABLED_BY_DEFAULT};
-const base::Feature kBraveNewsV2Feature{"BraveNewsV2",
-                                        base::FEATURE_DISABLED_BY_DEFAULT};
+
+const base::Feature kBraveNewsV2Feature {
+  "BraveNewsV2",
+#if BUILDFLAG(IS_ANDROID)
+      base::FEATURE_DISABLED_BY_DEFAULT
+#else
+      base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+};
+
 const base::Feature kBraveNewsCardPeekFeature{"BraveNewsCardPeek",
                                               base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveNewsSubscribeButtonFeature{

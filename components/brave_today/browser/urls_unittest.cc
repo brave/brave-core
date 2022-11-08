@@ -15,12 +15,20 @@
 
 class BraveNewsUrlsTest : public testing::Test {};
 
-TEST_F(BraveNewsUrlsTest, BraveNewsV2IsDisabled) {
+TEST_F(BraveNewsUrlsTest, BraveNewsV2FeatureFlag) {
+#if BUILDFLAG(IS_ANDROID)
   EXPECT_FALSE(
       base::FeatureList::IsEnabled(brave_today::features::kBraveNewsV2Feature));
+#else
+  EXPECT_TRUE(
+      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsV2Feature));
+#endif
 }
 
-TEST_F(BraveNewsUrlsTest, BraveNewsUsesV1ByDefault) {
+TEST_F(BraveNewsUrlsTest, BraveNewsV1UsesLocalUrl) {
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(brave_today::features::kBraveNewsV2Feature);
+
   {
     brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
     std::string region = brave_today::GetRegionUrlPart();
@@ -44,7 +52,7 @@ TEST_F(BraveNewsUrlsTest, BraveNewsUsesV1ByDefault) {
   }
 }
 
-TEST_F(BraveNewsUrlsTest, BraveNewsV2FlagUsesGlobalFeeds) {
+TEST_F(BraveNewsUrlsTest, BraveNewsUsesGlobalFeedsWithV2) {
   base::test::ScopedFeatureList features;
   features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
 
