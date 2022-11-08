@@ -726,6 +726,12 @@
   <message name="IDS_SETTINGS_ENABLE_TOR_DESC" desc="Text fragment for enabling tor component">
     Tor hides your IP address from the sites you visit.
   </message>
+  <message name="IDS_SETTINGS_TOR_SNOWFLAKE_EXTENSION_TITLE" desc="">
+    Volunteer to help others connect to the Tor network
+  </message>
+  <message name="IDS_SETTINGS_TOR_SNOWFLAKE_EXTENSION_DESC" desc="">
+    Enable the Snowflake extension to allow users in censored countries to connect to the Tor network via your network connection.
+  </message>
   <message name="IDS_SETTINGS_TOR_USE_BRIDGES_TITLE" desc="">
     Use Bridges
   </message>

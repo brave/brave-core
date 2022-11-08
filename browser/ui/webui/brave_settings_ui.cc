@@ -37,6 +37,7 @@
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
@@ -52,6 +53,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/webui/settings/brave_tor_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -70,6 +75,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
+#endif
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  web_ui->AddMessageHandler(
+      std::make_unique<BraveTorSnowflakeExtensionHandler>());
 #endif
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
@@ -123,6 +132,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("shouldExposeElementsForTesting",
                           ShouldExposeElementsForTesting());
+
+  html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
 }
 
 // static

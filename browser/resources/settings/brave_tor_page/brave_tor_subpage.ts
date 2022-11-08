@@ -13,6 +13,7 @@ import { PrefsMixin } from '../prefs/prefs_mixin.js'
 import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'
 import './brave_tor_bridges_dialog.js'
 import {getTemplate} from './brave_tor_subpage.html.js'
+import { loadTimeData } from '../i18n_setup.js'
 
 const SettingBraveTorPageElementBase = I18nMixin(RouteObserverMixin(WebUIListenerMixin(PrefsMixin(PolymerElement))))
 
@@ -115,6 +116,22 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         },
       },
 
+      torSnowflakeExtensionEnabledPref_: {
+        type: Object,
+        value() {
+          return {
+            key: '',
+            type: chrome.settingsPrivate.PrefType.BOOLEAN,
+            value: false,
+          }
+        },
+      },
+
+      torSnowflakeExtensionAllowed_: {
+        type: Boolean,
+        value: false,
+      },
+
       showRequestBridgesDialog_: Boolean,
 
       isConfigChanged_: {
@@ -136,6 +153,12 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   ready() {
     super.ready()
+
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing[`torSubpage`] = this.shadowRoot
+    }
+    
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
       this.isUsingBridgesPref_ = {
@@ -160,6 +183,18 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     this.browserProxy_.isTorManaged().then(managed => {
       this.disableTorOption_ = managed
     })
+
+    if (loadTimeData.getBoolean('enable_extensions')) {
+      this.browserProxy_.isSnowflakeExtensionAllowed().then(allowed => {
+        this.torSnowflakeExtensionAllowed_ = allowed
+      })
+      this.addWebUIListener('tor-snowflake-extension-enabled', enabled => {
+        this.setTorSnowflakeExtensionEnabledPref_(enabled)
+      })
+      this.browserProxy_.isSnowflakeExtensionEnabled().then(enabled => {
+        this.setTorSnowflakeExtensionEnabledPref_(enabled)
+      })
+    }
   }
 
   onSlotClick_(e) {
@@ -319,6 +354,24 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     if (event.currentTarget.bridges_) {
       this.requestedBridges_ = event.currentTarget.bridges_.join('\n')
     }
+  }
+
+  setTorSnowflakeExtensionEnabledPref_(enabled: boolean) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    }
+    this.torSnowflakeExtensionEnabledPref_ = pref
+  }
+
+  onTorSnowflakeExtensionChange_(e: Event) {
+    e.stopPropagation()
+    this.browserProxy_.enableSnowflakeExtension(e.target.checked).
+      catch((reason: String) => {
+        console.log(reason)
+        this.setTorSnowflakeExtensionEnabledPref_(false)
+      })
   }
 
   currentRouteChanged() {
