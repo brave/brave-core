@@ -102,6 +102,7 @@ function AdvancedControlsContent () {
               value={siteSettings?.adBlockMode}
               ariaLabel={getLocale('braveShieldsTrackersAndAds')}
               onChange={handleAdBlockModeChange}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
               {adBlockModeOptions.map(entry => {
                 return (
@@ -129,6 +130,7 @@ function AdvancedControlsContent () {
               isOn={siteSettings?.isHttpsEverywhereEnabled}
               size='sm'
               accessibleLabel='Enable HTTPS'
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </label>
           <S.CountButton
@@ -148,6 +150,7 @@ function AdvancedControlsContent () {
               isOn={siteSettings?.isNoscriptEnabled}
               size='sm'
               accessibleLabel={getLocale('braveShieldsScriptsBlockedEnable')}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </label>
           <S.CountButton
@@ -165,6 +168,7 @@ function AdvancedControlsContent () {
               value={siteSettings?.fingerprintMode}
               ariaLabel={getLocale('braveShieldsFingerprintingBlocked')}
               onChange={handleFingerprintModeChange}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
             {fingerprintModeOptions.map(entry => {
                 return (
@@ -180,6 +184,7 @@ function AdvancedControlsContent () {
               value={siteSettings?.cookieBlockMode}
               ariaLabel={getLocale('braveShieldsCookiesBlockAll')}
               onChange={handleCookieBlockModeChange}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
               {cookieBlockModeOptions.map(entry => {
                 return (

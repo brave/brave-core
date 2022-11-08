@@ -5,6 +5,7 @@
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -32,6 +33,10 @@ const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
     {policy::key::kBraveWalletDisabled, brave_wallet::prefs::kDisabledByPolicy,
      base::Value::Type::BOOLEAN},
+    {policy::key::kBraveShieldsDisabledForUrls,
+     kManagedBraveShieldsDisabledForUrls, base::Value::Type::LIST},
+    {policy::key::kBraveShieldsEnabledForUrls,
+     kManagedBraveShieldsEnabledForUrls, base::Value::Type::LIST},
 #endif
 #if BUILDFLAG(ENABLE_TOR)
     {policy::key::kTorDisabled, tor::prefs::kTorDisabled,

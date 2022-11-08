@@ -54,4 +54,5 @@ bool IsMorePermissive_BraveImpl(ContentSettingsType content_type,
 
 #if !BUILDFLAG(IS_IOS)
 #undef PrefProvider
+#undef PolicyProvider
 #endif

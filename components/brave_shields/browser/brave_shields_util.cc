@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/debounce/common/features.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -570,6 +571,18 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 
   return fp_setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                              : ControlType::BLOCK;
+}
+
+bool IsBraveShieldsManaged(PrefService* prefs,
+                           HostContentSettingsMap* map,
+                           GURL url) {
+  DCHECK(prefs);
+  DCHECK(map);
+  content_settings::SettingInfo info;
+  map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
+  return (prefs->IsManagedPreference(kManagedBraveShieldsDisabledForUrls) ||
+          prefs->IsManagedPreference(kManagedBraveShieldsEnabledForUrls)) &&
+         info.source == content_settings::SettingSource::SETTING_SOURCE_POLICY;
 }
 
 void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
