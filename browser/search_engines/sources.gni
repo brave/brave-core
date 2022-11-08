@@ -24,11 +24,14 @@ brave_browser_search_engines_deps = [
 if (is_android) {
   brave_browser_search_engines_sources += [
     "//brave/browser/search_engines/brave_search_engine_pref_helper_android.cc",
+    "//brave/browser/search_engines/brave_template_url_service_factory_android.cc",
   ]
 
   brave_browser_search_engines_deps += [
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
     "//brave/components/brave_search/browser",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
     "//components/prefs",
   ]
 } else {

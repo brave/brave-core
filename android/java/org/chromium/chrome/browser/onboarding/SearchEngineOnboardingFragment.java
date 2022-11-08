@@ -29,7 +29,8 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchEngineEnum;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -45,10 +46,17 @@ public class SearchEngineOnboardingFragment extends Fragment {
 
     private Button btnSave;
 
-    private TemplateUrl selectedSearchEngine;
+    private Profile mProfile;
+    private TemplateUrl mSelectedSearchEngine;
 
     public SearchEngineOnboardingFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mProfile = Profile.getLastUsedRegularProfile();
     }
 
     @Override
@@ -67,10 +75,12 @@ public class SearchEngineOnboardingFragment extends Fragment {
     }
 
     private void refreshData() {
-        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.get();
+        TemplateUrlService templateUrlService =
+                BraveTemplateUrlServiceFactory.getForProfile(mProfile);
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
-            BraveSearchEngineUtils.getTemplateUrlByShortName(BraveSearchEngineUtils.getDSEShortName(false));
+                BraveSearchEngineUtils.getTemplateUrlByShortName(
+                        mProfile, BraveSearchEngineUtils.getDSEShortName(mProfile, false));
 
         Iterator<TemplateUrl> iterator = templateUrls.iterator();
         Set<String> templateUrlSet = new HashSet<String>();
@@ -153,12 +163,14 @@ public class SearchEngineOnboardingFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedSearchEngine == null) {
-                    selectedSearchEngine = BraveSearchEngineUtils.getTemplateUrlByShortName(BraveSearchEngineUtils.getDSEShortName(false));
+                if (mSelectedSearchEngine == null) {
+                    mSelectedSearchEngine = BraveSearchEngineUtils.getTemplateUrlByShortName(
+                            mProfile, BraveSearchEngineUtils.getDSEShortName(mProfile, false));
                 }
-                if (selectedSearchEngine != null) {
-                    BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, false);
-                    BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, true);
+                if (mSelectedSearchEngine != null) {
+                    BraveSearchEngineUtils.setDSEPrefs(mSelectedSearchEngine, mProfile);
+                    BraveSearchEngineUtils.setDSEPrefs(mSelectedSearchEngine,
+                            mProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
                 }
                 getActivity().finish();
             }
@@ -166,6 +178,6 @@ public class SearchEngineOnboardingFragment extends Fragment {
     }
 
     private void searchEngineSelected(int position, List<TemplateUrl> templateUrls) {
-        selectedSearchEngine = templateUrls.get(position);
+        mSelectedSearchEngine = templateUrls.get(position);
     }
 }

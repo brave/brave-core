@@ -31,7 +31,11 @@ public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObs
 
     @Override
     public void onTabModelSelected(TabModel newModel, TabModel oldModel) {
-        BraveSearchEngineUtils.updateActiveDSE(mTabModelSelector.isIncognitoSelected());
+        if (newModel.getProfile().isOffTheRecord()) {
+            BraveSearchEngineUtils.initializePrivateBraveSearchEngineStates(newModel.getProfile());
+        } else {
+            BraveSearchEngineUtils.updateActiveDSE(newModel.getProfile());
+        }
     }
 
     @Override

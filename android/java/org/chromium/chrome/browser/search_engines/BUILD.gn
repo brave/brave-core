@@ -7,18 +7,20 @@ import("//build/config/android/rules.gni")
 
 android_library("java") {
   sources = [
-    "BraveBaseSearchEngineAdapter.java",
-    "BravePrivateSearchEnginePreference.java",
-    "BraveSearchEngineAdapter.java",
-    "BraveSearchEnginePrefHelper.java",
-    "BraveSearchEnginePreference.java",
-    "BraveStandardSearchEnginePreference.java",
+    "BraveTemplateUrlServiceFactory.java",
+    "settings/BraveBaseSearchEngineAdapter.java",
+    "settings/BravePrivateSearchEnginePreference.java",
+    "settings/BraveSearchEngineAdapter.java",
+    "settings/BraveSearchEnginePrefHelper.java",
+    "settings/BraveSearchEnginePreference.java",
+    "settings/BraveStandardSearchEnginePreference.java",
   ]
   deps = [
     ":java_resources",
     "//base:base_java",
     "//base:jni_java",
     "//build/android:build_java",
+    "//chrome/browser/profiles/android:java",
     "//chrome/browser/search_engines/android:java",
     "//components/search_engines/android:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
@@ -29,7 +31,10 @@ android_library("java") {
 }
 
 generate_jni("jni_headers") {
-  sources = [ "BraveSearchEnginePrefHelper.java" ]
+  sources = [
+    "BraveTemplateUrlServiceFactory.java",
+    "settings/BraveSearchEnginePrefHelper.java",
+  ]
 }
 
 android_resources("java_resources") {

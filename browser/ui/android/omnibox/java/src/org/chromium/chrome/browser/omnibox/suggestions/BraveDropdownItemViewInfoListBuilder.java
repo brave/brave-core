@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
@@ -99,7 +100,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                 && mUrlBarEditingTextProvider.getTextWithoutAutocomplete().length() > 0
                 && activeTab != null && !activeTab.isIncognito()
                 && mBraveSearchEngineDefaultRegions.contains(Locale.getDefault().getCountry())
-                && !BraveSearchEngineAdapter.getDSEShortName(false).equals("Brave")
+                && !BraveSearchEngineAdapter
+                            .getDSEShortName(
+                                    Profile.fromWebContents(activeTab.getWebContents()), false)
+                            .equals("Brave")
                 && !OmniboxPrefManager.getInstance().isBraveSearchPromoBannerDismissed()
                 && !OmniboxPrefManager.getInstance()
                             .isBraveSearchPromoBannerDismissedCurrentSession()) {
