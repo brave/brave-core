@@ -37,3 +37,7 @@
     *** setContentSettingException(...);
     *** setContentSetting(...);
 }
+
+-keep class org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory {
+    *** get(...);
+}
