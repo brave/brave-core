@@ -1237,7 +1237,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private BraveNotificationWarningDialog.DismissListener closeDialogListener =
             new BraveNotificationWarningDialog.DismissListener() {
                 @Override
-                public void onDisMiss() {
+                public void onDismiss() {
                     checkForNotificationData();
                 }
             };
@@ -1618,11 +1618,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 openNewOrSelectExistingTab(openUrl);
             }
         }
-<<<<<<< HEAD
-        checkForNotificationData();
-=======
         checkAndshowNotificationWarningDialog();
->>>>>>> show notification permission dialog when geo button continue clicked
     }
 
     @Override

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.BuildInfo;
 import org.chromium.base.Log;
@@ -41,6 +42,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
 
     public static final int FROM_LAUNCHED_BRAVE_SETTINGS = 1;
     public static final int FROM_LAUNCHED_BRAVE_ACTIVITY = 2;
+    public static final int FROM_LAUNCHED_BRAVE_PANEL = 3;
     private static final String LAUNCHED_FROM = "launched_from";
 
     private TextView mTitleTextView;
@@ -49,7 +51,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     private int mLaunchedFrom;
 
     public interface DismissListener {
-        void onDisMiss();
+        void onDismiss();
     }
     private DismissListener mListener;
     public void setDismissListener(DismissListener listener) {
@@ -60,7 +62,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (mListener != null && mLaunchedFrom == FROM_LAUNCHED_BRAVE_ACTIVITY)
-            mListener.onDisMiss();
+            mListener.onDismiss();
     }
 
     public static BraveNotificationWarningDialog newInstance(int launchedFrom) {
@@ -78,7 +80,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         if (!BravePermissionUtils.hasPermission(
                     context, PermissionConstants.NOTIFICATION_PERMISSION)) {
             return OnboardingPrefManager.getInstance().isBraveStatsEnabled()
-                    || OnboardingPrefManager.getInstance().isBraveRewardsEnabled();
+                    || OnboardingPrefManager.getInstance().isBraveAdsEnabled();
         }
         return false;
     }
@@ -116,7 +118,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     public boolean isBraveRewardsEnabled() {
-        return OnboardingPrefManager.getInstance().isBraveRewardsEnabled();
+        return OnboardingPrefManager.getInstance().isBraveAdsEnabled();
     }
 
     public boolean isPrivacyReportsEnabled() {
@@ -131,8 +133,23 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
             } else if (mLaunchedFrom == FROM_LAUNCHED_BRAVE_SETTINGS) {
                 launchedFromBraveSettings(view);
                 view.findViewById(R.id.btn_not_now).setVisibility(View.GONE);
+            } else if (mLaunchedFrom == FROM_LAUNCHED_BRAVE_PANEL) {
+                launchedFromBravePanel(view);
             }
         }
+    }
+
+    private void launchedFromBravePanel(View view) {
+        ImageView icon = view.findViewById(R.id.warning_imageview);
+        icon.setImageDrawable(
+                ResourcesCompat.getDrawable(view.getResources(), R.drawable.ic_bell_icon, null));
+        mTitleTextView.setText(R.string.enable_notifications_from_brave_to_earn_brave_rewards);
+        mDescriptionTextView.setText(
+                R.string.open_settings_and_turn_on_device_notifications_for_brave_ads);
+        view.findViewById(R.id.btn_not_now).setVisibility(View.GONE);
+        mPrimaryButton.setText(R.string.brave_open_system_sync_settings);
+        mPrimaryButton.setBackground(ResourcesCompat.getDrawable(
+                view.getResources(), R.drawable.blue_48_rounded_bg, null));
     }
 
     private void launchedFromBraveActivity(View view) {
