@@ -380,7 +380,6 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
       }
     }
   )";
-
   // 'lamports' and 'rentEpoch' are converted to strings.
   std::string json_expected = R"(
     {
@@ -397,7 +396,6 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
       }
     }
   )";
-
   auto json_converted = ConverterForGetAccountInfo().Run(json);
   ASSERT_TRUE(json_converted);
   CompareJSON(*json_converted, json_expected);
@@ -422,7 +420,6 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-
   // 'lamports' and 'rentEpoch' are converted to strings.
   std::string json_expected = R"(
     {
@@ -442,7 +439,6 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-
   auto json_converted = ConverterForGetProrgamAccounts().Run(json);
   ASSERT_TRUE(json_converted);
   CompareJSON(*json_converted, json_expected);
@@ -475,8 +471,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-
-  // 'lamports' and 'rentEpoch' are converted to strings.
+  // 'lamports' and 'rentEpoch' for the first item are converted to strings.
   json_expected = R"(
     {
       "jsonrpc": "2.0",
@@ -505,7 +500,6 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-
   json_converted = ConverterForGetProrgamAccounts().Run(json);
   ASSERT_TRUE(json_converted);
   CompareJSON(*json_converted, json_expected);
@@ -518,7 +512,6 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-
   // Empty result case.
   json_expected = R"(
     {
@@ -528,7 +521,6 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-
   json_converted = ConverterForGetProrgamAccounts().Run(json);
   ASSERT_TRUE(json_converted);
   CompareJSON(*json_converted, json_expected);

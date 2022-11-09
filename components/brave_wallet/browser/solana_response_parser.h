@@ -40,9 +40,9 @@ bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee);
 bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height);
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
-ConverterForGetProrgamAccounts();
-base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();
+base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+ConverterForGetProrgamAccounts();
 
 }  // namespace solana
 

@@ -80,13 +80,6 @@ absl::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     const std::vector<std::string>& keys,
     const std::string& json);
 
-namespace solana {
-
-base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
-ConverterForGetAccountInfo();
-
-}  // namespace solana
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_
