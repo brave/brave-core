@@ -94,19 +94,20 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
       base::BindOnce(
           [](const GURL& feed_url, const std::string& charset,
              std::string body_content) -> absl::optional<FeedData> {
+            std::string result;
             // Ensure the body is encoded as UTF-8.
             if (!base::ConvertToUtf8AndNormalize(body_content, charset,
-                                                 &body_content)) {
+                                                 &result)) {
               LOG(ERROR) << "Failed to convert body content of " << feed_url
                          << " to utf-8";
               return absl::nullopt;
             }
 
             brave_news::FeedData data;
-            if (!parse_feed_string(::rust::String(body_content), data)) {
+            if (!parse_feed_string(::rust::String(result), data)) {
               VLOG(1) << feed_url.spec() << " not a valid feed.";
               VLOG(2) << "Response body was:";
-              VLOG(2) << body_content;
+              VLOG(2) << result;
               return absl::nullopt;
             }
             return data;
@@ -230,7 +231,7 @@ void DirectFeedController::FindFeeds(
 
             // Response is valid, but still might not be a feed
             ParseFeedDataOffMainThread(
-                feed_url, charset, std::move(body_content),
+                feed_url, charset, body_content,
                 base::BindOnce(
                     [](const GURL& feed_url, const GURL& final_url,
                        const std::string& mime_type,
