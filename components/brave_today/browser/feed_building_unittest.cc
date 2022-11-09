@@ -42,7 +42,7 @@ std::string GetFeedJson() {
           "category": "Technology",
           "publish_time": "2021-09-01 07:01:28",
           "url": "https://www.example.com/an-article/",
-          "title": "Expecting ThirdLogitech built Bolt to make wireless mice and keyboards work better",
+          "title": "Expecting Third Logitech built Bolt to make wireless mice and keyboards work better",
           "description": "Built on top of Bluetooth Low Energy, Logi Bolt is designed to reliably and securely connect wireless mice and keyboard to business PCs.",
           "content_type": "article",
           "publisher_id": "222",
@@ -51,6 +51,20 @@ std::string GetFeedJson() {
           "url_hash": "523b9f2091474c2a082c06ec17965f8c2392f871917407228bbeb51d8a55d6be",
           "padded_img": "https://pcdn.brave.com/brave-today/cache/052e832456e00a3cee51c68eee206fe71c32cba35d5e53dee2777dd132e01364.jpg.pad",
           "score": 13.93160989810695
+        },
+        {
+          "category": "",
+          "publish_time": "2020-09-01 07:01:28",
+          "url": "https://fourth.example.com/an-article/",
+          "title": "Expecting Fourth Logitech built Bolt to make wireless mice and keyboards work better",
+          "description": "Built on top of Bluetooth Low Energy, Logi Bolt is designed to reliably and securely connect wireless mice and keyboard to business PCs.",
+          "content_type": "article",
+          "publisher_id": "444",
+          "publisher_name": "Fourth Publisher",
+          "creative_instance_id": "",
+          "url_hash": "523b9f2091474c2a082c06ec17965f8c2392f871917407228bbeb51d8a55d6be",
+          "padded_img": "https://pcdn.brave.com/brave-today/cache/052e832456e00a3cee51c68eee206fe71c32cba35d5e53dee2777dd132e01364.jpg.pad",
+          "score": 22.93160989810695
         },
         {
           "category": "Technology",
@@ -130,12 +144,22 @@ void PopulatePublishers(Publishers* publisher_list) {
       GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
       absl::nullopt, GURL("https://third-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
+
+  auto publisher4 = mojom::Publisher::New(
+      "444", mojom::PublisherType::COMBINED_SOURCE, "Fourth Publisher", "f",
+      false, CreateLocales({}, {}), GURL("https://fourth.example.com"),
+      absl::nullopt, absl::nullopt, absl::nullopt,
+      GURL("https://fourth-publisher.com/feed.xml"),
+      mojom::UserEnabled::ENABLED);
+
   publisher_list->insert_or_assign(publisher1->publisher_id,
                                    std::move(publisher1));
   publisher_list->insert_or_assign(publisher2->publisher_id,
                                    std::move(publisher2));
   publisher_list->insert_or_assign(publisher3->publisher_id,
                                    std::move(publisher3));
+  publisher_list->insert_or_assign(publisher4->publisher_id,
+                                   std::move(publisher4));
 }
 
 }  // namespace
@@ -177,7 +201,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeedV1) {
             "https://foreignpolicy.com/2021/09/01/"
             "africa-youth-protests-senegal-sudan-ghana-eswatini/");
   // Validate sorted by score descending
-  ASSERT_GE(feed.pages[0]->items.size(), 3u);
+  ASSERT_GE(feed.pages[0]->items.size(), 4u);
   // Because we cannot access a flat list, then select the items from each card
   // (some cards have 1 item, some have 2, etc). If the page_content_order
   // changes, then also change here which items we access in which order.
@@ -188,7 +212,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeedV1) {
   ASSERT_EQ(feed.pages[0]->items[1]->items.size(), 1u);
   ASSERT_EQ(feed.pages[0]->items[1]->items[0]->get_article()->data->url,
             "https://www.example.com/an-article/");
-  ASSERT_EQ(feed.pages[0]->items[2]->items.size(), 1u);
+  ASSERT_EQ(feed.pages[0]->items[2]->items.size(), 2u);
   ASSERT_EQ(feed.pages[0]->items[2]->items[0]->get_article()->data->url,
             "https://www.digitaltrends.com/computing/"
             "logi-bolt-secure-wireless-connectivity/");
@@ -221,7 +245,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeedV2) {
             "https://www.digitaltrends.com/computing/"
             "logi-bolt-secure-wireless-connectivity/");
   // Validate sorted by score descending
-  ASSERT_GE(feed.pages[0]->items.size(), 2u);
+  ASSERT_GE(feed.pages[0]->items.size(), 3u);
   // Because we cannot access a flat list, then select the items from each card
   // (some cards have 1 item, some have 2, etc). If the page_content_order
   // changes, then also change here which items we access in which order.
@@ -229,9 +253,21 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeedV2) {
   ASSERT_EQ(feed.pages[0]->items[0]->items[0]->get_article()->data->url,
             "https://www.espn.com/soccer/blog-transfer-talk/story/4465789/"
             "live-transfer-deadline-day-will-real-madrid-land-psg-star-mbappe");
+  // "444" publisher item should be ahead of others since although it has a
+  // worse score, it is directly followed and so its score gets bumped to be
+  // more highly ranked.
   ASSERT_EQ(feed.pages[0]->items[1]->items.size(), 1u);
   ASSERT_EQ(feed.pages[0]->items[1]->items[0]->get_article()->data->url,
+            "https://fourth.example.com/an-article/");
+  ASSERT_EQ(feed.pages[0]->items[2]->items.size(), 1u);
+  ASSERT_EQ(feed.pages[0]->items[2]->items[0]->get_article()->data->url,
             "https://www.example.com/an-article/");
+  auto direct_follow_score =
+      feed.pages[0]->items[1]->items[0]->get_article()->data->score;
+  auto channel_follow_score =
+      feed.pages[0]->items[2]->items[0]->get_article()->data->score;
+  // Lower score means higher ranked
+  ASSERT_LT(direct_follow_score, channel_follow_score);
 }
 
 TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
