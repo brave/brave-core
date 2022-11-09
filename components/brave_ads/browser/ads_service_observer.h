@@ -12,8 +12,8 @@ namespace brave_ads {
 
 class AdsServiceObserver : public base::CheckedObserver {
  public:
-  // Invoked when ad rewards have changed.
-  virtual void OnAdRewardsDidChange() {}
+  // Invoked when ads has successfully initialized.
+  virtual void OnDidInitializeAds() {}
 
   // Invoked when a browser upgrade is required to serve ads.
   virtual void OnNeedsBrowserUpgradeToServeAds() {}

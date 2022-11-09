@@ -1345,10 +1345,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           std::move(completion)));
 }
 
-- (void)updateAdRewards {
-  // Not needed on iOS because ads do not show unless you are viewing a tab
-}
-
 - (void)setBooleanPref:(const std::string&)path value:(const bool)value {
   const auto key = base::SysUTF8ToNSString(path);
   self.prefs[key] = @(value);

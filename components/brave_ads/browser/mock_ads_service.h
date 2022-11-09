@@ -26,6 +26,9 @@ class MockAdsService : public AdsService {
 
   ~MockAdsService() override;
 
+  MOCK_METHOD1(AddBatAdsObserver, void(ads::AdsObserver* observer));
+  MOCK_METHOD1(RemoveBatAdsObserver, void(ads::AdsObserver* observer));
+
   MOCK_CONST_METHOD0(IsSupportedLocale, bool());
 
   MOCK_CONST_METHOD0(IsEnabled, bool());

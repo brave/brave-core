@@ -14,6 +14,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_observer_manager.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/common/platform/platform_helper_mock.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
@@ -162,6 +163,7 @@ class UnitTestBase : public testing::Test {
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
 
+  std::unique_ptr<AdsObserverManager> ads_observer_manager_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ClientStateManager> client_state_manager_;
   std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;

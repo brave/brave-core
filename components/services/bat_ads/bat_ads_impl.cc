@@ -44,6 +44,11 @@ BatAdsImpl::BatAdsImpl(
 
 BatAdsImpl::~BatAdsImpl() = default;
 
+void BatAdsImpl::AddBatAdsObserver(
+    mojo::PendingRemote<mojom::BatAdsObserver> observer) {
+  ads_->AddBatAdsObserver(std::move(observer));
+}
+
 void BatAdsImpl::Initialize(InitializeCallback callback) {
   ads_->Initialize(std::move(callback));
 }

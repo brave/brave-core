@@ -61,8 +61,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void UpdateAdRewards() override;
-
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,

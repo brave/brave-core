@@ -21,8 +21,15 @@ interface BatAdsService {
   SetBuildChannel(ads.mojom.BuildChannelInfo build_channel) => ();
 };
 
+// // Observer interface to know if things are working as expected.
+// interface BatAdsClientObserver {
+//   OnDidVerifyRewardsWallet();
+// };
+
 interface BatAdsClient {
   // See AdsClient for documentation.
+
+  // AddBatAdsClientObserver(pending_remote<BatAdsClientObserver> observer);
 
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
@@ -38,8 +45,6 @@ interface BatAdsClient {
   CanShowNotificationAdsWhileBrowserIsBackgrounded() => (bool can_show);
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
-
-  UpdateAdRewards();
 
   RecordAdEventForId(string id, string ad_type, string confirmation_type, mojo_base.mojom.Time time);
   [Sync]
@@ -100,8 +105,15 @@ interface BatAdsClient {
   Log(string file, int32 line, int32 verbose_level, string message);
 };
 
+// Bat ads observer interface
+interface BatAdsObserver {
+  OnStatementOfAccountsDidChange();
+};
+
 interface BatAds {
   // See Ads for documentation.
+
+  AddBatAdsObserver(pending_remote<BatAdsObserver> observer);
 
   Initialize() => (bool success);
   Shutdown() => (bool success);

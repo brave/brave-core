@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 
+#include "base/check.h"
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -16,10 +17,14 @@ AdsService::AdsService() = default;
 AdsService::~AdsService() = default;
 
 void AdsService::AddObserver(AdsServiceObserver* observer) {
+  DCHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
 void AdsService::RemoveObserver(AdsServiceObserver* observer) {
+  DCHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

@@ -27,6 +27,7 @@
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/ads_observer_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
@@ -305,6 +306,8 @@ void Account::NotifyFailedToProcessDeposit(
 }
 
 void Account::NotifyStatementOfAccountsDidChange() const {
+  AdsObserverManager::GetInstance()->NotifyStatementOfAccountsDidChange();
+
   for (AccountObserver& observer : observers_) {
     observer.OnStatementOfAccountsDidChange();
   }

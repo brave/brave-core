@@ -56,7 +56,6 @@
           callback:(ads::UrlRequestCallback)callback;
 - (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback;
-- (void)updateAdRewards;
 - (void)setBooleanPref:(const std::string&)path value:(const bool)value;
 - (bool)getBooleanPref:(const std::string&)path;
 - (void)setIntegerPref:(const std::string&)path value:(const int)value;

@@ -94,10 +94,6 @@ void AdsClientMojoBridge::CloseNotificationAd(const std::string& placement_id) {
   ads_client_->CloseNotificationAd(placement_id);
 }
 
-void AdsClientMojoBridge::UpdateAdRewards() {
-  ads_client_->UpdateAdRewards();
-}
-
 void AdsClientMojoBridge::RecordAdEventForId(
     const std::string& id,
     const std::string& ad_type,

@@ -331,6 +331,16 @@ export function AdsPanel () {
     )
   }
 
+  function renderNextPaymentDate () {
+    if (adsData.adsNextPaymentDate === 0) {
+      return ''
+    }
+
+    return (
+      <MonthDay date={new Date(adsData.adsNextPaymentDate)} />
+    )
+  }
+
   function renderContent () {
     if (!adsData.adsEnabled || !canEnable) {
       return renderDisabled()
@@ -363,7 +373,7 @@ export function AdsPanel () {
           {renderEarnings()}
         </PanelItem>
         <PanelItem label={getString('adsPaymentDate')}>
-          <MonthDay date={new Date(adsData.adsNextPaymentDate)} />
+          {renderNextPaymentDate()}
         </PanelItem>
         <PanelItem label={getString('adsNotificationsReceived')}>
           {adsData.adsReceivedThisMonth}

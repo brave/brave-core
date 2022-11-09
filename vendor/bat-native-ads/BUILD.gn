@@ -71,6 +71,7 @@ source_set("headers") {
     "include/bat/ads/ads_callback.h",
     "include/bat/ads/ads_client.h",
     "include/bat/ads/ads_client_callback.h",
+    "include/bat/ads/ads_observer.h",
     "include/bat/ads/build_channel.h",
     "include/bat/ads/category_content_action_types.h",
     "include/bat/ads/category_content_info.h",
@@ -99,6 +100,7 @@ source_set("headers") {
   public_deps = [
     "include/bat/ads/public/interfaces",
     "//brave/components/brave_federated/public/interfaces",
+    "//brave/components/services/bat_ads/public/interfaces",
     "//sql",
   ]
 }
@@ -116,6 +118,7 @@ source_set("ads") {
     "src/bat/ads/ad_info.cc",
     "src/bat/ads/ad_type.cc",
     "src/bat/ads/ads.cc",
+    "src/bat/ads/ads_observer.cc",
     "src/bat/ads/build_channel.cc",
     "src/bat/ads/category_content_info.cc",
     "src/bat/ads/confirmation_type.cc",
@@ -539,6 +542,8 @@ source_set("ads") {
     "src/bat/ads/internal/ads_client_helper.h",
     "src/bat/ads/internal/ads_impl.cc",
     "src/bat/ads/internal/ads_impl.h",
+    "src/bat/ads/internal/ads_observer_manager.cc",
+    "src/bat/ads/internal/ads_observer_manager.h",
     "src/bat/ads/internal/browser/browser_manager.cc",
     "src/bat/ads/internal/browser/browser_manager.h",
     "src/bat/ads/internal/browser/browser_manager_observer.h",
@@ -1221,6 +1226,7 @@ source_set("ads") {
     "//brave/vendor/bat-native-ledger",
     "//components/variations:variations",
     "//crypto",
+    "//mojo/public/cpp/bindings",
     "//net",
     "//sql",
     "//third_party/abseil-cpp:absl",

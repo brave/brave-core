@@ -23,6 +23,7 @@
 #include "bat/ads/internal/ads/promoted_content_ad.h"
 #include "bat/ads/internal/ads/search_result_ad.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/ads_observer_manager.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/common/logging_util.h"
@@ -80,6 +81,7 @@ void FailedToInitialize(InitializeCallback callback) {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)) {
+  ads_observer_manager_ = std::make_unique<AdsObserverManager>();
   browser_manager_ = std::make_unique<BrowserManager>();
   client_state_manager_ = std::make_unique<ClientStateManager>();
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
@@ -141,14 +143,12 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 
   user_reactions_ = std::make_unique<UserReactions>(account_.get());
 
-  account_->AddObserver(this);
   conversions_->AddObserver(this);
   database_manager_->AddObserver(this);
   transfer_->AddObserver(this);
 }
 
 AdsImpl::~AdsImpl() {
-  account_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   database_manager_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
@@ -156,6 +156,11 @@ AdsImpl::~AdsImpl() {
 
 bool AdsImpl::IsInitialized() const {
   return is_initialized_;
+}
+
+void AdsImpl::AddBatAdsObserver(
+    mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) {
+  AdsObserverManager::GetInstance()->AddObserver(std::move(observer));
 }
 
 void AdsImpl::Initialize(InitializeCallback callback) {
@@ -571,10 +576,6 @@ void AdsImpl::Start() {
   catalog_->MaybeFetch();
 
   notification_ad_->MaybeServeAtRegularIntervals();
-}
-
-void AdsImpl::OnStatementOfAccountsDidChange() {
-  AdsClientHelper::GetInstance()->UpdateAdRewards();
 }
 
 void AdsImpl::OnConversion(

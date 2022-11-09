@@ -22,6 +22,10 @@
 
 class GURL;
 
+namespace ads {
+class AdsObserver;
+}  // namespace ads
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
@@ -45,6 +49,12 @@ class AdsService : public KeyedService {
 
   // static
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
+  // Called to add an ads observer
+  virtual void AddBatAdsObserver(ads::AdsObserver* observer) = 0;
+
+  // Called to remove an ads observer
+  virtual void RemoveBatAdsObserver(ads::AdsObserver* observer) = 0;
 
   // Returns |true| if the user's locale supports ads.
   virtual bool IsSupportedLocale() const = 0;

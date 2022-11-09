@@ -19,12 +19,10 @@
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
-
-class GURL;
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
 namespace base {
 class Time;
-class TimeDelta;
 }  // namespace base
 
 namespace ads {
@@ -48,6 +46,10 @@ class ADS_EXPORT Ads {
   virtual ~Ads() = default;
 
   static Ads* CreateInstance(AdsClient* ads_client);
+
+  // Binds a listener to be notified of something exciting.
+  virtual void AddBatAdsObserver(
+      mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) = 0;
 
   // Called to initialize ads. The callback takes one argument - |bool| is set
   // to |true| if successful otherwise |false|.

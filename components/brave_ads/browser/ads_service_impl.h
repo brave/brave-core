@@ -42,6 +42,7 @@ class NotificationDisplayService;
 class Profile;
 
 namespace ads {
+class AdsObserver;
 class Database;
 struct NewTabPageAdInfo;
 struct NotificationAdInfo;
@@ -213,6 +214,9 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
   // AdsService:
+  void AddBatAdsObserver(ads::AdsObserver* observer) override;
+  void RemoveBatAdsObserver(ads::AdsObserver* observer) override;
+
   bool IsSupportedLocale() const override;
 
   bool IsEnabled() const override;
@@ -323,8 +327,6 @@ class AdsServiceImpl : public AdsService,
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
   void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
-
-  void UpdateAdRewards() override;
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& type,
@@ -474,9 +476,10 @@ class AdsServiceImpl : public AdsService,
   const raw_ptr<brave_federated::AsyncDataStore>
       notification_ad_timing_data_store_ = nullptr;  // NOT OWNED
 
-  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
-  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
-  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
+  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote_;
+  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
+      bat_ads_client_receiver_;
+  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_remote_;
 };
 
 }  // namespace brave_ads

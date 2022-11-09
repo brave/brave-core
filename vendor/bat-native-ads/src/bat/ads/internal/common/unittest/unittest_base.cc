@@ -178,6 +178,8 @@ void UnitTestBase::Initialize() {
     return;
   }
 
+  ads_observer_manager_ = std::make_unique<AdsObserverManager>();
+
   browser_manager_ = std::make_unique<BrowserManager>();
 
   client_state_manager_ = std::make_unique<ClientStateManager>();

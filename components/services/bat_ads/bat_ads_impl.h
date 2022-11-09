@@ -41,6 +41,9 @@ class BatAdsImpl : public mojom::BatAds {
   ~BatAdsImpl() override;
 
   // mojom::BatAds:
+  void AddBatAdsObserver(
+      mojo::PendingRemote<mojom::BatAdsObserver> observer) override;
+
   void Initialize(InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 

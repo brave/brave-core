@@ -31,6 +31,7 @@
 #include "base/timer/timer.h"
 #include "bat/ads/ad_constants.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_observer.h"
 #include "bat/ads/database.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/new_tab_page_ad_value_util.h"
@@ -356,7 +357,7 @@ AdsServiceImpl::AdsServiceImpl(
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
       rewards_service_(rewards_service),
       notification_ad_timing_data_store_(notification_ad_timing_data_store),
-      bat_ads_client_(new bat_ads::AdsClientMojoBridge(this)) {
+      bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);
   DCHECK(adaptive_captcha_service_);
   DCHECK(device_id_);
@@ -439,7 +440,7 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
 void AdsServiceImpl::MaybeStartBatAdsService() {
   CancelRestartBatAdsService();
 
-  if (bat_ads_service_.is_bound() || !CanStartBatAdsService()) {
+  if (bat_ads_service_remote_.is_bound() || !CanStartBatAdsService()) {
     return;
   }
 
@@ -454,27 +455,27 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
 
 void AdsServiceImpl::StartBatAdsService() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(!bat_ads_service_.is_bound());
+  DCHECK(!bat_ads_service_remote_.is_bound());
 
   content::ServiceProcessHost::Launch(
-      bat_ads_service_.BindNewPipeAndPassReceiver(),
+      bat_ads_service_remote_.BindNewPipeAndPassReceiver(),
       content::ServiceProcessHost::Options()
           .WithDisplayName(IDS_SERVICE_BAT_ADS)
           .WithExtraCommandLineSwitches(ExtraCommandLineSwitches())
           .Pass());
 
-  bat_ads_service_.set_disconnect_handler(base::BindOnce(
+  bat_ads_service_remote_.set_disconnect_handler(base::BindOnce(
       &AdsServiceImpl::RestartBatAdsServiceAfterDelay, AsWeakPtr()));
 
-  DCHECK(bat_ads_service_.is_bound());
+  DCHECK(bat_ads_service_remote_.is_bound());
 
   SetSysInfo();
 
   SetBuildChannel();
 
-  bat_ads_service_->Create(
-      bat_ads_client_.BindNewEndpointAndPassRemote(),
-      bat_ads_.BindNewEndpointAndPassReceiver(),
+  bat_ads_service_remote_->Create(
+      bat_ads_client_receiver_.BindNewEndpointAndPassRemote(),
+      bat_ads_remote_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectory,
                      AsWeakPtr()));
 }
@@ -544,12 +545,12 @@ void AdsServiceImpl::InitializeRewardsWallet() {
 
 void AdsServiceImpl::OnInitializeRewardsWallet(
     ledger::mojom::RewardsWalletPtr wallet) {
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return;
   }
 
   if (wallet) {
-    bat_ads_->OnRewardsWalletDidChange(
+    bat_ads_remote_->OnRewardsWalletDidChange(
         wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
   } else if (ShouldRewardUser()) {
     VLOG(1) << "Failed to initialize Rewards wallet";
@@ -560,8 +561,8 @@ void AdsServiceImpl::OnInitializeRewardsWallet(
 }
 
 void AdsServiceImpl::InitializeBatAds() {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->Initialize(
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->Initialize(
         base::BindOnce(&AdsServiceImpl::OnInitializeBatAds, AsWeakPtr()));
   }
 }
@@ -573,6 +574,10 @@ void AdsServiceImpl::OnInitializeBatAds(const bool success) {
   }
 
   is_bat_ads_initialized_ = true;
+
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnDidInitializeAds();
+  }
 
   CleanUpOnFirstRun();
 
@@ -596,8 +601,8 @@ void AdsServiceImpl::ShutdownAndResetState() {
 }
 
 void AdsServiceImpl::SetSysInfo() {
-  DCHECK(bat_ads_service_.is_bound());
-  bat_ads_service_->SetSysInfo(sys_info_.Clone(), base::NullCallback());
+  DCHECK(bat_ads_service_remote_.is_bound());
+  bat_ads_service_remote_->SetSysInfo(sys_info_.Clone(), base::NullCallback());
 }
 
 void AdsServiceImpl::SetBuildChannel() {
@@ -606,9 +611,9 @@ void AdsServiceImpl::SetBuildChannel() {
   build_channel->name = brave::GetChannelName();
   build_channel->is_release = build_channel->name == "release";
 
-  DCHECK(bat_ads_service_.is_bound());
-  bat_ads_service_->SetBuildChannel(std::move(build_channel),
-                                    base::NullCallback());
+  DCHECK(bat_ads_service_remote_.is_bound());
+  bat_ads_service_remote_->SetBuildChannel(std::move(build_channel),
+                                           base::NullCallback());
 }
 
 void AdsServiceImpl::CleanUpOnFirstRun() {
@@ -707,8 +712,8 @@ void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnPrefDidChange(path);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnPrefDidChange(path);
   }
 }
 
@@ -719,8 +724,8 @@ void AdsServiceImpl::GetRewardsWallet() {
 
 void AdsServiceImpl::OnGetRewardsWallet(
     ledger::mojom::RewardsWalletPtr wallet) {
-  if (wallet && bat_ads_.is_bound()) {
-    bat_ads_->OnRewardsWalletDidChange(
+  if (wallet && bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnRewardsWalletDidChange(
         wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
   }
 }
@@ -752,8 +757,8 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     case ui::IdleState::IDLE_STATE_ACTIVE: {
       const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      if (bat_ads_.is_bound()) {
-        bat_ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
+      if (bat_ads_remote_.is_bound()) {
+        bat_ads_remote_->OnUserDidBecomeActive(idle_time, screen_was_locked);
       }
 
       break;
@@ -761,8 +766,8 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      if (bat_ads_.is_bound()) {
-        bat_ads_->OnUserDidBecomeIdle();
+      if (bat_ads_remote_.is_bound()) {
+        bat_ads_remote_->OnUserDidBecomeIdle();
       }
 
       break;
@@ -850,13 +855,13 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
 
   CloseNotificationAd(placement_id);
 
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return;
   }
 
   if (!ShouldShowCustomNotificationAds() &&
       NotificationHelper::GetInstance()->DoesSupportSystemNotifications()) {
-    bat_ads_->TriggerNotificationAdEvent(
+    bat_ads_remote_->TriggerNotificationAdEvent(
         placement_id, ads::mojom::NotificationAdEventType::kTimedOut);
   }
 }
@@ -944,7 +949,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
     return RetryOpeningNewTabWithAd(placement_id);
   }
 
-  bat_ads_->MaybeGetNotificationAd(
+  bat_ads_remote_->MaybeGetNotificationAd(
       placement_id,
       base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
 }
@@ -1402,9 +1407,9 @@ void AdsServiceImpl::Shutdown() {
 
   is_bat_ads_initialized_ = false;
 
-  bat_ads_.reset();
-  bat_ads_client_.reset();
-  bat_ads_service_.reset();
+  bat_ads_remote_.reset();
+  bat_ads_client_receiver_.reset();
+  bat_ads_service_remote_.reset();
 
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
@@ -1425,6 +1430,21 @@ void AdsServiceImpl::Shutdown() {
   }
 
   VLOG(2) << "Shutdown bat-ads service";
+}
+
+void AdsServiceImpl::AddBatAdsObserver(ads::AdsObserver* observer) {
+  DCHECK(observer);
+  DCHECK(!observer->IsBound());
+
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->AddBatAdsObserver(observer->Bind());
+  }
+}
+
+void AdsServiceImpl::RemoveBatAdsObserver(ads::AdsObserver* observer) {
+  DCHECK(observer);
+
+  observer->Reset();
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
@@ -1498,8 +1518,8 @@ void AdsServiceImpl::SnoozeScheduledCaptcha() {
 }
 
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerNotificationAdEvent(
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->TriggerNotificationAdEvent(
         placement_id, ads::mojom::NotificationAdEventType::kViewed);
   }
 }
@@ -1511,7 +1531,7 @@ void AdsServiceImpl::OnNotificationAdClosed(const std::string& placement_id,
             << placement_id;
   }
 
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return;
   }
 
@@ -1519,44 +1539,45 @@ void AdsServiceImpl::OnNotificationAdClosed(const std::string& placement_id,
       by_user ? ads::mojom::NotificationAdEventType::kDismissed
               : ads::mojom::NotificationAdEventType::kTimedOut;
 
-  bat_ads_->TriggerNotificationAdEvent(placement_id, event_type);
+  bat_ads_remote_->TriggerNotificationAdEvent(placement_id, event_type);
 }
 
 void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return;
   }
 
   OpenNewTabWithAd(placement_id);
 
-  bat_ads_->TriggerNotificationAdEvent(
+  bat_ads_remote_->TriggerNotificationAdEvent(
       placement_id, ads::mojom::NotificationAdEventType::kClicked);
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return std::move(callback).Run(/*diagnostics*/ absl::nullopt);
   }
 
-  bat_ads_->GetDiagnostics(std::move(callback));
+  bat_ads_remote_->GetDiagnostics(std::move(callback));
 }
 
 void AdsServiceImpl::OnLocaleDidChange(const std::string& locale) {
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return;
   }
 
   RegisterResourceComponentsForLocale(locale);
 
-  bat_ads_->OnLocaleDidChange(locale);
+  bat_ads_remote_->OnLocaleDidChange(locale);
 }
 
 void AdsServiceImpl::OnTabHtmlContentDidChange(
     const SessionID& tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabHtmlContentDidChange(tab_id.id(), redirect_chain, html);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnTabHtmlContentDidChange(tab_id.id(), redirect_chain,
+                                               html);
   }
 }
 
@@ -1564,27 +1585,28 @@ void AdsServiceImpl::OnTabTextContentDidChange(
     const SessionID& tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabTextContentDidChange(tab_id.id(), redirect_chain, text);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnTabTextContentDidChange(tab_id.id(), redirect_chain,
+                                               text);
   }
 }
 
 void AdsServiceImpl::TriggerUserGestureEvent(
     const int32_t page_transition_type) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerUserGestureEvent(page_transition_type);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->TriggerUserGestureEvent(page_transition_type);
   }
 }
 
 void AdsServiceImpl::OnTabDidStartPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabDidStartPlayingMedia(tab_id.id());
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnTabDidStartPlayingMedia(tab_id.id());
   }
 }
 
 void AdsServiceImpl::OnTabDidStopPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabDidStopPlayingMedia(tab_id.id());
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnTabDidStopPlayingMedia(tab_id.id());
   }
 }
 
@@ -1592,38 +1614,38 @@ void AdsServiceImpl::OnTabDidChange(const SessionID& tab_id,
                                     const std::vector<GURL>& redirect_chain,
                                     const bool is_active,
                                     const bool is_browser_active) {
-  if (bat_ads_.is_bound()) {
+  if (bat_ads_remote_.is_bound()) {
     const bool is_incognito = !brave::IsRegularProfile(profile_);
 
-    bat_ads_->OnTabDidChange(tab_id.id(), redirect_chain, is_active,
-                             is_browser_active, is_incognito);
+    bat_ads_remote_->OnTabDidChange(tab_id.id(), redirect_chain, is_active,
+                                    is_browser_active, is_incognito);
   }
 }
 
 void AdsServiceImpl::OnDidCloseTab(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnDidCloseTab(tab_id.id());
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnDidCloseTab(tab_id.id());
   }
 }
 
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return std::move(callback).Run(/*statement*/ nullptr);
   }
 
-  bat_ads_->GetStatementOfAccounts(std::move(callback));
+  bat_ads_remote_->GetStatementOfAccounts(std::move(callback));
 }
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return std::move(callback).Run(dimensions,
                                    /*inline_content_ad*/ absl::nullopt);
   }
 
-  bat_ads_->MaybeServeInlineContentAd(dimensions, std::move(callback));
+  bat_ads_remote_->MaybeServeInlineContentAd(dimensions, std::move(callback));
 }
 
 void AdsServiceImpl::TriggerInlineContentAdEvent(
@@ -1632,9 +1654,9 @@ void AdsServiceImpl::TriggerInlineContentAdEvent(
     const ads::mojom::InlineContentAdEventType event_type) {
   DCHECK(ads::mojom::IsKnownEnumValue(event_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                          event_type);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->TriggerInlineContentAdEvent(
+        placement_id, creative_instance_id, event_type);
   }
 }
 
@@ -1646,7 +1668,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
     return;
   }
 
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return;
   }
 
@@ -1663,14 +1685,14 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
         base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents,
                        AsWeakPtr()));
   } else {
-    bat_ads_->MaybeServeNewTabPageAd(
+    bat_ads_remote_->MaybeServeNewTabPageAd(
         base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
   }
 }
 
 absl::optional<ads::NewTabPageAdInfo>
 AdsServiceImpl::GetPrefetchedNewTabPageAd() {
-  if (!bat_ads_.is_bound()) {
+  if (!bat_ads_remote_.is_bound()) {
     return absl::nullopt;
   }
 
@@ -1695,9 +1717,9 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const ads::mojom::NewTabPageAdEventType event_type) {
   DCHECK(ads::mojom::IsKnownEnumValue(event_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                       event_type);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->TriggerNewTabPageAdEvent(placement_id,
+                                              creative_instance_id, event_type);
   }
 }
 
@@ -1707,9 +1729,9 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
     const ads::mojom::PromotedContentAdEventType event_type) {
   DCHECK(ads::mojom::IsKnownEnumValue(event_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                            event_type);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->TriggerPromotedContentAdEvent(
+        placement_id, creative_instance_id, event_type);
   }
 }
 
@@ -1718,8 +1740,9 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
     const ads::mojom::SearchResultAdEventType event_type) {
   DCHECK(ads::mojom::IsKnownEnumValue(event_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->TriggerSearchResultAdEvent(std::move(ad_mojom),
+                                                event_type);
   }
 }
 
@@ -1728,60 +1751,60 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(
     PurgeOrphanedAdEventsForTypeCallback callback) {
   DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
   }
 }
 
 void AdsServiceImpl::GetHistory(const base::Time from_time,
                                 const base::Time to_time,
                                 GetHistoryCallback callback) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->GetHistory(from_time, to_time, std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->GetHistory(from_time, to_time, std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleAdThumbUp(base::Value::Dict value,
                                      ToggleAdThumbUpCallback callback) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdThumbUp(std::move(value), std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->ToggleAdThumbUp(std::move(value), std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleAdThumbDown(base::Value::Dict value,
                                        ToggleAdThumbDownCallback callback) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdThumbDown(std::move(value), std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->ToggleAdThumbDown(std::move(value), std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleAdOptIn(const std::string& category,
                                    const int action,
                                    ToggleAdOptInCallback callback) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdOptIn(category, action, std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->ToggleAdOptIn(category, action, std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleAdOptOut(const std::string& category,
                                     const int action,
                                     ToggleAdOptOutCallback callback) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdOptOut(category, action, std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->ToggleAdOptOut(category, action, std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleSavedAd(base::Value::Dict value,
                                    ToggleSavedAdCallback callback) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleSavedAd(std::move(value), std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->ToggleSavedAd(std::move(value), std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
                                      ToggleFlaggedAdCallback callback) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleFlaggedAd(std::move(value), std::move(callback));
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->ToggleFlaggedAd(std::move(value), std::move(callback));
   }
 }
 
@@ -1889,12 +1912,6 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
         placement_id, url);
 #endif
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS, placement_id);
-  }
-}
-
-void AdsServiceImpl::UpdateAdRewards() {
-  for (AdsServiceObserver& observer : observers_) {
-    observer.OnAdRewardsDidChange();
   }
 }
 
@@ -2222,20 +2239,20 @@ void AdsServiceImpl::Log(const char* file,
 }
 
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnBrowserDidEnterForeground();
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnBrowserDidEnterForeground();
   }
 }
 
 void AdsServiceImpl::OnBrowserDidEnterBackground() {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnBrowserDidEnterBackground();
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnBrowserDidEnterBackground();
   }
 }
 
 void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnDidUpdateResourceComponent(id);
+  if (bat_ads_remote_.is_bound()) {
+    bat_ads_remote_->OnDidUpdateResourceComponent(id);
   }
 }
 

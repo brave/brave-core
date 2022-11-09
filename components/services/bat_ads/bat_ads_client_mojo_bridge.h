@@ -53,8 +53,6 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void UpdateAdRewards() override;
-
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
@@ -127,7 +125,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
            const std::string& message) override;
 
  private:
-  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
+  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_receiver_;
 };
 
 }  // namespace bat_ads

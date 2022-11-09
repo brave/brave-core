@@ -134,10 +134,6 @@ void AdsClientIOS::RunDBTransaction(
                    callback:std::move(callback)];
 }
 
-void AdsClientIOS::UpdateAdRewards() {
-  [bridge_ updateAdRewards];
-}
-
 void AdsClientIOS::SetBooleanPref(const std::string& path, const bool value) {
   [bridge_ setBooleanPref:path value:value];
 }
