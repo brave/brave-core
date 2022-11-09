@@ -17,6 +17,8 @@ HttpsState CalculateHttpsState(const SecurityOrigin* security_origin,
                                absl::optional<HttpsState> parent_https_state) {
   if (security_origin && (security_origin->Protocol() == "http" &&
                           security_origin->Host().EndsWith(".onion"))) {
+    // MixedContentChecker::ShouldAutoupgrade upgrades resource only on the
+    // kModern pages. Return it for .onion as for https.
     return HttpsState::kModern;
   }
 

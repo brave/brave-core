@@ -57,6 +57,7 @@ void MixedContentChecker::UpgradeInsecureRequest(
     ExecutionContext* execution_context_for_logging,
     mojom::RequestContextFrameType frame_type,
     WebContentSettingsClient* settings_client) {
+  // Do not upgrade resource from .onion sites because we treat them as secure.
   if (IsOnion(resource_request.Url()))
     return;
   UpgradeInsecureRequest_ChromiumImpl(

@@ -513,6 +513,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
     console_observer.Wait();
   }
+  auto fetch = [](const std::string& resource) {
+    return "fetch('" + resource + "').then((response) => { console.log('" +
+           resource + "' + ' ' + response.statusText) })";
+  };
   {
     content::WebContentsConsoleObserver console_observer(contents);
     console_observer.SetPattern(
@@ -522,23 +526,36 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
         "must be served over HTTPS.");
     const GURL resource_url =
         embedded_test_server()->GetURL("example.com", "/logo-referrer.png");
-    const std::string kFetchScript = "fetch('" + resource_url.spec() + "')";
+    const std::string kFetchScript = fetch(resource_url.spec());
     ASSERT_FALSE(content::ExecJs(contents, kFetchScript));
     console_observer.Wait();
   }
   {
+    auto https_server = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    https_server->SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server->AddDefaultHandlers();
+    ASSERT_TRUE(https_server->Start());
+
     content::WebContentsConsoleObserver console_observer(contents);
-    ASSERT_FALSE(content::ExecJs(contents, "fetch('https://example.com')"));
-    EXPECT_TRUE(console_observer.messages().empty());
+    const auto resource_url =
+        https_server->GetURL("example.a.test", "/echoheader").spec();
+    console_observer.SetPattern(resource_url + " OK");
+    const std::string kFetchScript = fetch(resource_url);
+    ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
+    console_observer.Wait();
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
     // logo-referrer.png sets "access-control-allow-origin: *"
-    const GURL resource_url =
-        embedded_test_server()->GetURL("example.onion", "/logo-referrer.png");
-    const std::string kFetchScript = "fetch('" + resource_url.spec() + "')";
+    const auto resource_url =
+        embedded_test_server()
+            ->GetURL("example.onion", "/logo-referrer.png")
+            .spec();
+    console_observer.SetPattern(resource_url + " OK");
+    const std::string kFetchScript = fetch(resource_url);
     ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
-    EXPECT_TRUE(console_observer.messages().empty());
+    console_observer.Wait();
   }
 }
 
