@@ -275,6 +275,14 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value::Dict& value,
     return nullptr;
   tokenPtr->is_erc721 = is_erc721.value();
 
+  // There might be existing pref values that does not have is_nft yet, in this
+  // case, fallback to is_erc721 value.
+  absl::optional<bool> is_nft = value.FindBool("is_nft");
+  if (is_nft)
+    tokenPtr->is_nft = is_nft.value();
+  else
+    tokenPtr->is_nft = tokenPtr->is_erc721;
+
   absl::optional<int> decimals = value.FindInt("decimals");
   if (!decimals)
     return nullptr;

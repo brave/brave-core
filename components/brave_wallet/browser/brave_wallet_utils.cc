@@ -1316,6 +1316,7 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
   native_asset.Set("symbol", chain.symbol);
   native_asset.Set("is_erc20", false);
   native_asset.Set("is_erc721", false);
+  native_asset.Set("is_nft", false);
   native_asset.Set("decimals", chain.decimals);
   native_asset.Set("visible", true);
   native_asset.Set("logo", chain.icon_urls.empty() ? "" : chain.icon_urls[0]);
