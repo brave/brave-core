@@ -786,6 +786,7 @@ public class FeedDataSource: ObservableObject {
       .sponsor,
       .fillUsing(
         FilteredFillStrategy(isIncluded: { $0.source.category == Self.topNewsCategory }),
+        fallback: DefaultFillStrategy(),
         [
           .headline(paired: false)
         ]),
@@ -910,11 +911,15 @@ public class FeedDataSource: ObservableObject {
         return fillStrategy.next(3, from: &articles).map {
           [.group($0, title: "", direction: .vertical, displayBrand: false)]
         }
-      case .fillUsing(let strategy, let elements):
+      case .fillUsing(let strategy, let fallbackStrategy, let elements):
         var cards: [FeedCard] = []
         for element in elements {
           if let elementCards = _cards(for: element, fillStrategy: strategy) {
             cards.append(contentsOf: elementCards)
+          } else {
+            if let fallbackStrategy, let elementCards = _cards(for: element, fillStrategy: fallbackStrategy) {
+              cards.append(contentsOf: elementCards)
+            }
           }
         }
         return cards
@@ -984,8 +989,9 @@ extension FeedDataSource {
     /// Displays a list of `article` typed items that can have different categories and different sources.
     case group
     /// Displays the sequence element provided using a specific fill strategy to obtain feed items from the
-    /// feed list
-    indirect case fillUsing(_ strategy: FillStrategy, _ elements: [FeedSequenceElement])
+    /// feed list. You can provide a fallback strategy that will be used if the strategy provided does not
+    /// yield any results.
+    indirect case fillUsing(_ strategy: FillStrategy, fallback: FillStrategy? = nil, _ elements: [FeedSequenceElement])
     /// Displays the provided elements a number of times. Passing in `.max` for `times` means it will repeat
     /// until there is no more content available
     indirect case repeating([FeedSequenceElement], times: Int = .max)
