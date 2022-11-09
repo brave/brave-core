@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -191,6 +193,18 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcErrorResponse) {
   EXPECT_EQ(123, *value->GetDict().FindIntByDottedPath("error.code"));
   EXPECT_EQ("Error!",
             *value->GetDict().FindStringByDottedPath("error.message"));
+}
+
+TEST(JsonRpcServiceTestUtils, MakeJsonRpcValueResponse) {
+  base::Value::Dict payload;
+  payload.Set("test", 555);
+  auto json = MakeJsonRpcValueResponse(base::Value(std::move(payload)));
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
+  ASSERT_TRUE(value);
+  ASSERT_TRUE(value->is_dict());
+  EXPECT_EQ("2.0", *value->GetDict().FindString("jsonrpc"));
+  EXPECT_EQ(1, *value->GetDict().FindInt("id"));
+  EXPECT_EQ(555, *value->GetDict().FindIntByDottedPath("result.value.test"));
 }
 
 }  // namespace brave_wallet

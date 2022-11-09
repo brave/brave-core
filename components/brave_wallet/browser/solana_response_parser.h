@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/callback.h"
+#include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
@@ -32,8 +34,15 @@ bool ParseGetSignatureStatuses(
     std::vector<absl::optional<SolanaSignatureStatus>>* statuses);
 bool ParseGetAccountInfo(const std::string& json,
                          absl::optional<SolanaAccountInfo>* account_info_out);
+bool ParseGetAccountInfo(const base::Value::Dict& value_dict,
+                         absl::optional<SolanaAccountInfo>* account_info_out);
 bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee);
 bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height);
+
+base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+ConverterForGetAccountInfo();
+base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+ConverterForGetProrgamAccounts();
 
 }  // namespace solana
 

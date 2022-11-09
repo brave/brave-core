@@ -863,6 +863,30 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
             GetNetworkURL(&prefs, chain1.chain_id, mojom::CoinType::ETH));
   EXPECT_EQ(chain2.rpc_endpoints.front(),
             GetNetworkURL(&prefs, chain2.chain_id, mojom::CoinType::ETH));
+
+  EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"),
+            GetNetworkURL(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL));
+  auto custom_sol_network =
+      GetKnownChain(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  custom_sol_network->rpc_endpoints.emplace_back("https://test-sol.com");
+  custom_sol_network->active_rpc_endpoint_index = 1;
+  UpdateCustomNetworks(&prefs, {NetworkInfoToValue(*custom_sol_network)},
+                       mojom::CoinType::SOL);
+  EXPECT_EQ(GURL("https://test-sol.com"),
+            GetNetworkURL(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL));
+
+  EXPECT_EQ(
+      GURL("https://api.node.glif.io/rpc/v0"),
+      GetNetworkURL(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL));
+  auto custom_fil_network =
+      GetKnownChain(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+  custom_fil_network->rpc_endpoints.emplace_back("https://test-fil.com");
+  custom_fil_network->active_rpc_endpoint_index = 1;
+  UpdateCustomNetworks(&prefs, {NetworkInfoToValue(*custom_fil_network)},
+                       mojom::CoinType::FIL);
+  EXPECT_EQ(
+      GURL("https://test-fil.com"),
+      GetNetworkURL(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {

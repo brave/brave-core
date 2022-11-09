@@ -10,6 +10,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
@@ -32,6 +33,7 @@ bool Base58Decode(const std::string& str,
                   bool strict = true);
 // A bridge function to call EncodeBase58 in bitcoin-core.
 std::string Base58Encode(const std::vector<uint8_t>& bytes);
+std::string Base58Encode(base::span<const uint8_t> bytes);
 
 bool IsBase58EncodedSolanaPubkey(const std::string& key);
 

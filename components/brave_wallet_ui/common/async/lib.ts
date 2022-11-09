@@ -148,6 +148,11 @@ export async function findENSAddress (address: string, ensOffchainLookupOptions?
   return apiProxy.jsonRpcService.ensGetEthAddr(address, ensOffchainLookupOptions || null)
 }
 
+export async function findSNSAddress (address: string) {
+  const apiProxy = getAPIProxy()
+  return apiProxy.jsonRpcService.snsGetSolAddr(address)
+}
+
 export async function findUnstoppableDomainAddress (address: string, token: BraveWallet.BlockchainToken | null) {
   const apiProxy = getAPIProxy()
   return apiProxy.jsonRpcService.unstoppableDomainsGetWalletAddr(address, token)

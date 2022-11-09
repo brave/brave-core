@@ -91,6 +91,8 @@ static_library("browser") {
     "nonce_tracker.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "sns_resolver_task.cc",
+    "sns_resolver_task.h",
     "solana_account_meta.cc",
     "solana_account_meta.h",
     "solana_block_tracker.cc",
