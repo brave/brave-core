@@ -224,6 +224,12 @@ bool HasValidSubscriberCredential(PrefService* local_prefs) {
   return true;
 }
 
+bool HasSubscriberCredential(PrefService* local_prefs) {
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  return !sub_cred_dict.empty();
+}
+
 std::string GetSubscriberCredential(PrefService* local_prefs) {
   if (!HasValidSubscriberCredential(local_prefs))
     return "";
