@@ -727,6 +727,7 @@ public class FeedDataSource: ObservableObject {
         .lazy
         .compactMap(\.url)
         .compactMap { URL(string: $0)?.baseDomain }) ?? []
+    let followedSources = FeedSourceOverride.all().filter(\.enabled).map(\.publisherID)
     todayQueue.async {
       let items: [FeedItem] = feeds.compactMap { content in
         var score = content.baseScore
@@ -736,6 +737,9 @@ public class FeedDataSource: ObservableObject {
         }
         guard let source = sources.first(where: { $0.id == content.publisherID }) else {
           return nil
+        }
+        if followedSources.contains(where: { $0 == source.id }) {
+          score -= 5
         }
         return FeedItem(score: score, content: content, source: source)
       }
