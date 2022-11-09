@@ -526,7 +526,7 @@ export function refreshBalances () {
           if (networks.some(n => n.chainId === token.chainId)) {
             const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
             return {
-              balance: getSolTokenBalance.uiAmountString,
+              balance: getSolTokenBalance.amount,
               error: getSolTokenBalance.error,
               errorMessage: getSolTokenBalance.errorMessage,
               chainId: token.chainId
