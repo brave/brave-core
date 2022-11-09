@@ -95,7 +95,7 @@ export const Loading = () => (
 )
 
 export const Error = () => (
-  <BraveTodayErrorCard />
+  <BraveTodayErrorCard onRefresh={() => console.log('refresh clicked')} />
 )
 
 const handleDisplayAdVisit = () => alert('handle visit')

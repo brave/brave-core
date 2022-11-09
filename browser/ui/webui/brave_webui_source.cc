@@ -226,6 +226,12 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsSearchQueryTooShort", IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT},  // NOLINT
         { "braveNewsSuggestionsTitle", IDS_BRAVE_NEWS_SUGGESTIONS_TITLE},
         { "braveNewsSuggestionsSubtitle", IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE},
+        { "braveNewsErrorHeading", IDS_BRAVE_NEWS_ERROR_HEADING},
+        { "braveNewsErrorMessage", IDS_BRAVE_NEWS_ERROR_MESSAGE},
+        { "braveNewsErrorActionLabel", IDS_BRAVE_NEWS_ERROR_ACTION_LABEL},
+        { "braveNewsNoContentHeading", IDS_BRAVE_NEWS_NO_CONTENT_HEADING},
+        { "braveNewsNoContentMessage", IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE},
+        { "braveNewsNoContentActionLabel", IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL},  // NOLINT
         // Brave News Channels
         { "braveNewsChannel-Brave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},
         { "braveNewsChannel-Business", IDS_BRAVE_NEWS_CHANNEL_BUSINESS},

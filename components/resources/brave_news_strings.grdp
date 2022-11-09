@@ -69,6 +69,24 @@
   <message name="IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE" desc="Subtitle of the suggested sources section">
     Some sources you might like. Suggestions are anonymous and matched only on your device.
   </message>
+  <message name="IDS_BRAVE_NEWS_ERROR_HEADING" desc="Message heading for when there is a Brave News error">
+    Oops…
+  </message>
+  <message name="IDS_BRAVE_NEWS_ERROR_MESSAGE" desc="Message body for when there is a Brave News error">
+    Brave News was unable to fetch content.
+  </message>
+  <message name="IDS_BRAVE_NEWS_ERROR_ACTION_LABEL" desc="Message action label for when there is a Brave News error">
+    Try again
+  </message>
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_HEADING" desc="Message heading for when there is no Brave News content">
+    No content
+  </message>
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE" desc="Message body for when there is no Brave News content">
+    Brave News has no content to show.
+  </message>
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL" desc="Message action label for when there is no Brave News content">
+    Choose content sources
+  </message>
 
   <message name="IDS_BRAVE_NEWS_CHANNEL_BRAVE" desc="Translation of the 'Brave' channel">
     Brave
