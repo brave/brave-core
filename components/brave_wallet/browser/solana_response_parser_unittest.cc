@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/json/json_reader.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -14,6 +15,19 @@
 namespace brave_wallet {
 
 namespace solana {
+
+namespace {
+
+void CompareJSON(const std::string& request_string,
+                 const std::string& expected_request) {
+  auto request_json = base::JSONReader::Read(request_string);
+  ASSERT_TRUE(request_json);
+  auto expected_request_json = base::JSONReader::Read(expected_request);
+  ASSERT_TRUE(expected_request_json);
+  EXPECT_EQ(*request_json, *expected_request_json);
+}
+
+}  // namespace
 
 TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   std::string json =
@@ -348,6 +362,176 @@ TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
         << invalid_json;
 
   EXPECT_DCHECK_DEATH(ParseGetBlockHeight(json, nullptr));
+}
+
+TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
+  std::string json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":18446744073709551615,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":18446744073709551615
+        }
+      }
+    }
+  )";
+
+  // 'lamports' and 'rentEpoch' are converted to strings.
+  std::string json_expected = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":"18446744073709551615",
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":"18446744073709551615"
+        }
+      }
+    }
+  )";
+
+  auto json_converted = ConverterForGetAccountInfo().Run(json);
+  ASSERT_TRUE(json_converted);
+  CompareJSON(*json_converted, json_expected);
+}
+
+TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
+  std::string json = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": [
+        {
+          "account": {
+            "data": "2R9jLfiAQ9bgdcw6h8s44439",
+            "executable": false,
+            "lamports": 18446744073709551615,
+            "owner": "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
+            "rentEpoch": 18446744073709551615
+          },
+          "pubkey": "CxELquR1gPP8wHe33gZ4QxqGB3sZ9RSwsJ2KshVewkFY"
+        }
+      ],
+      "id": 1
+    }
+  )";
+
+  // 'lamports' and 'rentEpoch' are converted to strings.
+  std::string json_expected = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": [
+        {
+          "account": {
+            "data": "2R9jLfiAQ9bgdcw6h8s44439",
+            "executable": false,
+            "lamports": "18446744073709551615",
+            "owner": "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
+            "rentEpoch": "18446744073709551615"
+          },
+          "pubkey": "CxELquR1gPP8wHe33gZ4QxqGB3sZ9RSwsJ2KshVewkFY"
+        }
+      ],
+      "id": 1
+    }
+  )";
+
+  auto json_converted = ConverterForGetProrgamAccounts().Run(json);
+  ASSERT_TRUE(json_converted);
+  CompareJSON(*json_converted, json_expected);
+
+  json = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": [
+        {
+          "account": {
+            "data": "2R9jLfiAQ9bgdcw6h8s44439",
+            "executable": false,
+            "lamports": 123,
+            "owner": "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
+            "rentEpoch": 123
+          },
+          "pubkey": "CxELquR1gPP8wHe33gZ4QxqGB3sZ9RSwsJ2KshVewkFY"
+        },
+        {
+          "account": {
+            "data": "2R9jLfiAQ9bgdcw6h8s44439",
+            "executable": false,
+            "lamports": 123,
+            "owner": "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
+            "rentEpoch": 123
+          },
+          "pubkey": "CxELquR1gPP8wHe33gZ4QxqGB3sZ9RSwsJ2KshVewkFY"
+        }
+      ],
+      "id": 1
+    }
+  )";
+
+  // 'lamports' and 'rentEpoch' are converted to strings.
+  json_expected = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": [
+        {
+          "account": {
+            "data": "2R9jLfiAQ9bgdcw6h8s44439",
+            "executable": false,
+            "lamports": "123",
+            "owner": "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
+            "rentEpoch": "123"
+          },
+          "pubkey": "CxELquR1gPP8wHe33gZ4QxqGB3sZ9RSwsJ2KshVewkFY"
+        },
+        {
+          "account": {
+            "data": "2R9jLfiAQ9bgdcw6h8s44439",
+            "executable": false,
+            "lamports": 123,
+            "owner": "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
+            "rentEpoch": 123
+          },
+          "pubkey": "CxELquR1gPP8wHe33gZ4QxqGB3sZ9RSwsJ2KshVewkFY"
+        }
+      ],
+      "id": 1
+    }
+  )";
+
+  json_converted = ConverterForGetProrgamAccounts().Run(json);
+  ASSERT_TRUE(json_converted);
+  CompareJSON(*json_converted, json_expected);
+
+  json = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": [
+      ],
+      "id": 1
+    }
+  )";
+
+  // Empty result case.
+  json_expected = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": [
+      ],
+      "id": 1
+    }
+  )";
+
+  json_converted = ConverterForGetProrgamAccounts().Run(json);
+  ASSERT_TRUE(json_converted);
+  CompareJSON(*json_converted, json_expected);
 }
 
 }  // namespace solana

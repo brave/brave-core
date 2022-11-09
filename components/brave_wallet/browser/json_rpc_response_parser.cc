@@ -166,15 +166,4 @@ absl::optional<std::string> ConvertInt64ToString(const std::string& path,
   return converted_json;
 }
 
-namespace solana {
-
-base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
-ConverterForGetAccountInfo() {
-  return base::BindOnce(&ConvertMultiUint64ToString,
-                        std::vector<std::string>({"/result/value/lamports",
-                                                  "/result/value/rentEpoch"}));
-}
-
-}  // namespace solana
-
 }  // namespace brave_wallet

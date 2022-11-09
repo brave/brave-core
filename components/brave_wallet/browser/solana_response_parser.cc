@@ -265,6 +265,13 @@ bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height) {
 }
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+ConverterForGetAccountInfo() {
+  return base::BindOnce(&ConvertMultiUint64ToString,
+                        std::vector<std::string>({"/result/value/lamports",
+                                                  "/result/value/rentEpoch"}));
+}
+
+base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetProrgamAccounts() {
   return base::BindOnce(
       &ConvertMultiUint64ToString,

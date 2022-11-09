@@ -85,6 +85,8 @@ absl::optional<SolanaAddress> ParseAndVerifySolRecordData(
   constexpr size_t kSolRecordDataSize =
       kSolanaPubkeySize + kSolRecordDataSignature;
 
+  // No strict equality check here as `sol_record_payload` usually comes as 2K
+  // bytes vector. We need only first 96 bytes of it.
   if (sol_record_payload.size() < kSolRecordDataSize) {
     return absl::nullopt;
   }
@@ -104,6 +106,8 @@ absl::optional<SolanaAddress> ParseAndVerifySolRecordData(
   message.insert(message.end(), sol_record_address.bytes().begin(),
                  sol_record_address.bytes().end());
 
+  // Reference implementation adds lowered hex encoding.
+  // https://github.com/Bonfida/solana-program-library/blob/171553544d76f5de294a0c041dfcb17834fe91c5/name-service/js/src/resolve.ts#L54
   std::string hex_message = base::ToLowerASCII(base::HexEncode(message));
 
   // Signature must match.
