@@ -217,7 +217,8 @@ public struct NewsSettingsView: View {
   
   // Xcode typechecker struggled when these were inside of `body`
   @ViewBuilder private var destinations: some View {
-    let totalFollowCount = dataSource.followedSources.count + dataSource.followedChannels.count + dataSource.rssFeedLocations.count
+    let followedSourcesCount = dataSource.followedSources.count
+    let totalFollowCount = followedSourcesCount + dataSource.followedChannels.count + dataSource.rssFeedLocations.count
     NavigationLink {
       SourceListContainerView(dataSource: dataSource)
     } label: {
@@ -227,14 +228,17 @@ public struct NewsSettingsView: View {
         subtitle: "Currently trending sources" // TODO: Localize
       )
     }
-    NavigationLink {
-      SourceSuggestionsContainerView(dataSource: dataSource)
-    } label: {
-      DestinationLabel(
-        image: Image(braveSystemName: "brave.star"),
-        title: "Suggested", // TODO: Localize
-        subtitle: "Our curated list of sources"
-      )
+    if followedSourcesCount > 0 {
+      // Only have suggestions if you have followed individual sources
+      NavigationLink {
+        SourceSuggestionsContainerView(dataSource: dataSource)
+      } label: {
+        DestinationLabel(
+          image: Image(braveSystemName: "brave.star"),
+          title: "Suggested", // TODO: Localize
+          subtitle: "Our curated list of sources"
+        )
+      }
     }
     if !dataSource.channels.isEmpty {
       NavigationLink {
