@@ -538,6 +538,12 @@ class BraveVPNServiceTest : public testing::Test {
                             base::Time::Now() + base::Seconds(10));
   }
 
+  void SetInvalidSubscriberCredential() {
+    // Set expired date.
+    SetSubscriberCredential(&local_pref_service_, "subscriber_credential",
+                            base::Time::Now() - base::Seconds(10));
+  }
+
   std::string SetupTestingStoreForEnv(const std::string& env,
                                       bool active_subscription = true) {
     std::string domain = skus::GetDomain("vpn", env);
@@ -1076,6 +1082,13 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
 
   // Set valid subscriber credential to pretend it's purchased user.
   SetValidSubscriberCredential();
+  ResetVpnService();
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+
+  // Set in-valid subscriber credential but not empty to pretend it's purchased
+  // user but expired while browser is terminated.
+  // In this case, service should try to reload purchased state at startup.
+  SetInvalidSubscriberCredential();
   ResetVpnService();
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
 }

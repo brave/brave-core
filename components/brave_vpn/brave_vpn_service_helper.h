@@ -44,6 +44,7 @@ mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::vector<mojom::Region> region_list);
 bool IsValidCredentialSummary(const base::Value& summary);
 bool HasValidSubscriberCredential(PrefService* local_prefs);
+bool HasSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
 absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs);
 void SetSubscriberCredential(PrefService* local_prefs,
