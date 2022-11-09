@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/components/core_metrics/core_metrics_service.h"
+#include "brave/components/misc_metrics/page_metrics_service.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/history/core/browser/history_service.h"
@@ -14,11 +14,11 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace core_metrics {
+namespace misc_metrics {
 
-class CoreMetricsServiceUnitTest : public testing::Test {
+class PageMetricsServiceUnitTest : public testing::Test {
  public:
-  CoreMetricsServiceUnitTest()
+  PageMetricsServiceUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
@@ -29,9 +29,9 @@ class CoreMetricsServiceUnitTest : public testing::Test {
 
     history_service_ = HistoryServiceFactory::GetForProfile(
         profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
-    core_metrics::CoreMetricsService::RegisterPrefs(local_state_.registry());
-    core_metrics_service_ =
-        new CoreMetricsService(&local_state_, history_service_);
+    misc_metrics::PageMetricsService::RegisterPrefs(local_state_.registry());
+    page_metrics_service_ =
+        new PageMetricsService(&local_state_, history_service_);
   }
 
  protected:
@@ -40,10 +40,10 @@ class CoreMetricsServiceUnitTest : public testing::Test {
   base::HistogramTester histogram_tester_;
   std::unique_ptr<TestingProfile> profile_;
   raw_ptr<history::HistoryService> history_service_;
-  raw_ptr<CoreMetricsService> core_metrics_service_;
+  raw_ptr<PageMetricsService> page_metrics_service_;
 };
 
-TEST_F(CoreMetricsServiceUnitTest, DomainsLoadedCount) {
+TEST_F(PageMetricsServiceUnitTest, DomainsLoadedCount) {
   histogram_tester_.ExpectTotalCount(kDomainsLoadedHistogramName, 0);
 
   task_environment_.FastForwardBy(base::Seconds(30));
@@ -83,27 +83,27 @@ TEST_F(CoreMetricsServiceUnitTest, DomainsLoadedCount) {
             init_zero_count);
 }
 
-TEST_F(CoreMetricsServiceUnitTest, PagesLoadedCount) {
+TEST_F(PageMetricsServiceUnitTest, PagesLoadedCount) {
   task_environment_.FastForwardBy(base::Seconds(30));
 
   histogram_tester_.ExpectUniqueSample(kPagesLoadedHistogramName, 0, 1);
 
   for (size_t i = 0; i < 6; i++) {
-    core_metrics_service_->IncrementPagesLoadedCount();
+    page_metrics_service_->IncrementPagesLoadedCount();
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 1, 1);
 
   for (size_t i = 0; i < 30; i++) {
-    core_metrics_service_->IncrementPagesLoadedCount();
+    page_metrics_service_->IncrementPagesLoadedCount();
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 2, 1);
 
   for (size_t i = 0; i < 30; i++) {
-    core_metrics_service_->IncrementPagesLoadedCount();
+    page_metrics_service_->IncrementPagesLoadedCount();
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
@@ -114,4 +114,4 @@ TEST_F(CoreMetricsServiceUnitTest, PagesLoadedCount) {
   EXPECT_GT(histogram_tester_.GetBucketCount(kPagesLoadedHistogramName, 0), 1);
 }
 
-}  // namespace core_metrics
+}  // namespace misc_metrics

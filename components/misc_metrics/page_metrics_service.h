@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_CORE_METRICS_CORE_METRICS_SERVICE_H_
-#define BRAVE_COMPONENTS_CORE_METRICS_CORE_METRICS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_SERVICE_H_
+#define BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_SERVICE_H_
 
 #include <memory>
 #include <vector>
@@ -22,16 +22,16 @@ class HistoryService;
 struct DomainMetricSet;
 }  // namespace history
 
-namespace core_metrics {
+namespace misc_metrics {
 
 extern const char kPagesLoadedHistogramName[];
 extern const char kDomainsLoadedHistogramName[];
 
-class CoreMetricsService : public KeyedService {
+class PageMetricsService : public KeyedService {
  public:
-  CoreMetricsService(PrefService* local_state,
+  PageMetricsService(PrefService* local_state,
                      history::HistoryService* history_service);
-  ~CoreMetricsService() override;
+  ~PageMetricsService() override;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -56,6 +56,6 @@ class CoreMetricsService : public KeyedService {
   raw_ptr<history::HistoryService> history_service_ = nullptr;
 };
 
-}  // namespace core_metrics
+}  // namespace misc_metrics
 
-#endif  // BRAVE_COMPONENTS_CORE_METRICS_CORE_METRICS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_SERVICE_H_

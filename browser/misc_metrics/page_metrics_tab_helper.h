@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_CORE_METRICS_CORE_METRICS_TAB_HELPER_H_
-#define BRAVE_BROWSER_CORE_METRICS_CORE_METRICS_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_
+#define BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_
 
 #include "base/memory/raw_ptr.h"
 #include "content/public/browser/web_contents.h"
@@ -15,32 +15,32 @@ namespace content {
 class NavigationHandle;
 }  // namespace content
 
-namespace core_metrics {
+namespace misc_metrics {
 
-class CoreMetricsService;
+class PageMetricsService;
 
-class CoreMetricsTabHelper
+class PageMetricsTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<CoreMetricsTabHelper> {
+      public content::WebContentsUserData<PageMetricsTabHelper> {
  public:
-  explicit CoreMetricsTabHelper(content::WebContents* web_contents);
-  ~CoreMetricsTabHelper() override;
+  explicit PageMetricsTabHelper(content::WebContents* web_contents);
+  ~PageMetricsTabHelper() override;
 
-  CoreMetricsTabHelper(const CoreMetricsTabHelper&) = delete;
-  CoreMetricsTabHelper& operator=(const CoreMetricsTabHelper&) = delete;
+  PageMetricsTabHelper(const PageMetricsTabHelper&) = delete;
+  PageMetricsTabHelper& operator=(const PageMetricsTabHelper&) = delete;
 
  private:
-  friend class content::WebContentsUserData<CoreMetricsTabHelper>;
+  friend class content::WebContentsUserData<PageMetricsTabHelper>;
 
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  raw_ptr<CoreMetricsService> core_metrics_service_;
+  raw_ptr<PageMetricsService> page_metrics_service_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-}  // namespace core_metrics
+}  // namespace misc_metrics
 
-#endif  // BRAVE_BROWSER_CORE_METRICS_CORE_METRICS_TAB_HELPER_H_
+#endif  // BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_

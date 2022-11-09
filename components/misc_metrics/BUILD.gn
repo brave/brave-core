@@ -1,7 +1,7 @@
-static_library("core_metrics") {
+static_library("misc_metrics") {
   sources = [
-    "core_metrics_service.cc",
-    "core_metrics_service.h",
+    "page_metrics_service.cc",
+    "page_metrics_service.h",
     "pref_names.cc",
     "pref_names.h",
   ]
