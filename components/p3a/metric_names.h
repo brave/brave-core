@@ -75,6 +75,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Today.WeeklyMaxCardVisitsCount",
     "Brave.Today.WeeklySessionCount",
     "Brave.Today.WeeklyTotalCardViews",
+    "Brave.Toolbar.FrequentMenuGroup",
     "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",

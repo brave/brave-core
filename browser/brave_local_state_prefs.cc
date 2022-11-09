@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/page_metrics_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -135,6 +136,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefs(registry);
 
   brave_wallet::RegisterLocalStatePrefs(registry);
+
+  misc_metrics::MenuMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetricsService::RegisterPrefs(registry);
 }
 

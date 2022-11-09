@@ -7,5 +7,6 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
 
 extern const char kMiscMetricsPagesLoadedCount[];
+extern const char kMiscMetricsMenuGroupActionCounts[];
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
