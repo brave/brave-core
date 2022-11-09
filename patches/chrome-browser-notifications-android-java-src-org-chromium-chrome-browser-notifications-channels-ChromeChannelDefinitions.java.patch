@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index 066843c048ae06f4ad5d6af8c2f4950548a623de..32a3659571e3ee12c2067635118d55e9a152190c 100644
+index 7a874e3a6c288c75e5f673f2ff14710544c107d4..2d8550df76ccd93bd0f9ca81a2a2aac4986ed0c9 100644
 --- a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 +++ b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-@@ -36,6 +36,7 @@ import java.util.Set;
+@@ -42,6 +42,7 @@ import java.util.Set;
   * <br/>
   * See the README.md in this directory for more information before adding or changing any channels.
   */
@@ -10,15 +10,15 @@ index 066843c048ae06f4ad5d6af8c2f4950548a623de..32a3659571e3ee12c2067635118d55e9
  @RequiresApi(Build.VERSION_CODES.O)
  public class ChromeChannelDefinitions extends ChannelDefinitions {
      /**
-@@ -69,6 +70,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -75,6 +76,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
       * more detailed instructions.
       */
      @StringDef({ChannelId.BROWSER, ChannelId.DOWNLOADS, ChannelId.INCOGNITO,
 +            BraveChannelDefinitions.ChannelId.BRAVE_ADS, BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND,
              ChannelId.MEDIA_PLAYBACK, ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS,
-             ChannelId.WEBAPP_ACTIONS, ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES,
-             ChannelId.COMPLETED_DOWNLOADS, ChannelId.PERMISSION_REQUESTS,
-@@ -103,7 +105,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+             ChannelId.WEBAPP_ACTIONS, ChannelId.SITES, ChannelId.VR, ChannelId.SHARING,
+             ChannelId.UPDATES, ChannelId.COMPLETED_DOWNLOADS, ChannelId.PERMISSION_REQUESTS,
+@@ -116,7 +118,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          String USB = "usb";
      }
  
@@ -27,7 +27,7 @@ index 066843c048ae06f4ad5d6af8c2f4950548a623de..32a3659571e3ee12c2067635118d55e9
      @Retention(RetentionPolicy.SOURCE)
      public @interface ChannelGroupId {
          String SITES = "sites";
-@@ -132,6 +134,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -145,6 +147,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  
@@ -35,7 +35,7 @@ index 066843c048ae06f4ad5d6af8c2f4950548a623de..32a3659571e3ee12c2067635118d55e9
              map.put(ChannelId.BROWSER,
                      PredefinedChannel.create(ChannelId.BROWSER,
                              R.string.notification_category_browser,
-@@ -281,6 +284,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -315,6 +318,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          static final Map<String, PredefinedChannelGroup> MAP;
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();
