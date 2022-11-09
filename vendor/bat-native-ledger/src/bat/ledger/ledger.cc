@@ -16,6 +16,7 @@ mojom::Environment _environment = mojom::Environment::PRODUCTION;
 int gemini_retries = 3;
 bool is_debug = false;
 bool is_testing = false;
+int state_migration_target_version_for_testing = -1;
 int reconcile_interval = 0;  // minutes
 int retry_interval = 0;      // seconds
 

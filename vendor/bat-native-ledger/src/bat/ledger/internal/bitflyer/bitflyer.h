@@ -10,11 +10,14 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
+#include "bat/ledger/internal/wallet_provider/connect_external_wallet.h"
+#include "bat/ledger/internal/wallet_provider/get_external_wallet.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -33,14 +36,12 @@ struct Transaction {
 };
 
 class BitflyerTransfer;
-class BitflyerAuthorization;
-class BitflyerWallet;
 
 using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 
 class Bitflyer {
  public:
-  explicit Bitflyer(LedgerImpl* ledger);
+  explicit Bitflyer(LedgerImpl*);
 
   ~Bitflyer();
 
@@ -51,23 +52,24 @@ class Bitflyer {
                          double amount,
                          ledger::LegacyResultCallback callback);
 
-  void FetchBalance(FetchBalanceCallback callback);
+  void FetchBalance(FetchBalanceCallback);
 
   void TransferFunds(const double amount,
                      const std::string& address,
                      client::TransactionCallback callback);
 
-  void WalletAuthorization(
-      const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback);
+  void ConnectWallet(const base::flat_map<std::string, std::string>& args,
+                     ledger::ConnectExternalWalletCallback);
 
-  void GenerateWallet(ledger::ResultCallback callback);
-
-  void DisconnectWallet(const bool manual = false);
+  void GetWallet(ledger::GetExternalWalletCallback);
 
   mojom::ExternalWalletPtr GetWallet();
 
-  bool SetWallet(mojom::ExternalWalletPtr wallet);
+  mojom::ExternalWalletPtr GetWalletIf(const std::set<mojom::WalletStatus>&);
+
+  [[nodiscard]] bool SetWallet(mojom::ExternalWalletPtr);
+
+  [[nodiscard]] bool DisconnectWallet(bool manual = false);
 
  private:
   void ContributionCompleted(mojom::Result result,
@@ -77,11 +79,9 @@ class Bitflyer {
                              const std::string& publisher_key,
                              ledger::LegacyResultCallback callback);
 
-  void OnFetchBalance(FetchBalanceCallback callback,
-                      const mojom::Result result,
-                      const double available);
+  void OnFetchBalance(FetchBalanceCallback, mojom::Result, double available);
 
-  void SaveTransferFee(const std::string& contribution_id, const double amount);
+  void SaveTransferFee(const std::string& contribution_id, double amount);
 
   void StartTransferFeeTimer(const std::string& fee_id, const int attempts);
 
@@ -99,8 +99,8 @@ class Bitflyer {
   void RemoveTransferFee(const std::string& contribution_id);
 
   std::unique_ptr<BitflyerTransfer> transfer_;
-  std::unique_ptr<BitflyerAuthorization> authorization_;
-  std::unique_ptr<BitflyerWallet> wallet_;
+  std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
+  std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
   std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;

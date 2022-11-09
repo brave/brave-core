@@ -257,12 +257,12 @@ class LedgerImpl : public Ledger {
   void FetchBalance(FetchBalanceCallback callback) override;
 
   void GetExternalWallet(const std::string& wallet_type,
-                         ExternalWalletCallback callback) override;
+                         GetExternalWalletCallback) override;
 
-  void ExternalWalletAuthorization(
+  void ConnectExternalWallet(
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
-      ExternalWalletAuthorizationCallback callback) override;
+      ConnectExternalWalletCallback) override;
 
   void DisconnectWallet(const std::string& wallet_type,
                         LegacyResultCallback callback) override;

@@ -843,9 +843,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT },  // NOLINT
         { "walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS },
         { "walletOneTimeTips", IDS_REWARDS_WALLET_ONE_TIME_TIPS },
-        { "walletPending", IDS_REWARDS_WALLET_PENDING },
         { "walletPendingContributions", IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS },  // NOLINT
-        { "walletPendingText", IDS_REWARDS_WALLET_PENDING_TEXT },
         { "walletRewardsFromAds", IDS_REWARDS_WALLET_REWARDS_FROM_ADS },
         { "walletRewardsSummary", IDS_REWARDS_WALLET_REWARDS_SUMMARY },
         { "walletUnverified", IDS_REWARDS_WALLET_UNVERIFIED },
@@ -1084,12 +1082,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletNotCreated", IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED },
         { "walletPaymentId", IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID },
         { "walletStatus", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS },
-        { "walletStatusConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED },    // NOLINT
         { "walletStatusNotConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED },    // NOLINT
+        { "walletStatusNoWallet", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NO_WALLET },    // NOLINT
         { "walletStatusVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED },    // NOLINT
-        { "walletStatusDisconnectedNotVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED },    // NOLINT
         { "walletStatusDisconnectedVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED },    // NOLINT
-        { "walletStatusPending", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING },    // NOLINT
       }
     }, {
 #if BUILDFLAG(ENABLE_TOR)

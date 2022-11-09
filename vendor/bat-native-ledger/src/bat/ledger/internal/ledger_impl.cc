@@ -804,39 +804,48 @@ void LedgerImpl::FetchBalance(FetchBalanceCallback callback) {
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
-                                   ExternalWalletCallback callback) {
+                                   GetExternalWalletCallback callback) {
   WhenReady([this, wallet_type, callback = std::move(callback)]() mutable {
-    auto on_generated = base::BindOnce(
-        [](ExternalWalletCallback callback, LedgerImpl* ledger_impl,
-           const std::string& wallet_type, mojom::Result result) {
-          if (result == mojom::Result::CONTINUE) {
-            result = mojom::Result::LEDGER_OK;
-          }
-          std::move(callback).Run(result,
-                                  wallet::GetWallet(ledger_impl, wallet_type));
-        },
-        std::move(callback), this, wallet_type);
+    if (wallet_type == constant::kWalletBitflyer) {
+      return bitflyer()->GetWallet(std::move(callback));
+    }
+
+    if (wallet_type == constant::kWalletGemini) {
+      return gemini()->GetWallet(std::move(callback));
+    }
 
     if (wallet_type == constant::kWalletUphold) {
-      uphold()->GenerateWallet(std::move(on_generated));
-    } else if (wallet_type == constant::kWalletBitflyer) {
-      bitflyer()->GenerateWallet(std::move(on_generated));
-    } else if (wallet_type == constant::kWalletGemini) {
-      gemini()->GenerateWallet(std::move(on_generated));
-    } else {
-      NOTREACHED();
-      std::move(on_generated).Run(mojom::Result::LEDGER_OK);
+      return uphold()->GetWallet(std::move(callback));
     }
+
+    NOTREACHED() << "Unknown external wallet type!";
+    std::move(callback).Run(
+        base::unexpected(mojom::GetExternalWalletError::kUnexpected));
   });
 }
 
-void LedgerImpl::ExternalWalletAuthorization(
+void LedgerImpl::ConnectExternalWallet(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
-    ExternalWalletAuthorizationCallback callback) {
-  WhenReady([this, wallet_type, args, callback]() {
-    wallet()->ExternalWalletAuthorization(wallet_type, args, callback);
-  });
+    ConnectExternalWalletCallback callback) {
+  WhenReady(
+      [this, wallet_type, args, callback = std::move(callback)]() mutable {
+        if (wallet_type == constant::kWalletBitflyer) {
+          return bitflyer()->ConnectWallet(args, std::move(callback));
+        }
+
+        if (wallet_type == constant::kWalletGemini) {
+          return gemini()->ConnectWallet(args, std::move(callback));
+        }
+
+        if (wallet_type == constant::kWalletUphold) {
+          return uphold()->ConnectWallet(args, std::move(callback));
+        }
+
+        NOTREACHED() << "Unknown external wallet type!";
+        std::move(callback).Run(
+            base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+      });
 }
 
 void LedgerImpl::DisconnectWallet(const std::string& wallet_type,

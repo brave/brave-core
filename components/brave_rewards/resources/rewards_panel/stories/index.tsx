@@ -17,6 +17,7 @@ import { NotificationCard } from '../components/notification_card'
 import { App } from '../components/app'
 
 import grantCaptchaImageURL from './grant_captcha_image.png'
+import * as mojom from '../../shared/lib/mojom'
 
 export default {
   title: 'Rewards/Panel'
@@ -96,7 +97,7 @@ function createHost (): Host {
     externalWallet: {
       provider: 'uphold',
       username: 'brave123',
-      status: 'verified',
+      status: mojom.WalletStatus.kConnected,
       links: {}
     },
     summaryData: {

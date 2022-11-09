@@ -34,6 +34,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/l10n/l10n_util.h"
 
+using brave_rewards::GetExternalWalletResult;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsServiceObserver;
@@ -93,8 +94,7 @@ class TipMessageHandler : public WebUIMessageHandler,
   void GetRecurringTipsCallback(
       std::vector<ledger::mojom::PublisherInfoPtr> list);
 
-  void GetExternalWalletCallback(const ledger::mojom::Result result,
-                                 ledger::mojom::ExternalWalletPtr wallet);
+  void OnGetExternalWallet(GetExternalWalletResult);
 
   void GetPublisherBannerCallback(ledger::mojom::PublisherBannerPtr banner);
 
@@ -338,9 +338,8 @@ void TipMessageHandler::GetExternalWallet(const base::Value::List& args) {
   if (!rewards_service_) {
     return;
   }
-  rewards_service_->GetExternalWallet(
-      base::BindOnce(&TipMessageHandler::GetExternalWalletCallback,
-                     weak_factory_.GetWeakPtr()));
+  rewards_service_->GetExternalWallet(base::BindOnce(
+      &TipMessageHandler::OnGetExternalWallet, weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetRecurringTips(const base::Value::List& args) {
@@ -493,15 +492,13 @@ void TipMessageHandler::FetchBalanceCallback(
   FireWebUIListener("balanceUpdated", base::Value(std::move(data)));
 }
 
-void TipMessageHandler::GetExternalWalletCallback(
-    const ledger::mojom::Result result,
-    ledger::mojom::ExternalWalletPtr wallet) {
+void TipMessageHandler::OnGetExternalWallet(GetExternalWalletResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict data;
-  if (wallet) {
+  if (auto wallet = std::move(result).value_or(nullptr)) {
     data.Set("type", wallet->type);
     data.Set("status", static_cast<int>(wallet->status));
   }

@@ -122,25 +122,6 @@ OBJC_EXPORT
                                         LedgerDrainStatus status))completion
     NS_SWIFT_NAME(drainStatus(for:completion:));
 
-#pragma mark - User Wallets
-
-/// The last updated external wallet if a user has hooked one up
-@property(nonatomic, readonly, nullable) LedgerExternalWallet* upholdWallet;
-
-- (void)fetchUpholdWallet:
-    (nullable void (^)(LedgerExternalWallet* _Nullable wallet))completion;
-
-- (void)disconnectWalletOfType:(ExternalWalletType)walletType
-                    completion:
-                        (nullable void (^)(LedgerResult result))completion;
-
-- (void)authorizeExternalWalletOfType:(ExternalWalletType)walletType
-                           queryItems:
-                               (NSDictionary<NSString*, NSString*>*)queryItems
-                           completion:(void (^)(LedgerResult result,
-                                                NSURL* _Nullable redirectURL))
-                                          completion;
-
 #pragma mark - Publishers
 
 @property(nonatomic, readonly, getter=isLoadingPublisherList)

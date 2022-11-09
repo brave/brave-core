@@ -52,8 +52,8 @@ function fullLog (log: string) {
   getActions().onGetFullLog(log)
 }
 
-function externalWallet (properties: {result: number, wallet: RewardsInternals.ExternalWallet}) {
-  getActions().onExternalWallet(properties.result, properties.wallet)
+function onGetExternalWallet (wallet: RewardsInternals.ExternalWallet) {
+  getActions().onGetExternalWallet(wallet)
 }
 
 function eventLogs (logs: RewardsInternals.EventLog[]) {
@@ -84,7 +84,7 @@ window.brave_rewards_internals = {
   promotions,
   partialLog,
   fullLog,
-  externalWallet,
+  onGetExternalWallet,
   eventLogs,
   adDiagnostics
 }

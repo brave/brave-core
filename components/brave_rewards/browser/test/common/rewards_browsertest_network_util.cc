@@ -87,27 +87,38 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   return std::move(http_response);
 }
 
-std::string GetUpholdUser(const bool wallet_verified) {
-  const std::string verified = wallet_verified
-      ? "2018-08-01T09:53:51.258Z"
-      : "null";
+std::string GetUpholdCapabilities() {
+  return R"(
+    [
+      {
+        "category": "permissions",
+        "enabled": true,
+        "key": "receives",
+        "name": "Receives",
+        "requirements": [],
+        "restrictions": []
+      },
+      {
+        "category": "permissions",
+        "enabled": true,
+        "key": "sends",
+        "name": "Sends",
+        "requirements": [],
+        "restrictions": []
+      }
+    ]
+  )";
+}
 
-  const std::string status = wallet_verified
-      ? "ok"
-      : "pending";
-
-  const std::string name = "Test User";
-
-  return base::StringPrintf(
-      R"({
-        "name": "%s",
-        "memberAt": "%s",
-        "status": "%s",
-        "currencies": ["BAT"]
-      })",
-      name.c_str(),
-      verified.c_str(),
-      status.c_str());
+std::string GetUpholdUser() {
+  return R"(
+    {
+      "name": "Test User",
+      "memberAt": "2018-08-01T09:53:51.258Z",
+      "status": "ok",
+      "currencies": ["BAT"]
+    }
+  )";
 }
 
 std::string GetUpholdCard(

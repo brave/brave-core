@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
@@ -24,9 +25,12 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.ledger.mojom.WalletStatus;
 
 public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity {
+    private static final String TAG = "BraveRewards";
     public static final String DISCONNECT_WALLET_URL = "brave://rewards/#disconnect-wallet";
+    public static final int UNDEFINED_WALLET_STATUS = -1;
 
     private String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
     private String walletTypeString;
@@ -51,7 +55,8 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
 
     private void SetUIControls() {
         Intent intent = getIntent();
-        final int status = intent.getIntExtra(BraveRewardsExternalWallet.STATUS, -1);
+        final int status =
+                intent.getIntExtra(BraveRewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
         TextView txtUserId = (TextView) findViewById(R.id.user_id);
         TextView txtUserStatus = (TextView) findViewById(R.id.user_status);
         Button btn1 = (Button) findViewById(R.id.user_wallet_btn1);
@@ -60,37 +65,31 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
         btnGotoProvider.setText(String.format(
                 getResources().getString(R.string.user_wallet_goto_provider), walletTypeString));
 
-        if (status < BraveRewardsExternalWallet.NOT_CONNECTED
-                || status > BraveRewardsExternalWallet.PENDING) {
-            finish();
-        } else if (status == BraveRewardsExternalWallet.VERIFIED) {
-            // set 2nd button visible
-            findViewById(R.id.user_wallet_btn2_separator).setVisibility(View.VISIBLE);
-            btn2 = (Button) findViewById(R.id.user_wallet_btn2);
-            btn2.setVisibility(View.VISIBLE);
+        switch (status) {
+            case WalletStatus.CONNECTED:
+                // set 2nd button visible
+                findViewById(R.id.user_wallet_btn2_separator).setVisibility(View.VISIBLE);
+                btn2 = (Button) findViewById(R.id.user_wallet_btn2);
+                btn2.setVisibility(View.VISIBLE);
 
-            // Buttons:
-            // Add funds
-            // Withdraw
-            // Go to provider
-            // Disconnect
-            btn1.setText(getResources().getString(R.string.brave_rewards_local_panel_add_funds));
-            btn2.setText(getResources().getString(R.string.user_wallet_withdraw_funds));
-            txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
+                // Buttons:
+                // Add funds
+                // Withdraw
+                // Go to provider
+                // Disconnect
+                btn1.setText(
+                        getResources().getString(R.string.brave_rewards_local_panel_add_funds));
+                btn2.setText(getResources().getString(R.string.user_wallet_withdraw_funds));
+                txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
 
-            SetBtnOpenUrlClickHandler(
-                    btn1, intent.getStringExtra(BraveRewardsExternalWallet.ADD_URL));
-            SetBtnOpenUrlClickHandler(
-                    btn2, intent.getStringExtra(BraveRewardsExternalWallet.WITHDRAW_URL));
-        } else {
-            // CONNECTED or PENDING
-            // Buttons:
-            // Complete verification
-            // Go to provider
-            // Disconnect
-            btn1.setText(getResources().getString(R.string.user_wallet_complete_verification));
-            SetBtnOpenUrlClickHandler(
-                    btn1, intent.getStringExtra(BraveRewardsExternalWallet.LOGIN_URL));
+                SetBtnOpenUrlClickHandler(
+                        btn1, intent.getStringExtra(BraveRewardsExternalWallet.ADD_URL));
+                SetBtnOpenUrlClickHandler(
+                        btn2, intent.getStringExtra(BraveRewardsExternalWallet.WITHDRAW_URL));
+                break;
+            case UNDEFINED_WALLET_STATUS:
+                finish();
+                break;
         }
 
         SetBtnOpenUrlClickHandler(
@@ -137,15 +136,6 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
                 String.format(getResources().getString(R.string.user_wallet_disconnect_rewards),
                         walletTypeString));
         SetBtnOpenUrlClickHandler(btnDisconnect, DISCONNECT_WALLET_URL);
-        /*
-        -- Use this code when android transitions to native code for Brave Rewards UI --
-        btnDisconnect.setOnClickListener((View v) -> {
-            BraveRewardsNativeWorker.getInstance().DisconnectWallet();
-            Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
-            finish();
-        });
-        */
     }
 
     @Override

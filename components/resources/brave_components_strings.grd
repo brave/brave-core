@@ -688,12 +688,10 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Rewards profile not yet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Rewards payment ID">Rewards payment ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Rewards state:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NO_WALLET" desc="">No wallet</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED" desc="">Verified</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED" desc="">Disconnected (Not verified)</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED" desc="">Disconnected (Verified)</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING" desc="">Pending</message>
 
       <!-- WebUI brave tip dialog resources -->
       <message name="IDS_BRAVE_REWARDS_TIP_BAT_FUNDS" desc="">BAT Funds</message>

@@ -6,16 +6,15 @@
 package org.chromium.chrome.browser;
 
 import android.content.Context;
-import androidx.annotation.IntDef;
+
 import androidx.annotation.VisibleForTesting;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.chromium.ledger.mojom.WalletStatus;
 
 public class BraveRewardsExternalWallet {
     //fields
@@ -29,23 +28,9 @@ public class BraveRewardsExternalWallet {
     public static final String WITHDRAW_URL = "withdraw_url";
     public static final String LOGIN_URL = "login_url";
 
-    //WalletStatus @
-    //vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({NOT_CONNECTED, CONNECTED, VERIFIED, DISCONNECTED_NOT_VERIFIED,
-            DISCONNECTED_VERIFIED, PENDING})
-    public @interface WalletStatus {}
-    public static final int NOT_CONNECTED = 0;
-    public static final int CONNECTED = 1;
-    public static final int VERIFIED = 2;
-    public static final int DISCONNECTED_NOT_VERIFIED = 3;
-    public static final int DISCONNECTED_VERIFIED = 4;
-    public static final int PENDING = 5;
-
     private String mAccountUrl;
     private String mAddUrl;
     private String mAddress;
-    @WalletStatus
     private int mStatus;
     private String mToken;
     private String mType;
@@ -116,33 +101,21 @@ public class BraveRewardsExternalWallet {
                 + '\'' + ", mLoginUrl='" + mLoginUrl + '\'' + '}';
     }
 
-    public static String WalletStatusToString (@WalletStatus int status){
+    public static String WalletStatusToString(int status) {
         String value = "";
         Context context = ContextUtils.getApplicationContext();
         switch (status){
-            case NOT_CONNECTED:
+            case WalletStatus.NOT_CONNECTED:
                 value = context.getResources().getString(
                     R.string.user_wallet_status_not_connected);
                 break;
-            case CONNECTED:
-                value = context.getResources().getString(
-                    R.string.user_wallet_status_connected);
-                break;
-            case VERIFIED:
+            case WalletStatus.CONNECTED:
                 value = context.getResources().getString(
                     R.string.user_wallet_status_verified);
                 break;
-            case DISCONNECTED_NOT_VERIFIED:
+            case WalletStatus.LOGGED_OUT:
                 value = context.getResources().getString(
-                    R.string.user_wallet_status_disconnected_not_verified);
-                break;
-            case DISCONNECTED_VERIFIED:
-                value = context.getResources().getString(
-                    R.string.user_wallet_status_disconnected_verified);
-                break;
-            case PENDING:
-                value = context.getResources().getString(
-                    R.string.user_wallet_status_pending);
+                        R.string.brave_ui_wallet_button_logged_out);
                 break;
             default:
                 break;

@@ -34,6 +34,7 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
+  "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:ledger_types_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",

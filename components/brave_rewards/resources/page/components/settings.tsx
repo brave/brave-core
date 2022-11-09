@@ -47,9 +47,8 @@ export function Settings () {
       return true
     }
 
-    // Allow the browser to handle any URL that has 2 or more path components.
-    if (pathname.split('/').length > 2) {
-      actions.processRewardsPageUrl(pathname, location.search)
+    if (pathname.includes('authorization')) {
+      actions.connectExternalWallet(pathname, location.search)
       return true
     }
 

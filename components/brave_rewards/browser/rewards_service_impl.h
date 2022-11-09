@@ -89,10 +89,6 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
     std::string* response,
     base::flat_map<std::string, std::string>* headers)>;
 
-using ExternalWalletAuthorizationCallback =
-    base::OnceCallback<void(const ledger::mojom::Result,
-                            const base::flat_map<std::string, std::string>&)>;
-
 using StopLedgerCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
@@ -301,14 +297,9 @@ class RewardsServiceImpl : public RewardsService,
 
   std::vector<std::string> GetExternalWalletProviders() const override;
 
-  void ExternalWalletAuthorization(
-      const std::string& wallet_type,
-      const base::flat_map<std::string, std::string>& args,
-      ExternalWalletAuthorizationCallback callback);
-
-  void ProcessRewardsPageUrl(const std::string& path,
+  void ConnectExternalWallet(const std::string& path,
                              const std::string& query,
-                             ProcessRewardsPageUrlCallback callback) override;
+                             ConnectExternalWalletCallback) override;
 
   void DisconnectWallet() override;
 
@@ -337,6 +328,7 @@ class RewardsServiceImpl : public RewardsService,
 
   // Testing methods
   void SetLedgerEnvForTesting();
+  void SetLedgerStateTargetVersionForTesting(int version);
   void PrepareLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
   void MaybeShowNotificationAddFundsForTesting(
@@ -415,13 +407,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPendingContributionRemoved(const ledger::mojom::Result result);
 
   void OnRemoveAllPendingContributions(const ledger::mojom::Result result);
-
-  void OnProcessExternalWalletAuthorization(
-      const std::string& wallet_type,
-      const std::string& action,
-      ProcessRewardsPageUrlCallback callback,
-      const ledger::mojom::Result result,
-      const base::flat_map<std::string, std::string>& args);
 
   void OnDisconnectWallet(const std::string& wallet_type,
                           const ledger::mojom::Result result);
@@ -653,6 +638,7 @@ class RewardsServiceImpl : public RewardsService,
   int32_t country_id_ = 0;
   bool reset_states_;
   bool ledger_for_testing_ = false;
+  int ledger_state_target_version_for_testing_ = -1;
   bool resetting_rewards_ = false;
   int persist_log_level_ = 0;
 

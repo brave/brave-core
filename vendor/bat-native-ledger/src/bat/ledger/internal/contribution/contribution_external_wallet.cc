@@ -52,31 +52,25 @@ void ContributionExternalWallet::ContributionInfo(
 
   mojom::ExternalWalletPtr wallet;
   switch (contribution->processor) {
-    case mojom::ContributionProcessor::UPHOLD:
-      wallet = ledger_->uphold()->GetWallet();
-      break;
     case mojom::ContributionProcessor::BITFLYER:
-      wallet = ledger_->bitflyer()->GetWallet();
+      wallet =
+          ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     case mojom::ContributionProcessor::GEMINI:
-      wallet = ledger_->gemini()->GetWallet();
+      wallet =
+          ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
+      break;
+    case mojom::ContributionProcessor::UPHOLD:
+      wallet =
+          ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     default:
       break;
   }
 
   if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(mojom::Result::LEDGER_ERROR);
-    return;
-  }
-
-  if (wallet->token.empty() ||
-      wallet->status != mojom::WalletStatus::VERIFIED) {
-    BLOG(0, "Wallet token is empty/wallet is not verified. Wallet status: "
-        << wallet->status);
-    callback(mojom::Result::LEDGER_ERROR);
-    return;
+    BLOG(0, "Unexpected wallet status!");
+    return callback(mojom::Result::LEDGER_ERROR);
   }
 
   if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {

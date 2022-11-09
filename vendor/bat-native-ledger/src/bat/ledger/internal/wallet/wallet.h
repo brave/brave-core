@@ -33,13 +33,8 @@ class Wallet {
 
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
-  void ExternalWalletAuthorization(
-      const std::string& wallet_type,
-      const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback);
-
   void DisconnectWallet(const std::string& wallet_type,
-                        ledger::LegacyResultCallback callback);
+                        ledger::LegacyResultCallback);
 
   void DisconnectAllWallets(ledger::LegacyResultCallback callback);
 

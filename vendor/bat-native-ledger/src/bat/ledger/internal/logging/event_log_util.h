@@ -9,10 +9,11 @@
 #include <string>
 
 #include "bat/ledger/mojom_structs.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
 
 namespace ledger {
 namespace log {
-std::string GetEventLogKeyForLinkingResult(mojom::Result result);
+std::string GetEventLogKeyForLinkingResult(mojom::ConnectExternalWalletError);
 }  // namespace log
 }  // namespace ledger
 

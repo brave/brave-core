@@ -1098,9 +1098,6 @@ Are you sure you want to do this?
       <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
         Brave Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
       </message>
-      <message name="IDS_USER_WALLET_COMPLETE_VERIFICATION">
-        Complete wallet verification
-      </message>
       <message name="IDS_USER_WALLET_ACTIVITY_NAME">
         User Wallet
       </message>
@@ -1116,20 +1113,8 @@ Are you sure you want to do this?
       <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
         Not connected
       </message>
-      <message name="IDS_USER_WALLET_STATUS_CONNECTED">
-        Connected
-      </message>
       <message name="IDS_USER_WALLET_STATUS_VERIFIED">
         Verified
-      </message>
-      <message name="IDS_USER_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED">
-        Disconnected not verified
-      </message>
-      <message name="IDS_USER_WALLET_STATUS_DISCONNECTED_VERIFIED">
-        Disconnected verified
-      </message>
-      <message name="IDS_USER_WALLET_STATUS_PENDING">
-        Pending
       </message>
       <message name="IDS_BRAVE_DEFAULT" desc="Text for brave default settings option.">
         Brave Default

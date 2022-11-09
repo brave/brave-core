@@ -20,6 +20,8 @@ import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 
 import * as style from './wallet_card.style'
 
+import * as mojom from '../../../shared/lib/mojom'
+
 const rangeFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short',
   day: 'numeric'
@@ -54,7 +56,7 @@ export function WalletCard (props: Props) {
   const { externalWallet } = props
 
   const walletDisconnected =
-    externalWallet && externalWallet.status === 'disconnected'
+    externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut
 
   function onAddFundsClick () {
     props.onExternalWalletAction('add-funds')

@@ -90,7 +90,7 @@ export function getExternalWalletProviders () {
     // The extension API currently does not support retrieving a list of
     // external wallet providers. Instead, use the `getExternalWallet` function
     // to retrieve the "currently selected" provider.
-    chrome.braveRewards.getExternalWallet((_, wallet) => {
+    chrome.braveRewards.getExternalWallet((wallet) => {
       const provider = wallet && externalWalletProviderFromString(wallet.type)
       resolve(provider ? [provider] : [])
     })
@@ -99,7 +99,7 @@ export function getExternalWalletProviders () {
 
 export function getExternalWallet () {
   return new Promise((resolve) => {
-    chrome.braveRewards.getExternalWallet((_, wallet) => { resolve(wallet) })
+    chrome.braveRewards.getExternalWallet((wallet) => { resolve(wallet) })
   }).then(externalWalletFromExtensionData)
 }
 
