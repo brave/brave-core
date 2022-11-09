@@ -452,6 +452,12 @@ void RewardsServiceImpl::CheckPreferences() {
 
   if (is_ac_enabled || is_ads_enabled) {
     StartLedgerProcessIfNecessary();
+
+    // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
+    // the "enabled" pref to true.
+    if (!profile_->GetPrefs()->GetUserPrefValue(prefs::kEnabled)) {
+      profile_->GetPrefs()->SetBoolean(prefs::kEnabled, true);
+    }
   }
 }
 
