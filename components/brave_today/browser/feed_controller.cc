@@ -142,6 +142,7 @@ void FeedController::EnsureFeedIsUpdating() {
               VLOG(1) << "All feed item fetches done with item count: "
                       << total_size;
               if (total_size == 0) {
+                controller->ResetFeed();
                 controller->NotifyUpdateDone();
                 return;
               }
