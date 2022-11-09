@@ -263,6 +263,7 @@ Config.prototype.buildArgs = function () {
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
+    branding_path_product: "brave",
     enable_nacl: false,
     enable_widevine: true,
     target_cpu: this.targetArch,
@@ -321,6 +322,10 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
     ...this.extraGnArgs,
+  }
+
+  if (!this.isOfficialBuild()) {
+    args.branding_path_product += "-development"
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -545,8 +550,8 @@ Config.prototype.buildArgs = function () {
     delete args.proprietary_codecs
     delete args.ffmpeg_branding
     delete args.branding_path_component
+    delete args.branding_path_product
     delete args.enable_nacl
-    delete args.branding_path_component
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
