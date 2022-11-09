@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
+import Button from '$web-components/button'
+import { getLocale } from '../../../../../common/locale'
 import * as Card from '../cardIntro'
 
 const Content = styled('div')`
@@ -25,6 +27,10 @@ const Graphic = styled('div')`
   height: 46px;
 `
 
+const Action = styled('div')`
+  padding-top: 20px;
+`
+
 function Icon () {
   return (
     <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 64 46'>
@@ -38,7 +44,13 @@ function Icon () {
   )
 }
 
-export default function CardError () {
+interface MessageProps {
+  heading: string
+  message: string
+  actionLabel?: string
+  onActionClick?: () => unknown
+}
+export function UnidealMessageCard (props: MessageProps) {
   return (
     <Card.Intro>
       <Content>
@@ -46,12 +58,33 @@ export default function CardError () {
           <Icon />
         </Graphic>
         <Heading>
-          Oops…
+          {props.heading}
         </Heading>
         <Card.Paragraph>
-          Brave News is experiencing some issues. Try again.
+          {props.message}
         </Card.Paragraph>
+        {!!props.actionLabel && !!props.onActionClick &&
+          <Action>
+            <Button isPrimary onClick={props.onActionClick}>
+              {props.actionLabel}
+            </Button>
+          </Action>
+        }
       </Content>
     </Card.Intro>
+  )
+}
+
+interface Props {
+  onRefresh: () => unknown
+}
+export default function CardError (props: Props) {
+  return (
+    <UnidealMessageCard
+      heading={getLocale('braveNewsErrorHeading')}
+      message={getLocale('braveNewsErrorMessage')}
+      actionLabel={getLocale('braveNewsErrorActionLabel')}
+      onActionClick={props.onRefresh}
+    />
   )
 }
