@@ -12,8 +12,9 @@ runner:
         -c p/terraform \
         -c p/secrets \
         $(find semgrep_rules -name '*.yml' | sed 's/^/-c /g') \
+        --baseline-commit origin/${GITHUB_BASE_REF:-development} \
         --metrics=off \
-        --json $(git --no-pager diff --name-only HEAD $(git merge-base HEAD origin/${GITHUB_BASE_REF:-development}) | xargs ls -d 2>/dev/null) \
+        --json \
         | jq -r '.results[] | "\(.extra.severity[0:1]):\(.path):\(.end.line) \(.extra.message)"' \
         | sed 's/$/ (Cc @brave\/sec-team @thypon @stoletheminerals)/g' | tee semgrep.log &&\
         find semgrep.log -type f -empty -delete
