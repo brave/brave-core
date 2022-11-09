@@ -18,6 +18,7 @@ import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 import { SuggestionsPage } from './Suggestions'
 import { PopularPage } from './Popular'
+import { useCallback } from '@storybook/addons'
 
 const Grid = styled.div`
   width: 100%;
@@ -110,11 +111,16 @@ const Content = styled.div`
 
 export default function Configure () {
   const [enabled, setEnabled] = useNewTabPref('isBraveTodayOptedIn')
+  const [, setShowToday] = useNewTabPref('showToday')
   const { setCustomizePage, customizePage } = useBraveNews()
+  const toggleBraveNews = useCallback((show: boolean) => {
+    setEnabled(show)
+    setShowToday(show)
+  }, [setEnabled, setShowToday])
 
   let content: JSX.Element
   if (!enabled) {
-    content = <DisabledPlaceholder enableBraveNews={() => setEnabled(true)} />
+    content = <DisabledPlaceholder enableBraveNews={() => toggleBraveNews(true)} />
   } else if (customizePage === 'suggestions') {
     content = <SuggestionsPage/>
   } else if (customizePage === 'popular') {
@@ -143,7 +149,7 @@ export default function Configure () {
         </CloseButtonContainer>
         {enabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveTodayTitle')}</HeaderText>
-          <Toggle isOn={enabled} onChange={setEnabled} />
+          <Toggle isOn={enabled} onChange={toggleBraveNews} />
         </Flex>}
       </Header>
       <Hr />
