@@ -258,7 +258,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "107.0.5304.91",
+        "tag": "107.0.5304.110",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }
@@ -368,5 +368,8 @@
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4",
     "webtorrent": "^0.114.0"
+  },
+  "overrides": {
+    "loader-utils": "2.0.3"
   }
 }
