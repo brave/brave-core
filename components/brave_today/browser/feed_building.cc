@@ -429,12 +429,22 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
       break;
     }
   }
+  if (featured_article_it == articles.end()) {
+    // If there was no matching "news" article,
+    // get the highest score article.
+    featured_article_it = articles.begin();
+    VLOG(1) << "Featured item was set to the highest ranked article";
+  }
+  // When we have no articles, do not set a featured item
   if (featured_article_it != articles.end()) {
     auto item = *std::make_move_iterator(featured_article_it);
     auto article = mojom::FeedItem::NewArticle(std::move(item));
     feed->featured_item = std::move(article);
     articles.erase(featured_article_it);
+  } else {
+    VLOG(1) << "No featured item was set as there are no articles";
   }
+
   // Generate as many pages of content as possible
   // Make the pages
   int cur_page = 0;
