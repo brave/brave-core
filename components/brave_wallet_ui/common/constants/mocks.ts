@@ -133,6 +133,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   logo: '',
   isErc20: true,
   isErc721: false,
+  isNft: false,
   decimals: 18,
   visible: true,
   tokenId: '',
