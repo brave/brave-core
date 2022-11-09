@@ -58,8 +58,8 @@ const SitePermissionAccountItem = (props: Props) => {
   }, [account.address])
 
   const isActive = React.useMemo((): boolean => {
-    return account.address.toLowerCase() === selectedAccount.address.toLowerCase()
-  }, [selectedAccount, account])
+    return account.address.toLowerCase() === selectedAccount?.address.toLowerCase()
+  }, [selectedAccount?.address, account.address])
 
   const hasPermission = React.useMemo((): boolean => {
     return connectedAccounts.some(a => a.address.toLowerCase() === account.address.toLowerCase())

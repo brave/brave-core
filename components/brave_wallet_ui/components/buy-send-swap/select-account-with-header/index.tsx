@@ -15,7 +15,7 @@ import {
 
 export interface Props {
   accounts: WalletAccountType[]
-  selectedAccount: UserAccountType
+  selectedAccount?: UserAccountType
   onSelectAccount: (account: UserAccountType) => () => void
   onAddAccount?: () => void
   hasAddButton?: boolean

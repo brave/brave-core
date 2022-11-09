@@ -908,7 +908,7 @@ export async function sendEthTransaction (store: Store, payload: SendEthTransact
     // Check if network and keyring support EIP-1559.
     default:
       const { selectedAccount, selectedNetwork } = store.getState().wallet
-      isEIP1559 = selectedNetwork
+      isEIP1559 = selectedNetwork && selectedAccount
         ? hasEIP1559Support(selectedAccount, selectedNetwork)
         : false
   }

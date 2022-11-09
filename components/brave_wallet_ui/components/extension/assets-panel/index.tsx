@@ -25,7 +25,7 @@ import { PortfolioAssetItem } from '../../desktop'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 export interface Props {
   userAssetList: BraveWallet.BlockchainToken[]
-  selectedAccount: WalletAccountType
+  selectedAccount?: WalletAccountType
   onAddAsset: () => void
 }
 

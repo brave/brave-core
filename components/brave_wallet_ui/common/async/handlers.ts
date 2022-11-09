@@ -499,7 +499,7 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
     return
   }
 
-  if (selectedNetwork && !hasEIP1559Support(selectedAccount, selectedNetwork)) {
+  if (selectedNetwork && selectedAccount && !hasEIP1559Support(selectedAccount, selectedNetwork)) {
     return
   }
 

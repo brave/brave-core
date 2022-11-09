@@ -424,7 +424,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         // order to ensure a swap with minimum slippage.
         const { estimation: gasEstimates } = await ethTxManagerProxy.getGasEstimation1559()
 
-        const isEIP1559 = selectedNetwork && gasEstimates
+        const isEIP1559 = selectedNetwork && gasEstimates && selectedAccount
           ? hasEIP1559Support(selectedAccount, selectedNetwork)
           : false
         let maxPriorityFeePerGas
@@ -678,7 +678,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return
     }
 
-    if (!selectedNetwork) {
+    if (!selectedNetwork || !selectedAccount) {
       return
     }
 
@@ -807,7 +807,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         return
       }
 
-      if (swapValidationError === 'insufficientAllowance' && allowance) {
+      if (swapValidationError === 'insufficientAllowance' && allowance && selectedAccount) {
         // IMPORTANT SECURITY NOTICE
         //
         // The token allowance suggested by Swap is always unlimited,
@@ -948,22 +948,29 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   React.useEffect(() => {
     let isSubscribed = true // track if the component is mounted
 
+    // cleanup function, unsubscribe to promise on unmount
+    const effectCleanup = () => { isSubscribed = false }
+
     if (swapProvider !== SwapProvider.ZeroEx) {
-      return
+      return effectCleanup
     }
 
     if (!fromAsset) {
-      return
+      return effectCleanup
     }
 
     if (!fromAsset.isErc20) {
       setAllowance(undefined)
-      return
+      return effectCleanup
     }
 
     if (!swapQuote) {
       setAllowance(undefined)
-      return
+      return effectCleanup
+    }
+
+    if (!selectedAccount) {
+      return effectCleanup
     }
 
     const { allowanceTarget } = swapQuote
@@ -976,10 +983,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       })
       .catch(e => console.log(e))
 
-    // cleanup function, unsubscribe to promise on unmount
-    return () => {
-      isSubscribed = false
-    }
+    return effectCleanup
   }, [fromAsset, swapQuote, selectedAccount, swapProvider])
 
   /**
