@@ -14,7 +14,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"

@@ -1,3 +1,10 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -BluetoothLowEnergyApiTest.*
@@ -10,6 +17,7 @@
 -ExternalProtocolHandlerSandboxBrowserTest.*
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
+-MetricIntegrationTest.FirstInputDelay
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginAllow
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginDeny
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedSameOriginAllow
@@ -17,6 +25,7 @@
 -NewTabUIProcessPerTabTest.*
 -OzonePlatformTest.*
 -PolicyTestPrefetchProxyBrowserTest.*
+-PolicyTestSetTimeoutWithout1MsClamp.DisablePolicy
 -PPAPINaClPNaClNonSfiTest.*
 -PrefetchProxyBrowserTest.*
 -PrefetchProxyWithDecoyRequestsBrowserTest.*

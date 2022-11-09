@@ -85,6 +85,7 @@ class NTPBackgroundPrefs final {
   absl::variant<GURL, std::string> GetSelectedValue() const;
 
   void AddCustomImageToList(const std::string& file_name);
+  void RemoveCustomImageFromList(const std::string& file_name);
   std::vector<std::string> GetCustomImageList() const;
 
  private:

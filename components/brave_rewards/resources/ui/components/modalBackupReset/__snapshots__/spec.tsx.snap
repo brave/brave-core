@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalBackupReset tests basic tests matches the snapshot 1`] = `
+<div
+  className="sc-dliRfk gLWpoT"
+  id="modal"
+  onClick={[Function]}
+>
+  <div
+    className="sc-kLIISr hErQVG"
+    size="small"
+  >
+    <div
+      className="sc-qrIAp cisNde"
+      onClick={[Function]}
+    >
+      <svg
+        aria-hidden="true"
+        className="sc-ksYbfQ gAtYxm"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+        />
+        <path
+          d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
+        />
+      </svg>
+    </div>
+    <div
+      className="sc-iqzUVk jWvkBw"
+    >
+      <div
+        className="sc-jTzLTM hVnMft"
+      >
+        <span
+          className="sc-fjdhpX itrNPn"
+        >
+          MISSING: manageWallet
+        </span>
+      </div>
+      <div
+        className="sc-kAzzGY bKcMZn"
+      >
+        <div
+          className="sc-cSHVUG hYZwci"
+        >
+          <div
+            className="sc-fxmata iwrIdh"
+          >
+            <div
+              className="sc-boCWhm gPpBhW"
+            >
+              <div
+                className="sc-cIsjWt ibtXuY"
+              >
+                <div
+                  className="sc-OnmeF gQhETW"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="sc-fxMfqs cIybic"
+                    selected={true}
+                  >
+                    MISSING: backup
+                  </div>
+                </div>
+                <div
+                  className="sc-OnmeF fsLRjJ"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="sc-fxMfqs gwNGqr"
+                    selected={false}
+                  >
+                    MISSING: restore
+                  </div>
+                </div>
+              </div>
+              <div
+                className="sc-hQfrgq eDFSyR"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-fONwsr RtqQQ"
+      >
+        <div
+          className="sc-VJcYb fyXZmJ"
+          disabled={false}
+          type="light"
+        >
+          MISSING: recoveryKeys
+        </div>
+        <div
+          className="sc-bGbJRg KPVVf"
+        >
+          <textarea
+            className="sc-bEjcJn enyJAU"
+            disabled={true}
+          />
+        </div>
+      </div>
+      <div
+        className="sc-htoDjs eXfEak"
+      >
+        <button
+          className="sc-dnqmqq iwhhqf sc-htpNat dupObH sc-bdVaJa kouSbH"
+          onClick={[Function]}
+          size="small"
+          type="subtle"
+        >
+          <div
+            className="sc-ifAKCX gVLYon"
+            size="small"
+            type="subtle"
+          >
+            MISSING: copy
+          </div>
+        </button>
+        <button
+          className="sc-dnqmqq iwhhqf sc-htpNat dupObH sc-bdVaJa kouSbH"
+          onClick={[Function]}
+          size="small"
+          type="subtle"
+        >
+          <div
+            className="sc-ifAKCX gVLYon"
+            size="small"
+            type="subtle"
+          >
+            MISSING: print
+          </div>
+        </button>
+        <button
+          className="sc-dnqmqq iwhhqf sc-htpNat dupObH sc-bdVaJa kouSbH"
+          onClick={[Function]}
+          size="small"
+          type="subtle"
+        >
+          <div
+            className="sc-ifAKCX gVLYon"
+            size="small"
+            type="subtle"
+          >
+            MISSING: saveAsFile
+          </div>
+        </button>
+      </div>
+      <div
+        className="sc-bZQynM jpTLXm"
+      >
+        <span
+          className="sc-jzJRlG fXEDZo"
+        >
+          MISSING: rewardsBackupText2
+        </span>
+        MISSING: rewardsBackupText3
+      </div>
+      <div
+        className="sc-iwsKbI lcqftr"
+      >
+        <button
+          className="sc-bwzfXH kdRIEH sc-bdVaJa eBKAvE"
+          onClick={[Function]}
+          size="medium"
+          type="accent"
+        >
+          <div
+            className="sc-ifAKCX gVLYon"
+            size="medium"
+            type="accent"
+          >
+            MISSING: done
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -55,12 +55,14 @@ export const CreateAccountTab = ({
   const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
 
   // memos
-  const accountNetwork = React.useMemo((): BraveWallet.NetworkInfo => {
+  const accountNetwork = React.useMemo(() => {
     return network || selectedNetwork
   }, [network, selectedNetwork])
 
   const suggestedAccountName = React.useMemo((): string => {
-    return suggestNewAccountName(accounts, accountNetwork)
+    return accountNetwork
+      ? suggestNewAccountName(accounts, accountNetwork)
+      : ''
   }, [accounts, accountNetwork])
 
   // methods
@@ -80,10 +82,15 @@ export const CreateAccountTab = ({
       return setShowUnlock(true)
     }
 
+    // Do nothing if accountNetwork is undefined
+    if (!accountNetwork) {
+      return
+    }
+
     if (accountNetwork.coin === BraveWallet.CoinType.FIL) {
       dispatch(WalletActions.addFilecoinAccount({
         accountName: suggestedAccountName,
-        network: 'f'
+        network: accountNetwork.chainId === BraveWallet.FILECOIN_TESTNET ? BraveWallet.FILECOIN_TESTNET : BraveWallet.FILECOIN_MAINNET
       }))
     } else {
       dispatch(WalletActions.addAccount({
@@ -98,7 +105,7 @@ export const CreateAccountTab = ({
   }, [
     isWalletLocked,
     showUnlock,
-    accountNetwork.coin,
+    accountNetwork,
     suggestedAccountName,
     isPanel
   ])
@@ -132,7 +139,10 @@ export const CreateAccountTab = ({
   return (
     <StyledWrapper>
       <Description>
-        {getLocale('braveWalletCreateAccountDescription').replace('$1', accountNetwork.symbolName)}
+        {accountNetwork
+          ? getLocale('braveWalletCreateAccountDescription').replace('$1', accountNetwork.symbolName)
+          : ''
+        }
       </Description>
 
       <ButtonRow>

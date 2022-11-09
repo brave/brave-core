@@ -35,7 +35,6 @@ class SidebarBrowserTest;
 class SidebarControlView : public views::View,
                            public views::ContextMenuController,
                            public ui::SimpleMenuModel::Delegate,
-                           public SidebarButtonView::Delegate,
                            public sidebar::SidebarModel::Observer {
  public:
   METADATA_HEADER(SidebarControlView);
@@ -67,9 +66,6 @@ class SidebarControlView : public views::View,
   bool IsCommandIdChecked(int command_id) const override;
   void MenuClosed(ui::SimpleMenuModel* source) override;
 
-  // SidebarButtonView::Delegate overrides:
-  std::u16string GetTooltipTextFor(const views::View* view) const override;
-
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
                    size_t index,
@@ -80,6 +76,7 @@ class SidebarControlView : public views::View,
 
   bool IsItemReorderingInProgress() const;
   bool IsBubbleWidgetVisible() const;
+  void SetSidebarOnLeft(bool sidebar_on_left);
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -93,6 +90,7 @@ class SidebarControlView : public views::View,
   void UpdateSettingsButtonState();
   void UpdateBackgroundAndBorder();
 
+  bool sidebar_on_left_ = true;
   raw_ptr<Delegate> delegate_ = nullptr;
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidebarItemsScrollView> sidebar_items_view_ = nullptr;

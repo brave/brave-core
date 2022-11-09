@@ -38,7 +38,7 @@ absl::optional<PaymentInfo> ParsePayment(const base::Value& value) {
   payment.month = *month;
 
   // Transaction count
-  const std::string* transaction_count =
+  const std::string* const transaction_count =
       value.FindStringKey(kTransactionCountKey);
   if (!transaction_count) {
     return absl::nullopt;

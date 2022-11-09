@@ -1,5 +1,5 @@
 diff --git a/chrome/app/theme/BUILD.gn b/chrome/app/theme/BUILD.gn
-index 57e8917e359a2fc59f567bd33f9340e400e55b1f..a4489e2c34d1a02138afb05ccfc72d0129572f3e 100644
+index 05627a44d0fec2963be170297cd7371ead146bbd..f21d8a96ffa079041e7e98f388e93a7bf4490aae 100644
 --- a/chrome/app/theme/BUILD.gn
 +++ b/chrome/app/theme/BUILD.gn
 @@ -21,6 +21,7 @@ grit("theme_resources") {

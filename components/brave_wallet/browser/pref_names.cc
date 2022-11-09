@@ -25,6 +25,8 @@ const char kBraveWalletP3AFirstReportTime[] =
     "brave.wallet.wallet_p3a_first_report_time";
 const char kBraveWalletP3AWeeklyStorage[] =
     "brave.wallet.wallet_p3a_weekly_storage";
+const char kBraveWalletP3AActiveWalletDict[] =
+    "brave.wallet.wallet_p3a_active_wallets";
 const char kBraveWalletCustomNetworks[] = "brave.wallet.custom_networks";
 const char kBraveWalletHiddenNetworks[] = "brave.wallet.hidden_networks";
 const char kBraveWalletSelectedNetworks[] = "brave.wallet.selected_networks";
@@ -34,6 +36,10 @@ const char kBraveWalletUserAssetEthContractAddressMigrated[] =
     "brave.wallet.user.asset.eth_contract_address_migrated";
 const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
     "brave.wallet.user.assets.add_preloading_networks_migrated_2";
+const char kBraveWalletUserAssetsAddIsNFTMigrated[] =
+    "brave.wallet.user.assets.add_is_nft_migrated";
+const char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
+    "brave.wallet.deprecated_ethereum_test_networks_migrated";
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";
 const char kSupportEip1559OnLocalhostChain[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
@@ -45,10 +51,10 @@ extern const char kBraveWalletP3ALastUnlockTime[] =
     "brave.wallet.p3a_last_unlock_time";
 extern const char kBraveWalletP3AUsedSecondDay[] =
     "brave.wallet.p3a_used_second_day";
-extern const char kBraveWalletWasOnboardingShown[] =
-    "brave.wallet.was_onboarding_shown";
 const char kBraveWalletKeyringEncryptionKeysMigrated[] =
     "brave.wallet.keyring_encryption_keys_migrated";
+const char kBraveWalletLastTransactionSentTimeDict[] =
+    "brave.wallet.last_transaction_sent_time_dict";
 
 // DEPRECATED
 const char kBraveWalletSelectedAccount[] = "brave.wallet.selected_account";

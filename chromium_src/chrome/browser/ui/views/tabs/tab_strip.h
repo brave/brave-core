@@ -10,6 +10,8 @@
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 
+class BraveTabHoverCardController;
+
 #define UpdateHoverCard           \
   UpdateHoverCard_Unused();       \
   friend class BraveTabHoverTest; \
@@ -19,16 +21,23 @@
 #define ShouldDrawStrokes   \
   UnUsed() { return true; } \
   virtual bool ShouldDrawStrokes
-#define GetDragContext                        \
-  Unused_GetDragContext() { return nullptr; } \
-  friend class BraveTabStrip;                 \
-  friend class BraveTabDragContext;           \
+#define GetDragContext                                                  \
+  Unused_GetDragContext() { return nullptr; }                           \
+  friend class BraveTabStrip;                                           \
+  friend class BraveTabDragContext;                                     \
+  static constexpr bool IsUsingBraveTabHoverCardController() {          \
+    return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>, \
+                          decltype(TabStrip::hover_card_controller_)>;  \
+  }                                                                     \
   virtual TabDragContext* GetDragContext
-#define TabContainer BraveTabContainer
+#define TabHoverCardController BraveTabHoverCardController
 #include "src/chrome/browser/ui/views/tabs/tab_strip.h"
-#undef TabContainer
+#undef TabHoverCardController
 #undef GetDragContext
 #undef ShouldDrawStrokes
 #undef UpdateHoverCard
+
+static_assert(TabStrip::IsUsingBraveTabHoverCardController(),
+              "Should use BraveTabHoverCardController");
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_H_

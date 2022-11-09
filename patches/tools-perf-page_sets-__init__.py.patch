@@ -1,0 +1,9 @@
+diff --git a/tools/perf/page_sets/__init__.py b/tools/perf/page_sets/__init__.py
+index 63f264c3b1caeb6e677366ac794983f84ec534fc..39c0195ef78a44b546b5f0881953d8983f7df361 100644
+--- a/tools/perf/page_sets/__init__.py
++++ b/tools/perf/page_sets/__init__.py
+@@ -19,3 +19,4 @@ for base_class in base_classes:
+   for cls in discover.DiscoverClasses(
+       start_dir, top_level_dir, base_class).values():
+     setattr(sys.modules[__name__], cls.__name__, cls)
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/perf/page_sets/__init__.py", globals(), locals())

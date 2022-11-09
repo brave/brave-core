@@ -2,12 +2,13 @@ import styled from 'styled-components'
 import { MoreVertRIcon, ArrowRightIcon } from 'brave-ui/components/icons'
 import CoinsIconSVG from '../../../assets/svg-icons/coins-icon.svg'
 import { WalletButton } from '../../shared/style'
+import { OrbContainer } from '../../extension/transaction-detail-panel/style'
 
 interface StyleProps {
   orb: string
 }
 
-export const StyledWrapper = styled.div`
+export const PortfolioTransactionItemWrapper = styled.div<{ isFocused?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,6 +16,9 @@ export const StyledWrapper = styled.div`
   width: 100%;
   margin: 14px 0px;
   position: relative;
+  background-color: ${(p) => p.isFocused ? `${p.theme.color.text01}10` : 'none'};
+  padding: 10px;
+  border-radius: 10px;
 `
 
 export const DetailRow = styled.div`
@@ -22,6 +26,7 @@ export const DetailRow = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  flex-wrap: wrap;
 `
 
 export const AddressText = styled.span`
@@ -137,12 +142,12 @@ export const ArrowIcon = styled(ArrowRightIcon)`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const TransactionDetailRow = styled.div`
+export const OrbAndTxDescriptionContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  width: 50%;
+  flex-wrap: wrap;
 `
 
 export const StatusRow = styled.div`
@@ -151,6 +156,7 @@ export const StatusRow = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+  margin-right: 16px;
 `
 
 export const CoinsButton = styled(WalletButton)`
@@ -192,4 +198,16 @@ export const TransactionFeeTooltipTitle = styled.div`
 export const TransactionFeeTooltipBody = styled.div`
   font-weight: 400;
   letter-spacing: 0.01em;
+`
+
+export const StatusBalanceAndMoreContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+`
+
+export const OrbWrapper = styled(OrbContainer)`
+  margin-bottom: 0px;
 `

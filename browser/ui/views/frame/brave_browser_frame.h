@@ -20,12 +20,15 @@ class BraveBrowserFrame : public BrowserFrame {
   BraveBrowserFrame& operator=(const BraveBrowserFrame&) = delete;
   ~BraveBrowserFrame() override;
 
+  const BrowserView* browser_view() const { return view_; }
+
   // BrowserFrame overrides:
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   const ui::NativeTheme* GetNativeTheme() const override;
 #endif
   ui::ColorProviderManager::ThemeInitializerSupplier* GetCustomTheme()
       const override;
+  views::internal::RootView* CreateRootView() override;
 
  private:
   raw_ptr<BrowserView> view_ = nullptr;

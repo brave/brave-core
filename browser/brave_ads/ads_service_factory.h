@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
 
 #include <memory>
+
 #include "base/memory/singleton.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -25,6 +26,9 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   AdsServiceFactory(const AdsServiceFactory&) = delete;
   AdsServiceFactory& operator=(const AdsServiceFactory&) = delete;
 
+  AdsServiceFactory(AdsServiceFactory&& other) noexcept = delete;
+  AdsServiceFactory& operator=(AdsServiceFactory&& other) noexcept = delete;
+
   static AdsService* GetForProfile(Profile* profile);
 
   static AdsServiceFactory* GetInstance();
@@ -33,6 +37,7 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   friend struct base::DefaultSingletonTraits<AdsServiceFactory>;
 
   AdsServiceFactory();
+
   ~AdsServiceFactory() override;
 
   std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate(

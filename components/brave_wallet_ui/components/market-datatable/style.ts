@@ -73,3 +73,12 @@ export const CoinGeckoText = styled.span`
   color: ${(p) => p.theme.color.text03};
   margin: 15px 0px;
 `
+
+export const ButtonsRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  position: relative;
+  pointer-events: none;
+`

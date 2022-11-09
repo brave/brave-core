@@ -8,7 +8,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { loadTimeData } from '../../common/loadTimeData'
-import { BraveWallet } from '../constants/types'
+import {
+  BraveWallet,
+  DefaultCurrencies
+} from '../constants/types'
 
 const marketUiOrigin = loadTimeData.getString('braveWalletMarketUiBridgeUrl')
 
@@ -19,7 +22,11 @@ export const braveWalletOrigin = 'chrome://wallet'
 export const enum MarketUiCommand {
   UpdateCoinMarkets = 'update-coin-markets',
   SelectCoinMarket = 'select-coin-market',
-  UpdateTradableAssets = 'update-tradable-assets'
+  SelectBuy = 'select-buy',
+  SelectDeposit = 'select-deposit',
+  UpdateTradableAssets = 'update-tradable-assets',
+  UpdateBuyableAssets = 'update-buyable-assets',
+  UpdateDepositableAssets = 'update-depositable-assets'
 }
 
 export type MarketCommandMessage = {
@@ -27,14 +34,33 @@ export type MarketCommandMessage = {
 }
 
 export type UpdateCoinMarketMessage = MarketCommandMessage & {
-  payload: BraveWallet.CoinMarket[]
+  payload: {
+    coins: BraveWallet.CoinMarket[]
+    defaultCurrencies: DefaultCurrencies
+  }
 }
 
 export type SelectCoinMarketMessage = MarketCommandMessage & {
   payload: BraveWallet.CoinMarket
 }
 
+export type SelectBuyMessage = MarketCommandMessage & {
+  payload: BraveWallet.CoinMarket
+}
+
+export type SelectDepositMessage = MarketCommandMessage & {
+  payload: BraveWallet.CoinMarket
+}
+
 export type UpdateTradableAssetsMessage = MarketCommandMessage & {
+  payload: BraveWallet.BlockchainToken[]
+}
+
+export type UpdateBuyableAssetsMessage = MarketCommandMessage & {
+  payload: BraveWallet.BlockchainToken[]
+}
+
+export type UpdateDepositableAssetsMessage = MarketCommandMessage & {
   payload: BraveWallet.BlockchainToken[]
 }
 

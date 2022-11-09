@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 
-#include <string>
 #include <utility>
 
 #include "base/check_op.h"
@@ -60,7 +59,7 @@ void DiagnosticManager::SetEntry(
 }
 
 void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
-  callback(ToValue(diagnostics_));
+  std::move(callback).Run(ToValue(diagnostics_));
 }
 
 }  // namespace ads

@@ -163,7 +163,8 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
                   "https://crypto.sardine.ai/"
                   "?address=0xdeadbeef&network=ethereum&asset_type=USDC&fiat_"
                   "amount=55000000&fiat_currency=USD&client_token=74618e17-"
-                  "a537-4f5d-ab4d-9916739560b1",
+                  "a537-4f5d-ab4d-9916739560b1&fixed_asset_type=USDC&fixed_"
+                  "network=ethereum",
                   absl::nullopt);
 
   // Timeout yields error
@@ -439,9 +440,9 @@ TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
   )");
   GetTokenInfo(
       "0xdac17f958d2ee523a2206206994597c13d831ec7",
-      mojom::BlockchainToken::New("0xdAC17F958D2ee523a2206206994597C13D831ec7",
-                                  "Tether USD", "", true, false, "USDT", 6,
-                                  true, "", "", "0x1", mojom::CoinType::ETH));
+      mojom::BlockchainToken::New(
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
+          false, false, "USDT", 6, true, "", "", "0x1", mojom::CoinType::ETH));
 
   SetInterceptor("unexpected response");
   GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);

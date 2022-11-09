@@ -19,7 +19,7 @@
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -36,11 +36,6 @@ namespace {
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-class LocaleHelperMock : public brave_l10n::LocaleHelper {
- public:
-  MOCK_CONST_METHOD0(GetLocale, std::string());
-};
 
 std::unique_ptr<TemplateURL> CreateSearchProvider(std::string host) {
   std::string base_url = "https://" + host + '/';
@@ -157,9 +152,7 @@ TEST_F(BraveSearchDefaultHostTest, DisallowsAfterMaxTimesAsked) {
 TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   base::test::ScopedFeatureList feature_list;
 
-  NiceMock<LocaleHelperMock> locale_helper_mock;
-  brave_l10n::LocaleHelper::GetInstance()->SetForTesting(&locale_helper_mock);
-  ON_CALL(locale_helper_mock, GetLocale()).WillByDefault(Return("en-US"));
+  brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
 
   auto host = GetAPIHost("search.test.com");
   // Add a search provider for the host

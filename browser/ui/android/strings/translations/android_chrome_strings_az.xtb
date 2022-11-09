@@ -454,6 +454,7 @@ Baxış tarixçənizi (bütün saytlar və ya müəyyən bir sayt üçün) sildi
 <translation id="3435465986463792564">Çox sayda pəncərə var? Onları buradan idarə edə bilərsiniz</translation>
 <translation id="3443221991560634068">Cari səhifəni yenidən yükləyin</translation>
 <translation id="3444179773590444986">Saytlar üçün tünd tema barədə rəy paylaşılsın?</translation>
+<translation id="7384339501748168186">Brave məxfiliyi qorumaq üçün parolu bu sahədə avtomatik doldurmayacaq.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 endirmə planlanıb}other{# endirmə planlanıb}}</translation>
 <translation id="3474624961160222204"><ph name="NAME"/> olaraq davam edin</translation>
 <translation id="3478363558367712427">Axtarış maşınını seçə bilərsiniz</translation>
@@ -679,6 +680,7 @@ Baxış tarixçənizi (bütün saytlar və ya müəyyən bir sayt üçün) sildi
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Parollar bu cihazda Parol Menecerində saxlanılır</translation>
 <translation id="4766678251456904326">Cihaza hesab əlavə edin</translation>
+<translation id="4787736314074622408"><ph name="ITEM_TITLE"/> faylını silmək istəyirsiniz?</translation>
 <translation id="4791358705705538979">Sizə vebdə ödənişin tamamlanması kimi tapşırıqları yerinə yetirməkdə kömək edir</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Google Pay'dəki ödəniş metodları və ünvanlar parol şifrələməsinə daxil deyil.
@@ -748,6 +750,7 @@ Ayarı dəyişmək üçün <ph name="BEGIN_LINK"/>sinxronizasiyanı sıfırlayı
 <translation id="4744980273298156620">Tezliklə yeni tab açdığınız zaman <ph name="SITE_NAME"/> saytından hekayələri görəcəksiniz. İzlədiyiniz saytlar Brave hesabınızda saxlanılır. Onları Təkliflər ayarlarında idarə edə bilərsiniz.</translation>
 <translation id="5091249083535528968">Artırılmış istifadə datası</translation>
 <translation id="509429900233858213">Xəta baş verdi.</translation>
+<translation id="5099845111805573968">Masaüstü saytını bir dəfə seçdiyiniz zaman ayar hər dəfə ziyarət etdiyinizdə sayta tətbiq edilir</translation>
 <translation id="225414324447409614">Sayt parolunuzu oğurlamağa çalışdıqda və ya zərərli fayl endirdiyinizdə Brave səhifə məzmunundan kiçik nümunələr də daxil olmaqla, URL'ləri Təhlükəsiz Baxışa göndərə bilər</translation>
 <translation id="510275257476243843">1 saat qaldı</translation>
 <translation id="5115811374190515607"><ph name="PRODUCT_NAME"/> məkanına</translation>
@@ -907,6 +910,7 @@ Ayarı dəyişmək üçün <ph name="BEGIN_LINK"/>sinxronizasiyanı sıfırlayı
 <translation id="5958275228015807058">Fayl və səhifələri Endirilənlər bölməsində tapın</translation>
 <translation id="5962718611393537961">Yığcamlaşdırmaq üçün klikləyin</translation>
 <translation id="5964869237734432770">Şəkil təsvirini dayandırın</translation>
+<translation id="9135546826883360971">Brave seçiminizi yadda saxlayacaq</translation>
 <translation id="5979084224081478209">Parolları yoxlayın</translation>
 <translation id="5995726099713306770">Səhifə yenidən endirilsin?</translation>
 <translation id="6456271171669383967">Brave'u saxlayın</translation>
@@ -946,6 +950,7 @@ Məxfilik Sendboksu sınaqları hələ də aktiv hazırlanma mərhələsindədir
 <translation id="6192907950379606605">Şəkil təsvirləri əldə edin</translation>
 <translation id="8367262879301982880">Parollar bu cihazda Brave Parol Menecerində saxlanılır</translation>
 <translation id="620197886010707372"><ph name="APPNAME"/> üçün tətbiq Google Play ilə açılsın?</translation>
+<translation id="6202812185118613467">Sinxronizasiyanı başlatmaq üçün yenidən daxil olun</translation>
 <translation id="6203593061661911168">Endirmə Wi-Fi aktiv olduqda başlayacaq</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> deyil?</translation>
 <translation id="6211386937064921208">Bu səhifə önizlənir</translation>
@@ -1081,6 +1086,7 @@ Güvən nişanları internetdə məxfiliyi yaxşılaşdırır və kim olduğunuz
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/> tabı seçilib</translation>
 <translation id="6828070228333235514">Qiymətin izlənməsini dayandırın</translation>
+<translation id="6830728435402077660">Təhlükəsiz deyil</translation>
 <translation id="6833996806551876956">Privacy Sandbox sınağı</translation>
 <translation id="6836206421467243968"><ph name="TITLE_OF_GROUP"/> tab qrupunu yeni arxa fon tab qrupu olaraq bərpa edin.</translation>
 <translation id="6846298663435243399">Yüklənir...</translation>
@@ -1391,7 +1397,7 @@ Güvən nişanları internetdə məxfiliyi yaxşılaşdırır və kim olduğunuz
 <translation id="8460448946170646641">Əsas məxfilik və təhlükəsizlik nəzarətlərini nəzərdən keçirin</translation>
 <translation id="8461694314515752532">Sinxronizasiya parolunuz ilə sinxronizasiya edilmiş datanı şifrələyin</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/> cihazının internetə qoşulduğuna əmin olun</translation>
-<translation id="8473863474539038330">Ünvanlar və s.</translation>
+<translation id="5633907266617216186">Ünvanlar və s.</translation>
 <translation id="8481921391193215807">Aktiv olduqda, saytlar məzmun və xidmətlərini təmin etmək üçün burada göstərilən məxfiliyi qoruma üsullarından istifadə edə bilərlər. Bunlara saytlararası izləmə üçün alternativlər daxildir. Zamanla daha çox sınaq əlavə edilə bilər.
 
 <ph name="BEGIN_LIST_ITEM1"/>Reklamçılar və naşirlər FLoC üsulundan istifadə edə bilərlər.<ph name="END_LIST_ITEM1"/>

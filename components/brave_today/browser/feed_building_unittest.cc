@@ -6,18 +6,25 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
-#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_today/common/pref_names.h"
+#include "chrome/test/base/testing_profile.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/mojom/url.mojom.h"
 
 namespace brave_news {
@@ -74,7 +81,7 @@ std::string GetFeedJson() {
           "score": 13.96799592432192
         },
         {
-          "category": "Technology",
+          "category": "Top News",
           "publish_time": "2021-09-01 07:01:28",
           "url": "https://www.digitaltrends.com/computing/logi-bolt-secure-wireless-connectivity/",
           "title": "Expecting Second Logitech built Bolt to make wireless mice and keyboards work better",
@@ -85,30 +92,43 @@ std::string GetFeedJson() {
           "creative_instance_id": "",
           "url_hash": "523b9f2091474c2a082c06ec17965f8c2392f871917407228bbeb51d8a55d6be",
           "padded_img": "https://pcdn.brave.com/brave-today/cache/052e832456e00a3cee51c68eee206fe71c32cba35d5e53dee2777dd132e01364.jpg.pad",
-          "score": 13.91160989810695
+          "score": 13.97160989810695
         }
       ]
     )";
 }
 
+std::vector<mojom::LocaleInfoPtr> CreateLocales(
+    const std::vector<std::string>& locales,
+    const std::vector<std::string>& channels) {
+  std::vector<mojom::LocaleInfoPtr> result;
+  for (const auto& locale : locales) {
+    auto info = mojom::LocaleInfo::New();
+    info->locale = locale;
+    info->channels = channels;
+    result.push_back(std::move(info));
+  }
+  return result;
+}
+
 void PopulatePublishers(Publishers* publisher_list) {
   auto publisher1 = mojom::Publisher::New(
       "111", mojom::PublisherType::COMBINED_SOURCE, "First Publisher",
-      "Top News", true, std::vector<std::string>{"en_US"},
-      GURL("https://www.example.com"),
-      GURL("https://first-publisher.com/feed.xml"),
+      "Top News", true, CreateLocales({"en_US"}, {"Top News", "Top Sources"}),
+      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
+      absl::nullopt, GURL("https://first-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher2 = mojom::Publisher::New(
       "222", mojom::PublisherType::COMBINED_SOURCE, "Second Publisher",
-      "Top News", true, std::vector<std::string>{"en_US"},
-      GURL("https://www.example.com"),
-      GURL("https://second-publisher.com/feed.xml"),
+      "Top News", true, CreateLocales({"en_US"}, {"Top News", "Top Sources"}),
+      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
+      absl::nullopt, GURL("https://second-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher3 = mojom::Publisher::New(
       "333", mojom::PublisherType::COMBINED_SOURCE, "Third Publisher",
-      "Top News", true, std::vector<std::string>{"en_US"},
-      GURL("https://www.example.com"),
-      GURL("https://third-publisher.com/feed.xml"),
+      "Top News", true, CreateLocales({"en_US"}, {"Top News"}),
+      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
+      absl::nullopt, GURL("https://third-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   publisher_list->insert_or_assign(publisher1->publisher_id,
                                    std::move(publisher1));
@@ -120,7 +140,24 @@ void PopulatePublishers(Publishers* publisher_list) {
 
 }  // namespace
 
-TEST(BraveNewsFeedBuilding, BuildFeed) {
+class BraveNewsFeedBuildingTest : public testing::Test {
+ public:
+  BraveNewsFeedBuildingTest() = default;
+  BraveNewsFeedBuildingTest(const BraveNewsFeedBuildingTest&) = delete;
+  BraveNewsFeedBuildingTest& operator=(const BraveNewsFeedBuildingTest&) =
+      delete;
+  ~BraveNewsFeedBuildingTest() override {}
+
+ protected:
+  content::BrowserTaskEnvironment browser_task_environment_;
+  TestingProfile profile_;
+};
+
+TEST_F(BraveNewsFeedBuildingTest, BuildFeedV1) {
+  // Use v1 feed strategy
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(brave_today::features::kBraveNewsV2Feature);
+
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
 
@@ -131,7 +168,8 @@ TEST(BraveNewsFeedBuilding, BuildFeed) {
 
   mojom::Feed feed;
 
-  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed));
+  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
+                        profile_.GetPrefs()));
   ASSERT_EQ(feed.pages.size(), 1u);
   // Validate featured article is top news
   ASSERT_TRUE(feed.featured_item->is_article());
@@ -149,14 +187,88 @@ TEST(BraveNewsFeedBuilding, BuildFeed) {
             "live-transfer-deadline-day-will-real-madrid-land-psg-star-mbappe");
   ASSERT_EQ(feed.pages[0]->items[1]->items.size(), 1u);
   ASSERT_EQ(feed.pages[0]->items[1]->items[0]->get_article()->data->url,
-            "https://www.digitaltrends.com/computing/"
-            "logi-bolt-secure-wireless-connectivity/");
+            "https://www.example.com/an-article/");
   ASSERT_EQ(feed.pages[0]->items[2]->items.size(), 1u);
   ASSERT_EQ(feed.pages[0]->items[2]->items[0]->get_article()->data->url,
+            "https://www.digitaltrends.com/computing/"
+            "logi-bolt-secure-wireless-connectivity/");
+}
+
+TEST_F(BraveNewsFeedBuildingTest, BuildFeedV2) {
+  // Use v2 feed strategy by subscribing to a channel
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
+
+  ChannelsController::SetChannelSubscribedPref(profile_.GetPrefs(), "en_US",
+                                               "Top Sources", true);
+
+  Publishers publisher_list;
+  PopulatePublishers(&publisher_list);
+
+  std::unordered_set<std::string> history_hosts = {"www.espn.com"};
+
+  std::vector<mojom::FeedItemPtr> feed_items;
+  ParseFeedItems(GetFeedJson(), &feed_items);
+
+  mojom::Feed feed;
+
+  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
+                        profile_.GetPrefs()));
+  ASSERT_EQ(feed.pages.size(), 1u);
+  // Validate featured article is top news
+  ASSERT_TRUE(feed.featured_item->is_article());
+  ASSERT_EQ(feed.featured_item->get_article()->data->url.spec(),
+            "https://www.digitaltrends.com/computing/"
+            "logi-bolt-secure-wireless-connectivity/");
+  // Validate sorted by score descending
+  ASSERT_GE(feed.pages[0]->items.size(), 2u);
+  // Because we cannot access a flat list, then select the items from each card
+  // (some cards have 1 item, some have 2, etc). If the page_content_order
+  // changes, then also change here which items we access in which order.
+  ASSERT_EQ(feed.pages[0]->items[0]->items.size(), 1u);
+  ASSERT_EQ(feed.pages[0]->items[0]->items[0]->get_article()->data->url,
+            "https://www.espn.com/soccer/blog-transfer-talk/story/4465789/"
+            "live-transfer-deadline-day-will-real-madrid-land-psg-star-mbappe");
+  ASSERT_EQ(feed.pages[0]->items[1]->items.size(), 1u);
+  ASSERT_EQ(feed.pages[0]->items[1]->items[0]->get_article()->data->url,
             "https://www.example.com/an-article/");
 }
 
-TEST(BraveNewsFeedBuilding, RemovesDefaultOffItems) {
+TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
+  // Enable the BraveNewsV2 Feature.
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
+
+  Channels channels;
+  Publishers publisher_list;
+  PopulatePublishers(&publisher_list);
+  auto* publisher = publisher_list["111"].get();
+  publisher->type = mojom::PublisherType::DIRECT_SOURCE;
+  publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
+
+  auto feed_item = mojom::FeedItem::NewArticle(
+      mojom::Article::New(mojom::FeedItemMetadata::New(
+          "Technology", base::Time::Now(), "Title", "Description",
+          GURL("https://example.com/article"),
+          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
+          mojom::Image::NewPaddedImageUrl(
+              GURL("https://example.com/article/image")),
+          publisher->publisher_id, "Source", 10, "a minute ago")));
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  publisher->locales = std::vector<mojom::LocaleInfoPtr>();
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  features.Reset();
+  features.InitAndDisableFeature(brave_today::features::kBraveNewsV2Feature);
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+}
+
+TEST_F(BraveNewsFeedBuildingTest, RemovesDefaultOffItems) {
+  // Use v1 feed strategy
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(brave_today::features::kBraveNewsV2Feature);
+
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
   std::unordered_set<std::string> history_hosts = {};
@@ -184,10 +296,11 @@ TEST(BraveNewsFeedBuilding, RemovesDefaultOffItems) {
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
           "a minute ago")));
 
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  Channels channels;
+  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
-TEST(BraveNewsFeedBuilding, RemovesUserDisabledItems) {
+TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
   std::unordered_set<std::string> history_hosts = {};
@@ -217,11 +330,13 @@ TEST(BraveNewsFeedBuilding, RemovesUserDisabledItems) {
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
           "a minute ago")));
 
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  Channels channels;
+  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
-TEST(BraveNewsFeedBuilding, IncludesUserEnabledItems) {
+TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
   Publishers publisher_list;
+
   PopulatePublishers(&publisher_list);
   std::unordered_set<std::string> history_hosts = {};
 
@@ -250,7 +365,53 @@ TEST(BraveNewsFeedBuilding, IncludesUserEnabledItems) {
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
           "a minute ago")));
 
-  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  Channels channels;
+  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+}
+
+TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
+  // Enable the BraveNewsV2 Feature.
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
+
+  Publishers publisher_list;
+  PopulatePublishers(&publisher_list);
+  auto* publisher = publisher_list["111"].get();
+
+  Channels channels;
+  channels.insert(
+      {"Top News", brave_news::mojom::Channel::New(
+                       "Top News", std::vector<std::string>{"en_US"})});
+  auto* channel = channels["Top News"].get();
+
+  auto feed_item = mojom::FeedItem::NewArticle(
+      mojom::Article::New(mojom::FeedItemMetadata::New(
+          "Technology", base::Time::Now(), "Title", "Description",
+          GURL("https://example.com/article"),
+          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
+          mojom::Image::NewPaddedImageUrl(
+              GURL("https://example.com/article/image")),
+          publisher->publisher_id, "Source", 10, "a minute ago")));
+
+  // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: NOT_MODIFIED, Channel: Not subscribed in any locale, Should not
+  // display.
+  channel->subscribed_locales = {};
+  EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: ENABLED, Channel: Not subscribed, Should display.
+  publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
+  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: Disabled, Channel: Not subscribed, Should not display.
+  publisher->user_enabled_status = mojom::UserEnabled::DISABLED;
+  EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: DISABLED, Channel: Subscribed in en_US, Should not display.
+  channel->subscribed_locales = {"en_US"};
+  EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
 }  // namespace brave_news

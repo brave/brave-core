@@ -15,8 +15,6 @@ namespace ads {
 
 class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsConversionsDatabaseTableIntegrationTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }
@@ -35,7 +33,7 @@ TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  database::table::Conversions conversions;
+  const database::table::Conversions conversions;
   conversions.GetAll([](const bool success, const ConversionList& conversions) {
     EXPECT_TRUE(success);
     EXPECT_EQ(2UL, conversions.size());

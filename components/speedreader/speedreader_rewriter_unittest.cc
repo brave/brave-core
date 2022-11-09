@@ -39,11 +39,16 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
   }
 
   std::string ProcessPage(const std::string& file_name,
-                          const std::string& theme = {}) {
-    auto rewriter = speedreader_.MakeRewriter(
-        "https://test.com", RewriterType::RewriterReadability);
+                          const std::string& theme = {},
+                          const std::string& font = {},
+                          const std::string& font_size = {},
+                          const std::string& content_style = {}) {
+    auto rewriter = speedreader_.MakeRewriter("https://test.com");
     rewriter->SetMinOutLength(100);
     rewriter->SetTheme(theme);
+    rewriter->SetFontFamily(font);
+    rewriter->SetFontSize(font_size);
+    rewriter->SetContentStyle(content_style);
     const auto file_content = GetFileContent(file_name);
     rewriter->Write(file_content.data(), file_content.size());
     rewriter->End();
@@ -102,6 +107,43 @@ TEST_F(SpeedreaderRewriterThemeTest, SetTheme) {
   const std::string input_file = "meta_name_shortest_desc.html";
   const std::string expected_file = "meta_name_shortest_desc.themed.html";
   const auto out = ProcessPage(input_file, "dark");
+  CheckContent(out, expected_file);
+}
+
+TEST_F(SpeedreaderRewriterThemeTest, SetFont) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  const std::string input_file = "meta_name_shortest_desc.html";
+  const std::string expected_file = "meta_name_shortest_desc.font.html";
+  const auto out = ProcessPage(input_file, {}, "sans");
+  CheckContent(out, expected_file);
+}
+
+TEST_F(SpeedreaderRewriterThemeTest, SetFontSize) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  const std::string input_file = "meta_name_shortest_desc.html";
+  const std::string expected_file = "meta_name_shortest_desc.font_size.html";
+  const auto out = ProcessPage(input_file, {}, {}, "120");
+  CheckContent(out, expected_file);
+}
+
+TEST_F(SpeedreaderRewriterThemeTest, SetContentStyle) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  const std::string input_file = "meta_name_shortest_desc.html";
+  const std::string expected_file =
+      "meta_name_shortest_desc.content_style.html";
+  const auto out = ProcessPage(input_file, {}, {}, {}, "text-only");
+  CheckContent(out, expected_file);
+}
+
+TEST_F(SpeedreaderRewriterThemeTest, SetAll) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  const std::string input_file = "meta_name_shortest_desc.html";
+  const std::string expected_file = "meta_name_shortest_desc.all.html";
+  const auto out = ProcessPage(input_file, "sepia", "serif", "70", "text-only");
   CheckContent(out, expected_file);
 }
 

@@ -17,9 +17,9 @@ namespace {
 constexpr char kCatalogId[] = "04a13086-8fd8-4dce-a44f-afe86f14a662";
 }  // namespace
 
-class BatAdsConfirmationCatalogDtoUserDataTest : public UnitTestBase {};
+class BatAdsCatalogUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsConfirmationCatalogDtoUserDataTest, GetCatalog) {
+TEST_F(BatAdsCatalogUserDataTest, GetCatalog) {
   // Arrange
   SetCatalogId(kCatalogId);
 

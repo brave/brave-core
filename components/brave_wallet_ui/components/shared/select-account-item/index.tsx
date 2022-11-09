@@ -18,8 +18,7 @@ import {
   IconsWrapper,
   NetworkIconWrapper,
   SwitchAccountIcon,
-  Row,
-  HorizontalSpace
+  Row
 } from '../style'
 import {
   StyledWrapper,
@@ -28,7 +27,8 @@ import {
   AccountCircle,
   AccountName,
   LeftSide,
-  BigCheckMark
+  BigCheckMark,
+  SwitchAccountIconContainer
 } from './style'
 
 export interface Props {
@@ -97,10 +97,9 @@ export function SelectAccountItem ({
             <Row justifyContent={'flex-start'}>
               <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
               {showSwitchAccountsLink &&
-                <>
-                  <HorizontalSpace space='5px' />
+                <SwitchAccountIconContainer>
                   <SwitchAccountIcon />
-                </>
+                </SwitchAccountIconContainer>
               }
             </Row>
           </PossibleToolTip>

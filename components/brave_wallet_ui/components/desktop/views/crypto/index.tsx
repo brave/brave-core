@@ -24,6 +24,9 @@ import { TOP_NAV_OPTIONS } from '../../../../options/top-nav-options'
 // style
 import { StyledWrapper } from './style'
 
+// hooks
+import { useBalanceUpdater } from '../../../../common/hooks/use-balance-updater'
+
 // components
 import { TopTabNav, WalletBanner, EditVisibleAssetsModal } from '../../'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
@@ -59,6 +62,9 @@ const CryptoView = (props: Props) => {
     isMetaMaskInstalled,
     sessionRoute
   } = props
+
+  // hooks
+  useBalanceUpdater()
 
   // accounts tab state
   const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)

@@ -46,15 +46,15 @@ base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
 
   base::Value::List wallpapers;
   for (const NewTabPageAdWallpaperInfo& wallpaper : ad.wallpapers) {
-    base::Value::Dict dict;
-    dict.Set(kImageUrlKey, wallpaper.image_url.spec());
+    base::Value::Dict wallpaper_dict;
+    wallpaper_dict.Set(kImageUrlKey, wallpaper.image_url.spec());
 
     base::Value::Dict focal_point;
     focal_point.Set(kFocalPointXKey, wallpaper.focal_point.x);
     focal_point.Set(kFocalPointYKey, wallpaper.focal_point.y);
-    dict.Set(kFocalPointKey, std::move(focal_point));
+    wallpaper_dict.Set(kFocalPointKey, std::move(focal_point));
 
-    wallpapers.Append(std::move(dict));
+    wallpapers.Append(std::move(wallpaper_dict));
   }
   dict.Set(kWallpapersKey, std::move(wallpapers));
 
@@ -106,13 +106,14 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root) {
 
   if (const auto* wallpapers = root.FindList(kWallpapersKey)) {
     for (const auto& value : *wallpapers) {
-      const base::Value::Dict* dict = value.GetIfDict();
+      const base::Value::Dict* const dict = value.GetIfDict();
       if (!dict) {
         continue;
       }
 
-      const std::string* image_url = dict->FindString(kImageUrlKey);
-      const base::Value::Dict* focal_point = dict->FindDict(kFocalPointKey);
+      const std::string* const image_url = dict->FindString(kImageUrlKey);
+      const base::Value::Dict* const focal_point =
+          dict->FindDict(kFocalPointKey);
       if (!image_url || !focal_point) {
         continue;
       }

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
 class Browser;
+class GURL;
 
 namespace brave {
 
@@ -22,8 +23,16 @@ void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 void OpenIpfsFilesWebUI(Browser* browser);
-void CopyCleanLink(Browser* browser);
+// Copies an url sanitized by URLSanitizerService.
+void CopySanitizedURL(Browser* browser, const GURL& url);
+// Copies an url cleared through:
+// - Debouncer (potentially debouncing many levels)
+// - Query filter
+// - URLSanitizerService
+void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
 
+void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
+void ToggleVerticalTabStrip(Browser* browser);
 }  // namespace brave
 
 

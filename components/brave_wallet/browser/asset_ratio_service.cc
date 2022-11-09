@@ -144,6 +144,8 @@ GURL AssetRatioService::GetSardineBuyURL(const std::string chain_id,
   url = net::AppendQueryParameter(url, "fiat_amount", amount);
   url = net::AppendQueryParameter(url, "fiat_currency", currency_code);
   url = net::AppendQueryParameter(url, "client_token", auth_token);
+  url = net::AppendQueryParameter(url, "fixed_asset_type", symbol);
+  url = net::AppendQueryParameter(url, "fixed_network", sardine_network_name);
   return url;
 }
 
@@ -184,22 +186,26 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
                                     GetBuyUrlV1Callback callback) {
   std::string url;
   if (provider == mojom::OnRampProvider::kWyre) {
-    GURL url = GURL(kWyreBaseUrl);
-    url = net::AppendQueryParameter(url, "dest", "ethereum:" + address);
-    url = net::AppendQueryParameter(url, "sourceCurrency", currency_code);
-    url = net::AppendQueryParameter(url, "destCurrency", symbol);
-    url = net::AppendQueryParameter(url, "amount", amount);
-    url = net::AppendQueryParameter(url, "accountId", kWyreID);
-    url = net::AppendQueryParameter(url, "paymentMethod", "debit-card");
-    std::move(callback).Run(std::move(url.spec()), absl::nullopt);
+    GURL wyre_url = GURL(kWyreBaseUrl);
+    wyre_url =
+        net::AppendQueryParameter(wyre_url, "dest", "ethereum:" + address);
+    wyre_url =
+        net::AppendQueryParameter(wyre_url, "sourceCurrency", currency_code);
+    wyre_url = net::AppendQueryParameter(wyre_url, "destCurrency", symbol);
+    wyre_url = net::AppendQueryParameter(wyre_url, "amount", amount);
+    wyre_url = net::AppendQueryParameter(wyre_url, "accountId", kWyreID);
+    wyre_url =
+        net::AppendQueryParameter(wyre_url, "paymentMethod", "debit-card");
+    std::move(callback).Run(std::move(wyre_url.spec()), absl::nullopt);
   } else if (provider == mojom::OnRampProvider::kRamp) {
-    GURL url = GURL(kRampBaseUrl);
-    url = net::AppendQueryParameter(url, "userAddress", address);
-    url = net::AppendQueryParameter(url, "swapAsset", symbol);
-    url = net::AppendQueryParameter(url, "fiatValue", amount);
-    url = net::AppendQueryParameter(url, "fiatCurrency", currency_code);
-    url = net::AppendQueryParameter(url, "hostApiKey", kRampID);
-    std::move(callback).Run(std::move(url.spec()), absl::nullopt);
+    GURL ramp_url = GURL(kRampBaseUrl);
+    ramp_url = net::AppendQueryParameter(ramp_url, "userAddress", address);
+    ramp_url = net::AppendQueryParameter(ramp_url, "swapAsset", symbol);
+    ramp_url = net::AppendQueryParameter(ramp_url, "fiatValue", amount);
+    ramp_url =
+        net::AppendQueryParameter(ramp_url, "fiatCurrency", currency_code);
+    ramp_url = net::AppendQueryParameter(ramp_url, "hostApiKey", kRampID);
+    std::move(callback).Run(std::move(ramp_url.spec()), absl::nullopt);
   } else if (provider == mojom::OnRampProvider::kSardine) {
     auto internal_callback =
         base::BindOnce(&AssetRatioService::OnGetSardineAuthToken,

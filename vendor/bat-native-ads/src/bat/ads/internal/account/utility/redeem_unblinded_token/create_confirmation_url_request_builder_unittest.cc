@@ -12,6 +12,7 @@
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/sys_info.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -21,9 +22,9 @@ namespace ads {
 namespace {
 
 constexpr char kExpectedUrl[] =
-    R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJacnR0SXcwTWNlVFNuam50NHA4aXBtSGJaSzlpWGxlNEhnTWUzdVRDZFgxZStzK2pZTDljYkFOV01WaDhMZjVnN3BxRHRucWF5UTExQWZmMGxFSXEwUT09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)";
+    R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJrM3hJalZwc0FYTGNHL0NKRGVLQVphN0g3aGlrMVpyUThIOVpEZC9KVU1SQWdtYk5WY0V6VnhRb2dDZDBjcmlDZnZCQWtsd1hybWNyeVBaaFUxMlg3Zz09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)";
 constexpr char kExpectedContent[] =
-    R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
+    R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
 }  // namespace
 
 class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {};
@@ -39,10 +40,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
-
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -72,10 +71,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -105,10 +104,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -138,10 +137,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
-
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -171,10 +168,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -204,10 +201,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -237,10 +234,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
-
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -270,10 +265,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -303,10 +298,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kRelease);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -336,10 +331,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
-
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -369,10 +362,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-AS");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
@@ -402,10 +395,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockLocaleHelper(locale_helper_mock_, "en-KY");
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act

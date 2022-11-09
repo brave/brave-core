@@ -6,6 +6,7 @@
 #include "base/android/jni_android.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/build/android/jni_headers/BraveWalletServiceFactory_jni.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -19,6 +20,18 @@ static jint JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
   auto pending =
       brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
           profile);
+
+  return static_cast<jint>(pending.PassPipe().release().value());
+}
+
+static jint JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& profile_android) {
+  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+  auto pending = brave_wallet::BraveWalletServiceFactory::GetInstance()
+                     ->GetServiceForContext(profile)
+                     ->GetBraveWalletP3A()
+                     ->MakeRemote();
 
   return static_cast<jint>(pending.PassPipe().release().value());
 }

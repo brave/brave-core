@@ -10,6 +10,7 @@ export * from 'gen/brave/components/brave_today/common/brave_news.mojom.m.js'
 // Provide easy access to types which mojom functions return but aren't
 // defined as a struct.
 export type Publishers = Record<string, BraveNews.Publisher>
+export type Channels = Record<string, BraveNews.Channel>
 
 // Create singleton connection to browser interface
 let braveNewsControllerInstance: BraveNews.BraveNewsControllerRemote
@@ -19,7 +20,10 @@ export default function getBraveNewsController () {
   // doesn't try to connect, or pages which use exported types
   // but ultimately don't fetch any data.
   if (!braveNewsControllerInstance) {
-    braveNewsControllerInstance = BraveNews.BraveNewsController.getRemote()
+    // In Storybook, we have a mocked BraveNewsController because none of the
+    // mojo apis are available.
+    // @ts-expect-error
+    braveNewsControllerInstance = window.storybookBraveNewsController || BraveNews.BraveNewsController.getRemote()
   }
   return braveNewsControllerInstance
 }

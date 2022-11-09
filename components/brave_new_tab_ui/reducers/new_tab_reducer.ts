@@ -22,7 +22,7 @@ import { setMostVisitedSettings } from '../api/topSites'
 // Utils
 import { handleWidgetPrefsChange } from './stack_widget_reducer'
 import { NewTabAdsData } from '../api/newTabAdsData'
-import { Background } from '../api/background'
+import { Background, CustomBackground } from '../api/background'
 
 let sideEffectState: NewTab.State = storage.load()
 
@@ -54,13 +54,19 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         // Auto-dismiss of together prompt only
         // takes effect on the next page view and not the
         // page view that the action occurred on.
-        braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
+        braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed,
+        customImageBackgrounds: initialDataPayload.customImageBackgrounds
       }
 
       if (initialDataPayload.wallpaperData) {
         let backgroundWallpaper = initialDataPayload.wallpaperData.backgroundWallpaper
         if (backgroundWallpaper?.type === 'color' && backgroundWallpaper.random) {
           backgroundWallpaper = backgroundAPI.randomColorBackground(backgroundWallpaper.wallpaperColor)
+        } else if (backgroundWallpaper?.type === 'image' && backgroundWallpaper.random) {
+          const customBackgrounds = state.customImageBackgrounds
+          if (customBackgrounds.length) {
+            backgroundWallpaper = { ...customBackgrounds[Math.floor(Math.random() * customBackgrounds.length)], random: true }
+          }
         }
 
         state = {
@@ -133,10 +139,17 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         const url = background.custom.url.url
         const color = background.custom.color
         const random = background.custom.useRandomItem
-        if (url) {
-          state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
-        } else if (color) {
+        if (color) {
           state.backgroundWallpaper = random ? backgroundAPI.randomColorBackground(color) : { type: 'color', wallpaperColor: color, random }
+        } else if (url) {
+          // Custom Image was specified
+          state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
+        } else if (random) {
+          // Random custom image should be used.
+          const customBackgrounds = state.customImageBackgrounds
+          if (customBackgrounds.length) {
+            state.backgroundWallpaper = { ...customBackgrounds[Math.floor(Math.random() * customBackgrounds.length)], random: true }
+          }
         }
       }
 
@@ -152,6 +165,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
       if (!state.backgroundWallpaper) {
         state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
+      }
+      break
+
+    case types.CUSTOM_IMAGE_BACKGROUNDS_UPDATED:
+      const customBackgrounds = payload as CustomBackground[]
+      state = {
+        ...state,
+        customImageBackgrounds: customBackgrounds.map(background => ({ type: 'image', wallpaperImageUrl: background.url.url }))
       }
       break
 

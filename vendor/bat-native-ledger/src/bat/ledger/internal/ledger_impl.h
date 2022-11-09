@@ -96,7 +96,8 @@ class LedgerImpl : public Ledger {
   void Initialize(bool execute_create_script,
                   LegacyResultCallback callback) override;
 
-  void CreateRewardsWallet(ResultCallback callback) override;
+  void CreateRewardsWallet(const std::string& country,
+                           CreateRewardsWalletCallback callback) override;
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,
@@ -179,9 +180,6 @@ class LedgerImpl : public Ledger {
   void GetAllBalanceReports(GetBalanceReportListCallback callback) override;
 
   mojom::AutoContributePropertiesPtr GetAutoContributeProperties() override;
-
-  void RecoverWallet(const std::string& pass_phrase,
-                     LegacyResultCallback callback) override;
 
   void SetPublisherExclude(const std::string& publisher_id,
                            mojom::PublisherExclude exclude,
@@ -299,11 +297,6 @@ class LedgerImpl : public Ledger {
   void GetEventLogs(GetEventLogsCallback callback) override;
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
-
-  std::string GetRewardsWalletPassphrase() override;
-
-  void LinkRewardsWallet(const std::string& destination_payment_id,
-                         PostSuggestionsClaimCallback callback) override;
 
   void GetDrainStatus(const std::string& drain_id,
                       GetDrainCallback callback) override;

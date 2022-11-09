@@ -1,35 +1,39 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
-import { useSelector } from 'react-redux'
-
-import { getLocale } from '../../../../common/locale'
-import {
-  BraveWallet,
-  WalletAccountType,
-  DefaultCurrencies,
-  WalletState
-} from '../../../constants/types'
 
 // Utils
+import { getLocale } from '../../../../common/locale'
 import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { formatDateAsRelative } from '../../../utils/datetime-utils'
 import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
+import { reduceAddress } from '../../../utils/reduce-address'
+import { WalletSelectors } from '../../../common/selectors'
 import Amount from '../../../utils/amount'
+
+// Types
+import { BraveWallet } from '../../../constants/types'
+import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
-import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
+import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+
+// Components
+import { TransactionIntentDescription } from './transaction-intent-description'
 
 // Styled Components
 import {
   DetailTextDarkBold,
   DetailTextDark
 } from '../shared-panel-styles'
-
 import { StatusBubble } from '../../shared/style'
-
 import {
   DetailColumn,
   FromCircle,
@@ -39,52 +43,40 @@ import {
   ToCircle,
   TransactionDetailRow
 } from './style'
-import { reduceAddress } from '../../../utils/reduce-address'
-import { TransactionIntentDescription } from './transaction-intent-description'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   transaction: BraveWallet.TransactionInfo
-  account?: WalletAccountType
-  accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.BlockchainToken[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
-  defaultCurrencies: DefaultCurrencies
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
-}
-
-const findAccountNameForAddress = (address: string, accounts: WalletAccountType[]): string => {
-  return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name || ''
 }
 
 const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } = BraveWallet.TransactionType
 
-const TransactionsListItem = (props: Props) => {
-  const {
-    transaction,
-    selectedNetwork,
-    accounts,
-    onSelectTransaction,
-    defaultCurrencies
-  } = props
+export const TransactionsListItem = ({
+  transaction,
+  selectedNetwork,
+  onSelectTransaction
+}: Props) => {
+  // redux
+  const defaultNetworks = useUnsafeWalletSelector(WalletSelectors.defaultNetworks)
+  const defaultFiatCurrency = useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
 
-  const {
-    defaultNetworks
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  // methods
+  const onClickTransaction = () => {
+    onSelectTransaction(transaction)
+  }
 
+  // memos & custom hooks
   const transactionsNetwork = React.useMemo(() => {
     return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
   }, [defaultNetworks, transaction, selectedNetwork])
 
   const parseTransaction = useTransactionParser(transactionsNetwork)
+
   const transactionDetails = React.useMemo(
     () => parseTransaction(transaction),
     [transaction]
   )
-
-  const fromAccountName = React.useMemo(() => {
-    return findAccountNameForAddress(transaction.fromAddress, accounts)
-  }, [transaction.fromAddress, accounts])
 
   const fromOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -93,10 +85,6 @@ const TransactionsListItem = (props: Props) => {
   const toOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [transactionDetails.recipient])
-
-  const onClickTransaction = () => {
-    onSelectTransaction(transaction)
-  }
 
   const transactionIntentLocale = React.useMemo((): React.ReactNode => {
     // approval
@@ -125,11 +113,11 @@ const TransactionsListItem = (props: Props) => {
           } ${
             erc721ID
           } (${
-            transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat) || '...'
+            transactionDetails.fiatValue.formatAsFiat(defaultFiatCurrency) || '...'
           })`}
       </DetailTextDark>
     )
-  }, [transaction, fromAccountName, transactionDetails])
+  }, [transaction.txType, transactionDetails, defaultFiatCurrency])
 
   const transactionIntentDescription = React.useMemo(() => {
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
@@ -155,6 +143,7 @@ const TransactionsListItem = (props: Props) => {
     return <TransactionIntentDescription from={from} to={to} wrapFrom={wrapFromText} />
   }, [transactionDetails])
 
+  // render
   return (
     <StyledWrapper onClick={onClickTransaction}>
       <DetailColumn>

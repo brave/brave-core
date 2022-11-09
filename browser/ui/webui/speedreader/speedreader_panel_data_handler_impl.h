@@ -21,11 +21,14 @@
 
 class TabStripModel;
 
+using speedreader::mojom::ContentStyle;
+using speedreader::mojom::FontFamily;
+using speedreader::mojom::FontSize;
 using speedreader::mojom::Theme;
 
 namespace speedreader {
 class SpeedreaderTabHelper;
-};  // namespace speedreader
+}  // namespace speedreader
 
 class SpeedreaderPanelDataHandlerImpl
     : public speedreader::mojom::PanelDataHandler {
@@ -44,6 +47,20 @@ class SpeedreaderPanelDataHandlerImpl
   // speedreader::mojom::PanelDatahandler overrides
   void GetTheme(GetThemeCallback callback) override;
   void SetTheme(Theme theme) override;
+
+  void GetFontFamily(GetFontFamilyCallback callback) override;
+  void SetFontFamily(FontFamily font) override;
+
+  void GetFontSize(GetFontSizeCallback callback) override;
+  void SetFontSize(FontSize size) override;
+
+  void GetContentStyle(GetContentStyleCallback callback) override;
+  void SetContentStyle(ContentStyle style) override;
+
+  void GetCurrentSiteURL(GetCurrentSiteURLCallback callback) override;
+
+  void IsEnabled(IsEnabledCallback callback) override;
+  void SetEnabled(bool on) override;
 
  private:
   mojo::Receiver<speedreader::mojom::PanelDataHandler> receiver_;

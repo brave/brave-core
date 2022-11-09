@@ -199,7 +199,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
-      false, "USDT", 6, true, "", "", "0x1", mojom::CoinType::ETH);
+      false, false, "USDT", 6, true, "", "", "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH), expected_token);
 
   // ERC721
@@ -221,7 +221,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   )");
   expected_token = mojom::BlockchainToken::New(
       "0x0E3A2A1f2146d86A604adc220b4967A898D7Fe07", "Gods Unchained Cards", "",
-      false, true, "CARD", 0, true, "", "", "0x1", mojom::CoinType::ETH);
+      false, true, true, "CARD", 0, true, "", "", "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH), expected_token);
 
   const std::string valid_json = (R"(

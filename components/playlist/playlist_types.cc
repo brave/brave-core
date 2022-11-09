@@ -43,6 +43,10 @@ PlaylistChangeParams::PlaylistChangeParams(Type type, const std::string& id)
     : change_type(type), playlist_id(id) {}
 PlaylistChangeParams::~PlaylistChangeParams() = default;
 
+bool PlaylistChangeParams::operator==(const PlaylistChangeParams& rhs) const {
+  return change_type == rhs.change_type && playlist_id == rhs.playlist_id;
+}
+
 PlaylistInfo::PlaylistInfo() = default;
 PlaylistInfo::~PlaylistInfo() = default;
 PlaylistInfo::PlaylistInfo(const PlaylistInfo& rhs) = default;

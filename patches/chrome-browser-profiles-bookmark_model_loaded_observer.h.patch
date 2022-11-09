@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/bookmark_model_loaded_observer.h b/chrome/browser/profiles/bookmark_model_loaded_observer.h
-index 27417fda3de06fc8a2ed7fe654c42e5450e1d3b3..41ff7c74a7bebdad0a2c7894149b65478aa26bdd 100644
+index edea86a9cfb628dc7758a139a6f928b285cdfe21..822ecc861c363e6aaa037c38cb5a94afb1f92375 100644
 --- a/chrome/browser/profiles/bookmark_model_loaded_observer.h
 +++ b/chrome/browser/profiles/bookmark_model_loaded_observer.h
 @@ -19,6 +19,7 @@ class BookmarkModelLoadedObserver

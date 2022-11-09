@@ -28,7 +28,7 @@ const mockAccount: WalletAccountType = {
   },
   nativeBalanceRegistry: {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
-    [BraveWallet.ROPSTEN_CHAIN_ID]: '496917339073158043'
+    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
   keyringId: undefined
 }
@@ -43,41 +43,7 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
     'iconUrls': [],
     'activeRpcEndpointIndex': 0,
     'rpcEndpoints': [
-      { url: 'https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485' }
-    ],
-    'symbol': 'ETH',
-    'symbolName': 'Ethereum',
-    'decimals': 18,
-    'coin': 60,
-    'isEip1559': true
-  },
-  {
-    'chainId': '0x4',
-    'chainName': 'Rinkeby Test Network',
-    'blockExplorerUrls': [
-      'https://rinkeby.etherscan.io'
-    ],
-    'iconUrls': [],
-    'activeRpcEndpointIndex': 0,
-    'rpcEndpoints': [
-      { url: 'https://rinkeby-infura.brave.com/f7106c838853428280fa0c585acc9485' }
-    ],
-    'symbol': 'ETH',
-    'symbolName': 'Ethereum',
-    'decimals': 18,
-    'coin': 60,
-    'isEip1559': true
-  },
-  {
-    'chainId': '0x3',
-    'chainName': 'Ropsten Test Network',
-    'blockExplorerUrls': [
-      'https://ropsten.etherscan.io'
-    ],
-    'iconUrls': [],
-    'activeRpcEndpointIndex': 0,
-    'rpcEndpoints': [
-      { url: 'https://ropsten-infura.brave.com/f7106c838853428280fa0c585acc9485' }
+      { url: 'https://mainnet-infura.brave.com' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -94,7 +60,7 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
     'iconUrls': [],
     'activeRpcEndpointIndex': 0,
     'rpcEndpoints': [
-      { url: 'https://goerli-infura.brave.com/f7106c838853428280fa0c585acc9485' }
+      { url: 'https://goerli-infura.brave.com' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -103,15 +69,15 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
     'isEip1559': true
   },
   {
-    'chainId': '0x2a',
-    'chainName': 'Kovan Test Network',
+    'chainId': '0xaa36a7',
+    'chainName': 'Sepolia Test Network',
     'blockExplorerUrls': [
-      'https://kovan.etherscan.io'
+      'https://sepolia.etherscan.io'
     ],
     'iconUrls': [],
     'activeRpcEndpointIndex': 0,
     'rpcEndpoints': [
-      { url: 'https://kovan-infura.brave.com/f7106c838853428280fa0c585acc9485' }
+      { url: 'https://sepolia-infura.brave.com' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -239,6 +205,7 @@ export const mockWalletState: WalletState = {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/usdc.png',
       name: 'USD Coin',
       symbol: 'USDC',
@@ -253,6 +220,7 @@ export const mockWalletState: WalletState = {
       decimals: 18,
       isErc20: true,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/dai.png',
       name: 'DAI Stablecoin',
       symbol: 'DAI',
@@ -311,6 +279,7 @@ export const mockWalletState: WalletState = {
       decimals: 18,
       isErc20: false,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/',
       name: 'Ethereum',
       symbol: 'ETH',
@@ -325,6 +294,7 @@ export const mockWalletState: WalletState = {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/usdc.png',
       name: 'USD Coin',
       symbol: 'USDC',
@@ -339,13 +309,14 @@ export const mockWalletState: WalletState = {
       decimals: 18,
       isErc20: false,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/',
       name: 'Ethereum',
       symbol: 'ETH',
       tokenId: '',
       visible: true,
       coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.ROPSTEN_CHAIN_ID
+      chainId: BraveWallet.GOERLI_CHAIN_ID
     },
     {
       coingeckoId: 'usd-coin',
@@ -353,18 +324,18 @@ export const mockWalletState: WalletState = {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/usdc.png',
       name: 'USD Coin',
       symbol: 'USDC',
       tokenId: '',
       visible: true,
       coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.ROPSTEN_CHAIN_ID
+      chainId: BraveWallet.GOERLI_CHAIN_ID
     }
   ],
   transactionProviderErrorRegistry: {},
   defaultNetworks: [mockNetwork],
-  isTestNetworksEnabled: true,
   selectedCoin: BraveWallet.CoinType.ETH,
   selectedNetworkFilter: AllNetworksOption,
   selectedAssetFilter: AllAssetsFilterOption,

@@ -14,9 +14,16 @@ namespace brave_ads {
 class NotificationHelperImplMock : public NotificationHelperImpl {
  public:
   NotificationHelperImplMock();
+
   NotificationHelperImplMock(const NotificationHelperImplMock&) = delete;
   NotificationHelperImplMock& operator=(const NotificationHelperImplMock&) =
       delete;
+
+  NotificationHelperImplMock(NotificationHelperImplMock&& other) noexcept =
+      delete;
+  NotificationHelperImplMock& operator=(
+      NotificationHelperImplMock&& other) noexcept = delete;
+
   ~NotificationHelperImplMock() override;
 
   MOCK_METHOD0(CanShowNotifications, bool());

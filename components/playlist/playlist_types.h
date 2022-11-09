@@ -20,7 +20,7 @@ struct PlaylistChangeParams {
     kItemThumbnailReady,    // Thumbnail ready to use for playlist
     kItemThumbnailFailed,   // Failed to fetch thumbnail
     kItemCached,            // The item is cached in local storage
-    kItemDeleted,           // A playlist deleted
+    kItemDeleted,           // An item deleted
     kItemAborted,           // Aborted during the creation process
     kItemLocalDataRemoved,  // Local data removed
 
@@ -36,6 +36,15 @@ struct PlaylistChangeParams {
 
   Type change_type = Type::kNone;
   std::string playlist_id;
+
+  bool operator==(const PlaylistChangeParams& rhs) const;
+
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const PlaylistChangeParams& change_params) {
+    return os << "{ "
+              << GetPlaylistChangeTypeAsString(change_params.change_type)
+              << " }";
+  }
 };
 
 struct PlaylistItemInfo {

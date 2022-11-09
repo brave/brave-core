@@ -7,7 +7,7 @@
 
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -43,21 +43,10 @@ SkColor GetToolbarInkDropColor(const ui::ColorMixer& mixer) {
                      0xFF * kToolbarInkDropHighlightVisibleOpacity);
 }
 
-enum class ProfileType {
-  kNormalProfile,
-  kPrivateProfile,
-  kTorProfile,
-};
-
-struct ColorPropertiesMapEntry {
-  int property_id;
-  BraveColorIds color_id;
-};
-
-SkColor GetColorContrastingToToolbar(const ui::ColorProviderManager::Key& key,
-                                     const ui::ColorMixer& mixer,
-                                     const ColorPropertiesMapEntry& entry,
-                                     ProfileType profile_type) {
+SkColor PickColorContrastingToToolbar(const ui::ColorProviderManager::Key& key,
+                                      const ui::ColorMixer& mixer,
+                                      SkColor color1,
+                                      SkColor color2) {
   // Custom theme's toolbar color will be the final color.
   auto toolbar_color = mixer.GetResultColor(kColorToolbar);
   SkColor custom_toolbar_color;
@@ -66,203 +55,17 @@ SkColor GetColorContrastingToToolbar(const ui::ColorProviderManager::Key& key,
                                  &custom_toolbar_color)) {
     toolbar_color = custom_toolbar_color;
   }
-  const auto base_button_color_light = MaybeGetDefaultColorForBraveUi(
-      entry.property_id, profile_type == ProfileType::kPrivateProfile,
-      profile_type == ProfileType::kTorProfile,
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  const auto base_button_color_dark = MaybeGetDefaultColorForBraveUi(
-      entry.property_id, profile_type == ProfileType::kPrivateProfile,
-      profile_type == ProfileType::kTorProfile,
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  DCHECK(base_button_color_light && base_button_color_dark);
-  return color_utils::PickContrastingColor(base_button_color_light.value(),
-                                           base_button_color_dark.value(),
-                                           toolbar_color);
-}
-
-SkColor GetBraveThemeColor(const ui::ColorProviderManager::Key& key,
-                           const ColorPropertiesMapEntry& entry,
-                           ProfileType profile_type) {
-  auto color = MaybeGetDefaultColorForBraveUi(
-      entry.property_id, profile_type == ProfileType::kPrivateProfile,
-      profile_type == ProfileType::kTorProfile,
-      key.color_mode == ui::ColorProviderManager::ColorMode::kLight
-          ? dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT
-          : dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  DCHECK(color);
-  return color.value();
-}
-
-void AddBraveFeaturesColors(const ui::ColorProviderManager::Key& key,
-                            ui::ColorMixer* color_mixer,
-                            ProfileType profile_type) {
-  static constexpr ColorPropertiesMapEntry kPropertiesMap[] = {
-    {BraveThemeProperties::COLOR_ICON_BASE, kColorIconBase},
-    {BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT,
-     kColorBookmarkBarInstructionsText},
-    {BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR,
-     kColorMenuItemSubText},
-    {BraveThemeProperties::
-         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER,
-     kColorSearchConversionBannerTypeBackgroundBorder},
-    {BraveThemeProperties::
-         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED,
-     kColorSearchConversionBannerTypeBackgroundBorderHovered},
-    {BraveThemeProperties::
-         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_FROM,
-     kColorSearchConversionBannerTypeBackgroundGradientFrom},
-    {BraveThemeProperties::
-         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_TO,
-     kColorSearchConversionBannerTypeBackgroundGradientTo},
-    {BraveThemeProperties::
-         COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_NORMAL,
-     kColorSearchConversionButtonTypeBackgroundNormal},
-    {BraveThemeProperties::
-         COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_HOVERED,
-     kColorSearchConversionButtonTypeBackgroundHovered},
-    {BraveThemeProperties::COLOR_SEARCH_CONVERSION_BANNER_TYPE_DESC_TEXT,
-     kColorSearchConversionBannerTypeDescText},
-    {BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_NORMAL,
-     kColorSearchConversionButtonTypeDescNormal},
-    {BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_HOVERED,
-     kColorSearchConversionButtonTypeDescHovered},
-    {BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_INPUT_APPEND,
-     kColorSearchConversionButtonTypeInputAppend},
-#if BUILDFLAG(ENABLE_SIDEBAR)
-    {BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_BACKGROUND,
-     kColorSidebarAddBubbleBackground},
-    {BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT,
-     kColorSidebarAddBubbleHeaderText},
-    {BraveThemeProperties::
-         COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED,
-     kColorSidebarAddBubbleItemTextBackgroundHovered},
-    {BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED,
-     kColorSidebarAddBubbleItemTextHovered},
-    {BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL,
-     kColorSidebarAddBubbleItemTextNormal},
-    {BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED,
-     kColorSidebarAddButtonDisabled},
-    {BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED,
-     kColorSidebarArrowBackgroundHovered},
-    {BraveThemeProperties::COLOR_SIDEBAR_ARROW_DISABLED,
-     kColorSidebarArrowDisabled},
-    {BraveThemeProperties::COLOR_SIDEBAR_ARROW_NORMAL,
-     kColorSidebarArrowNormal},
-    {BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE, kColorSidebarButtonBase},
-    {BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND_HOVERED,
-     kColorSidebarItemBackgroundHovered},
-    {BraveThemeProperties::COLOR_SIDEBAR_ITEM_DRAG_INDICATOR_COLOR,
-     kColorSidebarItemDragIndicatorColor},
-    {BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR, kColorSidebarSeparator},
-#endif
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-    {BraveThemeProperties::COLOR_SPEEDREADER_ICON, kColorSpeedreaderIcon},
-    {BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_THUMB,
-     kColorSpeedreaderToggleThumb},
-    {BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK,
-     kColorSpeedreaderToggleTrack},
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-    {BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER,
-     kColorBraveVpnButtonBorder},
-    {BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED,
-     kColorBraveVpnButtonTextConnected},
-    {BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED,
-     kColorBraveVpnButtonTextDisconnected},
-#endif
-  };
-
-  ui::ColorMixer& mixer = *color_mixer;
-  for (auto& entry : kPropertiesMap) {
-    switch (entry.property_id) {
-      case BraveThemeProperties::COLOR_ICON_BASE:
-      case BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_FROM:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_TO:
-      case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BANNER_TYPE_DESC_TEXT:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_NORMAL:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_HOVERED:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_NORMAL:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_HOVERED:
-      case BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BUTTON_TYPE_INPUT_APPEND: {
-        mixer[entry.color_id] = {GetBraveThemeColor(key, entry, profile_type)};
-        break;
-      }
-      case BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT: {
-        mixer[entry.color_id] = {
-            GetColorContrastingToToolbar(key, mixer, entry, profile_type)};
-        break;
-      }
-#if BUILDFLAG(ENABLE_SIDEBAR)
-      case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_BACKGROUND:
-      case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT:
-      case BraveThemeProperties::
-          COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
-      case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED:
-      case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL:
-      case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR: {
-        mixer[entry.color_id] = {GetBraveThemeColor(key, entry, profile_type)};
-        break;
-      }
-      case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED:
-      case BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE:
-      case BraveThemeProperties::COLOR_SIDEBAR_ARROW_DISABLED:
-      case BraveThemeProperties::COLOR_SIDEBAR_ARROW_NORMAL:
-      case BraveThemeProperties::COLOR_SIDEBAR_ITEM_DRAG_INDICATOR_COLOR: {
-        mixer[entry.color_id] = {
-            GetColorContrastingToToolbar(key, mixer, entry, profile_type)};
-        break;
-      }
-      case BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED:
-      case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND_HOVERED: {
-        mixer[entry.color_id] = {GetToolbarInkDropColor(mixer)};
-        break;
-      }
-#endif
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-      case BraveThemeProperties::COLOR_SPEEDREADER_ICON:
-      case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_THUMB:
-      case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK: {
-        mixer[entry.color_id] = {GetBraveThemeColor(key, entry, profile_type)};
-        break;
-      }
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-      case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER: {
-        mixer[entry.color_id] = {GetBraveThemeColor(key, entry, profile_type)};
-        break;
-      }
-      case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED:
-      case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED: {
-        mixer[entry.color_id] = {
-            GetColorContrastingToToolbar(key, mixer, entry, profile_type)};
-        break;
-      }
-#endif
-      default:
-        NOTREACHED();
-    }
-  }
+  return color_utils::PickContrastingColor(color1, color2, toolbar_color);
 }
 
 void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
   mixer[kColorDownloadShelfButtonText] = {gfx::kBraveGrey800};
-  mixer[kColorForTest] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
+  mixer[kColorForTest] = {kLightColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
@@ -287,22 +90,16 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0xDA, 0xDC, 0xE8)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
-
-  // Colors for HelpBubble. IDs are defined in
-  // chrome/browser/ui/color/chrome_color_id.h
-  mixer[kColorFeaturePromoBubbleBackground] = {SK_ColorWHITE};
-  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0x42, 0x45, 0x52)};
-  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
-      GetToolbarInkDropColor(mixer)};
 }
 
 void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
                                   const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
   mixer[kColorDownloadShelfButtonText] = {SK_ColorWHITE};
-  mixer[kColorForTest] = {SkColorSetRGB(0x00, 0x00, 0x00)};
+  mixer[kColorForTest] = {kDarkColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
@@ -330,13 +127,6 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
-
-  // Colors for HelpBubble. IDs are defined in
-  // chrome/browser/ui/color/chrome_color_id.h
-  mixer[kColorFeaturePromoBubbleBackground] = {SkColorSetRGB(0x12, 0x13, 0x16)};
-  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0xC6, 0xC8, 0xD0)};
-  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
-      GetToolbarInkDropColor(mixer)};
 }
 
 }  // namespace
@@ -399,22 +189,211 @@ void AddBravifiedChromeThemeColorMixer(
       : AddChromeLightThemeColorMixer(provider, key);
 }
 
-void AddBraveThemeColorMixer(ui::ColorProvider* provider,
-                             const ui::ColorProviderManager::Key& key) {
+void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
+                                  const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  AddBraveFeaturesColors(key, &mixer, ProfileType::kNormalProfile);
+  mixer[kColorForTest] = {kLightColorForTest};
+
+  mixer[kColorIconBase] = {SkColorSetRGB(0x49, 0x50, 0x57)};
+  mixer[kColorBookmarkBarInstructionsText] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
+                                    SkColorSetRGB(0xFF, 0xFF, 0xFF))};
+  mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
+  mixer[kColorSearchConversionBannerTypeDescText] = {
+      SkColorSetRGB(0x2E, 0x30, 0x39)};
+  mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
+      SkColorSetRGB(0xE2, 0xE3, 0xF8)};
+  mixer[kColorSearchConversionBannerTypeBackgroundBorderHovered] = {
+      SkColorSetRGB(0x83, 0x89, 0xE0)};
+  mixer[kColorSearchConversionBannerTypeBackgroundGradientFrom] = {
+      SkColorSetARGB(104, 0xFF, 0xFF, 0xFF)};
+  mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
+      SkColorSetARGB(104, 0xEF, 0xEF, 0xFB)};
+  mixer[kColorSearchConversionButtonTypeInputAppend] = {
+      SkColorSetRGB(0x58, 0x5C, 0x6D)};
+  mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
+      SkColorSetRGB(0xED, 0xEE, 0xFA)};
+  mixer[kColorSearchConversionButtonTypeBackgroundHovered] = {
+      SkColorSetRGB(0xE2, 0xE3, 0xF8)};
+
+  mixer[kColorSearchConversionButtonTypeDescNormal] = {
+      SkColorSetRGB(0x44, 0x4d, 0xd0)};
+  mixer[kColorSearchConversionButtonTypeDescHovered] = {
+      SkColorSetRGB(0x1F, 0x25, 0x7A)};
+  mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
+  mixer[kColorDialogDontAskAgainButtonHovered] = {
+      SkColorSetRGB(0x49, 0x50, 0x57)};
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  mixer[kColorSidebarAddBubbleBackground] = {SK_ColorWHITE};
+  mixer[kColorSidebarAddBubbleHeaderText] = {SkColorSetRGB(0x17, 0x17, 0x1F)};
+  mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
+      SkColorSetRGB(0x4C, 0x54, 0xD2)};
+  mixer[kColorSidebarAddBubbleItemTextHovered] = {
+      SkColorSetRGB(0xF0, 0xF2, 0xFF)};
+  mixer[kColorSidebarAddBubbleItemTextNormal] = {
+      SkColorSetRGB(0x21, 0x25, 0x29)};
+  mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
+  mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
+  mixer[kColorSidebarSeparator] = {SkColorSetRGB(0xE6, 0xE8, 0xF5)};
+
+  mixer[kColorSidebarButtonBase] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
+                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
+      key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
+      SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};
+  mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
+      key, mixer, SkColorSetARGB(0x8A, 0x49, 0x50, 0x57),
+      SkColorSetARGB(0x8A, 0xAE, 0xB1, 0xC2))};
+  mixer[kColorSidebarArrowNormal] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
+                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  mixer[kColorSidebarItemDragIndicator] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
+                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  mixer[kColorSpeedreaderIcon] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
+  mixer[kColorSpeedreaderToggleThumb] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
+  mixer[kColorSpeedreaderToggleTrack] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  mixer[kColorBraveVpnButtonBorder] = {SkColorSetRGB(0xD0, 0xD3, 0xD6)};
+  mixer[kColorBraveVpnButtonTextConnected] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
+                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
+  mixer[kColorBraveVpnButtonTextDisconnected] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x86, 0x8E, 0x96),
+                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
+#endif
+
+  // Colors for HelpBubble. IDs are defined in
+  // chrome/browser/ui/color/chrome_color_id.h
+  mixer[kColorFeaturePromoBubbleBackground] = {SK_ColorWHITE};
+  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0x42, 0x45, 0x52)};
+  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
+      GetToolbarInkDropColor(mixer)};
+}
+
+void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
+                                 const ui::ColorProviderManager::Key& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  mixer[kColorForTest] = {kDarkColorForTest};
+
+  mixer[kColorIconBase] = {SkColorSetRGB(0xC2, 0xC4, 0xCF)};
+  mixer[kColorBookmarkBarInstructionsText] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
+                                    SkColorSetRGB(0xFF, 0xFF, 0xFF))};
+  mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
+  mixer[kColorSearchConversionBannerTypeDescText] = {
+      SkColorSetRGB(0xE2, 0xE3, 0xE7)};
+  mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
+      SkColorSetRGB(0x1F, 0x25, 0x7A)};
+  mixer[kColorSearchConversionBannerTypeBackgroundBorderHovered] = {
+      SkColorSetRGB(0x5F, 0x67, 0xD7)};
+  mixer[kColorSearchConversionBannerTypeBackgroundGradientFrom] = {
+      SkColorSetARGB(104, 0x17, 0x19, 0x1E)};
+  mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
+      SkColorSetARGB(104, 0x1F, 0x25, 0x7A)};
+  mixer[kColorSearchConversionButtonTypeInputAppend] = {
+      SkColorSetRGB(0xAC, 0xAF, 0xBB)};
+  mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
+      SkColorSetRGB(0x1A, 0x1C, 0x3B)};
+  mixer[kColorSearchConversionButtonTypeBackgroundHovered] = {
+      SkColorSetRGB(0x1F, 0x25, 0x7A)};
+  mixer[kColorSearchConversionButtonTypeDescNormal] = {
+      SkColorSetRGB(0xA6, 0xAB, 0xE9)};
+  mixer[kColorSearchConversionButtonTypeDescHovered] = {
+      SkColorSetRGB(0xE2, 0xE3, 0xF8)};
+  mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
+  mixer[kColorDialogDontAskAgainButtonHovered] = {
+      SkColorSetRGB(0xC2, 0xC4, 0xCF)};
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  mixer[kColorSidebarAddBubbleBackground] = {gfx::kBraveGrey800};
+  mixer[kColorSidebarAddBubbleHeaderText] = {SkColorSetRGB(0xF0, 0xF0, 0xFF)};
+  mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
+      SkColorSetRGB(0x4C, 0x54, 0xD2)};
+  mixer[kColorSidebarAddBubbleItemTextHovered] = {
+      SkColorSetRGB(0xF0, 0xF0, 0xFF)};
+  mixer[kColorSidebarAddBubbleItemTextNormal] = {
+      SkColorSetRGB(0xF0, 0xF0, 0xFF)};
+  mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
+  mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
+  mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
+  mixer[kColorSidebarButtonBase] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
+                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
+      key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
+      SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};
+  mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
+      key, mixer, SkColorSetARGB(0x8A, 0x49, 0x50, 0x57),
+      SkColorSetARGB(0x8A, 0xAE, 0xB1, 0xC2))};
+  mixer[kColorSidebarArrowNormal] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
+                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  mixer[kColorSidebarItemDragIndicator] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
+                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  mixer[kColorSpeedreaderIcon] = {SkColorSetRGB(0x73, 0x7A, 0xDE)};
+  mixer[kColorSpeedreaderToggleThumb] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
+  mixer[kColorSpeedreaderToggleTrack] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  mixer[kColorBraveVpnButtonBorder] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
+  mixer[kColorBraveVpnButtonTextConnected] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
+                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
+  mixer[kColorBraveVpnButtonTextDisconnected] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x86, 0x8E, 0x96),
+                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
+#endif
+
+  // Colors for HelpBubble. IDs are defined in
+  // chrome/browser/ui/color/chrome_color_id.h
+  mixer[kColorFeaturePromoBubbleBackground] = {SkColorSetRGB(0x12, 0x13, 0x16)};
+  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0xC6, 0xC8, 0xD0)};
+  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
+      GetToolbarInkDropColor(mixer)};
+}
+
+// Handling dark or light theme on normal profile.
+void AddBraveThemeColorMixer(ui::ColorProvider* provider,
+                             const ui::ColorProviderManager::Key& key) {
+  key.color_mode == ui::ColorProviderManager::ColorMode::kDark
+      ? AddBraveDarkThemeColorMixer(provider, key)
+      : AddBraveLightThemeColorMixer(provider, key);
 }
 
 void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
                                     const ui::ColorProviderManager::Key& key) {
-  AddBraveThemeColorMixer(provider, key);
+  AddBraveDarkThemeColorMixer(provider, key);
+
+  // Add private theme specific brave colors here.
+  ui::ColorMixer& mixer = provider->AddMixer();
+  mixer[kColorForTest] = {kPrivateColorForTest};
+}
+
+void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
+                                const ui::ColorProviderManager::Key& key) {
+  AddBravePrivateThemeColorMixer(provider, key);
+  AddChromeDarkThemeColorMixer(provider, key);
+
+  // Add tor theme specific brave colors here.
+}
+
+void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
+                               const ui::ColorProviderManager::Key& key) {
+  AddBravePrivateThemeColorMixer(provider, key);
   AddChromeDarkThemeColorMixer(provider, key);
 
   ui::ColorMixer& mixer = provider->AddMixer();
 
   mixer[kColorBookmarkBarForeground] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
-  mixer[kColorForTest] = {SkColorSetRGB(0xFF, 0x00, 0x00)};
   mixer[kColorLocationBarFocusRing] = {SkColorSetRGB(0xC6, 0xB3, 0xFF)};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
@@ -435,13 +414,11 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorFrameActive] = {kPrivateFrame};
   mixer[ui::kColorFrameInactive] = {
       color_utils::HSLShift(kPrivateFrame, {-1, -1, 0.55})};
-
-  AddBraveFeaturesColors(key, &mixer, ProfileType::kPrivateProfile);
 }
 
-void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
-                                const ui::ColorProviderManager::Key& key) {
-  AddBravePrivateThemeColorMixer(provider, key);
+void AddTorThemeColorMixer(ui::ColorProvider* provider,
+                           const ui::ColorProviderManager::Key& key) {
+  AddBraveTorThemeColorMixer(provider, key);
 
   ui::ColorMixer& mixer = provider->AddMixer();
 
@@ -460,8 +437,6 @@ void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorFrameActive] = {kPrivateTorFrame};
   mixer[ui::kColorFrameInactive] = {
       color_utils::HSLShift(kPrivateTorFrame, {-1, -1, 0.55})};
-
-  AddBraveFeaturesColors(key, &mixer, ProfileType::kTorProfile);
 }
 
 void AddBraveOmniboxLightThemeColorMixer(

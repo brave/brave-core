@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/flags/BUILD.gn b/chrome/browser/flags/BUILD.gn
+index 998075fc2dd120acbcbd160283910d7e286d35a3..cc6292a28ad59610438bceb1876cefbfa321c74c 100644
+--- a/chrome/browser/flags/BUILD.gn
++++ b/chrome/browser/flags/BUILD.gn
+@@ -34,6 +34,7 @@ android_library("java") {
+     "//third_party/android_deps:guava_android_java",
+     "//third_party/androidx:androidx_annotation_annotation_java",
+   ]
++  sources += brave_flags_java_sources
+   srcjar_deps = [
+     ":chrome_android_java_switches_srcjar",
+     ":chrome_browser_flags_enums_srcjar",

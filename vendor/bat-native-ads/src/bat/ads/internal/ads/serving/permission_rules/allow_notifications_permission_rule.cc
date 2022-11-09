@@ -9,6 +9,14 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  return AdsClientHelper::GetInstance()->CanShowNotificationAds();
+}
+
+}  // namespace
+
 bool AllowNotificationsPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "System notifications not allowed";
@@ -20,10 +28,6 @@ bool AllowNotificationsPermissionRule::ShouldAllow() {
 
 const std::string& AllowNotificationsPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool AllowNotificationsPermissionRule::DoesRespectCap() {
-  return AdsClientHelper::GetInstance()->CanShowNotificationAds();
 }
 
 }  // namespace ads

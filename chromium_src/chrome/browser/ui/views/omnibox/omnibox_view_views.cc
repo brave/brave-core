@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_contents_view.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -14,7 +15,6 @@
 #include "chrome/browser/ui/browser_dialogs.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
-#include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_controller.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
@@ -24,12 +24,13 @@
 
 namespace {
 
-void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents) {
+void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
+  if (!url.SchemeIsHTTPOrHTTPS())
+    return;
   absl::optional<size_t> copy_position =
       menu_contents->GetIndexOfCommandId(views::Textfield::kCopy);
   if (!copy_position)
     return;
-
   menu_contents->InsertItemWithStringIdAt(
       copy_position.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
 }
@@ -68,8 +69,11 @@ int GetSearchEnginesID() {
 #undef IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH
 #define IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH GetSearchEnginesID()); \
   if (model()->CurrentTextIsURL() && !GetSelectedText().empty())         \
-    BraveUpdateContextMenu(menu_contents
+    BraveUpdateContextMenu(menu_contents, \
+                           controller()->GetLocationBarModel()->GetURL()
+#define OmniboxPopupContentsView BraveOmniboxPopupContentsView
 #include "src/chrome/browser/ui/views/omnibox/omnibox_view_views.cc"
+#undef OmniboxPopupContentsView
 #undef IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH
 #define IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH GetSearchEnginesID()
 

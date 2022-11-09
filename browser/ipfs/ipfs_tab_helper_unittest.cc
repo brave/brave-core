@@ -32,7 +32,7 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
       : ipfs::IPFSHostResolver(context) {}
   ~FakeIPFSHostResolver() override = default;
   void Resolve(const net::HostPortPair& host,
-               const net::NetworkIsolationKey& isolation_key,
+               const net::NetworkAnonymizationKey& anonymization_key,
                net::DnsQueryType dns_query_type,
                HostTextResultsCallback callback) override {
     resolve_called_ = true;
@@ -68,6 +68,8 @@ class IpfsTabHelperUnitTest : public testing::Test {
         ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents_.get()));
 
     ipfs_tab_helper()->SetResolverForTesting(std::move(ipfs_host_resolver));
+    ipfs_tab_helper()->SetRediretCallbackForTesting(base::BindRepeating(
+        &IpfsTabHelperUnitTest::OnRedirect, base::Unretained(this)));
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
   }
   TestingProfile* profile() { return profile_; }
@@ -77,6 +79,9 @@ class IpfsTabHelperUnitTest : public testing::Test {
   }
   void SetAutoRedirectDNSLink(bool value) {
     profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectDNSLink, value);
+  }
+  void SetAutoRedirecIPFSResources(bool value) {
+    profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, value);
   }
 
   ipfs::IPFSTabHelper* ipfs_tab_helper() {
@@ -89,7 +94,14 @@ class IpfsTabHelperUnitTest : public testing::Test {
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
 
+  GURL redirect_url() { return redirect_url_; }
+
+  void ResetRedirectUrl() { redirect_url_ = GURL(); }
+
  private:
+  void OnRedirect(const GURL& gurl) { redirect_url_ = gurl; }
+
+  GURL redirect_url_;
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   TestingProfileManager profile_manager_;
@@ -241,10 +253,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS) {
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
 
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipfs/bafy");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url.spec(), "ipfs://bafy?query#ref");
 }
 
 TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
@@ -266,10 +275,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
 
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/brantly.eth/");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url, GURL("ipns://brantly.eth/?query#ref"));
 }
 
 TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
@@ -281,10 +287,7 @@ TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
     GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                   chrome::GetChannel());
     GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
-    EXPECT_EQ(url.host(), gateway.host());
-    EXPECT_EQ(url.path(), "/ipfs/bafy");
-    EXPECT_EQ(url.query(), "");
-    EXPECT_EQ(url.ref(), "");
+    EXPECT_EQ(url, GURL("ipfs://bafy"));
   }
 
   {
@@ -292,10 +295,15 @@ TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
     GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                   chrome::GetChannel());
     GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
-    EXPECT_EQ(url.host(), gateway.host());
-    EXPECT_EQ(url.path(), "/ipfs/bafy");
-    EXPECT_EQ(url.query(), "");
-    EXPECT_EQ(url.ref(), "");
+    EXPECT_EQ(url, GURL("ipfs://bafy"));
+  }
+
+  {
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
+    GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                                  chrome::GetChannel());
+    GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
+    EXPECT_EQ(url, GURL("ipfs://bafy"));
   }
 }
 
@@ -333,6 +341,155 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
   helper->DNSLinkResolved(GURL());
   helper->MaybeCheckDNSLinkRecord(response_headers.get());
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayLikeUrlParsed_AutoRedirectEnabled) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  SetAutoRedirecIPFSResources(true);
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy1?query#ref"));
+  }
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    helper->SetPageURLForTesting(GURL("https://bafy1.ipfs.ipfs.io?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://bafy1.ipfs.ipfs.io?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy1/?query#ref"));
+  }
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
+    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy2/?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://ipfs.io/ipfs/bafy2/?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy2?query#ref"));
+  }
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy3?query#ref"));
+  }
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
+    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL());
+  }
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       GatewayLikeUrlParsed_AutoRedirectEnabled_WrongFormat) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  SetAutoRedirecIPFSResources(true);
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    helper->SetPageURLForTesting(
+        GURL("https://ipfs.io/ipxxs/bafy1/?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://ipfs.io/ipxxs/bafy1/?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL());
+  }
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    helper->SetPageURLForTesting(GURL("https://bafy1.ipxxs.ipfs.io?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://bafy1.ipxxs.ipfs.io?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL());
+  }
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       GatewayLikeUrlParsed_AutoRedirectEnabled_ConfiguredGatewayIgnored) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  SetAutoRedirecIPFSResources(true);
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    SetIPFSDefaultGatewayForTest(GURL("https://a.com/"));
+
+    helper->SetPageURLForTesting(GURL("https://a.com/ipfs/bafy"));
+
+    web_contents()->NavigateAndCommit(GURL("https://a.com/ipfs/bafy"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL());
+  }
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayLikeUrlParsed_AutoRedirectDisabled) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  SetAutoRedirecIPFSResources(false);
+
+  {
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+
+    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+    web_contents()->NavigateAndCommit(
+        GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL());
+    EXPECT_EQ(ipfs_tab_helper()->ipfs_resolved_url_,
+              GURL("ipfs://bafy1?query#ref"));
+  }
 }
 
 }  // namespace ipfs

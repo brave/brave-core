@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@color/brave_stats_bg_color"
+        android:background="@drawable/stats_bottomsheet_background"
         android:orientation="vertical">
 
         <com.airbnb.lottie.LottieAnimationView

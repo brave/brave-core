@@ -8,9 +8,18 @@
 #include <vector>
 
 #include "base/check_op.h"
+#include "base/containers/contains.h"
 #include "base/strings/string_split.h"
+#include "bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h"
 
 namespace ads::locale {
+
+bool IsSupportedCountryCodeForSubdivisionTargeting(
+    const std::string& country_code) {
+  const auto& supported_subdivision_codes =
+      ::ads::geographic::GetSupportedSubdivisionCodes();
+  return base::Contains(supported_subdivision_codes, country_code);
+}
 
 std::string GetCountryCode(const std::string& code) {
   const std::vector<std::string> components =

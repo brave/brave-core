@@ -48,14 +48,6 @@ export const deletePromotion = (promotionId: string) => action(types.DELETE_PROM
   promotionId
 })
 
-export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
-  key
-})
-
-export const onRecoverWalletData = (result: number) => action(types.ON_RECOVER_WALLET_DATA, {
-  result
-})
-
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
 
 export const onModalBackupOpen = () => action(types.ON_MODAL_BACKUP_OPEN)
@@ -296,13 +288,7 @@ export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RE
   success
 })
 
-export const getPaymentId = () => action(types.GET_PAYMENT_ID)
-
 export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
-
-export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
-  paymentId
-})
 
 export const getOnboardingStatus = () => action(types.GET_ONBOARDING_STATUS)
 
@@ -322,4 +308,10 @@ export const restartBrowser = () => action(types.RESTART_BROWSER)
 
 export const onPrefChanged = (key: string) => action(types.ON_PREF_CHANGED, {
   key
+})
+
+export const getIsUnsupportedRegion = () => action(types.GET_IS_UNSUPPORTED_REGION)
+
+export const onIsUnsupportedRegion = (isUnsupportedRegion: boolean) => action(types.ON_IS_UNSUPPORTED_REGION, {
+  isUnsupportedRegion
 })

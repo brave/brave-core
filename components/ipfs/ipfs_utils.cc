@@ -149,6 +149,26 @@ bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
           url.DomainIs(std::string("ipns.") + gateway_host));
 }
 
+absl::optional<GURL> TranslateXIPFSPath(const std::string& x_ipfs_path_header) {
+  std::string scheme;
+  if (base::StartsWith(x_ipfs_path_header, "/ipfs/")) {
+    scheme = kIPFSScheme;
+  } else if (base::StartsWith(x_ipfs_path_header, "/ipns/")) {
+    scheme = kIPNSScheme;
+  } else {
+    return absl::nullopt;
+  }
+  std::string content = x_ipfs_path_header.substr(6, x_ipfs_path_header.size());
+  if (content.empty()) {
+    return absl::nullopt;
+  }
+  GURL result = GURL(scheme + "://" + content);
+  if (!result.is_valid()) {
+    return absl::nullopt;
+  }
+  return result;
+}
+
 bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
   if (!url.is_valid())
     return false;
@@ -251,6 +271,21 @@ void SetIPFSDefaultGatewayForTest(const GURL& url) {
 
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
   return AppendLocalPort(GetGatewayPort(channel));
+}
+
+GURL GetDefaultNFTIPFSGateway(PrefService* prefs) {
+  if (!ipfs_default_gateway_for_test.is_empty()) {
+    return GURL(ipfs_default_gateway_for_test);
+  }
+
+  DCHECK(prefs);
+  GURL gateway_url(prefs->GetString(kIPFSPublicNFTGatewayAddress));
+  if (gateway_url.DomainIs(kLocalhostIP)) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(kLocalhostDomain);
+    return gateway_url.ReplaceComponents(replacements);
+  }
+  return gateway_url;
 }
 
 GURL GetDefaultIPFSGateway(PrefService* prefs) {
@@ -423,6 +458,49 @@ std::string GetRegistryDomainFromIPNS(const GURL& url) {
     return std::string();
   return GetDomainAndRegistry(
       cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+}
+
+// gateway.io/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy ->
+// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
+// bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy.ipfs.gateway.io ->
+// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
+absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url) {
+  if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
+    return absl::nullopt;
+  }
+
+  std::vector<std::string> host_parts = base::SplitStringUsingSubstr(
+      url.host(), ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+
+  if (host_parts.size() > 2 && IsValidCID(host_parts.at(0)) &&
+      host_parts.at(1) == "ipfs") {
+    GURL final_url = GURL("ipfs://" + host_parts.at(0) + url.path());
+    GURL::Replacements replacements;
+    replacements.SetQueryStr(url.query_piece());
+    replacements.SetRefStr(url.ref_piece());
+    return final_url.ReplaceComponents(replacements);
+  }
+
+  std::vector<std::string> path_parts = base::SplitStringUsingSubstr(
+      url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  if (path_parts.size() >= 2 && path_parts.at(0) == "ipfs" &&
+      IsValidCID(path_parts.at(1))) {
+    std::string final_path;
+    if (path_parts.size() >= 3) {
+      std::vector<std::string> final_path_parts(path_parts.begin() + 2,
+                                                path_parts.end());
+      final_path = "/" + base::JoinString(final_path_parts, "/");
+    }
+
+    GURL final_url = GURL("ipfs://" + path_parts.at(1) + final_path);
+    GURL::Replacements replacements;
+    replacements.SetQueryStr(url.query_piece());
+    replacements.SetRefStr(url.ref_piece());
+    return final_url.ReplaceComponents(replacements);
+  }
+
+  return absl::nullopt;
 }
 
 }  // namespace ipfs

@@ -36,7 +36,7 @@ std::string LastNotificationAdWasClicked::GetValue() const {
   const base::Time from_time = now - kTimeWindow;
   const base::Time to_time = now;
 
-  const HistoryItemList history_items = HistoryManager::GetInstance()->Get(
+  const HistoryItemList history_items = HistoryManager::Get(
       HistoryFilterType::kNone, HistorySortType::kDescendingOrder, from_time,
       to_time);
   if (history_items.empty()) {

@@ -104,11 +104,13 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
   // Min Publisher Duration (There is no support for uint64_t. Writing JSON with
   // such types violates the spec. As we need a uint64_t, we need to use a
   // double and cast to a uint64_t)
-  if (auto value =
+  if (auto min_page_time_value_int64 =
           base::ValueToInt64(dict.Find(kMinPageTimeBeforeLoggingAVisitKey))) {
-    min_page_time_before_logging_a_visit = *value;
-  } else if (auto value = dict.FindDouble(kMinPageTimeBeforeLoggingAVisitKey)) {
-    min_page_time_before_logging_a_visit = static_cast<uint64_t>(*value);
+    min_page_time_before_logging_a_visit = *min_page_time_value_int64;
+  } else if (auto min_page_time_value_double =
+                 dict.FindDouble(kMinPageTimeBeforeLoggingAVisitKey)) {
+    min_page_time_before_logging_a_visit =
+        static_cast<uint64_t>(*min_page_time_value_double);
   } else {
     NOTREACHED();
     return false;
@@ -117,11 +119,13 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
   // Min Visits (There is no support for unsigned int. Writing JSON with such
   // types violates the spec. As we need an unsigned int, we need to a double
   // and cast to an unsigned int)
-  if (auto value =
+  if (auto min_visits_value_int64 =
           base::ValueToInt64(dict.Find(kMinVisitsForPublisherRelevancy))) {
-    min_visits_for_publisher_relevancy = *value;
-  } else if (auto value = dict.FindDouble(kMinVisitsForPublisherRelevancy)) {
-    min_visits_for_publisher_relevancy = static_cast<unsigned int>(*value);
+    min_visits_for_publisher_relevancy = *min_visits_value_int64;
+  } else if (auto min_visits_value_double =
+                 dict.FindDouble(kMinVisitsForPublisherRelevancy)) {
+    min_visits_for_publisher_relevancy =
+        static_cast<unsigned int>(*min_visits_value_double);
   } else {
     NOTREACHED();
     return false;

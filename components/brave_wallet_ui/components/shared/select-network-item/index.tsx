@@ -11,6 +11,7 @@ import {
 } from './style'
 import { WalletActions } from '../../../common/actions'
 import { PanelActions } from '../../../panel/actions'
+import { AllNetworksOption } from '../../../options/network-filter-options'
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
@@ -38,7 +39,9 @@ function SelectNetworkItem (props: Props) {
   return (
     <StyledWrapper onClick={onSelectNetwork} data-test-chain-id={'chain-' + network.chainId}>
       <LeftSide>
-        <CreateNetworkIcon network={network} marginRight={14} />
+        {network.chainId !== AllNetworksOption.chainId &&
+          <CreateNetworkIcon network={network} marginRight={14} />
+        }
         <NetworkName>{network.chainName}</NetworkName>
       </LeftSide>
       {

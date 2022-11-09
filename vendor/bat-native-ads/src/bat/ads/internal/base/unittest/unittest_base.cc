@@ -16,7 +16,8 @@
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 using ::testing::NiceMock;
 
@@ -25,9 +26,10 @@ namespace ads {
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-      locale_helper_mock_(
-          std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>()),
-      platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()) {
+      platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()),
+      scoped_default_locale_(
+          std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
+              kDefaultLocale)) {
   CHECK(temp_dir_.CreateUniqueTempDir());
 }
 
@@ -180,11 +182,11 @@ void UnitTestBase::Initialize() {
 
   client_state_manager_ = std::make_unique<ClientStateManager>();
   client_state_manager_->Initialize(
-      [](const bool success) { ASSERT_TRUE(success); });
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
   confirmation_state_manager_->Initialize(
-      [](const bool success) { ASSERT_TRUE(success); });
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   covariate_manager_ = std::make_unique<CovariateManager>();
 
@@ -219,8 +221,6 @@ void UnitTestBase::Initialize() {
 
 void UnitTestBase::SetDefaultMocks() {
   MockBuildChannel(BuildChannelType::kRelease);
-
-  MockLocaleHelper(locale_helper_mock_, kDefaultLocale);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -321,15 +321,18 @@ void UnitTestBase::SetUpIntegrationTest() {
          "initialized for integration testing";
 
   ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
-  ads_->Initialize([=](const bool success) {
-    ASSERT_TRUE(success);
-
-    ads_->OnRewardsWalletDidChange(
-        /*payment_id*/ "c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-        /*seed*/ "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-  });
+  ads_->Initialize(
+      base::BindOnce(&UnitTestBase::OnAdsInitialize, base::Unretained(this)));
 
   task_environment_.RunUntilIdle();
+}
+
+void UnitTestBase::OnAdsInitialize(const bool success) {
+  ASSERT_TRUE(success);
+
+  ads_->OnRewardsWalletDidChange(
+      /*payment_id*/ "c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+      /*seed*/ "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
 }
 
 }  // namespace ads

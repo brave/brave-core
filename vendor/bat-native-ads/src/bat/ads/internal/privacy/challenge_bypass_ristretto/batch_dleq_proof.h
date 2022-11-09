@@ -45,7 +45,9 @@ class BatchDLEQProof {
   bool operator==(const BatchDLEQProof& other) const;
   bool operator!=(const BatchDLEQProof& other) const;
 
-  bool has_value() const { return batch_dleq_proof_.has_value(); }
+  bool has_value() const {
+    return batch_dleq_proof_ && batch_dleq_proof_.has_value();
+  }
 
   challenge_bypass_ristretto::BatchDLEQProof& get() {
     DCHECK(batch_dleq_proof_);

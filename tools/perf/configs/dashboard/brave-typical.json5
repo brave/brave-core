@@ -1,0 +1,33 @@
+{
+  "configurations": [{
+    "dashboard-bot-name": "asus-w10-slow-laptop-typical",
+    "browser-type": "brave",
+    "profile": "brave-typical-v1.46.52",
+    "extra-browser-args": [],
+    "extra-benchmark-args": [],
+    "save-artifacts": false,
+  }],
+  "benchmarks": [
+    {
+      "name": "loading.desktop.brave",
+      "pageset-repeat": 10,
+      "stories": [
+        "example.com_cold",
+        "wikipedia.com_cold",
+        "IGN_warm",
+      ]
+    },
+    {
+      "name": "system_health.memory_desktop",
+      "pageset-repeat": 10,
+      "stories": [
+        "load:chrome:blank",
+        "browse:news:hackernews:2020",
+      ]
+    },
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 1
+    }
+  ]
+}

@@ -7,13 +7,8 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_PERMISSION_RULES_NOTIFICATION_ADS_NOTIFICATION_ADS_PER_DAY_PERMISSION_RULE_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_interface.h"
-
-namespace base {
-class Time;
-}  // namespace base
 
 namespace ads::notification_ads {
 
@@ -24,8 +19,6 @@ class AdsPerDayPermissionRule final : public PermissionRuleInterface {
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const std::vector<base::Time>& history);
-
   std::string last_message_;
 };
 

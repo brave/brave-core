@@ -17,17 +17,15 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -87,45 +85,14 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 }  // namespace
 
-class TestRewardsServiceObserver
-    : public brave_rewards::RewardsServiceObserver {
- public:
-  TestRewardsServiceObserver() = default;
-  ~TestRewardsServiceObserver() override = default;
-
-  void WaitForRewardsInitialization() {
-    if (rewards_initialized_) {
-      return;
-    }
-
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
-  }
-
-  // RewardsServiceObserver:
-  void OnRewardsInitialized(brave_rewards::RewardsService* service) override {
-    rewards_initialized_ = true;
-    if (run_loop_) {
-      run_loop_->Quit();
-    }
-  }
-
- private:
-  std::unique_ptr<base::RunLoop> run_loop_;
-  bool rewards_initialized_ = false;
-};
-
 class BraveAdsBrowserTest : public InProcessBrowserTest,
                             public base::SupportsWeakPtr<BraveAdsBrowserTest> {
  public:
   BraveAdsBrowserTest() {
     // You can do set-up work for each test here
 
-    MaybeMockLocaleHelper();
+    MaybeMockLocale();
   }
-
-  // You can do clean-up work that doesn't throw exceptions here
-  ~BraveAdsBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     // Code here will be called immediately after the constructor (right before
@@ -149,24 +116,17 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(browser_profile));
-    rewards_service_->AddObserver(&rewards_service_observer_);
 
     rewards_service_->ForTestingSetTestResponseCallback(base::BindRepeating(
         &BraveAdsBrowserTest::GetTestResponse, base::Unretained(this)));
 
     rewards_service_->SetLedgerEnvForTesting();
 
+    rewards_browsertest_util::StartProcess(rewards_service_);
+
     ads_service_ = static_cast<brave_ads::AdsService*>(
         brave_ads::AdsServiceFactory::GetForProfile(browser_profile));
     ASSERT_NE(nullptr, ads_service_);
-  }
-
-  void TearDownOnMainThread() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-    rewards_service_->RemoveObserver(&rewards_service_observer_);
-
-    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -213,7 +173,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
   bool IsAdsEnabled() { return ads_service_->IsEnabled(); }
 
-  void MaybeMockLocaleHelper() {
+  void MaybeMockLocale() {
     const std::map<std::string, std::string> locale_for_tests = {
         {"BraveAdsLocaleIsSupported", "en_US"},
         {"BraveAdsLocaleIsNotSupported", "en_XX"},
@@ -232,14 +192,15 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     const auto it = locale_for_tests.find(test_info->name());
     if (it == locale_for_tests.end()) {
-      MaybeMockLocaleHelperForBraveAdsUpgradePath();
+      MaybeMockLocaleForBraveAdsUpgradePath();
       return;
     }
 
-    MockLocaleHelper(it->second);
+    scoped_default_locale_ =
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(it->second);
   }
 
-  void MaybeMockLocaleHelperForBraveAdsUpgradePath() {
+  void MaybeMockLocaleForBraveAdsUpgradePath() {
     std::vector<std::string> parameters;
     if (!GetUpgradePathParams(&parameters)) {
       return;
@@ -273,14 +234,8 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
       }
     }
 
-    MockLocaleHelper(locale);
-  }
-
-  void MockLocaleHelper(const std::string& locale) {
-    locale_helper_mock_ =
-        std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>();
-
-    ON_CALL(*locale_helper_mock_, GetLocale()).WillByDefault(Return(locale));
+    scoped_default_locale_ =
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(locale);
   }
 
   void MaybeMockUserProfilePreferencesForBraveAdsUpgradePath() {
@@ -379,13 +334,12 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
 
-  TestRewardsServiceObserver rewards_service_observer_;
-
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   const std::string newly_supported_locale_ = "en_830";
 
   std::string wallet_;
   std::string parameters_;
+
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsSupported) {
@@ -1061,23 +1015,6 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
         true, /*rewards_enabled*/
         false /*ads_enabled*/
     }};
-
-IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, PRE_UpgradePath) {
-  // Handled in |MaybeMockLocaleHelperForBraveAdsUpgradePath|
-
-  const ::testing::TestInfo* const test_info =
-      ::testing::UnitTest::GetInstance()->current_test_info();
-  ASSERT_NE(nullptr, test_info);
-  const std::string test_name = test_info->name();
-
-  // Wait for Brave Rewards to be initialized before proceeding with
-  // tests that rely on Rewards
-  if ((test_name.find("WithRewardsEnabled_") != std::string::npos ||
-       test_name.find("WithRewardsAndAdsEnabled_") != std::string::npos) &&
-      !rewards_service_->IsInitialized()) {
-    rewards_service_observer_.WaitForRewardsInitialization();
-  }
-}
 
 IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, UpgradePath) {
   BraveAdsUpgradePathParamInfo param(GetParam());

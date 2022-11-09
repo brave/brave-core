@@ -17,9 +17,16 @@ namespace brave_ads {
 class NotificationAdPlatformBridge {
  public:
   explicit NotificationAdPlatformBridge(Profile* profile);
+
   NotificationAdPlatformBridge(const NotificationAdPlatformBridge&) = delete;
   NotificationAdPlatformBridge& operator=(const NotificationAdPlatformBridge&) =
       delete;
+
+  NotificationAdPlatformBridge(NotificationAdPlatformBridge&& other) noexcept =
+      delete;
+  NotificationAdPlatformBridge& operator=(
+      NotificationAdPlatformBridge&& other) noexcept = delete;
+
   ~NotificationAdPlatformBridge();
 
   void ShowNotificationAd(NotificationAd notification_ad);

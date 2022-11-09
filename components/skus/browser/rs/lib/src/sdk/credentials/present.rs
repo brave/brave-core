@@ -1,4 +1,4 @@
-use chrono::Utc;
+use chrono::{NaiveDateTime, Utc};
 use hmac::Hmac;
 use http::uri;
 use serde::{Deserialize, Serialize};
@@ -10,8 +10,19 @@ use crate::errors::{InternalError, SkusError};
 use crate::models::*;
 use crate::sdk::SDK;
 use crate::{HTTPClient, StorageClient};
+use challenge_bypass_ristretto::voprf::TokenPreimage;
 
 type HmacSha512 = Hmac<Sha512>;
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct TimeLimitedV2CredentialRedemption {
+    valid_from: NaiveDateTime,
+    valid_to: NaiveDateTime,
+    issuer: String,
+    t: TokenPreimage,
+    signature: String,
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -61,6 +72,50 @@ where
                 let name = "sku#".to_string() + &item.sku;
 
                 let (expires_at, presentation) = match item.credential_type {
+                    CredentialType::TimeLimitedV2 => {
+                        let tlv2_cred = self
+                            .matching_time_limited_v2_credential(&item.id) // get tokens for today
+                            .await?
+                            .ok_or(InternalError::ItemCredentialsMissing)?;
+                        let unblinded_creds = tlv2_cred
+                            .unblinded_creds
+                            .ok_or(InternalError::ItemCredentialsMissing)?;
+
+                        // retrieve the next unspent token
+                        let (i, cred) = unblinded_creds
+                            .into_iter()
+                            .enumerate()
+                            .find(|(_i, cred)| !cred.spent)
+                            .ok_or(InternalError::OutOfCredentials)?;
+
+                        let issuer = self.encode_issuer_id(&order.merchant_id, &item.sku)?;
+
+                        let verification_key =
+                            cred.unblinded_cred.derive_verification_key::<Sha512>();
+
+                        let signature =
+                            verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();
+
+                        let redemption = TimeLimitedV2CredentialRedemption {
+                            valid_from: tlv2_cred.valid_from,
+                            valid_to: tlv2_cred.valid_to,
+                            issuer,
+                            t: cred.unblinded_cred.t,
+                            signature,
+                        };
+
+                        // burn that cred
+                        self.client.spend_time_limited_v2_item_cred(&item.id, i).await?;
+
+                        // our presentation/redemption
+                        (
+                            Some(format!(
+                                "{}",
+                                tlv2_cred.valid_to.format("%a, %d %b %Y %H:%M:%S GMT")
+                            )),
+                            base64::encode(&serde_json::to_vec(&redemption)?),
+                        )
+                    }
                     CredentialType::SingleUse => {
                         let creds = self
                             .client
@@ -122,11 +177,16 @@ where
                     }
                 };
 
+                let (_credential_type, version) = match item.credential_type {
+                    CredentialType::TimeLimitedV2 => ("time-limited", 2),
+                    CredentialType::TimeLimited => ("time-limited", 1),
+                    CredentialType::SingleUse => ("single-use", 1),
+                };
+
                 let payload = urlencoding::encode(&base64::encode(&serde_json::to_vec(
                     &VerifyCredentialRequest {
                         credential_type: item.credential_type,
-                        // FIXME
-                        version: 1,
+                        version,
                         sku: item.sku.to_string(),
                         presentation,
                     },

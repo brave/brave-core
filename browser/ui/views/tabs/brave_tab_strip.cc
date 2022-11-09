@@ -9,7 +9,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
@@ -25,6 +25,9 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 BraveTabStrip::~BraveTabStrip() = default;
 
 bool BraveTabStrip::ShouldDrawStrokes() const {
+  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()))
+    return false;
+
   if (!TabStrip::ShouldDrawStrokes())
     return false;
 
@@ -54,7 +57,7 @@ void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
 }
 
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()))
     return SK_ColorTRANSPARENT;
 
   Profile* profile = controller()->GetProfile();

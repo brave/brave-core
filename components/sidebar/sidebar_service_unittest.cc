@@ -517,7 +517,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   InitService();
 
   // Verify migration
-  auto& items = prefs_.GetValueList(kSidebarItems);
+  auto& items = prefs_.GetList(kSidebarItems);
   for (const auto& item : items) {
     const auto item_type =
         static_cast<SidebarItem::Type>(*item.FindIntKey(kSidebarItemTypeKey));

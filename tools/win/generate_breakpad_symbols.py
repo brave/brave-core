@@ -6,8 +6,8 @@
 # found in the LICENSE file.
 """Convert pdb to sym for given directories"""
 
+import configparser
 import errno
-import glob
 import argparse
 import os
 import re
@@ -19,8 +19,6 @@ from shutil import rmtree, move, copy
 
 
 async def ProcessBinary(semaphore, options, binary):
-    dump_syms = os.path.join(options.build_dir, options.dump_syms_path)
-
     sym_temp_output = binary + '.sym'
     error = None
     async with semaphore:
@@ -29,7 +27,7 @@ async def ProcessBinary(semaphore, options, binary):
             print(f'Generating symbols for {binary}')
         with open(sym_temp_output, 'w', encoding='utf-8') as output:
             process = await asyncio.create_subprocess_exec(
-                dump_syms,
+                options.dump_syms_path,
                 binary,
                 stdout=output,
                 stderr=asyncio.subprocess.PIPE)
@@ -108,9 +106,9 @@ async def GenerateSymbols(options, binaries):
 
 async def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('directories',
-                        nargs='+',
-                        help='Directories in which to look for pdbs.')
+    parser.add_argument('--installer-config',
+                        required=True,
+                        help='Installer config that contains files to process.')
     parser.add_argument('--build-dir',
                         required=True,
                         help='The build output directory.')
@@ -141,9 +139,19 @@ async def main():
             pass
 
     pdbs = []
-    for directory in args.directories:
-        pdbs += glob.glob(os.path.join(directory, '*.exe.pdb'))
-        pdbs += glob.glob(os.path.join(directory, '*.dll.pdb'))
+
+    installer_config = configparser.ConfigParser()
+    installer_config.optionxform=str  # Preserve string case.
+    installer_config.read(args.installer_config)
+    for group in installer_config:
+        if group == 'GOOGLE_CHROME':
+            # Skip Google Chrome-only files.
+            continue
+
+        for file in installer_config[group]:
+            pdb_file = os.path.join(args.build_dir, file + '.pdb')
+            if os.path.exists(pdb_file):
+                pdbs.append(pdb_file)
 
     result = await GenerateSymbols(args, pdbs)
     sys.exit(0 if result else 1)

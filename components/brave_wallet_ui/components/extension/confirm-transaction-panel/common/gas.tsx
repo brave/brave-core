@@ -35,7 +35,7 @@ export function EditPendingTransactionGas (props: Props) {
     transactionsNetwork
   } = usePendingTransactions()
 
-  if (!transactionInfo) {
+  if (!transactionInfo || !transactionsNetwork) {
     return null
   }
 

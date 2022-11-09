@@ -113,7 +113,7 @@ INSTANTIATE_TEST_SUITE_P(
   Authorize,
   Values(
     AuthorizeParamType{  // Uphold wallet is null!
-      "00_uphold_wallet_is_null",
+      "uphold_wallet_is_null",
       {},
       {},
       {},
@@ -122,7 +122,7 @@ INSTANTIATE_TEST_SUITE_P(
       {}
     },
     AuthorizeParamType{  // Attempting to re-authorize in VERIFIED status!
-      "01_VERIFIED_attempting_to_re_authorize",
+      "VERIFIED_attempting_to_re_authorize",
       R"({ "status": 2 })",
       {},
       {},
@@ -133,7 +133,7 @@ INSTANTIATE_TEST_SUITE_P(
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - the user is not KYC'd. (NOT_CONNECTED)
       // NOLINTNEXTLINE
-      "02_NOT_CONNECTED_uphold_returned_with_user_does_not_meet_minimum_requirements",
+      "NOT_CONNECTED_uphold_returned_with_user_does_not_meet_minimum_requirements",
       R"({ "status": 0 })",
       { { "error_description", "User does not meet minimum requirements" } },
       {},
@@ -144,7 +144,7 @@ INSTANTIATE_TEST_SUITE_P(
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - user's region is not supported. (NOT_CONNECTED)
       // NOLINTNEXTLINE
-      "03_NOT_CONNECTED_uphold_returned_with_application_not_available_for_user_geolocation",
+      "NOT_CONNECTED_uphold_returned_with_application_not_available_for_user_geolocation",
       R"({ "status": 0 })",
       { { "error_description", "Application not available for user geolocation" } },  // NOLINT
       {},
@@ -154,7 +154,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (NOT_CONNECTED)
-      "04_NOT_CONNECTED_uphold_returned_with_an_error",
+      "NOT_CONNECTED_uphold_returned_with_an_error",
       R"({ "status": 0 })",
       { { "error_description", "some other reason" } },
       {},
@@ -163,7 +163,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Arguments are empty! (NOT_CONNECTED)
-      "05_NOT_CONNECTED_arguments_are_empty",
+      "NOT_CONNECTED_arguments_are_empty",
       R"({ "status": 0 })",
       {},
       {},
@@ -172,7 +172,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // code is empty! (NOT_CONNECTED)
-      "06_NOT_CONNECTED_code_is_empty",
+      "NOT_CONNECTED_code_is_empty",
       R"({ "status": 0 })",
       { { "code", "" } },
       {},
@@ -181,7 +181,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // state is empty! (NOT_CONNECTED)
-      "07_NOT_CONNECTED_state_is_empty",
+      "NOT_CONNECTED_state_is_empty",
       R"({ "status": 0 })",
       { { "code", "code" }, { "state", "" } },
       {},
@@ -190,7 +190,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // One-time string mismatch! (NOT_CONNECTED)
-      "08_NOT_CONNECTED_one_time_string_mismatch",
+      "NOT_CONNECTED_one_time_string_mismatch",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
@@ -200,7 +200,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (NOT_CONNECTED)
-      "09_NOT_CONNECTED_couldn_t_exchange_code_for_the_access_token",
+      "NOT_CONNECTED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       mojom::UrlResponse{
@@ -215,7 +215,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Access token is empty! (NOT_CONNECTED)
-      "10_NOT_CONNECTED_access_token_is_empty",
+      "NOT_CONNECTED_access_token_is_empty",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       mojom::UrlResponse{
@@ -230,7 +230,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Happy path. (NOT_CONNECTED)
-      "11_NOT_CONNECTED_happy_path",
+      "NOT_CONNECTED_happy_path",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       mojom::UrlResponse{
@@ -247,7 +247,7 @@ INSTANTIATE_TEST_SUITE_P(
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - the user is not KYC'd. (DISCONNECTED_VERIFIED)
       // NOLINTNEXTLINE
-      "12_DISCONNECTED_VERIFIED_uphold_returned_with_user_does_not_meet_minimum_requirements",
+      "DISCONNECTED_VERIFIED_uphold_returned_with_user_does_not_meet_minimum_requirements",
       R"({ "status": 4 })",
       { { "error_description", "User does not meet minimum requirements" } },
       {},
@@ -257,7 +257,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (DISCONNECTED_VERIFIED)
-      "13_DISCONNECTED_VERIFIED_uphold_returned_with_an_error",
+      "DISCONNECTED_VERIFIED_uphold_returned_with_an_error",
       R"({ "status": 4 })",
       { { "error_description", "some other reason" } },
       {},
@@ -266,7 +266,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Arguments are empty! (DISCONNECTED_VERIFIED)
-      "14_DISCONNECTED_VERIFIED_arguments_are_empty",
+      "DISCONNECTED_VERIFIED_arguments_are_empty",
       R"({ "status": 4 })",
       {},
       {},
@@ -275,7 +275,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // code is empty! (DISCONNECTED_VERIFIED)
-      "15_DISCONNECTED_VERIFIED_code_is_empty",
+      "DISCONNECTED_VERIFIED_code_is_empty",
       R"({ "status": 4 })",
       { { "code", "" } },
       {},
@@ -284,7 +284,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // state is empty! (DISCONNECTED_VERIFIED)
-      "16_DISCONNECTED_VERIFIED_state_is_empty",
+      "DISCONNECTED_VERIFIED_state_is_empty",
       R"({ "status": 4 })",
       { { "code", "code" }, { "state", "" } },
       {},
@@ -293,7 +293,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // One-time string mismatch! (DISCONNECTED_VERIFIED)
-      "17_DISCONNECTED_VERIFIED_one_time_string_mismatch",
+      "DISCONNECTED_VERIFIED_one_time_string_mismatch",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
@@ -303,7 +303,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (DISCONNECTED_VERIFIED)
-      "18_DISCONNECTED_VERIFIED_couldn_t_exchange_code_for_the_access_token",
+      "DISCONNECTED_VERIFIED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       mojom::UrlResponse{
@@ -318,7 +318,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Access token is empty! (DISCONNECTED_VERIFIED)
-      "19_DISCONNECTED_VERIFIED_access_token_is_empty",
+      "DISCONNECTED_VERIFIED_access_token_is_empty",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       mojom::UrlResponse{
@@ -333,7 +333,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Happy path. (DISCONNECTED_VERIFIED)
-      "20_DISCONNECTED_VERIFIED_happy_path",
+      "DISCONNECTED_VERIFIED_happy_path",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       mojom::UrlResponse{
@@ -411,21 +411,21 @@ INSTANTIATE_TEST_SUITE_P(
   Generate,
   Values(
     GenerateParamType{  // Happy path (no wallet).
-      "00_happy_path_no_wallet",
+      "happy_path_no_wallet",
       {},
       mojom::Result::LEDGER_OK,
       mojom::WalletStatus::NOT_CONNECTED,
       false
     },
     GenerateParamType{  // Happy path (NOT_CONNECTED).
-      "01_happy_path_NOT_CONNECTED",
+      "happy_path_NOT_CONNECTED",
       R"({ "status": 0 })",
       mojom::Result::LEDGER_OK,
       mojom::WalletStatus::NOT_CONNECTED,
       false
     },
     GenerateParamType{  // Happy path (DISCONNECTED_VERIFIED).
-      "02_happy_path_DISCONNECTED_VERIFIED",
+      "happy_path_DISCONNECTED_VERIFIED",
       R"({ "status": 4 })",
       mojom::Result::LEDGER_OK,
       mojom::WalletStatus::DISCONNECTED_VERIFIED,
@@ -490,7 +490,7 @@ INSTANTIATE_TEST_SUITE_P(
   GetUser,
   Values(
     GetUserParamType{  // Access token expired! (PENDING)
-      "00_PENDING_access_token_expired",
+      "PENDING_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -503,7 +503,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Couldn't get the user object from Uphold! (PENDING)
-      "01_PENDING_couldn_t_get_the_user_object_from_uphold",
+      "PENDING_couldn_t_get_the_user_object_from_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -516,7 +516,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::PENDING
     },
     GetUserParamType{  // BAT is not allowed for the user! (PENDING)
-      "02_PENDING_bat_is_not_allowed_for_the_user",
+      "PENDING_bat_is_not_allowed_for_the_user",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -529,7 +529,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Access token expired! (VERIFIED)
-      "03_VERIFIED_access_token_expired",
+      "VERIFIED_access_token_expired",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -542,7 +542,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Couldn't get the user object from Uphold! (VERIFIED)
-      "04_VERIFIED_couldn_t_get_the_user_object_from_uphold",
+      "VERIFIED_couldn_t_get_the_user_object_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -555,7 +555,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::VERIFIED
     },
     GetUserParamType{  // BAT is not allowed for the user! (VERIFIED)
-      "05_VERIFIED_bat_is_not_allowed_for_the_user",
+      "VERIFIED_bat_is_not_allowed_for_the_user",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -627,7 +627,7 @@ INSTANTIATE_TEST_SUITE_P(
   GetCapabilities,
   Values(
     GetCapabilitiesParamType{  // Access token expired! (PENDING)
-      "00_PENDING_access_token_expired",
+      "PENDING_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -649,7 +649,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
-      "01_PENDING_couldn_t_get_capabilities_from_uphold",
+      "PENDING_couldn_t_get_capabilities_from_uphold_internal_server_error",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -671,7 +671,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
-      "02_PENDING_couldn_t_get_capabilities_from_uphold",
+      "PENDING_couldn_t_get_capabilities_from_uphold_ok",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -693,7 +693,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
-      "03_PENDING_couldn_t_get_capabilities_from_uphold",
+      "PENDING_couldn_t_get_capabilities_from_uphold_sends_enabled",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -715,7 +715,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
-      "04_PENDING_couldn_t_get_capabilities_from_uphold",
+      "PENDING_couldn_t_get_capabilities_from_uphold_receives_enabled",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -737,7 +737,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // User doesn't have the required Uphold capabilities! (PENDING)
-      "05_PENDING_user_doesnt_have_the_required_uphold_capabilities",
+      "PENDING_user_doesnt_have_the_required_uphold_capabilities",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -758,7 +758,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     GetCapabilitiesParamType{  // Access token expired! (VERIFIED)
-      "06_VERIFIED_access_token_expired",
+      "VERIFIED_access_token_expired",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -780,7 +780,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
-      "07_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      "VERIFIED_couldn_t_get_capabilities_from_uphold_internal_server_error",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -802,7 +802,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
-      "08_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      "VERIFIED_couldn_t_get_capabilities_from_uphold_ok",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -824,7 +824,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
-      "09_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      "VERIFIED_couldn_t_get_capabilities_from_uphold_sends_enabled",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -846,7 +846,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
-      "10_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      "VERIFIED_couldn_t_get_capabilities_from_uphold_receives_enabled",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -868,7 +868,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // User doesn't have the required Uphold capabilities! (VERIFIED)
-      "11_VERIFIED_user_doesnt_have_the_required_uphold_capabilities",
+      "VERIFIED_user_doesnt_have_the_required_uphold_capabilities",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -895,7 +895,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     GetCapabilitiesParamType{  // Happy path. (VERIFIED)
-      "12_VERIFIED_happy_path",
+      "VERIFIED_happy_path",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       mojom::UrlResponse{
         {},
@@ -998,7 +998,7 @@ INSTANTIATE_TEST_SUITE_P(
   GetCardID,
   Values(
     GetCardIDParamType{  // Access token expired! (List Cards)
-      "00_list_cards_access_token_expired",
+      "list_cards_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -1028,7 +1028,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCardIDParamType{  // List Cards failed && Access token expired! (Create Card)
-      "01_create_card_access_token_expired",
+      "create_card_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -1063,7 +1063,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     GetCardIDParamType{  // Create Card failed.
-      "02_create_card_failed",
+      "create_card_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -1098,7 +1098,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::PENDING
     },
     GetCardIDParamType{  // Create Card succeeded && id is empty.
-      "03_create_card_succeeded_but_id_is_empty",
+      "create_card_succeeded_but_id_is_empty",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -1134,7 +1134,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     GetCardIDParamType{  // Create Card succeeded && Access token expired! (Update Card)
-      "04_update_card_access_token_expired",
+      "update_card_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -1175,7 +1175,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     GetCardIDParamType{  // Update Card failed.
-      "05_update_card_failed",
+      "update_card_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       mojom::UrlResponse{
         {},
@@ -1294,7 +1294,7 @@ INSTANTIATE_TEST_SUITE_P(
   ClaimWallet,
   Values(
     ClaimWalletParamType{  // Device limit reached.
-      "00_device_limit_reached",
+      "device_limit_reached",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1329,7 +1329,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // KYC required.
-      "01_kyc_required",
+      "kyc_required",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1369,7 +1369,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Mismatched provider accounts.
-      "02_mismatched_provider_accounts",
+      "mismatched_provider_accounts",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1409,7 +1409,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Transaction verification failure.
-      "03_transaction_verification_failure",
+      "transaction_verification_failure",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1449,7 +1449,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Flagged wallet.
-      "04_flagged_wallet",
+      "flagged_wallet",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1489,7 +1489,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Region not supported.
-      "05_region_not_supported",
+      "region_not_supported",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1528,8 +1528,8 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::Result::REGION_NOT_SUPPORTED,
       mojom::WalletStatus::NOT_CONNECTED
     },
-    ClaimWalletParamType{  // Mismatched provider account regions.
-      "06_mismatched_provider_account_regions",
+    ClaimWalletParamType{  // Mismatched countries.
+      "mismatched_countries",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1565,11 +1565,51 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS,
+      mojom::Result::MISMATCHED_COUNTRIES,
+      mojom::WalletStatus::NOT_CONNECTED
+    },
+    ClaimWalletParamType{  // Mismatched countries.
+      "provider_unavailable",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      mojom::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
+        {}
+      },
+      mojom::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
+        {}
+      },
+      mojom::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_BAD_REQUEST,
+        R"(
+          {
+              "message": "Error validating Connecting Brave Rewards to Uphold is temporarily unavailable. Please try again later",
+              "code": 400
+          }
+        )",
+        {}
+      },
+      mojom::Result::PROVIDER_UNAVAILABLE,
       mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Rewards Link (Claim) Wallet failed.
-      "07_link_wallet_failed",
+      "link_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1604,7 +1644,7 @@ INSTANTIATE_TEST_SUITE_P(
       mojom::WalletStatus::PENDING
     },
     ClaimWalletParamType{  // Happy path.
-      "08_happy_path",
+      "happy_path",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       mojom::UrlResponse{
@@ -1718,7 +1758,7 @@ INSTANTIATE_TEST_SUITE_P(
   Values(
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (NOT_CONNECTED)
-      "00_NOT_CONNECTED_unlink_wallet_succeeded",
+      "NOT_CONNECTED_unlink_wallet_succeeded",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -1733,7 +1773,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (NOT_CONNECTED)
-      "01_NOT_CONNECTED_unlink_wallet_failed",
+      "NOT_CONNECTED_unlink_wallet_failed",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -1748,7 +1788,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (VERIFIED)
-      "02_VERIFIED_unlink_wallet_succeeded",
+      "VERIFIED_unlink_wallet_succeeded",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -1763,7 +1803,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (VERIFIED)
-      "03_VERIFIED_unlink_wallet_failed",
+      "VERIFIED_unlink_wallet_failed",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -1778,7 +1818,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (DISCONNECTED_VERIFIED)
-      "04_DISCONNECTED_VERIFIED_unlink_wallet_succeeded",
+      "DISCONNECTED_VERIFIED_unlink_wallet_succeeded",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -1793,7 +1833,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (DISCONNECTED_VERIFIED)
-      "05_DISCONNECTED_VERIFIED_unlink_wallet_failed",
+      "DISCONNECTED_VERIFIED_unlink_wallet_failed",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -1808,7 +1848,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (PENDING)
-      "06_PENDING_unlink_wallet_succeeded",
+      "PENDING_unlink_wallet_succeeded",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -1823,7 +1863,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (PENDING)
-      "07_PENDING_unlink_wallet_failed",
+      "PENDING_unlink_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{

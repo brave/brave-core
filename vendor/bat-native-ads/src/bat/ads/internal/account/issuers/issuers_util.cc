@@ -5,41 +5,17 @@
 
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 
-#include "base/containers/flat_map.h"
 #include "base/ranges/algorithm.h"
+#include "bat/ads/internal/account/issuers/confirmations_issuer_util.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
+#include "bat/ads/internal/account/issuers/payments_issuer_util.h"
+#include "bat/ads/internal/account/issuers/public_key_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
-
-namespace {
-
-constexpr int kMaximumIssuerPublicKeys = 3;
-
-bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
-  const auto iter = issuer.public_keys.find(public_key);
-  return iter != issuer.public_keys.cend();
-}
-
-}  // namespace
-
-bool IsIssuerValid(const IssuerInfo& issuer) {
-  base::flat_map<double, int> buckets;
-  for (const auto& public_key : issuer.public_keys) {
-    const double bucket = public_key.second;
-    buckets[bucket]++;
-
-    const int count = buckets[bucket];
-    if (count > kMaximumIssuerPublicKeys) {
-      return false;
-    }
-  }
-
-  return true;
-}
 
 void SetIssuers(const IssuersInfo& issuers) {
   AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIssuerPing,
@@ -69,9 +45,13 @@ absl::optional<IssuersInfo> GetIssuers() {
   return issuers;
 }
 
+bool IsIssuersValid(const IssuersInfo& issuers) {
+  return IsConfirmationsIssuerValid(issuers) && IsPaymentsIssuerValid(issuers);
+}
+
 bool HasIssuers() {
-  return !(!IssuerExistsForType(IssuerType::kConfirmations) ||
-           !IssuerExistsForType(IssuerType::kPayments));
+  return IssuerExistsForType(IssuerType::kConfirmations) &&
+         IssuerExistsForType(IssuerType::kPayments);
 }
 
 bool HasIssuersChanged(const IssuersInfo& issuers) {

@@ -18,8 +18,6 @@ namespace ads::new_tab_page_ads {
 
 class BatAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdsPerDayPermissionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

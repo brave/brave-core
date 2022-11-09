@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.vpn.wireguard;
 
-import org.chromium.base.annotations.IdentifierNameString;
+import org.chromium.build.annotations.IdentifierNameString;
 import org.chromium.chrome.browser.base.SplitCompatService;
 
 /** See {@link WireguardServiceImpl}. */

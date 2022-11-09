@@ -13,8 +13,6 @@ namespace ads {
 
 class BatAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
  protected:
-  BatAdsTabManagerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -185,6 +183,7 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -214,6 +213,7 @@ TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -245,6 +245,7 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -275,6 +276,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -394,6 +396,7 @@ TEST_F(BatAdsTabManagerTest, GetVisible) {
 
   // Act
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
+  ASSERT_TRUE(tab);
 
   // Assert
   TabInfo expected_tab;
@@ -419,6 +422,7 @@ TEST_F(BatAdsTabManagerTest, GetLastVisible) {
   // Act
   const absl::optional<TabInfo> tab =
       TabManager::GetInstance()->GetLastVisible();
+  ASSERT_TRUE(tab);
 
   // Assert
   TabInfo expected_tab;
@@ -439,6 +443,7 @@ TEST_F(BatAdsTabManagerTest, GetForId) {
 
   // Act
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  ASSERT_TRUE(tab);
 
   // Assert
   TabInfo expected_tab;

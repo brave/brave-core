@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -20,15 +20,19 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
  public:
   explicit BatAdsServiceImpl(
       mojo::PendingReceiver<mojom::BatAdsService> receiver);
+
   BatAdsServiceImpl(const BatAdsServiceImpl&) = delete;
   BatAdsServiceImpl& operator=(const BatAdsServiceImpl&) = delete;
+
+  BatAdsServiceImpl(BatAdsServiceImpl&& other) noexcept = delete;
+  BatAdsServiceImpl& operator=(BatAdsServiceImpl&& other) noexcept = delete;
+
   ~BatAdsServiceImpl() override;
 
   // BatAdsService:
-  void Create(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
-      mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
-      CreateCallback callback) override;
+  void Create(mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+              mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
+              CreateCallback callback) override;
 
   void SetSysInfo(ads::mojom::SysInfoPtr sys_info,
                   SetSysInfoCallback callback) override;

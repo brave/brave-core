@@ -24,14 +24,9 @@ constexpr char kSimpleResourceFile[] =
 
 }  // namespace
 
-class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
- protected:
-  BatAdsEmbeddingProcessingPipelineTest() = default;
+class BatAdsEmbeddingProcessingTest : public UnitTestBase {};
 
-  ~BatAdsEmbeddingProcessingPipelineTest() override = default;
-};
-
-TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedText) {
+TEST_F(BatAdsEmbeddingProcessingTest, EmbedText) {
   // Arrange
   CopyFileFromTestPathToTempPath(kSimpleResourceFile, kResourceFile);
 
@@ -41,7 +36,8 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedText) {
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(resource.IsInitialized());
 
-  ml::pipeline::EmbeddingProcessing* embedding_processing = resource.Get();
+  const ml::pipeline::EmbeddingProcessing* const embedding_processing =
+      resource.Get();
   ASSERT_TRUE(embedding_processing);
 
   const std::vector<std::tuple<std::string, ml::VectorData>> kSamples = {

@@ -55,7 +55,6 @@ template("brave_extra_paks") {
     sources = [
       "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
       "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
-      "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
     ]
 
@@ -63,9 +62,7 @@ template("brave_extra_paks") {
       sources += [
         "$root_gen_dir/brave/brave_generated_resources.pak",
         "$root_gen_dir/brave/brave_unscaled_resources.pak",
-        "$root_gen_dir/brave/browser/resources/bookmarks/brave_bookmarks_resources.pak",
         "$root_gen_dir/brave/browser/resources/federated_internals/federated_internals_resources.pak",
-        "$root_gen_dir/brave/browser/resources/history/brave_history_resources.pak",
         "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
       ]
     }
@@ -74,16 +71,13 @@ template("brave_extra_paks") {
       "//brave/components/brave_ads/resources",
       "//brave/components/brave_rewards/resources",
       "//brave/components/resources",
-      "//brave/ui/webui/resources",
     ]
 
     if (!is_android) {
       deps += [
         "//brave/app:brave_generated_resources_grit",
         "//brave/app/theme:brave_unscaled_resources",
-        "//brave/browser/resources/bookmarks:resources",
         "//brave/browser/resources/federated_internals:resources",
-        "//brave/browser/resources/history:resources",
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
       ]
@@ -103,23 +97,12 @@ template("brave_extra_paks") {
     }
 
     if (enable_extensions) {
-      sources += [
-        "$root_gen_dir/brave/browser/resources/extensions/brave_extensions_resources.pak",
-        "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak",
-      ]
+      sources += [ "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak" ]
 
       deps += [
-        "//brave/browser/resources/extensions:resources",
         "//brave/common/extensions/api",
         "//brave/components/brave_extension:resources",
       ]
-    }
-
-    if (enable_extensions) {
-      sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak" ]
-
-      deps +=
-          [ "//brave/components/brave_rewards/resources/extension:resources" ]
     }
 
     if (defined(invoker.deps)) {

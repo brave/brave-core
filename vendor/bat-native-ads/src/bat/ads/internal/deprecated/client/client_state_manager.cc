@@ -6,8 +6,6 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 #include <cstdint>
-#include <functional>
-#include <memory>
 #include <utility>
 
 #include "base/bind.h"
@@ -17,13 +15,14 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history_constants.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
 namespace ads {
@@ -85,6 +84,16 @@ bool IsMutated(const std::string& value) {
          GenerateHash(value);
 }
 
+void OnSaved(const bool success) {
+  if (!success) {
+    BLOG(0, "Failed to save client state");
+
+    return;
+  }
+
+  BLOG(9, "Successfully saved client state");
+}
+
 }  // namespace
 
 ClientStateManager::ClientStateManager() : client_(new ClientInfo()) {
@@ -128,9 +137,7 @@ const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
 }
 
 void ClientStateManager::Initialize(InitializeCallback callback) {
-  callback_ = std::move(callback);
-
-  Load();
+  Load(std::move(callback));
 }
 
 void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
@@ -248,13 +255,17 @@ AdContentLikeActionType ClientStateManager::ToggleAdThumbDown(
 AdContentLikeActionType
 ClientStateManager::GetAdContentLikeActionTypeForAdvertiser(
     const std::string& advertiser_id) {
-  for (const auto& item : client_->history_items) {
-    if (item.ad_content.advertiser_id == advertiser_id) {
-      return item.ad_content.like_action_type;
-    }
+  const auto iter = base::ranges::find_if(
+      client_->history_items,
+      [&advertiser_id](const HistoryItemInfo& history_item) -> bool {
+        return history_item.ad_content.advertiser_id == advertiser_id;
+      });
+
+  if (iter == client_->history_items.cend()) {
+    return AdContentLikeActionType::kNeutral;
   }
 
-  return AdContentLikeActionType::kNeutral;
+  return iter->ad_content.like_action_type;
 }
 
 CategoryContentOptActionType ClientStateManager::ToggleAdOptIn(
@@ -319,13 +330,17 @@ CategoryContentOptActionType ClientStateManager::ToggleAdOptOut(
 CategoryContentOptActionType
 ClientStateManager::GetCategoryContentOptActionTypeForSegment(
     const std::string& segment) {
-  for (const auto& item : client_->history_items) {
-    if (item.category_content.category == segment) {
-      return item.category_content.opt_action_type;
-    }
+  const auto iter = base::ranges::find_if(
+      client_->history_items,
+      [&segment](const HistoryItemInfo& history_item) -> bool {
+        return history_item.category_content.category == segment;
+      });
+
+  if (iter == client_->history_items.cend()) {
+    return CategoryContentOptActionType::kNone;
   }
 
-  return CategoryContentOptActionType::kNone;
+  return iter->category_content.opt_action_type;
 }
 
 bool ClientStateManager::ToggleSavedAd(const AdContentInfo& ad_content) {
@@ -516,30 +531,22 @@ void ClientStateManager::Save() {
     SetHash(json);
   }
 
-  AdsClientHelper::GetInstance()->Save(
-      kClientStateFilename, json,
-      base::BindOnce(&ClientStateManager::OnSaved, base::Unretained(this)));
+  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json,
+                                       base::BindOnce(&OnSaved));
 }
 
-void ClientStateManager::OnSaved(const bool success) {
-  if (!success) {
-    BLOG(0, "Failed to save client state");
-
-    return;
-  }
-
-  BLOG(9, "Successfully saved client state");
-}
-
-void ClientStateManager::Load() {
+void ClientStateManager::Load(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
   AdsClientHelper::GetInstance()->Load(
       kClientStateFilename,
-      base::BindOnce(&ClientStateManager::OnLoaded, base::Unretained(this)));
+      base::BindOnce(&ClientStateManager::OnLoaded, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
+void ClientStateManager::OnLoaded(InitializeCallback callback,
+                                  const bool success,
+                                  const std::string& json) {
   if (!success) {
     BLOG(3, "Client state does not exist, creating default state");
 
@@ -553,7 +560,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
 
       BLOG(3, "Failed to parse client state: " << json);
 
-      callback_(/*success*/ false);
+      std::move(callback).Run(/*success*/ false);
       return;
     }
 
@@ -567,7 +574,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
     BLOG(9, "Client state is mutated");
   }
 
-  callback_(/*success */ true);
+  std::move(callback).Run(/*success */ true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

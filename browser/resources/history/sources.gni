@@ -3,10 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_deps_chrome_browser_resources_history_in_files = [
-  "brave_overrides/side_bar.js",
-  "brave_overrides/index.js",
+brave_history_web_component_files = [ "brave_history_item.ts" ]
+
+brave_history_non_web_component_files = [
+  "brave_overrides/side_bar.ts",
+  "brave_overrides/index.ts",
 ]
 
-brave_deps_chrome_browser_resources_history_extra_deps =
+# Also include the .html sibling files
+brave_history_local_files =
+    brave_history_web_component_files + brave_history_non_web_component_files
+foreach(component_file, brave_history_web_component_files) {
+  brave_history_local_files +=
+      [ string_replace(component_file, ".ts", ".html") ]
+}
+
+brave_history_preprocess_extra_deps =
     [ "//brave/browser/resources/history:preprocess" ]

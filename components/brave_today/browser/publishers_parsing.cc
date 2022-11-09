@@ -14,9 +14,40 @@
 #include "base/values.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_news {
+
+mojom::LocaleInfoPtr ParseLocaleInfo(const base::Value::Dict& publisher_dict,
+                                     const base::Value& locale_entry) {
+  auto result = mojom::LocaleInfo::New();
+
+  // TODO(fallaciousreasoining): Remove this branch after sources.global.json
+  // has been updated. https://github.com/brave/brave-browser/issues/26307
+  if (locale_entry.is_string()) {
+    result->locale = locale_entry.GetString();
+
+    // We consider '0' to be unranked, as mojo doesn't support nullable
+    // primitives.
+    result->rank = publisher_dict.FindInt("rank").value_or(0);
+    auto* channels_raw = publisher_dict.FindList("channels");
+    if (channels_raw) {
+      for (const auto& channel : *channels_raw)
+        result->channels.push_back(channel.GetString());
+    }
+
+    return result;
+  }
+
+  const auto& locale_dict = locale_entry.GetDict();
+  result->locale = *locale_dict.FindString("locale");
+  result->rank = locale_dict.FindInt("rank").value_or(0);
+
+  for (const auto& channel : *locale_dict.FindList("channels"))
+    result->channels.push_back(channel.GetString());
+  return result;
+}
 
 bool ParseCombinedPublisherList(const std::string& json,
                                 Publishers* publishers) {
@@ -32,27 +63,29 @@ bool ParseCombinedPublisherList(const std::string& json,
     return false;
   }
   for (const base::Value& publisher_raw : records_v->GetList()) {
+    const auto& publisher_dict = publisher_raw.GetDict();
+
     auto publisher = brave_news::mojom::Publisher::New();
-    publisher->publisher_id = *publisher_raw.FindStringKey("publisher_id");
+    publisher->publisher_id = *publisher_dict.FindString("publisher_id");
     publisher->type = mojom::PublisherType::COMBINED_SOURCE;
-    publisher->publisher_name = *publisher_raw.FindStringKey("publisher_name");
-    publisher->category_name = *publisher_raw.FindStringKey("category");
-    publisher->is_enabled = publisher_raw.FindBoolKey("enabled").value_or(true);
-    GURL feed_source(*publisher_raw.FindStringKey("feed_url"));
+    publisher->publisher_name = *publisher_dict.FindString("publisher_name");
+
+    publisher->category_name = *publisher_dict.FindString("category");
+    publisher->is_enabled = publisher_dict.FindBool("enabled").value_or(true);
+    GURL feed_source(*publisher_dict.FindString("feed_url"));
     if (feed_source.is_valid()) {
       publisher->feed_source = feed_source;
     }
 
-    auto* locales_raw = publisher_raw.FindListKey("locales");
+    auto* locales_raw = publisher_dict.FindList("locales");
     if (locales_raw) {
-      for (const auto& locale : locales_raw->GetList()) {
-        if (!locale.is_string())
-          continue;
-        publisher->locales.push_back(locale.GetString());
+      for (const auto& locale_raw : *locales_raw) {
+        publisher->locales.push_back(
+            ParseLocaleInfo(publisher_dict, locale_raw));
       }
     }
 
-    std::string site_url_raw = *publisher_raw.FindStringKey("site_url");
+    std::string site_url_raw = *publisher_dict.FindString("site_url");
     if (!base::StartsWith(site_url_raw, "https://")) {
       site_url_raw = "https://" + site_url_raw;
     }
@@ -63,25 +96,44 @@ bool ParseCombinedPublisherList(const std::string& json,
       continue;
     }
     publisher->site_url = site_url;
+
+    auto* favicon_url_raw = publisher_dict.FindString("favicon_url");
+    if (favicon_url_raw) {
+      if (GURL favicon_url(*favicon_url_raw); favicon_url.is_valid()) {
+        publisher->favicon_url = favicon_url;
+      }
+    }
+
+    auto* cover_url_raw = publisher_dict.FindString("cover_url");
+    if (cover_url_raw) {
+      if (GURL cover_url(*cover_url_raw); cover_url.is_valid()) {
+        publisher->cover_url = cover_url;
+      }
+    }
+
+    auto* background_color = publisher_dict.FindString("background_color");
+    if (background_color) {
+      publisher->background_color = *background_color;
+    }
+
     // TODO(petemill): Validate
     publishers->insert_or_assign(publisher->publisher_id, std::move(publisher));
   }
   return true;
 }
 
-void ParseDirectPublisherList(const base::Value* direct_feeds_pref_value,
+void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
                               std::vector<mojom::PublisherPtr>* publishers) {
-  for (auto const kv : direct_feeds_pref_value->DictItems()) {
-    if (!kv.second.is_dict()) {
+  for (const auto&& [key, value] : direct_feeds_pref_dict) {
+    if (!value.is_dict()) {
       // Handle unknown value type
       LOG(ERROR) << "Found unknown dictionary pref value for"
                     "Brave News direct feeds at the pref path: "
-                 << kv.first;
+                 << key;
       // TODO(petemill): delete item from pref dict?
       continue;
     }
-    VLOG(1) << "Found direct feed in prefs: " << kv.first;
-    const auto& value = kv.second;
+    VLOG(1) << "Found direct feed in prefs: " << key;
 
     GURL feed_source(
         *value.FindStringKey(prefs::kBraveTodayDirectFeedsKeySource));
@@ -98,7 +150,7 @@ void ParseDirectPublisherList(const base::Value* direct_feeds_pref_value,
     }
     auto publisher = mojom::Publisher::New();
     publisher->feed_source = feed_source;
-    publisher->publisher_id = kv.first;
+    publisher->publisher_id = key;
     publisher->publisher_name =
         *value.FindStringKey(prefs::kBraveTodayDirectFeedsKeyTitle);
     publisher->type = mojom::PublisherType::DIRECT_SOURCE;

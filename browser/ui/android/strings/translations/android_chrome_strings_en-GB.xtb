@@ -441,6 +441,7 @@ When you delete your browsing history – all or for a specific site – you als
 <translation id="3435465986463792564">Got many windows? You can manage them from here</translation>
 <translation id="3443221991560634068">Reload the current page</translation>
 <translation id="3444179773590444986">Share feedback on Dark theme for sites?</translation>
+<translation id="7384339501748168186">To protect your privacy, Brave will not auto-fill your password in this field.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 download scheduled}other{# downloads scheduled}}</translation>
 <translation id="3474624961160222204">Continue as <ph name="NAME"/></translation>
 <translation id="3478363558367712427">You can choose your search engine</translation>
@@ -658,6 +659,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Passwords are saved to Password Manager on this device</translation>
 <translation id="4766678251456904326">Add account to device</translation>
+<translation id="4787736314074622408">Do you want to delete <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Helps you complete tasks, such as checkout, throughout the web</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Passphrase encryption doesn’t include payment methods and addresses from Google Pay.
@@ -726,6 +728,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="4744980273298156620">Soon, you’ll see stories from <ph name="SITE_NAME"/> when you open a new tab. The sites that you follow are saved in your Brave sync chain. You can manage them in Discover settings.</translation>
 <translation id="5091249083535528968">Extended usage data</translation>
 <translation id="509429900233858213">An error occurred.</translation>
+<translation id="5099845111805573968">When you select desktop site once, the setting is applied to the site each time that you visit</translation>
 <translation id="225414324447409614">If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing</translation>
 <translation id="510275257476243843">1 hour left</translation>
 <translation id="5115811374190515607">to <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5958275228015807058">Find your files and pages in Downloads</translation>
 <translation id="5962718611393537961">Tap to collapse</translation>
 <translation id="5964869237734432770">Stop image descriptions</translation>
+<translation id="9135546826883360971">Brave will remember your choice</translation>
 <translation id="5979084224081478209">Check passwords</translation>
 <translation id="5995726099713306770">Download page again?</translation>
 <translation id="6456271171669383967">Keep Brave</translation>
@@ -920,6 +924,7 @@ Privacy Sandbox trials are still in active development and are available in sele
 <translation id="6192907950379606605">Get image descriptions</translation>
 <translation id="8367262879301982880">Passwords are saved to Brave Password Manager on this device</translation>
 <translation id="620197886010707372">Open app for <ph name="APPNAME"/> with Google Play?</translation>
+<translation id="6202812185118613467">Sign back in to start sync</translation>
 <translation id="6203593061661911168">Download will start when on Wi-Fi</translation>
 <translation id="6210748933810148297">Not <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Previewing this page</translation>
@@ -1051,6 +1056,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/> tab, selected</translation>
 <translation id="6828070228333235514">Stop tracking price</translation>
+<translation id="6830728435402077660">Not secure</translation>
 <translation id="6833996806551876956">Privacy sandbox trial</translation>
 <translation id="6836206421467243968">Restore tab group <ph name="TITLE_OF_GROUP"/> as a new background tab group.</translation>
 <translation id="6846298663435243399">Loading…</translation>
@@ -1351,7 +1357,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="8460448946170646641">Review key privacy and security controls</translation>
 <translation id="8461694314515752532">Encrypt synced data with your own sync passphrase</translation>
 <translation id="8466613982764129868">Make sure that <ph name="TARGET_DEVICE_NAME"/> is connected to the Internet</translation>
-<translation id="8473863474539038330">Addresses and more</translation>
+<translation id="5633907266617216186">Addresses and more</translation>
 <translation id="8481921391193215807">When on, sites may use the privacy-preserving techniques shown here to provide their content and services. These include alternatives to cross-site tracking. More trials may be added over time.
 
 <ph name="BEGIN_LIST_ITEM1"/>Advertisers and publishers can use FLoC.<ph name="END_LIST_ITEM1"/>

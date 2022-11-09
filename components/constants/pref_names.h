@@ -8,6 +8,8 @@
 
 #include "build/build_config.h"
 
+extern const char kManagedBraveShieldsEnabledForUrls[];
+extern const char kManagedBraveShieldsDisabledForUrls[];
 extern const char kAdsBlocked[];
 extern const char kTrackersBlocked[];
 extern const char kJavascriptBlocked[];
@@ -34,7 +36,6 @@ extern const char kReferralAttemptTimestamp[];
 extern const char kReferralAttemptCount[];
 extern const char kReferralHeaders[];
 extern const char kReferralAndroidFirstRunTimestamp[];
-extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
 extern const char kShieldsAdvancedViewEnabled[];
 extern const char kShieldsStatsBadgeVisible[];

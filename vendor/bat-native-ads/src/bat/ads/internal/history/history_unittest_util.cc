@@ -14,9 +14,9 @@
 namespace ads {
 
 int GetHistoryItemCount() {
-  const HistoryItemList history_items = HistoryManager::GetInstance()->Get(
-      HistoryFilterType::kNone, HistorySortType::kNone, DistantPast(),
-      DistantFuture());
+  const HistoryItemList history_items =
+      HistoryManager::Get(HistoryFilterType::kNone, HistorySortType::kNone,
+                          DistantPast(), DistantFuture());
 
   return history_items.size();
 }

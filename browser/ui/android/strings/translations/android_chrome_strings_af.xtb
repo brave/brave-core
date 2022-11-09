@@ -441,6 +441,7 @@ Wanneer jy jou blaaigeskiedenis uitvee — alles of vir ’n spesifieke werf —
 <translation id="3435465986463792564">Het jy baie vensters? Jy kan hulle van hier af bestuur</translation>
 <translation id="3443221991560634068">Herlaai die huidige bladsy</translation>
 <translation id="3444179773590444986">Deel terugvoer oor donkertema vir werwe?</translation>
+<translation id="7384339501748168186">Om jou privaatheid te beskerm, sal Brave nie outomaties jou wagwoord in hierdie veld invul nie.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 aflaai is geskeduleer}other{# aflaaie is geskeduleer}}</translation>
 <translation id="3474624961160222204">Gaan voort as <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Jy kan jou soekenjin kies</translation>
@@ -658,6 +659,7 @@ Jou Brave-rekening het dalk ander vorme van blaaigeskiedenis, soos soektogte en 
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Wagwoorde word op hierdie toestel in Wagwoordbestuurder gestoor</translation>
 <translation id="4766678251456904326">Voeg rekening by toestel</translation>
+<translation id="4787736314074622408">Wil jy <ph name="ITEM_TITLE"/> uitvee?</translation>
 <translation id="4791358705705538979">Help jou om oral op die web take te voltooi, soos by betaalpunte</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Wagfrase-enkripsie sluit nie betaalmetodes en adresse van Google Pay af in nie.
@@ -726,6 +728,7 @@ Jou Brave-rekening het dalk ander vorme van blaaigeskiedenis, soos soektogte en 
 <translation id="4744980273298156620">Jy sal binnekort stories van <ph name="SITE_NAME"/> af sien wanneer jy 'n nuwe oortjie oopmaak. Werwe wat jy volg, word in jou Brave-rekening gestoor. Jy kan hulle bestuur in Ontdek-instellings.</translation>
 <translation id="5091249083535528968">Uitgebreide datagebruik</translation>
 <translation id="509429900233858213">'n Fout het voorgekom.</translation>
+<translation id="5099845111805573968">As jy een keer rekenaarwerf gekies het, sal die instelling elke keer wanneer jy besoek aflê op die werf toegepas word</translation>
 <translation id="225414324447409614">As 'n werf probeer om jou wagwoord te steel, of wanneer jy 'n skadelike lêer aflaai, sal Brave dalk URL'e, insluitend stukkies bladsyinhoud, na Veiligblaai toe stuur</translation>
 <translation id="510275257476243843">1 uur oor</translation>
 <translation id="5115811374190515607">na <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Jou Brave-rekening het dalk ander vorme van blaaigeskiedenis, soos soektogte en 
 <translation id="5958275228015807058">Kry jou lêers en bladsye in Aflaaie</translation>
 <translation id="5962718611393537961">Tik om in te vou</translation>
 <translation id="5964869237734432770">Stop prentbeskrywings</translation>
+<translation id="9135546826883360971">Brave sal jou keuse onthou</translation>
 <translation id="5979084224081478209">Gaan wagwoorde na</translation>
 <translation id="5995726099713306770">Laai bladsy weer af?</translation>
 <translation id="6456271171669383967">Hou Brave</translation>
@@ -920,6 +924,7 @@ Privacy Sandbox-proeflopies word nog aktief ontwikkel en is in uitgesoekte strek
 <translation id="6192907950379606605">Kry prentbeskrywings</translation>
 <translation id="8367262879301982880">Wagwoorde word op hierdie toestel in Brave Wagwoordbestuurder gestoor</translation>
 <translation id="620197886010707372">Maak program vir <ph name="APPNAME"/> oop met Google Play?</translation>
+<translation id="6202812185118613467">Meld weer aan om sinkronisering te begin</translation>
 <translation id="6203593061661911168">Aflaai sal begin wanneer jy op wi-fi is</translation>
 <translation id="6210748933810148297">Nie <ph name="EMAIL"/> nie?</translation>
 <translation id="6211386937064921208">Voorbeskou tans hierdie bladsy</translation>
@@ -1051,6 +1056,7 @@ Byvoorbeeld, sommige webwerwe kan op hierdie versoek reageer deur vir jou advert
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, oortjie, gekies</translation>
 <translation id="6828070228333235514">Stop prysnasporing</translation>
+<translation id="6830728435402077660">Nie veilig nie</translation>
 <translation id="6833996806551876956">Privaatheidsandputproeflopie</translation>
 <translation id="6836206421467243968">Stel oortjiegroep <ph name="TITLE_OF_GROUP"/> terug as ’n nuwe agtergrondoortjiegroep.</translation>
 <translation id="6846298663435243399">Laai tans …</translation>
@@ -1353,7 +1359,7 @@ Byvoorbeeld, sommige webwerwe kan op hierdie versoek reageer deur vir jou advert
 <translation id="8460448946170646641">Gaan belangrike privaatheid- en sekuriteitkontroles na</translation>
 <translation id="8461694314515752532">Enkripteer gesinkroniseerde data met jou eie sinkroniseringwagfrase</translation>
 <translation id="8466613982764129868">Maak seker dat <ph name="TARGET_DEVICE_NAME"/> aan die internet gekoppel is.</translation>
-<translation id="8473863474539038330">Adresse en meer</translation>
+<translation id="5633907266617216186">Adresse en meer</translation>
 <translation id="8481921391193215807">Wanneer dit aan is, kan werwe die privaatheidinstandhoudingtegnieke wat hier gewys word, gebruik om hul inhoud en dienste te verskaf. Dit sluit alternatiewe vir kruiswerfnasporing in. Nog proeflopies kan oor tyd bygevoeg word.
 
 <ph name="BEGIN_LIST_ITEM1"/>Adverteerders en uitgewers kan FLoC gebruik.<ph name="END_LIST_ITEM1"/>

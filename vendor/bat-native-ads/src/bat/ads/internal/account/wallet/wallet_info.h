@@ -13,6 +13,7 @@ namespace ads {
 struct WalletInfo final {
   bool IsValid() const;
 
+  bool WasUpdated(const WalletInfo& other) const;
   bool HasChanged(const WalletInfo& other) const;
 
   bool operator==(const WalletInfo& other) const;

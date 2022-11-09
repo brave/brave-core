@@ -4,6 +4,13 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 module ledger.mojom;
 
+enum GetParametersError {
+  kFailedToCreateRequest,
+  kFailedToGetParameters,               // HTTP 500
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
 enum PatchWalletsError {
   kFailedToCreateRequest,
   kInvalidRequest,                      // HTTP 400, HTTP 403
@@ -19,7 +26,8 @@ enum PatchWalletsError {
 enum PostConnectError {
   kFailedToCreateRequest,
   kFlaggedWallet,                       // HTTP 400
-  kMismatchedProviderAccountRegions,    // HTTP 400
+  kMismatchedCountries,                 // HTTP 400
+  kProviderUnavailable,                 // HTTP 400
   kRegionNotSupported,                  // HTTP 400
   kUnknownMessage,                      // HTTP 400, HTTP 403
   kKycRequired,                         // HTTP 403, HTTP 404

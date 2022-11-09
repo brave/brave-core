@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index d9867abfabbdb346733430dd6b3006e97f99d7d7..a24adab43ac7c36b3f16484366e16d47434dedda 100644
+index bcdc111b9168adeb60a94e7f96145a8e637f3987..1316a3557fbc3ce79b3b8e12cf378dc29ff07475 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1224,6 +1224,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1251,6 +1251,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,10 +11,10 @@ index d9867abfabbdb346733430dd6b3006e97f99d7d7..a24adab43ac7c36b3f16484366e16d47
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1580,6 +1582,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1614,6 +1616,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #if !BUILDFLAG(IS_ANDROID)
+   registry->RegisterIntegerPref(prefs::kHighEfficiencyChipExpandedCount, 0);
  #endif
- 
-   RegisterProfilePrefsForMigration(registry);
 +  brave::RegisterProfilePrefs(registry);
  }
  

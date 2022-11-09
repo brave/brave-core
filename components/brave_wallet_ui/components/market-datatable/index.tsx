@@ -7,8 +7,16 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '$web-common/locale'
-import { BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
+import {
+  AccountButtonOptionsObjectType,
+  BraveWallet,
+  MarketDataTableColumnTypes,
+  SortOrder
+} from '../../constants/types'
 import Amount from '../../utils/amount'
+
+// Options
+import { BuyButtonOption, DepositButtonOption } from '../../options/account-list-button-options'
 
 // Styled components
 import {
@@ -16,7 +24,8 @@ import {
   AssetsColumnWrapper,
   StyledWrapper,
   TableWrapper,
-  TextWrapper
+  TextWrapper,
+  ButtonsRow
 } from './style'
 
 // Components
@@ -24,6 +33,7 @@ import { Table, Cell, Header, Row } from '../shared/datatable'
 import { AssetNameAndIcon } from '../asset-name-and-icon'
 import { AssetPriceChange } from '../asset-price-change'
 import { CoinGeckoText } from '../desktop/views/portfolio/style'
+import { AccountListItemOptionButton } from '../desktop/account-list-item/account-list-item-option-button'
 
 export interface MarketDataHeader extends Header {
   id: MarketDataTableColumnTypes
@@ -35,9 +45,20 @@ export interface Props {
   showEmptyState: boolean
   onSort?: (column: MarketDataTableColumnTypes, newSortOrder: SortOrder) => void
   onSelectCoinMarket: (coinMarket: BraveWallet.CoinMarket) => void
+  isBuySupported: (coinMarket: BraveWallet.CoinMarket) => boolean
+  isDepositSupported: (coinMarket: BraveWallet.CoinMarket) => boolean
+  onClickBuy: (coinMarket: BraveWallet.CoinMarket) => void
+  onClickDeposit: (coinMarket: BraveWallet.CoinMarket) => void
+  fiatCurrency: string
 }
 
-const renderCells = (coinMarkDataItem: BraveWallet.CoinMarket) => {
+const renderCells = (
+  coinMarkDataItem: BraveWallet.CoinMarket,
+  buttonOptions: AccountButtonOptionsObjectType[],
+  fiatCurrency: string,
+  onClickBuy: (coinMarket: BraveWallet.CoinMarket) => void,
+  onClickDeposit: (coinMarket: BraveWallet.CoinMarket) => void
+) => {
   const {
     name,
     symbol,
@@ -50,10 +71,10 @@ const renderCells = (coinMarkDataItem: BraveWallet.CoinMarket) => {
     totalVolume
   } = coinMarkDataItem
 
-  const formattedPrice = new Amount(currentPrice).formatAsFiat('USD')
+  const formattedPrice = new Amount(currentPrice).formatAsFiat(fiatCurrency)
   const formattedPercentageChange = new Amount(priceChangePercentage24h).value?.absoluteValue().toFixed(2) + '%'
-  const formattedMarketCap = new Amount(marketCap).abbreviate(1, 'USD', 'billion')
-  const formattedVolume = new Amount(totalVolume).abbreviate(1, 'USD')
+  const formattedMarketCap = new Amount(marketCap).abbreviate(1, fiatCurrency, 'billion')
+  const formattedVolume = new Amount(totalVolume).abbreviate(1, fiatCurrency)
   const isDown = priceChange24h < 0
 
   const cellsContent: React.ReactNode[] = [
@@ -87,7 +108,20 @@ const renderCells = (coinMarkDataItem: BraveWallet.CoinMarket) => {
     <TextWrapper alignment="right">{formattedMarketCap}</TextWrapper>,
 
     // Volume Column
-    <TextWrapper alignment="right">{formattedVolume}</TextWrapper>
+    <TextWrapper alignment="right">{formattedVolume}</TextWrapper>,
+
+    <ButtonsRow>
+      {buttonOptions.map((option) =>
+        <AccountListItemOptionButton
+          key={option.id}
+          onClick={option.id === 'buy'
+            ? () => onClickBuy(coinMarkDataItem)
+            : () => onClickDeposit(coinMarkDataItem)}
+          option={option}
+          hideIcon={true}
+        />
+      )}
+    </ButtonsRow>
 
     // Line Chart Column
     // Commented out because priceHistory data is yet to be
@@ -125,20 +159,29 @@ export const MarketDataTable = (props: Props) => {
     headers,
     coinMarketData,
     showEmptyState,
+    fiatCurrency,
     onSort,
-    onSelectCoinMarket
+    onSelectCoinMarket,
+    isBuySupported,
+    isDepositSupported,
+    onClickBuy,
+    onClickDeposit
   } = props
 
+  // Memos
   const rows: Row[] = React.useMemo(() => {
     return coinMarketData.map((coinMarketItem: BraveWallet.CoinMarket) => {
+      const buySupported = isBuySupported(coinMarketItem)
+      const depositSupported = isDepositSupported(coinMarketItem)
+      const buttonOptions = buySupported ? [BuyButtonOption, DepositButtonOption] : depositSupported ? [DepositButtonOption] : []
       return {
         id: `coin-row-${coinMarketItem.symbol}-${coinMarketItem.marketCapRank}`,
-        content: renderCells(coinMarketItem),
+        content: renderCells(coinMarketItem, buttonOptions, fiatCurrency, onClickBuy, onClickDeposit),
         data: coinMarketItem,
         onClick: onSelectCoinMarket
       }
     })
-  }, [coinMarketData])
+  }, [coinMarketData, isBuySupported, isDepositSupported, onClickBuy, onClickDeposit])
 
   return (
     <StyledWrapper>

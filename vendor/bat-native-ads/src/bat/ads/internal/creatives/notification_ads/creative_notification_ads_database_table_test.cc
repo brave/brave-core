@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
-#include <vector>
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -18,11 +16,6 @@ namespace ads {
 class BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
  protected:
-  BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest() = default;
-
-  ~BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest() override =
-      default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }
@@ -43,7 +36,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
   // Assert
   const std::vector<std::string> segments = {"technology & computing"};
 
-  database::table::CreativeNotificationAds creative_ads;
+  const database::table::CreativeNotificationAds creative_ads;
   creative_ads.GetForSegments(
       segments, [](const bool success, const SegmentList& /*segments*/,
                    const CreativeNotificationAdList& creative_ads) {

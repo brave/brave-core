@@ -7,10 +7,12 @@
 
 #include <memory>
 
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
+#include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
@@ -39,4 +41,13 @@ void BraveOpaqueBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
     canvas->ClipRect(bounds_to_frame_graphic);
   }
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);
+}
+
+int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
+  if (auto res = brave::NonClientHitTest(browser_view(), point);
+      res != HTNOWHERE) {
+    return res;
+  }
+
+  return OpaqueBrowserFrameView::NonClientHitTest(point);
 }

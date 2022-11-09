@@ -10,6 +10,8 @@ interface StyleProps {
 }
 
 export const StyledWrapper = styled.div`
+  font-family: 'Poppins';
+  font-style: normal;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;

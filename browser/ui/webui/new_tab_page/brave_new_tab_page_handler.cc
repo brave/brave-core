@@ -6,7 +6,6 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/bind.h"
 #include "base/containers/span.h"
@@ -24,7 +23,7 @@
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -42,10 +41,6 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "url/gurl.h"
-
-#if defined(OS_WIN)
-#include "base/strings/sys_string_conversions.h"
-#endif
 
 namespace {
 
@@ -85,6 +80,7 @@ BraveNewTabPageHandler::BraveNewTabPageHandler(
       page_(std::move(pending_page)),
       profile_(profile),
       web_contents_(web_contents),
+      file_manager_(std::make_unique<CustomBackgroundFileManager>(profile_)),
       weak_factory_(this) {
   InitForSearchPromotion();
 }
@@ -130,10 +126,54 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   file_types.extension_description_overrides.push_back(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_UPLOAD_IMAGE_FORMAT));
   select_file_dialog_->SelectFile(
-      ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(),
+      ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE, std::u16string(),
       profile_->last_selected_directory(), &file_types, 0,
       base::FilePath::StringType(), web_contents_->GetTopLevelNativeWindow(),
       nullptr);
+}
+
+void BraveNewTabPageHandler::UseCustomImageBackground(
+    const std::string& selected_background) {
+  auto decoded_background = selected_background;
+  if (!decoded_background.empty()) {
+    decoded_background =
+        CustomBackgroundFileManager::Converter(GURL(decoded_background))
+            .To<std::string>();
+  }
+
+  auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
+  pref.SetType(NTPBackgroundPrefs::Type::kCustomImage);
+  pref.SetSelectedValue(decoded_background);
+  pref.SetShouldUseRandomValue(decoded_background.empty());
+
+  OnBackgroundUpdated();
+}
+
+void BraveNewTabPageHandler::GetCustomImageBackgrounds(
+    GetCustomImageBackgroundsCallback callback) {
+  std::vector<brave_new_tab_page::mojom::CustomBackgroundPtr> backgrounds;
+  for (const auto& name :
+       NTPBackgroundPrefs(profile_->GetPrefs()).GetCustomImageList()) {
+    auto value = brave_new_tab_page::mojom::CustomBackground::New();
+    value->url = CustomBackgroundFileManager::Converter(name).To<GURL>();
+    backgrounds.push_back(std::move(value));
+  }
+
+  std::move(callback).Run(std::move(backgrounds));
+}
+
+void BraveNewTabPageHandler::RemoveCustomImageBackground(
+    const std::string& background) {
+  if (background.empty())
+    return;
+
+  auto file_path = CustomBackgroundFileManager::Converter(GURL(background),
+                                                          file_manager_.get())
+                       .To<base::FilePath>();
+  file_manager_->RemoveImage(
+      file_path,
+      base::BindOnce(&BraveNewTabPageHandler::OnRemoveCustomImageBackground,
+                     weak_factory_.GetWeakPtr(), file_path));
 }
 
 void BraveNewTabPageHandler::UseBraveBackground(
@@ -223,11 +263,18 @@ void BraveNewTabPageHandler::OnSavedCustomImage(const base::FilePath& path) {
     return;
   }
 
-#if defined(OS_WIN)
-  auto file_name = base::SysWideToUTF8(path.BaseName().value());
-#else
-  auto file_name = std::string(path.BaseName().value().c_str());
-#endif
+  if (brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
+          NTPBackgroundPrefs(profile_->GetPrefs())
+              .GetCustomImageList()
+              .size() <=
+      0) {
+    // We can't save more images.
+    file_manager_->RemoveImage(path, base::DoNothing());
+    return;
+  }
+
+  auto file_name =
+      CustomBackgroundFileManager::Converter(path).To<std::string>();
   DCHECK(!file_name.empty());
 
   auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
@@ -235,16 +282,53 @@ void BraveNewTabPageHandler::OnSavedCustomImage(const base::FilePath& path) {
   background_pref.SetSelectedValue(file_name);
   background_pref.AddCustomImageToList(file_name);
   OnBackgroundUpdated();
+  OnCustomImageBackgroundsUpdated();
+}
+
+void BraveNewTabPageHandler::OnRemoveCustomImageBackground(
+    const base::FilePath& path,
+    bool success) {
+  if (!success) {
+    LOG(ERROR) << "Failed to remove custom image " << path;
+    return;
+  }
+
+  auto file_name =
+      CustomBackgroundFileManager::Converter(path).To<std::string>();
+  DCHECK(!file_name.empty());
+
+  auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
+  background_pref.RemoveCustomImageFromList(file_name);
+  if (background_pref.GetType() == NTPBackgroundPrefs::Type::kCustomImage) {
+    if (auto custom_images = background_pref.GetCustomImageList();
+        !custom_images.empty() &&
+        absl::get<std::string>(background_pref.GetSelectedValue()) ==
+            file_name) {
+      // Reset to the next candidate after we've removed the chosen one.
+      background_pref.SetSelectedValue(custom_images.front());
+    } else if (custom_images.empty()) {
+      // Reset to default when there's no available custom images.
+      background_pref.SetType(NTPBackgroundPrefs::Type::kBrave);
+      background_pref.SetSelectedValue({});
+      background_pref.SetShouldUseRandomValue(true);
+    }
+    OnBackgroundUpdated();
+  }
+
+  OnCustomImageBackgroundsUpdated();
 }
 
 void BraveNewTabPageHandler::OnBackgroundUpdated() {
   if (IsCustomBackgroundImageEnabled()) {
     auto value = brave_new_tab_page::mojom::CustomBackground::New();
-    // Add a timestamp to the url to prevent the browser from using a cached
-    // version when "Upload an image" is used multiple times.
-    std::string time_string = std::to_string(base::Time::Now().ToTimeT());
-    std::string local_string(ntp_background_images::kCustomWallpaperURL);
-    value->url = GURL(local_string + "?ts=" + time_string);
+
+    NTPBackgroundPrefs prefs(profile_->GetPrefs());
+    auto selected_value = prefs.GetSelectedValue();
+    DCHECK(absl::holds_alternative<std::string>(selected_value));
+    const std::string file_name = absl::get<std::string>(selected_value);
+    if (!file_name.empty())
+      value->url = CustomBackgroundFileManager::Converter(file_name).To<GURL>();
+    value->use_random_item = prefs.ShouldUseRandomValue();
     page_->OnBackgroundUpdated(
         brave_new_tab_page::mojom::Background::NewCustom(std::move(value)));
     return;
@@ -305,19 +389,44 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
       brave_new_tab_page::mojom::Background::NewBrave(std::move(value)));
 }
 
+void BraveNewTabPageHandler::OnCustomImageBackgroundsUpdated() {
+  std::vector<brave_new_tab_page::mojom::CustomBackgroundPtr> backgrounds;
+  for (const auto& name :
+       NTPBackgroundPrefs(profile_->GetPrefs()).GetCustomImageList()) {
+    auto value = brave_new_tab_page::mojom::CustomBackground::New();
+    value->url = CustomBackgroundFileManager::Converter(name).To<GURL>();
+    backgrounds.push_back(std::move(value));
+  }
+
+  page_->OnCustomImageBackgroundsUpdated(std::move(backgrounds));
+}
+
 void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
                                           int index,
                                           void* params) {
   profile_->set_last_selected_directory(path.DirName());
-
-  if (!file_manager_)
-    file_manager_ = std::make_unique<CustomBackgroundFileManager>(profile_);
 
   file_manager_->SaveImage(
       path, base::BindOnce(&BraveNewTabPageHandler::OnSavedCustomImage,
                            weak_factory_.GetWeakPtr()));
 
   select_file_dialog_ = nullptr;
+}
+
+void BraveNewTabPageHandler::MultiFilesSelected(
+    const std::vector<base::FilePath>& files,
+    void* params) {
+  NTPBackgroundPrefs prefs(profile_->GetPrefs());
+  auto available_image_count =
+      brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
+      prefs.GetCustomImageList().size();
+  for (const auto& path : files) {
+    if (available_image_count == 0)
+      break;
+
+    FileSelected(path, 0, params);
+    available_image_count--;
+  }
 }
 
 void BraveNewTabPageHandler::FileSelectionCanceled(void* params) {

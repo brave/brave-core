@@ -13,10 +13,21 @@ brave-news-cxx = { path = "../../components/brave_today/rust" }
 json-cxx = { path = "../../components/json/rs" }
 filecoin-cxx = { path = "../../components/filecoin/rs" }
 
+[patch.crates-io.link-cplusplus_v1]
+path = "../../../third_party/rust/link_cplusplus/v1/crate"
+package = "link-cplusplus"
+
+[patch.crates-io.cxx_v1]
+path = "../../../third_party/rust/cxx/v1/crate"
+package = "cxx"
+
 [lib]
 crate-type = [ "staticlib" ]
 name = "brave_rust"
 path = "lib.rs"
+
+[features]
+ios = ["adblock-ffi/ios"]
 
 [profile.dev]
 panic = "abort"

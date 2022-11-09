@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ml/data/vector_data.h"
 
 #include <map>
-#include <vector>
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 

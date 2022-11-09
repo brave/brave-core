@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -51,6 +52,12 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
  private:
   // brave_new_tab_page::mojom::PageHandler overrides:
   void ChooseLocalCustomBackground() override;
+  void UseCustomImageBackground(
+      const std::string& selected_background) override;
+  void GetCustomImageBackgrounds(
+      GetCustomImageBackgroundsCallback callback) override;
+  void RemoveCustomImageBackground(const std::string& background) override;
+
   void UseBraveBackground(const std::string& selected_background) override;
   void GetBraveBackgrounds(GetBraveBackgroundsCallback callback) override;
   void TryBraveSearchPromotion(const std::string& input,
@@ -63,11 +70,14 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
 
   // Observe NTPCustomBackgroundImagesService.
   void OnBackgroundUpdated();
+  void OnCustomImageBackgroundsUpdated();
 
   // SelectFileDialog::Listener overrides:
   void FileSelected(const base::FilePath& path,
                     int index,
                     void* params) override;
+  void MultiFilesSelected(const std::vector<base::FilePath>& files,
+                          void* params) override;
   void FileSelectionCanceled(void* params) override;
 
   // TemplateURLServiceObserver overrides:
@@ -77,6 +87,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   bool IsCustomBackgroundImageEnabled() const;
   bool IsColorBackgroundEnabled() const;
   void OnSavedCustomImage(const base::FilePath& path);
+  void OnRemoveCustomImageBackground(const base::FilePath& path, bool success);
 
   void OnSearchPromotionDismissed();
   void NotifySearchPromotionDisabledIfNeeded() const;

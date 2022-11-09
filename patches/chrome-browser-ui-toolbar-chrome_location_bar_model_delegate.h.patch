@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
-index b35ab3ad929823c79952fd5212875d933c0676e0..0f7bfdcf3e25a9ff58f41d10b12bd9074d599f73 100644
+index 9650d891c1572196cc57f5b5b694a9cbf2c83360..e6340b92e69876da29ea9ecc39b9182280715589 100644
 --- a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
 +++ b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
 @@ -64,6 +64,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {

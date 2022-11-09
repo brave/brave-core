@@ -6,7 +6,7 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 
 #include "brave/browser/widevine/widevine_utils.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"

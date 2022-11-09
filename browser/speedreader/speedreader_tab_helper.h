@@ -26,6 +26,9 @@ class WebContents;
 }  // namespace content
 
 namespace speedreader {
+using mojom::ContentStyle;
+using mojom::FontFamily;
+using mojom::FontSize;
 using mojom::Theme;
 
 namespace test {
@@ -97,6 +100,17 @@ class SpeedreaderTabHelper
   void SetTheme(Theme theme);
   Theme GetTheme();
 
+  void SetFontFamily(FontFamily font_family);
+  FontFamily GetFontFamily();
+
+  void SetFontSize(FontSize size);
+  FontSize GetFontSize() const;
+
+  void SetContentStyle(ContentStyle style);
+  ContentStyle GetContentStyle();
+
+  std::string GetCurrentSiteURL();
+
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);
@@ -129,6 +143,8 @@ class SpeedreaderTabHelper
   // Updates the distill state when the global speedreader state is changed.
   void OnPrefChanged();
 
+  void OnPropertyPrefChanged(const std::string& path);
+
   // Updates UI if the tab is visible.
   void UpdateButtonIfNeeded();
 
@@ -144,6 +160,9 @@ class SpeedreaderTabHelper
 
   // SpeedreaderResultDelegate:
   void OnDistillComplete() override;
+
+  void SetDocumentAttribute(const std::string& attribute,
+                            const std::string& value);
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 

@@ -16,9 +16,6 @@ namespace ads {
 class CatalogUrlRequestBuilder final : public UrlRequestBuilderInterface {
  public:
   mojom::UrlRequestInfoPtr Build() override;
-
- private:
-  GURL BuildUrl() const;
 };
 
 }  // namespace ads

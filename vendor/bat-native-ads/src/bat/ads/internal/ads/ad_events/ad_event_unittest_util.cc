@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/guid.h"
 #include "base/time/time.h"
@@ -113,7 +114,8 @@ void RecordAdEvents(const AdType& type,
 }
 
 void FireAdEvent(const AdEventInfo& ad_event) {
-  LogAdEvent(ad_event, [](const bool success) { CHECK(success); });
+  LogAdEvent(ad_event,
+             base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 void FireAdEvents(const AdEventInfo& ad_event, const int count) {

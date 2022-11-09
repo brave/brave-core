@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
-index a90de50b0243c2a669b53e6580c3bfd70320503b..a5bcdf2a4f8f6805e4d532732854b2315e6c7ceb 100644
+index 72f83840c5fe943ada4fd7e4a2c65c4112fcc734..cc8464aaf8f0d46e2f07b7d5c66ea450dc9fb40e 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
 @@ -58,6 +58,7 @@ class IdentityGetAuthTokenError;

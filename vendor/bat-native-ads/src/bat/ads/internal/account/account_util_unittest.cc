@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/account_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
@@ -14,7 +15,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -54,7 +55,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
       *confirmation);
 
@@ -66,12 +67,12 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   ResetRewards([](const bool success) {
     ASSERT_TRUE(success);
 
-    database::table::Transactions database_table;
-    database_table.GetAll(
+    const database::table::Transactions database_table;
+    database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
           ASSERT_TRUE(success);
           EXPECT_TRUE(transactions.empty());
-        });
+        }));
 
     const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
@@ -90,12 +91,12 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
   ResetRewards([](const bool success) {
     ASSERT_TRUE(success);
 
-    database::table::Transactions database_table;
-    database_table.GetAll(
+    const database::table::Transactions database_table;
+    database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
           ASSERT_TRUE(success);
           EXPECT_TRUE(transactions.empty());
-        });
+        }));
 
     const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();

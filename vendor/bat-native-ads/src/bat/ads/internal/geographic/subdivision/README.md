@@ -61,4 +61,17 @@ See [ISO_3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) for a list of assigne
 | WI  | Wisconsin  |
 | WY  | Wyoming  |
 
+### Canada
+
+| code  | subdivision  |
+|---|---|
+| AB  | Alberta  |
+| BC  | British Columbia  |
+| MB  | Manitoba  |
+| NB  | New Brunswick  |
+| NS  | Nova Scotia  |
+| ON  | Ontario  |
+| QC  | Quebec  |
+| SK  | Saskatchewan  |
+
 Please add to it!

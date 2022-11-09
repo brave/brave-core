@@ -29,7 +29,9 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
@@ -46,6 +48,15 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getKeyringService();
+        }
+
+        return null;
+    }
+
+    private BraveWalletP3a getBraveWalletP3A() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletP3A();
         }
 
         return null;
@@ -146,9 +157,13 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
 
     private void goToTheNextPage(String passwordInput) {
         KeyringService keyringService = getKeyringService();
+        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
         if (keyringService != null) {
             keyringService.createWallet(passwordInput, recoveryPhrases -> {
                 // Go to the next page after wallet creation is done
+                if (braveWalletP3A != null) {
+                    braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET);
+                }
                 Utils.setCryptoOnboarding(false);
                 mOnboardingViewModel.setPassword(passwordInput);
                 onNextPage.gotoNextPage(false);

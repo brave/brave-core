@@ -16,6 +16,7 @@ export type InitialData = {
   privateTabData: privateTabDataAPI.PrivateTabData
   wallpaperData?: NewTab.Wallpaper
   braveBackgrounds: NewTab.BraveBackground[]
+  customImageBackgrounds: NewTab.ImageBackground[]
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
   geminiSupported: boolean
@@ -27,6 +28,8 @@ export type InitialData = {
 
 export type PreInitialRewardsData = {
   rewardsEnabled: boolean
+  isUnsupportedRegion: boolean
+  declaredCountry: string
   enabledAds: boolean
   adsSupported: boolean
   needsBrowserUpgradeToServeAds: boolean
@@ -58,7 +61,8 @@ export async function getInitialData (): Promise<InitialData> {
       ftxSupported,
       binanceSupported,
       searchPromotionEnabled,
-      braveBackgrounds
+      braveBackgrounds,
+      customImageBackgrounds
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
@@ -101,7 +105,10 @@ export async function getInitialData (): Promise<InitialData> {
       }),
       getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled),
       getNTPBrowserAPI().pageHandler.getBraveBackgrounds().then(({ backgrounds }) => {
-        return backgrounds.map(background => { return { type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url } })
+        return backgrounds.map(background => ({ type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url }))
+      }),
+      getNTPBrowserAPI().pageHandler.getCustomImageBackgrounds().then(({ backgrounds }) => {
+        return backgrounds.map(background => ({ type: 'image', wallpaperImageUrl: background.url.url }))
       })
     ])
     console.timeStamp('Got all initial data.')
@@ -111,6 +118,7 @@ export async function getInitialData (): Promise<InitialData> {
       privateTabData,
       wallpaperData,
       braveBackgrounds,
+      customImageBackgrounds,
       braveRewardsSupported,
       braveTalkSupported,
       geminiSupported,
@@ -128,6 +136,8 @@ export async function getInitialData (): Promise<InitialData> {
 export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
   const [
     rewardsEnabled,
+    isUnsupportedRegion,
+    declaredCountry,
     enabledAds,
     adsSupported,
     adsData
@@ -135,16 +145,22 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.getRewardsEnabled(resolve)),
     new Promise<boolean>(
+      (resolve) => chrome.braveRewards.isUnsupportedRegion(resolve)),
+    new Promise<string>(
+      (resolve) => chrome.braveRewards.getDeclaredCountry(resolve)),
+    new Promise<boolean>(
       (resolve) => chrome.braveRewards.getAdsEnabled(resolve)),
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.getAdsSupported(resolve)),
     newTabAdsDataAPI.getNewTabAdsData()
-    ])
+  ])
 
   const needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
 
   return {
     rewardsEnabled,
+    isUnsupportedRegion,
+    declaredCountry,
     enabledAds,
     adsSupported,
     needsBrowserUpgradeToServeAds

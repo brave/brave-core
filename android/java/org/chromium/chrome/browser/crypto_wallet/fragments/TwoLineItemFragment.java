@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
-import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemDataSource;
+import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
 
 import java.util.List;
 
@@ -25,18 +26,19 @@ import java.util.List;
  * sub-title.
  */
 public class TwoLineItemFragment extends Fragment {
-    private List<TwoLineItemDataSource> items;
+    private List<TwoLineItem> items;
     private TwoLineItemRecyclerViewAdapter adapter;
 
-    public TwoLineItemFragment(List<TwoLineItemDataSource> items) {
+    public TwoLineItemFragment(List<TwoLineItem> items) {
         this.items = items;
     }
 
-    public static TwoLineItemFragment newInstance(List<TwoLineItemDataSource> items) {
+    public static TwoLineItemFragment newInstance(List<TwoLineItem> items) {
         TwoLineItemFragment fragment = new TwoLineItemFragment(items);
         return fragment;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +46,24 @@ public class TwoLineItemFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view;
         adapter = new TwoLineItemRecyclerViewAdapter(items);
         recyclerView.setAdapter(adapter);
+        recyclerView.setOnTouchListener((v, event) -> {
+            int action = event.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    // Disallow NestedScrollView to intercept touch events.
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    // Allow NestedScrollView to intercept touch events.
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    break;
+            }
+
+            // Handle RecyclerView touch events.
+            v.onTouchEvent(event);
+            return true;
+        });
         return view;
     }
 

@@ -63,7 +63,7 @@ where
     let mut dom: Sink =
         parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
-    extract_dom(&mut dom, &url, None, None, &HashMap::new())
+    extract_dom(&mut dom, &url, None, None, None, None, None, &HashMap::new())
 }
 
 #[derive(Default, Debug)]
@@ -221,6 +221,9 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     url: &Url,
     min_out_length: Option<i32>,
     theme: Option<String>,
+    font_family: Option<String>,
+    font_size: Option<String>,
+    content_style: Option<String>,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let handle = dom.document_node.clone();
@@ -283,8 +286,21 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         content = title_blob + &content;
     }
 
-    if let Some(theme) = theme {
-        content = format!("<html data-theme=\"{}\">", theme) + &content + "</html>";
+    if theme.is_some() || font_family.is_some() || font_size.is_some() || content_style.is_some() {
+        let mut header: String = String::from("<html");
+        if let Some(theme) = theme {
+            header = [header, format!(" data-theme=\"{}\"", theme)].concat();
+        }
+        if let Some(font_family) = font_family {
+            header = [header, format!(" data-font-family=\"{}\"", font_family)].concat();
+        }
+        if let Some(font_size) = font_size {
+            header = [header, format!(" data-font-size=\"{}\"", font_size)].concat();
+        }
+        if let Some(content_style) = content_style {
+            header = [header, format!(" data-content-style=\"{}\"", content_style)].concat();
+        }
+        content = [header, ">".to_string(), content, "</html>".to_string()].concat();
     }
 
     Ok(Product { meta, content })

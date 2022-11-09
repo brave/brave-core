@@ -26,7 +26,6 @@ import {
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import { useSelector } from 'react-redux'
-import Amount from '../../../utils/amount'
 import {
   useAssetManagement,
   useLib,
@@ -34,26 +33,27 @@ import {
 } from '../../../common/hooks'
 
 interface Props {
-  contractAddress: string | undefined
+  contractAddress: string
   onHideForm: () => void
+  onNftAssetFound: (contractAddress: string) => void
+  onChangeContractAddress: (contractAddress: string) => void
 }
 
 export const AddCustomTokenForm = (props: Props) => {
   const {
-    contractAddress,
-    onHideForm
+    contractAddress: tokenContractAddress,
+    onHideForm,
+    onNftAssetFound,
+    onChangeContractAddress
   } = props
 
   // state
-  const [showTokenIDRequired, setShowTokenIDRequired] = React.useState<boolean>(false)
   const [showAdvancedFields, setShowAdvancedFields] = React.useState<boolean>(false)
   const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
 
   // Form States
   const [tokenName, setTokenName] = React.useState<string>('')
-  const [tokenID, setTokenID] = React.useState<string>('')
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
-  const [tokenContractAddress, setTokenContractAddress] = React.useState<string>(contractAddress || '')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
   const [coingeckoID, setCoingeckoID] = React.useState<string>('')
   const [iconURL, setIconURL] = React.useState<string>('')
@@ -64,6 +64,7 @@ export const AddCustomTokenForm = (props: Props) => {
   const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
   const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
   const addUserAssetError = useSelector(({ wallet }: { wallet: WalletState }) => wallet.addUserAssetError)
+  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // more state
   const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
@@ -73,7 +74,7 @@ export const AddCustomTokenForm = (props: Props) => {
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, customAssetsNetwork || selectedNetwork)
   const {
     onAddCustomAsset
   } = useAssetManagement()
@@ -84,13 +85,6 @@ export const AddCustomTokenForm = (props: Props) => {
     setTokenName(event.target.value)
   }, [])
 
-  const handleTokenIDChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setHasError(false)
-    setShowTokenIDRequired(false)
-    setTokenDecimals('0')
-    setTokenID(event.target.value)
-  }, [])
-
   const handleTokenSymbolChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setHasError(false)
     setTokenSymbol(event.target.value)
@@ -98,8 +92,8 @@ export const AddCustomTokenForm = (props: Props) => {
 
   const handleTokenAddressChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setHasError(false)
-    setTokenContractAddress(event.target.value)
-  }, [])
+    onChangeContractAddress(event.target.value)
+  }, [onChangeContractAddress])
 
   const handleTokenDecimalsChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setHasError(false)
@@ -119,40 +113,36 @@ export const AddCustomTokenForm = (props: Props) => {
   // methods
   const resetInputFields = React.useCallback(() => {
     setTokenName('')
-    setTokenContractAddress('')
+    onChangeContractAddress('')
     setTokenSymbol('')
     setTokenDecimals('')
-    setTokenID('')
     setCoingeckoID('')
     setIconURL('')
-  }, [])
+  }, [onChangeContractAddress])
 
   const onClickAddCustomToken = React.useCallback(() => {
     if (!customAssetsNetwork) return
 
     if (foundTokenInfoByContractAddress) {
       if (foundTokenInfoByContractAddress.isErc721) {
-        let token = foundTokenInfoByContractAddress
-        token.tokenId = tokenID ? new Amount(tokenID).toHex() : ''
-        token.logo = token.logo ? token.logo : iconURL
-        token.chainId = customAssetsNetwork.chainId
-        onAddCustomAsset(token)
-        return
+        onNftAssetFound(foundTokenInfoByContractAddress.contractAddress)
       }
       let foundToken = foundTokenInfoByContractAddress
       foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
       foundToken.logo = foundToken.logo ? foundToken.logo : iconURL
       foundToken.chainId = customAssetsNetwork.chainId
       onAddCustomAsset(foundToken)
+      onHideForm()
     } else {
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
         decimals: Number(tokenDecimals),
-        isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
-        isErc721: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID,
+        isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
+        isErc721: false,
+        isNft: false,
         name: tokenName,
         symbol: tokenSymbol,
-        tokenId: tokenID ? new Amount(tokenID).toHex() : '',
+        tokenId: '',
         logo: iconURL,
         visible: true,
         coingeckoId: coingeckoID,
@@ -162,13 +152,13 @@ export const AddCustomTokenForm = (props: Props) => {
       onAddCustomAsset(newToken)
     }
     onHideForm()
-  }, [tokenContractAddress, foundTokenInfoByContractAddress, customAssetsNetwork, iconURL, tokenDecimals, tokenName, tokenSymbol, tokenID, coingeckoID, onAddCustomAsset])
+  }, [tokenContractAddress, foundTokenInfoByContractAddress, customAssetsNetwork, iconURL, tokenDecimals, tokenName, tokenSymbol, coingeckoID, onAddCustomAsset, onHideForm, onNftAssetFound])
 
   const onToggleShowAdvancedFields = () => setShowAdvancedFields(prev => !prev)
 
   const onHideNetworkDropDown = React.useCallback(() => {
     if (showNetworkDropDown) {
-    setShowNetworkDropDown(false)
+      setShowNetworkDropDown(false)
     }
   }, [showNetworkDropDown])
 
@@ -188,19 +178,18 @@ export const AddCustomTokenForm = (props: Props) => {
 
   // memos
   const isDecimalDisabled = React.useMemo((): boolean => {
-    return foundTokenInfoByContractAddress?.isErc721 ?? tokenID !== ''
-  }, [foundTokenInfoByContractAddress, tokenID])
+    return foundTokenInfoByContractAddress?.isErc721 || false
+  }, [foundTokenInfoByContractAddress])
 
   const buttonDisabled = React.useMemo((): boolean => {
     return tokenName === '' ||
       tokenSymbol === '' ||
-      (tokenDecimals === '0' && tokenID === '') ||
       tokenDecimals === '' ||
       tokenContractAddress === '' ||
       !customAssetsNetwork ||
       (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
         !tokenContractAddress.toLowerCase().startsWith('0x'))
-  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress, customAssetsNetwork])
+  }, [tokenName, tokenSymbol, tokenDecimals, tokenContractAddress, customAssetsNetwork])
 
   // effects
   React.useEffect(() => {
@@ -213,16 +202,13 @@ export const AddCustomTokenForm = (props: Props) => {
       setTokenName(foundTokenInfoByContractAddress.name)
       setTokenSymbol(foundTokenInfoByContractAddress.symbol)
       setTokenDecimals(foundTokenInfoByContractAddress.decimals.toString())
+      const network = networks.find(network => network.chainId.toLowerCase() === foundTokenInfoByContractAddress.chainId.toLowerCase())
+      if (network) setCustomAssetsNetwork(network)
     }
     if (foundTokenInfoByContractAddress?.isErc721) {
-      if (tokenID === '') {
-        setShowTokenIDRequired(true)
-        setShowAdvancedFields(true)
-      }
-    } else {
-      setShowTokenIDRequired(false)
+      onNftAssetFound(foundTokenInfoByContractAddress.contractAddress)
     }
-  }, [foundTokenInfoByContractAddress, tokenID, tokenContractAddress, onFindTokenInfoByContractAddress, resetInputFields])
+  }, [foundTokenInfoByContractAddress, tokenContractAddress, onFindTokenInfoByContractAddress, resetInputFields, networks, onNftAssetFound])
 
   return (
     <FormWrapper onClick={onHideNetworkDropDown}>
@@ -288,20 +274,6 @@ export const AddCustomTokenForm = (props: Props) => {
             value={coingeckoID}
             onChange={handleCoingeckoIDChanged}
           />
-          {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
-            <>
-              <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
-              <Input
-                value={tokenID}
-                onChange={handleTokenIDChanged}
-                type='number'
-                disabled={Number(tokenDecimals) > 0}
-              />
-            </>
-          }
-          {showTokenIDRequired &&
-            <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
-          }
         </>
       }
       {hasError &&

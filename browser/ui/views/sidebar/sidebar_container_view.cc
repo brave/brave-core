@@ -127,6 +127,24 @@ void SidebarContainerView::Init() {
   UpdateToolbarButtonVisibility();
 }
 
+void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
+  DCHECK(initialized_);
+
+  if (sidebar_on_left_ == sidebar_on_left)
+    return;
+
+  sidebar_on_left_ = sidebar_on_left;
+
+  DCHECK(sidebar_control_view_);
+  sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
+  GetEventDetectWidget()->SetSidebarOnLeft(sidebar_on_left_);
+
+  DCHECK(side_panel_);
+  side_panel_->SetHorizontalAlignment(
+      sidebar_on_left ? BraveSidePanel::kHorizontalAlignLeft
+                      : BraveSidePanel::kHorizontalAlignRight);
+}
+
 void SidebarContainerView::SetSidebarShowOption(
     sidebar::SidebarService::ShowSidebarOption show_option) {
   UpdateSidebarVisibility(show_option);
@@ -183,10 +201,18 @@ void SidebarContainerView::Layout() {
 
   const int control_view_preferred_width =
       sidebar_control_view_->GetPreferredSize().width();
-  sidebar_control_view_->SetBounds(0, 0, control_view_preferred_width,
-                                   height());
+
+  int control_view_x = 0;
+  int side_panel_x = control_view_x + control_view_preferred_width;
+  if (!sidebar_on_left_) {
+    control_view_x = width() - control_view_preferred_width;
+    side_panel_x = 0;
+  }
+
+  sidebar_control_view_->SetBounds(control_view_x, 0,
+                                   control_view_preferred_width, height());
   if (side_panel_->GetVisible()) {
-    side_panel_->SetBounds(control_view_preferred_width, 0,
+    side_panel_->SetBounds(side_panel_x, 0,
                            side_panel_->GetPreferredSize().width(), height());
   }
 }
@@ -391,7 +417,7 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
     if (!item.open_in_panel) {
       continue;
     }
-    if (entry->id() == sidebar::SidePanelIdFromSideBarItem(item)) {
+    if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
       auto* controller = browser_->sidebar_controller();
       controller->ActivateItemAt(side_bar_index);
@@ -408,7 +434,7 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
     if (!item.open_in_panel) {
       continue;
     }
-    if (entry->id() == sidebar::SidePanelIdFromSideBarItem(item)) {
+    if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
       auto* controller = browser_->sidebar_controller();
       if (controller->IsActiveIndex(side_bar_index)) {

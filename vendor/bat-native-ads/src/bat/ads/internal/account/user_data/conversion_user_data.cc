@@ -13,7 +13,7 @@ namespace ads::user_data {
 
 void GetConversion(const std::string& creative_instance_id,
                    const ConfirmationType& confirmation_type,
-                   ConversionCallback callback) {
+                   const ConversionCallback& callback) {
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
 

@@ -26,8 +26,6 @@ constexpr char kCreativeInstanceIdId[] = "75d4cbac-b661-4126-9ccb-7bbb6ee56ef3";
 
 class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsPromotedContentAdIntegrationTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 

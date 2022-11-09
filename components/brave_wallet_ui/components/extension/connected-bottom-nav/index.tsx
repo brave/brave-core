@@ -29,7 +29,7 @@ export interface Props {
   onNavigate: (path: PanelTypes) => void
   isSwapDisabled: boolean
   isBuyDisabled: boolean
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
 }
 
 function ConnectedBottomNav (props: Props) {
@@ -47,7 +47,11 @@ function ConnectedBottomNav (props: Props) {
           position='right'
           verticalPosition='above'
           maxWidth='150px'
-          text={getLocale('braveWalletBuyNotSupportedTooltip').replace('$1', selectedNetwork.chainName)}
+          text={
+            selectedNetwork
+              ? getLocale('braveWalletBuyNotSupportedTooltip').replace('$1', selectedNetwork.chainName)
+              : ''
+          }
         >
           <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
             <NavButtonText disabled={isBuyDisabled}>{getLocale('braveWalletBuy')}</NavButtonText>
@@ -67,7 +71,11 @@ function ConnectedBottomNav (props: Props) {
           isVisible={isSwapDisabled}
           position='left'
           verticalPosition='above'
-          text={getLocale('braveWalletSwapNotSupportedTooltip').replace('$1', selectedNetwork.chainName)}
+          text={
+            selectedNetwork
+              ? getLocale('braveWalletSwapNotSupportedTooltip').replace('$1', selectedNetwork.chainName)
+              : ''
+          }
           maxWidth='150px'
         >
           <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>

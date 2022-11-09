@@ -7,10 +7,14 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_non_client_frame_view_mac.h"
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
@@ -18,8 +22,23 @@
 BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
     BrowserFrame* frame, BrowserView* browser_view)
     : BrowserNonClientFrameViewMac(frame, browser_view) {
-  frame_graphic_ = std::make_unique<BraveWindowFrameGraphic>(
-      browser_view->browser()->profile());
+  auto* browser = browser_view->browser();
+  frame_graphic_ =
+      std::make_unique<BraveWindowFrameGraphic>(browser->profile());
+
+  if (tabs::features::ShouldShowVerticalTabs(browser)) {
+    auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+    show_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsEnabled, prefs,
+        base::BindRepeating(
+            &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility,
+            base::Unretained(this)));
+    show_title_bar_on_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
+        base::BindRepeating(
+            &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility,
+            base::Unretained(this)));
+  }
 }
 
 BraveBrowserNonClientFrameViewMac::~BraveBrowserNonClientFrameViewMac() = default;
@@ -41,10 +60,33 @@ void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
-  if (tabs::features::ShouldShowVerticalTabs()) {
+  if (ShouldShowWindowTitleForVerticalTabs()) {
     // Set minimum top inset to show caption buttons on frame.
-    return 18;
+    return 30;
   }
 
   return BrowserNonClientFrameViewMac::GetTopInset(restored);
+}
+
+bool BraveBrowserNonClientFrameViewMac::ShouldShowWindowTitleForVerticalTabs()
+    const {
+  return tabs::features::ShouldShowWindowTitleForVerticalTabs(
+      browser_view()->browser());
+}
+
+void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility() {
+  if (!browser_view()->browser()->is_type_normal())
+    return;
+
+  frame()->SetWindowTitleVisibility(ShouldShowWindowTitleForVerticalTabs());
+}
+
+int BraveBrowserNonClientFrameViewMac::NonClientHitTest(
+    const gfx::Point& point) {
+  if (auto res = brave::NonClientHitTest(browser_view(), point);
+      res != HTNOWHERE) {
+    return res;
+  }
+
+  return BrowserNonClientFrameViewMac::NonClientHitTest(point);
 }

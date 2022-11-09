@@ -14,7 +14,7 @@ import useSwap from './swap'
 // Redux
 import { Provider } from 'react-redux'
 import { combineReducers, createStore } from 'redux'
-import { createWalletReducer } from '../reducers/wallet_reducer'
+import { createWalletReducer } from '../slices/wallet.slice'
 import { createPageReducer } from '../../page/reducers/page_reducer'
 
 // Mocks
@@ -89,6 +89,7 @@ describe('useSwap hook', () => {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isNft: false,
       logo: 'chrome://erc-token-images/usdc.png',
       name: 'USD Coin',
       symbol: 'USDC',
@@ -455,7 +456,7 @@ describe('useSwap hook', () => {
             ...mockAccount,
             nativeBalanceRegistry: {
               [BraveWallet.MAINNET_CHAIN_ID]: '1000000000000000000', // 1 ETH
-              [BraveWallet.ROPSTEN_CHAIN_ID]: '1000000000000000000' // 1 ETH
+              [BraveWallet.GOERLI_CHAIN_ID]: '1000000000000000000' // 1 ETH
             },
             tokenBalanceRegistry: {
               [USDC.contractAddress.toLowerCase()]: '20000000000000000000' // 20 BAT

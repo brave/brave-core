@@ -49,6 +49,10 @@
     Global defaults
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_MANAGED" desc="A description to explain the settings managed by organization.">
+    Settings managed by organization
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS" desc="A link that redirects to Adblock lists.">
     Filter lists
   </message>

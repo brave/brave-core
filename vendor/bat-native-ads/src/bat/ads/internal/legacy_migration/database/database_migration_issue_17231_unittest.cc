@@ -19,8 +19,6 @@ namespace ads {
 
 class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
  protected:
-  BatAdsDatabaseMigrationIssue17231Test() = default;
-
   void SetUpMocks() override {
     CopyFileFromTestPathToTempPath("database_issue_17231.sqlite",
                                    kDatabaseFilename);
@@ -29,7 +27,7 @@ class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
 
 TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   // Arrange
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
 
   // Act
   database_table.GetAll(
@@ -62,7 +60,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
 
 TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   // Arrange
-  database::table::Conversions database_table;
+  const database::table::Conversions database_table;
 
   AdvanceClockTo(TimeFromString("28 July 2021", /*is_local*/ false));
 

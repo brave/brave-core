@@ -383,18 +383,17 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadUnexpectedReturn) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(SwapServiceUnitTest, GetSwapConfigurationRopsten) {
-  std::string swap_api_url = "https://ropsten.api.0x.org/";
+TEST_F(SwapServiceUnitTest, GetSwapConfigurationGoerli) {
+  std::string swap_api_url = "https://goerli.api.0x.org/";
   std::string buy_token_percantage_fee = "0.00875";
   std::string fee_recipient = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
   std::string affiliate_address;
-  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kRopstenChainId));
+  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kGoerliChainId));
   EXPECT_EQ(buy_token_percantage_fee,
-            SwapService::GetFee(mojom::kRopstenChainId));
-  EXPECT_EQ(fee_recipient,
-            SwapService::GetFeeRecipient(mojom::kRopstenChainId));
+            SwapService::GetFee(mojom::kGoerliChainId));
+  EXPECT_EQ(fee_recipient, SwapService::GetFeeRecipient(mojom::kGoerliChainId));
   EXPECT_EQ(affiliate_address,
-            SwapService::GetAffiliateAddress(mojom::kRopstenChainId));
+            SwapService::GetAffiliateAddress(mojom::kGoerliChainId));
 }
 
 TEST_F(SwapServiceUnitTest, GetSwapConfigurationMainnet) {
@@ -420,19 +419,20 @@ TEST_F(SwapServiceUnitTest, GetSwapConfigurationOtherNet) {
   std::string buy_token_percantage_fee;
   std::string fee_recipient;
   std::string affiliate_address;
-  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kRinkebyChainId));
-  EXPECT_EQ(buy_token_percantage_fee,
-            SwapService::GetFee(mojom::kRinkebyChainId));
-  EXPECT_EQ(fee_recipient,
-            SwapService::GetFeeRecipient(mojom::kRinkebyChainId));
-  EXPECT_EQ(affiliate_address,
-            SwapService::GetAffiliateAddress(mojom::kRinkebyChainId));
+  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL("0x3"));
+  EXPECT_EQ(buy_token_percantage_fee, SwapService::GetFee("0x3"));
+  EXPECT_EQ(fee_recipient, SwapService::GetFeeRecipient("0x3"));
+  EXPECT_EQ(affiliate_address, SwapService::GetAffiliateAddress("0x3"));
+  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL("0x4"));
+  EXPECT_EQ(buy_token_percantage_fee, SwapService::GetFee("0x4"));
+  EXPECT_EQ(fee_recipient, SwapService::GetFeeRecipient("0x4"));
+  EXPECT_EQ(affiliate_address, SwapService::GetAffiliateAddress("0x4"));
 }
 
 TEST_F(SwapServiceUnitTest, IsSwapSupported) {
   const std::vector<std::string> supported_chain_ids({
       mojom::kMainnetChainId,
-      mojom::kRopstenChainId,
+      mojom::kGoerliChainId,
       mojom::kPolygonMainnetChainId,
       mojom::kPolygonMainnetChainId,
       mojom::kBinanceSmartChainMainnetChainId,
@@ -447,19 +447,36 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
     EXPECT_TRUE(IsSwapSupported(chain_id));
   }
 
-  EXPECT_FALSE(IsSwapSupported(mojom::kRinkebyChainId));
+  EXPECT_FALSE(IsSwapSupported("0x4"));
+  EXPECT_FALSE(IsSwapSupported("0x3"));
   EXPECT_FALSE(IsSwapSupported(""));
   EXPECT_FALSE(IsSwapSupported("invalid chain_id"));
 }
 TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
-  auto url = swap_service_->GetJupiterQuoteURL(GetCannedJupiterQuoteParams(),
-                                               mojom::kSolanaMainnet);
+  auto params = GetCannedJupiterQuoteParams();
+  auto url =
+      swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
+
+  // OK: output mint has Jupiter fees
   ASSERT_EQ(url,
             "https://quote-api.jup.ag/v1/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
             "feeBps=85&"
+            "slippage=0.500000&"
+            "onlyDirectRoutes=true");
+
+  params->output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
+  url =
+      swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
+
+  // OK: output mint does not have Jupiter fees
+  ASSERT_EQ(url,
+            "https://quote-api.jup.ag/v1/quote?"
+            "inputMint=So11111111111111111111111111111111111111112&"
+            "outputMint=SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y&"
+            "amount=10000&"
             "slippage=0.500000&"
             "onlyDirectRoutes=true");
 }

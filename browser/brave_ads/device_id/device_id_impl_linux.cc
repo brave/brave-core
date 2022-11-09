@@ -5,16 +5,13 @@
 
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 
-// clang-format off
-// NOLINTBEGIN(sort-order)
-#include <sys/socket.h>  // NOLINT - has to be included before ifaddrs.h
+#include <sys/socket.h>
+
 #include <ifaddrs.h>
 #include <net/if.h>
 #include <stddef.h>
 #include <string.h>
 #include <sys/ioctl.h>
-// NOLINTEND(sort-order)
-// clang-format on
 
 #include <map>
 #include <string>

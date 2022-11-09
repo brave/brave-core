@@ -106,6 +106,13 @@ void LedgerClientIOS::SetUint64State(const std::string& name, uint64_t value) {
 uint64_t LedgerClientIOS::GetUint64State(const std::string& name) const {
   return [bridge_ getUint64State:name];
 }
+void LedgerClientIOS::SetValueState(const std::string& name,
+                                    base::Value value) {
+  [bridge_ setValueState:name value:std::move(value)];
+}
+base::Value LedgerClientIOS::GetValueState(const std::string& name) const {
+  return [bridge_ getValueState:name];
+}
 void LedgerClientIOS::ClearState(const std::string& name) {
   [bridge_ clearState:name];
 }

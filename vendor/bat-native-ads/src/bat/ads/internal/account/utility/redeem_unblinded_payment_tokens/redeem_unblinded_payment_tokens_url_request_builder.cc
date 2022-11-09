@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
 #include <utility>
+#include <vector>
 
 #include "absl/types/optional.h"
 #include "base/check.h"
@@ -22,13 +23,77 @@
 
 namespace ads {
 
+namespace {
+
+std::vector<std::string> BuildHeaders() {
+  std::vector<std::string> headers;
+
+  const std::string via_header = server::BuildViaHeader();
+  headers.push_back(via_header);
+
+  const std::string accept_header = "accept: application/json";
+  headers.push_back(accept_header);
+
+  return headers;
+}
+
+base::Value::Dict CreateCredential(
+    const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
+    const std::string& payload) {
+  DCHECK(!payload.empty());
+
+  base::Value::Dict credential;
+
+  absl::optional<privacy::cbr::VerificationKey> verification_key =
+      unblinded_payment_token.value.DeriveVerificationKey();
+  if (!verification_key) {
+    NOTREACHED();
+    return credential;
+  }
+
+  const absl::optional<privacy::cbr::VerificationSignature>
+      verification_signature = verification_key->Sign(payload);
+  if (!verification_signature) {
+    NOTREACHED();
+    return credential;
+  }
+
+  const absl::optional<std::string> verification_signature_base64 =
+      verification_signature->EncodeBase64();
+  if (!verification_signature_base64) {
+    NOTREACHED();
+    return credential;
+  }
+
+  const absl::optional<privacy::cbr::TokenPreimage> token_preimage =
+      unblinded_payment_token.value.GetTokenPreimage();
+  if (!token_preimage) {
+    NOTREACHED();
+    return credential;
+  }
+
+  const absl::optional<std::string> token_preimage_base64 =
+      token_preimage->EncodeBase64();
+  if (!token_preimage_base64) {
+    NOTREACHED();
+    return credential;
+  }
+
+  credential.Set("signature", *verification_signature_base64);
+  credential.Set("t", *token_preimage_base64);
+
+  return credential;
+}
+
+}  // namespace
+
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
-        const WalletInfo& wallet,
-        const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+        WalletInfo wallet,
+        privacy::UnblindedPaymentTokenList unblinded_payment_tokens,
         const base::Value::Dict& user_data)
-    : wallet_(wallet),
-      unblinded_payment_tokens_(unblinded_payment_tokens),
+    : wallet_(std::move(wallet)),
+      unblinded_payment_tokens_(std::move(unblinded_payment_tokens)),
       user_data_(user_data.Clone()) {
   DCHECK(wallet_.IsValid());
   DCHECK(!unblinded_payment_tokens_.empty());
@@ -59,19 +124,6 @@ GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
       "%s/v2/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
       wallet_.id.c_str());
   return GURL(spec);
-}
-
-std::vector<std::string>
-RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildHeaders() const {
-  std::vector<std::string> headers;
-
-  const std::string via_header = server::BuildViaHeader();
-  headers.push_back(via_header);
-
-  const std::string accept_header = "accept: application/json";
-  headers.push_back(accept_header);
-
-  return headers;
 }
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
@@ -131,55 +183,6 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
   }
 
   return payment_request_dto;
-}
-
-base::Value::Dict
-RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
-    const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
-    const std::string& payload) const {
-  DCHECK(!payload.empty());
-
-  base::Value::Dict credential;
-
-  absl::optional<privacy::cbr::VerificationKey> verification_key =
-      unblinded_payment_token.value.DeriveVerificationKey();
-  if (!verification_key) {
-    NOTREACHED();
-    return credential;
-  }
-
-  const absl::optional<privacy::cbr::VerificationSignature>
-      verification_signature = verification_key->Sign(payload);
-  if (!verification_signature) {
-    NOTREACHED();
-    return credential;
-  }
-
-  const absl::optional<std::string> verification_signature_base64 =
-      verification_signature->EncodeBase64();
-  if (!verification_signature_base64) {
-    NOTREACHED();
-    return credential;
-  }
-
-  const absl::optional<privacy::cbr::TokenPreimage> token_preimage =
-      unblinded_payment_token.value.GetTokenPreimage();
-  if (!token_preimage) {
-    NOTREACHED();
-    return credential;
-  }
-
-  const absl::optional<std::string> token_preimage_base64 =
-      token_preimage->EncodeBase64();
-  if (!token_preimage_base64) {
-    NOTREACHED();
-    return credential;
-  }
-
-  credential.Set("signature", *verification_signature_base64);
-  credential.Set("t", *token_preimage_base64);
-
-  return credential;
 }
 
 }  // namespace ads

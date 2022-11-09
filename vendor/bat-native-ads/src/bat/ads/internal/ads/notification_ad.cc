@@ -31,7 +31,7 @@
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 
@@ -169,7 +169,7 @@ void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
 
-  epsilon_greedy_bandit_processor_->Process(
+  processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
   CovariateManager::GetInstance()->SetNotificationAdEvent(
@@ -185,7 +185,7 @@ void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kDismissed);
 
-  epsilon_greedy_bandit_processor_->Process(
+  processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
   CovariateManager::GetInstance()->SetNotificationAdEvent(
@@ -196,7 +196,7 @@ void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
 void NotificationAd::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
   NotificationAdTimedOut(ad.placement_id);
 
-  epsilon_greedy_bandit_processor_->Process(
+  processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
   CovariateManager::GetInstance()->SetNotificationAdEvent(

@@ -20,8 +20,6 @@ namespace ads::inline_content_ads {
 
 class BatAdsEligibleInlineContentAdsV2Test : public UnitTestBase {
  protected:
-  BatAdsEligibleInlineContentAdsV2Test() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

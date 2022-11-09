@@ -25,12 +25,18 @@ class NotificationAdControlButtonsView : public views::View {
 
   explicit NotificationAdControlButtonsView(
       NotificationAdView* notification_ad_view);
-  ~NotificationAdControlButtonsView() override;
 
   NotificationAdControlButtonsView(const NotificationAdControlButtonsView&) =
       delete;
   NotificationAdControlButtonsView& operator=(
       const NotificationAdControlButtonsView&) = delete;
+
+  NotificationAdControlButtonsView(
+      NotificationAdControlButtonsView&& other) noexcept = delete;
+  NotificationAdControlButtonsView& operator=(
+      NotificationAdControlButtonsView&& other) noexcept = delete;
+
+  ~NotificationAdControlButtonsView() override;
 
   // views::View:
   void OnThemeChanged() override;

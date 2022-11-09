@@ -3,13 +3,10 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +30,10 @@ import org.chromium.brave_wallet.mojom.SwitchChainRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType;
 import org.chromium.chrome.browser.crypto_wallet.adapters.FragmentNavigationItemAdapter;
-import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemDataSource;
+import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
+import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemText;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -58,21 +55,21 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private AddChainRequest mAddChainRequest;
     private AddSwitchRequestProcessListener mAddSwitchRequestProcessListener;
     private boolean hasMultipleAddSwitchChainRequest;
-    private List<TwoLineItemDataSource> networks;
-    private List<TwoLineItemDataSource> details;
+    private List<TwoLineItem> networks;
+    private List<TwoLineItem> details;
     private ImageView mFavicon;
     private TextView mSiteTv;
     private FaviconHelper mFaviconHelper;
     private DefaultFaviconHelper mDefaultFaviconHelper;
 
-    public AddSwitchChainNetworkFragment(BraveWalletDAppsActivity.ActivityType panelType) {
+    public AddSwitchChainNetworkFragment(ActivityType panelType) {
         mPanelType = panelType;
         mTabTitles = new ArrayList<>();
         networks = new ArrayList<>();
         details = new ArrayList<>();
     }
 
-    public AddSwitchChainNetworkFragment(BraveWalletDAppsActivity.ActivityType panelType,
+    public AddSwitchChainNetworkFragment(ActivityType panelType,
             AddSwitchRequestProcessListener addSwitchRequestProcessListener) {
         this(panelType);
         mAddSwitchRequestProcessListener = addSwitchRequestProcessListener;
@@ -260,28 +257,26 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     private void addDetailsTabInfo(NetworkInfo networkInfo) {
         networks.clear();
-        networks.add(new TwoLineItemDataSource(
+        networks.add(new TwoLineItemText(
                 getString(R.string.brave_wallet_allow_add_network_name), networkInfo.chainName));
-        networks.add(
-                new TwoLineItemDataSource(getString(R.string.brave_wallet_allow_add_network_url),
-                        getActiveRpcEndpointUrl(networkInfo)));
+        networks.add(new TwoLineItemText(getString(R.string.brave_wallet_allow_add_network_url),
+                getActiveRpcEndpointUrl(networkInfo)));
     }
 
     private void addNetworkTabInfo(NetworkInfo networkInfo) {
         details.clear();
-        details.add(new TwoLineItemDataSource(
+        details.add(new TwoLineItemText(
                 getString(R.string.brave_wallet_allow_add_network_name), networkInfo.chainName));
-        details.add(
-                new TwoLineItemDataSource(getString(R.string.brave_wallet_allow_add_network_url),
-                        getActiveRpcEndpointUrl(networkInfo)));
-        details.add(new TwoLineItemDataSource(
+        details.add(new TwoLineItemText(getString(R.string.brave_wallet_allow_add_network_url),
+                getActiveRpcEndpointUrl(networkInfo)));
+        details.add(new TwoLineItemText(
                 getString(R.string.brave_wallet_allow_add_network_chain_id), networkInfo.chainId));
-        details.add(new TwoLineItemDataSource(
+        details.add(new TwoLineItemText(
                 getString(R.string.brave_wallet_allow_add_network_currency_symbol),
                 networkInfo.symbol));
-        details.add(new TwoLineItemDataSource(getString(R.string.wallet_add_custom_asset_decimals),
+        details.add(new TwoLineItemText(getString(R.string.wallet_add_custom_asset_decimals),
                 String.valueOf(networkInfo.decimals)));
-        details.add(new TwoLineItemDataSource(
+        details.add(new TwoLineItemText(
                 getString(R.string.brave_wallet_add_network_block_explorer_urls),
                 networkInfo.blockExplorerUrls.length > 0 ? networkInfo.blockExplorerUrls[0] : ""));
     }

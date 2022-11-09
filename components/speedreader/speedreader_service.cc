@@ -5,10 +5,14 @@
 
 #include "brave/components/speedreader/speedreader_service.h"
 
+#include <string>
+
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/string_util.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/common/speedreader_panel.mojom-shared.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -97,6 +101,12 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);
   registry->RegisterIntegerPref(kSpeedreaderPrefTheme,
                                 static_cast<int>(Theme::kNone));
+  registry->RegisterIntegerPref(kSpeedreaderPrefFontSize,
+                                static_cast<int>(FontSize::k100));
+  registry->RegisterIntegerPref(kSpeedreaderPrefFontFamily,
+                                static_cast<int>(FontFamily::kSans));
+  registry->RegisterIntegerPref(kSpeedreaderPrefContentStyle,
+                                static_cast<int>(ContentStyle::kDefault));
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
@@ -159,6 +169,58 @@ std::string SpeedreaderService::GetThemeName() const {
       return "sepia";
     case Theme::kDark:
       return "dark";
+  }
+}
+
+void SpeedreaderService::SetFontSize(FontSize size) {
+  prefs_->SetInteger(kSpeedreaderPrefFontSize, static_cast<int>(size));
+}
+
+FontSize SpeedreaderService::GetFontSize() const {
+  return static_cast<FontSize>(prefs_->GetInteger(kSpeedreaderPrefFontSize));
+}
+
+std::string SpeedreaderService::GetFontSizeName() const {
+  return std::to_string(static_cast<int>(GetFontSize()));
+}
+
+void SpeedreaderService::SetFontFamily(FontFamily font) {
+  prefs_->SetInteger(kSpeedreaderPrefFontFamily, static_cast<int>(font));
+}
+
+FontFamily SpeedreaderService::GetFontFamily() const {
+  return static_cast<FontFamily>(
+      prefs_->GetInteger(kSpeedreaderPrefFontFamily));
+}
+
+std::string SpeedreaderService::GetFontFamilyName() const {
+  switch (GetFontFamily()) {
+    case FontFamily::kSans:
+      return "sans";
+    case FontFamily::kSerif:
+      return "serif";
+    case FontFamily::kMono:
+      return "mono";
+    case FontFamily::kDyslexic:
+      return "dyslexic";
+  }
+}
+
+void SpeedreaderService::SetContentStyle(ContentStyle style) {
+  prefs_->SetInteger(kSpeedreaderPrefContentStyle, static_cast<int>(style));
+}
+
+ContentStyle SpeedreaderService::GetContentStyle() const {
+  return static_cast<ContentStyle>(
+      prefs_->GetInteger(kSpeedreaderPrefContentStyle));
+}
+
+std::string SpeedreaderService::GetContentStyleName() const {
+  switch (GetContentStyle()) {
+    case ContentStyle::kDefault:
+      return base::EmptyString();
+    case ContentStyle::kTextOnly:
+      return "text-only";
   }
 }
 

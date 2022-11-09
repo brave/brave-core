@@ -15,14 +15,12 @@ declare_args() {
 }
 
 if (cargo_profile == "") {
-  if (is_official_build) {
-    cargo_profile = "release"
-  } else {
+  if (is_debug) {
     cargo_profile = "dev"
+  } else {
+    cargo_profile = "release"
   }
 }
-
-unexport_list_path = "$root_build_dir/brave_rust/rust_lib.unexports"
 
 rustc_target = ""
 rustc_toolchain = ""
@@ -47,13 +45,20 @@ if (use_lld) {
 
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
 # Supposedly this bug was fixed, but it's still happening for us.
-too_many_personality_profiles_workaround = is_apple && use_lld && !is_component_build
+too_many_personality_profiles_workaround =
+    is_apple && use_lld && !is_component_build
 
 enable_rust_lto = too_many_personality_profiles_workaround
 
 if (enable_rust_lto) {
   default_rustflags += [ "-Cembed-bitcode=yes" ]
   default_rustflags += [ "-Clto" ]
+} else {
+  default_rustflags += [ "-Cembed-bitcode=no" ]
+}
+
+if (is_official_build) {
+  default_rustflags += [ "-Ccodegen-units=1" ]
 }
 
 if (is_debug) {
@@ -85,6 +90,8 @@ if (is_win) {
     rustc_target = "i686-pc-windows-msvc"
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-pc-windows-msvc"
+  } else if (current_cpu == "arm64") {
+    rustc_target = "aarch64-pc-windows-msvc"
   }
 } else if (is_mac) {
   if (current_cpu == "x64") {
@@ -95,10 +102,12 @@ if (is_win) {
 } else if (is_linux) {
   if (current_cpu == "x64") {
     rustc_target = "x86_64-unknown-linux-gnu"
-    if (use_sysroot) {
-      default_rustflags += [ "-C link-arg=--sysroot=$target_sysroot" ]
-      default_rustflags += [ "-C link-arg=-Wl,-rpath=\$ORIGIN" ]
-    }
+  } else if (current_cpu == "arm64") {
+    rustc_target = "aarch64-unknown-linux-gnu"
+  }
+  if (use_sysroot) {
+    default_rustflags += [ "-C link-arg=--sysroot=$target_sysroot" ]
+    default_rustflags += [ "-C link-arg=-Wl,-rpath=\$ORIGIN" ]
   }
 } else if (is_android) {
   if (current_cpu == "arm") {

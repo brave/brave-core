@@ -89,6 +89,9 @@
   <message name="IDS_REWARDS_WIDGET_CLAIM_TOKENS" desc="">
     Claim Tokens
   </message>
+  <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
+    Continue
+  </message>
   <message name="IDS_REWARDS_WIDGET_EARNING" desc="">
     Earning
   </message>
@@ -118,6 +121,12 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_SETTINGS" desc="">
     Rewards settings
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_HEADER" desc="">
+    Select your country
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT" desc="">
+    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT" desc="">
     You’re earning tokens for viewing this sponsored image.
@@ -324,6 +333,12 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS" desc="">
     Brave Rewards
   </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_CLOSE" desc="">
+    Close
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_CONTINUE" desc="">
+    Continue
+  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS" desc="">
     <ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph> or <ph name="LEARN_LINK_BEGIN">$3</ph>learn more<ph name="LEARN_LINK_END">$4</ph> for details.
   </message>
@@ -333,6 +348,36 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
     Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
   </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER" desc="">
+    Something went wrong
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER_DISABLED" desc="">
+    Brave Rewards not available
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT" desc="">
+    Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DECLARE_COUNTRY" desc="">
+    Unfortunately, there was an error while trying to set your country. Please try again.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DISABLED" desc="">
+    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_HEADER" desc="">
+    Select your country
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_HEADER" desc="">
+    Thank you!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT" desc="">
+    Your Brave Rewards region has been set to <ph name="COUNTRY">$1<ex>United States</ex></ph>.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
+    Select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT_DECLARE_COUNTRY" desc="">
+    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
+  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">
     Maybe Later
   </message>
@@ -341,6 +386,12 @@
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT" desc="">
     Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SAVE" desc="">
+    Save
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY" desc="">
+    Select Country
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
     How often do you want to see ads?
@@ -451,6 +502,23 @@
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE" desc="">
     <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.
+  </message>
+
+  <!-- Rewards unsupported region notice -->
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER" desc="">
+    Sorry, Brave Rewards is not available
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER" desc="">
+    Unfortunately, it looks like you’re in a region where Brave Rewards is not available.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE" desc="">
+    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1" desc="">
+    Don’t worry.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2" desc="">
+    You can still browse privately!
   </message>
 
 </grit-part>

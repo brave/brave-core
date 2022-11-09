@@ -78,6 +78,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.Validations;
@@ -586,7 +587,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             if (error != ProviderError.SUCCESS) {
                                 return;
                             }
-                            populateBalance(balance, from);
+                            populateBalance(balance, from, 0);
                         });
             } else if (mSelectedNetwork.coin == CoinType.SOL) {
                 mJsonRpcService.getSolanaBalance(
@@ -595,7 +596,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             if (error != ProviderError.SUCCESS) {
                                 return;
                             }
-                            populateBalance(String.valueOf(balance), from);
+                            populateBalance(String.valueOf(balance), from, 0);
                         });
             }
         } else if (blockchainToken.isErc721) {
@@ -606,7 +607,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         if (error != ProviderError.SUCCESS) {
                             return;
                         }
-                        populateBalance(balance, from);
+                        populateBalance(balance, from, 0);
                     });
         } else if (mSelectedNetwork.coin == CoinType.SOL
                 && !TextUtils.isEmpty(blockchainToken.contractAddress)) {
@@ -614,7 +615,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mJsonRpcService.getSplTokenAccountBalance(address, blockchainToken.contractAddress,
                     mSelectedNetwork.chainId,
                     (amount, decimals, uiAmountString, solanaProvideError, error_message) -> {
-                        populateBalance(amount, from);
+                        populateBalance(amount, from, decimals);
                     });
         } else {
             mJsonRpcService.getErc20TokenBalance(blockchainToken.contractAddress, address,
@@ -623,7 +624,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         if (error != ProviderError.SUCCESS) {
                             return;
                         }
-                        populateBalance(balance, from);
+                        populateBalance(balance, from, 0);
                     });
         }
     }
@@ -645,7 +646,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         updateBalanceMaybeSwap(getCurrentSelectedAccountAddr());
     }
 
-    private void populateBalance(String balance, boolean from) {
+    private void populateBalance(String balance, boolean from, int responseDecimals) {
         BlockchainToken token = from ? mCurrentBlockchainToken : mCurrentSwapToBlockchainToken;
         TextView textView = from ? mFromBalanceText : mToBalanceText;
 
@@ -653,7 +654,10 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         // some old calls are returning ETH result when SOL is selected so do nothing
         try {
-            int decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
+            int decimals = responseDecimals;
+            if (decimals == 0) {
+                decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
+            }
             int tokenCoin = token != null ? token.coin : CoinType.ETH;
             fromToBalance = Utils.getBalanceForCoinType(tokenCoin, decimals, balance);
         } catch (NumberFormatException e) {
@@ -1134,17 +1138,18 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (barcode == null) {
             return;
         }
-        final String barcodeValue = barcode.displayValue;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (null != mCameraSourcePreview) {
-                    mCameraSourcePreview.stop();
-                }
-                RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
-                relativeLayout.setVisibility(View.GONE);
-                mSendToAddrText.setText(barcodeValue);
+        String barcodeValue = barcode.displayValue;
+        if (mSelectedNetwork.coin == CoinType.ETH) {
+            barcodeValue = AddressUtils.sanitizeEthAddress(barcodeValue);
+        }
+        final String finalBarcodeValue = barcodeValue;
+        runOnUiThread(() -> {
+            if (null != mCameraSourcePreview) {
+                mCameraSourcePreview.stop();
             }
+            RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
+            relativeLayout.setVisibility(View.GONE);
+            mSendToAddrText.setText(finalBarcodeValue);
         });
     }
 
@@ -1420,7 +1425,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mCurrentSwapToBlockchainToken = blockchainToken;
 
         BlockchainToken token = buySend ? mCurrentBlockchainToken : mCurrentSwapToBlockchainToken;
-        // Replace USDC and DAI contract addresses for Ropsten network
+        // Replace USDC and DAI contract addresses for Goerli network
         token.contractAddress = Utils.getContractAddress(
                 mSelectedNetwork.chainId, token.symbol, token.contractAddress);
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();

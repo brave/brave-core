@@ -6,6 +6,8 @@
 import("//third_party/skia/modules/svg/svg.gni")
 
 source_set("svg") {
+  cflags_cc = [ "-Wno-extra-semi" ]
+
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
@@ -35,12 +37,12 @@ source_set("svg") {
     "//third_party/skia/src/codec/SkWebpCodec.cpp",
     "//third_party/skia/src/ports/SkImageGenerator_skia.cpp",
     "//third_party/skia/src/utils/SkParsePath.cpp",
-    "//third_party/skia/src/xml/skDOM.cpp",
-    "//third_party/skia/src/xml/skDOM.h",
-    "//third_party/skia/src/xml/skXMLParser.cpp",
-    "//third_party/skia/src/xml/skXMLParser.h",
-    "//third_party/skia/src/xml/skXMLWriter.cpp",
-    "//third_party/skia/src/xml/skXMLWriter.h",
+    "//third_party/skia/src/xml/SkDOM.cpp",
+    "//third_party/skia/src/xml/SkDOM.h",
+    "//third_party/skia/src/xml/SkXMLParser.cpp",
+    "//third_party/skia/src/xml/SkXMLParser.h",
+    "//third_party/skia/src/xml/SkXMLWriter.cpp",
+    "//third_party/skia/src/xml/SkXMLWriter.h",
   ]
 
   sources += skia_svg_public

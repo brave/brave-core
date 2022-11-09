@@ -21,6 +21,7 @@ import {
 
 import { getLocale } from '../../../common/locale'
 import { Publishers } from '../../api/brave_news'
+import { BraveNewsContext } from '../../components/default/braveToday/customize/Context'
 
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
@@ -41,6 +42,7 @@ const BraveTodaySettings = React.lazy(() => import('./settings/braveToday'))
 
 // Types
 import { NewTabActions } from '../../constants/new_tab_types'
+import { loadTimeData } from '../../../common/loadTimeData'
 
 export interface Props {
   newTabData: NewTab.State
@@ -66,7 +68,9 @@ export interface Props {
   toggleShowFTX: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
-  useCustomBackgroundImage: () => void
+  chooseNewCustomImageBackground: () => void
+  setCustomImageBackground: (selectedBackground: string) => void
+  removeCustomImageBackground: (background: string) => void
   setBraveBackground: (selectedBackground: string) => void
   setColorBackground: (color: string, useRandomColor: boolean) => void
   onEnableRewards: () => void
@@ -108,6 +112,7 @@ interface State {
 }
 
 export default class Settings extends React.PureComponent<Props, State> {
+  static contextType: typeof BraveNewsContext = BraveNewsContext
   settingsMenuRef: React.RefObject<any>
   allTabTypes: TabType[]
   allTabTypesWithoutBackground: TabType[]
@@ -137,7 +142,11 @@ export default class Settings extends React.PureComponent<Props, State> {
     if (
       this.settingsMenuRef &&
       this.settingsMenuRef.current &&
-      !this.settingsMenuRef.current.contains(event.target)
+      !this.settingsMenuRef.current.contains(event.target) &&
+      // Don't close the settings dialog for a click outside if we're in the
+      // Brave News modal - the user expects closing that one to bring them back
+      // to this one.
+      !this.context.customizePage
     ) {
       this.props.onClose()
     }
@@ -184,10 +193,6 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.props.toggleShowBackgroundImage()
   }
 
-  useCustomBackgroundImage = () => {
-    this.props.useCustomBackgroundImage()
-  }
-
   setBraveBackground = (selectedBackground: string) => {
     this.props.setBraveBackground(selectedBackground)
   }
@@ -197,6 +202,11 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   setActiveTab (activeTab: TabType) {
+    if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveToday) {
+      this.context.setCustomizePage('news')
+      return
+    }
+
     this.setState({ activeTab })
   }
 
@@ -354,13 +364,16 @@ export default class Settings extends React.PureComponent<Props, State> {
                     newTabData={this.props.newTabData}
                     toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                     toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-                    useCustomBackgroundImage={this.useCustomBackgroundImage}
+                    chooseNewCustomImageBackground={this.props.chooseNewCustomImageBackground}
+                    setCustomImageBackground={this.props.setCustomImageBackground}
+                    removeCustomImageBackground={this.props.removeCustomImageBackground}
                     setBraveBackground={this.setBraveBackground}
                     setColorBackground={this.setColorBackground}
                     brandedWallpaperOptIn={brandedWallpaperOptIn}
                     showBackgroundImage={showBackgroundImage}
                     featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
                     onEnableRewards={onEnableRewards}
+                    braveRewardsSupported={braveRewardsSupported}
                   />
                 ) : null
               }

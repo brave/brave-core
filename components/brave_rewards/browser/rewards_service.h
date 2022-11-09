@@ -120,9 +120,6 @@ using GetEventLogsCallback =
 using GetRewardsWalletCallback =
     base::OnceCallback<void(ledger::mojom::RewardsWalletPtr wallet)>;
 
-using GetRewardsWalletPassphraseCallback =
-    base::OnceCallback<void(const std::string&)>;
-
 using OnTipCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
 class RewardsService : public KeyedService {
@@ -135,13 +132,25 @@ class RewardsService : public KeyedService {
   virtual bool IsInitialized() = 0;
 
   using CreateRewardsWalletCallback =
-      base::OnceCallback<void(ledger::mojom::Result)>;
+      base::OnceCallback<void(ledger::mojom::CreateRewardsWalletResult)>;
 
   // Creates a Rewards wallet for the current profile. If a Rewards wallet has
   // already been created, then the existing wallet information will be
   // returned. Ads and AC will be enabled if those prefs have not been
   // previously set.
-  virtual void CreateRewardsWallet(CreateRewardsWalletCallback callback) = 0;
+  virtual void CreateRewardsWallet(const std::string& country,
+                                   CreateRewardsWalletCallback callback) = 0;
+
+  // Returns the country code associated with the user's Rewards profile.
+  virtual std::string GetCountryCode() const = 0;
+
+  using GetAvailableCountriesCallback =
+      base::OnceCallback<void(std::vector<std::string>)>;
+
+  // Asynchronously returns a vector of ISO country codes that the user can
+  // select when creating a Rewards ID.
+  virtual void GetAvailableCountries(
+      GetAvailableCountriesCallback callback) const = 0;
 
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetActivityInfoList(const uint32_t start,
@@ -163,11 +172,9 @@ class RewardsService : public KeyedService {
   virtual void ClaimPromotion(
       const std::string& promotion_id,
       AttestPromotionCallback callback) = 0;
-  virtual void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      AttestPromotionCallback callback) = 0;
-  virtual void RecoverWallet(const std::string& passPhrase) = 0;
+  virtual void AttestPromotion(const std::string& promotion_id,
+                               const std::string& solution,
+                               AttestPromotionCallback callback) = 0;
   virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
@@ -305,7 +312,7 @@ class RewardsService : public KeyedService {
 
   virtual std::string GetExternalWalletType() const = 0;
 
-  virtual const std::vector<std::string> GetExternalWalletProviders() const = 0;
+  virtual std::vector<std::string> GetExternalWalletProviders() const = 0;
 
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
@@ -345,11 +352,6 @@ class RewardsService : public KeyedService {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual void StartProcess(base::OnceClosure callback) = 0;
-
-  virtual void GetRewardsWalletPassphrase(
-      GetRewardsWalletPassphraseCallback callback) = 0;
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 

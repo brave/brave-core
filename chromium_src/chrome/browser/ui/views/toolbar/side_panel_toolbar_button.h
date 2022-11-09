@@ -6,8 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_SIDE_PANEL_TOOLBAR_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_SIDE_PANEL_TOOLBAR_BUTTON_H_
 
-#include <memory>
-
+#include "components/prefs/pref_member.h"
 #include "ui/base/models/simple_menu_model.h"
 
 #define SidePanelToolbarButton SidePanelToolbarButton_ChromiumImpl
@@ -23,6 +22,11 @@ class SidePanelToolbarButton : public SidePanelToolbarButton_ChromiumImpl {
   SidePanelToolbarButton(const SidePanelToolbarButton&) = delete;
   SidePanelToolbarButton& operator=(const SidePanelToolbarButton&) = delete;
   ~SidePanelToolbarButton() override;
+
+ private:
+  void UpdateButtonImage();
+
+  BooleanPrefMember sidebar_alignment_;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_SIDE_PANEL_TOOLBAR_BUTTON_H_

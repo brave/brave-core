@@ -110,7 +110,7 @@ export const ConfirmSolanaTransactionPanel = ({
   [])
 
   // render
-  if (!transactionDetails || !transactionInfo) {
+  if (!transactionDetails || !transactionInfo || !transactionsNetwork) {
     return <StyledWrapper>
       <Skeleton width={'100%'} height={'100%'} enableAnimation />
     </StyledWrapper>

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/importer_data_types.h b/chrome/common/importer/importer_data_types.h
-index 7af3d7b83c5a7f9c61bbc55219989575595c1708..e3fc3d7942ce3af9d1fecaea5f22d43e88623948 100644
+index 1347b4ed67fd93726d4b22702603704c358aac60..5bbb9074ec70da791629d10feaf8f438fa268bf2 100644
 --- a/chrome/common/importer/importer_data_types.h
 +++ b/chrome/common/importer/importer_data_types.h
 @@ -30,7 +30,7 @@ enum ImportItem {

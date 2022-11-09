@@ -7,6 +7,7 @@
 #include <string>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -16,7 +17,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -85,6 +86,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"siteSettingsSolanaAsk", IDS_SETTINGS_SITE_SETTINGS_SOLANA_ASK},
     {"siteSettingsSolanaBlock", IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK},
     {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+    {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
+    {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
+    {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
+    {"siteSettingsShieldsDown", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN},
+    {"siteSettingsShieldsDescription",
+     IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION},
     {"appearanceSettingsBraveTheme",
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
     {"appearanceSettingsShowBookmarksButton",
@@ -163,8 +170,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"reduceLanguageControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL},
     {"reduceLanguageDesc", IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM},
-    {"httpsEverywhereControlLabel",
-     IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL},
     {"noScriptControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL},
     {"showStatsBlockedBadgeLabel",
@@ -270,6 +275,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveNewTabNewTabPageShows", IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS},
     {"braveNewTabNewTabCustomizeWidgets",
      IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS},
+  // Pin shortcut page
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
+    {"canPinShortcut", IDS_SETTINGS_CAN_PIN_SHORTCUT},
+    {"pinShortcut", IDS_SETTINGS_PIN_SHORTCUT},
+    {"shortcutPinned", IDS_SETTINGS_SHORTCUT_PINNED},
+#endif
     // Rewards page
     {"braveRewards", IDS_SETTINGS_BRAVE_REWARDS_TITLE},
     {"braveRewardsDisabledLabel", IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL},
@@ -354,6 +365,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ensOffchainLookupTitle", IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE},
     {"resolveIPFSURLDesc", IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC},
     {"ipfsPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC},
+    {"ipfsNftPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC},
     {"ipfsChangeGatewayButtonLabel",
      IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL},
     {"changeIpfsGatewayDialogTitle",
@@ -532,6 +544,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_BRAVE_ADBLOCK_SHOW_FULL_LISTS_BUTTON_LABEL},
     {"adblockFilterListsInputURLPlaceholder",
      IDS_BRAVE_ADBLOCK_CUSTOM_FILTER_LISTS_INPUT_PLACEHOLDER},
+    {"adblockContentFiltersLabel", IDS_BRAVE_ADBLOCK_CONTENT_FILTERS},
+    {"adblockFilterListsInputPlaceHolder",
+     IDS_BRAVE_ADBLOCK_FILTER_LISTS_INPUT_PLACEHOLDER},
     {"adblockFilterListsTableUrlHeader",
      IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_URL_HEADER},
     {"adblockFilterListsTableUpdatedHeader",

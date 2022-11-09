@@ -14,7 +14,7 @@ namespace {
 constexpr char kFeatureName[] = "AdRewards";
 constexpr char kFieldTrialParameterNextPaymentDay[] = "next_payment_day";
 
-constexpr int kDefaultNextPaymentDay = 5;
+constexpr int kDefaultNextPaymentDay = 7;
 
 }  // namespace
 

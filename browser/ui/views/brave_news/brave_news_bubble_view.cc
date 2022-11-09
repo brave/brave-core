@@ -11,16 +11,28 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/referrer.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/gfx/font.h"
+#include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/text_constants.h"
@@ -33,10 +45,19 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/flex_layout_types.h"
+#include "ui/views/layout/layout_types.h"
 #include "ui/views/style/typography.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
+
+namespace {
+constexpr SkColor kSubtitleColorLight = SkColorSetRGB(134, 142, 150);
+constexpr SkColor kSubtitleColorDark = SkColorSetRGB(134, 142, 150);
+
+constexpr SkColor kBackgroundColorLight = SkColorSetRGB(248, 249, 250);
+constexpr SkColor kBackgroundColorDark = SkColorSetRGB(30, 32, 41);
+}  // namespace
 
 // static
 base::WeakPtr<views::Widget> BraveNewsBubbleView::Show(
@@ -47,95 +68,6 @@ base::WeakPtr<views::Widget> BraveNewsBubbleView::Show(
   widget->Show();
   return widget->GetWeakPtr();
 }
-
-class BraveNewsFeedRow : public views::View,
-                         public BraveNewsTabHelper::PageFeedsObserver {
- public:
-  METADATA_HEADER(BraveNewsFeedRow);
-
-  explicit BraveNewsFeedRow(BraveNewsTabHelper::FeedDetails details,
-                            content::WebContents* contents)
-      : feed_details_(details), contents_(contents) {
-    DCHECK(contents_);
-    tab_helper_ = BraveNewsTabHelper::FromWebContents(contents);
-    tab_helper_observation_.Observe(tab_helper_);
-
-    auto* const layout =
-        SetLayoutManager(std::make_unique<views::FlexLayout>());
-    layout->SetOrientation(views::LayoutOrientation::kHorizontal);
-    layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
-    layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
-
-    auto* title = AddChildView(
-        std::make_unique<views::Label>(base::UTF8ToUTF16(details.title)));
-    title->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
-    title->SetProperty(
-        views::kFlexBehaviorKey,
-        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
-                                 views::MaximumFlexSizeRule::kScaleToMaximum));
-    title->SetMultiLine(false);
-    title->SetMaximumWidthSingleLine(150);
-    title->SetElideBehavior(gfx::ELIDE_TAIL);
-
-    auto* spacer = AddChildView(std::make_unique<views::View>());
-    spacer->SetPreferredSize(gfx::Size(8, 0));
-    spacer->SetProperty(
-        views::kFlexBehaviorKey,
-        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
-                                 views::MaximumFlexSizeRule::kUnbounded));
-
-    subscribe_button_ = AddChildView(std::make_unique<views::MdTextButton>(
-        base::BindRepeating(&BraveNewsFeedRow::OnPressed,
-                            base::Unretained(this)),
-        u""));
-
-    Update();
-  }
-
-  ~BraveNewsFeedRow() override = default;
-
-  void Update() {
-    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-    auto is_subscribed = tab_helper_->IsSubscribed(feed_details_);
-    subscribe_button_->SetText(l10n_util::GetStringUTF16(
-        loading_        ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING
-        : is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
-                        : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
-    subscribe_button_->SetProminent(!is_subscribed && !loading_);
-  }
-
-  void OnAvailableFeedsChanged(
-      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override {
-    loading_ = false;
-    Update();
-  }
-
-  void OnPressed() {
-    // Don't queue multiple toggles.
-    if (loading_)
-      return;
-
-    tab_helper_->ToggleSubscription(feed_details_);
-    loading_ = true;
-    Update();
-  }
-
- private:
-  bool loading_ = false;
-  raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;
-
-  BraveNewsTabHelper::FeedDetails feed_details_;
-  raw_ptr<content::WebContents> contents_;
-  raw_ptr<BraveNewsTabHelper> tab_helper_;
-
-  base::ScopedObservation<BraveNewsTabHelper,
-                          BraveNewsTabHelper::PageFeedsObserver>
-      tab_helper_observation_{this};
-};
-
-BEGIN_METADATA(BraveNewsFeedRow, views::View)
-END_METADATA
 
 BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                          content::WebContents* contents)
@@ -149,43 +81,76 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   SetAccessibleRole(ax::mojom::Role::kDialog);
   set_adjust_if_offscreen(true);
 
+  SetProperty(views::kInternalPaddingKey, gfx::Insets::VH(16, 16));
+
+  auto title_font_list = views::Label::GetDefaultFontList().DeriveWithWeight(
+      gfx::Font::Weight::SEMIBOLD);
+  title_font_list =
+      title_font_list.DeriveWithSizeDelta(14 - title_font_list.GetFontSize());
+  views::Label::CustomFont custom_font{title_font_list};
   title_label_ = AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER),
-      views::style::CONTEXT_DIALOG_TITLE));
+      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_TITLE), custom_font));
+  title_label_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 
-  views::FlexLayout* const layout =
-      SetLayoutManager(std::make_unique<views::FlexLayout>());
-  layout->SetOrientation(views::LayoutOrientation::kVertical);
-  layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
-  layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
-  layout->SetCollapseMargins(true);
+  auto subtitle_font_list = views::Label::GetDefaultFontList().DeriveWithWeight(
+      gfx::Font::Weight::NORMAL);
+  subtitle_font_list = subtitle_font_list.DeriveWithSizeDelta(
+      12 - subtitle_font_list.GetFontSize());
+  views::Label::CustomFont subtitle_custom_font{subtitle_font_list};
 
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-  for (const auto& feed_item : tab_helper->GetAvailableFeeds()) {
-    auto* child =
-        AddChildView(std::make_unique<BraveNewsFeedRow>(feed_item, contents));
-    child->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 0, 0));
-  }
+  subtitle_label_ = AddChildView(std::make_unique<views::Label>(
+      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_SUBTITLE),
+      subtitle_custom_font));
+  subtitle_label_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+  subtitle_label_->SetProperty(views::kMarginsKey,
+                               gfx::Insets::TLBR(0, 0, 16, 0));
 
-  auto* dismiss_button = AddChildView(std::make_unique<views::MdTextButton>(
-      base::BindRepeating(&BraveNewsBubbleView::DismissForever,
-                          base::Unretained(this)),
-      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER)));
-  dismiss_button->SetProperty(views::kMarginsKey,
-                              gfx::Insets::TLBR(10, 0, 0, 0));
-  dismiss_button->SetProperty(
+  feeds_container_ =
+      AddChildView(std::make_unique<BraveNewsFeedsContainerView>(contents));
+
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kVertical)
+      .SetMainAxisAlignment(views::LayoutAlignment::kStart)
+      .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
+      .SetCollapseMargins(true);
+
+  auto* manage_feeds_button =
+      AddChildView(std::make_unique<views::MdTextButton>(
+          base::BindRepeating(&BraveNewsBubbleView::OpenManageFeeds,
+                              base::Unretained(this)),
+          l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS)));
+  manage_feeds_button->SetKind(views::MdTextButton::Kind::kTertiary);
+  manage_feeds_button->SetProperty(views::kMarginsKey,
+                                   gfx::Insets::TLBR(10, 0, 0, 0));
+  manage_feeds_button->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                views::MaximumFlexSizeRule::kPreferred));
+  manage_feeds_button->SetProperty(views::kCrossAxisAlignmentKey,
+                                   views::LayoutAlignment::kEnd);
+  manage_feeds_button->SetIcon(&kBraveNewsArrowRightIcon);
+  manage_feeds_button->SetHorizontalAlignment(
+      gfx::HorizontalAlignment::ALIGN_RIGHT);
 }
 
 BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 
-void BraveNewsBubbleView::DismissForever() {
-  GetWidget()->Hide();
-  auto* profile = Profile::FromBrowserContext(contents_->GetBrowserContext());
-  profile->GetPrefs()->SetBoolean(brave_news::prefs::kShouldShowToolbarButton,
-                                  false);
+void BraveNewsBubbleView::OpenManageFeeds() {
+  auto* browser = chrome::FindBrowserWithWebContents(contents_);
+  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveToday"),
+                    content::Referrer(),
+                    WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                    ui::PAGE_TRANSITION_LINK, false});
+}
+
+void BraveNewsBubbleView::OnThemeChanged() {
+  views::BubbleDialogDelegateView::OnThemeChanged();
+
+  auto is_dark = dark_mode::GetActiveBraveDarkModeType() ==
+                 dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
+  set_color(is_dark ? kBackgroundColorDark : kBackgroundColorLight);
+  subtitle_label_->SetEnabledColor(is_dark ? kSubtitleColorDark
+                                           : kSubtitleColorLight);
 }
 
 BEGIN_METADATA(BraveNewsBubbleView, views::BubbleDialogDelegateView)

@@ -8,10 +8,11 @@
 
 #include "third_party/skia/include/core/SkColor.h"
 
-// TODO(simonhong): Move all below colors to brave_color_mixer.cc.
-// Originally this colors were defined in BraveThemeProperties but
-// they are used from mixers also. When color fetching from theme
-// provider is deprecated, only mixer will use these colors.
+// Although most of colors are only used at brave_color_mixer.cc,
+// test also needs some colors. So, defined all here.
+constexpr SkColor kPrivateColorForTest = SkColorSetRGB(0xFF, 0x00, 0x00);
+constexpr SkColor kLightColorForTest = SkColorSetRGB(0xFF, 0xFF, 0xFF);
+constexpr SkColor kDarkColorForTest = SkColorSetRGB(0x00, 0x00, 0x00);
 constexpr SkColor kLightToolbar = SkColorSetRGB(0xf3, 0xf3, 0xf3);
 constexpr SkColor kLightFrame = SkColorSetRGB(0xd5, 0xd9, 0xdc);
 constexpr SkColor kLightToolbarIcon = SkColorSetRGB(0x42, 0x42, 0x42);

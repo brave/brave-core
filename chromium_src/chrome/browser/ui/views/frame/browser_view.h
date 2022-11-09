@@ -9,6 +9,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_search/side_search_browser_controller.h"
 
@@ -28,7 +29,15 @@
 #define GetTabStripVisible virtual GetTabStripVisible
 #define BrowserViewLayout BraveBrowserViewLayout
 
+#if BUILDFLAG(IS_WIN)
+#define GetSupportsTitle virtual GetSupportsTitle
+#endif
+
 #include "src/chrome/browser/ui/views/frame/browser_view.h"
+
+#if BUILDFLAG(IS_WIN)
+#undef GetSupportsTitle
+#endif
 
 #undef BrowserViewLayout
 #undef GetTabStripVisible

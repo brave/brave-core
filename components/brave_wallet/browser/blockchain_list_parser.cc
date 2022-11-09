@@ -99,6 +99,8 @@ bool ParseTokenList(const std::string& json,
     else
       blockchain_token->is_erc721 = false;
 
+    blockchain_token->is_nft = blockchain_token->is_erc721;
+
     if (!ParseResultFromDict(blockchain_token_value, "symbol",
                              &blockchain_token->symbol)) {
       continue;

@@ -1,12 +1,19 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 import {
   BraveWallet,
-  DefaultCurrencies,
   WalletRoutes,
   WalletAccountType
 } from '../../../constants/types'
+
+// utils
 import { getLocale } from '../../../../common/locale'
+import { getBalance } from '../../../utils/balance-utils'
 
 // Styled Components
 import {
@@ -15,13 +22,9 @@ import {
 } from './style'
 
 import { PortfolioAssetItem } from '../../desktop'
-import { useBalance } from '../../../common/hooks'
-
+import { getAssetIdKey } from '../../../utils/asset-utils'
 export interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
   userAssetList: BraveWallet.BlockchainToken[]
-  defaultCurrencies: DefaultCurrencies
-  networkList: BraveWallet.NetworkInfo[]
   selectedAccount: WalletAccountType
   onAddAsset: () => void
 }
@@ -29,14 +32,9 @@ export interface Props {
 const AssetsPanel = (props: Props) => {
   const {
     userAssetList,
-    spotPrices,
-    defaultCurrencies,
     selectedAccount,
-    networkList,
     onAddAsset
   } = props
-
-  const getBalance = useBalance(networkList)
 
   const onClickAsset = (symbol: string) => () => {
     const url = `brave://wallet${WalletRoutes.Portfolio}/${symbol}`
@@ -56,13 +54,10 @@ const AssetsPanel = (props: Props) => {
       </AddAssetButton>
       {userAssetList?.map((asset) =>
         <PortfolioAssetItem
-          spotPrices={spotPrices}
-          defaultCurrencies={defaultCurrencies}
           action={onClickAsset(asset.symbol)}
-          key={asset.contractAddress}
+          key={getAssetIdKey(asset)}
           assetBalance={getBalance(selectedAccount, asset)}
           token={asset}
-          networks={networkList}
           isPanel={true}
         />
       )}

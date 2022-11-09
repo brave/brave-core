@@ -37,7 +37,8 @@ class BatLedgerImpl :
   void Initialize(
     const bool execute_create_script,
     InitializeCallback callback) override;
-  void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
+  void CreateRewardsWallet(const std::string& country,
+                           CreateRewardsWalletCallback callback) override;
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
   void GetAutoContributeProperties(
@@ -84,13 +85,9 @@ class BatLedgerImpl :
       const std::string& promotion_id,
       const std::string& payload,
       ClaimPromotionCallback callback) override;
-  void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      AttestPromotionCallback callback) override;
-  void RecoverWallet(
-      const std::string& pass_phrase,
-      RecoverWalletCallback callback) override;
+  void AttestPromotion(const std::string& promotion_id,
+                       const std::string& solution,
+                       AttestPromotionCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
   void SetPublisherMinVisits(int visits) override;
@@ -234,9 +231,6 @@ class BatLedgerImpl :
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
-  void GetRewardsWalletPassphrase(
-      GetRewardsWalletPassphraseCallback callback) override;
-
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>
@@ -273,9 +267,6 @@ class BatLedgerImpl :
 
   static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
                            ledger::mojom::Result result);
-
-  static void OnRecoverWallet(CallbackHolder<RecoverWalletCallback>* holder,
-                              ledger::mojom::Result result);
 
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,

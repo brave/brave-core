@@ -11,6 +11,7 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -167,12 +168,14 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
+  std::string chain_id_lower = base::ToLowerASCII(chain->chain_id);
 
   // Check if we already have the chain
-  if (GetNetworkURL(prefs_, chain->chain_id, mojom::CoinType::ETH).is_valid()) {
-    if (json_rpc_service_->GetChainId(mojom::CoinType::ETH) !=
-        chain->chain_id) {
-      SwitchEthereumChain(chain->chain_id, std::move(callback), std::move(id));
+  if (GetNetworkURL(prefs_, chain_id_lower, mojom::CoinType::ETH).is_valid()) {
+    if (base::CompareCaseInsensitiveASCII(
+            json_rpc_service_->GetChainId(mojom::CoinType::ETH),
+            chain_id_lower) != 0) {
+      SwitchEthereumChain(chain_id_lower, std::move(callback), std::move(id));
       return;
     }
 
@@ -183,7 +186,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
   // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
   // we expect chain name and rpc urls as well at this time
   // https://github.com/brave/brave-browser/issues/17637
-  if (chain->chain_id.empty() || chain->rpc_endpoints.empty() ||
+  if (chain_id_lower.empty() || chain->rpc_endpoints.empty() ||
       chain->chain_name.empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -193,7 +196,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
-  if (chain_callbacks_.contains(chain->chain_id)) {
+  if (chain_callbacks_.contains(chain_id_lower)) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
@@ -211,8 +214,8 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
-  chain_callbacks_[chain->chain_id] = std::move(callback);
-  chain_ids_[chain->chain_id] = std::move(id);
+  chain_callbacks_[chain_id_lower] = std::move(callback);
+  chain_ids_[chain_id_lower] = std::move(id);
   json_rpc_service_->AddEthereumChainForOrigin(
       chain->Clone(), delegate_->GetOrigin(),
       base::BindOnce(&EthereumProviderImpl::OnAddEthereumChain,
@@ -224,17 +227,19 @@ void EthereumProviderImpl::OnAddEthereumChain(
     mojom::ProviderError error,
     const std::string& error_message) {
   DCHECK(delegate_);
-  if (!chain_callbacks_.contains(chain_id) || !chain_ids_.contains(chain_id))
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (!chain_callbacks_.contains(chain_id_lower) ||
+      !chain_ids_.contains(chain_id_lower))
     return;
   if (error != mojom::ProviderError::kSuccess) {
     base::Value formed_response =
         GetProviderErrorDictionary(error, error_message);
     bool reject = true;
-    std::move(chain_callbacks_[chain_id])
-        .Run(std::move(chain_ids_[chain_id]), std::move(formed_response),
+    std::move(chain_callbacks_[chain_id_lower])
+        .Run(std::move(chain_ids_[chain_id_lower]), std::move(formed_response),
              reject, "", true);
-    chain_callbacks_.erase(chain_id);
-    chain_ids_.erase(chain_id);
+    chain_callbacks_.erase(chain_id_lower);
+    chain_ids_.erase(chain_id_lower);
     return;
   }
   delegate_->ShowPanel();
@@ -733,7 +738,9 @@ void EthereumProviderImpl::SignTypedMessage(
   if (chain_id) {
     const std::string chain_id_hex =
         Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
-    if (chain_id_hex != json_rpc_service_->GetChainId(mojom::CoinType::ETH)) {
+    if (base::CompareCaseInsensitiveASCII(
+            chain_id_hex,
+            json_rpc_service_->GetChainId(mojom::CoinType::ETH)) != 0) {
       base::Value formed_response = GetProviderErrorDictionary(
           mojom::ProviderError::kInternalError,
           l10n_util::GetStringFUTF8(
@@ -895,27 +902,30 @@ bool EthereumProviderImpl::CheckAccountAllowed(
 void EthereumProviderImpl::OnAddEthereumChainRequestCompleted(
     const std::string& chain_id,
     const std::string& error) {
-  if (!chain_callbacks_.contains(chain_id) || !chain_ids_.contains(chain_id))
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (!chain_callbacks_.contains(chain_id_lower) ||
+      !chain_ids_.contains(chain_id_lower))
     return;
   if (error.empty()) {
     // To match MM for webcompat, after adding a chain we should prompt
     // again to switch to the chain. And the error result only depends on
     // what the switch action is at that point.
-    SwitchEthereumChain(chain_id, std::move(chain_callbacks_[chain_id]),
-                        std::move(chain_ids_[chain_id]));
-    chain_callbacks_.erase(chain_id);
-    chain_ids_.erase(chain_id);
+    SwitchEthereumChain(chain_id_lower,
+                        std::move(chain_callbacks_[chain_id_lower]),
+                        std::move(chain_ids_[chain_id_lower]));
+    chain_callbacks_.erase(chain_id_lower);
+    chain_ids_.erase(chain_id_lower);
     return;
   }
   bool reject = true;
   base::Value formed_response = GetProviderErrorDictionary(
       mojom::ProviderError::kUserRejectedRequest, error);
-  std::move(chain_callbacks_[chain_id])
-      .Run(std::move(chain_ids_[chain_id]), std::move(formed_response), reject,
-           "", false);
+  std::move(chain_callbacks_[chain_id_lower])
+      .Run(std::move(chain_ids_[chain_id_lower]), std::move(formed_response),
+           reject, "", false);
 
-  chain_callbacks_.erase(chain_id);
-  chain_ids_.erase(chain_id);
+  chain_callbacks_.erase(chain_id_lower);
+  chain_ids_.erase(chain_id_lower);
 }
 
 void EthereumProviderImpl::Request(base::Value input,

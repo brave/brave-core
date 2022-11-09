@@ -33,8 +33,6 @@ class HashVectorizer final {
   int GetBucketCount() const;
 
  private:
-  uint32_t GetHash(const std::string& text) const;
-
   std::vector<uint32_t> substring_sizes_;
   int bucket_count_;
 };

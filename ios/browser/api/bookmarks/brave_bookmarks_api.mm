@@ -22,7 +22,7 @@
 #include "components/undo/bookmark_undo_service.h"
 #include "components/undo/undo_manager.h"
 #include "components/user_prefs/user_prefs.h"
-#include "ios/chrome/browser/application_context.h"
+#include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/ui/bookmarks/bookmark_utils_ios.h"
@@ -159,7 +159,8 @@
 - (void)setTitle:(NSString*)title {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetTitle(node_, base::SysNSStringToUTF16(title));
+  model_->SetTitle(node_, base::SysNSStringToUTF16(title),
+                   bookmarks::metrics::BookmarkEditSource::kUser);
 }
 
 - (NSUInteger)nodeId {
@@ -180,7 +181,8 @@
 - (void)setUrl:(NSURL*)url {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetURL(node_, net::GURLWithNSURL(url));
+  model_->SetURL(node_, net::GURLWithNSURL(url),
+                 bookmarks::metrics::BookmarkEditSource::kUser);
 }
 
 - (NSURL*)iconUrl {

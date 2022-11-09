@@ -16,7 +16,7 @@ class BraveTabContainer : public TabContainerImpl {
 
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
-                    TabDragContext* drag_context,
+                    TabDragContextBase* drag_context,
                     TabSlotController& tab_slot_controller,
                     views::View* scroll_contents_view);
   ~BraveTabContainer() override;
@@ -26,6 +26,19 @@ class BraveTabContainer : public TabContainerImpl {
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
                                          int former_model_index) const override;
+  void EnterTabClosingMode(absl::optional<int> override_width,
+                           CloseTabSource source) override;
+  bool ShouldTabBeVisible(const Tab* tab) const override;
+  void StartInsertTabAnimation(int model_index) override;
+  void RemoveTab(int index, bool was_active) override;
+  void OnTabCloseAnimationCompleted(Tab* tab) override;
+
+ private:
+  void UpdateLayoutOrientation();
+
+  base::flat_set<Tab*> closing_tabs_;
+
+  BooleanPrefMember show_vertical_tabs_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

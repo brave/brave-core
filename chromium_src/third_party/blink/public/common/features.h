@@ -18,6 +18,7 @@ BLINK_COMMON_EXPORT extern const base::Feature kPartitionBlinkMemoryCache;
 BLINK_COMMON_EXPORT extern const base::Feature kRestrictWebSocketsPool;
 BLINK_COMMON_EXPORT extern const base::Feature kBraveBlockScreenFingerprinting;
 BLINK_COMMON_EXPORT extern const base::Feature kBraveTorWindowsHttpsOnly;
+BLINK_COMMON_EXPORT extern const base::Feature kBraveRoundTimeStamps;
 
 }  // namespace features
 }  // namespace blink

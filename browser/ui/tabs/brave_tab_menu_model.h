@@ -24,6 +24,8 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandStart = TabStripModel::CommandLast,
     CommandRestoreTab,
     CommandBookmarkAllTabs,
+    CommandShowVerticalTabs,
+    CommandShowTitleBar,
     CommandLast,
   };
 

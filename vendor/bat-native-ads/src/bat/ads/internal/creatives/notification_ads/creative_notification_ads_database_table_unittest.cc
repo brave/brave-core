@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
-#include <vector>
-
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -19,8 +17,6 @@ namespace ads::database::table {
 
 class BatAdsCreativeNotificationAdsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsCreativeNotificationAdsDatabaseTableTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

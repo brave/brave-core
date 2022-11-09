@@ -15,6 +15,7 @@ extern const char kDisabledByPolicy[];
 extern const char kHideButton[];  // DEPRECATED
 extern const char kShowButton[];
 extern const char kEnabled[];  // DEPRECATED
+extern const char kDeclaredGeo[];
 extern const char kAdsEnabledTimeDelta[];
 extern const char kAdsEnabledTimestamp[];
 extern const char kNotifications[];
@@ -58,6 +59,7 @@ extern const char kParametersAutoContributeChoices[];
 extern const char kParametersTipChoices[];
 extern const char kParametersMonthlyTipChoices[];
 extern const char kParametersPayoutStatus[];
+extern const char kParametersWalletProviderRegions[];
 extern const char kFetchOldBalance[];  // DEPRECATED
 extern const char kEmptyBalanceChecked[];
 extern const char kWalletBrave[];

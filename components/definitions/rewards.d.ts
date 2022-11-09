@@ -43,12 +43,12 @@ declare namespace Rewards {
       reddit: boolean
       github: boolean
     }
+    isUnsupportedRegion: boolean
     excludedList: ExcludedPublisher[]
     externalWalletProviderList: string[]
     monthlyReport: MonthlyReport
     monthlyReportIds: string[]
     parameters: RewardsParameters
-    paymentId: string
     promotions: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
@@ -65,8 +65,9 @@ declare namespace Rewards {
         | 'flaggedWalletModal'
         | 'hide'
         | 'kycRequiredModal'
-        | 'mismatchedProviderAccountRegionsModal'
+        | 'mismatchedCountriesModal'
         | 'mismatchedProviderAccountsModal'
+        | 'providerUnavailableModal'
         | 'regionNotSupportedModal'
         | 'show'
         | 'upholdBATNotAllowedModal'
@@ -75,17 +76,18 @@ declare namespace Rewards {
       promosDismissed: {
         [key: string]: boolean
       }
-      walletRecoveryStatus: number | null
     }
   }
 
   export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
+  export type Regions = { allow: string[], block: string[] }
 
   export interface RewardsParameters {
     rate: number
     autoContributeChoice: number
     autoContributeChoices: number[]
     payoutStatus: Record<string, ProviderPayoutStatus>
+    walletProviderRegions: Record<string, Regions | undefined>
   }
 
   export interface ComponentProps {
@@ -165,11 +167,6 @@ declare namespace Rewards {
     promotions: Promotion[]
   }
 
-  export interface RecoverWallet {
-    result: Result
-    balance: number
-  }
-
   export interface PromotionFinish {
     result: Result,
     promotion?: Promotion
@@ -226,12 +223,18 @@ declare namespace Rewards {
     hint: string
   }
 
+  export interface Subdivision {
+    name: string
+    code: string
+  }
+
   export interface AdsData {
     adsEnabled: boolean
     adsPerHour: number
     adsSubdivisionTargeting: string
     automaticallyDetectedAdsSubdivisionTargeting: string
     shouldAllowAdsSubdivisionTargeting: boolean
+    subdivisions: Subdivision[]
     adsUIEnabled: boolean
     adsIsSupported: boolean
     needsBrowserUpgradeToServeAds: boolean

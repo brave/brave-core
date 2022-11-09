@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Import BraveNewsControllerMock first.
+import './default/data/mockBraveNewsController'
+
 import * as React from 'react'
 import { Dispatch } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
@@ -58,7 +61,7 @@ updateImages(images.map((image): NewTab.BraveBackground => {
 }))
 
 export const Regular = () => {
-  const doNothing = (value: boolean) => value
+  const doNothing = (value?: any) => value
   const state = store.getState()
   const newTabData = useNewTabData(state.newTabData)
   const gridSitesData = getGridSitesData(state.gridSitesData)
@@ -84,7 +87,9 @@ export const Regular = () => {
       saveSetAllStackWidgets={doNothing}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}
       setBraveBackground={onUseBraveBackground}
-      useCustomBackgroundImage={() => {}}
+      chooseNewCustomBackgroundImage={doNothing}
+      setCustomImageBackground={doNothing}
+      removeCustomImageBackground={doNothing}
       setColorBackground={onChangeColoredBackground}
     />
   )

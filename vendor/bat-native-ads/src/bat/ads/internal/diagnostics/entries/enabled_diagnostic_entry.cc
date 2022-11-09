@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/strings/string_conversions_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 

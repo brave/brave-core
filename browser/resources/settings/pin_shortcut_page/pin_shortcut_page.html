@@ -1,0 +1,27 @@
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<if expr="enable_pin_shortcut">
+<style include="cr-shared-style settings-shared iron-flex">
+</style>
+<template is="dom-if" if="[[!pinned_]]">
+  <div class="cr-row">
+    <div class="flex cr-padded-text">
+      <div>$i18n{canPinShortcut}</div>
+    </div>
+    <div class="separator"></div>
+    <cr-button on-click="onPinShortcutTap_">
+      $i18n{pinShortcut}
+    </cr-button>
+  </div>
+</template>
+<template is="dom-if" if="[[pinned_]]">
+  <div class="cr-row">
+    <div class="flex cr-padded-text">
+      $i18n{shortcutPinned}
+    </div>
+  </div>
+</template>
+</if>

@@ -11,7 +11,7 @@
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader.h"
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "components/favicon_base/favicon_types.h"
-#include "ios/chrome/browser/application_context.h"
+#include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/common/ui/favicon/favicon_attributes.h"

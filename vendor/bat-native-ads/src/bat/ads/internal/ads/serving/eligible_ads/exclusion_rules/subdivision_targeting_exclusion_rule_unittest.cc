@@ -11,7 +11,8 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -34,16 +35,12 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
       public ::testing::WithParamInterface<
           SubdivisionTargetingExclusionRuleTestParam> {
  protected:
-  BatAdsSubdivisionTargetingExclusionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    if (GetParam().country == base::StringPiece("US")) {
-      MockLocaleHelper(locale_helper_mock_, "en-US");
-    } else if (GetParam().country == base::StringPiece("CA")) {
-      MockLocaleHelper(locale_helper_mock_, "en-CA");
-    }
+    scoped_default_locale_ =
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
+            base::StrCat({"en", "_", GetParam().country}));
 
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
@@ -51,18 +48,18 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
         subdivision_targeting_.get());
   }
 
-  std::string GetCountryParam() const { return GetParam().country; }
+  static std::string GetCountryParam() { return GetParam().country; }
 
-  std::string GetGeoTargetResponseParam() const {
+  static std::string GetGeoTargetResponseParam() {
     return base::StrCat({R"({"country":")", GetParam().country,
                          R"(", "region":")", GetParam().region, R"("})"});
   }
 
-  std::string GetSubdivisionParam() const {
+  static std::string GetSubdivisionParam() {
     return base::StrCat({GetParam().country, "-", GetParam().region});
   }
 
-  std::string GetAdditionalSubdivisionParam() const {
+  static std::string GetAdditionalSubdivisionParam() {
     const char* additional_region = "";
     if (GetParam().country == base::StringPiece("US")) {
       additional_region = "CA";
@@ -78,9 +75,11 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
     return base::StrCat({GetParam().country, "-", additional_region});
   }
 
-  std::string GetUnsupportedSubdivisionParam() const {
+  static std::string GetUnsupportedSubdivisionParam() {
     return base::StrCat({GetParam().country, "-XX"});
   }
+
+  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;

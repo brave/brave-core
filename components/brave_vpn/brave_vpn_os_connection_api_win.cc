@@ -62,7 +62,7 @@ BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() {
   CloseEventHandleForConnectFailed();
 }
 
-void BraveVPNOSConnectionAPIWin::CreateVPNConnection(
+void BraveVPNOSConnectionAPIWin::CreateVPNConnectionImpl(
     const BraveVPNConnectionInfo& info) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
@@ -74,26 +74,22 @@ void BraveVPNOSConnectionAPIWin::CreateVPNConnection(
                      weak_factory_.GetWeakPtr(), info.connection_name()));
 }
 
-void BraveVPNOSConnectionAPIWin::UpdateVPNConnection(
-    const BraveVPNConnectionInfo& info) {
-  NOTIMPLEMENTED();
-}
-
-void BraveVPNOSConnectionAPIWin::Connect(const std::string& name) {
+void BraveVPNOSConnectionAPIWin::ConnectImpl(const std::string& name) {
   // Connection state update from this call will be done by monitoring.
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ConnectEntry, base::UTF8ToWide(name)));
 }
 
-void BraveVPNOSConnectionAPIWin::Disconnect(const std::string& name) {
+void BraveVPNOSConnectionAPIWin::DisconnectImpl(const std::string& name) {
   // Connection state update from this call will be done by monitoring.
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&DisconnectEntry, base::UTF8ToWide(name)));
 }
 
-void BraveVPNOSConnectionAPIWin::RemoveVPNConnection(const std::string& name) {
+void BraveVPNOSConnectionAPIWin::RemoveVPNConnectionImpl(
+    const std::string& name) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&RemoveEntry, base::UTF8ToWide(name)),
@@ -101,7 +97,7 @@ void BraveVPNOSConnectionAPIWin::RemoveVPNConnection(const std::string& name) {
                      weak_factory_.GetWeakPtr(), name));
 }
 
-void BraveVPNOSConnectionAPIWin::CheckConnection(const std::string& name) {
+void BraveVPNOSConnectionAPIWin::CheckConnectionImpl(const std::string& name) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&internal::CheckConnection, base::UTF8ToWide(name)),
@@ -133,49 +129,39 @@ void BraveVPNOSConnectionAPIWin::OnObjectSignaled(HANDLE object) {
 void BraveVPNOSConnectionAPIWin::OnCheckConnection(
     const std::string& name,
     CheckConnectionResult result) {
-  for (Observer& obs : observers_) {
-    switch (result) {
-      case CheckConnectionResult::CONNECTED:
-        obs.OnConnected();
-        break;
-      case CheckConnectionResult::CONNECTING:
-        obs.OnIsConnecting();
-        break;
-      case CheckConnectionResult::CONNECT_FAILED:
-        obs.OnConnectFailed();
-        break;
-      case CheckConnectionResult::DISCONNECTED:
-        obs.OnDisconnected();
-        break;
-      case CheckConnectionResult::DISCONNECTING:
-        obs.OnIsDisconnecting();
-        break;
-      default:
-        break;
-    }
+  switch (result) {
+    case CheckConnectionResult::CONNECTED:
+      OnConnected();
+      break;
+    case CheckConnectionResult::CONNECTING:
+      OnIsConnecting();
+      break;
+    case CheckConnectionResult::CONNECT_FAILED:
+      OnConnectFailed();
+      break;
+    case CheckConnectionResult::DISCONNECTED:
+      OnDisconnected();
+      break;
+    case CheckConnectionResult::DISCONNECTING:
+      OnIsDisconnecting();
+      break;
+    default:
+      break;
   }
 }
 
 void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
                                            bool success) {
   if (!success) {
-    for (Observer& obs : observers_)
-      obs.OnCreateFailed();
+    OnCreateFailed();
     return;
   }
 
-  for (Observer& obs : observers_)
-    obs.OnCreated();
+  BraveVPNOSConnectionAPI::OnCreated();
 }
 
 void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
-                                           bool success) {
-  if (!success)
-    return;
-
-  for (Observer& obs : observers_)
-    obs.OnRemoved();
-}
+                                           bool success) {}
 
 void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {
   DCHECK(!event_handle_for_connected_ && !event_handle_for_disconnected_);

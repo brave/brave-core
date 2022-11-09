@@ -21,7 +21,6 @@ import { Grid, Column, ControlWrapper } from 'brave-ui/components'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 
 import { LayoutKind } from '../lib/layout_context'
-import { getAdsSubdivisions } from '../../shared/lib/ads_subdivisions'
 import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
@@ -151,10 +150,10 @@ class AdsBox extends React.Component<Props, State> {
                   onChange={selectChangeHandler('adsSubdivisionTargeting')}
                 >
                   {
-                    getAdsSubdivisions(this.props.rewardsData).map((subdivision) => {
+                    this.getAdsSubdivisions().map((subdivision) => {
                       return (
-                        <option key={subdivision[0]} value={subdivision[0]}>
-                          {subdivision[1]}
+                        <option key={subdivision.code} value={subdivision.code}>
+                          {subdivision.name}
                         </option>
                       )
                     })
@@ -258,6 +257,36 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     return groupedAdsHistory
+  }
+
+  getAdsSubdivisions = (): Rewards.Subdivision[] => {
+    const {
+      adsSubdivisionTargeting,
+      automaticallyDetectedAdsSubdivisionTargeting,
+      subdivisions
+    } = this.props.rewardsData.adsData
+
+    if (!subdivisions || !subdivisions.length) {
+      return []
+    }
+
+    let adsSubdivisionsList: Rewards.Subdivision[] = subdivisions.map(val => ({ ...val }))
+
+    if (adsSubdivisionTargeting === 'DISABLED') {
+      adsSubdivisionsList.unshift({ code: 'DISABLED', name: getLocale('adsSubdivisionTargetingDisabled') })
+    } else {
+      adsSubdivisionsList.unshift({ code: 'DISABLED', name: getLocale('adsSubdivisionTargetingDisable') })
+    }
+
+    const subdivisionMap = new Map<string, string>(subdivisions.map(v => [v.code, v.name]))
+    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting)
+    if (subdivision && adsSubdivisionTargeting === 'AUTO') {
+      adsSubdivisionsList.unshift({ code: 'AUTO', name: getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision }) })
+    } else {
+      adsSubdivisionsList.unshift({ code: 'AUTO', name: getLocale('adsSubdivisionTargetingAutoDetect') })
+    }
+
+    return adsSubdivisionsList
   }
 
   getAdDetailRow = (adHistory: Rewards.AdHistory) => {

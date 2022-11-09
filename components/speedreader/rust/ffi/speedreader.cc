@@ -24,31 +24,21 @@ SpeedReader::~SpeedReader() {
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(const std::string& url) {
-  return std::make_unique<Rewriter>(raw_, url, RewriterType::RewriterUnknown);
+  return std::make_unique<Rewriter>(raw_, url);
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
     const std::string& url,
-    RewriterType rewriter_type) {
-  return std::make_unique<Rewriter>(raw_, url, rewriter_type);
-}
-
-std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
-    const std::string& url,
-    RewriterType rewriter_type,
     void (*output_sink)(const char*, size_t, void*),
     void* output_sink_user_data) {
-  return std::make_unique<Rewriter>(raw_, url, rewriter_type, output_sink,
+  return std::make_unique<Rewriter>(raw_, url, output_sink,
                                     output_sink_user_data);
 }
 
-Rewriter::Rewriter(C_SpeedReader* speedreader,
-                   const std::string& url,
-                   RewriterType rewriter_type)
+Rewriter::Rewriter(C_SpeedReader* speedreader, const std::string& url)
     : Rewriter(
           speedreader,
           url,
-          rewriter_type,
           [](const char* chunk, size_t chunk_len, void* user_data) {
             std::string* out = static_cast<std::string*>(user_data);
             out->append(chunk, chunk_len);
@@ -57,7 +47,6 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
 
 Rewriter::Rewriter(C_SpeedReader* speedreader,
                    const std::string& url,
-                   RewriterType rewriter_type,
                    void (*output_sink)(const char*, size_t, void*),
                    void* output_sink_user_data)
     : output_(""),
@@ -67,8 +56,7 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
                         url.c_str(),
                         url.length(),
                         output_sink,
-                        output_sink_user_data,
-                        rewriter_type)) {}
+                        output_sink_user_data)) {}
 
 Rewriter::~Rewriter() {
   if (!ended_) {
@@ -83,6 +71,24 @@ void Rewriter::SetMinOutLength(int min_out_length) {
 void Rewriter::SetTheme(const std::string& theme) {
   if (!theme.empty()) {
     rewriter_set_theme(raw_, theme.c_str());
+  }
+}
+
+void Rewriter::SetFontFamily(const std::string& font_family) {
+  if (!font_family.empty()) {
+    rewriter_set_font_family(raw_, font_family.c_str());
+  }
+}
+
+void Rewriter::SetFontSize(const std::string& font_size) {
+  if (!font_size.empty()) {
+    rewriter_set_font_size(raw_, font_size.c_str());
+  }
+}
+
+void Rewriter::SetContentStyle(const std::string& content_style) {
+  if (!content_style.empty()) {
+    rewriter_set_content_style(raw_, content_style.c_str());
   }
 }
 

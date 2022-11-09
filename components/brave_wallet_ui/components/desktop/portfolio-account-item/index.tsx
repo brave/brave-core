@@ -1,5 +1,9 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
+import { useHistory } from 'react-router'
+
+// Types
+import { BraveWallet, DefaultCurrencies, WalletRoutes } from '../../../constants/types'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
@@ -7,18 +11,19 @@ import { useExplorer, usePricing } from '../../../common/hooks'
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
-
 import { getLocale } from '../../../../common/locale'
-import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
+
+// Components
 import { TransactionPopup, WithHideBalancePlaceholder } from '../'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
+import { TransactionPopupItem } from '../transaction-popup'
 
 // Styled Components
 import {
   StyledWrapper,
   AssetBalanceText,
-  AccountName,
-  AccountAddress,
+  AccountNameButton,
+  AccountAddressButton,
   AccountAndAddress,
   BalanceColumn,
   FiatBalanceText,
@@ -26,71 +31,86 @@ import {
   AccountCircle,
   MoreButton,
   MoreIcon,
-  RightSide
+  RightSide,
+  CopyIcon,
+  AddressAndButtonRow
 } from './style'
-import { TransactionPopupItem } from '../transaction-popup'
 
-export interface Props {
+interface Props {
   spotPrices: BraveWallet.AssetPrice[]
-  defaultCurrencies: DefaultCurrencies
   address: string
+  defaultCurrencies: DefaultCurrencies
   assetBalance: string
   assetTicker: string
   assetDecimals: number
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   name: string
   hideBalances?: boolean
 }
 
-const PortfolioAccountItem = (props: Props) => {
+export const PortfolioAccountItem = (props: Props) => {
   const {
-    address,
-    name,
     assetBalance,
+    address,
     assetTicker,
     assetDecimals,
     selectedNetwork,
     defaultCurrencies,
     hideBalances,
+    name,
     spotPrices
   } = props
+
+  // Routing
+  const history = useHistory()
+
+  // Hooks
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const { computeFiatAmount } = usePricing(spotPrices)
+
+  // State
   const [showAccountPopup, setShowAccountPopup] = React.useState<boolean>(false)
 
+  // Memos
   const orb = React.useMemo(() => {
     return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [address])
 
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const formattedAssetBalance: string = React.useMemo(() => {
+    return new Amount(assetBalance)
+      .divideByDecimals(assetDecimals)
+      .format(6, true)
+  }, [assetBalance, assetDecimals])
 
-  const formattedAssetBalance = new Amount(assetBalance)
-    .divideByDecimals(assetDecimals)
-    .format(6, true)
-
-  const { computeFiatAmount } = usePricing(spotPrices)
-  const fiatBalance = React.useMemo(() => {
+  const fiatBalance: Amount = React.useMemo(() => {
     return computeFiatAmount(assetBalance, assetTicker, assetDecimals)
   }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker])
 
-  const onShowTransactionPopup = () => {
-    setShowAccountPopup(true)
-  }
-
-  const onHideTransactionPopup = () => {
+  // Methods
+  const onHideAccountPopup = React.useCallback(() => {
     if (showAccountPopup) {
       setShowAccountPopup(false)
     }
-  }
+  }, [showAccountPopup])
+
+  const onSelectAccount = React.useCallback(() => {
+    history.push(`${WalletRoutes.Accounts}/${address}`)
+  }, [address])
 
   return (
-    <StyledWrapper onClick={onHideTransactionPopup}>
+    <StyledWrapper onClick={onHideAccountPopup}>
       <NameAndIcon>
         <AccountCircle orb={orb} />
-        <CopyTooltip text={address}>
-          <AccountAndAddress>
-            <AccountName>{name}</AccountName>
-            <AccountAddress>{reduceAddress(address)}</AccountAddress>
-          </AccountAndAddress>
-        </CopyTooltip>
+        <AccountAndAddress>
+          <AccountNameButton onClick={onSelectAccount}>{name}</AccountNameButton>
+          <AddressAndButtonRow>
+            <AccountAddressButton onClick={onSelectAccount}>{reduceAddress(address)}</AccountAddressButton>
+            <CopyTooltip text={address}>
+              <CopyIcon />
+            </CopyTooltip>
+          </AddressAndButtonRow>
+        </AccountAndAddress>
+
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>
@@ -104,7 +124,7 @@ const PortfolioAccountItem = (props: Props) => {
             <AssetBalanceText>{`${formattedAssetBalance} ${assetTicker}`}</AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
-        <MoreButton onClick={onShowTransactionPopup}>
+        <MoreButton onClick={() => setShowAccountPopup(true)}>
           <MoreIcon />
         </MoreButton>
         {showAccountPopup &&

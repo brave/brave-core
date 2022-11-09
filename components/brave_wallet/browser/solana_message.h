@@ -27,7 +27,10 @@ class SolanaMessage {
                 uint64_t last_valid_block_height,
                 const std::string& fee_payer,
                 std::vector<SolanaInstruction>&& instructions);
-  SolanaMessage(const SolanaMessage&);
+  SolanaMessage(const SolanaMessage&) = delete;
+  SolanaMessage(SolanaMessage&&);
+  SolanaMessage& operator=(const SolanaMessage&) = delete;
+  SolanaMessage& operator=(SolanaMessage&&);
   ~SolanaMessage();
   bool operator==(const SolanaMessage&) const;
 
@@ -56,6 +59,11 @@ class SolanaMessage {
 
   static absl::optional<SolanaMessage> FromValue(
       const base::Value::Dict& value);
+
+  void SetInstructionsForTesting(
+      const std::vector<SolanaInstruction>& instructions) {
+    instructions_ = instructions;
+  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);

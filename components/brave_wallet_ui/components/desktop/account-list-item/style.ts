@@ -29,43 +29,11 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AccountAndAddress = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-`
-
 export const AccountNameRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-`
-
-export const AccountName = styled(WalletButton)`
-  font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
-`
-
-export const AccountAddress = styled(WalletButton)`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
 `
 
 export const RightSide = styled.div`
@@ -108,6 +76,7 @@ export const OvalButton = styled(WalletButton)`
   padding: 3px 10px;
   border: 1px solid ${(p) => p.theme.color.interactive08};
   margin-right: 6px;
+  pointer-events: auto;
 `
 
 export const OvalButtonText = styled.span`

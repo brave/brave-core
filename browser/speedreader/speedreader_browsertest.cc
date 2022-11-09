@@ -6,6 +6,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/app/brave_command_ids.h"
@@ -399,38 +400,76 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
                   .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
+  auto* contents = ActiveWebContents();
 
-  constexpr const char kGetTheme[] =
-      R"js(
-        document.documentElement.getAttribute('data-theme')
-      )js";
+  // Open second tab
+  NavigateToPageSynchronously(kTestPageReadable);
+
+  auto GetDataAttribute = [](const std::string& attr) {
+    constexpr const char kGetDataAttribute[] =
+        R"js(
+          document.documentElement.getAttribute('$1')
+        )js";
+    return base::ReplaceStringPlaceholders(kGetDataAttribute, {attr}, nullptr);
+  };
 
   EXPECT_EQ(speedreader::mojom::Theme::kNone,
             speedreader_service()->GetTheme());
+  EXPECT_EQ(speedreader::mojom::FontFamily::kSans,
+            speedreader_service()->GetFontFamily());
+  EXPECT_EQ(speedreader::mojom::FontSize::k100,
+            speedreader_service()->GetFontSize());
+  EXPECT_EQ(speedreader::mojom::ContentStyle::kDefault,
+            speedreader_service()->GetContentStyle());
 
-  EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kGetTheme,
+  EXPECT_EQ(nullptr, content::EvalJs(contents, GetDataAttribute("data-theme"),
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                      speedreader::kIsolatedWorldId));
   auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(ActiveWebContents());
+      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   tab_helper->SetTheme(speedreader::mojom::Theme::kDark);
+  tab_helper->SetFontFamily(speedreader::mojom::FontFamily::kDyslexic);
+  tab_helper->SetFontSize(speedreader::mojom::FontSize::k130);
+  tab_helper->SetContentStyle(speedreader::mojom::ContentStyle::kTextOnly);
+  EXPECT_EQ(kTestHost, tab_helper->GetCurrentSiteURL());
+  EXPECT_TRUE(tab_helper->IsEnabledForSite());
 
-  EXPECT_EQ("dark", content::EvalJs(ActiveWebContents(), kGetTheme,
-                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                    speedreader::kIsolatedWorldId)
-                        .ExtractString());
+  auto EvalAttr = [&](content::WebContents* contents, const std::string& attr) {
+    return content::EvalJs(contents, GetDataAttribute(attr),
+                           content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                           speedreader::kIsolatedWorldId)
+        .ExtractString();
+  };
+
+  EXPECT_EQ("dark", EvalAttr(contents, "data-theme"));
+  EXPECT_EQ("dyslexic", EvalAttr(contents, "data-font-family"));
+  EXPECT_EQ("130", EvalAttr(contents, "data-font-size"));
+  EXPECT_EQ("text-only", EvalAttr(contents, "data-content-style"));
+
+  // Same in the second tab
+  EXPECT_EQ("dark", EvalAttr(ActiveWebContents(), "data-theme"));
+  EXPECT_EQ("dyslexic", EvalAttr(ActiveWebContents(), "data-font-family"));
+  EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
+  EXPECT_EQ("text-only", EvalAttr(ActiveWebContents(), "data-content-style"));
+
   EXPECT_EQ(speedreader::mojom::Theme::kDark,
             speedreader_service()->GetTheme());
+  EXPECT_EQ(speedreader::mojom::FontFamily::kDyslexic,
+            speedreader_service()->GetFontFamily());
+  EXPECT_EQ(speedreader::mojom::FontSize::k130,
+            speedreader_service()->GetFontSize());
+  EXPECT_EQ(speedreader::mojom::ContentStyle::kTextOnly,
+            speedreader_service()->GetContentStyle());
 
   // New page
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_EQ("dark", content::EvalJs(ActiveWebContents(), kGetTheme,
-                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                    speedreader::kIsolatedWorldId)
-                        .ExtractString());
+  EXPECT_EQ("dark", EvalAttr(ActiveWebContents(), "data-theme"));
+  EXPECT_EQ("dyslexic", EvalAttr(ActiveWebContents(), "data-font-family"));
+  EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
+  EXPECT_EQ("text-only", EvalAttr(ActiveWebContents(), "data-content-style"));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {

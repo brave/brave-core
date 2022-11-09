@@ -79,7 +79,8 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggers) {
   const std::string triggers = GetTriggers();
 
   // Assert
-  const std::string expected_triggers = "01=.5;02=.5;08=1;09=1;0D=1;0E=1";
+  const std::string expected_triggers =
+      "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0";
   EXPECT_EQ(expected_triggers, triggers);
 }
 
@@ -99,7 +100,8 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
   const std::string triggers = GetTriggers();
 
   // Assert
-  const std::string expected_triggers = "01=.5;02=.5;08=1;09=1;0D=1;0E=1";
+  const std::string expected_triggers =
+      "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0";
   EXPECT_EQ(expected_triggers, triggers);
 }
 
@@ -140,7 +142,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindow) {
   const base::TimeDelta time_window = GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Hours(1);
+  const base::TimeDelta expected_time_window = base::Minutes(15);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -160,7 +162,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
   const base::TimeDelta time_window = GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Hours(1);
+  const base::TimeDelta expected_time_window = base::Minutes(15);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -201,7 +203,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThreshold) {
   const double threshold = GetThreshold();
 
   // Assert
-  const double expected_threshold = 2.0;
+  const double expected_threshold = 0.0;
   EXPECT_EQ(expected_threshold, threshold);
 }
 
@@ -221,7 +223,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
   const double threshold = GetThreshold();
 
   // Assert
-  const double expected_threshold = 2.0;
+  const double expected_threshold = 0.0;
   EXPECT_EQ(expected_threshold, threshold);
 }
 
@@ -229,7 +231,7 @@ TEST(BatAdsUserActivityFeaturesTest, IdleTimeThreshold) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kIdleTimeThresholdParameter[] = "idle_time_threshold";
-  parameters[kIdleTimeThresholdParameter] = "5s";
+  parameters[kIdleTimeThresholdParameter] = "7s";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 
@@ -243,7 +245,7 @@ TEST(BatAdsUserActivityFeaturesTest, IdleTimeThreshold) {
   const base::TimeDelta idle_time_threshold = GetIdleTimeThreshold();
 
   // Assert
-  const base::TimeDelta expected_idle_time_threshold = base::Seconds(5);
+  const base::TimeDelta expected_idle_time_threshold = base::Seconds(7);
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 
@@ -262,7 +264,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultIdleTimeThreshold) {
   const base::TimeDelta idle_time_threshold = GetIdleTimeThreshold();
 
   // Assert
-  const base::TimeDelta expected_idle_time_threshold = base::Seconds(15);
+  const base::TimeDelta expected_idle_time_threshold = base::Seconds(5);
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 
@@ -282,7 +284,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultIdleTimeThresholdWhenDisabled) {
   const base::TimeDelta idle_time_threshold = GetIdleTimeThreshold();
 
   // Assert
-  const base::TimeDelta expected_idle_time_threshold = base::Seconds(15);
+  const base::TimeDelta expected_idle_time_threshold = base::Seconds(5);
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 

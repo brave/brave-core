@@ -10,7 +10,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"

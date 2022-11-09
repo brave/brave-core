@@ -6,6 +6,7 @@ import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/externa
 import { GrantInfo } from '../../shared/lib/grant_info'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
+import { OnboardingResult } from '../../shared/components/onboarding'
 import { ExternalWalletAction, RewardsSummaryData } from '../../shared/components/wallet_card'
 import { Notification, NotificationAction } from '../../shared/components/notifications'
 
@@ -70,8 +71,8 @@ type RequestedView = 'rewards-tour'
 export interface HostState {
   openTime: number
   loading: boolean
-  requestedView: RequestedView | null
   rewardsEnabled: boolean
+  requestedView: RequestedView | null
   balance: number
   settings: Settings
   options: Options
@@ -86,6 +87,8 @@ export interface HostState {
   externalWallet: ExternalWallet | null
   summaryData: RewardsSummaryData
   notifications: Notification[]
+  availableCountries: string[]
+  declaredCountry: string
 }
 
 export type HostListener = (state: HostState) => void
@@ -96,7 +99,7 @@ export interface Host {
   state: HostState
   addListener: (callback: HostListener) => () => void
   getString: (key: string) => string
-  enableRewards: () => void
+  enableRewards: (country: string) => Promise<OnboardingResult>
   openAdaptiveCaptchaSupport: () => void
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void

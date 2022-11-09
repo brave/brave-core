@@ -18,7 +18,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
@@ -52,6 +52,10 @@ void SetShowOriginalLinkTitle(const std::u16string* title) {
 
 }  // namespace test
 
+constexpr const char* kPropertyPrefNames[] = {
+    kSpeedreaderPrefTheme, kSpeedreaderPrefFontSize, kSpeedreaderPrefFontFamily,
+    kSpeedreaderPrefContentStyle};
+
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents) {
@@ -61,6 +65,14 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
       kSpeedreaderPrefEnabled,
       base::BindRepeating(&SpeedreaderTabHelper::OnPrefChanged,
                           weak_factory_.GetWeakPtr()));
+
+  for (const auto* pref_name : kPropertyPrefNames) {
+    pref_change_registrar_->Add(
+        pref_name,
+        base::BindRepeating(&SpeedreaderTabHelper::OnPropertyPrefChanged,
+                            weak_factory_.GetWeakPtr()));
+  }
+
   content_rules_ = HostContentSettingsMapFactory::GetForProfile(
       web_contents->GetBrowserContext());
 }
@@ -300,27 +312,7 @@ void SpeedreaderTabHelper::SetTheme(Theme theme) {
 
   if (speedreader_service->GetTheme() == theme)
     return;
-
-  constexpr const char16_t kSetTheme[] =
-      uR"js(
-    (function() {
-      const theme = '$1'
-      if (theme == '') {
-        document.documentElement.removeAttribute('data-theme')
-      } else {
-        document.documentElement.setAttribute('data-theme', theme)
-      }
-    })();
-  )js";
-
   speedreader_service->SetTheme(theme);
-
-  const auto script = base::ReplaceStringPlaceholders(
-      kSetTheme, base::UTF8ToUTF16(speedreader_service->GetThemeName()),
-      nullptr);
-
-  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      script, base::DoNothing(), kIsolatedWorldId);
 }
 
 Theme SpeedreaderTabHelper::GetTheme() {
@@ -336,6 +328,57 @@ Theme SpeedreaderTabHelper::GetTheme() {
     }
   }
   return theme;
+}
+
+void SpeedreaderTabHelper::SetFontFamily(FontFamily font) {
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (!speedreader_service)
+    return;
+  if (speedreader_service->GetFontFamily() == font)
+    return;
+
+  speedreader_service->SetFontFamily(font);
+}
+
+FontFamily SpeedreaderTabHelper::GetFontFamily() {
+  return SpeedreaderServiceFactory::GetForProfile(GetProfile())
+      ->GetFontFamily();
+}
+
+void SpeedreaderTabHelper::SetFontSize(FontSize size) {
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (!speedreader_service)
+    return;
+  if (speedreader_service->GetFontSize() == size)
+    return;
+
+  speedreader_service->SetFontSize(size);
+}
+
+FontSize SpeedreaderTabHelper::GetFontSize() const {
+  return SpeedreaderServiceFactory::GetForProfile(GetProfile())->GetFontSize();
+}
+
+void SpeedreaderTabHelper::SetContentStyle(ContentStyle style) {
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (!speedreader_service)
+    return;
+  if (speedreader_service->GetContentStyle() == style)
+    return;
+
+  speedreader_service->SetContentStyle(style);
+}
+
+ContentStyle SpeedreaderTabHelper::GetContentStyle() {
+  return SpeedreaderServiceFactory::GetForProfile(GetProfile())
+      ->GetContentStyle();
+}
+
+std::string SpeedreaderTabHelper::GetCurrentSiteURL() {
+  return web_contents()->GetLastCommittedURL().host();
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {
@@ -397,6 +440,29 @@ void SpeedreaderTabHelper::OnPrefChanged() {
   }
 
   UpdateButtonIfNeeded();
+}
+
+void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
+  DCHECK(base::Contains(kPropertyPrefNames, path));
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (!speedreader_service)
+    return;
+  if (!PageStateIsDistilled(distill_state_))
+    return;
+
+  if (path == kSpeedreaderPrefTheme) {
+    SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
+  } else if (path == kSpeedreaderPrefFontFamily) {
+    SetDocumentAttribute("data-font-family",
+                         speedreader_service->GetFontFamilyName());
+  } else if (path == kSpeedreaderPrefFontSize) {
+    SetDocumentAttribute("data-font-size",
+                         speedreader_service->GetFontSizeName());
+  } else if (path == kSpeedreaderPrefContentStyle) {
+    SetDocumentAttribute("data-content-style",
+                         speedreader_service->GetContentStyleName());
+  }
 }
 
 void SpeedreaderTabHelper::UpdateButtonIfNeeded() {
@@ -484,6 +550,29 @@ void SpeedreaderTabHelper::OnDistillComplete() {
   }
 
   UpdateButtonIfNeeded();
+}
+
+void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
+                                                const std::string& value) {
+  constexpr const char16_t kSetAttribute[] =
+      uR"js(
+    (function() {
+      const attribute = '$1'
+      const value = '$2'
+      if (value == '') {
+        document.documentElement.removeAttribute(attribute)
+      } else {
+        document.documentElement.setAttribute(attribute, value)
+      }
+    })();
+  )js";
+
+  const auto script = base::ReplaceStringPlaceholders(
+      kSetAttribute, {base::UTF8ToUTF16(attribute), base::UTF8ToUTF16(value)},
+      nullptr);
+
+  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      script, base::DoNothing(), kIsolatedWorldId);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);

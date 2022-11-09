@@ -86,6 +86,9 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   // Added 06/2022
   brave::MigrateSearchEngineProviderPrefs(profile);
+
+  // Added 10/2022
+  profile->GetPrefs()->ClearPref(kDefaultBrowserLaunchingCount);
 #endif
 
   brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(
@@ -102,7 +105,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   // Added 05/2022
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  translate::MigrateBraveProfilePrefs(profile->GetPrefs());
+  translate::ClearMigrationBraveProfilePrefs(profile->GetPrefs());
 #endif
 
   // Added 06/2022
@@ -128,6 +131,11 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
 
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 10/2022
+  local_state->ClearPref(kDefaultBrowserPromptEnabled);
+#endif
 
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }

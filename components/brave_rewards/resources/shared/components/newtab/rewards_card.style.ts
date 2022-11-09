@@ -43,6 +43,10 @@ export const cardHeaderText = styled.div`
   margin-top: 2px;
 `
 
+export const unsupportedRegionCard = styled.div`
+  margin-top: 24px;
+`
+
 export const rewardsOptIn = styled.div`
   margin-top: 11px;
   margin-bottom: 16px;
@@ -58,6 +62,10 @@ export const rewardsOptInHeader = styled.div`
   font-weight: 600;
   font-size: 13px;
   line-height: 20px;
+`
+
+export const selectCountry = styled.div`
+  margin: 16px -12px 0;
 `
 
 export const terms = styled.div`

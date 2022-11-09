@@ -5,8 +5,11 @@
 
 #include "brave/components/speedreader/renderer/speedreader_js_handler.h"
 
+#include <utility>
+
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
+#include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/converter.h"
 #include "gin/handle.h"
@@ -25,18 +28,21 @@ namespace speedreader {
 
 gin::WrapperInfo SpeedreaderJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
 
-SpeedreaderJSHandler::SpeedreaderJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {}
+SpeedreaderJSHandler::SpeedreaderJSHandler(
+    base::WeakPtr<SpeedreaderRenderFrameObserver> owner)
+    : owner_(std::move(owner)) {}
 
 SpeedreaderJSHandler::~SpeedreaderJSHandler() = default;
 
 // static
-void SpeedreaderJSHandler::Install(content::RenderFrame* render_frame) {
+void SpeedreaderJSHandler::Install(
+    base::WeakPtr<SpeedreaderRenderFrameObserver> owner) {
+  DCHECK(owner);
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
 
   v8::Local<v8::Context> context =
-      render_frame->GetWebFrame()->GetScriptContextFromWorldId(
+      owner->render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
           isolate, kIsolatedWorldId);
   if (context.IsEmpty())
     return;
@@ -52,7 +58,7 @@ void SpeedreaderJSHandler::Install(content::RenderFrame* render_frame) {
     return;
 
   gin::Handle<SpeedreaderJSHandler> handler =
-      gin::CreateHandle(isolate, new SpeedreaderJSHandler(render_frame));
+      gin::CreateHandle(isolate, new SpeedreaderJSHandler(std::move(owner)));
   if (handler.IsEmpty())
     return;
 
@@ -73,8 +79,11 @@ gin::ObjectTemplateBuilder SpeedreaderJSHandler::GetObjectTemplateBuilder(
 
 void SpeedreaderJSHandler::ShowOriginalPage(v8::Isolate* isolate) {
   DCHECK(isolate);
+  if (!owner_)
+    return;
+
   mojo::AssociatedRemote<speedreader::mojom::SpeedreaderHost> speedreader_host;
-  render_frame_->GetRemoteAssociatedInterfaces()->GetInterface(
+  owner_->render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
       &speedreader_host);
 
   if (speedreader_host.is_bound()) {

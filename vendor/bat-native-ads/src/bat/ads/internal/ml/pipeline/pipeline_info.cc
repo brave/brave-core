@@ -10,13 +10,13 @@
 namespace ads::ml::pipeline {
 
 PipelineInfo::PipelineInfo(const int version,
-                           const std::string& timestamp,
-                           const std::string& locale,
+                           std::string timestamp,
+                           std::string locale,
                            TransformationVector new_transformations,
                            model::Linear linear_model)
     : version(version),
-      timestamp(timestamp),
-      locale(locale),
+      timestamp(std::move(timestamp)),
+      locale(std::move(locale)),
       linear_model(std::move(linear_model)) {
   transformations = std::move(new_transformations);
 }

@@ -6,9 +6,9 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 
 #include "base/feature_list.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/skus/common/features.h"
@@ -50,6 +50,12 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+  auto* connection_api = BraveVPNOSConnectionAPI::GetInstance();
+  connection_api->set_shared_url_loader_factory(
+      g_browser_process->shared_url_loader_factory());
+  connection_api->set_local_prefs(g_browser_process->local_state());
+#endif
 }
 
 BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
@@ -71,7 +77,8 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       },
       context);
 
-  return new BraveVpnService(shared_url_loader_factory, local_state, callback);
+  return new BraveVpnService(shared_url_loader_factory, local_state,
+                             user_prefs::UserPrefs::Get(context), callback);
 }
 
 void BraveVpnServiceFactory::RegisterProfilePrefs(

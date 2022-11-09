@@ -279,7 +279,7 @@ export const AccountSettingsModal = () => {
                 </CopyTooltip>
               </>
               : <PasswordInput
-                placeholder={getLocale('braveWalletEnterYourPassword')}
+                placeholder={getLocale('braveWalletEnterYourBraveWalletPassword')}
                 onChange={onPasswordChange}
                 hasError={!!password && !isCorrectPassword}
                 error={getLocale('braveWalletLockScreenError')}

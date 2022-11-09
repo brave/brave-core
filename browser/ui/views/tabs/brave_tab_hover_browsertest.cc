@@ -9,7 +9,8 @@
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"

@@ -46,6 +46,7 @@
 <translation id="1043505821207197890">Something went wrong. Linux may only be partially upgraded. Review logs for more information. Logs have been saved in Files &gt; My files &gt; <ph name="LOG_FILE"/></translation>
 <translation id="1043818413152647937">Also clear data from these apps?</translation>
 <translation id="1043824690776631483">You need permission to visit this site. It may have inappropriate content.</translation>
+<translation id="104419033123549300">Keymap style</translation>
 <translation id="104710386808485638">Restart Linux?</translation>
 <translation id="1047431265488717055">Copy Link Te&amp;xt</translation>
 <translation id="1048286738600630630">Displays</translation>
@@ -67,6 +68,7 @@
 <translation id="1061904396131502319">Almost time for a break</translation>
 <translation id="1062628064301375934">Help us build a more private web</translation>
 <translation id="1067048845568873861">Created</translation>
+<translation id="3983904244054509097">For added safety, you can encrypt passwords on your device before they're saved to your Brave sync chain</translation>
 <translation id="5428209950370661546">Other Brave services</translation>
 <translation id="1069355737714877171">Remove eSIM profile named <ph name="PROFILE_NAME"/></translation>
 <translation id="6654312501894761082">Another program on your computer added an extension that may change the way Brave works.
@@ -104,6 +106,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1094607894174825014">Read or write operation was requested with an invalid offset on: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="1095761715416917775">Make sure that you can always access your sync data</translation>
 <translation id="109647177154844434">Uninstalling Parallels Desktop will delete your Windows image. This includes its applications, settings and data. Are you sure that you wish to continue?</translation>
+<translation id="1097016918605049747">This page couldn't be translated</translation>
 <translation id="1097658378307015415">Before signing in, please enter as Guest to activate the network <ph name="NETWORK_ID"/></translation>
 <translation id="4235458114993854152">Are you able to see your Chromecast in the
     <ph name="BEGIN_LINK"/>
@@ -248,6 +251,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1223853788495130632">Your administrator recommends a specific value for this setting.</translation>
 <translation id="1225177025209879837">Processing request...</translation>
 <translation id="1227507814927581609">Authentication failed while connecting to "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="1227993798763400520">Failed to cast. Please try again.</translation>
 <translation id="1230417814058465809">Standard protection is on. For even more security, use enhanced protection.</translation>
 <translation id="1231733316453485619">Turn on sync?</translation>
 <translation id="1232569758102978740">Untitled</translation>
@@ -263,7 +267,6 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1240903469550363138">To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> will share your name, email address and profile picture with this site. See this site's <ph name="BEGIN_LINK1"/>privacy policy<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Terms of Service<ph name="END_LINK2"/>.</translation>
 <translation id="1241066500170667906">Select experiment state for <ph name="EXPERIMENT_NAME"/></translation>
 <translation id="124116460088058876">More languages</translation>
-<translation id="1241753985463165747">Read and change all your data on the current website when invoked</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> wants to reset your settings.</translation>
 <translation id="1243314992276662751">Upload</translation>
 <translation id="1243436884219965846">Review passwords</translation>
@@ -327,6 +330,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1307165550267142340">Your PIN was created</translation>
 <translation id="1307431692088049276">Don't ask me again</translation>
 <translation id="1307559529304613120">Oops!  The system failed to store the long-term API access token for this device.</translation>
+<translation id="1312811472299082263">Create from an Ansible playbook or a Crostini backup file</translation>
 <translation id="1313405956111467313">Automatic proxy configuration</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1313660246522271310">You'll be signed out of all sites, including in open tabs</translation>
@@ -369,7 +373,6 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1353980523955420967">Can’t find PPD. Make sure that your Chromebook is online and try again.</translation>
 <translation id="1354045473509304750">Continue allowing <ph name="HOST"/> to use and move your camera</translation>
 <translation id="1355088139103479645">Delete all data?</translation>
-<translation id="1355466263109342573"><ph name="PLUGIN_NAME"/> is blocked</translation>
 <translation id="1358741672408003399">Spelling and Grammar</translation>
 <translation id="1359923111303110318">Your device can be unlocked with Smart Lock. Press enter to unlock.</translation>
 <translation id="1361164813881551742">Add Manually</translation>
@@ -482,6 +485,7 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="145432137617179457">Spell check languages</translation>
 <translation id="1455119378540982311">Preset window sizes</translation>
 <translation id="146000042969587795">This frame was blocked because it contains some insecure content.</translation>
+<translation id="1461041542809785877">Performance</translation>
 <translation id="146219525117638703">ONC State</translation>
 <translation id="146220085323579959">Internet disconnected. Please check your internet connection and try again.</translation>
 <translation id="1462850958694534228">Review icon update</translation>
@@ -564,7 +568,6 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1536754031901697553">Disconnecting...</translation>
 <translation id="1537254971476575106">Full-screen magnifier</translation>
 <translation id="15373452373711364">Large mouse cursor</translation>
-<translation id="1539630663098418038"><ph name="EXTENSIONS_REQUESTING_ACCESS"/> is requesting to read and change <ph name="ORIGIN"/></translation>
 <translation id="1540605929960647700">Enable demo mode</translation>
 <translation id="1541346352678737112">No network found</translation>
 <translation id="1542137295869176367">Your sign-in data couldn't be updated</translation>
@@ -665,7 +668,6 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1621984899599015181">Options for sharing are managed by your organisation. Some items may be hidden.</translation>
 <translation id="1622054403950683339">Forget Wi-Fi network</translation>
 <translation id="1623723619460186680">Blue light reduction</translation>
-<translation id="1624012933569991823">Settings</translation>
 <translation id="1624599281783425761">You won't see <ph name="MERCHANT"/> again</translation>
 <translation id="1624863973697515675">This file is too big for your device to manage. Try to download it on another device</translation>
 <translation id="1627276047960621195">File Descriptors</translation>
@@ -678,6 +680,7 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1632756664321977232">Crop tool</translation>
 <translation id="163309982320328737">Initial character width is Full</translation>
 <translation id="5778813027254879911">Disable Brave Assistant</translation>
+<translation id="1634224622052500893">Wi-Fi network found</translation>
 <translation id="1634783886312010422">Have you already changed this password on <ph name="WEBSITE"/>?</translation>
 <translation id="1636212173818785548">OK</translation>
 <translation id="163712950892155760"><ph name="BEGIN_PARAGRAPH1"/>App data can be any data that an app has saved (based on developer settings), including data such as contacts, messages and photos. Backup data will not count towards your Drive storage quota.<ph name="END_PARAGRAPH1"/>
@@ -690,6 +693,7 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1640283014264083726">PKCS #1 MD4 With RSA Encryption</translation>
 <translation id="1641113438599504367">Safe Browsing</translation>
 <translation id="1641496881756082050">More actions for <ph name="NETWORK_NAME"/></translation>
+<translation id="1641884605525735390">{NUM_PASSWORDS,plural, =1{1 other password wasn't imported because it's formatted incorrectly}other{{NUM_PASSWORDS} other passwords weren't imported because they're formatted incorrectly}}</translation>
 <translation id="1642492862748815878">Connected to <ph name="DEVICE"/> and <ph name="NUMBER_OF_DEVICES"/> other Bluetooth devices</translation>
 <translation id="1642494467033190216">A removal of rootfs protection and restart is required before enabling other debugging features.</translation>
 <translation id="1643072738649235303">X9.62 ECDSA Signature with SHA-1</translation>
@@ -714,6 +718,7 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="16620462294541761">Sorry, your password could not be verified. Please try again.</translation>
 <translation id="166278006618318542">Subject Public Key Algorithm</translation>
 <translation id="1662801900924515589"><ph name="APP"/> installed</translation>
+<translation id="1665328953287874063">Use a password or PIN to unlock your <ph name="DEVICE_TYPE"/></translation>
 <translation id="1666232093776384142">Disable data access protection for peripherals</translation>
 <translation id="1667842670298352129">Hear specific text read aloud. First, select the Select to Speak icon at the bottom of your screen, then highlight text. You can also use a keyboard shortcut: Highlight text, then press Search + S.</translation>
 <translation id="1668435968811469751">Enrol manually</translation>
@@ -723,7 +728,6 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1676902103953506022">Credential details for <ph name="USERNAME"/> on <ph name="DOMAIN"/></translation>
 <translation id="1677306805708094828">Can't add <ph name="EXTENSION_TYPE_PARAMETER"/></translation>
 <translation id="1677472565718498478"><ph name="TIME"/> left</translation>
-<translation id="1678794218766467608">Lock in sleep mode or when cover is closed</translation>
 <translation id="1679068421605151609">Developer Tools</translation>
 <translation id="1679810534535368772">Are you sure that you want to exit?</translation>
 <translation id="167983332380191032">Management service sent HTTP error.</translation>
@@ -780,7 +784,9 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1721312023322545264">You need permission from <ph name="NAME"/> to visit this site</translation>
 <translation id="1722460139690167654">Your <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> is managed<ph name="END_LINK"/> by <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="1723824996674794290">&amp;New window</translation>
+<translation id="1724801751621173132">Input mode</translation>
 <translation id="1725562816265788801">Tab scrolling</translation>
+<translation id="1726503915437308071">Italic font</translation>
 <translation id="1729533290416704613">It also controls what page is shown when you search from the Omnibox.</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>To remove apps, go to Settings &gt; Google Play Store &gt; Manage Android preferences &gt; Apps or Application manager. Then tap the app that you want to uninstall (you may need to swipe right or left to find the app). Then tap Uninstall or Disable.<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1730989807608739928">Scroll towards the last tab</translation>
@@ -856,7 +862,6 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1794051631868188691">Never show <ph name="MERCHANT"/></translation>
 <translation id="1794791083288629568">Send feedback to help us fix this issue.</translation>
 <translation id="1795214765651529549">Use Classic</translation>
-<translation id="1796105431091975902">Select an Ansible playbook to add</translation>
 <translation id="1796588414813960292">Features that need sound won't work</translation>
 <translation id="1797117170091578105">Play using your Chromebook keyboard. You can customise keys to specific actions.</translation>
 <translation id="1800502858278951817">No extensions have requested to read and change <ph name="SITE_NAME"/></translation>
@@ -919,6 +924,7 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1842766183094193446">Are you sure that you want to enable demo mode?</translation>
 <translation id="1845727111305721124">Allowed to play sound</translation>
 <translation id="1846308012215045257">Control-click to run <ph name="PLUGIN_NAME"/></translation>
+<translation id="1848219224579402567">Sign out when lid is closed</translation>
 <translation id="184862733444771842">Feature request</translation>
 <translation id="1849016657376805933">Any HID device</translation>
 <translation id="1849186935225320012">This page has full control of MIDI devices.</translation>
@@ -984,7 +990,6 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1897120393475391208">Use strong password</translation>
 <translation id="1900305421498694955">Apps from Google Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="1901303067676059328">Select &amp;all</translation>
-<translation id="8252369960192910896">Brave couldn't save these passwords in your Brave sync chain. You can still save them on this device.</translation>
 <translation id="1903995858055162096">Not your device? Use <ph name="BEGIN_LINK"/>guest mode<ph name="END_LINK"/>.</translation>
 <translation id="6893464351226208429">The URLs that you visit are saved to your Brave sync chain</translation>
 <translation id="1905375423839394163">Chromebook device name</translation>
@@ -1019,6 +1024,7 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1931152874660185993">No components installed.</translation>
 <translation id="1931410639376954712">Installing <ph name="DEVICE_OS"/></translation>
 <translation id="1932098463447129402">Not Before</translation>
+<translation id="1933489278505808700">Allowed to read and change</translation>
 <translation id="1935303383381416800">Allowed to see your location</translation>
 <translation id="1936157145127842922">Show in Folder</translation>
 <translation id="1936931585862840749">Use a number to indicate how many copies to print (1 to <ph name="MAX_COPIES"/>).</translation>
@@ -1030,7 +1036,6 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="1941553344801134989">Version: <ph name="APP_VERSION"/></translation>
 <translation id="1941995177877935582">Show key mapping</translation>
 <translation id="1942128823046546853">Read and change all your data on all websites</translation>
-<translation id="1942600407708803723">Shut down when cover is closed</translation>
 <translation id="1944528062465413897">Bluetooth pairing code</translation>
 <translation id="1944921356641260203">Update found</translation>
 <translation id="1947136734041527201">Lets you sign in to websites using the account that you have with an identity service</translation>
@@ -1112,6 +1117,7 @@ Permissions that you've already given to apps may apply to this account. You can
 <translation id="2031914984822377766">Add your preferred <ph name="LINK_BEGIN"/>website languages<ph name="LINK_END"/>. The top language from the list will be used for translations.</translation>
 <translation id="2033758234986231162">Can't maintain a connection with your phone. Make sure that your phone is close by, unlocked and Bluetooth and Wi-Fi are turned on.</translation>
 <translation id="2034346955588403444">Add other Wi-Fi network</translation>
+<translation id="2035211704574173780">Greyscale</translation>
 <translation id="203574396658008164">Enable note taking from lock screen</translation>
 <translation id="2037445849770872822">Supervision is set up for this Brave account. To set up more parental controls, select Continue.
 
@@ -1167,6 +1173,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="208634871997892083">Always-on VPN</translation>
 <translation id="2087822576218954668">Print: <ph name="PRINT_NAME"/></translation>
 <translation id="2088092308059522196">Enrolment is only supported after you install <ph name="DEVICE_OS"/>.</translation>
+<translation id="2089090684895656482">Less</translation>
 <translation id="208928984520943006">To get to the home screen at any time, swipe up from the bottom.</translation>
 <translation id="2618024864038703735">Browse safely with Brave</translation>
 <translation id="2089795179672254991">Ask when a site wants to see text and images copied to the clipboard (recommended)</translation>
@@ -1225,7 +1232,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2127372758936585790">Low-power charger</translation>
 <translation id="212862741129535676">Frequency state occupancy percentage</translation>
 <translation id="212876957201860463">Preparing to set up your mobile device…</translation>
-<translation id="2129825002735785149">Update plug-in</translation>
 <translation id="2131077480075264">Unable to install "<ph name="APP_NAME"/>" because it is not allowed by "<ph name="IMPORT_NAME"/>"</translation>
 <translation id="21354425047973905">Hide PINs</translation>
 <translation id="2135456203358955318">Docked magnifier</translation>
@@ -1306,6 +1312,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2203088913459920044">Name can use letters, numbers and special characters</translation>
 <translation id="220321590587754225">Couldn't connect. Try again.</translation>
 <translation id="2204034823255629767">Read and change anything that you type</translation>
+<translation id="2204387456724731099">This selection couldn't be translated</translation>
 <translation id="220858061631308971">Please enter this PIN code on "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="2210462644007531147">Couldn’t complete installation</translation>
 <translation id="2212565012507486665">Allow cookies</translation>
@@ -1353,6 +1360,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2249605167705922988">e.g. 1-5, 8, 11-13</translation>
 <translation id="2251218783371366160">Open with system viewer</translation>
 <translation id="225163402930830576">Refresh Networks</translation>
+<translation id="2252017960592955005">Viewing protection (beta)</translation>
 <translation id="225240747099314620">Allow identifiers for protected content (computer restart may be required)</translation>
 <translation id="2255077166240162850">This device was locked to different domain or mode.</translation>
 <translation id="2255317897038918278">Microsoft Time Stamping</translation>
@@ -1463,6 +1471,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2327920026543055248">Enter character <ph name="CHARACTER"/> of <ph name="TOTAL"/></translation>
 <translation id="2328561734797404498">Please restart your device to use <ph name="APP_NAME"/>.</translation>
 <translation id="2329597144923131178">Sign in to get your bookmarks, history, passwords and other settings on all your devices</translation>
+<translation id="2332115969598251205">Can’t load devices saved to <ph name="PRIMARY_EMAIL"/>. Check your Internet connection and try again.</translation>
 <translation id="2332131598580221120">View in store</translation>
 <translation id="2332192922827071008">Open preferences</translation>
 <translation id="2332515770639153015">Enhanced Safe Browsing is on</translation>
@@ -1500,6 +1509,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2356070529366658676">Ask</translation>
 <translation id="2357330829548294574">Remove <ph name="USER_NAME"/></translation>
 <translation id="2358561147588818967">Sites can use Javascript</translation>
+<translation id="2358777858338503863">Click to allow on <ph name="ORIGIN"/>:</translation>
 <translation id="2359071692152028734">Linux apps may become unresponsive.</translation>
 <translation id="2359345697448000899">Manage your extensions by clicking Extensions in the Tools menu.</translation>
 <translation id="2359556993567737338">Connect Bluetooth device</translation>
@@ -1620,7 +1630,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2476974672882258506">Shut down Windows to uninstall <ph name="PARALLELS_DESKTOP"/>.</translation>
 <translation id="2477065602824695373">Since you set up multiple switches, auto-scan has been turned off.</translation>
 <translation id="2478176599153288112">Media-File Permissions for "<ph name="EXTENSION"/>"</translation>
-<translation id="248003956660572823">Passwords not saved</translation>
 <translation id="2480868415629598489">Modify data that you copy and paste</translation>
 <translation id="2482878487686419369">Notifications</translation>
 <translation id="2482895651873876648">Tab moved into group <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/></translation>
@@ -1719,6 +1728,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2568774940984945469">Infobar Container</translation>
 <translation id="2571655996835834626">Change your settings that control websites' access to features such as cookies, JavaScript, plugins, geolocation, microphone, camera, etc.</translation>
 <translation id="2572032849266859634">Read-only access to <ph name="VOLUME_NAME"/> has been granted.</translation>
+<translation id="2573276323521243649">Back from avatar selection page</translation>
 <translation id="2573417407488272418">Back up apps and files to Files &gt; My files before the upgrade.</translation>
 <translation id="2573831315551295105">Assign switch for '<ph name="ACTION"/>'</translation>
 <translation id="2575247648642144396">This icon will be visible when the extension can act on the current page. Use this extension by clicking on the icon or by pressing <ph name="EXTENSION_SHORTCUT"/>.</translation>
@@ -1771,6 +1781,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2627424346328942291">Can't share</translation>
 <translation id="2628770867680720336">A factory reset of this Chromebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE"/>Learn more<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="2629227353894235473">Develop Android apps</translation>
+<translation id="2629437048544561682">Clear canvas</translation>
 <translation id="2631498379019108537">Show input options in the shelf</translation>
 <translation id="2633212996805280240">Remove "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="263325223718984101"><ph name="PRODUCT_NAME"/> couldn't complete installation, but will continue to run from its disk image.</translation>
@@ -1782,6 +1793,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2637400434494156704">Incorrect PIN. You have one attempt remaining.</translation>
 <translation id="2638286699381354126">Update...</translation>
 <translation id="2638662041295312666">Sign-in image</translation>
+<translation id="2640299212685523844">Use GTK</translation>
 <translation id="264083724974021997">Connect to your phone – dialogue</translation>
 <translation id="2642111877055905627">Football</translation>
 <translation id="2643698698624765890">Manage your extensions by clicking Extensions in the Window menu.</translation>
@@ -1822,6 +1834,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2673135533890720193">Read your browsing history</translation>
 <translation id="2674764818721168631">Off</translation>
 <translation id="2678063897982469759">Re-enable</translation>
+<translation id="2678100101831051676">Unable to cast.</translation>
 <translation id="268053382412112343">Hi&amp;story</translation>
 <translation id="2681124317993121768">Guest profiles are not supported</translation>
 <translation id="2682498795777673382">Update from a parent</translation>
@@ -1835,6 +1848,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2691385045260836588">Model</translation>
 <translation id="2691440343905273290">Change input settings</translation>
 <translation id="2693176596243495071">Oops!  An unknown error occurred. Please try again later or contact your administrator if the issue persists.</translation>
+<translation id="2698147581454716013">This is a bundled device and cannot be enrolled with Kiosk and signage upgrade.</translation>
 <translation id="2699911226086014512">PIN operation failed with code <ph name="RETRIES"/>.</translation>
 <translation id="2701330563083355633">Shared from <ph name="DEVICE_NAME"/></translation>
 <translation id="2701737434167469065">Sign in, <ph name="EMAIL"/></translation>
@@ -1904,6 +1918,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2749836841884031656">SIM</translation>
 <translation id="2749881179542288782">Check Grammar With Spelling</translation>
 <translation id="2753677631968972007">Manually control site permissions.</translation>
+<translation id="2754226775788136540">Looking for Fast Pair devices saved to <ph name="PRIMARY_EMAIL"/></translation>
 <translation id="2754825024506485820">Find the apps that you need, from productivity to entertainment, on the Google Play Store. You can install apps anytime.</translation>
 <translation id="2755349111255270002">Reset this <ph name="DEVICE_TYPE"/></translation>
 <translation id="2755367719610958252">Manage accessibility features</translation>
@@ -1912,6 +1927,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2757338480560142065">Make sure that the password you are saving matches your password for <ph name="WEBSITE"/></translation>
 <translation id="2762441749940182211">Camera blocked</translation>
 <translation id="2764786626780673772">VPN details</translation>
+<translation id="2764920001292228569">Enter a profile name</translation>
 <translation id="2765100602267695013">Please contact your mobile provider</translation>
 <translation id="2765217105034171413">Small</translation>
 <translation id="2766006623206032690">Pa&amp;ste and go</translation>
@@ -1938,6 +1954,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2783829359200813069">Select encryption types</translation>
 <translation id="2783952358106015700">Use your security key with <ph name="APP_NAME"/></translation>
 <translation id="2785873697295365461">File descriptors</translation>
+<translation id="2785975315093449168">GTK</translation>
 <translation id="2787022501752539710">Keep local browsing data (bookmarks, passwords, history, etc.)</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="2788135150614412178">+</translation>
@@ -1955,6 +1972,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2796740370559399562">Continue allowing cookies</translation>
 <translation id="2798347533012571708">Keep updates</translation>
 <translation id="2799223571221894425">Relaunch</translation>
+<translation id="2800309299477632167">Custom keymap</translation>
 <translation id="2800760947029405028">Upload an image</translation>
 <translation id="2801954693771979815">Screen size</translation>
 <translation id="2802557211515765772">There are no managed printers.</translation>
@@ -1966,7 +1984,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="280518252911523675">If you continue without entering your old password, your local data will be deleted. You’ll sign in with your Brave sync chain to set up this user again.</translation>
 <translation id="2805539617243680210">You're ready!</translation>
 <translation id="2805646850212350655">Microsoft Encrypting File System</translation>
-<translation id="2805756323405976993">Apps</translation>
+<translation id="294985549514492876">Apps</translation>
 <translation id="2805760958323556153">The policy value of ExtensionInstallForcelist is invalid. Please contact your administrator.</translation>
 <translation id="2805770823691782631">Additional details</translation>
 <translation id="2806372837663997957">The device that you’re trying to share with did not accept</translation>
@@ -1980,7 +1998,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2813094189969465044">Parental controls</translation>
 <translation id="281390819046738856">Request could not be signed.</translation>
 <translation id="2814489978934728345">Stop loading this page</translation>
-<translation id="7068873021383263704">View and manage saved passwords in your <ph name="BEGIN_LINK"/>Brave sync chain<ph name="END_LINK"/></translation>
 <translation id="2815693974042551705">Bookmark folder</translation>
 <translation id="2576226373705473566">To save passwords to your Brave account, turn on sync.</translation>
 <translation id="2816628817680324566">Allow this site to identify your security key?</translation>
@@ -2006,6 +2023,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2839032553903800133">Notifications blocked</translation>
 <translation id="2841013758207633010">Time</translation>
 <translation id="2841837950101800123">Provider</translation>
+<translation id="2842013086666334835">Sign in to "<ph name="NETWORK_ID"/>"</translation>
 <translation id="2843560154284403323">To finish setting up Linux, update Chrome OS and try again.</translation>
 <translation id="2844169650293029770">USB-C device (left side front port)</translation>
 <translation id="2844809857160214557">View and manage print jobs</translation>
@@ -2016,6 +2034,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2849767214114481738">Your PIN has been added</translation>
 <translation id="2849936225196189499">Critical</translation>
 <translation id="2850541429955027218">Add theme</translation>
+<translation id="2850672011315104382">Punctuation style</translation>
 <translation id="2851634818064021665">You need permission to visit this site</translation>
 <translation id="2851728849045278002">Something went wrong. Click for more details.</translation>
 <translation id="2852385257476173980">A list of sites that you visit may appear here as you browse the web</translation>
@@ -2072,6 +2091,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2902312830803030883">More actions</translation>
 <translation id="2903457445916429186">Open selected items</translation>
 <translation id="2903882649406874750">Always block <ph name="HOST"/> from accessing sensors</translation>
+<translation id="2904845070985032877">Pause animations</translation>
 <translation id="2907619724991574506">Startup URLs</translation>
 <translation id="2907798539022650680">Failed to connect to '<ph name="NAME"/>': <ph name="DETAILS"/>
     Server message: <ph name="SERVER_MSG"/></translation>
@@ -2102,6 +2122,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2927017729816812676">Cache Storage</translation>
 <translation id="2928795416630981206">Allowed to track your camera position</translation>
 <translation id="2931157624143513983">Fit to printable area</translation>
+<translation id="2931342457001070961">No microphone connected</translation>
 <translation id="2932085390869194046">Suggest password...</translation>
 <translation id="2932483646085333864">Sign out then sign in again to start sync</translation>
 <translation id="2932883381142163287">Report abuse</translation>
@@ -2117,6 +2138,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2942279350258725020">Android messages</translation>
 <translation id="2942560570858569904">Waiting...</translation>
 <translation id="2942581856830209953">Customise this page</translation>
+<translation id="2943268899142471972">Select an Ansible playbook or Crostini backup file</translation>
 <translation id="2944060181911631861">Send usage and diagnostic data. Help improve your Android experience by automatically sending diagnostic, device and app usage data to Brave. This will help system and app stability and other improvements. Some aggregate data will also help Brave apps and partners, such as Android developers. If your additional Web &amp; App Activity setting is turned on, this data may be saved to your Brave sync chain. <ph name="BEGIN_LINK1"/>Find out more<ph name="END_LINK1"/></translation>
 <translation id="2946054015403765210">Go to files</translation>
 <translation id="2946119680249604491">Add connection</translation>
@@ -2149,6 +2171,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2977480621796371840">Remove from group</translation>
 <translation id="2979639724566107830">Open in new window</translation>
 <translation id="2981113813906970160">Show large mouse cursor</translation>
+<translation id="2981293774053328982">This file contains malware that can compromise your personal or social network accounts</translation>
 <translation id="2983373101216420412">Case battery level <ph name="PERCENTAGE"/>%.</translation>
 <translation id="2985348301114641460">Send a request to your administrator to install '<ph name="EXTENSION_NAME"/>'?</translation>
 <translation id="2987620471460279764">Text shared from other device</translation>
@@ -2164,6 +2187,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2996286169319737844">Data is encrypted with your sync passphrase. This doesn't include payment methods and addresses from Google Pay.</translation>
 <translation id="2996722619877761919">Flip on long edge</translation>
 <translation id="2996932914629936323">Clears history from all synced devices</translation>
+<translation id="2998267783395280091">Network found</translation>
 <translation id="3000378525979847272">Allowed <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="3000461861112256445">Mono audio</translation>
 <translation id="3001144475369593262">Child accounts</translation>
@@ -2225,6 +2249,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3046178388369461825">Linux disk space critically low</translation>
 <translation id="3046910703532196514">Web Page, Complete</translation>
 <translation id="304747341537320566">Speech engines</translation>
+<translation id="3048051495640130973">You can control when Battery Saver turns on in settings</translation>
 <translation id="3048336643003835855">HID devices from vendor <ph name="VENDOR_ID"/></translation>
 <translation id="3048917188684939573">Cast and device logs</translation>
 <translation id="3051250416341590778">Display size</translation>
@@ -2315,6 +2340,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3142562627629111859">New Group</translation>
 <translation id="3143515551205905069">Cancel sync</translation>
 <translation id="3143754809889689516">Play from the beginning</translation>
+<translation id="3143937294861726703">Memory saver is on</translation>
 <translation id="3144647712221361880">Open link as</translation>
 <translation id="300669147395456190">Brave Apps</translation>
 <translation id="3150693969729403281">Run safety check now</translation>
@@ -2383,6 +2409,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3225319735946384299">Code Signing</translation>
 <translation id="3226487301970807183">Toggle left-aligned side panel</translation>
 <translation id="3227137524299004712">Microphone</translation>
+<translation id="3232558119926886907">Align right</translation>
 <translation id="3232754137068452469">Web App</translation>
 <translation id="3233271424239923319">Backup Linux apps and files</translation>
 <translation id="3234251228180563751">Username is more than 1,000 characters</translation>
@@ -2427,6 +2454,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3275778809241512831">Your internal security key is currently insecure. Please remove it from any services that you used it with. In order to resolve the issue, please reset the security key.</translation>
 <translation id="3275778913554317645">Open as window</translation>
 <translation id="3277214528693754078">Navigate with text cursor (Caret Browsing)</translation>
+<translation id="3277594800340743211">Large shadow</translation>
 <translation id="3278001907972365362">Your Brave sync chain(s) need attention</translation>
 <translation id="3279092821516760512">Selected contacts can share with you when nearby. Transfers won't start until you accept.</translation>
 <translation id="3279230909244266691">This process may take a few minutes. Starting the virtual machine.</translation>
@@ -2481,6 +2509,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3325910708063135066">Camera and microphone are turned off in Mac System Preferences</translation>
 <translation id="3327050066667856415">Chromebooks are designed for security. Your device is protected from malware automatically – no extra software required.</translation>
 <translation id="3328489342742826322">Restoring from a backup will delete existing Linux applications and data in your Linux files folder.</translation>
+<translation id="3329013043687509092">Saturation</translation>
 <translation id="3331321258768829690">(<ph name="UTCOFFSET"/>) <ph name="LONGTZNAME"/> (<ph name="EXEMPLARCITY"/>)</translation>
 <translation id="3331974543021145906">App info</translation>
 <translation id="3333190335304955291">You can turn this service off in settings.</translation>
@@ -2510,9 +2539,11 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3359256513598016054">Certificate Policy Constraints</translation>
 <translation id="3360297538363969800">Printing failed. Please check your printer and try again.</translation>
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> is sharing <ph name="ATTACHMENTS"/> with you.}other{<ph name="DEVICE_NAME"/> is sharing <ph name="ATTACHMENTS"/> with you.}}</translation>
+<translation id="3361954577771524115">From the app</translation>
 <translation id="3363202073972776113">This new profile will be managed by your organisation. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="3364986687961713424">From your administrator: <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">Use either Ctrl or Alt</translation>
+<translation id="3368586359109138591">Download a copy to use elsewhere</translation>
 <translation id="3368922792935385530">Connected</translation>
 <translation id="3369067987974711168">Show more actions for this port</translation>
 <translation id="3369624026883419694">Resolving host...</translation>
@@ -2660,6 +2691,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3494769164076977169">Ask when a site tries to download files automatically after the first file (recommended)</translation>
 <translation id="3495496470825196617">Idle power while charging</translation>
 <translation id="3908743412684152579">Brave Assistant settings</translation>
+<translation id="3495675993466884458">Your system administrator has allowed <ph name="APP_ORIGIN"/> to record your screen</translation>
 <translation id="3496213124478423963">Zoom Out</translation>
 <translation id="3496238553815913323"><ph name="LANGUAGE"/> (not selected)</translation>
 <translation id="3496689104192986836">Battery level <ph name="PERCENTAGE"/>%</translation>
@@ -2699,6 +2731,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3532273508346491126">Sync management</translation>
 <translation id="3532521178906420528">Establishing network connection…</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> – Audio muted</translation>
+<translation id="3536492240554502321">Hue rotation</translation>
 <translation id="3537881477201137177">This can be modified later in Settings</translation>
 <translation id="3538066758857505094">Error uninstalling Linux. Please try again.</translation>
 <translation id="354060433403403521">AC adaptor</translation>
@@ -2775,7 +2808,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3616741288025931835">&amp;Clear Browsing Data...</translation>
 <translation id="3617891479562106823">Backgrounds are unavailable. Try again later.</translation>
 <translation id="3619115746895587757">Cappuccino</translation>
-<translation id="3619962278978697442">Choose either one each time that you sign in</translation>
+<translation id="3620136223548713675">Geolocation</translation>
 <translation id="3621807901162200696">Help improve Chrome OS features and performance</translation>
 <translation id="362266093274784978">{COUNT,plural, =1{an app}other{# apps}}</translation>
 <translation id="362333465072914957">Waiting for the CA to issue a certificate</translation>
@@ -2807,6 +2840,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3641456520301071208">Sites can ask for your location</translation>
 <translation id="3642070413432681490">Circle cursor</translation>
 <translation id="3642699533549879077">When someone else looks at your screen, you'll get an alert and notification content will be hidden.</translation>
+<translation id="3643962751030964445">This device is managed by <ph name="DEVICE_MANAGER"/>. A new profile is required for account <ph name="USER_EMAIL_ADDRESS"/> by <ph name="DEVICE_MANAGER"/></translation>
 <translation id="3645372836428131288">Move slightly to capture a different part of the fingerprint.</translation>
 <translation id="3647998456578545569">{COUNT,plural, =1{<ph name="ATTACHMENTS"/> received from <ph name="DEVICE_NAME"/>}other{<ph name="ATTACHMENTS"/> received from <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> detected</translation>
@@ -2885,6 +2919,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="372062398998492895">CUPS</translation>
 <translation id="8397843425685839889">You and Brave</translation>
 <translation id="3722108462506185496">Error starting the virtual machine service. Please try again.</translation>
+<translation id="3726965532284929944">QT</translation>
 <translation id="3727144509609414201">Available Wi-Fi networks</translation>
 <translation id="3727187387656390258">Inspect pop-up</translation>
 <translation id="372722114124766626">Just Once</translation>
@@ -2951,6 +2986,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3784472333786002075">Cookies are files created by websites. There are two types of cookies: first-party cookies are created by the site that you visit. The site is shown on the address bar. Third-party cookies are created by other sites. These sites own some of the content, like ads or images, that you see on the website that you visit.</translation>
 <translation id="3785308913036335955">Show Apps Shortcut</translation>
 <translation id="3785727820640310185">Saved passwords for this site</translation>
+<translation id="3787434344076711519">Waiting for translation</translation>
 <translation id="3788301286821743879">The kiosk application could not be launched.</translation>
 <translation id="3788331399335602504">these files</translation>
 <translation id="3788401245189148511">It could:</translation>
@@ -2961,6 +2997,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3888429887790492932">{NUM_DAYS,plural, =1{Brave didn't find harmful software on your computer • Checked 1 day ago}other{Brave didn't find harmful software on your computer • Checked {NUM_DAYS} days ago}}</translation>
 <translation id="379500251094592809">To use Nearby Share, make sure that both devices are unlocked, close together and have Bluetooth turned on. If you’re sharing with a Chromebook that is not in your contacts, make sure that it has Nearby visibility turned on (open the status area by selecting the time, then turn on Nearby visibility) <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="379509625511193653">Off</translation>
+<translation id="3795766489237825963">Play animations</translation>
 <translation id="3796648294839530037">Favourite Networks:</translation>
 <translation id="3797739167230984533">Your <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> is managed<ph name="END_LINK"/> by your organisation</translation>
 <translation id="3797900183766075808">&amp;Search <ph name="SEARCH_ENGINE"/> for “<ph name="SEARCH_TERMS"/>”</translation>
@@ -3014,6 +3051,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="383669374481694771">This is general information about this device and how it's used (such as battery level, system and app activity, and errors). The data will be used to improve Android, and some aggregated information will also help Brave apps and partners, such as Android developers, make their apps and products better.</translation>
 <translation id="3838085852053358637">Failed to load extension</translation>
 <translation id="3838486795898716504">More <ph name="PAGE_TITLE"/></translation>
+<translation id="9106683078444907752">Add saved passwords to Brave Password Manager</translation>
 <translation id="383891835335927981">No sites have been zoomed in or out</translation>
 <translation id="3839509547554145593">Enable mouse scroll acceleration</translation>
 <translation id="3839516600093027468">Always block <ph name="HOST"/> from seeing the clipboard</translation>
@@ -3025,6 +3063,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3847319713229060696">Help improve security on the web for everyone</translation>
 <translation id="385051799172605136">Back</translation>
 <translation id="3851428669031642514">Load unsafe scripts</translation>
+<translation id="3852215160863921508">Input assistance</translation>
 <translation id="3854599674806204102">Pick an option</translation>
 <translation id="3854967233147778866">Offer to translate websites in other languages</translation>
 <translation id="3854976556788175030">Output tray is full</translation>
@@ -3081,10 +3120,8 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="389901847090970821">Select keyboard</translation>
 <translation id="3900966090527141178">Export passwords</translation>
 <translation id="3903187154317825986">Built-in keyboard</translation>
-<translation id="3903191712482985591">Add playbook</translation>
 <translation id="3904326018476041253">Location Services</translation>
 <translation id="3905761538810670789">Repair app</translation>
-<translation id="3908393983276948098"><ph name="PLUGIN_NAME"/> is out of date</translation>
 <translation id="3908501907586732282">Enable extension</translation>
 <translation id="3909701002594999354">Show All &amp;Controls</translation>
 <translation id="3909791450649380159">Cu&amp;t</translation>
@@ -3109,6 +3146,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7575176983371565462">Sends URLs to Safe Browsing to check them. Also sends a small sample of pages, downloads, extension activity and system information to help discover new threats. Temporarily links this data to your Brave sync chain when you're signed in, to protect you across Brave apps.</translation>
 <translation id="3925573269917483990">Camera:</translation>
 <translation id="3926002189479431949">Smart Lock phone changed</translation>
+<translation id="392627956579011934">Restart needed to install speech files.</translation>
 <translation id="3927932062596804919">Deny</translation>
 <translation id="3928570707778085600">Save changes to <ph name="FILE_OR_FOLDER_NAME"/>?</translation>
 <translation id="3928659086758780856">Low on ink</translation>
@@ -3157,6 +3195,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3966072572894326936">Choose another folder...</translation>
 <translation id="3967822245660637423">Download complete</translation>
 <translation id="3967841595862839006">Choose your language &amp; keyboard</translation>
+<translation id="3968739731834770921">Kana</translation>
 <translation id="3970114302595058915">ID</translation>
 <translation id="397105322502079400">Calculating...</translation>
 <translation id="3971764089670057203">Fingerprints on this security key</translation>
@@ -3231,6 +3270,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4036778507053569103">The policy downloaded from the server is invalid.</translation>
 <translation id="4037084878352560732">Horse</translation>
 <translation id="403725336528835653">Try it first</translation>
+<translation id="4040041015953651705">Language to translate from</translation>
 <translation id="4040105702484676956">Clear site data and permissions for <ph name="SITE_NAME"/> and its installed app?</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Exit Page}other{Exit Pages}}</translation>
 <translation id="4043267180218562935">Cursor size</translation>
@@ -3248,6 +3288,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4050534976465737778">Make sure that both devices are unlocked, close together and have Bluetooth turned on. If you’re sharing with a Chromebook not in your contacts, make sure that it has Nearby visibility turned on (open the status area, then turn on Nearby visibility). <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="4052120076834320548">Tiny</translation>
 <translation id="4054070260844648638">Visible to everyone</translation>
+<translation id="4056223980640387499">Sepia</translation>
 <translation id="8891261408659902804">You reached the time limit that your parent set for <ph name="APP_NAME"/> Brave app. You can use it for <ph name="TIME_LIMIT"/> tomorrow.</translation>
 <translation id="4057041477816018958"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/></translation>
 <translation id="4057896668975954729">View in Store</translation>
@@ -3258,18 +3299,17 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4062561150282203854">Sync your <ph name="DEVICE_TYPE"/> apps, settings and more</translation>
 <translation id="4065876735068446555">The network you are using (<ph name="NETWORK_ID"/>) may require you to visit its login page.</translation>
 <translation id="4066207411788646768">Please check your connection to see available printers in your network</translation>
+<translation id="4067839975993712852">Mark current tab as read</translation>
 <translation id="4068776064906523561">Saved fingerprints</translation>
 <translation id="407173827865827707">On click</translation>
 <translation id="5493571544288146030">Password will be saved in your Brave sync chain, <ph name="ACCOUNT"/>. You won’t have to remember it.</translation>
 <translation id="407520071244661467">Scale</translation>
 <translation id="407543464472585404"><ph name="NAME"/>'s profile is linked to <ph name="EMAIL"/></translation>
-<translation id="4075639477629295004">Unable to cast <ph name="FILE_NAME"/>.</translation>
 <translation id="4077917118009885966">Ads blocked on this site</translation>
 <translation id="4077919383365622693">All data and cookies stored by <ph name="SITE"/> will be cleared.</translation>
 <translation id="4078738236287221428">Aggressive</translation>
 <translation id="4079140982534148664">Use Enhanced Spell Check</translation>
 <translation id="4081203444152654304">Search inside image with <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
-<translation id="4081242589061676262">Unable to cast file.</translation>
 <translation id="408223403876103285"><ph name="WEBSITE"/> sent a notification to your phone. To confirm that it's you, follow the steps there.</translation>
 <translation id="4084682180776658562">Bookmark</translation>
 <translation id="4084835346725913160">Close <ph name="TAB_NAME"/></translation>
@@ -3366,10 +3406,12 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4175137578744761569">Light purple and white</translation>
 <translation id="4175737294868205930">Persistent storage</translation>
 <translation id="4176463684765177261">Disabled</translation>
+<translation id="4176864026061939326">This device is managed. A new profile is required for account <ph name="USER_EMAIL_ADDRESS"/> by your device administrator</translation>
 <translation id="4180788401304023883">Delete CA certificate "<ph name="CERTIFICATE_NAME"/>"?</translation>
 <translation id="4181602000363099176">20x</translation>
 <translation id="4181841719683918333">Languages</translation>
 <translation id="4184803915913850597">HID device (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
+<translation id="4186749321808907788"><ph name="QUERY_NAME"/> – <ph name="DEFAULT_SEARCH_ENGINE_NAME"/> Search</translation>
 <translation id="4187424053537113647">Setting up <ph name="APP_NAME"/>…</translation>
 <translation id="4190828427319282529">Highlight keyboard focus</translation>
 <translation id="4193836101014293726">Can't delete this profile</translation>
@@ -3494,10 +3536,12 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4306119971288449206">Apps must be served with content-type '<ph name="CONTENT_TYPE"/>'</translation>
 <translation id="4307992518367153382">Basics</translation>
 <translation id="4309165024397827958">Allow Android apps and services with location permission to use your device's location. Brave may collect location data periodically and use this data in an anonymous way to improve location accuracy and location-based services.</translation>
+<translation id="4309183709806093061">Also share system audio. This device will be muted to prevent feedback.</translation>
 <translation id="4309420042698375243"><ph name="NUM_KILOBYTES"/>K (<ph name="NUM_KILOBYTES_LIVE"/>K live)</translation>
 <translation id="4310132194679586591">Select an app on your device to open this link</translation>
 <translation id="4310139701823742692">File is in the wrong format. Check the PPD file and try again.</translation>
 <translation id="431076611119798497">&amp;Details</translation>
+<translation id="4311284648179069796">Not allowed to read and change</translation>
 <translation id="3047737257561987312">{COUNT,plural, =1{1 Brave sync chain}other{<ph name="EXTRA_ACCOUNTS"/> Brave sync chains}}</translation>
 <translation id="4312866146174492540">Block (default)</translation>
 <translation id="4314497418046265427">Be more productive when you connect your phone to your <ph name="DEVICE_TYPE"/></translation>
@@ -3688,6 +3732,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4504940961672722399">Use this extension by clicking on this icon or by pressing <ph name="EXTENSION_SHORTCUT"/>.</translation>
 <translation id="450552327874992444">Word already added</translation>
 <translation id="4507128560633489176">Data cleared.</translation>
+<translation id="4507373251891673233">You blocked all extensions from <ph name="HOST"/></translation>
 <translation id="450867954911715010">Accessibility settings</translation>
 <translation id="4508765956121923607">View S&amp;ource</translation>
 <translation id="4509421746503122514">Relaunch to update</translation>
@@ -3747,6 +3792,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4554591392113183336">External extension is at the same or lower version compared to the existing one.</translation>
 <translation id="4555769855065597957">Shadow</translation>
 <translation id="4808253054156608144">To save passwords to your Brave account, sign in and turn on sync.</translation>
+<translation id="4556194354084985730">Easily sign in to sites and apps with your saved passwords. When turned off, you’ll be asked before signing in.</translation>
 <translation id="4558426062282641716">Auto-launch permission requested</translation>
 <translation id="4559617833001311418">This site is accessing your motion or light sensors.</translation>
 <translation id="4561893854334016293">No recently changed permissions</translation>
@@ -3776,8 +3822,8 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4579453506923101210">Forget connected phone</translation>
 <translation id="4579581181964204535">Unable to cast <ph name="HOST_NAME"/>.</translation>
 <translation id="7343272409020602342">For browser notifications, go to <ph name="LINK_BEGIN"/>Brave browser settings<ph name="LINK_END"/></translation>
+<translation id="5450255970312261532">Sign back in to Brave Password Manager</translation>
 <translation id="4580596421317071374">Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER"/> on this device.</translation>
-<translation id="4580626299762849806">Can't import passwords. Check <ph name="FILENAME"/> and make sure that it's formatted correctly.</translation>
 <translation id="4581774856936278355">Error while restoring Linux</translation>
 <translation id="4582297591746054421">Sites usually read your clipboard for features like keeping the formatting of text that you copied</translation>
 <translation id="4582563038311694664">Reset all settings</translation>
@@ -3811,6 +3857,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4617019240346358451">Reload the page to use '<ph name="EXTENSION_NAME"/>'</translation>
 <translation id="4617270414136722281">Extension options</translation>
 <translation id="4617880081511131945">Can't establish connection</translation>
+<translation id="4618195822946934889">URL can only contain ASCII characters</translation>
 <translation id="4619564267100705184">Verify that it's you</translation>
 <translation id="4619615317237390068">Tabs from other devices</translation>
 <translation id="4620809267248568679">This setting is enforced by an extension.</translation>
@@ -3847,6 +3894,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4651484272688821107">Could not load online component with demo mode resources.</translation>
 <translation id="4651921906638302153">Can't sign in with this account</translation>
 <translation id="4652935475563630866">The change in camera setting requires Parallels Desktop to relaunch. Relaunch Parallels Desktop to proceed.</translation>
+<translation id="4653116291358041820">Small shadow</translation>
 <translation id="4653405415038586100">Error configuring Linux</translation>
 <translation id="7287449509207005261">You’re seeing baskets that help you easily get back to items that you left in shopping baskets across the web.
         <ph name="BREAK"/>
@@ -3945,6 +3993,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="474609389162964566">Access your Assistant with 'Hey Brave'</translation>
 <translation id="4746351372139058112">Messages</translation>
 <translation id="4748783296226936791">Sites usually connect to HID devices for features that use uncommon keyboards, game controllers and other devices</translation>
+<translation id="4749960740855309258">Open a new tab</translation>
 <translation id="4750185073185658673">Go to your phone to review a few more permissions. Make sure that your phone's Bluetooth and Wi-Fi are turned on.</translation>
 <translation id="4750394297954878236">Suggestions</translation>
 <translation id="475088594373173692">First user</translation>
@@ -3959,10 +4008,10 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="4763408175235639573">The following cookies were set when you viewed this page</translation>
 <translation id="4765524037138975789">{MONTHS,plural, =1{This device will be saved for one month and you can connect without a code next time. This is set by your administrator.}other{This device will be saved for {MONTHS} months and you can connect without a code next time. This is set by your administrator.}}</translation>
 <translation id="4765582662863429759">Allows Android Messages to relay texts from your phone to your Chromebook</translation>
+<translation id="4766598565665644999">All extensions can read and change <ph name="HOST"/></translation>
 <translation id="4768332406694066911">You have certificates from these organisations that identify you</translation>
 <translation id="4770119228883592393">Permission requested, press ⌘ + Option + Down arrow to respond</translation>
 <translation id="4773112038801431077">Upgrade Linux</translation>
-<translation id="4774337692467964393">If Smart Lock is turned on, you won't need to enter a PIN or password</translation>
 <translation id="4775142426314270551">Help improve Brave and Chrome OS features and performance by automatically sending crash reports as well as diagnostic and usage data to Brave. Some aggregate data will also help Android apps and Brave Partners. If the Web &amp; App Activity setting is turned on for your child's Brave sync chain, your child's Android data may be saved to your child's Brave sync chain.</translation>
 <translation id="477647109558161443">Create a desktop shortcut</translation>
 <translation id="4776594120007763294">To add a page to read later, click the button</translation>
@@ -4011,7 +4060,6 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="4820236583224459650">Set as active ticket</translation>
 <translation id="4821935166599369261">&amp;Profiling Enabled</translation>
 <translation id="4823484602432206655">Read and change user and device settings</translation>
-<translation id="4823894915586516138">This PIN or password protects your data on this <ph name="DEVICE_TYPE"/>, including any information that you access from your phone</translation>
 <translation id="4824037980212326045">Linux backup and restore</translation>
 <translation id="4824958205181053313">Cancel sync?</translation>
 <translation id="4825532258163983651">Can't delete passkey</translation>
@@ -4033,6 +4081,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="4838170306476614339">View your phone's photos, media and notifications</translation>
 <translation id="4838836835474292213">Clipboard read access allowed</translation>
 <translation id="4838907349371614303">Password updated</translation>
+<translation id="4838958829619609362">Selection is not in <ph name="LANGUAGE"/></translation>
 <translation id="4839303808932127586">Sa&amp;ve video as...</translation>
 <translation id="4841741146571978176">A required virtual machine does not exist. Please try setting up <ph name="VM_TYPE"/> to continue</translation>
 <translation id="4842976633412754305">This page is trying to load scripts from unauthenticated sources.</translation>
@@ -4068,6 +4117,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="4871568871368204250">Turn off sync</translation>
 <translation id="4871719318659334896">Close group</translation>
 <translation id="4872192066608821120">To import passwords, select a CSV file</translation>
+<translation id="4872212987539553601">Set up on-device encryption</translation>
 <translation id="4873312501243535625">Media File Checker</translation>
 <translation id="4876273079589074638">Help our engineers investigate and fix this crash. List exact steps if you can. No detail is too small!</translation>
 <translation id="4876895919560854374">Lock and unlock the screen</translation>
@@ -4176,6 +4226,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="4972737347717125191">Sites can ask to use virtual reality devices and data</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Mute site}other{Mute sites}}</translation>
 <translation id="497403230787583386">Security checks are complete. Your document will be printed.</translation>
+<translation id="4975543297921324897">Monospace font</translation>
 <translation id="4977882548591990850"><ph name="CHARACTER_COUNT"/>/<ph name="CHARACTER_LIMIT"/></translation>
 <translation id="4977942889532008999">Confirm Access</translation>
 <translation id="4980805016576257426">This extension contains malware.</translation>
@@ -4226,6 +4277,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5038818366306248416">You previously chose not to allow any extensions on <ph name="ORIGIN"/></translation>
 <translation id="1246634473640425087">View and manage saved passwords in your Brave sync chain</translation>
 <translation id="5039804452771397117">Allow</translation>
+<translation id="5040262127954254034">Privacy</translation>
 <translation id="5040823038948176460">Additional content settings</translation>
 <translation id="1773373699515552474">Brave app</translation>
 <translation id="5043440033854483429">Name can use letters, numbers and hyphens (-), and must be between 1 and 15 characters inclusive.</translation>
@@ -4265,7 +4317,6 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5078638979202084724">Bookmark all tabs</translation>
 <translation id="5078796286268621944">Incorrect PIN</translation>
 <translation id="5079010647467150187">Add built-in VPN…</translation>
-<translation id="5079950360618752063">Use suggested password</translation>
 <translation id="508059534790499809">Refresh a Kerberos ticket</translation>
 <translation id="5084328598860513926">Provisioning flow was interrupted. Please try again or contact your device owner or administrator. Error code: <ph name="ERROR_CODE"/>.</translation>
 <translation id="5085162214018721575">Checking for updates</translation>
@@ -4347,7 +4398,6 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5161251470972801814">USB devices from <ph name="VENDOR_NAME"/></translation>
 <translation id="5162905305237671850"><ph name="DEVICE_TYPE"/> has been blocked</translation>
 <translation id="5163910114647549394">Tab moved to end of tabstrip</translation>
-<translation id="5166596762332123936"><ph name="PLUGIN_NAME"/> was blocked because it is out of date</translation>
 <translation id="516747639689914043">Hypertext Transport Protocol (HTTP)</translation>
 <translation id="5170568018924773124">Show in folder</translation>
 <translation id="5171045022955879922">Search or type URL</translation>
@@ -4371,6 +4421,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5190926251776387065">Activate port</translation>
 <translation id="5191094172448199359">The PINs that you entered don't match</translation>
 <translation id="5191251636205085390">Learn about and control new technologies that aim to replace third-party cookies</translation>
+<translation id="519185197579575131">Use QT</translation>
 <translation id="5192062846343383368">Open the Family Link app to see your supervision settings</translation>
 <translation id="5193988420012215838">Copied to your clipboard</translation>
 <translation id="5195074424945754995">URLs matching these rules won't trigger a browser switch and can be open in either <ph name="BROWSER_NAME"/> or <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
@@ -4386,11 +4437,10 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="520568280985468584">Network has been added successfully. It may take several minutes for your mobile network to become active.</translation>
 <translation id="5206215183583316675">Delete "<ph name="CERTIFICATE_NAME"/>"?</translation>
 <translation id="520621735928254154">Certificate import error</translation>
-<translation id="5206562235913517859">Retailer-store ID is ABC-1234 format</translation>
-<translation id="7485307793427476822">{COUNT,plural, =1{Successfully changed the compromised password. You have # more compromised password. Brave recommends checking this password now.}other{Successfully changed the compromised password. You have # more compromised passwords. Brave recommends checking these passwords now.}}</translation>
 <translation id="5207949376430453814">Highlight text caret</translation>
 <translation id="520840839826327499"><ph name="SERVICE_NAME"/> wants to check if you are using an eligible Chrome OS device.</translation>
 <translation id="5208548918290612795">Storing <ph name="WEB_DRIVE"/> authentication token</translation>
+<translation id="5208988882104884956">Halfwidth</translation>
 <translation id="5247681254378595620">Enable a pop-up bubble in Top Brave UI to search over currently open tabs.</translation>
 <translation id="5209320130288484488">No devices found</translation>
 <translation id="5209513429611499188">HID devices with usages from usage page <ph name="USAGE_PAGE"/></translation>
@@ -4448,6 +4498,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5268373933383932086">Your page, your way</translation>
 <translation id="5269977353971873915">Print Failed</translation>
 <translation id="5273806377963980154">Edit site URL</translation>
+<translation id="5275084684151588738">User dictionaries</translation>
 <translation id="5275338516105640560">Saved tab group button</translation>
 <translation id="5275352920323889391">Dog</translation>
 <translation id="527605719918376753">Mute tab</translation>
@@ -4493,6 +4544,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5305145881844743843">This account is managed by <ph name="BEGIN_LINK"/><ph name="DOMAIN"/><ph name="END_LINK"/></translation>
 <translation id="5307030433605830021">Source not supported</translation>
 <translation id="5307386115243749078">Pair Bluetooth switch</translation>
+<translation id="333946966437820429">Brave Password Manager timed out</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="5309418307557605830">Brave Assistant works here too</translation>
 <translation id="5311304534597152726">Signing in as</translation>
@@ -4569,6 +4621,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5390743329570580756">Send for</translation>
 <translation id="5392192690789334093">Allowed to send notifications</translation>
 <translation id="5393761864111565424">{COUNT,plural, =1{Link}other{# links}}</translation>
+<translation id="5395498824851198390">Default font</translation>
 <translation id="5396325212236512832">Automatically sign in to sites and apps using stored credentials. If turned off, you'll be asked for confirmation every time before signing in to a site or app.</translation>
 <translation id="5397378439569041789">Enrol kiosk or signage device</translation>
 <translation id="5397794290049113714">You</translation>
@@ -4605,6 +4658,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="542750953150239272">By continuing, you agree that this device may also automatically download and install updates and apps from Brave, your operator and your device's manufacturer, possibly using mobile data. Some of these apps may offer in-app purchases.</translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Update is available)</translation>
 <translation id="542948651837270806">An update for the trusted platform module firmware needs to be installed. See <ph name="TPM_FIRMWARE_UPDATE_LINK"/></translation>
+<translation id="5429818411180678468">Fullwidth</translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
 <translation id="5431318178759467895">Colour</translation>
 <translation id="543338862236136125">Edit password</translation>
@@ -4642,18 +4696,15 @@ You can assign multiple switches to this action.</translation>
 <translation id="5463625433003343978">Finding devices…</translation>
 <translation id="5463845647891602726">To increase free space, delete files from your device</translation>
 <translation id="5463856536939868464">Menu containing hidden bookmarks</translation>
-<translation id="5464632865477611176">Run this time</translation>
 <translation id="5464660706533281090">This setting can't be changed by a child user.</translation>
 <translation id="5466374726908360271">Paste and search for '<ph name="SEARCH_TERMS"/>'</translation>
 <translation id="5467207440419968613">Blocked <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="5468173180030470402">Looking for file shares</translation>
 <translation id="5468330507528805311">Tethering status:</translation>
-<translation id="5468881191994555667">Choose file</translation>
 <translation id="5469852975082458401">You can navigate pages with a text cursor. Press F7 to turn off.</translation>
 <translation id="5470735824776589490">A restart is required before your device can be reset with Powerwash. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="5471768120198416576">Hi there! I'm your text-to-speech voice.</translation>
 <translation id="5472627187093107397">Save passwords for this site</translation>
-<translation id="7253003527666031200">Find more accessibility tools in the Brave Web Store</translation>
 <translation id="5473075389972733037">IBM</translation>
 <translation id="5473099001878321374">By continuing, you agree that this device may also automatically download and install updates and apps from Brave, your child's operator and this device's manufacturer, possibly using mobile data. Some of these apps may offer in-app purchases.</translation>
 <translation id="5473156705047072749">{NUM_CHARACTERS,plural, =1{PIN must be at least one character}other{PIN must be at least # characters}}</translation>
@@ -4792,6 +4843,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="558918721941304263">Loading apps...</translation>
 <translation id="5590418976913374224">Play sound on device start-up</translation>
 <translation id="5592595402373377407">Not enough data available yet.</translation>
+<translation id="5594899180331219722">Select file</translation>
 <translation id="5595307023264033512">Total storage used by sites: <ph name="TOTAL_USAGE"/></translation>
 <translation id="5595485650161345191">Edit address</translation>
 <translation id="5596627076506792578">More options</translation>
@@ -4818,7 +4870,6 @@ You can assign multiple switches to this action.</translation>
            and <ph name="BEGIN_LINK3"/>{BrowserSwitcherUseIeSitelist}<ph name="END_LINK3"/></translation>
 <translation id="5620568081365989559">DevTools requests full access to <ph name="FOLDER_PATH"/>. Make sure that you do not expose any sensitive information.</translation>
 <translation id="5620612546311710611">usage statistics</translation>
-<translation id="5620655347161642930">Export passwords…</translation>
 <translation id="5623282979409330487">This site is accessing your motion sensors.</translation>
 <translation id="5623842676595125836">Log</translation>
 <translation id="5624120631404540903">Manage passwords</translation>
@@ -4842,6 +4893,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5639549361331209298">Reload this page, hold to see more options</translation>
 <translation id="5640133431808313291">Manage security keys</translation>
 <translation id="5641608986289282154">Start using <ph name="DEVICE_OS"/></translation>
+<translation id="5641648607875312660">Screenshot image editor</translation>
 <translation id="5642508497713047">CRL Signer</translation>
 <translation id="5643321261065707929">Metered network</translation>
 <translation id="5643620609347735571">Clear and continue</translation>
@@ -4856,7 +4908,6 @@ You can assign multiple switches to this action.</translation>
 <translation id="5657667036353380798">The external extension requires chrome version <ph name="MINIMUM_CHROME_VERSION"/> or greater to be installed.</translation>
 <translation id="5658415415603568799">For added security, Smart Lock will ask you to enter your password after 20 hours.</translation>
 <translation id="5659593005791499971">Email</translation>
-<translation id="5659833766619490117">This page could not be translated</translation>
 <translation id="5662513737565158057">Change how Linux apps will work.</translation>
 <translation id="5667293444945855280">Malware</translation>
 <translation id="5667546120811588575">Setting up Google Play…</translation>
@@ -4887,6 +4938,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5696143504434933566">Report abuse from '<ph name="EXTENSION_NAME"/>'</translation>
 <translation id="5696679855467848181">Current PPD file in use: <ph name="PPD_NAME"/></translation>
 <translation id="5697832193891326782">Emoji picker</translation>
+<translation id="5698462638680260399">Sign in to use passwords</translation>
 <translation id="570043786759263127">Google Play apps and services</translation>
 <translation id="5700836101007545240">Add connection is disabled by your administrator</translation>
 <translation id="5701080607174488915">Error when fetching policy from the server.</translation>
@@ -4904,6 +4956,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5712153969432126546">Sites sometimes publish PDFs, like documents, contracts and forms</translation>
 <translation id="571222594670061844">Sites can show sign-in prompts from identity services</translation>
 <translation id="5713158217420111469">Connected to <ph name="DEVICE"/></translation>
+<translation id="5713960379473463904">Space input style</translation>
 <translation id="5715711091495208045">Plug-in Broker: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5719603411793408026">Default search engines</translation>
 <translation id="5719854774000914513">Sites can ask to connect to HID devices</translation>
@@ -4991,6 +5044,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5800351251499368110">Close search in side panel. Search is open in the side panel.</translation>
 <translation id="5801568494490449797">Preferences</translation>
 <translation id="5804241973901381774">Permissions</translation>
+<translation id="5805268472388605531">Press and hold keyboard keys to see accent marks and special characters</translation>
 <translation id="5805697420284793859">Window manager</translation>
 <translation id="5806447147478173900">Total storage used by displayed sites: <ph name="TOTAL_USAGE"/></translation>
 <translation id="5806773519584576205">0° (Default)</translation>
@@ -5008,7 +5062,6 @@ You can assign multiple switches to this action.</translation>
 <translation id="5827266244928330802">Safari</translation>
 <translation id="5827733057563115968">Next word prediction</translation>
 <translation id="5828633471261496623">Printing...</translation>
-<translation id="5828797982387013521">Select playbook</translation>
 <translation id="5830205393314753525">Can't open <ph name="APP_NAME"/></translation>
 <translation id="5830720307094128296">Save Page &amp;As...</translation>
 <translation id="583281660410589416">Unknown</translation>
@@ -5019,6 +5072,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5834581999798853053">About <ph name="TIME"/> minutes left</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – Camera or microphone recording</translation>
 <translation id="583673505367439042">Sites can ask to edit files and folders on your device</translation>
+<translation id="5836999627049108525">Language to translate from</translation>
 <translation id="583756221537636748">Case</translation>
 <translation id="7230006500876504868">Search with Brave</translation>
 <translation id="5840680448799937675">Files will always be shared offline</translation>
@@ -5026,6 +5080,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5842497610951477805">Bluetooth enable</translation>
 <translation id="5844574845205796324">Suggest new content to explore</translation>
 <translation id="5846200638699387931">Relation syntax error: <ph name="ERROR_LINE"/></translation>
+<translation id="5846455742152785308">No shadow</translation>
 <translation id="5846504156837627898">Manage site permissions</translation>
 <translation id="5846807460505171493">Install updates and apps. By continuing, you agree that this device may also automatically download and install updates and apps from Brave, your operator and your device's manufacturer, possibly using mobile data. Some of these apps may offer in-app purchases.</translation>
 <translation id="5849212445710944278">Already added</translation>
@@ -5072,7 +5127,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5884474295213649357">This tab is connected to a USB device.</translation>
 <translation id="5885314688092915589">Your organisation will manage this profile</translation>
 <translation id="5886009770935151472">Finger 1</translation>
-<translation id="5888843733007437002">Viewing templates. Press tab to navigate.</translation>
+<translation id="5886384907280980632">Turn off now</translation>
 <translation id="5889282057229379085">Maximum number of intermediate CAs: <ph name="NUM_INTERMEDIATE_CA"/></translation>
 <translation id="5891688036610113830">Preferred Wi-Fi networks</translation>
 <translation id="5895138241574237353">Restart</translation>
@@ -5112,6 +5167,7 @@ You can assign multiple switches to this action.</translation>
     <ph name="LINE_BREAK"/>
     This picture will appear on the Chromebook sign-in screen and lock screen.</translation>
 <translation id="5925147183566400388">Certification Practice Statement Pointer</translation>
+<translation id="5927232971138258197">This extension can read and change <ph name="HOST"/></translation>
 <translation id="592740088639760830">Stop this container</translation>
 <translation id="539658326146969381">Download PDF files instead of automatically opening them in Brave</translation>
 <translation id="592919310198008711">When I click the extension</translation>
@@ -5153,6 +5209,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5957987129450536192">Tap the Select-to-Speak icon near your profile image, then select what you want to hear.</translation>
 <translation id="5959471481388474538">Network not available</translation>
 <translation id="595959584676692139">Reload page to use this extension</translation>
+<translation id="5963413905009737549">Section</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> peak)</translation>
 <translation id="5964113968897211042">{COUNT,plural, =0{Open all in &amp;new window}=1{Open in &amp;new window}other{Open all ({COUNT}) in &amp;new window}}</translation>
 <translation id="5965661248935608907">It also controls what page is shown when you click the Home button or search from the Omnibox.</translation>
@@ -5170,6 +5227,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5975792506968920132">Battery Charge Percentage</translation>
 <translation id="5976160379964388480">Others</translation>
 <translation id="5978277834170881274">Use basic spell check</translation>
+<translation id="5978395054855988504">Battery Saver is on</translation>
 <translation id="5978493744931296692">Your administrator has disabled other profiles</translation>
 <translation id="5979084224081478209">Check passwords</translation>
 <translation id="5979156418378918004">{NUM_EXTENSIONS,plural, =1{You turned 1 potentially harmful extension back on}other{You turned {NUM_EXTENSIONS} potentially harmful extensions back on}}</translation>
@@ -5253,6 +5311,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6057381398996433816">This site has been blocked from using motion and light sensors.</translation>
 <translation id="931766611660157151">Recent Brave tabs</translation>
 <translation id="6059652578941944813">Certificate Hierarchy</translation>
+<translation id="6059925163896151826">USB devices</translation>
 <translation id="6063284707309177505">Create QR code</translation>
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Note:<ph name="END_BOLD"/> A similar voice or recording might be able to access <ph name="SUPERVISED_USER_NAME"/>’s personal results. To save battery, you can select in <ph name="SUPERVISED_USER_NAME"/>’s Assistant settings to have ‘Hey Brave’ on only when this device is connected to a power source.</translation>
 <translation id="6064217302520318294">Screen lock</translation>
@@ -5275,6 +5334,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6077476112742402730">Speak-to-type</translation>
 <translation id="6078121669093215958">{0,plural, =1{Guest}other{# open guest windows}}</translation>
 <translation id="6078323886959318429">Add shortcut</translation>
+<translation id="6078742430369906859">Connectivity on '<ph name="NETWORK_ID"/>' may be limited</translation>
 <translation id="6078752646384677957">Please check your microphone and audio levels.</translation>
 <translation id="6078769373519310690">'<ph name="CHROME_EXTENSION_NAME"/>' wants to connect to a HID device</translation>
 <translation id="608029822688206592">No network found. Please insert your SIM and try again.</translation>
@@ -5288,6 +5348,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6087960857463881712">Awesome face</translation>
 <translation id="608912389580139775">To add this page to your reading list, click the Bookmark icon</translation>
 <translation id="6091761513005122595">Share mounted successfully.</translation>
+<translation id="6093803049406781019">Delete profile</translation>
 <translation id="6093888419484831006">Cancelling update...</translation>
 <translation id="6095541101974653012">You were logged out.</translation>
 <translation id="6095984072944024315">−</translation>
@@ -5381,6 +5442,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6185132558746749656">Device Location</translation>
 <translation id="6190953336330058278">Phone Hub apps</translation>
 <translation id="6195005504600220730">Read information about your browser, OS and device</translation>
+<translation id="6195155925303302899">Align centre</translation>
 <translation id="6195693561221576702">This device cannot be set up in offline demo mode.</translation>
 <translation id="6196640612572343990">Block third-party cookies</translation>
 <translation id="6196854373336333322">The extension "<ph name="EXTENSION_NAME"/>" has taken control of your proxy settings, which means it can change, break or eavesdrop on anything you do online. If you aren't sure why this change happened, you probably don't want it.</translation>
@@ -5467,13 +5529,11 @@ You can assign multiple switches to this action.</translation>
 <translation id="6270391203985052864">Sites can ask to send notifications</translation>
 <translation id="6270770586500173387">Send <ph name="BEGIN_LINK1"/>system and app information<ph name="END_LINK1"/>, and <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
 <translation id="6271348838875430303">correction undone</translation>
-<translation id="6272643420381259437">There was an error (<ph name="ERROR"/>) while downloading the plug-in</translation>
 <translation id="6273677812470008672">Quality</translation>
 <translation id="6274202259872570803">Screencast</translation>
 <translation id="6276210637549544171">The proxy <ph name="PROXY_SERVER"/> requires a username and password.</translation>
 <translation id="6277105963844135994">Network timeout</translation>
 <translation id="6277518330158259200">T&amp;ake Screenshot</translation>
-<translation id="6278057325678116358">Use GTK+</translation>
 <translation id="6278428485366576908">Theme</translation>
 <translation id="6278776436938569440">Change location</translation>
 <translation id="6279183038361895380">Press |<ph name="ACCELERATOR"/>| to show your cursor</translation>
@@ -5534,7 +5594,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6333170995003625229">Your email address or password couldn't be verified. Try signing in again.</translation>
 <translation id="6335920438823100346">To start Linux, <ph name="MANAGER"/> requires you to back up your data and reset this Chromebook to factory settings.</translation>
 <translation id="6336038146639916978"><ph name="MANAGER"/> has disabled ADB debugging. This will reset your <ph name="DEVICE_TYPE"/> in 24 hours. Back up any files that you'd like to keep.</translation>
-<translation id="6338402296920404442">Consider deleting <ph name="FILENAME"/>, so that others who use this device can't see your passwords.</translation>
+<translation id="6338968693068997776">Add USB device</translation>
 <translation id="6338981933082930623">All sites can show any ads to you</translation>
 <translation id="6339668969738228384">Create a new profile for <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6340071272923955280">Internet Printing Protocol (IPPS)</translation>
@@ -5623,6 +5683,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="642469772702851743">This device (SN: <ph name="SERIAL_NUMBER"/>) was locked by the owner.</translation>
 <translation id="6425556984042222041">Text-to-speech rate</translation>
 <translation id="642729974267661262">Not allowed to play sound</translation>
+<translation id="6427608534767366138">Proxy authentication is required for '<ph name="NETWORK_ID"/>'</translation>
 <translation id="6429384232893414837">Update error</translation>
 <translation id="6430814529589430811">Base64-encoded ASCII, single certificate</translation>
 <translation id="6431347207794742960"><ph name="PRODUCT_NAME"/> will set up automatic updates for all users of this computer.</translation>
@@ -5677,7 +5738,6 @@ You can assign multiple switches to this action.</translation>
 <translation id="6474498546677193336">Couldn't unshare because an application is using this folder. The folder will be unshared when Linux is next shut down.</translation>
 <translation id="6474884162850599008">Disconnect Google Drive account</translation>
 <translation id="6475294023568239942">Free up disk space or resize the Linux disk in settings</translation>
-<translation id="6476138569087741884">Full-screen zoom level</translation>
 <translation id="6476482583633999078">Speech speed</translation>
 <translation id="6477822444490674459">Notification syncing is not supported for phones in a work profile. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="6478248366783946499">Keep dangerous file?</translation>
@@ -5709,6 +5769,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6508248480704296122">Related to <ph name="NAME_PH"/></translation>
 <translation id="6508261954199872201">App: <ph name="APP_NAME"/></translation>
 <translation id="6509207748479174212">Media licence</translation>
+<translation id="6511827214781912955">Consider deleting <ph name="FILENAME"/>, so that others who use this device can't see your passwords</translation>
 <translation id="6513247462497316522">Brave will use mobile data if you're not connected to another network.</translation>
 <translation id="6514010653036109809">Available device:</translation>
 <translation id="6514565641373682518">This page has disabled your mouse cursor.</translation>
@@ -5895,7 +5956,6 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6686665106869989887">Tab moved right</translation>
 <translation id="6686817083349815241">Save your password</translation>
 <translation id="6687079240787935001">Hide <ph name="MODULE_TITLE"/></translation>
-<translation id="6688391094668641513">Requesting to read and change <ph name="ORIGIN"/>:</translation>
 <translation id="6689714331348768690">Ask <ph name="SUPERVISED_USER_NAME"/> to come to the computer. Your child will be reading a few phrases on this screen to create their voice model.
     <ph name="BR"/>
     If <ph name="SUPERVISED_USER_NAME"/> needs help with reading, have your child repeat after you. Whisper away from the mic so that the Assistant learns your child’s voice instead of yours.</translation>
@@ -5983,12 +6043,14 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6779447100905857289">your baskets</translation>
 <translation id="677965093459947883">Very small</translation>
 <translation id="6781005693196527806">&amp;Manage search engines…</translation>
+<translation id="6781012982807899368">Saved passwords will appear here. <ph name="BEGIN_LINK"/> Import passwords<ph name="END_LINK"/></translation>
 <translation id="6781284683813954823">Doodle Link</translation>
 <translation id="6781658011335120230"><ph name="BEGIN_PARAGRAPH1"/>App data can be any data that an app has saved (based on developer settings), including data such as contacts, messages and photos. Backup data will not count towards your child's Drive storage quota.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>You can turn this service off in Settings.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="6781978626986383437">Linux backup cancelled</translation>
 <translation id="6782067259631821405">Invalid PIN</translation>
 <translation id="6784523122863989144">Profile is supported</translation>
+<translation id="6785739405821760313">Viewing saved desks. Press tab to navigate.</translation>
 <translation id="5350485513372498152">Brave Assistant in Brave can complete actions across websites for you</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="6787097042755590313">Other Tab</translation>
@@ -6051,6 +6113,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6828860976882136098">Failed to set up automatic updates for all users (preflight execution error: <ph name="ERROR_NUMBER"/>)</translation>
 <translation id="682971198310367122">Brave Privacy Policy</translation>
 <translation id="6831043979455480757">Translate</translation>
+<translation id="6832218595502288407">Align left</translation>
 <translation id="6833479554815567477">Tab removed from group <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/></translation>
 <translation id="683373380308365518">Switch to a smart and secure browser</translation>
 <translation id="6833996806551876956">Privacy sandbox trial</translation>
@@ -6129,6 +6192,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6903907808598579934">Turn on sync</translation>
 <translation id="6904344821472985372">Revoke file access</translation>
 <translation id="6904655473976120856">Press App button to exit</translation>
+<translation id="6007499659428028662">{NUM_MINS,plural, =1{To keep your passwords safe, Brave Password Manager locks after 1 minute of inactivity}other{To keep your passwords safe, Brave Password Manager locks after {NUM_MINS} minutes of inactivity}}</translation>
 <translation id="6909422577741440844">Receive from this device?</translation>
 <translation id="6910211073230771657">Deleted</translation>
 <translation id="691106080621596509">This will clear all data and cookies stored by <ph name="SITE_GROUP_NAME"/>, any sites under it and its installed app</translation>
@@ -6197,13 +6261,12 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6970543303783413625">Can't import passwords. You can only import up to <ph name="COUNT"/> passwords at a time.</translation>
 <translation id="6970856801391541997">Print Specific Pages</translation>
 <translation id="6970861306198150268">Make sure that you're saving your current password for this site</translation>
-<translation id="6972180789171089114">Audio/Video</translation>
 <translation id="6972754398087986839">Get started</translation>
-<translation id="6972887130317925583">Successfully changed the compromised password. Check your passwords at any time in <ph name="SETTINGS"/>.</translation>
 <translation id="697312151395002334">Allowed to send pop-ups and use redirects</translation>
 <translation id="6973611239564315524">An upgrade to Debian 10 (Buster) is available</translation>
 <translation id="5351075736722780148">If Brave is also your default search engine, you'll see better, contextually relevant suggestions</translation>
 <translation id="697508444536771064">Shut down Linux</translation>
+<translation id="6975361011348772931">Requested to read and change</translation>
 <translation id="6978121630131642226">Search Engines</translation>
 <translation id="6979044105893951891">Launch and exit managed guest sessions</translation>
 <translation id="6979158407327259162">Google Drive</translation>
@@ -6256,6 +6319,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7011797924920577670">estimates your interests</translation>
 <translation id="7014174261166285193">Installation failed.</translation>
 <translation id="7014480873681694324">Remove highlight</translation>
+<translation id="7014741021609395734">Zoom level</translation>
 <translation id="7017004637493394352">Say 'OK Brave' again</translation>
 <translation id="7017219178341817193">Add a new page</translation>
 <translation id="7017354871202642555">Cannot set mode after window is set.</translation>
@@ -6311,6 +6375,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7069811530847688087"><ph name="WEBSITE"/> may require a newer or different kind of security key</translation>
 <translation id="7070484045139057854">This Can Read and Change Site Data</translation>
 <translation id="7072010813301522126">Shortcut name</translation>
+<translation id="7074066049407662839">Sign in to save passwords</translation>
 <translation id="7075513071073410194">PKCS #1 MD5 With RSA Encryption</translation>
 <translation id="7075625805486468288">Manage HTTPS/SSL certificates and settings</translation>
 <translation id="7076875098323397992">Can't start upgrade</translation>
@@ -6328,8 +6393,8 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7090160970140261931">You can add additional accounts to your <ph name="DEVICE_TYPE"/> to use with websites and Android apps. You can also control which accounts are used with Android apps.</translation>
 <translation id="7093220653036489319">Quick Answers</translation>
 <translation id="7093416310351037609">For data safety and security, your organisation requires all eligible downloads to be saved to your organisation's <ph name="WEB_DRIVE"/> account.</translation>
-<translation id="7093434536568905704">GTK+</translation>
 <translation id="7093866338626856921">Exchange data with the devices named: <ph name="HOSTNAMES"/></translation>
+<translation id="7094680343477712655">Accept cast request on your <ph name="DEVICE_NAME"/>.</translation>
 <translation id="7098389117866926363">USB-C device (left port in the back)</translation>
 <translation id="7098447629416471489">Other saved search engines will appear here</translation>
 <translation id="7098936390718461001">{NUM_APPS,plural, =1{Remove app}other{Remove apps}}</translation>
@@ -6372,6 +6437,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7138678301420049075">Other</translation>
 <translation id="7139627972753429585"><ph name="APP_NAME"/> is using your microphone</translation>
 <translation id="7141105143012495934">Sign-in failed because your account details could not be retrieved. Please contact your administrator or try again.</translation>
+<translation id="7141844554192012199">Check-up</translation>
 <translation id="7144878232160441200">Retry</translation>
 <translation id="7149839598364933473">Convert this device into a <ph name="DEVICE_OS"/> device.</translation>
 <translation id="7149893636342594995">Last 24 Hours</translation>
@@ -6419,7 +6485,6 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' deleted</translation>
 <translation id="7201420661433230412">View files</translation>
 <translation id="7203150201908454328">Expanded</translation>
-<translation id="7206693748120342859">Downloading <ph name="PLUGIN_NAME"/>...</translation>
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{Exit page}other{Exit pages}}</translation>
 <translation id="7207457272187520234">Send usage and diagnostic data. This device is currently automatically sending diagnostic, device and app usage data to Brave. This will help system and app stability and other improvements. Some aggregate data will also help Brave apps and partners, such as Android developers. This setting is enforced by the owner. If your additional Web &amp; App Activity setting is turned on, this data may be saved to your Brave sync chain.</translation>
 <translation id="7207631048330366454">Search apps</translation>
@@ -6429,6 +6494,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7212097698621322584">Enter your current PIN to change it. If you don’t know your PIN, you’ll need to reset the security key, then create a new PIN.</translation>
 <translation id="7213903639823314449">Search engine used in the address bar</translation>
 <translation id="721490496276866468">Import passwords</translation>
+<translation id="7218514093816577632">Make sure that notifications are turned on on your <ph name="DEVICE_NAME"/>.</translation>
 <translation id="7219473482981809164">We've found multiple profiles available to download. Select the ones that you would like to download before proceeding.</translation>
 <translation id="7219762788664143869">{NUM_WEAK,plural, =0{No weak passwords}=1{1 weak password}other{{NUM_WEAK} weak passwords}}</translation>
 <translation id="7220019174139618249">Can't export passwords to '<ph name="FOLDER"/>'</translation>
@@ -6437,6 +6503,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="5468853758063275923">Brave is your default browser</translation>
 <translation id="7222232353993864120">Email Address</translation>
 <translation id="7222235798733126207">Limited sharing between sites</translation>
+<translation id="7225082563376899794">Use Windows Hello when filling passwords</translation>
 <translation id="7225179976675429563">Network type missing</translation>
 <translation id="7227458944009118910">Apps listed below can handle protocol links as well. Other apps will ask for permission.</translation>
 <translation id="7228523857728654909">Screen lock and sign-in</translation>
@@ -6478,12 +6545,14 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7258192266780953209">Transformations</translation>
 <translation id="7258225044283673131">The application is not responding. Select 'Force close' to close the app.</translation>
 <translation id="7260186537988033909">Kiosk and signage device enrolment complete</translation>
+<translation id="7261851165551049223">Use TouchID when filling passwords</translation>
 <translation id="7262004276116528033">This sign-in service is hosted by <ph name="SAML_DOMAIN"/></translation>
 <translation id="7264695323040866038">Always use the <ph name="APP"/> app to open supported web links?</translation>
 <translation id="7267044199012331848">Couldn't install the virtual machine. Please try again, or contact your administrator. Error code: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7267875682732693301">Keep lifting your finger to add the different parts of your fingerprint</translation>
 <translation id="7267898843336437186">Select a folder that this site can view</translation>
 <translation id="7268127947535186412">This setting is managed by the device owner.</translation>
+<translation id="7269229526547981029">This profile is managed by <ph name="PROFILE_MANAGER"/>. A new profile is required for account <ph name="USER_EMAIL_ADDRESS"/> by <ph name="ACCOUNT_MANAGER"/></translation>
 <translation id="7269736181983384521">Nearby Share data usage</translation>
 <translation id="7272674038937250585">No description provided</translation>
 <translation id="7273110280511444812">last attached on <ph name="DATE"/></translation>
@@ -6547,6 +6616,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7343372807593926528">Please describe the problem before sending feedback.</translation>
 <translation id="7344585835349671209">Manage HTTPS/SSL certificates on your device</translation>
 <translation id="7345706641791090287">Confirm your password</translation>
+<translation id="7345919885156673810">Selection is not in <ph name="LANGUAGE"/></translation>
 <translation id="7346909386216857016">OK, got it</translation>
 <translation id="7347452120014970266">This will clear all data and cookies stored by <ph name="ORIGIN_NAME"/> and its installed apps</translation>
 <translation id="7347751611463936647">To use this extension, type "<ph name="EXTENSION_KEYWORD"/>", then TAB, then your command or search.</translation>
@@ -6563,6 +6633,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7358338787722390626">Close search in side panel</translation>
 <translation id="735994578317267253">Get your apps, settings and more on any Chrome OS device</translation>
 <translation id="7360233684753165754"><ph name="PAGE_NUMBER"/> pages to <ph name="PRINTER_NAME"/></translation>
+<translation id="7360257054721917104">Viewing saved desks and templates. Press tab to navigate.</translation>
 <translation id="7361297102842600584">Right-click to run <ph name="PLUGIN_NAME"/></translation>
 <translation id="7362387053578559123">Sites can ask to connect to Bluetooth devices</translation>
 <translation id="7363349185727752629">A guide of your privacy choices</translation>
@@ -6612,6 +6683,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7404065585741198296">Your phone with a USB cable</translation>
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{Safety check ran 1 hour ago}other{Safety check ran {NUM_HOURS} hours ago}}</translation>
 <translation id="740624631517654988">Pop-up blocked</translation>
+<translation id="7406912950279255498">Colour inversion mode</translation>
 <translation id="7407430846095439694">Import and Bind</translation>
 <translation id="740810853557944681">Add a print server</translation>
 <translation id="7409549334477097887">Extra large</translation>
@@ -6655,6 +6727,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="744341768939279100">Create a new profile</translation>
 <translation id="744366959743242014">Loading data; this may take up to a few seconds.</translation>
 <translation id="6470635120107893736">Access your passwords whenever you're signed in to your Brave account</translation>
+<translation id="7444046173054089907">This site is blocked</translation>
 <translation id="7444970023873202833">Explore more of your memories in Google Photos</translation>
 <translation id="7444983668544353857">Disable <ph name="NETWORKDEVICE"/></translation>
 <translation id="7448430327655618736">Automatically install apps</translation>
@@ -6834,6 +6907,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7625568159987162309">View permissions and data stored across sites</translation>
 <translation id="7625823789272218216">New Tab to the Left</translation>
 <translation id="7628201176665550262">Refresh rate</translation>
+<translation id="7628392600831846024">Symbol style</translation>
 <translation id="7629827748548208700">Tab: <ph name="TAB_NAME"/></translation>
 <translation id="7630426712700473382">This device is managed by <ph name="MANAGER"/> and requires you to sign in every time.</translation>
 <translation id="7631014249255418691">Linux apps &amp; files have been successfully backed up</translation>
@@ -6885,6 +6959,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7664620655576155379">Unsupported Bluetooth device: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="7665082356120621510">Reserve size</translation>
 <translation id="7665369617277396874">Add account</translation>
+<translation id="766635563210446220">Can't import passwords. Check <ph name="FILENAME"/> and make sure that it's formatted correctly. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="7668002322287525834">{NUM_WEEKS,plural, =1{Return <ph name="DEVICE_TYPE"/> within {NUM_WEEKS} week}other{Return <ph name="DEVICE_TYPE"/> within {NUM_WEEKS} weeks}}</translation>
 <translation id="2190324512336800037">In Brave Password Manager for <ph name="ACCOUNT"/></translation>
 <translation id="7668648754769651616">Accessibility features make your device easier to use. To access Quick Settings, select the time at the bottom of your screen.</translation>
@@ -7047,7 +7122,6 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="7807117920154132308">It looks like <ph name="SUPERVISED_USER_NAME"/> has already set up Brave Assistant on another device. <ph name="SUPERVISED_USER_NAME"/> can get even more out of Assistant by turning on screen context on this device.</translation>
 <translation id="7807711621188256451">Always allow <ph name="HOST"/> to access your camera</translation>
 <translation id="7810202088502699111">Pop-ups were blocked on this page.</translation>
-<translation id="781167124805380294">Cast <ph name="FILE_NAME"/></translation>
 <translation id="7814458197256864873">&amp;Copy</translation>
 <translation id="7815680994978050279">Dangerous download blocked</translation>
 <translation id="7817361223956157679">The on-screen keyboard doesn’t work in Linux apps yet</translation>
@@ -7075,6 +7149,7 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="7838971600045234625">{COUNT,plural, =1{<ph name="ATTACHMENTS"/> sent to <ph name="DEVICE_NAME"/>}other{<ph name="ATTACHMENTS"/> sent to <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="7839051173341654115">View/Backup media</translation>
 <translation id="7839192898639727867">Certificate Subject Key ID</translation>
+<translation id="7842062217214609161">No shortcut</translation>
 <translation id="7842692330619197998">Visit g.co/BraveEnterpriseAccount if you need to create a new account.</translation>
 <translation id="78427265591841839">Search any part of the page with <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="784273751836026224">Uninstall Linux</translation>
@@ -7111,11 +7186,13 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="7870790288828963061">No Kiosk apps with newer version found. Nothing to update. Please remove the USB stick.</translation>
 <translation id="7871049986386271121">Always on this site</translation>
 <translation id="7871109039747854576">Use <ph name="COMMA"/> and <ph name="PERIOD"/> keys to page a candidate list</translation>
+<translation id="7872494313446521576">Click to allow '<ph name="EXTENSIONS_REQUESTING_ACCESS"/>' on <ph name="ORIGIN"/>:</translation>
 <translation id="787268756490971083">Off</translation>
 <translation id="7872758299142009420">Too many nested groups: <ph name="ERROR_LINE"/></translation>
 <translation id="5801450813341024983">Brave backgrounds</translation>
 <translation id="7876027585589532670">Can't edit shortcut</translation>
 <translation id="7877451762676714207">Unknown server error. Please try again, or contact the server administrator.</translation>
+<translation id="7879478708475862060">Follow input mode</translation>
 <translation id="7879631849810108578">Shortcut set: <ph name="IDS_SHORT_SET_COMMAND"/></translation>
 <translation id="6922111016435971292">When on and the status is active, Brave uses your browsing history over seven days to determine a group, or 'cohort', that you’re in. Advertisers can select ads for the group. Your browsing history is kept private on your device. This trial is active only in
     <ph name="BEGIN_LINK"/>some regions<ph name="END_LINK"/>.</translation>
@@ -7141,7 +7218,6 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="7898725031477653577">Always translate</translation>
 <translation id="7901405293566323524">Phone Hub</translation>
 <translation id="7903290522161827520">Looking for browser components? Visit</translation>
-<translation id="7903345046358933331">The page has become unresponsive. You can wait for it to become responsive or close it.</translation>
 <translation id="7903429136755645827">Click to customise your game controls</translation>
 <translation id="7903742244674067440">You have certificates on file that identify these certificate authorities</translation>
 <translation id="7903925330883316394">Utility: <ph name="UTILITY_TYPE"/></translation>
@@ -7181,6 +7257,7 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="793531125873261495">Error downloading the virtual machine. Please try again.</translation>
 <translation id="7935451262452051102"><ph name="PERCENT"/>% completed</translation>
 <translation id="7939062555109487992">Advanced options</translation>
+<translation id="7939073735115504773">Click this extension's icon to read and change <ph name="HOST"/></translation>
 <translation id="7939328347457537652">Manage device certificates</translation>
 <translation id="7939412583708276221">Keep anyway</translation>
 <translation id="7941179291434537290">Tethering readiness:</translation>
@@ -7203,6 +7280,7 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="7952904276017482715">Expected ID '<ph name="EXPECTED_ID"/>', but ID was '<ph name="NEW_ID"/>'</translation>
 <translation id="7953669802889559161">Inputs</translation>
 <translation id="7953955868932471628">Manage shortcuts</translation>
+<translation id="7955177647836564772">If Smart Lock is turned on and your phone is unlocked, you don't need to enter a password or PIN</translation>
 <translation id="7956373551960864128">Your saved printers</translation>
 <translation id="7957074856830851026">See device information, such as its serial number or asset ID</translation>
 <translation id="7959074893852789871">The file contained multiple certificates, some of which were not imported:</translation>
@@ -7238,11 +7316,11 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="7984068253310542383">Mirror <ph name="DISPLAY_NAME"/></translation>
 <translation id="7986295104073916105">Read and change saved password settings</translation>
 <translation id="7987814697832569482">Always connect through this VPN</translation>
-<translation id="7987932397583333141">Set a PIN or password</translation>
 <translation id="7988355189918024273">Enable accessibility features</translation>
 <translation id="7988805580376093356">Keep your OS and run <ph name="DEVICE_OS"/> from USB.</translation>
 <translation id="7991296728590311172">Switch Access settings</translation>
 <translation id="7992203134935383159">Speech synthesis</translation>
+<translation id="799570308305997052">Web view</translation>
 <translation id="7997826902155442747">Process Priority</translation>
 <translation id="7999229196265990314">Created the following files:
         
@@ -7361,6 +7439,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8098616321286360457">Network connection required</translation>
 <translation id="810068641062493918"><ph name="LANGUAGE"/> selected. Press 'Search' plus 'Space' to unselect.</translation>
 <translation id="8100972288595615768">Clear site data and permissions for <ph name="SITE_NAME"/>?</translation>
+<translation id="8101409298456377967">Create, save and manage your passwords so that you can easily sign in to sites and apps. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="810185532889603849">Custom colour</translation>
 <translation id="8101987792947961127">Powerwash required on next reboot</translation>
 <translation id="81020759409809034">Local location</translation>
@@ -7405,6 +7484,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="814204052173971714">{COUNT,plural, =1{a video}other{# videos}}</translation>
 <translation id="8143442547342702591">Invalid application</translation>
 <translation id="8143609395536282994">How you can manage your data:</translation>
+<translation id="8145170459658034418">Memory saver</translation>
 <translation id="8146177459103116374">If you've already registered on this device, you can <ph name="LINK2_START"/>sign in as an existing user<ph name="LINK2_END"/>.</translation>
 <translation id="8146287226035613638">Add and rank your preferred languages. Websites will show in your preferred languages, when possible. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE"/>Learn more<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="8146793085009540321">Sign-in failed. Please contact your administrator or try again.</translation>
@@ -7427,6 +7507,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="816095449251911490"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/>, <ph name="TIME_REMAINING"/></translation>
 <translation id="1812589499212787158">With <ph name="BEGIN_LINK"/>Privacy Sandbox<ph name="END_LINK"/>, Brave is developing new technologies to safeguard you from cross-site tracking while preserving the open web.</translation>
 <translation id="8161293209665121583">Reader mode for web pages</translation>
+<translation id="8161604891089629425">Outline font</translation>
 <translation id="8162984717805647492">{NUM_TABS,plural, =1{Move Tab to New Window}other{Move Tabs to New Window}}</translation>
 <translation id="8165997195302308593">Crostini port forwarding</translation>
 <translation id="816704878106051517">{COUNT,plural, =1{a phone number}other{# phone numbers}}</translation>
@@ -7460,9 +7541,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Your devices<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8195027750202970175">Size on disk</translation>
 <translation id="8195191503358432289">Add password</translation>
+<translation id="8197673340773315084">Add a name or label, like Work or Personal</translation>
 <translation id="8198456017687137612">Cast tab</translation>
 <translation id="8199300056570174101">Network (Service) and Device properties</translation>
 <translation id="8200772114523450471">Resume</translation>
+<translation id="8200789660596905522">Make sure that you accept the cast request on your <ph name="DEVICE_NAME"/></translation>
 <translation id="8202160505685531999">Please re-enter your password to update your <ph name="DEVICE_TYPE"/> profile.</translation>
 <translation id="8203152941016626022">Nearby Share device name</translation>
 <translation id="8203732864715032075">Send you notifications and default to remembering this computer for Messages. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
@@ -7474,6 +7557,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8210398899759134986">{MUTED_NOTIFICATIONS_COUNT,plural, =1{New notification}other{# new notifications}}</translation>
 <translation id="5241363291337441220">To import passwords to Brave Password Manager for <ph name="USER_EMAIL"/>, select a CSV file</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Download is in progress}other{Downloads are in progress}}</translation>
+<translation id="8212601853154459483">This profile is managed by <ph name="PROFILE_MANAGER"/> and requires you to create a separate profile for the account <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8213449224684199188">Photo mode entered</translation>
 <translation id="8214489666383623925">Open File...</translation>
 <translation id="8215129063232901118">Access your phone's capabilities from your <ph name="DEVICE_TYPE"/></translation>
@@ -7536,13 +7620,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
     <ph name="BEGIN_PARAGRAPH3"/>The owner can control this feature from Settings &gt; Advanced &gt; Automatically send diagnostic and usage data to Brave.<ph name="END_PARAGRAPH3"/>
     <ph name="BEGIN_PARAGRAPH4"/>If additional Web &amp; app activity setting is turned on for your child, this data may be saved to their Brave sync chain. Learn more about these settings and how to adjust them at families.google.com.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="826905130698769948">Invalid client certificate</translation>
+<translation id="8270162672241199380">Steam installer</translation>
 <translation id="827097179112817503">Show Home button</translation>
 <translation id="8271268254812352141">Get definitions, translations or unit conversions when you right-click or touch and hold text. Customise translation languages in <ph name="LINK_BEGIN"/>website languages<ph name="LINK_END"/>.</translation>
 <translation id="8271379370373330993">Parents, the next few steps are for you. You can hand the <ph name="DEVICE_TYPE"/> back to the child after account setup.</translation>
 <translation id="8272194309885535896">Download Image</translation>
 <translation id="8272443605911821513">Manage your extensions by clicking Extensions in the "More tools" menu.</translation>
 <translation id="8273905181216423293">Download now</translation>
-<translation id="8274332263553132018">Cast file</translation>
 <translation id="8274921654076766238">Magnifier follows keyboard focus</translation>
 <translation id="8274924778568117936">Don’t turn off or close your <ph name="DEVICE_TYPE"/> until the update finishes. Your <ph name="DEVICE_TYPE"/> will restart after installation completes.</translation>
 <translation id="8275038454117074363">Import</translation>
@@ -7555,6 +7639,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8284279544186306258">all <ph name="WEBSITE_1"/> sites</translation>
 <translation id="8284326494547611709">Captions</translation>
 <translation id="8286036467436129157">Sign In</translation>
+<translation id="828642162569365647">This password or PIN protects your data on this <ph name="DEVICE_TYPE"/> and any information that you access from your phone. You'll need to unlock each time your <ph name="DEVICE_TYPE"/> wakes from sleep.</translation>
 <translation id="8287902281644548111">Search by API call/URL</translation>
 <translation id="8288032458496410887">Uninstall <ph name="APP"/>...</translation>
 <translation id="8289128870594824098">Disk size</translation>
@@ -7708,6 +7793,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="844063558976952706">Always on this site</translation>
 <translation id="8441313165929432954">Enable/disable tethering</translation>
 <translation id="8443795068008423036">Please ensure that your device is up to date and try again</translation>
+<translation id="8443986842926457191">URL is more than 2048 characters</translation>
 <translation id="8446884382197647889">Learn More</translation>
 <translation id="8447409163267621480">Include either Ctrl or Alt</translation>
 <translation id="844850004779619592">No commands found</translation>
@@ -7736,7 +7822,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8471525937465764768">Sites usually connect to USB devices for features like printing a document or saving to a storage device</translation>
 <translation id="8471959340398751476">Discounts are off. You can turn them on in the customise menu</translation>
 <translation id="8472623782143987204">hardware-backed</translation>
-<translation id="8473863474539038330">Addresses and more</translation>
+<translation id="5633907266617216186">Addresses and more</translation>
 <translation id="2015014930243978107">Another programme on your computer added an extension that may change the way Brave works.</translation>
 <translation id="8477241577829954800">Superseded</translation>
 <translation id="8477384620836102176">&amp;General</translation>
@@ -7773,9 +7859,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="851263357009351303">Always allow <ph name="HOST"/> to show images</translation>
 <translation id="8513108775083588393">Auto-rotate</translation>
 <translation id="8514746246728959655">Try a different security key</translation>
+<translation id="8519895319663397036">Can't import passwords. The file size should be less than 150 KB.</translation>
 <translation id="8523493869875972733">Keep Changes</translation>
 <translation id="8523849605371521713">Added by policy</translation>
 <translation id="4483547786985740455">Save cards in your Brave sync chain</translation>
+<translation id="8525157245469383124">The retailer-store ID format is ABC-1234</translation>
 <translation id="8525306231823319788">Full screen</translation>
 <translation id="8526813720153458066">SSH</translation>
 <translation id="8528074251912154910">Add languages</translation>
@@ -7945,6 +8033,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8688672835843460752">Available</translation>
 <translation id="8690129572193755009">Sites can ask to handle protocols</translation>
 <translation id="8692107307702113268">Password is more than 1,000 characters</translation>
+<translation id="8694596275649352090">Lock when sleeping or lid is closed</translation>
 <translation id="8695139659682234808">Add parental controls after setup</translation>
 <translation id="8695825812785969222">Open &amp;Location...</translation>
 <translation id="8698269656364382265">To return to the previous screen, swipe from the left side.</translation>
@@ -7971,7 +8060,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8717864919010420084">Copy link</translation>
 <translation id="8718994464069323380">Touchscreen detected</translation>
 <translation id="8719472795285728850">Listening for extension activities...</translation>
-<translation id="8719653885894320876"><ph name="PLUGIN_NAME"/> download failed</translation>
 <translation id="8720200012906404956">Looking for a mobile network. <ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/></translation>
 <translation id="8720816553731218127">The initialisation of the installation-time attributes has timed out.</translation>
 <translation id="8722912030556880711">Send usage and diagnostic data. This device is currently automatically sending diagnostic, device and app usage data to Brave. This will help system and app stability and other improvements. Some aggregate data will also help Brave apps and partners, such as Android developers. If your additional Web &amp; App Activity setting is turned on, this data may be saved to your Brave sync chain. <ph name="BEGIN_LINK2"/>Find out more<ph name="END_LINK2"/></translation>
@@ -7993,7 +8081,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8732844209475700754">More settings that relate to privacy, security and data collection</translation>
 <translation id="8734073480934656039">Enabling this setting allows kiosk applications to launch automatically on startup.</translation>
 <translation id="8734674662128056360">Third-party cookie blocking</translation>
-<translation id="873545264931343897">When <ph name="PLUGIN_NAME"/> finishes updating, reload the page to activate it</translation>
+<translation id="8734755021067981851">No USB devices are attached.</translation>
 <translation id="8736288397686080465">This site has been updated in the background.</translation>
 <translation id="8737709691285775803">Shill</translation>
 <translation id="8737914367566358838">Choose the language into which you want to translate the page</translation>
@@ -8001,6 +8089,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8740672167979365981">Chrome OS Flex update required</translation>
 <translation id="8741944563400125534">Switch Access setup guide</translation>
 <translation id="8742998548129056176">This is general information about your device and how you use it (such as battery level, system and app activity, and errors). The data will be used to improve Android, and some aggregated information will also help Brave apps and partners, such as Android developers, to make their apps and products better.</translation>
+<translation id="8744641000906923997">Romaji</translation>
 <translation id="8746654918629346731">You already requested '<ph name="EXTENSION_NAME"/>'</translation>
 <translation id="874689135111202667">{0,plural, =1{Upload one file to this site?}other{Upload # files to this site?}}</translation>
 <translation id="8749805710397399240">Unable to cast your screen. Check the Screen recording permission in system preferences.</translation>
@@ -8021,11 +8110,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8756969031206844760">Update password?</translation>
 <translation id="8757203080302669031">This tab is actively scanning for Bluetooth devices.</translation>
 <translation id="8757368836647541092"><ph name="USER_NAME_OR_EMAIL"/> removed</translation>
-<translation id="8758418656925882523">Enable dictation (speak to type)</translation>
 <translation id="8759753423332885148">Learn more.</translation>
 <translation id="8761945298804995673">This user already exists</translation>
 <translation id="8762886931014513155">Your <ph name="DEVICE_TYPE"/> needs an update</translation>
 <translation id="8763927697961133303">USB device</translation>
+<translation id="8766796754185931010">Kotoeri</translation>
 <translation id="4570609078116869893">Automatically update Brave for all users</translation>
 <translation id="8769901904650373714">There was a problem with Steam setup</translation>
 <translation id="8770406935328356739">Extension root directory</translation>
@@ -8044,6 +8133,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1732768497619250086">Get image descriptions from Brave</translation>
 <translation id="8780443667474968681">Voice search has been turned off.</translation>
 <translation id="8781834595282316166">New Tab in Group</translation>
+<translation id="8781980678064919987">Shut down when lid is closed</translation>
 <translation id="8782565991310229362">Kiosk application launch cancelled.</translation>
 <translation id="8783834180813871000">Type the pairing code then press Return or Enter</translation>
 <translation id="8784626084144195648">Binned Average</translation>
@@ -8107,13 +8197,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8846132060409673887">Read the manufacturer and model of this computer</translation>
 <translation id="8846163936679269230">Reset eSIM profiles</translation>
 <translation id="8846239054091760429">Mono audio, startup, Live Caption and more</translation>
-<translation id="8847523528195140327">Sign out when cover is closed</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">Hidden</translation>
 <translation id="8849219423513870962">Cancel removal of eSIM profile named <ph name="PROFILE_NAME"/></translation>
 <translation id="8850251000316748990">See more...</translation>
 <translation id="885246833287407341">API function arguments</translation>
 <translation id="8853586775156634952">This card will be saved to this device only</translation>
+<translation id="8854745870658584490">Selection shortcut</translation>
 <translation id="8855977033756560989">This Chromebook Enterprise device comes bundled with the Brave Enterprise upgrade. To take advantage of the enterprise capabilities, enrol this device with a Brave Admin account.</translation>
 <translation id="8856028055086294840">Restore apps and pages</translation>
 <translation id="885701979325669005">Storage</translation>
@@ -8323,6 +8413,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="9048745018038487540">Select all fonts</translation>
 <translation id="9050666287014529139">Passphrase</translation>
 <translation id="9052404922357793350">Continue blocking</translation>
+<translation id="90528604757378587">Background activity and some visual effects, like smooth scrolling, may be limited.</translation>
 <translation id="9053563360605707198">Print on both sides</translation>
 <translation id="9055636786322918818">Enforce RC4 encryption. Using this option increases your risk, as the RC4 ciphers are insecure.</translation>
 <translation id="9056810968620647706">No matches were found.</translation>
@@ -8637,6 +8728,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2254158488150713536">To continue, click OK, then click Add Person to create a new profile for your email address.</translation>
 <translation id="1725743343613175327">To continue, click OK, then click Add Person to create a new profile for your <ph name="DOMAIN"/> email address.</translation>
 <translation id="3707212204259470604">Manage other people</translation>
+<translation id="7253003527666031200">Find more accessibility tools in the web store</translation>
 <translation id="8273477935094091719">Your <ph name="DEVICE_TYPE"/> uses a built-in sensor to detect profiles in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="5832813618714645810">People</translation>
 <translation id="3216703137209942563">{COUNT, plural,
@@ -8667,4 +8759,5 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6464648082977038075">Close Private tabs</translation>
 <translation id="4933782374919065856">Questions? Contact the person who supervises your profile.</translation>
 <translation id="8108906085747235166">Ask in profile</translation>
+<translation id="317153861231603077">Ask in profile instead</translation>
 </translationbundle>

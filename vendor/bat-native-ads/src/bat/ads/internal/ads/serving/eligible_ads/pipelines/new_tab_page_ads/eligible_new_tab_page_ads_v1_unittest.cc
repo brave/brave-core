@@ -24,8 +24,6 @@ namespace ads::new_tab_page_ads {
 
 class BatAdsEligibleNewTabPageAdsV1Test : public UnitTestBase {
  protected:
-  BatAdsEligibleNewTabPageAdsV1Test() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

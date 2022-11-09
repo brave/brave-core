@@ -5,12 +5,13 @@
 
 #include "bat/ads/internal/base/unittest/command_line_switch_info.h"
 
+#include <utility>
+
 namespace ads {
 
 CommandLineSwitchInfo::CommandLineSwitchInfo() = default;
 
-CommandLineSwitchInfo::CommandLineSwitchInfo(const std::string& key,
-                                             const std::string& value)
-    : key(key), value(value) {}
+CommandLineSwitchInfo::CommandLineSwitchInfo(std::string key, std::string value)
+    : key(std::move(key)), value(std::move(value)) {}
 
 }  // namespace ads

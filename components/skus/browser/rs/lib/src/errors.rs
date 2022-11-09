@@ -27,6 +27,7 @@ pub enum InternalError {
     StorageWriteFailed(String),
     StorageReadFailed(String),
     OrderUnpaid,
+    OrderMisconfiguration,
     UnhandledVariant,
     OrderLocationMismatch,
     ItemCredentialsMissing,
@@ -76,9 +77,7 @@ impl Display for InternalError {
             InternalError::RetryLater(after) => write!(
                 f,
                 "Retry later{}",
-                after
-                    .map(|a| format!("after {} ms", a.as_millis()))
-                    .unwrap_or_else(|| "".to_string())
+                after.map(|a| format!("after {} ms", a.as_millis())).unwrap_or_default()
             ),
             InternalError::NotFound => write!(f, "Resource not found"),
             InternalError::SerializationFailed => write!(f, "Could not (de)serialize"),
@@ -95,6 +94,7 @@ impl Display for InternalError {
                 write!(f, "Failed to read from storage: {}", reason)
             }
             InternalError::OrderUnpaid => write!(f, "The order is unpaid"),
+            InternalError::OrderMisconfiguration => write!(f, "The order is misconfigured"),
             InternalError::UnhandledVariant => write!(f, "Variant is unhandled"),
             InternalError::OrderLocationMismatch => write!(f, "Order location does not match"),
             InternalError::ItemCredentialsMissing => {

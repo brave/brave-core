@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 
-#include <functional>
 #include <utility>
 #include <vector>
 
 #include "base/bind.h"
+#include "base/callback.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -67,6 +67,47 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return transaction;
 }
 
+void OnGetTransactions(GetTransactionsCallback callback,
+                       mojom::DBCommandResponseInfoPtr response) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    BLOG(0, "Failed to get transactions");
+    std::move(callback).Run(/*success*/ false, /*transactions*/ {});
+    return;
+  }
+
+  TransactionList transactions;
+
+  for (const auto& record : response->result->get_records()) {
+    const TransactionInfo info = GetFromRecord(record.get());
+    transactions.push_back(info);
+  }
+
+  std::move(callback).Run(/*success*/ true, transactions);
+}
+
+void MigrateToV18(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE IF NOT EXISTS transactions "
+      "(id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
+      "created_at TIMESTAMP NOT NULL, "
+      "creative_instance_id TEXT, "
+      "value DOUBLE NOT NULL, "
+      "ad_type TEXT NOT NULL, "
+      "confirmation_type TEXT NOT NULL, "
+      "reconciled_at TIMESTAMP)");
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+
+  CreateTableIndex(transaction, "transactions", "id");
+}
+
 }  // namespace
 
 void Transactions::Save(const TransactionList& transactions,
@@ -84,7 +125,7 @@ void Transactions::Save(const TransactionList& transactions,
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void Transactions::GetAll(GetTransactionsCallback callback) {
+void Transactions::GetAll(GetTransactionsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "id, "
@@ -117,13 +158,13 @@ void Transactions::GetAll(GetTransactionsCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&Transactions::OnGetTransactions,
-                                             base::Unretained(this), callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetTransactions, std::move(callback)));
 }
 
 void Transactions::GetForDateRange(const base::Time from_time,
                                    const base::Time to_time,
-                                   GetTransactionsCallback callback) {
+                                   GetTransactionsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "id, "
@@ -157,8 +198,8 @@ void Transactions::GetForDateRange(const base::Time from_time,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&Transactions::OnGetTransactions,
-                                             base::Unretained(this), callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetTransactions, std::move(callback)));
 }
 
 void Transactions::Update(
@@ -168,7 +209,7 @@ void Transactions::Update(
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
     transaction_ids.push_back(unblinded_payment_token.transaction_id);
   }
-  transaction_ids.push_back(rewards::kMigrationUnreconciledTransactionId);
+  transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
   const std::string query = base::StringPrintf(
       "UPDATE %s "
@@ -266,47 +307,6 @@ std::string Transactions::BuildInsertOrUpdateQuery(
       "reconciled_at) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(7, count).c_str());
-}
-
-void Transactions::OnGetTransactions(const GetTransactionsCallback& callback,
-                                     mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get transactions");
-    callback(/*success*/ false, {});
-    return;
-  }
-
-  TransactionList transactions;
-
-  for (const auto& record : response->result->get_records()) {
-    const TransactionInfo info = GetFromRecord(record.get());
-    transactions.push_back(info);
-  }
-
-  callback(/*success*/ true, transactions);
-}
-
-void Transactions::MigrateToV18(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE IF NOT EXISTS transactions "
-      "(id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
-      "created_at TIMESTAMP NOT NULL, "
-      "creative_instance_id TEXT, "
-      "value DOUBLE NOT NULL, "
-      "ad_type TEXT NOT NULL, "
-      "confirmation_type TEXT NOT NULL, "
-      "reconciled_at TIMESTAMP)");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-
-  CreateTableIndex(transaction, "transactions", "id");
 }
 
 }  // namespace ads::database::table

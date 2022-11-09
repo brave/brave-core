@@ -1,0 +1,13 @@
+diff --git a/tools/perf/page_sets/system_health/system_health_stories.py b/tools/perf/page_sets/system_health/system_health_stories.py
+index 113257076777fed9c9fb1e2ff13b6e528a32d26e..8c337a7cffa7d35579fef845da017dc2181214bf 100644
+--- a/tools/perf/page_sets/system_health/system_health_stories.py
++++ b/tools/perf/page_sets/system_health/system_health_stories.py
+@@ -26,7 +26,7 @@ class SystemHealthStorySet(story.StorySet):
+                take_memory_measurement=False,
+                tag=None):
+     super(SystemHealthStorySet, self).__init__(
+-        archive_data_file=('../data/system_health_%s.json' % platform),
++        archive_data_file=('../../../../brave/tools/perf/page_sets/data/system_health_%s.json' % platform),
+         cloud_storage_bucket=story.PARTNER_BUCKET)
+ 
+     assert platform in platforms.ALL_PLATFORMS

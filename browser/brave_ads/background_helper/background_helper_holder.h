@@ -19,6 +19,13 @@ class BackgroundHelper;
 
 class BackgroundHelperHolder final {
  public:
+  BackgroundHelperHolder(const BackgroundHelperHolder&) = delete;
+  BackgroundHelperHolder& operator=(const BackgroundHelperHolder&) = delete;
+
+  BackgroundHelperHolder(BackgroundHelperHolder&& other) noexcept = delete;
+  BackgroundHelperHolder& operator=(BackgroundHelperHolder&& other) noexcept =
+      delete;
+
   static BackgroundHelperHolder* GetInstance();
 
   BackgroundHelper* GetBackgroundHelper();
@@ -27,6 +34,7 @@ class BackgroundHelperHolder final {
   friend struct base::DefaultSingletonTraits<BackgroundHelperHolder>;
 
   BackgroundHelperHolder();
+
   ~BackgroundHelperHolder();
 
   std::unique_ptr<BackgroundHelper> background_helper_;

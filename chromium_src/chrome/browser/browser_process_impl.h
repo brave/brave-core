@@ -28,7 +28,13 @@
 #include "services/network/public/mojom/network_service.mojom-forward.h"
 
 #define Init virtual Init
+#if !BUILDFLAG(IS_ANDROID)
+#define StartTearDown virtual StartTearDown
+#endif  // !BUILDFLAG(IS_ANDROID)
 #include "src/chrome/browser/browser_process_impl.h"
+#if !BUILDFLAG(IS_ANDROID)
+#undef StartTearDown
+#endif  // !BUILDFLAG(IS_ANDROID)
 #undef Init
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSER_PROCESS_IMPL_H_

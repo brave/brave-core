@@ -31,7 +31,7 @@ const char kComponentName[] = "Brave Ads Resources (%s)";
 const base::FilePath::CharType kManifestFile[] =
     FILE_PATH_LITERAL("resources.json");
 
-std::string GetIndex(std::string id, int version) {
+std::string GetIndex(const std::string& id, int version) {
   return id + std::to_string(version);
 }
 
@@ -57,11 +57,8 @@ void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
 }
 
 void ResourceComponent::RegisterComponentsForLocale(const std::string& locale) {
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-  RegisterComponentForCountryCode(country_code);
-
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-  RegisterComponentForLanguageCode(language_code);
+  RegisterComponentForCountryCode(brave_l10n::GetISOCountryCode(locale));
+  RegisterComponentForLanguageCode(brave_l10n::GetISOLanguageCode(locale));
 }
 
 void ResourceComponent::NotifyDidUpdateResourceComponent(
@@ -168,7 +165,8 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     return;
   }
 
-  const base::Value* resource_values = manifest->FindListPath(kResourcePath);
+  const base::Value* const resource_values =
+      manifest->FindListPath(kResourcePath);
   if (!resource_values) {
     VLOG(1) << "No resources found";
     return;
@@ -177,7 +175,8 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
   for (const auto& resource_value : resource_values->GetList()) {
     ResourceInfo resource;
 
-    const std::string* id = resource_value.FindStringPath(kResourceIdPath);
+    const std::string* const id =
+        resource_value.FindStringPath(kResourceIdPath);
     if (!id) {
       VLOG(1) << "Resource id is missing";
       continue;
@@ -192,7 +191,7 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     }
     resource.version = *version;
 
-    const std::string* path =
+    const std::string* const path =
         resource_value.FindStringPath(kResourceFilenamePath);
     if (!path) {
       VLOG(1) << *id << " resource path is missing";

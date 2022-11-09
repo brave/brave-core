@@ -22,8 +22,8 @@ class RequestSignedTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
   RequestSignedTokensUrlRequestBuilder(
-      const WalletInfo& wallet,
-      const std::vector<privacy::cbr::BlindedToken>& tokens);
+      WalletInfo wallet,
+      std::vector<privacy::cbr::BlindedToken> tokens);
 
   RequestSignedTokensUrlRequestBuilder(
       const RequestSignedTokensUrlRequestBuilder& other) = delete;
@@ -43,13 +43,12 @@ class RequestSignedTokensUrlRequestBuilder final
   GURL BuildUrl() const;
 
   std::vector<std::string> BuildHeaders(const std::string& body) const;
-  std::string BuildDigestHeaderValue(const std::string& body) const;
   std::string BuildSignatureHeaderValue(const std::string& body) const;
 
   std::string BuildBody() const;
 
-  WalletInfo wallet_;
-  std::vector<privacy::cbr::BlindedToken> blinded_tokens_;
+  const WalletInfo wallet_;
+  const std::vector<privacy::cbr::BlindedToken> blinded_tokens_;
 };
 
 }  // namespace ads

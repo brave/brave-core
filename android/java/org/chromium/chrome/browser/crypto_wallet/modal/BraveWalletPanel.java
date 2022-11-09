@@ -87,7 +87,7 @@ public class BraveWalletPanel implements DialogInterface {
     private WalletModel mWalletModel;
     private AccountInfo mSelectedAccount;
     private NetworkInfo mSelectedNetwork;
-    private Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
+    private final Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
         if (accountInfo == null) return;
         mSelectedAccount = accountInfo;
         mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
@@ -284,7 +284,7 @@ public class BraveWalletPanel implements DialogInterface {
                 mCvSolConnectionStatus.setVisibility(View.GONE);
             } else {
                 BraveActivity activity = BraveActivity.getBraveActivity();
-                if (activity != null) {
+                if (activity != null && activity.getActivityTab() != null) {
                     BraveWalletProviderDelegateImplHelper.IsSolanaConnected(
                             activity.getActivityTab().getWebContents(), selectedAccount.address,
                             isConnected -> {

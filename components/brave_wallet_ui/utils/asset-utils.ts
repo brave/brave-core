@@ -88,13 +88,26 @@ export const auroraSupportedContractAddresses = [
 ].map(contractAddress => contractAddress.toLowerCase())
 
 export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
-  return {
-    ...token,
-    logo: token.logo?.startsWith('ipfs://')
-      ? httpifyIpfsUrl(token.logo)
-      : token.logo?.startsWith('data:image/')
-        ? token.logo
-        : `chrome://erc-token-images/${token.logo}`
+  const newLogo = token.logo?.startsWith('ipfs://')
+    ? httpifyIpfsUrl(token.logo)
+    : token.logo?.startsWith('data:image/')
+      ? token.logo
+      : `chrome://erc-token-images/${token.logo}`
+
+  if (token.logo === newLogo) {
+    // nothing to change
+    return token
+  }
+
+  try {
+    token.logo = newLogo
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      logo: newLogo
+    }
   }
 }
 
@@ -170,3 +183,12 @@ export const getAssetIdKey = (asset: BraveWallet.BlockchainToken) => {
  * @returns Boolean indicating sardine support
  */
 export const isSardineSupported = () => navigator.language.toLowerCase() === 'en-us'
+
+export const findTokenByContractAddress = (
+  contractAddress: string,
+  tokensList: BraveWallet.BlockchainToken[]
+) => {
+  return tokensList.find((token) =>
+    token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+  )
+}

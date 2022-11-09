@@ -175,9 +175,8 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
     return;
 
   base::AutoLock lock(subscription_services_lock_);
-  subscriptions_ = local_state_->GetDictionary(prefs::kAdBlockListSubscriptions)
-                       ->GetDict()
-                       .Clone();
+  subscriptions_ =
+      local_state_->GetDict(prefs::kAdBlockListSubscriptions).Clone();
 
   for (const auto it : subscriptions_) {
     const std::string key = it.first;
@@ -415,9 +414,8 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
     return;
 
   base::AutoLock lock(subscription_services_lock_);
-  subscriptions_ = local_state_->GetDictionary(prefs::kAdBlockListSubscriptions)
-                       ->GetDict()
-                       .Clone();
+  subscriptions_ =
+      local_state_->GetDict(prefs::kAdBlockListSubscriptions).Clone();
 
   for (const auto it : subscriptions_) {
     const std::string key = it.first;

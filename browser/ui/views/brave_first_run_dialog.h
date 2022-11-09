@@ -7,8 +7,14 @@
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_FIRST_RUN_DIALOG_H_
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
+
+namespace views {
+class Checkbox;
+}  // namespace views
 
 class BraveFirstRunDialog : public views::DialogDelegateView {
  public:
@@ -33,6 +39,10 @@ class BraveFirstRunDialog : public views::DialogDelegateView {
   void WindowClosing() override;
 
   base::RepeatingClosure quit_runloop_;
+
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
+  raw_ptr<views::Checkbox> pin_shortcut_checkbox_ = nullptr;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_FIRST_RUN_DIALOG_H_

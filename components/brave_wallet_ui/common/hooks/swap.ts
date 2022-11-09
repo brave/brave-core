@@ -39,10 +39,10 @@ import { debounce } from '../../../common/debounce'
 import { WalletActions } from '../actions'
 import getAPIProxy from '../async/bridge'
 import { hexStrToNumberArray } from '../../utils/hex-utils'
+import { getBalance } from '../../utils/balance-utils'
 
 // Hooks
 import useAssetManagement from './assets-management'
-import useBalance from './balance'
 import usePreset from './select-preset'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
@@ -111,14 +111,18 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const {
     selectedAccount,
     selectedNetwork,
-    networkList,
     fullTokenList,
     userVisibleTokensInfo
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const dispatch = useDispatch()
 
-  const swapProvider = React.useMemo(() =>
-    getSwapProvider(selectedNetwork), [selectedNetwork])
+  const swapProvider = React.useMemo(() => {
+    if (!selectedNetwork) {
+      return SwapProvider.ZeroEx
+    }
+
+    return getSwapProvider(selectedNetwork)
+  }, [selectedNetwork])
 
   // common state
   const [customSlippageTolerance, setCustomSlippageTolerance] = React.useState<string>('')
@@ -151,12 +155,16 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
   // custom hooks
   const isMounted = useIsMounted()
-  const getBalance = useBalance(networkList)
   const { makeTokenVisible } = useAssetManagement()
-  const { getIsSwapSupported, getERC20Allowance, sendSolanaSerializedTransaction } = useLib()
+  const {
+    getIsSwapSupported,
+    getERC20Allowance,
+    sendSolanaSerializedTransaction,
+    hasEIP1559Support
+  } = useLib()
 
   // memos
-  const nativeAsset = React.useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
+  const nativeAsset = React.useMemo(() => selectedNetwork && makeNetworkAsset(selectedNetwork), [selectedNetwork])
   const fromAssetBalance = getBalance(selectedAccount, fromAsset)
   const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
   const toAssetBalance = getBalance(selectedAccount, toAsset)
@@ -181,6 +189,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   }, [swapQuote, swapProvider])
 
   const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+    if (!selectedNetwork || !nativeAsset) {
+      return []
+    }
+
     return [
       nativeAsset,
       ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'USDC'),
@@ -221,6 +233,11 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return
     }
 
+    // No validations to perform if selectedNetwork is not loaded
+    if (!selectedNetwork) {
+      return
+    }
+
     const fromAmountWeiWrapped = new Amount(fromAmount)
       .multiplyByDecimals(fromAsset.decimals)
 
@@ -232,7 +249,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return 'insufficientFundsForGas'
     }
 
-    if (fromAsset.symbol === selectedNetwork.symbol && fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)) {
+    if (fromAsset.chainId === selectedNetwork.chainId && fromAsset.coin === selectedNetwork.coin && fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)) {
       return 'insufficientFundsForGas'
     }
 
@@ -407,19 +424,22 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         // order to ensure a swap with minimum slippage.
         const { estimation: gasEstimates } = await ethTxManagerProxy.getGasEstimation1559()
 
+        const isEIP1559 = selectedNetwork && gasEstimates
+          ? hasEIP1559Support(selectedAccount, selectedNetwork)
+          : false
         let maxPriorityFeePerGas
         let maxFeePerGas
-        if (gasEstimates && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
+        if (isEIP1559 && gasEstimates && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
           // Bump fast priority fee and max fee by 1 GWei if same as average fees.
           const maxPriorityFeePerGasBN = new BigNumber(gasEstimates.fastMaxPriorityFeePerGas).plus(10 ** 9)
           const maxFeePerGasBN = new BigNumber(gasEstimates.fastMaxFeePerGas).plus(10 ** 9)
 
           maxPriorityFeePerGas = `0x${maxPriorityFeePerGasBN.toString(16)}`
           maxFeePerGas = `0x${maxFeePerGasBN.toString(16)}`
-        } else if (gasEstimates) {
+        } else if (isEIP1559) {
           // Always suggest fast gas fees as default
-          maxPriorityFeePerGas = gasEstimates.fastMaxPriorityFeePerGas
-          maxFeePerGas = gasEstimates.fastMaxFeePerGas
+          maxPriorityFeePerGas = gasEstimates?.fastMaxPriorityFeePerGas
+          maxFeePerGas = gasEstimates?.fastMaxFeePerGas
         }
 
         const params: SendTransactionParams = {
@@ -452,7 +472,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         console.error(`[swap] error querying 0x API: ${quote.errorResponse}`)
       }
     }
-  }, [isMounted])
+  }, [isMounted, selectedAccount, selectedNetwork])
 
   const fetchJupiterSwapQuote = React.useCallback(async (payload: SwapParamsPayloadType) => {
     if (!isMounted) {
@@ -655,6 +675,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
     if (fromAmountWeiWrapped?.isUndefined() || fromAmountWeiWrapped?.isZero()) {
       setFromAmount('')
+      return
+    }
+
+    if (!selectedNetwork) {
       return
     }
 
@@ -898,6 +922,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
   React.useEffect(() => {
     let isSubscribed = true // track if the component is mounted
+
+    if (!selectedNetwork) {
+      return
+    }
 
     getIsSwapSupported(selectedNetwork).then(
       (supported) => {

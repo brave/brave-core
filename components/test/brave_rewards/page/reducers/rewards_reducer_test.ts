@@ -60,10 +60,8 @@ describe('rewards reducer', () => {
 
       it('import flow - existing state', () => {
         const initState: Rewards.State = defaultState()
-        initState.ui.walletRecoveryStatus = 1
 
         const expectedState: Rewards.State = defaultState()
-        expectedState.ui.walletRecoveryStatus = 1
 
         const assertion = reducers({
           rewardsData: initState
@@ -95,6 +93,7 @@ describe('rewards reducer', () => {
           adsSubdivisionTargeting: 'US-CA',
           automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
           shouldAllowAdsSubdivisionTargeting: true,
+          subdivisions: [],
           isAdsSubdivisionTargetingRegion: true,
           adsUIEnabled: false,
           adsIsSupported: false,
@@ -110,6 +109,7 @@ describe('rewards reducer', () => {
           adsSubdivisionTargeting: 'US-CA',
           automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
           shouldAllowAdsSubdivisionTargeting: true,
+          subdivisions: [],
           isAdsSubdivisionTargetingRegion: true,
           adsUIEnabled: true,
           adsIsSupported: true,
@@ -129,6 +129,7 @@ describe('rewards reducer', () => {
               adsSubdivisionTargeting: 'US-CA',
               automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
               shouldAllowAdsSubdivisionTargeting: true,
+              subdivisions: [],
               adsUIEnabled: true,
               adsIsSupported: true
             }

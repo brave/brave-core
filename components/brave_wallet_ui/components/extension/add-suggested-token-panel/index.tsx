@@ -32,7 +32,7 @@ export interface Props {
   onCancel: () => void
   onAddToken: () => void
   originInfo: BraveWallet.OriginInfo
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
 }
 
@@ -55,7 +55,7 @@ function AddSuggestedTokenPanel (props: Props) {
     <StyledWrapper>
       <TopWrapper>
         <TopRow>
-          <NetworkText>{selectedNetwork.chainName}</NetworkText>
+          <NetworkText>{selectedNetwork?.chainName ?? ''}</NetworkText>
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
         <URLText>

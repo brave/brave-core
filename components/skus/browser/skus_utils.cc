@@ -5,6 +5,8 @@
 
 #include "brave/components/skus/browser/skus_utils.h"
 
+#include <utility>
+
 #include "base/command_line.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -70,13 +72,14 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 }
 
 void MigrateSkusSettings(PrefService* profile_prefs, PrefService* local_prefs) {
-  auto* obsolete_pref = profile_prefs->Get(prefs::kSkusState);
-  if (!obsolete_pref || !obsolete_pref->is_dict())
+  if (!profile_prefs->HasPrefPath(prefs::kSkusState))
     return;
+  base::Value::Dict obsolete_pref =
+      profile_prefs->GetDict(prefs::kSkusState).Clone();
   if (local_prefs->GetBoolean(prefs::kSkusStateMigratedToLocalState)) {
     return;
   }
-  local_prefs->Set(prefs::kSkusState, obsolete_pref->Clone());
+  local_prefs->Set(prefs::kSkusState, base::Value(std::move(obsolete_pref)));
   local_prefs->SetBoolean(prefs::kSkusStateMigratedToLocalState, true);
   profile_prefs->ClearPref(prefs::kSkusState);
 }

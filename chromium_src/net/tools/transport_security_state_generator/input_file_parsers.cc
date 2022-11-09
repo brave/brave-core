@@ -17,9 +17,9 @@ bool ParseCertificatesFile(base::StringPiece certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   base::StringPiece brave_certs = R"brave_certs(
-# Last updated: Mon Sep 26 22:53:33 UTC 2022
+# Last updated: Thu Oct 27 22:02:58 UTC 2022
 PinsListTimestamp
-1664232813
+1666908178
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
@@ -449,10 +449,8 @@ bool ParseJSON(base::StringPiece json,
 
       // Wallet
       { "name": "goerli-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "kovan-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "sepolia-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "rinkeby-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "ropsten-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-beta-solana.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-polygon.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 

@@ -8,8 +8,7 @@ import { connect } from 'react-redux'
 // Components
 import {
   ModalActivity,
-  ModalBackupRestore,
-  ModalQRCode
+  ModalBackupReset
 } from '../../ui/components'
 import { WalletCard, ExternalWalletAction } from '../../shared/components/wallet_card'
 import { LayoutKind } from '../lib/layout_context'
@@ -23,7 +22,7 @@ import {
 
 import { Provider } from '../../ui/components/profile'
 // Utils
-import { getLocale, getLocaleWithTag } from '../../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import { convertBalance, isPublisherConnectedOrVerified } from './utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
@@ -37,7 +36,6 @@ interface State {
   modalActivity: boolean
   modalPendingContribution: boolean
   modalVerify: boolean
-  modalQRCode: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -51,8 +49,7 @@ class PageWallet extends React.Component<Props, State> {
       activeTabId: 0,
       modalActivity: false,
       modalPendingContribution: false,
-      modalVerify: false,
-      modalQRCode: false
+      modalVerify: false
     }
   }
 
@@ -86,32 +83,9 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
-  onModalBackupOnRestore = (key: string | MouseEvent) => {
-    if (typeof key === 'string' && key.length > 0) {
-      key = this.pullRecoveryKeyFromFile(key)
-      this.actions.recoverWallet(key)
-    }
-  }
-
   onModalBackupOnReset = () => {
     this.actions.onModalBackupClose()
     this.actions.completeReset()
-  }
-
-  pullRecoveryKeyFromFile = (key: string) => {
-    let recoveryKey = null
-    if (key) {
-      let messageLines = key.match(/^.+$/gm)
-      if (messageLines) {
-        let passphraseLine = '' || messageLines[2]
-        if (passphraseLine) {
-          const passphrasePattern = new RegExp(['Recovery Key:', '(.+)$'].join(' '))
-          recoveryKey = (passphraseLine.match(passphrasePattern) || [])[1]
-          return recoveryKey
-        }
-      }
-    }
-    return key
   }
 
   onModalActivityToggle = () => {
@@ -163,21 +137,6 @@ class PageWallet extends React.Component<Props, State> {
     }
     this.setState({
       modalVerify: !this.state.modalVerify
-    })
-  }
-
-  toggleQRCodeModal = () => {
-    // If we are opening the QR code panel, then request a payment ID if we do
-    // not already have one and close the backup/restore modal.
-    if (!this.state.modalQRCode) {
-      if (!this.props.rewardsData.paymentId) {
-        this.actions.getPaymentId()
-      }
-      this.actions.onModalBackupClose()
-    }
-
-    this.setState({
-      modalQRCode: !this.state.modalQRCode
     })
   }
 
@@ -592,39 +551,29 @@ class PageWallet extends React.Component<Props, State> {
     return (balance.wallets.blinded || 0)
   }
 
-  getBackupErrorMessage = () => {
-    const { ui } = this.props.rewardsData
-    const { walletRecoveryStatus } = ui
+  isWalletProviderEnabled = (walletProvider: string) => {
+    const { currentCountryCode, parameters } = this.props.rewardsData
+    const regions = parameters.walletProviderRegions[walletProvider]
 
-    if (walletRecoveryStatus === null) {
-      return ''
+    if (!regions) {
+      return true
     }
 
-    // ledger::mojom::Result::CORRUPTED_DATA
-    if (walletRecoveryStatus === 17) {
-      const tags = getLocaleWithTag('walletRecoveryOutdated')
-      return (
-        <span>
-          {tags.beforeTag}
-          <a href='https://brave.com/faq#convert-old-keys' target='_blank' rel='noopener noreferrer'>
-            {tags.duringTag}
-          </a>
-          {tags.afterTag}
-        </span>
-      )
+    const { allow, block } = regions
+
+    if (allow.length === 0 && block.length === 0) {
+      return true
     }
 
-    if (walletRecoveryStatus !== 0) {
-      return getLocale('walletRecoveryFail')
-    }
-
-    return ''
+    return allow.includes(currentCountryCode) ||
+      block.length !== 0 && !block.includes(currentCountryCode)
   }
 
   generateExternalWalletProviderList = (walletProviders: string[]) => {
     return walletProviders.map((type) => ({
       type,
-      name: lookupExternalWalletProviderName(type)
+      name: lookupExternalWalletProviderName(type),
+      enabled: this.isWalletProviderEnabled(type)
     }))
   }
 
@@ -658,7 +607,6 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       externalWallet,
       parameters,
-      paymentId,
       pendingContributionTotal,
       pendingContributions
     } = this.props.rewardsData
@@ -706,16 +654,13 @@ class PageWallet extends React.Component<Props, State> {
         { this.props.layout === 'wide' && <ManageWalletButton onClick={this.onModalBackupOpen} /> }
         {
           modalBackup
-            ? <ModalBackupRestore
+            ? <ModalBackupReset
               activeTabId={this.state.activeTabId}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
-              onRestore={this.onModalBackupOnRestore}
               onVerify={this.onVerifyClick}
               onReset={this.onModalBackupOnReset}
-              onShowQRCode={this.toggleQRCodeModal}
               internalFunds={this.getInternalFunds()}
-              error={this.getBackupErrorMessage()}
             />
             : null
         }
@@ -744,14 +689,6 @@ class PageWallet extends React.Component<Props, State> {
           this.state.modalActivity
             ? this.generateMonthlyReport()
             : null
-        }
-        {
-          this.state.modalQRCode
-          ? <ModalQRCode
-              paymentId={paymentId}
-              onClose={this.toggleQRCodeModal}
-          />
-          : null
         }
       </div>
     )

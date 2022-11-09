@@ -5,57 +5,18 @@
 
 import * as React from 'react'
 import * as Card from '../cardSizes'
-import getBraveNewsController, * as BraveNews from '../../../../api/brave_news'
+import * as BraveNews from '../../../../api/brave_news'
+import { useUnpaddedImageUrl } from '../useUnpaddedImageUrl'
 
 type Props = {
-  imageUrl: string
+  imageUrl?: string
   list?: boolean
-  isUnpadded?: boolean
   isPromoted?: boolean
   onLoaded?: () => any
 }
 
-function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?: () => any) {
-  const [unpaddedUrl, setUnpaddedUrl] = React.useState('')
-  const onReceiveUnpaddedUrl = (result: string) => {
-    setUnpaddedUrl(result)
-    window.requestAnimationFrame(() => {
-      if (onLoaded) {
-        onLoaded()
-      }
-    })
-  }
-  React.useEffect(() => {
-    // Storybook method
-    // @ts-expect-error
-    if (window.braveStorybookUnpadUrl) {
-      // @ts-expect-error
-      window.braveStorybookUnpadUrl(paddedUrl)
-      .then(onReceiveUnpaddedUrl)
-      return
-    }
-
-    let blobUrl: string
-    getBraveNewsController().getImageData({ url: paddedUrl })
-    .then(async (result) => {
-      if (!result.imageData) {
-        return
-      }
-      const blob = new Blob([new Uint8Array(result.imageData)], { type: 'image/*' })
-      blobUrl = URL.createObjectURL(blob)
-      onReceiveUnpaddedUrl(blobUrl)
-    })
-    .catch(err => {
-      console.error(`Error getting image for ${paddedUrl}.`, err)
-    })
-
-    return () => URL.revokeObjectURL(blobUrl)
-  }, [paddedUrl, isUnpadded])
-  return unpaddedUrl
-}
-
 export default function CardImage (props: Props) {
-  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, !!props.isUnpadded, props.onLoaded)
+  const unpaddedUrl = useUnpaddedImageUrl(props.imageUrl, props.onLoaded)
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
   React.useEffect(() => {
     if (unpaddedUrl) {

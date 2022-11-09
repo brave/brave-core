@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
+#include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
@@ -18,6 +21,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/network_change_notifier.h"
 
 namespace brave_vpn {
 
@@ -30,14 +34,11 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
   registry->RegisterBooleanPref(prefs::kBraveVPNShowDNSPolicyWarningDialog,
                                 true);
-#elif BUILDFLAG(IS_ANDROID)
-  registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
-  registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
 #endif
-  registry->RegisterStringPref(prefs::kBraveVPNEEnvironment,
+  registry->RegisterStringPref(prefs::kBraveVPNEnvironment,
                                skus::GetDefaultEnvironment());
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
-
+  registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
 }
 
@@ -48,28 +49,29 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
     return;
   }
 
-  auto* obsolete_pref = profile_prefs->Get(prefs::kBraveVPNRootPref);
-  if (!obsolete_pref || !obsolete_pref->is_dict()) {
+  if (!profile_prefs->HasPrefPath(prefs::kBraveVPNRootPref)) {
     local_prefs->SetBoolean(prefs::kBraveVPNLocalStateMigrated, true);
     return;
   }
-  base::Value result;
+  base::Value::Dict obsolete_pref =
+      profile_prefs->GetDict(prefs::kBraveVPNRootPref).Clone();
+  base::Value::Dict result;
   if (local_prefs->HasPrefPath(prefs::kBraveVPNRootPref)) {
-    result = local_prefs->Get(prefs::kBraveVPNRootPref)->Clone();
-    auto& result_dict = result.GetDict();
-    result_dict.Merge(obsolete_pref->GetDict().Clone());
+    result = local_prefs->GetDict(prefs::kBraveVPNRootPref).Clone();
+    auto& result_dict = result;
+    result_dict.Merge(std::move(obsolete_pref));
   } else {
-    result = obsolete_pref->Clone();
+    result = std::move(obsolete_pref);
   }
   // Do not migrate brave_vpn::prefs::kBraveVPNShowButton, we want it to be
   // inside the profile preferences.
   auto tokens =
       base::SplitString(brave_vpn::prefs::kBraveVPNShowButton, ".",
                         base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  if (result.GetDict().FindBool(tokens.back())) {
-    result.RemoveKey(tokens.back());
+  if (result.FindBool(tokens.back())) {
+    result.Remove(tokens.back());
   }
-  local_prefs->Set(prefs::kBraveVPNRootPref, result);
+  local_prefs->Set(prefs::kBraveVPNRootPref, base::Value(std::move(result)));
   local_prefs->SetBoolean(prefs::kBraveVPNLocalStateMigrated, true);
 
   bool show_button =
@@ -100,6 +102,11 @@ std::string GetManageUrl(const std::string& env) {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
+#if BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
+  registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
+  registry->RegisterStringPref(prefs::kBraveVPNProductIdAndroid, "");
+#endif
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -108,5 +115,12 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed);
   RegisterVPNLocalStatePrefs(registry);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+bool IsNetworkAvailable() {
+  return net::NetworkChangeNotifier::GetConnectionType() !=
+         net::NetworkChangeNotifier::CONNECTION_NONE;
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_vpn

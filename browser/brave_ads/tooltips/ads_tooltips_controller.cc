@@ -11,7 +11,7 @@
 #include "brave/browser/brave_ads/tooltips/ads_captcha_tooltip.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_popup_handler.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 

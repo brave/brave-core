@@ -63,7 +63,7 @@ TEST_F(BatAdsUnblindedTokenValueUtilTest, ToEmptyValue) {
 TEST_F(BatAdsUnblindedTokenValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::List* list = value.GetIfList();
+  const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
   // Act
@@ -77,7 +77,7 @@ TEST_F(BatAdsUnblindedTokenValueUtilTest, FromValue) {
 TEST_F(BatAdsUnblindedTokenValueUtilTest, FromEmptyValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kEmptyJson);
-  const base::Value::List* list = value.GetIfList();
+  const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
   // Act

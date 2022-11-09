@@ -5,7 +5,6 @@
 
 #include "base/path_service.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/brave_color_mixer.h"
 #include "brave/browser/ui/color/color_palette.h"
@@ -133,8 +132,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
 
   const ui::ColorProvider* color_provider =
       ThemeServiceFactory::GetForProfile(profile)->GetColorProvider();
-  EXPECT_EQ(BraveThemeProperties::kLightColorForTest,
-            color_provider->GetColor(test_theme_color));
+  EXPECT_EQ(kLightColorForTest, color_provider->GetColor(test_theme_color));
 
   // Test dark theme
   dark_mode::SetBraveDarkModeType(
@@ -145,8 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
 
   color_provider =
       ThemeServiceFactory::GetForProfile(profile)->GetColorProvider();
-  EXPECT_EQ(BraveThemeProperties::kDarkColorForTest,
-            color_provider->GetColor(test_theme_color));
+  EXPECT_EQ(kDarkColorForTest, color_provider->GetColor(test_theme_color));
 
   // Test dark theme private
   Profile* profile_private =
@@ -154,7 +151,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
   const ui::ColorProvider* color_provider_private =
       ThemeServiceFactory::GetForProfile(profile_private)->GetColorProvider();
   // Private color mixer overrides are not loaded because there's no theme.
-  EXPECT_EQ(BraveThemeProperties::kDarkColorForTest,
+  EXPECT_EQ(kDarkColorForTest,
             color_provider_private->GetColor(test_theme_color));
 }
 

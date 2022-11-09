@@ -32,8 +32,13 @@ namespace brave_ads {
 class AdsService : public KeyedService {
  public:
   AdsService();
+
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
+
+  AdsService(AdsService&& other) noexcept = delete;
+  AdsService& operator=(AdsService&& other) noexcept = delete;
+
   ~AdsService() override;
 
   void AddObserver(AdsServiceObserver* observer);
@@ -287,9 +292,6 @@ class AdsService : public KeyedService {
   // containing the current state.
   virtual void ToggleFlaggedAd(base::Value::Dict value,
                                ToggleFlaggedAdCallback callback) = 0;
-
-  // Called to wipe all state.
-  virtual void WipeState(bool should_shutdown) = 0;
 
  protected:
   base::ObserverList<AdsServiceObserver> observers_;

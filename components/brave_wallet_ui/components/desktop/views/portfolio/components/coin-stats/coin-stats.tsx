@@ -40,7 +40,7 @@ export const CoinStats = (props: Props) => {
       <Row>
         <StatWrapper>
           <StatValue>{marketCapRank}</StatValue>
-          <StatLabel>{getLocale('braveWalletMarketCapStat')}</StatLabel>
+          <StatLabel>{getLocale('braveWalletRankStat')}</StatLabel>
         </StatWrapper>
 
         <StatWrapper>

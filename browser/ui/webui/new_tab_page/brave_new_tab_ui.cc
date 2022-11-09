@@ -18,7 +18,7 @@
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -65,6 +65,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
                      base::FeatureList::IsEnabled(
                          brave_today::features::kBraveNewsCardPeekFeature));
+  source->AddBoolean(
+      "featureFlagBraveNewsV2Enabled",
+      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsV2Feature));
   source->AddBoolean(
       "featureFlagBraveNewsSubscribeButtonEnabled",
       base::FeatureList::IsEnabled(

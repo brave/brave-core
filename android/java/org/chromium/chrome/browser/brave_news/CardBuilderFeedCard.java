@@ -702,8 +702,10 @@ public class CardBuilderFeedCard {
     }
 
     private void openUrlAndSaveEvent(DisplayAd adData) {
-        mBraveNewsController.onDisplayAdVisit(adData.uuid, adData.creativeInstanceId);
-        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+        if (mBraveNewsController != null) {
+            mBraveNewsController.onDisplayAdVisit(adData.uuid, adData.creativeInstanceId);
+            openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+        }
     }
 
     private void addElementsToSingleLayout(ViewGroup view, int index, int itemType) {
@@ -1275,24 +1277,27 @@ public class CardBuilderFeedCard {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPromo) {
-                    // Updates the no. of promotion cards visited
-                    mBraveNewsController.onPromotedItemVisit(
-                            mNewsItem.getUuid(), creativeInstanceId);
-                } else if (displayAd != null) {
-                    // Updates the no. of ads cards visited
-                    mBraveNewsController.onDisplayAdVisit(
-                            displayAd.uuid, displayAd.creativeInstanceId);
-                } else {
-                    // Brave News updates the no. of "normal" cards visited
-                    int visitedNewsCardsCount = SharedPreferencesManager.getInstance().readInt(
-                            BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED);
-                    visitedNewsCardsCount++;
-                    SharedPreferencesManager.getInstance().writeInt(
-                            BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED, visitedNewsCardsCount);
-                    if (visitedNewsCardsCount > 0) {
-                        mBraveNewsController.onSessionCardVisitsCountChanged(
-                                (short) visitedNewsCardsCount);
+                if (mBraveNewsController != null) {
+                    if (isPromo) {
+                        // Updates the no. of promotion cards visited
+                        mBraveNewsController.onPromotedItemVisit(
+                                mNewsItem.getUuid(), creativeInstanceId);
+                    } else if (displayAd != null) {
+                        // Updates the no. of ads cards visited
+                        mBraveNewsController.onDisplayAdVisit(
+                                displayAd.uuid, displayAd.creativeInstanceId);
+                    } else {
+                        // Brave News updates the no. of "normal" cards visited
+                        int visitedNewsCardsCount = SharedPreferencesManager.getInstance().readInt(
+                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED);
+                        visitedNewsCardsCount++;
+                        SharedPreferencesManager.getInstance().writeInt(
+                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED,
+                                visitedNewsCardsCount);
+                        if (visitedNewsCardsCount > 0) {
+                            mBraveNewsController.onSessionCardVisitsCountChanged(
+                                    (short) visitedNewsCardsCount);
+                        }
                     }
                 }
             }
@@ -1335,28 +1340,30 @@ public class CardBuilderFeedCard {
         }
 
         final Url adImageUrl = imageUrlTemp;
-
-        mBraveNewsController.getImageData(adImageUrl, imageData -> {
-            if (imageData != null) {
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-                Glide.with(mActivity)
-                        .asBitmap()
-                        .load(decodedByte)
-                        .fitCenter()
-                        .priority(Priority.IMMEDIATE)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource,
-                                    @Nullable Transition<? super Bitmap> transition) {
-                                imageView.setImageBitmap(resource);
-                            }
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {}
-                        });
-                imageView.setClipToOutline(true);
-            }
-        });
+        if (mBraveNewsController != null) {
+            mBraveNewsController.getImageData(adImageUrl, imageData -> {
+                if (imageData != null) {
+                    Bitmap decodedByte =
+                            BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                    Glide.with(mActivity)
+                            .asBitmap()
+                            .load(decodedByte)
+                            .fitCenter()
+                            .priority(Priority.IMMEDIATE)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource,
+                                        @Nullable Transition<? super Bitmap> transition) {
+                                    imageView.setImageBitmap(resource);
+                                }
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {}
+                            });
+                    imageView.setClipToOutline(true);
+                }
+            });
+        }
     }
 
     private void setImage(ImageView imageView, String type, int index) {
@@ -1382,19 +1389,21 @@ public class CardBuilderFeedCard {
             }
 
             Url itemImageUrl = getImage(itemMetaData);
-            mBraveNewsController.getImageData(itemImageUrl, imageData -> {
-                if (imageData != null) {
-                    GranularRoundedCorners radius = new GranularRoundedCorners(15, 15, 15, 15);
-                    if (!type.equals("paired")) {
-                        radius = new GranularRoundedCorners(30, 30, 0, 0);
-                    }
-                    RequestOptions requestOptions = new RequestOptions();
-                    requestOptions =
-                            requestOptions.centerInside().transform(new CenterCrop(), radius);
+            if (mBraveNewsController != null) {
+                mBraveNewsController.getImageData(itemImageUrl, imageData -> {
+                    if (imageData != null) {
+                        GranularRoundedCorners radius = new GranularRoundedCorners(15, 15, 15, 15);
+                        if (!type.equals("paired")) {
+                            radius = new GranularRoundedCorners(30, 30, 0, 0);
+                        }
+                        RequestOptions requestOptions = new RequestOptions();
+                        requestOptions =
+                                requestOptions.centerInside().transform(new CenterCrop(), radius);
 
-                    mGlide.load(imageData).centerCrop().apply(requestOptions).into(imageView);
-                }
-            });
+                        mGlide.load(imageData).centerCrop().apply(requestOptions).into(imageView);
+                    }
+                });
+            }
         }
     }
 

@@ -85,10 +85,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8303432794159193481">Programu za Waendelezaji za Kivinjari cha Brave</translation>
 <translation id="8292967014767479012">Programu za Kivinjari cha Brave</translation>
 <translation id="4743468424889072281">Programu za Maendeleo za Kivinjari cha Brave</translation>
-<translation id="239760341987199724">Weka Brave kuwa kivinjari chako chaguomsingi</translation>
-<translation id="1391855377994926460">Endelea kuvinjari wavuti haraka - hadi mara 6 haraka zaidi kwenye tovuti kuu za habari.</translation>
-<translation id="9218430445555521422">Weka iwe chaguomsingi</translation>
-<translation id="3479552764303398839">Si sasa</translation>
 <translation id="732814027519296280">Unataka kufanya Brave Search iwe bora hata zaidi?</translation>
 <translation id="2677865600861971449">Ingia katika Web Discovery Project ili uchangie kwenye utafutaji bila kujulikana na data ya kuvinjari na uimarishe matokeo ya Brave Search kwa wote. Inadumisha faragha. Hakuna kutumia nguvu. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Pata maelezo zaidi</translation>
@@ -204,9 +200,10 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Weka Brave kama kivinjari chako chaguomsingi ili kupata ulinzi wa faragha wa Brave kwenye kila ukurasa wa wavuti unaofungua.</translation>
 <translation id="8722651357687610395">Weka Brave kuwa chaguomsingi</translation>
 <translation id="2370739752330685659">Labda baadaye</translation>
+<translation id="7537601449003285327">Tundika kwenye upau wa kazi</translation>
 <translation id="961012016278832836">Urithi wa Microsoft Edge</translation>
 <translation id="6436994631426134065">Imehamishwa kutoka<ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Nakili kiungo safi (URL kuu tu)</translation>
+<translation id="7630214457764713113">Nakili kiungo kikamilifu</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
 <translation id="7179921470347911571">Zindua Sasa</translation>
 <translation id="4472575034687746823">Anza</translation>
@@ -246,10 +243,17 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3719826155360621982">Ukurasa wa nyumbani</translation>
 <translation id="5448570825852364919">Ukurasa mtupu</translation>
 <translation id="5919424224662539292">Fanya picha na wijeti za mandharinyuma zifae ambazo zinaonekana kwenye ukurasa mpya wa kichupo</translation>
+<translation id="7461924472993315131">Bana</translation>
+<translation id="7506648566440714944">Brave imebandikwa tayari</translation>
+<translation id="3195845168740336657">Mipangilio ya ulinzi</translation>
+<translation id="754769152790647708">Hali ya ulinzi</translation>
+<translation id="3615717588724840230">Tovuti zinaweza kuzuia vifuatiliaji, matangazo na kunakili data ya matumizi kwa kutumia Ulinzi</translation>
+<translation id="5690973901138662477">Ulinzi Umewashwa</translation>
+<translation id="4697275813919189958">Ulinzi Umezimwa</translation>
 <translation id="6303294677342628402">Ngao</translation>
 <translation id="7133511168130368997">Zuia wafuatiliaji na matangazo ambayo yanakufuatilia kwenye wavuti.</translation>
 <translation id="2761825942249694703">Hii ni mipangilio chaguo msingi ya Ngao. Hutumika kwenye tovuti zote isipokuwa tu kama utabadilisha kitu kwenye paneli la Ngao kwenye toavuti husika. Kubadilisha haya hakutaathiri mipangilio iliyopo ya tovuti.</translation>
-<translation id="1435116578479068303">Hii itazuia matangazo mengi kwenye tovuti, si Matangazo ya Faragha ya Brave — hayo hudhibitiwa katika mipangilio ya<ph name="BEGIN_LINK"/>Zawadi za Brave<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">Hii itazuia matangazo mengi kwenye tovuti, si Matangazo ya Faragha ya Brave — hayo hudhibitiwa katika mipangilio ya <ph name="BEGIN_LINK"/> Zawadi za Brave<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">Hii itazuia matangazo mengi kwenye tovuti.</translation>
 <translation id="4800195524776354947">Onyesha idadi ya vitu vilivyozuiwa kwenye alama ya Kinga</translation>
 <translation id="5510493033031835532">Elekeza kurasa za AMP upya kiotomatiki</translation>
@@ -259,7 +263,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2133317862976486547">Uzuiaji wa matangazo na vifuatiliaji</translation>
 <translation id="4078738236287221428">Chokozi</translation>
 <translation id="7740996059027112821">Wastani</translation>
-<translation id="3570081523466826008">Pandisha miunganisho kuwa HTTPS</translation>
 <translation id="4824468494729001999">Zuia maandishi</translation>
 <translation id="6531019308847917584">Zuia kukusanya maelezo kuhusu kifaa changu</translation>
 <translation id="5533533363827555308">Inasisitizwa, inaweza kuathiri utendaji wa tovuti</translation>
@@ -269,14 +272,14 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7390783310074170337">Mwonekano chaguomsingi</translation>
 <translation id="130615081792797568">Mwonekano rahisi</translation>
 <translation id="2360360976480535628">Mwonekano mahiri</translation>
-<translation id="6486983549008741930">Kuchuja Maudhui</translation>
+<translation id="101592339984642584">Kuchuja maudhui</translation>
 <translation id="8694564340481124390">Wezesha vichujio maalum ambavyo huzuia vifuatiliaji vya eneo na lugha mahususi na Kero.</translation>
-<translation id="6522618763902154348">Wezesha vichujio maalum ambavyo huzuia vifuatiliaji vya eneo na lugha mahususi na 
+<translation id="4877657558909976793">Wezesha vichujio maalum ambavyo huzuia vifuatiliaji vya eneo na lugha mahususi na
     <ph name="BEGIN_LINK"/>Kero<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Ongeza orodha za vichujio maalum</translation>
 <translation id="1020877116991797978">Ongeza orodha za ziada zinazoundwa na kuhifadhiwa na jumuiya yako inayoaminika.</translation>
 <translation id="7617831480435794399">Jisajili tu kwa orodha kutoka kwenye mashirika unayoamini. Kivinjari chako kitakagua mara kwa mara masasisho kutokana na URL unayoweka, kwa kutambua anwani yako ya IP kwenye seva yako.</translation>
-<translation id="2831397936251948638">Unda vichujio Maalumu</translation>
+<translation id="8580328754808744073">Unda vichujio maalumu</translation>
 <translation id="4618274268052410139">Ongeza vichujio maalum ulivyounda, kimoja kwa kila mstari, katika sehemu iliyo hapa chini. Hakikisha unatumia<ph name="BEGIN_LINK"/>sintaksia ya kichujio cha Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Ongeza</translation>
 <translation id="571950783952070673">URL ya orodha</translation>
@@ -292,6 +295,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5438573563213942361">Orodha maalum</translation>
 <translation id="4182731739150761577">Onyesha orodha kamili</translation>
 <translation id="1340263054776016283">Ingiza URL ya orodha ya vichujio</translation>
+<translation id="8578397014396032341">Vichujio vya Maudhui</translation>
 <translation id="6821903322090655051">Brave Rewards imelemazwa</translation>
 <translation id="413570371620795359">Fungua paneli ya Zawadi ili kuwezesha na kuanza</translation>
 <translation id="3849957491997306859">Imetambuliwa kiotomatiki</translation>
@@ -402,6 +406,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5927916530277631319">Mbinu ya kusuluhisha Vikoa Visivyoweza Kusimamishwa</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Jifunze Zaidi<ph name="END_LINK"/> kuhusu uzingatiaji wa faragha wa Ethereum.</translation>
 <translation id="5248318250177143470">Mbinu ya kusuluhisha Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Ruhusu utafutaji wa nje wa ENS.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Jifunze Zaidi<ph name="END_LINK"/> kuhusu uzingatiaji wa faragha wa utafutaji wa nje wa ENS.</translation>
 <translation id="6241402707160226266">Dirisha la Faragha na Tor</translation>
 <translation id="8762452230727230396">Tor huficha anwani yako ya IP kutoka kwenye tovuti unazotembelea.</translation>
 <translation id="2959986444009520721">Tumia Madaraja</translation>

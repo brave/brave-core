@@ -6,7 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
+#include "base/timer/timer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "components/prefs/pref_member.h"
 
 namespace views {
 class ScrollView;
@@ -19,25 +21,52 @@ class VerticalTabStripRegionView : public views::View {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
-  enum class State { kCollapsed, kExpanded };
+  // We have a state machine which cycles like:
+  //
+  //               <hovered>          <pressed button>
+  //   kCollapsed <----------> kFloating ----------> kExpanded
+  //       ^        <exited>                            |
+  //       |                                            |
+  //       +--------------------------------------------+
+  //                  <press button>
+  //
+  enum class State {
+    kCollapsed,
+    kFloating,
+    kExpanded,
+  };
 
   VerticalTabStripRegionView(Browser* browser, TabStripRegionView* region_view);
   ~VerticalTabStripRegionView() override;
 
+  State state() const { return state_; }
+
+  const TabStrip* tab_strip() const { return region_view_->tab_strip_; }
+  TabStrip* tab_strip() { return region_view_->tab_strip_; }
+
+  const Browser* browser() const { return browser_; }
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
+  gfx::Size GetMinimumSize() const override;
   void Layout() override;
   void OnThemeChanged() override;
+  void OnMouseExited(const ui::MouseEvent& event) override;
+  void OnMouseEntered(const ui::MouseEvent& event) override;
 
  private:
   bool IsTabFullscreen() const;
 
   void SetState(State state);
 
-  void UpdateLayout();
+  void UpdateLayout(bool in_destruction = false);
 
   void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
+
+  void OnCollapsedPrefChanged();
+
+  gfx::Size GetPreferredSizeForState(State state) const;
 
   raw_ptr<Browser> browser_ = nullptr;
 
@@ -46,12 +75,18 @@ class VerticalTabStripRegionView : public views::View {
 
   // Contains TabStripRegion.
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
+  raw_ptr<views::View> scroll_contents_view_ = nullptr;
   raw_ptr<views::View> scroll_view_header_ = nullptr;
 
   // New tab button created for vertical tabs
   raw_ptr<NewTabButton> new_tab_button_ = nullptr;
 
   State state_ = State::kExpanded;
+
+  BooleanPrefMember show_vertical_tabs_;
+  BooleanPrefMember collapsed_pref_;
+
+  base::OneShotTimer mouse_enter_timer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_

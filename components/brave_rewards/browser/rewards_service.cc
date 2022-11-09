@@ -41,6 +41,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kUserHasClaimedGrant, false);
   registry->RegisterTimePref(prefs::kAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kEnabled, false);
+  registry->RegisterStringPref(prefs::kDeclaredGeo, "");
   registry->RegisterTimePref(prefs::kAdsEnabledTimestamp, base::Time());
   registry->RegisterTimeDeltaPref(prefs::kAdsEnabledTimeDelta,
                                   base::TimeDelta());
@@ -79,6 +80,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kParametersTipChoices, "");
   registry->RegisterStringPref(prefs::kParametersMonthlyTipChoices, "");
   registry->RegisterStringPref(prefs::kParametersPayoutStatus, "");
+  registry->RegisterDictionaryPref(prefs::kParametersWalletProviderRegions);
   registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
   registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
   registry->RegisterStringPref(prefs::kWalletBrave, "");

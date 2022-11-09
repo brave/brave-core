@@ -56,6 +56,10 @@
 #include "brave/browser/ui/views/tabs/features.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/android/preferences/features.h"
+#endif
+
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
@@ -76,6 +80,10 @@ using debounce::features::kBraveDebounce;
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
+
+#if BUILDFLAG(IS_ANDROID)
+using preferences::features::kBraveBackgroundVideoPlayback;
+#endif
 
 namespace flag_descriptions {
 
@@ -197,6 +205,11 @@ constexpr char kBraveTorWindowsHttpsOnlyDescription[] =
     "Prevents Private Windows with Tor from making any insecure HTTP "
     "connections without warning the user first.";
 
+constexpr char kBraveRoundTimeStampsName[] = "Round time stamps";
+constexpr char kBraveRoundTimeStampsDescription[] =
+    "Prevents JavaScript from getting access to high-resolution clocks by "
+    "rounding all DOMHighResTimeStamps to the nearest millisecond.";
+
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
@@ -251,11 +264,6 @@ constexpr char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";
 constexpr char kBraveRewardsGeminiDescription[] =
     "Enables support for Gemini as an external wallet provider for Brave";
 #endif
-
-constexpr char kBraveRewardsWebUIPanelName[] = "Use WebUI Rewards Panel";
-constexpr char kBraveRewardsWebUIPanelDescription[] =
-    "When enabled, the Brave Rewards panel will be displayed using WebUI "
-    "instead of the built-in Rewards extension.";
 
 constexpr char kBraveRewardsVerboseLoggingName[] =
     "Enable Brave Rewards verbose logging";
@@ -389,6 +397,15 @@ constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
 constexpr char kBraveVerticalTabsDescription[] =
     "Move tab strip to be a vertical panel on the side of the window instead "
     "of horizontal at the top of the window.";
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+constexpr char kBraveBackgroundVideoPlaybackName[] =
+    "Background video playback";
+constexpr char kBraveBackgroundVideoPlaybackDescription[] =
+    "Enables play audio from video in background when tab is not active or "
+    "device screen is turned off. Try to switch to desktop mode if this "
+    "feature is not working.";
 #endif
 }  // namespace
 
@@ -551,6 +568,17 @@ constexpr char kBraveVerticalTabsDescription[] =
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
 #endif  // defined(TOOLKIT_VIEWS)
 
+#if BUILDFLAG(IS_ANDROID)
+#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                   \
+    {"brave-background-video-playback",                           \
+     flag_descriptions::kBraveBackgroundVideoPlaybackName,        \
+     flag_descriptions::kBraveBackgroundVideoPlaybackDescription, \
+     kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(kBraveBackgroundVideoPlayback)},
+#else
+#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
+#endif  // BUILDFLAG(IS_ANDROID)
+
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
      flag_descriptions::kUseDevUpdaterUrlName,                              \
@@ -652,11 +680,6 @@ constexpr char kBraveVerticalTabsDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
-    {"brave-rewards-webui-panel",                                           \
-     flag_descriptions::kBraveRewardsWebUIPanelName,                        \
-     flag_descriptions::kBraveRewardsWebUIPanelDescription,                 \
-     kOsDesktop,                                                            \
-     FEATURE_VALUE_TYPE(brave_rewards::features::kWebUIPanelFeature)},      \
     {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
@@ -699,6 +722,11 @@ constexpr char kBraveVerticalTabsDescription[] =
       flag_descriptions::kBraveTorWindowsHttpsOnlyDescription,              \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kBraveTorWindowsHttpsOnly)},                     \
+    {"brave-round-time-stamps",                                             \
+      flag_descriptions::kBraveRoundTimeStampsName,                         \
+      flag_descriptions::kBraveRoundTimeStampsDescription,                  \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kBraveRoundTimeStamps)},                         \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \
@@ -710,4 +738,5 @@ constexpr char kBraveVerticalTabsDescription[] =
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
     BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
     PLAYLIST_FEATURE_ENTRIES                                                \
-    BRAVE_VERTICAL_TABS_FEATURE_ENTRY
+    BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                       \
+    BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID

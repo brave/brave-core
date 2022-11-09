@@ -49,8 +49,6 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import {
   AppsListType,
   BraveWallet,
-  WalletState,
-  PanelState,
   PanelTypes,
   WalletAccountType,
   BuySendSwapViewTypes,
@@ -61,15 +59,18 @@ import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
-import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork } from '../common/hooks'
+import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork, useBalanceUpdater } from '../common/hooks'
 import { getUniqueAssets } from '../utils/asset-utils'
 import { isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { SelectCurrency } from '../components/buy-send-swap/select-currency/select-currency'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
 import { TransactionStatus } from '../components/extension/post-confirmation'
+import { useSafePanelSelector, useSafeWalletSelector, useUnsafePanelSelector, useUnsafeWalletSelector } from '../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../common/selectors'
+import { PanelSelectors } from './selectors'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -79,37 +80,40 @@ import { TransactionStatus } from '../components/extension/post-confirmation'
 function Container () {
   // redux
   const dispatch = useDispatch()
-  const {
-    accounts,
-    selectedAccount,
-    selectedNetwork,
-    selectedPendingTransaction,
-    isWalletLocked,
-    favoriteApps,
-    hasInitialized,
-    isWalletCreated,
-    networkList,
-    transactionSpotPrices,
-    activeOrigin,
-    defaultCurrencies,
-    transactions,
-    userVisibleTokensInfo,
-    defaultNetworks
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
-  const {
-    connectToSiteOrigin,
-    panelTitle,
-    selectedPanel,
-    addChainRequest,
-    signMessageData,
-    switchChainRequest,
-    suggestedTokenRequest,
-    getEncryptionPublicKeyRequest,
-    decryptRequest,
-    connectingAccounts,
-    selectedTransaction,
-    hardwareWalletCode
-  } = useSelector(({ panel }: { panel: PanelState }) => panel)
+
+  // wallet selectors (safe)
+  const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+
+  // wallet selectors (unsafe)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const defaultNetworks = useUnsafeWalletSelector(WalletSelectors.defaultNetworks)
+  const favoriteApps = useUnsafeWalletSelector(WalletSelectors.favoriteApps)
+  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+  const selectedPendingTransaction = useUnsafeWalletSelector(WalletSelectors.selectedPendingTransaction)
+  const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+
+  // panel selectors (safe)
+  const panelTitle = useSafePanelSelector(PanelSelectors.panelTitle)
+  const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
+  const hardwareWalletCode = useSafePanelSelector(PanelSelectors.hardwareWalletCode)
+
+  // panel selectors (unsafe)
+  const connectToSiteOrigin = useUnsafePanelSelector(PanelSelectors.connectToSiteOrigin)
+  const addChainRequest = useUnsafePanelSelector(PanelSelectors.addChainRequest)
+  const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
+  const switchChainRequest = useUnsafePanelSelector(PanelSelectors.switchChainRequest)
+  const suggestedTokenRequest = useUnsafePanelSelector(PanelSelectors.suggestedTokenRequest)
+  const getEncryptionPublicKeyRequest = useUnsafePanelSelector(PanelSelectors.getEncryptionPublicKeyRequest)
+  const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
+  const connectingAccounts = useUnsafePanelSelector(PanelSelectors.connectingAccounts)
+  const selectedTransaction = useUnsafePanelSelector(PanelSelectors.selectedTransaction)
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
   // consider rendering a "loading" indicator when `hasInitialized === false`, and
@@ -126,6 +130,8 @@ function Container () {
 
   const [selectedBuyAsset, setSelectedBuyAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
+  // hooks
+  useBalanceUpdater()
   const swap = useSwap()
   const {
     filteredAssetList,
@@ -544,7 +550,7 @@ function Container () {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
+            selectedNetwork={selectedNetwork}
             defaultNetworks={defaultNetworks}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
@@ -787,18 +793,11 @@ function Container () {
             title={panelTitle}
             useSearch={false}
           >
-            <ScrollContainer>
-              <TransactionsPanel
-                accounts={accounts}
-                defaultCurrencies={defaultCurrencies}
-                onSelectTransaction={viewTransactionDetail}
-                selectedNetwork={selectedNetwork}
-                selectedAccount={selectedAccount}
-                visibleTokens={userVisibleTokensInfo}
-                transactionSpotPrices={transactionSpotPrices}
-                transactions={transactions}
-              />
-            </ScrollContainer>
+            <TransactionsPanel
+              onSelectTransaction={viewTransactionDetail}
+              selectedNetwork={selectedNetwork}
+              selectedAccountAddress={selectedAccount.address}
+            />
           </Panel>
         </StyledExtensionWrapper>
       </PanelWrapper>
@@ -816,11 +815,8 @@ function Container () {
           >
             <ScrollContainer>
               <AssetsPanel
-                defaultCurrencies={defaultCurrencies}
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
-                spotPrices={transactionSpotPrices}
-                networkList={networkList}
                 onAddAsset={onAddAsset}
               />
             </ScrollContainer>

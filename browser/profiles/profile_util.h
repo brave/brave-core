@@ -6,28 +6,10 @@
 #ifndef BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_
 #define BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_
 
-#include "base/files/file_path.h"
-#include "base/supports_user_data.h"
-// this needs to be here so we don't accidentally override the real method
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 
 namespace brave {
-
-Profile* CreateParentProfileData(content::BrowserContext* context);
-
-base::FilePath GetParentProfilePath(content::BrowserContext* context);
-
-base::FilePath GetParentProfilePath(const base::FilePath& file_path);
-
-bool IsSessionProfile(content::BrowserContext* context);
-
-bool IsSessionProfilePath(const base::FilePath& path);
-
-Profile* GetParentProfile(content::BrowserContext* context);
-
-Profile* GetParentProfile(const base::FilePath& path);
 
 // This function is similar to Profile::IsGuestSession. It is used to get
 // around the bug(?) in OffTheRecordProfileImpl::Init() code that calls
@@ -65,24 +47,5 @@ void SetDefaultSearchVersion(Profile* profile, bool is_new_profile);
 void SetDefaultThirdPartyCookieBlockValue(Profile* profile);
 
 }  // namespace brave
-
-namespace chrome {
-
-// Get the correct profile for keyed services that use
-// GetBrowserContextRedirectedInIncognito or equivalent
-content::BrowserContext* GetBrowserContextRedirectedInIncognitoOverride(
-    content::BrowserContext* context);
-
-}  // namespace chrome
-
-// Get the correct profile for keyed services that do NOT use
-// GetBrowserContextRedirectedInIncognito or equivalent
-#define BRAVE_GET_BROWSER_CONTEXT_TO_USE_WITHOUT_REDIRECT                   \
-  if (brave::IsSessionProfile(context)) {                                   \
-    auto* parent = brave::GetParentProfile(context);                        \
-    context = context->IsOffTheRecord()                                     \
-                  ? parent->GetPrimaryOTRProfile(/*create_if_needed=*/true) \
-                  : parent;                                                 \
-  }
 
 #endif  // BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_

@@ -24,10 +24,14 @@ class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
                     const brave_tooltips::BraveTooltipAttributes& attributes,
                     const std::string& payment_id,
                     const std::string& captcha_id);
-  ~AdsCaptchaTooltip() override;
 
   AdsCaptchaTooltip(const AdsCaptchaTooltip&) = delete;
   AdsCaptchaTooltip& operator=(const AdsCaptchaTooltip&) = delete;
+
+  AdsCaptchaTooltip(AdsCaptchaTooltip&& other) noexcept = delete;
+  AdsCaptchaTooltip& operator=(AdsCaptchaTooltip&& other) noexcept = delete;
+
+  ~AdsCaptchaTooltip() override;
 
   const std::string& payment_id() const { return payment_id_; }
   const std::string& captcha_id() const { return captcha_id_; }

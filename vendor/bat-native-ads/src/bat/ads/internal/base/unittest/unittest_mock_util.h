@@ -7,23 +7,18 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_UNITTEST_UNITTEST_MOCK_UTIL_H_
 
 #include <memory>
-#include <string>
 
 #include "base/files/scoped_temp_dir.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/base/platform/platform_helper_mock.h"
 #include "bat/ads/internal/base/unittest/unittest_build_channel_types.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_alias.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
 
 namespace ads {
 
 class Database;
 
 void MockBuildChannel(BuildChannelType type);
-
-void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
-                      const std::string& locale);
 
 void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
                         PlatformType type);

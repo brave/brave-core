@@ -18,6 +18,7 @@
 #include "components/version_info/channel.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class IpfsUtilsUnitTest : public testing::Test {
@@ -28,6 +29,8 @@ class IpfsUtilsUnitTest : public testing::Test {
   void SetUp() override {
     prefs_.registry()->RegisterStringPref(kIPFSPublicGatewayAddress,
                                           ipfs::kDefaultIPFSGateway);
+    prefs_.registry()->RegisterStringPref(kIPFSPublicNFTGatewayAddress,
+                                          ipfs::kDefaultIPFSNFTGateway);
     prefs_.registry()->RegisterIntegerPref(
         kIPFSResolveMethod,
         static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -241,6 +244,21 @@ TEST_F(IpfsUtilsUnitTest, ResolveIPFSURI) {
                                    &gateway_url));
   ASSERT_EQ(gateway_url, GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgp"
                               "dr4cjr3oz3evfyavhwq.ipfs.localhost:48080"));
+}
+
+TEST_F(IpfsUtilsUnitTest, GetDefaultIPFSNFTGateway) {
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://example.com/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://example.com/"));
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://127.0.0.1:8888/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://localhost:8888/"));
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://127.0.0.1/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://localhost/"));
+  prefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://localhost/");
+  EXPECT_EQ(ipfs::GetDefaultNFTIPFSGateway(prefs()),
+            GURL("https://localhost/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, GetDefaultIPFSGateway) {
@@ -699,4 +717,75 @@ TEST_F(IpfsUtilsUnitTest, IsValidCIDOrDomain) {
   ASSERT_TRUE(ipfs::IsValidCIDOrDomain("a.b.c.localhost"));
   ASSERT_FALSE(ipfs::IsValidCIDOrDomain("a.b.c.com:11112"));
   ASSERT_FALSE(ipfs::IsValidCIDOrDomain("wrongdomainandcid"));
+}
+
+TEST_F(IpfsUtilsUnitTest, TranslateXIPFSPath) {
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath(""));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("ipfs/abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("ipns/abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipfsabc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipnsabc"));
+  ASSERT_EQ(GURL("ipfs://abc"), ipfs::TranslateXIPFSPath("/ipfs/abc"));
+  ASSERT_EQ(GURL("ipns://abc"), ipfs::TranslateXIPFSPath("/ipns/abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipfs/"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipns/"));
+}
+
+TEST_F(IpfsUtilsUnitTest, TranslateToCurrentGatewayUrl) {
+  {
+    GURL url =
+        ipfs::TranslateToCurrentGatewayUrl(
+            GURL("https://ipfs.io/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"))
+            .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq"));
+  }
+
+  {
+    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+                   GURL("https://ipfs.io/ipfs//////"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq////p1////Index.html#ref"))
+                   .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq/p1/Index.html#ref"));
+  }
+
+  {
+    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+                   GURL("https://ipfs.io/ipfs////"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq////p1/Index.html?a=b#ref"))
+                   .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq/p1/Index.html?a=b#ref"));
+  }
+
+  {
+    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+                   GURL("https://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq.ipfs.ipfs.io/p1/Index.html?a=b#ref"))
+                   .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq/p1/Index.html?a=b#ref"));
+  }
+
+  {
+    EXPECT_FALSE(ipfs::TranslateToCurrentGatewayUrl(
+        GURL("https://"
+             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+             "avhwq.abc.io")));
+  }
+
+  {
+    EXPECT_FALSE(
+        ipfs::TranslateToCurrentGatewayUrl(GURL("https://abc.io/ipfs/")));
+  }
 }

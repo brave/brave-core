@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { FilecoinNetwork, HardwareDerivationScheme, LedgerDerivationPaths, TrezorDerivationPaths } from '../../../../../common/hardware/types'
+import { FilecoinNetwork, HardwareDerivationScheme, LedgerDerivationPaths, TrezorDerivationPaths, SolDerivationPaths } from '../../../../../common/hardware/types'
 import { BraveWallet } from '../../../../../constants/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
+export { SolDerivationPaths } from '../../../../../common/hardware/types'
 
+// TODO(apaymyshev): strings below need localization.
 export const HardwareWalletDerivationPathLocaleMapping = {
   [LedgerDerivationPaths.LedgerLive]: 'Ledger Live',
   [LedgerDerivationPaths.Legacy]: 'Legacy (MEW/MyCrypto)',
@@ -17,6 +19,12 @@ export const HardwareWalletDerivationPathLocaleMapping = {
 export const HardwareWalletDerivationPathsMapping = {
   [BraveWallet.LEDGER_HARDWARE_VENDOR]: LedgerDerivationPaths,
   [BraveWallet.TREZOR_HARDWARE_VENDOR]: TrezorDerivationPaths
+}
+
+// TODO(apaymyshev): strings below need localization.
+export const SolHardwareWalletDerivationPathLocaleMapping = {
+  [SolDerivationPaths.Default]: 'Default',
+  [SolDerivationPaths.LedgerLive]: 'Ledger Live'
 }
 
 export interface HardwareWalletConnectOpts {

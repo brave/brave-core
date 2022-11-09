@@ -42,6 +42,7 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   // ui::SimpleMenuModel::Delegate overrides:
   bool IsCommandIdChecked(int command_id) const override;
   bool IsCommandIdEnabled(int command_id) const override;
+  bool IsCommandIdVisible(int command_id) const override;
   bool GetAcceleratorForCommandId(int command_id,
                                   ui::Accelerator* accelerator) const override;
   void ExecuteCommand(int command_id, int event_flags) override;

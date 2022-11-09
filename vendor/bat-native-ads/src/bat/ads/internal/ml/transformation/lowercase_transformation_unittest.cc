@@ -14,9 +14,9 @@
 
 namespace ads::ml {
 
-class BatAdsLowercaseTest : public UnitTestBase {};
+class BatAdsLowercaseTransformationTest : public UnitTestBase {};
 
-TEST_F(BatAdsLowercaseTest, LowercaseTest) {
+TEST_F(BatAdsLowercaseTransformationTest, LowercaseTest) {
   // Arrange
   const std::string kUppercaseStr = "LOWER CASE";
   const std::string kLowercaseStr = "lower case";
@@ -29,7 +29,7 @@ TEST_F(BatAdsLowercaseTest, LowercaseTest) {
   const std::unique_ptr<Data> lowercase_data = lowercase.Apply(uppercase_data);
 
   ASSERT_EQ(DataType::kText, lowercase_data->GetType());
-  const TextData* lowercase_text_data =
+  const TextData* const lowercase_text_data =
       static_cast<TextData*>(lowercase_data.get());
 
   // Assert

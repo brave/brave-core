@@ -18,10 +18,14 @@ class BackgroundHelperAndroid
     : public BackgroundHelper,
       public base::SupportsWeakPtr<BackgroundHelperAndroid> {
  public:
-  ~BackgroundHelperAndroid() override;
-
   BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
   BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
+
+  BackgroundHelperAndroid(BackgroundHelperAndroid&& other) noexcept = delete;
+  BackgroundHelperAndroid& operator=(BackgroundHelperAndroid&& other) noexcept =
+      delete;
+
+  ~BackgroundHelperAndroid() override;
 
  protected:
   friend class BackgroundHelperHolder;

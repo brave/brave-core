@@ -25,6 +25,7 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -35,10 +36,10 @@
 #include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/public/ledger_database.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
@@ -76,6 +77,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/icu/source/common/unicode/locid.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
@@ -282,6 +284,15 @@ std::string GetPrefPath(const std::string& name) {
   return base::StringPrintf("%s.%s", pref_prefix, name.c_str());
 }
 
+std::vector<std::string> GetISOCountries() {
+  std::vector<std::string> countries;
+  for (const char* const* country_pointer = icu::Locale::getISOCountries();
+       *country_pointer; ++country_pointer) {
+    countries.emplace_back(*country_pointer);
+  }
+  return countries;
+}
+
 template <typename Callback, typename... Args>
 void DeferCallback(base::Location location, Callback callback, Args&&... args) {
   base::SequencedTaskRunnerHandle::Get()->PostTask(
@@ -448,6 +459,9 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
   if (key == ads::prefs::kEnabled) {
+    p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
+                                          ads::prefs::kEnabled);
+
     bool ads_enabled = profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -467,15 +481,17 @@ void RewardsServiceImpl::CheckPreferences() {
 
   if (prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
       prefs->GetBoolean(ads::prefs::kEnabled)) {
-    // If the user has enabled Ads or AC, then start the background Rewards
-    // utility process.
-    StartLedgerProcessIfNecessary();
-
     // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
     // the "enabled" pref to true.
     if (!prefs->GetUserPrefValue(prefs::kEnabled)) {
       prefs->SetBoolean(prefs::kEnabled, true);
     }
+  }
+
+  if (prefs->GetUserPrefValue(prefs::kEnabled)) {
+    // If the "enabled" pref is set, then start the background Rewards
+    // utility process.
+    StartLedgerProcessIfNecessary();
   }
 }
 
@@ -552,30 +568,41 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
 }
 
 void RewardsServiceImpl::CreateRewardsWallet(
+    const std::string& country,
     CreateRewardsWalletCallback callback) {
+  using ledger::mojom::CreateRewardsWalletResult;
+
   auto on_start = [](base::WeakPtr<RewardsServiceImpl> self,
+                     std::string country,
                      CreateRewardsWalletCallback callback) {
     if (!self) {
-      std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR);
+      std::move(callback).Run(CreateRewardsWalletResult::kUnexpected);
       return;
     }
 
     auto on_created = [](base::WeakPtr<RewardsServiceImpl> self,
+                         std::string country,
                          CreateRewardsWalletCallback callback,
-                         ledger::mojom::Result result) {
+                         CreateRewardsWalletResult result) {
       if (!self) {
-        std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR);
+        std::move(callback).Run(CreateRewardsWalletResult::kUnexpected);
         return;
       }
 
-      if (result != ledger::mojom::Result::LEDGER_OK) {
+      // If the server responds with `kGeoCountryAlreadyDeclared`,
+      // optimistically assume that the user has already declared their
+      // country correctly and save `country` in preferences.
+      if (result != CreateRewardsWalletResult::kSuccess &&
+          result != CreateRewardsWalletResult::kGeoCountryAlreadyDeclared) {
         std::move(callback).Run(result);
         return;
       }
 
+      auto* prefs = self->profile_->GetPrefs();
+      prefs->SetString(prefs::kDeclaredGeo, country);
+
       // After successfully creating a Rewards wallet for the first time,
       // automatically enable Ads and AC.
-      auto* prefs = self->profile_->GetPrefs();
       if (!prefs->GetBoolean(prefs::kEnabled)) {
         prefs->SetBoolean(prefs::kEnabled, true);
         prefs->SetBoolean(ads::prefs::kEnabled, true);
@@ -598,14 +625,80 @@ void RewardsServiceImpl::CreateRewardsWallet(
         observer.OnRewardsWalletUpdated();
       }
 
-      std::move(callback).Run(ledger::mojom::Result::LEDGER_OK);
+      std::move(callback).Run(CreateRewardsWalletResult::kSuccess);
     };
 
     self->bat_ledger_->CreateRewardsWallet(
-        base::BindOnce(on_created, self, std::move(callback)));
+        country,
+        base::BindOnce(on_created, self, country, std::move(callback)));
   };
 
-  StartProcess(base::BindOnce(on_start, AsWeakPtr(), std::move(callback)));
+  ready_->Post(FROM_HERE, base::BindOnce(on_start, AsWeakPtr(), country,
+                                         std::move(callback)));
+  StartLedgerProcessIfNecessary();
+}
+
+std::string RewardsServiceImpl::GetCountryCode() const {
+  auto* prefs = profile_->GetPrefs();
+  std::string country = prefs->GetString(prefs::kDeclaredGeo);
+  if (!country.empty()) {
+    return country;
+  }
+
+  int32_t country_id = country_id_;
+  if (!country_id) {
+    country_id = country_codes::GetCountryIDFromPrefs(prefs);
+  }
+  if (country_id < 0) {
+    return "";
+  }
+  return {base::ToUpperASCII(static_cast<char>(country_id >> 8)),
+          base::ToUpperASCII(static_cast<char>(0xFF & country_id))};
+}
+
+void RewardsServiceImpl::GetAvailableCountries(
+    GetAvailableCountriesCallback callback) const {
+  static const std::vector<std::string> kISOCountries = GetISOCountries();
+
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), kISOCountries);
+  }
+
+  auto on_external_wallet = [](GetAvailableCountriesCallback callback,
+                               ledger::mojom::Result result,
+                               ledger::mojom::ExternalWalletPtr wallet) {
+    // If the user is not currently linked to any wallet provider, then all ISO
+    // country codes are available.
+    if (!wallet ||
+        wallet->status == ledger::mojom::WalletStatus::NOT_CONNECTED) {
+      return std::move(callback).Run(kISOCountries);
+    }
+
+    // If the user is currently linked to a bitFlyer wallet, then the only
+    // available countries are |kBitflyerCountries|.
+    if (wallet->type == ledger::constant::kWalletBitflyer) {
+      return std::move(callback).Run(std::vector<std::string>(
+          kBitflyerCountries.begin(), kBitflyerCountries.end()));
+    }
+
+    // If the user is currently linked to any other external wallet provider,
+    // then remove |kBitflyerCountries| from the list of ISO countries.
+    static const std::vector<std::string> kNonBitflyerCountries = []() {
+      auto countries = kISOCountries;
+      auto removed =
+          base::ranges::remove_if(countries, [](const std::string& country) {
+            return base::Contains(kBitflyerCountries, country);
+          });
+      countries.erase(removed, countries.end());
+      return countries;
+    }();
+
+    return std::move(callback).Run(kNonBitflyerCountries);
+  };
+
+  bat_ledger_->GetExternalWallet(
+      GetExternalWalletType(),
+      base::BindOnce(on_external_wallet, std::move(callback)));
 }
 
 void RewardsServiceImpl::GetActivityInfoList(
@@ -1061,7 +1154,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
     }
   }
 
-  if (response_body && loader->ResponseInfo() &&
+  if (response_body && !response_body->empty() && loader->ResponseInfo() &&
       base::Contains(loader->ResponseInfo()->mime_type, "json")) {
     return data_decoder::JsonSanitizer::Sanitize(
         *response_body,
@@ -1243,27 +1336,7 @@ void RewardsServiceImpl::ClaimPromotion(
   bat_ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
 }
 
-void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->RecoverWallet(passPhrase, base::BindOnce(
-      &RewardsServiceImpl::OnRecoverWallet,
-      AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnRecoverWallet(const ledger::mojom::Result result) {
-  // Fetch balance after recovering wallet in order to initiate P3A
-  // stats collection
-  FetchBalance(base::DoNothing());
-
-  for (auto& observer : observers_) {
-    observer.OnRecoverWallet(this, result);
-  }
-}
-
-const std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
+std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     const {
   std::vector<std::string> providers;
 
@@ -1475,6 +1548,15 @@ void RewardsServiceImpl::SetUint64State(const std::string& name,
 
 uint64_t RewardsServiceImpl::GetUint64State(const std::string& name) const {
   return profile_->GetPrefs()->GetUint64(GetPrefPath(name));
+}
+
+void RewardsServiceImpl::SetValueState(const std::string& name,
+                                       base::Value value) {
+  profile_->GetPrefs()->Set(GetPrefPath(name), std::move(value));
+}
+
+base::Value RewardsServiceImpl::GetValueState(const std::string& name) const {
+  return profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone();
 }
 
 void RewardsServiceImpl::ClearState(const std::string& name) {
@@ -1861,24 +1943,11 @@ void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
-    if (!profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
-      return DeferCallback(FROM_HERE, std::move(callback),
-                           ledger::mojom::Result::LEDGER_ERROR, nullptr);
-    }
-
-    StartProcess(
-        base::BindOnce(&RewardsServiceImpl::OnStartProcessForGetPublisherInfo,
-                       AsWeakPtr(), publisher_key, std::move(callback)));
-    return;
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         ledger::mojom::Result::LEDGER_ERROR, nullptr);
   }
 
   bat_ledger_->GetPublisherInfo(publisher_key, std::move(callback));
-}
-
-void RewardsServiceImpl::OnStartProcessForGetPublisherInfo(
-    const std::string& publisher_key,
-    GetPublisherInfoCallback callback) {
-  GetPublisherInfo(publisher_key, std::move(callback));
 }
 
 void RewardsServiceImpl::GetPublisherPanelInfo(
@@ -1897,26 +1966,12 @@ void RewardsServiceImpl::SavePublisherInfo(
     ledger::mojom::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
-    if (!profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
-      return DeferCallback(FROM_HERE, std::move(callback),
-                           ledger::mojom::Result::LEDGER_ERROR);
-    }
-
-    StartProcess(base::BindOnce(
-        &RewardsServiceImpl::OnStartProcessForSavePublisherInfo, AsWeakPtr(),
-        window_id, std::move(publisher_info), std::move(callback)));
-    return;
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         ledger::mojom::Result::LEDGER_ERROR);
   }
 
   bat_ledger_->SavePublisherInfo(window_id, std::move(publisher_info),
                                  std::move(callback));
-}
-
-void RewardsServiceImpl::OnStartProcessForSavePublisherInfo(
-    uint64_t window_id,
-    ledger::mojom::PublisherInfoPtr publisher_info,
-    SavePublisherInfoCallback callback) {
-  SavePublisherInfo(window_id, std::move(publisher_info), std::move(callback));
 }
 
 void RewardsServiceImpl::GetRecurringTips(
@@ -2252,6 +2307,11 @@ bool RewardsServiceImpl::Connected() const {
   return bat_ledger_.is_bound();
 }
 
+void RewardsServiceImpl::StartProcessForTesting(base::OnceClosure callback) {
+  ready_->Post(FROM_HERE, std::move(callback));
+  StartLedgerProcessIfNecessary();
+}
+
 void RewardsServiceImpl::SetLedgerEnvForTesting() {
   ledger_for_testing_ = true;
 }
@@ -2518,11 +2578,11 @@ bool RewardsServiceImpl::IsAutoContributeSupported() const {
 }
 
 std::string RewardsServiceImpl::GetLegacyWallet() {
-  auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
+  const auto& dict = profile_->GetPrefs()->GetDict(prefs::kExternalWallets);
 
   std::string json;
-  for (auto it : dict->DictItems()) {
-    base::JSONWriter::Write(std::move(it.second), &json);
+  for (auto it = dict.begin(); it != dict.end(); ++it) {
+    base::JSONWriter::Write(std::move(it->second), &json);
   }
 
   return json;
@@ -2894,14 +2954,6 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
     const bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   resetting_rewards_ = false;
-  StartProcess(
-      base::BindOnce(&RewardsServiceImpl::OnStartProcessForCompleteReset,
-                     AsWeakPtr(), std::move(callback), success));
-}
-
-void RewardsServiceImpl::OnStartProcessForCompleteReset(
-    SuccessCallback callback,
-    bool success) {
   for (auto& observer : observers_) {
     observer.OnCompleteReset(success);
   }
@@ -2961,38 +3013,8 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   bat_ledger_->GetRewardsWallet(std::move(callback));
 }
 
-void RewardsServiceImpl::StartProcess(base::OnceClosure callback) {
-  ready_->Post(FROM_HERE, std::move(callback));
-  StartLedgerProcessIfNecessary();
-}
-
-void RewardsServiceImpl::GetRewardsWalletPassphrase(
-    GetRewardsWalletPassphraseCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), "");
-  }
-
-  bat_ledger_->GetRewardsWalletPassphrase(std::move(callback));
-}
-
 bool RewardsServiceImpl::IsBitFlyerRegion() const {
-  int32_t current_country = country_id_;
-
-  if (!current_country) {
-    current_country =
-        country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
-  }
-
-  for (const auto& country : kBitflyerCountries) {
-    if (country.length() == 2) {
-      const int id =
-          country_codes::CountryCharsToCountryID(country.at(0), country.at(1));
-
-      if (id == current_country)
-        return true;
-    }
-  }
-  return false;
+  return base::Contains(kBitflyerCountries, GetCountryCode());
 }
 
 bool RewardsServiceImpl::IsValidWalletType(

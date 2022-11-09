@@ -36,7 +36,9 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/common/chrome_features.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -208,6 +210,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   // - Stats
   // - Preferences
   // - PrivatePage properties
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString("braveNewsSourceCount",
+                                            IDS_BRAVE_NEWS_SOURCE_COUNT);
+  web_ui()->AddMessageHandler(std::move(plural_string_handler));
+
   web_ui()->RegisterMessageCallback(
       "getNewTabPagePreferences",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetPreferences,
@@ -396,10 +403,6 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
 
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
     const base::Value::List& args) {
-  if (!ads_service_) {
-    return;
-  }
-
   AllowJavascript();
 
   base::Value data = GetAdsDataDictionary();

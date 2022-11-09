@@ -303,13 +303,19 @@
         Manage Subscriptions
       </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE" desc="The text on the button for subscribing to a feed">
-        Subscribe
+        Follow
       </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE" desc="The text on the button for unsubscribing from a feed">
-        Unsubscribe
+        Unfollow
       </message>
-      <message name="IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER" desc="The text on the button hidding the Brave News bubble, and not showing it again">
-        Hide and don't show this again
+      <message name="IDS_BRAVE_NEWS_BUBBLE_TITLE" desc="The title for the Brave News bubble">
+        Follow this source in 1-click.
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_SUBTITLE" desc="The subtitle for the Brave News bubble">
+        Get all the latest stories in Brave News.
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS" desc="The text on the button for opening the Brave News configuration page">
+        Manage Feeds
       </message>
       <message name="IDS_BRAVE_TODAY_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
         No thanks
@@ -353,8 +359,8 @@
       <message name="IDS_BRAVE_NEW_TAB_WIDGET_HIDE" desc="Hide Widget Text">Hide</message>
       <message name="IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC" desc="Rewards widget description">Earn tokens for watching privacy-respecting ads.</message>
-      <message name="IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC" desc="Binance widget description">Trade Crypto on Binance directly in your browser.</message>
-      <message name="IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC" desc="Gemini widget description">Trade Crypto on Gemini directly in your browser.</message>
+      <message name="IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC" desc="Binance widget description">Trade crypto on Binance directly in your browser.</message>
+      <message name="IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC" desc="Gemini widget description">Trade crypto on Gemini directly in your browser.</message>
       <message name="IDS_BRAVE_NEW_TAB_CARDS_TITLE" desc="Toggle cards title">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_CARDS_DESC" desc="Toggle cards description">By turning off Cards, all cards currently visible will be hidden. However, you may still be notified of new cards.</message>
 
@@ -393,10 +399,8 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1" desc="">Brave never remembers what you do in a Private Window. Sites you visit won't show up in your history. Cookies, form data, and site data vanish when you close the window.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2" desc="">Note that your activity could still be visible to your internet service provider, passive network observers, or your employer (if you're using a work machine or network). For more privacy, open a private window with Tor.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON" desc="">Learn more.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR" desc="">Private Window with Tor Connectivity</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC" desc="">Brave never remembers what you do in a Private Window. With Tor connectivity, your IP address is also hidden from the sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_TEXT_1" desc="">Brave never remembers what you do in a Private Window. With Tor connectivity, you get two additional benefits: your IP address is hidden from the sites you visit, and the sites you visit are hidden from passive network observers. Note that Tor may slow down browsing, or break some websites.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_TEXT_2" desc="">A private window with Tor makes it more difficult, but not impossible, for your ISP or employer (if you're using a work machine or network) to see what sites you visit. However, even a private window with Tor won't fully defend against tracking. If your personal safety depends on remaining anonymous, use the Tor Browser instead.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR" desc="">Private Window with Tor connectivity</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC" desc="">Brave doesn't store browsing activity from Private Windows. With Tor connectivity, it becomes more difficult for sites to see your true IP address and for network observers to see what sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL" desc="">Search Privately with</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TITLE" desc="">DuckDuckGo</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_1" desc="">With private search, Brave will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn’t track your search history, so you can search privately.</message>
@@ -404,7 +408,7 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_BUTTON" desc="">Search with DuckDuckGo</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL" desc="">Make Private Windows more private</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL_2" desc="">This Private Window is more private</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE" desc="">with Tor Connectivity</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE" desc="">with Tor connectivity</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1" desc="">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. Tor can slow down browsing and some sites might not work at all.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2" desc="">Using Private Windows only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with [[ key ]].</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON" desc="">Learn more about Tor in Brave</message>
@@ -539,8 +543,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_REDT" desc="">Reddit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_GH" desc="">GitHub</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_OUTDATED" desc="">The restore key entered is not supported anymore. Please visit <ph name="BEGIN_LINK">$1</ph>here<ph name="END_LINK">$2</ph> to get a new key.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tips date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
@@ -565,10 +567,13 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TITLE" desc="">Error: Brave Rewards profile is flagged</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE" desc="">Error: You need a verified account to log in</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TEXT" desc="">Hmm, it looks like your Brave Rewards profile was already connected to a custodial account in another region. Please try connecting again with your previous custodial account, or update your custodial account's region to match your previous account.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE" desc="">Error: Different account region</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_COUNTRIES_TEXT" desc="">Hmm, it looks like your Brave Rewards country does not match the country of the <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account you're trying to connect.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_COUNTRIES_TITLE" desc="">Error: Country mismatch</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">Error: Different account</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_1" desc="">It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Brave Rewards is temporarily unavailable. Please try again later.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_2" desc="">You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TITLE" desc="">Error: Connecting to selected custodian temporarily unavailable</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1" desc="">Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2" desc="">See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Brave Rewards.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE" desc="">Error: Region currently not supported</message>
@@ -581,15 +586,17 @@
 
       <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
 
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER" desc="">Choose a wallet service</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_NOTE" desc="">Note: Your transactions will be visible to the selected wallet service once you authorize; for instance, they will be able to see the recipient and amount of your tips.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER" desc="">Choose an account provider</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">If you already have a custodial account, you'll be prompted to connect it. If you don't, you'll get the chance to create one.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_NOTE" desc="">Note: Your transactions will be visible to the custodian once you authorize. For instance, they will be able to see the recipient and amount of your tips.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER" desc="">Verifying is optional</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE" desc="">Custodial wallet providers are required to verify the identity of anyone creating a wallet, including using a photo ID.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_BRAVE_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Brave Software Inc.<ph name="BOLD_END">$2</ph> does not process, store, or access any of the personal information when you establish an account with our custodial wallet partners.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT" desc="">However, your current Brave Rewards features are limited. Verifying with a custodial wallet partner allows you to:</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1" desc="">Freely withdraw and deposit funds</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2" desc="">Receive your Rewards directly to your account</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE" desc="">Learn more about regions and support</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE" desc="">Currently not available in your region</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TERMS_LABEL" desc="">I have read and agree to Brave’s <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> &amp; <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_CONTINUE" desc="">Continue</message>
       <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
@@ -639,6 +646,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key info seed:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_NOTICE" desc="">We show the last [[numberOfLines]] lines of the log. If you want the whole log, you can download it above.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_TITLE" desc="">Rewards internals</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_NOT_SET" desc="Not set">Not set</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID" desc="Wallet persona ID">Persona ID</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS" desc="">Ads</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT" desc="">Amount</message>
@@ -660,6 +668,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION" desc="">Version</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT" desc="Retry count">Retry Count:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_COUNTRY" desc="Rewards	country">Rewards country:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="One-time tip">One-time tip</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring tip</message>
@@ -812,7 +821,6 @@
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated [[reservedAmount]] [[currency]] for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
       <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
-      <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
       <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1" desc="">If your Brave Rewards is not verified, your BAT balance is stored in local files on your device.</message>
@@ -820,11 +828,6 @@
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this content creator by sending a tip. It’s a way of thanking them for making great content.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
-      <message name="IDS_BRAVE_UI_REWARDS_VIEW_QR_CODE_TEXT1" desc="">View QR Code</message>
-      <message name="IDS_BRAVE_UI_REWARDS_VIEW_QR_CODE_TEXT2" desc="">for iOS Rewards users transferring BAT.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Restoring with a recovery key will replace your current Brave Rewards profile. Make sure you empty or back up your current Brave Rewards before restoring.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT4" desc="">Enter your recovery key or</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_WARNING" desc="">Backup your wallet before replacing. Or you will lose the fund, [[funds]], in your current wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_CONFIRMATION" desc="">Are you sure you want to reset your Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS" desc="">Your <ph name="BAT_AMOUNT">$1<ex>5 BAT</ex></ph> and other Rewards data will be permanently lost if you reset your Brave Rewards. Please ensure you have <ph name="LINK_BEGIN">$2</ph>verified<ph name="LINK_END">$3</ph> so you can keep your BAT.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS" desc="">Your Rewards data will be permanently lost if you reset your Brave Rewards.</message>
@@ -842,7 +845,6 @@
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOKEN" desc="">Token</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
-      <message name="IDS_BRAVE_UI_QR_CODE_LOADING" desc="">Loading image...</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
@@ -878,6 +880,10 @@
 
       <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Verify</message>
       <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Verifying is optional. However, by verifying, you will be able to withdraw your BAT earned from Brave Rewards to a custodial wallet directly.</message>
+
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE" desc="">Become a Brave Creator!</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2" desc="">Brave supports YouTube, Twitch, Vimeo and more!</message>
 
       <message name="IDS_BRAVE_UI_GEMINI_PROMO_TITLE" desc="">Link Rewards to Gemini!</message>
       <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO" desc="">Trade 50+ cryptos, including BAT, on Gemini. It&apos;s a secure platform to store your crypto. Plus, you can earn interest in US, HK, and SG.</message>
@@ -996,6 +1002,7 @@
       <part file="speedreader_strings.grdp" />
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
+      <part file="brave_news_strings.grdp" />
       <part file="brave_shields_strings.grdp" />
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />

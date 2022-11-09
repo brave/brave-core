@@ -22,7 +22,7 @@ constexpr size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
 
 }  // namespace
 
-TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
+TEST(BatAdsCryptoUtilTest, Sign) {
   // Arrange
   const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
@@ -43,7 +43,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
+TEST(BatAdsCryptoUtilTest, SignWithInvalidheaders) {
   // Arrange
   const base::flat_map<std::string, std::string> headers;
 
@@ -62,7 +62,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
+TEST(BatAdsCryptoUtilTest, SignWithInvalidKeyId) {
   // Arrange
   const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
@@ -82,7 +82,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidSecretKey) {
+TEST(BatAdsCryptoUtilTest, SignWithInvalidSecretKey) {
   // Arrange
   const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
@@ -100,7 +100,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidSecretKey) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityCryptoUtilsTest, Sha256) {
+TEST(BatAdsCryptoUtilTest, Sha256) {
   // Arrange
   const std::string value = R"(
     {
@@ -170,7 +170,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sha256) {
   EXPECT_EQ(expected_sha256_base64, sha256_base64);
 }
 
-TEST(BatAdsSecurityCryptoUtilsTest, Sha256WithEmptyString) {
+TEST(BatAdsCryptoUtilTest, Sha256WithEmptyString) {
   // Arrange
   const std::string value;
 
@@ -181,7 +181,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sha256WithEmptyString) {
   EXPECT_TRUE(sha256.empty());
 }
 
-TEST(BatAdsSecurityCryptoUtilsTest, GenerateBoxKeyPair) {
+TEST(BatAdsCryptoUtilTest, GenerateBoxKeyPair) {
   // Arrange
 
   // Act
@@ -193,7 +193,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, GenerateBoxKeyPair) {
   EXPECT_TRUE(key_pair.IsValid());
 }
 
-TEST(BatAdsSecurityCryptoUtilsTest, Encrypt) {
+TEST(BatAdsCryptoUtilTest, Encrypt) {
   // Arrange
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();

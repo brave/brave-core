@@ -48,6 +48,8 @@
 - (int64_t)getInt64State:(const std::string&)name;
 - (void)setUint64State:(const std::string&)name value:(uint64_t)value;
 - (uint64_t)getUint64State:(const std::string&)name;
+- (void)setValueState:(const std::string&)name value:(base::Value)value;
+- (base::Value)getValueState:(const std::string&)name;
 - (void)clearState:(const std::string&)name;
 - (std::string)getLegacyWallet;
 - (void)showNotification:(const std::string&)type

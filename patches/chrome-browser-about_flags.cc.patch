@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 9a0c47ab605d708408e5df6500382837aa041d6b..257ab01f4cbd04b73907c59054917bc07e516884 100644
+index a076714a6d86ad8b11f3966920076d02bb4ff902..b88e46a5f94cb11c550364723f9a42d96571b2ae 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3332,6 +3332,7 @@ const FeatureEntry::FeatureVariation
+@@ -3485,6 +3485,7 @@ const FeatureEntry::FeatureVariation kPasswordNotesAuthValidityVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

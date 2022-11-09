@@ -9,6 +9,7 @@
 #include <functional>
 #include <vector>
 
+#include "base/callback.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace base {
@@ -22,7 +23,7 @@ class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
 
-using AdEventCallback = std::function<void(const bool)>;
+using AdEventCallback = base::OnceCallback<void(const bool)>;
 
 void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,

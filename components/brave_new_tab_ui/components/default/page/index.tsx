@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styled, { css } from 'styled-components'
+import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
 
 const breakpointLargeBlocks = '980px'
@@ -321,7 +321,7 @@ function getPageBackground (p: HasImageProps) {
               rgba(0, 0, 0, 0) 35%,
               rgba(0, 0, 0, 0) 80%,
               rgba(0, 0, 0, 0.6) 100%
-            ), url(${p.imageSrc});
+            ), url("${p.imageSrc}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -393,7 +393,7 @@ export const IconLink = styled('a')<{}>`
   height: 24px;
   margin: 8px;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--override-readability-color, #ffffff);
   opacity: 0.7;
   transition: opacity 0.15s ease, filter 0.15s ease;
 
@@ -412,7 +412,7 @@ export const IconButton = styled('button')<IconButtonProps>`
   outline: none;
   margin: ${p => p.isClickMenu ? '7' : '0 12'}px;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--override-readability-color, #ffffff);
   background-color: transparent;
   opacity: 0.7;
   transition: opacity 0.15s ease, filter 0.15s ease;
@@ -467,13 +467,21 @@ export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255,255,255,0.8);
+  color: rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.8);
   margin-right: ${p => p.textDirection === 'ltr' && '8px'};
   margin-left: ${p => p.textDirection === 'rtl' && '8px'};
-  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
-  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
+  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.6)'};
+  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.6)'};
 
   &:hover {
-    color: #ffffff;
+    color: ${p => p.color};
+  }
+`
+
+export const OverrideReadabilityColor = createGlobalStyle<{override: boolean}>`
+  :root {
+    ${p => p.override && css`
+      --override-readability-color-rgb: 0, 0, 0;
+      --override-readability-color: rgb(0, 0, 0);`}
   }
 `

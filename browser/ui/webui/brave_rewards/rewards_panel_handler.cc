@@ -44,15 +44,6 @@ void RewardsPanelHandler::CloseUI() {
   }
 }
 
-void RewardsPanelHandler::StartRewards(StartRewardsCallback callback) {
-  if (!rewards_service_) {
-    std::move(callback).Run();
-    return;
-  }
-
-  rewards_service_->StartProcess(std::move(callback));
-}
-
 void RewardsPanelHandler::GetRewardsPanelArgs(
     GetRewardsPanelArgsCallback callback) {
   std::move(callback).Run(panel_coordinator_

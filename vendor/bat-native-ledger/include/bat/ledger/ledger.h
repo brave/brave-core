@@ -32,6 +32,9 @@ using PublisherBannerCallback = std::function<void(mojom::PublisherBannerPtr)>;
 using GetRewardsParametersCallback =
     base::OnceCallback<void(mojom::RewardsParametersPtr)>;
 
+using CreateRewardsWalletCallback =
+    base::OnceCallback<void(mojom::CreateRewardsWalletResult)>;
+
 using OnRefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
 
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
@@ -132,7 +135,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 
-  virtual void CreateRewardsWallet(ResultCallback callback) = 0;
+  virtual void CreateRewardsWallet(const std::string& country,
+                                   CreateRewardsWalletCallback callback) = 0;
 
   virtual void OneTimeTip(const std::string& publisher_key,
                           double amount,
@@ -241,9 +245,6 @@ class LEDGER_EXPORT Ledger {
   virtual void GetAllBalanceReports(GetBalanceReportListCallback callback) = 0;
 
   virtual mojom::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
-
-  virtual void RecoverWallet(const std::string& pass_phrase,
-                             LegacyResultCallback callback) = 0;
 
   virtual void SetPublisherExclude(const std::string& publisher_id,
                                    mojom::PublisherExclude exclude,
@@ -366,11 +367,6 @@ class LEDGER_EXPORT Ledger {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual std::string GetRewardsWalletPassphrase() = 0;
-
-  virtual void LinkRewardsWallet(const std::string& destination_payment_id,
-                                 PostSuggestionsClaimCallback callback) = 0;
 
   virtual void GetDrainStatus(const std::string& drain_id,
                               GetDrainCallback callback) = 0;

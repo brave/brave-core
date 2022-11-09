@@ -98,8 +98,6 @@ struct ParamInfo final {
 class BatAdsFlagManagerTest : public UnitTestBase,
                               public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsFlagManagerTest() = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
@@ -133,23 +131,25 @@ TEST_P(BatAdsFlagManagerTest, Initialize) {
   EXPECT_EQ(param.expected_environment_type, GetEnvironmentType());
 }
 
-std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
+std::string TestParamToString(
+    const ::testing::TestParamInfo<ParamInfo>& test_param) {
   // Environment
   const std::string environment_type =
       EnvironmentTypeEnumToString(test_param.param.expected_environment_type);
 
   // When
   std::vector<std::string> flags;
+
   if (test_param.param.should_force_staging_environment) {
-    flags.push_back("ShouldForceStagingEnvironment");
+    flags.emplace_back("ShouldForceStagingEnvironment");
   }
 
   if (test_param.param.expected_should_debug) {
-    flags.push_back("ShouldDebug");
+    flags.emplace_back("ShouldDebug");
   }
 
   if (test_param.param.expected_did_override_command_line_switches) {
-    flags.push_back("DidOverride");
+    flags.emplace_back("DidOverride");
   }
 
   std::string when;

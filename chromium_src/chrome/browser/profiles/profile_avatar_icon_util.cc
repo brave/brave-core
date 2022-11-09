@@ -6,7 +6,7 @@
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
 #include "base/values.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "build/build_config.h"
@@ -44,6 +44,13 @@ size_t GetBraveAvatarIconStartIndex();
 #define BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX  \
   return GetBraveAvatarIconStartIndex();
 
+#define BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN \
+  avatars.erase(avatars.begin());                                            \
+  generic_avatar_info = GetDefaultProfileAvatarIconAndLabel_Brave(           \
+      colors.default_avatar_fill_color, colors.default_avatar_stroke_color,  \
+      selected_avatar_idx == GetPlaceholderAvatarIndex());                   \
+  avatars.Insert(avatars.begin(), base::Value(std::move(generic_avatar_info)));
+
 }  // namespace profiles
 
 // Override some functions (see implementations for details).
@@ -57,6 +64,7 @@ size_t GetBraveAvatarIconStartIndex();
 #include "src/chrome/browser/profiles/profile_avatar_icon_util.cc"
 #undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 #undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
+#undef BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN
 #undef IsDefaultAvatarIconUrl
 #undef GetGuestAvatar
 #undef GetPlaceholderAvatarIconWithColors
@@ -197,6 +205,13 @@ base::Value::Dict GetDefaultProfileAvatarIconAndLabel(SkColor fill_color,
                                    brave_l10n::GetLocalizedResourceUTF16String(
                                        IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER),
                                    index, selected, /*is_gaia_avatar=*/false);
+}
+base::Value::Dict GetDefaultProfileAvatarIconAndLabel_Brave(
+    SkColor fill_color,
+    SkColor stroke_color,
+    bool selected) {
+  return GetDefaultProfileAvatarIconAndLabel(fill_color, stroke_color,
+                                             selected);
 }
 
 }  // namespace profiles

@@ -27,10 +27,7 @@ brave_grit("static_resources") {
   ]
 
   if (enable_extensions) {
-    deps += [
-      "//brave/components/brave_extension/extension/brave_extension",
-      "//brave/components/brave_rewards/resources/extension:resources",
-    ]
+    deps += [ "//brave/components/brave_extension/extension/brave_extension" ]
   }
 
   if (enable_tor) {

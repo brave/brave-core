@@ -18,6 +18,7 @@ std::string MakeJsonRpcStringArrayResponse(
     const std::vector<std::string>& items);
 std::string MakeJsonRpcStringResponse(const std::string& str);
 std::string MakeJsonRpcTupleResponse(const eth_abi::TupleEncoder& tuple);
+std::string MakeJsonRpcRawBytesResponse(const std::vector<uint8_t>& bytes);
 std::string MakeJsonRpcErrorResponse(int error,
                                      const std::string& error_message);
 std::string MakeJsonRpcErrorResponseWithData(int error,

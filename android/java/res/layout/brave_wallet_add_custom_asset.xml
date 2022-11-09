@@ -45,6 +45,7 @@
         tools:ignore="LabelFor, Autofill" />
 
     <TextView
+        android:id="@+id/token_contract_address_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -83,6 +84,7 @@
         tools:ignore="LabelFor, Autofill" />
 
     <TextView
+        android:id="@+id/token_decimals_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -115,6 +117,7 @@
         android:textSize="18sp" />
 
     <View
+        android:id="@+id/advanced_section_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="12dp"
@@ -150,6 +153,14 @@
             android:textSize="14sp"
             tools:ignore="LabelFor, Autofill" />
     </LinearLayout>
+
+    <CheckBox
+       android:id="@+id/nft_check"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginStart="24dp"
+       android:text="@string/wallet_add_solana_nft_checkbox"
+       android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

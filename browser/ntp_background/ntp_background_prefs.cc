@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/constants/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -135,17 +136,22 @@ void NTPBackgroundPrefs::AddCustomImageToList(const std::string& file_name) {
   update->GetList().Append(file_name);
 }
 
+void NTPBackgroundPrefs::RemoveCustomImageFromList(
+    const std::string& file_name) {
+  ListPrefUpdate update(service_, NTPBackgroundPrefs::kCustomImageListPrefName);
+  auto& list = update->GetList();
+  list.erase(base::ranges::remove(update->GetList(), file_name), list.end());
+}
+
 std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {
-  const auto* list = service_->GetList(kCustomImageListPrefName);
+  const auto& list = service_->GetList(kCustomImageListPrefName);
   std::vector<std::string> result;
-  for (const auto& item : list->GetList())
+  for (const auto& item : list)
     result.push_back(item.GetString());
 
   return result;
 }
 
 const base::Value::Dict* NTPBackgroundPrefs::GetPrefValue() const {
-  const auto* value = service_->GetDictionary(kPrefName);
-  DCHECK(value && value->is_dict());
-  return value->GetIfDict();
+  return &service_->GetDict(kPrefName);
 }

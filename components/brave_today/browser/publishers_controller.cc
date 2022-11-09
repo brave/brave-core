@@ -19,9 +19,11 @@
 #include "base/feature_list.h"
 #include "base/location.h"
 #include "base/one_shot_event.h"
+#include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
+#include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/browser/urls.h"
@@ -29,7 +31,6 @@
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "url/origin.h"
 
@@ -53,10 +54,13 @@ const mojom::Publisher* PublishersController::GetPublisherForSite(
   if (publishers_.empty())
     return nullptr;
 
-  const auto& site_origin = url::Origin::Create(site_url);
+  const auto& site_host = site_url.host();
   for (const auto& kv : publishers_) {
-    const auto& publisher_origin = url::Origin::Create(kv.second->site_url);
-    if (site_origin.IsSameOriginWith(publisher_origin)) {
+    const auto& publisher_host = kv.second->site_url.host();
+    // When https://github.com/brave/brave-browser/issues/26092 is fixed, this
+    // hack can be removed.
+    const auto& publisher_host_www = "www." + publisher_host;
+    if (publisher_host == site_host || publisher_host_www == site_host) {
       return kv.second.get();
     }
   }
@@ -141,8 +145,10 @@ void PublishersController::EnsurePublishersIsUpdating() {
     return;
   }
   is_update_in_progress_ = true;
+  std::string region_part = brave_today::GetRegionUrlPart();
   GURL sources_url("https://" + brave_today::GetHostname() + "/sources." +
-                   brave_today::GetRegionUrlPart() + "json");
+                   region_part + "json");
+
   auto onRequest = base::BindOnce(
       [](PublishersController* controller,
          api_request_helper::APIRequestResult api_request_result) {
@@ -150,13 +156,12 @@ void PublishersController::EnsurePublishersIsUpdating() {
         Publishers publisher_list;
         ParseCombinedPublisherList(api_request_result.body(), &publisher_list);
         // Add user enabled statuses
-        const base::Value* publisher_prefs =
-            controller->prefs_->GetDictionary(prefs::kBraveTodaySources);
+        const auto& publisher_prefs =
+            controller->prefs_->GetDict(prefs::kBraveTodaySources);
         std::vector<std::string> missing_publishers_;
-
-        for (auto kv : publisher_prefs->DictItems()) {
-          auto publisher_id = kv.first;
-          auto is_user_enabled = kv.second.GetIfBool();
+        for (const auto&& [key, value] : publisher_prefs) {
+          auto publisher_id = key;
+          auto is_user_enabled = value.GetIfBool();
           if (publisher_list.contains(publisher_id) &&
               is_user_enabled.has_value()) {
             publisher_list[publisher_id]->user_enabled_status =
@@ -169,7 +174,10 @@ void PublishersController::EnsurePublishersIsUpdating() {
                     << publisher_id
                     << ". This could be because we've removed the publisher. "
                        "Attempting to migrate to a direct feed.";
-            missing_publishers_.push_back(publisher_id);
+            // We only care about missing publishers if the user was subscribed
+            // to them.
+            if (is_user_enabled.value_or(false))
+              missing_publishers_.push_back(publisher_id);
           }
         }
         // Add direct feeds
@@ -221,19 +229,19 @@ void PublishersController::EnsurePublishersIsUpdating() {
 }
 
 void PublishersController::UpdateDefaultLocale() {
-  base::flat_set<std::string> available_locales;
-  for (const auto& it : publishers_) {
-    for (const auto& locale : it.second->locales)
-      available_locales.insert(locale);
+  if (!base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsV2Feature)) {
+    default_locale_ = brave_today::GetV1RegionUrlPart();
+    return;
   }
 
-  // Locale is lang-COUNTRY but Brave News wants the format to be
-  // lang_COUNTRY.
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-  const std::string brave_news_locale = language_code + "_" + country_code;
+  auto available_locales = GetPublisherLocales(publishers_);
+
+  // Locale can be "language_Script_COUNTRY.charset@variant" but Brave News
+  // wants the format to be "language_COUNTRY".
+  const std::string brave_news_locale =
+      base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
+                    brave_l10n::GetDefaultISOLanguageCodeString()});
 
   // Fallback to en_US, if we can't match anything else.
   // TODO(fallaciousreasoning): Implement more complicated fallback

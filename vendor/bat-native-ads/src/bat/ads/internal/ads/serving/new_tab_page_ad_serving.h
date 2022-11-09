@@ -45,14 +45,14 @@ class Serving final {
   void AddObserver(ServingObserver* observer);
   void RemoveObserver(ServingObserver* observer);
 
-  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
+  void MaybeServeAd(const MaybeServeNewTabPageAdCallback& callback);
 
  private:
   bool IsSupported() const;
 
   void ServeAd(const NewTabPageAdInfo& ad,
-               MaybeServeNewTabPageAdCallback callback);
-  void FailedToServeAd(MaybeServeNewTabPageAdCallback callback);
+               const MaybeServeNewTabPageAdCallback& callback);
+  void FailedToServeAd(const MaybeServeNewTabPageAdCallback& callback);
 
   void NotifyOpportunityAroseToServeNewTabPageAd(
       const SegmentList& segments) const;

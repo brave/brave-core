@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
 
+#include <vector>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -16,7 +18,20 @@
 namespace ads::notification_ads {
 
 namespace {
+
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
+
+bool DoesRespectCap(const std::vector<base::Time>& history) {
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
+  if (ads_per_hour == 0) {
+    // Never respect cap if set to 0
+    return false;
+  }
+
+  return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint,
+                                                 ads_per_hour);
+}
+
 }  // namespace
 
 bool AdsPerHourPermissionRule::ShouldAllow() {
@@ -39,18 +54,6 @@ bool AdsPerHourPermissionRule::ShouldAllow() {
 
 const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool AdsPerHourPermissionRule::DoesRespectCap(
-    const std::vector<base::Time>& history) {
-  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
-  if (ads_per_hour == 0) {
-    // Never respect cap if set to 0
-    return false;
-  }
-
-  return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint,
-                                                 ads_per_hour);
 }
 
 }  // namespace ads::notification_ads

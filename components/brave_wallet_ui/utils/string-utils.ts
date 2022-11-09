@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, WalletRoutes } from '../constants/types'
+import { getLocale } from '../../common/locale'
 
 export const stripERC20TokenImageURL = (url?: string) =>
   url?.replace('chrome://erc-token-images/', '')
@@ -22,6 +23,10 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
   const trimmedUrl = url ? url.trim() : ''
   return trimmedUrl.startsWith('ipfs://') ? trimmedUrl.replace('ipfs://', 'https://ipfs.io/ipfs/') : trimmedUrl
 }
+
+export const isIpfs = (url?: string) => url?.startsWith('ipfs://')
+
+export const isDataURL = (url?: string) => url?.startsWith('chrome://erc-token-images/')
 
 /**
  * Wyre currently supports the following chains:
@@ -86,4 +91,24 @@ export function unicodeEscape (string: string) {
       return charCode > 127 ? unicodeCharEscape(charCode) : char
     })
     .join('')
+}
+
+/** This prevents there from being more than one space between words. */
+export const removeDoubleSpaces = (val: string) => val.replace(/ +(?= )/g, '')
+
+export const getWalletLocationTitle = (location: string) => {
+  /** Buy crypto */
+  if (location.includes(WalletRoutes.FundWalletPageStart)) {
+    return getLocale('braveWalletBuyCryptoButton')
+  }
+  /** Deposit crypto */
+  if (location.includes(WalletRoutes.DepositFundsPageStart)) {
+    return getLocale('braveWalletDepositFundsTitle')
+  }
+  /** Swap */
+  if (location === WalletRoutes.Swap) {
+    return getLocale('braveWalletSwap')
+  }
+  /** Wallet */
+  return getLocale('braveWalletTitle')
 }

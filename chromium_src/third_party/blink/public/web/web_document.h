@@ -11,7 +11,7 @@
 #define IsPluginDocument                                    \
   IsDOMFeaturePolicyEnabled(v8::Local<v8::Context> context, \
                             const String& feature);         \
-  BLINK_EXPORT bool IsPluginDocument
+  bool IsPluginDocument
 
 #include "src/third_party/blink/public/web/web_document.h"
 

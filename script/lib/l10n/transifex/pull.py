@@ -262,9 +262,14 @@ def create_xtb_format_translationbundle_tag(lang):
 def check_plural_string_formatting(grd_string_content, translation_content):
     """Checks 'plural' string formatting in translations"""
     pattern = re.compile(
-        r"\s*{.*,\s*plural,(\s*offset:[0-2])?"
-        r"(\s*(=[0-2]|[zero|one|two|few|many])"
-        r"\s*{(.*)})+\s*other\s*{(.*)}\s*}\s*")
+        r"\s*{(.*,\s*plural,)(\s*offset:[0-2])?"
+        r"(\s*(=0|zero)\s*{(.*)})?"
+        r"(\s*(=1|one)\s*{(.*)})?"
+        r"(\s*(=2|two)\s*{(.*)})?"
+        r"(\s*(few)\s*{(.*)})?"
+        r"(\s*(many)\s*{(.*)})?"
+        r"(\s*other\s*{(.*)})?"
+        r"\s*}\s*")
     if pattern.match(grd_string_content) is not None:
         if pattern.match(translation_content) is None:
             error = ('Translation of plural string:\n'

@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { WalletRoutes, WalletState } from '../../../../constants/types'
+import { OnboardingAction, WalletRoutes, WalletState } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -56,9 +57,13 @@ export const OnboardingCreatePassword = () => {
     setIsValid(isValid)
   }, [])
 
+  // custom hooks
+  const { braveWalletP3A } = useApiProxy()
+
   // effects
   React.useEffect(() => {
     if (isWalletCreated) {
+      braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET)
       history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
     }
   }, [isWalletCreated])

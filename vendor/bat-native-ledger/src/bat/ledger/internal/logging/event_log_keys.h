@@ -16,10 +16,10 @@ const char kDatabaseMigrated[] = "database_migrated";
 const char kDeviceLimitReached[] = "device_limit_reached";
 const char kFlaggedWallet[] = "flagged_wallet";
 const char kKYCRequired[] = "kyc_required";
-const char kMismatchedProviderAccountRegions[] =
-    "mismatched_provider_account_regions";
+const char kMismatchedCountries[] = "mismatched_countries";
 const char kMismatchedProviderAccounts[] = "mismatched_provider_accounts";
 const char kPromotionVBATDrained[] = "promotion_vbat_drained";
+const char kProviderUnavailable[] = "provider_unavailable";
 const char kRecurringTipAdded[] = "recurring_tip_added";
 const char kRecurringTipRemoved[] = "recurring_tip_removed";
 const char kRegionNotSupported[] = "region_not_supported";
@@ -30,7 +30,6 @@ const char kTransactionVerificationFailure[] =
 const char kWalletConnected[] = "wallet_connected";
 const char kWalletCorrupted[] = "wallet_corrupted";
 const char kWalletDisconnected[] = "wallet_disconnected";
-const char kWalletRecovered[] = "wallet_recovered";
 const char kWalletStatusChange[] = "wallet_status_change";
 const char kWalletVerified[] = "wallet_verified";
 

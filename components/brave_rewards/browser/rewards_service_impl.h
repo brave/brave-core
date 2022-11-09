@@ -122,7 +122,13 @@ class RewardsServiceImpl : public RewardsService,
             std::unique_ptr<RewardsNotificationServiceObserver>
                 notification_observer);
 
-  void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
+  void CreateRewardsWallet(const std::string& country,
+                           CreateRewardsWalletCallback callback) override;
+
+  std::string GetCountryCode() const override;
+
+  void GetAvailableCountries(
+      GetAvailableCountriesCallback callback) const override;
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
@@ -134,11 +140,9 @@ class RewardsServiceImpl : public RewardsService,
   void ClaimPromotion(
       const std::string& promotion_id,
       AttestPromotionCallback callback) override;
-  void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      AttestPromotionCallback callback) override;
-  void RecoverWallet(const std::string& passPhrase) override;
+  void AttestPromotion(const std::string& promotion_id,
+                       const std::string& solution,
+                       AttestPromotionCallback callback) override;
   void GetActivityInfoList(const uint32_t start,
                            const uint32_t limit,
                            ledger::mojom::ActivityInfoFilterPtr filter,
@@ -295,7 +299,7 @@ class RewardsServiceImpl : public RewardsService,
 
   std::string GetExternalWalletType() const override;
 
-  const std::vector<std::string> GetExternalWalletProviders() const override;
+  std::vector<std::string> GetExternalWalletProviders() const override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -331,11 +335,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
-  void StartProcess(base::OnceClosure callback) override;
-
-  void GetRewardsWalletPassphrase(
-      GetRewardsWalletPassphraseCallback callback) override;
-
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();
@@ -345,6 +344,7 @@ class RewardsServiceImpl : public RewardsService,
   void CheckInsufficientFundsForTesting();
   void ForTestingSetTestResponseCallback(
       const GetTestResponseCallback& callback);
+  void StartProcessForTesting(base::OnceClosure callback);
 
  private:
   friend class ::RewardsFlagBrowserTest;
@@ -449,8 +449,6 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& token,
       const bool attestation_passed);
 
-  void OnRecoverWallet(const ledger::mojom::Result result);
-
   // ledger::LedgerClient
   void OnReconcileComplete(
       const ledger::mojom::Result result,
@@ -478,12 +476,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::client::FetchIconCallback callback,
                                     bool success);
-  void OnStartProcessForGetPublisherInfo(const std::string& publisher_key,
-                                         GetPublisherInfoCallback callback);
-  void OnStartProcessForSavePublisherInfo(
-      uint64_t window_id,
-      ledger::mojom::PublisherInfoPtr publisher_info,
-      SavePublisherInfoCallback callback);
 
   void WriteDiagnosticLog(const std::string& file,
                           const int line,
@@ -522,6 +514,8 @@ class RewardsServiceImpl : public RewardsService,
   int64_t GetInt64State(const std::string& name) const override;
   void SetUint64State(const std::string& name, uint64_t value) override;
   uint64_t GetUint64State(const std::string& name) const override;
+  void SetValueState(const std::string& name, base::Value value) override;
+  base::Value GetValueState(const std::string& name) const override;
   void ClearState(const std::string& name) override;
 
   bool GetBooleanOption(const std::string& name) const override;
@@ -613,8 +607,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnFilesDeletedForCompleteReset(SuccessCallback callback,
                                       const bool success);
-
-  void OnStartProcessForCompleteReset(SuccessCallback callback, bool success);
 
   void OnDiagnosticLogDeleted(ledger::LegacyResultCallback callback,
                               bool success);

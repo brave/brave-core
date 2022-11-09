@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/feature_list.h"
+#include "base/feature_list.h"   // IWYU pragma: keep
 #include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads::features {
@@ -22,7 +22,8 @@ int NotificationAdTimeout();
 
 extern const base::Feature kCustomNotificationAds;
 bool IsCustomNotificationAdsEnabled();
-#if !BUILDFLAG(IS_ANDROID)
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 int NotificationAdFadeDuration();
 std::string NotificationAdDarkModeBackgroundColor();
 bool ShouldAttachNotificationAdToBrowserWindow();
@@ -30,7 +31,7 @@ double NotificationAdNormalizedDisplayCoordinateX();
 int NotificationAdInsetX();
 double NotificationAdNormalizedDisplayCoordinateY();
 int NotificationAdInsetY();
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 extern const base::Feature kAllowedToFallbackToCustomNotificationAds;
 bool IsAllowedToFallbackToCustomNotificationAdsEnabled();

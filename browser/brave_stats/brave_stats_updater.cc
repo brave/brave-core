@@ -11,11 +11,11 @@
 #include "base/barrier_closure.h"
 #include "base/command_line.h"
 #include "base/system/sys_info.h"
-#include "bat/ads/pref_names.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -112,7 +112,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
 
   // Track initial profile creation
   if (g_browser_process->profile_manager()) {
-    g_browser_process->profile_manager()->AddObserver(this);
+    profile_manager_observer_.Observe(g_browser_process->profile_manager());
     DCHECK_EQ(0U,
               g_browser_process->profile_manager()->GetLoadedProfiles().size());
   }
@@ -122,7 +122,7 @@ BraveStatsUpdater::~BraveStatsUpdater() = default;
 
 void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
   if (profile == ProfileManager::GetPrimaryUserProfile()) {
-    g_browser_process->profile_manager()->RemoveObserver(this);
+    profile_manager_observer_.Reset();
     Start();
   }
 }

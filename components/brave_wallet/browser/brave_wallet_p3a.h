@@ -11,17 +11,31 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefService;
 
 namespace brave_wallet {
+
+extern const char kDefaultWalletHistogramName[];
+extern const char kDefaultSolanaWalletHistogramName[];
+extern const char kKeyringCreatedHistogramName[];
+extern const char kOnboardingConversionHistogramName[];
+extern const char kEthProviderHistogramName[];
+extern const char kEthTransactionSentHistogramName[];
+extern const char kSolTransactionSentHistogramName[];
+extern const char kFilTransactionSentHistogramName[];
+extern const char kEthActiveAccountHistogramName[];
+extern const char kSolActiveAccountHistogramName[];
+extern const char kFilActiveAccountHistogramName[];
 
 class BraveWalletService;
 class KeyringService;
 
 // Reports BraveWallet related P3A data
 class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
-                       public mojom::KeyringServiceObserver {
+                       public mojom::KeyringServiceObserver,
+                       public mojom::BraveWalletP3A {
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
                  KeyringService* keyring_service,
@@ -30,6 +44,20 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   ~BraveWalletP3A() override;
   BraveWalletP3A(const BraveWalletP3A&) = delete;
   BraveWalletP3A& operator=(BraveWalletP3A&) = delete;
+
+  mojo::PendingRemote<mojom::BraveWalletP3A> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::BraveWalletP3A> receiver);
+
+  void Update();
+
+  void AddObservers();
+
+  void ReportEthereumProvider(
+      mojom::EthereumProviderType provider_type) override;
+  void ReportOnboardingAction(
+      mojom::OnboardingAction onboarding_action) override;
+  void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
+  void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
 
   // KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override;
@@ -63,6 +91,8 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
       wallet_service_observer_receiver_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
+
+  mojo::ReceiverSet<mojom::BraveWalletP3A> receivers_;
 };
 
 }  // namespace brave_wallet

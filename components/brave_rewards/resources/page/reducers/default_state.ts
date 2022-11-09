@@ -17,7 +17,6 @@ export function defaultState (): Rewards.State {
       disconnectWalletError: false,
       modalBackup: false,
       modalRedirect: 'hide',
-      walletRecoveryStatus: null,
       promosDismissed: {}
     },
     autoContributeList: [],
@@ -29,6 +28,7 @@ export function defaultState (): Rewards.State {
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
+      subdivisions: [],
       adsUIEnabled: false,
       adsIsSupported: false,
       needsBrowserUpgradeToServeAds: false,
@@ -62,10 +62,15 @@ export function defaultState (): Rewards.State {
       autoContributeChoice: 0,
       autoContributeChoices: [],
       rate: 0,
-      payoutStatus: {}
+      payoutStatus: {},
+      walletProviderRegions: {
+        bitflyer: { allow: [], block: [] },
+        gemini: { allow: [], block: [] },
+        uphold: { allow: [], block: [] }
+      }
     },
     initializing: true,
-    paymentId: '',
-    showOnboarding: null
+    showOnboarding: null,
+    isUnsupportedRegion: false
   }
 }

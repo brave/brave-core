@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -12,8 +14,19 @@
 
 namespace ads {
 
-DailyCapExclusionRule::DailyCapExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+namespace {
+
+bool DoesRespectCap(const AdEventList& ad_events,
+                    const CreativeAdInfo& creative_ad) {
+  return DoesRespectCampaignCap(creative_ad, ad_events,
+                                ConfirmationType::kServed, base::Days(1),
+                                creative_ad.daily_cap);
+}
+
+}  // namespace
+
+DailyCapExclusionRule::DailyCapExclusionRule(AdEventList ad_events)
+    : ad_events_(std::move(ad_events)) {}
 
 DailyCapExclusionRule::~DailyCapExclusionRule() = default;
 
@@ -36,13 +49,6 @@ bool DailyCapExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& DailyCapExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool DailyCapExclusionRule::DoesRespectCap(const AdEventList& ad_events,
-                                           const CreativeAdInfo& creative_ad) {
-  return DoesRespectCampaignCap(creative_ad, ad_events,
-                                ConfirmationType::kServed, base::Days(1),
-                                creative_ad.daily_cap);
 }
 
 }  // namespace ads

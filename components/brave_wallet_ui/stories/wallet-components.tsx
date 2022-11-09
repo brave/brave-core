@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
-import { SideNav, TopTabNav, ChartControlBar } from '../components/desktop'
+import { SideNav, TopTabNav } from '../components/desktop'
 import { NavTypes, TopTabNavTypes, BraveWallet } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
@@ -9,6 +9,7 @@ import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import './locale'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared'
+import { ChartControlBar } from '../components/desktop/chart-control-bar/chart-control-bar'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -64,15 +65,12 @@ _DesktopTopTabNav.story = {
 export const _LineChartControls = () => {
   const [selectedTimeline, setSelectedTimeline] = React.useState<BraveWallet.AssetPriceTimeframe>(BraveWallet.AssetPriceTimeframe.OneDay)
 
-  const changeTimline = (path: BraveWallet.AssetPriceTimeframe) => {
-    setSelectedTimeline(path)
-  }
   return (
     <DesktopComponentWrapper>
       <ChartControlBar
-        onSubmit={changeTimline}
+        onSelectTimeframe={setSelectedTimeline}
         selectedTimeline={selectedTimeline}
-        timelineOptions={ChartTimelineOptions()}
+        timelineOptions={ChartTimelineOptions}
       />
     </DesktopComponentWrapper>
   )

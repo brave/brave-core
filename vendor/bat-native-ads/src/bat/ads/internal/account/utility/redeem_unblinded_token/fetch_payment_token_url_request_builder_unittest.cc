@@ -23,7 +23,7 @@ TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  CHECK(confirmation);
+  ASSERT_TRUE(confirmation);
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(*confirmation);
 

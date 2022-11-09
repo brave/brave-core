@@ -52,9 +52,9 @@ class CreativeNotificationAds final : public TableInterface {
   void Delete(ResultCallback callback) const;
 
   void GetForSegments(const SegmentList& segments,
-                      GetCreativeNotificationAdsCallback callback);
+                      GetCreativeNotificationAdsCallback callback) const;
 
-  void GetAll(GetCreativeNotificationAdsCallback callback);
+  void GetAll(GetCreativeNotificationAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);
@@ -73,15 +73,6 @@ class CreativeNotificationAds final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const CreativeNotificationAdList& creative_ads) const;
-
-  void OnGetForSegments(const SegmentList& segments,
-                        GetCreativeNotificationAdsCallback callback,
-                        mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetAll(GetCreativeNotificationAdsCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 
   int batch_size_;
 

@@ -10,8 +10,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
-#include "bat/ads/pref_names.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -109,11 +109,7 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     // turn on Ads and AC.
     browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
                                                  false);
-
-    base::RunLoop run_loop;
-    rewards_service_->CreateRewardsWallet(base::BindLambdaForTesting(
-        [&run_loop](ledger::mojom::Result) { run_loop.Quit(); }));
-    run_loop.Run();
+    rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   }
 
   content::WebContents* contents() {

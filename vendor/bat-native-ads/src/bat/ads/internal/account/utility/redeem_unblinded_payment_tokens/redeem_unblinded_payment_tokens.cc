@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 
 #include <cstdint>
-#include <functional>
 #include <utility>
 
 #include "base/time/time.h"
@@ -20,8 +19,8 @@
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -35,6 +34,36 @@ constexpr int64_t kNextTokenRedemptionAfterSeconds =
     24 * base::Time::kSecondsPerHour;
 constexpr int64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
+
+base::TimeDelta CalculateTokenRedemptionDelay() {
+  const base::Time next_token_redemption_at =
+      AdsClientHelper::GetInstance()->GetTimePref(
+          prefs::kNextTokenRedemptionAt);
+
+  const base::Time now = base::Time::Now();
+
+  base::TimeDelta delay;
+  if (now >= next_token_redemption_at) {
+    // Browser was launched after the next token redemption date
+    delay = kExpiredNextTokenRedemptionAfter;
+  } else {
+    delay = next_token_redemption_at - now;
+  }
+
+  return delay;
+}
+
+base::Time CalculateNextTokenRedemptionDate() {
+  const base::Time now = base::Time::Now();
+
+  const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
+                                      : kNextTokenRedemptionAfterSeconds;
+
+  const auto rand_delay =
+      static_cast<int64_t>(brave_base::random::Geometric(delay));
+
+  return now + base::Seconds(rand_delay);
+}
 
 }  // namespace
 
@@ -186,36 +215,6 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
   is_processing_ = false;
 
   Redeem();
-}
-
-base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
-  const base::Time next_token_redemption_at =
-      AdsClientHelper::GetInstance()->GetTimePref(
-          prefs::kNextTokenRedemptionAt);
-
-  const base::Time now = base::Time::Now();
-
-  base::TimeDelta delay;
-  if (now >= next_token_redemption_at) {
-    // Browser was launched after the next token redemption date
-    delay = kExpiredNextTokenRedemptionAfter;
-  } else {
-    delay = next_token_redemption_at - now;
-  }
-
-  return delay;
-}
-
-base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
-  const base::Time now = base::Time::Now();
-
-  const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
-                                      : kNextTokenRedemptionAfterSeconds;
-
-  const auto rand_delay =
-      static_cast<int64_t>(brave_base::random::Geometric(delay));
-
-  return now + base::Seconds(rand_delay);
 }
 
 }  // namespace ads

@@ -15,7 +15,7 @@
 
     <!-- Theme colors -->
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
-    <color name="brave_link">#F35333</color>
+    <color name="brave_link">#A0A5EB</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
     <color name="onboarding_bg_color">#1E2029</color>
@@ -44,6 +44,7 @@
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
 
     <!-- Text colors -->
+    <color name="brave_theme_subtitle_text">#C2C4CF</color>
     <color name="brave_theme_hint_text">#84889C</color>
 
     <!-- Set Default Browser colors -->
@@ -124,4 +125,16 @@
     <color name="cookie_consent_action_color">@android:color/white</color>
     <color name="cookie_consent_text_color">#F0F2FF</color>
     <color name="cookie_consent_tooltip_color">#1E2029</color>
+
+    <!-- Quick Action Search and Bookmark Widget -->
+    <color name="quick_action_search_and_bookmark_widget_bg_color">#F21E2029</color>
+    <color name="quick_action_search_and_bookmark_widget_search_bg_color">#405E6175</color>
+    <color name="quick_action_search_and_bookmark_widget_bookmark_bg_color">#FFFFFF</color>
+    <color name="quick_action_search_and_bookmark_widget_tint">#F0F2FF</color>
+    <color name="quick_action_search_and_bookmark_widget_text_color">#CED0DB</color>
+
+    <!-- Quick Action Search and Bookmark Widget Promo-->
+    <color name="search_widget_promo_add_widget_text_color">#FFFFFF</color>
+    <color name="search_widget_promo_not_now_text_color">#F0F2FF</color>
+    <color name="search_widget_promo_bg_color">#495057</color>
 </resources>

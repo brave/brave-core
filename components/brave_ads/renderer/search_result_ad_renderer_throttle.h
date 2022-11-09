@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_RENDERER_SEARCH_RESULT_AD_RENDERER_THROTTLE_H_
 
 #include <memory>
-#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/brave_ads_host.mojom.h"

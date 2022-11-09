@@ -12,19 +12,26 @@
 #include <list>
 #include <map>
 #include <random>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
+#include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
@@ -226,7 +233,8 @@ mojom::FeedItemMetadataPtr& MetadataFromFeedItem(
 }  // namespace
 
 bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
-                           const Publishers* publishers) {
+                           const Publishers* publishers,
+                           const Channels& channels) {
   // Filter out articles from publishers we're ignoring
   const auto& data = MetadataFromFeedItem(feed_item);
   if (!publishers->contains(data->publisher_id)) {
@@ -241,13 +249,50 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
             << data->publisher_id << ": " << publisher->publisher_name;
     return false;
   }
-  if (publisher->user_enabled_status ==
-          brave_news::mojom::UserEnabled::NOT_MODIFIED &&
-      publisher->is_enabled == false) {
-    VLOG(2) << "Hiding article for disabled-by-default publisher "
-            << data->publisher_id << ": " << publisher->publisher_name;
-    return false;
+
+  // Direct publishers should be shown, even though they aren't in any locales,
+  // and their enabled status is |NOT_MODIFIED|.
+  if (publisher->type == brave_news::mojom::PublisherType::DIRECT_SOURCE) {
+    VLOG(2) << "Showing article for direct feed " << data->publisher_id << ": "
+            << publisher->publisher_name
+            << " because direct feeds are always shown.";
+    return true;
   }
+
+  if (publisher->user_enabled_status ==
+      brave_news::mojom::UserEnabled::NOT_MODIFIED) {
+    if (base::FeatureList::IsEnabled(
+            brave_today::features::kBraveNewsV2Feature)) {
+      // If the publisher is NOT_MODIFIED then display it if any of the channels
+      // it belongs to are subscribed to.
+      for (const auto& locale_info : publisher->locales) {
+        for (const auto& channel_id : locale_info->channels) {
+          if (channels.contains(channel_id)) {
+            const auto& channel = channels.at(channel_id);
+            if (base::Contains(channel->subscribed_locales,
+                               locale_info->locale)) {
+              VLOG(2) << "Showing article because publisher "
+                      << data->publisher_id << ": " << publisher->publisher_name
+                      << " is in channel " << locale_info->locale << "."
+                      << channel_id << " which is subscribed to.";
+              return true;
+            }
+          }
+        }
+      }
+
+      // The publisher isn't in a subscribed channel, and the user hasn't
+      // enabled it, so it must be hidden.
+      return false;
+    }
+
+    if (!publisher->is_enabled) {
+      VLOG(2) << "Hiding article for disabled-by-default publisher "
+              << data->publisher_id << ": " << publisher->publisher_name;
+      return false;
+    }
+  }
+
   // None of the filters match, we can display
   VLOG(2) << "None of the filters matched, will display item for publisher "
           << data->publisher_id;
@@ -257,13 +302,17 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
 bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
-               mojom::Feed* feed) {
+               mojom::Feed* feed,
+               PrefService* prefs) {
+  Channels channels =
+      ChannelsController::GetChannelsFromPublishers(*publishers, prefs);
+
   std::list<mojom::ArticlePtr> articles;
   std::list<mojom::PromotedArticlePtr> promoted_articles;
   std::list<mojom::DealPtr> deals;
   std::hash<std::string> hasher;
   for (auto& item : feed_items) {
-    if (!ShouldDisplayFeedItem(item, publishers)) {
+    if (!ShouldDisplayFeedItem(item, publishers, channels)) {
       continue;
     }
     auto& metadata = MetadataFromFeedItem(item);

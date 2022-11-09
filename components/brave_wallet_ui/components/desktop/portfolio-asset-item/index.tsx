@@ -6,11 +6,20 @@
 import * as React from 'react'
 
 // Options
-import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
+import { getTokensNetwork } from '../../../utils/network-utils'
+import { computeFiatAmount } from '../../../utils/pricing-utils'
+import { unbiasedRandom } from '../../../utils/random-utils'
+import { isDataURL } from '../../../utils/string-utils'
+
+// Components
+import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
+import { WithHideBalancePlaceholder } from '../'
+import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 // Styled Components
 import {
@@ -25,49 +34,37 @@ import {
   Spacer,
   NetworkDescriptionText
 } from './style'
-import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
-import { WithHideBalancePlaceholder } from '../'
-
-import { getTokensNetwork } from '../../../utils/network-utils'
-
-// Hooks
-import { usePricing } from '../../../common/hooks'
-import { unbiasedRandom } from '../../../utils/random-utils'
-import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { IconsWrapper, NetworkIconWrapper } from '../../shared/style'
+import { useSelector } from 'react-redux'
 
 interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
   action?: () => void
   assetBalance: string
   token: BraveWallet.BlockchainToken
-  defaultCurrencies: DefaultCurrencies
   hideBalances?: boolean
-  networks: BraveWallet.NetworkInfo[]
   isPanel?: boolean
 }
 
 export const PortfolioAssetItem = ({
-  spotPrices,
   assetBalance,
   action,
   token,
-  defaultCurrencies,
   hideBalances,
-  isPanel,
-  networks
+  isPanel
 }: Props) => {
+  // redux
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
+  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+  const spotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
+
   // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
 
-  // custom hooks
-  const { computeFiatAmount } = usePricing(spotPrices)
-
   // memos & computed
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-  }, [token])
+    return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+  }, [token.isErc721])
 
   const formattedAssetBalance = token.isErc721
     ? new Amount(assetBalance)
@@ -78,12 +75,12 @@ export const PortfolioAssetItem = ({
       .formatAsAsset(6, token.symbol)
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(assetBalance, token.symbol, token.decimals)
-  }, [computeFiatAmount, assetBalance, token])
+    return computeFiatAmount(spotPrices, { decimals: token.decimals, symbol: token.symbol, value: assetBalance })
+  }, [spotPrices, assetBalance, token.symbol, token.decimals])
 
   const formattedFiatBalance = React.useMemo(() => {
     return fiatBalance.formatAsFiat(defaultCurrencies.fiat)
-  }, [fiatBalance])
+  }, [fiatBalance, defaultCurrencies.fiat])
 
   const isLoading = React.useMemo(() => {
     return formattedAssetBalance === '' && !token.isErc721

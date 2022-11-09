@@ -10,7 +10,7 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -18,17 +18,17 @@ using ::testing::Invoke;
 
 namespace ads {
 
-class BatAdsNotificationAdUtilTest : public UnitTestBase {
- protected:
-  BatAdsNotificationAdUtilTest() = default;
+namespace {
 
-  void BuildAndShowNotificationAd() {
-    const CreativeNotificationAdInfo creative_ad =
-        BuildCreativeNotificationAd();
-    const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-    ShowNotificationAd(ad);
-  }
-};
+void BuildAndShowNotificationAd() {
+  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+  ShowNotificationAd(ad);
+}
+
+}  // namespace
+
+class BatAdsNotificationAdUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
   // Arrange

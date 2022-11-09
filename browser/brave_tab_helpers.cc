@@ -13,6 +13,7 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/browser/core_metrics/core_metrics_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
@@ -136,6 +137,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
+    core_metrics::CoreMetricsTabHelper::CreateForWebContents(web_contents);
   }
 }
 

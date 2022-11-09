@@ -60,7 +60,8 @@ public class AppearancePreferences extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_UI_THEME);
         }
 
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        if (mBraveRewardsNativeWorker == null || !mBraveRewardsNativeWorker.IsSupported()) {
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
         }
     }
@@ -129,7 +130,6 @@ public class AppearancePreferences extends BravePreferenceFragment
 
     @Override
     public void onStart() {
-        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.AddObserver(this);
         }

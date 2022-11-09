@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +19,10 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.fragments.SolanaTxDetailsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TxDetailsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TxFragment;
+import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +40,8 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private HashMap<String, HashMap<String, Double>> mBlockchainTokensBalances;
     private boolean mUpdateTxObjectManually;
     private long mSolanaEstimatedTxFee;
+    private Context mContext;
+    private Fragment mDetailsFragment;
 
     public ApproveTxFragmentPageAdapter(FragmentManager fm, TransactionInfo txInfo,
             NetworkInfo selectedNetwork, AccountInfo[] accounts,
@@ -52,6 +57,7 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         mFullTokenList = fullTokenList;
         mNativeAssetsBalances = nativeAssetsBalances;
         mBlockchainTokensBalances = blockchainTokensBalances;
+        mContext = activity;
         mTitles = new ArrayList<>(Arrays.asList(activity.getText(R.string.transaction).toString(),
                 activity.getText(R.string.transaction_details).toString()));
         mUpdateTxObjectManually = updateTxObjectManually;
@@ -66,8 +72,21 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
                     mFullTokenList, mNativeAssetsBalances, mBlockchainTokensBalances,
                     mUpdateTxObjectManually, mSolanaEstimatedTxFee);
         } else {
-            return TxDetailsFragment.newInstance(mTxInfo);
+            if (mDetailsFragment == null) {
+                if (TransactionUtils.isSolanaTx(mTxInfo)) {
+                    mDetailsFragment = SolanaTxDetailsFragment.newInstance(mTxInfo, mContext);
+                } else {
+                    mDetailsFragment = TxDetailsFragment.newInstance(mTxInfo);
+                }
+            }
+            return mDetailsFragment;
         }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        mDetailsFragment = null;
+        super.notifyDataSetChanged();
     }
 
     @Override

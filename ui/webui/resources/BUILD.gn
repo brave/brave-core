@@ -1,52 +1,146 @@
-import("//brave/resources/brave_grit.gni")
-import("//tools/polymer/polymer.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/polymer/css_to_wrapper.gni")
+import("//tools/polymer/html_to_wrapper.gni")
+import("//ui/webui/resources/include_polymer.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
 import("//ui/webui/webui_features.gni")
+import("./fonts/fonts.gni")
+import("./sources.gni")
 
-brave_grit("resources") {
-  defines = [ "optimize_webui=$optimize_webui" ]
-  source = "brave_webui_resources.grd"
+# Add Files to chrome://resources
+# - Use preprocess_if_expr to get the files to same gen dir as chromium
+# - Use extensible patch to ui/webui/resources/build.gn to get the info to typescript, grd, and c++ (via the main resources .grd)
+# - Generate GRDP for extra static files - fonts, css
 
-  deps = [ ":modulize" ]
+preprocess_in_files = brave_web_component_files_native_ts +
+                      brave_native_html_files + brave_non_web_component_files_ts
+if (include_polymer) {
+  preprocess_in_files += brave_web_component_files_polymer_ts +
+                         brave_polymer_html_files + brave_css_files
+}
+requires_preprocess = preprocess_in_files != []
 
-  # The .grd contains references to generated files.
-  enable_input_discovery_for_gn_analyze = false
+# Same path as //ui/webui/resources generates to
+if (requires_preprocess) {
+  preprocess_folder = "$root_gen_dir/ui/webui/resources/preprocessed"
+}
 
-  outputs = [
-    "grit/brave_webui_resources.h",
-    "grit/brave_webui_resources_map.cc",
-    "grit/brave_webui_resources_map.h",
-    "brave_webui_resources.pak",
+# Put files that are required for the //ui/webui/resources typescript compile in the
+# expected gen directory
+if (requires_preprocess) {
+  preprocess_if_expr("preprocess_ts") {
+    in_folder = "."
+    out_folder = preprocess_folder
+    in_files = preprocess_in_files
+  }
+}
+
+group("preprocess") {
+  public_deps = []
+  if (requires_preprocess) {
+    public_deps += [ ":preprocess_ts" ]
+    if (brave_polymer_html_files != []) {
+      public_deps += [ ":html_wrapper_files" ]
+    }
+    if (brave_css_files != []) {
+      public_deps += [ ":css_wrapper_files" ]
+    }
+  }
+}
+
+# Generate .html.ts files from .html
+if (requires_preprocess && brave_polymer_html_files != []) {
+  html_to_wrapper("html_wrapper_files") {
+    deps = [ ":preprocess_ts" ]
+    in_folder = preprocess_folder
+    out_folder = preprocess_folder
+    in_files = brave_polymer_html_files
+    scheme = "relative"
+    minify = optimize_webui
+  }
+}
+
+# Generate .css.ts files from .css
+if (requires_preprocess && brave_css_files != []) {
+  css_to_wrapper("css_wrapper_files") {
+    deps = [ ":preprocess_ts" ]
+    in_folder = preprocess_folder
+    out_folder = preprocess_folder
+    in_files = brave_css_files
+    minify = optimize_webui
+  }
+}
+
+static_files = [
+  "css/md_colors.css",
+  "css/text_defaults_md.css",
+  "css/reset.css",
+]
+
+if (include_polymer) {
+  static_files += [
+    "page_specific/history/history_loading_shim.css",
+    "page_specific/downloads/downloads_loading_shim.css",
+    "page_specific/settings/settings_loading_shim.css",
+    "page_specific/bookmarks/bookmarks_loading_shim.css",
+    "page_specific/extensions/extensions_loading_shim.css",
+    "br_elements/br_toolbar/br_toolbar_selection_overlay_overrides.css",
   ]
 }
 
-copy("rollup_resources") {
-  visibility = [ ":*" ]
-
-  sources = [ "polymer_overriding.js" ]
-
-  deps = [ "br_elements:polymer3_elements" ]
-
-  outputs = [ "$root_gen_dir/brave/ui/webui/resources/{{source_file_part}}" ]
-}
-
-copy("override_resources") {
-  visibility = [ ":*" ]
-
-  sources = [
-    "overrides/cr_button.js",
-    "overrides/cr_toggle.js",
-  ]
-
-  outputs = [
-    "$root_gen_dir/brave/ui/webui/resources/overrides/{{source_file_part}}",
+group("grdp") {
+  public_deps = [
+    ":fonts_grdp",
+    ":static_grdp",
   ]
 }
 
-group("modulize") {
+# Create a grdp that //ui/webui/resources can include in its main resources GRD
+generate_grd("static_grdp") {
+  grd_prefix = "brave_webui"
+  resource_path_prefix = "brave"
+  out_grd = "$brave_resources_extra_grdps_path/brave_static_resources.grdp"
+  input_files = static_files + [
+                  # TODO(petemill): ethereum_remote_client_page.html does not need to be served from chrome://resources
+                  # and should be put in to it's own resource package.
+                  "ethereum_remote_client_page.html",
+                ]
+  input_files_base_dir =
+      rebase_path("$brave_resources_extra_grdps_path/brave", root_build_dir)
   deps = [
-    ":override_resources",
-    ":rollup_resources",
-    "br_elements:polymer3_elements",
-    "page_specific:polymer3_elements",
+    ":ethereum_remote_client_html_copy",
+    ":static_copy",
+  ]
+}
+
+# Create a grdp that //ui/webui/resources can include in its main resources GRD
+generate_grd("fonts_grdp") {
+  grd_prefix = "brave_webui"
+  out_grd = "$brave_resources_extra_grdps_path/brave_fonts_resources.grdp"
+  input_files = brave_font_files
+  input_files_base_dir =
+      rebase_path("$brave_resources_extra_grdps_path/", root_build_dir)
+  deps = [ ":fonts_copy" ]
+}
+
+# Static files should be put relative to //ui/webui/resources main resources GRD
+copy("static_copy") {
+  sources = static_files
+  outputs =
+      [ "$brave_resources_extra_grdps_path/brave/{{source_target_relative}}" ]
+}
+
+# Static files should be put relative to //ui/webui/resources main resources GRD
+copy("fonts_copy") {
+  sources = brave_font_files
+  outputs = [ "$brave_resources_extra_grdps_path/{{source_target_relative}}" ]
+}
+
+# Static files should be put relative to //ui/webui/resources main resources GRD.
+# This is separate to "static_copy" because the path is not relative.
+copy("ethereum_remote_client_html_copy") {
+  sources = [ "../../../browser/ui/webui/ethereum_remote_client/ethereum_remote_client_page.html" ]
+  outputs = [
+    "$brave_resources_extra_grdps_path/brave/ethereum_remote_client_page.html",
   ]
 }

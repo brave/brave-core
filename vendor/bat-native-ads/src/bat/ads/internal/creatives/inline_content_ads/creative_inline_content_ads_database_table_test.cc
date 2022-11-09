@@ -18,11 +18,6 @@ namespace ads {
 class BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
  protected:
-  BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest() = default;
-
-  ~BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest() override =
-      default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }
@@ -43,7 +38,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Assert
   const std::vector<std::string> segments = {"technology & computing"};
 
-  database::table::CreativeInlineContentAds creative_ads;
+  const database::table::CreativeInlineContentAds creative_ads;
   creative_ads.GetForSegmentsAndDimensions(
       segments, "200x100",
       [](const bool success, const SegmentList& /*segments*/,
@@ -60,7 +55,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  database::table::CreativeInlineContentAds creative_ads;
+  const database::table::CreativeInlineContentAds creative_ads;
   creative_ads.GetForDimensions(
       "200x100",
       [](const bool success, const CreativeInlineContentAdList& creative_ads) {

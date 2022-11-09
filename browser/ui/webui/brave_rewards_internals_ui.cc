@@ -19,9 +19,11 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -130,7 +132,6 @@ void RewardsInternalsDOMHandler::Init() {
   profile_ = Profile::FromWebUI(web_ui());
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-  rewards_service_->StartProcess(base::DoNothing());
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
@@ -161,9 +162,13 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
 
   base::Value::Dict info_dict;
   if (info) {
+    const auto* prefs = profile_->GetPrefs();
+    const std::string declared_geo =
+        prefs->GetString(::brave_rewards::prefs::kDeclaredGeo);
     info_dict.Set("walletPaymentId", info->payment_id);
     info_dict.Set("isKeyInfoSeedValid", info->is_key_info_seed_valid);
     info_dict.Set("bootStamp", static_cast<double>(info->boot_stamp));
+    info_dict.Set("declaredGeo", declared_geo);
   }
   CallJavascriptFunction("brave_rewards_internals.onGetRewardsInternalsInfo",
                          base::Value(std::move(info_dict)));

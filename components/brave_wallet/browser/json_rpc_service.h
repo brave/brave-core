@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
+#include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -42,11 +43,6 @@ namespace brave_wallet {
 
 class EnsResolverTask;
 
-namespace unstoppable_domains {
-template <class ResultType>
-class MultichainCalls;
-}  // namespace unstoppable_domains
-
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
   JsonRpcService(
@@ -60,6 +56,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   ~JsonRpcService() override;
 
   static void MigrateMultichainNetworks(PrefService* prefs);
+  static void MigrateDeprecatedEthereumTestnets(PrefService* prefs);
 
   mojo::PendingRemote<mojom::JsonRpcService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
@@ -169,9 +166,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& domain,
       UnstoppableDomainsResolveDnsCallback callback);
 
-  void UnstoppableDomainsGetEthAddr(
+  void UnstoppableDomainsGetWalletAddr(
       const std::string& domain,
-      UnstoppableDomainsGetEthAddrCallback callback) override;
+      mojom::BlockchainTokenPtr token,
+      UnstoppableDomainsGetWalletAddrCallback callback) override;
 
   void EnsGetContentHash(const std::string& domain,
                          EnsGetContentHashCallback callback);
@@ -448,9 +446,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnUnstoppableDomainsResolveDns(const std::string& domain,
                                       const std::string& chain_id,
                                       APIRequestResult api_request_result);
-  void OnUnstoppableDomainsGetEthAddr(const std::string& domain,
-                                      const std::string& chain_id,
-                                      APIRequestResult api_request_result);
+  void OnUnstoppableDomainsGetWalletAddr(
+      const unstoppable_domains::WalletAddressKey& key,
+      const std::string& chain_id,
+      APIRequestResult api_request_result);
   void EnsRegistryGetResolver(const std::string& domain,
                               StringResultCallback callback);
   void OnEnsRegistryGetResolver(StringResultCallback callback,
@@ -574,10 +573,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   base::flat_map<url::Origin, RequestCallback> switch_chain_callbacks_;
   base::flat_map<url::Origin, base::Value> switch_chain_ids_;
 
-  std::unique_ptr<unstoppable_domains::MultichainCalls<std::string>>
+  unstoppable_domains::MultichainCalls<unstoppable_domains::WalletAddressKey,
+                                       std::string>
       ud_get_eth_addr_calls_;
-  std::unique_ptr<unstoppable_domains::MultichainCalls<GURL>>
-      ud_resolve_dns_calls_;
+  unstoppable_domains::MultichainCalls<std::string, GURL> ud_resolve_dns_calls_;
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 

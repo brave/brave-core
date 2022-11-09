@@ -31,10 +31,8 @@ using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
 
-class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
+class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
  protected:
-  BatAdsReactionsTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -57,7 +55,7 @@ class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  HistoryItemInfo AddHistoryItem() {
+  static HistoryItemInfo AddHistoryItem() {
     const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();
     const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
@@ -85,7 +83,7 @@ class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
   std::unique_ptr<UserReactions> user_reactions_;
 };
 
-TEST_F(BatAdsReactionsTest, LikeAd) {
+TEST_F(BatAdsUserReactionsTest, LikeAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
@@ -97,7 +95,7 @@ TEST_F(BatAdsReactionsTest, LikeAd) {
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsReactionsTest, DislikeAd) {
+TEST_F(BatAdsUserReactionsTest, DislikeAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
@@ -109,7 +107,7 @@ TEST_F(BatAdsReactionsTest, DislikeAd) {
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsReactionsTest, MarkAdAsInappropriate) {
+TEST_F(BatAdsUserReactionsTest, MarkAdAsInappropriate) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
@@ -122,7 +120,7 @@ TEST_F(BatAdsReactionsTest, MarkAdAsInappropriate) {
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsReactionsTest, SaveAd) {
+TEST_F(BatAdsUserReactionsTest, SaveAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 

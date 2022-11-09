@@ -1,9 +1,9 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 3.0. If a copy of the MPL was not distributed with this file,
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/android/java/org/chromium/chrome/browser/search_engines/settings/jni_headers/BraveSearchEnginePrefHelper_jni.h"
+#include "brave/android/java/org/chromium/chrome/browser/search_engines/jni_headers/BraveSearchEnginePrefHelper_jni.h"
 
 #include "brave/components/brave_search/browser/prefs.h"
 #include "chrome/browser/profiles/profile.h"

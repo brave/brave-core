@@ -17,6 +17,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -132,10 +133,16 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   // to a normal window in this case.
   const bool is_guest_session = browser_->profile()->IsGuestSession();
   if (!is_guest_session) {
-    if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
+    // If Rewards is not supported due to OFAC sanctions we still want to show
+    // the menu item.
+    if (brave_rewards::IsSupported(
+            browser_->profile()->GetPrefs(),
+            brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
       UpdateCommandForBraveRewards();
     }
-    UpdateCommandForBraveWallet();
+    if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
+      UpdateCommandForBraveWallet();
+    }
     if (syncer::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();
   }
@@ -306,7 +313,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::OpenBraveVPNUrls(browser_, id);
       break;
     case IDC_COPY_CLEAN_LINK:
-      brave::CopyCleanLink(browser_);
+      brave::CopySanitizedURL(
+          browser_,
+          browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
       break;
     case IDC_APP_MENU_IPFS_OPEN_FILES:
       brave::OpenIpfsFilesWebUI(browser_);

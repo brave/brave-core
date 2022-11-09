@@ -10,6 +10,8 @@
 #include "base/command_line.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
@@ -44,22 +46,21 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
+#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
+#include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
+#include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_user_settings.h"
 #include "content/public/browser/web_contents.h"
+#else
+#include "brave/browser/android/preferences/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/browser_process.h"
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
-#include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
-#include "chrome/browser/sync/sync_service_factory.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_user_settings.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
@@ -174,6 +175,11 @@ void BraveBrowserMainParts::PreProfileInit() {
 
   if (!translate::ShouldUpdateLanguagesList())
     translate::TranslateLanguageList::DisableUpdate();
+
+  const auto& flags = brave_rewards::RewardsFlags::ForCurrentProcess();
+  if (flags.country_id) {
+    brave_rewards::SetCountryCodeForOFACTesting(*flags.country_id);
+  }
 }
 
 void BraveBrowserMainParts::PostProfileInit(Profile* profile,
@@ -181,7 +187,9 @@ void BraveBrowserMainParts::PostProfileInit(Profile* profile,
   ChromeBrowserMainParts::PostProfileInit(profile, is_initial_profile);
 
 #if BUILDFLAG(IS_ANDROID)
-  if (profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+  if (base::FeatureList::IsEnabled(
+          preferences::features::kBraveBackgroundVideoPlayback) ||
+      profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);

@@ -12,13 +12,13 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/supported_subdivisions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
-#include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
@@ -26,7 +26,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -52,12 +52,6 @@ using brave_rewards::RewardsTabHelper;
 
 namespace {
 
-const char kShouldAllowAdsSubdivisionTargeting[] =
-    "shouldAllowAdsSubdivisionTargeting";
-const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutoDetectedAdsSubdivisionTargeting[] =
-    "automaticallyDetectedAdsSubdivisionTargeting";
-
 RewardsTabHelper* GetRewardsTabHelperForTabId(
     int tab_id,
     content::BrowserContext* browser_context) {
@@ -71,14 +65,43 @@ RewardsTabHelper* GetRewardsTabHelperForTabId(
   return RewardsTabHelper::FromWebContents(web_contents);
 }
 
+content::WebContents* WebContentsFromBrowserContext(
+    int tab_id,
+    content::BrowserContext* browser_context) {
+  content::WebContents* contents = nullptr;
+  extensions::ExtensionTabUtil::GetTabById(
+      tab_id, Profile::FromBrowserContext(browser_context), false, nullptr,
+      nullptr, &contents, nullptr);
+  return contents;
+}
+
+RewardsPanelCoordinator* GetPanelCoordinator(
+    content::WebContents* web_contents) {
+  DCHECK(web_contents);
+  auto* browser = chrome::FindBrowserWithWebContents(web_contents);
+  return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
+}
+
 RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
   DCHECK(function);
   auto* web_contents = function->GetSenderWebContents();
   if (!web_contents) {
     return nullptr;
   }
-  auto* browser = chrome::FindBrowserWithWebContents(web_contents);
-  return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
+  return GetPanelCoordinator(web_contents);
+}
+
+std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result) {
+  switch (result) {
+    case ledger::mojom::CreateRewardsWalletResult::kSuccess:
+      return "success";
+    case ledger::mojom::CreateRewardsWalletResult::kWalletGenerationDisabled:
+      return "wallet-generation-disabled";
+    case ledger::mojom::CreateRewardsWalletResult::kGeoCountryAlreadyDeclared:
+      return "country-already-declared";
+    case ledger::mojom::CreateRewardsWalletResult::kUnexpected:
+      return "unexpected-error";
+  }
 }
 
 }  // namespace
@@ -90,15 +113,25 @@ BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ::brave_rewards::IsSupportedForProfile(profile);
+  bool is_supported = ::brave_rewards::IsSupportedForProfile(
+      profile, ::brave_rewards::IsSupportedOptions::kSkipRegionCheck);
   return RespondNow(OneArgument(base::Value(is_supported)));
+}
+
+BraveRewardsIsUnsupportedRegionFunction::
+    ~BraveRewardsIsUnsupportedRegionFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsIsUnsupportedRegionFunction::Run() {
+  bool is_unsupported_region = ::brave_rewards::IsUnsupportedRegion();
+  return RespondNow(OneArgument(base::Value(is_unsupported_region)));
 }
 
 BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
-  std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  return RespondNow(OneArgument(base::Value(std::move(locale))));
+  return RespondNow(
+      OneArgument(base::Value(brave_l10n::GetDefaultLocaleString())));
 }
 
 BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
@@ -368,10 +401,9 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   }
 
   // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-          params->tab_id, Profile::FromBrowserContext(browser_context()), false,
-          nullptr, nullptr, &contents, nullptr)) {
+  content::WebContents* contents =
+      WebContentsFromBrowserContext(params->tab_id, browser_context());
+  if (!contents) {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
                             base::NumberToString(params->tab_id)));
   }
@@ -405,27 +437,33 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
+  // If the user clicks the tipping button before having opted into the Rewards,
+  // then the Rewards service would not have started the ledger process yet. We
+  // need to open the Rewards panel for the user to offer opting in.
+  if (!profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled)) {
+    // Get web contents for this tab
+    content::WebContents* contents =
+        WebContentsFromBrowserContext(params->tab_id, browser_context());
+    if (!contents) {
+      return RespondNow(Error(tabs_constants::kTabNotFoundError,
+                              base::NumberToString(params->tab_id)));
+    }
+    auto* coordinator = GetPanelCoordinator(contents);
+    if (!coordinator) {
+      return RespondNow(Error("Unable to open Rewards panel"));
+    }
+    coordinator->OpenRewardsPanel();
+    return RespondNow(NoArguments());
+  }
+
   AddRef();
 
-  rewards_service->StartProcess(
-      base::BindOnce(&BraveRewardsTipUserFunction::OnProcessStarted, this,
-                     params->publisher_key));
-
-  return RespondNow(NoArguments());
-}
-
-void BraveRewardsTipUserFunction::OnProcessStarted(
-    const std::string& publisher_key) {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    Release();
-    return;
-  }
   rewards_service->GetPublisherInfo(
-      publisher_key,
+      params->publisher_key,
       base::BindOnce(&BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
                      this));
+
+  return RespondNow(NoArguments());
 }
 
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
@@ -486,10 +524,9 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   }
 
   // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-          params->tab_id, Profile::FromBrowserContext(browser_context()), false,
-          nullptr, nullptr, &contents, nullptr)) {
+  content::WebContents* contents =
+      WebContentsFromBrowserContext(params->tab_id, browser_context());
+  if (!contents) {
     Release();
     return;
   }
@@ -600,47 +637,65 @@ BraveRewardsCreateRewardsWalletFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsCreateRewardsWalletFunction::Run() {
+  auto params = brave_rewards::CreateRewardsWallet::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
     return RespondNow(Error("RewardsService not available"));
   }
 
-  rewards_service->CreateRewardsWallet(base::BindOnce(
-      &BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback,
-      this));
+  rewards_service->CreateRewardsWallet(
+      params->country,
+      base::BindOnce(
+          &BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback,
+          this));
 
   return RespondLater();
 }
 
 void BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback(
-    ledger::mojom::Result result) {
-  Respond(OneArgument(base::Value(static_cast<int>(result))));
+    ledger::mojom::CreateRewardsWalletResult result) {
+  Respond(OneArgument(base::Value(StringifyResult(result))));
 }
 
-BraveRewardsGetRewardsWalletFunction::~BraveRewardsGetRewardsWalletFunction() =
-    default;
+BraveRewardsGetAvailableCountriesFunction::
+    ~BraveRewardsGetAvailableCountriesFunction() = default;
 
-ExtensionFunction::ResponseAction BraveRewardsGetRewardsWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
+ExtensionFunction::ResponseAction
+BraveRewardsGetAvailableCountriesFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+
   if (!rewards_service) {
-    return RespondNow(Error("RewardsService not available"));
+    return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service->GetRewardsWallet(base::BindOnce(
-      &BraveRewardsGetRewardsWalletFunction::GetRewardsWalletCallback, this));
+  rewards_service->GetAvailableCountries(base::BindOnce(
+      &BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback,
+      this));
+
   return RespondLater();
 }
 
-void BraveRewardsGetRewardsWalletFunction::GetRewardsWalletCallback(
-    ledger::mojom::RewardsWalletPtr rewards_wallet) {
-  if (!rewards_wallet) {
-    return Respond(NoArguments());
+void BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback(
+    std::vector<std::string> countries) {
+  base::Value::List country_list;
+  for (auto& country : countries) {
+    country_list.Append(std::move(country));
   }
-  base::Value::Dict dict;
-  dict.Set("paymentId", rewards_wallet->payment_id);
-  Respond(OneArgument(base::Value(std::move(dict))));
+  Respond(OneArgument(base::Value(std::move(country_list))));
+}
+
+BraveRewardsGetDeclaredCountryFunction::
+    ~BraveRewardsGetDeclaredCountryFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetDeclaredCountryFunction::Run() {
+  auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
+  std::string country = prefs->GetString(::brave_rewards::prefs::kDeclaredGeo);
+  return RespondNow(OneArgument(base::Value(std::move(country))));
 }
 
 BraveRewardsGetBalanceReportFunction::~BraveRewardsGetBalanceReportFunction() =
@@ -1170,7 +1225,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsEnabledFunction::Run() {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (!ads_service) {
-    return RespondNow(Error("Ads service is not initialized"));
+    return RespondNow(OneArgument(base::Value(false)));
   }
 
   const bool enabled = ads_service->IsEnabled();
@@ -1223,7 +1278,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsSupportedFunction::Run() {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (!ads_service) {
-    return RespondNow(Error("Ads service is not initialized"));
+    return RespondNow(OneArgument(base::Value(false)));
   }
 
   const bool supported = ads_service->IsSupportedLocale();
@@ -1236,29 +1291,39 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
+  base::Value::Dict ads_data;
   if (!ads_service) {
-    return RespondNow(Error("Ads service is not initialized"));
+    ads_data.Set("adsIsSupported", false);
+    ads_data.Set("adsEnabled", false);
+    ads_data.Set("adsPerHour", 0);
+    ads_data.Set("adsSubdivisionTargeting", std::string());
+    ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting", std::string());
+    ads_data.Set("shouldAllowAdsSubdivisionTargeting", false);
+    ads_data.Set("adsUIEnabled", false);
+  } else {
+    ads_data.Set("adsIsSupported", ads_service->IsSupportedLocale());
+    ads_data.Set("adsEnabled", ads_service->IsEnabled());
+    ads_data.Set(
+        "adsPerHour",
+        static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
+    ads_data.Set("adsSubdivisionTargeting",
+                 ads_service->GetSubdivisionTargetingCode());
+    ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting",
+                 ads_service->GetAutoDetectedSubdivisionTargetingCode());
+    ads_data.Set("shouldAllowAdsSubdivisionTargeting",
+                 ads_service->ShouldAllowSubdivisionTargeting());
+    ads_data.Set("adsUIEnabled", true);
   }
 
-  base::Value::Dict ads_data;
-  ads_data.Set("adsIsSupported", ads_service->IsSupportedLocale());
-  ads_data.Set("adsEnabled", ads_service->IsEnabled());
-  ads_data.Set(
-      "adsPerHour",
-      static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
-  ads_data.Set(kAdsSubdivisionTargeting,
-               ads_service->GetSubdivisionTargetingCode());
-  ads_data.Set(kAutoDetectedAdsSubdivisionTargeting,
-               ads_service->GetAutoDetectedSubdivisionTargetingCode());
-  ads_data.Set(kShouldAllowAdsSubdivisionTargeting,
-               ads_service->ShouldAllowSubdivisionTargeting());
-  ads_data.Set("adsUIEnabled", true);
-
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  ads_data.Set("countryCode", country_code);
+  base::Value::List subdivisions;
+  const auto subdivision_infos = ads::GetSupportedSubdivisions();
+  for (const auto& info : subdivision_infos) {
+    base::Value::Dict subdivision;
+    subdivision.Set("value", info.first);
+    subdivision.Set("name", info.second);
+    subdivisions.Append(std::move(subdivision));
+  }
+  ads_data.Set("subdivisions", std::move(subdivisions));
 
   return RespondNow(OneArgument(base::Value(std::move(ads_data))));
 }
@@ -1392,21 +1457,21 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
   auto* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (rewards_service) {
-    bool* ac_enabled = params->prefs.auto_contribute_enabled.get();
+    auto& ac_enabled = params->prefs.auto_contribute_enabled;
     if (ac_enabled)
       rewards_service->SetAutoContributeEnabled(*ac_enabled);
 
-    double* ac_amount = params->prefs.auto_contribute_amount.get();
+    auto& ac_amount = params->prefs.auto_contribute_amount;
     if (ac_amount)
       rewards_service->SetAutoContributionAmount(*ac_amount);
   }
 
   if (ads_service) {
-    bool* ads_enabled = params->prefs.ads_enabled.get();
+    auto& ads_enabled = params->prefs.ads_enabled;
     if (ads_enabled)
       ads_service->SetEnabled(*ads_enabled);
 
-    int* ads_per_hour = params->prefs.ads_per_hour.get();
+    auto& ads_per_hour = params->prefs.ads_per_hour;
     if (ads_per_hour)
       ads_service->SetMaximumNotificationAdsPerHour(*ads_per_hour);
   }

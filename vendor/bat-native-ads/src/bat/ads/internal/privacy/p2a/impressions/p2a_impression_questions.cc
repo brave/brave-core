@@ -34,7 +34,7 @@ std::vector<std::string> CreateAdImpressionQuestions(
 
   questions.push_back(question);
 
-  questions.push_back("Brave.P2A.TotalAdImpressions");
+  questions.emplace_back("Brave.P2A.TotalAdImpressions");
 
   return questions;
 }

@@ -12,7 +12,8 @@
 
 namespace ads::promoted_content_ads {
 
-bool PermissionRules::HasPermission() const {
+// static
+bool PermissionRules::HasPermission() {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }

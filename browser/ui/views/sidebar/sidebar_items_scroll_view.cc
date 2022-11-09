@@ -18,7 +18,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_drag_context.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
@@ -231,10 +231,10 @@ void SidebarItemsScrollView::OnActiveIndexChanged(
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
 
-void SidebarItemsScrollView::OnWillUpdateFavicon(
+void SidebarItemsScrollView::OnItemUpdated(
     const sidebar::SidebarItem& item,
-    size_t index) {
-  contents_view_->SetDefaultImageAt(index, item);
+    const sidebar::SidebarItemUpdate& update) {
+  contents_view_->UpdateItem(item, update);
 }
 
 void SidebarItemsScrollView::OnFaviconUpdatedForItem(
@@ -400,6 +400,15 @@ bool SidebarItemsScrollView::CanDrop(const OSExchangeData& data) {
       ui::ClipboardFormatType::GetType(kSidebarItemDragType));
 }
 
+void SidebarItemsScrollView::OnDragExited() {
+  ClearDragIndicator();
+}
+
+void SidebarItemsScrollView::ClearDragIndicator() {
+  contents_view_->ClearDragIndicator();
+  drag_context_->set_drag_indicator_index(absl::nullopt);
+}
+
 int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
   auto ret = ui::DragDropTypes::DRAG_NONE;
 
@@ -414,8 +423,7 @@ int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
     drag_context_->set_drag_indicator_index(target_index);
     ret = ui::DragDropTypes::DRAG_MOVE;
   } else {
-    contents_view_->ClearDragIndicator();
-    drag_context_->set_drag_indicator_index(absl::nullopt);
+    ClearDragIndicator();
   }
 
   return ret;
@@ -483,6 +491,10 @@ bool SidebarItemsScrollView::IsBubbleVisible() const {
 
 void SidebarItemsScrollView::Update() {
   contents_view_->Update();
+}
+
+void SidebarItemsScrollView::SetSidebarOnLeft(bool sidebar_on_left) {
+  contents_view_->SetSidebarOnLeft(sidebar_on_left);
 }
 
 BEGIN_METADATA(SidebarItemsScrollView, views::View)

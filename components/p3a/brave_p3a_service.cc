@@ -24,7 +24,7 @@
 #include "base/strings/string_piece_forward.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
@@ -38,10 +38,20 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/metrics_proto/reporting_info.pb.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(IS_IOS)
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#else
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
+#endif  // BUILDFLAG(IS_IOS)
 
 namespace brave {
 
@@ -124,6 +134,22 @@ base::Time GetNextRotationTime(MetricLogType log_type,
   NOTREACHED();
 }
 
+inline scoped_refptr<base::SingleThreadTaskRunner> GetUIThreadTaskRunner() {
+#if BUILDFLAG(IS_IOS)
+  return web::GetUIThreadTaskRunner({});
+#else
+  return content::GetUIThreadTaskRunner({});
+#endif
+}
+
+inline void DCheckCurrentlyOnUIThread() {
+#if BUILDFLAG(IS_IOS)
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+#else
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#endif
+}
+
 }  // namespace
 
 BraveP3AService::BraveP3AService(PrefService* local_state,
@@ -176,7 +202,7 @@ void BraveP3AService::RegisterDynamicMetric(const std::string& histogram_name,
                                             MetricLogType log_type,
                                             bool should_be_on_ui_thread) {
   if (should_be_on_ui_thread) {
-    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+    DCheckCurrentlyOnUIThread();
   }
   if (dynamic_metric_log_types_.contains(histogram_name)) {
     return;
@@ -193,7 +219,7 @@ void BraveP3AService::RegisterDynamicMetric(const std::string& histogram_name,
 }
 
 void BraveP3AService::RemoveDynamicMetric(const std::string& histogram_name) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
   if (!dynamic_metric_log_types_.contains(histogram_name)) {
     return;
   }
@@ -214,19 +240,19 @@ void BraveP3AService::RemoveDynamicMetric(const std::string& histogram_name) {
 
 bool BraveP3AService::IsDynamicMetricRegistered(
     const std::string& histogram_name) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
   return dynamic_metric_log_types_.contains(histogram_name);
 }
 
 base::CallbackListSubscription BraveP3AService::RegisterRotationCallback(
     base::RepeatingCallback<void(bool is_express)> callback) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
   return rotation_callbacks_.Add(std::move(callback));
 }
 
 base::CallbackListSubscription BraveP3AService::RegisterMetricSentCallback(
     base::RepeatingCallback<void(const std::string&)> callback) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
   return metric_sent_callbacks_.Add(std::move(callback));
 }
 
@@ -320,8 +346,7 @@ BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
 }
 
 void BraveP3AService::LoadDynamicMetrics() {
-  const base::Value::Dict& dict =
-      local_state_->GetValueDict(kDynamicMetricsDictPref);
+  const auto& dict = local_state_->GetDict(kDynamicMetricsDictPref);
 
   for (const auto [histogram_name, log_type_ordinal] : dict) {
     DCHECK(log_type_ordinal.is_int());
@@ -391,7 +416,9 @@ void BraveP3AService::InitMessageMeta() {
 
   message_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   message_meta_.refcode = local_state_->GetString(kReferralPromoCode);
+#endif
   MaybeStripRefcodeAndCountry(&message_meta_);
 
   UpdateMessageMeta();
@@ -458,7 +485,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
-    content::GetUIThreadTaskRunner({})->PostTask(
+    GetUIThreadTaskRunner()->PostTask(
         FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
                                   this, histogram_name, kSuspendedMetricValue,
                                   kSuspendedMetricBucket));
@@ -490,7 +517,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
     bucket = DirectEncodingProtocol::Perturb(bucket_count, bucket);
   }
 
-  content::GetUIThreadTaskRunner({})->PostTask(
+  GetUIThreadTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
                                 histogram_name, sample, bucket));
 }

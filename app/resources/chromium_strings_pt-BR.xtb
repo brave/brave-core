@@ -52,6 +52,7 @@
 <translation id="7291143854620707672">Quaisquer dados do Brave gerados quando este perfil estiver sendo usado (como a criação de favoritos, histórico, senhas e outras configurações) podem ser removidos pelo administrador do perfil de trabalho. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Ocorreu um erro no sistema operacional durante a instalação. Faça o download do Brave novamente.</translation>
 <translation id="2648689842065142443">Se você compartilha um dispositivo, seus amigos e familiares podem navegar separadamente e configurar o Brave da maneira que quiserem</translation>
+<translation id="5926459996518749366">O Brave bloqueou esse arquivo porque ele pode conter malware</translation>
 <translation id="6384359666082467439">Bem-vindo ao Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Guia do Brave</translation>
 <translation id="8372880274820509128">Para maior segurança, o Brave criptografará seus dados.</translation>
@@ -192,6 +193,7 @@
 <translation id="7861579472672677409">A extensão <ph name="EXTENSION_NAME"/> foi adicionada ao Brave</translation>
 <translation id="608006075545470555">Adicionar um perfil de trabalho a este navegador</translation>
 <translation id="5849446944780602366">Personalize e controle o Brave. Uma atualização está disponível.</translation>
+<translation id="7433698744896946664">Permitir que a extensão mostre solicitações de acesso na barra de ferramentas do Brave</translation>
 <translation id="492209281555538239">O Brave salvará essa senha na sua Conta do Brave. Você não precisará se lembrar dela.</translation>
 <translation id="4168372721886011198">O arquivo <ph name="FILE_NAME"/> é perigoso. Por isso ele foi bloqueado pelo Brave.</translation>
 <translation id="7006260220514217183">O "Navegação segura" está desativado. O Brave recomenda ativá-lo.</translation>
@@ -280,6 +282,7 @@
 <translation id="8678991866891573053">O Brave está explorando novos recursos que permitem que os sites ofereçam a mesma experiência de navegação usando menos dados</translation>
 <translation id="3343095737966473035">O Brave não é seu navegador padrão</translation>
 <translation id="5477319665405831211">Sincronize e personalize o Brave em todos os seus dispositivos</translation>
+<translation id="2280238321454602884">Quando essa opção está ativada, o Brave recupera a memória das guias que você não está usando ativamente. Isso libera os recursos do seu computador para outras tarefas e mantém a velocidade do Brave. As guias inativas aparecem vazias e são atualizadas automaticamente quando você clica nelas. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> ou <ph name="BEGIN_LINK_2"/>envie um feedback<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Essa ação excluirá seus dados de navegação deste dispositivo. Para recuperá-los mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">O instalador não conseguiu criar um diretório temporário. Verifique se há espaço livre em disco e se há permissão para a instalação de software.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/>: Brave Canary</translation>
@@ -308,6 +311,7 @@
 <translation id="6914496861676471566">O arquivo de instalação está corrompido ou não é válido. Faça o download do Brave novamente.</translation>
 <translation id="6431861494713261006">Opcional: ajude a melhorar os recursos e o desempenho do ChromeOS enviando automaticamente dados de uso e diagnóstico ao Brave.</translation>
 <translation id="2097604701283463988">O Brave está desatualizado</translation>
+<translation id="607365808648940765">Conforme necessário, o Brave recupera a memória das guias que você não está usando ativamente. É possível mudar isso a qualquer momento nas configurações.</translation>
 <translation id="8550334526674375523">Este perfil de trabalho é completamente separado do seu perfil pessoal.</translation>
 <translation id="2452889775041290116">Seu pai/mãe desativou "Permissões para sites, apps e extensões" no Brave. Não é permitido adicionar <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Para receber as próximas atualizações do Brave, você vai precisar do macOS 10.13 ou mais recente. Este computador está usando o macOS 10.12.</translation>

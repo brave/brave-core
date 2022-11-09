@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"

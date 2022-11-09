@@ -6,6 +6,7 @@ import { Notification } from '../../shared/components/notifications'
 import { GrantInfo } from '../../shared/lib/grant_info'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
+import { OnboardingResult } from '../../shared/components/onboarding'
 import { mapNotification } from './notification_adapter'
 
 import {
@@ -191,8 +192,34 @@ export function getRewardsEnabled () {
   })
 }
 
-export function onRewardsEnabled (callback: () => void) {
-  chrome.braveRewards.onRewardsWalletUpdated.addListener(() => { callback() })
+export function getDeclaredCountry () {
+  return new Promise<string>((resolve) => {
+    chrome.braveRewards.getDeclaredCountry(resolve)
+  })
+}
+
+export function createRewardsWallet (country: string) {
+  return new Promise<OnboardingResult>((resolve) => {
+    chrome.braveRewards.createRewardsWallet(country, (result) => {
+      switch (result) {
+        case 'success':
+        case 'unexpected-error':
+        case 'wallet-generation-disabled':
+        case 'country-already-declared':
+          resolve(result)
+          break
+        default:
+          resolve('unexpected-error')
+          break
+      }
+    })
+  })
+}
+
+export function getAvailableCountries () {
+  return new Promise<string[]>((resolve) => {
+    chrome.braveRewards.getAvailableCountries(resolve)
+  })
 }
 
 function getMonthlyTipAmount (publisherKey: string) {
@@ -244,46 +271,6 @@ function defaultPublisherInfo (url: string) {
     autoContributeEnabled: true,
     monthlyTip: 0,
     supportedWalletProviders: []
-  }
-}
-
-function isGreaselionURL (url: string) {
-  const parsedURL = parseURL(url)
-  if (!parsedURL) {
-    return false
-  }
-
-  const hosts = [
-    'github.com',
-    'reddit.com',
-    'twitch.tv',
-    'twitter.com',
-    'vimeo.com',
-    'youtube.com'
-  ]
-
-  const { hostname } = parsedURL
-  return hosts.some((h) => hostname.endsWith(`.${h}`) || hostname === h)
-}
-
-export async function fetchPublisherInfo (tabId: number) {
-  const tab = await getTab(tabId)
-  if (!tab || !tab.url) {
-    return
-  }
-
-  const { url } = tab
-
-  // Publisher info for "Greaselion" domains is managed by extension content
-  // scripts that execute within the context of the tab. We do not need to
-  // explicitly request publisher data for these domains.
-  if (isGreaselionURL(url)) {
-    return
-  }
-
-  if (isPublisherURL(url)) {
-    const favicon = tab.favIconUrl || ''
-    chrome.braveRewards.getPublisherData(tabId, url, favicon, '')
   }
 }
 
@@ -360,10 +347,5 @@ export async function getPublisherInfo (tabId: number) {
 }
 
 export function onPublisherDataUpdated (callback: () => void) {
-  chrome.braveRewards.onPublisherData.addListener(() => {
-    // The background script may not have updated its Redux store at the point
-    // when this callback is executed. Unfortunatley, we don't currently have a
-    // way to know when the update has finished and must rely on a short delay.
-    setTimeout(() => { callback() }, 200)
-  })
+  chrome.braveRewards.onPublisherData.addListener(() => { callback() })
 }

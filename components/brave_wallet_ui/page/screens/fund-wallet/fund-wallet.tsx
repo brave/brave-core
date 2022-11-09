@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -13,6 +13,7 @@ import {
 // utils
 import { getLocale } from '../../../../common/locale'
 import { getTokensNetwork } from '../../../utils/network-utils'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 
 // types
 import {
@@ -22,6 +23,7 @@ import {
   WalletRoutes,
   WalletState
 } from '../../../constants/types'
+import { RenderTokenFunc } from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
 
 // actions
 import { WalletActions } from '../../../common/actions'
@@ -33,6 +35,7 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 // hooks
 import { usePrevNetwork } from '../../../common/hooks/previous-network'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
+import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 
 // style
 import { Column, Flex, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -60,6 +63,7 @@ import { SelectCurrency } from '../../../components/buy-send-swap/select-currenc
 export const FundWalletScreen = () => {
   // routing
   const history = useHistory()
+  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
   const dispatch = useDispatch()
@@ -82,12 +86,14 @@ export const FundWalletScreen = () => {
     setBuyAmount,
     setSelectedAsset
   } = useMultiChainBuyAssets()
+  const scrollIntoView = useScrollIntoView()
 
   // state
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [showFiatSelection, setShowFiatSelection] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
+  const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
 
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
@@ -95,7 +101,9 @@ export const FundWalletScreen = () => {
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
       ? allBuyAssetOptions
-      : allBuyAssetOptions.filter(({ chainId }) => selectedNetworkFilter.chainId === chainId)
+      : allBuyAssetOptions.filter(({ chainId }) =>
+          selectedNetworkFilter.chainId === chainId
+        )
 
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, allBuyAssetOptions])
@@ -130,8 +138,12 @@ export const FundWalletScreen = () => {
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
   const goToPortfolio = React.useCallback(() => {
+    if (tokenId !== undefined) {
+      history.goBack()
+      return
+    }
     history.push(WalletRoutes.Portfolio)
-  }, [history])
+  }, [history, tokenId])
 
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
@@ -173,6 +185,41 @@ export const FundWalletScreen = () => {
     setSelectedAsset(undefined)
   }, [])
 
+  const checkIsBuyAssetSelected = React.useCallback((asset: BraveWallet.BlockchainToken) => {
+    if (selectedAsset) {
+      return (
+        selectedAsset.contractAddress.toLowerCase() === asset.contractAddress.toLowerCase() &&
+        selectedAsset.symbol.toLowerCase() === asset.symbol.toLowerCase() &&
+        selectedAsset.chainId === asset.chainId
+      )
+    }
+    return false
+  }, [selectedAsset])
+
+  const handleScrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
+    if (checkIsBuyAssetSelected(asset)) {
+      scrollIntoView(ref)
+    }
+  }, [checkIsBuyAssetSelected, scrollIntoView])
+
+  const renderToken: RenderTokenFunc = React.useCallback(({ item: { asset } }) =>
+    <BuyAssetOptionItem
+      selectedCurrency={selectedCurrency}
+      isSelected={checkIsBuyAssetSelected(asset)}
+      key={getAssetIdKey(asset)}
+      token={asset}
+      tokenNetwork={getTokensNetwork(buyAssetNetworks, asset)}
+      onClick={setSelectedAsset}
+      ref={(ref) => handleScrollIntoView(asset, ref)}
+    />,
+    [
+      selectedCurrency,
+      checkIsBuyAssetSelected,
+      buyAssetNetworks,
+      handleScrollIntoView
+    ]
+  )
+
   // effects
   React.useEffect(() => {
     if (assetsForFilteredNetwork.length === 0) {
@@ -181,11 +228,18 @@ export const FundWalletScreen = () => {
   }, [assetsForFilteredNetwork.length])
 
   React.useEffect(() => {
-    // unselect asset on chain filter changed
-    if (selectedNetworkFilter) {
+    // unselect asset if  AllNetworksOption is not selected
+    if (selectedNetworkFilter.chainId !== AllNetworksOption.chainId) {
       setSelectedAsset(undefined)
     }
-  }, [selectedNetworkFilter])
+  }, [selectedNetworkFilter.chainId])
+
+  // sync selected currency with default
+  React.useEffect(() => {
+    if (defaultCurrencies.fiat) {
+      setSelectedCurrency(defaultCurrencies.fiat)
+    }
+  }, [defaultCurrencies.fiat])
 
   // sync default selected account with selected asset
   React.useEffect(() => {
@@ -203,6 +257,15 @@ export const FundWalletScreen = () => {
     accountsForSelectedAssetNetwork,
     selectedAccount
   ])
+
+  React.useEffect(() => {
+    if (tokenId !== undefined) {
+      const foundBuyAsset = allBuyAssetOptions.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
+      if (foundBuyAsset) {
+        setSelectedAsset(foundBuyAsset)
+      }
+    }
+  }, [tokenId, allBuyAssetOptions])
 
   // render
   return (
@@ -228,7 +291,10 @@ export const FundWalletScreen = () => {
             <SelectCurrency
               onSelectCurrency={
                 // this internally sets the currency via redux, so just hide the UI when selected
-                () => setShowFiatSelection(false)
+                (currency) => {
+                  setSelectedCurrency(currency.currencyCode)
+                  setShowFiatSelection(false)
+                }
               }
               onBack={() => setShowFiatSelection(false)}
             />
@@ -260,17 +326,7 @@ export const FundWalletScreen = () => {
                       hideAssetFilter
                       hideAccountFilter
                       estimatedItemSize={100}
-                      renderToken={({ item: { asset } }) => {
-                        return <BuyAssetOptionItem
-                          isSelected={asset === selectedAsset}
-                          key={asset.isErc721
-                            ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
-                            : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
-                          token={asset}
-                          tokenNetwork={getTokensNetwork(buyAssetNetworks, asset)}
-                          onClick={setSelectedAsset}
-                        />
-                      }}
+                      renderToken={renderToken}
                     />
                   : <Column>
                       <LoadingIcon
@@ -278,7 +334,7 @@ export const FundWalletScreen = () => {
                         size='100px'
                         color='interactive05'
                       />
-                  </Column>
+                    </Column>
                 }
 
                 <VerticalSpace space='12px' />

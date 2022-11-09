@@ -25,6 +25,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents_delegate.h"
+#include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "url/origin.h"
 
@@ -94,7 +95,7 @@ bool IPFSTabHelper::MaybeCreateForWebContents(
   return true;
 }
 
-void IPFSTabHelper::XIPFSPathLinkResolved(const GURL& ipfs) {
+void IPFSTabHelper::IPFSResourceLinkResolved(const GURL& ipfs) {
   ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   UpdateLocationBar();
 }
@@ -103,11 +104,7 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs) {
   DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
   ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   if (ipfs.is_valid() && pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink)) {
-    content::OpenURLParams params(GetIPFSResolvedURL(), content::Referrer(),
-                                  WindowOpenDisposition::CURRENT_TAB,
-                                  ui::PAGE_TRANSITION_LINK, false);
-    params.should_replace_current_entry = true;
-    web_contents()->OpenURL(params);
+    LoadUrl(GetIPFSResolvedURL());
     return;
   }
   UpdateLocationBar();
@@ -123,11 +120,25 @@ void IPFSTabHelper::HostResolvedCallback(
     return;
   if (!dnslink || dnslink.value().empty()) {
     if (x_ipfs_path_header) {
-      XIPFSPathLinkResolved(ResolveXIPFSPathUrl(x_ipfs_path_header.value()));
+      IPFSResourceLinkResolved(ResolveXIPFSPathUrl(x_ipfs_path_header.value()));
     }
     return;
   }
+
   DNSLinkResolved(ResolveDNSLinkUrl(current));
+}
+
+void IPFSTabHelper::LoadUrl(const GURL& gurl) {
+  if (redirect_callback_for_testing_) {
+    redirect_callback_for_testing_.Run(gurl);
+    return;
+  }
+
+  content::OpenURLParams params(gurl, content::Referrer(),
+                                WindowOpenDisposition::CURRENT_TAB,
+                                ui::PAGE_TRANSITION_LINK, false);
+  params.should_replace_current_entry = true;
+  web_contents()->OpenURL(params);
 }
 
 void IPFSTabHelper::UpdateLocationBar() {
@@ -163,20 +174,32 @@ void IPFSTabHelper::CheckDNSLinkRecord(
   auto resolved_callback = base::BindOnce(&IPFSTabHelper::HostResolvedCallback,
                                           weak_ptr_factory_.GetWeakPtr(),
                                           std::move(x_ipfs_path_header));
-  const auto& key =
+  const auto& network_anonymization_key =
       web_contents()->GetPrimaryMainFrame()
-          ? web_contents()->GetPrimaryMainFrame()->GetNetworkIsolationKey()
-          : net::NetworkIsolationKey();
-  resolver_->Resolve(host_port_pair, key, net::DnsQueryType::TXT,
-                     std::move(resolved_callback));
+          ? web_contents()
+                ->GetPrimaryMainFrame()
+                ->GetIsolationInfoForSubresources()
+                .network_anonymization_key()
+          : net::NetworkAnonymizationKey();
+  resolver_->Resolve(host_port_pair, network_anonymization_key,
+                     net::DnsQueryType::TXT, std::move(resolved_callback));
 }
 
 bool IPFSTabHelper::IsDNSLinkCheckEnabled() const {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
 
-  return (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL ||
-          resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+  return (resolve_method != ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
+}
+
+bool IPFSTabHelper::IsAutoRedirectIPFSResourcesEnabled() const {
+  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
+      pref_service_->GetInteger(kIPFSResolveMethod));
+  auto autoredirect_ipfs_resources_enabled =
+      pref_service_->GetBoolean(kIPFSAutoRedirectGateway);
+
+  return (resolve_method != ipfs::IPFSResolveMethodTypes::IPFS_DISABLED) &&
+         autoredirect_ipfs_resources_enabled;
 }
 
 void IPFSTabHelper::UpdateDnsLinkButtonState() {
@@ -208,14 +231,24 @@ bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
 }
 
 // For x-ipfs-path header we are making urls like
-// <gateway>/<x-ipfs-path>
+// ipfs://<x-ipfs-path>
 GURL IPFSTabHelper::ResolveXIPFSPathUrl(
     const std::string& x_ipfs_path_header_value) {
-  GURL gateway =
-      ipfs::GetConfiguredBaseGateway(pref_service_, chrome::GetChannel());
-  GURL::Replacements replacements;
-  replacements.SetPathStr(x_ipfs_path_header_value);
-  return gateway.ReplaceComponents(replacements);
+  return TranslateXIPFSPath(x_ipfs_path_header_value).value_or(GURL());
+}
+
+absl::optional<GURL> IPFSTabHelper::ResolveIPFSUrlFromGatewayLikeUrl(
+    const GURL& gurl) {
+  bool api_gateway = IsAPIGateway(gurl, chrome::GetChannel());
+  auto base_gateway =
+      GetConfiguredBaseGateway(pref_service_, chrome::GetChannel());
+  if (!api_gateway &&
+      // Make sure we don't infinite redirect
+      !gurl.DomainIs(base_gateway.host()) && !net::IsLocalhost(gurl)) {
+    return ipfs::TranslateToCurrentGatewayUrl(gurl);
+  }
+
+  return absl::nullopt;
 }
 
 // For _dnslink we just translate url to ipns:// scheme
@@ -229,6 +262,16 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     const net::HttpResponseHeaders* headers) {
   UpdateDnsLinkButtonState();
   auto current_url = GetCurrentPageURL();
+
+  auto possible_redirect = ResolveIPFSUrlFromGatewayLikeUrl(current_url);
+  if (possible_redirect) {
+    if (IsAutoRedirectIPFSResourcesEnabled()) {
+      LoadUrl(possible_redirect.value());
+    } else {
+      IPFSResourceLinkResolved(possible_redirect.value());
+    }
+    return;
+  }
 
   if (!IsDNSLinkCheckEnabled() || !headers || ipfs_resolved_url_.is_valid() ||
       !CanResolveURL(current_url)) {

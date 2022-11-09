@@ -6,6 +6,7 @@
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 
 #include <string>
+#include <utility>
 
 #include "absl/types/optional.h"
 #include "base/bind.h"
@@ -16,7 +17,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads::conversions {
 
@@ -35,19 +36,19 @@ bool HasMigrated() {
 }
 
 void FailedToMigrate(InitializeCallback callback) {
-  callback(/*success*/ false);
+  std::move(callback).Run(/*success*/ false);
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedConversionState, true);
-  callback(/*success*/ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
     const base::Value::Dict& dict) {
   // Timestamp
-  const std::string* timestamp_value = dict.FindString(kTimestampKey);
+  const std::string* const timestamp_value = dict.FindString(kTimestampKey);
   if (!timestamp_value) {
     return absl::nullopt;
   }
@@ -58,7 +59,8 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   }
 
   // Creative set id
-  const std::string* creative_set_id_value = dict.FindString(kCreativeSetIdKey);
+  const std::string* const creative_set_id_value =
+      dict.FindString(kCreativeSetIdKey);
   if (!creative_set_id_value) {
     return absl::nullopt;
   }
@@ -83,7 +85,7 @@ absl::optional<ConversionQueueItemList> GetFromList(
   ConversionQueueItemList conversion_queue_items;
 
   for (const auto& item : list) {
-    const base::Value::Dict* dict = item.GetIfDict();
+    const base::Value::Dict* const dict = item.GetIfDict();
     if (!dict) {
       return absl::nullopt;
     }
@@ -107,7 +109,7 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  const base::Value::List* list = dict.FindList(kListKey);
+  const base::Value::List* const list = dict.FindList(kListKey);
   if (!list) {
     return absl::nullopt;
   }
@@ -120,7 +122,7 @@ void OnMigrate(InitializeCallback callback,
                const std::string& json) {
   if (!success) {
     // Conversion state does not exist
-    SuccessfullyMigrated(callback);
+    SuccessfullyMigrated(std::move(callback));
     return;
   }
 
@@ -128,7 +130,7 @@ void OnMigrate(InitializeCallback callback,
       FromJson(json);
   if (!conversion_queue_items) {
     BLOG(0, "Failed to parse conversion state");
-    FailedToMigrate(callback);
+    FailedToMigrate(std::move(callback));
     return;
   }
 
@@ -143,28 +145,28 @@ void OnMigrate(InitializeCallback callback,
           [](InitializeCallback callback, const bool success) {
             if (!success) {
               BLOG(0, "Failed to save conversion state");
-              FailedToMigrate(callback);
+              FailedToMigrate(std::move(callback));
               return;
             }
 
             BLOG(3, "Successfully migrated conversion state");
-            SuccessfullyMigrated(callback);
+            SuccessfullyMigrated(std::move(callback));
           },
-          callback));
+          std::move(callback)));
 }
 
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/*success*/ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
   BLOG(3, "Loading conversion state");
 
-  AdsClientHelper::GetInstance()->Load(kFilename,
-                                       base::BindOnce(&OnMigrate, callback));
+  AdsClientHelper::GetInstance()->Load(
+      kFilename, base::BindOnce(&OnMigrate, std::move(callback)));
 }
 
 }  // namespace ads::conversions

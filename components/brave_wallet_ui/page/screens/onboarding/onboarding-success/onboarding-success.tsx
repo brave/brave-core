@@ -55,12 +55,12 @@ export const OnboardingSuccess = () => {
 
   const onClickBuyCrypto = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
-    history.push(WalletRoutes.FundWalletPage)
+    history.push(WalletRoutes.FundWalletPageStart)
   }, [])
 
   const onClickDepositCrypto = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
-    history.push(WalletRoutes.DepositFundsPage)
+    history.push(WalletRoutes.DepositFundsPageStart)
   }, [])
 
   // render

@@ -29,7 +29,7 @@ export const SelectScrollSearchContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
   max-height: 100%;
@@ -40,7 +40,7 @@ export const SelectScrollContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   position: absolute;
   top: 50px;

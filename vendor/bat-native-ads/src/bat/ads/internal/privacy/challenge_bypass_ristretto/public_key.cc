@@ -59,7 +59,7 @@ PublicKey PublicKey::DecodeBase64(const std::string& public_key_base64) {
 }
 
 absl::optional<std::string> PublicKey::EncodeBase64() const {
-  if (!has_value()) {
+  if (!public_key_ || !has_value()) {
     return absl::nullopt;
   }
 

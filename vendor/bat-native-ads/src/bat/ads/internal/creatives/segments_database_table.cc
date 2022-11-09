@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/creatives/segments_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/bind.h"
@@ -38,6 +37,25 @@ int BindParameters(mojom::DBCommandInfo* command,
   }
 
   return count;
+}
+
+void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  DropTable(transaction, "segments");
+
+  const std::string query =
+      "CREATE TABLE segments "
+      "(creative_set_id TEXT NOT NULL, "
+      "segment TEXT NOT NULL, "
+      "PRIMARY KEY (creative_set_id, segment), "
+      "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -102,25 +120,6 @@ std::string Segments::BuildInsertOrUpdateQuery(
       "segment) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
-}
-
-void Segments::MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  DropTable(transaction, "segments");
-
-  const std::string query =
-      "CREATE TABLE segments "
-      "(creative_set_id TEXT NOT NULL, "
-      "segment TEXT NOT NULL, "
-      "PRIMARY KEY (creative_set_id, segment), "
-      "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace ads::database::table

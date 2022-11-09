@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -33,6 +34,10 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
+
 class BraveBrowser;
 class ContentsLayoutManager;
 class SidebarContainerView;
@@ -52,7 +57,7 @@ class BraveBrowserView : public BrowserView {
       translate::TranslateStep step,
       const std::string& source_language,
       const std::string& target_language,
-      translate::TranslateErrors::Type error_type,
+      translate::TranslateErrors error_type,
       bool is_user_gesture) override;
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
@@ -68,16 +73,21 @@ class BraveBrowserView : public BrowserView {
   void ShowSpeedreaderWebUIBubble(Browser* browser) override;
   void HideSpeedreaderWebUIBubble() override;
   bool GetTabStripVisible() const override;
+#if BUILDFLAG(IS_WIN)
+  bool GetSupportsTitle() const override;
+#endif
 
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 
  private:
   class TabCyclingEventHandler;
   friend class WindowClosingConfirmBrowserTest;
+  friend class sidebar::SidebarBrowserTest;
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
   // BrowserView overrides:
+  void AddedToWidget() override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
@@ -89,6 +99,7 @@ class BraveBrowserView : public BrowserView {
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
+  bool ShouldShowWindowTitle() const override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
@@ -97,10 +108,11 @@ class BraveBrowserView : public BrowserView {
   BraveBrowser* GetBraveBrowser() const;
 
   sidebar::Sidebar* InitSidebar() override;
+  void UpdateSideBarHorizontalAlignment();
 
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
-  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
+  raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};

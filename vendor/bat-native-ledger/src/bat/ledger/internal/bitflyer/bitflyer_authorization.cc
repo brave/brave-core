@@ -198,7 +198,8 @@ void BitflyerAuthorization::OnConnectWallet(
     case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
     case mojom::Result::FLAGGED_WALLET:
     case mojom::Result::REGION_NOT_SUPPORTED:
-    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
+    case mojom::Result::MISMATCHED_COUNTRIES:
+    case mojom::Result::PROVIDER_UNAVAILABLE:
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(legacy_result),
           constant::kWalletBitflyer + std::string("/") + abbreviated_address);

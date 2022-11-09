@@ -23,8 +23,6 @@ constexpr char kMissingCreativeInstanceId[] =
 
 class BatAdsCashDepositIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsCashDepositIntegrationTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }

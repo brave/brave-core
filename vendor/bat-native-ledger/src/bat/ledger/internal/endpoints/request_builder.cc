@@ -60,4 +60,4 @@ uint32_t RequestBuilder::LoadFlags() const {
   return 0;
 }
 
-};  // namespace ledger::endpoints
+}  // namespace ledger::endpoints

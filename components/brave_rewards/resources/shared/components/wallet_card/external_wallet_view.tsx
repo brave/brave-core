@@ -38,9 +38,9 @@ export function ExternalWalletView (props: Props) {
     }
 
     switch (externalWallet.provider) {
-      case 'gemini': return <GeminiIcon white={true} />
-      case 'bitflyer': return <BitflyerIcon white={true} />
-      case 'uphold': return <UpholdIcon white={true} />
+      case 'gemini': return <GeminiIcon />
+      case 'bitflyer': return <BitflyerIcon />
+      case 'uphold': return <UpholdIcon />
     }
   }
 

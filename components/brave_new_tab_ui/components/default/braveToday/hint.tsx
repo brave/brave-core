@@ -8,14 +8,14 @@ import styled from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 
-const Hint = styled('div')`
+const Hint = styled('div')<{}>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   text-align: center;
   font-size: 15px;
-  color: white;
+  color: var(--override-readability-color, #FFFFFF);
   > p {
     margin: 0;
   }

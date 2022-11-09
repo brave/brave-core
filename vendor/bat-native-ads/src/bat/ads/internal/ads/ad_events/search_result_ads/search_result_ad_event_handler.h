@@ -42,39 +42,40 @@ class EventHandler final : public EventHandlerObserver {
 
   void FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                  mojom::SearchResultAdEventType event_type,
-                 FireAdEventHandlerCallback callback) const;
+                 const FireAdEventHandlerCallback& callback) const;
 
  private:
   void FireEvent(const SearchResultAdInfo& ad,
                  mojom::SearchResultAdEventType event_type,
-                 FireAdEventHandlerCallback callback) const;
+                 const FireAdEventHandlerCallback& callback) const;
 
   void FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                       FireAdEventHandlerCallback callback) const;
+                       const FireAdEventHandlerCallback& callback) const;
   void OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
-                      FireAdEventHandlerCallback callback,
+                      const FireAdEventHandlerCallback& callback,
                       bool success) const;
   void OnSaveConversions(const SearchResultAdInfo& ad,
-                         FireAdEventHandlerCallback callback,
+                         const FireAdEventHandlerCallback& callback,
                          bool success) const;
 
   void FireClickedEvent(const SearchResultAdInfo& ad,
-                        FireAdEventHandlerCallback callback) const;
+                        const FireAdEventHandlerCallback& callback) const;
 
   void FailedToFireEvent(const SearchResultAdInfo& ad,
                          mojom::SearchResultAdEventType event_type,
-                         FireAdEventHandlerCallback callback) const;
+                         const FireAdEventHandlerCallback& callback) const;
 
-  void NotifySearchResultAdEvent(const SearchResultAdInfo& ad,
-                                 mojom::SearchResultAdEventType event_type,
-                                 FireAdEventHandlerCallback callback) const;
+  void NotifySearchResultAdEvent(
+      const SearchResultAdInfo& ad,
+      mojom::SearchResultAdEventType event_type,
+      const FireAdEventHandlerCallback& callback) const;
   void NotifySearchResultAdServed(const SearchResultAdInfo& ad) const;
   void NotifySearchResultAdViewed(const SearchResultAdInfo& ad) const;
   void NotifySearchResultAdClicked(const SearchResultAdInfo& ad) const;
   void NotifySearchResultAdEventFailed(
       const SearchResultAdInfo& ad,
       mojom::SearchResultAdEventType event_type,
-      FireAdEventHandlerCallback callback) const;
+      const FireAdEventHandlerCallback& callback) const;
 
   base::ObserverList<EventHandlerObserver> observers_;
 };

@@ -47,7 +47,7 @@ void Serving::RemoveObserver(ServingObserver* observer) {
 }
 
 void Serving::MaybeServeAd(const std::string& dimensions,
-                           MaybeServeInlineContentAdCallback callback) {
+                           const MaybeServeInlineContentAdCallback& callback) {
   if (!features::IsEnabled()) {
     BLOG(1, "Inline content ad not served: Feature is disabled");
     FailedToServeAd(dimensions, callback);
@@ -60,8 +60,7 @@ void Serving::MaybeServeAd(const std::string& dimensions,
     return;
   }
 
-  const PermissionRules permission_rules;
-  if (!permission_rules.HasPermission()) {
+  if (!PermissionRules::HasPermission()) {
     BLOG(1,
          "Inline content ad not served: Not allowed due to permission rules");
     FailedToServeAd(dimensions, callback);
@@ -104,7 +103,7 @@ bool Serving::IsSupported() const {
 }
 
 void Serving::ServeAd(const InlineContentAdInfo& ad,
-                      MaybeServeInlineContentAdCallback callback) {
+                      const MaybeServeInlineContentAdCallback& callback) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve inline content ad");
     FailedToServeAd(ad.dimensions, callback);
@@ -133,8 +132,9 @@ void Serving::ServeAd(const InlineContentAdInfo& ad,
   callback(ad.dimensions, ad);
 }
 
-void Serving::FailedToServeAd(const std::string& dimensions,
-                              MaybeServeInlineContentAdCallback callback) {
+void Serving::FailedToServeAd(
+    const std::string& dimensions,
+    const MaybeServeInlineContentAdCallback& callback) {
   NotifyFailedToServeInlineContentAd();
 
   callback(dimensions, absl::nullopt);

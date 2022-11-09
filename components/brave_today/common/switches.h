@@ -12,6 +12,9 @@ namespace switches {
 // Allow providing an alternate host for Brave Today feeds (e.g. staging or dev)
 extern const char kBraveTodayHost[];
 
+// Allow overriding the region for Brave News feeds (e.g. ja, en_US ect.)
+extern const char kBraveNewsRegion[];
+
 }  // namespace switches
 }  // namespace brave_today
 

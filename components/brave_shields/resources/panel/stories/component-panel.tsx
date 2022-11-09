@@ -50,7 +50,8 @@ export default {
         siteBlockInfo: {
           host: text('Host name', 'brave.com'),
           totalBlockedResources: (LIST_ADS.length + LIST_JS.length),
-          isShieldsEnabled: boolean('Enable Shields', true),
+          isBraveShieldsEnabled: boolean('Enable Shields', true),
+          isBraveShieldsManaged: boolean('Shields Managed', false),
           adsList: LIST_ADS,
           jsList: LIST_JS,
           httpRedirectsList: [],

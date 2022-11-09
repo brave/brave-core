@@ -19,8 +19,6 @@ class BrowserIsActivePermissionRule final : public PermissionRuleInterface {
   const std::string& GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap();
-
   std::string last_message_;
 };
 

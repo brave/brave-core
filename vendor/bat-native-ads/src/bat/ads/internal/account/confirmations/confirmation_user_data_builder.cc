@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/confirmations/confirmation_user_data_builder.h"
 
+#include <utility>
+
 #include "base/check_op.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
@@ -24,10 +26,10 @@ namespace ads {
 
 ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
     const base::Time created_at,
-    const std::string& creative_instance_id,
+    std::string creative_instance_id,
     const ConfirmationType& confirmation_type)
     : created_at_(created_at),
-      creative_instance_id_(creative_instance_id),
+      creative_instance_id_(std::move(creative_instance_id)),
       confirmation_type_(confirmation_type) {
   DCHECK(!creative_instance_id_.empty());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type_.value());

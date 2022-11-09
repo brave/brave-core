@@ -11,6 +11,18 @@
 
 namespace ads {
 
+namespace {
+
+bool DoesRespectCap() {
+  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kAndroid) {
+    return true;
+  }
+
+  return BrowserManager::GetInstance()->IsBrowserActive();
+}
+
+}  // namespace
+
 bool BrowserIsActivePermissionRule::ShouldAllow() {
   if (!permission_rules::features::ShouldOnlyServeAdsIfBrowserIsActive()) {
     return true;
@@ -26,14 +38,6 @@ bool BrowserIsActivePermissionRule::ShouldAllow() {
 
 const std::string& BrowserIsActivePermissionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool BrowserIsActivePermissionRule::DoesRespectCap() {
-  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kAndroid) {
-    return true;
-  }
-
-  return BrowserManager::GetInstance()->IsBrowserActive();
 }
 
 }  // namespace ads

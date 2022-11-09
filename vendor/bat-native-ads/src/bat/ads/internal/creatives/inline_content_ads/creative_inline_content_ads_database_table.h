@@ -59,19 +59,20 @@ class CreativeInlineContentAds final : public TableInterface {
 
   void Delete(ResultCallback callback) const;
 
-  void GetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeInlineContentAdCallback callback);
+  void GetForCreativeInstanceId(
+      const std::string& creative_instance_id,
+      GetCreativeInlineContentAdCallback callback) const;
 
   void GetForSegmentsAndDimensions(
       const SegmentList& segments,
       const std::string& dimensions,
-      GetCreativeInlineContentAdsCallback callback);
+      GetCreativeInlineContentAdsCallback callback) const;
 
   void GetForDimensions(
       const std::string& dimensions,
-      GetCreativeInlineContentAdsForDimensionsCallback callback);
+      GetCreativeInlineContentAdsForDimensionsCallback callback) const;
 
-  void GetAll(GetCreativeInlineContentAdsCallback callback);
+  void GetAll(GetCreativeInlineContentAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);
@@ -90,24 +91,6 @@ class CreativeInlineContentAds final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const CreativeInlineContentAdList& creative_ads) const;
-
-  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                  GetCreativeInlineContentAdCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForSegmentsAndDimensions(
-      const SegmentList& segments,
-      GetCreativeInlineContentAdsCallback callback,
-      mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetForDimensions(
-      GetCreativeInlineContentAdsForDimensionsCallback callback,
-      mojom::DBCommandResponseInfoPtr response);
-
-  void OnGetAll(GetCreativeInlineContentAdsCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 
   int batch_size_;
 

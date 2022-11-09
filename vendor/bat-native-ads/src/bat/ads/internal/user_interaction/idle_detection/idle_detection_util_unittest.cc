@@ -10,15 +10,15 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_features.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsIdleTimeTest : public UnitTestBase {};
+class BatAdsIdleDetectionUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsIdleTimeTest, WasLocked) {
+TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kShouldDetectScreenWasLockedParameter[] =
@@ -41,7 +41,7 @@ TEST_F(BatAdsIdleTimeTest, WasLocked) {
   EXPECT_TRUE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleTimeTest, WasLockedIfShouldDetectScreenWasLocked) {
+TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kShouldDetectScreenWasLockedParameter[] =
@@ -64,7 +64,7 @@ TEST_F(BatAdsIdleTimeTest, WasLockedIfShouldDetectScreenWasLocked) {
   EXPECT_TRUE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleTimeTest, WasNotLocked) {
+TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kShouldDetectScreenWasLockedParameter[] =
@@ -87,7 +87,7 @@ TEST_F(BatAdsIdleTimeTest, WasNotLocked) {
   EXPECT_FALSE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleTimeTest, WasNotLockedIfShouldNotDetectWasLocked) {
+TEST_F(BatAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kShouldDetectScreenWasLockedParameter[] =
@@ -110,7 +110,7 @@ TEST_F(BatAdsIdleTimeTest, WasNotLockedIfShouldNotDetectWasLocked) {
   EXPECT_FALSE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleTimeTest, HasNotExceededMaximumIdleTime) {
+TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
@@ -132,7 +132,7 @@ TEST_F(BatAdsIdleTimeTest, HasNotExceededMaximumIdleTime) {
   EXPECT_FALSE(has_exceeded_maximum_idle_time);
 }
 
-TEST_F(BatAdsIdleTimeTest, HasNotExceededInfiniteMaximumIdleTime) {
+TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
@@ -154,7 +154,7 @@ TEST_F(BatAdsIdleTimeTest, HasNotExceededInfiniteMaximumIdleTime) {
   EXPECT_FALSE(has_exceeded_maximum_idle_time);
 }
 
-TEST_F(BatAdsIdleTimeTest, HasExceededMaximumIdleTime) {
+TEST_F(BatAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
@@ -176,7 +176,7 @@ TEST_F(BatAdsIdleTimeTest, HasExceededMaximumIdleTime) {
   EXPECT_TRUE(has_exceeded_maximum_idle_time);
 }
 
-TEST_F(BatAdsIdleTimeTest, UpdateIdleTimeThreshold) {
+TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kIdleTimeThresholdParameter[] = "idle_time_threshold";
@@ -203,7 +203,7 @@ TEST_F(BatAdsIdleTimeTest, UpdateIdleTimeThreshold) {
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 
-TEST_F(BatAdsIdleTimeTest, DoNotUpdateIdleTimeThreshold) {
+TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   // Arrange
   base::FieldTrialParams parameters;
   const char kIdleTimeThresholdParameter[] = "idle_time_threshold";

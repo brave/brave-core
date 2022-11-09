@@ -34,6 +34,38 @@
 
 namespace brave_shields {
 
+namespace {
+
+auto* GetRegionalServiceManager() {
+  return g_brave_browser_process->ad_block_service()
+      ->regional_service_manager();
+}
+
+bool IsCookieListFilterEnabled() {
+  return GetRegionalServiceManager()->IsFilterListEnabled(kCookieListUuid);
+}
+
+class CookieListFilterEnabledObserver {
+ public:
+  CookieListFilterEnabledObserver() {
+    pref_observer_.Init(g_browser_process->local_state());
+    pref_observer_.Add(prefs::kAdBlockRegionalFilters,
+                       base::BindLambdaForTesting([this]() {
+                         if (IsCookieListFilterEnabled()) {
+                           run_loop_.Quit();
+                         }
+                       }));
+  }
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  base::RunLoop run_loop_;
+  PrefChangeRegistrar pref_observer_;
+};
+
+}  // namespace
+
 class CookieListOptInBrowserTest : public InProcessBrowserTest {
  public:
   static inline constexpr char kRegionalAdBlockComponentTestId[] =
@@ -71,11 +103,6 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::PreRunTestOnMainThread();
   }
 
-  auto* regional_service_manager() {
-    return g_brave_browser_process->ad_block_service()
-        ->regional_service_manager();
-  }
-
   content::WebContents* GetBubbleWebContents() {
     auto* host = CookieListOptInBubbleHost::FromBrowser(browser());
     return host ? host->GetBubbleWebContentsForTesting() : nullptr;
@@ -91,10 +118,6 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
     }
   }
 
-  bool IsCookieListFilterEnabled() {
-    return regional_service_manager()->IsFilterListEnabled(kCookieListUuid);
-  }
-
  private:
   void InitializeFilterLists() {
     std::vector filter_list_catalog = {FilterListCatalogEntry(
@@ -104,7 +127,7 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
         "https://forums.lanik.us/", kRegionalAdBlockComponentTestId,
         kRegionalAdBlockComponentTest64PublicKey,
         "Removes obtrusive cookie law notices", "", "")};
-    regional_service_manager()->SetFilterListCatalog(filter_list_catalog);
+    GetRegionalServiceManager()->SetFilterListCatalog(filter_list_catalog);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -114,15 +137,7 @@ IN_PROC_BROWSER_TEST_F(CookieListOptInBrowserTest, EnableFromBubble) {
   auto* web_contents = GetBubbleWebContents();
   ASSERT_TRUE(web_contents);
 
-  base::RunLoop run_loop;
-  PrefChangeRegistrar pref_observer;
-  pref_observer.Init(g_browser_process->local_state());
-  pref_observer.Add(prefs::kAdBlockRegionalFilters,
-                    base::BindLambdaForTesting([this, &run_loop]() {
-                      if (IsCookieListFilterEnabled()) {
-                        run_loop.Quit();
-                      }
-                    }));
+  CookieListFilterEnabledObserver enabled_observer;
 
   ASSERT_EQ(true, content::EvalJs(web_contents, R"js(
     new Promise((resolve) => {
@@ -138,7 +153,7 @@ IN_PROC_BROWSER_TEST_F(CookieListOptInBrowserTest, EnableFromBubble) {
     })
   )js"));
 
-  run_loop.Run();
+  enabled_observer.Wait();
 
   EXPECT_TRUE(IsCookieListFilterEnabled());
 
@@ -210,7 +225,10 @@ class CookieListOptInPreEnabledBrowserTest : public CookieListOptInBrowserTest {
  protected:
   void SetUpLocalState() override {
     CookieListOptInBrowserTest::SetUpLocalState();
-    regional_service_manager()->EnableFilterList(kCookieListUuid, true);
+
+    CookieListFilterEnabledObserver enabled_observer;
+    GetRegionalServiceManager()->EnableFilterList(kCookieListUuid, true);
+    enabled_observer.Wait();
   }
 };
 

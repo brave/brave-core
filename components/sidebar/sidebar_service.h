@@ -24,7 +24,7 @@ class PrefService;
 namespace sidebar {
 
 struct SidebarItemUpdate {
-  int index = -1;
+  size_t index = 0;
   bool title_updated = false;
   bool url_updated = false;
 
@@ -108,6 +108,8 @@ class SidebarService : public KeyedService {
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
+  std::vector<SidebarItem> GetDefaultSidebarItems() const;
+  SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) const;
   std::vector<SidebarItem::BuiltInItemType> GetCurrentlyPresentBuiltInTypes()
       const;
   void OnPreferenceChanged(const std::string& pref_name);

@@ -10,7 +10,17 @@ class PrefService;
 
 namespace brave_rewards {
 
-bool IsSupported(PrefService* prefs);
+enum class IsSupportedOptions {
+  kNone,
+  kSkipRegionCheck,
+};
+
+bool IsSupported(PrefService* prefs,
+                 IsSupportedOptions options = IsSupportedOptions::kNone);
+
+bool IsUnsupportedRegion();
+
+void SetCountryCodeForOFACTesting(int country_id);
 
 }  // namespace brave_rewards
 

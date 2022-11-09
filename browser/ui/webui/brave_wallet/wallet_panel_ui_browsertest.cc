@@ -234,7 +234,14 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {
   ASSERT_TRUE(EvalJs(wallet(), wallet_panel_js).ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, HideNetworkInSettings) {
+// This test is crashing on macos because renderer process DCHECKs trying
+// to display scroll bar. Disabled for macos until this is fixed.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_HideNetworkInSettings DISABLED_HideNetworkInSettings
+#else
+#define MAYBE_HideNetworkInSettings HideNetworkInSettings
+#endif
+IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
   ActivateWalletTab();
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));

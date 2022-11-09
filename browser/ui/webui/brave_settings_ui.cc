@@ -10,9 +10,11 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
+#include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -29,11 +31,16 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
+
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
+#include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -63,6 +70,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
+#endif
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
+  web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
 #endif
 }
 
@@ -99,6 +109,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+  html_source->AddBoolean("isBraveWalletAllowed",
+                          brave_wallet::IsAllowedForContext(profile));
   html_source->AddBoolean(
       "isDeAmpFeatureEnabled",
       base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));

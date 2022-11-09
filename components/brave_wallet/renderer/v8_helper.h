@@ -53,9 +53,10 @@ void SetProviderNonWritable(v8::Local<v8::Context> context,
                             v8::Local<v8::String> provider_name,
                             bool is_enumerable);
 
-void SetOwnPropertyNonWritable(v8::Local<v8::Context> context,
-                               v8::Local<v8::Object> provider_object,
-                               v8::Local<v8::String> property_name);
+void SetOwnPropertyWritable(v8::Local<v8::Context> context,
+                            v8::Local<v8::Object> provider_object,
+                            v8::Local<v8::String> property_name,
+                            bool writable);
 
 }  // namespace brave_wallet
 

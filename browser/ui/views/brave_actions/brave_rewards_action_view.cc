@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -156,6 +156,10 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
   pref_change_registrar_.Init(profile->GetPrefs());
   pref_change_registrar_.Add(
       brave_rewards::prefs::kBadgeText,
+      base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kDeclaredGeo,
       base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
                           base::Unretained(this)));
 
@@ -361,8 +365,21 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
 }
 
 size_t BraveRewardsActionView::GetRewardsNotificationCount() {
-  auto* service = GetNotificationService();
-  return service ? service->GetAllNotifications().size() : 0;
+  size_t count = 0;
+
+  if (auto* service = GetNotificationService()) {
+    count += service->GetAllNotifications().size();
+  }
+
+  // Increment the notification count if the user has enabled Rewards but has
+  // not declared a country.
+  auto* prefs = browser_->profile()->GetPrefs();
+  if (prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
+      prefs->GetString(brave_rewards::prefs::kDeclaredGeo).empty()) {
+    ++count;
+  }
+
+  return count;
 }
 
 bool BraveRewardsActionView::UpdatePublisherStatus() {

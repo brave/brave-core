@@ -80,12 +80,13 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case 'mismatchedProviderAccountRegionsModal':
+    case 'mismatchedCountriesModal':
       return (
         <ModalRedirect
-          id={'redirect-modal-mismatched-provider-account-regions'}
-          errorText={[getString('redirectModalMismatchedProviderAccountRegionsText')]}
-          titleText={getString('redirectModalMismatchedProviderAccountRegionsTitle')}
+          id={'redirect-modal-mismatched-countries'}
+          errorText={[getString('redirectModalMismatchedCountriesText').replace('$1', providerName)]}
+          titleText={getString('redirectModalMismatchedCountriesTitle')}
+          learnMore={'https://support.brave.com/hc/en-us/articles/9809690466061'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
@@ -98,6 +99,20 @@ export function ProviderRedirectModal () {
           errorText={[getString('redirectModalMismatchedProviderAccountsText').replace('$1', providerName)]}
           titleText={getString('redirectModalMismatchedProviderAccountsTitle')}
           learnMore={'https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-'}
+          buttonText={getString('redirectModalClose')}
+          walletType={walletType}
+          onClick={actions.hideRedirectModal}
+        />
+      )
+    case 'providerUnavailableModal':
+      return (
+        <ModalRedirect
+          id={'redirect-modal-provider-unavailable'}
+          errorText={[
+            getString('redirectModalProviderUnavailableText1').replaceAll('$1', providerName),
+            getString('redirectModalProviderUnavailableText2')]}
+          titleText={getString('redirectModalProviderUnavailableTitle')}
+          errorTextLink={'https://status.brave.com/'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}

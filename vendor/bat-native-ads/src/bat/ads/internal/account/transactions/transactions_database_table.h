@@ -7,7 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_DATABASE_TABLE_H_
 
 #include <string>
+#include <utility>
 
+#include "base/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -21,16 +23,16 @@ class Time;
 namespace ads::database::table {
 
 using GetTransactionsCallback =
-    std::function<void(const bool, const TransactionList&)>;
+    base::OnceCallback<void(const bool, const TransactionList&)>;
 
 class Transactions final : public TableInterface {
  public:
   void Save(const TransactionList& transactions, ResultCallback callback);
 
-  void GetAll(GetTransactionsCallback callback);
+  void GetAll(GetTransactionsCallback callback) const;
   void GetForDateRange(base::Time from_time,
                        base::Time to_time,
-                       GetTransactionsCallback callback);
+                       GetTransactionsCallback callback) const;
 
   void Update(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
@@ -49,11 +51,6 @@ class Transactions final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const TransactionList& transactions) const;
-
-  void OnGetTransactions(const GetTransactionsCallback& callback,
-                         mojom::DBCommandResponseInfoPtr response);
-
-  void MigrateToV18(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace ads::database::table

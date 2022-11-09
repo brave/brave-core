@@ -9,7 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/download/download_ui_model.h"
 #include "components/download/public/common/download_item.h"
 #include "components/strings/grit/components_strings.h"
@@ -50,6 +50,10 @@ std::u16string BraveDownloadItemModel::GetTooltipText() {
 // Returns origin url text and sets |is_secure|.
 std::u16string BraveDownloadItemModel::GetOriginURLText(bool* is_secure) {
   *is_secure = false;
+  if (!model_->GetDownloadItem()) {
+    return std::u16string();
+  }
+
   const GURL gurl = model_->GetDownloadItem()->GetURL();
   if (gurl.is_empty()) {
     return std::u16string();

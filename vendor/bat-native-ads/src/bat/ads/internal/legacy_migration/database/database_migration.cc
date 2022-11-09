@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/legacy_migration/database/database_migration.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/bind.h"

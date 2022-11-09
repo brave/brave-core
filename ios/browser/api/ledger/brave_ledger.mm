@@ -9,6 +9,8 @@
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
 #include "base/ios/ios_util.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -16,6 +18,7 @@
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -442,48 +445,57 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  ledger->CreateRewardsWallet(base::BindOnce(^(ledger::mojom::Result result) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    NSError* error = nil;
-    if (result != ledger::mojom::Result::LEDGER_OK) {
-      std::map<ledger::mojom::Result, std::string> errorDescriptions{
-          {ledger::mojom::Result::LEDGER_ERROR,
-           "The wallet was already initialized"},
-          {ledger::mojom::Result::BAD_REGISTRATION_RESPONSE,
-           "Request credentials call failure or malformed data"},
-          {ledger::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
-           "Missing master user token from registered persona"},
-      };
-      NSDictionary* userInfo = @{};
-      const auto description =
-          errorDescriptions[static_cast<ledger::mojom::Result>(result)];
-      if (description.length() > 0) {
-        userInfo =
-            @{NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)};
-      }
-      error = [NSError errorWithDomain:BraveLedgerErrorDomain
-                                  code:static_cast<NSInteger>(result)
-                              userInfo:userInfo];
-    }
-
-    [strongSelf startNotificationTimers];
-    strongSelf.initializingWallet = NO;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if (completion) {
-        completion(error);
-      }
-
-      for (BraveLedgerObserver* observer in [strongSelf.observers copy]) {
-        if (observer.walletInitalized) {
-          observer.walletInitalized(static_cast<LedgerResult>(result));
+  ledger->CreateRewardsWallet(
+      "",
+      base::BindOnce(^(ledger::mojom::CreateRewardsWalletResult create_result) {
+        const auto strongSelf = weakSelf;
+        if (!strongSelf) {
+          return;
         }
-      }
-    });
-  }));
+
+        ledger::mojom::Result result =
+            create_result == ledger::mojom::CreateRewardsWalletResult::kSuccess
+                ? ledger::mojom::Result::LEDGER_OK
+                : ledger::mojom::Result::LEDGER_ERROR;
+
+        NSError* error = nil;
+        if (result != ledger::mojom::Result::LEDGER_OK) {
+          std::map<ledger::mojom::Result, std::string> errorDescriptions{
+              {ledger::mojom::Result::LEDGER_ERROR,
+               "The wallet was already initialized"},
+              {ledger::mojom::Result::BAD_REGISTRATION_RESPONSE,
+               "Request credentials call failure or malformed data"},
+              {ledger::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
+               "Missing master user token from registered persona"},
+          };
+          NSDictionary* userInfo = @{};
+          const auto description =
+              errorDescriptions[static_cast<ledger::mojom::Result>(result)];
+          if (description.length() > 0) {
+            userInfo = @{
+              NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)
+            };
+          }
+          error = [NSError errorWithDomain:BraveLedgerErrorDomain
+                                      code:static_cast<NSInteger>(result)
+                                  userInfo:userInfo];
+        }
+
+        [strongSelf startNotificationTimers];
+        strongSelf.initializingWallet = NO;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (completion) {
+            completion(error);
+          }
+
+          for (BraveLedgerObserver* observer in [strongSelf.observers copy]) {
+            if (observer.walletInitalized) {
+              observer.walletInitalized(static_cast<LedgerResult>(result));
+            }
+          }
+        });
+      }));
 }
 
 - (void)currentWalletInfo:
@@ -540,39 +552,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       }));
 }
 
-- (void)recoverWalletUsingPassphrase:(NSString*)passphrase
-                          completion:(void (^)(NSError* _Nullable))completion {
-  const auto __weak weakSelf = self;
-  // Results that can come from RecoverWallet():
-  //   - LEDGER_OK: Good to go
-  //   - LEDGER_ERROR: Recovery failed
-  ledger->RecoverWallet(base::SysNSStringToUTF8(passphrase), ^(
-                            const ledger::mojom::Result result) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    NSError* error = nil;
-    if (result != ledger::mojom::Result::LEDGER_OK) {
-      std::map<ledger::mojom::Result, std::string> errorDescriptions{
-          {ledger::mojom::Result::LEDGER_ERROR, "The recovery failed"},
-      };
-      NSDictionary* userInfo = @{};
-      const auto description = errorDescriptions[result];
-      if (description.length() > 0) {
-        userInfo =
-            @{NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)};
-      }
-      error = [NSError errorWithDomain:BraveLedgerErrorDomain
-                                  code:static_cast<NSInteger>(result)
-                              userInfo:userInfo];
-    }
-    if (completion) {
-      completion(error);
-    }
-  });
-}
-
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL))completion {
   ledger->HasSufficientBalanceToReconcile(completion);
 }
@@ -581,26 +560,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   ledger->GetPendingContributionsTotal(^(double total) {
     completion(total);
   });
-}
-
-- (void)linkBraveWalletToPaymentId:(NSString*)paymentId
-                        completion:(void (^)(LedgerResult result,
-                                             NSString* drainID))completion {
-  ledger->LinkRewardsWallet(
-      base::SysNSStringToUTF8(paymentId),
-      base::BindOnce(^(ledger::mojom::Result result, std::string drain_id) {
-        // The internal draining API now returns a success
-        // code when there are no tokens to drain. Since
-        // brave-ios expects a valid drain ID when the
-        // result is LEDGER_OK, to maintain backward
-        // compatibility convert the result to an error code
-        // when the drain ID is empty.
-        if (drain_id.empty()) {
-          result = ledger::mojom::Result::LEDGER_ERROR;
-        }
-        completion(static_cast<LedgerResult>(result),
-                   base::SysUTF8ToNSString(drain_id));
-      }));
 }
 
 - (void)drainStatusForDrainId:(NSString*)drainId
@@ -1476,6 +1435,30 @@ BATLedgerBridge(BOOL,
 - (uint64_t)getUint64State:(const std::string&)name {
   const auto key = base::SysUTF8ToNSString(name);
   return [self.prefs[key] unsignedLongLongValue];
+}
+
+- (void)setValueState:(const std::string&)name value:(base::Value)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(name);
+    self.prefs[key] = base::SysUTF8ToNSString(json);
+    [self savePrefs];
+  }
+}
+
+- (base::Value)getValueState:(const std::string&)name {
+  const auto key = base::SysUTF8ToNSString(name);
+  const auto json = (NSString*)self.prefs[key];
+  if (!json) {
+    return base::Value();
+  }
+
+  auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json));
+  if (!value) {
+    return base::Value();
+  }
+
+  return std::move(*value);
 }
 
 - (void)clearState:(const std::string&)name {

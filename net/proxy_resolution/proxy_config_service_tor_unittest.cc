@@ -30,7 +30,7 @@ class ProxyConfigServiceTorTest : public TestWithTaskEnvironment {
  private:
 };
 
-TEST_F(ProxyConfigServiceTorTest, CircuitIsolationKey) {
+TEST_F(ProxyConfigServiceTorTest, CircuitAnonymizationKey) {
   const struct {
     GURL url;
     std::string key;
@@ -100,7 +100,8 @@ TEST_F(ProxyConfigServiceTorTest, CircuitIsolationKey) {
   for (auto& c : cases) {
     const GURL& url = c.url;
     const std::string& expected_key = c.key;
-    std::string actual_key = ProxyConfigServiceTor::CircuitIsolationKey(url);
+    std::string actual_key =
+        ProxyConfigServiceTor::CircuitAnonymizationKey(url);
 
     EXPECT_EQ(expected_key, actual_key);
   }
@@ -109,8 +110,8 @@ TEST_F(ProxyConfigServiceTorTest, CircuitIsolationKey) {
 TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
   const std::string proxy_uri("socks5://127.0.0.1:5566");
   const GURL site_url("https://check.torproject.org/");
-  const std::string isolation_key =
-      ProxyConfigServiceTor::CircuitIsolationKey(site_url);
+  const std::string anonymization_key =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
 
   ProxyConfigServiceTor proxy_config_service(proxy_uri);
   ProxyConfigWithAnnotation config;
@@ -120,7 +121,7 @@ TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
   auto single_proxy = config.value().proxy_rules().single_proxies.Get();
   EXPECT_TRUE(!single_proxy.host_port_pair().password().empty());
   EXPECT_TRUE(single_proxy.scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(single_proxy.host_port_pair().username(), isolation_key);
+  EXPECT_EQ(single_proxy.host_port_pair().username(), anonymization_key);
   EXPECT_EQ(single_proxy.host_port_pair().host(), "127.0.0.1");
   EXPECT_EQ(single_proxy.host_port_pair().port(), 5566);
 }
@@ -129,10 +130,10 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   const std::string proxy_uri("socks5://127.0.0.1:5566");
   const GURL site_url("https://check.torproject.org/");
   const GURL site_url2("https://brave.com/");
-  const std::string isolation_key =
-      ProxyConfigServiceTor::CircuitIsolationKey(site_url);
-  const std::string isolation_key2 =
-      ProxyConfigServiceTor::CircuitIsolationKey(site_url2);
+  const std::string anonymization_key =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
+  const std::string anonymization_key2 =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url2);
 
   auto config_service = net::ProxyConfigService::CreateSystemProxyConfigService(
       base::ThreadTaskRunnerHandle::Get());
@@ -151,7 +152,7 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
       config, site_url, service, &info);
   auto host_port_pair = info.proxy_server().host_port_pair();
 
-  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_EQ(host_port_pair.username(), anonymization_key);
   EXPECT_TRUE(info.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
@@ -163,13 +164,13 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
       config, site_url, service, &info2);
   host_port_pair = info2.proxy_server().host_port_pair();
 
-  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_EQ(host_port_pair.username(), anonymization_key);
   EXPECT_EQ(host_port_pair.password(), password);
   EXPECT_TRUE(info2.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
 
-  // TODO(darkdh): Test persistent circuit isolation until timeout.
+  // TODO(darkdh): Test persistent circuit anonymization until timeout.
 
   // Test new tor circuit.
   proxy_config_service.SetNewTorCircuit(site_url);
@@ -179,7 +180,7 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
       config, site_url, service, &info3);
   host_port_pair = info3.proxy_server().host_port_pair();
 
-  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_EQ(host_port_pair.username(), anonymization_key);
   EXPECT_NE(host_port_pair.password(), password);
   EXPECT_TRUE(info3.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
@@ -192,7 +193,7 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
       config, site_url, service, &info4);
   host_port_pair = info4.proxy_server().host_port_pair();
 
-  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_EQ(host_port_pair.username(), anonymization_key);
   EXPECT_EQ(host_port_pair.password(), password);
   EXPECT_TRUE(info4.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
@@ -204,7 +205,7 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url2, service, &info5);
   host_port_pair = info5.proxy_server().host_port_pair();
-  EXPECT_EQ(host_port_pair.username(), isolation_key2);
+  EXPECT_EQ(host_port_pair.username(), anonymization_key2);
   EXPECT_NE(host_port_pair.password(), password);
   EXPECT_TRUE(info5.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");

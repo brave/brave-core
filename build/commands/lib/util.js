@@ -19,18 +19,27 @@ async function applyPatches() {
   const coreRepoPath = config.braveCoreDir
   const patchesPath = path.join(coreRepoPath, 'patches')
   const v8PatchesPath = path.join(patchesPath, 'v8')
+  const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
+
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
+  const catapultRepoPath = path.join(chromiumRepoPath, 'third_party', 'catapult')
+
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
+  const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
+  const catapultPatchStatus = await catapultPatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
   v8PatchStatus.forEach(s => s.path = path.join('v8', s.path))
-  const allPatchStatus = chromiumPatchStatus.concat(v8PatchStatus)
+  catapultPatchStatus.forEach(
+    s => s.path = path.join('third_party', 'catapult', s.path))
+  const allPatchStatus =
+    chromiumPatchStatus.concat(v8PatchStatus).concat(catapultPatchStatus)
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)
@@ -196,7 +205,7 @@ const util = {
     const braveAppDir = path.join(config.braveCoreDir, 'app')
     const chromeBrowserResourcesDir = path.join(config.srcDir, 'chrome', 'browser', 'resources')
     const braveBrowserResourcesDir = path.join(config.braveCoreDir, 'browser', 'resources')
-    const braveAppVectorIconsDir = path.join(config.braveCoreDir, 'vector_icons', 'chrome', 'app')
+    const braveAppVectorIconsDir = path.join(config.braveCoreDir, 'components')
     const chromeAndroidJavaStringsTranslationsDir = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'strings', 'translations')
     const braveAndroidJavaStringsTranslationsDir = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'strings', 'translations')
 
@@ -230,7 +239,7 @@ const util = {
     fileMap.add([path.join(braveComponentsDir, 'resources', 'default_100_percent', 'brave'), path.join(chromeComponentsDir, 'resources', 'default_100_percent', 'chromium')])
     fileMap.add([path.join(braveComponentsDir, 'resources', 'default_200_percent'), path.join(chromeComponentsDir, 'resources', 'default_200_percent')])
     fileMap.add([path.join(braveComponentsDir, 'resources', 'default_200_percent', 'brave'), path.join(chromeComponentsDir, 'resources', 'default_200_percent', 'chromium')])
-    fileMap.add([path.join(braveAppVectorIconsDir, 'vector_icons', 'brave'), path.join(chromeAppDir, 'vector_icons', 'brave')])
+    fileMap.add([path.join(braveAppVectorIconsDir, 'vector_icons', 'brave'), path.join(chromeComponentsDir, 'vector_icons', 'brave')])
     // Copy chrome-logo-faded.png for replacing chrome logo of welcome page with brave's on Win8.
     fileMap.add([path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'), path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
@@ -634,7 +643,7 @@ const util = {
         const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
         if (gomaLoginInfo.status !== 0) {
           console.log('Login required for using Goma. This is only needed once')
-          util.run('goma_auth', ['login', '--no-browser'], options)
+          util.run('goma_auth', ['login'], options)
         }
         util.run('goma_ctl', ['ensure_start'], options)
       }
@@ -702,11 +711,16 @@ const util = {
     cmd_options.cwd = config.braveCoreDir
     cmd_options = mergeWithDefault(cmd_options)
     cmd = 'git'
-    args = ['cl', 'presubmit', options.base, '--force']
+    // --upload mode is similar to `git cl upload`. Non-upload mode covers less
+    // checks.
+    args = ['cl', 'presubmit', options.base, '--force', '--upload']
     if (options.all)
       args.push('--all')
     if (options.files)
       args.push('--files', options.files)
+    if (options.verbose) {
+      args.push(...Array(options.verbose).fill('--verbose'))
+    }
     util.run(cmd, args, cmd_options)
   },
 

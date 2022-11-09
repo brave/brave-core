@@ -21,13 +21,10 @@ class NTPBackgroundPrefsTest : public testing::Test {
 };
 
 TEST_F(NTPBackgroundPrefsTest, RegisterDefaultPref) {
-  const auto* value = service_.GetDictionary(NTPBackgroundPrefs::kPrefName);
-  EXPECT_TRUE(value);
-
-  const auto* dict = value->GetIfDict();
-  EXPECT_TRUE(dict->FindString("type"));
-  EXPECT_TRUE(dict->FindBool("random").has_value());
-  EXPECT_TRUE(dict->FindString("selected_value"));
+  const auto& dict = service_.GetDict(NTPBackgroundPrefs::kPrefName);
+  EXPECT_TRUE(dict.FindString("type"));
+  EXPECT_TRUE(dict.FindBool("random").has_value());
+  EXPECT_TRUE(dict.FindString("selected_value"));
 }
 
 TEST_F(NTPBackgroundPrefsTest, TypeAccessor) {
@@ -44,7 +41,6 @@ TEST_F(NTPBackgroundPrefsTest, MigrationTest) {
   auto* registry = service_.registry();
   registry->RegisterBooleanPref(NTPBackgroundPrefs::kDeprecatedPrefName, false);
   EXPECT_FALSE(service_.GetBoolean(NTPBackgroundPrefs::kDeprecatedPrefName));
-  EXPECT_TRUE(service_.GetDictionary(NTPBackgroundPrefs::kPrefName));
 
   // Check default value
   EXPECT_TRUE(background_prefs_.IsBraveType());

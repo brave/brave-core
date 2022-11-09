@@ -7,7 +7,7 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/grit/brave_components_strings.h"

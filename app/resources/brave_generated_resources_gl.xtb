@@ -85,10 +85,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="8303432794159193481">Aplicativos de Brave do navegador para navegadores</translation>
 <translation id="8292967014767479012">Aplicativos do navegador Brave</translation>
 <translation id="4743468424889072281">Aplicativos de desenvolvemento do navegador Brave</translation>
-<translation id="239760341987199724">Establecer Brave como o teu navegador predeterminado</translation>
-<translation id="1391855377994926460">Sigue a navegar pola rede máis rápido, ata seis veces máis rápido nos sitios de noticias máis importantes.</translation>
-<translation id="9218430445555521422">Establecer como predeterminado</translation>
-<translation id="3479552764303398839">Agora non</translation>
 <translation id="732814027519296280">Queres mellorar Brave Search aínda máis?</translation>
 <translation id="2677865600861971449">Participa no Proxecto de detección web para facilitar de xeito anónimo datos de buscas e navegación e así mellorar os resultados de Brave Search para todo o mundo. Este proceso é totalmente confidencial e non supón ningún esforzo. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Máis información</translation>
@@ -207,7 +203,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2370739752330685659">Quizais máis tarde</translation>
 <translation id="961012016278832836">Versións anteriores de Microsoft Edge</translation>
 <translation id="6436994631426134065">Importado desde <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Copiar ligazón limpa (só URL principal)</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzamento agora</translation>
 <translation id="4472575034687746823">Comezar</translation>
@@ -250,7 +245,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="6303294677342628402">Escudos</translation>
 <translation id="7133511168130368997">Bloqueo de rastreadores e anuncios que te seguen na rede.</translation>
 <translation id="2761825942249694703">Esta é a configuración predeterminada de Escudos. Aplícanse a todos os sitios web a menos que cambies algo no panel de Escudos dun sitio determinado. A modificación destes non afectará a configuración existente por cada sitio.</translation>
-<translation id="1435116578479068303">Isto bloqueará a maioría dos anuncios nos sitios web, mais non os anuncios privados de Brave. Estes contrólanse desde a configuración de  <ph name="BEGIN_LINK"/>Recompensas de Brave<ph name="END_LINK"/> .</translation>
 <translation id="8452536890042542134">Isto bloqueará a maioría dos anuncios dos sitios web.</translation>
 <translation id="4800195524776354947">Amosa o número de elementos bloqueados na icona de Escudos</translation>
 <translation id="5510493033031835532">Redireccionar automaticamente as páxinas de AMP</translation>
@@ -260,7 +254,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2133317862976486547">Bloqueo de anuncios de rastreadores &amp;</translation>
 <translation id="4078738236287221428">Agresivo</translation>
 <translation id="7740996059027112821">Estándar</translation>
-<translation id="3570081523466826008">Actualización de conexións a HTTPS</translation>
 <translation id="4824468494729001999">Bloquear guións</translation>
 <translation id="6531019308847917584">Bloquear as pegadas dixitais</translation>
 <translation id="5533533363827555308">Estrita, pode que algúns sitios non funcionen</translation>
@@ -270,14 +263,10 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="7390783310074170337">Vista predeterminada</translation>
 <translation id="130615081792797568">Vista simple</translation>
 <translation id="2360360976480535628">Vista avanzada</translation>
-<translation id="6486983549008741930">Filtrado de contido</translation>
 <translation id="8694564340481124390">Activa os filtros personalizados que bloquean os rastreadores e molestias asociados a un idioma ou rexión en particular.</translation>
-<translation id="6522618763902154348">Activa os filtros personalizados que bloquean os rastreadores e 
-    <ph name="BEGIN_LINK"/>molestias<ph name="END_LINK"/> asociados a un idioma ou rexión en particular.</translation>
 <translation id="3482656215021340727">Engade listas de filtros personalizadas</translation>
 <translation id="1020877116991797978">Engade listas adicionais creadas e mantidas pola túa comunidade de confianza.</translation>
 <translation id="7617831480435794399">Subscríbete só ás listas de entidades nas que confías. O teu navegador comprobará regularmente se as listas dos URL que introduzas teñen actualizacións, de tal xeito que os seus servidores poderán ver o teu enderezo IP.</translation>
-<translation id="2831397936251948638">Crear filtros personalizados</translation>
 <translation id="4618274268052410139">En cada liña do campo de abaixo, engade un filtro personalizado creado por ti. Asegúrate de usar a <ph name="BEGIN_LINK"/>sintaxe do filtro de Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Engadir</translation>
 <translation id="571950783952070673">URL das listas</translation>

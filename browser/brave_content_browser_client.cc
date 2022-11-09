@@ -52,6 +52,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
@@ -111,6 +113,7 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
@@ -268,6 +271,23 @@ void BindCosmeticFiltersResources(
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
                                 std::move(receiver)));
+}
+
+void MaybeBindWalletP3A(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  if (brave_wallet::IsAllowedForContext(frame_host->GetBrowserContext())) {
+    brave_wallet::BraveWalletService* wallet_service =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
+    DCHECK(wallet_service);
+    wallet_service->GetBraveWalletP3A()->Bind(std::move(receiver));
+  } else {
+    // Dummy API to avoid reporting P3A for OTR contexts
+    mojo::MakeSelfOwnedReceiver(
+        std::make_unique<brave_wallet::BraveWalletP3APrivate>(),
+        std::move(receiver));
+  }
 }
 
 void MaybeBindEthereumProvider(
@@ -553,13 +573,16 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveAdsHost));
   }
 
-  if (brave_wallet::IsNativeWalletEnabled() &&
-      brave_wallet::IsAllowedForContext(
+  map->Add<brave_wallet::mojom::BraveWalletP3A>(
+      base::BindRepeating(&MaybeBindWalletP3A));
+  if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
-    map->Add<brave_wallet::mojom::EthereumProvider>(
-        base::BindRepeating(&MaybeBindEthereumProvider));
-    map->Add<brave_wallet::mojom::SolanaProvider>(
-        base::BindRepeating(&MaybeBindSolanaProvider));
+    if (brave_wallet::IsNativeWalletEnabled()) {
+      map->Add<brave_wallet::mojom::EthereumProvider>(
+          base::BindRepeating(&MaybeBindEthereumProvider));
+      map->Add<brave_wallet::mojom::SolanaProvider>(
+          base::BindRepeating(&MaybeBindSolanaProvider));
+    }
   }
 
   map->Add<skus::mojom::SkusService>(
@@ -583,11 +606,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         brave_shields::mojom::CookieListOptInPageHandlerFactory,
         CookieListOptInUI>(map);
   }
-  if (base::FeatureList::IsEnabled(
-          brave_rewards::features::kWebUIPanelFeature)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
-  }
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
   if (base::FeatureList::IsEnabled(
           brave_federated::features::kFederatedLearning)) {
     content::RegisterWebUIControllerInterfaceBinder<
@@ -1033,12 +1053,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   return throttles;
 }
 
-bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
-    WebContents* web_contents,
-    WebPreferences* prefs) {
-  bool changed =
-      ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
-          web_contents, prefs);
+bool PreventDarkModeFingerprinting(WebContents* web_contents,
+                                   WebPreferences* prefs) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   const GURL url = web_contents->GetLastCommittedURL();
@@ -1050,16 +1066,28 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveDarkModeBlock) &&
-      shields_up && fingerprinting_type == ControlType::BLOCK) {
+      shields_up && fingerprinting_type == ControlType::BLOCK &&
+      prefs->preferred_color_scheme !=
+          blink::mojom::PreferredColorScheme::kLight) {
     prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
-    changed = true;
+    return true;
   }
-  return changed;
+  return false;
+}
+
+bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+    WebContents* web_contents,
+    WebPreferences* prefs) {
+  bool changed =
+      ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+          web_contents, prefs);
+  return PreventDarkModeFingerprinting(web_contents, prefs) || changed;
 }
 
 void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
                                                     WebPreferences* web_prefs) {
   ChromeContentBrowserClient::OverrideWebkitPrefs(web_contents, web_prefs);
+  PreventDarkModeFingerprinting(web_contents, web_prefs);
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;
@@ -1068,7 +1096,7 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   if (auto* playlist_service =
           playlist::PlaylistServiceFactory::GetForBrowserContext(
               web_contents->GetBrowserContext())) {
-    playlist_service->ConfigureWebPrefsforBackgroundWebContents(web_contents,
+    playlist_service->ConfigureWebPrefsForBackgroundWebContents(web_contents,
                                                                 web_prefs);
   }
 #endif

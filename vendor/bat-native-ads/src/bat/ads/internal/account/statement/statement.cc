@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/bind.h"
+#include "base/callback.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/statement/statement_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
@@ -22,22 +24,27 @@ void BuildStatement(BuildStatementCallback callback) {
 
   transactions::GetForDateRange(
       from_time, to_time,
-      [callback](const bool success, const TransactionList& transactions) {
-        if (!success) {
-          BLOG(0, "Failed to get transactions");
-          callback(/*statement*/ nullptr);
-          return;
-        }
+      base::BindOnce(
+          [](BuildStatementCallback callback, const bool success,
+             const TransactionList& transactions) {
+            if (!success) {
+              BLOG(0, "Failed to get transactions");
+              std::move(callback).Run(/*statement*/ nullptr);
+              return;
+            }
 
-        mojom::StatementInfoPtr statement = mojom::StatementInfo::New();
-        statement->earnings_last_month = GetEarningsForLastMonth(transactions);
-        statement->earnings_this_month = GetEarningsForThisMonth(transactions);
-        statement->next_payment_date = GetNextPaymentDate(transactions);
-        statement->ads_received_this_month =
-            GetAdsReceivedThisMonth(transactions);
+            mojom::StatementInfoPtr statement = mojom::StatementInfo::New();
+            statement->earnings_last_month =
+                GetEarningsForLastMonth(transactions);
+            statement->earnings_this_month =
+                GetEarningsForThisMonth(transactions);
+            statement->next_payment_date = GetNextPaymentDate(transactions);
+            statement->ads_received_this_month =
+                GetAdsReceivedThisMonth(transactions);
 
-        callback(std::move(statement));
-      });
+            std::move(callback).Run(std::move(statement));
+          },
+          std::move(callback)));
 }
 
 }  // namespace ads

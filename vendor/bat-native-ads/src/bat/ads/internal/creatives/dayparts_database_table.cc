@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/creatives/dayparts_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/bind.h"
@@ -41,6 +40,28 @@ int BindParameters(mojom::DBCommandInfo* command,
   }
 
   return count;
+}
+
+void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  DropTable(transaction, "dayparts");
+
+  const std::string query =
+      "CREATE TABLE dayparts "
+      "(campaign_id TEXT NOT NULL, "
+      "dow TEXT NOT NULL, "
+      "start_minute INT NOT NULL, "
+      "end_minute INT NOT NULL, "
+      "PRIMARY KEY (campaign_id, dow, start_minute, end_minute), "
+      "UNIQUE(campaign_id, dow, start_minute, end_minute) "
+      "ON CONFLICT REPLACE)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -107,28 +128,6 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
       "end_minute) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(4, count).c_str());
-}
-
-void Dayparts::MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  DropTable(transaction, "dayparts");
-
-  const std::string query =
-      "CREATE TABLE dayparts "
-      "(campaign_id TEXT NOT NULL, "
-      "dow TEXT NOT NULL, "
-      "start_minute INT NOT NULL, "
-      "end_minute INT NOT NULL, "
-      "PRIMARY KEY (campaign_id, dow, start_minute, end_minute), "
-      "UNIQUE(campaign_id, dow, start_minute, end_minute) "
-      "ON CONFLICT REPLACE)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace ads::database::table

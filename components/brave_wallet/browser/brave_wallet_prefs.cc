@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -47,6 +48,7 @@ base::Value::Dict GetDefaultSelectedNetworks() {
 }  // namespace
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(
       kDefaultEthereumWallet,
       static_cast<int>(
@@ -67,6 +69,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
                                 false);
@@ -82,7 +85,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
                                        kBraveWalletP3ALastUnlockTime,
                                        kBraveWalletP3AUsedSecondDay, nullptr);
-  registry->RegisterBooleanPref(kBraveWalletWasOnboardingShown, false);
+  registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -115,6 +118,13 @@ void RegisterProfilePrefsForMigration(
   // Added 06/2022
   registry->RegisterBooleanPref(
       kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
+
+  // Added 10/2022
+  registry->RegisterBooleanPref(
+      kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
+
+  // Added 10/2022
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -156,6 +166,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 06/22 to have native tokens for all preloading networks.
   BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(prefs);
 
+  // Added 10/22 to have is_nft set for existing ERC721 tokens.
+  BraveWalletService::MigrateUserAssetsAddIsNFT(prefs);
+
   JsonRpcService::MigrateMultichainNetworks(prefs);
 
   if (prefs->HasPrefPath(kBraveWalletWeb3ProviderDeprecated)) {
@@ -184,16 +197,18 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Ethereum transactions were at kBraveWalletTransactions.network_id.tx_id,
   // migrate it to be at kBraveWalletTransactions.ethereum.network_id.tx_id.
   if (!prefs->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated)) {
-    base::Value transactions =
-        prefs->GetDictionary(kBraveWalletTransactions)->Clone();
+    auto transactions = prefs->GetDict(kBraveWalletTransactions).Clone();
     prefs->ClearPref(kBraveWalletTransactions);
-    if (!transactions.DictEmpty()) {
+    if (!transactions.empty()) {
       DictionaryPrefUpdate update(prefs, kBraveWalletTransactions);
       base::Value* dict = update.Get();
-      dict->SetPath(kEthereumPrefKey, std::move(transactions));
+      dict->SetPath(kEthereumPrefKey, base::Value(std::move(transactions)));
     }
     prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }
+
+  // Added 10/2022
+  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 }
 
 }  // namespace brave_wallet

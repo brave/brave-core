@@ -4,21 +4,30 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
+
+// utils
+import { getLocale } from '$web-common/locale'
+import { getWalletLocationTitle } from '../utils/string-utils'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 
+// selectors
+import { WalletSelectors } from '../common/selectors'
+import { PageSelectors } from './selectors'
+
 // types
 import {
   BuySendSwapTypes,
-  PageState,
   WalletAccountType,
-  WalletRoutes,
-  WalletState
+  WalletRoutes
 } from '../constants/types'
+
+// hooks
+import { useSafePageSelector, useSafeWalletSelector } from '../common/hooks/use-safe-selector'
 
 // style
 import 'emptykit.css'
@@ -35,13 +44,13 @@ import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '.
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
-import { BackupWallet } from './screens/backup-wallet/backup-wallet'
+import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
-import { getLocale } from '$web-common/locale'
+import { Swap } from './screens/swap/swap'
 
 const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
 
@@ -52,15 +61,19 @@ export const Container = () => {
 
   // redux
   const dispatch = useDispatch()
-  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
-  const isWalletLocked = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletLocked)
-  const isWalletBackedUp = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletBackedUp)
-  const hasIncorrectPassword = useSelector(({ wallet }: { wallet: WalletState }) => wallet.hasIncorrectPassword)
-  const hasInitialized = useSelector(({ wallet }: { wallet: WalletState }) => wallet.hasInitialized)
-  const defaultEthereumWallet = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultEthereumWallet)
-  const defaultSolanaWallet = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultSolanaWallet)
-  const isMetaMaskInstalled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isMetaMaskInstalled)
-  const setupStillInProgress = useSelector(({ page }: { page: PageState }) => page.setupStillInProgress)
+
+  // wallet selectors (safe)
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isWalletBackedUp = useSafeWalletSelector(WalletSelectors.isWalletBackedUp)
+  const hasIncorrectPassword = useSafeWalletSelector(WalletSelectors.hasIncorrectPassword)
+  const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
+  const defaultEthereumWallet = useSafeWalletSelector(WalletSelectors.defaultEthereumWallet)
+  const defaultSolanaWallet = useSafeWalletSelector(WalletSelectors.defaultSolanaWallet)
+  const isMetaMaskInstalled = useSafeWalletSelector(WalletSelectors.isMetaMaskInstalled)
+
+  // page selectors (safe)
+  const setupStillInProgress = useSafePageSelector(PageSelectors.setupStillInProgress)
 
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
@@ -99,11 +112,6 @@ export const Container = () => {
       history.push(WalletRoutes.Portfolio)
     }
   }, [inputValue, sessionRoute])
-
-  const onHideBackup = React.useCallback(() => {
-    dispatch(WalletPageActions.showRecoveryPhrase({ show: false }))
-    history.goBack()
-  }, [])
 
   const handlePasswordChanged = React.useCallback((value: string) => {
     setInputValue(value)
@@ -154,11 +162,44 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.FundWalletPage) ||
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Market) ||
-      walletLocation.includes(WalletRoutes.Nfts)
+      walletLocation.includes(WalletRoutes.Nfts) ||
+      walletLocation.includes(WalletRoutes.Swap)
     ) {
       setSessionRoute(walletLocation)
     }
   }, [walletLocation, isWalletCreated])
+
+  React.useEffect(() => {
+    const toobarElement = document.getElementById('toolbar')
+    const rootElement = document.getElementById('root')
+    if (toobarElement && rootElement) {
+      if (
+        walletLocation === WalletRoutes.Swap ||
+        walletLocation.includes(WalletRoutes.DepositFundsPage) ||
+        walletLocation.includes(WalletRoutes.FundWalletPage)
+      ) {
+        toobarElement.hidden = true
+        rootElement.style.setProperty('min-height', '100vh')
+        return
+      }
+      toobarElement.hidden = false
+      rootElement.style.setProperty('min-height', 'calc(100vh - 56px)')
+    }
+  }, [walletLocation])
+
+  React.useEffect(() => {
+    document.title = getWalletLocationTitle(walletLocation)
+  }, [walletLocation])
+
+  React.useEffect(() => {
+    // clean recovery phrase if not backing up or onboarding on route change
+    if (
+      !walletLocation.includes(WalletRoutes.Backup) &&
+      !walletLocation.includes(WalletRoutes.Onboarding)
+    ) {
+      dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+    }
+  }, [walletLocation])
 
   // render
   if (!hasInitialized) {
@@ -166,8 +207,8 @@ export const Container = () => {
   }
 
   return (
-    <WalletPageLayout>
-      <WalletSubViewLayout>
+    <WalletPageLayout maintainWidth={walletLocation === WalletRoutes.Swap}>
+      <WalletSubViewLayout noPadding={walletLocation === WalletRoutes.Swap}>
 
         <Switch>
 
@@ -211,12 +252,15 @@ export const Container = () => {
               }
 
               {!isWalletLocked &&
-                <Route path={WalletRoutes.Backup} exact={true}>
+                <Route path={WalletRoutes.Swap} exact={true}>
+                  <Swap />
+                </Route>
+              }
+
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.Backup}>
                   <SimplePageWrapper>
-                    <BackupWallet
-                      isOnboarding={false}
-                      onCancel={onHideBackup}
-                    />
+                    <BackupWalletRoutes />
                   </SimplePageWrapper>
                 </Route>
               }
@@ -253,7 +297,7 @@ export const Container = () => {
         </WalletWidgetStandIn>
       }
 
-      {!isWalletLocked &&
+      {!isWalletLocked && walletLocation !== WalletRoutes.Swap &&
         <FeatureRequestButton onClick={onClickFeatureRequestButton}>
           <IdeaButtonIcon />
           <ButtonText>{getLocale('braveWalletRequestFeatureButtonText')}</ButtonText>

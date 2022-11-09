@@ -45,8 +45,9 @@ InlineContentAd::~InlineContentAd() {
   serving_->RemoveObserver(this);
 }
 
-void InlineContentAd::MaybeServe(const std::string& dimensions,
-                                 MaybeServeInlineContentAdCallback callback) {
+void InlineContentAd::MaybeServe(
+    const std::string& dimensions,
+    const MaybeServeInlineContentAdCallback& callback) {
   serving_->MaybeServeAd(
       dimensions, [callback](const std::string& dimensions,
                              const absl::optional<InlineContentAdInfo>& ad) {

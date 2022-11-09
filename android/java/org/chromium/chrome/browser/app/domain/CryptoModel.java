@@ -67,8 +67,7 @@ public class CryptoModel {
     private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
             new MutableLiveData<>(CoinType.ETH);
     public final LiveData<Integer> mCoinTypeMutableLiveData = _mCoinTypeMutableLiveData;
-    private final MutableLiveData<BraveWalletDAppsActivity.ActivityType> _mProcessNextDAppsRequest =
-            new MutableLiveData<>();
+
     private final Object mLock = new Object();
     private Context mContext;
     private SendModel mSendModel;
@@ -77,8 +76,7 @@ public class CryptoModel {
     // Todo: create a models for portfolio
     // Todo: create method to create and return new models for Asset, Account,
     //  TransactionConfirmation, SwapModel, AssetModel, SendModel
-    public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
-            _mProcessNextDAppsRequest;
+
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
     public LiveData<Boolean> mIsSwapEnabled;
 
@@ -135,7 +133,7 @@ public class CryptoModel {
             if (mKeyringService == null || mPendingTxHelper == null) {
                 return;
             }
-            // TODO(pav): uncomment the below and mvoe to refreshTransactions.
+            // TODO(pav): uncomment the below and move to refreshTransactions.
             // To process pending tx from all networks and full network name
 
             //            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(),
@@ -236,46 +234,6 @@ public class CryptoModel {
                 return new MutableLiveData<>(Collections.emptyList());
             }
             return mPendingTxHelper.mTransactionInfoLd;
-        }
-    }
-
-    public void processPublicEncryptionKey(boolean isApproved, Origin origin) {
-        synchronized (mLock) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            mBraveWalletService.notifyGetPublicKeyRequestProcessed(isApproved, origin);
-            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-                if (requests != null && requests.length > 0) {
-                    _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType
-                                                                .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
-                } else {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.FINISH);
-                }
-            });
-        }
-    }
-
-    public void clearDappsState() {
-        _mProcessNextDAppsRequest.postValue(null);
-    }
-
-    public void processDecryptRequest(boolean isApproved, Origin origin) {
-        synchronized (mLock) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            mBraveWalletService.notifyDecryptRequestProcessed(isApproved, origin);
-            mBraveWalletService.getPendingDecryptRequests(requests -> {
-                if (requests != null && requests.length > 0) {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
-                } else {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.FINISH);
-                }
-            });
         }
     }
 

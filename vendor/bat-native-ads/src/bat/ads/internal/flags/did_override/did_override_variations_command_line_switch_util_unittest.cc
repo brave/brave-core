@@ -48,8 +48,6 @@ class BatAdsDidOverrideVariationsCommandLineSwitchUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsDidOverrideVariationsCommandLineSwitchUtilTest() = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
@@ -76,7 +74,8 @@ TEST_P(BatAdsDidOverrideVariationsCommandLineSwitchUtilTest,
             DidOverrideVariationsCommandLineSwitch());
 }
 
-std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
+std::string TestParamToString(
+    const ::testing::TestParamInfo<ParamInfo>& test_param) {
   const std::string expected_did_override_command_line_switch =
       test_param.param.expected_did_override_command_line_switch
           ? "DidOverride"

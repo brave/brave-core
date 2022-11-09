@@ -52,6 +52,7 @@ struct NotificationAdInfo;
 }  // namespace ads
 
 namespace base {
+class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
@@ -90,102 +91,114 @@ class AdsServiceImpl : public AdsService,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
       brave_federated::AsyncDataStore* notification_ad_timing_data_store);
+
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
+
+  AdsServiceImpl(AdsServiceImpl&& other) noexcept = delete;
+  AdsServiceImpl& operator=(AdsServiceImpl&& other) noexcept = delete;
+
   ~AdsServiceImpl() override;
 
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
-  bool IsBraveNewsEnabled() const;
-
-  bool ShouldStartBatAds() const;
-
-  void InitNotificationsForProfile();
+  void InitializeNotificationsForCurrentProfile() const;
 
   void MigrateConfirmationState();
   void OnMigrateConfirmationState(bool success);
+  void GetDeviceId();
+  void OnGetDeviceId(std::string device_id);
+  void DetectUncertainFuture();
+  void OnDetectUncertainFuture(bool is_uncertain_future);
 
-  void InitializePrefChangeRegistrar();
+  bool UserHasOptedIn() const;
+
+  bool CanStartBatAdsService() const;
+  void MaybeStartBatAdsService();
+  void StartBatAdsService();
+  void RestartBatAdsServiceAfterDelay();
+  void CancelRestartBatAdsService();
+
+  void InitializeBasePathDirectory();
+  void OnInitializeBasePathDirectory(bool success);
+  void Initialize();
+  void InitializeDatabase();
+
+  bool ShouldRewardUser() const;
+  void InitializeRewardsWallet();
+  void OnInitializeRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void InitializeBatAds();
+  void OnInitializeBatAds(bool success);
+
+  void ShutdownAndResetState();
 
   void SetSysInfo();
 
   void SetBuildChannel();
 
-  void MaybeStartOrStop(bool should_restart);
-  void StartBatAdsService();
-  base::TimeDelta GetBatAdsServiceRestartDelay();
-  void Start(uint32_t number_of_start);
-
-  void GetDeviceId(uint32_t number_of_start);
-  void OnGetDeviceId(uint32_t number_of_start, std::string device_id);
-
-  void DetectUncertainFuture(uint32_t number_of_start);
-  void OnDetectUncertainFuture(uint32_t number_of_start,
-                               bool is_uncertain_future);
-
-  void EnsureBaseDirectoryExists(uint32_t number_of_start);
-  void OnEnsureBaseDirectoryExists(uint32_t number_of_start, bool success);
-
-  void CreateBatAdsService(uint32_t number_of_start);
-  void OnCreateBatAdsService();
-
-  bool IsBatAdsServiceBound() const;
-  bool IsBatAdsBound() const;
-
-  void OnInitializeBatAds(bool success);
-
   void CleanUpOnFirstRun();
   void RemoveDeprecatedFiles() const;
-
-  void ResetState();
-  void OnResetState(bool success);
-
-  void OnEnabledPrefChanged();
-  void OnIdleTimeThresholdPrefChanged();
-  void OnWalletBravePrefChanged();
-  void OnBraveTodayOptedInPrefChanged();
-  void OnNewTabPageShowTodayPrefChanged();
-
-  void NotifyPrefChanged(const std::string& path);
 
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
 
+  void CloseAdaptiveCaptcha();
+
+  void InitializePrefChangeRegistrar();
+  void OnEnabledPrefChanged();
+  void OnIdleTimeThresholdPrefChanged();
+  void OnBraveTodayOptedInPrefChanged();
+  void OnNewTabPageShowTodayPrefChanged();
+  void NotifyPrefChanged(const std::string& path) const;
+
   void GetRewardsWallet();
   void OnGetRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
 
-  void StartCheckIdleStateTimer();
+  // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
+  // state business logic.
+  void CheckIdleStateAfterDelay();
   void CheckIdleState();
   void ProcessIdleState(ui::IdleState idle_state, base::TimeDelta idle_time);
 
-  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
-  void OnFailedToPrefetchNewTabPageAd(
-      const std::string& placement_id,
-      const std::string& creative_instance_id) override;
-
+  // TODO(https://github.com/brave/brave-browser/issues/23974) Decouple
+  // notification ad business logic.
   bool ShouldShowCustomNotificationAds();
   void StartNotificationAdTimeOutTimer(const std::string& placement_id);
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
   void NotificationAdTimedOut(const std::string& placement_id);
+  void CloseAllNotificationAds();
 
-  void PrefetchNewTabPageAd() override;
+  // TODO(https://github.com/brave/brave-browser/issues/26192) Decouple new
+  // tab page ad business logic.
   void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
-
+  void PurgeOrphanedNewTabPageAdEvents();
   void OnPurgeOrphanedNewTabPageAdEvents(bool success);
 
-  void OpenNewTabWithUrl(const GURL& url);
+  // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
+  // new tab with ad business logic.
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnGetNotificationAd(absl::optional<base::Value::Dict> dict);
+  void OnOpenNewTabWithAd(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
+  void OpenNewTabWithUrl(const GURL& url);
+
+  // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
+  // request business logic.
+  void OnURLRequest(SimpleURLLoaderList::iterator url_loader_iter,
+                    ads::UrlRequestCallback callback,
+                    std::unique_ptr<std::string> response_body);
+
+  // TODO(https://github.com/brave/brave-browser/issues/14673) Decouple
+  // migration business logic.
   bool IsUpgradingFromPreBraveAdsBuild();
   void MigratePrefs();
   bool MigratePrefs(int source_version,
                     int dest_version,
                     bool is_dry_run = false);
+
   void DisableAdsIfUpgradingFromPreBraveAdsBuild();
   void DisableAdsForUnsupportedCountryCodes(
       const std::string& country_code,
@@ -201,25 +214,6 @@ class AdsServiceImpl : public AdsService,
   void MigratePrefsVersion9To10();
   void MigratePrefsVersion10To11();
   void MigratePrefsVersion11To12();
-
-  void WriteDiagnosticLog(const std::string& file,
-                          int line,
-                          int verbose_level,
-                          const std::string& message);
-
-  void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
-                                       history::QueryResults results);
-
-  void OnURLRequest(SimpleURLLoaderList::iterator url_loader_iter,
-                    ads::UrlRequestCallback callback,
-                    std::unique_ptr<std::string> response_body);
-
-  void OnLoad(ads::LoadCallback callback, const std::string& value);
-  void OnLoadFileResource(
-      ads::LoadFileCallback callback,
-      std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
-
-  void OnLogTrainingInstance(bool success);
 
   // KeyedService:
   void Shutdown() override;
@@ -285,6 +279,11 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       ads::mojom::InlineContentAdEventType event_type) override;
 
+  void PrefetchNewTabPageAd() override;
+  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
+  void OnFailedToPrefetchNewTabPageAd(
+      const std::string& placement_id,
+      const std::string& creative_instance_id) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -322,8 +321,6 @@ class AdsServiceImpl : public AdsService,
   void ToggleFlaggedAd(base::Value::Dict value,
                        ToggleFlaggedAdCallback callback) override;
 
-  void WipeState(bool should_shutdown) override;
-
   // AdsClient:
   bool IsNetworkConnectionAvailable() const override;
 
@@ -334,7 +331,6 @@ class AdsServiceImpl : public AdsService,
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
   void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
-  void CloseAllNotificationAds();
 
   void UpdateAdRewards() override;
 
@@ -351,13 +347,20 @@ class AdsServiceImpl : public AdsService,
                           int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
+  // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
+  // request business logic.
   void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
+  // TODO(https://github.com/brave/brave-browser/issues/26194) Decouple
+  // load/save file business logic.
   void Save(const std::string& name,
             const std::string& value,
             ads::SaveCallback callback) override;
   void Load(const std::string& name, ads::LoadCallback callback) override;
+
+  // TODO(https://github.com/brave/brave-browser/issues/26195) Decouple load
+  // resources business logic.
   void LoadFileResource(const std::string& id,
                         int version,
                         ads::LoadFileCallback callback) override;
@@ -374,6 +377,8 @@ class AdsServiceImpl : public AdsService,
   void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
+  // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
+  // business logic.
   void RecordP2AEvent(const std::string& name,
                       base::Value::List value) override;
 
@@ -420,6 +425,7 @@ class AdsServiceImpl : public AdsService,
   void OnDidUpdateResourceComponent(const std::string& id) override;
 
   // RewardsServiceObserver:
+  void OnRewardsWalletUpdated() override;
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
@@ -427,13 +433,9 @@ class AdsServiceImpl : public AdsService,
   bool needs_browser_upgrade_to_serve_ads_ = false;
   bool is_upgrading_from_pre_brave_ads_build_ = false;
 
-  // This is needed to check if the current ads service becomes stale due to
-  // another ads service being in progress.
-  uint32_t total_number_of_starts_ = 0;
-
-  base::Time last_bat_ads_service_restart_time_;
-
   PrefChangeRegistrar pref_change_registrar_;
+
+  base::OneShotTimer restart_bat_ads_service_timer_;
 
   ads::mojom::SysInfo sys_info_;
 

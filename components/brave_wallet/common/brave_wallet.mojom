@@ -223,7 +223,8 @@ interface PanelHandlerFactory {
                      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                     pending_receiver<BraveWalletService> brave_wallet_service);
+                     pending_receiver<BraveWalletService> brave_wallet_service,
+                     pending_receiver<BraveWalletP3A> brave_wallet_p3a);
 };
 
 interface PageHandlerFactory {
@@ -240,7 +241,8 @@ interface PageHandlerFactory {
                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                    pending_receiver<BraveWalletService> brave_wallet_service);
+                    pending_receiver<BraveWalletService> brave_wallet_service,
+                    pending_receiver<BraveWalletP3A> brave_wallet_p3a);
 
 };
 
@@ -407,6 +409,9 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
+const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
+const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
+
 enum FilecoinAddressProtocol {
   SECP256K1 = 1, // Represents the address SECP256K1 protocol
   BLS = 3 // Represents the address BLS protocol
@@ -473,6 +478,7 @@ struct BlockchainToken {
   string logo;
   bool is_erc20;
   bool is_erc721;
+  bool is_nft;
   string symbol;
   int32 decimals;
   bool visible = true;
@@ -713,6 +719,10 @@ interface SwapService {
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
+
+  // Obtains whether the given Solana token mint should have fees for Jupiter
+  // swaps.
+  HasJupiterFeesForTokenMint(string mint) => (bool result);
 };
 
 interface JsonRpcServiceObserver {
@@ -753,11 +763,15 @@ struct TxData1559 {
   GasEstimation1559? gas_estimation;
 };
 
+const string kSolanaSystemProgramId = "11111111111111111111111111111111";
+const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
+
+// It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
-const string kRinkebyChainId = "0x4";
-const string kRopstenChainId = "0x3";
 const string kGoerliChainId = "0x5";
-const string kKovanChainId = "0x2a";
+const string kSepoliaChainId = "0xaa36a7";
 const string kLocalhostChainId = "0x539";
 const string kPolygonMainnetChainId = "0x89";
 const string kBinanceSmartChainMainnetChainId = "0x38";
@@ -892,7 +906,7 @@ interface JsonRpcService {
   EnsGetEthAddr(string domain, EnsOffchainLookupOptions? options) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
 
   // Unstoppable Domains lookups
-  UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
+  UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
 
   // Used for making requests to the currently selected EVM compatible node for
   // coin ETH and other nodes with corresponding coin types
@@ -1303,9 +1317,33 @@ interface BraveWalletService {
 
   // Resets the keyring and the related preferences
   Reset();
+};
 
-  // Called when onboarding is shown (for analytics)
-  OnOnboardingShown();
+// For reporting wallet related P3A metrics.
+interface BraveWalletP3A {
+  // Called when the ethereum provider type is evaluated after page load.
+  ReportEthereumProvider(EthereumProviderType provider_type);
+
+  // Called when a Wallet onboarding action is performed.
+  ReportOnboardingAction(OnboardingAction onboarding_action);
+
+  // Called when a mainnet transaction is sent.
+  ReportTransactionSent(CoinType coin, bool new_send);
+
+  // Called to report an active wallet count for P3A
+  RecordActiveWalletCount(int32 count, CoinType coin_type);
+};
+
+enum OnboardingAction {
+  Shown = 0,
+  CreatedWallet = 1,
+  RestoredWallet = 2
+};
+
+enum EthereumProviderType {
+  None = 0,
+  ThirdParty = 1,
+  Native = 2
 };
 
 enum DefaultWallet {
@@ -1328,10 +1366,75 @@ struct SolanaAccountMeta {
   bool is_writable;
 };
 
+// https://docs.rs/solana-program/latest/solana_program/system_instruction/enum.SystemInstruction.html
+enum SolanaSystemInstruction {
+  kCreateAccount = 0,
+  kAssign = 1,
+  kTransfer = 2,
+  kCreateAccountWithSeed = 3,
+  kAdvanceNonceAccount = 4,
+  kWithdrawNonceAccount = 5,
+  kInitializeNonceAccount = 6,
+  kAuthorizeNonceAccount = 7,
+  kAllocate = 8,
+  kAllocateWithSeed = 9,
+  kAssignWithSeed = 10,
+  kTransferWithSeed = 11,
+  kUpgradeNonceAccount = 12,
+};
+
+// https://docs.rs/spl-token/latest/spl_token/instruction/enum.TokenInstruction.html
+enum SolanaTokenInstruction {
+  kInitializeMint = 0,
+  kInitializeAccount = 1,
+  kInitializeMultisig = 2,
+  kTransfer = 3,
+  kApprove = 4,
+  kRevoke = 5,
+  kSetAuthority = 6,
+  kMintTo = 7,
+  kBurn = 8,
+  kCloseAccount = 9,
+  kFreezeAccount = 10,
+  kThawAccount = 11,
+  kTransferChecked = 12,
+  kApproveChecked = 13,
+  kMintToChecked = 14,
+  kBurnChecked = 15,
+  kInitializeAccount2 = 16,
+  kSyncNative = 17,
+  kInitializeAccount3 = 18,
+  kInitializeMultisig2 = 19,
+  kInitializeMint2 = 20,
+};
+
+struct SolanaInstructionParam {
+  string name;
+  string localized_name;  // For UI display.
+  string value;
+};
+
+struct SolanaInstructionAccountParam {
+  string name;
+  string localized_name;  // For UI display.
+};
+
+struct DecodedSolanaInstructionData {
+  uint32 instruction_type;  // Should be converted to either
+                            // SolanaSystmeInstruction or SolanaTokenInstruction
+                            // based on program ID.
+
+  // Parameter names of the account meta array.
+  array<SolanaInstructionAccountParam> account_params;
+  // Parameters encoded in the instruction data array.
+  array<SolanaInstructionParam> params;
+};
+
 struct SolanaInstruction {
   string program_id;
   array<SolanaAccountMeta> account_metas;
   array<uint8> data;
+  DecodedSolanaInstructionData? decoded_data;
 };
 
 struct SolanaTxData {

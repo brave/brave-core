@@ -6,7 +6,6 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 
 #include "base/feature_list.h"
-#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -49,12 +48,12 @@ void BraveContentRendererClient::
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
-  blink::WebRuntimeFeatures::EnableWebNfc(false);
+  blink::WebRuntimeFeatures::EnableWebNFC(false);
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
-    blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccess",
+    blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
                                                        false);
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
@@ -139,9 +138,9 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    if (auto* observer =
+    if (auto* playlist_observer =
             playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
-      observer->RunScriptsAtDocumentStart();
+      playlist_observer->RunScriptsAtDocumentStart();
     }
   }
 #endif

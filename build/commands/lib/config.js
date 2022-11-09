@@ -392,8 +392,14 @@ Config.prototype.buildArgs = function () {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
 
-  if (this.targetArch === 'x86' && process.platform === 'linux') {
-    // Minimal symbols for target Linux x86, because ELF32 cannot be > 4GiB
+  if ((this.getTargetOS() === 'linux' && this.targetArch === 'x86') ||
+      (this.getTargetOS() === 'win' && (this.targetArch === 'x86' || this.targetArch === 'arm64'))) {
+    // Minimal symbols to work around size restrictions:
+    // On Linux x86, ELF32 cannot be > 4GiB.
+    // For x86 and Arm64 Windows, chrome.dll.pdb sometimes becomes > 4 GiB and
+    // llvm-pdbutil on that file errors out with "The data is in an unexpected
+    // format. Too many directory blocks". Associated llvm issue:
+    // https://github.com/llvm/llvm-project/issues/54445
     args.symbol_level = 1
   }
 
@@ -403,9 +409,19 @@ Config.prototype.buildArgs = function () {
       args.use_system_xcode = false
   }
 
-  if (this.getTargetOS() === 'linux' && this.targetArch === 'x64') {
-    // Include vaapi support
-    args.use_vaapi = true
+  if (this.getTargetOS() === 'linux') {
+    if (this.targetArch !== 'x86') {
+      // Include vaapi support
+      // TODO: Consider setting use_vaapi_x11 instead of use_vaapi. Also
+      // consider enabling it for x86 builds. See
+      // https://github.com/brave/brave-browser/issues/1024#issuecomment-1175397914
+      args.use_vaapi = true
+
+    }
+    if (this.targetArch === 'arm64') {
+      // We don't yet support Widevine on Arm64 Linux.
+      args.enable_widevine = false
+    }
   }
 
   // Enable Page Graph only in desktop builds.

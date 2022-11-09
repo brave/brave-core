@@ -19,13 +19,6 @@ export type EthereumChainRequestPayload = {
   approved: boolean
 }
 
-export type SignMessagePayload = {
-  id: number
-  address: string
-  message: string
-  originInfo: BraveWallet.OriginInfo
-}
-
 export type SignMessageProcessedPayload = {
   approved: boolean
   id: number

@@ -12,7 +12,7 @@ namespace ads::notification_ads {
 
 class PermissionRules final : public PermissionRulesBase {
  public:
-  bool HasPermission() const;
+  static bool HasPermission();
 };
 
 }  // namespace ads::notification_ads

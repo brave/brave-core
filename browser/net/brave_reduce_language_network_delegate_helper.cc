@@ -34,15 +34,18 @@ const std::array<std::string, 5> kFakeQValues = {";q=0.5", ";q=0.6", ";q=0.7",
 static constexpr auto kFarbleAcceptLanguageExceptions =
     base::MakeFixedFlatSet<base::StringPiece>(
         {// https://github.com/brave/brave-browser/issues/25309
-         "ulta.com", "www.ulta.com"});
+         "ulta.com", "www.ulta.com",
+         // https://github.com/brave/brave-browser/issues/26325
+         "aeroplan.rewardops.com"});
 }  // namespace
 
 std::string FarbleAcceptLanguageHeader(
     const GURL& tab_origin,
     Profile* profile,
     HostContentSettingsMap* content_settings) {
-  std::string languages =
-      profile->GetPrefs()->Get(language::prefs::kAcceptLanguages)->GetString();
+  std::string languages = profile->GetPrefs()
+                              ->GetValue(language::prefs::kAcceptLanguages)
+                              .GetString();
   std::string accept_language_string = language::GetFirstLanguage(languages);
   // If the first language is a multi-part code like "en-US" or "zh-HK",
   // extract and append the base language code to |accept_language_string|.

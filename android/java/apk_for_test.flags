@@ -41,6 +41,7 @@
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
+    *** mTileGroup;
     public <init>(...);
     *** updateTilePlaceholderVisibility(...);
 }
@@ -103,6 +104,14 @@
     *** runMenuItemEnterAnimations(...);
 }
 
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.BraveQuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
+}
+
 -keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {
     public <init>(...);
 }
@@ -141,6 +150,7 @@
     *** mTabContentManager;
     *** mTabCreatorManager;
     *** mSnackbarManager;
+    *** mTabObscuringHandler;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
@@ -584,4 +594,44 @@
 
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
     *** shouldShowTabSwitcher(...);
+}
+
+-keep class org.chromium.chrome.browser.IntentHandler {
+    public <init>(...);
+    *** getUrlForCustomTab(...);
+    *** getUrlForWebapp(...);
+    *** isJavascriptSchemeOrInvalidUrl(...);
+    *** extractUrlFromIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.BraveIntentHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.AppHooksImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.BraveAppHooks {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.flags.CachedFlag {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.flags.BraveCachedFlag {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.logo.LogoCoordinator {
+    *** mShouldShowLogo;
+    public <init>(...);
+    *** updateVisibility(...);
+}
+
+-keep class org.chromium.chrome.browser.logo.BraveLogoCoordinator {
+    *** mShouldShowLogo;
+    public <init>(...);
+    *** updateVisibility(...);
 }

@@ -100,7 +100,9 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   PrefService* profile_state = nullptr);
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url);
-
+bool IsBraveShieldsManaged(PrefService* prefs,
+                           HostContentSettingsMap* map,
+                           GURL url);
 void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
                                bool enable,
                                const GURL& url,

@@ -13,12 +13,11 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/sidebar/bubble_border_with_arrow.h"
-#include "brave/browser/ui/views/sidebar/sidebar_bubble_background.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -98,15 +97,34 @@ END_METADATA
 
 }  // namespace
 
+// static
+views::Widget* SidebarAddItemBubbleDelegateView::Create(
+    BraveBrowser* browser,
+    views::View* anchor_view) {
+  auto* delegate = new SidebarAddItemBubbleDelegateView(browser, anchor_view);
+  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
+  auto* frame_view = delegate->GetBubbleFrameView();
+  frame_view->bubble_border()->set_md_shadow_elevation(
+      ChromeLayoutProvider::Get()->GetShadowElevationMetric(
+          views::Emphasis::kHigh));
+  frame_view->SetDisplayVisibleArrow(true);
+  delegate->set_adjust_if_offscreen(true);
+  delegate->SizeToContents();
+  frame_view->SetCornerRadius(4);
+
+  return bubble;
+}
+
 SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
     BraveBrowser* browser,
     views::View* anchor_view)
-    : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::LEFT_TOP),
+    : BubbleDialogDelegateView(anchor_view,
+                               views::BubbleBorder::LEFT_TOP,
+                               views::BubbleBorder::STANDARD_SHADOW),
       browser_(browser) {
   DCHECK(browser_);
-  // Give margin and arrow at there.
-  set_margins(gfx::Insets::TLBR(
-      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
+
+  set_margins(gfx::Insets());
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
@@ -118,22 +136,6 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
 }
 
 SidebarAddItemBubbleDelegateView::~SidebarAddItemBubbleDelegateView() = default;
-
-std::unique_ptr<views::NonClientFrameView>
-SidebarAddItemBubbleDelegateView::CreateNonClientFrameView(
-    views::Widget* widget) {
-  std::unique_ptr<views::BubbleFrameView> frame(
-      new views::BubbleFrameView(gfx::Insets(), gfx::Insets()));
-  std::unique_ptr<BubbleBorderWithArrow> border =
-      std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
-  constexpr int kRadius = 4;
-  border->SetCornerRadius(kRadius);
-  auto* border_ptr = border.get();
-  frame->SetBubbleBorder(std::move(border));
-  // Replace frame's background to draw arrow.
-  frame->SetBackground(std::make_unique<SidebarBubbleBackground>(border_ptr));
-  return frame;
-}
 
 void SidebarAddItemBubbleDelegateView::AddChildViews() {
   SetLayoutManager(std::make_unique<views::BoxLayout>(

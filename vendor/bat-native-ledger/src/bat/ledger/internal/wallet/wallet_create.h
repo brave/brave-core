@@ -20,11 +20,12 @@ class WalletCreate {
  public:
   explicit WalletCreate(LedgerImpl*);
 
-  void CreateWallet(absl::optional<std::string>&& geo_country, ResultCallback);
+  void CreateWallet(absl::optional<std::string>&& geo_country,
+                    CreateRewardsWalletCallback callback);
 
  private:
   template <typename Result>
-  void OnResult(ResultCallback,
+  void OnResult(CreateRewardsWalletCallback,
                 absl::optional<std::string>&& geo_country,
                 Result&&);
 

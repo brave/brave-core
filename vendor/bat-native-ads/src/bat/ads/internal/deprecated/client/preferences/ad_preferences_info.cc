@@ -67,6 +67,8 @@ base::Value::Dict AdPreferencesInfo::ToValue() const {
   return dict;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/24939): Reduce cognitive
+// complexity.
 void AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindList("filtered_advertisers")) {
     for (const auto& item : *value) {

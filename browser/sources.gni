@@ -16,6 +16,7 @@ import("//brave/browser/brave_wallet/android/sources.gni")
 import("//brave/browser/brave_wallet/notifications/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/component_updater/sources.gni")
+import("//brave/browser/core_metrics/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/download/sources.gni")
@@ -31,6 +32,7 @@ import("//brave/browser/ntp_background/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
+import("//brave/browser/sharing_hub/sources.gni")
 import("//brave/browser/skus/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/themes/sources.gni")
@@ -126,6 +128,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_federated",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_rewards/common",
   "//brave/components/brave_rewards/common/buildflags",
   "//brave/components/brave_search/browser",
   "//brave/components/brave_search/common",
@@ -150,7 +153,6 @@ brave_chrome_browser_deps = [
   "//brave/components/gemini/browser/buildflags",
   "//brave/components/greaselion/browser/buildflags",
   "//brave/components/ipfs/buildflags",
-  "//brave/components/l10n/browser",
   "//brave/components/l10n/common",
   "//brave/components/ntp_background_images/browser",
   "//brave/components/ntp_background_images/buildflags",
@@ -218,6 +220,8 @@ if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_browser_main_parts_mac.h",
     "//brave/browser/brave_browser_main_parts_mac.mm",
+    "//brave/browser/brave_shell_integration_mac.h",
+    "//brave/browser/brave_shell_integration_mac.mm",
   ]
 }
 
@@ -371,27 +375,7 @@ if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_contents = [ "Frameworks" ]
-  brave_chrome_framework_ldflags = []
-
-  # this needs to match the guards on //chrome:verify_chrome_framework_order
-  if (!is_component_build && chrome_pgo_phase != 1) {
-    brave_chrome_framework_public_deps += [
-      # TODO(bridiver) - this doesn't have to be a public dep
-      "//brave/build/rust:generate_unexport_list",
-    ]
-    brave_chrome_framework_ldflags += [
-      # prevent export of all rust symbols
-      "-Wl,-unexported_symbols_list," +
-          rebase_path(unexport_list_path, root_build_dir),
-    ]
-  }
-  if (!is_component_build && !use_lld) {
-    brave_chrome_framework_ldflags += [
-      # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
-      # Supposedly this bug was fixed, but it's still happening for us
-      "-Wl,-no_compact_unwind",
-    ]
-  }
+  brave_chrome_framework_configs = [ "//brave/build/rust:strip_rust_symbols" ]
 }
 
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
@@ -407,6 +391,7 @@ brave_chrome_browser_sources += brave_browser_brave_shields_sources
 brave_chrome_browser_sources += brave_browser_brave_stats_updater_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_component_updater_sources
+brave_chrome_browser_sources += brave_browser_core_metrics_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_download_sources
@@ -425,6 +410,7 @@ brave_chrome_browser_sources += brave_browser_speedreader_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_sources += brave_browser_url_sanitizer_sources
+brave_chrome_browser_sources += brave_browser_sharing_hub_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_binance_deps
@@ -438,6 +424,7 @@ brave_chrome_browser_deps += brave_browser_brave_shields_deps
 brave_chrome_browser_deps += brave_browser_brave_stats_updater_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_component_updater_deps
+brave_chrome_browser_deps += brave_browser_core_metrics_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_download_deps

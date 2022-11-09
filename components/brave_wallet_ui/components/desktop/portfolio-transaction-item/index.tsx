@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -9,6 +14,7 @@ import {
   WalletState,
   WalletRoutes
 } from '../../../constants/types'
+import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
@@ -19,10 +25,10 @@ import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getLocale } from '../../../../common/locale'
 import { isSolanaTransaction } from '../../../utils/tx-utils'
+import { WalletActions } from '../../../common/actions'
 
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
-import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
 
 // Styled Components
@@ -42,31 +48,47 @@ import {
   MoreButton,
   MoreIcon,
   StatusRow,
-  StyledWrapper,
+  PortfolioTransactionItemWrapper,
   ToCircle,
-  TransactionDetailRow,
+  OrbAndTxDescriptionContainer,
   TransactionFeeTooltipBody,
-  TransactionFeeTooltipTitle
+  TransactionFeeTooltipTitle,
+  StatusBalanceAndMoreContainer,
+  OrbWrapper
 } from './style'
 import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
-import { WalletActions } from '../../../common/actions'
 
 export interface Props {
   transaction: BraveWallet.TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
   displayAccountName: boolean
+  isFocused?: boolean
 }
 
-export const PortfolioTransactionItem = ({
+const getLocaleKeyForTxStatus = (status: BraveWallet.TransactionStatus) => {
+  switch (status) {
+    case BraveWallet.TransactionStatus.Unapproved: return 'braveWalletTransactionStatusUnapproved'
+    case BraveWallet.TransactionStatus.Approved: return 'braveWalletTransactionStatusApproved'
+    case BraveWallet.TransactionStatus.Rejected: return 'braveWalletTransactionStatusRejected'
+    case BraveWallet.TransactionStatus.Submitted: return 'braveWalletTransactionStatusSubmitted'
+    case BraveWallet.TransactionStatus.Confirmed: return 'braveWalletTransactionStatusConfirmed'
+    case BraveWallet.TransactionStatus.Error: return 'braveWalletTransactionStatusError'
+    case BraveWallet.TransactionStatus.Dropped: return 'braveWalletTransactionStatusDropped'
+    default: return ''
+  }
+}
+
+export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(({
   transaction,
   account,
   displayAccountName,
-  accounts
-}: Props) => {
+  accounts,
+  isFocused
+}: Props, forwardedRef) => {
   // routing
   const history = useHistory()
 
@@ -265,7 +287,7 @@ export const PortfolioTransactionItem = ({
     }
   }, [transactionDetails, onAssetClick, onAddressClick])
 
-  const transactionIntentLocale = React.useMemo(() => {
+  const transactionActionLocale = React.useMemo(() => {
     switch (true) {
       case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
         const text = getLocale('braveWalletApprovalTransactionIntent')
@@ -316,23 +338,29 @@ export const PortfolioTransactionItem = ({
     }
   }, [transaction, transactionDetails, displayAccountName, onAssetClick])
 
+  const wasTxRejected =
+    transactionDetails.status !== BraveWallet.TransactionStatus.Rejected &&
+    transactionDetails.status !== BraveWallet.TransactionStatus.Unapproved
+
   // render
   return (
-    <StyledWrapper onClick={onHideTransactionPopup}>
-      <TransactionDetailRow>
-        <FromCircle orb={fromOrb} />
-        <ToCircle orb={toOrb} />
+    <PortfolioTransactionItemWrapper ref={forwardedRef} isFocused={isFocused} onClick={onHideTransactionPopup}>
+      <OrbAndTxDescriptionContainer>
+        <OrbWrapper>
+          <FromCircle orb={fromOrb} />
+          <ToCircle orb={toOrb} />
+        </OrbWrapper>
+
         <DetailColumn>
           <DetailRow>
-            { // Display account name only if rendered under Portfolio view
-              displayAccountName &&
+
+            {displayAccountName && // Display account name only if rendered under Portfolio view
               <DetailTextLight>
                 {account?.name}
               </DetailTextLight>
             }
-            <DetailTextDark>
-              {transactionIntentLocale}
-            </DetailTextDark>
+
+            <DetailTextDark>{transactionActionLocale}</DetailTextDark>
             <DetailTextLight>-</DetailTextLight>
 
             <TransactionTimestampTooltip
@@ -346,114 +374,113 @@ export const PortfolioTransactionItem = ({
                 {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
               </DetailTextDarkBold>
             </TransactionTimestampTooltip>
+
           </DetailRow>
+
           {transactionIntentDescription}
+
         </DetailColumn>
-      </TransactionDetailRow>
-      <StatusRow>
-        <StatusBubble status={transactionDetails.status} />
-        <DetailTextDarkBold>
-          {transactionDetails.status === BraveWallet.TransactionStatus.Unapproved && getLocale('braveWalletTransactionStatusUnapproved')}
-          {transactionDetails.status === BraveWallet.TransactionStatus.Approved && getLocale('braveWalletTransactionStatusApproved')}
-          {transactionDetails.status === BraveWallet.TransactionStatus.Rejected && getLocale('braveWalletTransactionStatusRejected')}
-          {transactionDetails.status === BraveWallet.TransactionStatus.Submitted && getLocale('braveWalletTransactionStatusSubmitted')}
-          {transactionDetails.status === BraveWallet.TransactionStatus.Confirmed && getLocale('braveWalletTransactionStatusConfirmed')}
-          {transactionDetails.status === BraveWallet.TransactionStatus.Error && getLocale('braveWalletTransactionStatusError')}
-          {transactionDetails.status === BraveWallet.TransactionStatus.Dropped && getLocale('braveWalletTransactionStatusDropped')}
-        </DetailTextDarkBold>
-      </StatusRow>
-      <DetailRow>
-        <BalanceColumn>
-          <DetailTextDark>
-            {/* We need to return a Transaction Time Stamp to calculate Fiat value here */}
-            {transactionDetails.fiatValue
-              .formatAsFiat(defaultCurrencies.fiat)}
-          </DetailTextDark>
-          <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
-        </BalanceColumn>
-        {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-        {!isSolanaTxn &&
-          <TransactionFeesTooltip
-            text={
-              <>
-                <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
-                <TransactionFeeTooltipBody>
-                  {
-                    new Amount(transactionDetails.gasFee)
+
+      </OrbAndTxDescriptionContainer>
+
+      <StatusBalanceAndMoreContainer>
+        <StatusRow>
+          <StatusBubble status={transactionDetails.status} />
+          <DetailTextDarkBold>
+            {getLocale(getLocaleKeyForTxStatus(transactionDetails.status))}
+          </DetailTextDarkBold>
+        </StatusRow>
+
+        {/* Balance & more */}
+        <DetailRow>
+          <BalanceColumn>
+            <DetailTextDark>
+              {/* We need to return a Transaction Time Stamp to calculate Fiat value here */}
+              {transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat)}
+            </DetailTextDark>
+            <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
+          </BalanceColumn>
+
+          {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
+          {!isSolanaTxn &&
+            <TransactionFeesTooltip
+              text={
+                <>
+                  <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
+                  <TransactionFeeTooltipBody>
+                    {transactionsNetwork && new Amount(transactionDetails.gasFee)
                       .divideByDecimals(transactionsNetwork.decimals)
                       .formatAsAsset(6, transactionsNetwork.symbol)
-                  }
-                </TransactionFeeTooltipBody>
-                <TransactionFeeTooltipBody>
-                  {
-                    new Amount(transactionDetails.gasFeeFiat)
-                      .formatAsFiat(defaultCurrencies.fiat)
-                  }
-                </TransactionFeeTooltipBody>
-              </>
-            }
-          >
-            <CoinsButton>
-              <CoinsIcon />
-            </CoinsButton>
-          </TransactionFeesTooltip>
-        }
+                    }
+                  </TransactionFeeTooltipBody>
+                  <TransactionFeeTooltipBody>
+                    {
+                      new Amount(transactionDetails.gasFeeFiat)
+                        .formatAsFiat(defaultCurrencies.fiat)
+                    }
+                  </TransactionFeeTooltipBody>
+                </>
+              }
+            >
+              <CoinsButton>
+                <CoinsIcon />
+              </CoinsButton>
+            </TransactionFeesTooltip>
+          }
 
-        {(transactionDetails.status !== BraveWallet.TransactionStatus.Rejected && transactionDetails.status !== BraveWallet.TransactionStatus.Unapproved) ? (
-          <MoreButton onClick={onShowTransactionPopup}>
-            <MoreIcon />
-          </MoreButton>
-        ) : (
-          <RejectedTransactionSpacer />
-        )}
+          {wasTxRejected
+            ? <MoreButton onClick={onShowTransactionPopup}>
+              <MoreIcon />
+            </MoreButton>
+            : <RejectedTransactionSpacer />
+          }
 
-        {showTransactionPopup &&
-          <TransactionPopup>
-            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed, BraveWallet.TransactionStatus.Dropped].includes(transactionDetails.status) &&
-              <TransactionPopupItem
-                onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
-                text={getLocale('braveWalletTransactionExplorer')}
-              />
-            }
+          {showTransactionPopup &&
+            <TransactionPopup>
+              {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed, BraveWallet.TransactionStatus.Dropped].includes(transactionDetails.status) &&
+                <>
+                  <TransactionPopupItem
+                    onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
+                    text={getLocale('braveWalletTransactionExplorer')}
+                  />
+                  <TransactionPopupItem
+                    onClick={onClickCopyTransactionHash}
+                    text={getLocale('braveWalletTransactionCopyHash')}
+                  />
+                </>
+              }
 
-            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed, BraveWallet.TransactionStatus.Dropped].includes(transactionDetails.status) &&
-              <TransactionPopupItem
-                onClick={onClickCopyTransactionHash}
-                text={getLocale('braveWalletTransactionCopyHash')}
-              />
-            }
+              {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
+                !isSolanaTxn &&
+                !isFilecoinTransaction &&
+                <>
+                  <TransactionPopupItem
+                    onClick={onClickSpeedupTransaction}
+                    text={getLocale('braveWalletTransactionSpeedup')}
+                  />
+                  <TransactionPopupItem
+                    onClick={onClickCancelTransaction}
+                    text={getLocale('braveWalletTransactionCancel')}
+                  />
+                </>
+              }
 
-            {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
-              !isSolanaTxn &&
-              !isFilecoinTransaction &&
-              <TransactionPopupItem
-                onClick={onClickSpeedupTransaction}
-                text={getLocale('braveWalletTransactionSpeedup')}
-              />
-            }
+              {[BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
+                !isSolanaTxn &&
+                !isFilecoinTransaction &&
+                <TransactionPopupItem
+                  onClick={onClickRetryTransaction}
+                  text={getLocale('braveWalletTransactionRetry')}
+                />
+              }
+            </TransactionPopup>
+          }
+        </DetailRow>
+      </StatusBalanceAndMoreContainer>
 
-            {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
-              !isSolanaTxn &&
-              !isFilecoinTransaction &&
-              <TransactionPopupItem
-                onClick={onClickCancelTransaction}
-                text={getLocale('braveWalletTransactionCancel')}
-              />
-            }
-
-            {[BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
-              !isSolanaTxn &&
-              !isFilecoinTransaction &&
-              <TransactionPopupItem
-                onClick={onClickRetryTransaction}
-                text={getLocale('braveWalletTransactionRetry')}
-              />
-            }
-          </TransactionPopup>
-        }
-      </DetailRow>
-    </StyledWrapper>
+    </PortfolioTransactionItemWrapper>
   )
 }
+)
 
 export default PortfolioTransactionItem

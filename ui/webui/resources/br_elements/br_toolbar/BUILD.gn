@@ -1,8 +1,0 @@
-import("//tools/polymer/html_to_js.gni")
-
-html_to_js("br_toolbar") {
-  js_files = [
-    "br_toolbar.js",
-    "br_toolbar_search_field.js",
-  ]
-}

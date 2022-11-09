@@ -6,6 +6,7 @@
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_migration.h"
 
 #include <string>
+#include <utility>
 
 #include "absl/types/optional.h"
 #include "base/bind.h"
@@ -15,7 +16,7 @@
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_json_reader.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads::notifications {
 
@@ -29,20 +30,20 @@ bool HasMigrated() {
 }
 
 void FailedToMigrate(InitializeCallback callback) {
-  callback(/*success*/ false);
+  std::move(callback).Run(/*success*/ false);
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedNotificationState, true);
-  callback(/*success*/ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/*success*/ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
@@ -55,7 +56,7 @@ void Migrate(InitializeCallback callback) {
              const std::string& json) {
             if (!success) {
               // Notification state does not exist
-              SuccessfullyMigrated(callback);
+              SuccessfullyMigrated(std::move(callback));
               return;
             }
 
@@ -63,7 +64,7 @@ void Migrate(InitializeCallback callback) {
                 json::reader::ReadNotificationAds(json);
             if (!ads) {
               BLOG(0, "Failed to load notification state");
-              FailedToMigrate(callback);
+              FailedToMigrate(std::move(callback));
               return;
             }
 
@@ -75,9 +76,9 @@ void Migrate(InitializeCallback callback) {
                 prefs::kNotificationAds, NotificationAdsToValue(*ads));
 
             BLOG(3, "Successfully migrated notification state");
-            SuccessfullyMigrated(callback);
+            SuccessfullyMigrated(std::move(callback));
           },
-          callback));
+          std::move(callback)));
 }
 
 }  // namespace ads::notifications

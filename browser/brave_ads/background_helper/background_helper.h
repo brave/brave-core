@@ -20,10 +20,13 @@ class BackgroundHelper {
     virtual void OnBrowserDidEnterBackground() = 0;
   };
 
-  virtual ~BackgroundHelper();
-
   BackgroundHelper(const BackgroundHelper&) = delete;
   BackgroundHelper& operator=(const BackgroundHelper&) = delete;
+
+  BackgroundHelper(BackgroundHelper&& other) noexcept = delete;
+  BackgroundHelper& operator=(BackgroundHelper&& other) noexcept = delete;
+
+  virtual ~BackgroundHelper();
 
   static BackgroundHelper* GetInstance();
 

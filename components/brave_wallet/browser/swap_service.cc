@@ -54,7 +54,7 @@ bool IsMainnetEVMNetworkSupported(const std::string& chain_id) {
 }
 
 bool IsEVMNetworkSupported(const std::string& chain_id) {
-  return (chain_id == brave_wallet::mojom::kRopstenChainId ||
+  return (chain_id == brave_wallet::mojom::kGoerliChainId ||
           IsMainnetEVMNetworkSupported(chain_id));
 }
 
@@ -105,8 +105,12 @@ GURL AppendJupiterQuoteParams(
     url = net::AppendQueryParameter(url, "outputMint", params.output_mint);
   if (!params.amount.empty())
     url = net::AppendQueryParameter(url, "amount", params.amount);
-  url = net::AppendQueryParameter(url, "feeBps",
-                                  brave_wallet::SwapService::GetFee(chain_id));
+
+  if (brave_wallet::HasJupiterFeesForTokenMint(params.output_mint)) {
+    url = net::AppendQueryParameter(
+        url, "feeBps", brave_wallet::SwapService::GetFee(chain_id));
+  }
+
   url = net::AppendQueryParameter(
       url, "slippage", base::StringPrintf("%.6f", params.slippage_percentage));
 
@@ -164,8 +168,8 @@ std::string SwapService::GetFee(const std::string& chain_id) {
 std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
   std::string url;
 
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    url = brave_wallet::kRopstenSwapBaseAPIURL;
+  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
+    url = brave_wallet::kGoerliSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
     url = brave_wallet::kSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
@@ -196,8 +200,8 @@ std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
 
   // For easy testability on test networks, we use an address different from
   // the production multisig address.
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    feeRecipient = brave_wallet::kRopstenFeeRecipient;
+  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
+    feeRecipient = brave_wallet::kGoerliFeeRecipient;
   } else if (IsMainnetEVMNetworkSupported(chain_id)) {
     feeRecipient = brave_wallet::kFeeRecipient;
   } else if (IsSolanaNetworkSupported(chain_id)) {
@@ -445,6 +449,12 @@ void SwapService::OnGetJupiterSwapTransactions(
   }
 
   std::move(callback).Run(true, std::move(swap_transactions), absl::nullopt);
+}
+
+void SwapService::HasJupiterFeesForTokenMint(
+    const std::string& mint,
+    HasJupiterFeesForTokenMintCallback callback) {
+  std::move(callback).Run(brave_wallet::HasJupiterFeesForTokenMint(mint));
 }
 
 }  // namespace brave_wallet

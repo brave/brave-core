@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.cc b/chrome/browser/ui/tabs/tab_style.cc
-index 450d68c42441d6c81daeca7676ee1f12b2bea095..60c0a59b94730dd552e9d217ddba341d0bc6f2dc 100644
+index 2070b5956576442c6cf7ddf667134232013e5dc2..a3bf90a36d71a29eb73030b5eb18dbc2482e4fcd 100644
 --- a/chrome/browser/ui/tabs/tab_style.cc
 +++ b/chrome/browser/ui/tabs/tab_style.cc
 @@ -15,7 +15,7 @@ constexpr int kSeparatorThickness = 1;

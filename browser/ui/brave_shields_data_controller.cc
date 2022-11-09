@@ -340,6 +340,16 @@ void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
   ReloadWebContents();
 }
 
+bool BraveShieldsDataController::IsBraveShieldsManaged() {
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+
+  return brave_shields::IsBraveShieldsManaged(
+      profile_prefs, GetHostContentSettingsMap(web_contents()),
+      GetCurrentSiteURL());
+}
+
 void BraveShieldsDataController::HandleItemBlocked(
     const std::string& block_type,
     const std::string& subresource) {

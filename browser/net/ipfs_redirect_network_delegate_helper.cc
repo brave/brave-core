@@ -13,6 +13,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
+#include "net/base/url_util.h"
 
 namespace ipfs {
 
@@ -81,48 +82,6 @@ int OnBeforeURLRequest_IPFSRedirectWork(
   } else if (has_ipfs_scheme) {
     // Block incorrect url.
     ctx->blocked_by = brave::kOtherBlocked;
-  }
-
-  return net::OK;
-}
-
-int OnHeadersReceived_IPFSRedirectWork(
-    const net::HttpResponseHeaders* response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-    GURL* allowed_unsafe_redirect_url,
-    const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!ctx->browser_context)
-    return net::OK;
-  auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
-  if (IsIpfsResolveMethodDisabled(prefs)) {
-    return net::OK;
-  }
-
-  std::string ipfs_path;
-  bool api_gateway = IsAPIGateway(ctx->request_url, chrome::GetChannel());
-  if (ctx->ipfs_auto_fallback && !api_gateway && response_headers &&
-      response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
-      // Make sure we don't infinite redirect
-      !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host()) &&
-      // Do not redirect if the frame is not ipfs/ipns
-      IsIPFSScheme(ctx->initiator_url)) {
-    GURL::Replacements replacements;
-    replacements.SetPathStr(ipfs_path);
-
-    if (ctx->request_url.has_query()) {
-      replacements.SetQueryStr(ctx->request_url.query_piece());
-    }
-
-    GURL new_url = ctx->ipfs_gateway_url.ReplaceComponents(replacements);
-
-    *override_response_headers =
-        new net::HttpResponseHeaders(response_headers->raw_headers());
-    (*override_response_headers)
-        ->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
-    (*override_response_headers)->RemoveHeader("Location");
-    (*override_response_headers)->AddHeader("Location", new_url.spec());
-    *allowed_unsafe_redirect_url = new_url;
   }
 
   return net::OK;

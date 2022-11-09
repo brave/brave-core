@@ -152,11 +152,6 @@ void OpenTipDialog(WebContents* initiator, base::Value::Dict params) {
     }
   }
 
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->StartProcess(base::DoNothing());
-  }
-
   content::WebContents* outermost_web_contents =
     guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
   gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();

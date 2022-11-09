@@ -6,11 +6,13 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_JS_HANDLER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_JS_HANDLER_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/wrappable.h"
 
 namespace speedreader {
+
+class SpeedreaderRenderFrameObserver;
 
 class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
  public:
@@ -19,10 +21,11 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
   SpeedreaderJSHandler(const SpeedreaderJSHandler&) = delete;
   SpeedreaderJSHandler& operator=(const SpeedreaderJSHandler&) = delete;
 
-  static void Install(content::RenderFrame* render_frame);
+  static void Install(base::WeakPtr<SpeedreaderRenderFrameObserver> owner);
 
  private:
-  explicit SpeedreaderJSHandler(content::RenderFrame* render_frame);
+  explicit SpeedreaderJSHandler(
+      base::WeakPtr<SpeedreaderRenderFrameObserver> owner);
   ~SpeedreaderJSHandler() final;
 
   // gin::WrappableBase
@@ -32,7 +35,7 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
   // A function to be called from JS
   void ShowOriginalPage(v8::Isolate* isolate);
 
-  raw_ptr<content::RenderFrame> render_frame_ = nullptr;
+  base::WeakPtr<SpeedreaderRenderFrameObserver> owner_;
 };
 
 }  // namespace speedreader

@@ -21,7 +21,7 @@ absl::optional<int> ParsePing(const base::Value& value) {
 }
 
 absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value) {
-  const base::Value::List* list = value.FindList(kIssuersKey);
+  const base::Value::List* const list = value.FindList(kIssuersKey);
   if (!list) {
     return absl::nullopt;
   }

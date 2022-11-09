@@ -13,7 +13,6 @@
 
 #include "base/observer_list.h"
 #include "bat/ads/internal/base/timer/timer.h"
-#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
@@ -64,10 +63,6 @@ class Conversions final : public LocaleManagerObserver,
 
   void Convert(const AdEventInfo& ad_event,
                const VerifiableConversionInfo& verifiable_conversion);
-
-  ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
-                                   const ConversionList& conversions);
-  ConversionList SortConversions(const ConversionList& conversions);
 
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);

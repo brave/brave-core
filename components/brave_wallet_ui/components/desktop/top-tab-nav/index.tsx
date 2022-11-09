@@ -1,9 +1,7 @@
 import * as React from 'react'
 import {
   TopTabNavObjectType,
-  TopTabNavTypes,
-  AddAccountNavTypes,
-  AccountSettingsNavTypes
+  TabNavTypes
 } from '../../../constants/types'
 
 // Styled Components
@@ -24,10 +22,10 @@ import {
 
 export interface Props {
   tabList: TopTabNavObjectType[]
-  selectedTab?: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes
+  selectedTab?: TabNavTypes
   hasMoreButtons?: boolean
   showMore?: boolean
-  onSelectTab: (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => void
+  onSelectTab: (id: TabNavTypes) => void
   onClickSettings?: () => void
   onClickBackup?: () => void
   onClickMore?: () => void
@@ -45,7 +43,7 @@ function TopTabNav (props: Props) {
     onSelectTab
   } = props
 
-  const onClickSelectTab = (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => () => {
+  const onClickSelectTab = (id: TabNavTypes) => () => {
     onSelectTab(id)
   }
 

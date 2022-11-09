@@ -169,12 +169,21 @@ export const ConnectedPanel = (props: Props) => {
   }, [selectedAccount.address])
 
   const isBuyDisabled = React.useMemo(() => {
+    if (!selectedNetwork) {
+      return true
+    }
     return !BuySupportedChains.includes(selectedNetwork.chainId)
   }, [BuySupportedChains, selectedNetwork])
 
-  const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
-    selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals
-  ), [computeFiatAmount, selectedNetwork, selectedAccount])
+  const selectedAccountFiatBalance = React.useMemo(() => {
+    if (!selectedNetwork) {
+      return Amount.empty()
+    }
+
+    return computeFiatAmount(
+      selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals
+    )
+  }, [computeFiatAmount, selectedNetwork, selectedAccount])
 
   const isConnected = React.useMemo((): boolean => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
@@ -212,9 +221,11 @@ export const ConnectedPanel = (props: Props) => {
   }, [selectedCoin, connectedAccounts, originInfo, isPermissionDenied])
 
   // computed
-  const formattedAssetBalance = new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
-    .divideByDecimals(selectedNetwork.decimals)
-    .formatAsAsset(6, selectedNetwork.symbol)
+  const formattedAssetBalance = selectedNetwork
+    ? new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
+      .divideByDecimals(selectedNetwork.decimals)
+      .formatAsAsset(6, selectedNetwork.symbol)
+    : ''
 
   // render
   return (

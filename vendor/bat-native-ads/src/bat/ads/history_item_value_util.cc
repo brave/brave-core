@@ -54,13 +54,14 @@ base::Value::List HistoryItemToDetailRowsValue(
 HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& root) {
   HistoryItemInfo history_item;
 
-  if (const auto* value = root.FindString(kCreatedAtKey)) {
+  if (const auto* created_at_value_string = root.FindString(kCreatedAtKey)) {
     double created_at_as_double = 0.0;
-    if (base::StringToDouble(*value, &created_at_as_double)) {
+    if (base::StringToDouble(*created_at_value_string, &created_at_as_double)) {
       history_item.created_at = base::Time::FromDoubleT(created_at_as_double);
     }
-  } else if (const auto value = root.FindDouble(kCreatedAtKey)) {
-    history_item.created_at = base::Time::FromDoubleT(*value);
+  } else if (const auto created_at_value_double =
+                 root.FindDouble(kCreatedAtKey)) {
+    history_item.created_at = base::Time::FromDoubleT(*created_at_value_double);
   }
 
   if (const auto* value = root.FindDict(kAdContentKey)) {
@@ -108,7 +109,7 @@ HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   HistoryItemList history_items;
 
   for (const auto& history_item : list) {
-    const base::Value::Dict* dict = history_item.GetIfDict();
+    const base::Value::Dict* const dict = history_item.GetIfDict();
     if (!dict) {
       continue;
     }

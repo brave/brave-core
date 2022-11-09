@@ -8,9 +8,9 @@
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -35,10 +35,6 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
@@ -156,6 +152,8 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
+    case IDC_COPY_CLEAN_LINK:
+      return params_.link_url.is_valid();
     case IDC_CONTENT_CONTEXT_FORCE_PASTE:
       // only enable if there is plain text data to paste - this is what
       // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
@@ -223,6 +221,9 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
+    case IDC_COPY_CLEAN_LINK:
+      brave::CopyLinkWithStrictCleaning(GetBrowser(), params_.link_url);
+      break;
     case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
       std::u16string result;
       ui::Clipboard::GetForCurrentThread()->ReadText(
@@ -400,24 +401,16 @@ void BraveRenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 #endif
+  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
+    absl::optional<size_t> link_index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
+    if (link_index.has_value()) {
+      menu_model_.InsertItemWithStringIdAt(
+          link_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
+    }
+  }
 
 #if BUILDFLAG(ENABLE_IPFS)
   BuildIPFSMenu();
 #endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  const bool remove_translate =
-      !translate::IsInternalTranslationEnabled(GetProfile());
-#else
-  const bool remove_translate = true;
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-
-  // Only show the translate item when go-translate is enabled.
-  // This removes menu item, but keeps the duplicated separator. The duplicated
-  // separator is removed in |BraveRenderViewContextMenuViews::Show|
-  if (remove_translate) {
-    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
-    if (index.has_value())
-      menu_model_.RemoveItemAt(index.value());
-  }
 }

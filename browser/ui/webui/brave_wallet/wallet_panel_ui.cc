@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/command_line.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -24,9 +25,10 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -62,11 +64,13 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + ";");
+          kUntrustedLedgerURL + " " + kUntrustedNftURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
-
+  source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
+                     base::CommandLine::ForCurrentProcess()->HasSwitch(
+                         brave_wallet::mojom::kP3ACountTestNetworksSwitch));
   if (ShouldDisableCSPForTesting()) {
     source->DisableContentSecurityPolicy();
   }
@@ -115,7 +119,9 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
         filecoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
-        brave_wallet_service_receiver) {
+        brave_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
+        brave_wallet_p3a_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -142,8 +148,11 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(solana_tx_manager_proxy_receiver));
   brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
       profile, std::move(filecoin_tx_manager_proxy_receiver));
-  brave_wallet::BraveWalletServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_service_receiver));
+  brave_wallet::BraveWalletService* wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+  wallet_service->Bind(std::move(brave_wallet_service_receiver));
+  wallet_service->GetBraveWalletP3A()->Bind(
+      std::move(brave_wallet_p3a_receiver));
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

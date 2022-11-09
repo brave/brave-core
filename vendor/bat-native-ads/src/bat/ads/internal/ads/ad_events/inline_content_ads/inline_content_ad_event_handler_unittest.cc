@@ -29,13 +29,21 @@ constexpr char kInvalidPlacementId[] = "";
 constexpr char kCreativeInstanceId[] = "1547f94f-9086-4db9-a441-efb2f0365269";
 constexpr char kInvalidCreativeInstanceId[] = "";
 
+CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
+  CreativeInlineContentAdList creative_ads;
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  creative_ads.push_back(creative_ad);
+
+  SaveCreativeAds(creative_ads);
+
+  return creative_ad;
+}
+
 }  // namespace
 
 class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
                                               public UnitTestBase {
  protected:
-  BatAdsInlineContentAdEventHandlerTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -69,16 +77,6 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
       const std::string& /*creative_instance_id*/,
       const mojom::InlineContentAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
-  }
-
-  CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
-    CreativeInlineContentAdList creative_ads;
-    CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
-    creative_ads.push_back(creative_ad);
-
-    SaveCreativeAds(creative_ads);
-
-    return creative_ad;
   }
 
   std::unique_ptr<EventHandler> event_handler_;

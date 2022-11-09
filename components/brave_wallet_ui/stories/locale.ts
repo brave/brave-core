@@ -72,6 +72,9 @@ provideStrings({
 
   // Actions
   braveWalletClickToSwitch: 'Click to switch',
+  braveWalletEnterYourPassword: 'Enter your password',
+  braveWalletEnterAPassswordToContinue: 'Enter a password to continue',
+  braveWalletEnterYourPasswordToStartBackup: 'Enter your Brave Wallet password to start backing up wallet.',
 
   // BuySendSwap
   braveWalletBuy: 'Buy',
@@ -199,7 +202,7 @@ provideStrings({
   // Onboarding Success
   braveWalletOnboardingSuccessTitle: 'Congratulations! Your Brave Wallet is ready to go!',
   braveWalletOnboardingSuccessDescription: 'To access your wallet, just click the wallet icon at the top right of any Brave browser window.',
-  braveWalletBuyCryptoButton: 'Buy Crypto',
+  braveWalletBuyCryptoButton: 'Buy crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
 
@@ -207,7 +210,7 @@ provideStrings({
   braveWalletArticleLinkWhatsARecoveryPhrase: 'What’s a recovery phrase?',
 
   // Lock Screen
-  braveWalletEnterYourPassword: 'Enter your Brave Wallet password',
+  braveWalletEnterYourBraveWalletPassword: 'Enter your Brave Wallet password',
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',
   braveWalletLockScreenButton: 'Unlock',
   braveWalletLockScreenError: 'Incorrect password',
@@ -362,9 +365,6 @@ provideStrings({
   braveWalletNetworkETH: 'Ethereum',
   braveWalletNetworkMain: 'Mainnet',
   braveWalletNetworkTest: 'Test Network',
-  braveWalletNetworkRopsten: 'Roptsten',
-  braveWalletNetworkKovan: 'Kovan',
-  braveWalletNetworkRinkeby: 'Rinkeby',
   braveWalletNetworkGoerli: 'Goerli',
   braveWalletNetworkBinance: 'Binance Smart Chain',
   braveWalletNetworkBinanceAbbr: 'BSC',
@@ -490,6 +490,7 @@ provideStrings({
   braveWalletAssetsPanelTitle: 'Account assets',
   braveWalletPanelDisconnected: 'Disconnected',
   braveWalletPanelBlocked: 'Blocked',
+  braveWalletTitle: 'Wallet',
 
   // Wallet Welcome Panel
   braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',
@@ -527,6 +528,10 @@ provideStrings({
   braveWalletConnectHardwarePanelConnect: 'Connect your $1',
   braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation on device.',
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
+
+  // Transaction History Panel (Empty)
+  braveWalletNoTransactionsYet: 'No transactions yet',
+  braveWalletNoTransactionsYetDescription: 'After your first transaction you will be able to view it here.',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',
@@ -634,13 +639,14 @@ provideStrings({
   braveWalletMarketData24HrColumn: '24Hr',
   braveWalletMarketDataMarketCapColumn: 'Mkt. Cap',
   braveWalletMarketDataVolumeColumn: 'Volume',
+  braveWalletMarketDataBuyDepositColumn: 'Buy/Deposit',
 
   // Market Coin Detail Screen
   braveWalletInformation: 'Information',
   braveWalletRankStat: 'Rank',
   braveWalletVolumeStat: '24h Volume',
   braveWalletMarketCapStat: 'Market Cap',
-  braveWalletMarketDataCoinNotSupported: 'This asset is not supported by brave wallet',
+  braveWalletMarketDataCoinNotSupported: 'This asset is not supported by Brave Wallet',
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
@@ -758,5 +764,10 @@ provideStrings({
   // NFTs Tab
   braveWalletNftsEmptyState: 'No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of' +
     ' the "Portfolio" tab',
-  braveWalletNftsEmptyStateSearch: 'No NFTs matching search or filter found'
+  braveWalletNftsEmptyStateSearch: 'No NFTs matching search or filter found',
+
+  // Add asset tabs
+  braveWalletAddAssetTokenTabTitle: 'Token',
+  braveWalletAddAssetNftTabTitle: 'NFT',
+  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.'
 })

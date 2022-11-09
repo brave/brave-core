@@ -19,8 +19,17 @@ using TabDragControllerBrave = TabDragController;
   Unused_MoveUattached() {}      \
   friend TabDragControllerBrave; \
   virtual void MoveAttached
+#define GetTabGroupForTargetIndex virtual GetTabGroupForTargetIndex
+#define GetAttachedBrowserWidget                   \
+  GetAttachedBrowserWidget_Unused() { return {}; } \
+  virtual views::Widget* GetAttachedBrowserWidget
+#define GetLocalProcessWindow virtual GetLocalProcessWindow
 
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.h"
+
+#undef GetLocalProcessWindow
+#undef GetAttachedBrowserWidget
+#undef GetTabGroupForTargetIndex
 #undef TabDragController
 #undef MoveAttached
 #undef GetAttachedDragPoint
@@ -44,6 +53,16 @@ class TabDragController : public TabDragControllerChromium {
   gfx::Point GetAttachedDragPoint(const gfx::Point& point_in_screen) override;
   void MoveAttached(const gfx::Point& point_in_screen,
                     bool just_attached) override;
+  absl::optional<tab_groups::TabGroupId> GetTabGroupForTargetIndex(
+      const std::vector<int>& selected) override;
+  views::Widget* GetAttachedBrowserWidget() override;
+
+  Liveness GetLocalProcessWindow(const gfx::Point& screen_point,
+                                 bool exclude_dragged_view,
+                                 gfx::NativeWindow* window) override;
+
+ private:
+  bool is_showing_vertical_tabs_ = false;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_

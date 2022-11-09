@@ -48,8 +48,10 @@ gfx::Size RoundedSeparator::CalculatePreferredSize() const {
 }
 
 void RoundedSeparator::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  node_data->SetName(l10n_util::GetStringUTF8(IDS_ACCNAME_SEPARATOR));
+  // A valid role must be set in the AXNodeData prior to setting the name
+  // via AXNodeData::SetName.
   node_data->role = ax::mojom::Role::kSplitter;
+  node_data->SetName(l10n_util::GetStringUTF8(IDS_ACCNAME_SEPARATOR));
 }
 
 void RoundedSeparator::OnPaint(gfx::Canvas* canvas) {

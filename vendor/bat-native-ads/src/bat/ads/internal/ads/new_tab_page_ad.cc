@@ -44,7 +44,7 @@ NewTabPageAd::~NewTabPageAd() {
   serving_->RemoveObserver(this);
 }
 
-void NewTabPageAd::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
+void NewTabPageAd::MaybeServe(const MaybeServeNewTabPageAdCallback& callback) {
   serving_->MaybeServeAd(
       [callback](const absl::optional<NewTabPageAdInfo>& ad) { callback(ad); });
 }

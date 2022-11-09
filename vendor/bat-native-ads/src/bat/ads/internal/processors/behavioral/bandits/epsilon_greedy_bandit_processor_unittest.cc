@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
+#include <string>
+
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"
@@ -75,11 +77,15 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [0, 0, 0, 0] => value: 0.0
 
   // Act
-  processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  const processor::EpsilonGreedyBandit processor;
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -102,11 +108,15 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [1, 0, 1, 0] => value: 0.5
 
   // Act
-  processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  const processor::EpsilonGreedyBandit processor;
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kDismissed});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -129,11 +139,15 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [1, 1, 1, 1] => value: 1.0
 
   // Act
-  processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  const processor::EpsilonGreedyBandit processor;
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kClicked});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -155,8 +169,9 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   const std::string segment = "foobar";
 
   // Act
-  processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  const processor::EpsilonGreedyBandit processor;
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -171,8 +186,9 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   const std::string parent_segment = "travel";
 
   // Act
-  processor::EpsilonGreedyBandit processor;
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  const processor::EpsilonGreedyBandit processor;
+  processor::EpsilonGreedyBandit::Process(
+      {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =

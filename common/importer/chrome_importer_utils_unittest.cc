@@ -73,4 +73,23 @@ TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {
           GetTestProfilePath().Append(base::FilePath::StringType(
               FILE_PATH_LITERAL("No Profile Local State")))),
       base::JSONReader::Read(R"([{"id": "", "name": "Default" }])")->GetList());
+
+  EXPECT_EQ(GetChromeSourceProfiles(
+                GetTestProfilePath().Append(base::FilePath::StringType(
+                    FILE_PATH_LITERAL("Local State With Avatar")))),
+            base::JSONReader::Read(R"([
+        {
+          "id": "Default",
+          "name": "Profile 1",
+          "last_active": true,
+          "avatar_icon": "chrome://theme/IDR_PROFILE_AVATAR_26",
+          "active_time": 1663746595.898419
+        },
+        {
+          "id": "Profile 2",
+          "name": "Profile 2",
+          "last_active": false
+        }
+      ])")
+                ->GetList());
 }

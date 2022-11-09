@@ -69,7 +69,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_MODAL_BACKUP_CLOSE: {
       state = { ...state }
       let ui = state.ui
-      ui.walletRecoveryStatus = null
       ui.modalBackup = false
       state = {
         ...state,
@@ -128,6 +127,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsSubdivisionTargeting = action.payload.adsData.adsSubdivisionTargeting
       state.adsData.automaticallyDetectedAdsSubdivisionTargeting = action.payload.adsData.automaticallyDetectedAdsSubdivisionTargeting
       state.adsData.shouldAllowAdsSubdivisionTargeting = action.payload.adsData.shouldAllowAdsSubdivisionTargeting
+      state.adsData.subdivisions = action.payload.adsData.subdivisions
       state.adsData.adsUIEnabled = action.payload.adsData.adsUIEnabled
       state.adsData.adsIsSupported = action.payload.adsData.adsIsSupported
       state.adsData.needsBrowserUpgradeToServeAds = action.payload.adsData.needsBrowserUpgradeToServeAds
@@ -350,8 +350,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      if (data.result === 46) { // type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS
-        ui.modalRedirect = 'mismatchedProviderAccountRegionsModal'
+      if (data.result === 46) { // type::Result::MISMATCHED_COUNTRIES
+        ui.modalRedirect = 'mismatchedCountriesModal'
+        break
+      }
+
+      if (data.result === 47) { // type::Result::PROVIDER_UNAVAILABLE
+        ui.modalRedirect = 'providerUnavailableModal'
         break
       }
 
@@ -440,17 +445,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.GET_PAYMENT_ID: {
-      chrome.send('brave_rewards.getPaymentId')
-      break
-    }
-    case types.ON_PAYMENT_ID: {
-      state = {
-        ...state,
-        paymentId: action.payload.paymentId
-      }
-      break
-    }
     case types.GET_ONBOARDING_STATUS: {
       chrome.send('brave_rewards.getOnboardingStatus')
       break
@@ -476,6 +470,18 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getContributionAmount')
       chrome.send('brave_rewards.getAutoContributeProperties')
       chrome.send('brave_rewards.getAdsData')
+      break
+    }
+    case types.GET_IS_UNSUPPORTED_REGION: {
+      chrome.send('brave_rewards.getIsUnsupportedRegion')
+      break
+    }
+    case types.ON_IS_UNSUPPORTED_REGION: {
+      const { isUnsupportedRegion } = action.payload
+      state = {
+        ...state,
+        isUnsupportedRegion
+      }
       break
     }
   }

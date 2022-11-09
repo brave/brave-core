@@ -60,18 +60,17 @@ void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+// static
 HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
                                     const HistorySortType sort_type,
                                     const base::Time from_time,
-                                    const base::Time to_time) const {
+                                    const base::Time to_time) {
   HistoryItemList history_items =
       ClientStateManager::GetInstance()->GetHistory();
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
-  if (date_range_filter) {
-    history_items = date_range_filter->Apply(history_items);
-  }
+  history_items = date_range_filter->Apply(history_items);
 
   const auto filter = HistoryFilterFactory::Build(filter_type);
   if (filter) {

@@ -71,8 +71,6 @@ class BraveAdaptiveCaptchaService
 
  private:
   // brave_rewards::RewardsServiceObserver:
-  void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
-                       const ledger::mojom::Result result) override;
   void OnCompleteReset(const bool success) override;
 
   raw_ptr<PrefService> prefs_ = nullptr;

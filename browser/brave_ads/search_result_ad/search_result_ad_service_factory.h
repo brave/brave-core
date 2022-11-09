@@ -21,18 +21,24 @@ class SearchResultAdService;
 
 class SearchResultAdServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static SearchResultAdService* GetForProfile(Profile* profile);
-
-  static SearchResultAdServiceFactory* GetInstance();
-
   SearchResultAdServiceFactory(const SearchResultAdServiceFactory&) = delete;
   SearchResultAdServiceFactory& operator=(const SearchResultAdServiceFactory&) =
       delete;
+
+  SearchResultAdServiceFactory(SearchResultAdServiceFactory&& other) noexcept =
+      delete;
+  SearchResultAdServiceFactory& operator=(
+      SearchResultAdServiceFactory&& other) noexcept = delete;
+
+  static SearchResultAdService* GetForProfile(Profile* profile);
+
+  static SearchResultAdServiceFactory* GetInstance();
 
  private:
   friend struct base::DefaultSingletonTraits<SearchResultAdServiceFactory>;
 
   SearchResultAdServiceFactory();
+
   ~SearchResultAdServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:

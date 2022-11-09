@@ -33,7 +33,7 @@ import {
 
 // Custom types
 import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
-import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize } from '../../../../../common/hardware/types'
+import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize, SolDerivationPaths } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 import { WalletPageActions } from '../../../../../page/actions'
 import { BraveWallet, CreateAccountOptionsType, WalletState } from '../../../../../constants/types'
@@ -89,7 +89,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
   const [connectionError, setConnectionError] = React.useState<ErrorMessage | undefined>(undefined)
   const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
-    LedgerDerivationPaths.LedgerLive
+    selectedAccountType.coin === BraveWallet.CoinType.SOL ? SolDerivationPaths.Default : LedgerDerivationPaths.LedgerLive
   )
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
   const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
@@ -221,7 +221,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
     )
   }, [savedAccounts])
 
-  const selectedAccountTypesDefaultNetwork: BraveWallet.NetworkInfo = React.useMemo(() => {
+  const selectedAccountTypesDefaultNetwork = React.useMemo(() => {
     return defaultNetworks.find((network: BraveWallet.NetworkInfo) => network.coin === selectedAccountType.coin) ?? selectedNetwork
   }, [defaultNetworks, selectedAccountType, selectedNetwork])
 

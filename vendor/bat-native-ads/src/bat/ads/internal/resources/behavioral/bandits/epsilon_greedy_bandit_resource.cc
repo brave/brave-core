@@ -42,7 +42,8 @@ void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
   is_initialized_ = true;
 }
 
-SegmentList EpsilonGreedyBandit::Get() const {
+// static
+SegmentList EpsilonGreedyBandit::Get() {
   return GetEpsilonGreedyBanditEligibleSegments();
 }
 

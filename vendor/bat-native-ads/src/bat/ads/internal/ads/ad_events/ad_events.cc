@@ -42,10 +42,12 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
   RecordAdEvent(ad_event);
 
   database::table::AdEvents database_table;
-  database_table.LogEvent(
-      ad_event, base::BindOnce([](AdEventCallback callback,
-                                  const bool success) { callback(success); },
-                               callback));
+  database_table.LogEvent(ad_event,
+                          base::BindOnce(
+                              [](AdEventCallback callback, const bool success) {
+                                std::move(callback).Run(success);
+                              },
+                              std::move(callback)));
 }
 
 void PurgeExpiredAdEvents(AdEventCallback callback) {
@@ -56,9 +58,9 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
           RebuildAdEventHistoryFromDatabase();
         }
 
-        callback(success);
+        std::move(callback).Run(success);
       },
-      callback));
+      std::move(callback)));
 }
 
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
@@ -73,13 +75,13 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                        RebuildAdEventHistoryFromDatabase();
                      }
 
-                     callback(success);
+                     std::move(callback).Run(success);
                    },
-                   callback));
+                   std::move(callback)));
 }
 
 void RebuildAdEventHistoryFromDatabase() {
-  database::table::AdEvents database_table;
+  const database::table::AdEvents database_table;
   database_table.GetAll([](const bool success, const AdEventList& ad_events) {
     if (!success) {
       BLOG(1, "Failed to get ad events");

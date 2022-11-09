@@ -34,3 +34,52 @@ void SpeedreaderPanelDataHandlerImpl::SetTheme(Theme theme) {
   DCHECK(speedreader_tab_helper_);
   speedreader_tab_helper_->SetTheme(theme);
 }
+
+void SpeedreaderPanelDataHandlerImpl::GetFontFamily(
+    GetFontFamilyCallback callback) {
+  DCHECK(speedreader_tab_helper_);
+  std::move(callback).Run(speedreader_tab_helper_->GetFontFamily());
+}
+
+void SpeedreaderPanelDataHandlerImpl::SetFontFamily(FontFamily font) {
+  DCHECK(speedreader_tab_helper_);
+  speedreader_tab_helper_->SetFontFamily(font);
+}
+
+void SpeedreaderPanelDataHandlerImpl::GetFontSize(
+    GetFontSizeCallback callback) {
+  DCHECK(speedreader_tab_helper_);
+  std::move(callback).Run(speedreader_tab_helper_->GetFontSize());
+}
+
+void SpeedreaderPanelDataHandlerImpl::SetFontSize(FontSize size) {
+  DCHECK(speedreader_tab_helper_);
+  speedreader_tab_helper_->SetFontSize(size);
+}
+
+void SpeedreaderPanelDataHandlerImpl::GetContentStyle(
+    GetContentStyleCallback callback) {
+  DCHECK(speedreader_tab_helper_);
+  std::move(callback).Run(speedreader_tab_helper_->GetContentStyle());
+}
+
+void SpeedreaderPanelDataHandlerImpl::SetContentStyle(ContentStyle style) {
+  DCHECK(speedreader_tab_helper_);
+  speedreader_tab_helper_->SetContentStyle(style);
+}
+
+void SpeedreaderPanelDataHandlerImpl::GetCurrentSiteURL(
+    GetCurrentSiteURLCallback callback) {
+  DCHECK(speedreader_tab_helper_);
+  std::move(callback).Run(speedreader_tab_helper_->GetCurrentSiteURL());
+}
+
+void SpeedreaderPanelDataHandlerImpl::IsEnabled(IsEnabledCallback callback) {
+  DCHECK(speedreader_tab_helper_);
+  std::move(callback).Run(speedreader_tab_helper_->IsEnabledForSite());
+}
+
+void SpeedreaderPanelDataHandlerImpl::SetEnabled(bool on) {
+  DCHECK(speedreader_tab_helper_);
+  speedreader_tab_helper_->MaybeToggleEnabledForSite(on);
+}

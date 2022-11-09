@@ -8,11 +8,9 @@ extern crate url;
 #[macro_use]
 extern crate matches;
 
-pub mod classifier;
 pub mod speedreader;
-mod speedreader_heuristics;
 mod speedreader_readability;
 
 pub use self::speedreader::{
-    OutputSink, RewriterType, SpeedReader, SpeedReaderError, SpeedReaderProcessor,
+    OutputSink, SpeedReader, SpeedReaderError, SpeedReaderProcessor,
 };

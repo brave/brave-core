@@ -13,17 +13,25 @@ import PencilIcon from '../assets/svg-icons/pencil-icon.svg'
 import DetailsIcon from '../assets/svg-icons/details-icon.svg'
 import TrashIcon from '../assets/svg-icons/trash-icon.svg'
 
+export const BuyButtonOption: AccountButtonOptionsObjectType = {
+  id: 'buy',
+  name: 'braveWalletBuy',
+  icon: ''
+}
+
+export const DepositButtonOption: AccountButtonOptionsObjectType = {
+  id: 'deposit',
+  name: 'braveWalletAccountsDeposit',
+  icon: QRIcon
+}
+
 export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
   {
     id: 'privateKey',
     name: 'braveWalletAccountsExport',
     icon: KeyIcon
   },
-  {
-    id: 'deposit',
-    name: 'braveWalletAccountsDeposit',
-    icon: QRIcon
-  },
+  DepositButtonOption,
   {
     id: 'edit',
     name: 'braveWalletAllowSpendEditButton',

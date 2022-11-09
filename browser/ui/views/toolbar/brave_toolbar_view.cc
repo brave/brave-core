@@ -12,6 +12,8 @@
 #include "base/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -28,8 +30,10 @@
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/hit_test.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
+#include "ui/views/window/hit_test_utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -115,6 +119,9 @@ BraveToolbarView::~BraveToolbarView() = default;
 void BraveToolbarView::Init() {
   ToolbarView::Init();
 
+  // This will allow us to move this window by dragging toolbar
+  views::SetHitTestComponent(this, HTCAPTION);
+
   // For non-normal mode, we don't have to more.
   if (display_mode_ != DisplayMode::NORMAL) {
     brave_initialized_ = true;
@@ -142,6 +149,20 @@ void BraveToolbarView::Init() {
       kLocationBarIsWide, profile->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
                           base::Unretained(this)));
+
+  if (tabs::features::SupportsVerticalTabs(browser_)) {
+    show_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsEnabled,
+        profile->GetOriginalProfile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
+                            base::Unretained(this)));
+    show_title_bar_on_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsShowTitleOnWindow,
+        profile->GetOriginalProfile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
+                            base::Unretained(this)));
+    UpdateHorizontalPadding();
+  }
 
   const auto callback = [](Browser* browser, int command,
                            const ui::Event& event) {
@@ -265,6 +286,18 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
                         show_bookmarks_button_.GetValue());
 }
 
+void BraveToolbarView::UpdateHorizontalPadding() {
+  if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser())) {
+    SetBorder(nullptr);
+  } else {
+    auto [leading, trailing] =
+        tabs::features::GetLeadingTrailingCaptionButtonWidth(
+            browser_view_->frame());
+    SetBorder(views::CreateEmptyBorder(
+        gfx::Insets().set_left(leading).set_right(trailing)));
+  }
+}
+
 void BraveToolbarView::ShowBookmarkBubble(
     const GURL& url,
     bool already_bookmarked,
@@ -279,9 +312,20 @@ void BraveToolbarView::ShowBookmarkBubble(
   std::unique_ptr<BubbleSyncPromoDelegate> delegate;
   delegate =
       std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
-  BookmarkBubbleView::ShowBubble(anchor_view, bookmark_, observer,
-                                 std::move(delegate), browser_->profile(), url,
-                                 already_bookmarked);
+  BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
+                                 observer, std::move(delegate),
+                                 browser_->profile(), url, already_bookmarked);
+}
+
+void BraveToolbarView::ViewHierarchyChanged(
+    const views::ViewHierarchyChangedDetails& details) {
+  ToolbarView::ViewHierarchyChanged(details);
+
+  if (details.is_add && details.parent == this) {
+    // Mark children of this view as client area so that they are not perceived
+    // as client area.
+    views::SetHitTestComponent(details.child, HTCLIENT);
+  }
 }
 
 void BraveToolbarView::Layout() {

@@ -11,7 +11,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 // utils
 import { createSendCryptoReducer } from '../../common/reducers/send_crypto_reducer'
-import { createWalletReducer } from '../../common/reducers/wallet_reducer'
+import { createWalletReducer } from '../../common/slices/wallet.slice'
 import { createPanelReducer } from '../../panel/reducers/panel_reducer'
 
 // actions

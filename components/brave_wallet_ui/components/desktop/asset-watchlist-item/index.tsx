@@ -5,6 +5,7 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getTokensNetwork } from '../../../utils/network-utils'
+import { isDataURL } from '../../../utils/string-utils'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
@@ -58,7 +59,7 @@ const AssetWatchlistItem = (props: Props) => {
   }, [token, onRemoveAsset])
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+    return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
   }, [token])
 
   const tokensNetwork = React.useMemo(() => {

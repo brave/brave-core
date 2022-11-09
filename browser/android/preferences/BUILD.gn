@@ -11,6 +11,8 @@ source_set("preferences") {
     "background_video_playback_tab_helper.cc",
     "background_video_playback_tab_helper.h",
     "brave_pref_service_bridge.cc",
+    "features.cc",
+    "features.h",
   ]
 
   deps = [
@@ -39,6 +41,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/constants/pref_names.cc",
     "//brave/components/ntp_background_images/common/pref_names.cc",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
+    "//components/translate/core/browser/translate_pref_names.cc",
   ]
 
   template =

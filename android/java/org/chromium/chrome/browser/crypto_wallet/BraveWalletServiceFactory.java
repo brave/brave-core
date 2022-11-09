@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -44,6 +45,17 @@ public class BraveWalletServiceFactory {
         return braveWalletService;
     }
 
+    public BraveWalletP3a getBraveWalletP3A(ConnectionErrorHandler connectionErrorHandler) {
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        int nativeHandle = BraveWalletServiceFactoryJni.get().getInterfaceToBraveWalletP3A(profile);
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        BraveWalletP3a braveWalletP3A = BraveWalletP3a.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) braveWalletP3A).getProxyHandler();
+        handler.setErrorHandler(connectionErrorHandler);
+
+        return braveWalletP3A;
+    }
+
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
@@ -51,5 +63,6 @@ public class BraveWalletServiceFactory {
     @NativeMethods
     interface Natives {
         int getInterfaceToBraveWalletService(Profile profile);
+        int getInterfaceToBraveWalletP3A(Profile profile);
     }
 }

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/extensions.ts b/chrome/browser/resources/extensions/extensions.ts
-index 4d1af5fe9061370e94c18a60c1fd3e450138e1c2..b430ebc078244eeacbf716a8a4605ba863297cb6 100644
+index 915b5517fa2e11f9366ef4f6b9c634d3615ff9cd..42ae4c0f261b4362d87bbcec44eddce38e0f1d8d 100644
 --- a/chrome/browser/resources/extensions/extensions.ts
 +++ b/chrome/browser/resources/extensions/extensions.ts
 @@ -2,6 +2,7 @@

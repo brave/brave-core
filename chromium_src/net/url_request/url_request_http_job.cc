@@ -7,12 +7,12 @@
 
 #include "net/http/transport_security_state.h"
 
-#define ShouldSSLErrorsBeFatal(host)                                         \
-  ShouldSSLErrorsBeFatal(request_->isolation_info().network_isolation_key(), \
-                         host)
-#define ShouldUpgradeToSSL(host, net_log)                                     \
-  ShouldUpgradeToSSL(request->isolation_info().network_isolation_key(), host, \
-                     net_log)
+#define ShouldSSLErrorsBeFatal(host) \
+  ShouldSSLErrorsBeFatal(            \
+      request_->isolation_info().network_anonymization_key(), host)
+#define ShouldUpgradeToSSL(host, net_log)                                   \
+  ShouldUpgradeToSSL(request->isolation_info().network_anonymization_key(), \
+                     host, net_log)
 #define AddHSTSHeader(host, value) \
   AddHSTSHeader(request_->isolation_info(), host, value)
 

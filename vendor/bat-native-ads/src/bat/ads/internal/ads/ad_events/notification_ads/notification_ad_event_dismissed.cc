@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_dismissed.h"
 
+#include "base/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -17,14 +18,15 @@ void AdEventDismissed::FireEvent(const NotificationAdInfo& ad) {
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kDismissed, [](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to log notification ad dismissed event");
-      return;
-    }
+  LogAdEvent(ad, ConfirmationType::kDismissed,
+             base::BindOnce([](const bool success) {
+               if (!success) {
+                 BLOG(1, "Failed to log notification ad dismissed event");
+                 return;
+               }
 
-    BLOG(6, "Successfully logged notification ad dismissed event");
-  });
+               BLOG(6, "Successfully logged notification ad dismissed event");
+             }));
 }
 
 }  // namespace ads::notification_ads

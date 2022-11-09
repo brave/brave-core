@@ -172,10 +172,16 @@
         <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
           Report a Broken Site
         </message>
+        <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
+          Copy Clean Link
+        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
           Report a broken site
+        </message>
+        <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
+          Copy clean link
         </message>
       </if>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
@@ -440,14 +446,29 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </if>
 
       <!-- Brave Rewards Extension -->
-      <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
-        Hide Brave Rewards icon
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
+          Hide Brave Rewards Icon
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
+          Hide Brave Rewards icon
+        </message>
+      </if>
 
       <!-- Brave Wallet Extension -->
-      <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave wallet panel icon on the toolbar">
-        Hide Brave Wallet icon
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave Wallet icon on the toolbar">
+          Hide Brave Wallet Icon
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave Wallet icon on the toolbar">
+          Hide Brave Wallet icon
+        </message>
+      </if>
+
 
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
@@ -482,25 +503,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEVELOPMENT" desc="Name for the Brave Apps Start Menu folder name.">
           Brave Browser Development Apps
-        </message>
-      </if>
-
-      <!-- Brave default browser dialog -->
-      <if expr="not is_android">
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_HEADER_TEXT" desc="The header text for default browser dialog">
-          Set Brave as your default browser
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CONTENTS_TEXT" desc="The contents for default browser dialog">
-          Keep browsing the web faster - up to 6x faster on major news sites.
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_DONT_ASK" desc="The text for disabling default browser dialog checkbox">
-          Don't ask again
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_OK_BUTTON_LABEL" desc="The text for default browser dialog ok button">
-          Set as default
-        </message>
-        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for default browser dialog cancel button">
-          Not now
         </message>
       </if>
 
@@ -816,14 +818,28 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.
       </message>
+
+      <!-- Brave's tab context menu -->
       <if expr="not use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
           Bookmark all tabs...
+        </message>
+        <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
+          Use vertical tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
+          Show title bar
         </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
           Bookmark All Tabs...
+        </message>
+        <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
+          Use Vertical Tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
+          Show title bar
         </message>
       </if>
 
@@ -928,6 +944,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Maybe later
       </message>
 
+      <if expr="enable_pin_shortcut">
+        <if expr="is_win">
+          <message name="IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT" desc="Text for pin to taskbar checkbox">
+            Pin to taskbar
+          </message>
+        </if>
+        <if expr="is_macosx">
+          <message name="IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT" desc="Text for pin to taskbar checkbox">
+            Keep in Dock
+          </message>
+        </if>
+      </if>
+
       <!-- Importer -->
       <message name="IDS_BRAVE_IMPORT_FROM_EDGE" desc="browser combo box: Microsoft Edge Legacy">
         Microsoft Edge Legacy
@@ -935,9 +964,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <message name="IDS_IMPORTED_FROM_BOOKMARK_FOLDER" desc="Name for bookmark panel folder imported from another browser">
         Imported from <ph name="BROWSER_NAME">$1<ex>Chrome</ex></ph>.
-      </message>
-      <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
-        Copy clean link (only main URL)
       </message>
       <!--Add new items to the appropriate sections above -->
     </messages>

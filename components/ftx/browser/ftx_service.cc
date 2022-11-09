@@ -208,7 +208,8 @@ bool FTXService::AuthenticateFromAuthToken(const std::string& auth_token) {
   std::string body;
   // This is the only API POST that needs to be in form type.
   BuildFormEncoding("grant_type", "code", &body);
-  BuildFormEncoding("redirect_uri", oauth_callback, &body);
+  // "://" is not escaped by base::EscapeUrlEncodedData().
+  body += "&redirect_uri=" + base::EscapeQueryParamValue(oauth_callback, true);
   BuildFormEncoding("code", auth_token, &body);
   access_token_.clear();
   // Handle response from API network call
@@ -378,10 +379,10 @@ void FTXService::OnURLLoaderComplete(
     response_code = loader->ResponseInfo()->headers->response_code();
     auto headers_list = loader->ResponseInfo()->headers;
     if (headers_list) {
-      size_t iter = 0;
+      size_t headers_iter = 0;
       std::string key;
       std::string value;
-      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
+      while (headers_list->EnumerateHeaderLines(&headers_iter, &key, &value)) {
         key = base::ToLowerASCII(key);
         headers[key] = value;
       }

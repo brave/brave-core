@@ -12,9 +12,9 @@
 
 namespace ads::ml {
 
-class BatAdsLinearModelTest : public UnitTestBase {};
+class BatAdsLinearTest : public UnitTestBase {};
 
-TEST_F(BatAdsLinearModelTest, ThreeClassesPredictionTest) {
+TEST_F(BatAdsLinearTest, ThreeClassesPredictionTest) {
   // Arrange
   const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.0, 0.0})},
@@ -45,7 +45,7 @@ TEST_F(BatAdsLinearModelTest, ThreeClassesPredictionTest) {
               predictions_3.at("class_3") > predictions_3.at("class_2"));
 }
 
-TEST_F(BatAdsLinearModelTest, BiasesPredictionTest) {
+TEST_F(BatAdsLinearTest, BiasesPredictionTest) {
   // Arrange
   const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.0, 0.0})},
@@ -67,7 +67,7 @@ TEST_F(BatAdsLinearModelTest, BiasesPredictionTest) {
               predictions.at("class_1") > predictions.at("class_2"));
 }
 
-TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
+TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
   // Arrange
   const size_t kExpectedPredictionSize = 1;
   const std::map<std::string, VectorData> weights = {
@@ -94,7 +94,7 @@ TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
               predictions_1.at("the_only_class") > 0.5);
 }
 
-TEST_F(BatAdsLinearModelTest, TopPredictionsTest) {
+TEST_F(BatAdsLinearTest, TopPredictionsTest) {
   // Arrange
   const size_t kPredictionLimits[2] = {2, 1};
   const std::map<std::string, VectorData> weights = {

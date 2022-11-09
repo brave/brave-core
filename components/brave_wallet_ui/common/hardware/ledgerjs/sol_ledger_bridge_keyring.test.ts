@@ -6,7 +6,7 @@
 import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
 import { BraveWallet } from '../../../constants/types'
-import { GetAccountsHardwareOperationResult, SignHardwareOperationResult } from '../types'
+import { GetAccountsHardwareOperationResult, SignHardwareOperationResult, SolDerivationPaths } from '../types'
 import { LedgerCommand, LedgerError, UnlockResponse } from './ledger-messages'
 import {
   SolGetAccountResponse,
@@ -81,7 +81,7 @@ test('getAccounts success', async () => {
   }
   keyring['transport']['addSendCommandResponse']({ payload: getAccountsResponsePayload2 })
 
-  const result = await keyring.getAccounts(-2, 1)
+  const result = await keyring.getAccounts(-2, 1, SolDerivationPaths.Default)
   expect(result).toEqual({
     success: true,
     payload: [
@@ -126,7 +126,7 @@ test('getAccounts ledger error after successful unlock', async () => {
   }
 
   keyring['transport']['addSendCommandResponse']({ payload: getAccountResponseLedgerError })
-  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1)
+  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1, SolDerivationPaths.LedgerLive)
 
   // TODO why is this different from the eth counterpart test
   expect(result).toEqual({

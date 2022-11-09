@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
@@ -34,6 +35,7 @@
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
+#include "chrome/common/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/events/event_observer.h"
@@ -172,43 +174,54 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
 #endif
 
-  const bool show_vertical_tabs =
-      browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs();
+  const bool supports_vertical_tabs =
+      tabs::features::SupportsVerticalTabs(browser_.get());
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
 
-  if (!show_vertical_tabs && !can_have_sidebar)
+  if (!supports_vertical_tabs && !can_have_sidebar)
     return;
 
   // Wrap chromium side panel with our sidebar container
-  auto original_side_panel = RemoveChildViewT(right_aligned_side_panel_.get());
+  auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
   sidebar_container_view_ =
       contents_container_->AddChildView(std::make_unique<SidebarContainerView>(
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
-  right_aligned_side_panel_ = sidebar_container_view_->side_panel();
-  if (show_vertical_tabs) {
-    vertical_tabs_container_ = contents_container_->AddChildView(
-        std::make_unique<VerticalTabStripRegionView>(browser_.get(),
-                                                     tab_strip_region_view_));
+  unified_side_panel_ = sidebar_container_view_->side_panel();
+  if (supports_vertical_tabs) {
+    vertical_tab_strip_host_view_ =
+        contents_container_->AddChildView(std::make_unique<views::View>());
   }
 
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view_, contents_web_view_, sidebar_container_view_,
-          vertical_tabs_container_));
+          vertical_tab_strip_host_view_));
   sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
 
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
   // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
   // See the comments of BrowserView::find_bar_host_view().
   ReorderChildView(find_bar_host_view_, -1);
+
+  if (can_have_sidebar) {
+    pref_change_registrar_.Add(
+        prefs::kSidePanelHorizontalAlignment,
+        base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                            base::Unretained(this)));
+  }
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();
+    return;
+  }
+
+  if (pref_name == prefs::kSidePanelHorizontalAlignment) {
+    UpdateSideBarHorizontalAlignment();
     return;
   }
 
@@ -218,6 +231,19 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 #endif
+}
+
+void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
+  DCHECK(sidebar_container_view_);
+
+  const bool on_left = !GetProfile()->GetPrefs()->GetBoolean(
+      prefs::kSidePanelHorizontalAlignment);
+
+  sidebar_container_view_->SetSidebarOnLeft(on_left);
+  static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
+      ->set_sidebar_on_left(on_left);
+
+  contents_container_->Layout();
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
@@ -239,6 +265,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
+  UpdateSideBarHorizontalAlignment();
   return sidebar_container_view_;
 }
 
@@ -280,11 +307,20 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(browser()))
     return false;
 
   return BrowserView::GetTabStripVisible();
 }
+
+#if BUILDFLAG(IS_WIN)
+bool BraveBrowserView::GetSupportsTitle() const {
+  if (tabs::features::SupportsVerticalTabs(browser()))
+    return true;
+
+  return BrowserView::GetSupportsTitle();
+}
+#endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =
@@ -331,16 +367,15 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     translate::TranslateStep step,
     const std::string& source_language,
     const std::string& target_language,
-    translate::TranslateErrors::Type error_type,
+    translate::TranslateErrors error_type,
     bool is_user_gesture) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  if (translate::IsInternalTranslationEnabled(GetProfile())) {
-    return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
-                                            target_language, error_type,
-                                            is_user_gesture);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
+                                          target_language, error_type,
+                                          is_user_gesture);
+#else   // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 }
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
@@ -391,6 +426,15 @@ void BraveBrowserView::CreateApproveWalletBubble() {
 void BraveBrowserView::CloseWalletBubble() {
   if (GetWalletButton())
     GetWalletButton()->CloseWalletBubble();
+}
+
+void BraveBrowserView::AddedToWidget() {
+  BrowserView::AddedToWidget();
+
+  if (vertical_tab_strip_host_view_) {
+    VerticalTabStripWidgetDelegateView::Create(this,
+                                               vertical_tab_strip_host_view_);
+  }
 }
 
 void BraveBrowserView::OnTabStripModelChanged(
@@ -452,6 +496,16 @@ void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
 
 void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
+}
+
+bool BraveBrowserView::ShouldShowWindowTitle() const {
+  if (BrowserView::ShouldShowWindowTitle())
+    return true;
+
+  if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()))
+    return true;
+
+  return false;
 }
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {

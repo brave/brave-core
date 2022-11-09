@@ -6,6 +6,7 @@
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
 
 #include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -13,27 +14,27 @@
 #include "bat/ads/internal/deprecated/client/client_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads::client {
 
 namespace {
 
 void FailedToMigrate(InitializeCallback callback) {
-  callback(/*success*/ false);
+  std::move(callback).Run(/*success*/ false);
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
                                                  true);
-  callback(/*success*/ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/*success*/ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
@@ -46,14 +47,14 @@ void Migrate(InitializeCallback callback) {
              const std::string& json) {
             if (!success) {
               // Client state does not exist
-              SuccessfullyMigrated(callback);
+              SuccessfullyMigrated(std::move(callback));
               return;
             }
 
             ClientInfo client;
             if (!client.FromJson(json)) {
               BLOG(0, "Failed to load client state");
-              FailedToMigrate(callback);
+              FailedToMigrate(std::move(callback));
               return;
             }
 
@@ -70,16 +71,16 @@ void Migrate(InitializeCallback callback) {
                     [](InitializeCallback callback, const bool success) {
                       if (!success) {
                         BLOG(0, "Failed to save client state");
-                        FailedToMigrate(callback);
+                        FailedToMigrate(std::move(callback));
                         return;
                       }
 
                       BLOG(3, "Successfully migrated client state");
-                      SuccessfullyMigrated(callback);
+                      SuccessfullyMigrated(std::move(callback));
                     },
-                    callback));
+                    std::move(callback)));
           },
-          callback));
+          std::move(callback)));
 }
 
 }  // namespace ads::client

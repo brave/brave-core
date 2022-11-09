@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_
 
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "base/callback.h"
@@ -15,6 +16,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet::unstoppable_domains {
+
+// (domain, coin, symbol, chain_id)
+using WalletAddressKey =
+    std::tuple<std::string, mojom::CoinType, std::string, std::string>;
 
 template <class ResultType>
 class MultichainCall {
@@ -51,7 +56,7 @@ class MultichainCall {
   std::vector<CallbackType> callbacks_;
 };
 
-template <class ResultType>
+template <class KeyType, class ResultType>
 class MultichainCalls {
  public:
   using CallbackType = typename MultichainCall<ResultType>::CallbackType;
@@ -61,20 +66,20 @@ class MultichainCalls {
 
   std::vector<std::string> GetChains() const;
 
-  bool HasCall(const std::string& domain);
-  void AddCallback(const std::string& domain, CallbackType callback);
-  void SetNoResult(const std::string& domain, const std::string& chain_id);
-  void SetResult(const std::string& domain,
+  bool HasCall(const KeyType& key);
+  void AddCallback(const KeyType& key, CallbackType callback);
+  void SetNoResult(const KeyType& key, const std::string& chain_id);
+  void SetResult(const KeyType& key,
                  const std::string& chain_id,
                  ResultType result);
-  void SetError(const std::string& domain,
+  void SetError(const KeyType& key,
                 const std::string& chain_id,
                 mojom::ProviderError error,
                 std::string error_message);
 
  private:
   // domain -> call
-  base::flat_map<std::string, MultichainCall<ResultType>> calls_;
+  base::flat_map<KeyType, MultichainCall<ResultType>> calls_;
 };
 
 }  // namespace brave_wallet::unstoppable_domains

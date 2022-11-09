@@ -10,7 +10,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 
@@ -18,7 +18,7 @@ bool ShouldRewardUser() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
 }
 
-void ResetRewards(ResetRewardsCallback callback) {
+void ResetRewards(const ResetRewardsCallback& callback) {
   transactions::RemoveAll([callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to remove transactions");

@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <ostream>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -82,16 +83,9 @@ void MockBuildChannel(const BuildChannelType type) {
                << static_cast<int>(type);
 }
 
-void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
-                      const std::string& locale) {
-  brave_l10n::LocaleHelper::SetForTesting(mock.get());
-
-  ON_CALL(*mock, GetLocale()).WillByDefault(Return(locale));
-}
-
 void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
                         const PlatformType type) {
-  PlatformHelper::GetInstance()->SetForTesting(mock.get());
+  PlatformHelper::SetForTesting(mock.get());
 
   bool is_mobile = false;
   std::string name;
@@ -520,7 +514,7 @@ void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock) {
               return absl::nullopt;
             }
 
-            const base::Value::Dict* dict = root->GetIfDict();
+            const base::Value::Dict* const dict = root->GetIfDict();
             CHECK(dict);
             return dict->Clone();
           }));
@@ -549,7 +543,7 @@ void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock) {
               return absl::nullopt;
             }
 
-            const base::Value::List* list = root->GetIfList();
+            const base::Value::List* const list = root->GetIfList();
             CHECK(list);
             return list->Clone();
           }));

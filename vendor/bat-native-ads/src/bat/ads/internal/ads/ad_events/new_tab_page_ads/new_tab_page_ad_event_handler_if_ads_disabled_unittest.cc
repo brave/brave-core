@@ -21,7 +21,7 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/new_tab_page_ad_info.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -35,14 +35,22 @@ constexpr char kInvalidPlacementId[] = "";
 constexpr char kCreativeInstanceId[] = "1547f94f-9086-4db9-a441-efb2f0365269";
 constexpr char kInvalidCreativeInstanceId[] = "";
 
+CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
+  CreativeNewTabPageAdList creative_ads;
+  CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+  creative_ads.push_back(creative_ad);
+
+  SaveCreativeAds(creative_ads);
+
+  return creative_ad;
+}
+
 }  // namespace
 
 class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
     : public EventHandlerObserver,
       public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -78,16 +86,6 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
       const std::string& /*creative_instance_id*/,
       const mojom::NewTabPageAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
-  }
-
-  CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
-    CreativeNewTabPageAdList creative_ads;
-    CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
-    creative_ads.push_back(creative_ad);
-
-    SaveCreativeAds(creative_ads);
-
-    return creative_ad;
   }
 
   std::unique_ptr<EventHandler> event_handler_;

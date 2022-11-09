@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index 0626baa25d07770e6643b1078bf53889f7f67947..5deba756a23909912f4c20987803b31ff62e0a5d 100644
+index d32618c45588b5810db1b548df65fd13b3af01f2..0d6bc279d7853612b9c59cd35b28b8e3e02743f9 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
 @@ -24,7 +24,11 @@ namespace {

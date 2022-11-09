@@ -25,8 +25,6 @@ using ::testing::NiceMock;
 
 class BatAdsIssuersTest : public UnitTestBase {
  protected:
-  BatAdsIssuersTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

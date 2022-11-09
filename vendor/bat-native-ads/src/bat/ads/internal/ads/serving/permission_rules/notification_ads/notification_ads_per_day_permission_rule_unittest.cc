@@ -16,10 +16,8 @@
 
 namespace ads::notification_ads {
 
-class BatAdsAdsPerDayPermissionRuleTest : public UnitTestBase {
+class BatAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsAdsPerDayPermissionRuleTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -34,7 +32,8 @@ class BatAdsAdsPerDayPermissionRuleTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsAdsPerDayPermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+       AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
@@ -45,7 +44,8 @@ TEST_F(BatAdsAdsPerDayPermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+       AllowAdIfDoesNotExceedCap) {
   // Arrange
   const size_t count = features::GetMaximumNotificationAdsPerDay() - 1;
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
@@ -58,7 +58,8 @@ TEST_F(BatAdsAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
+TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+       AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   const size_t count = features::GetMaximumNotificationAdsPerDay();
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
@@ -73,7 +74,8 @@ TEST_F(BatAdsAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAdsPerDayPermissionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
+TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+       DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   const size_t count = features::GetMaximumNotificationAdsPerDay();
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);

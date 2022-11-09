@@ -19,11 +19,19 @@ use crate::{HTTPClient, StorageClient};
 #[serde(rename_all = "camelCase")]
 struct OrderMetadataResponse {
     stripe_checkout_session_id: Option<String>,
+    payment_processor: Option<String>,
+    num_intervals: Option<usize>,
+    num_per_interval: Option<usize>,
 }
 
 impl From<OrderMetadataResponse> for OrderMetadata {
     fn from(order_metadata: OrderMetadataResponse) -> Self {
-        OrderMetadata { stripe_checkout_session_id: order_metadata.stripe_checkout_session_id }
+        OrderMetadata {
+            stripe_checkout_session_id: order_metadata.stripe_checkout_session_id,
+            payment_processor: order_metadata.payment_processor,
+            num_intervals: order_metadata.num_intervals,
+            num_per_interval: order_metadata.num_per_interval,
+        }
     }
 }
 
@@ -124,6 +132,15 @@ where
     U: HTTPClient + StorageClient,
 {
     #[cfg(feature = "e2e_test")]
+    pub async fn remove_last_n_creds(&self, order_id: &str, n: usize) -> Result<(), SkusError> {
+        let order = self.client.get_order(order_id).await?;
+        // iterate over all order items
+        for item in order.unwrap().items {
+            self.client.delete_n_item_creds(&item.id, n).await?;
+        }
+        Ok(())
+    }
+    #[cfg(feature = "e2e_test")]
     pub async fn create_order(&self, kind: &str) -> Result<Order, SkusError> {
         let sku = match kind {
             "trial" => {
@@ -134,6 +151,9 @@ where
             }
             "beta" => {
                 "AgEVc2VhcmNoLmJyYXZlLnNvZnR3YXJlAh9zZWFyY2ggY2xvc2VkIGJldGEgcHJvZ3JhbSBkZW1vAAIWc2t1PXNlYXJjaC1iZXRhLWFjY2VzcwACB3ByaWNlPTAAAgxjdXJyZW5jeT1CQVQAAi1kZXNjcmlwdGlvbj1TZWFyY2ggY2xvc2VkIGJldGEgcHJvZ3JhbSBhY2Nlc3MAAhpjcmVkZW50aWFsX3R5cGU9c2luZ2xlLXVzZQAABiB3uXfAAkNSRQd24jSauRny3VM0BYZ8yOclPTEgPa0xrA=="
+            }
+            "tlv2_e2e" => {
+                "MDAzMWxvY2F0aW9uIGZyZWUudGltZS5saW1pdGVkLnYyLmJyYXZlLnNvZnR3YXJlCjAwMjhpZGVudGlmaWVyIGZyZWUtdGltZS1saW1pdGVkLXYyLWRldgowMDI1Y2lkIHNrdT1mcmVlLXRpbWUtbGltaXRlZC12Mi1kZXYKMDAxMGNpZCBwcmljZT0wCjAwMTVjaWQgY3VycmVuY3k9VVNECjAwMmRjaWQgZGVzY3JpcHRpb249ZnJlZS10aW1lLWxpbWl0ZWQtdjItZGV2CjAwMjhjaWQgY3JlZGVudGlhbF90eXBlPXRpbWUtbGltaXRlZC12MgowMDI2Y2lkIGNyZWRlbnRpYWxfdmFsaWRfZHVyYXRpb249UDFNCjAwMWZjaWQgaXNzdWVyX3Rva2VuX2J1ZmZlcj0zMAowMDFmY2lkIGlzc3Vlcl90b2tlbl9vdmVybGFwPTEKMDAyN2NpZCBhbGxvd2VkX3BheW1lbnRfbWV0aG9kcz1zdHJpcGUKMDAyZnNpZ25hdHVyZSAqgung8GCnS0TDch62es768kupFxaEMD1yMSgJX2apdgo="
             }
             _ => "",
         };
@@ -219,7 +239,7 @@ where
 
                 let receipt_bytes = receipt.as_bytes().to_vec();
                 let req =
-                    builder.body(receipt_bytes).or(Err(InternalError::SerializationFailed))?;
+                    builder.body(receipt_bytes).map_err(|_| InternalError::SerializationFailed)?;
 
                 let resp = self.fetch(req).await?;
                 event!(

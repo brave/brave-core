@@ -140,7 +140,48 @@
     Customize the background image and widgets that appear on the new tab page
   </message>
 
+  <!-- Settings / Pin shortcut-->
+  <if expr="enable_pin_shortcut">
+    <if expr="is_win">
+      <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT" desc="The label for pin to taskbar settings">
+        Pin to taskbar
+      </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for pin to taskbar button">
+        Pin
+      </message>
+      <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for pinned state description">
+        Brave is already pinned
+      </message>
+    </if>
+    <if expr="is_macosx">
+      <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT" desc="The label for keep in dock settings">
+        Keep in Dock
+      </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for dock button">
+        Dock
+      </message>
+      <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for docked state description">
+        Brave is already in Dock
+      </message>
+    </if>
+  </if>
+
   <!-- Settings / Shields -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS" desc="Label for shields site settings.">
+    Shields settings
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS" desc="Label for shields status site settings.">
+    Shields status
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
+    Sites can block trackers, ads, and fingerprinting using Shields
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
+    Shields Up
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN" desc="Label for shields status down site settings.">
+    Shields Down
+  </message>  
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
     Shields
   </message>
@@ -151,7 +192,7 @@
     These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The description for Brave shields Defaults sub-section in settings.">
-    This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
+    This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Brave shields Defaults sub-section in settings when Brave Rewards are disabled.">
     This will block most ads on websites.
@@ -182,9 +223,6 @@
   </message>
   <message name="IDS_SETTINGS_ALLOW_ADS_TRACKERS" desc="Select value">
     Disabled
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
-    Upgrade connections to HTTPS
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
     Block scripts
@@ -225,13 +263,13 @@
 
   <!-- Settings / Shields / ContentFilters -->
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_LABEL" desc="Label for Content Filtering">
-    Content Filtering
+    Content filtering
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTER_LABEL_DESCRIPTION" desc="Long description describing what Content Filtering does">
     Enable custom filters that block regional and language-specific trackers and Annoyances.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_DESC" desc="Long description describing what Content Filtering does">
-    Enable custom filters that block regional and language-specific trackers and 
+    Enable custom filters that block regional and language-specific trackers and
     <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Annoyances<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL" desc="Label for custom filters lists section">
@@ -244,7 +282,7 @@
     Only subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_LABEL" desc="Label for custom filters section">
-    Create Custom filters
+    Create custom filters
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_DESC" desc="Description for custom filters section">
     Add custom filters you've created, one per line, in the field below. Be sure to use the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Adblock filter syntax<ph name="END_LINK">&lt;/a&gt;</ph>.
@@ -290,6 +328,12 @@
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to ask the user to enter a URL">
     Enter filter list URL
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERS" desc="A button label that navigates to Content Filters page">
+    Content Filters
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to allow the user to filter from a list of content filters">
+    Filter lists
   </message>
 
   <!-- Settings / Brave Rewards -->
@@ -942,6 +986,9 @@
   <message name="IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC" desc="The description of changing IPFS public gateway">
     IPFS public gateway address
   </message>
+  <message name="IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC" desc="The description of changing NFT IPFS public gateway">
+    IPFS public gateway address for NFT
+  </message>
   <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
     Change
   </message>
@@ -955,7 +1002,8 @@
     Redirect IPFS resources to the configured IPFS gateway
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC" desc="The description for redirecting IPFS resources to the configured gateway">
-    Automatically uses the configured gateway for IPFS resolutions when an IPFS gateway resource is encountered.
+    Requests to IPFS resources, hosted on third-party IPFS gateways will be loaded via selected local or remote gateway.
+    Note: If local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL" desc="The text label for redirecting IPFS resources for DNSLink">
     Automatically redirect to IPFS pages via DNSLink when possible

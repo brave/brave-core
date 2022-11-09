@@ -38,6 +38,31 @@
 
 namespace rewards_browsertest {
 
+constexpr char kSelectCountryScript[] = R"(
+  const select = document.querySelector('[data-test-id=country-select]');
+  select.value = 'US';
+  select.dispatchEvent(new Event("change", { bubbles: true }));
+  true;
+)";
+
+class WalletUpdatedWaiter : public brave_rewards::RewardsServiceObserver {
+ public:
+  explicit WalletUpdatedWaiter(brave_rewards::RewardsService* rewards_service)
+      : rewards_service_(rewards_service) {
+    rewards_service_->AddObserver(this);
+  }
+
+  ~WalletUpdatedWaiter() override { rewards_service_->RemoveObserver(this); }
+
+  void OnRewardsWalletUpdated() override { run_loop_.Quit(); }
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  base::RunLoop run_loop_;
+  brave_rewards::RewardsService* rewards_service_;
+};
+
 class RewardsBrowserTest : public InProcessBrowserTest {
  public:
   RewardsBrowserTest() {
@@ -155,6 +180,8 @@ class RewardsBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
+  rewards_browsertest_util::SetOnboardingBypassed(browser(), true);
+  rewards_browsertest_util::StartProcess(rewards_service_);
   context_helper_->LoadRewardsPage();
 
   rewards_browsertest_util::WaitForElementThenClick(
@@ -329,8 +356,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
   rewards_browsertest_util::WaitForElementToAppear(contents(), "#modal");
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settings-modal-tabs-2']");
+      contents(), "[data-test-id='settings-modal-tabs-1']");
 
   rewards_browsertest_util::WaitForElementToContain(
       contents(),
@@ -351,8 +377,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
       "#modal");
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settings-modal-tabs-2']");
+      contents(), "[data-test-id='settings-modal-tabs-1']");
 
   rewards_browsertest_util::WaitForElementToContain(
       contents(), "[data-test-id='reset-text']",
@@ -374,13 +399,61 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
   prefs->SetBoolean(brave_rewards::prefs::kAutoContributeEnabled, false);
 
   base::RunLoop run_loop;
-  rewards_service_->CreateRewardsWallet(base::BindLambdaForTesting(
-      [&run_loop](ledger::mojom::Result) { run_loop.Quit(); }));
+  rewards_service_->CreateRewardsWallet(
+      "", base::BindLambdaForTesting(
+              [&run_loop](ledger::mojom::CreateRewardsWalletResult) {
+                run_loop.Quit();
+              }));
   run_loop.Run();
 
   // Ensure that AC is not enabled
   EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kEnabled));
   EXPECT_FALSE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, GeoDeclarationNewUser) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  EXPECT_EQ(prefs->GetString(brave_rewards::prefs::kDeclaredGeo), "");
+
+  auto popup_contents = context_helper_->OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      popup_contents.get(), "[data-test-id=opt-in-button]");
+
+  rewards_browsertest_util::WaitForElementToAppear(
+      popup_contents.get(), "[data-test-id=country-select]");
+
+  WalletUpdatedWaiter waiter(rewards_service_);
+  EXPECT_EQ(true, content::EvalJs(popup_contents.get(), kSelectCountryScript));
+  rewards_browsertest_util::WaitForElementThenClick(
+      popup_contents.get(), "[data-test-id=select-country-button]");
+  waiter.Wait();
+
+  EXPECT_EQ(prefs->GetString(brave_rewards::prefs::kDeclaredGeo), "US");
+  EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, GeoDeclarationExistingUser) {
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetString(brave_rewards::prefs::kDeclaredGeo, "");
+
+  auto popup_contents = context_helper_->OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
+
+  rewards_browsertest_util::WaitForElementToAppear(
+      popup_contents.get(), "[data-test-id=select-country-button]");
+
+  WalletUpdatedWaiter waiter(rewards_service_);
+  EXPECT_EQ(true, content::EvalJs(popup_contents.get(), kSelectCountryScript));
+  rewards_browsertest_util::WaitForElementThenClick(
+      popup_contents.get(), "[data-test-id=select-country-button]");
+  waiter.Wait();
+
+  EXPECT_EQ(prefs->GetString(brave_rewards::prefs::kDeclaredGeo), "US");
+  EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kEnabled));
 }
 
 }  // namespace rewards_browsertest

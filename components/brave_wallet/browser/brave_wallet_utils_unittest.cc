@@ -711,12 +711,18 @@ TEST(BraveWalletUtilsUnitTest, KnownChainExists) {
   UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
   auto known_chains = GetAllKnownChains(&prefs, mojom::CoinType::ETH);
-  EXPECT_EQ(known_chains.size(), 13u);
+  EXPECT_EQ(known_chains.size(), 11u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(KnownChainExists(known_chain->chain_id, mojom::CoinType::ETH));
+    // Test that uppercase chain ID works too
+    EXPECT_TRUE(KnownChainExists(base::ToUpperASCII(known_chain->chain_id),
+                                 mojom::CoinType::ETH));
   }
 
   EXPECT_TRUE(CustomChainExists(&prefs, chain.chain_id, mojom::CoinType::ETH));
+  // Test that uppercase chain ID works too
+  EXPECT_TRUE(CustomChainExists(&prefs, base::ToUpperASCII(chain.chain_id),
+                                mojom::CoinType::ETH));
   EXPECT_FALSE(KnownChainExists(chain.chain_id, mojom::CoinType::ETH));
 
   EXPECT_TRUE(KnownChainExists(mojom::kFilecoinMainnet, mojom::CoinType::FIL));
@@ -870,10 +876,8 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
       brave_wallet::mojom::kPolygonMainnetChainId,
       brave_wallet::mojom::kOptimismMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId,
-      brave_wallet::mojom::kRinkebyChainId,
-      brave_wallet::mojom::kRopstenChainId,
       brave_wallet::mojom::kGoerliChainId,
-      brave_wallet::mojom::kKovanChainId};
+      brave_wallet::mojom::kSepoliaChainId};
 
   for (const auto& chain : GetAllKnownChains(&prefs, mojom::CoinType::ETH)) {
     auto network_url =
@@ -948,6 +952,12 @@ TEST(BraveWalletUtilsUnitTest, GetCustomChain) {
   auto network = GetCustomChain(&prefs, chain.chain_id, mojom::CoinType::ETH);
   ASSERT_TRUE(network);
   EXPECT_EQ(*network, chain);
+
+  // Test that uppercase chain ID works too
+  network = GetCustomChain(&prefs, base::ToUpperASCII(chain.chain_id),
+                           mojom::CoinType::ETH);
+  ASSERT_TRUE(network);
+  EXPECT_EQ(*network, chain);
 }
 
 TEST(BraveWalletUtilsUnitTest, GetChain) {
@@ -996,8 +1006,8 @@ TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
       {"mainnet", mojom::kPolygonMainnetChainId,
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
-       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "rinkeby",
-       "ropsten", "goerli", "kovan", "http://localhost:7545/"});
+       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "goerli",
+       "sepolia", "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
@@ -1007,10 +1017,8 @@ TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kLocalhostChainId),
             "http://localhost:7545/");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kMainnetChainId), "mainnet");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kRinkebyChainId), "rinkeby");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kRopstenChainId), "ropsten");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kGoerliChainId), "goerli");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kKovanChainId), "kovan");
+  EXPECT_EQ(GetKnownEthNetworkId(mojom::kSepoliaChainId), "sepolia");
 }
 
 TEST(BraveWalletUtilsUnitTest, GetKnownSolNetworkId) {
@@ -1085,8 +1093,8 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
 
   // Asset list of new custom chains should have native asset in
   // kBraveWalletUserAssets.
-  const base::Value* assets_pref = prefs.GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list1 = assets_pref->FindPath("ethereum.chain_id");
+  const auto& assets_pref = prefs.GetDict(kBraveWalletUserAssets);
+  const base::Value* list1 = assets_pref.FindByDottedPath("ethereum.chain_id");
   ASSERT_TRUE(list1->is_list());
   const base::Value::List& asset_list1 = list1->GetList();
   ASSERT_EQ(asset_list1.size(), 1u);
@@ -1100,7 +1108,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list1[0].FindStringKey("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("visible"), true);
 
-  const base::Value* list2 = assets_pref->FindPath("ethereum.chain_id2");
+  const base::Value* list2 = assets_pref.FindByDottedPath("ethereum.chain_id2");
   ASSERT_TRUE(list2->is_list());
   const base::Value::List& asset_list2 = list2->GetList();
   ASSERT_EQ(asset_list2.size(), 1u);

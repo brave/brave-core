@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -15,7 +14,6 @@
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/deposits/deposits_factory.h"
-#include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
@@ -31,8 +29,8 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 
@@ -75,10 +73,12 @@ void Account::SetWallet(const std::string& id, const std::string& seed) {
     return;
   }
 
-  BLOG(1, "Successfully set wallet");
-
   const WalletInfo& wallet = GetWallet();
-  NotifyWalletDidUpdate(wallet);
+
+  if (wallet.WasUpdated(last_wallet_copy)) {
+    BLOG(1, "Successfully set wallet");
+    NotifyWalletDidUpdate(wallet);
+  }
 
   if (wallet.HasChanged(last_wallet_copy)) {
     WalletDidChange(wallet);
@@ -125,15 +125,14 @@ void Account::Deposit(const std::string& creative_instance_id,
       });
 }
 
-void Account::GetStatement(GetStatementCallback callback) const {
+// static
+void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!ShouldRewardUser()) {
-    callback(/*statement*/ nullptr);
+    std::move(callback).Run(/*statement*/ nullptr);
     return;
   }
 
-  return BuildStatement([callback](mojom::StatementInfoPtr statement) {
-    callback(std::move(statement));
-  });
+  return BuildStatement(std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -286,14 +285,7 @@ void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
 }
 
 void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
-  const absl::optional<IssuerInfo> issuer =
-      GetIssuerForType(issuers, IssuerType::kPayments);
-  if (!issuer) {
-    BLOG(0, "Missing issuers");
-    return;
-  }
-
-  if (!IsIssuerValid(*issuer)) {
+  if (!IsIssuersValid(issuers)) {
     BLOG(0, "Invalid issuers");
     return;
   }

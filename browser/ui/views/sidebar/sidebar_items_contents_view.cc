@@ -20,7 +20,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -133,17 +133,6 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   }
 }
 
-std::u16string SidebarItemsContentsView::GetTooltipTextFor(
-    const views::View* view) const {
-  auto index = GetIndexOf(view);
-  DCHECK(index);
-  auto& item = sidebar_model_->GetAllSidebarItems()[*index];
-  if (!item.title.empty())
-    return item.title;
-
-  return base::UTF8ToUTF16(item.url.spec());
-}
-
 void SidebarItemsContentsView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,
@@ -185,9 +174,8 @@ void SidebarItemsContentsView::LaunchEditItemDialog() {
   auto index = GetIndexOf(view_for_context_menu_);
   const auto& items = sidebar_model_->GetAllSidebarItems();
 
-  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
-      new SidebarEditItemBubbleDelegateView(browser_, items[*index],
-                                            view_for_context_menu_));
+  auto* bubble = SidebarEditItemBubbleDelegateView::Create(
+      browser_, items[*index], view_for_context_menu_);
   observation_.Observe(bubble);
   bubble->Show();
 }
@@ -260,10 +248,10 @@ void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
 void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                                            int index,
                                            bool user_gesture) {
-  auto* item_view = AddChildViewAt(
-      std::make_unique<SidebarItemView>(
-          this, sidebar_model_->GetAllSidebarItems()[index].title),
-      index);
+  auto* item_view =
+      AddChildViewAt(std::make_unique<SidebarItemView>(
+                         sidebar_model_->GetAllSidebarItems()[index].title),
+                     index);
   item_view->set_context_menu_controller(this);
   item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(
@@ -300,6 +288,22 @@ void SidebarItemsContentsView::SetDefaultImageAt(
                   gfx::ImageSkia(gfx::ImageSkiaRep(canvas.GetBitmap(), scale)));
 }
 
+void SidebarItemsContentsView::UpdateItem(
+    const sidebar::SidebarItem& item,
+    const sidebar::SidebarItemUpdate& update) {
+  //  Set default for new url. Then waiting favicon update event.
+  if (update.url_updated)
+    SetDefaultImageAt(update.index, item);
+
+  // Each item button uses accessible name as a title.
+  if (update.title_updated) {
+    auto title = item.title;
+    if (title.empty())
+      title = base::UTF8ToUTF16(item.url.spec());
+    GetItemViewAt(update.index)->SetAccessibleName(title);
+  }
+}
+
 void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {
   auto* prefs = browser_->profile()->GetPrefs();
   const int current_count =
@@ -320,8 +324,7 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   DCHECK_EQ(browser_, BrowserList::GetInstance()->GetLastActive());
   DCHECK(!observation_.IsObserving());
 
-  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
-      new SidebarItemAddedFeedbackBubble(anchor_view, this));
+  auto* bubble = SidebarItemAddedFeedbackBubble::Create(anchor_view, this);
   observation_.Observe(bubble);
   bubble->Show();
 }
@@ -416,8 +419,10 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
-  if (item.open_in_panel)
+  if (item.open_in_panel) {
     item_view->set_draw_highlight(active);
+    item_view->set_draw_highlight_on_left(sidebar_on_left_);
+  }
 
   if (sidebar::IsBuiltInType(item)) {
     item_view->SetImage(
@@ -512,6 +517,11 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
     return true;
 
   return false;
+}
+
+void SidebarItemsContentsView::SetSidebarOnLeft(bool sidebar_on_left) {
+  sidebar_on_left_ = sidebar_on_left;
+  UpdateAllBuiltInItemsViewState();
 }
 
 BEGIN_METADATA(SidebarItemsContentsView, views::View)

@@ -6,18 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_CONTROLLER_H_
 #define BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_CONTROLLER_H_
 
+#include <cstddef>
 #include <memory>
 #include <string>
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_today/browser/suggestions_controller.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -34,6 +38,10 @@ class PrefService;
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
+
+namespace favicon {
+class FaviconService;
+}
 
 namespace history {
 class HistoryService;
@@ -54,6 +62,7 @@ class BraveNewsController : public KeyedService,
 
   BraveNewsController(
       PrefService* prefs,
+      favicon::FaviconService* favicon_service,
       brave_ads::AdsService* ads_service,
       history::HistoryService* history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -75,14 +84,23 @@ class BraveNewsController : public KeyedService,
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
+  void GetSuggestedPublisherIds(
+      GetSuggestedPublisherIdsCallback callback) override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  FindFeedsCallback callback) override;
+  void GetChannels(GetChannelsCallback callback) override;
+  void SetChannelSubscribed(const std::string& locale,
+                            const std::string& channel_id,
+                            bool subscribed,
+                            SetChannelSubscribedCallback callback) override;
   void SubscribeToNewDirectFeed(
       const GURL& feed_url,
       SubscribeToNewDirectFeedCallback callback) override;
   void RemoveDirectFeed(const std::string& publisher_id) override;
   void GetImageData(const GURL& padded_image_url,
                     GetImageDataCallback callback) override;
+  void GetFavIconData(const std::string& publisher_id,
+                      GetFavIconDataCallback callback) override;
   void SetPublisherPref(const std::string& publisher_id,
                         mojom::UserEnabled new_status) override;
   void ClearPrefs() override;
@@ -108,9 +126,12 @@ class BraveNewsController : public KeyedService,
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
+  bool GetIsEnabled();
+  void HandleSubscriptionsChanged();
   void Prefetch();
 
   raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
   brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
@@ -118,12 +139,15 @@ class BraveNewsController : public KeyedService,
   DirectFeedController direct_feed_controller_;
   UnsupportedPublisherMigrator unsupported_publisher_migrator_;
   PublishersController publishers_controller_;
+  ChannelsController channels_controller_;
   FeedController feed_controller_;
+  SuggestionsController suggestions_controller_;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer timer_prefetch_;
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
+  base::CancelableTaskTracker task_tracker_;
 
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;

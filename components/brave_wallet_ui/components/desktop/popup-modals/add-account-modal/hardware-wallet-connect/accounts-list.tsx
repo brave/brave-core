@@ -17,7 +17,8 @@ import {
 } from './style'
 import {
   HardwareWalletDerivationPathLocaleMapping,
-  HardwareWalletDerivationPathsMapping
+  HardwareWalletDerivationPathsMapping,
+  SolHardwareWalletDerivationPathLocaleMapping
 } from './types'
 import {
   FilecoinNetwork,
@@ -37,7 +38,7 @@ import Amount from '../../../../../utils/amount'
 interface Props {
   hardwareWallet: string
   accounts: BraveWallet.HardwareWalletAccount[]
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   preAddedHardwareWalletAccounts: WalletAccountType[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
@@ -76,7 +77,8 @@ export default function (props: Props) {
     setIsLoadingMore(false)
   }, [accounts])
 
-  const derivationPathsEnum = HardwareWalletDerivationPathsMapping[hardwareWallet]
+  const ethDerivationPathsEnum = HardwareWalletDerivationPathsMapping[hardwareWallet]
+  const solDerivationPathsEnum = SolHardwareWalletDerivationPathLocaleMapping
 
   const onSelectAccountCheckbox = (account: BraveWallet.HardwareWalletAccount) => () => {
     const { derivationPath } = account
@@ -113,22 +115,34 @@ export default function (props: Props) {
 
   return (
     <>
-      {selectedAccountType.coin !== BraveWallet.CoinType.SOL && (
-        <SelectRow>
-          <SelectWrapper>
-            {selectedAccountType.coin !== BraveWallet.CoinType.FIL ? (
-              <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
-                {Object.keys(derivationPathsEnum).map((path, index) => {
-                  const pathValue = derivationPathsEnum[path]
-                  const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
-                  return (
-                    <div data-value={pathValue} key={index}>
-                      {pathLocale}
-                    </div>
-                  )
-                })}
-              </Select>
-            ) : (
+      <SelectRow>
+        <SelectWrapper>
+          {selectedAccountType.coin === BraveWallet.CoinType.ETH ? (
+            <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
+              {Object.keys(ethDerivationPathsEnum).map((path, index) => {
+                const pathValue = ethDerivationPathsEnum[path]
+                const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
+                return (
+                  <div data-value={pathValue} key={index}>
+                    {pathLocale}
+                  </div>
+                )
+              })}
+            </Select>
+          ) : null}
+          {selectedAccountType.coin === BraveWallet.CoinType.SOL ? (
+            <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
+              {Object.keys(solDerivationPathsEnum).map((path, index) => {
+                const pathLocale = solDerivationPathsEnum[path]
+                return (
+                  <div data-value={path} key={index}>
+                    {pathLocale}
+                  </div>
+                )
+              })}
+            </Select>
+          ) : null}
+          {selectedAccountType.coin === BraveWallet.CoinType.FIL ? (
             <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
               {FilecoinNetworkTypes.map((network, index) => {
                 const networkLocale = FilecoinNetworkLocaleMapping[network]
@@ -139,15 +153,12 @@ export default function (props: Props) {
                 )
               })}
             </Select>
-          )}
-          </SelectWrapper>
-        </SelectRow>
-      )}
-      {selectedAccountType.coin !== BraveWallet.CoinType.SOL && (
-        <DisclaimerWrapper>
-          <DisclaimerText>{getLocale('braveWalletSwitchHDPathTextHardwareWallet')}</DisclaimerText>
-        </DisclaimerWrapper>
-      )}
+          ) : null}
+        </SelectWrapper>
+      </SelectRow>
+      <DisclaimerWrapper>
+        <DisclaimerText>{getLocale('braveWalletSwitchHDPathTextHardwareWallet')}</DisclaimerText>
+      </DisclaimerWrapper>
       <SearchBar placeholder={getLocale('braveWalletSearchScannedAccounts')} action={filterAccountList} />
       <HardwareWalletAccountsList>
         {
@@ -211,7 +222,7 @@ export default function (props: Props) {
 
 interface AccountListItemProps {
   account: BraveWallet.HardwareWalletAccount
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   onSelect: () => void
   selected: boolean
   disabled: boolean
@@ -225,17 +236,17 @@ function AccountListItem (props: AccountListItemProps) {
   }, [account.address])
   const [balance, setBalance] = React.useState('')
 
-  React.useMemo(() => {
+  React.useEffect(() => {
+    if (!selectedNetwork) {
+      return
+    }
+
     getBalance(account.address, account.coin).then((result) => {
-      let amount = new Amount(result)
-      if (account.coin === BraveWallet.CoinType.SOL) {
-        amount = amount.divideByDecimals(9)
-      } else {
-        amount = amount.divideByDecimals(selectedNetwork.decimals)
-      }
+      const amount = new Amount(result)
+        .divideByDecimals(selectedNetwork.decimals)
       setBalance(amount.format())
     }).catch()
-  }, [account])
+  }, [account, selectedNetwork, getBalance])
 
   return (
     <HardwareWalletAccountListItem>

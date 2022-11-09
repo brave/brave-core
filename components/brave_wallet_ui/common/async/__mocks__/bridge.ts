@@ -5,7 +5,7 @@
 
 // redux
 import { createStore, combineReducers } from 'redux'
-import { createWalletReducer } from '../../reducers/wallet_reducer'
+import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -14,6 +14,7 @@ import type WalletApiProxy from '../../wallet_api_proxy'
 
 // mocks
 import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
+import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(combineReducers({
@@ -120,7 +121,10 @@ export class MockedWalletApiProxy {
     ) => (password === 'password'
       ? { privateKey: 'secret-private-key', success: true }
       : { privateKey: '', success: false }
-    )
+    ),
+    async getMnemonicForDefaultKeyring (password) {
+      return password === 'password' ? { mnemonic: mockedMnemonic } : { mnemonic: '' }
+    }
   }
 
   ethTxManagerProxy: Partial<InstanceType<typeof BraveWallet.EthTxManagerProxyInterface>> = {
@@ -136,6 +140,27 @@ export class MockedWalletApiProxy {
           baseFeePerGas: '0'
         } as BraveWallet.GasEstimation1559 | null
       }
+    }
+  }
+
+  braveWalletP3A: Partial<InstanceType<typeof BraveWallet.BraveWalletP3AInterface>> = {
+    reportOnboardingAction: () => {},
+    reportEthereumProvider: () => {}
+  }
+
+  assetRatioService: Partial<InstanceType<typeof BraveWallet.AssetRatioServiceInterface>> = {
+    async getPrice (fromAssets, toAssets, timeframe) {
+        return {
+          success: true,
+          values: [
+            {
+              assetTimeframeChange: '1',
+              fromAsset: fromAssets[0],
+              toAsset: toAssets[0],
+              price: '1234.56'
+            }
+          ]
+        }
     }
   }
 

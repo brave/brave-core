@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_PANEL_REWARDS_PANEL_COORDINATOR_H_
 #define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_PANEL_REWARDS_PANEL_COORDINATOR_H_
 
-#include <memory>
 #include <string>
 
 #include "base/observer_list.h"
@@ -68,7 +67,6 @@ class RewardsPanelCoordinator
 
   mojom::RewardsPanelArgs panel_args_;
   base::ObserverList<Observer> observers_;
-  std::unique_ptr<Observer> extension_handler_;
 
   BROWSER_USER_DATA_KEY_DECL();
 };

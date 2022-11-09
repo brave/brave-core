@@ -78,20 +78,20 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
   font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
   font-size: 14px;
+  letter-spacing: 0.01em;
   line-height: 20px;
-  font-weight: 300;
   color: ${(p) => p.theme.color.text02};
   text-align: ${(p) => p?.textAlign || 'left'};
 
   & > * > strong {
-    font-family: 'Poppins';
-    font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.01em;
+    color: ${(p) => p.theme.color.text01};
   }
 `
 

@@ -34,8 +34,9 @@ class BrowserContext;
 class WebContents;
 }  // namespace content
 
-class PrefService;
 class CosmeticFilteringPlaylistFlagEnabledTest;
+class PlaylistRenderFrameObserverBrowserTest;
+class PrefService;
 
 namespace playlist {
 
@@ -70,13 +71,18 @@ class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate {
  public:
+  using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
+  using PlaylistItemId =
+      base::StrongAlias<class PlaylistItemIdTag, std::string>;
+
   PlaylistService(content::BrowserContext* context,
                   MediaDetectorComponentManager* manager);
   ~PlaylistService() override;
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
 
-  void CreatePlaylist(const PlaylistInfo& info);
+  // This function will fill |info|'s id with a new generated id.
+  void CreatePlaylist(PlaylistInfo& info);
   void RemovePlaylist(const std::string& id);
 
   std::vector<PlaylistItemInfo> GetAllPlaylistItems();
@@ -108,8 +114,19 @@ class PlaylistService : public KeyedService,
 
   void RecoverPlaylistItem(const std::string& id);
 
-  void RemoveItemFromPlaylist(const std::string& playlist_id,
-                              const std::string& item_id);
+  // Add |item_ids| to playlist's item list
+  bool AddItemsToPlaylist(const std::string& playlist_id,
+                          const std::vector<std::string>& item_ids);
+
+  // Remove a item from a list. When |remove_item| is true, the item preference
+  // and local data will be removed together.
+  bool RemoveItemFromPlaylist(const PlaylistId& playlist_id,
+                              const PlaylistItemId& item_id,
+                              bool remove_item = true);
+  bool MoveItem(const PlaylistId& from,
+                const PlaylistId& to,
+                const PlaylistItemId& item);
+
   // Removes Item value from prefs and related cached data.
   void DeletePlaylistItemData(const std::string& id);
   // Removes only cached data.
@@ -125,18 +142,21 @@ class PlaylistService : public KeyedService,
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
 
   // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsforBackgroundWebContents(
+  void ConfigureWebPrefsForBackgroundWebContents(
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* web_prefs);
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ApiFunctions);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylist);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylistItem);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, MediaDownloadFailed);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ThumbnailFailed);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, RemoveAndRestoreLocalData);
+  friend class ::PlaylistRenderFrameObserverBrowserTest;
+
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylist);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylistItem);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaDownloadFailed);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ThumbnailFailed);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaRecoverTest);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, DeleteItem);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveAndRestoreLocalData);
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -152,6 +172,8 @@ class PlaylistService : public KeyedService,
   // Called when thumbnail image file is downloaded.
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;
+
+  bool ShouldDownloadOnBackground(content::WebContents* contents) const;
 
   void OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
                                 bool directory_ready);

@@ -4,7 +4,6 @@ import {
   reduceNetworkDisplayName,
   getNetworksByCoinType,
   getTokensNetwork,
-  getTokensCoinType,
   getCoinFromTxDataUnion,
   getFilecoinKeyringIdFromNetwork
 } from './network-utils'
@@ -59,20 +58,8 @@ describe('getTokensNetwork', () => {
   it('Ethereum with chainId 0x1, should return ETH Mainnet info', () => {
     expect(getTokensNetwork(mockNetworks, ethToken)).toEqual(ethMainNetwork)
   })
-  it('Binance Coin with chainId 0x3, should return ETH Ropsten Testnetwork info', () => {
+  it('Binance Coin with chainId 0x5, should return ETH Goerli Testnetwork info', () => {
     expect(getTokensNetwork(mockNetworks, bnbToken)).toEqual(mockNetworks[1])
-  })
-})
-
-describe('getTokensCoinType', () => {
-  it('Ethereum with chainId 0x1, should return CoinType ETH', () => {
-    expect(getTokensCoinType(mockNetworks, ethToken)).toEqual(BraveWallet.CoinType.ETH)
-  })
-  it('Binance Coin with chainId 0x3, should return ETH CoinType ETH', () => {
-    expect(getTokensCoinType(mockNetworks, bnbToken)).toEqual(BraveWallet.CoinType.ETH)
-  })
-  it('Binance Coin with chainId 0x3333333458, should default to CoinType ETH', () => {
-    expect(getTokensCoinType(mockNetworks, { ...bnbToken, chainId: '0x3333333458' })).toEqual(BraveWallet.CoinType.ETH)
   })
 })
 
@@ -122,6 +109,6 @@ describe('getFilecoinKeyringIdFromNetwork', () => {
     expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.FILECOIN_MAINNET, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.FILECOIN_KEYRING_ID)
   })
   it('Non filecoin', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.ROPSTEN_CHAIN_ID, coin: BraveWallet.CoinType.ETH } as BraveWallet.NetworkInfo)).toEqual(undefined)
+    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.GOERLI_CHAIN_ID, coin: BraveWallet.CoinType.ETH } as BraveWallet.NetworkInfo)).toEqual(undefined)
   })
 })

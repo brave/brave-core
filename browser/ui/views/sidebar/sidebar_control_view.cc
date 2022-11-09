@@ -13,7 +13,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -120,7 +120,8 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
     SetBorder(views::CreateSolidSidedBorder(
-        gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
+        gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : kBorderThickness, 0,
+                          sidebar_on_left_ ? kBorderThickness : 0),
         color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }
@@ -173,15 +174,6 @@ void SidebarControlView::MenuClosed(ui::SimpleMenuModel* source) {
   delegate_->MenuClosed();
 }
 
-std::u16string SidebarControlView::GetTooltipTextFor(
-    const views::View* view) const {
-  if (view == sidebar_settings_view_)
-    return brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP);
-
-  return std::u16string();
-}
-
 void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,
                                      size_t index,
                                      bool user_gesture) {
@@ -198,12 +190,12 @@ void SidebarControlView::AddChildViews() {
 
   sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
       browser_, brave_l10n::GetLocalizedResourceUTF16String(
-                    IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE)));
+                    IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP)));
   sidebar_item_add_view_->set_context_menu_controller(this);
 
   sidebar_settings_view_ = AddChildView(std::make_unique<SidebarButtonView>(
-      this, brave_l10n::GetLocalizedResourceUTF16String(
-                IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
 
   sidebar_settings_view_->SetCallback(
       base::BindRepeating(&SidebarControlView::OnButtonPressed,
@@ -267,6 +259,12 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
     return true;
 
   return false;
+}
+
+void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
+  sidebar_on_left_ = sidebar_on_left;
+  sidebar_items_view_->SetSidebarOnLeft(sidebar_on_left);
+  UpdateBackgroundAndBorder();
 }
 
 BEGIN_METADATA(SidebarControlView, views::View)

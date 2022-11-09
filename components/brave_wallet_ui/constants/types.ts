@@ -138,6 +138,10 @@ export type AccountSettingsNavTypes =
   | 'details'
   | 'privateKey'
 
+export type AddCustomAssetFormNavTypes =
+  | 'token'
+  | 'nft'
+
 export type HardwareAccountSettingsNavTypes =
   | 'details'
 
@@ -160,9 +164,11 @@ export interface BuySendSwapObjectType {
   id: BuySendSwapTypes
 }
 
+export type TabNavTypes = TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes | HardwareAccountSettingsNavTypes | AddCustomAssetFormNavTypes
+
 export interface TopTabNavObjectType {
   name: string
-  id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes | HardwareAccountSettingsNavTypes
+  id: TabNavTypes
 }
 
 export interface NavObjectType {
@@ -202,18 +208,21 @@ export interface SolFeeEstimates {
   fee: bigint
 }
 
+export interface TokenRegistry {
+  [chainID: string]: BraveWallet.BlockchainToken[]
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
-  isTestNetworksEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount: WalletAccountType
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
   accounts: WalletAccountType[]
   transactions: AccountTransactions
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
@@ -276,6 +285,7 @@ export interface PageState {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
+  nftMetadataError: string | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
@@ -394,7 +404,7 @@ export interface GetNativeAssetBalancesPayload {
 }
 
 export interface GetBlockchainTokenBalanceReturnInfo {
-  balances: BraveWallet.JsonRpcService_GetERC20TokenBalance_ResponseParams[][]
+  balances: BalancePayload[][]
 }
 
 export interface GetFlattenedAccountBalancesReturnInfo {
@@ -478,6 +488,7 @@ export type AccountTransactions = {
 }
 
 export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
+export type GetUnstoppableDomainsWalletAddrReturnInfo = BraveWallet.JsonRpcService_UnstoppableDomainsGetWalletAddr_ResponseParams
 
 export interface GetBlockchainTokenInfoReturnInfo {
   token: BraveWallet.BlockchainToken | null
@@ -564,10 +575,7 @@ export type AllowSpendReturnPayload = {
 
 export const BuySupportedChains = [
   BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.RINKEBY_CHAIN_ID,
-  BraveWallet.ROPSTEN_CHAIN_ID,
   BraveWallet.GOERLI_CHAIN_ID,
-  BraveWallet.KOVAN_CHAIN_ID,
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
@@ -630,8 +638,10 @@ export enum WalletRoutes {
   OnboardingComplete = '/crypto/onboarding/complete',
 
   // fund wallet page
-  FundWalletPage = '/crypto/fund-wallet',
-  DepositFundsPage = '/crypto/deposit-funds',
+  FundWalletPageStart = '/crypto/fund-wallet',
+  FundWalletPage = '/crypto/fund-wallet/:tokenId?',
+  DepositFundsPageStart = '/crypto/deposit-funds',
+  DepositFundsPage = '/crypto/deposit-funds/:tokenId?',
 
   // NFTs
   Nfts = '/crypto/nfts',
@@ -657,8 +667,13 @@ export enum WalletRoutes {
   AddHardwareAccountModalStart = '/crypto/accounts/add-account/hardware',
   AddHardwareAccountModal = '/crypto/accounts/add-account/hardware/:accountTypeName?',
 
-  // wallet mangement
+  // wallet backup
   Backup = '/crypto/backup-wallet',
+  BackupExplainRecoveryPhrase = '/crypto/backup-wallet/explain-recovery-phrase',
+  BackupRecoveryPhrase = '/crypto/backup-wallet/backup-recovery-phrase',
+  BackupVerifyRecoveryPhrase = '/crypto/backup-wallet/verify-recovery-phrase',
+
+  // wallet mangement
   Restore = '/crypto/restore-wallet',
   Unlock = '/crypto/unlock',
 
@@ -669,6 +684,9 @@ export enum WalletRoutes {
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
+
+  // swap
+  Swap = '/swap',
 }
 
 export const WalletOrigin = 'chrome://wallet'
@@ -691,7 +709,10 @@ export interface NFTMetadataReturnType {
   chainName: string
   tokenType: string
   tokenID: string
-  imageURL: string
+  imageURL?: string
+  imageMimeType?: string
+  animationURL?: string
+  animationMimeType?: string
   floorFiatPrice: string
   floorCryptoPrice: string
   contractInformation: {
@@ -723,6 +744,7 @@ export const SupportedCoinTypes = [
 export const SupportedOnRampNetworks = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.MAINNET_CHAIN_ID, // ETH
+  BraveWallet.FILECOIN_MAINNET,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
@@ -730,14 +752,11 @@ export const SupportedOnRampNetworks = [
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID
-
 ]
 
 export const SupportedTestNetworks = [
-  BraveWallet.RINKEBY_CHAIN_ID,
-  BraveWallet.ROPSTEN_CHAIN_ID,
   BraveWallet.GOERLI_CHAIN_ID,
-  BraveWallet.KOVAN_CHAIN_ID,
+  BraveWallet.SEPOLIA_CHAIN_ID,
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,
@@ -748,6 +767,12 @@ export enum CoinTypesMap {
   ETH = BraveWallet.CoinType.ETH,
   FIL = BraveWallet.CoinType.FIL,
   SOL = BraveWallet.CoinType.SOL
+}
+
+export enum OnboardingAction {
+  SHOWN = 0,
+  CREATED_WALLET = 1,
+  RESTORED_WALLET = 2
 }
 
 export type BuyOption = {
@@ -797,6 +822,7 @@ export type MarketDataTableColumnTypes =
   | 'marketCap'
   | 'priceChange24h'
   | 'priceChangePercentage24h'
+  | 'actions'
 
 export type AbbreviationOptions =
   | 'thousand'
@@ -810,9 +836,20 @@ export type AccountModalTypes =
   | 'edit'
   | 'details'
   | 'remove'
+  | 'buy'
 
 export interface AccountButtonOptionsObjectType {
   name: string
   id: AccountModalTypes
   icon: string
 }
+
+export type StringWithAutocomplete<T> = T | (string & Record<never, never>)
+
+export const P3ASendTransactionTypes = [
+  BraveWallet.TransactionType.ETHSend,
+  BraveWallet.TransactionType.ERC20Transfer,
+  BraveWallet.TransactionType.SolanaSystemTransfer,
+  BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+  BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+]

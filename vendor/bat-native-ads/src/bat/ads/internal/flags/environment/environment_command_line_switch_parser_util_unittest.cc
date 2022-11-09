@@ -42,8 +42,6 @@ class BatAdsEnvironmentCommandLineSwitchParserUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsEnvironmentCommandLineSwitchParserUtilTest() = default;
-
   void SetUpMocks() override {
     AppendCommandLineSwitches({GetParam().command_line_switch});
   }
@@ -59,7 +57,8 @@ TEST_P(BatAdsEnvironmentCommandLineSwitchParserUtilTest,
   EXPECT_EQ(GetParam().expected_environment_type, GetEnvironmentType());
 }
 
-std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
+std::string TestParamToString(
+    const ::testing::TestParamInfo<ParamInfo>& test_param) {
   const std::string expected_environment_type =
       EnvironmentTypeEnumToString(test_param.param.expected_environment_type);
 

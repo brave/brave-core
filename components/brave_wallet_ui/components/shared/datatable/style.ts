@@ -27,7 +27,7 @@ export const StyledTBody = styled.tbody`
   }
 `
 
-export const StyledNoContent = styled('div')<{}>`
+export const StyledNoContent = styled('div') <{}>`
   text-align: center;
   padding: 30px 0;
   color: ${p => p.theme.color.text03};
@@ -49,7 +49,7 @@ export const StyledTable = styled('table')`
 export const StyledTHead = styled('thead')`
 `
 
-export const StyledTH = styled('th')<Partial<StyleProps>>`
+export const StyledTH = styled('th') <Partial<StyleProps>>`
   text-align: left;
   font-family: Poppins;
   font-size: 12px;
@@ -70,8 +70,12 @@ export const StyledTH = styled('th')<Partial<StyleProps>>`
   }
   
   &:last-child {
-    padding-right: 20px;
+    padding-right: 6px;
   }
+`
+
+export const StyledTR = styled('tr')`
+  pointer-events: none;
 `
 
 export const StyledTD = styled('td')`
@@ -85,9 +89,10 @@ export const StyledTD = styled('td')`
   font-size: 14px;
   line-height: 20px;
   padding: 0 0 16px 10px;
+  pointer-events: auto;
 
   &:last-child {
-    padding-right: 20px;
+    pointer-events: none;
   }
 `
 export const ArrowWrapper = styled.div`

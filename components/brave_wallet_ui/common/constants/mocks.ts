@@ -133,6 +133,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   logo: '',
   isErc20: true,
   isErc721: false,
+  isNft: false,
   decimals: 18,
   visible: true,
   tokenId: '',
@@ -292,7 +293,8 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
               'isWritable': true
             }
           ],
-          'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
+          'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+          'decodedData': undefined
         }
       ],
       'sendOptions': undefined,
@@ -336,7 +338,8 @@ export const mockSolDappSignAndSendTransactionRequest = {
               'isWritable': true
             }
           ],
-          'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
+          'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+          'decodedData': undefined
         }
       ],
       'sendOptions': undefined,
@@ -404,7 +407,8 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
               'isWritable': true
             }
           ],
-          'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
+          'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+          'decodedData': undefined
         }],
         'sendOptions': undefined,
         'signTransactionParam': undefined
@@ -438,7 +442,8 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
                 'isWritable': true
               }
             ],
-            'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
+            'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+            'decodedData': undefined
           }
         ],
         'sendOptions': undefined,

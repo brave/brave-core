@@ -18,7 +18,6 @@ export interface WidgetProps {
   widgetTitle?: string
   hideMenu?: boolean
   isForeground?: boolean
-  lightWidget?: boolean
   paddingType: 'none' | 'right' | 'default'
   onLearnMore?: () => void
   onDisconnect?: () => void
@@ -42,7 +41,6 @@ export function Widget ({
   widgetTitle,
   hideMenu,
   isForeground,
-  lightWidget,
   paddingType,
   onLearnMore,
   onDisconnect,
@@ -78,7 +76,6 @@ export function Widget ({
         hideWidget={hideWidget}
         persistWidget={() => setWidgetMenuPersist(true)}
         unpersistWidget={() => setWidgetMenuPersist(false)}
-        lightWidget={lightWidget}
         paddingType={paddingType} />}
   </StyledWidgetContainer>
 }

@@ -5,13 +5,20 @@ import { background } from 'ethereum-blockies'
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension, httpifyIpfsUrl } from '../../../utils/string-utils'
+import {
+  stripERC20TokenImageURL,
+  isRemoteImageURL,
+  isValidIconExtension,
+  httpifyIpfsUrl,
+  isIpfs,
+  isDataURL
+} from '../../../utils/string-utils'
 
 // Styled components
 import { IconWrapper, PlaceholderText } from './style'
 
 // Options
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { getNetworkLogo } from '../../../options/asset-options'
 
 interface Config {
   size: 'big' | 'small'
@@ -38,47 +45,43 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       return null
     }
 
-    const nativeAsset = React.useMemo(
-      () => makeNetworkAsset(network),
-      [network]
-    )
+    const networkLogo = getNetworkLogo(network)
 
     const isNativeAsset = React.useMemo(() =>
-      asset.symbol.toLowerCase() === nativeAsset.symbol.toLowerCase(),
-      [nativeAsset, asset]
+      asset.symbol.toLowerCase() === network.symbol.toLowerCase(),
+      [network.symbol, asset.symbol]
     )
 
     const tokenImageURL = stripERC20TokenImageURL(asset.logo)
     const isRemoteURL = isRemoteImageURL(tokenImageURL)
-    const isDataURL = asset.logo.startsWith('chrome://erc-token-images/')
     const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
 
     const isValidIcon = React.useMemo(() => {
-      if (isRemoteURL || isDataURL) {
-        return tokenImageURL?.includes('data:image/') ? true : isValidIconExtension(new URL(asset.logo).pathname)
+      if (isRemoteURL || isDataURL(asset.logo)) {
+        return tokenImageURL?.includes('data:image/') || isIpfs(tokenImageURL) ? true : isValidIconExtension(new URL(asset.logo).pathname)
       }
       if (isStorybook) {
         return true
       }
       return false
-    }, [isRemoteURL, isDataURL, tokenImageURL])
+    }, [isRemoteURL, tokenImageURL, asset.logo, isStorybook])
 
     const needsPlaceholder = isNativeAsset
-      ? (tokenImageURL === '' || !isValidIcon) && nativeAsset.logo === ''
+      ? (tokenImageURL === '' || !isValidIcon) && networkLogo === ''
       : tokenImageURL === '' || !isValidIcon
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
         return background({ seed: asset.contractAddress ? asset.contractAddress.toLowerCase() : asset.name })
       }
-    }, [asset])
+    }, [needsPlaceholder, asset.contractAddress, asset.name])
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
         return `chrome://image?${httpifyIpfsUrl(tokenImageURL)}`
       }
       return ''
-    }, [tokenImageURL])
+    }, [isRemoteURL, tokenImageURL])
 
     if (needsPlaceholder) {
       return (
@@ -103,8 +106,8 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       >
         <WrappedComponent
           icon={
-            isNativeAsset && nativeAsset.logo
-              ? nativeAsset.logo
+            isNativeAsset && networkLogo
+              ? networkLogo
               : isRemoteURL ? remoteImage : asset.logo
           }
         />

@@ -40,7 +40,9 @@ class NTPCustomBackgroundImagesServiceDelegate
 
   // NTPCustomBackgroundImagesService::Delegate overrides:
   bool IsCustomImageBackgroundEnabled() const override;
-  base::FilePath GetCustomBackgroundImageLocalFilePath() const override;
+  base::FilePath GetCustomBackgroundImageLocalFilePath(
+      const GURL& url) const override;
+  GURL GetCustomBackgroundImageURL() const override;
   bool IsColorBackgroundEnabled() const override;
   std::string GetColor() const override;
   bool ShouldUseRandomValue() const override;

@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
-#include <functional>
-#include <string>
 #include <utility>
 
 #include "absl/types/optional.h"
@@ -20,14 +18,22 @@
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "net/http/http_status_code.h"
 
 namespace ads {
 
 namespace {
+
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+
+base::TimeDelta GetFetchDelay() {
+  const int ping =
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
+  return base::Milliseconds(ping);
+}
+
 }  // namespace
 
 Issuers::Issuers() = default;
@@ -121,12 +127,6 @@ void Issuers::FetchAfterDelay() {
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at,
                                                   /*use_sentence_style*/ true));
-}
-
-base::TimeDelta Issuers::GetFetchDelay() const {
-  const int ping =
-      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
-  return base::Milliseconds(ping);
 }
 
 void Issuers::RetryAfterDelay() {

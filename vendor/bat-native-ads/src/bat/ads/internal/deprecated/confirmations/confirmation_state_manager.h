@@ -41,7 +41,6 @@ class ConfirmationStateManager final {
   void Initialize(InitializeCallback callback);
   bool IsInitialized() const;
 
-  void Load();
   void Save();
 
   std::string ToJson();
@@ -65,12 +64,10 @@ class ConfirmationStateManager final {
   bool is_mutated() const { return is_mutated_; }
 
  private:
-  void OnLoaded(bool success, const std::string& json);
+  void OnLoaded(InitializeCallback callback,
+                bool success,
+                const std::string& json);
 
-  base::Value::Dict GetFailedConfirmationsAsDictionary(
-      const ConfirmationList& confirmations) const;
-  bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
-                                            ConfirmationList* confirmations);
   bool ParseFailedConfirmationsFromDictionary(const base::Value::Dict& dict);
 
   bool ParseUnblindedTokensFromDictionary(const base::Value::Dict& dict);
@@ -80,7 +77,6 @@ class ConfirmationStateManager final {
   bool is_mutated_ = false;
 
   bool is_initialized_ = false;
-  InitializeCallback callback_;
 
   ConfirmationList failed_confirmations_;
 

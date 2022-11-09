@@ -127,7 +127,7 @@ void SearchResultAdService::SetMetadataRequestFinishedCallbackForTesting(
 
 AdsService* SearchResultAdService::SetAdsServiceForTesting(
     AdsService* ads_service) {
-  AdsService* previous_ads_service = ads_service_.get();
+  AdsService* const previous_ads_service = ads_service_.get();
   ads_service_ = ads_service;
   return previous_ads_service;
 }

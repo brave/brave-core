@@ -11,10 +11,13 @@ import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.chrome.browser.suggestions.tile.Tile;
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
+    private TileGroup mTileGroup;
     public BraveMostVisitedTilesMediator(Resources resources, UiConfig uiConfig,
             ViewGroup mvTilesLayout, ViewStub noMvPlaceholderStub, TileRenderer renderer,
             PropertyModel propertyModel, boolean shouldShowSkeletonUIPreNative,
@@ -28,5 +31,18 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
 
     protected void updateTilePlaceholderVisibility() {
         // This function is kept empty to avoid placeholder implementation
+    }
+
+    @Override
+    public void onTileDataChanged() {
+        super.onTileDataChanged();
+        QuickActionSearchAndBookmarkWidgetProvider.DataManager.parseTilesAndWriteWidgetTiles(
+                mTileGroup.getTileSections().get(TileSectionType.PERSONALIZED));
+    }
+
+    @Override
+    public void onTileIconChanged(Tile tile) {
+        super.onTileIconChanged(tile);
+        QuickActionSearchAndBookmarkWidgetProvider.updateTileIcon(tile);
     }
 }

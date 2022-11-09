@@ -12,6 +12,7 @@ const char kDisabledByPolicy[] = "brave.rewards.disabled_by_policy";
 const char kHideButton[] = "brave.hide_brave_rewards_button";
 const char kShowButton[] = "brave.show_brave_rewards_button";
 const char kEnabled[] = "brave.rewards.enabled";
+const char kDeclaredGeo[] = "brave.rewards.declared_geo";
 const char kAdsEnabledTimeDelta[] = "brave.rewards.ads_enabled_time_delta";
 const char kAdsEnabledTimestamp[] = "brave.rewards.ads_enabled_timestamp";
 const char kNotifications[] = "brave.rewards.notifications";
@@ -66,6 +67,8 @@ const char kParametersTipChoices[] =
 const char kParametersMonthlyTipChoices[] =
     "brave.rewards.parameters.tip.monthly_choices";
 const char kParametersPayoutStatus[] = "brave.rewards.parameters.payout_status";
+const char kParametersWalletProviderRegions[] =
+    "brave.rewards.parameters.wallet_provider_regions";
 const char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";
 const char kEmptyBalanceChecked[] =

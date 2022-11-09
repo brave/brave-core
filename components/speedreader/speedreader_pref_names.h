@@ -24,6 +24,13 @@ constexpr char kSpeedreaderPrefPromptCount[] = "brave.speedreader.prompt_count";
 // should be used.
 constexpr char kSpeedreaderPrefTheme[] = "brave.speedreader.theme";
 
+constexpr char kSpeedreaderPrefFontSize[] = "brave.speedreader.font_size";
+
+constexpr char kSpeedreaderPrefFontFamily[] = "brave.speedreader.font_family";
+
+constexpr char kSpeedreaderPrefContentStyle[] =
+    "brave.speedreader.content_style";
+
 }  // namespace speedreader
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_PREF_NAMES_H_

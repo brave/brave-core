@@ -25,8 +25,6 @@ namespace ads::notification_ads {
 class BatAdsNotificationAdServingTest : public ServingObserver,
                                         public UnitTestBase {
  protected:
-  BatAdsNotificationAdServingTest() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

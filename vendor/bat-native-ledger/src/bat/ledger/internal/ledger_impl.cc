@@ -231,9 +231,9 @@ void LedgerImpl::OnInitialized(mojom::Result result,
   }
 
   while (!ready_callbacks_.empty()) {
-    auto callback = std::move(ready_callbacks_.front());
+    auto ready_callback = std::move(ready_callbacks_.front());
     ready_callbacks_.pop();
-    callback();
+    ready_callback();
   }
 
   ready_state_ = ReadyState::kReady;
@@ -269,9 +269,13 @@ void LedgerImpl::OnStateInitialized(mojom::Result result,
   callback(mojom::Result::LEDGER_OK);
 }
 
-void LedgerImpl::CreateRewardsWallet(ResultCallback callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    wallet()->CreateWalletIfNecessary(std::move(callback));
+void LedgerImpl::CreateRewardsWallet(const std::string& country,
+                                     CreateRewardsWalletCallback callback) {
+  WhenReady([this, country, callback = std::move(callback)]() mutable {
+    wallet()->CreateWalletIfNecessary(
+        country.empty() ? absl::nullopt
+                        : absl::optional<std::string>(std::move(country)),
+        std::move(callback));
   });
 }
 
@@ -573,13 +577,6 @@ mojom::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
   props->contribution_videos = state()->GetPublisherAllowVideos();
   props->reconcile_stamp = state()->GetReconcileStamp();
   return props;
-}
-
-void LedgerImpl::RecoverWallet(const std::string& pass_phrase,
-                               LegacyResultCallback callback) {
-  WhenReady([this, pass_phrase, callback]() {
-    wallet()->RecoverWallet(pass_phrase, callback);
-  });
 }
 
 void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
@@ -935,26 +932,17 @@ bool LedgerImpl::IsShuttingDown() const {
 }
 
 void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
-  WhenReady([this, callback]() { callback(wallet()->GetWallet()); });
-}
-
-std::string LedgerImpl::GetRewardsWalletPassphrase() {
-  if (!IsReady())
-    return "";
-
-  auto brave_wallet = wallet()->GetWallet();
-  if (!brave_wallet) {
-    return "";
-  }
-
-  return wallet()->GetWalletPassphrase(std::move(brave_wallet));
-}
-
-void LedgerImpl::LinkRewardsWallet(const std::string& destination_payment_id,
-                                   PostSuggestionsClaimCallback callback) {
-  WhenReady([this, destination_payment_id,
-             callback = std::move(callback)]() mutable {
-    wallet()->LinkRewardsWallet(destination_payment_id, std::move(callback));
+  WhenReady([this, callback]() {
+    auto rewards_wallet = wallet()->GetWallet();
+    if (rewards_wallet) {
+      // While the wallet creation flow is running, the Rewards wallet data may
+      // have a recovery seed without a payment ID. Only return a struct to the
+      // caller if it contains a payment ID.
+      if (rewards_wallet->payment_id.empty()) {
+        rewards_wallet = nullptr;
+      }
+    }
+    callback(std::move(rewards_wallet));
   });
 }
 

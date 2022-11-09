@@ -5,78 +5,86 @@
 
 #include "brave/components/l10n/common/locale_util.h"
 
-#include <algorithm>
-#include <vector>
-
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "ui/base/resource/resource_bundle.h"
+#include "brave/components/l10n/common/default_locale.h"
+#include "brave/components/l10n/common/locale_subtag_info.h"
+#include "brave/components/l10n/common/locale_subtag_parser_util.h"
 
 namespace brave_l10n {
 
 namespace {
 
-const char kDefaultLanguageCode[] = "en";
-const char kDefaultCountryCode[] = "US";
+constexpr char kFallbackLanguageCode[] = "en";
+constexpr char kFallbackCountryCode[] = "US";
 
 }  // namespace
 
-std::string GetLanguageCode(
-    const std::string& locale) {
-  const std::vector<std::string> locale_components = base::SplitString(locale,
-      ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  if (locale_components.empty()) {
-    return kDefaultLanguageCode;
-  }
-
-  std::string normalized_locale = locale_components.front();
-  std::replace(normalized_locale.begin(), normalized_locale.end(), '-', '_');
-
-  const std::vector<std::string> components = base::SplitString(
-      normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-
-  if (components.empty()) {
-    return kDefaultLanguageCode;
-  }
-
-  const std::string language_code = components.front();
-
-  return base::ToLowerASCII(language_code);
+const std::string& GetDefaultLocaleString() {
+  return DefaultLocaleString();
 }
 
-std::string GetCountryCode(
-    const std::string& locale) {
-  const std::vector<std::string> locale_components = base::SplitString(locale,
-      ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  if (locale_components.empty()) {
-    return kDefaultCountryCode;
+std::string GetISOLanguageCode(const std::string& locale) {
+  std::string language = ParseLocaleSubtags(locale).language;
+  if (language.empty()) {
+    return kFallbackLanguageCode;
   }
 
-  std::string normalized_locale = locale_components.front();
-  std::replace(normalized_locale.begin(), normalized_locale.end(), '-', '_');
-
-  const std::vector<std::string> components = base::SplitString(
-      normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-
-  if (components.size() <= 1) {
-    return kDefaultCountryCode;
-  }
-
-  const std::string country_code = components.back();
-
-  return base::ToUpperASCII(country_code);
+  return language;
 }
 
-std::u16string GetLocalizedResourceUTF16String(int resource_id) {
-  std::string value =
-      ui::ResourceBundle::GetSharedInstance().LoadLocalizedResourceString(
-          resource_id);
-  std::u16string output;
-  base::UTF8ToUTF16(value.data(), value.size(), &output);
-  return output;
+std::string GetDefaultISOLanguageCodeString() {
+  return GetISOLanguageCode(GetDefaultLocaleString());
+}
+
+absl::optional<std::string> GetISOScriptCode(const std::string& locale) {
+  std::string script = ParseLocaleSubtags(locale).script;
+  if (script.empty()) {
+    return absl::nullopt;
+  }
+
+  return script;
+}
+
+absl::optional<std::string> GetDefaultISOScriptCodeString() {
+  return GetISOScriptCode(GetDefaultLocaleString());
+}
+
+std::string GetISOCountryCode(const std::string& locale) {
+  std::string country = ParseLocaleSubtags(locale).country;
+  if (country.empty()) {
+    return kFallbackCountryCode;
+  }
+
+  return country;
+}
+
+std::string GetDefaultISOCountryCodeString() {
+  return GetISOCountryCode(GetDefaultLocaleString());
+}
+
+absl::optional<std::string> GetCharSet(const std::string& locale) {
+  std::string charset = ParseLocaleSubtags(locale).charset;
+  if (charset.empty()) {
+    return absl::nullopt;
+  }
+
+  return charset;
+}
+
+absl::optional<std::string> GetDefaultCharSetString() {
+  return GetCharSet(GetDefaultLocaleString());
+}
+
+absl::optional<std::string> GetVariant(const std::string& locale) {
+  std::string variant_code = ParseLocaleSubtags(locale).variant;
+  if (variant_code.empty()) {
+    return absl::nullopt;
+  }
+
+  return variant_code;
+}
+
+absl::optional<std::string> GetDefaultVariantString() {
+  return GetVariant(GetDefaultLocaleString());
 }
 
 }  // namespace brave_l10n

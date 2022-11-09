@@ -47,15 +47,15 @@ class Serving final {
   void RemoveObserver(ServingObserver* observer);
 
   void MaybeServeAd(const std::string& dimensions,
-                    MaybeServeInlineContentAdCallback callback);
+                    const MaybeServeInlineContentAdCallback& callback);
 
  private:
   bool IsSupported() const;
 
   void ServeAd(const InlineContentAdInfo& ad,
-               MaybeServeInlineContentAdCallback callback);
+               const MaybeServeInlineContentAdCallback& callback);
   void FailedToServeAd(const std::string& dimensions,
-                       MaybeServeInlineContentAdCallback callback);
+                       const MaybeServeInlineContentAdCallback& callback);
 
   void NotifyOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) const;

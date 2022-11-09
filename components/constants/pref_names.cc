@@ -5,6 +5,10 @@
 
 #include "brave/components/constants/pref_names.h"
 
+const char kManagedBraveShieldsDisabledForUrls[] =
+    "brave.managed_shields_disabled";
+const char kManagedBraveShieldsEnabledForUrls[] =
+    "brave.managed_shields_enabled";
 const char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
 // added to kAdsBlocked when being displayed.
@@ -40,7 +44,6 @@ const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
 const char kReferralHeaders[] = "brave.referral.headers";
 const char kReferralAndroidFirstRunTimestamp[] =
     "brave.referral_android_first_run_timestamp";
-const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
 const char kShieldsAdvancedViewEnabled[] =
     "brave.shields.advanced_view_enabled";

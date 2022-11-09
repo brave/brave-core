@@ -66,7 +66,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
-    "\\.(css|less)$": "identity-obj-proxy",
+    "\\.(css|less|scss)$": "identity-obj-proxy",
     "^\\$web-common\\/(.*)": "<rootDir>/components/common/$1",
     "^\\$web-components\\/(.*)": "<rootDir>/components/web-components/$1",
     "^brave-ui$": "<rootDir>/node_modules/brave-ui/src",

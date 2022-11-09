@@ -7,14 +7,15 @@
 #include <vector>
 
 #include "base/big_endian.h"
+#include "base/containers/contains.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/protos/channel_response.pb.h"
 #include "bat/ledger/internal/publisher/protos/publisher_prefix_list.pb.h"
-#include "bat/ledger/internal/common/request_util.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
@@ -212,7 +213,14 @@ void RewardsBrowserTestResponse::Get(
   requests_.emplace_back(url, method);
   DCHECK(response_status_code && response);
 
-  if (url.find("/v3/wallet/brave") != std::string::npos) {
+  if (base::Contains(url, "/v4/wallets/")) {
+    *response = "";
+    *response_status_code = net::HTTP_OK;
+    return;
+  }
+
+  if (base::Contains(url, "/v3/wallet/brave") ||
+      base::Contains(url, "/v4/wallets")) {
     *response = wallet_;
     *response_status_code = net::HTTP_CREATED;
     return;

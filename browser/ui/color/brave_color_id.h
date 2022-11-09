@@ -18,7 +18,9 @@
     E_CPONLY(kColorIconBase)                    \
     E_CPONLY(kColorMenuItemSubText)             \
     E_CPONLY(kColorBookmarkBarInstructionsText) \
-    E_CPONLY(kColorLocationBarFocusRing)
+    E_CPONLY(kColorLocationBarFocusRing)        \
+    E_CPONLY(kColorDialogDontAskAgainButton)    \
+    E_CPONLY(kColorDialogDontAskAgainButtonHovered) \
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \
@@ -45,7 +47,7 @@
     E_CPONLY(kColorSidebarArrowNormal)                        \
     E_CPONLY(kColorSidebarButtonBase)                         \
     E_CPONLY(kColorSidebarItemBackgroundHovered)              \
-    E_CPONLY(kColorSidebarItemDragIndicatorColor)             \
+    E_CPONLY(kColorSidebarItemDragIndicator)                  \
     E_CPONLY(kColorSidebarSeparator)
 #else
 #define BRAVE_SIDEBAR_COLOR_IDS

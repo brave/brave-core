@@ -15,6 +15,8 @@
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 
+class BraveNewsFeedsContainerView;
+
 class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
  public:
   static base::WeakPtr<views::Widget> Show(views::View* anchor,
@@ -27,11 +29,16 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
   BraveNewsBubbleView& operator=(const BraveNewsBubbleView&) = delete;
   ~BraveNewsBubbleView() override;
 
-  void DismissForever();
+  void OpenManageFeeds();
+
+  // views::BubbleDialogDelegateView:
+  void OnThemeChanged() override;
 
  private:
   raw_ptr<content::WebContents> contents_;
   raw_ptr<views::Label> title_label_ = nullptr;
+  raw_ptr<views::Label> subtitle_label_ = nullptr;
+  raw_ptr<BraveNewsFeedsContainerView> feeds_container_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_

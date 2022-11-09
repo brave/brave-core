@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, useParams } from 'react-router'
+import { Redirect, useParams, useLocation } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -23,6 +23,7 @@ import {
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { getBalance } from '../../../../utils/balance-utils'
 
 // Styled Components
 import {
@@ -51,7 +52,7 @@ import { AccountListItemOptionButton } from '../../account-list-item/account-lis
 import { AccountButtonOptions } from '../../../../options/account-list-button-options'
 
 // Hooks
-import { useBalance } from '../../../../common/hooks/balance'
+import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 
 // Actions
 import { getFilecoinKeyringIdFromNetwork } from '../../../../utils/network-utils'
@@ -66,18 +67,17 @@ export const Account = ({
 }: Props) => {
   // routing
   const { id: accountId } = useParams<{ id: string }>()
+  const { hash: transactionID } = useLocation()
 
   // redux
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const transactions = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactions)
-  const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
-  const getBalance = useBalance(networkList)
+  const scrollIntoView = useScrollIntoView()
 
   // memos
   const selectedAccount = React.useMemo(() => {
@@ -125,7 +125,7 @@ export const Account = ({
     () =>
       accountsTokensList.filter(({ isErc721 }) => isErc721)
         .filter((token) => getBalance(selectedAccount, token) !== '0'),
-    [accountsTokensList, selectedAccount, getBalance]
+    [accountsTokensList, selectedAccount]
   )
 
   const funigbleTokens = React.useMemo(
@@ -167,6 +167,19 @@ export const Account = ({
     dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
   }, [onRemoveAccount, dispatch])
 
+  const checkIsTransactionFocused = React.useCallback((id: string): boolean => {
+    if (transactionID !== '') {
+      return transactionID.replace('#', '') === id
+    }
+    return false
+  }, [transactionID])
+
+  const handleScrollIntoView = React.useCallback((id: string, ref: HTMLDivElement | null) => {
+    if (checkIsTransactionFocused(id)) {
+      scrollIntoView(ref)
+    }
+  }, [checkIsTransactionFocused, scrollIntoView])
+
   // redirect (asset not found)
   if (!selectedAccount) {
     return <Redirect to={WalletRoutes.Accounts} />
@@ -201,14 +214,12 @@ export const Account = ({
       <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
 
       <SubDivider />
+      <Spacer />
 
       {funigbleTokens.map((item) =>
         <PortfolioAssetItem
-          spotPrices={transactionSpotPrices}
-          defaultCurrencies={defaultCurrencies}
           key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
           assetBalance={getBalance(selectedAccount, item)}
-          networks={networkList}
           token={item}
         />
       )}
@@ -222,9 +233,6 @@ export const Account = ({
           <SubDivider />
           {nonFungibleTokens?.map((item) =>
             <PortfolioAssetItem
-              spotPrices={transactionSpotPrices}
-              networks={networkList}
-              defaultCurrencies={defaultCurrencies}
               key={`${item.contractAddress}-${item.symbol}-${item.chainId}-${item.tokenId}`}
               assetBalance={getBalance(selectedAccount, item)}
               token={item}
@@ -249,6 +257,8 @@ export const Account = ({
               account={selectedAccount}
               accounts={accounts}
               displayAccountName={false}
+              ref={(ref) => handleScrollIntoView(transaction.id, ref)}
+              isFocused={checkIsTransactionFocused(transaction.id)}
             />
           )}
         </>

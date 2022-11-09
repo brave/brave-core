@@ -65,7 +65,6 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
-#include "components/version_info/channel.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -128,8 +127,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/ui/startup/default_brave_browser_prompt.h"
-#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #endif
 
@@ -164,6 +162,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 06/2022
   brave::RegisterSearchEngineProviderPrefsForMigration(registry);
+
+  // Added 10/2022
+  registry->RegisterIntegerPref(kDefaultBrowserLaunchingCount, 0);
 #endif
   brave_wallet::RegisterProfilePrefsForMigration(registry);
 
@@ -206,7 +207,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kAskWidevineInstall, true);
 
   // Default Brave shields
-  registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
   registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
@@ -242,14 +242,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
       registry);
-#endif
-
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
-  // Disable sharing hub on stable only.
-  if (chrome::GetChannel() == version_info::Channel::STABLE) {
-    registry->SetDefaultPrefValue(prefs::kDesktopSharingHubEnabled,
-                                  base::Value(false));
-  }
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -425,6 +417,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
+  // Set false for showing sidebar on left by default.
+  registry->SetDefaultPrefValue(prefs::kSidePanelHorizontalAlignment,
+                                base::Value(false));
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -437,7 +432,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(true));
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
-  RegisterDefaultBraveBrowserPromptPrefs(registry);
+
   brave_tabs::RegisterBraveProfilePrefs(registry);
 #endif
 

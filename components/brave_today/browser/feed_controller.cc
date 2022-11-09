@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_today/browser/feed_controller.h"
 
+#include <algorithm>
+#include <cstddef>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -15,12 +18,16 @@
 #include "base/bind.h"
 #include "base/callback_forward.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/one_shot_event.h"
+#include "base/strings/string_util.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
+#include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
@@ -28,6 +35,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_news {
 
@@ -50,10 +58,14 @@ GURL GetFeedUrl(const std::string& default_locale) {
 FeedController::FeedController(
     PublishersController* publishers_controller,
     DirectFeedController* direct_feed_controller,
+    ChannelsController* channels_controller,
     history::HistoryService* history_service,
-    api_request_helper::APIRequestHelper* api_request_helper)
-    : publishers_controller_(publishers_controller),
+    api_request_helper::APIRequestHelper* api_request_helper,
+    PrefService* prefs)
+    : prefs_(prefs),
+      publishers_controller_(publishers_controller),
       direct_feed_controller_(direct_feed_controller),
+      channels_controller_(channels_controller),
       history_service_(history_service),
       api_request_helper_(api_request_helper),
       on_current_update_complete_(new base::OneShotEvent()),
@@ -158,11 +170,13 @@ void FeedController::EnsureFeedIsUpdating() {
                     controller->ResetFeed();
                     std::vector<mojom::FeedItemPtr> feed_items;
                     if (BuildFeed(all_feed_items, history_hosts, &publishers,
-                                  &controller->current_feed_)) {
+                                  &controller->current_feed_,
+                                  controller->prefs_)) {
                     } else {
                       VLOG(1) << "ParseFeed reported failure.";
                     }
-                    // Let any callbacks know that the data is ready or errored.
+                    // Let any callbacks know that the data is ready
+                    // or errored.
                     controller->NotifyUpdateDone();
                   },
                   base::Unretained(controller), std::move(all_feed_items),
@@ -202,43 +216,71 @@ void FeedController::UpdateIfRemoteChanged() {
     return;
   }
 
-  publishers_controller_->GetLocale(base::BindOnce(
-      [](FeedController* controller, const std::string& locale) {
-        // Get new Etag
-        controller->api_request_helper_->Request(
-            "HEAD", GetFeedUrl(locale), "", "", true,
+  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
+      [](FeedController* controller, Publishers publishers) {
+        auto locales = GetMinimalLocalesSet(
+            controller->channels_controller_->GetChannelLocales(), publishers);
+        VLOG(1) << "Going to fetch feed items for " << locales.size()
+                << " locales.";
+        auto check_completed_callback = base::BarrierCallback<bool>(
+            locales.size(),
             base::BindOnce(
-                [](FeedController* controller,
-                   api_request_helper::APIRequestResult api_request_result) {
-                  std::string etag;
-                  if (api_request_result.headers().contains(kEtagHeaderKey)) {
-                    etag = api_request_result.headers().at(kEtagHeaderKey);
-                  }
-                  // Empty etag means perhaps server isn't supporting
-                  // the header right now, so we assume we should
-                  // always fetch the body at these times.
-                  if (etag.empty()) {
-                    LOG(ERROR)
-                        << "Brave News did not get correct etag, "
-                           "therefore assuming etags aren't working and feed "
-                           "changed.";
+                [](FeedController* controller, std::vector<bool> updates) {
+                  if (base::ranges::any_of(updates, [](bool has_update) {
+                        return has_update;
+                      })) {
+                    // TODO(fallaciousreasoning): Only fetch the specific feed
+                    // which changes.
                     controller->EnsureFeedIsUpdating();
-                    return;
                   }
-                  VLOG(1) << "Comparing feed etag - "
-                             "Original: "
-                          << controller->current_feed_etag_
-                          << " Remote: " << etag;
-                  // Compare remote etag with last feed fetch.
-                  if (controller->current_feed_etag_ == etag) {
-                    // Nothing to do
-                    return;
-                  }
-                  // Needs update
-                  controller->EnsureFeedIsUpdating();
                 },
-                base::Unretained(controller)),
-            brave::private_cdn_headers);
+                base::Unretained(controller)));
+
+        for (const auto& locale : locales) {
+          auto it = controller->locale_feed_etags_.find(locale);
+          // If we haven't fetched this feed yet, we need to update it.
+          if (it == controller->locale_feed_etags_.end()) {
+            check_completed_callback.Run(true);
+            continue;
+          }
+
+          // Get new Etag
+          controller->api_request_helper_->Request(
+              "HEAD", GetFeedUrl(locale), "", "", true,
+              base::BindOnce(
+                  [](std::string current_etag,
+                     base::RepeatingCallback<void(bool)> has_update_callback,
+                     api_request_helper::APIRequestResult api_request_result) {
+                    std::string etag;
+                    if (api_request_result.headers().contains(kEtagHeaderKey)) {
+                      etag = api_request_result.headers().at(kEtagHeaderKey);
+                    }
+                    // Empty etag means perhaps server isn't supporting
+                    // the header right now, so we assume we should
+                    // always fetch the body at these times.
+                    if (etag.empty()) {
+                      LOG(ERROR)
+                          << "Brave News did not get correct etag, "
+                             "therefore assuming etags aren't working and feed "
+                             "changed.";
+                      has_update_callback.Run(false);
+                      return;
+                    }
+                    VLOG(1) << "Comparing feed etag - "
+                               "Original: "
+                            << current_etag << " Remote: " << etag;
+                    // Compare remote etag with last feed fetch.
+                    if (current_etag == etag) {
+                      // Nothing to do
+                      has_update_callback.Run(false);
+                      return;
+                    }
+                    // Needs update
+                    has_update_callback.Run(true);
+                  },
+                  it->second, check_completed_callback),
+              brave::private_cdn_headers);
+        }
       },
       base::Unretained(this)));
 }
@@ -253,42 +295,71 @@ void FeedController::OnPublishersUpdated(PublishersController* controller) {
 }
 
 void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
-  publishers_controller_->GetLocale(base::BindOnce(
+  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
       [](FeedController* controller, GetFeedItemsCallback callback,
-         const std::string& locale) {
-        // Handle the response
-        auto response_handler = base::BindOnce(
-            [](FeedController* controller, GetFeedItemsCallback callback,
-               api_request_helper::APIRequestResult api_request_result) {
-              std::string etag;
-              if (api_request_result.headers().contains(kEtagHeaderKey)) {
-                etag = api_request_result.headers().at(kEtagHeaderKey);
-              }
-              VLOG(1) << "Downloaded feed, status: "
-                      << api_request_result.response_code()
-                      << " etag: " << etag;
-              // Handle bad response
-              if (api_request_result.response_code() != 200 ||
-                  api_request_result.body().empty()) {
-                LOG(ERROR) << "Bad response from brave news feed.json. Status: "
-                           << api_request_result.response_code();
-                std::move(callback).Run({});
-                return;
-              }
-              // Only mark cache time of remote request if
-              // parsing was successful
-              controller->current_feed_etag_ = etag;
-              FeedItems feed_items;
-              ParseFeedItems(api_request_result.body(), &feed_items);
-              std::move(callback).Run(std::move(feed_items));
-            },
-            base::Unretained(controller), std::move(callback));
-        // Send the request
-        GURL feed_url(GetFeedUrl(locale));
-        VLOG(1) << "Making feed request to " << feed_url.spec();
-        controller->api_request_helper_->Request("GET", feed_url, "", "", true,
-                                                 std::move(response_handler),
-                                                 brave::private_cdn_headers);
+         Publishers publishers) {
+        auto locales = GetMinimalLocalesSet(
+            controller->channels_controller_->GetChannelLocales(), publishers);
+        VLOG(1) << "Going to fetch feed items for " << locales.size()
+                << " locales.";
+        auto locales_fetched_callback = base::BarrierCallback<FeedItems>(
+            locales.size(),
+            base::BindOnce(
+                [](GetFeedItemsCallback callback,
+                   std::vector<FeedItems> feed_items_unflat) {
+                  std::size_t total_size = 0;
+                  for (const auto& collection : feed_items_unflat)
+                    total_size += collection.size();
+
+                  FeedItems all_feed_items;
+                  all_feed_items.reserve(total_size);
+                  for (auto& collection : feed_items_unflat) {
+                    all_feed_items.insert(
+                        all_feed_items.end(),
+                        std::make_move_iterator(collection.begin()),
+                        std::make_move_iterator(collection.end()));
+                  }
+                  std::move(callback).Run(std::move(all_feed_items));
+                },
+                std::move(callback)));
+
+        for (const auto& locale : locales) {
+          // Handle the response
+          auto response_handler = base::BindOnce(
+              [](FeedController* controller, std::string locale,
+                 GetFeedItemsCallback callback,
+                 api_request_helper::APIRequestResult api_request_result) {
+                std::string etag;
+                if (api_request_result.headers().contains(kEtagHeaderKey)) {
+                  etag = api_request_result.headers().at(kEtagHeaderKey);
+                }
+                VLOG(1) << "Downloaded feed, status: "
+                        << api_request_result.response_code()
+                        << " etag: " << etag;
+                // Handle bad response
+                if (api_request_result.response_code() != 200 ||
+                    api_request_result.body().empty()) {
+                  LOG(ERROR)
+                      << "Bad response from brave news feed.json. Status: "
+                      << api_request_result.response_code();
+                  std::move(callback).Run({});
+                  return;
+                }
+                // Only mark cache time of remote request if
+                // parsing was successful
+                controller->locale_feed_etags_[locale] = etag;
+                FeedItems feed_items;
+                ParseFeedItems(api_request_result.body(), &feed_items);
+                std::move(callback).Run(std::move(feed_items));
+              },
+              base::Unretained(controller), locale, locales_fetched_callback);
+          // Send the request
+          GURL feed_url(GetFeedUrl(locale));
+          VLOG(1) << "Making feed request to " << feed_url.spec();
+          controller->api_request_helper_->Request(
+              "GET", feed_url, "", "", true, std::move(response_handler),
+              brave::private_cdn_headers);
+        }
       },
       base::Unretained(this), std::move(callback)));
 }

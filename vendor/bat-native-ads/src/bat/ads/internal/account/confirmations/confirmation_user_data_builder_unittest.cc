@@ -31,12 +31,12 @@ constexpr char kAdvertiserPublicKey[] =
 
 }  // namespace
 
-class BatAdsConfirmationUserDataTest : public UnitTestBase {};
+class BatAdsConfirmationUserDataBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
+TEST_F(BatAdsConfirmationUserDataBuilderTest,
+       BuildForNonConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
-  MockLocaleHelper(locale_helper_mock_, "en-US");
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   SetCatalogId(kCatalogId);
@@ -58,7 +58,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
       Now(), kCreativeInstanceId, ConfirmationType::kViewed);
   user_data_builder.Build([](const base::Value::Dict& user_data) {
     std::string json;
-    CHECK(base::JSONWriter::Write(user_data, &json));
+    ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
         R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
@@ -66,10 +66,10 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   });
 }
 
-TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
+TEST_F(BatAdsConfirmationUserDataBuilderTest,
+       BuildForConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
-  MockLocaleHelper(locale_helper_mock_, "en-US");
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   SetCatalogId(kCatalogId);
@@ -91,7 +91,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
       Now(), kCreativeInstanceId, ConfirmationType::kConversion);
   user_data_builder.Build([](const base::Value::Dict& user_data) {
     std::string json;
-    CHECK(base::JSONWriter::Write(user_data, &json));
+    ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
         R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
