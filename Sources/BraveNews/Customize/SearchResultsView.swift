@@ -10,7 +10,7 @@ import Fuzi
 import FeedKit
 
 struct SearchResultsView: View {
-  var dataSource: FeedDataSource
+  @ObservedObject var dataSource: FeedDataSource
   var query: String
   var results: SearchResults
   
