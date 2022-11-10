@@ -131,20 +131,6 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::HandleSubscriptionsChanged,
                           base::Unretained(this)));
 
-  if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsV2Feature)) {
-    const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
-    if (channels.empty()) {
-      publishers_controller_.GetLocale(base::BindOnce(
-          [](ChannelsController* channels_controller,
-             const std::string& locale) {
-            channels_controller->SetChannelSubscribed(locale,
-                                                      kTopSourcesChannel, true);
-          },
-          base::Unretained(&channels_controller_)));
-    }
-  }
-
   p3a::RecordAtInit(prefs_);
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
@@ -171,14 +157,26 @@ BraveNewsController::MakeRemote() {
 }
 
 void BraveNewsController::GetLocale(GetLocaleCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run("");
+    return;
+  }
   publishers_controller_.GetLocale(std::move(callback));
 }
 
 void BraveNewsController::GetFeed(GetFeedCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run(brave_news::mojom::Feed::New());
+    return;
+  }
   feed_controller_.GetOrFetchFeed(std::move(callback));
 }
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run({});
+    return;
+  }
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
 }
 
@@ -194,6 +192,10 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
 }
 
 void BraveNewsController::GetChannels(GetChannelsCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run({});
+    return;
+  }
   channels_controller_.GetAllChannels(std::move(callback));
 }
 
@@ -552,10 +554,16 @@ void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {
+  if (!GetIsEnabled()) {
+    return;
+  }
   publishers_controller_.EnsurePublishersIsUpdating();
 }
 
 void BraveNewsController::CheckForFeedsUpdate() {
+  if (!GetIsEnabled()) {
+    return;
+  }
   feed_controller_.UpdateIfRemoteChanged();
 }
 
@@ -565,6 +573,9 @@ void BraveNewsController::Prefetch() {
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {
+  // If the user has just enabled the feature for the first time,
+  // make sure we're setup or migrated.
+  MaybeInitPrefs();
   // Refresh data on an interval only if Brave News is enabled
   if (GetIsEnabled()) {
     VLOG(1) << "STARTING TIMERS";
@@ -605,6 +616,22 @@ void BraveNewsController::HandleSubscriptionsChanged() {
     feed_controller_.EnsureFeedIsUpdating();
   } else {
     VLOG(1) << "HandleSubscriptionsChanged: News not enabled, doing nothing.";
+  }
+}
+
+void BraveNewsController::MaybeInitPrefs() {
+  if (GetIsEnabled() && base::FeatureList::IsEnabled(
+                            brave_today::features::kBraveNewsV2Feature)) {
+    const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
+    if (channels.empty() && GetIsEnabled()) {
+      publishers_controller_.GetLocale(base::BindOnce(
+          [](ChannelsController* channels_controller,
+             const std::string& locale) {
+            channels_controller->SetChannelSubscribed(locale,
+                                                      kTopSourcesChannel, true);
+          },
+          base::Unretained(&channels_controller_)));
+    }
   }
 }
 

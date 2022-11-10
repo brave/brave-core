@@ -129,6 +129,7 @@ class BraveNewsController : public KeyedService,
   bool GetIsEnabled();
   void HandleSubscriptionsChanged();
   void Prefetch();
+  void MaybeInitPrefs();
 
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
