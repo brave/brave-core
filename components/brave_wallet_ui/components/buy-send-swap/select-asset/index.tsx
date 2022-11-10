@@ -93,7 +93,7 @@ function SelectAsset (props: Props) {
     }
   }, [fuse, assets])
 
-  const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.isErc721), [filteredAssetList])
+  const nonFungibleTokens = React.useMemo(() => filteredAssetList.filter((token) => (token.isErc721 || token.isNft)), [filteredAssetList])
 
   return (
     <SelectWrapper>
@@ -107,7 +107,7 @@ function SelectAsset (props: Props) {
       <SelectScrollSearchContainer>
         {
           // Temp filtering out erc721 tokens, sending will be handled in a different PR
-          filteredAssetList.filter((token) => !token.isErc721).map((asset: BraveWallet.BlockchainToken) =>
+          filteredAssetList.filter((token) => !token.isErc721 && !token.isNft).map((asset: BraveWallet.BlockchainToken) =>
             <SelectAssetItem
               key={getAssetIdKey(asset)}
               asset={asset}
@@ -116,12 +116,12 @@ function SelectAsset (props: Props) {
             />
           )
         }
-        {erc271Tokens.length > 0 &&
+        {nonFungibleTokens.length > 0 &&
           <>
             <DivderTextWrapper>
               <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
             </DivderTextWrapper>
-            {erc271Tokens.map((asset: BraveWallet.BlockchainToken) =>
+            {nonFungibleTokens.map((asset: BraveWallet.BlockchainToken) =>
               <SelectAssetItem
                 key={getAssetIdKey(asset)}
                 asset={asset}
