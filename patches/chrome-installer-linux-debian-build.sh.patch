@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index d1c4447bd34448735277c2b537258b525a6894bb..c9734c1fce5b961c7acf688ff07a3f76f852a4d1 100755
+index 7cd40b9c37cce8370238c3a1b3850d209ad8d4e2..078f7790cec1fd3d222ef07b451c5a5bb19ad01b 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -46,7 +46,7 @@ index d1c4447bd34448735277c2b537258b525a6894bb..c9734c1fce5b961c7acf688ff07a3f76
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -119,7 +120,7 @@ do_package() {
+@@ -118,7 +119,7 @@ do_package() {
      gen_control
    fi
    log_cmd fakeroot dpkg-deb -Znone -b "${STAGEDIR}" "${TMPFILEDIR}"
@@ -55,7 +55,7 @@ index d1c4447bd34448735277c2b537258b525a6894bb..c9734c1fce5b961c7acf688ff07a3f76
    if [ ${IS_OFFICIAL_BUILD} -ne 0 ]; then
      (cd "${TMPFILEDIR}" && ar -x "${TMPFILEDIR}/${PACKAGEFILE}")
      xz -z9 -T0 --lzma2='dict=256MiB' "${TMPFILEDIR}/data.tar"
-@@ -165,8 +166,11 @@ verify_channel() {
+@@ -164,8 +165,11 @@ verify_channel() {
        ;;
      dev|unstable|alpha )
        CHANNEL=unstable
@@ -67,7 +67,7 @@ index d1c4447bd34448735277c2b537258b525a6894bb..c9734c1fce5b961c7acf688ff07a3f76
      * )
        echo
        echo "ERROR: '$CHANNEL' is not a valid channel type."
-@@ -174,6 +178,7 @@ verify_channel() {
+@@ -173,6 +177,7 @@ verify_channel() {
        exit 1
        ;;
    esac
@@ -75,7 +75,7 @@ index d1c4447bd34448735277c2b537258b525a6894bb..c9734c1fce5b961c7acf688ff07a3f76
  }
  
  process_opts() {
-@@ -253,6 +258,17 @@ fi
+@@ -252,6 +257,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${OUTPUTDIR}/installer/theme/BRANDING")
  
@@ -93,10 +93,10 @@ index d1c4447bd34448735277c2b537258b525a6894bb..c9734c1fce5b961c7acf688ff07a3f76
  verify_channel
  
  # Some Debian packaging tools want these set.
-@@ -266,6 +282,10 @@ COMMON_PREDEPS="dpkg (>= 1.14.0)"
- MANUAL_RECOMMENDS="${SCRIPTDIR}/manual_recommends"
- COMMON_RECOMMENDS=$(grep -v ^$ "${MANUAL_RECOMMENDS}" | grep -v ^# |
-                         sed ':a;N;$!ba;s/\n/, /g')
+@@ -262,6 +278,10 @@ export ARCHITECTURE="${ARCHITECTURE}"
+ DEB_COMMON_DEPS="${OUTPUTDIR}/deb_common.deps"
+ COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
+ COMMON_PREDEPS="dpkg (>= 1.14.0)"
 +# Ensure that our signing key is up-to-date (brave/brave-browser#4205).
 +if [ "$CHANNEL" = "stable" ]; then
 +  COMMON_DEPS="${COMMON_DEPS}, brave-keyring"
