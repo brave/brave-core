@@ -44,10 +44,6 @@ inline uint64_t lfsr_next(uint64_t v) {
   return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
 }
 
-float Identity(float value, size_t index) {
-  return value;
-}
-
 float ConstantMultiplier(double fudge_factor, float value, size_t index) {
   return value * fudge_factor;
 }
@@ -251,7 +247,7 @@ AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
       }
     }
   }
-  return base::BindRepeating(&Identity);
+  return absl::nullopt;
 }
 
 void BraveSessionCache::PerturbPixels(blink::WebContentSettingsClient* settings,

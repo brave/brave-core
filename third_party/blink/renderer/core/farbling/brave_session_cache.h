@@ -12,6 +12,7 @@
 #include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
@@ -41,7 +42,8 @@ enum FarbleKey : uint64_t {
 };
 
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
-typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
+typedef absl::optional<base::RepeatingCallback<float(float, size_t)>>
+    AudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);

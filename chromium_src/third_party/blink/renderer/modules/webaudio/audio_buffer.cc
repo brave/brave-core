@@ -13,36 +13,38 @@
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/modules/webaudio/analyser_node.h"
 
-#define BRAVE_AUDIOBUFFER_GETCHANNELDATA                                       \
-  NotShared<DOMFloat32Array> array = getChannelData(channel_index);            \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {      \
-    if (WebContentSettingsClient* settings =                                   \
-            brave::GetContentSettingsClientFor(context)) {                     \
-      DOMFloat32Array* destination_array = array.Get();                        \
-      size_t len = destination_array->length();                                \
-      if (len > 0) {                                                           \
-        float* destination = destination_array->Data();                        \
-        brave::AudioFarblingCallback audio_farbling_callback =                 \
-            brave::BraveSessionCache::From(*context).GetAudioFarblingCallback( \
-                settings);                                                     \
-        for (unsigned i = 0; i < len; ++i) {                                   \
-          destination[i] = audio_farbling_callback.Run(destination[i], i);     \
-        }                                                                      \
-      }                                                                        \
-    }                                                                          \
+#define BRAVE_AUDIOBUFFER_GETCHANNELDATA                                      \
+  NotShared<DOMFloat32Array> array = getChannelData(channel_index);           \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {     \
+    if (WebContentSettingsClient* settings =                                  \
+            brave::GetContentSettingsClientFor(context)) {                    \
+      if (brave::AudioFarblingCallback audio_farbling_callback =              \
+              brave::BraveSessionCache::From(*context)                        \
+                  .GetAudioFarblingCallback(settings)) {                      \
+        DOMFloat32Array* destination_array = array.Get();                     \
+        size_t len = destination_array->length();                             \
+        if (len > 0) {                                                        \
+          float* destination = destination_array->Data();                     \
+          for (unsigned i = 0; i < len; ++i) {                                \
+            destination[i] = audio_farbling_callback->Run(destination[i], i); \
+          }                                                                   \
+        }                                                                     \
+      }                                                                       \
+    }                                                                         \
   }
 
-#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                    \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {    \
-    if (WebContentSettingsClient* settings =                                 \
-            brave::GetContentSettingsClientFor(context)) {                   \
-      brave::AudioFarblingCallback audio_farbling_callback =                 \
-          brave::BraveSessionCache::From(*context).GetAudioFarblingCallback( \
-              settings);                                                     \
-      for (unsigned i = 0; i < count; i++) {                                 \
-        dst[i] = audio_farbling_callback.Run(dst[i], i);                     \
-      }                                                                      \
-    }                                                                        \
+#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                 \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
+    if (WebContentSettingsClient* settings =                              \
+            brave::GetContentSettingsClientFor(context)) {                \
+      if (brave::AudioFarblingCallback audio_farbling_callback =          \
+              brave::BraveSessionCache::From(*context)                    \
+                  .GetAudioFarblingCallback(settings)) {                  \
+        for (unsigned i = 0; i < count; i++) {                            \
+          dst[i] = audio_farbling_callback->Run(dst[i], i);               \
+        }                                                                 \
+      }                                                                   \
+    }                                                                     \
   }
 
 #include "src/third_party/blink/renderer/modules/webaudio/audio_buffer.cc"
