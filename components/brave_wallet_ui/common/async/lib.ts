@@ -457,7 +457,7 @@ export function refreshBalances () {
           if (networks.some(n => n.chainId === token.chainId)) {
             const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
             return {
-              balance: getSolTokenBalance.amount,
+              balance: token.isNft ? getSolTokenBalance.uiAmountString : getSolTokenBalance.amount,
               error: getSolTokenBalance.error,
               errorMessage: getSolTokenBalance.errorMessage
             }

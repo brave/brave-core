@@ -90,7 +90,7 @@ export default function useSend () {
   }
 
   const selectSendAsset = (asset: BraveWallet.BlockchainToken) => {
-    if (asset?.isErc721) {
+    if (asset?.isErc721 || asset?.isNft) {
       setSendAmount('1')
     } else {
       setSendAmount('')
@@ -323,14 +323,15 @@ export default function useSend () {
       dispatch(WalletActions.sendSPLTransfer({
         from: selectedAccount.address,
         to: toAddress,
-        value: new Amount(sendAmount)
+        value: !selectedSendAsset.isNft ? new Amount(sendAmount)
           .multiplyByDecimals(selectedSendAsset.decimals)
-          .toHex(),
+          .toHex() : new Amount(sendAmount).toHex(),
         coin: selectedAccount.coin,
         splTokenMintAddress: selectedSendAsset.contractAddress
       }))
       setToAddressOrUrl('')
       setSendAmount('')
+      selectSendAsset(sendAssetOptions[0])
       return
     }
     if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
@@ -362,7 +363,8 @@ export default function useSend () {
     selectedSendAsset,
     selectedAccount,
     sendAmount,
-    toAddress
+    toAddress,
+    sendAssetOptions[0]
   ])
 
   // memos
