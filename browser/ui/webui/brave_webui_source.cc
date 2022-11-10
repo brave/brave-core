@@ -674,13 +674,12 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "connectWalletChooseText", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT },  // NOLINT
         { "connectWalletInfoHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER },  // NOLINT
         { "connectWalletInfoNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE },
-        { "connectWalletInfoBraveNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_BRAVE_NOTE },  // NOLINT
         { "connectWalletInfoText", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT },
         { "connectWalletInfoListItem1", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1 },  // NOLINT
         { "connectWalletInfoListItem2", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2 },  // NOLINT
+        { "connectWalletInfoListItem3", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_3 },  // NOLINT
         { "connectWalletLearnMore", IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE },  // NOLINT
         { "connectWalletProviderNotAvailable", IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE },  // NOLINT
-        { "continue", IDS_BRAVE_REWARDS_CONTINUE },
         { "contributionPendingUntil", IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL },  // NOLINT
 
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
