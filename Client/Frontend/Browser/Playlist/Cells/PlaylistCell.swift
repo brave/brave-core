@@ -77,6 +77,9 @@ class PlaylistCell: UITableViewCell {
   }
 
   func prepareForDisplay() {
+    titleLabel.text = nil
+    detailLabel.text = nil
+    iconView.image = nil
     thumbnailGenerator.cancel()
     iconView.cancelFaviconLoad()
   }

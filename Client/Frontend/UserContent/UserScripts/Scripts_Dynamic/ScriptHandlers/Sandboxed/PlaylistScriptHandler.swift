@@ -149,46 +149,13 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       // Therefore we shouldn't prompt the user to add to playlist.
       asset = AVURLAsset(url: url)
     }
-
-    let isAssetPlayable = { [weak self] () -> Bool in
-      guard let self = self else { return false }
-
-      var error: NSError?
-      let status = self.asset?.statusOfValue(forKey: "playable", error: &error)
-      let isPlayable = status == .loaded
-
-      if let error = error {
-        Logger.module.error("Couldn't load asset's playability: \(error.localizedDescription)")
-      }
-      return isPlayable
-    }
-
-    // Performance improvement to check the status first
-    // before attempting to load the playable status
-    if isAssetPlayable() {
-      DispatchQueue.main.async {
-        completion(true)
-      }
+    
+    guard let asset = asset else {
+      completion(false)
       return
     }
 
-    switch Reach().connectionStatus() {
-    case .offline, .unknown:
-      Logger.module.error("Couldn't load asset's playability -- Offline")
-      DispatchQueue.main.async {
-        // We have no other way of knowing the playable status
-        // It is best to assume the item can be played
-        // In the worst case, if it can't be played, it will show an error
-        completion(isAssetPlayable())
-      }
-    case .online:
-      // Fetch the playable status asynchronously
-      asset?.loadValuesAsynchronously(forKeys: ["playable"]) {
-        DispatchQueue.main.async {
-          completion(isAssetPlayable())
-        }
-      }
-    }
+    PlaylistMediaStreamer.loadAssetPlayability(asset: asset, completion: completion)
   }
 
   private func updateItem(_ item: PlaylistInfo, detected: Bool) {

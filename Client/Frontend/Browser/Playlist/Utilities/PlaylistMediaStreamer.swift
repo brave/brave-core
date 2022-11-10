@@ -60,6 +60,46 @@ class PlaylistMediaStreamer {
       }.eraseToAnyPublisher()
     }.eraseToAnyPublisher()
   }
+  
+  static func loadAssetPlayability(asset: AVURLAsset, completion: @escaping (Bool) -> Void) {
+    let isAssetPlayable = { () -> Bool in
+      var error: NSError?
+      let status = asset.statusOfValue(forKey: "playable", error: &error)
+      let isPlayable = status == .loaded
+
+      if let error = error {
+        Logger.module.error("Couldn't load asset's playability: \(error.localizedDescription)")
+      }
+      return isPlayable
+    }
+
+    // Performance improvement to check the status first
+    // before attempting to load the playable status
+    if isAssetPlayable() {
+      DispatchQueue.main.async {
+        completion(true)
+      }
+      return
+    }
+
+    switch Reach().connectionStatus() {
+    case .offline, .unknown:
+      Logger.module.error("Couldn't load asset's playability -- Offline")
+      DispatchQueue.main.async {
+        // We have no other way of knowing the playable status
+        // It is best to assume the item can be played
+        // In the worst case, if it can't be played, it will show an error
+        completion(isAssetPlayable())
+      }
+    case .online:
+      // Fetch the playable status asynchronously
+      asset.loadValuesAsynchronously(forKeys: ["playable"]) {
+        DispatchQueue.main.async {
+          completion(isAssetPlayable())
+        }
+      }
+    }
+  }
 
   // MARK: - Private
 
@@ -74,7 +114,15 @@ class PlaylistMediaStreamer {
           return
         }
 
-        self.webLoader = PlaylistWebLoader(handler: { [weak self] newItem in
+        self.webLoader = PlaylistWebLoader().then {
+          // If we don't do this, youtube shows ads 100% of the time.
+          // It's some weird race-condition in WKWebView where the content blockers may not load until
+          // The WebView is visible!
+          self.playerView?.insertSubview($0, at: 0)
+        }
+
+        if let url = URL(string: item.pageSrc) {
+          self.webLoader?.load(url: url) { [weak self] newItem in
             guard let self = self else { return }
             defer {
               // Destroy the web loader when the callback is complete.
@@ -92,15 +140,6 @@ class PlaylistMediaStreamer {
               resolver(.failure(.expired))
             }
           }
-        ).then {
-          // If we don't do this, youtube shows ads 100% of the time.
-          // It's some weird race-condition in WKWebView where the content blockers may not load until
-          // The WebView is visible!
-          self.playerView?.insertSubview($0, at: 0)
-        }
-
-        if let url = URL(string: item.pageSrc) {
-          self.webLoader?.load(url: url)
         } else {
           resolver(.failure(.cannotLoadMedia))
         }

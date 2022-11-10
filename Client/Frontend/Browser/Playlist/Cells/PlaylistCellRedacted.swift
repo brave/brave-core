@@ -125,11 +125,24 @@ class PlaylistRedactedHeader: UITableViewHeaderFooterView {
   }
 }
 
-class PlaylistCellRedacted: HostingTableViewCell<PlaylistCellRedactedView> {
+class PlaylistCellRedacted: UITableViewCell {
+  public let hostingController = UIHostingController<PlaylistCellRedactedView>(rootView:
+                                                                                PlaylistCellRedactedView(thumbnail: nil,
+                                                                                                         title: nil,
+                                                                                                         details: nil,
+                                                                                                         contentSize: .zero))
   private var faviconRenderer: FavIconImageRenderer?
+  private static let cache = NSCache<NSString, UIImage>()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    hostingController.view.backgroundColor = .clear
+    contentView.addSubview(hostingController.view)
+    hostingController.view.snp.makeConstraints {
+      $0.edges.equalTo(contentView)
+    }
+    
+    hostingController.view.invalidateIntrinsicContentSize()
   }
   
   required init?(coder: NSCoder) {
@@ -139,21 +152,40 @@ class PlaylistCellRedacted: HostingTableViewCell<PlaylistCellRedactedView> {
   override func layoutSubviews() {
     super.layoutSubviews()
     
-    hostingController.rootView?.contentSize = bounds.size
+    hostingController.rootView.contentSize = bounds.size
   }
   
   func loadThumbnail(for url: URL) {
+    let cacheKey = url.baseDomain ?? url.absoluteString
+    if let image = PlaylistCellRedacted.cache.object(forKey: cacheKey as NSString) {
+      hostingController.rootView.thumbnail = image
+      return
+    }
+    
     faviconRenderer = FavIconImageRenderer()
     faviconRenderer?.loadIcon(siteURL: url, persistent: false) { [weak self] image in
-      self?.hostingController.rootView?.thumbnail = image
+      if let image = image {
+        PlaylistCellRedacted.cache.setObject(image, forKey: cacheKey as NSString)
+      }
+      self?.hostingController.rootView.thumbnail = image
     }
   }
   
   func setTitle(title: String?) {
-    hostingController.rootView?.title = title
+    hostingController.rootView.title = title
   }
   
   func setDetails(details: String?) {
-    hostingController.rootView?.details = details
+    hostingController.rootView.details = details
+  }
+  
+  func setContentSize(parentController: UIViewController, size: CGSize) {
+    if hostingController.parent != parentController {
+      parentController.addChild(hostingController)
+      hostingController.didMove(toParent: parentController)
+    }
+    
+    hostingController.rootView.contentSize = size
+    hostingController.view.invalidateIntrinsicContentSize()
   }
 }

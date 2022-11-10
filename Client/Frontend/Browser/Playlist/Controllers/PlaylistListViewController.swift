@@ -714,6 +714,8 @@ extension PlaylistListViewController {
         }
         
         let items = try await PlaylistSharedFolderNetwork.fetchMediaItemInfo(item: model, viewForInvisibleWebView: self.view)
+        try Task.checkCancellation()
+        
         try folder.playlistItems?.forEach({ playlistItem in
           try Task.checkCancellation()
           
