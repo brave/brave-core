@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_BRAVE_NEWS_INTRO_TITLE" desc="Title for introduction to Brave News news feed section">
+    Turn on Brave News, and never miss a story
+  </message>
+  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION" desc="Description for introduction to Brave News news feed section. Do not translate the title Brave News.">
+    Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!
+  </message>
+  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO" desc="Description second paragraph for introduction to Brave News news feed section. Do not translate the title Brave News.">
+    Brave News is ad-supported with private, anonymized ads. <ph name="LINK_START">$1<ex>{</ex></ph>Learn more.<ph name="LINK_END">$2<ex>}</ex></ph>.
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Brave News">
+    Turn on Brave News
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
+    No thanks
+  </message>
   <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button">
     Back to <ph name="BEGIN_BOLD">$1</ph>Dashboard<ph name="END_BOLD">$2</ph>
   </message>
   <message name="IDS_BRAVE_NEWS_BACK_BUTTON" desc="Label for the back button">
     Back
-  </message>
-  <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER" desc="Header for the brave news disabled placeholder">
-    Turn on Brave News, and never miss a story
-  </message>
-  <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE" desc="Subtitle for the brave news disabled placeholder">
-    Customized news feeds, from leading sources, delivered right to your browser. All 100% private.
-  </message>
-  <message name="IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON" desc="Label for the button to reenable Brave News from the disabled placeholder">
-    Turn on Brave News
   </message>
   <message name="IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL" desc="Label that displays in the searchbox when the user hasn't entered anything">
     Search for site, topic, or RSS feed

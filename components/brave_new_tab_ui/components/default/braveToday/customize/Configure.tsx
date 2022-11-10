@@ -109,12 +109,24 @@ const Content = styled.div`
 `
 
 export default function Configure () {
-  const [enabled, setEnabled] = useNewTabPref('isBraveTodayOptedIn')
+  const [optInPrefEnabled, setOptInPrefEnabled] = useNewTabPref('isBraveTodayOptedIn')
+  const [showOnNTPPrefEnabled, setShowOnNTPPrefEnabled] = useNewTabPref('showToday')
   const { setCustomizePage, customizePage } = useBraveNews()
 
+  const handleEnabledChange = (shouldEnable: boolean) => {
+    if (shouldEnable) {
+      setOptInPrefEnabled(true)
+      setShowOnNTPPrefEnabled(true)
+      return
+    }
+    setShowOnNTPPrefEnabled(false)
+  }
+
+  const isBraveNewsFullyEnabled = optInPrefEnabled && showOnNTPPrefEnabled
+
   let content: JSX.Element
-  if (!enabled) {
-    content = <DisabledPlaceholder enableBraveNews={() => setEnabled(true)} />
+  if (!isBraveNewsFullyEnabled) {
+    content = <DisabledPlaceholder enableBraveNews={() => handleEnabledChange(true)} />
   } else if (customizePage === 'suggestions') {
     content = <SuggestionsPage/>
   } else if (customizePage === 'popular') {
@@ -141,15 +153,15 @@ export default function Configure () {
         <CloseButtonContainer>
           <Button onClick={() => setCustomizePage(null)}>{Cross}</Button>
         </CloseButtonContainer>
-        {enabled && <Flex direction="row" align="center" gap={8}>
+        {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveTodayTitle')}</HeaderText>
-          <Toggle isOn={enabled} onChange={setEnabled} />
+          <Toggle isOn={true} onChange={handleEnabledChange} />
         </Flex>}
       </Header>
       <Hr />
       <Sidebar>
         <SourcesList />
-        {!enabled && <SidebarOverlay />}
+        {!isBraveNewsFullyEnabled && <SidebarOverlay />}
       </Sidebar>
       <Content>
         {content}
