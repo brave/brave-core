@@ -102,6 +102,8 @@ const WalletInfo& Account::GetWallet() const {
 }
 
 void Account::Process() const {
+  MaybeResetConfirmations();
+
   NotifyStatementOfAccountsDidChange();
 
   MaybeGetIssuers();
