@@ -295,6 +295,11 @@ public struct NewsSettingsView: View {
     .onChange(of: searchDelegate.query) { query in
       searchResults = dataSource.search(query: query)
     }
+    .onChange(of: dataSource.rssFeedLocations) { _ in
+      withAnimation {
+        searchResults = dataSource.search(query: searchDelegate.query)
+      }
+    }
     .overlay(Group {
       if !searchDelegate.query.isEmpty {
         SearchResultsView(
