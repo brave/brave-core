@@ -7,11 +7,13 @@
 #include <vector>
 
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -481,6 +483,80 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
                torrent_extension_url().spec().c_str())
       << "No changes on the real URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
+  // Don't block the mock .onion requests.
+  tor::OnionLocationNavigationThrottle::BlockOnionRequestsOutsideTorForTesting(
+      false);
+
+  const GURL onion_url =
+      embedded_test_server()->GetURL("test.onion", "/onion.html");
+  const GURL onion_upgradable_url =
+      embedded_test_server()->GetURL("test.onion", "/onion_upgradable.html");
+
+  ASSERT_EQ("http", onion_url.scheme());
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_upgradable_url));
+    EXPECT_TRUE(console_observer.messages().empty());
+  }
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    console_observer.SetPattern(
+        "Mixed Content: The page at 'http://test.onion*/onion.html' was loaded "
+        "over HTTPS, but requested an insecure element "
+        "'http://auto_upgradable_to_https.com/image.jpg'. This request was "
+        "automatically upgraded to HTTPS*");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
+    console_observer.Wait();
+  }
+  auto fetch = [](const std::string& resource) {
+    return "fetch('" + resource + "').then((response) => { console.log('" +
+           resource + "' + ' ' + response.statusText) })";
+  };
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    console_observer.SetPattern(
+        "Mixed Content: The page at 'http://test.onion*/onion.html' was "
+        "loaded over HTTPS, but requested an insecure resource "
+        "'http://example.com*'. This request has been blocked; the content "
+        "must be served over HTTPS.");
+    const GURL resource_url =
+        embedded_test_server()->GetURL("example.com", "/logo-referrer.png");
+    const std::string kFetchScript = fetch(resource_url.spec());
+    ASSERT_FALSE(content::ExecJs(contents, kFetchScript));
+    console_observer.Wait();
+  }
+  {
+    auto https_server = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    https_server->SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server->AddDefaultHandlers();
+    ASSERT_TRUE(https_server->Start());
+
+    content::WebContentsConsoleObserver console_observer(contents);
+    const auto resource_url =
+        https_server->GetURL("example.a.test", "/echoheader").spec();
+    console_observer.SetPattern(resource_url + " OK");
+    const std::string kFetchScript = fetch(resource_url);
+    ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
+    console_observer.Wait();
+  }
+  {
+    content::WebContentsConsoleObserver console_observer(contents);
+    // logo-referrer.png sets "access-control-allow-origin: *"
+    const auto resource_url =
+        embedded_test_server()
+            ->GetURL("example.onion", "/logo-referrer.png")
+            .spec();
+    console_observer.SetPattern(resource_url + " OK");
+    const std::string kFetchScript = fetch(resource_url);
+    ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
+    console_observer.Wait();
+  }
 }
 
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
