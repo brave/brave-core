@@ -112,7 +112,6 @@ export interface Host {
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void
   setIncludeInAutoContribute: (include: boolean) => void
-  setAutoContributeAmount: (amount: number) => void
   setAdsEnabled: (adsEnabled: boolean) => void
   setAdsPerHour: (adsPerHour: number) => void
   sendTip: () => void

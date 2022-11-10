@@ -43,12 +43,10 @@ function getRewardsTourProps () {
   return {
     firstTimeSetup: true,
     adsPerHour: 3,
-    externalWalletProvider: 'bitflyer',
-    autoContributeAmount: 15,
-    autoContributeAmountOptions: [5, 10, 15, 20, 25, 50, 100],
+    canAutoContribute: true,
+    canConnectAccount: true,
     onAdsPerHourChanged: actionLogger('onAdsPerHourChanged'),
-    onAutoContributeAmountChanged: actionLogger('onAcAmountChanged'),
-    onVerifyWalletClick: actionLogger('onVerifyWalletClick'),
+    onConnectAccount: actionLogger('onConnectAccount'),
     onDone: actionLogger('onDone')
   }
 }

@@ -138,15 +138,6 @@ function createHost (): Host {
       return Promise.resolve('success')
     },
 
-    setAutoContributeAmount (amount) {
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          autoContributeAmount: amount
-        }
-      })
-    },
-
     setAdsEnabled (adsEnabled) {
       stateManager.update({
         settings: {

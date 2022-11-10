@@ -9,7 +9,11 @@ import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
 import { getUserType } from '../../shared/lib/user_type'
-import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
+
+import {
+  externalWalletFromExtensionData,
+  isExternalWalletProviderAllowed
+} from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
@@ -101,8 +105,9 @@ export function Settings () {
 
     const {
       adsData,
-      contributionMonthly,
+      currentCountryCode,
       externalWallet,
+      externalWalletProviderList,
       parameters
     } = rewardsData
 
@@ -114,27 +119,29 @@ export function Settings () {
       actions.onAdsSettingSave('adsPerHour', adsPerHour)
     }
 
-    const onAcAmountChanged = (amount: number) => {
-      actions.onSettingSave('contributionMonthly', amount)
-    }
-
-    const onVerifyClick = () => {
+    const onConnectAccount = () => {
       if (externalWallet && externalWallet.loginUrl) {
         window.open(externalWallet.loginUrl, '_self')
       }
     }
+
+    const canAutoContribute =
+      !(externalWallet && externalWallet.type === 'bitflyer')
+
+    const canConnectAccount = externalWalletProviderList.some((provider) => {
+      const regionInfo = parameters.walletProviderRegions[provider] || null
+      return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
+    })
 
     return (
       <RewardsTourModal
         layout={layoutKind}
         firstTimeSetup={false}
         adsPerHour={adsData.adsPerHour}
-        autoContributeAmount={contributionMonthly}
-        autoContributeAmountOptions={parameters.autoContributeChoices}
-        externalWalletProvider={externalWallet ? externalWallet.type : ''}
+        canAutoContribute={canAutoContribute}
+        canConnectAccount={canConnectAccount}
         onAdsPerHourChanged={onAdsPerHourChanged}
-        onAutoContributeAmountChanged={onAcAmountChanged}
-        onVerifyWalletClick={onVerifyClick}
+        onConnectAccount={onConnectAccount}
         onDone={onDone}
         onClose={onDone}
       />

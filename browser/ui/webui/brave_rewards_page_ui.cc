@@ -2046,6 +2046,9 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
   auto plural_string_handler = std::make_unique<PluralStringHandler>();
   plural_string_handler->AddLocalizedString("publisherCountText",
                                             IDS_REWARDS_PUBLISHER_COUNT_TEXT);
+  plural_string_handler->AddLocalizedString(
+      "onboardingSetupAdsPerHour",
+      IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
 
   auto handler_owner = std::make_unique<RewardsDOMHandler>();

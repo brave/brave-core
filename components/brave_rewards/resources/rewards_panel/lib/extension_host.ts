@@ -438,17 +438,6 @@ export function createHost (): Host {
       })
     },
 
-    setAutoContributeAmount (amount) {
-      chrome.braveRewards.updatePrefs({ autoContributeAmount: amount })
-
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          autoContributeAmount: amount
-        }
-      })
-    },
-
     setAdsEnabled (adsEnabled) {
       chrome.braveRewards.updatePrefs({ adsEnabled })
     },

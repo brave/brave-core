@@ -5,6 +5,7 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
+import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
 import { OnboardingResult, RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
@@ -63,7 +64,12 @@ export function PanelOverlays () {
   }
 
   if (showTour) {
-    const onVerifyWalletClick = () => {
+    const canConnectAccount = externalWalletProviders.some((provider) => {
+      const regionInfo = options.externalWalletRegions.get(provider) || null
+      return isExternalWalletProviderAllowed(declaredCountry, regionInfo)
+    })
+
+    const onConnectAccount = () => {
       host.handleExternalWalletAction('verify')
     }
 
@@ -71,12 +77,10 @@ export function PanelOverlays () {
       <RewardsTourModal
         firstTimeSetup={rewardsEnabled}
         adsPerHour={settings.adsPerHour}
-        externalWalletProvider={externalWalletProviders[0]}
-        autoContributeAmount={settings.autoContributeAmount}
-        autoContributeAmountOptions={options.autoContributeAmounts}
+        canAutoContribute={!externalWalletProviders.includes('bitflyer')}
+        canConnectAccount={canConnectAccount}
         onAdsPerHourChanged={host.setAdsPerHour}
-        onAutoContributeAmountChanged={host.setAutoContributeAmount}
-        onVerifyWalletClick={onVerifyWalletClick}
+        onConnectAccount={onConnectAccount}
         onDone={toggleTour}
         onClose={toggleTour}
       />

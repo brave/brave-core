@@ -434,14 +434,20 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
     How often do you want to see ads?
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER" desc="">
-    (ads per hour)
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR" desc="">
+    {ADS_PER_HOUR, plural,
+      =1 {# Ad per hour}
+      other {# Ads per hour}
+    }
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER" desc="">
-    How much monthly support do you want to give to your favorite creators?
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_1" desc="">
+    More private ads, more rewards
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER" desc="">
-    (from your ads earnings)
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_2" desc="">
+    With more ads, you can support more creators
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CHANGE_LATER" desc="">
+    You can change this later in settings.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
     Start using Brave Rewards
@@ -482,13 +488,7 @@
     Where do ads show up?
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">
-    Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER" desc="">
-    When do you receive rewards?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT" desc="">
-    Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.
+    Brave Private Ads appear as notifications on your screen. You control how often you see these ads.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">
     Giving back made effortless
@@ -502,17 +502,8 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">
     Tipping is a way to personally encourage and support content or creators that you love. Get tippin!
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER" desc="">
-    What can you do with tokens?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT" desc="">
-    Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER" desc="">
-    Lastly, let’s get you set up on the basic settings
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT" desc="">
-    You can change this later.
+    Lastly, let’s get you set up
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">
     Woohoo, you’re all set!
@@ -520,26 +511,14 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">
     By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER" desc="">
-    Verify
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT" desc="">
-    In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.
+    Connect a custodial account so you can earn BAT and withdraw your rewards
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER" desc="">
-    Do it later
+    I’ll do it later
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW" desc="">
-    Verify Brave Rewards
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE" desc="">
-    The bitFlyer wallet is a service managed by bitFlyer, Inc.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT" desc="">
-    By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE" desc="">
-    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.
+    Connect account
   </message>
 
   <!-- Rewards unsupported region notice -->
