@@ -50,6 +50,10 @@ function initialize () {
     document.getElementById('root'))
 }
 
+function userVersion (version: string) {
+  actions.onUserVersion(version)
+}
+
 function rewardsParameters (properties: Rewards.RewardsParameters) {
   actions.onRewardsParameters(properties)
   // Get the current AC amount after rewards parameters have been
@@ -265,6 +269,7 @@ function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
 Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
   value: {
+    userVersion,
     rewardsParameters,
     promotions,
     promotionClaimStarted,

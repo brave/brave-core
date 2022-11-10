@@ -14,6 +14,11 @@ export const onSettingSave = (key: string, value: any, persist: boolean = true) 
   persist
 })
 
+export const onUserVersion =
+  (version: string) => action(types.ON_USER_VERSION, { version })
+
+export const getUserVersion = () => action(types.GET_USER_VERSION)
+
 export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 
 export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
@@ -52,6 +57,10 @@ export const deletePromotion = (promotionId: string) => action(types.DELETE_PROM
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
 
 export const onModalBackupOpen = () => action(types.ON_MODAL_BACKUP_OPEN)
+
+export const onModalConnectClose = () => action(types.ON_MODAL_CONNECT_CLOSE)
+
+export const onModalConnectOpen = () => action(types.ON_MODAL_CONNECT_OPEN)
 
 export const onClearAlert = (property: string) => action(types.ON_CLEAR_ALERT, {
   property

@@ -6,7 +6,7 @@ import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
-import { compareVersionStrings } from '../../shared/lib/version_string'
+import { getUserType } from '../../shared/lib/user_type'
 import { WalletCard } from '../../shared/components/wallet_card'
 import { LimitedView } from './limited_view'
 import { NavBar } from './navbar'
@@ -18,8 +18,6 @@ type ActiveView = 'tip' | 'summary'
 export function Panel () {
   const host = React.useContext(HostContext)
 
-  const [rewardsEnabled, setRewardsEnabled] =
-    React.useState(host.state.rewardsEnabled)
   const [userVersion, setUserVersion] = React.useState(host.state.userVersion)
   const [balance, setBalance] = React.useState(host.state.balance)
   const [settings, setSettings] = React.useState(host.state.settings)
@@ -39,7 +37,6 @@ export function Panel () {
     publisherInfo ? 'tip' : 'summary')
 
   useHostListener(host, (state) => {
-    setRewardsEnabled(state.rewardsEnabled)
     setUserVersion(state.userVersion)
     setBalance(state.balance)
     setSettings(state.settings)
@@ -57,19 +54,8 @@ export function Panel () {
     payoutStatus, walletProvider)
 
   function shouldShowFullView () {
-    if (externalWallet) {
-      return true
-    }
-
-    if (!rewardsEnabled) {
-      return false
-    }
-
-    if (!userVersion) {
-      return true
-    }
-
-    return compareVersionStrings(userVersion, '2.5') < 0
+    const userType = getUserType(userVersion, externalWallet)
+    return userType !== 'unconnected'
   }
 
   function renderFull () {

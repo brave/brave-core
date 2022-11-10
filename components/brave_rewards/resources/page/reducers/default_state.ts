@@ -4,6 +4,7 @@
 
 export function defaultState (): Rewards.State {
   return {
+    userVersion: '',
     enabledAds: false,
     enabledAdsMigrated: false,
     enabledContribute: false,
@@ -16,6 +17,7 @@ export function defaultState (): Rewards.State {
     ui: {
       disconnectWalletError: false,
       modalBackup: false,
+      modalConnect: false,
       modalRedirect: 'hide',
       promosDismissed: {}
     },

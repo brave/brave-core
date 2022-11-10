@@ -43,10 +43,9 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"captchaSolvedText", IDS_REWARDS_CAPTCHA_SOLVED_TEXT},
     {"captchaSolvedTitle", IDS_REWARDS_CAPTCHA_SOLVED_TITLE},
     {"changeAmount", IDS_REWARDS_PANEL_CHANGE_AMOUNT},
-    {"connectAccount", IDS_REWARDS_PANEL_CONNECT_ACCOUNT},
-    {"connectAccountText", IDS_REWARDS_PANEL_CONNECT_ACCOUNT_TEXT},
-    {"connectAccountNoProviders",
-     IDS_REWARDS_PANEL_CONNECT_ACCOUNT_NO_PROVIDERS},
+    {"connectAccount", IDS_REWARDS_CONNECT_ACCOUNT},
+    {"connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT},
+    {"connectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS},
     {"grantCaptchaAmountAds", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_ADS},
     {"grantCaptchaAmountUGP", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_UGP},
     {"grantCaptchaErrorText", IDS_REWARDS_GRANT_CAPTCHA_ERROR_TEXT},
@@ -63,7 +62,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"headerTextAdsEnabled", IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED},
     {"headerTitle", IDS_REWARDS_PANEL_HEADER_TITLE},
     {"includeInAutoContribute", IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE},
-    {"learnMore", IDS_REWARDS_PANEL_LEARN_MORE},
+    {"learnMore", IDS_REWARDS_LEARN_MORE},
     {"learnMoreAboutBAT", IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT},
     {"monthlyTip", IDS_REWARDS_PANEL_MONTHLY_TIP},
     {"notificationAddFunds", IDS_REWARDS_NOTIFICATION_ADD_FUNDS},
@@ -237,8 +236,8 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
   }
 
   auto plural_string_handler = std::make_unique<PluralStringHandler>();
-  plural_string_handler->AddLocalizedString(
-      "publisherCountText", IDS_REWARDS_PANEL_PUBLISHER_COUNT_TEXT);
+  plural_string_handler->AddLocalizedString("publisherCountText",
+                                            IDS_REWARDS_PUBLISHER_COUNT_TEXT);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
 
   auto* source = content::WebUIDataSource::Create(kBraveRewardsPanelHost);

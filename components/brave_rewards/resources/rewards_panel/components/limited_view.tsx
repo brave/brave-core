@@ -7,12 +7,12 @@ import * as React from 'react'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
-import { ToggleButton } from './toggle_button'
+import { supportedWalletRegionsURL, aboutBATURL } from '../../shared/lib/rewards_urls'
+import { ToggleButton } from '../../shared/components/toggle_button'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { SettingsIcon } from '../../shared/components/icons/settings_icon'
+import { ArrowNextIcon } from '../../shared/components/icons/arrow_next_icon'
 import { FancyBatIcon } from './icons/fancy_bat_icon'
-import { ArrowNextIcon } from './icons/arrow_next_icon'
-import { supportedWalletRegionsURL } from '../../shared/lib/rewards_urls'
 
 import * as style from './limited_view.style'
 
@@ -160,7 +160,7 @@ export function LimitedView () {
         </button>
       </style.settings>
       <style.learnMore>
-        <NewTabLink href='https://brave.com/rewards'>
+        <NewTabLink href={aboutBATURL}>
           {getString('learnMoreAboutBAT')}
         </NewTabLink>
       </style.learnMore>

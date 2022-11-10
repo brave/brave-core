@@ -639,6 +639,23 @@ void RewardsServiceImpl::CreateRewardsWallet(
   StartLedgerProcessIfNecessary();
 }
 
+base::Version RewardsServiceImpl::GetUserVersion() const {
+  auto* prefs = profile_->GetPrefs();
+  base::Version version(prefs->GetString(prefs::kUserVersion));
+  if (!version.IsValid()) {
+    if (prefs->GetBoolean(prefs::kEnabled)) {
+      // If the profile does not have a valid version string, but Rewards is
+      // enabled, assume that the profile was created in an early version before
+      // user versions were recorded.
+      version = base::Version({1});
+    } else {
+      version = base::Version(prefs::kCurrentUserVersion);
+    }
+    DCHECK(version.IsValid());
+  }
+  return version;
+}
+
 std::string RewardsServiceImpl::GetCountryCode() const {
   auto* prefs = profile_->GetPrefs();
   std::string country = prefs->GetString(prefs::kDeclaredGeo);

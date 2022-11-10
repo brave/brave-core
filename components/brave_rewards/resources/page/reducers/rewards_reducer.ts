@@ -16,6 +16,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
+    case types.GET_USER_VERSION: {
+      chrome.send('brave_rewards.getUserVersion')
+      break
+    }
+    case types.ON_USER_VERSION: {
+      state = { ...state }
+      state.userVersion = action.payload.version
+      break
+    }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
       chrome.send('brave_rewards.getAutoContributeProperties')
       break
@@ -67,7 +76,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_MODAL_BACKUP_CLOSE: {
-      state = { ...state }
       let ui = state.ui
       ui.modalBackup = false
       state = {
@@ -79,6 +87,24 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_MODAL_BACKUP_OPEN: {
       let ui = state.ui
       ui.modalBackup = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_MODAL_CONNECT_CLOSE: {
+      let ui = state.ui
+      ui.modalConnect = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_MODAL_CONNECT_OPEN: {
+      let ui = state.ui
+      ui.modalConnect = true
       state = {
         ...state,
         ui

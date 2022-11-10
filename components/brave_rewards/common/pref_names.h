@@ -14,7 +14,8 @@ extern const char kDisabledByPolicy[];
 // Stores the "Rewards version" in which the user's Rewards account was created.
 // This value is intended to be used to distinguish "legacy" users when Rewards
 // features are migrated. Note that if the user has not yet created a Rewards
-// account, this value will default to the empty string.
+// account, this value will default to the empty string. Prefer calling
+// `RewardsService::GetUserVersion`, which will always return a valid version.
 extern const char kUserVersion[];
 extern const char kCurrentUserVersion[];
 

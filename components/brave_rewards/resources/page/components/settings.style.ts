@@ -6,6 +6,8 @@ import styled from 'styled-components'
 
 import selectArrow from '../assets/select_arrow.svg'
 
+import * as mixins from '../../shared/lib/css_mixins'
+
 export const root = styled.div`
   font-family: Poppins;
   min-height: 100vh;
@@ -75,6 +77,7 @@ export const content = styled.div`
   margin: 0 auto;
   max-width: 1024px;
   display: flex;
+  justify-content: center;
   gap: 32px;
 
   .layout-narrow & {
@@ -87,11 +90,18 @@ export const content = styled.div`
 
 export const main = styled.div`
   flex: 0 1 auto;
+  max-width: 620px;
 `
 
 export const sidebar = styled.div`
-  flex: 0 0 auto;
-  width: 373px;
+  flex: 0 0 373px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  &:empty {
+    display: none;
+  }
 
   .layout-narrow & {
     flex: 0 0 auto;
@@ -100,11 +110,32 @@ export const sidebar = styled.div`
   }
 `
 
-export const title = styled.div`
-  border-radius: 4px;
+export const header = styled.div`
+  border-radius: 6px;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.11),
+              0px 0.5px 1.5px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   padding: 20px 32px;
   margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+
+  .layout-narrow & {
+    border-radius: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    z-index: 10;
+    padding: 18px 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+  }
+`
+
+export const title = styled.div`
+  flex: 1 1 auto;
   font-size: 28px;
   font-weight: 600;
   line-height: 48px;
@@ -118,18 +149,8 @@ export const title = styled.div`
   }
 
   .layout-narrow & {
-    border-radius: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: auto;
-    z-index: 10;
     font-size: 22px;
     line-height: 24px;
-    padding: 18px 24px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    white-space: nowrap;
 
     .icon {
       height: 26px;
@@ -137,10 +158,25 @@ export const title = styled.div`
   }
 `
 
+export const manageAction = styled.div`
+  margin-top: 4px;
+
+  button {
+    ${mixins.buttonReset}
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    cursor: pointer;
+    color: #4C54D2;
+
+    .icon {
+      height: 18px;
+      width: auto;
+      vertical-align: middle;
+      margin-top: -3px;
+      margin-right: 8px;
+    }
+  }
+`
+
 export const settingGroup = styled.div``
-
-export const grants = styled.div``
-
-export const rewardsCard = styled.div``
-
-export const promotions = styled.div``

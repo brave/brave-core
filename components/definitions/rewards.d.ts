@@ -24,6 +24,7 @@ declare namespace Rewards {
   type ConnectExternalWalletError = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').ConnectExternalWalletError
 
   export interface State {
+    userVersion: string
     adsData: AdsData
     adsHistory: AdsHistory[]
     autoContributeList: Publisher[]
@@ -61,6 +62,7 @@ declare namespace Rewards {
     ui: {
       disconnectWalletError: boolean
       modalBackup: boolean
+      modalConnect: boolean
       modalRedirect: ConnectExternalWalletError
         | 'error'
         | 'hide'

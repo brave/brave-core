@@ -721,10 +721,13 @@ BraveRewardsGetUserVersionFunction::~BraveRewardsGetUserVersionFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetUserVersionFunction::Run() {
-  auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
-  base::Version version(prefs->GetString(::brave_rewards::prefs::kUserVersion));
-  return RespondNow(OneArgument(
-      base::Value(version.IsValid() ? version.GetString() : std::string())));
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(OneArgument(base::Value(std::string())));
+  }
+  base::Version version = rewards_service->GetUserVersion();
+  return RespondNow(OneArgument(base::Value(version.GetString())));
 }
 
 BraveRewardsGetPublishersVisitedCountFunction::

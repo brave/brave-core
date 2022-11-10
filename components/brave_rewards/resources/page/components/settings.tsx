@@ -8,18 +8,22 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
+import { getUserType } from '../../shared/lib/user_type'
+import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
-import AdsBox from './adsBox'
-import ContributeBox from './contributeBox'
-import TipBox from './tipsBox'
-import MonthlyTipsBox from './monthlyTipsBox'
+
+import { AdsPanel } from './ads_panel'
+import { AutoContributePanel } from './auto_contribute_panel'
+import { TipsPanel } from './tips_panel'
+import { MonthlyTipsPanel } from './monthly_tips_panel'
 import { SettingsOptInForm, RewardsTourModal } from '../../shared/components/onboarding'
 import { ProviderRedirectModal } from './provider_redirect_modal'
 import { GrantList } from './grant_list'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
-import { BatIcon } from '../../shared/components/icons/bat_icon'
 import { UnsupportedRegionNotice } from './unsupported_region_notice'
+import { BatIcon } from '../../shared/components/icons/bat_icon'
+import { SettingsIcon } from '../../shared/components/icons/settings_icon'
 
 import * as style from './settings.style'
 
@@ -31,6 +35,10 @@ export function Settings () {
   const rewardsData = useRewardsData((data) => data)
 
   const [showRewardsTour, setShowRewardsTour] = React.useState(false)
+
+  const userType = getUserType(
+    rewardsData.userVersion,
+    externalWalletFromExtensionData(rewardsData.externalWallet))
 
   const handleURL = () => {
     // Used by Android to disconnect the user's external wallet.
@@ -56,6 +64,7 @@ export function Settings () {
   }
 
   React.useEffect(() => {
+    actions.getUserVersion()
     actions.getIsUnsupportedRegion()
     const date = new Date()
     actions.getBalanceReport(date.getMonth() + 1, date.getFullYear())
@@ -138,14 +147,17 @@ export function Settings () {
     )
   }
 
-  const renderUnsupportedRegionNotice = () => {
+  const onManageClick = () => { actions.onModalBackupOpen() }
+
+  function renderUnsupportedRegionNotice () {
     return (
       <div>
         <style.unsupportedRegionNoticeTitle>
-          <style.title>
-            <BatIcon />
-            {getString('braveRewards')}
-          </style.title>
+          <style.header>
+            <style.title>
+              <BatIcon />{getString('braveRewards')}
+            </style.title>
+          </style.header>
         </style.unsupportedRegionNoticeTitle>
         <style.unsupportedRegionNotice>
           <UnsupportedRegionNotice />
@@ -154,7 +166,7 @@ export function Settings () {
     )
   }
 
-  const renderOnboarding = () => {
+  function renderOnboarding () {
     const onEnable = () => {
       actions.enableRewards()
     }
@@ -166,7 +178,7 @@ export function Settings () {
     )
   }
 
-  const renderContent = () => {
+  function renderContent () {
     // Do not display content until the user's onboarding status has been
     // determined.
     if (rewardsData.showOnboarding === null) {
@@ -192,33 +204,41 @@ export function Settings () {
     return (
       <style.content>
         <style.main>
-          <style.title>
-            <BatIcon />
-            {getString('braveRewards')}
-          </style.title>
+          <style.header>
+            <style.title>
+              <BatIcon />{getString('braveRewards')}
+            </style.title>
+            <style.manageAction>
+              <button
+                onClick={onManageClick}
+                data-test-id='manage-wallet-button'
+              >
+                <SettingsIcon />{getString('manage')}
+              </button>
+            </style.manageAction>
+          </style.header>
           <style.settingGroup>
-            <AdsBox layout={layoutKind} />
+            <AdsPanel />
           </style.settingGroup>
           <style.settingGroup data-test-id='auto-contribute-settings'>
-            <ContributeBox />
+            <AutoContributePanel />
           </style.settingGroup>
-          <style.settingGroup>
-            <TipBox showSettings={!isAndroid} />
-          </style.settingGroup>
-          <style.settingGroup>
-            <MonthlyTipsBox />
-          </style.settingGroup>
+          {
+            userType !== 'unconnected' &&
+              <>
+                <style.settingGroup>
+                  <TipsPanel />
+                </style.settingGroup>
+                <style.settingGroup>
+                  <MonthlyTipsPanel />
+                </style.settingGroup>
+              </>
+          }
         </style.main>
         <style.sidebar>
-          <style.grants>
-            <GrantList />
-          </style.grants>
-          <style.rewardsCard>
-            <PageWallet layout={layoutKind} />
-          </style.rewardsCard>
-          <style.promotions>
-            <SidebarPromotionPanel onTakeRewardsTour={onTakeTour} />
-          </style.promotions>
+          <GrantList />
+          <PageWallet layout={layoutKind} />
+          <SidebarPromotionPanel onTakeRewardsTour={onTakeTour} />
         </style.sidebar>
       </style.content>
     )

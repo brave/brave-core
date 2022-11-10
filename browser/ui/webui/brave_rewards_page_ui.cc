@@ -37,6 +37,8 @@
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
@@ -95,6 +97,7 @@ class RewardsDOMHandler
  private:
   void RestartBrowser(const base::Value::List& args);
   void IsInitialized(const base::Value::List& args);
+  void GetUserVersion(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
   void GetAutoContributeProperties(const base::Value::List& args);
   void FetchPromotions(const base::Value::List& args);
@@ -320,6 +323,10 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.isInitialized",
       base::BindRepeating(&RewardsDOMHandler::IsInitialized,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.getUserVersion",
+      base::BindRepeating(&RewardsDOMHandler::GetUserVersion,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getRewardsParameters",
@@ -590,6 +597,15 @@ void RewardsDOMHandler::IsInitialized(const base::Value::List& args) {
   if (rewards_service_ && rewards_service_->IsInitialized()) {
     CallJavascriptFunction("brave_rewards.initialized");
   }
+}
+
+void RewardsDOMHandler::GetUserVersion(const base::Value::List&) {
+  if (!IsJavascriptAllowed() || !rewards_service_) {
+    return;
+  }
+  base::Version version = rewards_service_->GetUserVersion();
+  CallJavascriptFunction("brave_rewards.userVersion",
+                         base::Value(version.GetString()));
 }
 
 void RewardsDOMHandler::OnJavascriptAllowed() {
@@ -1779,6 +1795,7 @@ void RewardsDOMHandler::OnRewardsWalletUpdated() {
   GetAdsData(base::Value::List());
   GetAutoContributeProperties(base::Value::List());
   GetOnboardingStatus(base::Value::List());
+  GetUserVersion(base::Value::List());
   GetExternalWallet(base::Value::List());
   GetCountryCode(base::Value::List());
 }
@@ -2039,6 +2056,11 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
 #else
   source->AddBoolean("isAndroid", false);
 #endif
+
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString("publisherCountText",
+                                            IDS_REWARDS_PUBLISHER_COUNT_TEXT);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
 
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler* handler = handler_owner.get();

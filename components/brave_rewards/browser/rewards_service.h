@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/observer_list.h"
 #include "base/types/expected.h"
+#include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
@@ -145,6 +146,10 @@ class RewardsService : public KeyedService {
 
   // Returns the country code associated with the user's Rewards profile.
   virtual std::string GetCountryCode() const = 0;
+
+  // Returns the Rewards feature version associated with the current user. The
+  // returned `base::Version` will always be valid.
+  virtual base::Version GetUserVersion() const = 0;
 
   using GetAvailableCountriesCallback =
       base::OnceCallback<void(std::vector<std::string>)>;

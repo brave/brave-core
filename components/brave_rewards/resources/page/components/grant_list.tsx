@@ -25,7 +25,7 @@ export function GrantList () {
   }
 
   return (
-    <div data-test-id='promotion-claim-box'>
+    <>
       {
         promotions.map((promotion) => {
           if (!promotion.promotionId) {
@@ -37,7 +37,7 @@ export function GrantList () {
           }
 
           return (
-            <div key={promotion.promotionId}>
+            <div key={promotion.promotionId} data-test-id='promotion-claim-box'>
               <ClaimGrantView
                 grantInfo={{
                   id: promotion.promotionId,
@@ -54,6 +54,6 @@ export function GrantList () {
           )
         })
       }
-    </div>
+    </>
   )
 }
