@@ -65,13 +65,11 @@ class DatabaseManager;
 class DiagnosticManager;
 class FlagManager;
 class HistoryManager;
-class IdleDetectionManager;
+class IdleDetection;
 class InlineContentAd;
-class LocaleManager;
 class NewTabPageAd;
 class NotificationAd;
 class NotificationAdManager;
-class PrefManager;
 class PromotedContentAd;
 class SearchResultAd;
 class TabManager;
@@ -106,40 +104,7 @@ class AdsImpl final : public Ads,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  void OnPrefDidChange(const std::string& path) override;
-
-  void OnDidUpdateResourceComponent(const std::string& id) override;
-
-  void OnTabHtmlContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
-  void OnUserDidBecomeIdle() override;
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
-
   void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnBrowserDidEnterForeground() override;
-  void OnBrowserDidEnterBackground() override;
-
-  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
-  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
-
-  void OnTabDidChange(int32_t tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active,
-                      bool is_incognito) override;
-  void OnDidCloseTab(int32_t tab_id) override;
-
-  void OnRewardsWalletDidChange(const std::string& payment_id,
-                                const std::string& seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -231,13 +196,11 @@ class AdsImpl final : public Ads,
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
-  std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
-  std::unique_ptr<PrefManager> pref_manager_;
-  std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
+
+  std::unique_ptr<IdleDetection> idle_detection_;
 
   std::unique_ptr<Catalog> catalog_;
 

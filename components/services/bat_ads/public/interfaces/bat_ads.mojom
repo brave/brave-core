@@ -21,15 +21,38 @@ interface BatAdsService {
   SetBuildChannel(ads.mojom.BuildChannelInfo build_channel) => ();
 };
 
-// // Observer interface to know if things are working as expected.
-// interface BatAdsClientObserver {
-//   OnDidVerifyRewardsWallet();
-// };
+interface BatAdsClientObserver {
+  // See AdsClientObserver for documentation.
+
+  OnLocaleDidChange(string locale);
+
+  OnPrefDidChange(string path);
+
+  OnDidUpdateResourceComponent(string id);
+
+  OnTabHtmlContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
+  OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
+  OnTabDidStartPlayingMedia(int32 tab_id);
+  OnTabDidStopPlayingMedia(int32 tab_id);
+  OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_visible, bool is_incognito);
+  OnDidCloseTab(int32 tab_id);
+
+  OnUserDidBecomeIdle();
+  OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time, bool screen_was_locked);
+
+  OnBrowserDidEnterForeground();
+  OnBrowserDidEnterBackground();
+  OnBrowserDidBecomeActive();
+  OnBrowserDidResignActive();
+
+  OnRewardsWalletIsReady(string payment_id, string recovery_seed);
+  OnRewardsWalletDidChange(string payment_id, string recovery_seed);
+};
 
 interface BatAdsClient {
   // See AdsClient for documentation.
 
-  // AddBatAdsClientObserver(pending_remote<BatAdsClientObserver> observer);
+  AddBatAdsClientObserver(pending_remote<BatAdsClientObserver> observer);
 
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
@@ -105,8 +128,12 @@ interface BatAdsClient {
   Log(string file, int32 line, int32 verbose_level, string message);
 };
 
-// Bat ads observer interface
 interface BatAdsObserver {
+  // See AdsObserver for documentation.
+
+  OnDidInitializeAds();
+  OnFailedToInitializeAds();
+
   OnStatementOfAccountsDidChange();
 };
 
@@ -120,39 +147,10 @@ interface BatAds {
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  OnLocaleDidChange(string locale);
-
-  OnPrefDidChange(string path);
-
-  OnDidUpdateResourceComponent(string id);
-
-  // User Interaction
-  OnUserDidBecomeIdle();
-  OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time, bool screen_was_locked);
-
   TriggerUserGestureEvent(int32 page_transition_type);
-
-  // Browser
-  OnBrowserDidEnterForeground();
-  OnBrowserDidEnterBackground();
-
-  // Tabs
-  OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
-
-  OnTabHtmlContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
-
-  OnTabDidStartPlayingMedia(int32 tab_id);
-  OnTabDidStopPlayingMedia(int32 tab_id);
-
-  OnDidCloseTab(int32 tab_id);
-
-  // Account
-  OnRewardsWalletDidChange(string payment_id, string seed);
 
   GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
 
-  // Ads
   MaybeServeInlineContentAd(string dimensions) => (string dimensions, mojo_base.mojom.DictionaryValue? value);
   TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
 
@@ -168,14 +166,16 @@ interface BatAds {
 
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
 
-  // History
   GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) => (mojo_base.mojom.ListValue value);
   RemoveAllHistory() => (bool success);
 
   ToggleAdThumbUp(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
   ToggleAdThumbDown(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
+
   ToggleAdOptIn(string category, int32 action) => (string category, int32 action);
   ToggleAdOptOut(string category, int32 action) => (string category, int32 action);
+
   ToggleSavedAd(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
+
   ToggleFlaggedAd(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
 };

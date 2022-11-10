@@ -12,6 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/locale/subdivision_code_util.h"
 #include "bat/ads/internal/common/logging_util.h"
@@ -21,8 +22,6 @@
 #include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
 #include "bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h"
-#include "bat/ads/internal/locale/locale_manager.h"
-#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -42,13 +41,11 @@ constexpr char kDisabled[] = "DISABLED";
 }  // namespace
 
 SubdivisionTargeting::SubdivisionTargeting() {
-  LocaleManager::GetInstance()->AddObserver(this);
-  PrefManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
 }
 
 SubdivisionTargeting::~SubdivisionTargeting() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
-  PrefManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
 }
 
 // static

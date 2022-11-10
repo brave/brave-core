@@ -8,11 +8,10 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/logging_util.h"
-#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 #include "bat/ads/internal/resources/country_components.h"
-#include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
 
 namespace ads::resource {
@@ -23,13 +22,11 @@ constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 
 AntiTargeting::AntiTargeting()
     : anti_targeting_(std::make_unique<AntiTargetingInfo>()) {
-  LocaleManager::GetInstance()->AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
 }
 
 AntiTargeting::~AntiTargeting() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
 }
 
 bool AntiTargeting::IsInitialized() const {
@@ -77,7 +74,7 @@ void AntiTargeting::OnLocaleDidChange(const std::string& /*locale*/) {
   Load();
 }
 
-void AntiTargeting::OnResourceDidUpdate(const std::string& id) {
+void AntiTargeting::OnDidUpdateResourceComponent(const std::string& id) {
   if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
     Load();
   }

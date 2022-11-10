@@ -11,8 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "bat/ads/internal/locale/locale_manager_observer.h"
-#include "bat/ads/internal/resources/resource_manager_observer.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
 
@@ -31,9 +30,7 @@ struct PurchaseIntentSiteInfo;
 
 namespace processor {
 
-class PurchaseIntent final : public LocaleManagerObserver,
-                             public ResourceManagerObserver,
-                             public TabManagerObserver {
+class PurchaseIntent : public AdsClientObserver, public TabManagerObserver {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
 
@@ -56,11 +53,9 @@ class PurchaseIntent final : public LocaleManagerObserver,
 
   uint16_t GetFunnelWeightForSearchQuery(const std::string& search_query) const;
 
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

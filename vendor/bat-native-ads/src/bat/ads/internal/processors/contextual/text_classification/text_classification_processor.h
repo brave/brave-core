@@ -11,8 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "bat/ads/internal/locale/locale_manager_observer.h"
-#include "bat/ads/internal/resources/resource_manager_observer.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
 
 class GURL;
@@ -25,9 +24,7 @@ class TextClassification;
 
 namespace processor {
 
-class TextClassification final : public LocaleManagerObserver,
-                                 public ResourceManagerObserver,
-                                 public TabManagerObserver {
+class TextClassification : public AdsClientObserver, public TabManagerObserver {
  public:
   explicit TextClassification(resource::TextClassification* resource);
 
@@ -42,11 +39,9 @@ class TextClassification final : public LocaleManagerObserver,
   void Process(const std::string& text);
 
  private:
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

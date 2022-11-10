@@ -7,11 +7,12 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_BROWSER_MANAGER_H_
 
 #include "base/observer_list.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/browser/browser_manager_observer.h"
 
 namespace ads {
 
-class BrowserManager final {
+class BrowserManager : public AdsClientObserver {
  public:
   BrowserManager();
 
@@ -21,7 +22,7 @@ class BrowserManager final {
   BrowserManager(BrowserManager&& other) noexcept = delete;
   BrowserManager& operator=(BrowserManager&& other) noexcept = delete;
 
-  ~BrowserManager();
+  ~BrowserManager() override;
 
   static BrowserManager* GetInstance();
 
@@ -30,13 +31,9 @@ class BrowserManager final {
   void AddObserver(BrowserManagerObserver* observer);
   void RemoveObserver(BrowserManagerObserver* observer);
 
-  void OnBrowserDidBecomeActive();
-  void OnBrowserDidResignActive();
   void SetBrowserIsActive(const bool is_active) { is_active_ = is_active; }
   bool IsBrowserActive() const { return is_active_ && is_in_foreground_; }
 
-  void OnBrowserDidEnterForeground();
-  void OnBrowserDidEnterBackground();
   void SetBrowserIsInForeground(const bool is_in_foreground) {
     is_in_foreground_ = is_in_foreground;
   }
@@ -50,6 +47,12 @@ class BrowserManager final {
   void NotifyBrowserDidEnterForeground() const;
   void NotifyBrowserDidEnterBackground() const;
   void LogBrowserForegroundState() const;
+
+  // AdsClientObserver:
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
+  void OnBrowserDidBecomeActive() override;
+  void OnBrowserDidResignActive() override;
 
   base::ObserverList<BrowserManagerObserver> observers_;
 

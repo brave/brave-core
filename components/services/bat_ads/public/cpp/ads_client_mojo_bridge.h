@@ -15,6 +15,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 
 class GURL;
 
@@ -41,6 +42,9 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
                            const ads::mojom::UrlResponseInfo& url_response);
 
   // BatAdsClient:
+  void AddBatAdsClientObserver(
+      mojo::PendingRemote<mojom::BatAdsClientObserver> observer) override;
+
   bool IsNetworkConnectionAvailable(bool* out_value) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;

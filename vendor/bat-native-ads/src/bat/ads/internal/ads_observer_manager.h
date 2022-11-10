@@ -30,6 +30,12 @@ class AdsObserverManager final {
   void AddObserver(
       mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer);
 
+  // Invoked when ads has successfully initialized.
+  void NotifyDidInitializeAds() const;
+
+  // Invoked when ads fail to initialize.
+  void NotifyFailedToInitializeAds() const;
+
   // Invoked when the statement of accounts have changed.
   void NotifyStatementOfAccountsDidChange() const;
 

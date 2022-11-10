@@ -16,6 +16,7 @@
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/common/time/time_formatting_util.h"
 #include "bat/ads/internal/common/url/url_util.h"
@@ -27,11 +28,9 @@
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/flags/flag_manager.h"
-#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
-#include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -212,14 +211,12 @@ ConversionList SortConversions(const ConversionList& conversions) {
 Conversions::Conversions() {
   resource_ = std::make_unique<resource::Conversions>();
 
-  LocaleManager::GetInstance()->AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 Conversions::~Conversions() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
@@ -567,7 +564,7 @@ void Conversions::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void Conversions::OnResourceDidUpdate(const std::string& id) {
+void Conversions::OnDidUpdateResourceComponent(const std::string& id) {
   if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
     resource_->Load();
   }

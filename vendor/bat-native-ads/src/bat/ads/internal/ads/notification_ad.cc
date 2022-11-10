@@ -15,20 +15,19 @@
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "bat/ads/internal/ads/notification_ad_util.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
-#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/transfer/transfer.h"
-#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 #include "bat/ads/notification_ad_info.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -57,18 +56,16 @@ NotificationAd::NotificationAd(
       subdivision_targeting, anti_targeting_resource);
   serving_->AddObserver(this);
 
+  AdsClientHelper::AddObserver(this);
   BrowserManager::GetInstance()->AddObserver(this);
-  PrefManager::GetInstance()->AddObserver(this);
-  IdleDetectionManager::GetInstance()->AddObserver(this);
 }
 
 NotificationAd::~NotificationAd() {
   account_->RemoveObserver(this);
   event_handler_->RemoveObserver(this);
   serving_->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
-  PrefManager::GetInstance()->RemoveObserver(this);
-  IdleDetectionManager::GetInstance()->RemoveObserver(this);
 }
 
 void NotificationAd::MaybeServeAtRegularIntervals() {

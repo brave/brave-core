@@ -65,7 +65,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActive) {
   BrowserManager::GetInstance()->SetBrowserIsActive(false);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
+  NotifyBrowserDidBecomeActive();
 
   // Assert
   EXPECT_TRUE(BrowserManager::GetInstance()->IsBrowserActive());
@@ -78,7 +78,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidResignActive) {
   BrowserManager::GetInstance()->SetBrowserIsActive(true);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidResignActive();
+  NotifyBrowserDidResignActive();
 
   // Assert
   EXPECT_FALSE(BrowserManager::GetInstance()->IsBrowserActive());
@@ -91,7 +91,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterForeground) {
   BrowserManager::GetInstance()->SetBrowserIsInForeground(false);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidEnterForeground();
 
   // Assert
   EXPECT_TRUE(BrowserManager::GetInstance()->IsBrowserInForeground());
@@ -104,7 +104,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackground) {
   BrowserManager::GetInstance()->SetBrowserIsInForeground(true);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
+  NotifyBrowserDidEnterBackground();
 
   // Assert
   EXPECT_FALSE(BrowserManager::GetInstance()->IsBrowserInForeground());

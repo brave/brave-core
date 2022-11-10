@@ -19,6 +19,11 @@ AdsClientIOS::~AdsClientIOS() {
   bridge_ = nil;
 }
 
+void AdsClientIOS::AddBatAdsClientObserver(
+    mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer) {
+  [bridge_ addBatAdsClientObserver:observer];
+}
+
 bool AdsClientIOS::IsNetworkConnectionAvailable() const {
   return [bridge_ isNetworkConnectionAvailable];
 }

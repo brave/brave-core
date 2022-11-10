@@ -38,7 +38,13 @@ class AdsObserver : public bat_ads::mojom::BatAdsObserver {
   // which were scheduled prior to unbinding are effectively cancelled.
   void Reset() { receiver_.reset(); }
 
-  // bat_ads::mojom::BatAdsObserver:
+  // Invoked when ads has successfully initialized.
+  void OnDidInitializeAds() override {}
+
+  // Invoked when ads fail to initialize.
+  void OnFailedToInitializeAds() override {}
+
+  // Invoked when the statement of accounts have changed.
   void OnStatementOfAccountsDidChange() override {}
 
  private:

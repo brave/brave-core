@@ -17,6 +17,7 @@
 #include "bat/ads/internal/ads_observer_manager.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/common/platform/platform_helper_mock.h"
+#include "bat/ads/internal/common/unittest/ads_client_observer_notifier_for_testing.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/internal/database/database_manager.h"
@@ -25,11 +26,7 @@
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 #include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/history/history_manager.h"
-#include "bat/ads/internal/locale/locale_manager.h"
-#include "bat/ads/internal/prefs/pref_manager.h"
-#include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
-#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
@@ -47,7 +44,8 @@ namespace ads {
 
 class Database;
 
-class UnitTestBase : public testing::Test {
+class UnitTestBase : public AdsClientObserverNotifierForTesting,
+                     public testing::Test {
  public:
   UnitTestBase();
 
@@ -132,7 +130,8 @@ class UnitTestBase : public testing::Test {
   void AdvanceClockTo(base::Time time);
   void AdvanceClockToMidnight(bool is_local);
 
-  base::test::TaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
 
   std::unique_ptr<AdsClientMock> ads_client_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
@@ -140,13 +139,15 @@ class UnitTestBase : public testing::Test {
  private:
   void Initialize();
 
+  void MockAddBatAdsClientObserver();
+
   void SetDefaultMocks();
 
   void SetDefaultPrefs();
 
   void SetUpIntegrationTest();
 
-  void OnAdsInitialize(bool success);
+  void OnInitializedAds(bool success);
 
   base::ScopedTempDir temp_dir_;
 
@@ -172,11 +173,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
-  std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
-  std::unique_ptr<PrefManager> pref_manager_;
-  std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 };

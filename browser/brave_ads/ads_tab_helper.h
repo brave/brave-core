@@ -88,6 +88,7 @@ class AdsTabHelper : public content::WebContentsObserver,
       nullptr;  // NOT OWNED
   bool is_active_ = false;
   bool is_browser_active_ = true;
+  bool is_incognito_ = false;
   std::vector<GURL> redirect_chain_;
   bool should_process_ = false;
 

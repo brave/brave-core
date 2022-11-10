@@ -8,15 +8,14 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/common/search_engine/search_engine_results_page_util.h"
 #include "bat/ads/internal/common/search_engine/search_engine_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
-#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/resources/language_components.h"
-#include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
@@ -44,14 +43,12 @@ TextClassification::TextClassification(resource::TextClassification* resource)
     : resource_(resource) {
   DCHECK(resource_);
 
-  LocaleManager::GetInstance()->AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 TextClassification::~TextClassification() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
@@ -87,7 +84,7 @@ void TextClassification::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextClassification::OnResourceDidUpdate(const std::string& id) {
+void TextClassification::OnDidUpdateResourceComponent(const std::string& id) {
   if (kLanguageComponentIds.find(id) != kLanguageComponentIds.cend()) {
     resource_->Load();
   }

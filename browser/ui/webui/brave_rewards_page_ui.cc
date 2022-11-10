@@ -273,11 +273,11 @@ class RewardsDOMHandler
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
-  // AdsServiceObserver implementation
-  void OnDidInitializeAds() override;
+  // brave_ads::AdsServiceObserver:
   void OnNeedsBrowserUpgradeToServeAds() override;
 
   // ads::AdsObserver:
+  void OnDidInitializeAds() override;
   void OnStatementOfAccountsDidChange() override;
 
   void InitPrefChangeRegistrar();
@@ -1543,15 +1543,15 @@ void RewardsDOMHandler::OnStatementChanged(
   }
 }
 
+void RewardsDOMHandler::OnNeedsBrowserUpgradeToServeAds() {
+  GetAdsData(base::Value::List());
+}
+
 void RewardsDOMHandler::OnDidInitializeAds() {
   if (ads_service_) {
     ads_service_->RemoveBatAdsObserver(this);
     ads_service_->AddBatAdsObserver(this);
   }
-}
-
-void RewardsDOMHandler::OnNeedsBrowserUpgradeToServeAds() {
-  GetAdsData(base::Value::List());
 }
 
 void RewardsDOMHandler::OnStatementOfAccountsDidChange() {

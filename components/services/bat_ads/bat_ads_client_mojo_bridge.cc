@@ -35,6 +35,15 @@ bool BatAdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded()
   return can_show;
 }
 
+void BatAdsClientMojoBridge::AddBatAdsClientObserver(
+    mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer) {
+  if (!bat_ads_client_receiver_.is_bound()) {
+    return;
+  }
+
+  bat_ads_client_receiver_->AddBatAdsClientObserver(std::move(observer));
+}
+
 bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
   if (!bat_ads_client_receiver_.is_bound()) {
     return false;

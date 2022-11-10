@@ -45,7 +45,6 @@ namespace ads {
 class AdsObserver;
 class Database;
 struct NewTabPageAdInfo;
-struct NotificationAdInfo;
 }  // namespace ads
 
 namespace base {
@@ -146,10 +145,9 @@ class AdsServiceImpl : public AdsService,
   void OnIdleTimeThresholdPrefChanged();
   void OnBraveTodayOptedInPrefChanged();
   void OnNewTabPageShowTodayPrefChanged();
-  void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();
-  void OnGetRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void OnGetRewardsWallet(ledger::mojom::RewardsWalletPtr wallet) const;
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -246,24 +244,7 @@ class AdsServiceImpl : public AdsService,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  void OnTabHtmlContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
   void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnTabDidStartPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidStopPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidChange(const SessionID& tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active) override;
-  void OnDidCloseTab(const SessionID& tab_id) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -318,6 +299,10 @@ class AdsServiceImpl : public AdsService,
                        ToggleFlaggedAdCallback callback) override;
 
   // AdsClient:
+  void AddBatAdsClientObserver(
+      mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer)
+      override;
+
   bool IsNetworkConnectionAvailable() const override;
 
   bool IsBrowserActive() const override;
@@ -480,7 +465,7 @@ class AdsServiceImpl : public AdsService,
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_remote_;
-};
+  };
 
 }  // namespace brave_ads
 

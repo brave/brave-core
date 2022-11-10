@@ -164,20 +164,8 @@ void UserActivityManager::OnBrowserDidEnterBackground() {
   RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
 }
 
-void UserActivityManager::OnTabDidChangeFocus(const int32_t /*id*/) {
-  RecordEvent(UserActivityEventType::kTabChangedFocus);
-}
-
-void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
-  RecordEvent(UserActivityEventType::kTabUpdated);
-}
-
 void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
   RecordEvent(UserActivityEventType::kOpenedNewTab);
-}
-
-void UserActivityManager::OnDidCloseTab(const int32_t /*id*/) {
-  RecordEvent(UserActivityEventType::kClosedTab);
 }
 
 void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*id*/) {
@@ -186,6 +174,18 @@ void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*id*/) {
 
 void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*id*/) {
   RecordEvent(UserActivityEventType::kTabStoppedPlayingMedia);
+}
+
+void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
+  RecordEvent(UserActivityEventType::kTabUpdated);
+}
+
+void UserActivityManager::OnTabDidChangeFocus(const int32_t /*id*/) {
+  RecordEvent(UserActivityEventType::kTabChangedFocus);
+}
+
+void UserActivityManager::OnDidCloseTab(const int32_t /*id*/) {
+  RecordEvent(UserActivityEventType::kClosedTab);
 }
 
 }  // namespace ads

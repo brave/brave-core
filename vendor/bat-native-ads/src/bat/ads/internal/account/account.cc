@@ -26,9 +26,8 @@
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/ads_observer_manager.h"
-#include "bat/ads/internal/prefs/pref_manager.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -53,7 +52,7 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
       refill_unblinded_tokens_(
           std::make_unique<RefillUnblindedTokens>(token_generator_)),
       wallet_(std::make_unique<Wallet>()) {
-  PrefManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
 
   confirmations_->SetDelegate(this);
   issuers_->SetDelegate(this);
@@ -62,7 +61,7 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
 }
 
 Account::~Account() {
-  PrefManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* observer) {
@@ -73,44 +72,6 @@ void Account::AddObserver(AccountObserver* observer) {
 void Account::RemoveObserver(AccountObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
-}
-
-void Account::SetWallet(const std::string& id, const std::string& seed) {
-  const WalletInfo last_wallet_copy = GetWallet();
-
-  if (!wallet_->Set(id, seed)) {
-    BLOG(0, "Failed to set wallet");
-    NotifyInvalidWallet();
-    return;
-  }
-
-  const WalletInfo& wallet = GetWallet();
-
-  if (wallet.WasUpdated(last_wallet_copy)) {
-    BLOG(1, "Successfully set wallet");
-    NotifyWalletDidUpdate(wallet);
-  }
-
-  if (wallet.HasChanged(last_wallet_copy)) {
-    WalletDidChange(wallet);
-    return;
-  }
-
-  TopUpUnblindedTokens();
-}
-
-const WalletInfo& Account::GetWallet() const {
-  return wallet_->Get();
-}
-
-void Account::Process() {
-  MaybeResetIssuersAndConfirmations();
-
-  NotifyStatementOfAccountsDidChange();
-
-  MaybeGetIssuers();
-
-  ProcessClearingCycle();
 }
 
 void Account::Deposit(const std::string& creative_instance_id,
@@ -129,9 +90,8 @@ void Account::Deposit(const std::string& creative_instance_id,
   deposit->GetValue(
       creative_instance_id, [=](const bool success, const double value) {
         if (!success) {
-          FailedToProcessDeposit(creative_instance_id, ad_type,
-                                 confirmation_type);
-          return;
+          return FailedToProcessDeposit(creative_instance_id, ad_type,
+                                        confirmation_type);
         }
 
         ProcessDeposit(creative_instance_id, ad_type, confirmation_type, value);
@@ -141,8 +101,7 @@ void Account::Deposit(const std::string& creative_instance_id,
 // static
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!ShouldRewardUser()) {
-    std::move(callback).Run(/*statement*/ nullptr);
-    return;
+    return std::move(callback).Run(/*statement*/ nullptr);
   }
 
   return BuildStatement(std::move(callback));
@@ -151,11 +110,9 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Account::MaybeGetIssuers() const {
-  if (!ShouldRewardUser()) {
-    return;
+  if (ShouldRewardUser()) {
+    issuers_->MaybeFetch();
   }
-
-  issuers_->MaybeFetch();
 }
 
 void Account::ProcessDeposit(const std::string& creative_instance_id,
@@ -166,9 +123,8 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
       creative_instance_id, value, ad_type, confirmation_type,
       [=](const bool success, const TransactionInfo& transaction) {
         if (!success) {
-          FailedToProcessDeposit(creative_instance_id, ad_type,
-                                 confirmation_type);
-          return;
+          return FailedToProcessDeposit(creative_instance_id, ad_type,
+                                        confirmation_type);
         }
 
         BLOG(3, "Successfully processed deposit for "
@@ -204,12 +160,30 @@ void Account::ProcessClearingCycle() const {
 }
 
 void Account::ProcessUnclearedTransactions() const {
-  if (!ShouldRewardUser()) {
-    return;
+  if (ShouldRewardUser()) {
+    redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet_->Get());
+  }
+}
+
+void Account::SetWallet(const std::string& payment_id,
+                        const std::string& recovery_seed) {
+  const WalletInfo last_wallet_copy = wallet_->Get();
+
+  if (!wallet_->Set(payment_id, recovery_seed)) {
+    BLOG(0, "Failed to set wallet");
+    return NotifyInvalidWallet();
   }
 
-  const WalletInfo& wallet = GetWallet();
-  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
+  const WalletInfo& wallet = wallet_->Get();
+
+  if (wallet.WasUpdated(last_wallet_copy)) {
+    BLOG(1, "Successfully set wallet");
+    NotifyWalletDidUpdate(wallet);
+  }
+
+  if (wallet.HasChanged(last_wallet_copy)) {
+    WalletDidChange(wallet);
+  }
 }
 
 void Account::WalletDidChange(const WalletInfo& wallet) const {
@@ -262,12 +236,9 @@ void Account::MaybeResetIssuersAndConfirmations() {
 }
 
 void Account::TopUpUnblindedTokens() const {
-  if (!ShouldRewardUser()) {
-    return;
+  if (ShouldRewardUser()) {
+    refill_unblinded_tokens_->MaybeRefill(wallet_->Get());
   }
-
-  const WalletInfo& wallet = GetWallet();
-  refill_unblinded_tokens_->MaybeRefill(wallet);
 }
 
 void Account::NotifyWalletDidUpdate(const WalletInfo& wallet) const {
@@ -323,6 +294,24 @@ void Account::OnPrefDidChange(const std::string& path) {
   }
 }
 
+void Account::OnRewardsWalletIsReady(const std::string& payment_id,
+                                     const std::string& recovery_seed) {
+  SetWallet(payment_id, recovery_seed);
+
+  MaybeResetIssuersAndConfirmations();
+
+  NotifyStatementOfAccountsDidChange();
+
+  MaybeGetIssuers();
+
+  ProcessClearingCycle();
+}
+
+void Account::OnRewardsWalletDidChange(const std::string& payment_id,
+                                       const std::string& recovery_seed) {
+  SetWallet(payment_id, recovery_seed);
+}
+
 void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
   DCHECK(IsValid(confirmation));
 
@@ -371,7 +360,6 @@ void Account::OnDidRefillUnblindedTokens() {
 
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
-  const WalletInfo& wallet = GetWallet();
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   const bool should_show_tooltip_notification = false;
 #else   // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
@@ -379,7 +367,7 @@ void Account::OnCaptchaRequiredToRefillUnblindedTokens(
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-      wallet.id, captcha_id, should_show_tooltip_notification);
+      wallet_->GetId(), captcha_id, should_show_tooltip_notification);
 }
 
 }  // namespace ads

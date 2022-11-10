@@ -19,6 +19,7 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_constants.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -40,9 +41,9 @@ using ::testing::Return;
 
 namespace {
 
-constexpr char kWalletId[] = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
-constexpr char kWalletSeed[] = "x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=";
-constexpr char kInvalidWalletSeed[] =
+constexpr char kAnotherRewardsWalletRecoverySeed[] =
+    "c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3";
+constexpr char kInvalidRewardsWalletRecoverySeed[] =
     "y6vCwhJ6NUUWZ7tkHw76f0FIs9w8j-VylGC0rWd6gQ1=";
 
 }  // namespace
@@ -64,12 +65,14 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnWalletDidUpdate(const WalletInfo& /*wallet*/) override {
+  void OnWalletDidUpdate(const WalletInfo& wallet) override {
     wallet_did_update_ = true;
+    wallet_ = wallet;
   }
 
-  void OnWalletDidChange(const WalletInfo& /*wallet*/) override {
+  void OnWalletDidChange(const WalletInfo& wallet) override {
     wallet_did_change_ = true;
+    wallet_ = wallet;
   }
 
   void OnInvalidWallet() override { invalid_wallet_ = true; }
@@ -96,6 +99,7 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   bool wallet_did_update_ = false;
   bool wallet_did_change_ = false;
   bool invalid_wallet_ = false;
+  WalletInfo wallet_;
 
   TransactionInfo transaction_;
   bool did_process_deposit_ = false;
@@ -108,54 +112,44 @@ TEST_F(BatAdsAccountTest, SetWallet) {
   // Arrange
 
   // Act
-  account_->SetWallet(kWalletId, kWalletSeed);
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kRewardsWalletRecoverySeed);
 
   // Assert
   EXPECT_TRUE(wallet_did_update_);
   EXPECT_FALSE(wallet_did_change_);
   EXPECT_FALSE(invalid_wallet_);
+  EXPECT_TRUE(wallet_.IsValid());
 }
 
 TEST_F(BatAdsAccountTest, SetInvalidWallet) {
   // Arrange
 
   // Act
-  account_->SetWallet(kWalletId, kInvalidWalletSeed);
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kInvalidRewardsWalletRecoverySeed);
 
   // Assert
   EXPECT_FALSE(wallet_did_update_);
   EXPECT_FALSE(wallet_did_change_);
   EXPECT_TRUE(invalid_wallet_);
+  EXPECT_FALSE(wallet_.IsValid());
 }
 
 TEST_F(BatAdsAccountTest, ChangeWallet) {
   // Arrange
-  account_->SetWallet(kWalletId, kWalletSeed);
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kRewardsWalletRecoverySeed);
 
   // Act
-  account_->SetWallet("c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3", kWalletSeed);
+  NotifyRewardsWalletDidChange(kAnotherRewardsWalletRecoverySeed,
+                               kRewardsWalletRecoverySeed);
 
   // Assert
   EXPECT_TRUE(wallet_did_update_);
   EXPECT_TRUE(wallet_did_change_);
   EXPECT_FALSE(invalid_wallet_);
-}
-
-TEST_F(BatAdsAccountTest, GetWallet) {
-  // Arrange
-  account_->SetWallet(kWalletId, kWalletSeed);
-
-  // Act
-  const WalletInfo& wallet = account_->GetWallet();
-
-  // Assert
-  WalletInfo expected_wallet;
-  expected_wallet.id = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
-  expected_wallet.secret_key =
-      "93052310477323AAE423A84BA32C68B1AE3B66B71952F6D8A69026E33BD817980621BF8B"
-      "7B5F34B49E380F59179AE43C21B286473B28245B412DDB54632F150D";
-
-  EXPECT_EQ(expected_wallet, wallet);
+  EXPECT_TRUE(wallet_.IsValid());
 }
 
 TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
@@ -219,7 +213,11 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
         )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
+
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kRewardsWalletRecoverySeed);
 
   // Act
   const absl::optional<IssuersInfo> issuers = GetIssuers();
@@ -304,7 +302,11 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
         )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
+
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kRewardsWalletRecoverySeed);
 
   // Act
   const absl::optional<IssuersInfo> issuers = GetIssuers();
@@ -401,7 +403,8 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
         )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kRewardsWalletRecoverySeed);
 
   // Act
   const absl::optional<IssuersInfo> issuers = GetIssuers();
@@ -427,7 +430,8 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
         )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kRewardsWalletRecoverySeed);
 
   // Act
   const absl::optional<IssuersInfo> issuers = GetIssuers();
@@ -448,7 +452,8 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
                                          {{net::HTTP_OK, "INVALID"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  NotifyRewardsWalletIsReady(kRewardsWalletPaymentId,
+                             kRewardsWalletRecoverySeed);
 
   // Act
   const absl::optional<IssuersInfo> issuers = GetIssuers();

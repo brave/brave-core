@@ -13,6 +13,7 @@
 
 #include "absl/types/optional.h"
 #include "base/observer_list.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
 
@@ -20,7 +21,7 @@ class GURL;
 
 namespace ads {
 
-class TabManager final {
+class TabManager : public AdsClientObserver {
  public:
   TabManager();
 
@@ -30,7 +31,7 @@ class TabManager final {
   TabManager(TabManager&& other) noexcept = delete;
   TabManager& operator=(TabManager&& other) noexcept = delete;
 
-  ~TabManager();
+  ~TabManager() override;
 
   static TabManager* GetInstance();
 
@@ -40,23 +41,6 @@ class TabManager final {
   void RemoveObserver(TabManagerObserver* observer);
 
   bool IsVisible(int32_t id) const;
-
-  void OnDidChange(int32_t id,
-                   const std::vector<GURL>& redirect_chain,
-                   bool is_visible,
-                   bool is_incognito);
-
-  void OnTextContentDidChange(int32_t id,
-                              const std::vector<GURL>& redirect_chain,
-                              const std::string& content);
-  void OnHtmlContentDidChange(int32_t id,
-                              const std::vector<GURL>& redirect_chain,
-                              const std::string& content);
-
-  void OnDidClose(int32_t id);
-
-  void OnDidStartPlayingMedia(int32_t id);
-  void OnDidStopPlayingMedia(int32_t id);
 
   bool IsPlayingMedia(int32_t id) const;
 
@@ -70,18 +54,33 @@ class TabManager final {
   void Update(const TabInfo& tab);
   void Remove(int32_t id);
 
-  void NotifyTabDidChangeFocus(int32_t id) const;
-  void NotifyTabDidChange(const TabInfo& tab) const;
   void NotifyDidOpenNewTab(const TabInfo& tab) const;
-  void NotifyTextContentDidChange(int32_t id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const std::string& content);
   void NotifyHtmlContentDidChange(int32_t id,
                                   const std::vector<GURL>& redirect_chain,
                                   const std::string& content);
-  void NotifyDidCloseTab(int32_t id) const;
+  void NotifyTextContentDidChange(int32_t id,
+                                  const std::vector<GURL>& redirect_chain,
+                                  const std::string& content);
   void NotifyTabDidStartPlayingMedia(int32_t id) const;
   void NotifyTabDidStopPlayingMedia(int32_t id) const;
+  void NotifyTabDidChange(const TabInfo& tab) const;
+  void NotifyTabDidChangeFocus(int32_t id) const;
+  void NotifyDidCloseTab(int32_t id) const;
+
+  // AdsClientObserver:
+  void OnTabHtmlContentDidChange(int32_t id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& content) override;
+  void OnTabTextContentDidChange(int32_t id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& content) override;
+  void OnTabDidStartPlayingMedia(int32_t id) override;
+  void OnTabDidStopPlayingMedia(int32_t id) override;
+  void OnTabDidChange(int32_t id,
+                      const std::vector<GURL>& redirect_chain,
+                      bool is_visible,
+                      bool is_incognito) override;
+  void OnDidCloseTab(int32_t id) override;
 
   base::ObserverList<TabManagerObserver> observers_;
 

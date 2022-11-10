@@ -17,12 +17,12 @@
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/common/time/time_formatting_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/notification_ad_info.h"
@@ -43,11 +43,11 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
 
-  PrefManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
 }
 
 Serving::~Serving() {
-  PrefManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
 }
 
 void Serving::AddObserver(ServingObserver* observer) {

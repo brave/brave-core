@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 
 #include "base/check.h"
+#include "bat/ads/ads_client_observer.h"
 
 namespace ads {
 
@@ -33,6 +34,22 @@ AdsClient* AdsClientHelper::GetInstance() {
 // static
 bool AdsClientHelper::HasInstance() {
   return !!g_ads_client_instance;
+}
+
+// static
+void AdsClientHelper::AddObserver(AdsClientObserver* observer) {
+  DCHECK(observer);
+  DCHECK(!observer->IsBound());
+
+  g_ads_client_instance->AddBatAdsClientObserver(observer->Bind());
+}
+
+// static
+void AdsClientHelper::RemoveObserver(AdsClientObserver* observer) {
+  DCHECK(observer);
+  DCHECK(observer->IsBound());
+
+  observer->Reset();
 }
 
 }  // namespace ads

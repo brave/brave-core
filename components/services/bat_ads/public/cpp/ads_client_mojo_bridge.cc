@@ -30,6 +30,11 @@ void AdsClientMojoBridge::OnURLRequest(
   std::move(callback).Run(ads::mojom::UrlResponseInfo::New(url_response));
 }
 
+void AdsClientMojoBridge::AddBatAdsClientObserver(
+    mojo::PendingRemote<mojom::BatAdsClientObserver> observer) {
+  ads_client_->AddBatAdsClientObserver(std::move(observer));
+}
+
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(bool* out_value) {
   DCHECK(out_value);
   *out_value = ads_client_->IsNetworkConnectionAvailable();

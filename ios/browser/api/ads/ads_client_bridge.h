@@ -18,6 +18,8 @@
 - (bool)isBrowserActive;
 - (bool)isBrowserInFullScreenMode;
 - (bool)canShowNotificationAdsWhileBrowserIsBackgrounded;
+- (void)addBatAdsClientObserver:
+    (mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver>)observer;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
 - (void)loadFileResource:(const std::string&)id

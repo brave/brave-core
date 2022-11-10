@@ -10,10 +10,10 @@
 #include <string>
 
 #include "base/observer_list.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/common/timer/timer.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
 namespace base {
@@ -41,7 +41,7 @@ namespace notification_ads {
 
 class EligibleAdsBase;
 
-class Serving final : public PrefManagerObserver {
+class Serving : public AdsClientObserver {
  public:
   Serving(geographic::SubdivisionTargeting* subdivision_targeting,
           resource::AntiTargeting* anti_targeting_resource);
@@ -83,7 +83,7 @@ class Serving final : public PrefManagerObserver {
   void NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const;
   void NotifyFailedToServeNotificationAd() const;
 
-  // PrefManagerObserver:
+  // AdsClientObserver:
   void OnPrefDidChange(const std::string& path) override;
 
   base::ObserverList<ServingObserver> observers_;

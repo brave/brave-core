@@ -28,6 +28,9 @@ class AdsClientMock : public AdsClient {
 
   ~AdsClientMock() override;
 
+  MOCK_METHOD1(AddBatAdsClientObserver,
+               void(mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver>));
+
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
   MOCK_CONST_METHOD0(IsBrowserActive, bool());

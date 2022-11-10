@@ -13,12 +13,12 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "bat/ads/ads_callback.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
-#include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace ads {
@@ -38,11 +38,11 @@ struct IssuersInfo;
 struct TransactionInfo;
 struct WalletInfo;
 
-class Account final : public PrefManagerObserver,
-                      public ConfirmationsDelegate,
-                      public IssuersDelegate,
-                      public RedeemUnblindedPaymentTokensDelegate,
-                      public RefillUnblindedTokensDelegate {
+class Account : public AdsClientObserver,
+                public ConfirmationsDelegate,
+                public IssuersDelegate,
+                public RedeemUnblindedPaymentTokensDelegate,
+                public RefillUnblindedTokensDelegate {
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
 
@@ -57,16 +57,11 @@ class Account final : public PrefManagerObserver,
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
-  void SetWallet(const std::string& id, const std::string& seed);
-  const WalletInfo& GetWallet() const;
-
   void Deposit(const std::string& creative_instance_id,
                const AdType& ad_type,
                const ConfirmationType& confirmation_type) const;
 
   static void GetStatement(GetStatementOfAccountsCallback callback);
-
-  void Process();
 
  private:
   void MaybeGetIssuers() const;
@@ -82,6 +77,8 @@ class Account final : public PrefManagerObserver,
   void ProcessClearingCycle() const;
   void ProcessUnclearedTransactions() const;
 
+  void SetWallet(const std::string& payment_id,
+                 const std::string& recovery_seed);
   void WalletDidChange(const WalletInfo& wallet) const;
 
   void MaybeResetIssuersAndConfirmations();
@@ -100,8 +97,12 @@ class Account final : public PrefManagerObserver,
 
   void NotifyStatementOfAccountsDidChange() const;
 
-  // PrefManagerObserver:
+  // AdsClientObserver:
   void OnPrefDidChange(const std::string& path) override;
+  void OnRewardsWalletIsReady(const std::string& payment_id,
+                              const std::string& recovery_seed) override;
+  void OnRewardsWalletDidChange(const std::string& payment_id,
+                                const std::string& recovery_seed) override;
 
   // ConfirmationsDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;

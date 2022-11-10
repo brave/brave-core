@@ -10,15 +10,13 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "bat/ads/internal/locale/locale_manager_observer.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource_manager_observer.h"
 
 namespace ads::resource {
 
-class AntiTargeting final : public LocaleManagerObserver,
-                            public ResourceManagerObserver {
+class AntiTargeting : public AdsClientObserver {
  public:
   AntiTargeting();
 
@@ -39,11 +37,9 @@ class AntiTargeting final : public LocaleManagerObserver,
  private:
   void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);
 
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   bool is_initialized_ = false;
 

@@ -10,13 +10,12 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/browser/browser_manager_observer.h"
-#include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/segments/segment_alias.h"
-#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace base {
@@ -47,12 +46,11 @@ class Transfer;
 struct NotificationAdInfo;
 struct WalletInfo;
 
-class NotificationAd final : public AccountObserver,
-                             public BrowserManagerObserver,
-                             public IdleDetectionManagerObserver,
-                             public notification_ads::EventHandlerObserver,
-                             public notification_ads::ServingObserver,
-                             public PrefManagerObserver {
+class NotificationAd : public AccountObserver,
+                       public AdsClientObserver,
+                       public BrowserManagerObserver,
+                       public notification_ads::EventHandlerObserver,
+                       public notification_ads::ServingObserver {
  public:
   NotificationAd(
       Account* account,
@@ -78,16 +76,14 @@ class NotificationAd final : public AccountObserver,
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
 
+  // AdsClientObserver:
+  void OnPrefDidChange(const std::string& path) override;
+  void OnUserDidBecomeActive(base::TimeDelta idle_time,
+                             bool screen_was_locked) override;
+
   // BrowserManagerObserver:
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
-
-  // PrefManagerObserver:
-  void OnPrefDidChange(const std::string& path) override;
-
-  // IdleDetectionManagerObserver:
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
 
   // notification_ads::ServingObserver:
   void OnOpportunityAroseToServeNotificationAd(

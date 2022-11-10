@@ -14,8 +14,11 @@ namespace ads {
 
 class Wallet final {
  public:
-  bool Set(const std::string& id, const std::string& seed);
-  const WalletInfo& Get() const;
+  bool Set(const std::string& payment_id, const std::string& recovery_seed);
+
+  const WalletInfo& Get() const { return wallet_; }
+  const std::string& GetId() const { return wallet_.id; }
+  const std::string& GetSecretKey() const { return wallet_.secret_key; }
 
  private:
   WalletInfo wallet_;

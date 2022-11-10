@@ -9,16 +9,14 @@
 #include <string>
 
 #include "absl/types/optional.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/common/timer/backoff_timer.h"
 #include "bat/ads/internal/common/timer/timer.h"
-#include "bat/ads/internal/locale/locale_manager_observer.h"
-#include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
 namespace ads::geographic {
 
-class SubdivisionTargeting final : public LocaleManagerObserver,
-                                   public PrefManagerObserver {
+class SubdivisionTargeting : public AdsClientObserver {
  public:
   SubdivisionTargeting();
 
@@ -61,10 +59,8 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   void Retry();
   void FetchAfterDelay();
 
-  // LocaleManagerObserver:
+  // AdsServiceObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // PrefManagerObserver:
   void OnPrefDidChange(const std::string& path) override;
 
   Timer timer_;

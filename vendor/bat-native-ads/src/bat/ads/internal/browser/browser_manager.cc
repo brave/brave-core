@@ -27,9 +27,13 @@ BrowserManager::BrowserManager() {
 
   is_in_foreground_ = is_browser_active;
   LogBrowserForegroundState();
+
+  AdsClientHelper::AddObserver(this);
 }
 
 BrowserManager::~BrowserManager() {
+  AdsClientHelper::RemoveObserver(this);
+
   DCHECK_EQ(this, g_browser_manager_instance);
   g_browser_manager_instance = nullptr;
 }
@@ -53,50 +57,6 @@ void BrowserManager::AddObserver(BrowserManagerObserver* observer) {
 void BrowserManager::RemoveObserver(BrowserManagerObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
-}
-
-void BrowserManager::OnBrowserDidBecomeActive() {
-  if (is_active_) {
-    return;
-  }
-
-  is_active_ = true;
-  LogBrowserActiveState();
-
-  NotifyBrowserDidBecomeActive();
-}
-
-void BrowserManager::OnBrowserDidResignActive() {
-  if (!is_active_) {
-    return;
-  }
-
-  is_active_ = false;
-  LogBrowserActiveState();
-
-  NotifyBrowserDidResignActive();
-}
-
-void BrowserManager::OnBrowserDidEnterForeground() {
-  if (is_in_foreground_) {
-    return;
-  }
-
-  is_in_foreground_ = true;
-  LogBrowserForegroundState();
-
-  NotifyBrowserDidEnterForeground();
-}
-
-void BrowserManager::OnBrowserDidEnterBackground() {
-  if (!is_in_foreground_) {
-    return;
-  }
-
-  is_in_foreground_ = false;
-  LogBrowserForegroundState();
-
-  NotifyBrowserDidEnterBackground();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,6 +99,50 @@ void BrowserManager::LogBrowserForegroundState() const {
   } else {
     BLOG(1, "Browser did enter background");
   }
+}
+
+void BrowserManager::OnBrowserDidEnterForeground() {
+  if (is_in_foreground_) {
+    return;
+  }
+
+  is_in_foreground_ = true;
+  LogBrowserForegroundState();
+
+  NotifyBrowserDidEnterForeground();
+}
+
+void BrowserManager::OnBrowserDidEnterBackground() {
+  if (!is_in_foreground_) {
+    return;
+  }
+
+  is_in_foreground_ = false;
+  LogBrowserForegroundState();
+
+  NotifyBrowserDidEnterBackground();
+}
+
+void BrowserManager::OnBrowserDidBecomeActive() {
+  if (is_active_) {
+    return;
+  }
+
+  is_active_ = true;
+  LogBrowserActiveState();
+
+  NotifyBrowserDidBecomeActive();
+}
+
+void BrowserManager::OnBrowserDidResignActive() {
+  if (!is_active_) {
+    return;
+  }
+
+  is_active_ = false;
+  LogBrowserActiveState();
+
+  NotifyBrowserDidResignActive();
 }
 
 }  // namespace ads

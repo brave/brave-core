@@ -545,13 +545,9 @@ void AdsServiceImpl::InitializeRewardsWallet() {
 
 void AdsServiceImpl::OnInitializeRewardsWallet(
     ledger::mojom::RewardsWalletPtr wallet) {
-  if (!bat_ads_remote_.is_bound()) {
-    return;
-  }
-
   if (wallet) {
-    bat_ads_remote_->OnRewardsWalletDidChange(
-        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
+    NotifyRewardsWalletIsReady(wallet->payment_id,
+                               base::Base64Encode(wallet->recovery_seed));
   } else if (ShouldRewardUser()) {
     VLOG(1) << "Failed to initialize Rewards wallet";
     return Shutdown();
@@ -574,10 +570,6 @@ void AdsServiceImpl::OnInitializeBatAds(const bool success) {
   }
 
   is_bat_ads_initialized_ = true;
-
-  for (AdsServiceObserver& observer : observers_) {
-    observer.OnDidInitializeAds();
-  }
 
   CleanUpOnFirstRun();
 
@@ -711,22 +703,16 @@ void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
   MaybeStartBatAdsService();
 }
 
-void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnPrefDidChange(path);
-  }
-}
-
 void AdsServiceImpl::GetRewardsWallet() {
   rewards_service_->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::OnGetRewardsWallet, AsWeakPtr()));
 }
 
 void AdsServiceImpl::OnGetRewardsWallet(
-    ledger::mojom::RewardsWalletPtr wallet) {
-  if (wallet && bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnRewardsWalletDidChange(
-        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
+    ledger::mojom::RewardsWalletPtr wallet) const {
+  if (wallet) {
+    NotifyRewardsWalletDidChange(wallet->payment_id,
+                                 base::Base64Encode(wallet->recovery_seed));
   }
 }
 
@@ -757,19 +743,13 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     case ui::IdleState::IDLE_STATE_ACTIVE: {
       const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      if (bat_ads_remote_.is_bound()) {
-        bat_ads_remote_->OnUserDidBecomeActive(idle_time, screen_was_locked);
-      }
-
+      NotifyUserDidBecomeActive(idle_time, screen_was_locked);
       break;
     }
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      if (bat_ads_remote_.is_bound()) {
-        bat_ads_remote_->OnUserDidBecomeIdle();
-      }
-
+      NotifyUserDidBecomeIdle();
       break;
     }
 
@@ -1561,70 +1541,10 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   bat_ads_remote_->GetDiagnostics(std::move(callback));
 }
 
-void AdsServiceImpl::OnLocaleDidChange(const std::string& locale) {
-  if (!bat_ads_remote_.is_bound()) {
-    return;
-  }
-
-  RegisterResourceComponentsForLocale(locale);
-
-  bat_ads_remote_->OnLocaleDidChange(locale);
-}
-
-void AdsServiceImpl::OnTabHtmlContentDidChange(
-    const SessionID& tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnTabHtmlContentDidChange(tab_id.id(), redirect_chain,
-                                               html);
-  }
-}
-
-void AdsServiceImpl::OnTabTextContentDidChange(
-    const SessionID& tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& text) {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnTabTextContentDidChange(tab_id.id(), redirect_chain,
-                                               text);
-  }
-}
-
 void AdsServiceImpl::TriggerUserGestureEvent(
     const int32_t page_transition_type) {
   if (bat_ads_remote_.is_bound()) {
     bat_ads_remote_->TriggerUserGestureEvent(page_transition_type);
-  }
-}
-
-void AdsServiceImpl::OnTabDidStartPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnTabDidStartPlayingMedia(tab_id.id());
-  }
-}
-
-void AdsServiceImpl::OnTabDidStopPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnTabDidStopPlayingMedia(tab_id.id());
-  }
-}
-
-void AdsServiceImpl::OnTabDidChange(const SessionID& tab_id,
-                                    const std::vector<GURL>& redirect_chain,
-                                    const bool is_active,
-                                    const bool is_browser_active) {
-  if (bat_ads_remote_.is_bound()) {
-    const bool is_incognito = !brave::IsRegularProfile(profile_);
-
-    bat_ads_remote_->OnTabDidChange(tab_id.id(), redirect_chain, is_active,
-                                    is_browser_active, is_incognito);
-  }
-}
-
-void AdsServiceImpl::OnDidCloseTab(const SessionID& tab_id) {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnDidCloseTab(tab_id.id());
   }
 }
 
@@ -1806,6 +1726,11 @@ void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
   if (bat_ads_remote_.is_bound()) {
     bat_ads_remote_->ToggleFlaggedAd(std::move(value), std::move(callback));
   }
+}
+
+void AdsServiceImpl::AddBatAdsClientObserver(
+    mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer) {
+  ads::AdsClientObserverNotifier::AddBatAdsClientObserver(std::move(observer));
 }
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() const {
@@ -2123,7 +2048,7 @@ bool AdsServiceImpl::GetBooleanPref(const std::string& path) const {
 
 void AdsServiceImpl::SetBooleanPref(const std::string& path, const bool value) {
   profile_->GetPrefs()->SetBoolean(path, value);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 int AdsServiceImpl::GetIntegerPref(const std::string& path) const {
@@ -2132,7 +2057,7 @@ int AdsServiceImpl::GetIntegerPref(const std::string& path) const {
 
 void AdsServiceImpl::SetIntegerPref(const std::string& path, const int value) {
   profile_->GetPrefs()->SetInteger(path, value);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 double AdsServiceImpl::GetDoublePref(const std::string& path) const {
@@ -2142,7 +2067,7 @@ double AdsServiceImpl::GetDoublePref(const std::string& path) const {
 void AdsServiceImpl::SetDoublePref(const std::string& path,
                                    const double value) {
   profile_->GetPrefs()->SetDouble(path, value);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 std::string AdsServiceImpl::GetStringPref(const std::string& path) const {
@@ -2152,7 +2077,7 @@ std::string AdsServiceImpl::GetStringPref(const std::string& path) const {
 void AdsServiceImpl::SetStringPref(const std::string& path,
                                    const std::string& value) {
   profile_->GetPrefs()->SetString(path, value);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 int64_t AdsServiceImpl::GetInt64Pref(const std::string& path) const {
@@ -2167,7 +2092,7 @@ int64_t AdsServiceImpl::GetInt64Pref(const std::string& path) const {
 void AdsServiceImpl::SetInt64Pref(const std::string& path,
                                   const int64_t value) {
   profile_->GetPrefs()->SetInt64(path, value);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
@@ -2182,7 +2107,7 @@ uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
 void AdsServiceImpl::SetUint64Pref(const std::string& path,
                                    const uint64_t value) {
   profile_->GetPrefs()->SetUint64(path, value);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 base::Time AdsServiceImpl::GetTimePref(const std::string& path) const {
@@ -2192,7 +2117,7 @@ base::Time AdsServiceImpl::GetTimePref(const std::string& path) const {
 void AdsServiceImpl::SetTimePref(const std::string& path,
                                  const base::Time value) {
   profile_->GetPrefs()->SetTime(path, value);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 absl::optional<base::Value::Dict> AdsServiceImpl::GetDictPref(
@@ -2203,7 +2128,7 @@ absl::optional<base::Value::Dict> AdsServiceImpl::GetDictPref(
 void AdsServiceImpl::SetDictPref(const std::string& path,
                                  base::Value::Dict value) {
   profile_->GetPrefs()->SetDict(path, std::move(value));
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 absl::optional<base::Value::List> AdsServiceImpl::GetListPref(
@@ -2214,12 +2139,12 @@ absl::optional<base::Value::List> AdsServiceImpl::GetListPref(
 void AdsServiceImpl::SetListPref(const std::string& path,
                                  base::Value::List value) {
   profile_->GetPrefs()->SetList(path, std::move(value));
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::ClearPref(const std::string& path) {
   profile_->GetPrefs()->ClearPref(path);
-  NotifyPrefChanged(path);
+  NotifyPrefDidChange(path);
 }
 
 bool AdsServiceImpl::HasPrefPath(const std::string& path) const {
@@ -2239,21 +2164,15 @@ void AdsServiceImpl::Log(const char* file,
 }
 
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnBrowserDidEnterForeground();
-  }
+  NotifyBrowserDidEnterForeground();
 }
 
 void AdsServiceImpl::OnBrowserDidEnterBackground() {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnBrowserDidEnterBackground();
-  }
+  NotifyBrowserDidEnterBackground();
 }
 
 void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  if (bat_ads_remote_.is_bound()) {
-    bat_ads_remote_->OnDidUpdateResourceComponent(id);
-  }
+  NotifyDidUpdateResourceComponent(id);
 }
 
 void AdsServiceImpl::OnRewardsWalletUpdated() {

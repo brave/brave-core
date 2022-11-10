@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
@@ -44,6 +45,9 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   if (!ads_service_) {
     return;
   }
+
+  is_incognito_ = !brave::IsRegularProfile(profile);
+
   search_result_ad_service_ =
       SearchResultAdServiceFactory::GetForProfile(profile);
 
@@ -65,8 +69,10 @@ void AdsTabHelper::TabUpdated() {
     return;
   }
 
-  ads_service_->OnTabDidChange(tab_id_, redirect_chain_, is_active_,
-                               is_browser_active_);
+  const bool is_visible = is_active_ && is_browser_active_;
+
+  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_, is_visible,
+                                   is_incognito_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -92,8 +98,10 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
   if (!value.is_string()) {
     return;
   }
+
   const std::string& html = value.GetString();
-  ads_service_->OnTabHtmlContentDidChange(tab_id_, redirect_chain_, html);
+  ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain_,
+                                              html);
 }
 
 void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
@@ -104,8 +112,10 @@ void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
   if (!value.is_string()) {
     return;
   }
+
   const std::string& text = value.GetString();
-  ads_service_->OnTabTextContentDidChange(tab_id_, redirect_chain_, text);
+  ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain_,
+                                              text);
 }
 
 void AdsTabHelper::DidFinishNavigation(
@@ -173,7 +183,7 @@ void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
     return;
   }
 
-  ads_service_->OnTabDidStartPlayingMedia(tab_id_);
+  ads_service_->NotifyTabDidStartPlayingMedia(tab_id_.id());
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
@@ -184,7 +194,7 @@ void AdsTabHelper::MediaStoppedPlaying(
     return;
   }
 
-  ads_service_->OnTabDidStopPlayingMedia(tab_id_);
+  ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
@@ -219,14 +229,15 @@ void AdsTabHelper::WebContentsDestroyed() {
     return;
   }
 
-  ads_service_->OnDidCloseTab(tab_id_);
+  ads_service_->NotifyDidCloseTab(tab_id_.id());
+
   ads_service_ = nullptr;
 }
 
 #if !BUILDFLAG(IS_ANDROID)
 // components/brave_ads/browser/background_helper_android.cc handles Android
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
-  if (!browser) {
+  if (!browser || !ads_service_) {
     return;
   }
 
@@ -241,11 +252,15 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
     return;
   }
 
-  TabUpdated();
+  ads_service_->NotifyBrowserDidBecomeActive();
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   DCHECK(browser);
+
+  if (!ads_service_) {
+    return;
+  }
 
   const bool old_is_browser_active = is_browser_active_;
 
@@ -258,7 +273,7 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
     return;
   }
 
-  TabUpdated();
+  ads_service_->NotifyBrowserDidResignActive();
 }
 #endif
 

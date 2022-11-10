@@ -12,33 +12,45 @@
 namespace ads {
 
 namespace {
-AdsObserverManager* g_observer_manager_instance = nullptr;
+AdsObserverManager* g_ads_observer_manager_instance = nullptr;
 }  // namespace
 
 AdsObserverManager::AdsObserverManager() {
-  DCHECK(!g_observer_manager_instance);
-  g_observer_manager_instance = this;
+  DCHECK(!g_ads_observer_manager_instance);
+  g_ads_observer_manager_instance = this;
 }
 
 AdsObserverManager::~AdsObserverManager() {
-  DCHECK_EQ(this, g_observer_manager_instance);
-  g_observer_manager_instance = nullptr;
+  DCHECK_EQ(this, g_ads_observer_manager_instance);
+  g_ads_observer_manager_instance = nullptr;
 }
 
 // static
 AdsObserverManager* AdsObserverManager::GetInstance() {
-  DCHECK(g_observer_manager_instance);
-  return g_observer_manager_instance;
+  DCHECK(g_ads_observer_manager_instance);
+  return g_ads_observer_manager_instance;
 }
 
 // static
 bool AdsObserverManager::HasInstance() {
-  return !!g_observer_manager_instance;
+  return !!g_ads_observer_manager_instance;
 }
 
 void AdsObserverManager::AddObserver(
     mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) {
   observers_.Add(std::move(observer));
+}
+
+void AdsObserverManager::NotifyDidInitializeAds() const {
+  for (const auto& observer : observers_) {
+    observer->OnDidInitializeAds();
+  }
+}
+
+void AdsObserverManager::NotifyFailedToInitializeAds() const {
+  for (const auto& observer : observers_) {
+    observer->OnFailedToInitializeAds();
+  }
 }
 
 void AdsObserverManager::NotifyStatementOfAccountsDidChange() const {

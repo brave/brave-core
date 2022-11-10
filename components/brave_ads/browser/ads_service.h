@@ -6,21 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
+#include <cstdint>
 #include <string>
-#include <vector>
 
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "bat/ads/ads_client_observer_notifier.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/new_tab_page_ad_info.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/sessions/core/session_id.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-class GURL;
 
 namespace ads {
 class AdsObserver;
@@ -32,7 +30,7 @@ class PrefRegistrySyncable;
 
 namespace brave_ads {
 
-class AdsService : public KeyedService {
+class AdsService : public ads::AdsClientObserverNotifier, public KeyedService {
  public:
   AdsService();
 
@@ -50,10 +48,10 @@ class AdsService : public KeyedService {
   // static
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  // Called to add an ads observer
+  // Called to add an ads observer.
   virtual void AddBatAdsObserver(ads::AdsObserver* observer) = 0;
 
-  // Called to remove an ads observer
+  // Called to remove an ads observer.
   virtual void RemoveBatAdsObserver(ads::AdsObserver* observer) = 0;
 
   // Returns |true| if the user's locale supports ads.
@@ -121,62 +119,10 @@ class AdsService : public KeyedService {
   // |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
-  // Called when the user changes the locale of their operating system. This
-  // call is not required if the operating system restarts the browser when
-  // changing the locale. |locale| should be specified in either
-  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
-  virtual void OnLocaleDidChange(const std::string& locale) = 0;
-
-  // Called when a resource component has been updated.
-  virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
-
-  // Called when the page for |tab_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a list of redirect URLs that
-  // occurred on the way to the current page. The current page is the last one
-  // in the list (so even when there's no redirect, there should be one entry in
-  // the list). |html| containing the page content as HTML.
-  virtual void OnTabHtmlContentDidChange(
-      const SessionID& tab_id,
-      const std::vector<GURL>& redirect_chain,
-      const std::string& html) = 0;
-
-  // Called when the page for |tab_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a list of redirect URLs that
-  // occurred on the way to the current page. The current page is the last one
-  // in the list (so even when there's no redirect, there should be one entry in
-  // the list). |text| containing the page content as text.
-  virtual void OnTabTextContentDidChange(
-      const SessionID& tab_id,
-      const std::vector<GURL>& redirect_chain,
-      const std::string& text) = 0;
-
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
   virtual void TriggerUserGestureEvent(int32_t page_transition_type) = 0;
-
-  // Called when media starts playing on a browser tab for the specified
-  // |tab_id|.
-  virtual void OnTabDidStartPlayingMedia(const SessionID& tab_id) = 0;
-
-  // Called when media stops playing on a browser tab for the specified
-  // |tab_id|.
-  virtual void OnTabDidStopPlayingMedia(const SessionID& tab_id) = 0;
-
-  // Called when a browser tab is updated with the specified |redirect_chain|
-  // containing a list of redirect URLs that occurred on the way to the current
-  // page. The current page is the last one in the list (so even when there's no
-  // redirect, there should be one entry in the list). |is_active| is set to
-  // |true| if |tab_id| refers to the currently active tab otherwise is set to
-  // |false|. |is_browser_active| is set to |true| if the browser window is
-  // active otherwise |false|.
-  virtual void OnTabDidChange(const SessionID& tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              bool is_active,
-                              bool is_browser_active) = 0;
-
-  // Called when a browser tab with the specified |tab_id| was closed.
-  virtual void OnDidCloseTab(const SessionID& tab_id) = 0;
 
   // Called to get the statement of accounts. The callback takes five arguments
   // - |bool| is set to |true| if successful otherwise |false|. |double|

@@ -10,6 +10,8 @@
 
 namespace ads {
 
+class AdsClientObserver;
+
 class AdsClientHelper final {
  public:
   explicit AdsClientHelper(AdsClient* ads_client);
@@ -25,6 +27,9 @@ class AdsClientHelper final {
   static AdsClient* GetInstance();
 
   static bool HasInstance();
+
+  static void AddObserver(AdsClientObserver* observer);
+  static void RemoveObserver(AdsClientObserver* observer);
 };
 
 }  // namespace ads

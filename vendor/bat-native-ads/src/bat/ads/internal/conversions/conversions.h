@@ -12,11 +12,10 @@
 #include <vector>
 
 #include "base/observer_list.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/internal/common/timer/timer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
-#include "bat/ads/internal/resources/resource_manager_observer.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
 
 class GURL;
@@ -31,9 +30,7 @@ struct AdEventInfo;
 struct ConversionQueueItemInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public LocaleManagerObserver,
-                          public ResourceManagerObserver,
-                          public TabManagerObserver {
+class Conversions : public AdsClientObserver, public TabManagerObserver {
  public:
   Conversions();
 
@@ -92,11 +89,9 @@ class Conversions final : public LocaleManagerObserver,
   void NotifyConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) const;
 
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,

@@ -19,8 +19,8 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  BrowserManager::GetInstance()->OnBrowserDidResignActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterBackground();
 
   AdvanceClockToMidnight(/*is_local*/ true);
 
@@ -71,8 +71,8 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
 
   AdvanceClockToMidnight(/*is_local*/ true);
 
@@ -122,8 +122,8 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
 
   AdvanceClockToMidnight(/*is_local*/ true);
 
@@ -152,8 +152,8 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
 
   AdvanceClockToMidnight(/*is_local*/ true);
 
@@ -182,8 +182,8 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
 
   AdvanceClockToMidnight(/*is_local*/ true);
 
@@ -212,8 +212,8 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
 
   AdvanceClockToMidnight(/*is_local*/ true);
 
