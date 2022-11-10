@@ -28,6 +28,7 @@
 #include "brave/components/brave_today/browser/brave_news_p3a.h"
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
+#include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/network.h"
 #include "brave/components/brave_today/browser/suggestions_controller.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
@@ -37,7 +38,6 @@
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/history/core/browser/history_service.h"
@@ -49,6 +49,7 @@
 
 namespace brave_news {
 namespace {
+
 // The favicon size we desire. The favicons are rendered at 24x24 pixels but
 // they look quite a bit nicer if we get a 48x48 pixel icon and downscale it.
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
@@ -64,17 +65,9 @@ bool IsPublisherEnabled(const mojom::Publisher* publisher) {
 
 // static
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  // Only default brave today to be shown for
-  // certain languages on browser startup.
-  const std::string language_code =
-      brave_l10n::GetDefaultISOLanguageCodeString();
-  const bool is_english_language = language_code == "en";
-  const bool is_japanese_language = language_code == "ja";
-  const bool brave_news_enabled_default =
-      is_english_language || is_japanese_language;
   registry->RegisterBooleanPref(prefs::kShouldShowToolbarButton, true);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowToday,
-                                brave_news_enabled_default);
+                                IsUserInDefaultEnabledLocale());
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
   registry->RegisterDictionaryPref(prefs::kBraveTodaySources);
   registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
