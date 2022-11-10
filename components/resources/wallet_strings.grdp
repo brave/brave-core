@@ -210,7 +210,7 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_REMOVE" desc="Account settings modal remove account button">Remove account</message>
   <message name="IDS_BRAVE_WALLET_WATCHLIST_ADD_CUSTOM_ASSET" desc="Visible assets modal add custom asset button">Add custom asset</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_NAME" desc="Visible assets modal token name label">Token name</message>
-  <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ADDRESS" desc="Visible assets modal contract address label">Token contract address</message>
+  <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ADDRESS" desc="Visible assets modal contract address label">Token address</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_SYMBOL" desc="Visible assets modal token symbol label">Token symbol</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS" desc="Visible assets modal decimals label">Decimals of precision</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADD" desc="Visible assets modal add button">Add</message>

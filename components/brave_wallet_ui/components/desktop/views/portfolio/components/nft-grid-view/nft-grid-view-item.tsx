@@ -42,7 +42,7 @@ export const NFTGridViewItem = (props: Props) => {
         <DIVForClickableArea />
         <NftIcon icon={remoteImage} responsive={true} />
       </IconWrapper>
-      <NFTText>{token.asset.name} {'#' + new Amount(token.asset.tokenId).toNumber()}</NFTText>
+      <NFTText>{token.asset.name} {token.asset.tokenId ? '#' + new Amount(token.asset.tokenId).toNumber() : ''}</NFTText>
     </NFTButton>
   )
 }
