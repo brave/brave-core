@@ -306,7 +306,7 @@ provideStrings({
   braveWalletAccountSettingsRemove: 'Remove account',
   braveWalletWatchlistAddCustomAsset: 'Add custom asset',
   braveWalletWatchListTokenName: 'Token name',
-  braveWalletWatchListTokenAddress: 'Token contract address',
+  braveWalletWatchListTokenAddress: 'Token address',
   braveWalletWatchListTokenSymbol: 'Token symbol',
   braveWalletWatchListTokenDecimals: 'Decimals of percision',
   braveWalletWatchListAdd: 'Add',

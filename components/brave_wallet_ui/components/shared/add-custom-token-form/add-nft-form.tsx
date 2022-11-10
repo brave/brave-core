@@ -57,7 +57,6 @@ export const AddNftForm = (props: Props) => {
   const [tokenName, setTokenName] = React.useState<string>('')
   const [tokenID, setTokenID] = React.useState<string>('')
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
-  const [coingeckoID, setCoingeckoID] = React.useState<string>('')
   const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<BraveWallet.NetworkInfo>()
 
   // redux
@@ -102,18 +101,12 @@ export const AddNftForm = (props: Props) => {
     onChangeContractAddress(event.target.value)
   }, [onChangeContractAddress])
 
-  const handleCoingeckoIDChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setHasError(false)
-    setCoingeckoID(event.target.value)
-  }, [])
-
   // methods
   const resetInputFields = React.useCallback(() => {
     setTokenName('')
     onChangeContractAddress('')
     setTokenSymbol('')
     setTokenID('')
-    setCoingeckoID('')
   }, [onChangeContractAddress])
 
   const onClickAddCustomToken = React.useCallback(() => {
@@ -129,7 +122,6 @@ export const AddNftForm = (props: Props) => {
         return
       }
       let foundToken = { ...foundTokenInfoByContractAddress }
-      foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
       foundToken.chainId = customAssetsNetwork.chainId
       onAddCustomAsset(foundToken)
     } else {
@@ -144,14 +136,14 @@ export const AddNftForm = (props: Props) => {
         tokenId: tokenID ? new Amount(tokenID).toHex() : '',
         logo: '',
         visible: true,
-        coingeckoId: coingeckoID,
+        coingeckoId: '',
         chainId: customAssetsNetwork.chainId,
         coin: customAssetsNetwork.coin
       }
       onAddCustomAsset(newToken)
     }
     onHideForm()
-  }, [tokenContractAddress, foundTokenInfoByContractAddress, customAssetsNetwork, tokenName, tokenSymbol, tokenID, coingeckoID, onAddCustomAsset, onHideForm])
+  }, [tokenContractAddress, foundTokenInfoByContractAddress, customAssetsNetwork, tokenName, tokenSymbol, tokenID, onAddCustomAsset, onHideForm])
 
   const onHideNetworkDropDown = React.useCallback(() => {
     if (showNetworkDropDown) {
@@ -177,11 +169,11 @@ export const AddNftForm = (props: Props) => {
   const buttonDisabled = React.useMemo((): boolean => {
     return tokenName === '' ||
       tokenSymbol === '' ||
-      tokenID === '' ||
       tokenContractAddress === '' ||
       !customAssetsNetwork ||
       (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
-        !tokenContractAddress.toLowerCase().startsWith('0x'))
+        !tokenContractAddress.toLowerCase().startsWith('0x')) ||
+      (customAssetsNetwork?.coin === BraveWallet.CoinType.ETH && tokenID === '')
   }, [tokenName, tokenSymbol, tokenID, tokenContractAddress, customAssetsNetwork])
 
   // effects
@@ -249,13 +241,6 @@ export const AddNftForm = (props: Props) => {
             />
           </FormColumn>
         }
-        <FormColumn>
-          <InputLabel>{getLocale('braveWalletWatchListCoingeckoId')}</InputLabel>
-          <Input
-            value={coingeckoID}
-            onChange={handleCoingeckoIDChanged}
-          />
-        </FormColumn>
       </FormRow>
       <>
         {showTokenIDRequired &&
