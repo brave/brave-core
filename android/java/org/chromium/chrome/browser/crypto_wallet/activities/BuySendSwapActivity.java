@@ -1439,7 +1439,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     token.symbol, getResources().getDisplayMetrics().density, assetText, this, true,
                     (float) 0.5);
         }
-        if (buySend && token.isErc721) {
+        if (buySend && (token.isErc721 || token.isNft)) {
             mFromValueBlock.setVisibility(View.GONE);
         } else {
             mFromValueBlock.setVisibility(View.VISIBLE);
