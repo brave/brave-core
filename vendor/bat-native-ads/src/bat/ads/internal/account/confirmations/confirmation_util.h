@@ -36,6 +36,8 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
 
 bool IsValid(const ConfirmationInfo& confirmation);
 
+void ResetConfirmations();
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_UTIL_H_
