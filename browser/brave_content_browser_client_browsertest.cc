@@ -511,7 +511,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
         "'http://auto_upgradable_to_https.com/image.jpg'. This request was "
         "automatically upgraded to HTTPS*");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
   auto fetch = [](const std::string& resource) {
     return "fetch('" + resource + "').then((response) => { console.log('" +
@@ -528,7 +528,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
         embedded_test_server()->GetURL("example.com", "/logo-referrer.png");
     const std::string kFetchScript = fetch(resource_url.spec());
     ASSERT_FALSE(content::ExecJs(contents, kFetchScript));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
   {
     auto https_server = std::make_unique<net::EmbeddedTestServer>(
@@ -543,7 +543,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     console_observer.SetPattern(resource_url + " OK");
     const std::string kFetchScript = fetch(resource_url);
     ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
@@ -555,7 +555,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     console_observer.SetPattern(resource_url + " OK");
     const std::string kFetchScript = fetch(resource_url);
     ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
 }
 
