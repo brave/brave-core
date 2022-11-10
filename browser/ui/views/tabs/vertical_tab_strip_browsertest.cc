@@ -191,7 +191,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
   brave::ToggleVerticalTabStrip(browser());
   browser_non_client_frame_view()->Layout();
 
-  // TabStripRegionView's mih height shouldn't affect that of browser window.
+  // TabStripRegionView's min height shouldn't affect that of browser window.
   const auto min_size = browser_view()->GetMinimumSize();
   auto* layout = browser_view()->tab_strip_region_view()->SetLayoutManager(
       std::make_unique<TallLayoutManager>());
