@@ -47,8 +47,7 @@
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -56,6 +55,11 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_IPFS)
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+#endif
 
 using api_request_helper::APIRequestHelper;
 using decentralized_dns::EnsOffchainResolveMethod;
@@ -1996,8 +2000,12 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
   // IPFS and HTTPS URIs require an additional request to fetch the metadata.
   std::string metadata_json;
   std::string scheme = url.scheme();
+#if BUILDFLAG(ENABLE_IPFS)
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
       scheme != ipfs::kIPFSScheme) {
+#else
+  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme) {
+#endif
     std::move(callback).Run(
         "", mojom::ProviderError::kMethodNotSupported,
         l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
@@ -2020,6 +2028,7 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
     return;
   }
 
+#if BUILDFLAG(ENABLE_IPFS)
   if (scheme == ipfs::kIPFSScheme &&
       !ipfs::TranslateIPFSURI(url, &url, ipfs::GetDefaultIPFSGateway(prefs_),
                               false)) {
@@ -2027,6 +2036,7 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
+#endif
 
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetTokenMetadataPayload,
