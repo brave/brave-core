@@ -40,6 +40,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.ProviderErrorUnion;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxService;
@@ -435,12 +436,24 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             return;
         }
         txService.approveTransaction(mCoinType, mTxInfo.id, (success, error, errorMessage) -> {
-            assert success : "tx is not approved";
             if (!success) {
-                // error.getProviderError() seems to be cause an assertion crash if
-                // there is no error
+                int providerError = -1;
+                switch (error.which()) {
+                    case ProviderErrorUnion.Tag.ProviderError:
+                        providerError = error.getProviderError();
+                        break;
+                    case ProviderErrorUnion.Tag.SolanaProviderError:
+                        providerError = error.getSolanaProviderError();
+                        break;
+                    case ProviderErrorUnion.Tag.FilecoinProviderError:
+                        providerError = error.getFilecoinProviderError();
+                        break;
+                    default:
+                        assert false : "unknown error " + errorMessage;
+                }
+                assert success : "tx is not approved error: " + providerError + ", " + errorMessage;
                 Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
-                        "approveTransaction", error.getProviderError(), errorMessage);
+                        "approveTransaction", providerError, errorMessage);
                 return;
             }
             mApproved = true;
