@@ -295,6 +295,8 @@ void Account::OnPrefDidChange(const std::string& path) {
     MaybeGetIssuers();
 
     MaybeResetConfirmations();
+  } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
+    MaybeResetConfirmations();
   }
 }
 
