@@ -320,7 +320,7 @@ public class PlaylistMimeTypeDetector {
 }
 
 class PlaylistWebLoader: UIView {
-  fileprivate static var pageLoadTimeout = 10.0
+  fileprivate static var pageLoadTimeout = 300.0
   private var pendingHTTPUpgrades = [String: URLRequest]()
   private var pendingRequests = [String: URLRequest]()
 
@@ -340,20 +340,13 @@ class PlaylistWebLoader: UIView {
   private weak var certStore: CertStore?
   private var handler: ((PlaylistInfo?) -> Void)?
 
-  init(handler: @escaping (PlaylistInfo?) -> Void) {
+  init() {
     super.init(frame: .zero)
     
-    self.handler = { [weak self] in
-      // Handler cannot be called more than once!
-      self?.handler = nil
-      handler($0)
-    }
-
     guard let webView = tab.webView else {
-      handler(nil)
       return
     }
-
+    
     self.addSubview(webView)
     webView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -368,9 +361,16 @@ class PlaylistWebLoader: UIView {
     self.removeFromSuperview()
   }
 
-  func load(url: URL) {
+  func load(url: URL, handler: @escaping (PlaylistInfo?) -> Void) {
+    self.handler = { [weak self] in
+      // Handler cannot be called more than once!
+      self?.handler = nil
+      handler($0)
+    }
+    
     guard let webView = tab.webView,
           let browserViewController = self.currentScene?.browserViewController else {
+      self.handler?(nil)
       return
     }
     
@@ -392,7 +392,7 @@ class PlaylistWebLoader: UIView {
     tab.replaceContentScript(PlaylistWebLoaderContentHelper(self),
                              name: PlaylistWebLoaderContentHelper.scriptName,
                              forTab: tab)
-    
+
     webView.frame = superview?.bounds ?? self.bounds
     webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 60.0))
   }
@@ -434,57 +434,44 @@ class PlaylistWebLoader: UIView {
     static let userScript: WKUserScript? = nil
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-      defer { replyHandler(nil, nil) }
+      replyHandler(nil, nil)
+      
+      let cancelRequest = {
+        self.timeout?.cancel()
+        self.timeout = nil
+        self.webLoader?.handler?(nil)
+        self.webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
+        self.webLoader = nil
+      }
 
       guard let item = PlaylistInfo.from(message: message),
         item.detected
       else {
-        timeout?.cancel()
-        timeout = nil
-        webLoader?.handler?(nil)
-        webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
-        webLoader = nil
+        cancelRequest()
         return
       }
 
       // For now, we ignore base64 video mime-types loaded via the `data:` scheme.
       if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
-        timeout?.cancel()
-        timeout = nil
-        webLoader?.handler?(nil)
-        webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
-        webLoader = nil
+        cancelRequest()
         return
       }
-
-      // We have to create an AVURLAsset here to determine if the item is playable
-      // because otherwise it will add an invalid item to playlist that can't be played.
-      // IE: WebM videos aren't supported so can't be played.
-      // Therefore we shouldn't prompt the user to add to playlist.
-      if let url = URL(string: item.src), !AVURLAsset(url: url).isPlayable {
-        timeout?.cancel()
-        timeout = nil
-        webLoader?.handler?(nil)
-        webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
-        webLoader = nil
-        return
-      }
-
-      if !playlistItems.contains(item.src) {
-        playlistItems.insert(item.src)
-
-        timeout?.cancel()
-        timeout = nil
-        webLoader?.handler?(item)
-        webLoader = nil
-      }
-
-      // This line MAY cause problems.. because some websites have a loading delay for the source of the media item
-      // If the second we receive the src, we reload the page by doing the below HTML,
-      // It may not have received all info necessary to play the item such as MetadataInfo
-      // For now it works 100% of the time and it is safe to do it. If we come across such a website, that causes problems,
-      // we'll need to find a different way of forcing the WebView to STOP loading metadata in the background
+        
       DispatchQueue.main.async {
+        if !self.playlistItems.contains(item.src) {
+          self.playlistItems.insert(item.src)
+          
+          self.timeout?.cancel()
+          self.timeout = nil
+          self.webLoader?.handler?(item)
+          self.webLoader = nil
+        }
+        
+        // This line MAY cause problems.. because some websites have a loading delay for the source of the media item
+        // If the second we receive the src, we reload the page by doing the below HTML,
+        // It may not have received all info necessary to play the item such as MetadataInfo
+        // For now it works 100% of the time and it is safe to do it. If we come across such a website, that causes problems,
+        // we'll need to find a different way of forcing the WebView to STOP loading metadata in the background
         self.webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
         self.webLoader = nil
       }

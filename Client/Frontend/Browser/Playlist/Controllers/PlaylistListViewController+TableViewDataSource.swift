@@ -83,11 +83,12 @@ extension PlaylistListViewController: UITableViewDataSource {
       }
       
       let domain = URL(string: item.pageSrc)?.baseDomain ?? "0s"
-      let rootView = PlaylistCellRedactedView(thumbnail: nil, title: item.name, details: domain, contentSize: view.bounds.size)
       
       cell.do {
         $0.showsReorderControl = false
-        $0.setRootView(rootView, parent: self)
+        $0.setTitle(title: item.name)
+        $0.setDetails(details: domain)
+        $0.setContentSize(parentController: self, size: view.bounds.size)
         
         if let url = URL(string: item.pageSrc) {
           $0.loadThumbnail(for: url)
