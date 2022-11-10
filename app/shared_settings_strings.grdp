@@ -216,9 +216,18 @@
   <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Brave counter-part because it will only be visible if Brave-branded.">
     Help improve Brave's features and performance
   </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
-    Automatically sends usage statistics and crash reports to Brave
-  </message>
+  <if expr="is_fuchsia">
+    <then>
+      <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
+        Automatically sends usage statistics to Brave. You can turn crash reports on or off in your device's settings.
+      </message>
+    </then>
+    <else>
+      <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
+        Automatically sends usage statistics and crash reports to Brave
+      </message>
+    </else>
+  </if>
   <message name="IDS_SETTINGS_LINKDOCTOR_PREF" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
     Show suggestions for similar pages when a page can't be found
   </message>
