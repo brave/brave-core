@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
-index adfb898a59d61e9a6f2b60fee6209f734cf0e038..4b3b3e0a9d980ebe15582de8f5619a891adae697 100644
+index f80b2cfee123a89237b83d5b672e7ca08e24aae5..1362a162f21473d3e372fa35762f57b2947871ad 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
-@@ -4420,6 +4420,7 @@ bool RenderFrameImpl::ShouldUseUserAgentOverride() const {
+@@ -4426,6 +4426,7 @@ bool RenderFrameImpl::ShouldUseUserAgentOverride() const {
    // Temporarily return early and fix properly as part of
    // https://crbug.com/426555.
    if (web_view->MainFrame()->IsWebRemoteFrame())
