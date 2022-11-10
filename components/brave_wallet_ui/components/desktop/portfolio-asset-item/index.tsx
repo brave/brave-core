@@ -162,7 +162,7 @@ export const PortfolioAssetItem = ({
               hideBalances={hideBalances ?? false}
             >
 
-              {!token.isErc721 &&
+              {!(token.isErc721 || token.isNft) &&
                 <>
                   {formattedFiatBalance ? (
                     <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>

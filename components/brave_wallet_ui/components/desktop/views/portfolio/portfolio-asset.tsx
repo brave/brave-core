@@ -338,7 +338,7 @@ export const PortfolioAsset = (props: Props) => {
       .formatAsAsset()
   }, [fullAssetBalances, selectedAsset])
 
-  const isNftAsset = selectedAssetFromParams?.isErc721
+  const isNftAsset = selectedAssetFromParams?.isErc721 || selectedAssetFromParams?.isNft
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
@@ -355,6 +355,7 @@ export const PortfolioAsset = (props: Props) => {
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
     dispatch(WalletPageActions.selectCoinMarket(undefined))
+    dispatch(WalletPageActions.updateNFTMetadata(undefined))
     setfilteredAssetList(userAssetList)
     history.goBack()
   }, [
@@ -542,7 +543,7 @@ export const PortfolioAsset = (props: Props) => {
             hideBalances={hideBalances}
             onClick={onToggleHideBalances}
           />
-          {selectedAsset?.contractAddress && !selectedAsset?.isErc721 &&
+          {selectedAsset?.contractAddress && !selectedAsset?.isErc721 && !selectedAsset.isNft &&
             <MoreButton onClick={onShowMore} />
           }
           {showMore && selectedAsset &&

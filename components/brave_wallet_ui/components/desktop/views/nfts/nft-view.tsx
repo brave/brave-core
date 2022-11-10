@@ -22,18 +22,18 @@ export const NftView = () => {
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState}) => wallet.userVisibleTokensInfo)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
 
-  const fungibleTokens = React.useMemo(() => {
+  const nonFungibleTokens = React.useMemo(() => {
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId) && token.isErc721)
+      return userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId) && (token.isErc721 || token.isNft))
     }
 
-    return userVisibleTokensInfo.filter(token => token.chainId === selectedNetworkFilter.chainId && token.isErc721)
+    return userVisibleTokensInfo.filter(token => token.chainId === selectedNetworkFilter.chainId && (token.isErc721 || token.isNft))
   }, [userVisibleTokensInfo, selectedNetworkFilter])
 
   return (
     <Nfts
       networks={networkList}
-      nftList={fungibleTokens}
+      nftList={nonFungibleTokens}
     />
   )
 }
