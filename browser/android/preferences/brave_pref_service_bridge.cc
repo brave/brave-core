@@ -16,6 +16,7 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
@@ -96,6 +97,12 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(JNIEnv* env,
 void JNI_BravePrefServiceBridge_SetDeAmpEnabled(JNIEnv* env, jboolean enabled) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(de_amp::kDeAmpPrefEnabled,
                                                enabled);
+}
+
+void JNI_BravePrefServiceBridge_SetDebounceEnabled(JNIEnv* env,
+                                                   jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      debounce::prefs::kDebounceEnabled, enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,

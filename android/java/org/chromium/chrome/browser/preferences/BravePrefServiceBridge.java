@@ -43,6 +43,13 @@ public class BravePrefServiceBridge {
     }
 
     /**
+     * @param whether Debounce should be enabled.
+     */
+    public void setDebounceEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setDebounceEnabled(enabled);
+    }
+
+    /**
      * @param whether the IPFS gateway should be enabled.
      */
     public void setIpfsGatewayEnabled(boolean enabled) {
@@ -303,6 +310,7 @@ public class BravePrefServiceBridge {
 
         void setHTTPSEEnabled(boolean enabled);
         void setDeAmpEnabled(boolean enabled);
+        void setDebounceEnabled(boolean enabled);
         void setIpfsGatewayEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
 
