@@ -20,6 +20,7 @@ include_rules = [
   "+brave/components/brave_webtorrent/grit",
   "+brave/components/constants",
   "+brave/components/content_settings/core",
+  "+brave/components/debounce",
   "+brave/components/decentralized_dns",
   "+brave/components/ipfs",
   "+brave/components/l10n/common",

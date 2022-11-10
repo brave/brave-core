@@ -11,6 +11,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/debounce/common/features.h"
 #include "third_party/blink/public/common/features.h"
 
 // clang-format off
@@ -22,7 +23,8 @@
     &brave_wallet::features::kNativeBraveWalletFeature,      \
     &brave_wallet::features::kBraveWalletSolanaFeature,      \
     &preferences::features::kBraveBackgroundVideoPlayback,   \
-    &safe_browsing::features::kBraveAndroidSafeBrowsing
+    &safe_browsing::features::kBraveAndroidSafeBrowsing,     \
+    &debounce::features::kBraveDebounce
 // clang-format on
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"

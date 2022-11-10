@@ -16,6 +16,7 @@
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -181,6 +182,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
   // De-AMP feature
   (*s_brave_allowlist)[de_amp::kDeAmpPrefEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // Debounce feature
+  (*s_brave_allowlist)[debounce::prefs::kDebounceEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // new tab prefs
   (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =

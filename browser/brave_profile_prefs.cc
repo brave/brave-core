@@ -33,6 +33,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -397,6 +398,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
   de_amp::RegisterProfilePrefs(registry);
+  debounce::DebounceService::RegisterProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefs(registry);

@@ -26,6 +26,7 @@
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
+#include "brave/components/debounce/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
@@ -123,6 +124,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isDeAmpFeatureEnabled",
       base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+  html_source->AddBoolean(
+      "isDebounceFeatureEnabled",
+      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
 
