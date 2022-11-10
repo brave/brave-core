@@ -10,7 +10,7 @@
 #include <tuple>
 #include <vector>
 
-#include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
+#include "brave/components/brave_federated/client/linear_algebra_util/linear_algebra_util.h"
 
 namespace brave_federated {
 

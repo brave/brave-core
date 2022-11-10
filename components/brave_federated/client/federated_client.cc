@@ -10,16 +10,21 @@
 #include <sstream>
 #include <tuple>
 
+#include "base/check.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
 #include "brave/components/brave_federated/client/model.h"
-#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
+#include "brave/components/brave_federated/client/synthetic_dataset/synthetic_dataset.h"
 
 #include "brave/third_party/flower/src/cc/flwr/include/client_runner.h"
 #include "brave/third_party/flower/src/cc/flwr/include/typing.h"
+
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace brave_federated {
 
@@ -30,10 +35,16 @@ constexpr int kGrpcMaxMessageLength = 536870912;
 
 }
 
-FederatedClient::FederatedClient(const std::string& task_name, Model* model)
-    : task_name_(task_name), model_(model) {
-      DCHECK(model_);
-    }
+FederatedClient::FederatedClient(
+    const std::string& task_name,
+    Model* model,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : task_name_(task_name),
+      model_(model),
+      url_loader_factory_(url_loader_factory) {
+  DCHECK(model_);
+  DCHECK(url_loader_factory_);
+}
 
 FederatedClient::~FederatedClient() {
   Stop();
@@ -114,7 +125,7 @@ void FederatedClient::SetParameters(flwr::Parameters parameters) {
 
 bool FederatedClient::IsCommunicating() {
     return is_communicating_;
-} 
+}
 
 flwr::PropertiesRes FederatedClient::GetProperties(flwr::PropertiesIns instructions) {
   flwr::PropertiesRes properties;

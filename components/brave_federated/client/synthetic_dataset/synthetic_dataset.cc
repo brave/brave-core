@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
+#include "brave/components/brave_federated/client/synthetic_dataset/synthetic_dataset.h"
 
 #include <algorithm>
 #include <cmath>
@@ -216,10 +216,10 @@ std::vector<std::vector<float>> SyntheticDataset::GetDataPoints() {
 }
 
 SyntheticDataset SyntheticDataset::SeparateTestData(int num_training) {
-  std::vector<std::vector<float>> split_lo(
-      data_points_.begin(), data_points_.begin() + num_training);
-  std::vector<std::vector<float>> split_hi(
-      data_points_.begin() + num_training, data_points_.end());
+  std::vector<std::vector<float>> split_lo(data_points_.begin(),
+                                           data_points_.begin() + num_training);
+  std::vector<std::vector<float>> split_hi(data_points_.begin() + num_training,
+                                           data_points_.end());
 
   data_points_ = split_lo;
   return SyntheticDataset(split_hi);

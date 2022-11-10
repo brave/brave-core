@@ -11,8 +11,17 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_federated/client/linear_algebra_util/linear_algebra_util.h"
 #include "brave/third_party/flower/src/cc/flwr/include/client.h"
-#include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
+#include "memory/scoped_refptr.h"
+
+namespace network {
+
+class SharedURLLoaderFactory;
+class SimpleURLLoader;
+struct ResourceRequest;
+
+}  // namespace network
 
 namespace brave_federated {
 
@@ -20,7 +29,10 @@ class Model;
 
 class FederatedClient final : public flwr::Client {
  public:
-  FederatedClient(const std::string& task_name, Model* model);
+  FederatedClient(
+      const std::string& task_name,
+      Model* model,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~FederatedClient();
 
   Model* GetModel();
@@ -39,6 +51,10 @@ class FederatedClient final : public flwr::Client {
   flwr::FitRes Fit(flwr::FitIns instructions) override;
 
  private:
+  scoped_refptr<network::SharedURLLoaderFactory>
+      url_loader_factory_;  // NOT OWNED
+  std::unique_ptr<network::SimpleURLLoader> url_loader_;
+
   bool is_communicating_ = false;
   std::string client_id_;
   std::string task_name_;

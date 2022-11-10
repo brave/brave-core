@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_SYNTHETIC_DATASET_SYNTHETIC_DATASET_H_
-#define BRAVE_COMPONENTS_BRAVE_FEDERATED_SYNTHETIC_DATASET_SYNTHETIC_DATASET_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_CLIENT_SYNTHETIC_DATASET_SYNTHETIC_DATASET_H_
+#define BRAVE_COMPONENTS_BRAVE_FEDERATED_CLIENT_SYNTHETIC_DATASET_SYNTHETIC_DATASET_H_
 
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
+#include "brave/components/brave_federated/client/linear_algebra_util/linear_algebra_util.h"
 
 namespace brave_federated {
 
@@ -41,4 +41,4 @@ class SyntheticDataset {
 
 }  // namespace brave_federated
 
-#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_SYNTHETIC_DATASET_SYNTHETIC_DATASET_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_CLIENT_SYNTHETIC_DATASET_SYNTHETIC_DATASET_H_
