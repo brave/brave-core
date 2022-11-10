@@ -5,7 +5,7 @@
 
 import { assert } from 'chrome://resources/js/assert.js'
 import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   TrezorCommand,
@@ -95,7 +95,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return this.getAccountsFromDevice(paths, addZeroPath)
   }
 
-  signTransaction = async (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): Promise<SignHardwareOperationResult> => {
+  signTransaction = async (path: string, txInfo: SerializableTransactionInfo, chainId: string): Promise<SignHardwareOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
@@ -197,7 +197,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return ''
   }
 
-  private prepareTransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+  private prepareTransactionPayload = (path: string, txInfo: SerializableTransactionInfo, chainId: string): SignTransactionCommandPayload => {
     const isEIP1559Transaction = txInfo.txDataUnion.ethTxData1559?.maxPriorityFeePerGas !== '' && txInfo.txDataUnion.ethTxData1559?.maxFeePerGas !== ''
     if (isEIP1559Transaction) {
       return this.createEIP1559TransactionPayload(path, txInfo, chainId)
@@ -205,7 +205,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return this.createLegacyTransactionPayload(path, txInfo, chainId)
   }
 
-  private createEIP1559TransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+  private createEIP1559TransactionPayload = (path: string, txInfo: SerializableTransactionInfo, chainId: string): SignTransactionCommandPayload => {
     assert(txInfo.txDataUnion.ethTxData1559)
     return {
       path: path,
@@ -222,7 +222,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     }
   }
 
-  private createLegacyTransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+  private createLegacyTransactionPayload = (path: string, txInfo: SerializableTransactionInfo, chainId: string): SignTransactionCommandPayload => {
     assert(txInfo.txDataUnion.ethTxData1559)
     return {
       path: path,

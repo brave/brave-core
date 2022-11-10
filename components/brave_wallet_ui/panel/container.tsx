@@ -52,7 +52,8 @@ import {
   PanelTypes,
   WalletAccountType,
   BuySendSwapViewTypes,
-  ToOrFromType
+  ToOrFromType,
+  SerializableTransactionInfo
 } from '../constants/types'
 
 import { AppsList } from '../options/apps-list-options'
@@ -267,12 +268,12 @@ function Container () {
     }
   }
 
-  const viewTransactionDetail = React.useCallback((transaction: BraveWallet.TransactionInfo) => {
+  const viewTransactionDetail = React.useCallback((transaction: SerializableTransactionInfo) => {
     dispatch(WalletPanelActions.setSelectedTransaction(transaction))
     dispatch(WalletPanelActions.navigateTo('transactionDetails'))
   }, [])
 
-  const viewTransactionStatus = React.useCallback((transaction: BraveWallet.TransactionInfo) => {
+  const viewTransactionStatus = React.useCallback((transaction: SerializableTransactionInfo) => {
     dispatch(WalletPanelActions.setSelectedTransaction(transaction))
     dispatch(WalletPanelActions.navigateTo('transactionStatus'))
   }, [])
@@ -339,15 +340,15 @@ function Container () {
     })
   }
 
-  const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onRetryTransaction = (transaction: SerializableTransactionInfo) => {
     dispatch(WalletActions.retryTransaction(transaction))
   }
 
-  const onSpeedupTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onSpeedupTransaction = (transaction: SerializableTransactionInfo) => {
     dispatch(WalletActions.speedupTransaction(transaction))
   }
 
-  const onCancelTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onCancelTransaction = (transaction: SerializableTransactionInfo) => {
     dispatch(WalletActions.cancelTransaction(transaction))
   }
 

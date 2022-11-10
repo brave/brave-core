@@ -40,7 +40,8 @@ import {
   AppsListType,
   BuySendSwapViewTypes,
   WalletState,
-  AccountTransactions
+  AccountTransactions,
+  SerializableTransactionInfo
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { filterAppList } from '../utils/filter-app-list'
@@ -116,9 +117,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5 * 1000) },
-      submittedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
-      confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
+      createdTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 * 1000 },
+      submittedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
+      confirmedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -149,9 +150,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -182,9 +183,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -215,9 +216,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -248,9 +249,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     }
@@ -283,9 +284,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -316,9 +317,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     }
@@ -576,7 +577,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>(transactionList[1][0])
+  const [selectedTransaction, setSelectedTransaction] = React.useState<SerializableTransactionInfo | undefined>(transactionList[1][0])
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     if (view === 'assets') {
@@ -678,7 +679,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will speedup transaction')
   }
 
-  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onSelectTransaction = (transaction: SerializableTransactionInfo) => {
     navigateTo('transactionDetails')
     setSelectedTransaction(transaction)
     console.log(selectedTransaction)

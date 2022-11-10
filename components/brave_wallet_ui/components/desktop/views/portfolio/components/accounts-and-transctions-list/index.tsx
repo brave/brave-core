@@ -8,7 +8,8 @@ import * as React from 'react'
 // Types
 import {
   BraveWallet,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  SerializableTransactionInfo
 } from '../../../../../../constants/types'
 
 // Utils
@@ -51,7 +52,7 @@ export interface Props {
   networkList: BraveWallet.NetworkInfo[]
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
-  selectedAssetTransactions: BraveWallet.TransactionInfo[]
+  selectedAssetTransactions: SerializableTransactionInfo[]
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
 }
 

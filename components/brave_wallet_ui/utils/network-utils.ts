@@ -63,13 +63,20 @@ export const getTokensNetwork = (networks: BraveWallet.NetworkInfo[], token: Bra
   return network[0] ?? emptyNetwork
 }
 
-export const getCoinFromTxDataUnion = (txDataUnion: BraveWallet.TxDataUnion): BraveWallet.CoinType => {
+type TxDataPresence = {
+  ethTxData?: any | undefined
+  ethTxData1559?: any | undefined
+  solanaTxData?: any | undefined
+  filTxData?: any | undefined
+}
+
+export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T): BraveWallet.CoinType => {
   if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
   return BraveWallet.CoinType.ETH
 }
 
-export const getNetworkFromTXDataUnion = (txDataUnion: BraveWallet.TxDataUnion, networks: BraveWallet.NetworkInfo[], selectedNetwork?: BraveWallet.NetworkInfo) => {
+export const getNetworkFromTXDataUnion = <T extends TxDataPresence> (txDataUnion: T, networks: BraveWallet.NetworkInfo[], selectedNetwork?: BraveWallet.NetworkInfo) => {
   const coin = getCoinFromTxDataUnion(txDataUnion)
   return networks.find((network) => network.coin === coin) ?? selectedNetwork
 }

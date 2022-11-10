@@ -23,7 +23,7 @@ import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 import { LedgerEthereumKeyring, LedgerFilecoinKeyring, LedgerSolanaKeyring } from '../hardware/interfaces'
 import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
@@ -58,7 +58,7 @@ export function dialogErrorFromTrezorErrorCode (code: TrezorErrorsCodes | string
 export async function signTrezorTransaction (
   apiProxy: WalletApiProxy,
   path: string,
-  txInfo: BraveWallet.TransactionInfo,
+  txInfo: SerializableTransactionInfo,
   deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring()): Promise<SignHardwareTransactionType> {
   const chainId = await apiProxy.jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
   const nonce = await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(txInfo.id)
@@ -93,7 +93,7 @@ export async function signTrezorTransaction (
 export async function signLedgerEthereumTransaction (
   apiProxy: WalletApiProxy,
   path: string,
-  txInfo: BraveWallet.TransactionInfo,
+  txInfo: SerializableTransactionInfo,
   coin: BraveWallet.CoinType,
   deviceKeyring: LedgerEthereumKeyring = getLedgerEthereumHardwareKeyring()): Promise<SignHardwareOperationResult> {
   const nonce = await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(txInfo.id)
@@ -122,7 +122,7 @@ export async function signLedgerEthereumTransaction (
 
 export async function signLedgerFilecoinTransaction (
   apiProxy: WalletApiProxy,
-  txInfo: BraveWallet.TransactionInfo,
+  txInfo: SerializableTransactionInfo,
   coin: BraveWallet.CoinType,
   deviceKeyring: LedgerFilecoinKeyring = getLedgerFilecoinHardwareKeyring()): Promise<SignHardwareOperationResult> {
   const data = await apiProxy.txService.getTransactionMessageToSign(coin, txInfo.id)

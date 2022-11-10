@@ -7,11 +7,11 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { CodeSnippet, CodeSnippetText, DetailColumn, DetailText, TransactionText } from './style'
 
 export interface Props {
-  transactionInfo: BraveWallet.TransactionInfo
+  transactionInfo: SerializableTransactionInfo
 }
 
 const txKeys = Object.keys(BraveWallet.TransactionType)

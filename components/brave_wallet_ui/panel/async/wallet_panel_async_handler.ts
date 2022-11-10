@@ -13,7 +13,8 @@ import {
   PanelState,
   WalletState,
   HardwareInfo,
-  WalletRoutes
+  WalletRoutes,
+  SerializableTransactionInfo
 } from '../../constants/types'
 import {
   AccountPayloadType,
@@ -192,7 +193,7 @@ handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, p
   await store.dispatch(PanelActions.navigateToMain())
 })
 
-handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
+handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, txInfo: SerializableTransactionInfo) => {
   const found = await findHardwareAccountInfo(txInfo.fromAddress)
   if (!found || !found.hardware) {
     return

@@ -6,7 +6,7 @@
 import { createReducer } from 'redux-act'
 import {
   BraveWallet,
-  PanelState, PanelTypes
+  PanelState, PanelTypes, SerializableTransactionInfo
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -178,7 +178,7 @@ export const createPanelReducer = (initialState: PanelState) => {
       suggestedTokenRequest: payload
     }
   })
-  reducer.on(PanelActions.setSelectedTransaction.type, (state: PanelState, payload: BraveWallet.TransactionInfo | undefined): PanelState => {
+  reducer.on(PanelActions.setSelectedTransaction.type, (state: PanelState, payload: SerializableTransactionInfo): PanelState => {
     return {
       ...state,
       selectedTransaction: payload
