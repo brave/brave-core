@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 7ad5b69266db2fc5e54ad9c2c7aa7290b3ae9093..77691ebe40e7c673d837bc232ead4199a82a7c8a 100644
+index 5639b9ffc996ece80ab74a358af5b1d71e5d1183..8ff49f799edbb1e9a51e701ae90288a9c7605cb5 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -88,6 +88,7 @@ if (build_with_internal_optimization_guide) {
@@ -34,7 +34,7 @@ index 7ad5b69266db2fc5e54ad9c2c7aa7290b3ae9093..77691ebe40e7c673d837bc232ead4199
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
-@@ -397,6 +401,7 @@ group("installer_deps") {
+@@ -396,6 +400,7 @@ group("installer_deps") {
      "//components/crash/core/app:chrome_crashpad_handler",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -42,7 +42,7 @@ index 7ad5b69266db2fc5e54ad9c2c7aa7290b3ae9093..77691ebe40e7c673d837bc232ead4199
    if (package_nacl) {
      public_deps += [
        ":strip_nacl_helper",
-@@ -457,6 +462,9 @@ group("installer_deps") {
+@@ -456,6 +461,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -52,7 +52,7 @@ index 7ad5b69266db2fc5e54ad9c2c7aa7290b3ae9093..77691ebe40e7c673d837bc232ead4199
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -624,3 +632,6 @@ linux_package("beta") {
+@@ -623,3 +631,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

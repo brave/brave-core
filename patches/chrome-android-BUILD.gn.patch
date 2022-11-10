@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e63166caf0f39 100644
+index cef15d8e51d19306c0da91e21f46209095a4067a..d6a4e2ae202b8951e1c5611907d1645e7da2057f 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -234,6 +234,7 @@ if (current_toolchain == default_toolchain) {
+@@ -243,6 +243,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -10,7 +10,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -309,6 +310,7 @@ if (current_toolchain == default_toolchain) {
+@@ -318,6 +319,7 @@ if (current_toolchain == default_toolchain) {
        "//third_party/androidx:androidx_gridlayout_gridlayout_java",
        "//third_party/androidx:androidx_preference_preference_java",
      ]
@@ -18,7 +18,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
    }
  
    if (enable_vr) {
-@@ -709,6 +711,7 @@ if (current_toolchain == default_toolchain) {
+@@ -717,6 +719,7 @@ if (current_toolchain == default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,7 +26,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
  
      srcjar_deps = [
        ":autofill_verification_status_generated_enum",
-@@ -735,6 +738,7 @@ if (current_toolchain == default_toolchain) {
+@@ -743,6 +746,7 @@ if (current_toolchain == default_toolchain) {
        "//components/offline_pages/core:offline_page_model_enums_java",
        "//net:effective_connection_type_java",
      ]
@@ -34,7 +34,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
  
      # From java_sources.gni.
      sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -876,6 +880,7 @@ if (current_toolchain == default_toolchain) {
+@@ -884,6 +888,7 @@ if (current_toolchain == default_toolchain) {
          "//chrome/android/features/tab_ui:module_desc_java",
        ]
      }
@@ -42,7 +42,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
    }
  
    action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2091,6 +2096,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2101,6 +2106,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +50,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -2339,6 +2345,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2349,6 +2355,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,7 +58,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2551,6 +2558,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2561,6 +2568,7 @@ if (current_toolchain == default_toolchain) {
        load_library_from_apk = chromium_linker_supported
  
        version_name = chrome_version_name
@@ -66,7 +66,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
      }
    }
  
-@@ -2694,6 +2702,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2704,6 +2712,7 @@ if (current_toolchain == default_toolchain) {
        "//components/payments/content/android:service_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -74,7 +74,7 @@ index 1b993ad424b732b295db7ad53edb615838263139..ce28f748b32f047ced9b1ae9945e6316
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -2871,6 +2880,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2889,6 +2898,7 @@ if (current_toolchain == default_toolchain) {
            deps += [ "//weblayer/browser/java:upstream_java" ]
          }
        }
