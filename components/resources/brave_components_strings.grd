@@ -681,6 +681,9 @@
       <message name="IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR" desc="">Support this creator</message>
       <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_DELAY_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Note: <ph name="BOLD_END">$2</ph>Your tip can take several minutes to process</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_BUTTON" desc="">Connect account</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_TEXT" desc="">Just connect a custodial account so you can start earning BAT and tip creators.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TIP_FAVORITE_CREATORS" desc="">Want to tip your favorite creators?</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one-time tip has been sent.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING" desc="">You’ve set up a pending tip!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>

@@ -86,6 +86,7 @@ export function createHost (): Host {
         return
       }
 
+      chrome.send('getUserVersion')
       chrome.send('getRewardsParameters')
       chrome.send('fetchBalance')
       chrome.send('getReconcileStamp')
@@ -113,6 +114,10 @@ export function createHost (): Host {
 
     publisherBannerUpdated (publisherInfo: PublisherInfo) {
       stateManager.update({ publisherInfo })
+    },
+
+    userVersionUpdated (userVersion: string) {
+      stateManager.update({ userVersion })
     },
 
     rewardsParametersUpdated (rewardsParameters: RewardsParameters) {

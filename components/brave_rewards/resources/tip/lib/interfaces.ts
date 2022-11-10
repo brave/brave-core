@@ -98,6 +98,7 @@ export interface HostState {
   publisherInfo?: PublisherInfo
   balanceInfo?: BalanceInfo
   externalWalletInfo?: ExternalWalletInfo
+  userVersion?: string
   rewardsParameters?: RewardsParameters
   hostError?: HostError
   nextReconcileDate?: Date
