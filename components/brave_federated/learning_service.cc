@@ -10,15 +10,24 @@
 
 #include "brave/components/brave_federated/client/federated_client.h"
 #include "brave/components/brave_federated/client/model.h"
+#include "brave/components/brave_federated/client/synthetic_dataset/synthetic_dataset.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
-#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
 #include "brave/third_party/flower/src/cc/flwr/include/client_runner.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace brave_federated {
 
-LearningService::LearningService(EligibilityService* eligibility_service)
-    : eligibility_service_(eligibility_service) {
+LearningService::LearningService(
+    EligibilityService* eligibility_service,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : url_loader_factory_(url_loader_factory),
+      eligibility_service_(eligibility_service) {
+  DCHECK(url_loader_factory);
+  DCHECK(eligibility_service);
+
   Model* model = new Model(500, 0.01, 32);
 
   FederatedClient* notification_ad_client =
@@ -65,9 +74,9 @@ LearningService::~LearningService() {
 }
 
 void LearningService::StartParticipating() {
-  for (auto it = clients_.begin(); it != clients_.end(); ++it) {
+  for (auto& client : clients_) {
     // TODO(lminto) : Add Probabilistic Participation
-    it->second->Start();
+    client.second->Start();
   }
 }
 
