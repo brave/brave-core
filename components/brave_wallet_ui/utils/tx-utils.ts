@@ -640,6 +640,22 @@ export const getTransactionErc721TokenId = (
   return undefined
 }
 
+/**
+ * Checks if a given address is a known contract address from our token
+ * registry.
+ *
+ * @remarks
+ *
+ * This function must only be used for the following transaction types:
+ *  - ERC20Transfer
+ *  - ERC721TransferFrom
+ *  - ERC721SafeTransferFrom
+ *  - SolanaSPLTokenTransfer
+ *  - SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+ *
+ * @param address - The address to check
+ * @returns false if case no error, true otherwise
+ */
 function isKnownTokenContractAddress (
   address: string,
   fullTokenList: BraveWallet.BlockchainToken[]
@@ -650,30 +666,62 @@ function isKnownTokenContractAddress (
 }
 
 /**
- * Checks if a given address is a known contract address from our token registry.
+ * Checks if a given transaction is sending funds to a known contract address from our token registry.
  *
  * @param fullTokenList - A list of Erc & SPL tokens to check against
- * @param to - The address to check
+ * @param tx - The transaction to check
  * @returns `true` if the to address is a known erc & SPL token contract address, `false` otherwise
 */
 export const isSendingToKnownTokenContractAddress = (
   tx: TransactionInfo,
   fullTokenList: BraveWallet.BlockchainToken[]
 ): boolean => {
-  const { txType } = tx
+  // ERC20Transfer
+  if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
+    const [recipient] = tx.txArgs // [address recipient, uint256 amount]
+    const contractAddressError = isKnownTokenContractAddress(recipient, fullTokenList)
+    return contractAddressError
+  }
 
-  const to = getTransactionToAddress(tx)
-
+  // ERC721TransferFrom
+  // ERC721SafeTransferFrom
   if (
-    to === SwapExchangeProxy ||
-    txType === BraveWallet.TransactionType.ERC20Approve ||
-    txType === BraveWallet.TransactionType.ETHSend ||
-    txType === BraveWallet.TransactionType.Other
+    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
   ) {
+    // The owner of the ERC721 must not be confused with the caller (fromAddress).
+    const [, toAddress] = tx.txArgs // address owner, address to, uint256 tokenId]
+    const contractAddressError = isKnownTokenContractAddress(toAddress, fullTokenList)
+    return contractAddressError
+  }
+
+  // ERC20Approve
+  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
     return false
   }
 
-  return isKnownTokenContractAddress(to, fullTokenList)
+  // Solana SPL Token Transfer
+  if (
+    tx.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+    tx.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+  ) {
+    const contractAddressError = isKnownTokenContractAddress(
+      getTransactionInteractionAddress(tx) ?? '',
+      fullTokenList
+    )
+    return contractAddressError
+  }
+
+  // getTransactionInteractionAddress(tx).toLowerCase() === SwapExchangeProxy:
+  // SolanaDappSignTransaction:
+  // SolanaDappSignAndSendTransaction:
+  // SolanaSwap:
+  // Other && solTxData !== undefined:
+  // ETHSwap:
+  // ETHSend:
+  // SolanaSystemTransfer:
+  // Other:
+  return false
 }
 
 /**
