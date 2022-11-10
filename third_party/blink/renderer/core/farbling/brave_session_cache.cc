@@ -373,7 +373,7 @@ bool BraveSessionCache::AllowFontFamily(
         return true;
       FarblingPRNG prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);
-      return ((prng() % 2) == 0);
+      return ((prng() % 20) == 0);
     }
     default:
       NOTREACHED();
