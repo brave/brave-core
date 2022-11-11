@@ -204,7 +204,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
 
         { "braveNewsIntroTitle", IDS_BRAVE_NEWS_INTRO_TITLE },
         { "braveNewsIntroDescription", IDS_BRAVE_NEWS_INTRO_DESCRIPTION },
-        { "braveNewsIntroDescriptionTwo", IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO },
+        { "braveNewsIntroDescriptionTwo", IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO },  // NOLINT
         { "braveNewsOptInActionLabel", IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL },
         { "braveNewsOptOutActionLabel", IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL },
         { "braveNewsBackToDashboard", IDS_BRAVE_NEWS_BACK_TO_DASHBOARD },
