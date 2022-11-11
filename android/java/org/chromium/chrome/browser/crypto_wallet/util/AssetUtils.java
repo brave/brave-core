@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 
 public class AssetUtils {
     public static String AURORA_SUPPORTED_CONTRACT_ADDRESSES[] = {
@@ -55,5 +56,42 @@ public class AssetUtils {
         }
         return (isEthereumBridgeAddress || isNativeAsset)
                 && chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID);
+    }
+
+    public static String getKeyringForCoinType(int coinType) {
+        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+        switch (coinType) {
+            case CoinType.ETH:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+            case CoinType.SOL:
+                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
+                break;
+            case CoinType.FIL:
+                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
+                break;
+            default:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+        }
+
+        return keyring;
+    }
+
+    public static @CoinType.EnumType int getCoinForKeyring(String keyringId) {
+        int coin = CoinType.ETH; // For default keyring
+        switch (keyringId) {
+            case BraveWalletConstants.SOLANA_KEYRING_ID:
+                coin = CoinType.SOL;
+                break;
+            // Todo(pav): Un-comment once Filecoin is supported
+            // case BraveWalletConstants.FILECOIN_KEYRING_ID:
+            // case BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID:
+            //     coin = CoinType.FIL;
+            //     break;
+            default:
+                // Do nothing
+        }
+        return coin;
     }
 }
