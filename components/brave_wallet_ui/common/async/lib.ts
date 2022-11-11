@@ -31,6 +31,7 @@ import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
+import { walletApi } from '../slices/api.slice'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -754,7 +755,7 @@ export function refreshNetworkInfo () {
     await dispatch(refreshFullNetworkList())
 
     const apiProxy = getAPIProxy()
-    const { jsonRpcService, braveWalletService } = apiProxy
+    const { jsonRpcService } = apiProxy
     const { wallet: { networkList } } = getState()
 
     // Get default network for each coinType
@@ -766,7 +767,7 @@ export function refreshNetworkInfo () {
     dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
 
     // Get current selected networks info
-    const { coin: selectedCoin } = await braveWalletService.getSelectedCoin()
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const chainId = await jsonRpcService.getChainId(selectedCoin)
 
     const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
@@ -778,7 +779,7 @@ export function refreshNetworkInfo () {
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { keyringService, walletHandler, jsonRpcService, braveWalletService } = apiProxy
+    const { keyringService, walletHandler, jsonRpcService } = apiProxy
     const walletInfoBase = await walletHandler.getWalletInfo()
     const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
 
@@ -799,7 +800,7 @@ export function refreshKeyringInfo () {
     }))
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
-    const { coin: selectedCoin } = await braveWalletService.getSelectedCoin()
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
 
     // Get selectedAccountAddress
