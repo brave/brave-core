@@ -27,22 +27,20 @@ class UpholdTransfer {
 
   ~UpholdTransfer();
 
-  void Start(
-      const Transaction& transaction,
-      client::TransactionCallback callback);
+  void Start(const Transaction&, client::TransactionCallback);
 
  private:
-  void OnCreateTransaction(const mojom::Result result,
+  void OnCreateTransaction(mojom::Result,
                            const std::string& id,
-                           client::TransactionCallback callback);
+                           client::TransactionCallback);
 
   void CommitTransaction(
       const std::string& transaction_id,
       client::TransactionCallback callback);
 
-  void OnCommitTransaction(const mojom::Result result,
+  void OnCommitTransaction(mojom::Result,
                            const std::string& transaction_id,
-                           client::TransactionCallback callback);
+                           client::TransactionCallback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;

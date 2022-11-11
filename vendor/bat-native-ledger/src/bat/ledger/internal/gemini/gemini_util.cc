@@ -89,26 +89,17 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
     return nullptr;
   }
 
-  switch (wallet->status) {
-    case mojom::WalletStatus::VERIFIED: {
-      wallet->add_url = GetAddUrl();
-      wallet->withdraw_url = GetWithdrawUrl();
-      break;
-    }
-    case mojom::WalletStatus::CONNECTED:
-    case mojom::WalletStatus::PENDING:
-    case mojom::WalletStatus::NOT_CONNECTED:
-    case mojom::WalletStatus::DISCONNECTED_VERIFIED:
-    case mojom::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
-      wallet->add_url = "";
-      wallet->withdraw_url = "";
-      break;
-    }
-  }
-
   wallet->account_url = GetAccountUrl();
+  wallet->activity_url = "";
+  wallet->add_url = "";
   wallet->login_url = GetLoginUrl(wallet->one_time_string);
-  wallet->activity_url = GetActivityUrl();
+  wallet->withdraw_url = "";
+
+  if (wallet->status == mojom::WalletStatus::kConnected) {
+    wallet->activity_url = GetActivityUrl();
+    wallet->add_url = GetAddUrl();
+    wallet->withdraw_url = GetWithdrawUrl();
+  }
 
   return wallet;
 }

@@ -2,19 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import * as mojom from '../../shared/lib/mojom'
+
 export type ExternalWalletProvider =
   'uphold' |
   'bitflyer' |
   'gemini'
 
-export type ExternalWalletStatus =
-  'pending' |
-  'verified' |
-  'disconnected'
-
 export interface ExternalWallet {
   provider: ExternalWalletProvider
-  status: ExternalWalletStatus
+  status: mojom.WalletStatus
   username: string
   links: {
     account?: string
@@ -66,16 +63,12 @@ export function lookupExternalWalletProviderName (providerKey: string) {
 export function externalWalletFromExtensionData (
   data: any
 ): ExternalWallet | null {
-  function mapStatus (status: number): ExternalWalletStatus | null {
+  function mapStatus (status: number): mojom.WalletStatus | null {
     switch (status) {
-      case 1: // CONNECTED
-      case 2: // VERIFIED
-        return 'verified'
-      case 3: // DISCONNECTED_NOT_VERIFIED
-      case 4: // DISCONNECTED_VERIFIED
-        return 'disconnected'
-      case 5: // PENDING
-        return 'pending'
+      case 2:
+        return mojom.WalletStatus.kConnected
+      case 4:
+        return mojom.WalletStatus.kLoggedOut
     }
     return null
   }

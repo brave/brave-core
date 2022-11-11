@@ -3,15 +3,12 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("interfaces") {
   support_lazy_serialization = true
 
-  sources = [
-    "bat_ledger.mojom",
-  ]
+  sources = [ "bat_ledger.mojom" ]
 
-  public_deps = [
-    "//mojo/public/mojom/base",
-  ]
+  public_deps = [ "//mojo/public/mojom/base" ]
 
   deps = [
-    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces"
+    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:interfaces",
+    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:ledger_types",
   ]
 }

@@ -11,6 +11,7 @@ import { WithThemeVariables } from '../../with_theme_variables'
 import { WalletCard } from '../'
 
 import { localeStrings } from './locale_strings'
+import * as mojom from '../../../../shared/lib/mojom'
 
 const locale = {
   getString (key: string) {
@@ -45,8 +46,8 @@ export function Wallet () {
   const externalWallet: ExternalWallet = {
     provider: 'uphold',
     status: knobs.boolean('Wallet disconnected', false)
-      ? 'disconnected'
-      : 'verified',
+      ? mojom.WalletStatus.kLoggedOut
+      : mojom.WalletStatus.kConnected,
     username: 'brave123',
     links: {}
   }

@@ -13,6 +13,8 @@ import { GrantAvailable } from './grant_available'
 import { PendingPublisherVerified } from './pending_publisher_verified'
 import { PendingTipFailed } from './pending_tip_failed'
 import { ExternalWalletDisconnected } from './external_wallet_disconnected'
+import { UpholdBATNotAllowed } from './uphold_bat_not_allowed'
+import { UpholdInsufficientCapabilities } from './uphold_insufficient_capabilities'
 
 export * from './notification'
 export * from './notification_view'
@@ -37,5 +39,9 @@ export function getNotificationView (
       return PendingTipFailed
     case 'external-wallet-disconnected':
       return ExternalWalletDisconnected
+    case 'uphold-bat-not-allowed':
+      return UpholdBATNotAllowed
+    case 'uphold-insufficient-capabilities':
+      return UpholdInsufficientCapabilities
   }
 }

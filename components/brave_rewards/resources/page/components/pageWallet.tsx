@@ -16,7 +16,6 @@ import { LayoutKind } from '../lib/layout_context'
 import {
   ExternalWallet,
   ExternalWalletProvider,
-  ExternalWalletStatus,
   lookupExternalWalletProviderName
 } from '../../shared/lib/external_wallet'
 
@@ -30,6 +29,8 @@ import { DetailRow as TransactionRow } from '../../ui/components/tableTransactio
 import { ConnectWalletModal } from './connect_wallet_modal'
 import { ManageWalletButton } from './manage_wallet_button'
 import { PendingContributionsModal } from './pending_contributions_modal'
+
+import * as mojom from '../../shared/lib/mojom'
 
 interface State {
   activeTabId: number
@@ -190,29 +191,13 @@ class PageWallet extends React.Component<Props, State> {
     this.handleExternalWalletLink()
   }
 
-  getExternalWalletStatus = (): ExternalWalletStatus | null => {
+  getExternalWalletStatus = (): mojom.WalletStatus | null => {
     const { externalWallet } = this.props.rewardsData
-    if (!externalWallet) {
+    if (!externalWallet || externalWallet.status === mojom.WalletStatus.kNotConnected) {
       return null
     }
 
-    switch (externalWallet.status) {
-      // ledger::mojom::WalletStatus::CONNECTED
-      case 1:
-      // WalletStatus::VERIFIED
-      case 2:
-        return 'verified'
-      // WalletStatus::DISCONNECTED_NOT_VERIFIED
-      case 3:
-      // WalletStatus::DISCONNECTED_VERIFIED
-      case 4:
-        return 'disconnected'
-      // ledger::mojom::WalletStatus::PENDING
-      case 5:
-        return 'pending'
-      default:
-        return null
-    }
+    return externalWallet.status
   }
 
   getExternalWalletProvider = (): ExternalWalletProvider | null => {

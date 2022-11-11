@@ -44,8 +44,6 @@ class RewardsBrowserTestResponse {
 
   void SetAlternativePublisherList(const bool alternative);
 
-  void SetVerifiedWallet(const bool verified);
-
   void SetExternalBalance(const std::string& balance);
 
  private:
@@ -67,7 +65,6 @@ class RewardsBrowserTestResponse {
   bool empty_promotion_key_ = false;
   bool alternative_publisher_list_ = false;
   ledger::mojom::SKUOrderPtr order_;
-  bool verified_wallet_ = false;
   std::string external_balance_ = "0.0";
   std::map<std::string, std::string> publisher_prefixes_;
 };

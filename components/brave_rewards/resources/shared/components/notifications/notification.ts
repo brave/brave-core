@@ -13,7 +13,9 @@ export type NotificationType =
   'grant-available' |
   'pending-publisher-verified' |
   'pending-tip-failed' |
-  'external-wallet-disconnected'
+  'external-wallet-disconnected' |
+  'uphold-bat-not-allowed' |
+  'uphold-insufficient-capabilities'
 
 export interface Notification {
   type: NotificationType
@@ -48,6 +50,16 @@ export interface PendingTipFailedNotification extends Notification {
 
 export interface ExternalWalletDisconnectedNotification extends Notification {
   type: 'external-wallet-disconnected'
+  provider: ExternalWalletProvider
+}
+
+export interface UpholdBATNotAllowedNotification extends Notification {
+  type: 'uphold-bat-not-allowed'
+  provider: ExternalWalletProvider
+}
+
+export interface UpholdInsufficientCapabilitiesNotification extends Notification {
+  type: 'uphold-insufficient-capabilities'
   provider: ExternalWalletProvider
 }
 

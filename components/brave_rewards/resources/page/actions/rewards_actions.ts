@@ -4,6 +4,7 @@
 
 import { action } from 'typesafe-actions'
 import { types } from './rewards_types'
+import * as mojom from '../../shared/lib/mojom'
 
 export const isInitialized = () => action(types.IS_INITIALIZED)
 
@@ -230,22 +231,21 @@ export const onBalance = (status: number, balance: Rewards.Balance) => action(ty
   balance
 })
 
-export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
-
 export const getExternalWalletProviders = () => action(types.GET_EXTERNAL_WALLET_PROVIDERS)
 
-export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
-  result,
-  wallet
+export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
+
+export const onGetExternalWallet = (result: mojom.GetExternalWalletResult) => action(types.ON_GET_EXTERNAL_WALLET, {
+  result
 })
 
-export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
+export const connectExternalWallet = (path: string, query: string) => action(types.CONNECT_EXTERNAL_WALLET, {
   path,
   query
 })
 
-export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => action(types.ON_PROCESS_REWARDS_PAGE_URL, {
-  data
+export const onConnectExternalWallet = (result: mojom.ConnectExternalWalletResult) => action(types.ON_CONNECT_EXTERNAL_WALLET, {
+  result
 })
 
 export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)

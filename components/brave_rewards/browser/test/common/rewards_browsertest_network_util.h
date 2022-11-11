@@ -19,7 +19,9 @@ namespace rewards_browsertest_util {
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request);
 
-std::string GetUpholdUser(const bool wallet_verified);
+std::string GetUpholdCapabilities();
+
+std::string GetUpholdUser();
 
 std::string GetUpholdCard(
     const std::string& balance,

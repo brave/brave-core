@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/endpoints/request_builder.h"
 #include "bat/ledger/internal/endpoints/response_handler.h"
 #include "bat/ledger/internal/endpoints/result_for.h"
+#include "bat/ledger/ledger.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_endpoints.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -32,7 +33,8 @@ struct ResultFor<PostConnect> {
 class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
-  static mojom::Result ToLegacyResult(const Result&);
+  static ConnectExternalWalletResult ToConnectExternalWalletResult(
+      const Result&);
 
   explicit PostConnect(LedgerImpl*);
   ~PostConnect() override;

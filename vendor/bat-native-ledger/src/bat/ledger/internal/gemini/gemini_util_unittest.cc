@@ -186,7 +186,7 @@ TEST_F(GeminiUtilTest, GetWallet) {
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");
   ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
-  ASSERT_EQ(result->status, mojom::WalletStatus::VERIFIED);
+  ASSERT_EQ(result->status, mojom::WalletStatus::kConnected);
 }
 
 TEST_F(GeminiUtilTest, GenerateRandomHexString) {
@@ -210,7 +210,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   wallet->one_time_string = "aaabbbccc";
 
   // Not connected
-  wallet->status = mojom::WalletStatus::NOT_CONNECTED;
+  wallet->status = mojom::WalletStatus::kNotConnected;
   auto result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -231,28 +231,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Connected
-  wallet->status = mojom::WalletStatus::CONNECTED;
-  result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->login_url,
-            base::StrCat(
-                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
-                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
-                 "&scope="
-                 "balances:read,"
-                 "history:read,"
-                 "crypto:send,"
-                 "account:read,"
-                 "payments:create,"
-                 "payments:send,"
-                 "&redirect_uri=rewards://gemini/authorization"
-                 "&state=aaabbbccc"
-                 "&response_type=code"}));
-  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
-
-  // Verified
-  wallet->status = mojom::WalletStatus::VERIFIED;
+  wallet->status = mojom::WalletStatus::kConnected;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                                            "/transfer/deposit"}));
@@ -275,50 +254,8 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
                  "&response_type=code"}));
   ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
-  // Disconnected Non-Verified
-  wallet->status = mojom::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-  result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->login_url,
-            base::StrCat(
-                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
-                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
-                 "&scope="
-                 "balances:read,"
-                 "history:read,"
-                 "crypto:send,"
-                 "account:read,"
-                 "payments:create,"
-                 "payments:send,"
-                 "&redirect_uri=rewards://gemini/authorization"
-                 "&state=aaabbbccc"
-                 "&response_type=code"}));
-  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
-
-  // Disconnected Verified
-  wallet->status = mojom::WalletStatus::DISCONNECTED_VERIFIED;
-  result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->login_url,
-            base::StrCat(
-                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
-                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
-                 "&scope="
-                 "balances:read,"
-                 "history:read,"
-                 "crypto:send,"
-                 "account:read,"
-                 "payments:create,"
-                 "payments:send,"
-                 "&redirect_uri=rewards://gemini/authorization"
-                 "&state=aaabbbccc"
-                 "&response_type=code"}));
-  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
-
-  // Pending
-  wallet->status = mojom::WalletStatus::PENDING;
+  // Logged out
+  wallet->status = mojom::WalletStatus::kLoggedOut;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
