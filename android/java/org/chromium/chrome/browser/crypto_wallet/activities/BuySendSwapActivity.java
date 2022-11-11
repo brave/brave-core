@@ -930,6 +930,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 mCurrentBlockchainToken.contractAddress);
                     }
                 } else if (mSelectedAccount.coin == CoinType.SOL) {
+                    if (mCurrentBlockchainToken.isNft) {
+                        value = "1";
+                    }
                     mSendModel.sendSolanaToken(mCurrentBlockchainToken, mSelectedAccount.address,
                             to, Utils.toDecimalLamport(value, mCurrentBlockchainToken.decimals),
                             (success, txMetaId, errorMessage) -> {
