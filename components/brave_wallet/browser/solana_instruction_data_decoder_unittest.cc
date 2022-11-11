@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -381,6 +382,32 @@ TEST_F(SolanaInstructionDecoderTest, Decode_InitializeMint2) {
        0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0},
       mojom::SolanaTokenInstruction::kInitializeMint2,
       {{"decimals", "9"}, {"mint_authority", kPubkey1}}, true);
+}
+
+TEST_F(SolanaInstructionDecoderTest, DecodeMetadataUri) {
+  auto uri_encoded = base::Base64Decode(
+      "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/"
+      "R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAMgAAABodHRwczovL2JhZmtyZWlmNHd4NTR3anI3c"
+      "GdmdWczd2xhdHIzbmZudHNmd25ndjZldXNlYmJxdWV6cnhlbmo2Y2s0LmlwZnMuZHdlYi5sa"
+      "W5rP2V4dD0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAAOgDAQIAAABlDeYSX9s0rnt0tCP3wqtelERLeTcT+"
+      "pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/"
+      "z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/"
+      "UEDizyp6mLT1tUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==");
+  ASSERT_TRUE(uri_encoded);
+  auto uri = DecodeMetadataUri(*uri_encoded);
+  ASSERT_TRUE(uri);
+  EXPECT_EQ((*uri).spec(),
+            "https://"
+            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+            "dweb.link/?ext=");
+  ASSERT_FALSE(DecodeMetadataUri({}));
 }
 
 }  // namespace brave_wallet::solana_ins_data_decoder

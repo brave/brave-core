@@ -15,6 +15,7 @@
 
 namespace brave_wallet::solana_ins_data_decoder {
 
+absl::optional<GURL> DecodeMetadataUri(const std::vector<uint8_t> data);
 absl::optional<SolanaInstructionDecodedData> Decode(
     const std::vector<uint8_t>& data,
     const std::string& program_id);

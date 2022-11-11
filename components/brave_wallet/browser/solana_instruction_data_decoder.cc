@@ -831,6 +831,43 @@ const std::vector<ParamNameTypeTuple>* DecodeInstructionType(
 
 }  // namespace
 
+// Expects a the bytes of a Borsh encoded Metadata struct (see
+// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Metadata.html)
+// and returns the URI string in of the nested Data struct (see
+// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
+// as a GURL.
+absl::optional<GURL> DecodeMetadataUri(const std::vector<uint8_t> data) {
+  size_t offset = 0;
+  offset = offset + /* Skip first byte for metadata.key */ 1 +
+           /* Skip next 32 bytes for `metadata.update_authority` */ 32 +
+           /* Skip next 32 bytes for `metadata.mint` */ 32;
+
+  // Skip next field, metdata.data.name, a string
+  // whose length is represented by a leading 32 bit integer
+  auto length = DecodeUint32(data, offset);
+  if (!length) {
+    return absl::nullopt;
+  }
+  offset += static_cast<size_t>(*length);
+
+  // Skip next field, `metdata.data.symbol`, a string
+  // whose length is represented by a leading 32 bit integer
+  length = DecodeUint32(data, offset);
+  if (!length) {
+    return absl::nullopt;
+  }
+  offset += static_cast<size_t>(*length);
+
+  // Parse next field, metadata.data.uri, a string
+  length = DecodeUint32(data, offset);
+  if (!length) {
+    return absl::nullopt;
+  }
+  std::string uri =
+      std::string(reinterpret_cast<const char*>(&data[offset]), *length);
+  return GURL(uri);
+}
+
 absl::optional<SolanaInstructionDecodedData> Decode(
     const std::vector<uint8_t>& data,
     const std::string& program_id) {

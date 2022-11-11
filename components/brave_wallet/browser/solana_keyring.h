@@ -39,6 +39,9 @@ class SolanaKeyring : public HDKeyring {
       const std::string& spl_token_mint_address,
       const std::string& wallet_address);
 
+  static absl::optional<std::string> GetAssociatedMetadataAccount(
+      const std::string& nft_account_address);
+
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key) const override;
 };

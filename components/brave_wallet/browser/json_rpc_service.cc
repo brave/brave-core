@@ -31,6 +31,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
@@ -2085,62 +2086,28 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
     return;
   }
 
-  // Obtain JSON from the URL depending on the scheme.
-  // IPFS, HTTPS, and data URIs are supported.
-  // IPFS and HTTPS URIs require an additional request to fetch the metadata.
-  std::string metadata_json;
-  std::string scheme = url.scheme();
-#if BUILDFLAG(ENABLE_IPFS)
-  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
-      scheme != ipfs::kIPFSScheme) {
-#else
-  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme) {
-#endif
-    std::move(callback).Run(
-        "", mojom::ProviderError::kMethodNotSupported,
-        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
-    return;
-  }
-
-  if (scheme == url::kDataScheme) {
-    if (!eth::ParseDataURIAndExtractJSON(url, &metadata_json)) {
-      std::move(callback).Run(
-          "", mojom::ProviderError::kParsingError,
-          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-      return;
-    }
-
-    // Sanitize JSON
-    data_decoder::JsonSanitizer::Sanitize(
-        std::move(metadata_json),
-        base::BindOnce(&JsonRpcService::OnSanitizeTokenMetadata,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-    return;
-  }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  if (scheme == ipfs::kIPFSScheme &&
-      !ipfs::TranslateIPFSURI(url, &url, ipfs::GetDefaultNFTIPFSGateway(prefs_),
-                              false)) {
-    std::move(callback).Run("", mojom::ProviderError::kParsingError,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-    return;
-  }
-#endif
-
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetTokenMetadataPayload,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_->Request("GET", url, "", "", true,
-                               std::move(internal_callback));
+  FetchTokenMetadata(
+      url, mojom::CoinType::ETH,
+      base::BindOnce(&JsonRpcService::CompleteGetTokenMetadataEth,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void JsonRpcService::OnSanitizeTokenMetadata(
-    GetTokenMetadataCallback callback,
+    mojom::CoinType coin,
+    GetTokenMetadataIntermediateCallback callback,
     data_decoder::JsonSanitizer::Result result) {
+  mojom::ProviderErrorUnionPtr error;
   if (result.error) {
+    if (coin == mojom::CoinType::SOL) {
+      error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+          mojom::SolanaProviderError::kParsingError);
+    } else {
+      error = mojom::ProviderErrorUnion::NewProviderError(
+          mojom::ProviderError::kParsingError);
+    }
+
     VLOG(1) << "Data URI JSON validation error:" << *result.error;
-    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+    std::move(callback).Run("", std::move(error),
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
@@ -2150,28 +2117,77 @@ void JsonRpcService::OnSanitizeTokenMetadata(
     metadata_json = result.value.value();
   }
 
-  std::move(callback).Run(metadata_json, mojom::ProviderError::kSuccess, "");
+  if (coin == mojom::CoinType::SOL) {
+    error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+        mojom::SolanaProviderError::kSuccess);
+  } else {
+    error = mojom::ProviderErrorUnion::NewProviderError(
+        mojom::ProviderError::kSuccess);
+  }
+  std::move(callback).Run(metadata_json, std::move(error), "");
 }
 
 void JsonRpcService::OnGetTokenMetadataPayload(
-    GetTokenMetadataCallback callback,
+    mojom::CoinType coin,
+    GetTokenMetadataIntermediateCallback callback,
     APIRequestResult api_request_result) {
+  mojom::ProviderErrorUnionPtr error;
   if (!api_request_result.Is2XXResponseCode()) {
+    if (coin == mojom::CoinType::SOL) {
+      error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+          mojom::SolanaProviderError::kInternalError);
+    } else {
+      error = mojom::ProviderErrorUnion::NewProviderError(
+          mojom::ProviderError::kInternalError);
+    }
     std::move(callback).Run(
-        "", mojom::ProviderError::kInternalError,
+        "", std::move(error),
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   // Invalid JSON becomes an empty string after sanitization
   if (api_request_result.body().empty()) {
-    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+    if (coin == mojom::CoinType::SOL) {
+      error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+          mojom::SolanaProviderError::kParsingError);
+    } else {
+      error = mojom::ProviderErrorUnion::NewProviderError(
+          mojom::ProviderError::kParsingError);
+    }
+    std::move(callback).Run("", std::move(error),
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  std::move(callback).Run(api_request_result.body(),
-                          mojom::ProviderError::kSuccess, "");
+  if (coin == mojom::CoinType::SOL) {
+    error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+        mojom::SolanaProviderError::kSuccess);
+  } else {
+    error = mojom::ProviderErrorUnion::NewProviderError(
+        mojom::ProviderError::kSuccess);
+  }
+
+  std::move(callback).Run(api_request_result.body(), std::move(error), "");
+}
+
+void JsonRpcService::CompleteGetTokenMetadataEth(
+    GetTokenMetadataCallback callback,
+    const std::string& response,
+    mojom::ProviderErrorUnionPtr error,
+    const std::string& error_message) {
+  DCHECK(error && error->is_provider_error());
+  std::move(callback).Run(response, error->get_provider_error(), error_message);
+}
+
+void JsonRpcService::CompleteGetTokenMetadataSol(
+    GetMetaplexMetadataCallback callback,
+    const std::string& response,
+    mojom::ProviderErrorUnionPtr error,
+    const std::string& error_message) {
+  DCHECK(error && error->is_solana_provider_error());
+  std::move(callback).Run(response, error->get_solana_provider_error(),
+                          error_message);
 }
 
 void JsonRpcService::GetERC1155TokenBalance(
@@ -2527,6 +2543,144 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
   std::move(callback).Run(amount, decimals, ui_amount_string,
                           mojom::SolanaProviderError::kSuccess, "");
 }
+
+void JsonRpcService::GetMetaplexMetadata(const std::string& nft_account_address,
+                                         GetMetaplexMetadataCallback callback) {
+  // Derive metadata PDA for the NFT accounts
+  absl::optional<std::string> associated_metadata_account =
+      SolanaKeyring::GetAssociatedMetadataAccount(nft_account_address);
+  if (!associated_metadata_account) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto account_info_metadata_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaAccountInfoMetaplex,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  // Call getAccountInfo for the metadata PDA
+  auto account_info_response_callback = base::BindOnce(
+      &JsonRpcService::OnGetSolanaAccountInfo, weak_ptr_factory_.GetWeakPtr(),
+      std::move(account_info_metadata_callback));
+  RequestInternal(solana::getAccountInfo(*associated_metadata_account), true,
+                  network_urls_[mojom::CoinType::SOL],
+                  std::move(account_info_response_callback));
+}
+
+void JsonRpcService::OnGetSolanaAccountInfoMetaplex(
+    GetMetaplexMetadataCallback callback,
+    absl::optional<SolanaAccountInfo> account_info,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess || !account_info) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  absl::optional<std::vector<uint8_t>> metadata =
+      base::Base64Decode((*account_info).data);
+  if (!metadata) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  }
+
+  absl::optional<GURL> url =
+      solana_ins_data_decoder::DecodeMetadataUri(*metadata);
+  if (!url) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  }
+
+  FetchTokenMetadata(
+      *url, mojom::CoinType::SOL,
+      base::BindOnce(&JsonRpcService::CompleteGetTokenMetadataSol,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void JsonRpcService::FetchTokenMetadata(
+    GURL url,
+    mojom::CoinType coin,
+    GetTokenMetadataIntermediateCallback callback) {
+  mojom::ProviderErrorUnionPtr error;
+  // Obtain JSON from the URL depending on the scheme.
+  // IPFS, HTTPS, and data URIs are supported.
+  // IPFS and HTTPS URIs require an additional request to fetch the metadata.
+  std::string metadata_json;
+  std::string scheme = url.scheme();
+#if BUILDFLAG(ENABLE_IPFS)
+  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
+      scheme != ipfs::kIPFSScheme) {
+#else
+  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme) {
+#endif
+    if (coin == mojom::CoinType::SOL) {
+      error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+          mojom::SolanaProviderError::kInternalError);
+    } else {
+      error = mojom::ProviderErrorUnion::NewProviderError(
+          mojom::ProviderError::kMethodNotSupported);
+    }
+    std::move(callback).Run(
+        "", std::move(error),
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
+    return;
+  }
+
+  if (scheme == url::kDataScheme) {
+    if (coin == mojom::CoinType::SOL) {
+      error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+          mojom::SolanaProviderError::kParsingError);
+    } else {
+      error = mojom::ProviderErrorUnion::NewProviderError(
+          mojom::ProviderError::kParsingError);
+    }
+
+    if (!eth::ParseDataURIAndExtractJSON(url, &metadata_json)) {
+      std::move(callback).Run(
+          "", std::move(error),
+          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+      return;
+    }
+
+    // Sanitize JSON
+    data_decoder::JsonSanitizer::Sanitize(
+        std::move(metadata_json),
+        base::BindOnce(&JsonRpcService::OnSanitizeTokenMetadata,
+                       weak_ptr_factory_.GetWeakPtr(), coin,
+                       std::move(callback)));
+    return;
+  }
+
+#if BUILDFLAG(ENABLE_IPFS)
+  if (scheme == ipfs::kIPFSScheme &&
+      !ipfs::TranslateIPFSURI(url, &url, ipfs::GetDefaultNFTIPFSGateway(prefs_),
+                              false)) {
+    if (coin == mojom::CoinType::SOL) {
+      error = mojom::ProviderErrorUnion::NewSolanaProviderError(
+          mojom::SolanaProviderError::kParsingError);
+    } else {
+      error = mojom::ProviderErrorUnion::NewProviderError(
+          mojom::ProviderError::kParsingError);
+    }
+    std::move(callback).Run("", std::move(error),
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+#endif
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetTokenMetadataPayload,
+                     weak_ptr_factory_.GetWeakPtr(), coin, std::move(callback));
+  api_request_helper_->Request("GET", url, "", "", true,
+                               std::move(internal_callback));
+}
+
 void JsonRpcService::SendFilecoinTransaction(
     const std::string& signed_tx,
     SendFilecoinTransactionCallback callback) {
