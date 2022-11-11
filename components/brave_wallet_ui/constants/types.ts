@@ -688,6 +688,9 @@ export enum WalletRoutes {
 
   // swap
   Swap = '/swap',
+
+  // send
+  Send = '/send'
 }
 
 export const WalletOrigin = 'chrome://wallet'
@@ -854,3 +857,5 @@ export const P3ASendTransactionTypes = [
   BraveWallet.TransactionType.SolanaSPLTokenTransfer,
   BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 ]
+
+export type SendOptionTypes = 'token' | 'nft'

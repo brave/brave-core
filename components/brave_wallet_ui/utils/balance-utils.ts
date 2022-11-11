@@ -8,6 +8,7 @@ import { BraveWallet, WalletAccountType } from '../constants/types'
 
 // utils
 import { createTokenBalanceRegistryKey } from './account-utils'
+import Amount from './amount'
 
 export const getBalance = (account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
   if (!account || !token) {
@@ -32,4 +33,10 @@ export const getBalance = (account?: WalletAccountType, token?: BraveWallet.Bloc
 
   const registryKey = createTokenBalanceRegistryKey(token)
   return (account.tokenBalanceRegistry || {})[registryKey] || ''
+}
+
+export const formatTokenBalanceWithSymbol = (balance: string, decimals: number, symbol: string, decimalPlace?: number) => {
+  return `${new Amount(balance)
+    .divideByDecimals(decimals)
+    .format(decimalPlace ?? 6, true)} ${symbol}`
 }

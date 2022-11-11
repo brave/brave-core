@@ -12,6 +12,7 @@ import SOLIconUrl from './sol-asset-icon.svg'
 import FILECOINIconUrl from './filecoin-asset-icon.svg'
 import MATICIconUrl from './matic-asset-icon.svg'
 import AVAXIconUrl from './avax-asset-icon.svg'
+import USDCIconUrl from './usdc-asset-icon.svg'
 
 export {
   ALGOIconUrl,
@@ -23,5 +24,6 @@ export {
   FILECOINIconUrl,
   MATICIconUrl,
   SOLIconUrl,
-  ZRXIconUrl
+  ZRXIconUrl,
+  USDCIconUrl
 }

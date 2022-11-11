@@ -51,6 +51,7 @@ import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboa
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
+import { SendScreen } from './screens/send/send-page/send-screen'
 
 const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
 
@@ -163,7 +164,8 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Nfts) ||
-      walletLocation.includes(WalletRoutes.Swap)
+      walletLocation.includes(WalletRoutes.Swap) ||
+      walletLocation.includes(WalletRoutes.Send)
     ) {
       setSessionRoute(walletLocation)
     }
@@ -175,6 +177,7 @@ export const Container = () => {
     if (toobarElement && rootElement) {
       if (
         walletLocation === WalletRoutes.Swap ||
+        walletLocation === WalletRoutes.Send ||
         walletLocation.includes(WalletRoutes.DepositFundsPage) ||
         walletLocation.includes(WalletRoutes.FundWalletPage)
       ) {
@@ -254,6 +257,12 @@ export const Container = () => {
               {!isWalletLocked &&
                 <Route path={WalletRoutes.Swap} exact={true}>
                   <Swap />
+                </Route>
+              }
+
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.Send} exact={true}>
+                  <SendScreen />
                 </Route>
               }
 
