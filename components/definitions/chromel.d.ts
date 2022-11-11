@@ -154,8 +154,6 @@ declare namespace chrome.braveRewards {
 
   const getExternalWalletProviders: (callback: (providers: string[]) => void) => void
 
-  const disconnectWallet: () => {}
-
   const onDisconnectWallet: {
     addListener: (callback: (properties: {result: number, walletType: string}) => void) => void
   }

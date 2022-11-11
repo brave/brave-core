@@ -254,10 +254,6 @@ class PageWallet extends React.Component<Props, State> {
     window.open(externalWallet.accountUrl, '_self')
   }
 
-  onDisconnectClick = () => {
-    this.actions.disconnectWallet()
-  }
-
   getBalanceToken = (key: string) => {
     const {
       monthlyReport,
@@ -554,9 +550,6 @@ class PageWallet extends React.Component<Props, State> {
     switch (action) {
       case 'add-funds':
         this.onFundsAction('add')
-        break
-      case 'disconnect':
-        this.onDisconnectClick()
         break
       case 'reconnect':
         this.handleExternalWalletLink()

@@ -854,9 +854,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
 }
 
 void BraveRewardsNativeWorker::DisconnectWallet(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->DisconnectWallet();
-  }
+  // TODO(zenparsing): Remove disconnect ability from Android UI.
 }
 
 void BraveRewardsNativeWorker::OnDisconnectWallet(

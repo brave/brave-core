@@ -12,7 +12,6 @@ export const localeStrings = {
   walletAddFunds: 'Add Funds',
   walletAutoContribute: 'Auto-Contribute',
   walletDisconnected: 'Logged out',
-  walletDisconnectLink: 'Disconnect from $1',
   walletEstimatedEarnings: 'Estimated Earnings',
   walletLogIntoYourAccount: 'Log in to your $1 account',
   walletMonthlyTips: 'Monthly Tips',

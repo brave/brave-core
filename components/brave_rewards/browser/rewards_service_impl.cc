@@ -2671,17 +2671,6 @@ void RewardsServiceImpl::OnDisconnectWallet(
   }
 }
 
-void RewardsServiceImpl::DisconnectWallet() {
-  if (!Connected()) {
-    return;
-  }
-
-  const std::string wallet_type = GetExternalWalletType();
-  bat_ledger_->DisconnectWallet(
-      wallet_type, base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
-                                  AsWeakPtr(), wallet_type));
-}
-
 void RewardsServiceImpl::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,

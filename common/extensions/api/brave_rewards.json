@@ -1453,12 +1453,6 @@
         ]
       },
       {
-        "name": "disconnectWallet",
-        "type": "function",
-        "description": "Disconnect wallet",
-        "parameters": []
-      },
-      {
         "name": "getAdsAccountStatement",
         "type": "function",
         "description": "Get ads account statement",

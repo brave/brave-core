@@ -41,12 +41,6 @@ export function Settings () {
     externalWalletFromExtensionData(rewardsData.externalWallet))
 
   const handleURL = () => {
-    // Used by Android to disconnect the user's external wallet.
-    if (location.hash === '#disconnect-wallet') {
-      actions.disconnectWallet()
-      return true
-    }
-
     const { pathname } = location
 
     // Used to enable Rewards directly from the Welcome UI.

@@ -338,8 +338,6 @@ class RewardsService : public KeyedService {
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;
 
-  virtual void DisconnectWallet() = 0;
-
   virtual void GetMonthlyReport(
       const uint32_t month,
       const uint32_t year,

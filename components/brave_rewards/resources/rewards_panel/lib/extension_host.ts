@@ -154,22 +154,10 @@ export function createHost (): Host {
         return verifyURL
       case 'view-account':
         return links.account || ''
-      case 'disconnect':
-        return ''
     }
   }
 
   function handleExternalWalletAction (action: ExternalWalletAction) {
-    const { externalWallet } = stateManager.getState()
-
-    if (action === 'disconnect') {
-      if (externalWallet) {
-        chrome.braveRewards.disconnectWallet()
-        stateManager.update({ externalWallet: null })
-      }
-      return
-    }
-
     const url = getExternalWalletActionURL(action)
     if (!url) {
       console.error(new Error(`Action URL does not exist for '${action}`))

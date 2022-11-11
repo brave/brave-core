@@ -493,16 +493,6 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
                      ledger::mojom::GetExternalWalletError> result);
 };
 
-class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.disconnectWallet", UNKNOWN)
-
- protected:
-  ~BraveRewardsDisconnectWalletFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetRewardsEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsEnabled", UNKNOWN)

@@ -1259,21 +1259,6 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   Respond(OneArgument(base::Value(std::move(data))));
 }
 
-BraveRewardsDisconnectWalletFunction::~BraveRewardsDisconnectWalletFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsDisconnectWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(NoArguments());
-  }
-
-  rewards_service->DisconnectWallet();
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsGetRewardsEnabledFunction::
     ~BraveRewardsGetRewardsEnabledFunction() = default;
 

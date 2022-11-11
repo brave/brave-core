@@ -306,8 +306,6 @@ class RewardsServiceImpl : public RewardsService,
                              const std::string& query,
                              ConnectExternalWalletCallback) override;
 
-  void DisconnectWallet() override;
-
   void SetAutoContributeEnabled(bool enabled) override;
 
   void GetMonthlyReport(

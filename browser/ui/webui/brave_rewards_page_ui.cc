@@ -164,8 +164,6 @@ class RewardsDOMHandler
   void ConnectExternalWallet(const base::Value::List& args);
   void OnConnectExternalWallet(brave_rewards::ConnectExternalWalletResult);
 
-  void DisconnectWallet(const base::Value::List& args);
-
   void GetBalanceReport(const base::Value::List& args);
 
   void OnGetBalanceReport(const uint32_t month,
@@ -463,10 +461,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.connectExternalWallet",
       base::BindRepeating(&RewardsDOMHandler::ConnectExternalWallet,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.disconnectWallet",
-      base::BindRepeating(&RewardsDOMHandler::DisconnectWallet,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getBalanceReport",
@@ -1765,14 +1759,6 @@ void RewardsDOMHandler::OnConnectExternalWallet(
 
   CallJavascriptFunction("brave_rewards.onConnectExternalWallet",
                          std::move(data));
-}
-
-void RewardsDOMHandler::DisconnectWallet(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-  AllowJavascript();
-  rewards_service_->DisconnectWallet();
 }
 
 void RewardsDOMHandler::OnDisconnectWallet(

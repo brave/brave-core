@@ -686,7 +686,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletAddFunds", IDS_REWARDS_WALLET_ADD_FUNDS },
         { "walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE },
         { "walletDisconnected", IDS_REWARDS_WALLET_DISCONNECTED },
-        { "walletDisconnectLink", IDS_REWARDS_WALLET_DISCONNECT_LINK },
         { "walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS },
         { "walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT },  // NOLINT
         { "walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS },
