@@ -26,6 +26,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
@@ -95,7 +96,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                 if (mIsUpdate) {
                     if (mIsImported) {
                         mKeyringService.setKeyringImportedAccountName(
-                                Utils.getKeyringForCoinType(mCryptoAccountTypeInfo.getCoinType()),
+                                AssetUtils.getKeyringForCoinType(
+                                        mCryptoAccountTypeInfo.getCoinType()),
                                 mAddress, mAddAccountText.getText().toString(), result -> {
                                     if (result) {
                                         Intent returnIntent = new Intent();
@@ -110,7 +112,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                                 });
                     } else {
                         mKeyringService.setKeyringDerivedAccountName(
-                                Utils.getKeyringForCoinType(mCryptoAccountTypeInfo.getCoinType()),
+                                AssetUtils.getKeyringForCoinType(
+                                        mCryptoAccountTypeInfo.getCoinType()),
                                 mAddress, mAddAccountText.getText().toString(), result -> {
                                     if (result) {
                                         Intent returnIntent = new Intent();

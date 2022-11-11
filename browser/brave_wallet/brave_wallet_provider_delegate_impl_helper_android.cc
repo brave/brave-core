@@ -29,7 +29,9 @@ void ShowWalletOnboarding(content::WebContents*) {
 
 void ShowAccountCreation(content::WebContents* web_contents,
                          const std::string& keyring_id) {
-  NOTIMPLEMENTED();
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveWalletProviderDelegateImplHelper_ShowAccountCreation(
+      env, base::android::ConvertUTF8ToJavaString(env, keyring_id));
 }
 
 void WalletInteractionDetected(content::WebContents* web_contents) {
