@@ -8,10 +8,13 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/browser/urls.h"
@@ -19,10 +22,22 @@
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 namespace {
+
+// In lieue of a component providing a dynamic list, we keep a hard-coded
+// list of matches for enabling Brave News on the NTP and prompting the user
+// to opt-in.
+constexpr auto kEnabledLanguages =
+    base::MakeFixedFlatSet<base::StringPiece>({"en", "ja"});
+// We can add to this list as new locales become available to have Brave News
+// show when it's ready for those users.
+constexpr auto kEnabledLocales =
+    base::MakeFixedFlatSet<base::StringPiece>({"es_ES", "es_MX", "pt_BR"});
+
 bool HasAnyLocale(const base::flat_set<std::string>& locales,
                   const mojom::Publisher* publisher) {
   return base::ranges::any_of(publisher->locales,
@@ -98,4 +113,17 @@ base::flat_set<std::string> GetMinimalLocalesSet(
 
   return result;
 }
+
+bool IsUserInDefaultEnabledLocale() {
+  // Only default brave today to be shown for
+  // certain languages and locales on browser startup.
+  const std::string language_code =
+      brave_l10n::GetDefaultISOLanguageCodeString();
+  return (base::Contains(kEnabledLanguages, language_code) ||
+          base::Contains(
+              kEnabledLocales,
+              base::StrCat({language_code, "_",
+                            brave_l10n::GetDefaultISOCountryCodeString()})));
+}
+
 }  // namespace brave_news

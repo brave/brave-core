@@ -13,26 +13,34 @@ export const Intro = styled(StandardBlock)`
   font-family: Poppins;
   color: white;
   text-align: center;
-  padding: 44px 90px 36px;
+  padding: 44px 82px 36px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 30px;
   align-items: center;
 `
 
 export const Title = styled('h2')`
-  margin: 0;
+  // Negative bottom margin counteracts line-spacing interfering
+  // with container flex gap.
+  margin: 0 0 -5px 0;
   font-weight: 600;
   font-size: 28px;
-  line-height: 38px;
+  line-height: 1.2;
 `
 
 export const Paragraph = styled('p')`
   margin: 0;
+  padding: 0;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
   letter-spacing: 0.16px;
+
+  & + & {
+    margin-top: 10px;
+  }
+
   a {
     color: inherit;
     text-decoration: underline;

@@ -37,6 +37,9 @@ class BraveNewsApi {
 
   constructor () {
     this.controller = getBraveNewsController()
+  }
+
+  update () {
     this.updateChannels()
 
     this.controller.getLocale().then(({ locale }) => {

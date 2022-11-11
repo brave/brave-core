@@ -6,7 +6,7 @@
 import Button from '$web-components/button'
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale } from '$web-common/locale'
+import { getLocale, getLocaleWithTag } from '$web-common/locale'
 import Flex from '../../../Flex'
 
 const TodayGraphic = <svg width="370" height="80" viewBox="0 0 370 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,17 +24,31 @@ const Container = styled(Flex)`
   height: 100%;
 `
 
-const Header = styled.span`
+const Header = styled.h3`
+  padding: 0;
+  margin: 0;
   font-size: 24px;
   font-weight: 500;
-  line-height: 1.66;
+  line-height: 1.2;
   color: var(--text2);
 `
 
-const Subtitle = styled.span`
+const Subtitle = styled.p`
+  padding: 0;
+  margin: 0;
+  max-width: 66ch;
+  text-align: center;
   font-size: 14px;
   font-weight: 500;
   color: var(--text2);
+
+  & + & {
+    margin-top: 12px;
+  }
+
+  a {
+    color: inherit;
+  }
 `
 
 const EnableButton = styled(Button)`
@@ -43,17 +57,30 @@ const EnableButton = styled(Button)`
   margin-bottom: 48px;
 `
 
+const descriptionTwoTextParts = getLocaleWithTag('braveNewsIntroDescriptionTwo')
+
 export default function DisabledPlaceholder (props: { enableBraveNews: () => void }) {
-  return <Container align="center" justify="center" direction="column" gap={12}>
-    {TodayGraphic}
-    <Header>
-      {getLocale('braveNewsDisabledPlaceholderHeader')}
-    </Header>
-    <Subtitle>
-      {getLocale('braveNewsDisabledPlaceholderSubtitle')}
-    </Subtitle>
-    <EnableButton isPrimary onClick={props.enableBraveNews}>
-      {getLocale('braveNewsDisabledPlaceholderEnableButton')}
-    </EnableButton>
-  </Container>
+  return (
+    <Container align="center" justify="center" direction="column" gap={26}>
+      {TodayGraphic}
+      <Header>
+        {getLocale('braveNewsIntroTitle')}
+      </Header>
+      <div>
+        <Subtitle>
+          {getLocale('braveNewsIntroDescription')}
+        </Subtitle>
+        <Subtitle>
+          {descriptionTwoTextParts.beforeTag}
+            <a href={'https://brave.com/privacy/browser/'}>
+              {descriptionTwoTextParts.duringTag}
+            </a>
+          {descriptionTwoTextParts.afterTag}
+        </Subtitle>
+      </div>
+      <EnableButton isPrimary onClick={props.enableBraveNews}>
+        {getLocale('braveNewsOptInActionLabel')}
+      </EnableButton>
+    </Container>
+  )
 }
