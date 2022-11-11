@@ -64,6 +64,13 @@ extension Strings {
       value: "Assets",
       comment: "The title which is displayed above a list of assets/tokens"
     )
+    public static let nftsTitle = NSLocalizedString(
+      "wallet.nftsTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "NFTs",
+      comment: "The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token."
+    )
     public static let transactionsTitle = NSLocalizedString(
       "wallet.transactionsTitle",
       tableName: "BraveWallet",

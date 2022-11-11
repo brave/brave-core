@@ -54,3 +54,49 @@ struct PortfolioAssetView_Previews: PreviewProvider {
   }
 }
 #endif
+
+struct PortfolioNFTAssetView: View {
+  
+  let image: NFTIconView
+  let title: String
+  let symbol: String
+  let quantity: String
+  
+  var body: some View {
+    HStack {
+      image
+      VStack(alignment: .leading) {
+        Text(title)
+          .font(.footnote)
+          .fontWeight(.semibold)
+          .foregroundColor(Color(.bravePrimary))
+        Text(symbol)
+          .font(.caption)
+          .foregroundColor(Color(.braveLabel))
+      }
+      Spacer()
+      Text(quantity)
+        .font(.footnote)
+        .foregroundColor(Color(.braveLabel))
+    }
+    .frame(maxWidth: .infinity)
+    .padding(.vertical, 6)
+    .accessibilityElement()
+    .accessibilityLabel("\(title), \(quantity) \(symbol)")
+  }
+}
+
+#if DEBUG
+struct PortfolioNFTAssetView_Previews: PreviewProvider {
+  static var previews: some View {
+    PortfolioNFTAssetView(
+      image: NFTIconView(token: .previewToken, network: .mockMainnet),
+      title: "Invisible Friends #3965",
+      symbol: "INVSBLE",
+      quantity: "1"
+    )
+    .previewLayout(.sizeThatFits)
+    .previewColorSchemes()
+  }
+}
+#endif
