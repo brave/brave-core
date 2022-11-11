@@ -120,6 +120,26 @@ export const earningsHeader = styled.div`
   opacity: 0.65;
 `
 
+export const hiddenEarnings = styled.div`
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.66);
+  min-height: 47px;
+
+  a {
+    display: inline-block;
+    margin-left: 8px;
+    margin-top: -4px;
+    vertical-align: middle;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+  }
+`
+
 const summaryActionButton = `
   font-weight: 600;
   font-size: 13px;

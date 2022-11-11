@@ -149,13 +149,6 @@ export function RewardsCard (props: Props) {
               {getString('rewardsBrowserNeedsUpdateToSeeAds')}
             </style.needsBrowserUpdateContentBody>
           </style.needsBrowserUpdateView>
-          <style.pendingRewards>
-            <PaymentStatusView
-              earningsLastMonth={props.earningsLastMonth}
-              nextPaymentDate={props.nextPaymentDate}
-              providerPayoutStatus={props.providerPayoutStatus}
-            />
-          </style.pendingRewards>
         </style.balance>
       )
     }
@@ -188,13 +181,16 @@ export function RewardsCard (props: Props) {
               </style.balanceExchangeNote>
           }
         </style.balanceExchange>
-        <style.pendingRewards>
-          <PaymentStatusView
-            earningsLastMonth={props.earningsLastMonth}
-            nextPaymentDate={props.nextPaymentDate}
-            providerPayoutStatus={props.providerPayoutStatus}
-          />
-        </style.pendingRewards>
+        {
+          showPending &&
+            <style.pendingRewards>
+              <PaymentStatusView
+                earningsLastMonth={props.earningsLastMonth}
+                nextPaymentDate={props.nextPaymentDate}
+                providerPayoutStatus={props.providerPayoutStatus}
+              />
+            </style.pendingRewards>
+        }
       </style.balance>
     )
   }
@@ -367,7 +363,19 @@ export function RewardsCard (props: Props) {
                 </style.earningInfo>
               </style.progressItemLabel>
               <style.progressItemAmount>
-                <TokenAmount amount={props.earningsThisMonth} />
+                {
+                  props.externalWallet
+                    ? <TokenAmount
+                        amount={props.earningsThisMonth}
+                        minimumFractionDigits={1}
+                      />
+                    : <style.hiddenEarnings>
+                        -&nbsp;-&nbsp;
+                        <NewTabLink href={urls.rewardsChangesURL}>
+                          {getString('rewardsLearnMore')}
+                        </NewTabLink>
+                      </style.hiddenEarnings>
+                }
               </style.progressItemAmount>
             </style.earning>
         }

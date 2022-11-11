@@ -599,6 +599,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsContribute", IDS_BRAVE_UI_REWARDS_CONTRIBUTE },
         { "rewardsContributeAttention", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION },             // NOLINT
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
+        { "rewardsLearnMore", IDS_REWARDS_LEARN_MORE },
         { "rewardsLogInToSeeBalance", IDS_REWARDS_LOG_IN_TO_SEE_BALANCE },
         { "rewardsPaymentCheckStatus", IDS_REWARDS_PAYMENT_CHECK_STATUS },
         { "rewardsPaymentCompleted", IDS_REWARDS_PAYMENT_COMPLETED },

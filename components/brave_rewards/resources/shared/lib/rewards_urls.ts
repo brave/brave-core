@@ -11,3 +11,4 @@ export const tippingLearnMoreURL = 'https://support.brave.com/hc/en-us/articles/
 export const contactSupportURL = 'https://community.brave.com/'
 export const supportedWalletRegionsURL = 'https://support.brave.com/hc/en-us/articles/6539887971469'
 export const aboutBATURL = 'https://brave.com/rewards'
+export const rewardsChangesURL = 'https://brave.com/rewards-changes'

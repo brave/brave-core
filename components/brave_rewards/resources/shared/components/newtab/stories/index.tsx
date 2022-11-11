@@ -35,7 +35,7 @@ export function Card () {
         <div style={{ width: '284px' }}>
           <RewardsCard
             rewardsEnabled={true}
-            userVersion={'2.5'}
+            userVersion={'1.0'}
             isUnsupportedRegion={false}
             declaredCountry='US'
             adsEnabled={true}

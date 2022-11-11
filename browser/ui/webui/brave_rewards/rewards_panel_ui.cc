@@ -198,6 +198,7 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_PANEL_PENDING_TIP_TITLE_REGISTERED},
     {"platformPublisherTitle", IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE},
     {"refreshStatus", IDS_REWARDS_PANEL_REFRESH_STATUS},
+    {"rewardsLearnMore", IDS_REWARDS_LEARN_MORE},
     {"rewardsLogInToSeeBalance", IDS_REWARDS_LOG_IN_TO_SEE_BALANCE},
     {"rewardsPaymentCheckStatus", IDS_REWARDS_PAYMENT_CHECK_STATUS},
     {"rewardsPaymentCompleted", IDS_REWARDS_PAYMENT_COMPLETED},

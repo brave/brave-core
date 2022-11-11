@@ -22,6 +22,7 @@ export const localeStrings = {
   connectWalletProviderNotAvailable: 'Currently not available in your region',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',
+  rewardsLearnMore: 'Learn more',
   rewardsTokenGrantTitle: 'A token grant is available!',
 
   braveRewards: 'Brave Rewards',

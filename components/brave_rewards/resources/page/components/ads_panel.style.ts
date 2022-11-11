@@ -93,6 +93,23 @@ export const paymentStatus = styled.div`
   }
 `
 
+export const hiddenEarnings = styled.div`
+  white-space: nowrap;
+
+  a {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-top: -3px;
+    color: #4C54D2;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 18px;
+    text-decoration: none;
+  }
+`
+
 export const showHistory = styled.div`
   margin-top: 25px;
   text-align: right;

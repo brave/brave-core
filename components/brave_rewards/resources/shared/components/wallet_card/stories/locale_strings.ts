@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 export const localeStrings = {
+  rewardsLearnMore: 'Learn more',
   rewardsLogInToSeeBalance: '$1Log in to $2$3 to see your balance',
   rewardsPaymentCheckStatus: 'Check status',
   rewardsPaymentCompleted: 'Congrats! Your $1 rewards have arrived!',

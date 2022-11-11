@@ -305,7 +305,33 @@ export function AdsPanel () {
             </button>
           </style.connectAction>
         </style.connect>
+        <style.showHistory>
+          <button onClick={toggleModal}>
+            {getString('openAdsHistory')}
+          </button>
+        </style.showHistory>
       </>
+    )
+  }
+
+  function renderEarnings () {
+    if (!externalWallet) {
+      return (
+        <style.hiddenEarnings>
+          -&nbsp;-
+          <NewTabLink href={urls.rewardsChangesURL}>
+            {getString('rewardsLearnMore')}
+          </NewTabLink>
+        </style.hiddenEarnings>
+      )
+    }
+
+    return (
+      <TokenAmountWithExchange
+        amount={adsData.adsEarningsThisMonth}
+        exchangeRate={data.parameters.rate}
+        exchangeCurrency='USD'
+      />
     )
   }
 
@@ -318,9 +344,14 @@ export function AdsPanel () {
       return renderLimited()
     }
 
-    const providerPayoutStatus = getProviderPayoutStatus(
-      data.parameters.payoutStatus,
-      externalWallet ? externalWallet.provider : null)
+    const providerPayoutStatus = () => {
+      if (!externalWallet) {
+        return 'off'
+      }
+      return getProviderPayoutStatus(
+        data.parameters.payoutStatus,
+        externalWallet.provider)
+    }
 
     return (
       <>
@@ -329,15 +360,11 @@ export function AdsPanel () {
             <PaymentStatusView
               earningsLastMonth={adsData.adsEarningsLastMonth}
               nextPaymentDate={adsData.adsNextPaymentDate}
-              providerPayoutStatus={providerPayoutStatus}
+              providerPayoutStatus={providerPayoutStatus()}
             />
           </style.paymentStatus>
         <PanelItem label={getString('adsCurrentEarnings')}>
-          <TokenAmountWithExchange
-            amount={adsData.adsEarningsThisMonth}
-            exchangeRate={data.parameters.rate}
-            exchangeCurrency='USD'
-          />
+          {renderEarnings()}
         </PanelItem>
         <PanelItem label={getString('adsPaymentDate')}>
           <MonthDay date={new Date(adsData.adsNextPaymentDate)} />

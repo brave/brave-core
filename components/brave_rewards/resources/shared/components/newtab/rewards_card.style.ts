@@ -314,6 +314,24 @@ export const earningTooltip = styled.div`
   line-height: 20px;
 `
 
+export const hiddenEarnings = styled.div`
+  padding-left: 3px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.66);
+
+  a {
+    display: block;
+    margin-top: -7px;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 18px;
+    color: #fff;
+    text-decoration: none;
+  }
+`
+
 export const giving = styled.div`
   flex: 1 1 50%;
 `
