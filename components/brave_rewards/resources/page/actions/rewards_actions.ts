@@ -295,8 +295,6 @@ export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RE
   success
 })
 
-export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
-
 export const getOnboardingStatus = () => action(types.GET_ONBOARDING_STATUS)
 
 export const onOnboardingStatus = (showOnboarding: boolean) => action(types.ON_ONBOARDING_STATUS, {

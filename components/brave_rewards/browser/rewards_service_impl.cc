@@ -2663,14 +2663,6 @@ void RewardsServiceImpl::ConnectExternalWallet(
                                      std::move(callback));
 }
 
-void RewardsServiceImpl::OnDisconnectWallet(
-    const std::string& wallet_type,
-    const ledger::mojom::Result result) {
-  for (auto& observer : observers_) {
-    observer.OnDisconnectWallet(this, result, wallet_type);
-  }
-}
-
 void RewardsServiceImpl::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
@@ -2944,8 +2936,22 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
   std::move(callback).Run(success);
 }
 
-void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
-  OnDisconnectWallet(wallet_type, ledger::mojom::Result::LEDGER_OK);
+void RewardsServiceImpl::ExternalWalletConnected() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletConnected();
+  }
+}
+
+void RewardsServiceImpl::ExternalWalletLoggedOut() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletLoggedOut();
+  }
+}
+
+void RewardsServiceImpl::ExternalWalletReconnected() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletReconnected();
+  }
 }
 
 void RewardsServiceImpl::DeleteLog(ledger::LegacyResultCallback callback) {

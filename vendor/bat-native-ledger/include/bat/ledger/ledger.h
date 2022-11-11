@@ -343,9 +343,6 @@ class LEDGER_EXPORT Ledger {
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) = 0;
 
-  virtual void DisconnectWallet(const std::string& wallet_type,
-                                LegacyResultCallback callback) = 0;
-
   virtual void GetAllPromotions(GetAllPromotionsCallback callback) = 0;
 
   virtual void GetTransactionReport(mojom::ActivityMonth month,

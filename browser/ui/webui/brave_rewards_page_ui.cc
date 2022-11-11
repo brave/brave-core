@@ -238,9 +238,7 @@ class RewardsDOMHandler
       brave_rewards::RewardsService* rewards_service,
       const ledger::mojom::Result result) override;
 
-  void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
-                          const ledger::mojom::Result result,
-                          const std::string& wallet_type) override;
+  void OnExternalWalletLoggedOut() override;
 
   void OnRewardsWalletUpdated() override;
 
@@ -1768,16 +1766,12 @@ void RewardsDOMHandler::OnConnectExternalWallet(
                          std::move(data));
 }
 
-void RewardsDOMHandler::OnDisconnectWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::string& wallet_type) {
-  base::Value::Dict data;
-  data.Set("result", static_cast<int>(result));
-  data.Set("walletType", wallet_type);
+void RewardsDOMHandler::OnExternalWalletLoggedOut() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
 
-  CallJavascriptFunction("brave_rewards.disconnectWallet",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.onExternalWalletLoggedOut");
 }
 
 void RewardsDOMHandler::OnRewardsWalletUpdated() {

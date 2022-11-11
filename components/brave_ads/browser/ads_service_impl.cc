@@ -2268,4 +2268,8 @@ void AdsServiceImpl::OnCompleteReset(const bool success) {
   }
 }
 
+void AdsServiceImpl::OnExternalWalletConnected() {
+  SetBooleanPref(ads::prefs::kShouldMigrateVerifiedRewardsUser, true);
+}
+
 }  // namespace brave_ads

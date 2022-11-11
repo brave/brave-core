@@ -267,9 +267,6 @@ class LedgerImpl : public Ledger {
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) override;
 
-  void DisconnectWallet(const std::string& wallet_type,
-                        LegacyResultCallback callback) override;
-
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
   void GetTransactionReport(mojom::ActivityMonth month,

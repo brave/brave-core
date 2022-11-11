@@ -855,13 +855,6 @@ void LedgerImpl::ConnectExternalWallet(
       });
 }
 
-void LedgerImpl::DisconnectWallet(const std::string& wallet_type,
-                                  LegacyResultCallback callback) {
-  WhenReady([this, wallet_type, callback]() {
-    wallet()->DisconnectWallet(wallet_type, callback);
-  });
-}
-
 void LedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
   WhenReady([this, callback]() { database()->GetAllPromotions(callback); });
 }
@@ -923,15 +916,8 @@ void LedgerImpl::Shutdown(LegacyResultCallback callback) {
   ready_state_ = ReadyState::kShuttingDown;
   ledger_client_->ClearAllNotifications();
 
-  wallet()->DisconnectAllWallets([this, callback](mojom::Result result) {
-    BLOG_IF(1, result != mojom::Result::LEDGER_OK,
-            "Not all wallets were disconnected");
-    auto finish_callback = std::bind(&LedgerImpl::OnAllDone,
-        this,
-        _1,
-        callback);
-    database()->FinishAllInProgressContributions(finish_callback);
-  });
+  database()->FinishAllInProgressContributions(
+      std::bind(&LedgerImpl::OnAllDone, this, _1, callback));
 }
 
 void LedgerImpl::OnAllDone(mojom::Result result,

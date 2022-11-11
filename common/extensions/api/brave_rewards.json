@@ -292,26 +292,10 @@
         ]
       },
       {
-        "name": "onDisconnectWallet",
+        "name": "onExternalWalletLoggedOut",
         "type": "function",
-        "description": "Fired when we disconnect wallet",
-        "parameters": [
-          {
-            "name": "properties",
-            "type": "object",
-            "properties": {
-              "result": {
-                "type": "integer",
-                "description": "result for disconnection"
-              },
-              "walletType": {
-                "type": "string",
-                "description": "wallet that was disconnected"
-              }
-
-            }
-          }
-        ]
+        "description": "Fired when an external wallet is logged out",
+        "parameters": []
       },
       {
         "name": "onUnblindedTokensReady",

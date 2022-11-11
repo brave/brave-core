@@ -305,10 +305,10 @@ export function createHost (): Host {
     apiAdapter.onGrantsUpdated(updateGrants)
 
     // Update the balance when a grant has been processed, when tips have been
-    // processed, or when the user disconnects their wallet.
+    // processed, or when the user's wallet is logged out.
     chrome.braveRewards.onReconcileComplete.addListener(updateBalance)
     chrome.braveRewards.onUnblindedTokensReady.addListener(updateBalance)
-    chrome.braveRewards.onDisconnectWallet.addListener(updateBalance)
+    chrome.braveRewards.onExternalWalletLoggedOut.addListener(updateBalance)
 
     // Update the notification list when notifications are added or removed.
     chrome.rewardsNotifications.onAllNotificationsDeleted.addListener(

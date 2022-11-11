@@ -372,9 +372,16 @@ void BatLedgerClientMojoBridge::ClearAllNotifications() {
   bat_ledger_client_->ClearAllNotifications();
 }
 
-void BatLedgerClientMojoBridge::WalletDisconnected(
-    const std::string& wallet_type) {
-  bat_ledger_client_->WalletDisconnected(wallet_type);
+void BatLedgerClientMojoBridge::ExternalWalletConnected() const {
+  bat_ledger_client_->ExternalWalletConnected();
+}
+
+void BatLedgerClientMojoBridge::ExternalWalletLoggedOut() const {
+  bat_ledger_client_->ExternalWalletLoggedOut();
+}
+
+void BatLedgerClientMojoBridge::ExternalWalletReconnected() const {
+  bat_ledger_client_->ExternalWalletReconnected();
 }
 
 void OnDeleteLog(ledger::client::LegacyResultCallback callback,

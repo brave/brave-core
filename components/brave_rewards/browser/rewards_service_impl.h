@@ -411,9 +411,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRemoveAllPendingContributions(const ledger::mojom::Result result);
 
-  void OnDisconnectWallet(const std::string& wallet_type,
-                          const ledger::mojom::Result result);
-
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
                              const ledger::mojom::Result result);
@@ -545,7 +542,11 @@ class RewardsServiceImpl : public RewardsService,
 
   void ClearAllNotifications() override;
 
-  void WalletDisconnected(const std::string& wallet_type) override;
+  void ExternalWalletConnected() const override;
+
+  void ExternalWalletLoggedOut() const override;
+
+  void ExternalWalletReconnected() const override;
 
   void DeleteLog(ledger::LegacyResultCallback callback) override;
 

@@ -141,8 +141,6 @@ interface BatLedger {
 
   ConnectExternalWallet(string wallet_type, map<string, string> args) => (ledger.mojom.ConnectExternalWalletResult result);
 
-  DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
-
   GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
 
   GetContributionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.ContributionReportInfo> list);
@@ -255,7 +253,11 @@ interface BatLedgerClient {
 
   ClearAllNotifications();
 
-  WalletDisconnected(string wallet_type);
+  ExternalWalletConnected();
+
+  ExternalWalletLoggedOut();
+
+  ExternalWalletReconnected();
 
   DeleteLog() => (ledger.mojom.Result result);
 

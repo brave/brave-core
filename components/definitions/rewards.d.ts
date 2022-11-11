@@ -60,7 +60,6 @@ declare namespace Rewards {
     showOnboarding: boolean | null
     tipsList: Publisher[]
     ui: {
-      disconnectWalletError: boolean
       modalBackup: boolean
       modalConnect: boolean
       modalRedirect: ConnectExternalWalletError

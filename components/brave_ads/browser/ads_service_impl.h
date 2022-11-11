@@ -427,6 +427,7 @@ class AdsServiceImpl : public AdsService,
   // RewardsServiceObserver:
   void OnRewardsWalletUpdated() override;
   void OnCompleteReset(bool success) override;
+  void OnExternalWalletConnected() override;
 
   bool is_bat_ads_initialized_ = false;
   bool did_cleanup_on_first_run_ = false;

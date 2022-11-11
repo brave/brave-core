@@ -60,7 +60,6 @@ class PageWallet extends React.Component<Props, State> {
 
   componentDidMount () {
     this.isBackupUrl()
-    this.isDisconnectUrl()
     this.isVerifyUrl()
     this.actions.getMonthlyReportIds()
     this.actions.getExternalWalletProviders()
@@ -123,12 +122,6 @@ class PageWallet extends React.Component<Props, State> {
   isVerifyUrl = () => {
     if (this.urlHashIs('#verify')) {
       this.toggleVerifyModal()
-    }
-  }
-
-  isDisconnectUrl = () => {
-    if (this.urlHashIs('#disconnect-wallet')) {
-      this.actions.disconnectWallet()
     }
   }
 

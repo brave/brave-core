@@ -289,7 +289,11 @@ void TestLedgerClient::PendingContributionSaved(const mojom::Result result) {}
 
 void TestLedgerClient::ClearAllNotifications() {}
 
-void TestLedgerClient::WalletDisconnected(const std::string& wallet_type) {}
+void TestLedgerClient::ExternalWalletConnected() const {}
+
+void TestLedgerClient::ExternalWalletLoggedOut() const {}
+
+void TestLedgerClient::ExternalWalletReconnected() const {}
 
 void TestLedgerClient::DeleteLog(client::LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);

@@ -201,10 +201,6 @@ class BatLedgerImpl :
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) override;
 
-  void DisconnectWallet(
-    const std::string& wallet_type,
-    DisconnectWalletCallback callback) override;
-
   void GetTransactionReport(const ledger::mojom::ActivityMonth month,
                             const int year,
                             GetTransactionReportCallback callback) override;
@@ -328,10 +324,6 @@ class BatLedgerImpl :
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);
-
-  static void OnDisconnectWallet(
-      CallbackHolder<DisconnectWalletCallback>* holder,
-      ledger::mojom::Result result);
 
   static void OnGetTransactionReport(
       CallbackHolder<GetTransactionReportCallback>* holder,

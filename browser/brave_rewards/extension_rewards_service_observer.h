@@ -63,9 +63,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
       const ledger::mojom::RewardsType type,
       const ledger::mojom::ContributionProcessor processor) override;
 
-  void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
-                          const ledger::mojom::Result result,
-                          const std::string& wallet_type) override;
+  void OnExternalWalletLoggedOut() override;
 
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;

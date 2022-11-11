@@ -205,13 +205,9 @@ function onConnectExternalWallet (result: mojom.ConnectExternalWalletResult) {
   actions.onConnectExternalWallet(result)
 }
 
-function disconnectWallet (properties: {result: number}) {
-  if (properties.result === 0) {
-    actions.getExternalWallet()
-    actions.getBalance()
-    return
-  }
-  actions.disconnectWalletError()
+function onExternalWalletLoggedOut () {
+  actions.getExternalWallet()
+  actions.getBalance()
 }
 
 function unblindedTokensReady () {
@@ -300,7 +296,7 @@ Object.defineProperty(window, 'brave_rewards', {
     reconcileComplete,
     onGetExternalWallet,
     onConnectExternalWallet,
-    disconnectWallet,
+    onExternalWalletLoggedOut,
     unblindedTokensReady,
     monthlyReport,
     reconcileStampReset,
