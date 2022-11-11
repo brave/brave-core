@@ -15,8 +15,8 @@ namespace content_settings {
 void ContentSettingsRegistry::BraveInit() {
   Register(ContentSettingsType::BRAVE_ADS, brave_shields::kAds,
            CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::SYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -26,8 +26,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(ContentSettingsType::BRAVE_TRACKERS, brave_shields::kTrackers,
            CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::SYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -37,8 +37,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
            brave_shields::kHTTPUpgradableResources, CONTENT_SETTING_BLOCK,
-           WebsiteSettingsInfo::SYNCABLE, AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -48,8 +48,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(ContentSettingsType::BRAVE_REFERRERS, brave_shields::kReferrers,
            CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::SYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -60,8 +60,8 @@ void ContentSettingsRegistry::BraveInit() {
   Register(
       ContentSettingsType::BRAVE_COOKIES, brave_shields::kCookies,
       CONTENT_SETTING_DEFAULT, WebsiteSettingsInfo::SYNCABLE,
-      AllowlistedSchemes(kChromeUIScheme, kChromeDevToolsScheme),
-      ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+      /*allowlisted_schemes=*/{kChromeUIScheme, kChromeDevToolsScheme},
+      /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
       WebsiteSettingsInfo::REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -72,8 +72,8 @@ void ContentSettingsRegistry::BraveInit() {
   Register(
       ContentSettingsType::BRAVE_COSMETIC_FILTERING,
       brave_shields::kCosmeticFiltering, CONTENT_SETTING_DEFAULT,
-      WebsiteSettingsInfo::SYNCABLE, AllowlistedSchemes(),
-      ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+      WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},
+      /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
       WebsiteSettingsInfo::REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -83,9 +83,9 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
            brave_shields::kFingerprintingV2, CONTENT_SETTING_ASK,
-           WebsiteSettingsInfo::SYNCABLE, AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
-                         CONTENT_SETTING_ASK),
+           WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -95,8 +95,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(ContentSettingsType::BRAVE_SHIELDS, brave_shields::kBraveShields,
            CONTENT_SETTING_ALLOW, WebsiteSettingsInfo::SYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -106,8 +106,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(ContentSettingsType::BRAVE_SPEEDREADER, "braveSpeedreader",
            CONTENT_SETTING_ALLOW, WebsiteSettingsInfo::SYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -121,9 +121,9 @@ void ContentSettingsRegistry::BraveInit() {
   content_settings_info_.erase(ContentSettingsType::AUTOPLAY);
   website_settings_registry_->UnRegister(ContentSettingsType::AUTOPLAY);
   Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_ALLOW,
-           WebsiteSettingsInfo::UNSYNCABLE, AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
-                         CONTENT_SETTING_ASK),
+           WebsiteSettingsInfo::UNSYNCABLE, /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -134,9 +134,9 @@ void ContentSettingsRegistry::BraveInit() {
   // Register ethereum default value as Ask.
   Register(ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum",
            CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
-                         CONTENT_SETTING_ASK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -147,9 +147,9 @@ void ContentSettingsRegistry::BraveInit() {
   // Register solana default value as Ask.
   Register(ContentSettingsType::BRAVE_SOLANA, "brave_solana",
            CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
-                         CONTENT_SETTING_ASK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -162,8 +162,8 @@ void ContentSettingsRegistry::BraveInit() {
   website_settings_registry_->UnRegister(ContentSettingsType::BACKGROUND_SYNC);
   Register(ContentSettingsType::BACKGROUND_SYNC, "background-sync",
            CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
@@ -175,8 +175,8 @@ void ContentSettingsRegistry::BraveInit() {
   content_settings_info_.erase(ContentSettingsType::SENSORS);
   website_settings_registry_->UnRegister(ContentSettingsType::SENSORS);
   Register(ContentSettingsType::SENSORS, "sensors", CONTENT_SETTING_BLOCK,
-           WebsiteSettingsInfo::UNSYNCABLE, AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           WebsiteSettingsInfo::UNSYNCABLE, /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
