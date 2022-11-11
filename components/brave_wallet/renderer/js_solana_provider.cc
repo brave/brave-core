@@ -937,7 +937,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
 
   v8::Local<v8::Context> isolated_context =
       solana_web3_module_->GetContext(isolate);
-  v8::MaybeLocal<v8::Value> public_key;
+  v8::Local<v8::Value> result;
   {
     v8::Context::Scope isolated_context_scope(isolated_context);
     v8::Local<v8::Value> public_key_module;
@@ -950,15 +950,61 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Value> args[] = {
         v8_value_converter_->ToV8Value(base58_str_value, isolated_context)};
 
-    public_key = public_key_module.As<v8::Object>()->CallAsConstructor(
-        isolated_context, sizeof(args) / sizeof(args[0]), args);
+    v8::MaybeLocal<v8::Value> public_key =
+        public_key_module.As<v8::Object>()->CallAsConstructor(
+            isolated_context, sizeof(args) / sizeof(args[0]), args);
 
     if (public_key.IsEmpty()) {
       return v8::Undefined(isolate);
     }
+    std::unique_ptr<content::V8ValueConverter> v8_value_converter =
+        content::V8ValueConverter::Create();
+    v8_value_converter->SetFunctionAllowed(true);
+    std::unique_ptr<base::Value> value = v8_value_converter->FromV8Value(
+        public_key.ToLocalChecked(), isolated_context);
+    result = v8_value_converter->ToV8Value(*value, context);
+
+    v8::Local<v8::Value> proto =
+        public_key.ToLocalChecked().As<v8::Object>()->GetPrototype();
+    {
+      v8::Local<v8::Array> property_names;
+      if (!proto.As<v8::Object>()
+               ->GetOwnPropertyNames(isolated_context, v8::ALL_PROPERTIES,
+                                     v8::KeyConversionMode::kConvertToString)
+               .ToLocal(&property_names)) {
+        return v8::Undefined(isolate);
+      }
+
+      for (uint32_t i = 0; i < property_names->Length(); ++i) {
+        v8::Local<v8::Value> key =
+            property_names->Get(isolated_context, i).ToLocalChecked();
+        v8::Local<v8::Value> child_v8;
+        v8::MaybeLocal<v8::Value> maybe_child =
+            public_key.ToLocalChecked().As<v8::Object>()->Get(isolated_context,
+                                                              key);
+
+        if (!maybe_child.ToLocal(&child_v8) || !child_v8->IsFunction())
+          continue;
+        v8::Context::Scope context_scope_in(context);
+        v8::MaybeLocal<v8::Object> new_func =
+            child_v8.As<v8::Function>()->NewInstance(context);
+        result.As<v8::Object>()
+            ->CreateDataProperty(context, key.As<v8::String>(),
+                                 new_func.ToLocalChecked())
+            .Check();
+#if 0
+    DCHECK(result.As<v8::Object>()
+               ->Get(context, key).ToLocalChecked()
+               .As<v8::Object>()
+               ->GetCreationContextChecked() == context);
+#endif
+      }
+    }
+
+    DCHECK(result.As<v8::Object>()->GetCreationContextChecked() == context);
   }
 
-  return public_key.ToLocalChecked();
+  return result;
 }
 
 v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
