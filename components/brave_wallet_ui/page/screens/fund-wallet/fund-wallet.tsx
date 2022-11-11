@@ -247,7 +247,7 @@ export const FundWalletScreen = () => {
       selectedAsset &&
       selectedAssetNetwork &&
       accountsForSelectedAssetNetwork.length && // asset is selected & account is available
-      selectedAccount.coin !== selectedAsset.coin // needs to change accounts to one with correct network
+      selectedAccount?.coin !== selectedAsset.coin // needs to change accounts to one with correct network
     ) {
       dispatch(WalletActions.selectAccount(accountsForSelectedAssetNetwork[0]))
     }

@@ -97,8 +97,8 @@ export const Buy = ({
 
   // methods
   const onSubmitBuy = React.useCallback(async (buyOption: BraveWallet.OnRampProvider) => {
-    // Do nothing if selected network is not populated yet
-    if (!selectedNetwork) {
+    // Do nothing if selected network or selected account is not populated yet
+    if (!selectedNetwork || !selectedAccount) {
       return
     }
 

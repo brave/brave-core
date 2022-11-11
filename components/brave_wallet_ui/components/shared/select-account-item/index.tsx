@@ -36,7 +36,7 @@ import {
 } from './style'
 
 export interface Props {
-  account: UserAccountType
+  account?: UserAccountType
   selectedAccount?: UserAccountType
   selectedNetwork?: BraveWallet.NetworkInfo
   onSelectAccount?: () => void
@@ -64,10 +64,13 @@ export function SelectAccountItem ({
     }
   }, [onSelectAccount])
 
-  // memos
+  // memos / computed
+  const accountAddress = account?.address || ''
+  const accountName = account?.name || ''
+
   const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account])
+    return create({ seed: accountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [accountAddress])
 
   const PossibleToolTip = React.useMemo(() => {
     return showTooltips ? Tooltip : ({ children }: React.PropsWithChildren<{
@@ -94,12 +97,12 @@ export function SelectAccountItem ({
           <PossibleToolTip
             text={showSwitchAccountsLink
               ? getLocale('braveWalletClickToSwitch')
-              : account.name
+              : accountName
             }
             isAddress={!showSwitchAccountsLink}
           >
             <Row justifyContent={'flex-start'}>
-              <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
+              <AccountName>{reduceAccountDisplayName(accountName, 22)}</AccountName>
               {showSwitchAccountsLink &&
                 <SwitchAccountIconContainer>
                   <SwitchAccountIcon />
@@ -109,17 +112,17 @@ export function SelectAccountItem ({
           </PossibleToolTip>
 
           {!hideAddress &&
-            <PossibleToolTip text={account.address} isAddress>
+            <PossibleToolTip text={accountAddress} isAddress>
               <AccountAddress>{fullAddress
-                ? account.address
-                : reduceAddress(account.address)
+                ? accountAddress
+                : reduceAddress(accountAddress)
               }</AccountAddress>
             </PossibleToolTip>
           }
 
         </AccountAndAddress>
       </LeftSide>
-      {account.address.toLowerCase() === selectedAccount?.address.toLowerCase() &&
+      {accountAddress.toLowerCase() === selectedAccount?.address.toLowerCase() &&
         <BigCheckMark />
       }
     </StyledWrapper>

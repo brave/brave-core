@@ -438,7 +438,7 @@ function Container () {
     )
   }
 
-  if ((selectedPendingTransaction || signMessageData.length) &&
+  if (selectedAccount && (selectedPendingTransaction || signMessageData.length) &&
     selectedPanel === 'connectHardwareWallet') {
     return (
       <PanelWrapper isLonger={false}>
@@ -796,7 +796,7 @@ function Container () {
             <TransactionsPanel
               onSelectTransaction={viewTransactionDetail}
               selectedNetwork={selectedNetwork}
-              selectedAccountAddress={selectedAccount.address}
+              selectedAccountAddress={selectedAccount?.address}
             />
           </Panel>
         </StyledExtensionWrapper>

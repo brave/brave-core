@@ -221,7 +221,7 @@ export interface WalletState {
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
-  selectedAccount: WalletAccountType
+  selectedAccount?: WalletAccountType
   selectedNetwork: BraveWallet.NetworkInfo | undefined
   accounts: WalletAccountType[]
   transactions: AccountTransactions

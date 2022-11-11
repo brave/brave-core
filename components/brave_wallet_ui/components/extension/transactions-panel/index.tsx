@@ -33,7 +33,7 @@ import {
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
-  selectedAccountAddress: string
+  selectedAccountAddress?: string
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
 
@@ -46,7 +46,7 @@ export const TransactionsPanel = ({
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
 
   // memos / computed
-  const transactionList = transactions?.[selectedAccountAddress] || []
+  const transactionList = selectedAccountAddress && transactions?.[selectedAccountAddress] || []
 
   const sortedNonRejectedTransactionList = React.useMemo(() => {
     return sortTransactionByDate(

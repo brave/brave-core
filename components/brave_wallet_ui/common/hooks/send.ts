@@ -193,7 +193,7 @@ export default function useSend () {
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [selectedAccount, selectedSendAsset, ensOffchainLookupOptions])
+  }, [selectedAccount?.address, selectedSendAsset, ensOffchainLookupOptions])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -214,7 +214,7 @@ export default function useSend () {
     }
 
     // If value is the same as the selectedAccounts Wallet Address
-    if (valueToLowerCase === selectedAccount.address.toLowerCase()) {
+    if (valueToLowerCase === selectedAccount?.address.toLowerCase()) {
       setAddressWarning('')
       setAddressError(getLocale('braveWalletSameAddressError'))
       return
@@ -238,7 +238,7 @@ export default function useSend () {
     // Reset error and warning state back to normal
     setAddressWarning('')
     setAddressError('')
-  }, [selectedSendAsset, selectedAccount.address])
+  }, [selectedSendAsset, selectedAccount?.address])
 
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -312,11 +312,16 @@ export default function useSend () {
       setAddressWarning('')
       setAddressError('')
     })
-  }, [selectedAccount, selectedSendAsset, fullTokenList])
+  }, [selectedAccount?.address, selectedSendAsset, fullTokenList])
 
   const submitSend = React.useCallback(() => {
     if (!selectedSendAsset) {
       console.log('Failed to submit Send transaction: no send asset selected')
+      return
+    }
+
+    if (!selectedAccount) {
+      console.log('Failed to submit Send transaction: no account selected')
       return
     }
 

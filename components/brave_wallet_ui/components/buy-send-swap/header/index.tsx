@@ -48,10 +48,13 @@ export const SwapHeader = ({ onChangeSwapView }: Props) => {
     onChangeSwapView('networks')
   }, [onChangeSwapView])
 
-  // memos
+  // memos / computed
+  const selectedAccountAddress = selectedAccount?.address || ''
+  const selectedAccountName = selectedAccount?.name || ''
+
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount])
+    return create({ seed: selectedAccountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [selectedAccountAddress])
 
   // render
   return (
@@ -68,10 +71,10 @@ export const SwapHeader = ({ onChangeSwapView }: Props) => {
         <AccountCircle onClick={onShowAccounts} orb={orb}>
           <SwitchIcon />
         </AccountCircle>
-        <CopyTooltip text={selectedAccount.address}>
+        <CopyTooltip text={selectedAccountAddress}>
           <AccountAndAddress>
-            <AccountName>{reduceAccountDisplayName(selectedAccount.name, 11)}</AccountName>
-            <AccountAddress>{reduceAddress(selectedAccount.address)}</AccountAddress>
+            <AccountName>{reduceAccountDisplayName(selectedAccountName, 11)}</AccountName>
+            <AccountAddress>{reduceAddress(selectedAccountAddress)}</AccountAddress>
           </AccountAndAddress>
         </CopyTooltip>
       </NameAndIcon>

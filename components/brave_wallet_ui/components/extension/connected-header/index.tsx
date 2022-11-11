@@ -23,7 +23,7 @@ export interface Props {
   onExpand: () => void
   onClickMore: () => void
   onClickSetting: () => void
-  onClickViewOnBlockExplorer: () => void
+  onClickViewOnBlockExplorer?: () => void
   showMore: boolean
 }
 

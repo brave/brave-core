@@ -13,7 +13,7 @@ import { SelectAccountItem } from '../select-account-item/index'
 
 export interface Props {
   accounts: WalletAccountType[]
-  selectedAccount: UserAccountType
+  selectedAccount?: UserAccountType
   onSelectAccount: (account: UserAccountType) => () => void
   showTooltips?: boolean
 }
