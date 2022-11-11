@@ -56,14 +56,9 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                              const gfx::Rect& new_bounds) override;
   void OnWidgetDestroying(views::Widget* widget) override;
 
-  const VerticalTabStripRegionView* vertical_tab_strip_region_view() const {
-    return region_view_.get();
-  }
-  VerticalTabStripRegionView* vertical_tab_strip_region_view() {
-    return region_view_.get();
-  }
-
  private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
+
   VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
                                      views::View* host);
   void UpdateWidgetBounds();
