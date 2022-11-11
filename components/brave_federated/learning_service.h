@@ -10,7 +10,10 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
+#include "brave/components/brave_federated/task/task_runner.h"
+#include "brave/components/brave_federated/task/typing.h"
 
 namespace network {
 
@@ -20,9 +23,10 @@ class SharedURLLoaderFactory;
 
 namespace brave_federated {
 
+class CommunicationAdapter;
 class DataStoreService;
 class EligibilityService;
-class FederatedClient;
+class TaskRunner;
 
 class LearningService : public Observer {
  public:
@@ -34,6 +38,10 @@ class LearningService : public Observer {
   void StartParticipating();
   void StopParticipating();
 
+  void PostTaskResults(TaskResultList results);
+  void HandleTasks(TaskList tasks);
+  void OnPostTaskResults(TaskResultResponse response);
+
   void OnEligibilityChanged(bool is_eligible) override;
 
  private:
@@ -41,7 +49,9 @@ class LearningService : public Observer {
       url_loader_factory_;  // NOT OWNED
   EligibilityService* eligibility_service_;
 
-  std::map<std::string, FederatedClient*> clients_;
+  std::map<std::string, TaskRunner*> task_runners_;
+  CommunicationAdapter* communication_adapter_;
+  bool participating_;
 };
 
 }  // namespace brave_federated
