@@ -26,6 +26,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandBookmarkAllTabs,
     CommandShowVerticalTabs,
     CommandShowTitleBar,
+    CommandUseFloatingVerticalTabStrip,
     CommandLast,
   };
 

@@ -58,4 +58,6 @@ void BraveTabMenuModel::Build() {
   AddCheckItemWithStringId(CommandShowVerticalTabs,
                            IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   AddCheckItemWithStringId(CommandShowTitleBar, IDS_TAB_CXMENU_SHOW_TITLE_BAR);
+  AddCheckItemWithStringId(CommandUseFloatingVerticalTabStrip,
+                           IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS);
 }

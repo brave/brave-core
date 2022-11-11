@@ -65,6 +65,9 @@ class VerticalTabStripRegionView : public views::View {
   void UpdateTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();
+  void OnFloatingModePrefChanged();
+
+  void ScheduleFloatingModeTimer();
 
   gfx::Size GetPreferredSizeForState(State state) const;
 
@@ -85,6 +88,7 @@ class VerticalTabStripRegionView : public views::View {
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
+  BooleanPrefMember floating_mode_pref_;
 
   base::OneShotTimer mouse_enter_timer_;
 };
