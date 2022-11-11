@@ -15,7 +15,7 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
     $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
   }
 
-  public init(rootView: Content) {
+  public init(rootView: Content, isDismissable: Bool = false) {
     let popup = PopupView({ rootView })
     hostingController = UIHostingController(rootView: popup)
     super.init(nibName: nil, bundle: nil)
@@ -23,6 +23,11 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
     modalPresentationStyle = .overFullScreen
     addChild(hostingController)
     hostingController.didMove(toParent: self)
+    if isDismissable {
+      hostingController.rootView.onBackgroundTap = { [unowned self] in
+        self.dismiss(animated: true)
+      }
+    }
   }
 
   public override func viewDidLoad() {
@@ -85,6 +90,7 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
 
 public struct PopupView<Content: View>: View {
   public var content: Content
+  public var onBackgroundTap: (() -> Void)?
 
   public init(@ViewBuilder _ content: () -> Content) {
     self.content = content()
@@ -97,6 +103,14 @@ public struct PopupView<Content: View>: View {
       .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
       .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
       .padding()
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(
+        Color.clear
+          .contentShape(Rectangle())
+          .onTapGesture {
+            onBackgroundTap?()
+          }
+      )
   }
 }
 

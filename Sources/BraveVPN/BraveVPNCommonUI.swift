@@ -7,6 +7,7 @@ import Foundation
 import Shared
 import BraveShared
 import UIKit
+import BraveUI
 
 struct BraveVPNCommonUI {
 
@@ -41,7 +42,7 @@ struct BraveVPNCommonUI {
           $0.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
         }
 
-        let image = UIImageView(image: UIImage(named: "vpn_brand", in: .module, compatibleWith: nil)!.template).then {
+        let image = UIImageView(image: UIImage(sharedNamed: "vpn_brand")!.template).then {
           $0.contentMode = .left
           $0.tintColor = imageColor
         }
@@ -57,7 +58,7 @@ struct BraveVPNCommonUI {
       UIStackView().then { stackView in
         stackView.alignment = useShieldAsCheckmark ? .center : .top
         stackView.spacing = 4
-        let image = useShieldAsCheckmark ? UIImage(named: "vpn_checkmark", in: .module, compatibleWith: nil)! : UIImage(named: "vpn_checkmark_popup", in: .module, compatibleWith: nil)!
+        let image = useShieldAsCheckmark ? UIImage(named: "vpn_checkmark", in: .module, compatibleWith: nil)! : UIImage(sharedNamed: "vpn_checkmark_popup")!
 
         let checkmarkImage = UIImageView(image: image).then {
           $0.contentMode = .scaleAspectFit
