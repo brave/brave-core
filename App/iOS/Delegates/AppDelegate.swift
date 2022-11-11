@@ -128,9 +128,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
       }()
       
-      // Every brave-core log has public visibiity, otherwise nothing will be recorded.
       let braveCoreLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "brave-core")
-      braveCoreLogger.log(level: level, "\(message)")
+      if AppConstants.buildChannel.isPublic {
+        braveCoreLogger.log(level: level, "\(message, privacy: .private)")
+      } else {
+        braveCoreLogger.log(level: level, "\(message, privacy: .public)")
+      }
+      
       return true
     }
 
