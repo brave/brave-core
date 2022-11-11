@@ -179,7 +179,7 @@ export const ConnectedPanel = (props: Props) => {
     return () => {
       subscribed = false
     }
-  }, [selectedAccount?.address])
+  }, [selectedAccount?.address, selectedCoin])
 
   // memos
   const bg = React.useMemo(() => {
