@@ -38,7 +38,8 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
  public:
   METADATA_HEADER(VerticalTabStripWidgetDelegateView);
 
-  static void Create(BrowserView* browser_view, views::View* host_view);
+  static VerticalTabStripWidgetDelegateView* Create(BrowserView* browser_view,
+                                                    views::View* host_view);
   ~VerticalTabStripWidgetDelegateView() override;
 
   // views::WidgetDelegateView:
@@ -54,6 +55,13 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   void OnWidgetBoundsChanged(views::Widget* widget,
                              const gfx::Rect& new_bounds) override;
   void OnWidgetDestroying(views::Widget* widget) override;
+
+  const VerticalTabStripRegionView* vertical_tab_strip_region_view() const {
+    return region_view_.get();
+  }
+  VerticalTabStripRegionView* vertical_tab_strip_region_view() {
+    return region_view_.get();
+  }
 
  private:
   VerticalTabStripWidgetDelegateView(BrowserView* browser_view,

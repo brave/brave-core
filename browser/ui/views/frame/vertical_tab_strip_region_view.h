@@ -55,6 +55,8 @@ class VerticalTabStripRegionView : public views::View {
   void OnMouseEntered(const ui::MouseEvent& event) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
+
   bool IsTabFullscreen() const;
 
   void SetState(State state);
@@ -91,6 +93,8 @@ class VerticalTabStripRegionView : public views::View {
   BooleanPrefMember floating_mode_pref_;
 
   base::OneShotTimer mouse_enter_timer_;
+
+  bool mouse_events_for_test_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
