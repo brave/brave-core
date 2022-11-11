@@ -7,9 +7,10 @@
 
 #include <utility>
 
+#include "base/json/json_writer.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -19,27 +20,40 @@ namespace api_request_helper {
 
 namespace {
 
-void OnSanitize(const int http_code,
-                const base::flat_map<std::string, std::string>& headers,
-                int error_code,
-                GURL final_url,
-                APIRequestHelper::ResultCallback result_callback,
-                data_decoder::JsonSanitizer::Result result) {
-  std::string response_body;
-  if (result.error) {
-    VLOG(1) << "Response validation error:" << *result.error;
+void OnParseJsonIsolated(
+    const int http_code,
+    const base::flat_map<std::string, std::string>& headers,
+    int error_code,
+    GURL final_url,
+    APIRequestHelper::ResultCallback result_callback,
+    data_decoder::DataDecoder::ValueOrError result) {
+  if (!result.has_value()) {
+    VLOG(1) << "Response validation error:" << result.error();
     std::move(result_callback)
-        .Run(APIRequestResult(http_code, "", std::move(headers), error_code,
-                              final_url));
+        .Run(APIRequestResult(http_code, "", base::Value(), std::move(headers),
+                              error_code, final_url));
     return;
   }
 
-  if (result.value.has_value()) {
-    response_body = result.value.value();
+  if (!result.value().is_dict() && !result.value().is_list()) {
+    VLOG(1) << "Response validation error: Invalid top-level type";
+    std::move(result_callback)
+        .Run(APIRequestResult(http_code, "", base::Value(), std::move(headers),
+                              error_code, final_url));
+    return;
+  }
+
+  std::string safe_json;
+  if (!base::JSONWriter::Write(result.value(), &safe_json)) {
+    VLOG(1) << "Response validation error: Encoding error";
+    std::move(result_callback)
+        .Run(APIRequestResult(http_code, "", base::Value(), std::move(headers),
+                              error_code, final_url));
+    return;
   }
 
   std::move(result_callback)
-      .Run(APIRequestResult(http_code, std::move(response_body),
+      .Run(APIRequestResult(http_code, safe_json, std::move(result.value()),
                             std::move(headers), error_code, final_url));
 }
 
@@ -51,20 +65,31 @@ APIRequestResult::APIRequestResult() = default;
 APIRequestResult::APIRequestResult(
     int response_code,
     std::string body,
+    base::Value value_body,
     base::flat_map<std::string, std::string> headers,
     int error_code,
     GURL final_url)
-    : final_url_(final_url),
+    : response_code_(response_code),
+      body_(std::move(body)),
+      value_body_(std::move(value_body)),
+      headers_(std::move(headers)),
       error_code_(error_code),
-      response_code_(response_code),
-      body_(body),
-      headers_(headers) {}
-APIRequestResult::APIRequestResult(const APIRequestResult&) = default;
-APIRequestResult& APIRequestResult::operator=(const APIRequestResult&) =
-    default;
+      final_url_(std::move(final_url)) {}
 APIRequestResult::APIRequestResult(APIRequestResult&&) = default;
 APIRequestResult& APIRequestResult::operator=(APIRequestResult&&) = default;
 APIRequestResult::~APIRequestResult() = default;
+
+bool APIRequestResult::operator==(const APIRequestResult& other) const {
+  auto tied = [](auto& v) {
+    return std::tie(v.response_code_, v.body_, v.value_body_, v.headers_,
+                    v.error_code_, v.final_url_);
+  };
+  return tied(*this) == tied(other);
+}
+
+bool APIRequestResult::operator!=(const APIRequestResult& other) const {
+  return !(*this == other);
+}
 
 bool APIRequestResult::Is2XXResponseCode() const {
   return response_code_ >= 200 && response_code_ <= 299;
@@ -202,8 +227,9 @@ void APIRequestHelper::OnResponse(
 
   url_loaders_.erase(iter);
   if (!response_body) {
-    std::move(callback).Run(APIRequestResult(
-        response_code, "", std::move(headers), error_code, final_url));
+    std::move(callback).Run(APIRequestResult(response_code, "", base::Value(),
+                                             std::move(headers), error_code,
+                                             final_url));
     return;
   }
   auto& raw_body = *response_body;
@@ -211,16 +237,16 @@ void APIRequestHelper::OnResponse(
     auto converted_body = std::move(conversion_callback).Run(raw_body);
     if (!converted_body) {
       std::move(callback).Run(APIRequestResult(
-          422, std::move(raw_body), std::move(headers), error_code, final_url));
+          422, "", base::Value(), std::move(headers), error_code, final_url));
       return;
     }
     raw_body = converted_body.value();
   }
 
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(raw_body),
-      base::BindOnce(&OnSanitize, response_code, std::move(headers), error_code,
-                     final_url, std::move(callback)));
+  data_decoder::DataDecoder::ParseJsonIsolated(
+      raw_body,
+      base::BindOnce(&OnParseJsonIsolated, response_code, std::move(headers),
+                     error_code, final_url, std::move(callback)));
 }
 
 void APIRequestHelper::OnDownload(SimpleURLLoaderList::iterator iter,
