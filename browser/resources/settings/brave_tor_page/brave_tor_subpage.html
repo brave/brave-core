@@ -97,3 +97,11 @@
   <request-bridges-dialog id="requestBridgesDialog" on-close="showRequestBridgesDialogClosed_">
   </request-bridges-dialog>
 </template>
+
+<if expr="enable_extensions">
+  <template is="dom-if" if="[[showTorSnowflakeInstallFailed_]]" restamp>
+    <tor-snowflake-install-failed-dialog id="torSnowflakeInstallFailedDialog"
+      on-close="torSnowflakeInstallFailedDialogClosed_">
+    </tor-snowflake-install-failed-dialog>
+  </template>
+</if>

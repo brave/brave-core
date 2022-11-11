@@ -86,6 +86,7 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest, InstallFail) {
   console_observer.SetPattern("Could not fetch data from the Chrome Web Store");
   ClickSnowflakeToggle(web_contents);
   console_observer.Wait();
+  EXPECT_FALSE(IsSnowflakeToggled(web_contents));
 }
 
 IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest,
@@ -110,10 +111,12 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest,
     EnableSnowflake(false);
   }
 
+  // enable from settings.
   ClickSnowflakeToggle(web_contents);
   EXPECT_TRUE(IsSnowflakeToggled(web_contents));
   EXPECT_TRUE(IsSnowflakeInstalled());
 
+  // disabled from settings -> uninstalled.
   ClickSnowflakeToggle(web_contents);
   EXPECT_FALSE(IsSnowflakeToggled(web_contents));
   EXPECT_FALSE(IsSnowflakeInstalled());

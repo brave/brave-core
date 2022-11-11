@@ -12,6 +12,7 @@ import { RouteObserverMixin } from '../router.js'
 import { PrefsMixin } from '../prefs/prefs_mixin.js'
 import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'
 import './brave_tor_bridges_dialog.js'
+import './brave_tor_snowflake_install_failed_dialog.js'
 import {getTemplate} from './brave_tor_subpage.html.js'
 import { loadTimeData } from '../i18n_setup.js'
 
@@ -139,7 +140,9 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_, shouldShowBridgesGroup_, torEnabledPref_.value)',
         value: false,
         notify: true
-      }
+      },
+
+      showTorSnowflakeInstallFailed_: Boolean,
     }
   }
 
@@ -158,7 +161,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       window.testing = window.testing || {}
       window.testing[`torSubpage`] = this.shadowRoot
     }
-    
+
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
       this.isUsingBridgesPref_ = {
@@ -371,7 +374,12 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       catch((reason: String) => {
         console.log(reason)
         this.setTorSnowflakeExtensionEnabledPref_(false)
+        this.showTorSnowflakeInstallFailed_ = true
       })
+  }
+
+  torSnowflakeInstallFailedDialogClosed_() {
+    this.showTorSnowflakeInstallFailed_ = false
   }
 
   currentRouteChanged() {
