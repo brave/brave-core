@@ -103,3 +103,25 @@ struct AssetIconView_Previews: PreviewProvider {
   }
 }
 #endif
+
+struct NFTIconView: View {
+  
+  /// NFT token
+  var token: BraveWallet.BlockchainToken
+  /// Network for token
+  var network: BraveWallet.NetworkInfo
+  /// NFT image url from metadata
+  var url: URL?
+  
+  var body: some View {
+    WebImageReader(url: url) { image, isFinished in
+      if let image = image {
+        Image(uiImage: image)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+      } else {
+        AssetIconView(token: token, network: network)
+      }
+    }
+  }
+}

@@ -69,6 +69,25 @@ struct PortfolioView: View {
   @State private var tableInset: CGFloat = -16.0
 
   @State private var selectedToken: BraveWallet.BlockchainToken?
+  
+  private var editUserAssetsButton: some View {
+    Button(action: { isPresentingEditUserAssets = true }) {
+      Text(Strings.Wallet.editVisibleAssetsButtonTitle)
+        .multilineTextAlignment(.center)
+        .font(.footnote.weight(.semibold))
+        .foregroundColor(Color(.bravePrimary))
+        .frame(maxWidth: .infinity)
+    }
+    .sheet(isPresented: $isPresentingEditUserAssets) {
+      EditUserAssetsView(
+        networkStore: networkStore,
+        keyringStore: keyringStore,
+        userAssetsStore: portfolioStore.userAssetsStore
+      ) {
+        portfolioStore.update()
+      }
+    }
+  }
 
   var body: some View {
     List {
@@ -79,9 +98,7 @@ struct PortfolioView: View {
           .resetListHeaderStyle()
       ) {
       }
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
-      ) {
+      Section(content: {
         Group {
           ForEach(portfolioStore.userVisibleAssets) { asset in
             Button(action: {
@@ -96,24 +113,38 @@ struct PortfolioView: View {
               )
             }
           }
-          Button(action: { isPresentingEditUserAssets = true }) {
-            Text(Strings.Wallet.editVisibleAssetsButtonTitle)
-              .multilineTextAlignment(.center)
-              .font(.footnote.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
-              .frame(maxWidth: .infinity)
-          }
-          .sheet(isPresented: $isPresentingEditUserAssets) {
-            EditUserAssetsView(
-              networkStore: networkStore,
-              keyringStore: keyringStore,
-              userAssetsStore: portfolioStore.userAssetsStore
-            ) {
-              portfolioStore.update()
-            }
-          }
+          editUserAssetsButton
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }, header: {
+        WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
+      })
+      
+      if !portfolioStore.userVisibleNFTs.isEmpty {
+        Section(content: {
+          Group {
+            ForEach(portfolioStore.userVisibleNFTs) { nftAsset in
+              Button(action: {
+                selectedToken = nftAsset.token
+              }) {
+                PortfolioNFTAssetView(
+                  image: NFTIconView(
+                    token: nftAsset.token,
+                    network: networkStore.selectedChain,
+                    url: nftAsset.imageUrl
+                  ),
+                  title: nftAsset.token.nftTokenTitle,
+                  symbol: nftAsset.token.symbol,
+                  quantity: "\(nftAsset.balance)"
+                )
+              }
+            }
+            editUserAssetsButton
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }, header: {
+          WalletListHeaderView(title: Text(Strings.Wallet.nftsTitle))
+        })
       }
     }
     .background(
@@ -264,3 +295,13 @@ struct PortfolioViewController_Previews: PreviewProvider {
   }
 }
 #endif
+
+private extension BraveWallet.BlockchainToken {
+  var nftTokenTitle: String {
+    if isErc721, let tokenId = Int(tokenId.removingHexPrefix, radix: 16) {
+      return "\(name) #\(tokenId)"
+    } else {
+      return name
+    }
+  }
+}
