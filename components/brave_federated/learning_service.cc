@@ -8,15 +8,19 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_federated/client/federated_client.h"
-#include "brave/components/brave_federated/client/model.h"
-#include "brave/components/brave_federated/client/synthetic_dataset/synthetic_dataset.h"
+#include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
-#include "brave/third_party/flower/src/cc/flwr/include/client_runner.h"
+#include "brave/components/brave_federated/task/communication_helper.h"
+#include "brave/components/brave_federated/task/model.h"
+#include "brave/components/brave_federated/task/task_runner.h"
+#include "brave/components/brave_federated/task/typing.h"
+#include "brave/components/brave_federated/util/synthetic_dataset.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+
+#include <iostream>
 
 namespace brave_federated {
 
@@ -28,41 +32,7 @@ LearningService::LearningService(
   DCHECK(url_loader_factory);
   DCHECK(eligibility_service);
 
-  Model* model = new Model(500, 0.01, 32);
-
-  FederatedClient* notification_ad_client =
-      new FederatedClient(kNotificationAdTaskName, model);
-
-  std::vector<std::vector<float>> W(2, std::vector<float>(32));
-  std::vector<float> b(2);
-  std::vector<float> W0 = {
-      0.720553,   -0.22378,   0.724898,   1.05209,   0.171692,  -2.08635,
-      0.00898889, 0.00195967, -0.521962,  -1.69172,  -0.906425, -1.05066,
-      -0.920127,  -0.200614,  -0.0248187, -0.510679, 0.139501,  1.44922,
-      -0.0535475, -0.497441,  -0.902036,  1.08325,   -1.31984,  0.413791,
-      -1.44259,   0.757306,   0.670382,   -1.13497,  -0.278086, -1.30519,
-      0.111584,   -0.362997};
-  W[0] = W0;
-  b[0] = -1.45966;
-  std::vector<float> W1 = {
-      -1.20866,  -0.385986,   -1.37335,   1.54405,     1.19847,   0.185225,
-      0.446334,  -0.00641536, -0.439716,  2.525,       -0.638792, 1.5815,
-      -0.933648, -0.240064,   -1.0451,    -0.00015671, -0.543405, 0.560255,
-      -1.80757,  -0.907905,   2.27475,    0.42947,     0.725056,  -1.54398,
-      -2.43804,  -1.07677,    0.00487297, -1.25289,    -0.708508, 0.322749,
-      0.91749,   -0.598813};
-  W[1] = W1;
-  b[1] = 1.12165;
-
-  SyntheticDataset local_training_data = SyntheticDataset(W, b, 32, 5500);
-  SyntheticDataset local_test_data = local_training_data.SeparateTestData(5000);
-
-  notification_ad_client->SetTrainingData(local_training_data.GetDataPoints());
-  notification_ad_client->SetTestData(local_test_data.GetDataPoints());
-
-  clients_.insert(std::make_pair(kNotificationAdTaskName,
-                                 std::move(notification_ad_client)));
-
+  communication_adapter_ = new CommunicationAdapter(url_loader_factory);
   eligibility_service_->AddObserver(this);
 
   StartParticipating();
@@ -74,16 +44,54 @@ LearningService::~LearningService() {
 }
 
 void LearningService::StartParticipating() {
-  for (auto& client : clients_) {
-    // TODO(lminto) : Add Probabilistic Participation
-    client.second->Start();
-  }
+  participating_ = true;
+  communication_adapter_->GetTasks(
+      base::BindOnce(&LearningService::HandleTasks, base::Unretained(this)));
 }
 
 void LearningService::StopParticipating() {
-  for (auto it = clients_.begin(); it != clients_.end(); ++it) {
-    it->second->Stop();
+  DCHECK(participating_);
+  participating_ = false;
+}
+
+void LearningService::HandleTasks(TaskList tasks) {
+  Task task = tasks.at(0);
+  std::cerr << "**: Received tasks to handle" << std::endl;
+  // TODO(lminto): implement actual task handling
+  ModelSpec spec{32, 0.01, 500, 10, 0.5};
+  Model* model = new Model(spec);
+  TaskRunner* notification_ad_task_runner = new TaskRunner(task, model);
+
+  SyntheticDataset local_training_data = CreateDefaultSyntheticDataset();
+  SyntheticDataset local_test_data = local_training_data.SeparateTestData(5000);
+
+  notification_ad_task_runner->SetTrainingData(
+      local_training_data.GetDataPoints());
+  notification_ad_task_runner->SetTestData(local_test_data.GetDataPoints());
+
+  task_runners_.insert(std::make_pair(kNotificationAdTaskName,
+                                      std::move(notification_ad_task_runner)));
+  // TODO(lminto): run task runner async and use callback
+  TaskResultList results;
+  TaskResult result = notification_ad_task_runner->Run();
+  results.push_back(result);
+  PostTaskResults(results);
+}
+
+void LearningService::PostTaskResults(TaskResultList results) {
+  for (const auto& result : results) {
+    communication_adapter_->PostTaskResult(
+        result, base::BindOnce(&LearningService::OnPostTaskResults,
+                               base::Unretained(this)));
   }
+}
+
+void LearningService::OnPostTaskResults(TaskResultResponse response) {
+  if (response.IsSuccessful()) {
+    std::cerr << "**: Succesfully posted results" << std::endl;
+  }
+
+  std::cerr << "**: Failed posting results" << std::endl;
 }
 
 void LearningService::OnEligibilityChanged(bool is_eligible) {

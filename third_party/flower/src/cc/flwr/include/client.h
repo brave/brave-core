@@ -18,7 +18,7 @@
 
 #include "brave/third_party/flower/src/cc/flwr/include/typing.h"
 
-namespace flwr {
+namespace flower {
 /**
  *
  * Abstract base class for C++ Flower clients
@@ -66,6 +66,6 @@ class Client {
   virtual EvaluateRes Evaluate(EvaluateIns ins) = 0;
 };
 
-}  // namespace flwr
+}  // namespace flower
 
 #endif  // BRAVE_THIRD_PARTY_FLOWER_SRC_CC_FLWR_INCLUDE_CLIENT_H_

@@ -6,18 +6,17 @@
 #include "net/url_request/url_request_context_getter.h"
 
 namespace flower {
-  
-ClientRunner::ClientRunner(
-  const std::string& server_endpoint,
-  flwr::Client* client,
-  int grpc_max_message_length)
-  : federated_client_(client),
-    server_endpoint_(server_endpoint) {
-    DCHECK(federated_client_);
 
-    net::URLRequestContextGetter url_request_context_getter({});
-    grpc_support::BidirectionalStream* bidirectional_stream_(
-      new grpc_support::BidirectionalStream(url_request_context_getter, this));
+ClientRunner::ClientRunner(const std::string& server_endpoint,
+                           flower::Client* client,
+                           int grpc_max_message_length)
+    : federated_client_(client), server_endpoint_(server_endpoint) {
+  DCHECK(federated_client_);
+
+  // net::URLRequestContextGetter url_request_context_getter({});
+  // grpc_support::BidirectionalStream* bidirectional_stream_(
+  //   new grpc_support::BidirectionalStream(url_request_context_getter,
+  //   this));
 }
 
 ClientRunner::~ClientRunner() {}
@@ -43,7 +42,7 @@ void ClientRunner::Start() {
   // while (federated_client_->is_communicating() && is_connected) {
   //   // Establish an insecure gRPC connection to a gRPC server
   //   std::shared_ptr<Channel> channel = grpc::CreateCustomChannel(
-  //       server_address, grpc::InsecureChannelCredentials(), args); 
+  //       server_address, grpc::InsecureChannelCredentials(), args);
   //   // std::cout << "Created channel on " << server_address << std::endl;
   //   // Create stub
   //   std::unique_ptr<FlowerService::Stub> stub_ =
@@ -53,9 +52,10 @@ void ClientRunner::Start() {
   //   std::shared_ptr<ClientReaderWriter<ClientMessage, ServerMessage>>
   //       reader_writer(stub_->Join(&context));
   //   ServerMessage sm;
-  //   while (reader_writer->Read(&sm)) { // TODO(lminto): Two objects - read and write
-  //     std::tuple<ClientMessage, int, bool> receive = handle(federated_client_, sm);
-  //     sleep_duration = std::get<1>(receive);
+  //   while (reader_writer->Read(&sm)) { // TODO(lminto): Two objects - read
+  //   and write
+  //     std::tuple<ClientMessage, int, bool> receive =
+  //     handle(federated_client_, sm); sleep_duration = std::get<1>(receive);
   //     reader_writer->Write(std::get<0>(receive));
   //     if (std::get<2>(receive) == false) {
   //       break;
@@ -80,37 +80,37 @@ void ClientRunner::Start() {
 }
 
 void ClientRunner::OnStreamReady() {
-  
+
 }
 
 void ClientRunner::OnHeadersReceived(
     const spdy::Http2HeaderBlock& response_headers,
     const char* negotiated_protocol) {
-  
+
 }
 
 void ClientRunner::OnDataRead(char* data, int size) {
-  
+
 }
 
 void ClientRunner::OnDataSent(const char* data) {
-  
+
 }
 
 void ClientRunner::OnTrailersReceived(const spdy::Http2HeaderBlock& trailers) {
-  
+
 }
 
 void ClientRunner::OnSucceeded() {
-  
+
 }
 
 void ClientRunner::OnFailed(int error) {
-  
+
 }
 
 void ClientRunner::OnCanceled() {
-  
+
 }
 
 } // namespace flower

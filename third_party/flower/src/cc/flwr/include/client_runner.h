@@ -23,9 +23,9 @@
 #include "brave/third_party/flower/src/cc/flwr/include/message_handler.h"
 #include "components/grpc_support/bidirectional_stream.h"
 
-using flower::transport::ClientMessage;
-using flower::transport::FlowerService;
-using flower::transport::ServerMessage;
+using flower::ClientMessage;
+using flower::FlowerService;
+using flower::ServerMessage;
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::ClientReaderWriter;
@@ -43,7 +43,7 @@ namespace flower {
  *
  *         client
  *                        An implementation of the abstract base class
- * `flwr::Client`
+ * `flower::Client`
  *
  *         grpc_max_message_length
  *                        int (default: 536_870_912, this equals 512MB).
@@ -51,7 +51,7 @@ namespace flower {
  * exchanged with the Flower server. The default should be sufficient for most
  * models. Users who train very large models might need to increase this value.
  * Note that the Flower server needs to be started with the same value (see
- * `flwr.server.start_server`), otherwise it will not know about the increased
+ * `flower.server.start_server`), otherwise it will not know about the increased
  * limit and block larger messages.
  *
  */
@@ -60,14 +60,14 @@ class ClientRunner final: public grpc_support::BidirectionalStream::Delegate {
 
 public:
  ClientRunner(const std::string& server_endpoint,
-                      flwr::Client* client,
-                      int grpc_max_message_length);
+              flower::Client* client,
+              int grpc_max_message_length);
  ~ClientRunner();
  ClientRunner(const ClientRunner&) = delete;
  ClientRunner& operator=(const ClientRunner&) = delete;
 
  void Start();
- 
+
  // Delegate implementation
  void OnStreamReady();
  void OnHeadersReceived(
@@ -82,7 +82,7 @@ public:
 
 private:
  grpc_support::BidirectionalStream* bidirectional_stream_;
- flwr::Client* federated_client_;
+ flower::Client* federated_client_;
  const std::string& server_endpoint_;
 };
 

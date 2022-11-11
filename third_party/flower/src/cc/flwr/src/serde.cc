@@ -1,11 +1,96 @@
 /* Copyright (c) 2022 The Flower Authors. */
 
 #include "brave/third_party/flower/src/cc/flwr/include/serde.h"
+#include <vector>
+
+/**
+ * Serialize client ParametersRes type to protobuf ParametersRes type
+ */
+ClientMessage_GetParametersRes parameters_res_to_proto(
+    flower::ParametersRes res) {
+  MessageParameters mp = parameters_to_proto(res.getParameters());
+  ClientMessage_GetParametersRes cpr;
+  *(cpr.mutable_parameters()) = mp;
+  return cpr;
+}
+
+/**
+ * Deserialize protobuf FitIns type to client FitIns type
+ */
+flower::FitIns fit_ins_from_proto(ServerMessage_FitIns msg) {
+  flower::Parameters parameters = parameters_from_proto(msg.parameters());
+  flower::Metrics config = metrics_from_proto(msg.config());
+  return flower::FitIns(parameters, config);
+}
+
+/**
+ * Serialize client FitRes type to protobuf FitRes type
+ */
+ClientMessage_FitRes fit_res_to_proto(flower::FitRes res) {
+  ClientMessage_FitRes cres;
+
+  MessageParameters parameters_proto = parameters_to_proto(res.getParameters());
+  google::protobuf::Map<::std::string, ::flower::Scalar>*
+      metrics_msg;
+  if (res.getMetrics() == std::nullopt) {
+    metrics_msg = NULL;
+  } else {
+    google::protobuf::Map<::std::string, ::flower::Scalar> proto =
+        metrics_to_proto(res.getMetrics().value());
+    metrics_msg = &proto;
+  }
+
+  // Forward - compatible case
+  *(cres.mutable_parameters()) = parameters_proto;
+  cres.set_num_examples(res.getNum_example());
+  if (metrics_msg != NULL) {
+    *cres.mutable_metrics() = *metrics_msg;
+  }
+  return cres;
+}
+
+/**
+ * Deserialize protobuf EvaluateIns type to client EvaluateIns type
+ */
+flower::EvaluateIns evaluate_ins_from_proto(ServerMessage_EvaluateIns msg) {
+  flower::Parameters parameters = parameters_from_proto(msg.parameters());
+  flower::Metrics config = metrics_from_proto(msg.config());
+  return flower::EvaluateIns(parameters, config);
+}
+
+/**
+ * Serialize client EvaluateRes type to protobuf EvaluateRes type
+ */
+ClientMessage_EvaluateRes evaluate_res_to_proto(flower::EvaluateRes res) {
+  ClientMessage_EvaluateRes cres;
+  google::protobuf::Map<::std::string, ::flower::Scalar>*
+      metrics_msg;
+  google::protobuf::Map<::std::string, ::flower::Scalar> proto;
+  if (res.getMetrics() == std::nullopt) {
+    metrics_msg = NULL;
+  } else {
+    proto = metrics_to_proto(res.getMetrics().value());
+    metrics_msg = &proto;
+  }
+
+  // Forward - compatible case
+  cres.set_loss(res.getLoss());
+  cres.set_num_examples(res.getNum_example());
+  if (metrics_msg != NULL) {
+    auto& map = *cres.mutable_metrics();
+
+    for (auto& [key, value] : *metrics_msg) {
+      map[key] = value;
+    }
+  }
+
+  return cres;
+}
 
 /**
  * Serialize client parameters to protobuf parameters message
  */
-MessageParameters parameters_to_proto(flwr::Parameters parameters) {
+MessageParameters parameters_to_proto(flower::Parameters parameters) {
   MessageParameters mp;
   mp.set_tensor_type(parameters.getTensor_type());
 
@@ -18,19 +103,19 @@ MessageParameters parameters_to_proto(flwr::Parameters parameters) {
 /**
  * Deserialize client protobuf parameters message to client parameters
  */
-flwr::Parameters parameters_from_proto(MessageParameters msg) {
-  std::list<std::string> tensors;
+flower::Parameters parameters_from_proto(MessageParameters msg) {
+  std::vector<std::string> tensors;
   for (int i = 0; i < msg.tensors_size(); i++) {
     tensors.push_back(msg.tensors(i));
   }
 
-  return flwr::Parameters(tensors, msg.tensor_type());
+  return flower::Parameters(tensors, msg.tensor_type());
 }
 
 /**
  * Serialize client scalar type to protobuf scalar type
  */
-ProtoScalar scalar_to_proto(flwr::Scalar scalar_msg) {
+ProtoScalar scalar_to_proto(flower::Scalar scalar_msg) {
   ProtoScalar s;
   if (scalar_msg.getBool() != std::nullopt) {
     s.set_bool_(scalar_msg.getBool().value());
@@ -59,8 +144,8 @@ ProtoScalar scalar_to_proto(flwr::Scalar scalar_msg) {
 /**
  * Deserialize protobuf scalar type to client scalar type
  */
-flwr::Scalar scalar_from_proto(ProtoScalar scalar_msg) {
-  flwr::Scalar scalar;
+flower::Scalar scalar_from_proto(ProtoScalar scalar_msg) {
+  flower::Scalar scalar;
   switch (scalar_msg.scalar_case()) {
     case 1:
       scalar.setDouble(scalar_msg.double_());
@@ -78,9 +163,9 @@ flwr::Scalar scalar_from_proto(ProtoScalar scalar_msg) {
       scalar.setBytes(scalar_msg.bytes());
       return scalar;
     case 0:
+      return scalar;
       break;
   }
-  throw "Error scalar type";
 }
 
 /**
@@ -88,7 +173,7 @@ flwr::Scalar scalar_from_proto(ProtoScalar scalar_msg) {
  * "Any" is used in Python, this part might be changed if needed
  */
 google::protobuf::Map<std::string, ProtoScalar> metrics_to_proto(
-    flwr::Metrics metrics) {
+    flower::Metrics metrics) {
   google::protobuf::Map<std::string, ProtoScalar> proto;
 
   for (auto& [key, value] : metrics) {
@@ -102,95 +187,12 @@ google::protobuf::Map<std::string, ProtoScalar> metrics_to_proto(
  * Deserialize protobuf metrics type to client metrics type
  * "Any" is used in Python, this part might be changed if needed
  */
-flwr::Metrics metrics_from_proto(
+flower::Metrics metrics_from_proto(
     google::protobuf::Map<std::string, ProtoScalar> proto) {
-  flwr::Metrics metrics;
+  flower::Metrics metrics;
 
   for (auto& [key, value] : proto) {
     metrics[key] = scalar_from_proto(value);
   }
   return metrics;
-}
-
-/**
- * Serialize client ParametersRes type to protobuf ParametersRes type
- */
-ClientMessage_ParametersRes parameters_res_to_proto(flwr::ParametersRes res) {
-  MessageParameters mp = parameters_to_proto(res.getParameters());
-  ClientMessage_ParametersRes cpr;
-  *(cpr.mutable_parameters()) = mp;
-  return cpr;
-}
-
-/**
- * Deserialize protobuf FitIns type to client FitIns type
- */
-flwr::FitIns fit_ins_from_proto(ServerMessage_FitIns msg) {
-  flwr::Parameters parameters = parameters_from_proto(msg.parameters());
-  flwr::Metrics config = metrics_from_proto(msg.config());
-  return flwr::FitIns(parameters, config);
-}
-
-/**
- * Serialize client FitRes type to protobuf FitRes type
- */
-ClientMessage_FitRes fit_res_to_proto(flwr::FitRes res) {
-  ClientMessage_FitRes cres;
-
-  MessageParameters parameters_proto = parameters_to_proto(res.getParameters());
-  google::protobuf::Map<::std::string, ::flower::transport::Scalar>*
-      metrics_msg;
-  if (res.getMetrics() == std::nullopt) {
-    metrics_msg = NULL;
-  } else {
-    google::protobuf::Map<::std::string, ::flower::transport::Scalar> proto =
-        metrics_to_proto(res.getMetrics().value());
-    metrics_msg = &proto;
-  }
-
-  // Forward - compatible case
-  *(cres.mutable_parameters()) = parameters_proto;
-  cres.set_num_examples(res.getNum_example());
-  if (metrics_msg != NULL) {
-    *cres.mutable_metrics() = *metrics_msg;
-  }
-  return cres;
-}
-
-/**
- * Deserialize protobuf EvaluateIns type to client EvaluateIns type
- */
-flwr::EvaluateIns evaluate_ins_from_proto(ServerMessage_EvaluateIns msg) {
-  flwr::Parameters parameters = parameters_from_proto(msg.parameters());
-  flwr::Metrics config = metrics_from_proto(msg.config());
-  return flwr::EvaluateIns(parameters, config);
-}
-
-/**
- * Serialize client EvaluateRes type to protobuf EvaluateRes type
- */
-ClientMessage_EvaluateRes evaluate_res_to_proto(flwr::EvaluateRes res) {
-  ClientMessage_EvaluateRes cres;
-  google::protobuf::Map<::std::string, ::flower::transport::Scalar>*
-      metrics_msg;
-  google::protobuf::Map<::std::string, ::flower::transport::Scalar> proto;
-  if (res.getMetrics() == std::nullopt) {
-    metrics_msg = NULL;
-  } else {
-    proto = metrics_to_proto(res.getMetrics().value());
-    metrics_msg = &proto;
-  }
-
-  // Forward - compatible case
-  cres.set_loss(res.getLoss());
-  cres.set_num_examples(res.getNum_example());
-  if (metrics_msg != NULL) {
-    auto& map = *cres.mutable_metrics();
-
-    for (auto& [key, value] : *metrics_msg) {
-      map[key] = value;
-    }
-  }
-
-  return cres;
 }
