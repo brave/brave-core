@@ -1485,19 +1485,19 @@ extension Strings {
       value: "Enter token name",
       comment: "A placeholder for the text field that users will input the custom token name"
     )
-    public static let tokenContractAddress = NSLocalizedString(
-      "wallet.tokenContractAddress",
+    public static let tokenAddress = NSLocalizedString(
+      "wallet.tokenAddress",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Token contract address",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token contract address"
+      value: "Token address",
+      comment: "A title that will be displayed on top of the text field for users to input the custom token address"
     )
-    public static let enterContractAddress = NSLocalizedString(
-      "wallet.enterContractAddress",
+    public static let enterAddress = NSLocalizedString(
+      "wallet.enterAddress",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enter contract address",
-      comment: "A placeholder for the text field that users will input the custom token contract address"
+      value: "Enter address",
+      comment: "A placeholder for the text field that users will input the custom token address"
     )
     public static let tokenSymbol = NSLocalizedString(
       "wallet.tokenSymbol",
@@ -1554,6 +1554,34 @@ extension Strings {
       bundle: .module,
       value: "Enter token Coingecko ID",
       comment: "A placeholder for the text field that users will input the custom token Coingecko ID."
+    )
+    public static let addCustomTokenId = NSLocalizedString(
+      "wallet.addCustomTokenId",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Token ID (only for ERC721)",
+      comment: "A title that will be displayed on top of the text field for users to input the custom token's ID."
+    )
+    public static let addCustomTokenTitle = NSLocalizedString(
+      "wallet.addCustomTokenTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Token",
+      comment: "A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token."
+    )
+    public static let addCustomNFTTitle = NSLocalizedString(
+      "wallet.addCustomNFTTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "NFT",
+      comment: "A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token."
+    )
+    public static let enterTokenId = NSLocalizedString(
+      "wallet.enterTokenId",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Enter Token ID",
+      comment: "A placeholder for the text field that users will input the custom token's ID."
     )
     public static let addCustomTokenErrorTitle = NSLocalizedString(
       "wallet.addCustomTokenErrorTitle",

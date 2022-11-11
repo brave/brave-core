@@ -150,9 +150,13 @@ struct EditUserAssetsView: View {
       .sheet(isPresented: $isAddingCustomAsset) {
         AddCustomAssetView(
           networkStore: networkStore,
+          networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
           keyringStore: keyringStore,
           userAssetStore: userAssetsStore
         )
+        .onDisappear {
+          networkStore.closeNetworkSelectionStore()
+        }
       }
       .alert(isPresented: $isPresentingAssetRemovalError) {
         Alert(
