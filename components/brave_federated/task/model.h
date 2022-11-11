@@ -10,45 +10,53 @@
 #include <tuple>
 #include <vector>
 
-#include "brave/components/brave_federated/client/linear_algebra_util/linear_algebra_util.h"
+#include "brave/components/brave_federated/util/linear_algebra_util.h"
 
 namespace brave_federated {
 
+struct ModelSpec {
+  int batch_size;
+  float learning_rate;
+  int num_iterations;
+  int num_params;
+  float threshold;
+};
+
+struct PerformanceReport {
+  size_t dataset_size;
+  float loss;
+  float accuracy;
+};
+
 class Model {
  public:
-  Model(int num_iterations, float learning_rate, int num_params);
-
+  explicit Model(ModelSpec model_spec);
   ~Model();
 
-  std::vector<float> Predict(DataSet X);
+  std::vector<float> Predict(const DataSet& dataset);
+  PerformanceReport Train(const DataSet& train_dataset);
+  PerformanceReport Evaluate(const DataSet& test_dataset);
 
-  std::tuple<size_t, float, float> Train(
-      const DataSet& dataset);
+  Weights GetWeights();
+  void SetWeights(Weights new_weights);
 
-  std::tuple<size_t, float, float> Evaluate(
-      const DataSet& test_dataset);
-
-  Weights GetPredWeights();
-  void SetPredWeights(Weights new_prediction_weights);
-
-  float Bias();
-
+  float GetBias();
   void SetBias(float new_bias);
 
   size_t ModelSize();
 
  private:
+  float ComputeNLL(std::vector<float> true_labels,
+                   std::vector<float> predictions);
+  float Activation(float z);
+
   int num_iterations_;
   int batch_size_;
   float learning_rate_;
   float threshold_;
 
-  Weights prediction_weights_;
-  float prediction_bias_;
-
-  float ComputeNLL(std::vector<float> true_labels, std::vector<float> predictions);
-
-  float Activation(float z);
+  Weights weights_;
+  float bias_;
 };
 
 }  // namespace brave_federated

@@ -18,11 +18,12 @@
 
 #include <optional>
 
-#include <map>
 #include <list>
+#include <map>
 #include <string>
+#include "brave/third_party/flower/src/cc/flwr/include/message_handler.h"
 
-namespace flwr {
+namespace flower {
 /**
  * This class contains C++ types corresponding to ProtoBuf types that
  * ProtoBuf considers to be "Scalar Value Types", even though some of them
@@ -57,15 +58,15 @@ class Scalar {
   std::optional<std::string> string = std::nullopt;
 };
 
-typedef std::map<std::string, flwr::Scalar> Metrics;
+typedef std::map<std::string, flower::Scalar> Metrics;
 
 /**
  * Model parameters
  */
 class Parameters {
  public:
-  Parameters() {}
-  Parameters(std::list<std::string> tensors, std::string tensor_type)
+  Parameters() = default;
+  Parameters(std::vector<std::string> tensors, std::string tensor_type)
       : tensors(tensors), tensor_type(tensor_type) {}
 
   // Getters
@@ -73,7 +74,7 @@ class Parameters {
   std::string getTensor_type() { return tensor_type; }
 
   // Setters
-  void setTensors(std::list<std::string> tensors) { this->tensors = tensors; }
+  void setTensors(std::vector<std::string> tensors) { this->tensors = tensors; }
   void setTensor_type(std::string tensor_type) {
     this->tensor_type = tensor_type;
   }
@@ -102,7 +103,7 @@ class ParametersRes {
  */
 class FitIns {
  public:
-  FitIns(Parameters parameters, std::map<std::string, flwr::Scalar> config)
+  FitIns(Parameters parameters, std::map<std::string, flower::Scalar> config)
       : parameters(parameters), config(config) {}
 
   // Getters
@@ -125,7 +126,7 @@ class FitIns {
  */
 class FitRes {
  public:
-  FitRes() {}
+  FitRes() = default;
   FitRes(Parameters parameters,
          int num_examples,
          int num_examples_ceil,
@@ -154,7 +155,7 @@ class FitRes {
           num_examples_ceil = n;
   }*/
   void setFit_duration(float f) { fit_duration = f; }
-  void setMetrics(flwr::Metrics m) { metrics = m; }
+  void setMetrics(flower::Metrics m) { metrics = m; }
 
  private:
   Parameters parameters;
@@ -192,7 +193,7 @@ class EvaluateIns {
  */
 class EvaluateRes {
  public:
-  EvaluateRes() {}
+  EvaluateRes() = default;
   EvaluateRes(float loss, int num_examples, float accuracy, Metrics metrics)
       : loss(loss), num_examples(num_examples), metrics(metrics) {}
 
@@ -212,15 +213,15 @@ class EvaluateRes {
   std::optional<Metrics> metrics = std::nullopt;
 };
 
-typedef std::map<std::string, flwr::Scalar> Config;
-typedef std::map<std::string, flwr::Scalar> Properties;
+typedef std::map<std::string, flower::Scalar> Config;
+typedef std::map<std::string, flower::Scalar> Properties;
 
 class PropertiesIns {
  public:
-  PropertiesIns() {}
+  PropertiesIns() = default;
 
-  std::map<std::string, flwr::Scalar> getPropertiesIns() {
-    return static_cast<std::map<std::string, flwr::Scalar>>(config);
+  std::map<std::string, flower::Scalar> getPropertiesIns() {
+    return static_cast<std::map<std::string, flower::Scalar>>(config);
   }
 
   void setPropertiesIns(Config c) { config = c; }
@@ -231,7 +232,7 @@ class PropertiesIns {
 
 class PropertiesRes {
  public:
-  PropertiesRes() {}
+  PropertiesRes() = default;
 
   Properties getPropertiesRes() { return properties; }
 
@@ -241,6 +242,36 @@ class PropertiesRes {
   Properties properties;
 };
 
-}  // namespace flwr
+class Result {
+  public:
+   Result() = default;
+
+   Result getTaskId() { return task_id; }
+   void setTaskId(int t) { task_id = t; }
+
+   string getClientMessage() { return message; }
+   void setClientMessage(ClientMessage m) { message = m; }
+
+  private:
+   int task_id;
+   ClientMessage message;
+}
+
+class TaskResult {
+  public:
+   TaskResult() = default;
+
+   Result getResult() { return result; }
+   void setResult(Result r) { result = r; }
+
+   string getToken() { return token; }
+   void setToken(std::string t) { token = t; }
+
+  private:
+   Result result;
+   std::string token;
+}
+
+}  // namespace flower
 
 #endif  // BRAVE_THIRD_PARTY_FLOWER_SRC_CC_FLWR_INCLUDE_TYPING_H_
