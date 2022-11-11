@@ -109,6 +109,15 @@ export const getWalletLocationTitle = (location: string) => {
   if (location === WalletRoutes.Swap) {
     return getLocale('braveWalletSwap')
   }
+  if (location === WalletRoutes.Send) {
+    return getLocale('braveWalletSend')
+  }
   /** Wallet */
   return getLocale('braveWalletTitle')
+}
+
+export const endsWithAny = (extensions: string[], url: string) => {
+  return extensions.some(function (suffix) {
+    return url.endsWith(suffix)
+  })
 }
