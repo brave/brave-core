@@ -49,14 +49,16 @@ extension BrowserViewController {
       return
     }
 
-    let popup = EnableVPNPopupViewController().then {
-      $0.isModalInPresentation = true
-      $0.modalPresentationStyle = .overFullScreen
+    var vpnDetailsView = OnboardingVPNDetailsView()
+    vpnDetailsView.learnMore = { [weak self] in
+      guard let self = self else { return }
+    
+      self.dismiss(animated: false) {
+        self.presentCorrespondingVPNViewController()
+      }
     }
-
-    popup.enableVPNTapped = { [weak self] in
-      self?.presentCorrespondingVPNViewController()
-    }
+    
+    let popup = PopupViewController(rootView: vpnDetailsView, isDismissable: true)
 
     isOnboardingOrFullScreenCalloutPresented = true
     showedPopup.value = true
