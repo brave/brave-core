@@ -93,7 +93,7 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
       local_frame = window->GetDisconnectedFrame();
     if (local_frame) {
       if (auto* top_local_frame =
-          blink::DynamicTo<blink::LocalFrame>(&local_frame->Tree().Top())) {
+              blink::DynamicTo<blink::LocalFrame>(&local_frame->Tree().Top())) {
         settings = top_local_frame->GetContentSettingsClient();
       } else {
         settings = local_frame->GetContentSettingsClient();
@@ -343,7 +343,7 @@ WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
   WTF::StringBuilder result;
   result.Append(real_user_agent);
   int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
-  for (int i = 0; i < extra + 1; i++)
+  for (int i = 0; i < extra; i++)
     result.Append(" ");
   return result.ToString();
 }
