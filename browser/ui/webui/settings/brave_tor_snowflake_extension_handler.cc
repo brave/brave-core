@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 
+#include <memory>
+#include <string>
+
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/tor/pref_names.h"
 #include "chrome/browser/extensions/extension_allowlist.h"

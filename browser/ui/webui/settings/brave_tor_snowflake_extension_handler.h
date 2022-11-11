@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_TOR_SNOWFLAKE_EXTENSION_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_TOR_SNOWFLAKE_EXTENSION_HANDLER_H_
 
+#include <string>
+
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"

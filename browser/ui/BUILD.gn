@@ -196,7 +196,7 @@ source_set("ui") {
       sources += [
         "webui/settings/brave_tor_snowflake_extension_handler.cc",
         "webui/settings/brave_tor_snowflake_extension_handler.h",
-      ]      
+      ]
     }
 
     public_deps += [ "//brave/vendor/bat-native-ads" ]
