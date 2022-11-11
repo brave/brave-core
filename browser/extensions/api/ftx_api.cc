@@ -185,10 +185,8 @@ void FtxGetAccountBalancesFunction::OnGetAccountBalances(
 }
 
 ExtensionFunction::ResponseAction FtxIsSupportedFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), ::ftx::unsupported_regions, false);
-  return RespondNow(OneArgument(base::Value(is_supported)));
+  // TODO(simonhong): Delete all ftx implemention.
+  return RespondNow(OneArgument(base::Value(false)));
 }
 
 ExtensionFunction::ResponseAction FtxGetConvertQuoteFunction::Run() {
