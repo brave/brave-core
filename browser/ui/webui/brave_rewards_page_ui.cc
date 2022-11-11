@@ -37,7 +37,6 @@
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -46,6 +45,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
@@ -193,6 +193,8 @@ class RewardsDOMHandler
 
   void OnExternalWalletTypeUpdated(brave_rewards::GetExternalWalletResult);
   void GetIsUnsupportedRegion(const base::Value::List& args);
+
+  void GetPluralString(const base::Value::List& args);
 
   // RewardsServiceObserver implementation
   void OnRewardsInitialized(
@@ -501,6 +503,11 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getIsUnsupportedRegion",
       base::BindRepeating(&RewardsDOMHandler::GetIsUnsupportedRegion,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getPluralString",
+      base::BindRepeating(&RewardsDOMHandler::GetPluralString,
                           base::Unretained(this)));
 }
 
@@ -1970,6 +1977,30 @@ void RewardsDOMHandler::GetIsUnsupportedRegion(const base::Value::List& args) {
                          base::Value(brave_rewards::IsUnsupportedRegion()));
 }
 
+void RewardsDOMHandler::GetPluralString(const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(3U, args.size());
+
+  // Adapted from `chrome/browser/ui/webui/plural_string_handler.cc`. The
+  // `PluralStringHandler` class is not current built on Android. Since this
+  // WebUI is shared between Android and desktop, we need to provide our own
+  // implementation for now.
+  const base::Value& callback_id = args[0];
+  std::string message_name = args[1].GetString();
+  int count = args[2].GetInt();
+
+  static const base::flat_map<std::string, int> name_to_id = {
+      {"publisherCountText", IDS_REWARDS_PUBLISHER_COUNT_TEXT},
+      {"onboardingSetupAdsPerHour",
+       IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR}};
+
+  auto message_id_it = name_to_id.find(message_name);
+  CHECK(name_to_id.end() != message_id_it);
+  auto string = l10n_util::GetPluralStringFUTF16(message_id_it->second, count);
+
+  ResolveJavascriptCallback(callback_id, base::Value(string));
+}
+
 void RewardsDOMHandler::CompleteReset(const base::Value::List& args) {
   if (!rewards_service_) {
     return;
@@ -2042,14 +2073,6 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
 #else
   source->AddBoolean("isAndroid", false);
 #endif
-
-  auto plural_string_handler = std::make_unique<PluralStringHandler>();
-  plural_string_handler->AddLocalizedString("publisherCountText",
-                                            IDS_REWARDS_PUBLISHER_COUNT_TEXT);
-  plural_string_handler->AddLocalizedString(
-      "onboardingSetupAdsPerHour",
-      IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR);
-  web_ui->AddMessageHandler(std::move(plural_string_handler));
 
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler* handler = handler_owner.get();
