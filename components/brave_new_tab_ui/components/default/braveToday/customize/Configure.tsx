@@ -12,7 +12,6 @@ import Button from '$web-components/button'
 import Toggle from '$web-components/toggle'
 import SourcesList from './SourcesList'
 import DisabledPlaceholder from './DisabledPlaceholder'
-import { useNewTabPref } from '../../../../hooks/usePref'
 import { useBraveNews } from './Context'
 import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
@@ -109,12 +108,22 @@ const Content = styled.div`
 `
 
 export default function Configure () {
-  const [enabled, setEnabled] = useNewTabPref('isBraveTodayOptedIn')
-  const { setCustomizePage, customizePage } = useBraveNews()
+  const {
+    setCustomizePage,
+    customizePage,
+    toggleBraveNewsOnNTP,
+    isOptInPrefEnabled,
+    isShowOnNTPPrefEnabled
+  } = useBraveNews()
+
+  // TODO(petemill): We'll probably need to have 2 toggles, or some other
+  // way to know if brave news is "enabled" when Brave News is exposed
+  // in places other than just the NTP. For now this is pretty tied to NTP.
+  const isBraveNewsFullyEnabled = isOptInPrefEnabled && isShowOnNTPPrefEnabled
 
   let content: JSX.Element
-  if (!enabled) {
-    content = <DisabledPlaceholder enableBraveNews={() => setEnabled(true)} />
+  if (!isBraveNewsFullyEnabled) {
+    content = <DisabledPlaceholder enableBraveNews={() => toggleBraveNewsOnNTP(true)} />
   } else if (customizePage === 'suggestions') {
     content = <SuggestionsPage/>
   } else if (customizePage === 'popular') {
@@ -141,15 +150,15 @@ export default function Configure () {
         <CloseButtonContainer>
           <Button onClick={() => setCustomizePage(null)}>{Cross}</Button>
         </CloseButtonContainer>
-        {enabled && <Flex direction="row" align="center" gap={8}>
+        {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveTodayTitle')}</HeaderText>
-          <Toggle isOn={enabled} onChange={setEnabled} />
+          <Toggle isOn={true} onChange={toggleBraveNewsOnNTP} />
         </Flex>}
       </Header>
       <Hr />
       <Sidebar>
         <SourcesList />
-        {!enabled && <SidebarOverlay />}
+        {!isBraveNewsFullyEnabled && <SidebarOverlay />}
       </Sidebar>
       <Content>
         {content}
