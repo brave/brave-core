@@ -4,8 +4,6 @@
 
 import * as React from 'react'
 
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
-
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { getUserType } from '../../shared/lib/user_type'
@@ -32,7 +30,7 @@ import * as style from './auto_contribute_panel.style'
 const maxTableSize = 5
 
 export function AutoContributePanel () {
-  const { getString } = React.useContext(LocaleContext)
+  const { getString, getPluralString } = React.useContext(LocaleContext)
   const actions = useActions()
 
   const data = useRewardsData((state) => ({
@@ -57,12 +55,8 @@ export function AutoContributePanel () {
   const [publisherCountText, setPublisherCountText] = React.useState('')
 
   React.useEffect(() => {
-    if (PluralStringProxyImpl) {
-      PluralStringProxyImpl
-        .getInstance()
-        .getPluralString('publisherCountText', data.autoContributeList.length)
-        .then(setPublisherCountText)
-    }
+    getPluralString('publisherCountText', data.autoContributeList.length)
+      .then(setPublisherCountText)
   }, [data.autoContributeList.length])
 
   const activityList = data.autoContributeList.sort(

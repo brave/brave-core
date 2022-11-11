@@ -19,7 +19,8 @@ export function getUserType (
       return 'legacy-unconnected'
     }
   } catch {
-    return 'legacy-unconnected'
+    // If `userVersion` is not a valid version string, assume that the user
+    // is a new, unconnected user.
   }
   return 'unconnected'
 }

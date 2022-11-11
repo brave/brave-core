@@ -121,9 +121,6 @@
   <message name="IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING" desc="">
     You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
   </message>
-  <message name="IDS_REWARDS_WIDGET_LEARN_MORE" desc="">
-    Learn more
-  </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
     Earn tokens and give back
   </message>

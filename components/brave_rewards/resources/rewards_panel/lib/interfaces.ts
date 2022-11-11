@@ -107,8 +107,6 @@ export type MonthlyTipAction = 'update' | 'cancel'
 export interface Host {
   state: HostState
   addListener: (callback: HostListener) => () => void
-  getString: (key: string) => string
-  getPluralString: (key: string, count: number) => Promise<string>
   enableRewards: (country: string) => Promise<OnboardingResult>
   openAdaptiveCaptchaSupport: () => void
   openRewardsSettings: () => void

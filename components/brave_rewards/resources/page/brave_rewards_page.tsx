@@ -12,6 +12,7 @@ import { createStore, bindActionCreators } from 'redux'
 
 import { loadTimeData } from '../../../common/loadTimeData'
 import { LocaleContext } from '../shared/lib/locale_context'
+import { createLocaleContextForWebUI } from '../shared/lib/webui_locale_context'
 import { PlatformContext } from './lib/platform_context'
 import { WithThemeVariables } from '../shared/components/with_theme_variables'
 import { createReducer } from './reducers'
@@ -27,10 +28,6 @@ const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
 function initialize () {
   initLocale(loadTimeData.data_)
 
-  const localeContext = {
-    getString: (key: string) => loadTimeData.getString(key)
-  }
-
   const platformInfo = {
     isAndroid: loadTimeData.getBoolean('isAndroid')
   }
@@ -38,7 +35,7 @@ function initialize () {
   render(
     <Provider store={store}>
       <ThemeProvider theme={Theme}>
-        <LocaleContext.Provider value={localeContext}>
+        <LocaleContext.Provider value={createLocaleContextForWebUI()}>
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
               <App />

@@ -4,7 +4,6 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { Host } from '../lib/interfaces'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
@@ -42,13 +41,11 @@ export function App (props: Props) {
 
   return (
     <HostContext.Provider value={props.host}>
-      <LocaleContext.Provider value={props.host}>
-        <WithThemeVariables>
-          <style.root>
-            {loading ? <Loading /> : <Panel key={panelKey} />}
-          </style.root>
-        </WithThemeVariables>
-      </LocaleContext.Provider>
+      <WithThemeVariables>
+        <style.root>
+          {loading ? <Loading /> : <Panel key={panelKey} />}
+        </style.root>
+      </WithThemeVariables>
     </HostContext.Provider>
   )
 }

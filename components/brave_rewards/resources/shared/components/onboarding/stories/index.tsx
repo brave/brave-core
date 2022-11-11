@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../../lib/locale_context'
+import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 
 import { RewardsTourModal } from '../rewards_tour_modal'
@@ -14,11 +14,7 @@ import { RewardsTourPromo } from '../rewards_tour_promo'
 
 import { localeStrings } from './locale_strings'
 
-const localeContext = {
-  getString (key: string) {
-    return localeStrings[key] || 'MISSING'
-  }
-}
+const localeContext = createLocaleContextForTesting(localeStrings)
 
 function actionLogger (name: string) {
   return (...args: any[]) => {

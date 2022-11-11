@@ -18,7 +18,7 @@ import * as style from './limited_view.style'
 
 export function LimitedView () {
   const host = React.useContext(HostContext)
-  const { getString } = React.useContext(LocaleContext)
+  const { getString, getPluralString } = React.useContext(LocaleContext)
 
   const [declaredCountry, setDeclaredCountry] =
     React.useState(host.state.declaredCountry)
@@ -46,9 +46,9 @@ export function LimitedView () {
   })
 
   React.useEffect(() => {
-    host.getPluralString('publisherCountText', publishersVisitedCount)
+    getPluralString('publisherCountText', publishersVisitedCount)
       .then(setPublisherCountText)
-  }, [host, publishersVisitedCount])
+  }, [publishersVisitedCount])
 
   function onToggleAdsEnabled () {
     host.setAdsEnabled(!adsEnabled)

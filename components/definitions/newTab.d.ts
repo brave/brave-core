@@ -159,11 +159,13 @@ declare namespace NewTab {
 
   export interface RewardsWidgetState {
     rewardsEnabled: boolean
+    userVersion: string
     isUnsupportedRegion: boolean
     declaredCountry: string
     adsSupported?: boolean
     balance: RewardsBalance
     externalWallet?: RewardsExtension.ExternalWallet
+    externalWalletProviders?: string[]
     report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
@@ -172,6 +174,7 @@ declare namespace NewTab {
     promotions: Promotion[]
     parameters: RewardsParameters
     totalContribution: number
+    publishersVisitedCount: number
   }
 
   export const enum RewardsResult {
@@ -235,6 +238,7 @@ declare namespace NewTab {
     rate: number
     monthlyTipChoices: number[]
     payoutStatus?: Record<string, ProviderPayoutStatus>
+    walletProviderRegions?: Record<string, { allow: string[], block: string[] } | undefined>
   }
 
   export interface DefaultSuperReferralTopSite {

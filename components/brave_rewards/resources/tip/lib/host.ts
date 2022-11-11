@@ -3,7 +3,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { addWebUIListener } from 'chrome://resources/js/cr.m'
-import { loadTimeData } from '../../../../common/loadTimeData'
 
 import { createStateManager } from '../../shared/lib/state_manager'
 
@@ -200,10 +199,6 @@ export function createHost (): Host {
 
     get state () {
       return stateManager.getState()
-    },
-
-    getString (key: string) {
-      return loadTimeData.getString(key)
     },
 
     getDialogArgs () {

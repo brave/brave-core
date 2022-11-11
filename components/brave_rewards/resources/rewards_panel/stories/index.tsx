@@ -10,7 +10,7 @@ import { Notification } from '../../shared/components/notifications'
 import { localeStrings } from './locale_strings'
 import { createStateManager } from '../../shared/lib/state_manager'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { LocaleContext, createLocaleContextForTesting } from '../../shared/lib/locale_context'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
 import { NotificationCard } from '../components/notification_card'
 
@@ -23,11 +23,7 @@ export default {
   title: 'Rewards/Panel'
 }
 
-const locale = {
-  getString (key: string) {
-    return localeStrings[key] || 'MISSING'
-  }
-}
+const locale = createLocaleContextForTesting(localeStrings)
 
 function actionLogger (name: string) {
   return (...args: any[]) => {
@@ -129,12 +125,6 @@ function createHost (): Host {
     get state () { return stateManager.getState() },
 
     addListener: stateManager.addListener,
-
-    getString: locale.getString,
-
-    async getPluralString (key: string, count: number) {
-      return locale.getString(key).replace('$1', count)
-    },
 
     refreshPublisherStatus () {
       console.log('refreshPublisherStatus')
@@ -291,7 +281,9 @@ export function MainPanel () {
   const [host] = React.useState(() => createHost())
   return (
     <div className='brave-theme-dark'>
-      <App host={host} />
+      <LocaleContext.Provider value={locale}>
+        <App host={host} />
+      </LocaleContext.Provider>
     </div>
   )
 }

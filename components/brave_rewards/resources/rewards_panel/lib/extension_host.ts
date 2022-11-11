@@ -3,7 +3,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from 'gen/brave/components/brave_rewards/common/brave_rewards_panel.mojom.m.js'
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 
 import { Host, GrantCaptchaStatus } from './interfaces'
 import { GrantInfo } from '../../shared/lib/grant_info'
@@ -48,10 +47,6 @@ function openTab (url: string) {
     return
   }
   chrome.tabs.create({ url })
-}
-
-function getString (key: string) {
-  return String((window as any).loadTimeData.getString(key) || '')
 }
 
 export function createHost (): Host {
@@ -410,12 +405,6 @@ export function createHost (): Host {
     get state () { return stateManager.getState() },
 
     addListener: stateManager.addListener,
-
-    getString,
-
-    getPluralString (key: string, count: number) {
-      return PluralStringProxyImpl.getInstance().getPluralString(key, count)
-    },
 
     enableRewards (country: string) {
       return apiAdapter.createRewardsWallet(country)

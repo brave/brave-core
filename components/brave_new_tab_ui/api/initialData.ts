@@ -24,6 +24,7 @@ export type InitialData = {
 
 export type PreInitialRewardsData = {
   rewardsEnabled: boolean
+  userVersion: string
   isUnsupportedRegion: boolean
   declaredCountry: string
   enabledAds: boolean
@@ -35,8 +36,10 @@ export type InitialRewardsData = {
   report: NewTab.RewardsBalanceReport
   balance: NewTab.RewardsBalance
   externalWallet?: RewardsExtension.ExternalWallet
+  externalWalletProviders?: string[]
   adsAccountStatement: NewTab.AdsAccountStatement
   parameters: NewTab.RewardsParameters
+  publishersVisitedCount: number
 }
 
 const isIncognito: boolean = chrome.extension.inIncognitoContext
@@ -104,6 +107,7 @@ export async function getInitialData (): Promise<InitialData> {
 export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
   const [
     rewardsEnabled,
+    userVersion,
     isUnsupportedRegion,
     declaredCountry,
     enabledAds,
@@ -112,6 +116,8 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
   ] = await Promise.all([
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.getRewardsEnabled(resolve)),
+    new Promise<string>(
+      (resolve) => chrome.braveRewards.getUserVersion(resolve)),
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.isUnsupportedRegion(resolve)),
     new Promise<string>(
@@ -127,6 +133,7 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
 
   return {
     rewardsEnabled,
+    userVersion,
     isUnsupportedRegion,
     declaredCountry,
     enabledAds,
@@ -142,7 +149,9 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       report,
       balance,
       parameters,
-      externalWallet
+      externalWallet,
+      externalWalletProviders,
+      publishersVisitedCount
     ] = await Promise.all([
       new Promise(resolve => chrome.braveRewards.getAdsAccountStatement((success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => {
         resolve(success ? adsAccountStatement : undefined)
@@ -160,6 +169,12 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
         chrome.braveRewards.getExternalWallet((wallet) => resolve(wallet))
       }),
       new Promise(resolve => {
+        chrome.braveRewards.getExternalWalletProviders(resolve)
+      }),
+      new Promise(resolve => {
+        chrome.braveRewards.getPublishersVisitedCount(resolve)
+      }),
+      new Promise(resolve => {
         chrome.braveRewards.fetchPromotions(resolve)
       })
     ])
@@ -168,7 +183,9 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       report,
       balance,
       parameters,
-      externalWallet
+      externalWallet,
+      externalWalletProviders,
+      publishersVisitedCount
     } as InitialRewardsData
   } catch (err) {
     throw Error(err)
