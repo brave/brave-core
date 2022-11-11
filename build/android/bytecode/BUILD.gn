@@ -68,6 +68,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsCategoryClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsDelegateClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsPreferencesBaseClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStartupPaintPreviewHelperClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStatusMediatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabGroupUiCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabSwitcherModeTTCoordinatorClassAdapter.java",

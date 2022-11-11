@@ -645,3 +645,8 @@
     public <init>(...);
     *** updateVisibility(...);
 }
+
+
+-keep class org.chromium.chrome.browser.paint_preview.StartupPaintPreviewHelper {
+    *** isEnabled(...);
+}
