@@ -16,7 +16,6 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionAndAu
 
 public class BraveRadioButtonGroupSafeBrowsingPreference
         extends RadioButtonGroupSafeBrowsingPreference {
-    private RadioButtonWithDescriptionAndAuxButton mEnhancedProtection;
     private String noProtectionSummary;
 
     public BraveRadioButtonGroupSafeBrowsingPreference(Context context, AttributeSet attrs) {
