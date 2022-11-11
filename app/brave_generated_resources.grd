@@ -830,6 +830,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
           Show title bar
         </message>
+        <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
+          Float on mouseover
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -839,7 +842,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Use Vertical Tabs
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
-          Show title bar
+          Show Title Bar
+        </message>
+        <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
+          Float on Mouseover
         </message>
       </if>
 

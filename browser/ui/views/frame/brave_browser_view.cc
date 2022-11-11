@@ -432,8 +432,9 @@ void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
 
   if (vertical_tab_strip_host_view_) {
-    VerticalTabStripWidgetDelegateView::Create(this,
-                                               vertical_tab_strip_host_view_);
+    vertical_tab_strip_widget_delegate_view_ =
+        VerticalTabStripWidgetDelegateView::Create(
+            this, vertical_tab_strip_host_view_);
   }
 }
 

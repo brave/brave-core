@@ -32,6 +32,9 @@ bool ShouldShowVerticalTabs(const Browser* browser);
 // tab strip is enabled.
 bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser);
 
+// Returns true if we should trigger floating vertical tab strip on mouse over.
+bool IsFloatingVerticalTabsEnabled(const Browser* browser);
+
 // Returns window caption buttons' width based on the current platform
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
     const BrowserFrame* frame);

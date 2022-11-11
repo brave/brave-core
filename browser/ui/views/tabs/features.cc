@@ -56,6 +56,14 @@ bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
       brave_tabs::kVerticalTabsShowTitleOnWindow);
 }
 
+bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
+  if (!ShouldShowVerticalTabs(browser))
+    return false;
+
+  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsFloatingEnabled);
+}
+
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
     const BrowserFrame* frame) {
 #if BUILDFLAG(IS_MAC)

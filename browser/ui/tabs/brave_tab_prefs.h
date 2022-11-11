@@ -18,6 +18,7 @@ extern const char kTabHoverMode[];
 extern const char kVerticalTabsEnabled[];
 extern const char kVerticalTabsCollapsed[];
 extern const char kVerticalTabsShowTitleOnWindow[];
+extern const char kVerticalTabsFloatingEnabled[];
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 

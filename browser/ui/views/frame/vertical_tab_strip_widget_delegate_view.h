@@ -38,7 +38,8 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
  public:
   METADATA_HEADER(VerticalTabStripWidgetDelegateView);
 
-  static void Create(BrowserView* browser_view, views::View* host_view);
+  static VerticalTabStripWidgetDelegateView* Create(BrowserView* browser_view,
+                                                    views::View* host_view);
   ~VerticalTabStripWidgetDelegateView() override;
 
   // views::WidgetDelegateView:
@@ -56,6 +57,8 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   void OnWidgetDestroying(views::Widget* widget) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
+
   VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
                                      views::View* host);
   void UpdateWidgetBounds();

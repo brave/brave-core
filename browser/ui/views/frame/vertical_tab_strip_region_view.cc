@@ -278,6 +278,13 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
                           base::Unretained(this)));
   OnCollapsedPrefChanged();
+
+  floating_mode_pref_.Init(
+      brave_tabs::kVerticalTabsFloatingEnabled, prefs,
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnFloatingModePrefChanged,
+          base::Unretained(this)));
+  OnFloatingModePrefChanged();
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
@@ -383,7 +390,7 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
-  if (IsMouseHovered()) {
+  if (IsMouseHovered() && !mouse_events_for_test_) {
     // On Windows, when mouse moves into the area which intersects with web
     // view, OnMouseExited() is invoked even mouse is on this view.
     return;
@@ -395,13 +402,10 @@ void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
 }
 
 void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
-  mouse_enter_timer_.Stop();
-  if (state_ == State::kCollapsed) {
-    mouse_enter_timer_.Start(
-        FROM_HERE, base::Milliseconds(400),
-        base::BindOnce(&VerticalTabStripRegionView::SetState,
-                       base::Unretained(this), State::kFloating));
-  }
+  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_))
+    return;
+
+  ScheduleFloatingModeTimer();
 }
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
@@ -423,6 +427,17 @@ void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
   SetState(collapsed_pref_.GetValue() ? State::kCollapsed : State::kExpanded);
 }
 
+void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
+  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_)) {
+    if (state_ == State::kFloating)
+      SetState(State::kCollapsed);
+    return;
+  }
+
+  if (IsMouseHovered())
+    ScheduleFloatingModeTimer();
+}
+
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     State state) const {
   if (!tabs::features::ShouldShowVerticalTabs(browser_))
@@ -440,6 +455,21 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
   return {tabs::kVerticalTabMinWidth, View::CalculatePreferredSize().height()};
+}
+
+void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
+  if (mouse_events_for_test_) {
+    SetState(State::kFloating);
+    return;
+  }
+
+  mouse_enter_timer_.Stop();
+  if (state_ == State::kCollapsed) {
+    mouse_enter_timer_.Start(
+        FROM_HERE, base::Milliseconds(400),
+        base::BindOnce(&VerticalTabStripRegionView::SetState,
+                       base::Unretained(this), State::kFloating));
+  }
 }
 
 BEGIN_METADATA(VerticalTabStripRegionView, views::View)
