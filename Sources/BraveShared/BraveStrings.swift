@@ -3257,12 +3257,12 @@ extension Strings {
       comment: ""
     )
     public static let introCardTitle = NSLocalizedString("today.introCardTitle", tableName: "BraveShared", bundle: .module,
-      value: "Today's top stories in a completely private feed, just for you.",
-      comment: ""
+      value: "Turn on Brave News, and never miss a story",
+      comment: "Shown above a button that turns on the \"Brave News\" product in the app."
     )
     public static let introCardBody = NSLocalizedString("today.introCardBody", tableName: "BraveShared", bundle: .module,
-      value: "Brave News is ad-supported with completely private and anonymized ads matched on your device.",
-      comment: ""
+      value: "Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!\nBrave News is ad-supported with private, anonymized ads.",
+      comment: "Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs."
     )
     public static let introCardNew = NSLocalizedString("today.introCardNew", tableName: "BraveShared", bundle: .module,
       value: "New",

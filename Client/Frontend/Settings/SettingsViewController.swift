@@ -239,7 +239,11 @@ class SettingsViewController: TableViewController {
       Row(
         text: Strings.BraveNews.braveNews,
         selection: {
-          let controller = NewsSettingsViewController(dataSource: self.feedDataSource)
+          let controller = NewsSettingsViewController(dataSource: self.feedDataSource, openURL: { [weak self] url in
+            guard let self else { return }
+            self.dismiss(animated: true)
+            self.settingsDelegate?.settingsOpenURLs([url])
+          })
           controller.viewDidDisappear = {
             if Preferences.Review.braveNewsCriteriaPassed.value {
               AppReviewManager.shared.isReviewRequired = true

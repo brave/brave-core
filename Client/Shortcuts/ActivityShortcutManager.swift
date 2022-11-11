@@ -162,7 +162,10 @@ public class ActivityShortcutManager: NSObject {
         guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else { return }
         newTabPageController.scrollToBraveNews()
       } else {
-        let controller = NewsSettingsViewController(dataSource: bvc.feedDataSource)
+        let controller = NewsSettingsViewController(dataSource: bvc.feedDataSource, openURL: { url in
+          bvc.dismiss(animated: true)
+          bvc.select(url: url, visitType: .link)
+        })
         controller.viewDidDisappear = {
           if Preferences.Review.braveNewsCriteriaPassed.value {
             AppReviewManager.shared.isReviewRequired = true

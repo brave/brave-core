@@ -8,104 +8,7 @@ import BraveShared
 import SwiftUI
 import Combine
 import BraveUI
-
-struct Divided<Content: View, Divider: View>: View {
-  var content: Content
-  var divider: Divider
-  
-  init(
-    by divider: Divider,
-    @ViewBuilder content: () -> Content
-  ) {
-    self.divider = divider
-    self.content = content()
-  }
-  
-  private struct _Layout<Divider: View>: _VariadicView_MultiViewRoot {
-    var divider: Divider
-    func body(children: _VariadicView.Children) -> some View {
-      let last = children.last?.id
-      ForEach(children) { child in
-        child
-        if child.id != last {
-          divider
-        }
-      }
-    }
-  }
-  
-  var body: some View {
-    _VariadicView.Tree(_Layout(divider: divider)) {
-      content
-    }
-  }
-}
-
-struct DestinationLabel<Title: View>: View {
-  var image: Image
-  var title: Title
-  var subtitle: String?
-  
-  @ScaledMetric private var imageSize: CGFloat = 38.0
-  
-  init(
-    image: Image,
-    @ViewBuilder title: () -> Title,
-    subtitle: String? = nil
-  ) {
-    self.image = image
-    self.title = title()
-    self.subtitle = subtitle
-  }
-  
-  var body: some View {
-    HStack(spacing: 12) {
-      image
-        .foregroundColor(Color(.braveLabel))
-        .frame(width: imageSize, height: imageSize)
-        .background(Color(.secondaryBraveBackground).clipShape(Circle()))
-      VStack(alignment: .leading, spacing: 2) {
-        title
-          .font(.headline)
-          .foregroundColor(Color(.braveLabel))
-        if let subtitle {
-          Text(subtitle)
-            .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
-        }
-      }
-    }
-    .padding(.vertical, 6)
-  }
-}
-
-extension DestinationLabel where Title == Text {
-  init(
-    image: Image,
-    title: String,
-    subtitle: String? = nil
-  ) {
-    self.init(image: image, title: { Text(title) }, subtitle: subtitle)
-  }
-}
-
-private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
-  @Published var query: String = ""
-  @Published var isEditing: Bool = false
-  
-  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-    isEditing = true
-  }
-  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-    isEditing = false
-  }
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    query = searchText
-  }
-  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    query = ""
-  }
-}
+import BraveCore
 
 public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
   private let dataSource: FeedDataSource
@@ -113,9 +16,15 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
   private var cancellables: Set<AnyCancellable> = []
   public var viewDidDisappear: (() -> Void)?
   
-  public init(dataSource: FeedDataSource) {
+  public init(
+    dataSource: FeedDataSource,
+    openURL: @escaping (URL) -> Void
+  ) {
     self.dataSource = dataSource
     super.init(rootView: NewsSettingsView(dataSource: dataSource, searchDelegate: searchDelegate))
+    rootView.tappedOptInLearnMore = {
+      openURL(BraveUX.braveNewsPrivacyURL)
+    }
   }
   
   public override func viewDidLoad() {
@@ -143,6 +52,12 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       .sink { [weak self] isEnabled in
         guard let self else { return }
         self.navigationItem.searchController = isEnabled ? self.searchController : nil
+      }
+      .store(in: &cancellables)
+    
+    Preferences.BraveNews.userOptedIn.$value
+      .sink { [weak self] isOptedIn in
+        self?.navigationController?.setToolbarHidden(!isOptedIn, animated: true)
       }
       .store(in: &cancellables)
     
@@ -175,7 +90,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
   
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    navigationController?.setToolbarHidden(false, animated: animated)
+    navigationController?.setToolbarHidden(!Preferences.BraveNews.userOptedIn.value, animated: animated)
   }
   
   public override func viewWillDisappear(_ animated: Bool) {
@@ -197,6 +112,9 @@ public struct NewsSettingsView: View {
   @ObservedObject var dataSource: FeedDataSource
   @ObservedObject fileprivate var searchDelegate: SearchDelegate
   @ObservedObject private var isNewsEnabled = Preferences.BraveNews.isEnabled
+  @ObservedObject private var userOptedIn = Preferences.BraveNews.userOptedIn
+  
+  fileprivate var tappedOptInLearnMore: (() -> Void)?
   @State private var searchResults: SearchResults?
   @State private var isShowingImportOPML: Bool = false
   
@@ -311,19 +229,111 @@ public struct NewsSettingsView: View {
     })
     .toolbar {
       ToolbarItemGroup(placement: .bottomBar) {
-        Spacer()
-        Menu {
-          Button {
-            isShowingImportOPML = true
+        if userOptedIn.value {
+          Spacer()
+          Menu {
+            Button {
+              isShowingImportOPML = true
+            } label: {
+              Label("Import OPML…", systemImage: "square.and.arrow.down") // TODO: Localize
+            }
           } label: {
-            Label("Import OPML…", systemImage: "square.and.arrow.down") // TODO: Localize
+            Image(systemName: "ellipsis")
           }
-        } label: {
-          Image(systemName: "ellipsis")
         }
       }
     }
     .opmlImporter(isPresented: $isShowingImportOPML, dataSource: dataSource)
+    .overlay(optInView)
+  }
+  
+  @ViewBuilder private var optInView: some View {
+    if !userOptedIn.value {
+      OptInView { @MainActor in
+        Preferences.BraveNews.isShowingOptIn.value = false
+        Preferences.BraveNews.isEnabled.value = true
+        // Initialize ads if it hasn't already been done
+        await dataSource.ads?.initialize()
+        await withCheckedContinuation { c in
+          dataSource.load {
+            c.resume()
+          }
+        }
+        withAnimation {
+          userOptedIn.value = true
+        }
+      } tappedLearnMore: {
+        tappedOptInLearnMore?()
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(Color(.braveBackground).ignoresSafeArea())
+    }
+  }
+}
+
+private struct DestinationLabel<Title: View>: View {
+  var image: Image
+  var title: Title
+  var subtitle: String?
+  
+  @ScaledMetric private var imageSize: CGFloat = 38.0
+  
+  init(
+    image: Image,
+    @ViewBuilder title: () -> Title,
+    subtitle: String? = nil
+  ) {
+    self.image = image
+    self.title = title()
+    self.subtitle = subtitle
+  }
+  
+  var body: some View {
+    HStack(spacing: 12) {
+      image
+        .foregroundColor(Color(.braveLabel))
+        .frame(width: imageSize, height: imageSize)
+        .background(Color(.secondaryBraveBackground).clipShape(Circle()))
+      VStack(alignment: .leading, spacing: 2) {
+        title
+          .font(.headline)
+          .foregroundColor(Color(.braveLabel))
+        if let subtitle {
+          Text(subtitle)
+            .font(.subheadline)
+            .foregroundColor(Color(.secondaryBraveLabel))
+        }
+      }
+    }
+    .padding(.vertical, 6)
+  }
+}
+
+extension DestinationLabel where Title == Text {
+  init(
+    image: Image,
+    title: String,
+    subtitle: String? = nil
+  ) {
+    self.init(image: image, title: { Text(title) }, subtitle: subtitle)
+  }
+}
+
+private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
+  @Published var query: String = ""
+  @Published var isEditing: Bool = false
+  
+  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    isEditing = true
+  }
+  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    isEditing = false
+  }
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    query = searchText
+  }
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    query = ""
   }
 }
 
@@ -332,7 +342,7 @@ struct NewsSettingsView_PreviewProvider: PreviewProvider {
   static var previews: some View {
     UIKitController(
       UINavigationController(
-        rootViewController: NewsSettingsViewController(dataSource: .init())
+        rootViewController: NewsSettingsViewController(dataSource: .init(), openURL: { _ in })
       )
     )
     .accentColor(Color(.braveOrange))
