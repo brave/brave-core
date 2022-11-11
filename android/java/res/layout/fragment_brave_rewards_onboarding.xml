@@ -45,8 +45,8 @@
                 android:text="@string/brave_rewards_onboarding_title"
                 android:textColor="@color/onboarding_text_color"
                 android:textSize="@dimen/onboarding_text_size"
-                android:lineSpacingMultiplier="1.2"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_600"
+                android:lineSpacingMultiplier="1.2" />
 
             <TextView
                 android:id="@+id/section_text"
@@ -60,6 +60,7 @@
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.2"
+                android:fontFamily="@font/poppins_400"
                 android:textColor="@color/onboarding_text_color"
                 android:textSize="@dimen/onboarding_text_size" />
 
@@ -93,6 +94,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/skip"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/onboarding_gray" />
 
             <android.widget.Button

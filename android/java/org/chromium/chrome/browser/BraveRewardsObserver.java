@@ -6,7 +6,8 @@ package org.chromium.chrome.browser;
 
 public interface BraveRewardsObserver {
     default public void onCreateRewardsWallet(String result){};
-    default public void OnRewardsParameters(int errorCode){};
+    default public void OnRewardsParameters(){};
+    default public void onBalance(int errorCode){};
     default public void OnPublisherInfo(int tabId){};
     default public void OnGetCurrentBalanceReport(double[] report){};
     default public void OnNotificationAdded(String id, int type, long timestamp, String[] args){};
@@ -35,4 +36,5 @@ public interface BraveRewardsObserver {
     default public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
             int adsReceivedThisMonth, double earningsThisMonth, double earningsLastMonth){};
     default public void onPublisherBanner(String jsonBannerInfo){};
+    default public void onGetPublishersVisitedCount(int count){};
 }

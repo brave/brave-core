@@ -112,10 +112,15 @@
     <color name="rewards_panel_card_bg_color">#000000</color>
     <color name="rewards_panel_action_color">#737ADE</color>
     <color name="rewards_panel_verified_button_border">#84889C</color>
+    <color name="rewards_panel_notification_date_border">#5E6175</color>
     <color name="rewards_panel_summary_title_bg">#AD17171F</color>
     <color name="rewards_panel_summary_bg">#9E17171F</color>
     <color name="rewards_panel_summary_divider_color">#66FFFFFF</color>
     <color name="rewards_panel_foreground_color">#80FFFFFF</color>
+    <color name="rewards_unverified_section_bg_color">#1AFFFFFF</color>
+    <color name="rewards_panel_notification_text_color">#ECEFF2</color>
+    <color name="rewards_panel_notification_secondary_text_color">#C2C4CF</color>
+    <color name="rewards_panel_notification_bg_color">#121316</color>
 
     <color name="rewards_divider_color">#3B3E4F</color>
 

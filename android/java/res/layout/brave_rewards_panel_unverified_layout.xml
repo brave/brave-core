@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/unverified_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:visibility="gone"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:fontFamily="@font/poppins_600"
+                android:textColor="@color/rewards_panel_text_color"
+                android:text="@string/menu_brave_rewards"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/unverified_toggle_sub_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:fontFamily="@font/poppins_400"
+                android:textColor="@color/rewards_panel_secondary_text_color"
+                android:text="@string/rewards_panel_unverified_switch_off_sub_text"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/brave_rewards_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:theme="@style/BraveRewardsSwitchTheme" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rewards_panel_unverified_on_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rewards_settings_gradient_bg"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/connect_account_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="14dp"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/connect_account"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_600"
+                android:background="@drawable/wallet_verify_button"
+                app:drawableEndCompat="@drawable/ic_arrow_circle_right" />
+
+            <TextView
+                android:id="@+id/rewards_panel_unverified_on_section_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_400" />
+
+            <TextView
+                android:id="@+id/rewards_panel_unverified_on_section_learn_more_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_learn_more"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_600" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/rewards_panel_unverified_creator_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rewards_panel_unverified_off_bg"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rewards_panel_unverified_creator_count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_400"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/wallet_secondary_layout_text_color"
+            android:layout_marginEnd="16dp"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/rewards_panel_unverified_creator_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/poppins_400"
+            android:textColor="@color/wallet_secondary_layout_text_color"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rewards_panel_unverified_off_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rewards_panel_unverified_off_bg"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_bat_unverified_off"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_400"
+            android:textColor="@color/wallet_secondary_layout_text_color"
+            android:text="@string/rewards_panel_unverified_off_section_text"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rewards_settings_button"
+        style="@style/BraveWalletButtonHollow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        tools:ignore="UseCompoundDrawables"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_settings_dapps"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/poppins_600"
+            android:textColor="@color/rewards_panel_text_color"
+            android:text="@string/rewards_settings"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/learn_more_unverified_text"
+        style="@style/BraveWalletTextView"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_600"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/learn_more_about_bat"
+        android:textColor="@color/brave_link" />
+
+</LinearLayout>

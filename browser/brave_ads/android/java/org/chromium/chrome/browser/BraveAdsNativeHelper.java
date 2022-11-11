@@ -18,8 +18,8 @@ public class BraveAdsNativeHelper {
         return BraveAdsNativeHelperJni.get().isBraveAdsEnabled(profile);
     };
 
-    public static void nativeSetAdsEnabled(Profile profile) {
-        BraveAdsNativeHelperJni.get().setAdsEnabled(profile);
+    public static void nativeSetAdsEnabled(Profile profile, boolean should_enable_ads) {
+        BraveAdsNativeHelperJni.get().setAdsEnabled(profile, should_enable_ads);
     };
 
     public static boolean nativeIsSupportedLocale(Profile profile) {
@@ -42,7 +42,7 @@ public class BraveAdsNativeHelper {
     @NativeMethods
     interface Natives {
         boolean isBraveAdsEnabled(Profile profile);
-        void setAdsEnabled(Profile profile);
+        void setAdsEnabled(Profile profile, boolean should_enable_ads);
         boolean isSupportedLocale(Profile profile);
         void onNotificationAdShown(Profile profile, String j_notification_id);
         void onNotificationAdClosed(Profile profile, String j_notification_id, boolean j_by_user);

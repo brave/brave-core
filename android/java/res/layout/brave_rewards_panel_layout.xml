@@ -15,6 +15,7 @@
         app:cardElevation="0dp">
 
                 <FrameLayout
+                    android:id="@+id/panel_main_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -34,10 +35,19 @@
                         android:id="@+id/brave_rewards_onboarding_layout_id"
                         layout="@layout/brave_rewards_onboarding_layout"/>
 
+                    <include
+                        android:id="@+id/brave_rewards_panel_unverified_layout_id"
+                        layout="@layout/brave_rewards_panel_unverified_layout"/>
+
+                    <include
+                        android:id="@+id/connect_account_layout_id"
+                        layout="@layout/connect_account_layout" />
+
                     <LinearLayout
                         android:id="@+id/rewards_main_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <androidx.cardview.widget.CardView 
@@ -64,13 +74,7 @@
 
                     </LinearLayout>
 
-                    <include
-                        android:id="@+id/brave_rewards_welcome_layout_id"
-                        layout="@layout/brave_rewards_welcome_layout"/>
-
                 </FrameLayout>
-
-            
 
     </androidx.cardview.widget.CardView>
 

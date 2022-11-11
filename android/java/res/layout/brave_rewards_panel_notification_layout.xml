@@ -3,20 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="16dp"
+    android:layout_margin="16dp"
     android:layout_gravity="bottom"
-    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
+    app:cardBackgroundColor="@color/rewards_panel_notification_bg_color"
     android:visibility="gone"
-    app:contentPadding="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
         <FrameLayout
@@ -30,12 +27,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
-                android:background="@drawable/unverified_48_rounded_bg"
+                android:background="@drawable/rewards_panel_notification_date_bg"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:fontFamily="@font/poppins_regular"
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/poppins_600"
                 app:drawableStartCompat="@drawable/ic_calendar" />
 
             <ImageView
@@ -45,35 +44,51 @@
                 android:contentDescription="@null"
                 android:padding="8dp"
                 android:layout_gravity="end|center_vertical"
+                app:tint="@color/onboarding_gray"
                 app:srcCompat="@drawable/ic_close_12"/>
 
         </FrameLayout>
+
+        <ImageView
+            android:id="@+id/notification_claim_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_notification_claim"/>
 
         <TextView
             android:id="@+id/notification_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/rewards_panel_text_color"
+            android:textSize="16sp"
+            android:textColor="@color/rewards_panel_notification_text_color"
             android:drawablePadding="4dp"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/poppins_regular"
-            android:layout_gravity="center_horizontal" />
+            android:layout_marginHorizontal="8dp"
+            android:fontFamily="@font/poppins_500"
+            android:textAlignment="center"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/notification_subtitle_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/rewards_panel_secondary_text_color"
+            android:textColor="@color/rewards_panel_notification_secondary_text_color"
             android:layout_marginBottom="16dp"
-            android:fontFamily="@font/poppins_regular"
+            android:layout_marginHorizontal="8dp"
+            android:fontFamily="@font/poppins_400"
+            android:textAlignment="center"
             android:layout_gravity="center_horizontal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:id="@+id/btn_action_notification"
@@ -84,8 +99,8 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:fontFamily="@font/poppins_regular"
-                android:textColor="@android:color/white" />
+                android:fontFamily="@font/poppins_600"
+                android:textColor="@color/rewards_panel_notification_action_color" />
 
             <ProgressBar
                 android:id="@+id/claim_progress"
@@ -97,6 +112,17 @@
                 android:visibility="visible"/>
 
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/notification_claim_subtitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/rewards_panel_notification_secondary_text_color"
+            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="8dp"
+            android:fontFamily="@font/poppins_600"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

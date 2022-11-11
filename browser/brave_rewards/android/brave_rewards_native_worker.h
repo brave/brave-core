@@ -54,6 +54,8 @@ class BraveRewardsNativeWorker
 
   void GetRewardsParameters(JNIEnv* env);
 
+  void FetchBalance(JNIEnv* env);
+
   void GetPublisherInfo(JNIEnv* env,
                         int tabId,
                         const base::android::JavaParamRef<jstring>& host);
@@ -63,6 +65,8 @@ class BraveRewardsNativeWorker
   base::android::ScopedJavaLocalRef<jstring> GetExternalWalletType(JNIEnv* env);
 
   void GetAdsAccountStatement(JNIEnv* env);
+
+  bool CanConnectAccount(JNIEnv* env);
 
   base::android::ScopedJavaLocalRef<jdoubleArray> GetTipChoices(JNIEnv* env);
 
@@ -156,6 +160,10 @@ class BraveRewardsNativeWorker
   void GetPublisherBanner(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher_key);
+
+  void GetPublishersVisitedCount(JNIEnv* env);
+
+  void OnGetPublishersVisitedCount(int count);
 
   void DisconnectWallet(JNIEnv* env);
 
