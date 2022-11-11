@@ -798,6 +798,7 @@ const string kSolanaSystemProgramId = "11111111111111111111111111111111";
 const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
 const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
+const string kSolanaMetadataProgramId = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
 
 // It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
@@ -973,6 +974,8 @@ interface JsonRpcService {
   GetSPLTokenAccountBalance(string wallet_address, string token_mint_address, string chain_id) =>
       (string amount, uint8 decimals, string uiAmountString,
        SolanaProviderError error, string error_message);
+  // Returns the metadata json associated with the NFT account address
+  GetSolTokenMetadata(string token_mint_address) => (string response, SolanaProviderError error, string error_message);
 };
 
 enum TransactionStatus {
