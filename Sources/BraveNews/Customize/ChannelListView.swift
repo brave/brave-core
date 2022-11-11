@@ -5,6 +5,7 @@
 
 import Foundation
 import SwiftUI
+import BraveUI
 
 struct ChannelListContainerView: View {
   @ObservedObject var dataSource: FeedDataSource
@@ -26,26 +27,17 @@ private struct ChannelListView: View {
   var isFollowingChannel: (String) -> Binding<Bool>
   
   var body: some View {
-    ScrollView(.vertical) {
-      LazyVStack(spacing: 0) {
-        Divider()
-        Divided(
-          by: Divider().padding(.leading)
-        ) {
-          ForEach(channels.sorted(), id: \.self) { channel in
-            ChannelLabel(
-              title: channel,
-              isFollowing: isFollowingChannel(channel)
-            )
-            .padding(.horizontal)
-            .padding(.vertical, 12)
-          }
-        }
-        Divider()
+    List {
+      ForEach(channels.sorted(), id: \.self) { channel in
+        ChannelLabel(
+          title: channel,
+          isFollowing: isFollowingChannel(channel)
+        )
       }
-      .background(Color(.secondaryBraveGroupedBackground))
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .background(Color(.braveGroupedBackground).ignoresSafeArea())
+    .listStyle(.grouped)
+    .listBackgroundColor(Color(.braveGroupedBackground))
     .environment(\.defaultMinListRowHeight, 0)
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle("Channels")

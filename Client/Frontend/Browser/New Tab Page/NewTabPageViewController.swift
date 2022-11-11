@@ -734,7 +734,11 @@ class NewTabPageViewController: UIViewController {
   }
 
   @objc private func tappedBraveNewsSettings() {
-    let controller = NewsSettingsViewController(dataSource: feedDataSource)
+    let controller = NewsSettingsViewController(dataSource: feedDataSource, openURL: { [weak self] url in
+      guard let self else { return }
+      self.dismiss(animated: true)
+      self.delegate?.navigateToInput(url.absoluteString, inNewTab: false, switchingToPrivateMode: false)
+    })
     controller.viewDidDisappear = {
       if Preferences.Review.braveNewsCriteriaPassed.value {
         AppReviewManager.shared.isReviewRequired = true
