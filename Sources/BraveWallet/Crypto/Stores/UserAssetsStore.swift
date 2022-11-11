@@ -122,6 +122,7 @@ public class UserAssetsStore: ObservableObject {
           logo: logo,
           isErc20: network.coin == .eth,
           isErc721: false,
+          isNft: false,
           symbol: symbol,
           decimals: Int32(decimals),
           visible: true,

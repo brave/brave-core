@@ -38,7 +38,7 @@ class SwapStoreTests: XCTestCase {
   }
 
   func testDefaultSellBuyTokensOnMainnetWithPrefilledToken() {
-    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
+    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -96,8 +96,8 @@ class SwapStoreTests: XCTestCase {
 
 
   func testDefaultSellBuyTokensOnEVMWithPrefilledToken() {
-    let daiToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
-    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, symbol: "BAT", decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
+    let daiToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
+    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "BAT", decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
     let rpcService = MockJsonRpcService()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
