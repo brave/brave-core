@@ -85,6 +85,12 @@ OBJC_EXPORT
 
 @property(readonly) BraveP3AUtils* p3aUtils;
 
+/// Sets up bundle path overrides and initializes ICU from the BraveCore bundle
+/// without setting up a BraveCoreMain instance.
+///
+/// Should only be called in unit tests
++ (bool)initializeICUForTesting;
+
 @end
 
 NS_ASSUME_NONNULL_END
