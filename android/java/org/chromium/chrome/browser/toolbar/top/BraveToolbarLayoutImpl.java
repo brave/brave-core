@@ -429,7 +429,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             @Override
             public void onPageLoadStarted(Tab tab, GURL url) {
-                showWalletIcon(false);
+                showWalletIcon(false, tab);
                 if (getToolbarDataProvider().getTab() == tab) {
                     updateBraveShieldsButtonState(tab);
                 }
@@ -511,7 +511,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
                             tab.getId(), tab.getUrl().getSpec());
-                    if (getToolbarDataProvider().getTab() == tab) {
+                    Tab providerTab = getToolbarDataProvider().getTab();
+                    if (providerTab != null && providerTab.getId() == tab.getId()) {
                         showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
                     } else if (mWalletLayout != null) {
                         mWalletLayout.setVisibility(mTabsWithWalletIcon.contains(tab.getId())
@@ -890,14 +891,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         return mWalletLayout.getVisibility() == View.VISIBLE;
     }
 
-    public void showWalletIcon(boolean show) {
+    public void showWalletIcon(boolean show, Tab tab) {
         // The layout could be null in Custom Tabs layout
         if (mWalletLayout == null) {
             return;
         }
-        Tab currentTab = getToolbarDataProvider().getTab();
+        Tab currentTab = tab;
         if (currentTab == null) {
-            return;
+            currentTab = getToolbarDataProvider().getTab();
+            if (currentTab == null) {
+                return;
+            }
         }
         if (show) {
             mWalletLayout.setVisibility(View.VISIBLE);
@@ -906,6 +910,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mWalletLayout.setVisibility(View.GONE);
             mTabsWithWalletIcon.remove(currentTab.getId());
         }
+    }
+
+    public void showWalletIcon(boolean show) {
+        showWalletIcon(show, null);
     }
 
     public void hideRewardsOnboardingIcon() {
