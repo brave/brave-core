@@ -124,13 +124,13 @@ export const Account = ({
 
   const nonFungibleTokens = React.useMemo(
     () =>
-      accountsTokensList.filter(({ isErc721 }) => isErc721)
+      accountsTokensList.filter(({ isErc721, isNft }) => isErc721 || isNft)
         .filter((token) => getBalance(selectedAccount, token) !== '0'),
     [accountsTokensList, selectedAccount, getBalance]
   )
 
-  const funigbleTokens = React.useMemo(
-    () => accountsTokensList.filter(({ isErc721 }) => !isErc721),
+  const fungibleTokens = React.useMemo(
+    () => accountsTokensList.filter(({ isErc721, isNft }) => !(isErc721 || isNft)),
     [accountsTokensList]
   )
 
@@ -217,7 +217,7 @@ export const Account = ({
       <SubDivider />
       <Spacer />
 
-      {funigbleTokens.map((item) =>
+      {fungibleTokens.map((item) =>
         <PortfolioAssetItem
           key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
           assetBalance={getBalance(selectedAccount, item)}
