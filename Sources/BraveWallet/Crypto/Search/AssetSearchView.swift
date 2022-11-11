@@ -51,14 +51,7 @@ struct AssetSearchView: View {
         cryptoStore.networkStore.selectedChainId,
         coin: cryptoStore.networkStore.selectedChain.coin
       ) { tokens in
-        if WalletDebugFlags.isNFTEnabled {
-          self.allTokens = ([cryptoStore.networkStore.selectedChain.nativeToken] + tokens).sorted(by: { $0.symbol < $1.symbol })
-        } else {
-          let tokens = ([cryptoStore.networkStore.selectedChain.nativeToken] + tokens).sorted(by: { $0.symbol < $1.symbol })
-          self.allTokens = tokens.filter {
-            !$0.isErc721 || cryptoStore.networkStore.selectedChain.isNativeAsset($0)
-          }
-        }
+        self.allTokens = ([cryptoStore.networkStore.selectedChain.nativeToken] + tokens).sorted(by: { $0.symbol < $1.symbol })
       }
     }
   }
