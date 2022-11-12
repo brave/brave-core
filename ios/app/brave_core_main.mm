@@ -9,9 +9,13 @@
 #import <UIKit/UIKit.h>
 
 #include "base/compiler_specific.h"
+#include "base/files/file_path.h"
+#include "base/i18n/icu_util.h"
 #include "base/logging.h"
+#include "base/mac/bundle_locations.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -381,6 +385,14 @@ static bool CustomLogHandler(int severity,
   return [[BraveP3AUtils alloc]
       initWithBrowserState:_mainBrowserState
                 localState:GetApplicationContext()->GetLocalState()];
+}
+
++ (bool)initializeICUForTesting {
+  base::FilePath path;
+  base::PathService::Get(base::DIR_MODULE, &path);
+  base::mac::SetOverrideFrameworkBundlePath(path);
+  base::mac::SetOverrideOuterBundlePath(path);
+  return base::i18n::InitializeICU();
 }
 
 @end
