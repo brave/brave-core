@@ -188,6 +188,7 @@ void BraveTorSnowflakeExtensionHandler::OnSnowflakeExtensionInstalled(
     bool success,
     const std::string& error,
     extensions::webstore_install::Result result) {
+  AllowJavascript();
   if (!success) {
     RejectJavascriptCallback(js_callback, base::Value(error));
   } else {
