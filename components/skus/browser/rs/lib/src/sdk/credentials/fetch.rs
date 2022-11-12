@@ -11,7 +11,7 @@ use serde_json::Value;
 use sha2::Sha512;
 
 use crate::errors::{InternalError, SkusError};
-use crate::http::HttpHandler;
+use crate::http::{HttpHandler, delay_from_response};
 use crate::models::*;
 use crate::sdk::SDK;
 use crate::{HTTPClient, StorageClient};
@@ -297,7 +297,7 @@ where
 
                 match resp.status() {
                     http::StatusCode::OK => Ok(resp),
-                    http::StatusCode::ACCEPTED => Err(InternalError::RetryLater(None)),
+                    http::StatusCode::ACCEPTED => Err(InternalError::RetryLater(delay_from_response(&resp))),
                     http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
                     _ => Err(resp.into()),
                 }

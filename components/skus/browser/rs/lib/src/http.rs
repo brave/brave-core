@@ -14,7 +14,7 @@ use crate::errors::*;
 use crate::models::APIError;
 use crate::sdk::SDK;
 
-static BASE_DELAY_MS: u64 = 1000;
+static BASE_DELAY_MS: u64 = 250;
 static MAX_DELAY_MS: u64 = 10000;
 
 /// Default mapping of server response codes to be used after explicitly handling known response codes
@@ -100,12 +100,9 @@ where
 
                 // If the server instructed us with a specific delay, delay for at least that long
                 // while incorporating some random delay based on our current attempt
-                rng.gen_range(
-                    after_ms,
-                    cmp::max(
-                        after_ms,
-                        cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * (1 << current_attempt)),
-                    ),
+                cmp::min(
+                    after_ms + rng.gen_range(0, BASE_DELAY_MS * (1 << current_attempt)),
+                    MAX_DELAY_MS,
                 )
             }
             _ => return RetryPolicy::ForwardError(e),
