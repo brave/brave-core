@@ -967,7 +967,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }
-        if (BraveVpnPrefUtils.isSubscriptionPurchase()
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
+                && BraveVpnPrefUtils.isSubscriptionPurchase()
                 && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
             showLinkVpnSubscriptionDialog();
         }
