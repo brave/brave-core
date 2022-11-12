@@ -176,11 +176,14 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   const bool supports_vertical_tabs =
       tabs::features::SupportsVerticalTabs(browser_.get());
+  if (supports_vertical_tabs) {
+    vertical_tab_strip_host_view_ =
+        AddChildView(std::make_unique<views::View>());
+  }
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
-
-  if (!supports_vertical_tabs && !can_have_sidebar)
+  if (!can_have_sidebar)
     return;
 
   // Wrap chromium side panel with our sidebar container
@@ -190,15 +193,10 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
   unified_side_panel_ = sidebar_container_view_->side_panel();
-  if (supports_vertical_tabs) {
-    vertical_tab_strip_host_view_ =
-        contents_container_->AddChildView(std::make_unique<views::View>());
-  }
 
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view_, contents_web_view_, sidebar_container_view_,
-          vertical_tab_strip_host_view_));
+          devtools_web_view_, contents_web_view_, sidebar_container_view_));
   sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
 
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
@@ -435,6 +433,15 @@ void BraveBrowserView::AddedToWidget() {
     vertical_tab_strip_widget_delegate_view_ =
         VerticalTabStripWidgetDelegateView::Create(
             this, vertical_tab_strip_host_view_);
+
+    // We should set this here because the layout is set in 
+    // BrowserView::AddedToWidget().
+    auto* brave_browser_view_layout =
+        static_cast<BraveBrowserViewLayout*>(GetLayoutManager());
+    DCHECK(brave_browser_view_layout);
+    brave_browser_view_layout->set_vertical_tab_strip_host_view(
+        vertical_tab_strip_host_view_.get());
+    Layout();
   }
 }
 

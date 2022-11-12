@@ -12,12 +12,10 @@
 BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* devtools_view,
     views::View* contents_view,
-    views::View* sidebar_container_view,
-    views::View* vertical_tabs_container)
+    views::View* sidebar_container_view)
     : ContentsLayoutManager(devtools_view, contents_view),
-      sidebar_container_view_(sidebar_container_view),
-      vertical_tabs_container_(vertical_tabs_container) {
-  DCHECK(sidebar_container_view_ || vertical_tabs_container_);
+      sidebar_container_view_(sidebar_container_view) {
+  DCHECK(sidebar_container_view_);
 }
 
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
@@ -35,7 +33,6 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   } else {
     right_side_candidate_views.push_back(sidebar_container_view_);
   }
-  left_side_candidate_views.push_back(vertical_tabs_container_);
 
   int taken_left_width = 0;
   for (auto* view : left_side_candidate_views) {

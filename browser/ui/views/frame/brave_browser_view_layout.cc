@@ -19,6 +19,26 @@ void BraveBrowserViewLayout::LayoutSidePanelView(
   return;
 }
 
+void BraveBrowserViewLayout::Layout(views::View* host) {
+  BrowserViewLayout::Layout(host);
+  if (!vertical_tab_strip_host_view_)
+    return;
+
+  const auto vertical_tab_strip_width = vertical_tab_strip_host_view_->GetPreferredSize().width();
+  for (auto* child : host->children()) {
+    if (child == vertical_tab_strip_host_view_) {
+      gfx::Rect bounds = vertical_layout_rect_;
+      bounds.set_width(vertical_tab_strip_width);
+      vertical_tab_strip_host_view_->SetBoundsRect(bounds);
+      continue;
+    }
+
+    gfx::Rect child_bounds = child->bounds();
+    child_bounds.Inset(gfx::Insets().set_left(vertical_tab_strip_width));
+    child->SetBoundsRect(child_bounds);
+  }
+}
+
 int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
   if (tabs::features::ShouldShowVerticalTabs(browser_view_->browser()))
     return top;
