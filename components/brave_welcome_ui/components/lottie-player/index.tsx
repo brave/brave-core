@@ -14,6 +14,7 @@ interface LottiePlayerProps {
   onPlaying?: () => void
   onPaused?: () => void
   onStopped?: () => void
+  onComplete?: () => void
 }
 
 function LottiePlayer (props: LottiePlayerProps) {
@@ -24,6 +25,7 @@ function LottiePlayer (props: LottiePlayerProps) {
       lottieEl.addEventListener('cr-lottie-playing', () => props.onPlaying?.())
       lottieEl.addEventListener('cr-lottie-paused', () => props.onPaused?.())
       lottieEl.addEventListener('cr-lottie-stopped', () => props.onStopped?.())
+      lottieEl.addEventListener('cr-lottie-complete', () => props.onComplete?.())
       // @ts-expect-error
       lottieEl.animationUrl = props.animationUrl
       // @ts-expect-error
