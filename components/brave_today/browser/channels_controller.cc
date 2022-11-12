@@ -34,6 +34,20 @@ bool IsChannelSubscribedInLocale(const base::Value::Dict& subscriptions,
 }
 }  // namespace
 
+// static
+void ChannelsController::SetChannelSubscribedPref(PrefService* prefs,
+                                                  const std::string& locale,
+                                                  const std::string& channel_id,
+                                                  bool subscribed) {
+  DictionaryPrefUpdate update(prefs, prefs::kBraveNewsChannels);
+  auto* locale_dict = update->GetDict().EnsureDict(locale);
+  if (!subscribed) {
+    locale_dict->Remove(channel_id);
+  } else {
+    locale_dict->Set(channel_id, true);
+  }
+}
+
 ChannelsController::ChannelsController(
     PrefService* prefs,
     PublishersController* publishers_controller)
@@ -111,18 +125,11 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
     const std::string& locale,
     const std::string& channel_id,
     bool subscribed) {
-  // Note: DictionaryPrefUpdate is nested here so the update happens before
-  // we call |GetChannelLocales|.
-  {
-    DictionaryPrefUpdate update(prefs_, prefs::kBraveNewsChannels);
-    auto* locale_dict = update->GetDict().EnsureDict(locale);
-    if (!subscribed) {
-      locale_dict->Remove(channel_id);
-    } else {
-      locale_dict->Set(channel_id, true);
-    }
-  }
+  // Persist the pref
+  ChannelsController::SetChannelSubscribedPref(prefs_, locale, channel_id,
+                                               subscribed);
 
+  // Provide an updated entity
   auto result = mojom::Channel::New();
   result->channel_name = channel_id;
   result->subscribed_locales = GetChannelLocales(channel_id);

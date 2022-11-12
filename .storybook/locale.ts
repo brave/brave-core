@@ -326,12 +326,6 @@ let locale: Record<string, string> = {
   showTopSites: 'Show Top Sites',
   showRewards: 'Show Rewards',
   tosAndPp: 'By turning on {{title}}, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
-  braveTodayDisableSourceCommand: 'Disable content from $1',
-  braveTodayIntroTitle: `Today's top stories in a completely private feed, just for you.`,
-  braveTodayIntroDescription: `Brave News is ad-supported with completely private and anonymized ads matched on your device. Your personal information always stays private, per our $1privacy policy$2.`,
-  braveTodayOptInActionLabel: 'Show Brave News',
-  braveTodayOptOutActionLabel: 'No thanks',
-  braveTodayScrollHint: 'Scroll for Brave News',
   editCardsTitle: 'Edit Cards'
 }
 

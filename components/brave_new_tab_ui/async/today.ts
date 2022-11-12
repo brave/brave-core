@@ -130,7 +130,9 @@ handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), 
 
 handler.on(Actions.checkForUpdate.getType(), async function (store) {
   const state = store.getState() as ApplicationState
-  if (!state.today.feed || !state.today.feed.hash) {
+  // Detect if we did not get any data successfully and therefore we can try again
+  // to fetch data
+  if (!state.today.feed) {
     store.dispatch(Actions.isUpdateAvailable({ isUpdateAvailable: true }))
     return
   }
