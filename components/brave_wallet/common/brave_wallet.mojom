@@ -942,6 +942,8 @@ interface JsonRpcService {
   GetSPLTokenAccountBalance(string wallet_address, string token_mint_address, string chain_id) =>
       (string amount, uint8 decimals, string uiAmountString,
        SolanaProviderError error, string error_message);
+
+  SimulateEVMTransaction(string from, string to, string data, string value) => (bool success, SimulationReport report);
 };
 
 enum TransactionStatus {
@@ -1472,4 +1474,13 @@ struct OnRampCurrency {
   string currency_code;
   string currency_name;
   array<OnRampProvider> providers;
+};
+
+struct BalanceDiff {
+  string symbol;
+  string diff;
+};
+
+struct SimulationReport {
+  array<BalanceDiff> simulation;
 };

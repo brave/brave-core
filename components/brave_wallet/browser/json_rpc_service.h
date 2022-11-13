@@ -566,6 +566,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSolanaBlockHeight(GetSolanaBlockHeightCallback callback,
                               APIRequestResult api_request_result);
 
+  void SimulateEVMTransaction(const std::string& from,
+                              const std::string& to,
+                              const std::string& data,
+                              const std::string& value,
+                              SimulateEVMTransactionCallback callback) override;
+
+  void OnSimulateEVMTransaction(SimulateEVMTransactionCallback callback,
+                                APIRequestResult api_request_result);
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   std::unique_ptr<APIRequestHelper> api_request_helper_ens_offchain_;
