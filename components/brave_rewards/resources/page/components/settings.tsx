@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -47,9 +47,8 @@ export function Settings () {
       return true
     }
 
-    // Allow the browser to handle any URL that has 2 or more path components.
-    if (pathname.split('/').length > 2) {
-      actions.processRewardsPageUrl(pathname, location.search)
+    if (pathname.includes('authorization')) {
+      actions.connectExternalWallet(pathname, location.search)
       return true
     }
 

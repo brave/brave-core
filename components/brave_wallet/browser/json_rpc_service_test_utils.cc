@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 
+#include <utility>
+
+#include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -60,6 +63,31 @@ std::string MakeJsonRpcErrorResponseWithData(int error,
       R"("error": {"code":%d, "message": "%s", "data": "%s"})"
       R"(})",
       error, error_message.c_str(), data.c_str());
+}
+
+std::string MakeJsonRpcValueResponse(const base::Value& value) {
+  base::Value::Dict response;
+  response.Set("jsonrpc", "2.0");
+  response.Set("id", 1);
+  base::Value::Dict result;
+  result.SetByDottedPath("context.slot", 12345);
+  result.Set("value", value.Clone());
+  response.Set("result", std::move(result));
+
+  std::string response_string;
+  base::JSONWriter::Write(response, &response_string);
+  return response_string;
+}
+
+std::string MakeJsonRpcResultResponse(const base::Value& value) {
+  base::Value::Dict response;
+  response.Set("jsonrpc", "2.0");
+  response.Set("id", 1);
+  response.Set("result", value.Clone());
+
+  std::string response_string;
+  base::JSONWriter::Write(response, &response_string);
+  return response_string;
 }
 
 }  // namespace brave_wallet

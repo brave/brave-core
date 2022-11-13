@@ -6,32 +6,36 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_UTIL_H_
 
-#include <map>
+#include <set>
 #include <string>
-#include <vector>
 
-#include "bat/ledger/ledger.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 
 namespace ledger {
 class LedgerImpl;
 
 namespace wallet {
 
-mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
-                                                   std::string wallet_type);
+mojom::ExternalWalletPtr GetWallet(LedgerImpl*, const std::string& wallet_type);
 
-mojom::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
-                                   const std::string wallet_type);
+mojom::ExternalWalletPtr GetWalletIf(LedgerImpl*,
+                                     const std::string& wallet_type,
+                                     const std::set<mojom::WalletStatus>&);
 
-bool SetWallet(LedgerImpl* ledger,
-               mojom::ExternalWalletPtr wallet,
-               const std::string wallet_type);
+bool SetWallet(LedgerImpl*, mojom::ExternalWalletPtr);
 
-mojom::ExternalWalletPtr ResetWallet(mojom::ExternalWalletPtr wallet);
+mojom::ExternalWalletPtr TransitionWallet(
+    LedgerImpl*,
+    absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
+    mojom::WalletStatus to);
 
-void OnWalletStatusChange(LedgerImpl* ledger,
-                          absl::optional<mojom::WalletStatus> from,
-                          mojom::WalletStatus to);
+mojom::ExternalWalletPtr MaybeCreateWallet(LedgerImpl*,
+                                           const std::string& wallet_type);
+
+bool DisconnectWallet(LedgerImpl*, const std::string& wallet_type, bool manual);
+
+mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 
 }  // namespace wallet
 }  // namespace ledger

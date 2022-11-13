@@ -1,15 +1,19 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { LAMPORTS_PER_SOL } from '@solana/web3.js'
+
+// asset
+import { USDCIconUrl } from '../../assets/asset-icons'
 
 // types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
+import { mockMoonCatNFT } from './mock-asset-options'
 
 // mocks
 import { mockNetwork } from '../../common/constants/mocks'
@@ -22,6 +26,42 @@ const mockAccount: WalletAccountType = {
   deviceId: '',
   id: '1',
   name: 'Account 1',
+  tokenBalanceRegistry: {
+    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
+    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
+  },
+  nativeBalanceRegistry: {
+    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
+    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
+  },
+  keyringId: undefined
+}
+
+const mockAccount2: WalletAccountType = {
+  accountType: 'Primary',
+  address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+  coin: 60,
+  deviceId: '',
+  id: '1',
+  name: 'Account 2',
+  tokenBalanceRegistry: {
+    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
+    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
+  },
+  nativeBalanceRegistry: {
+    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
+    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
+  },
+  keyringId: undefined
+}
+
+const mockAccount3: WalletAccountType = {
+  accountType: 'Primary',
+  address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+  coin: 60,
+  deviceId: '',
+  id: '1',
+  name: 'Account 2',
   tokenBalanceRegistry: {
     '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
     '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
@@ -177,7 +217,9 @@ const mockCoinMarketData: BraveWallet.CoinMarket[] = [
 
 export const mockWalletState: WalletState = {
   accounts: [
-    mockAccount
+    mockAccount,
+    mockAccount2,
+    mockAccount3
   ],
   activeOrigin: {
     origin: {
@@ -295,7 +337,7 @@ export const mockWalletState: WalletState = {
       isErc20: true,
       isErc721: false,
       isNft: false,
-      logo: 'chrome://erc-token-images/usdc.png',
+      logo: USDCIconUrl,
       name: 'USD Coin',
       symbol: 'USDC',
       tokenId: '',
@@ -325,14 +367,15 @@ export const mockWalletState: WalletState = {
       isErc20: true,
       isErc721: false,
       isNft: false,
-      logo: 'chrome://erc-token-images/usdc.png',
+      logo: USDCIconUrl,
       name: 'USD Coin',
       symbol: 'USDC',
       tokenId: '',
       visible: true,
       coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.GOERLI_CHAIN_ID
-    }
+    },
+    mockMoonCatNFT
   ],
   transactionProviderErrorRegistry: {},
   defaultNetworks: [mockNetwork],

@@ -10,23 +10,19 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bitflyer/bitflyer.h"
-#include "bat/ledger/internal/bitflyer/bitflyer_authorization.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_transfer.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
-#include "bat/ledger/internal/bitflyer/bitflyer_wallet.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/logging/event_log_keys.h"
-#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
+#include "bat/ledger/internal/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
+#include "bat/ledger/internal/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 #include "brave_base/random.h"
 
-using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace {
 const char kFeeMessage[] =
@@ -38,8 +34,8 @@ namespace bitflyer {
 
 Bitflyer::Bitflyer(LedgerImpl* ledger)
     : transfer_(std::make_unique<BitflyerTransfer>(ledger)),
-      authorization_(std::make_unique<BitflyerAuthorization>(ledger)),
-      wallet_(std::make_unique<BitflyerWallet>(ledger)),
+      connect_wallet_(std::make_unique<ConnectBitFlyerWallet>(ledger)),
+      get_wallet_(std::make_unique<GetBitFlyerWallet>(ledger)),
       bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)),
       ledger_(ledger) {}
 
@@ -101,17 +97,9 @@ void Bitflyer::ContributionCompleted(mojom::Result result,
 }
 
 void Bitflyer::FetchBalance(FetchBalanceCallback callback) {
-  const auto wallet = GetWallet();
-
-  if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
-    return;
-  }
-
-  if (wallet->status == mojom::WalletStatus::CONNECTED) {
-    BLOG(1, "Wallet is connected");
-    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
-    return;
+  auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});
+  if (!wallet) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
   }
 
   auto url_callback = base::BindOnce(
@@ -124,11 +112,19 @@ void Bitflyer::FetchBalance(FetchBalanceCallback callback) {
 void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
                               const mojom::Result result,
                               const double available) {
+  if (!GetWalletIf({mojom::WalletStatus::kConnected})) {
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
+  }
+
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    DisconnectWallet();
-    std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
-    return;
+    if (!DisconnectWallet()) {
+      BLOG(0,
+           "Failed to disconnect " << constant::kWalletBitflyer << " wallet!");
+      return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
+    }
+
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
   }
 
   if (result != mojom::Result::LEDGER_OK) {
@@ -149,51 +145,14 @@ void Bitflyer::TransferFunds(const double amount,
   transfer_->Start(transaction, callback);
 }
 
-void Bitflyer::WalletAuthorization(
+void Bitflyer::ConnectWallet(
     const base::flat_map<std::string, std::string>& args,
-    ledger::ExternalWalletAuthorizationCallback callback) {
-  authorization_->Authorize(args, callback);
+    ledger::ConnectExternalWalletCallback callback) {
+  connect_wallet_->Run(args, std::move(callback));
 }
 
-void Bitflyer::GenerateWallet(ledger::ResultCallback callback) {
-  wallet_->Generate(std::move(callback));
-}
-
-void Bitflyer::DisconnectWallet(const bool manual) {
-  auto wallet = GetWallet();
-  if (!wallet) {
-    return;
-  }
-
-  BLOG(1, "Disconnecting wallet");
-  const std::string wallet_address = wallet->address;
-
-  const auto from = wallet->status;
-  wallet = ledger::wallet::ResetWallet(std::move(wallet));
-  if (manual) {
-    wallet->status = mojom::WalletStatus::NOT_CONNECTED;
-  }
-  const auto to = wallet->status;
-
-  OnWalletStatusChange(ledger_, from, to);
-
-  const bool shutting_down = ledger_->IsShuttingDown();
-
-  if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletDisconnected, {}, [](mojom::Result) {});
-  }
-
-  SetWallet(std::move(wallet));
-
-  if (!shutting_down) {
-    ledger_->ledger_client()->WalletDisconnected(constant::kWalletBitflyer);
-  }
-
-  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
-                                    std::string(constant::kWalletBitflyer) +
-                                        (!wallet_address.empty() ? "/" : "") +
-                                        wallet_address.substr(0, 5));
+void Bitflyer::GetWallet(ledger::GetExternalWalletCallback callback) {
+  get_wallet_->Run(std::move(callback));
 }
 
 void Bitflyer::SaveTransferFee(const std::string& contribution_id,
@@ -207,7 +166,9 @@ void Bitflyer::SaveTransferFee(const std::string& contribution_id,
   }
 
   wallet->fees.insert(std::make_pair(contribution_id, fee));
-  SetWallet(std::move(wallet));
+  if (!SetWallet(std::move(wallet))) {
+    BLOG(0, "Failed to set " << constant::kWalletBitflyer << " wallet!");
+  }
 }
 
 void Bitflyer::StartTransferFeeTimer(const std::string& fee_id,
@@ -274,12 +235,22 @@ void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Bitflyer::GetWallet() {
-  return ::ledger::wallet::GetWallet(ledger_, constant::kWalletBitflyer);
+  return ledger::wallet::GetWallet(ledger_, constant::kWalletBitflyer);
+}
+
+mojom::ExternalWalletPtr Bitflyer::GetWalletIf(
+    const std::set<mojom::WalletStatus>& statuses) {
+  return ledger::wallet::GetWalletIf(ledger_, constant::kWalletBitflyer,
+                                     statuses);
 }
 
 bool Bitflyer::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
-                                     state::kWalletBitflyer);
+  return ledger::wallet::SetWallet(ledger_, std::move(wallet));
+}
+
+bool Bitflyer::DisconnectWallet(bool manual) {
+  return ledger::wallet::DisconnectWallet(ledger_, constant::kWalletBitflyer,
+                                          manual);
 }
 
 void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {
@@ -290,7 +261,9 @@ void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {
   }
 
   wallet->fees.erase(contribution_id);
-  SetWallet(std::move(wallet));
+  if (!SetWallet(std::move(wallet))) {
+    BLOG(0, "Failed to set " << constant::kWalletBitflyer << " wallet!");
+  }
 }
 
 }  // namespace bitflyer

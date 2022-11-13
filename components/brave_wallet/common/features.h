@@ -19,6 +19,7 @@ extern const base::FeatureParam<bool> kCreateDefaultSolanaAccount;
 extern const base::Feature kBraveWalletSolanaProviderFeature;
 extern const base::Feature kBraveWalletDappsSupportFeature;
 extern const base::Feature kBraveWalletENSL2Feature;
+extern const base::Feature kBraveWalletSnsFeature;
 
 }  // namespace features
 }  // namespace brave_wallet

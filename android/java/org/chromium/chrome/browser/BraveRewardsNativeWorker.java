@@ -635,9 +635,9 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetExternalWallet(int error_code, String external_wallet) {
+    public void OnGetExternalWallet(String external_wallet) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetExternalWallet(error_code, external_wallet);
+            observer.OnGetExternalWallet(external_wallet);
         }
     }
 

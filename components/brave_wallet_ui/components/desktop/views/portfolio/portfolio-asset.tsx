@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
@@ -351,7 +351,7 @@ export const PortfolioAsset = (props: Props) => {
       .formatAsAsset(8)
   }, [fullAssetBalances, selectedAsset])
 
-  const isNftAsset = selectedAssetFromParams?.isErc721
+  const isNftAsset = selectedAssetFromParams?.isErc721 || selectedAssetFromParams?.isNft
 
   const isSelectedAssetDepositSupported = React.useMemo(() => {
     return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
@@ -372,6 +372,8 @@ export const PortfolioAsset = (props: Props) => {
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
     dispatch(WalletPageActions.selectCoinMarket(undefined))
+    dispatch(WalletPageActions.updateNFTMetadata(undefined))
+    dispatch(WalletPageActions.updateNftMetadataError(undefined))
     setfilteredAssetList(userAssetList)
     history.goBack()
   }, [
@@ -587,7 +589,7 @@ export const PortfolioAsset = (props: Props) => {
               timelineOptions={ChartTimelineOptions}
             />
           }
-          {selectedAsset?.contractAddress && !selectedAsset?.isErc721 &&
+          {selectedAsset?.contractAddress && !selectedAsset?.isErc721 && !selectedAsset.isNft &&
             <MoreButton onClick={onShowMore} />
           }
           {showMore && selectedAsset &&

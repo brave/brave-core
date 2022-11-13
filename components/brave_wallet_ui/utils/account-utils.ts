@@ -1,16 +1,9 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// types
 import { AccountInfo, BraveWallet, WalletAccountType } from '../constants/types'
-
-// constants
-import registry from '../common/constants/registry'
-
-// utils
-import { reduceAddress } from './reduce-address'
 
 export const sortAccountsByName = (accounts: WalletAccountType[]) => {
   return [...accounts].sort(function (a: WalletAccountType, b: WalletAccountType) {
@@ -50,12 +43,4 @@ export const getAccountType = (info: AccountInfo) => {
     return info.hardware.vendor
   }
   return info.isImported ? 'Secondary' : 'Primary'
-}
-
-export const getAddressLabel = (address: string, accounts: WalletAccountType[]): string => {
-  return (
-    registry[address.toLowerCase()] ??
-    findAccountName(accounts, address) ??
-    reduceAddress(address)
-  )
 }

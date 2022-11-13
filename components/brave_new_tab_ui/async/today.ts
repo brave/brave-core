@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AsyncActionHandler from '../../common/AsyncActionHandler'
 import * as Actions from '../actions/today_actions'
@@ -130,7 +130,9 @@ handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), 
 
 handler.on(Actions.checkForUpdate.getType(), async function (store) {
   const state = store.getState() as ApplicationState
-  if (!state.today.feed || !state.today.feed.hash) {
+  // Detect if we did not get any data successfully and therefore we can try again
+  // to fetch data
+  if (!state.today.feed) {
     store.dispatch(Actions.isUpdateAvailable({ isUpdateAvailable: true }))
     return
   }

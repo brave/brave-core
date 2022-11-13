@@ -66,6 +66,7 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
@@ -106,9 +107,12 @@ import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
+import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
@@ -567,6 +571,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             layout.showWalletIcon(true);
             updateWalletBadgeVisibility();
         }
+    }
+
+    public void showAccountCreation(String keyringId) {
+        assert mWalletModel != null : " mWalletModel is null ";
+        mWalletModel.getDappsModel().addAccountCreationRequest(keyringId);
     }
 
     private void updateWalletBadgeVisibility() {
@@ -1429,8 +1438,39 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         updateWalletBadgeVisibility();
                     }
                 });
+
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.observe(
                 this, visible -> { setWalletBadgeVisibility(visible); });
+
+        mWalletModel.getDappsModel().mPendingWalletAccountCreationRequest.observe(this, request -> {
+            if (request == null) return;
+            mWalletModel.getKeyringModel().isWalletLocked(isLocked -> {
+                // Cannot use mWalletModel.getKeyringModel().getKeyringInfo().isLocked as account
+                // creation request can be triggered when the wallet is locked and keyringInfo will
+                // be null
+                if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) return;
+                if (isLocked) {
+                    Tab tab = getActivityTab();
+                    if (tab != null) {
+                        walletInteractionDetected(tab.getWebContents());
+                    }
+                    showWalletPanel(false);
+                    return;
+                }
+                for (CryptoAccountTypeInfo info :
+                        mWalletModel.getCryptoModel().getSupportedCryptoAccountTypes()) {
+                    if (info.getCoinType() == request.getCoinType()) {
+                        Intent addAccountActivityIntent =
+                                new Intent(this, AddAccountActivity.class);
+                        addAccountActivityIntent.putExtra(AddAccountActivity.ACCOUNT, info);
+                        startActivity(addAccountActivityIntent);
+                        mWalletModel.getDappsModel().removeProcessedAccountCreationRequest(request);
+                        break;
+                    }
+                }
+            });
+        });
+
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 this, networkInfo -> {
                     if (networkInfo == null) return;

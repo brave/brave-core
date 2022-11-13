@@ -1,6 +1,8 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as mojom from '../../shared/lib/mojom'
 
 type EmptyMediaData = {
   mediaType: 'none'
@@ -76,16 +78,8 @@ export interface BalanceInfo {
   wallets: Record<string, number>
 }
 
-export enum ExternalWalletStatus {
-  NOT_CONNECTED = 0,
-  CONNECTED = 1,
-  VERIFIED = 2,
-  DISCONNECTED_NOT_VERIFIED = 3,
-  DISCONNECTED_VERIFIED = 4
-}
-
 export interface ExternalWalletInfo {
-  status: ExternalWalletStatus
+  status: mojom.WalletStatus
   type: 'uphold' | 'bitflyer' | 'gemini'
 }
 

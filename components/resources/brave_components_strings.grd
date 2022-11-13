@@ -284,15 +284,6 @@
       <message name="IDS_BRAVE_TODAY_TITLE" translateable="false" desc="Title for Brave News news feed section">
         Brave News
       </message>
-      <message name="IDS_BRAVE_TODAY_INTRO_TITLE" desc="Title for introduction to Brave News news feed section">
-        Today's top stories in a completely private feed, just for you.
-      </message>
-      <message name="IDS_BRAVE_TODAY_INTRO_DESCRIPTION" desc="Description for introduction to Brave News news feed section. Do not translate the title Brave News.">
-        Brave News is ad-supported with completely private and anonymized ads matched on your device. Your personal information always stays private, per our <ph name="LINK_START">$1<ex>{</ex></ph>privacy policy<ph name="LINK_END">$2<ex>}</ex></ph>.
-      </message>
-      <message name="IDS_BRAVE_TODAY_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Brave News">
-        Show Brave News
-      </message>
       <message name="IDS_BRAVE_TODAY_SHOW_TOOLBAR_BUTTON" desc="Button text for opting in to Brave News">
         Show Brave News button in the toolbar
       </message>
@@ -316,9 +307,6 @@
       </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS" desc="The text on the button for opening the Brave News configuration page">
         Manage Feeds
-      </message>
-      <message name="IDS_BRAVE_TODAY_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
-        No thanks
       </message>
       <message name="IDS_BRAVE_TODAY_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
         Fetching…
@@ -688,12 +676,10 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Rewards profile not yet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Rewards payment ID">Rewards payment ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Rewards state:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NO_WALLET" desc="">No wallet</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED" desc="">Verified</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED" desc="">Disconnected (Not verified)</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED" desc="">Disconnected (Verified)</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING" desc="">Pending</message>
 
       <!-- WebUI brave tip dialog resources -->
       <message name="IDS_BRAVE_REWARDS_TIP_BAT_FUNDS" desc="">BAT Funds</message>

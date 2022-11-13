@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import { assert } from 'chrome://resources/js/assert.m.js'
 import {
   HardwareWalletConnectOpts
@@ -146,6 +146,11 @@ export async function isStrongPassword (value: string) {
 export async function findENSAddress (address: string, ensOffchainLookupOptions?: BraveWallet.EnsOffchainLookupOptions | undefined) {
   const apiProxy = getAPIProxy()
   return apiProxy.jsonRpcService.ensGetEthAddr(address, ensOffchainLookupOptions || null)
+}
+
+export async function findSNSAddress (address: string) {
+  const apiProxy = getAPIProxy()
+  return apiProxy.jsonRpcService.snsGetSolAddr(address)
 }
 
 export async function findUnstoppableDomainAddress (address: string, token: BraveWallet.BlockchainToken | null) {
@@ -521,7 +526,7 @@ export function refreshBalances () {
           if (networks.some(n => n.chainId === token.chainId)) {
             const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
             return {
-              balance: getSolTokenBalance.amount,
+              balance: token.isNft ? getSolTokenBalance.uiAmountString : getSolTokenBalance.amount,
               error: getSolTokenBalance.error,
               errorMessage: getSolTokenBalance.errorMessage,
               chainId: token.chainId
@@ -903,7 +908,7 @@ export async function sendEthTransaction (store: Store, payload: SendEthTransact
     // Check if network and keyring support EIP-1559.
     default:
       const { selectedAccount, selectedNetwork } = store.getState().wallet
-      isEIP1559 = selectedNetwork
+      isEIP1559 = selectedNetwork && selectedAccount
         ? hasEIP1559Support(selectedAccount, selectedNetwork)
         : false
   }

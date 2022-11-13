@@ -40,5 +40,8 @@ const base::Feature kBraveWalletENSL2Feature{"BraveWalletENSL2",
                                              base::FEATURE_ENABLED_BY_DEFAULT};
 #endif
 
+const base::Feature kBraveWalletSnsFeature{"BraveWalletSns",
+                                           base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace brave_wallet

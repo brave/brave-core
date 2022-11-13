@@ -62,6 +62,11 @@ void BatLedgerServiceImpl::SetTesting() {
   ledger::is_testing = true;
 }
 
+void BatLedgerServiceImpl::SetStateMigrationTargetVersionForTesting(
+    int32_t version) {
+  ledger::state_migration_target_version_for_testing = version;
+}
+
 void BatLedgerServiceImpl::SetGeminiRetries(int32_t retries) {
   ledger::gemini_retries = retries;
 }

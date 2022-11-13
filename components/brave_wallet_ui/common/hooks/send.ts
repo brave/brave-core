@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,13 +13,15 @@ import {
   IsBase58EncodedSolanaPubkeyReturnInfo,
   AmountValidationErrorType,
   WalletState,
-  SendFilTransactionParams
+  SendFilTransactionParams,
+  GetSolAddrReturnInfo
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
 import { isValidAddress, isValidFilAddress } from '../../utils/address-utils'
+import { endsWithAny } from '../../utils/string-utils'
 import Amount from '../../utils/amount'
 
 // hooks
@@ -27,18 +29,15 @@ import { useLib } from './useLib'
 import { useAssets } from './assets'
 import { PendingCryptoSendState, SendCryptoActions } from '../reducers/send_crypto_reducer'
 
-const supportedENSExtensions = ['.eth']
-// Should match `kUDPattern` array from json_rpc_service.cc.
-const supportedUDExtensions = [
-  '.crypto', '.x', '.coin', '.nft', '.dao', '.wallet', '.888', '.blockchain', '.bitcoin']
+// constants
+import {
+  supportedENSExtensions,
+  supportedSNSExtensions,
+  supportedUDExtensions
+} from '../constants/domain-extensions'
 
-const endsWithAny = (extensions: string[], url: string) => {
-  return extensions.some(function (suffix) {
-    return url.endsWith(suffix)
-  })
-}
-
-export default function useSend () {
+// ToDo: Remove isSendTab prop once we fully migrate to Send Tab
+export default function useSend (isSendTab?: boolean) {
   // redux
   const dispatch = useDispatch()
   const {
@@ -60,6 +59,7 @@ export default function useSend () {
   // custom hooks
   const {
     findENSAddress,
+    findSNSAddress,
     findUnstoppableDomainAddress,
     getChecksumEthAddress,
     isBase58EncodedSolanaPubkey
@@ -89,8 +89,8 @@ export default function useSend () {
     dispatch(SendCryptoActions.setToAddressOrUrl(payload))
   }
 
-  const selectSendAsset = (asset: BraveWallet.BlockchainToken) => {
-    if (asset?.isErc721) {
+  const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
+    if (asset?.isErc721 || asset?.isNft) {
       setSendAmount('1')
     } else {
       setSendAmount('')
@@ -190,7 +190,7 @@ export default function useSend () {
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [selectedAccount, selectedSendAsset, ensOffchainLookupOptions])
+  }, [selectedAccount?.address, selectedSendAsset, ensOffchainLookupOptions])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -211,7 +211,7 @@ export default function useSend () {
     }
 
     // If value is the same as the selectedAccounts Wallet Address
-    if (valueToLowerCase === selectedAccount.address.toLowerCase()) {
+    if (valueToLowerCase === selectedAccount?.address.toLowerCase()) {
       setAddressWarning('')
       setAddressError(getLocale('braveWalletSameAddressError'))
       return
@@ -235,7 +235,7 @@ export default function useSend () {
     // Reset error and warning state back to normal
     setAddressWarning('')
     setAddressError('')
-  }, [selectedSendAsset, selectedAccount.address])
+  }, [selectedSendAsset, selectedAccount?.address])
 
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -254,6 +254,20 @@ export default function useSend () {
       }).catch(e => console.log(e))
       return
     }
+
+    if (endsWithAny(supportedSNSExtensions, valueToLowerCase)) {
+      findSNSAddress(toAddressOrUrl).then((value: GetSolAddrReturnInfo) => {
+        if (value.error === BraveWallet.ProviderError.kSuccess) {
+          setAddressError('')
+          setAddressWarning('')
+          setToAddress(value.address)
+          return
+        }
+        setNotRegisteredError(valueToLowerCase)
+      }).catch(e => console.log(e))
+      return
+    }
+
     setToAddress(toAddressOrUrl)
 
     // Do nothing if value is an empty string
@@ -295,11 +309,30 @@ export default function useSend () {
       setAddressWarning('')
       setAddressError('')
     })
-  }, [selectedAccount, selectedSendAsset, fullTokenList])
+  }, [selectedAccount?.address, selectedSendAsset, fullTokenList])
+
+  const resetSendFields = React.useCallback((reselectSendAsset?: boolean) => {
+    if (isSendTab) {
+      selectSendAsset(undefined)
+      setToAddressOrUrl('')
+      setSendAmount('')
+      return
+    }
+    if (reselectSendAsset) {
+      selectSendAsset(sendAssetOptions[0])
+    }
+    setToAddressOrUrl('')
+    setSendAmount('')
+  }, [selectSendAsset, isSendTab, sendAssetOptions])
 
   const submitSend = React.useCallback(() => {
     if (!selectedSendAsset) {
       console.log('Failed to submit Send transaction: no send asset selected')
+      return
+    }
+
+    if (!selectedAccount) {
+      console.log('Failed to submit Send transaction: no account selected')
       return
     }
 
@@ -330,16 +363,16 @@ export default function useSend () {
       dispatch(WalletActions.sendSPLTransfer({
         from: selectedAccount.address,
         to: toAddress,
-        value: new Amount(sendAmount)
+        value: !selectedSendAsset.isNft ? new Amount(sendAmount)
           .multiplyByDecimals(selectedSendAsset.decimals)
-          .toHex(),
+          .toHex() : new Amount(sendAmount).toHex(),
         coin: selectedAccount.coin,
         splTokenMintAddress: selectedSendAsset.contractAddress
       }))
-      setToAddressOrUrl('')
-      setSendAmount('')
+      resetSendFields(true)
       return
     }
+
     if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
       dispatch(WalletActions.sendTransaction({
         from: selectedAccount.address,
@@ -348,11 +381,16 @@ export default function useSend () {
           .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
         coin: selectedAccount.coin
       } as SendFilTransactionParams))
-      setToAddressOrUrl('')
-      setSendAmount('')
+      resetSendFields()
       return
     }
-    if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) { return }
+
+    if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) {
+      if (isSendTab) {
+        resetSendFields()
+      }
+      return
+    }
 
     dispatch(WalletActions.sendTransaction({
       from: selectedAccount.address,
@@ -363,13 +401,14 @@ export default function useSend () {
         : new Amount(sendAmount).multiplyByDecimals(selectedSendAsset.decimals).toHex()
     }))
 
-    setToAddressOrUrl('')
-    setSendAmount('')
+    resetSendFields()
   }, [
     selectedSendAsset,
     selectedAccount,
     sendAmount,
-    toAddress
+    toAddress,
+    resetSendFields,
+    isSendTab
   ])
 
   // memos
@@ -389,6 +428,9 @@ export default function useSend () {
 
   // effects
   React.useEffect(() => {
+    if (isSendTab) {
+      return
+    }
     // We also check that coinType matches here because localhost
     // networks share the same chainId
     if (
@@ -398,7 +440,7 @@ export default function useSend () {
       return
     }
     selectSendAsset(sendAssetOptions[0])
-  }, [sendAssetOptions, selectedSendAsset, selectedNetwork])
+  }, [sendAssetOptions, selectedSendAsset, selectedNetwork, isSendTab])
 
   React.useEffect(() => {
     if (selectedAccount?.coin === BraveWallet.CoinType.ETH) {

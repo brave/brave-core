@@ -240,4 +240,11 @@ void ToggleVerticalTabStrip(Browser* browser) {
                     !prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
 }
 
+void ToggleVerticalTabStripFloatingMode(Browser* browser) {
+  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+  prefs->SetBoolean(
+      brave_tabs::kVerticalTabsFloatingEnabled,
+      !prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled));
+}
+
 }  // namespace brave

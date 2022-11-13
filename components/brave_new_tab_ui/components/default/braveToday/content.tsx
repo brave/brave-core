@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,7 @@ import * as TodayActions from '../../../actions/today_actions'
 import { Feed } from '../../../api/brave_news'
 import CardLoading from './cards/cardLoading'
 import CardError from './cards/cardError'
+import CardNoContent from './cards/cardNoContent'
 import CardLarge from './cards/_articles/cardArticleLarge'
 import CardDisplayAd from './cards/displayAd'
 import CardsGroup from './cardsGroup'
@@ -152,7 +153,11 @@ export default function BraveTodayContent (props: Props) {
     intersectionObserver.current.observe(trigger)
   }, [intersectionObserver.current])
 
-  const hasContent = feed && publishers
+  // TODO(petemill): Only way to test for error state is if there are no
+  // publishers since GetFeed and GetPublishers will always eventually return
+  // empty objects. Consider having those mojom functions provide error states.
+  const hasContent = feed && publishers && !!Object.keys(publishers).length
+
   // Loading state
   if (props.isFetching && !hasContent) {
     return <CardLoading />
@@ -160,7 +165,7 @@ export default function BraveTodayContent (props: Props) {
 
   // Error state
   if (!hasContent) {
-    return <CardError />
+    return <CardError onRefresh={props.onRefresh} />
   }
 
   // satisfy typescript sanity, should not get here
@@ -172,9 +177,16 @@ export default function BraveTodayContent (props: Props) {
   const isOnlyDisplayingPeekingCard = !props.hasInteracted && props.isPrompting
   const displayedPageCount = Math.min(props.displayedPageCount, feed.pages.length)
   const introCount = feed.featuredItem ? 2 : 1
+  const showNoContentMessage = !props.isFetching &&
+    hasContent &&
+    !feed.featuredItem &&
+    feed.pages.length === 0
   let runningCardCount = introCount
   return (
     <>
+      {/* no feed content available */}
+      {showNoContentMessage &&
+      <CardNoContent onCustomize={props.onCustomizeBraveToday} />}
       {/* featured item */}
       {feed.featuredItem && <CardLarge
         content={[feed.featuredItem]}

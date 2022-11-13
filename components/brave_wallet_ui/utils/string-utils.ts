@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveWallet, WalletRoutes } from '../constants/types'
 import { getLocale } from '../../common/locale'
@@ -109,6 +109,15 @@ export const getWalletLocationTitle = (location: string) => {
   if (location === WalletRoutes.Swap) {
     return getLocale('braveWalletSwap')
   }
+  if (location === WalletRoutes.Send) {
+    return getLocale('braveWalletSend')
+  }
   /** Wallet */
   return getLocale('braveWalletTitle')
+}
+
+export const endsWithAny = (extensions: string[], url: string) => {
+  return extensions.some(function (suffix) {
+    return url.endsWith(suffix)
+  })
 }

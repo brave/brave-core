@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { localeStrings as walletCardStrings } from '../../shared/components/wallet_card/stories/locale_strings'
 import { localeStrings as onboardingStrings } from '../../shared/components/onboarding/stories/locale_strings'
@@ -57,6 +57,10 @@ export const localeStrings = {
   notificationAutoContributeCompletedText: 'You\'ve contributed $1.',
   notificationWalletDisconnectedTitle: 'You are logged out',
   notificationWalletDisconnectedText: 'This can happen to keep your account secure. Click below to reconnect now.',
+  notificationUpholdBATNotAllowedTitle: 'Error: BAT unavailable',
+  notificationUpholdBATNotAllowedText: 'BAT is not yet supported in your region on Uphold.',
+  notificationUpholdInsufficientCapabilitiesTitle: 'Error: Limited Uphold account functionality',
+  notificationUpholdInsufficientCapabilitiesText: 'According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.',
   notificationWalletDisconnectedAction: 'Reconnect',
   notificationTokenGrantTitle: 'A token grant is available!',
   notificationAdGrantAmount: '$1 Rewards: $2',

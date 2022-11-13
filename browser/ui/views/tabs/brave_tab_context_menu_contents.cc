@@ -59,6 +59,11 @@ bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
         controller_->browser());
   }
 
+  if (command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
+    return tabs::features::IsFloatingVerticalTabsEnabled(
+        controller_->browser());
+  }
+
   return false;
 }
 
@@ -75,8 +80,10 @@ bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
     return tabs::features::SupportsVerticalTabs(controller_->browser());
 
-  if (command_id == BraveTabMenuModel::CommandShowTitleBar)
+  if (command_id == BraveTabMenuModel::CommandShowTitleBar ||
+      command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
     return tabs::features::ShouldShowVerticalTabs(controller_->browser());
+  }
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 }
@@ -122,6 +129,7 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       break;
     case BraveTabMenuModel::CommandShowTitleBar:
     case BraveTabMenuModel::CommandShowVerticalTabs:
+    case BraveTabMenuModel::CommandUseFloatingVerticalTabStrip:
       return true;
     default:
       NOTREACHED();
@@ -147,6 +155,10 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandShowTitleBar: {
       brave::ToggleWindowTitleVisibilityForVerticalTabs(browser_);
       BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();
+      return;
+    }
+    case BraveTabMenuModel::CommandUseFloatingVerticalTabStrip: {
+      brave::ToggleVerticalTabStripFloatingMode(browser_);
       return;
     }
     default:

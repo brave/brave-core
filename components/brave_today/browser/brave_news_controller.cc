@@ -28,6 +28,7 @@
 #include "brave/components/brave_today/browser/brave_news_p3a.h"
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
+#include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/network.h"
 #include "brave/components/brave_today/browser/suggestions_controller.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
@@ -37,7 +38,6 @@
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/history/core/browser/history_service.h"
@@ -49,6 +49,7 @@
 
 namespace brave_news {
 namespace {
+
 // The favicon size we desire. The favicons are rendered at 24x24 pixels but
 // they look quite a bit nicer if we get a 48x48 pixel icon and downscale it.
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
@@ -64,17 +65,9 @@ bool IsPublisherEnabled(const mojom::Publisher* publisher) {
 
 // static
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  // Only default brave today to be shown for
-  // certain languages on browser startup.
-  const std::string language_code =
-      brave_l10n::GetDefaultISOLanguageCodeString();
-  const bool is_english_language = language_code == "en";
-  const bool is_japanese_language = language_code == "ja";
-  const bool brave_news_enabled_default =
-      is_english_language || is_japanese_language;
   registry->RegisterBooleanPref(prefs::kShouldShowToolbarButton, true);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowToday,
-                                brave_news_enabled_default);
+                                IsUserInDefaultEnabledLocale());
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
   registry->RegisterDictionaryPref(prefs::kBraveTodaySources);
   registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
@@ -131,20 +124,6 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::HandleSubscriptionsChanged,
                           base::Unretained(this)));
 
-  if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsV2Feature)) {
-    const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
-    if (channels.empty()) {
-      publishers_controller_.GetLocale(base::BindOnce(
-          [](ChannelsController* channels_controller,
-             const std::string& locale) {
-            channels_controller->SetChannelSubscribed(locale,
-                                                      kTopSourcesChannel, true);
-          },
-          base::Unretained(&channels_controller_)));
-    }
-  }
-
   p3a::RecordAtInit(prefs_);
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
@@ -171,14 +150,26 @@ BraveNewsController::MakeRemote() {
 }
 
 void BraveNewsController::GetLocale(GetLocaleCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run("");
+    return;
+  }
   publishers_controller_.GetLocale(std::move(callback));
 }
 
 void BraveNewsController::GetFeed(GetFeedCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run(brave_news::mojom::Feed::New());
+    return;
+  }
   feed_controller_.GetOrFetchFeed(std::move(callback));
 }
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run({});
+    return;
+  }
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
 }
 
@@ -194,6 +185,10 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
 }
 
 void BraveNewsController::GetChannels(GetChannelsCallback callback) {
+  if (!GetIsEnabled()) {
+    std::move(callback).Run({});
+    return;
+  }
   channels_controller_.GetAllChannels(std::move(callback));
 }
 
@@ -552,10 +547,16 @@ void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {
+  if (!GetIsEnabled()) {
+    return;
+  }
   publishers_controller_.EnsurePublishersIsUpdating();
 }
 
 void BraveNewsController::CheckForFeedsUpdate() {
+  if (!GetIsEnabled()) {
+    return;
+  }
   feed_controller_.UpdateIfRemoteChanged();
 }
 
@@ -565,6 +566,9 @@ void BraveNewsController::Prefetch() {
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {
+  // If the user has just enabled the feature for the first time,
+  // make sure we're setup or migrated.
+  MaybeInitPrefs();
   // Refresh data on an interval only if Brave News is enabled
   if (GetIsEnabled()) {
     VLOG(1) << "STARTING TIMERS";
@@ -605,6 +609,22 @@ void BraveNewsController::HandleSubscriptionsChanged() {
     feed_controller_.EnsureFeedIsUpdating();
   } else {
     VLOG(1) << "HandleSubscriptionsChanged: News not enabled, doing nothing.";
+  }
+}
+
+void BraveNewsController::MaybeInitPrefs() {
+  if (GetIsEnabled() && base::FeatureList::IsEnabled(
+                            brave_today::features::kBraveNewsV2Feature)) {
+    const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
+    if (channels.empty() && GetIsEnabled()) {
+      publishers_controller_.GetLocale(base::BindOnce(
+          [](ChannelsController* channels_controller,
+             const std::string& locale) {
+            channels_controller->SetChannelSubscribed(locale,
+                                                      kTopSourcesChannel, true);
+          },
+          base::Unretained(&channels_controller_)));
+    }
   }
 }
 

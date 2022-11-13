@@ -932,6 +932,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 mCurrentBlockchainToken.contractAddress);
                     }
                 } else if (mSelectedAccount.coin == CoinType.SOL) {
+                    if (mCurrentBlockchainToken.isNft) {
+                        value = "1";
+                    }
                     mSendModel.sendSolanaToken(mCurrentBlockchainToken, mSelectedAccount.address,
                             to, Utils.toDecimalLamport(value, mCurrentBlockchainToken.decimals),
                             (success, txMetaId, errorMessage) -> {
@@ -1442,7 +1445,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     token.symbol, getResources().getDisplayMetrics().density, assetText, this, true,
                     (float) 0.5);
         }
-        if (buySend && token.isErc721) {
+        if (buySend && (token.isErc721 || token.isNft)) {
             mFromValueBlock.setVisibility(View.GONE);
         } else {
             mFromValueBlock.setVisibility(View.VISIBLE);

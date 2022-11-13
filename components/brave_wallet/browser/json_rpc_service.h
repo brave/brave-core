@@ -19,6 +19,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
+#include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -176,6 +177,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void EnsGetEthAddr(const std::string& domain,
                      mojom::EnsOffchainLookupOptionsPtr options,
                      EnsGetEthAddrCallback callback) override;
+  void SnsGetSolAddr(const std::string& domain,
+                     SnsGetSolAddrCallback callback) override;
 
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
@@ -474,6 +477,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       EnsResolverTask* task,
       absl::optional<EnsResolverTaskResult> task_result,
       absl::optional<EnsResolverTaskError> error);
+  void OnSnsGetSolAddrTaskDone(
+      SnsResolverTask* task,
+      absl::optional<SnsResolverTaskResult> task_result,
+      absl::optional<SnsResolverTaskError> error);
   void OnEnsGetEthAddr(EnsGetEthAddrCallback callback,
                        APIRequestResult api_request_result);
   void OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
@@ -583,6 +590,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   EnsResolverTaskContainer<EnsGetEthAddrCallback> ens_get_eth_addr_tasks_;
   EnsResolverTaskContainer<EnsGetContentHashCallback>
       ens_get_content_hash_tasks_;
+
+  SnsResolverTaskContainer<SnsGetSolAddrCallback> sns_get_sol_addr_tasks_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;

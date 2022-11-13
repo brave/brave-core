@@ -17,7 +17,6 @@
 
 using std::placeholders::_1;
 using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace ledger {
 namespace gemini {
@@ -30,11 +29,10 @@ GeminiTransfer::~GeminiTransfer() = default;
 
 void GeminiTransfer::Start(const Transaction& transaction,
                            client::TransactionCallback callback) {
-  auto wallet = ledger_->gemini()->GetWallet();
+  auto wallet =
+      ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(mojom::Result::LEDGER_ERROR, "");
-    return;
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   auto url_callback =
@@ -46,10 +44,17 @@ void GeminiTransfer::Start(const Transaction& transaction,
 void GeminiTransfer::OnCreateTransaction(const mojom::Result result,
                                          const std::string& id,
                                          client::TransactionCallback callback) {
+  if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+    return callback(mojom::Result::LEDGER_ERROR, "");
+  }
+
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    ledger_->gemini()->DisconnectWallet();
-    callback(mojom::Result::EXPIRED_TOKEN, "");
-    return;
+    if (!ledger_->gemini()->DisconnectWallet()) {
+      BLOG(0, "Failed to disconnect " << constant::kWalletGemini << " wallet!");
+      return callback(mojom::Result::LEDGER_ERROR, "");
+    }
+
+    return callback(mojom::Result::EXPIRED_TOKEN, "");
   }
 
   BLOG(1, "Number of retries: " << ledger::gemini_retries);
@@ -90,11 +95,11 @@ void GeminiTransfer::FetchTransactionStatus(
     const int attempts,
     client::TransactionCallback callback) {
   BLOG(1, "Fetching transaction status " << attempts << " time");
-  auto wallet = ledger_->gemini()->GetWallet();
+  auto wallet =
+      ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(mojom::Result::LEDGER_ERROR, "");
-    return;
+    BLOG(0, "Unexpected " << constant::kWalletGemini << " wallet status!");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   auto url_callback = std::bind(&GeminiTransfer::OnTransactionStatus, this, _1,
@@ -127,11 +132,11 @@ void GeminiTransfer::OnTransactionStatus(const mojom::Result result,
 
 void GeminiTransfer::CancelTransaction(const std::string& id,
                                        client::TransactionCallback callback) {
-  auto wallet = ledger_->gemini()->GetWallet();
+  auto wallet =
+      ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(mojom::Result::LEDGER_ERROR, "");
-    return;
+    BLOG(0, "Unexpected " << constant::kWalletGemini << " wallet status!");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   gemini_server_->post_cancel_transaction()->Request(

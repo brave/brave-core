@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 declare namespace chrome {
   function getVariableValue (variable: string): string
@@ -148,7 +148,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (result: number, type: number) => void) => void
   }
 
-  const getExternalWallet: (callback: (result: number, wallet?: RewardsExtension.ExternalWallet) => void) => {}
+  const getExternalWallet: (callback: (wallet?: RewardsExtension.ExternalWallet) => void) => {}
 
   const disconnectWallet: () => {}
 

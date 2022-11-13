@@ -1472,6 +1472,10 @@ public class Utils {
     }
 
     public static String formatErc721TokenTitle(String title, String id) {
+        if (id.isEmpty() || id.equals("0")) {
+            return title;
+        }
+
         return title + " #" + id;
     }
 

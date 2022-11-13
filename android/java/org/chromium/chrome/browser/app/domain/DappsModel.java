@@ -13,14 +13,18 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
+import org.chromium.chrome.browser.crypto_wallet.model.WalletAccountCreationRequest;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
+import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
 import org.chromium.url.internal.mojom.Origin;
 
@@ -29,7 +33,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class DappsModel {
+public class DappsModel implements KeyringServiceObserver {
     private JsonRpcService mJsonRpcService;
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
@@ -43,6 +47,9 @@ public class DappsModel {
     private final MutableLiveData<List<SignAllTransactionsRequest>> _mSignAllTxRequests;
     private final LiveData<List<SignTransactionRequest>> mSignTxRequests;
     private final LiveData<List<SignAllTransactionsRequest>> mSignAllTxRequests;
+    private List<WalletAccountCreationRequest> mPendingWalletAccountCreationRequests;
+    private MutableLiveData<WalletAccountCreationRequest> _mPendingWalletAccountCreationRequest;
+    public LiveData<WalletAccountCreationRequest> mPendingWalletAccountCreationRequest;
     public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
     public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
             _mProcessNextDAppsRequest;
@@ -57,32 +64,38 @@ public class DappsModel {
         mSignTxRequests = _mSignTxRequests;
         _mSignAllTxRequests = new MutableLiveData<>(Collections.emptyList());
         mSignAllTxRequests = _mSignAllTxRequests;
+        _mPendingWalletAccountCreationRequest = new MutableLiveData<>();
+        mPendingWalletAccountCreationRequest = _mPendingWalletAccountCreationRequest;
+        mPendingWalletAccountCreationRequests = new ArrayList<>();
+        mKeyringService.addObserver(this);
     }
 
     public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
             Callbacks.Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
         if (coinType == CoinType.ETH || coinType == CoinType.SOL) {
-            mKeyringService.getKeyringInfo(Utils.getKeyringForCoinType(coinType), keyringInfo -> {
-                mKeyringService.getSelectedAccount(coinType, accountAddress -> {
-                    if (coinType == CoinType.SOL) {
-                        // only the selected account is used for solana dapps
-                        for (AccountInfo accountInfo : keyringInfo.accountInfos) {
-                            if (accountAddress.equals(accountInfo.address)) {
-                                List<AccountInfo> accountInfos = new ArrayList<>();
-                                accountInfos.add(accountInfo);
+            mKeyringService.getKeyringInfo(
+                    AssetUtils.getKeyringForCoinType(coinType), keyringInfo -> {
+                        mKeyringService.getSelectedAccount(coinType, accountAddress -> {
+                            if (coinType == CoinType.SOL) {
+                                // only the selected account is used for solana dapps
+                                for (AccountInfo accountInfo : keyringInfo.accountInfos) {
+                                    if (accountAddress.equals(accountInfo.address)) {
+                                        List<AccountInfo> accountInfos = new ArrayList<>();
+                                        accountInfos.add(accountInfo);
+                                        callback.call(new Pair<>(
+                                                Utils.findAccount(
+                                                        keyringInfo.accountInfos, accountAddress),
+                                                accountInfos));
+                                        return;
+                                    }
+                                }
+                            } else {
                                 callback.call(new Pair<>(
                                         Utils.findAccount(keyringInfo.accountInfos, accountAddress),
-                                        accountInfos));
-                                return;
+                                        Arrays.asList(keyringInfo.accountInfos)));
                             }
-                        }
-                    } else {
-                        callback.call(new Pair<>(
-                                Utils.findAccount(keyringInfo.accountInfos, accountAddress),
-                                Arrays.asList(keyringInfo.accountInfos)));
-                    }
-                });
-            });
+                        });
+                    });
         } else {
             callback.call(new Pair<>(null, Collections.emptyList()));
         }
@@ -189,6 +202,32 @@ public class DappsModel {
         _mWalletIconNotificationVisible.setValue(false);
     }
 
+    public void addAccountCreationRequest(String keyringId) {
+        if (keyringId == null) return;
+        Utils.removeIf(mPendingWalletAccountCreationRequests,
+                request -> request.getKeyringId().equals(keyringId));
+        WalletAccountCreationRequest request = new WalletAccountCreationRequest(keyringId);
+        mPendingWalletAccountCreationRequests.add(request);
+        updatePendingAccountCreationRequest();
+    }
+
+    public void removeProcessedAccountCreationRequest(WalletAccountCreationRequest request) {
+        if (request == null) return;
+        Utils.removeIf(mPendingWalletAccountCreationRequests,
+                input -> input.getCoinType() == request.getCoinType());
+        updatePendingAccountCreationRequest();
+    }
+
+    public void showPendingAccountCreationRequest() {
+        WalletAccountCreationRequest request = _mPendingWalletAccountCreationRequest.getValue();
+        if (request != null) {
+            _mPendingWalletAccountCreationRequest.postValue(request);
+        } else if (!mPendingWalletAccountCreationRequests.isEmpty()) {
+            _mPendingWalletAccountCreationRequest.postValue(
+                    mPendingWalletAccountCreationRequests.get(0));
+        }
+    }
+
     private void updateWalletBadgeVisibilityInternal() {
         if (mBraveWalletService == null || mJsonRpcService == null || mPendingTxHelper == null) {
             return;
@@ -243,4 +282,48 @@ public class DappsModel {
             }
         }
     }
+
+    private void updatePendingAccountCreationRequest() {
+        if (mPendingWalletAccountCreationRequests.isEmpty()) {
+            _mPendingWalletAccountCreationRequest.postValue(null);
+        } else {
+            _mPendingWalletAccountCreationRequest.postValue(
+                    mPendingWalletAccountCreationRequests.get(0));
+        }
+    }
+
+    @Override
+    public void keyringCreated(String keyringId) {}
+
+    @Override
+    public void keyringRestored(String keyringId) {}
+
+    @Override
+    public void keyringReset() {}
+
+    @Override
+    public void locked() {}
+
+    @Override
+    public void unlocked() {
+        showPendingAccountCreationRequest();
+    }
+
+    @Override
+    public void backedUp() {}
+
+    @Override
+    public void accountsChanged() {}
+
+    @Override
+    public void autoLockMinutesChanged() {}
+
+    @Override
+    public void selectedAccountChanged(int coin) {}
+
+    @Override
+    public void onConnectionError(MojoException e) {}
+
+    @Override
+    public void close() {}
 }

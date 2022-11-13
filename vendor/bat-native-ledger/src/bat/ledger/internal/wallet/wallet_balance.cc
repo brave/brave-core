@@ -91,17 +91,9 @@ void WalletBalance::FetchBalanceUphold(mojom::BalancePtr balance,
     return;
   }
 
-  auto balance_callback =
+  ledger_->uphold()->FetchBalance(
       base::BindOnce(&WalletBalance::OnFetchBalanceUphold,
-                     base::Unretained(this), *balance, std::move(callback));
-
-  auto wallet = ledger_->uphold()->GetWallet();
-  if (!wallet) {
-    std::move(balance_callback).Run(mojom::Result::LEDGER_OK, 0);
-    return;
-  }
-
-  ledger_->uphold()->FetchBalance(std::move(balance_callback));
+                     base::Unretained(this), *balance, std::move(callback)));
 }
 
 void WalletBalance::OnFetchBalanceUphold(mojom::Balance info,
@@ -129,17 +121,9 @@ void WalletBalance::FetchBalanceBitflyer(
     return;
   }
 
-  auto balance_callback =
+  ledger_->bitflyer()->FetchBalance(
       base::BindOnce(&WalletBalance::OnFetchBalanceBitflyer,
-                     base::Unretained(this), *balance, std::move(callback));
-
-  auto wallet = ledger_->bitflyer()->GetWallet();
-  if (!wallet) {
-    std::move(balance_callback).Run(mojom::Result::LEDGER_OK, 0);
-    return;
-  }
-
-  ledger_->bitflyer()->FetchBalance(std::move(balance_callback));
+                     base::Unretained(this), *balance, std::move(callback)));
 }
 
 void WalletBalance::OnFetchBalanceBitflyer(
@@ -168,17 +152,9 @@ void WalletBalance::FetchBalanceGemini(mojom::BalancePtr balance,
     return;
   }
 
-  auto balance_callback =
+  ledger_->gemini()->FetchBalance(
       base::BindOnce(&WalletBalance::OnFetchBalanceGemini,
-                     base::Unretained(this), *balance, std::move(callback));
-
-  auto wallet = ledger_->gemini()->GetWallet();
-  if (!wallet) {
-    std::move(balance_callback).Run(mojom::Result::LEDGER_OK, 0);
-    return;
-  }
-
-  ledger_->gemini()->FetchBalance(std::move(balance_callback));
+                     base::Unretained(this), *balance, std::move(callback)));
 }
 
 void WalletBalance::OnFetchBalanceGemini(mojom::Balance info,

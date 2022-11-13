@@ -56,7 +56,7 @@ KeyringServiceFactory::KeyringServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "KeyringService",
           BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
+  DependsOn(JsonRpcServiceFactory::GetInstance());
 }
 
 KeyringServiceFactory::~KeyringServiceFactory() = default;

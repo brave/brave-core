@@ -19,13 +19,16 @@
 #endif
 
 // static
-void VerticalTabStripWidgetDelegateView::Create(BrowserView* browser_view,
-                                                views::View* host_view) {
+VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
+    BrowserView* browser_view,
+    views::View* host_view) {
   DCHECK(browser_view->GetWidget());
 
-  views::Widget::InitParams params;
-  params.delegate =
+  auto* delegate_view =
       new VerticalTabStripWidgetDelegateView(browser_view, host_view);
+  views::Widget::InitParams params;
+  params.delegate = delegate_view;
+
   params.parent = browser_view->GetWidget()->GetNativeView();
   params.type = views::Widget::InitParams::TYPE_CONTROL;
   // We need this to pass the key events to the top level widget. i.e. we should
@@ -39,6 +42,8 @@ void VerticalTabStripWidgetDelegateView::Create(BrowserView* browser_view,
 #endif
   widget->Show();
   widget.release();
+
+  return delegate_view;
 }
 
 VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() =

@@ -1169,15 +1169,14 @@ ExtensionFunction::ResponseAction BraveRewardsGetExternalWalletFunction::Run() {
 }
 
 void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
-    const ledger::mojom::Result result,
-    ledger::mojom::ExternalWalletPtr wallet) {
+    base::expected<ledger::mojom::ExternalWalletPtr,
+                   ledger::mojom::GetExternalWalletError> result) {
+  auto wallet = std::move(result).value_or(nullptr);
   if (!wallet) {
-    Respond(OneArgument(base::Value(static_cast<int>(result))));
-    return;
+    return Respond(NoArguments());
   }
 
   base::Value::Dict data;
-
   data.Set("type", wallet->type);
   data.Set("address", wallet->address);
   data.Set("status", static_cast<int>(wallet->status));
@@ -1188,8 +1187,7 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   data.Set("loginUrl", wallet->login_url);
   data.Set("activityUrl", wallet->activity_url);
 
-  Respond(TwoArguments(base::Value(static_cast<int>(result)),
-                       base::Value(std::move(data))));
+  Respond(OneArgument(base::Value(std::move(data))));
 }
 
 BraveRewardsDisconnectWalletFunction::~BraveRewardsDisconnectWalletFunction() =

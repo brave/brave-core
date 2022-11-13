@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -73,6 +73,10 @@ export const AccountsAndTransactionsList = ({
   // state
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
 
+  const isNonFungibleToken = React.useMemo(() => {
+    return selectedAsset?.isErc721 || selectedAsset?.isNft
+  }, [selectedAsset])
+
   const selectedAssetsNetwork = React.useMemo(() => {
     if (!selectedAsset) {
       return selectedNetwork
@@ -88,7 +92,7 @@ export const AccountsAndTransactionsList = ({
   }, [accounts, selectedAsset])
 
   const accountsList = React.useMemo(() => {
-    if (selectedAsset?.isErc721 && selectedAssetsNetwork) {
+    if (isNonFungibleToken && selectedAssetsNetwork) {
       return filteredAccountsByCoinType.filter((account) => Number(account.nativeBalanceRegistry[selectedAssetsNetwork.chainId] ?? 0) !== 0)
     }
     return filteredAccountsByCoinType
@@ -104,9 +108,9 @@ export const AccountsAndTransactionsList = ({
       {selectedAsset &&
         <>
           <DividerRow>
-            <DividerText>{selectedAsset?.isErc721 ? getLocale('braveWalletOwner') : getLocale('braveWalletAccounts')}</DividerText>
+            <DividerText>{isNonFungibleToken ? getLocale('braveWalletOwner') : getLocale('braveWalletAccounts')}</DividerText>
             <Row justifyContent='flex-end'>
-              {!selectedAsset?.isErc721 &&
+              {!isNonFungibleToken &&
                 <WithHideBalancePlaceholder
                   size='small'
                   hideBalances={hideBalances}

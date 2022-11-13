@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 import * as knobs from '@storybook/addon-knobs'
@@ -11,6 +11,7 @@ import { WithThemeVariables } from '../../with_theme_variables'
 import { WalletCard } from '../'
 
 import { localeStrings } from './locale_strings'
+import * as mojom from '../../../../shared/lib/mojom'
 
 const locale = {
   getString (key: string) {
@@ -45,8 +46,8 @@ export function Wallet () {
   const externalWallet: ExternalWallet = {
     provider: 'uphold',
     status: knobs.boolean('Wallet disconnected', false)
-      ? 'disconnected'
-      : 'verified',
+      ? mojom.WalletStatus.kLoggedOut
+      : mojom.WalletStatus.kConnected,
     username: 'brave123',
     links: {}
   }

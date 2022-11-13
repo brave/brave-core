@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 export const localeStrings = {
   rewardsLogInToSeeBalance: '$1Log in to $2$3 to see your balance',
   rewardsPaymentCheckStatus: 'Check status',
@@ -13,9 +17,7 @@ export const localeStrings = {
   walletLogIntoYourAccount: 'Log into your $1 account',
   walletMonthlyTips: 'Monthly Tips',
   walletOneTimeTips: 'One-Time Tips',
-  walletPending: 'Pending',
   walletPendingContributions: 'Pending contributions',
-  walletPendingText: 'There is a temporary problem verifying with $1. Your Brave Rewards will remain in a Pending state and retry automatically, but you can also try again later.',
   walletRewardsFromAds: 'Rewards from Ads',
   walletRewardsSummary: 'Rewards Summary',
   walletUnverified: 'Unverified',

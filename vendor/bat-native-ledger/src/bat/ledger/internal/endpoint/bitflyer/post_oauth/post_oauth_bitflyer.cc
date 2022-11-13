@@ -53,11 +53,6 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
 }
 
 mojom::Result PostOauth::CheckStatusCode(int status_code) {
-  if (status_code == net::HTTP_UNAUTHORIZED) {
-    BLOG(0, "Unauthorized access");
-    return mojom::Result::EXPIRED_TOKEN;
-  }
-
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
     return mojom::Result::LEDGER_ERROR;

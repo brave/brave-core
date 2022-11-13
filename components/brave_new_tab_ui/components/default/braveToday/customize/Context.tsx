@@ -1,10 +1,11 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useCallback, useMemo, useState } from 'react'
+import { useNewTabPref } from '../../../../hooks/usePref'
 import { Channels, Publisher, Publishers, PublisherType } from '../../../../api/brave_news'
 import { api, isPublisherEnabled } from '../../../../api/brave_news/news'
 import Modal from './Modal'
@@ -29,6 +30,9 @@ interface BraveNewsContext {
   // Publishers to suggest to the user.
   suggestedPublisherIds: string[]
   updateSuggestedPublisherIds: () => void
+  isOptInPrefEnabled: boolean | undefined
+  isShowOnNTPPrefEnabled: boolean | undefined
+  toggleBraveNewsOnNTP: (enabled: boolean) => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -40,7 +44,10 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   subscribedPublisherIds: [],
   channels: {},
   suggestedPublisherIds: [],
-  updateSuggestedPublisherIds: () => {}
+  updateSuggestedPublisherIds: () => {},
+  isOptInPrefEnabled: undefined,
+  isShowOnNTPPrefEnabled: undefined,
+  toggleBraveNewsOnNTP: (enabled: boolean) => {}
 })
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
@@ -48,6 +55,16 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
+  // TODO(petemill): Pref should come from the API since it isn't NTP-related. We should
+  // not use useNewTabPref here so that we can move Brave News to a shared component.
+  // But for now we're tied to NTP.
+  const [isOptInPrefEnabled, setOptInPrefEnabled] = useNewTabPref('isBraveTodayOptedIn')
+  const [isShowOnNTPPrefEnabled, setShowOnNTPPrefEnabled] = useNewTabPref('showToday')
+
+  // Update initially and when opt-in / enabled changes
+  React.useEffect(() => {
+    api.update()
+  }, [isOptInPrefEnabled && isShowOnNTPPrefEnabled])
 
   React.useEffect(() => {
     const handler = () => setChannels(api.getChannels())
@@ -87,6 +104,15 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     sortedPublishers.filter(isPublisherEnabled).map(p => p.publisherId),
     [sortedPublishers])
 
+  const toggleBraveNewsOnNTP = (shouldEnable: boolean) => {
+    if (shouldEnable) {
+      setOptInPrefEnabled(true)
+      setShowOnNTPPrefEnabled(true)
+      return
+    }
+    setShowOnNTPPrefEnabled(false)
+  }
+
   const context = useMemo<BraveNewsContext>(() => ({
     customizePage,
     setCustomizePage,
@@ -96,8 +122,11 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     sortedPublishers,
     filteredPublisherIds,
     subscribedPublisherIds,
-    updateSuggestedPublisherIds
-  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds])
+    updateSuggestedPublisherIds,
+    isOptInPrefEnabled,
+    isShowOnNTPPrefEnabled,
+    toggleBraveNewsOnNTP
+  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, isOptInPrefEnabled, isShowOnNTPPrefEnabled, toggleBraveNewsOnNTP])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

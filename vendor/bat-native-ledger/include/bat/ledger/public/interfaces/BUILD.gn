@@ -9,3 +9,29 @@ mojom("interfaces") {
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }
+
+mojom("ledger_types") {
+  generate_java = true
+  sources = [ "ledger_types.mojom" ]
+
+  cpp_typemaps = [
+    {
+      types = [
+        {
+          mojom = "ledger.mojom.GetExternalWalletResult"
+          cpp = "base::expected<ledger::mojom::ExternalWalletPtr, ledger::mojom::GetExternalWalletError>"
+          move_only = true
+        },
+        {
+          mojom = "ledger.mojom.ConnectExternalWalletResult"
+          cpp =
+              "base::expected<void, ledger::mojom::ConnectExternalWalletError>"
+          move_only = true
+        },
+      ]
+
+      traits_headers = [ "ledger_types_mojom_traits.h" ]
+      traits_sources = [ "ledger_types_mojom_traits.cc" ]
+    },
+  ]
+}

@@ -12,21 +12,17 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_server.h"
 #include "bat/ledger/internal/gemini/gemini.h"
-#include "bat/ledger/internal/gemini/gemini_authorization.h"
 #include "bat/ledger/internal/gemini/gemini_transfer.h"
 #include "bat/ledger/internal/gemini/gemini_util.h"
-#include "bat/ledger/internal/gemini/gemini_wallet.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/logging/event_log_keys.h"
-#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
+#include "bat/ledger/internal/wallet_provider/gemini/connect_gemini_wallet.h"
+#include "bat/ledger/internal/wallet_provider/gemini/get_gemini_wallet.h"
 #include "brave_base/random.h"
 
-using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace {
 const char kFeeMessage[] =
@@ -39,8 +35,8 @@ namespace gemini {
 
 Gemini::Gemini(LedgerImpl* ledger)
     : transfer_(std::make_unique<GeminiTransfer>(ledger)),
-      authorization_(std::make_unique<GeminiAuthorization>(ledger)),
-      wallet_(std::make_unique<GeminiWallet>(ledger)),
+      connect_wallet_(std::make_unique<ConnectGeminiWallet>(ledger)),
+      get_wallet_(std::make_unique<GetGeminiWallet>(ledger)),
       gemini_server_(std::make_unique<endpoint::GeminiServer>(ledger)),
       ledger_(ledger) {}
 
@@ -102,17 +98,9 @@ void Gemini::ContributionCompleted(mojom::Result result,
 }
 
 void Gemini::FetchBalance(FetchBalanceCallback callback) {
-  const auto wallet = GetWallet();
-
-  if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
-    return;
-  }
-
-  if (wallet->status != mojom::WalletStatus::VERIFIED) {
-    BLOG(1, "Wallet is not verified");
-    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
-    return;
+  auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});
+  if (!wallet) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
   }
 
   auto url_callback = base::BindOnce(
@@ -125,11 +113,18 @@ void Gemini::FetchBalance(FetchBalanceCallback callback) {
 void Gemini::OnFetchBalance(FetchBalanceCallback callback,
                             const mojom::Result result,
                             const double available) {
+  if (!GetWalletIf({mojom::WalletStatus::kConnected})) {
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
+  }
+
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    DisconnectWallet();
-    std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
-    return;
+    if (!DisconnectWallet()) {
+      BLOG(0, "Failed to disconnect " << constant::kWalletGemini << " wallet!");
+      return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
+    }
+
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
   }
 
   if (result != mojom::Result::LEDGER_OK) {
@@ -150,51 +145,13 @@ void Gemini::TransferFunds(const double amount,
   transfer_->Start(transaction, callback);
 }
 
-void Gemini::WalletAuthorization(
-    const base::flat_map<std::string, std::string>& args,
-    ExternalWalletAuthorizationCallback callback) {
-  authorization_->Authorize(args, callback);
+void Gemini::ConnectWallet(const base::flat_map<std::string, std::string>& args,
+                           ledger::ConnectExternalWalletCallback callback) {
+  connect_wallet_->Run(args, std::move(callback));
 }
 
-void Gemini::GenerateWallet(ResultCallback callback) {
-  wallet_->Generate(std::move(callback));
-}
-
-void Gemini::DisconnectWallet(const bool manual) {
-  auto wallet = GetWallet();
-  if (!wallet) {
-    return;
-  }
-
-  BLOG(1, "Disconnecting wallet");
-  const std::string wallet_address = wallet->address;
-
-  const auto from = wallet->status;
-  wallet = ledger::wallet::ResetWallet(std::move(wallet));
-  if (manual) {
-    wallet->status = mojom::WalletStatus::NOT_CONNECTED;
-  }
-  const auto to = wallet->status;
-
-  OnWalletStatusChange(ledger_, from, to);
-
-  const bool shutting_down = ledger_->IsShuttingDown();
-
-  if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletDisconnected, {}, [](mojom::Result) {});
-  }
-
-  SetWallet(std::move(wallet));
-
-  if (!shutting_down) {
-    ledger_->ledger_client()->WalletDisconnected(constant::kWalletGemini);
-  }
-
-  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
-                                    std::string(constant::kWalletGemini) +
-                                        (!wallet_address.empty() ? "/" : "") +
-                                        wallet_address.substr(0, 5));
+void Gemini::GetWallet(GetExternalWalletCallback callback) {
+  get_wallet_->Run(std::move(callback));
 }
 
 void Gemini::SaveTransferFee(const std::string& contribution_id,
@@ -208,7 +165,9 @@ void Gemini::SaveTransferFee(const std::string& contribution_id,
   }
 
   wallet->fees.insert(std::make_pair(contribution_id, fee));
-  SetWallet(std::move(wallet));
+  if (!SetWallet(std::move(wallet))) {
+    BLOG(0, "Failed to set " << constant::kWalletGemini << " wallet!");
+  }
 }
 
 void Gemini::StartTransferFeeTimer(const std::string& fee_id,
@@ -275,12 +234,22 @@ void Gemini::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Gemini::GetWallet() {
-  return ::ledger::wallet::GetWallet(ledger_, constant::kWalletGemini);
+  return ledger::wallet::GetWallet(ledger_, constant::kWalletGemini);
+}
+
+mojom::ExternalWalletPtr Gemini::GetWalletIf(
+    const std::set<mojom::WalletStatus>& statuses) {
+  return ledger::wallet::GetWalletIf(ledger_, constant::kWalletGemini,
+                                     statuses);
 }
 
 bool Gemini::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
-                                     state::kWalletGemini);
+  return ledger::wallet::SetWallet(ledger_, std::move(wallet));
+}
+
+bool Gemini::DisconnectWallet(bool manual) {
+  return ledger::wallet::DisconnectWallet(ledger_, constant::kWalletGemini,
+                                          manual);
 }
 
 void Gemini::RemoveTransferFee(const std::string& contribution_id) {
@@ -291,7 +260,9 @@ void Gemini::RemoveTransferFee(const std::string& contribution_id) {
   }
 
   wallet->fees.erase(contribution_id);
-  SetWallet(std::move(wallet));
+  if (!SetWallet(std::move(wallet))) {
+    BLOG(0, "Failed to set " << constant::kWalletGemini << " wallet!");
+  }
 }
 
 }  // namespace gemini
