@@ -4,25 +4,29 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { ViewType } from './component_types'
+import { ViewType, Scenes } from './component_types'
 import { BrowserProfile } from '../api/import_data_browser'
 
 interface Store {
   setViewType: (viewType: ViewType) => void
   setCurrentSelectedBrowser: (currentSelection: string) => void
   incrementCount: () => void
+  setScenes: React.Dispatch<React.SetStateAction<Scenes | undefined>>
   currentSelectedBrowser: string | undefined
   browserProfiles: BrowserProfile[] | undefined
   viewType: ViewType
+  scenes: Scenes | undefined
 }
 
 const defaultStore = {
   setViewType: () => {},
   setCurrentSelectedBrowser: () => {},
   incrementCount: () => {},
+  setScenes: () => {},
   currentSelectedBrowser: undefined,
   browserProfiles: undefined,
-  viewType: ViewType.Default
+  viewType: ViewType.Default,
+  scenes: undefined
 }
 
 const DataContext = React.createContext<Store>(defaultStore)

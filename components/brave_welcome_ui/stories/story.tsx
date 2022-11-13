@@ -7,7 +7,7 @@ import * as React from 'react'
 import welcomeDarkTheme from '../theme/welcome-dark'
 import welcomeLightTheme from '../theme/welcome-light'
 import { boolean, withKnobs } from '@storybook/addon-knobs'
-import * as S from '../style'
+
 import './locale'
 
 // Components
@@ -20,7 +20,8 @@ import SetupComplete from '../components/setup-complete'
 import Welcome from '../components/welcome'
 
 import DataContext from '../state/context'
-import { ViewType } from '../state/component_types'
+import { ViewType, Scenes } from '../state/component_types'
+import Background from '../components/background'
 
 const payload = [
   {
@@ -103,6 +104,7 @@ export default {
     (Story: any) => {
       // mock data
       const [currentSelectedBrowser, setCurrentSelectedBrowser] = React.useState<string | undefined>('Chrome')
+      const [scenes, setScenes] = React.useState<Scenes | undefined>(undefined)
 
       const incrementCount = () => {}
 
@@ -110,16 +112,16 @@ export default {
         setViewType: () => {},
         setCurrentSelectedBrowser,
         incrementCount,
+        setScenes,
         currentSelectedBrowser,
         browserProfiles: payload,
-        viewType: ViewType.Default
+        viewType: ViewType.Default,
+        scenes
       }
 
       return (
         <DataContext.Provider value={store}>
-          <S.MainBox>
-            <Story />
-          </S.MainBox>
+          <Story />
         </DataContext.Provider>
       )
     },
@@ -153,4 +155,8 @@ export const _SetupComplete = () => {
 
 export const _Welcome = () => {
   return <Welcome />
+}
+
+export const _Background = () => {
+  return <Background static={false} />
 }

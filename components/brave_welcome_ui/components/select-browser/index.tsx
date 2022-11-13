@@ -71,7 +71,7 @@ function BrowserItemButton (props: BrowserItemButtonProps) {
 }
 
 function SelectBrowser () {
-  const { browserProfiles, currentSelectedBrowser, setCurrentSelectedBrowser, setViewType, incrementCount } = React.useContext(DataContext)
+  const { browserProfiles, currentSelectedBrowser, setCurrentSelectedBrowser, setViewType, incrementCount, scenes } = React.useContext(DataContext)
   const browserTypes = getUniqueBrowserTypes(browserProfiles ?? [])
 
   const handleSelectionChange = (browserName: string) => {
@@ -95,6 +95,7 @@ function SelectBrowser () {
   }
 
   const handleSkip = () => {
+    scenes?.s2.play() // play the final animation on skip
     setViewType(ViewType.HelpImprove)
   }
 

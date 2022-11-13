@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-export const MainBox = styled.div`
+export const Box = styled.div`
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   border-radius: 30px;
@@ -17,11 +17,12 @@ export const MainBox = styled.div`
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  position: relative;
 
   .view-header-box {
     display: grid;
     grid-template-columns: 0.2fr 1.5fr 0.2fr;
-    padding: 40px 40px 50px 40px;
+    padding: 100px 40px 50px 40px;
   }
 
   .view-details {
@@ -38,6 +39,18 @@ export const MainBox = styled.div`
     font-weight: 400;
     font-size: 20px;
     margin: 0;
+  }
+
+  .brave-logo-box {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: calc(-160px / 2);
+
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 `
 

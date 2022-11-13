@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { BrowserType } from './component_types'
 import { BrowserProfile, ImportDataBrowserProxyImpl } from '../api/import_data_browser'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 export const getValidBrowserProfiles = (profiles: BrowserProfile[]) => {
   const browserList = Object.values(BrowserType)
@@ -65,4 +66,13 @@ export function useProfileCount () {
     incrementCount,
     decrementCount
   }
+}
+
+export function useShouldPlayAnimations () {
+  const [shouldPlayAnimations] = React.useState(
+    loadTimeData.getBoolean('hardwareAccelerationEnabledAtStartup') &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+
+  return shouldPlayAnimations
 }

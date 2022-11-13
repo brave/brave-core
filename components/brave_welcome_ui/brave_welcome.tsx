@@ -16,7 +16,7 @@ import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 
 import MainContainer from './main_container'
 import DataContext from './state/context'
-import { ViewType } from './state/component_types'
+import { ViewType, Scenes } from './state/component_types'
 import { useInitializeImportData, useProfileCount } from './state/hooks'
 
 function App () {
@@ -25,14 +25,17 @@ function App () {
   const [currentSelectedBrowser, setCurrentSelectedBrowser] = React.useState<string | undefined>(undefined)
   const { browserProfiles } = useInitializeImportData()
   const { profileCountRef, incrementCount, decrementCount } = useProfileCount()
+  const [scenes, setScenes] = React.useState<Scenes | undefined>(undefined)
 
   const store = {
     setViewType,
     setCurrentSelectedBrowser,
     incrementCount,
+    setScenes,
     browserProfiles,
     currentSelectedBrowser,
-    viewType
+    viewType,
+    scenes
   }
 
   React.useEffect(() => {

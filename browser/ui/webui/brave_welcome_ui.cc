@@ -35,6 +35,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/gpu_data_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -211,6 +212,10 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(
       "showRewardsCard",
       base::FeatureList::IsEnabled(brave_welcome::features::kShowRewardsCard));
+
+  source->AddBoolean(
+      "hardwareAccelerationEnabledAtStartup",
+      content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 }

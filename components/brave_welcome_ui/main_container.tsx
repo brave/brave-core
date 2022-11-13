@@ -4,19 +4,23 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as S from './style'
+
+import DataContext from './state/context'
+import { useShouldPlayAnimations } from './state/hooks'
+import { ViewType } from './state/component_types'
 
 import HelpImprove from './components/help-improve'
 import ImportInProgress from './components/import-in-progress'
 import SelectBrowser from './components/select-browser'
 import SelectProfile from './components/select-profile'
 import SetupComplete from './components/setup-complete'
+import Background from './components/background'
 import Welcome from './components/welcome'
-import { ViewType } from './state/component_types'
-import DataContext from './state/context'
 
 function MainContainer () {
   const { viewType } = React.useContext(DataContext)
+  const shouldPlayAnimations = useShouldPlayAnimations()
+
   let mainEl = <Welcome />
 
   if (viewType === ViewType.SelectBrowser) {
@@ -44,9 +48,9 @@ function MainContainer () {
   }
 
   return (
-    <S.MainBox>
+    <Background static={!shouldPlayAnimations}>
       {mainEl}
-    </S.MainBox>
+    </Background>
   )
 }
 
