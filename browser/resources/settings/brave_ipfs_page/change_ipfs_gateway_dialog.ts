@@ -74,7 +74,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
       this.isUrlValid_ = success
       if (success) {
         this.setPrefValue(this.pref.key, this.gatewayUrl_);
-        this.fire('close');
+        this.dispatchEvent(new Event('close'));
       } else {
         this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddressOrigin')
       }
