@@ -32,6 +32,7 @@ import {
   useLib,
   useTokenInfo
 } from '../../../common/hooks'
+import { Checkbox } from 'brave-ui'
 
 interface Props {
   contractAddress: string | undefined
@@ -58,6 +59,7 @@ export const AddCustomTokenForm = (props: Props) => {
   const [coingeckoID, setCoingeckoID] = React.useState<string>('')
   const [iconURL, setIconURL] = React.useState<string>('')
   const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<BraveWallet.NetworkInfo>()
+  const [isNft, setIsNft] = React.useState<boolean>(false)
 
   // redux
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
@@ -137,9 +139,10 @@ export const AddCustomTokenForm = (props: Props) => {
         token.logo = token.logo ? token.logo : iconURL
         token.chainId = customAssetsNetwork.chainId
         onAddCustomAsset(token)
+        onHideForm()
         return
       }
-      let foundToken = foundTokenInfoByContractAddress
+      let foundToken = { ...foundTokenInfoByContractAddress }
       foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
       foundToken.logo = foundToken.logo ? foundToken.logo : iconURL
       foundToken.chainId = customAssetsNetwork.chainId
@@ -149,10 +152,10 @@ export const AddCustomTokenForm = (props: Props) => {
       const isErc721 = customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
-        decimals: Number(tokenDecimals),
+        decimals: customAssetsNetwork.coin === BraveWallet.CoinType.SOL ? 0 : Number(tokenDecimals),
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
         isErc721: isErc721,
-        isNft: isErc721,
+        isNft: isNft,
         name: tokenName,
         symbol: tokenSymbol,
         tokenId: tokenID ? new Amount(tokenID).toHex() : '',
@@ -165,7 +168,7 @@ export const AddCustomTokenForm = (props: Props) => {
       onAddCustomAsset(newToken)
     }
     onHideForm()
-  }, [tokenContractAddress, foundTokenInfoByContractAddress, customAssetsNetwork, iconURL, tokenDecimals, tokenName, tokenSymbol, tokenID, coingeckoID, onAddCustomAsset])
+  }, [tokenContractAddress, foundTokenInfoByContractAddress, customAssetsNetwork, iconURL, tokenDecimals, tokenName, tokenSymbol, tokenID, coingeckoID, onAddCustomAsset, isNft])
 
   const onToggleShowAdvancedFields = () => setShowAdvancedFields(prev => !prev)
 
@@ -189,6 +192,12 @@ export const AddCustomTokenForm = (props: Props) => {
     onHideForm()
   }, [resetInputFields, onHideForm])
 
+  const onChangeIsNft = React.useCallback((key: string, selected: boolean) => {
+    if (key === 'isNft') {
+      setIsNft(selected)
+    }
+  }, [])
+
   // memos
   const isDecimalDisabled = React.useMemo((): boolean => {
     return foundTokenInfoByContractAddress?.isErc721 ?? tokenID !== ''
@@ -197,13 +206,12 @@ export const AddCustomTokenForm = (props: Props) => {
   const buttonDisabled = React.useMemo((): boolean => {
     return tokenName === '' ||
       tokenSymbol === '' ||
-      (tokenDecimals === '0' && tokenID === '') ||
-      tokenDecimals === '' ||
+      (customAssetsNetwork?.coin === BraveWallet.CoinType.ETH && tokenID === '') ||
       tokenContractAddress === '' ||
       !customAssetsNetwork ||
       (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
         !tokenContractAddress.toLowerCase().startsWith('0x'))
-  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress, customAssetsNetwork])
+  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress, customAssetsNetwork, isNft])
 
   // effects
   React.useEffect(() => {
@@ -220,10 +228,12 @@ export const AddCustomTokenForm = (props: Props) => {
     if (foundTokenInfoByContractAddress?.isErc721) {
       if (tokenID === '') {
         setShowTokenIDRequired(true)
+        setIsNft(true)
         setShowAdvancedFields(true)
       }
     } else {
       setShowTokenIDRequired(false)
+      setIsNft(false)
     }
   }, [foundTokenInfoByContractAddress, tokenID, tokenContractAddress, onFindTokenInfoByContractAddress, resetInputFields])
 
@@ -260,14 +270,23 @@ export const AddCustomTokenForm = (props: Props) => {
             onChange={handleTokenSymbolChanged}
           />
         </FormColumn>
+        {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
+          <FormColumn>
+            <InputLabel>{getLocale('braveWalletWatchListTokenDecimals')}</InputLabel>
+            <Input
+              value={tokenDecimals}
+              onChange={handleTokenDecimalsChanged}
+              disabled={isDecimalDisabled}
+              type='number'
+            />
+          </FormColumn>
+        }
+      </FormRow>
+      <FormRow>
         <FormColumn>
-          <InputLabel>{getLocale('braveWalletWatchListTokenDecimals')}</InputLabel>
-          <Input
-            value={tokenDecimals}
-            onChange={handleTokenDecimalsChanged}
-            disabled={isDecimalDisabled}
-            type='number'
-          />
+          <Checkbox value={{ isNft: isNft }} onChange={onChangeIsNft}>
+            <div data-key='isNft'>{getLocale('braveWalletTokenFormNftCheckLabel')}</div>
+          </Checkbox>
         </FormColumn>
       </FormRow>
       <DividerRow>
