@@ -511,7 +511,26 @@ public class FeedDataSource: ObservableObject {
     // Followed channels
     locales.formUnion(followedChannels.map(\.localeIdentifier))
     // Followed sources
-    locales.formUnion(followedSources.map(\.localeDetails).compactMap { $0 }.flatMap { $0 }.map(\.locale))
+    let localeDetails = followedSources.map(\.localeDetails).compactMap { $0 }
+    for detail in localeDetails where !detail.isEmpty {
+      // Sources are tricky, they can exist in multiple locales even though the contents of those will be the
+      // same in each feed.
+      //
+      // We don't want to unnecessarily download extra feeds so it'll be best to only download from 1 that
+      // we're already downloading from.
+      if detail.count == 1 {
+        // Only 1 to work with
+        locales.insert(detail.first!.locale)
+      } else {
+        // Try and see if it exists in a feed we're already downloading
+        if let locale = detail.first(where: { locales.contains($0.locale) })?.locale {
+          locales.insert(locale)
+        } else if let locale = locales.first {
+          // Nothing found so we'll just pick one
+          locales.insert(locale)
+        }
+      }
+    }
     return locales
   }
 
