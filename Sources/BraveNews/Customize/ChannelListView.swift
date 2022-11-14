@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import BraveShared
 
 struct ChannelListContainerView: View {
   @ObservedObject var dataSource: FeedDataSource
@@ -40,7 +41,7 @@ private struct ChannelListView: View {
     .listBackgroundColor(Color(.braveGroupedBackground))
     .environment(\.defaultMinListRowHeight, 0)
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle("Channels")
+    .navigationTitle(Strings.BraveNews.channelsTitle)
   }
 }
 

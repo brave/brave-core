@@ -5,13 +5,14 @@
 
 import Foundation
 import SwiftUI
+import BraveShared
 
 struct FollowToggle: View {
   @Binding var isFollowing: Bool
   
   var body: some View {
     Toggle(isOn: $isFollowing) {
-      Text(isFollowing ? "Unfollow" : "Follow")
+      Text(isFollowing ? Strings.BraveNews.unfollowToggleTitle : Strings.BraveNews.followToggleTitle)
         .lineLimit(1)
         .fixedSize(horizontal: true, vertical: false)
     }

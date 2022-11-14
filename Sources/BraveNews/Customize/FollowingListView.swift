@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import BraveShared
 import Introspect
 
 struct FollowingListContainerView: View {
@@ -44,7 +45,7 @@ struct FollowingListView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
-          Text("Sources") // TODO: Localize
+          Text(Strings.BraveNews.sourcesHeaderTitle)
         }
       }
       if !followedChannels.isEmpty {
@@ -62,7 +63,7 @@ struct FollowingListView: View {
             .padding(.vertical, 4)
           }
         } header: {
-          Text("Channels") // TODO: Localize
+          Text(Strings.BraveNews.channelsHeaderTitle)
         }
       }
       if !followedRSSFeeds.isEmpty {
@@ -72,14 +73,14 @@ struct FollowingListView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
-          Text("User Sources") // TODO: Localize
+          Text(Strings.BraveNews.userSourcesHeaderTitle)
         }
       }
     }
     .listBackgroundColor(Color(.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .environment(\.defaultMinListRowHeight, 0)
-    .navigationTitle("Following") // TODO: Localize
+    .navigationTitle(Strings.BraveNews.followingTitle)
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {
       // Since we dont want to remove entries from the list immediately, we will not be using

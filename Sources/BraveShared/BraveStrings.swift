@@ -3288,18 +3288,6 @@ extension Strings {
       value: "Deals",
       comment: ""
     )
-    public static let allSources = NSLocalizedString("today.allSources", tableName: "BraveShared", bundle: .module,
-      value: "All Sources",
-      comment: ""
-    )
-    public static let enableAll = NSLocalizedString("today.enableAll", tableName: "BraveShared", bundle: .module,
-      value: "Enable All",
-      comment: ""
-    )
-    public static let disableAll = NSLocalizedString("today.disableAll", tableName: "BraveShared", bundle: .module,
-      value: "Disable All",
-      comment: ""
-    )
     public static let errorNoInternetTitle = NSLocalizedString("today.noInternet", tableName: "BraveShared", bundle: .module,
       value: "No Internet",
       comment: ""
@@ -3336,20 +3324,8 @@ extension Strings {
       value: "Show Brave News",
       comment: ""
     )
-    public static let settingsSourceHeaderTitle = NSLocalizedString("today.settingsSourceHeaderTitle", tableName: "BraveShared", bundle: .module,
-      value: "Default Sources",
-      comment: ""
-    )
-    public static let resetSourceSettingsButtonTitle = NSLocalizedString("today.resetSourceSettingsButtonTitle", tableName: "BraveShared", bundle: .module,
-      value: "Reset Source Settings to Default",
-      comment: ""
-    )
     public static let contentAvailableButtonTitle = NSLocalizedString("today.contentAvailableButtonTitle", tableName: "BraveShared", bundle: .module,
       value: "New Content Available",
-      comment: ""
-    )
-    public static let sourceSearchPlaceholder = NSLocalizedString("today.sourceSearchPlaceholder", tableName: "BraveShared", bundle: .module,
-      value: "Search",
       comment: ""
     )
     public static let moreBraveOffers = NSLocalizedString("today.moreBraveOffers", tableName: "BraveShared", bundle: .module,
@@ -3388,29 +3364,170 @@ extension Strings {
       value: "Insecure Sources - Add at your own risk",
       comment: "The header above the list of insecure sources"
     )
-    public static let searchTextFieldPlaceholder = NSLocalizedString("today.searchTextFieldPlaceholder", tableName: "BraveShared", bundle: .module,
-      value: "Feed or Site URL",
-      comment: "The placeholder displayed on the text field where a user is expected to type in a website URL"
-    )
-    public static let searchButtonTitle = NSLocalizedString("today.searchButtonTitle", tableName: "BraveShared", bundle: .module,
-      value: "Search",
-      comment: "An action title where the user is executing a search based on inputted text"
-    )
     public static let importOPML = NSLocalizedString("today.importOPML", tableName: "BraveShared", bundle: .module,
       value: "Import OPML",
       comment: "\"OPML\" is a file extension that contains a list of rss feeds."
     )
-    public static let yourSources = NSLocalizedString("today.yourSources", tableName: "BraveShared", bundle: .module,
-      value: "Your Sources",
-      comment: "The header above a list of the users RSS feed sources"
+    public static let sourcesHeaderTitle = NSLocalizedString(
+      "today.sourcesHeaderTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sources",
+      comment: "A header title shown over a list of online news sources (i.e. CNN, NYT, etc.)"
     )
-    public static let addSource = NSLocalizedString("today.addSource", tableName: "BraveShared", bundle: .module,
-      value: "Add Source",
-      comment: "The button title for adding a user RSS feed"
+    public static let channelsHeaderTitle = NSLocalizedString(
+      "today.channelsHeaderTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Channels",
+      comment: "A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.)"
     )
-    public static let deleteUserSourceTitle = NSLocalizedString("today.deleteUserSourceTitle", tableName: "BraveShared", bundle: .module,
-      value: "Delete",
-      comment: "A button title for an action that deletes a users custom source"
+    public static let userSourcesHeaderTitle = NSLocalizedString(
+      "today.userSourcesHeaderTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "User Sources",
+      comment: "A header title shown over a list of news sources the user has subscribed to manually via RSS."
+    )
+    public static let followingTitle = NSLocalizedString(
+      "today.followingTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Following",
+      comment: "A title at the top of the screen that shows a list of the news content the user is following"
+    )
+    public static let suggestedTitle = NSLocalizedString(
+      "today.suggestedTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Suggested",
+      comment: "A title at the top of the screen that shows a list of the news content the user is being suggested"
+    )
+    public static let channelsTitle = NSLocalizedString(
+      "today.channelsTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Channels",
+      comment: "A title at the top of the screen that shows a list of topics the user can follow"
+    )
+    public static let popularSourcesTitle = NSLocalizedString(
+      "today.popularSourcesTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Channels",
+      comment: "A title at the top of the screen that shows a list of sources that are ranked the highest"
+    )
+    public static let searchPlaceholder = NSLocalizedString(
+      "today.searchPlaceholder",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Search for site, topic or RSS feed",
+      comment: "Placeholder text that appears in the search bar when empty. Site as in website."
+    )
+    public static let isEnabledToggleSubtitle = NSLocalizedString(
+      "today.isEnabledToggleSubtitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Ad-supported, private and anonymised ads matched on your device.",
+      comment: "Displays beneath the toggle to turn on Brave News that explains it shows ads."
+    )
+    public static let popularSourcesButtonTitle = NSLocalizedString(
+      "today.popularSourcesDestinationTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Popular Sources",
+      comment: "A button title that when tapped shows users a list of news sources that are ranked the highest"
+    )
+    public static let popularSourcesButtonSubtitle = NSLocalizedString(
+      "today.popularSourcesButtonSubtitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Currently trending sources",
+      comment: "Shown below 'Popular Sources' explaining what sources will be shown."
+    )
+    public static let suggestedSourcesButtonTitle = NSLocalizedString(
+      "today.suggestedSourcesButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Suggested",
+      comment: "A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow"
+    )
+    public static let suggestedSourcesButtonSubtitle = NSLocalizedString(
+      "today.suggestedSourcesButtonSubtitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Our curated list of sources",
+      comment: "Shown below 'Suggested' explaining what sources will be shown."
+    )
+    public static let channelsButtonTitle = NSLocalizedString(
+      "today.channelsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Channels",
+      comment: "A button title that when tapped shows users a list of channels/topics that they can follow"
+    )
+    public static let channelsButtonSubtitle = NSLocalizedString(
+      "today.channelsButtonSubtitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Follow topics relevant to you",
+      comment: "Shown below 'Channels' explaining what will be shown when tapping on it."
+    )
+    public static let followingButtonTitle = NSLocalizedString(
+      "today.followingButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Following",
+      comment: "A button title that when tapped shows users a list of sources & channels they are currently following"
+    )
+    public static let followingButtonSubtitle = NSLocalizedString(
+      "today.followingButtonSubtitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Manage your following list",
+      comment: "Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it"
+    )
+    public static let availableRSSFeedsHeaderTitle = NSLocalizedString(
+      "today.availableRSSFeedsHeaderTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Available RSS Feeds",
+      comment: "A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in"
+    )
+    public static let getFeedsFromSiteButtonTitle = NSLocalizedString(
+      "today.getFeedsFromSiteButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Get feeds from",
+      comment: "Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'."
+    )
+    public static let noResultsFound = NSLocalizedString(
+      "today.noResultsFound",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "No Results Found",
+      comment: "Shown on the screen when a user searches for sources/channels but finds no results."
+    )
+    public static let followToggleTitle = NSLocalizedString(
+      "today.followToggleTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Follow",
+      comment: "A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow'"
+    )
+    public static let unfollowToggleTitle = NSLocalizedString(
+      "today.unfollowToggleTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Unfollow",
+      comment: "A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow'"
+    )
+    public static let similarToSourceSubtitle = NSLocalizedString(
+      "today.similarToSourceSubtitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Similar to %@",
+      comment: "Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac'"
     )
   }
 }

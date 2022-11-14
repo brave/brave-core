@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import BraveShared
 
 private struct SourceImageView: View {
   var source: FeedItem.Source
@@ -85,7 +86,7 @@ struct SourceLabel: View {
             .foregroundColor(Color(.braveLabel))
             .frame(maxWidth: .infinity, alignment: .leading)
           if let similarSource {
-            Text("Similar to \(similarSource.name)")
+            Text(String.localizedStringWithFormat(Strings.BraveNews.similarToSourceSubtitle, similarSource.name))
               .font(.footnote)
               .foregroundColor(Color(.secondaryBraveLabel))
           }
