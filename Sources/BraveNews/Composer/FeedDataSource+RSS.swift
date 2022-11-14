@@ -8,6 +8,7 @@ import Data
 import FeedKit
 import Fuzi
 import Shared
+import Growth
 
 public struct RSSFeedLocation: Hashable {
   public var title: String?
@@ -50,6 +51,7 @@ extension FeedDataSource {
       title: location.title,
       feedUrl: feedUrl)
     setNeedsReloadCards()
+    recordTotalExternalFeedsP3A()
     return true
   }
 
@@ -62,6 +64,7 @@ extension FeedDataSource {
     RSSFeedSource.delete(with: feedUrl)
     FeedSourceOverride.resetStatus(forId: location.id)
     setNeedsReloadCards()
+    recordTotalExternalFeedsP3A()
   }
 
   /// Whether or not an RSS feed is currently enabled
@@ -75,6 +78,19 @@ extension FeedDataSource {
   func toggleRSSFeedEnabled(_ location: RSSFeedLocation, enabled: Bool) {
     FeedSourceOverride.setEnabled(forId: location.id, enabled: enabled)
     setNeedsReloadCards()
+  }
+  
+  // MARK: - P3A
+  
+  func recordTotalExternalFeedsP3A() {
+    // Q49 How many external feeds do you have in total?
+    Task { @MainActor in
+      UmaHistogramRecordValueToBucket(
+        "Brave.Today.DirectFeedsTotal",
+        buckets: [0, 1, 2, 3, 4, 5, .r(6...10), .r(11...)],
+        value: rssFeedLocations.count
+      )
+    }
   }
 }
 
