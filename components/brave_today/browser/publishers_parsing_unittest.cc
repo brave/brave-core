@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/json/json_reader.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -45,13 +46,13 @@ TEST(BraveNewsPublisherParsing, ParsePublisherList) {
     ]
   )");
   base::flat_map<std::string, mojom::PublisherPtr> publisher_list;
-  ASSERT_TRUE(ParseCombinedPublisherList(json, &publisher_list));
+  ASSERT_TRUE(ParseCombinedPublisherList(*base::JSONReader::Read(json),
+                                         &publisher_list));
   ASSERT_EQ(publisher_list.size(), 3UL);
 
   ASSERT_TRUE(publisher_list.contains("111"));
   auto first_opt = publisher_list.find("111");
   ASSERT_NE(first_opt, publisher_list.end());
-  // auto first = first_opt->second;
 
   ASSERT_EQ(first_opt->second->publisher_id, "111");
   ASSERT_EQ(first_opt->second->publisher_name, "Test Publisher 1");

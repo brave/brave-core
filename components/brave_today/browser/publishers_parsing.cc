@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -49,20 +48,13 @@ mojom::LocaleInfoPtr ParseLocaleInfo(const base::Value::Dict& publisher_dict,
   return result;
 }
 
-bool ParseCombinedPublisherList(const std::string& json,
+bool ParseCombinedPublisherList(const base::Value& json_value,
                                 Publishers* publishers) {
   DCHECK(publishers);
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!json_value.is_list()) {
     return false;
   }
-  if (!records_v->is_list()) {
-    return false;
-  }
-  for (const base::Value& publisher_raw : records_v->GetList()) {
+  for (const base::Value& publisher_raw : json_value.GetList()) {
     const auto& publisher_dict = publisher_raw.GetDict();
 
     auto publisher = brave_news::mojom::Publisher::New();

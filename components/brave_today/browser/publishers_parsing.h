@@ -15,7 +15,7 @@
 
 namespace brave_news {
 
-bool ParseCombinedPublisherList(const std::string& json,
+bool ParseCombinedPublisherList(const base::Value& json_value,
                                 Publishers* publishers);
 
 void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
