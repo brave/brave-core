@@ -682,4 +682,5 @@
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
   <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE" desc="Message displayed when user has no NFTs">No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
   <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER" desc="Message displayed no NFTs match search criteria">No NFTs matching search or filter found</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_FORM_NFT_CHECK_LABEL" desc="Add token form is NFT checkmark label">NFT</message>
 </grit-part>
