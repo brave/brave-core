@@ -304,8 +304,9 @@ mojom::ExternalWalletPtr EnsureValidTransition(mojom::ExternalWalletPtr wallet,
       wallet->code_verifier = util::GeneratePKCECodeVerifier();
       break;
     case mojom::WalletStatus::kNotConnected:
-      NOTREACHED() << "No transitions to kNotConnected are permitted (except for "
-                      "when the wallet is being created)!";
+      NOTREACHED()
+          << "No transitions to kNotConnected are permitted (except for "
+             "when the wallet is being created)!";
       return nullptr;
   }
 
