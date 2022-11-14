@@ -8,13 +8,15 @@
 namespace remote_cocoa {
 
 void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
-  NSUInteger style_mask = [window_ styleMask];
+  NSUInteger styleMask = [window_ styleMask];
   if (visible)
-    style_mask |= NSWindowStyleMaskTitled;
+    styleMask |= NSWindowStyleMaskTitled;
   else
-    style_mask &= ~NSWindowStyleMaskTitled;
+    styleMask &= ~NSWindowStyleMaskTitled;
 
-  [window_ setStyleMask:style_mask];
+  [window_ setStyleMask:styleMask];
+
+  ResetWindowControlsPosition();
 
   // Sometimes title is not visible until window is resized. In order to avoid
   // this, reset title to force it to be visible.
@@ -23,6 +25,14 @@ void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
     window_.get().title = @"";
     window_.get().title = title;
   }
+}
+
+void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
+  // Call undocumented method of NSThemeFrame in order to reset window controls'
+  // position.
+  NSView* frameView = window_.get().contentView.superview;
+  DCHECK([frameView isKindOfClass:[NSThemeFrame class]]);
+  [frameView performSelector:@selector(_resetTitleBarButtons)];
 }
 
 }  // namespace remote_cocoa

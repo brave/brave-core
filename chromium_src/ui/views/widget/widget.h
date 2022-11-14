@@ -11,6 +11,7 @@
 #if BUILDFLAG(IS_MAC)
 #define UnlockPaintAsActive               \
   SetWindowTitleVisibility(bool visible); \
+  void ResetWindowControlsPosition();     \
   void UnlockPaintAsActive
 #else
 #define UnlockPaintAsActive UnlockPaintAsActive

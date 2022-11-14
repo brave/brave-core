@@ -24,4 +24,8 @@ bool NativeWidgetMac::GetOverriddenWindowTitleVisibility() const {
   return *overridden_window_title_visibility_;
 }
 
+void NativeWidgetMac::ResetWindowControlsPosition() {
+  GetNSWindowMojo()->ResetWindowControlsPosition();
+}
+
 }  // namespace views

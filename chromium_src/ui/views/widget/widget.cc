@@ -16,6 +16,10 @@ void Widget::SetWindowTitleVisibility(bool visible) {
       ->SetWindowTitleVisibility(visible);
 }
 
+void Widget::ResetWindowControlsPosition() {
+  static_cast<NativeWidgetMac*>(native_widget_)->ResetWindowControlsPosition();
+}
+
 }  // namespace views
 
 #endif  // defined(OS_MAC)
