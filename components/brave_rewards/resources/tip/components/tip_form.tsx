@@ -17,17 +17,10 @@ import { MonthlyTipForm } from './monthly_tip_form'
 
 import * as style from './tip_form.style'
 
-function getTipKindOptions (
-  locale: Locale,
-  showMonthlyStar: boolean
-): Array<SliderSwitchOption<TipKind>> {
-  let monthlyText = locale.getString('monthlyText')
-  if (showMonthlyStar) {
-    monthlyText = '* ' + monthlyText
-  }
+function getTipKindOptions (locale: Locale): Array<SliderSwitchOption<TipKind>> {
   return [
     { value: 'one-time', content: locale.getString('oneTimeTip') },
-    { value: 'monthly', content: monthlyText }
+    { value: 'monthly', content: locale.getString('monthlyText') }
   ]
 }
 
@@ -111,9 +104,7 @@ export function TipForm () {
   const { mediaMetaData } = host.getDialogArgs()
 
   function onTipKindSelect (value: TipKind) {
-    if (value === 'monthly') {
-      setWasMonthlySelected(true)
-    }
+    setWasMonthlySelected(value === 'monthly')
     setTipKind(value)
   }
 
@@ -133,12 +124,11 @@ export function TipForm () {
         {
           showMonthlyIndicator &&
             <style.monthlyIndicator>
-              <style.monthlyIndicatorStar>*</style.monthlyIndicatorStar>&nbsp;
               {getString('currentlySupporting')}
             </style.monthlyIndicator>
         }
         <SliderSwitch<TipKind>
-          options={getTipKindOptions(locale, showMonthlyIndicator)}
+          options={getTipKindOptions(locale)}
           selectedValue={tipKind}
           onSelect={onTipKindSelect}
         />
