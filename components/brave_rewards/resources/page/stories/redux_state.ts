@@ -91,7 +91,7 @@ export const reduxState: Rewards.ApplicationState = {
       },
       {
         id: '2',
-        name: 'brave.com',
+        name: 'reallylongdomainname.com',
         url: 'https://brave.com',
         publisherKey: 'brave.com',
         percentage: 1,
@@ -207,6 +207,6 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
-    userVersion: '2.5'
+    userVersion: '2.0'
   }
 }

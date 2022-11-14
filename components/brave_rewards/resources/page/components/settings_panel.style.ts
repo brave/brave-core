@@ -20,6 +20,10 @@ export const panel = styled.div`
   font-size: 14px;
   line-height: 20px;
   color: #212529;
+
+  .layout-narrow & {
+    --settings-panel-padding: 24px;
+  }
 `
 
 export const header = styled.div`
@@ -67,11 +71,12 @@ export const itemContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
 `
 
 export const itemLabel = styled.div`
-  flex: 0 1 auto;
+  flex: 1 1 0%;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -90,6 +95,11 @@ export const amount = styled.div`
 export const exchange = styled.span`
   margin-left: 8px;
   color: #868E96;
+
+  .layout-narrow & {
+    display: block;
+    margin: 0;
+  }
 `
 
 export const date = styled.div`
@@ -102,6 +112,11 @@ export const date = styled.div`
 export const table = styled.div`
   margin-top: 16px;
   color: #686978;
+
+  .layout-narrow & {
+    overflow-x: auto;
+    font-size: 13px;
+  }
 
   table {
     width: 100%;

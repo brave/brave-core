@@ -92,9 +92,11 @@ export function Page () {
       <LocaleContext.Provider value={locale}>
         <WithThemeVariables>
           <PlatformContext.Provider value={{ isAndroid: false }}>
-            <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
-              <Settings />
-            </LayoutManager>
+            <div style={{ width: narrow ? '375px' : 'auto' }}>
+              <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
+                <Settings />
+              </LayoutManager>
+            </div>
           </PlatformContext.Provider>
         </WithThemeVariables>
       </LocaleContext.Provider>

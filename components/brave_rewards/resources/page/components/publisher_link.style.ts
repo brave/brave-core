@@ -5,8 +5,8 @@
 import styled from 'styled-components'
 
 export const root = styled.span`
-  font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
 
   a {
     text-decoration: none;

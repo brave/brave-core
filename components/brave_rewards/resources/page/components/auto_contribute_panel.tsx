@@ -115,13 +115,13 @@ export function AutoContributePanel () {
           </thead>
           <tbody>
             {
-              rows.map((item) => {
+              rows.map((item, index) => {
                 const removePublisher = () => {
                   actions.excludePublisher(item.id)
                 }
 
                 return (
-                  <tr key={item.id}>
+                  <tr key={index}>
                     <td data-test-id={`ac_link_${item.publisherKey}`}>
                       <PublisherLink
                         name={item.name}

@@ -66,9 +66,9 @@ export function TipsPanel () {
           </thead>
           <tbody>
             {
-              rows.map((item) => {
+              rows.map((item, index) => {
                 return (
-                  <tr key={item.id}>
+                  <tr key={index}>
                     <td>
                       <PublisherLink
                         name={item.name}

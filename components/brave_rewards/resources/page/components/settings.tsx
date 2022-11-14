@@ -209,14 +209,17 @@ export function Settings () {
             <style.title>
               <BatIcon />{getString('braveRewards')}
             </style.title>
-            <style.manageAction>
-              <button
-                onClick={onManageClick}
-                data-test-id='manage-wallet-button'
-              >
-                <SettingsIcon />{getString('manage')}
-              </button>
-            </style.manageAction>
+            {
+              !isAndroid &&
+                <style.manageAction>
+                  <button
+                    onClick={onManageClick}
+                    data-test-id='manage-wallet-button'
+                  >
+                    <SettingsIcon />{getString('manage')}
+                  </button>
+                </style.manageAction>
+            }
           </style.header>
           <style.settingGroup>
             <AdsPanel />

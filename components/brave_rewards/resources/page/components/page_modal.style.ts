@@ -10,6 +10,10 @@ export const root = styled.div`
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.2);
   min-width: 550px;
+
+  .layout-narrow & {
+    min-width: unset;
+  }
 `
 
 export const header = styled.div`

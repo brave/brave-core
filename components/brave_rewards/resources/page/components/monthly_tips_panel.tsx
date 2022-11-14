@@ -59,12 +59,12 @@ export function MonthlyTipsPanel () {
           </thead>
           <tbody>
             {
-              rows.map((item) => {
+              rows.map((item, index) => {
                 const removeTip = () => {
                   actions.removeRecurringTip(item.id)
                 }
                 return (
-                  <tr key={item.id}>
+                  <tr key={index}>
                     <td>
                       <PublisherLink
                         name={item.name}
