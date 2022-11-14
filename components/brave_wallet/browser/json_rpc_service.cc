@@ -2566,7 +2566,8 @@ void JsonRpcService::GetMetaplexMetadata(const std::string& nft_account_address,
       std::move(account_info_metadata_callback));
   RequestInternal(solana::getAccountInfo(*associated_metadata_account), true,
                   network_urls_[mojom::CoinType::SOL],
-                  std::move(account_info_response_callback));
+                  std::move(account_info_response_callback),
+                  solana::ConverterForGetAccountInfo());
 }
 
 void JsonRpcService::OnGetSolanaAccountInfoMetaplex(
@@ -2575,25 +2576,23 @@ void JsonRpcService::OnGetSolanaAccountInfoMetaplex(
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess || !account_info) {
-    std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run("", std::move(error), error_message);
     return;
   }
 
   absl::optional<std::vector<uint8_t>> metadata =
       base::Base64Decode((*account_info).data);
   if (!metadata) {
-    std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run("", mojom::SolanaProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
   }
 
   absl::optional<GURL> url = DecodeMetadataUri(*metadata);
-  if (!url) {
-    std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  if (!url || !url.value().is_valid()) {
+    std::move(callback).Run("", mojom::SolanaProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
   }
 
   FetchTokenMetadata(

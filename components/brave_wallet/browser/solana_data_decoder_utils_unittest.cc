@@ -17,6 +17,7 @@ class SolanaDataDecoderUtilsTest : public testing::Test {
 };
 
 TEST_F(SolanaDataDecoderUtilsTest, DecodeMetadataUri) {
+  // Valid borsh encoding and URI yields expected URI
   auto uri_encoded = base::Base64Decode(
       "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/"
       "R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAA"
@@ -35,11 +36,28 @@ TEST_F(SolanaDataDecoderUtilsTest, DecodeMetadataUri) {
   ASSERT_TRUE(uri_encoded);
   auto uri = DecodeMetadataUri(*uri_encoded);
   ASSERT_TRUE(uri);
-  EXPECT_EQ((*uri).spec(),
+  EXPECT_EQ(uri.value().spec(),
             "https://"
             "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
             "dweb.link/?ext=");
-  ASSERT_FALSE(DecodeMetadataUri({}));
+
+  // Valid borsh encoding, but invalid URI is parsed but yields empty URI
+  uri_encoded = base::Base64Decode(
+      "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/"
+      "R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAsAAABpbnZhbGlkIHVybOgDAQIAAABlDeYSX9s0r"
+      "nt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/"
+      "z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/"
+      "UEDizyp6mLT1tUA");
+  ASSERT_TRUE(uri_encoded);
+  uri = DecodeMetadataUri(*uri_encoded);
+  ASSERT_TRUE(uri);
+  EXPECT_EQ(uri.value().spec(), "");
+
+  // Invalid borsh encoding is not parsed
+  uri_encoded = base::Base64Decode("d2hvb3BzIQ==");
+  ASSERT_TRUE(uri_encoded);
+  ASSERT_FALSE(DecodeMetadataUri(*uri_encoded));
 }
 
 }  // namespace brave_wallet
