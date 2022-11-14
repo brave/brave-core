@@ -33,7 +33,6 @@ export function SetupForm (props: RewardsTourProps) {
     rootRef.current.style.setProperty(
       '--optionbar-handle-position',
       `${(selected as HTMLElement).offsetLeft}px`)
-
   }, [props.adsPerHour, rootRef.current])
 
   return (
