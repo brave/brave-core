@@ -17,17 +17,17 @@
 // overriding it in our version of the MdTextButton class because there are some
 // subclasses that define their own UpdateColors() method (OmniboxChipButton)
 // now, which would not work with the virtual + override approach.
-#define UpdateTextColor                    \
-  UpdateTextColor_Unused();                \
+#define UpdateColors                       \
+  UpdateColors_Unused();                   \
                                            \
  protected:                                \
   virtual void UpdateColorsForBrave() = 0; \
   virtual void UpdateIconForBrave() = 0;   \
-  void UpdateTextColor
+  void UpdateColors
 
 #include "src/ui/views/controls/button/md_text_button.h"
 
-#undef UpdateTextColor
+#undef UpdateColors
 #undef MdTextButton
 
 namespace views {
@@ -63,7 +63,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   void UpdateOldColorsForBrave();
 
   // MdTextButtonBase:
-  void UpdateBackgroundColor() override;
   void UpdateColorsForBrave() override;
   void UpdateIconForBrave() override;
 
