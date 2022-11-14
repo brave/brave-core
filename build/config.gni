@@ -1,3 +1,4 @@
+import("//build/config/apple/symbols.gni")
 import("//build/util/branding.gni")
 import("//chrome/version.gni")
 
@@ -53,7 +54,9 @@ declare_args() {
   }
 }
 
-should_generate_breakpad_symbols = brave_debug_symbol_level != 0
+should_generate_breakpad_symbols =
+    brave_debug_symbol_level != 0 &&
+    (!is_apple || (enable_dsyms && !is_component_build))
 
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 
