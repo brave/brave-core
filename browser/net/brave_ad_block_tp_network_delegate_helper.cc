@@ -202,7 +202,8 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
       url_to_check, ctx->resource_type, source_host,
       ctx->aggressive_blocking || force_aggressive,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
-      &previous_result.did_match_important, &ctx->mock_data_url);
+      &previous_result.did_match_important, &ctx->mock_data_url,
+      &ctx->new_url_spec);
 
   if (previous_result.did_match_important ||
       (previous_result.did_match_rule &&
