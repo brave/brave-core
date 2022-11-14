@@ -95,16 +95,26 @@ void SkusUrlLoaderImpl::OnFetchComplete(
     api_request_helper::APIRequestResult api_request_result) {
   uint16_t response_code = api_request_result.response_code();
   bool success = api_request_result.Is2XXResponseCode();
+
   std::vector<uint8_t> body_bytes;
   if (!api_request_result.body().empty()) {
     body_bytes.assign(api_request_result.body().begin(),
                       api_request_result.body().end());
   }
 
+  std::vector<std::string> headers = {};
+  if (!api_request_result.headers().empty()) {
+    for (const auto& header : api_request_result.headers()) {
+      std::string new_header_value = header.first + ": " + header.second;
+      VLOG(1) << "header[" << new_header_value << "]";
+      headers.push_back(new_header_value);
+    }
+  }
+
   skus::HttpResponse resp = {
       success ? skus::SkusResult::Ok : skus::SkusResult::RequestFailed,
       response_code,
-      {},
+      headers,
       body_bytes,
   };
 
