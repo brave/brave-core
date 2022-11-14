@@ -16,7 +16,7 @@ namespace features {
 // where the browser can participate in the credentialing process. When the
 // page calls the methods (from JavaScript), it'll invoke the browser's
 // implementation which allows for safe credential interception.
-extern const base::Feature kSkusFeature;
+BASE_DECLARE_FEATURE(kSkusFeature);
 
 }  // namespace features
 }  // namespace skus

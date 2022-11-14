@@ -21,7 +21,9 @@ const char kAutomaticSettingsResetLearnMoreURL[] =
     "360017903152-How-do-I-reset-Brave-settings-to-default-";
 
 const char kAdvancedProtectionDownloadLearnMoreURL[] =
-    "https://support.brave.com";
+    "https://support.brave.com/";
+
+const char kBatterySaverModeLearnMoreUrl[] = "https://support.brave.com/";
 
 const char kBluetoothAdapterOffHelpURL[] =
     "https://support.brave.com/";
@@ -247,7 +249,9 @@ const char kChromeCleanerLearnMoreURL[] =
 
 const char kWindowsXPVistaDeprecationURL[] =
     "https://support.brave.com/";
-#endif
+
+const char kWindows78DeprecationURL[] = "https://support.brave.com/";
+#endif  // BUILDFLAG(IS_WIN)
 
 const char kChromeSyncLearnMoreURL[] = "https://support.brave.com/";
 

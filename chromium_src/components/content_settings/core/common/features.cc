@@ -7,7 +7,8 @@
 
 namespace content_settings {
 
-const base::Feature kAllowIncognitoPermissionInheritance{
-    "AllowIncognitoPermissionInheritance", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kAllowIncognitoPermissionInheritance,
+             "AllowIncognitoPermissionInheritance",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace content_settings

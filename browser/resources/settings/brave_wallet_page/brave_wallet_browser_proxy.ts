@@ -3,100 +3,119 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
-export interface BraveWalletBrowserProxy {
-  setBraveWalletEnabled (value: boolean)
-  getWeb3ProviderList () // TODO(petemill): Define the expected type
-  getSolanaProviderList () // TODO(petemill): Define the expected type
-  isNativeWalletEnabled () // TODO(petemill): Define the expected type
-  getAutoLockMinutes () // TODO(petemill): Define the expected type
-  getNetworksList (coin) // TODO(petemill): Define the expected type
-  getPrepopulatedNetworksList () // TODO(petemill): Define the expected type
-  removeChain (chainId, coin) // TODO(petemill): Define the expected type
-  resetChain (chainId, coin) // TODO(petemill): Define the expected type
-  addChain (value) // TODO(petemill): Define the expected type
-  addHiddenNetwork (chainId, coin) // TODO(petemill): Define the expected type
-  removeHiddenNetwork (chainId, coin) // TODO(petemill): Define the expected type
-  setActiveNetwork (chainId, coin) // TODO(petemill): Define the expected type
-  resetTransactionInfo ()
+export enum CoinType {
+  ETH = 60,
+  FIL = 461,
+  SOL = 501
 }
 
-/**
- * @implements {settings.BraveWalletBrowserProxy}
- */
-export class BraveWalletBrowserProxyImpl {
-  /** @override */
+export type Currency = {
+  symbol: string
+  name: string
+  decimals: number
+}
+
+export type NetworkInfo = {
+  chainId: string
+  chainName: string
+  blockExplorerUrls: string[]
+  iconUrls: string[]
+  activeRpcEndpointIndex: number
+  rpcUrls: string[]
+  coin: CoinType
+  is_eip1559: boolean
+  nativeCurrency: Currency
+}
+
+export type NetworksList = {
+  activeNetwork: string
+  networks: NetworkInfo[]
+  knownNetworks: string[]
+  customNetworks: string[]
+  hiddenNetworks: string[]
+}
+
+export type SolanaProvider = {
+  name: string
+  value: number
+}
+
+export interface BraveWalletBrowserProxy {
+  setBraveWalletEnabled(value: boolean): void
+  getWeb3ProviderList(): Promise<string>
+  getSolanaProviderOptions(): Promise<SolanaProvider[]>
+  isNativeWalletEnabled(): Promise<boolean>
+  getAutoLockMinutes(): Promise<number>
+  getNetworksList(coin: number): Promise<NetworksList>
+  getPrepopulatedNetworksList(): Promise<NetworkInfo[]>
+  removeChain(chainId: string, coin: number): Promise<boolean>
+  resetChain(chainId: string, coin: number): Promise<boolean>
+  addChain(value: NetworkInfo): Promise<[boolean, string]>
+  addHiddenNetwork(chainId: string, coin: number): Promise<boolean>
+  removeHiddenNetwork(chainId: string, coin: number): Promise<boolean>
+  setActiveNetwork(chainId: string, coin: number): Promise<boolean>
+  resetTransactionInfo (): void
+}
+
+export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
   resetWallet () {
     chrome.send('resetWallet', [])
   }
-  /** @override */
+
   resetTransactionInfo () {
     chrome.send('resetTransactionInfo', [])
   }
-  /** @override */
-  setBraveWalletEnabled (value) {
+
+  setBraveWalletEnabled (value: boolean) {
     chrome.send('setBraveWalletEnabled', [value])
   }
 
-  /** @override */
-  getNetworksList (coin) {
+  getNetworksList (coin: number) {
     return sendWithPromise('getNetworksList', coin)
   }
 
-  /** @override */
   getPrepopulatedNetworksList () {
     return sendWithPromise('getPrepopulatedNetworksList')
   }
 
-  /** @override */
-  setActiveNetwork (chainId, coin) {
+  setActiveNetwork (chainId: string, coin: number) {
     return sendWithPromise('setActiveNetwork', chainId, coin)
   }
 
-  /** @override */
-  removeChain (chainId, coin) {
+  removeChain (chainId: string, coin: number) {
     return sendWithPromise('removeChain', chainId, coin)
   }
 
-  /** @override */
-  resetChain (chainId, coin) {
+  resetChain (chainId: string, coin: number) {
     return sendWithPromise('resetChain', chainId, coin)
   }
 
-  /** @override */
-  addChain (payload) {
+  addChain (payload: NetworkInfo) {
     return sendWithPromise('addChain', payload)
   }
 
-  /** @override */
-  addHiddenNetwork (chainId, coin) {
+  addHiddenNetwork (chainId: string, coin: number) {
     return sendWithPromise('addHiddenNetwork', chainId, coin)
   }
 
-  /** @override */
-  removeHiddenNetwork (chainId, coin) {
+  removeHiddenNetwork (chainId: string, coin: number) {
     return sendWithPromise('removeHiddenNetwork', chainId, coin)
   }
 
-  /** @override */
   getWeb3ProviderList () {
-    return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
+    return new Promise<string>(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
   }
 
-  /** @override */
-  isNativeWalletEnabled () {
-    return new Promise(resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
+  isNativeWalletEnabled() {
+    return new Promise<boolean>(resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
   }
 
-  /** @override */
   getAutoLockMinutes () {
     return sendWithPromise('getAutoLockMinutes')
   }
 
-  /** @override */
   getSolanaProviderOptions() {
     return sendWithPromise('getSolanaProviderOptions')
   }

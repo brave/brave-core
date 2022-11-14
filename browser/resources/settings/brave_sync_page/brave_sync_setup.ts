@@ -3,76 +3,83 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import './brave_sync_code_dialog.js';
+
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {BaseMixin} from '../base_mixin.js'
+import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {getTemplate} from './brave_sync_setup.html.js'
 
 /**
  * @fileoverview
  * 'brave-sync-setup' is the UI for starting or joining a sync chain
  * settings.
  */
-import './brave_sync_code_dialog.js';
 
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
+const SettingsBraveSyncSetupElementBase =
+  I18nMixin(BaseMixin(PolymerElement)) as {
+    new(): PolymerElement & I18nMixinInterface
+  }
 
-import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
-import {getTemplate} from './brave_sync_setup.html.js'
+export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElementBase {
+  static get is() {
+    return 'settings-brave-sync-setup'
+  }
 
-Polymer({
-  is: 'settings-brave-sync-setup',
+  static get template() {
+    return getTemplate()
+  }
 
-  _template: getTemplate(),
+  static get properties() {
+    return {
+      syncCode: {
+        type: String,
+        notify: true
+      },
+      /**
+      * Sync code dialog type. Can only have 1 at a time, so use a single property.
+      * 'qr' | 'words' | 'input' | 'choose' | null
+      * @private
+      */
+      syncCodeDialogType_: String,
+      isSubmittingSyncCode_: {
+        type: Boolean,
+        value: false,
+      },
+      isGettingSyncCode_: {
+        type: Boolean,
+        value: false,
+      },
+      syncCodeValidationError_: {
+        type: String,
+        value: '',
+      }
+    };
+  }
 
-  behaviors: [
-    I18nBehavior,
-  ],
+  private syncCode: string | undefined;
+  private syncCodeDialogType_: 'qr' | 'words' | 'input' | 'choose' | null;
+  private isSubmittingSyncCode_: boolean;
+  private isGettingSyncCode_: boolean;
+  private syncCodeValidationError_: string;
 
-  properties: {
-    syncCode: {
-      type: String,
-      notify: true
-    },
-     /**
-     * Sync code dialog type. Can only have 1 at a time, so use a single property.
-     * 'qr' | 'words' | 'input' | 'choose' | null
-     * @private
-     */
-    syncCodeDialogType_: String,
-    isSubmittingSyncCode_: {
-      type: Boolean,
-      value: false,
-    },
-    isGettingSyncCode_: {
-      type: Boolean,
-      value: false,
-    },
-    syncCodeValidationError_: {
-      type: String,
-      value: '',
-     }
-  },
+  syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
-  /** @private {?BraveSyncBrowserProxy} */
-  syncBrowserProxy_: null,
-
-  created: function() {
-    this.syncBrowserProxy_ = BraveSyncBrowserProxy.getInstance();
-  },
-
-  handleStartSyncChain_: async function () {
+  async handleStartSyncChain_() {
     this.isGettingSyncCode_ = true
     const syncCode = await this.syncBrowserProxy_.getSyncCode()
     this.isGettingSyncCode_ = false
     this.syncCode = syncCode;
     this.syncCodeDialogType_ = 'choose'
-  },
+  }
 
-  handleJoinSyncChain_: function () {
+  handleJoinSyncChain_() {
     this.syncCode = undefined
     this.syncCodeDialogType_ = 'input'
-  },
+  }
 
-  handleSyncCodeDialogDone_: function (e) {
+  handleSyncCodeDialogDone_() {
     if (this.syncCodeDialogType_ === 'input') {
       const messageText = this.i18n('braveSyncFinalSecurityWarning')
       const shouldProceed = confirm(messageText)
@@ -82,22 +89,26 @@ Polymer({
     }
 
     this.submitSyncCode_()
-  },
+  }
 
-  submitSyncCode_: async function () {
+  async submitSyncCode_() {
     this.isSubmittingSyncCode_ = true
     const syncCodeToSubmit = this.syncCode || ''
     let success = false
     try {
       success = await this.syncBrowserProxy_.setSyncCode(syncCodeToSubmit)
-    } catch (e) {
-      this.syncCodeValidationError_ = e
+    } catch (e: unknown) {
+      this.syncCodeValidationError_ = (e as Error).message
       success = false
     }
     this.isSubmittingSyncCode_ = false
     if (success) {
-      this.syncCodeDialogType_ = undefined
-      this.fire('setup-success')
+      this.syncCodeDialogType_ = null
+      this.dispatchEvent(new CustomEvent('setup-success'))
     }
-  },
-});
+  }
+}
+
+customElements.define(
+  SettingsBraveSyncSetupElement.is, SettingsBraveSyncSetupElement)
+

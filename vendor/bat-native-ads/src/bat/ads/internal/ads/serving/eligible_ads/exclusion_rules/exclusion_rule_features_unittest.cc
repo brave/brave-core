@@ -29,7 +29,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, IsDisabled) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.push_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -50,7 +50,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -70,7 +70,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, DefaultShouldExcludeAdIfConverted) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -89,7 +89,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, DisabledShouldExcludeAdIfConverted) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.push_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -113,7 +113,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ExcludeAdIfDismissedWithinTimeWindow) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -133,7 +133,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -153,7 +153,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.push_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -176,7 +176,7 @@ TEST(BatAdsUserActivityFeaturesTest, ExcludeAdIfTransferredWithinTimeWindow) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -196,7 +196,7 @@ TEST(BatAdsUserActivityFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -216,7 +216,7 @@ TEST(BatAdsUserActivityFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.push_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;

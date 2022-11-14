@@ -25,7 +25,7 @@ class BraveWalletPermissionPromptImpl : public permissions::PermissionPrompt {
       const BraveWalletPermissionPromptImpl&) = delete;
 
   // permissions::PermissionPrompt:
-  void UpdateAnchor() override;
+  bool UpdateAnchor() override;
   TabSwitchingBehavior GetTabSwitchingBehavior() override;
   permissions::PermissionPromptDisposition GetPromptDisposition()
       const override;

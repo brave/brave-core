@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py b/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py
-index 1b43f5786a8877af2e5271b440fab002484050e8..3dd79dbea42562383568dbdca2463d1fec362abf 100644
+index f19596bf0adce1141f3e24a5f0e060c5a4a167a0..93bdd7d8ce58b8a66dcf16821cd570de81ed8932 100644
 --- a/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py
 +++ b/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py
 @@ -306,5 +306,6 @@ def main():

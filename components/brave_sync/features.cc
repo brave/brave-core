@@ -10,7 +10,7 @@
 namespace brave_sync {
 namespace features {
 
-const base::Feature kBraveSync{"BraveSync", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveSync, "BraveSync", base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace brave_sync

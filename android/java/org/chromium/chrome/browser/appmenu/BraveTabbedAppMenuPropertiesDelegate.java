@@ -23,7 +23,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -50,7 +50,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
     private AppMenuDelegate mAppMenuDelegate;
-    private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
+    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
 
     public BraveTabbedAppMenuPropertiesDelegate(Context context,
             ActivityTabProvider activityTabProvider,
@@ -59,7 +59,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<LayoutStateProvider> layoutStateProvider,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
-            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
+            ObservableSupplier<BookmarkModel> bookmarkBridgeSupplier,
             WebFeedSnackbarController.FeedLauncher feedLauncher,
             ModalDialogManager modalDialogManager, SnackbarManager snackbarManager,
             @NonNull OneshotSupplier<IncognitoReauthController>
@@ -70,7 +70,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 snackbarManager, incognitoReauthControllerOneshotSupplier);
 
         mAppMenuDelegate = appMenuDelegate;
-        mBookmarkBridgeSupplier = bookmarkBridgeSupplier;
+        mBookmarkModelSupplier = bookmarkBridgeSupplier;
     }
 
     @Override
@@ -188,7 +188,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     @Override
     public void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
         // If it's still null, just hide the whole view
-        if (mBookmarkBridgeSupplier.get() == null) {
+        if (mBookmarkModelSupplier.get() == null) {
             if (view != null) {
                 view.setVisibility(View.GONE);
             }
@@ -200,7 +200,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         if (view instanceof AppMenuIconRowFooter) {
             ((AppMenuIconRowFooter) view)
-                    .initialize(appMenuHandler, mBookmarkBridgeSupplier.get(),
+                    .initialize(appMenuHandler, mBookmarkModelSupplier.get(),
                             mActivityTabProvider.get(), mAppMenuDelegate);
         }
 

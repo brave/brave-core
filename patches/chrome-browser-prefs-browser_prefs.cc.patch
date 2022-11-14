@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index bcdc111b9168adeb60a94e7f96145a8e637f3987..1316a3557fbc3ce79b3b8e12cf378dc29ff07475 100644
+index 3eff9bc639bb1db6dfd18b9f27955613a221be6b..07cccd4a7202be7e82af20ee7eb2fd9c678ae975 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1251,6 +1251,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1222,6 +1222,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,9 +11,9 @@ index bcdc111b9168adeb60a94e7f96145a8e637f3987..1316a3557fbc3ce79b3b8e12cf378dc2
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1614,6 +1616,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #if !BUILDFLAG(IS_ANDROID)
-   registry->RegisterIntegerPref(prefs::kHighEfficiencyChipExpandedCount, 0);
+@@ -1592,6 +1594,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   registry->RegisterBooleanPref(prefs::kVirtualKeyboardResizesLayoutByDefault,
+                                 false);
  #endif
 +  brave::RegisterProfilePrefs(registry);
  }

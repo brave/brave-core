@@ -3,30 +3,39 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
+export type BraveDeviceInfo = {
+  name: string
+  id: string
+  os: string
+  type: string
+  chromeVersion: string
+  lastUpdatedTimestamp: number
+  sendTabToSelfReceivingEnabled: boolean
+  hasSharingInfo: boolean
+}
+
 export class BraveSyncBrowserProxy {
-  getSyncCode() {
+  getSyncCode(): Promise<string> {
     return sendWithPromise('SyncSetupGetSyncCode');
   }
-  getPureSyncCode() {
+  getPureSyncCode(): Promise<string> {
     return sendWithPromise('SyncSetupGetPureSyncCode');
   }
-  getQRCode(syncCode) {
+  getQRCode(syncCode: string): Promise<string> {
     return sendWithPromise('SyncGetQRCode', syncCode);
   }
-  getDeviceList() {
+  getDeviceList(): Promise<BraveDeviceInfo[]> {
     return sendWithPromise('SyncGetDeviceList');
   }
-  setSyncCode(syncCode) {
+  setSyncCode(syncCode: string): Promise<boolean> {
     return sendWithPromise('SyncSetupSetSyncCode', syncCode);
   }
-  resetSyncChain() {
+  resetSyncChain(): Promise<boolean> {
     return sendWithPromise('SyncSetupReset');
   }
-  deleteDevice(deviceId) {
+  deleteDevice(deviceId: string): Promise<boolean> {
     return sendWithPromise('SyncDeleteDevice', deviceId);
   }
   static getInstance() {

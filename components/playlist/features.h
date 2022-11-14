@@ -10,7 +10,7 @@
 
 namespace playlist::features {
 
-extern const base::Feature kPlaylist;
+BASE_DECLARE_FEATURE(kPlaylist);
 
 }  // namespace playlist::features
 

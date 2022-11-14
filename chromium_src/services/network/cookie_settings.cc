@@ -76,6 +76,7 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const url::Origin* top_frame_origin,
+    const net::FirstPartySetMetadata& first_party_set_metadata,
     net::CookieAccessResultList& maybe_included_cookies,
     net::CookieAccessResultList& excluded_cookies) const {
   absl::optional<url::Origin> top_frame_origin_opt;
@@ -89,8 +90,8 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
   }
 
   return AnnotateAndMoveUserBlockedCookies(
-      url, site_for_cookies, top_frame_origin, maybe_included_cookies,
-      excluded_cookies);
+      url, site_for_cookies, top_frame_origin, first_party_set_metadata,
+      maybe_included_cookies, excluded_cookies);
 }
 
 }  // namespace network

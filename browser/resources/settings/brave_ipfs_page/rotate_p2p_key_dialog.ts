@@ -3,63 +3,84 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
-
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
-import 'chrome://resources/cr_elements/cr_input/cr_input.js'
 
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import { BaseMixin } from '../base_mixin.js'
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js'
+import {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import {getTemplate} from './rotate_p2p_key_dialog.html.js'
 
-Polymer({
-  is: 'rotate-p2p-key-dialog',
+const SettingsBraveRotateP2pKeyDialogElementBase =
+  I18nMixin(BaseMixin(PolymerElement)) as {
+    new(): PolymerElement & I18nMixinInterface
+  }
 
-  _template: getTemplate(),
+export interface KeysListItem {
+  name: string;
+  value: string;
+}
 
-  behaviors: [
-    I18nBehavior
-  ],
+export interface SettingsBraveRotateP2pKeyDialogElement {
+  $: {
+    key: CrInputElement,
+  }
+}
 
-  properties: {
-    isAllowed_: Boolean,
-    errorText_: String,
+export class SettingsBraveRotateP2pKeyDialogElement extends SettingsBraveRotateP2pKeyDialogElementBase {
+  static get is() {
+    return 'rotate-p2p-key-dialog'
+  }
 
-    showError_: {
-      type: Boolean,
-      value: false,
-    },
+  static get template() {
+    return getTemplate()
+  }
 
-    keys: {
-      type: Array,
-      value() {
-        return [];
+  static get properties() {
+    return {
+      isAllowed_: Boolean,
+      errorText_: String,
+
+      showError_: {
+        type: Boolean,
+        value: false,
       },
-    },
 
-    isSubmitButtonEnabled_: {
-      type: Boolean,
-      value: false,
-    }
-  },
+      keys: {
+        type: Array,
+        value() {
+          return [];
+        },
+      },
 
-  browserProxy_: null,
+      isSubmitButtonEnabled_: {
+        type: Boolean,
+        value: false,
+      }
+    };
+  }
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
+  private isAllowed_: boolean;
+  private errorText_: string;
+  private showError_: boolean;
+  private keys: KeysListItem[];
+  private isSubmitButtonEnabled_: boolean;
+
+  browserProxy_: BraveIPFSBrowserProxyImpl = BraveIPFSBrowserProxyImpl.getInstance();
+
+  override ready() {
+    super.ready()
     this.showError(false, "")
-  },
+  }
 
-  showError: function(show, error) {
+  showError(show: boolean, error: string) {
     this.errorText_ = error ? this.i18n(error) : ""
     this.showError_ = show
-  },
+  }
 
-  /** @private */
-  nameChanged_: function() {
+  nameChanged_() {
     this.showError(false, "")
     const name = this.$.key.value.trim()
     // Disable the submit button if input text is empty but don't show the name
@@ -74,41 +95,44 @@ Polymer({
       this.isSubmitButtonEnabled_ = false;
       return;
     }
-    var result = this.keys.find(function(element, index) {
+    var result = this.keys.find((element: KeysListItem) => {
       return element.name == name;
     });
     let value = result === undefined
     this.isAllowed_ = value
     this.isSubmitButtonEnabled_ = value;
-  },
+  }
 
-  launchService: function() {
-    this.browserProxy_.launchIPFSService().then((launched) => {
+  launchService() {
+    this.browserProxy_.launchIPFSService().then((launched: boolean) => {
       if (!launched) {
         this.showError(true, "ipfsRotationLaunchError");
         return;
       }
       if (launched) {
-        this.fire('close');
+        this.dispatchEvent(new CustomEvent('close'));
       }
     });
-  },
+  }
 
-  rotateKey: function(name) {
-    this.browserProxy_.rotateKey(name).then((success) => {
+  rotateKey(name: string) {
+    this.browserProxy_.rotateKey(name).then(() => {
       this.launchService();
     });
-  },
+  }
 
-  handleSubmit_: function() {
+  handleSubmit_() {
     this.showError(false, "");
     var name = this.$.key.value
-    this.browserProxy_.shutdownIPFSService().then((launched) => {
+    this.browserProxy_.shutdownIPFSService().then((launched: boolean) => {
       if (!launched) {
         this.showError(true, "ipfsRotationStopError")
         return;
       }
       this.rotateKey(name);
     })
-  },
-});
+  }
+}
+
+customElements.define(
+  SettingsBraveRotateP2pKeyDialogElement.is, SettingsBraveRotateP2pKeyDialogElement)

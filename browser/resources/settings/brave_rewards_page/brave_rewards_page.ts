@@ -11,7 +11,7 @@ import {loadTimeData} from '../i18n_setup.js';
 import '//resources/js/cr.m.js';
 import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import {BraveRewardsBrowserProxyImpl} from './brave_rewards_browser_proxy.js';
 import {getTemplate} from './brave_rewards_page.html.js'

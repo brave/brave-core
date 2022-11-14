@@ -49,6 +49,7 @@ source_set("browser") {
     "//ios/chrome/browser/flags",
     "//ios/chrome/browser/flags:client_side",
     "//ios/chrome/browser/paths",
+    "//ios/chrome/browser/url:constants",
     "//ios/components/webui:url_constants",
     "//ios/web/public",
     "//ios/web/public/init",

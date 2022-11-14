@@ -618,9 +618,9 @@
   bookmark_model_->RemoveAllUserBookmarks();
 }
 
-- (void)searchWithQuery:(NSString*)query
-               maxCount:(NSUInteger)maxCount
-             completion:(void (^)(NSArray<IOSBookmarkNode*>*))completion {
+- (void)searchWithQuery:(NSString*)queryArg
+               maxCount:(NSUInteger)maxCountArg
+             completion:(void (^)(NSArray<IOSBookmarkNode*>*))callback {
   __weak BraveBookmarksAPI* weak_bookmarks_api = self;
   auto search_with_query =
       ^(NSString* query, NSUInteger maxCount,
@@ -653,7 +653,7 @@
 
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,
-      base::BindOnce(search_with_query, query, maxCount, completion));
+      base::BindOnce(search_with_query, queryArg, maxCountArg, callback));
 }
 
 - (void)undo {

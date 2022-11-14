@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc b/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc
-index 515fb2ce8d47f75a09283438198691fdf78328e2..3214caa20c0b6b6833c2ed9ed63a0aef90708682 100644
+index dedba93f8c1e63643e28d8a22cb7d9b77348f57d..544cceb49dbf914915f63b50e885d9c1e3e1a9e8 100644
 --- a/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc
 +++ b/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc
 @@ -163,6 +163,7 @@ void SharingHubBubbleViewImpl::PopulateScrollView(

@@ -11,7 +11,7 @@
 namespace debounce {
 namespace features {
 
-extern const base::Feature kBraveDebounce;
+BASE_DECLARE_FEATURE(kBraveDebounce);
 
 }  // namespace features
 }  // namespace debounce

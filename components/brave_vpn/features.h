@@ -11,8 +11,8 @@
 namespace brave_vpn {
 namespace features {
 
-extern const base::Feature kBraveVPN;
-extern const base::Feature kBraveVPNLinkSubscriptionAndroidUI;
+BASE_DECLARE_FEATURE(kBraveVPN);
+BASE_DECLARE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI);
 
 }  // namespace features
 }  // namespace brave_vpn

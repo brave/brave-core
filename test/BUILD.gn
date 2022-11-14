@@ -189,7 +189,6 @@ test("brave_unit_tests") {
     "//brave/browser/ui/webui/new_tab_page:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
     "//brave/browser/widevine:unittest",
-    "//brave/chromium_src/chrome/browser/privacy_sandbox:unit_tests",
     "//brave/chromium_src/components/autofill_assistant/browser:unit_tests",
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
@@ -707,6 +706,7 @@ test("brave_browser_tests") {
     "//brave/vendor/bat-native-ledger:internal_config",
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
+    "//chrome/test:pdb_larger_than_4gb",
   ]
 
   sources = [
@@ -965,6 +965,8 @@ test("brave_browser_tests") {
     "//components/safe_browsing/content/browser/web_ui",
     "//components/safe_browsing/core/common",
     "//components/security_interstitials/content:security_interstitial_page",
+    "//components/segmentation_platform/public",
+    "//components/send_tab_to_self",
     "//components/shared_highlighting/core/common",
     "//components/spellcheck/browser",
     "//components/user_prefs",

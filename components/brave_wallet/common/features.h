@@ -12,13 +12,13 @@
 namespace brave_wallet {
 namespace features {
 
-extern const base::Feature kNativeBraveWalletFeature;
-extern const base::Feature kBraveWalletFilecoinFeature;
-extern const base::Feature kBraveWalletSolanaFeature;
+BASE_DECLARE_FEATURE(kNativeBraveWalletFeature);
+BASE_DECLARE_FEATURE(kBraveWalletFilecoinFeature);
+BASE_DECLARE_FEATURE(kBraveWalletSolanaFeature);
 extern const base::FeatureParam<bool> kCreateDefaultSolanaAccount;
-extern const base::Feature kBraveWalletSolanaProviderFeature;
-extern const base::Feature kBraveWalletDappsSupportFeature;
-extern const base::Feature kBraveWalletENSL2Feature;
+BASE_DECLARE_FEATURE(kBraveWalletSolanaProviderFeature);
+BASE_DECLARE_FEATURE(kBraveWalletDappsSupportFeature);
+BASE_DECLARE_FEATURE(kBraveWalletENSL2Feature);
 
 }  // namespace features
 }  // namespace brave_wallet

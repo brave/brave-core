@@ -27,7 +27,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -50,7 +50,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -73,7 +73,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -96,7 +96,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -118,7 +118,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -140,7 +140,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -162,7 +162,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -184,7 +184,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -211,7 +211,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

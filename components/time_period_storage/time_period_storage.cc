@@ -14,7 +14,6 @@
 #include "base/time/default_clock.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
@@ -173,8 +172,7 @@ void TimePeriodStorage::Save() {
   DCHECK(!daily_values_.empty());
   DCHECK_LE(daily_values_.size(), period_days_);
 
-  ListPrefUpdate update(prefs_, pref_name_);
-  base::Value::List& list = update.Get()->GetList();
+  base::Value::List list;
   // TODO(iefremov): Optimize if needed.
   list.clear();
   for (const auto& u : daily_values_) {
@@ -183,4 +181,5 @@ void TimePeriodStorage::Save() {
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
   }
+  prefs_->SetList(pref_name_, std::move(list));
 }

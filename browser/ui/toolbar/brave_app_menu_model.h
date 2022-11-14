@@ -28,7 +28,8 @@ class BraveAppMenuModel : public AppMenuModel {
  public:
   BraveAppMenuModel(ui::AcceleratorProvider* provider,
                     Browser* browser,
-                    AppMenuIconController* app_menu_icon_controller = nullptr);
+                    AppMenuIconController* app_menu_icon_controller = nullptr,
+                    AlertMenuItem alert_item = AlertMenuItem::kNone);
   ~BraveAppMenuModel() override;
 
   BraveAppMenuModel(const BraveAppMenuModel&) = delete;

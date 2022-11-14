@@ -39,7 +39,7 @@
 namespace {
 class TestObserver : public permissions::PermissionRequestManager::Observer {
  public:
-  void OnBubbleAdded() override {
+  void OnPromptAdded() override {
     added_count_++;
     bubble_added_ = true;
   }

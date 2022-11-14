@@ -28,12 +28,12 @@ bool ShouldShowFirstRunDialog() {
 namespace first_run {
 namespace internal {
 
-void DoPostImportPlatformSpecificTasks(Profile* profile) {
+void DoPostImportPlatformSpecificTasks() {
   if (ShouldShowFirstRunDialog()) {
-    ShowFirstRunDialog(profile);
+    ShowFirstRunDialog();
   }
 
-  DoPostImportPlatformSpecificTasks_ChromiumImpl(profile);
+  DoPostImportPlatformSpecificTasks_ChromiumImpl();
 }
 
 }  // namespace internal

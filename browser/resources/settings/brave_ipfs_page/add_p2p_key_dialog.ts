@@ -3,51 +3,66 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
-
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {BaseMixin} from '../base_mixin.js'
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
+import {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import {getTemplate} from './add_p2p_key_dialog.html.js'
 
-Polymer({
-  is: 'add-p2p-key-dialog',
+const SettingsBraveAddP2pKeyDialogElementBase =
+  I18nMixin(BaseMixin(PolymerElement)) as {
+    new(): PolymerElement & I18nMixinInterface
+  }
 
-  _template: getTemplate(),
+export interface KeysListItem {
+  name: string;
+  value: string;
+}
 
-  behaviors: [
-    I18nBehavior
-  ],
+export interface SettingsBraveAddP2pKeyDialogElement {
+  $: {
+    key: CrInputElement,
+  }
+}
 
-  properties: {
-    isNameValid_: Boolean,
+export class SettingsBraveAddP2pKeyDialogElement extends SettingsBraveAddP2pKeyDialogElementBase {
+  static get is() {
+   return 'add-p2p-key-dialog'
+  }
 
-    keys: {
-      type: Array,
-      value() {
-        return [];
+  static get template() {
+    return getTemplate()
+  }
+
+  static get properties() {
+    return {
+      isNameValid_: Boolean,
+
+      keys: {
+        type: Array,
+        value() {
+          return [];
+        },
       },
-    },
 
-    isSubmitButtonEnabled_: {
-      type: Boolean,
-      value: false,
-    }
-  },
+      isSubmitButtonEnabled_: {
+        type: Boolean,
+        value: false,
+      }
+    };
+  }
 
-  browserProxy_: null,
+  private isNameValid_: boolean;
+  private keys: KeysListItem[];
+  private isSubmitButtonEnabled_: boolean;
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
-  },
+  browserProxy_: BraveIPFSBrowserProxyImpl = BraveIPFSBrowserProxyImpl.getInstance();
 
-  /** @private */
-  nameChanged_: function() {
+  nameChanged_() {
     const name = this.$.key.value.trim()
     // Disable the submit button if input text is empty but don't show the name
     // invalid error message.
@@ -61,28 +76,33 @@ Polymer({
       this.isSubmitButtonEnabled_ = false;
       return;
     }
-    var result = this.keys.find(function(element, index) {
+    var result = this.keys.find(function(element) {
       return element.name == name;
     });
     let value = result === undefined
     this.isNameValid_ = value;
     this.isSubmitButtonEnabled_ = value;
-  },
-  onImportKeyTap_: function(item) {
+  }
+
+  onImportKeyTap_() {
     this.browserProxy_.importIpnsKey(this.$.key.value)
-    this.fire('close');
-  },
-  handleSubmit_: function() {
+    this.dispatchEvent(new CustomEvent('close'));
+  }
+
+  handleSubmit_() {
     var name = this.$.key.value
-    this.browserProxy_.addIpnsKey(name).then(json => {
+    this.browserProxy_.addIpnsKey(name).then((json: string) => {
       if (!json)
         return;
       var added = JSON.parse(json);
       if (added.name === name) {
-        this.fire('close');
+        this.dispatchEvent(new CustomEvent('close'));
         return;
       }
       this.isNameValid_ = false;
     });
-  },
-});
+  }
+}
+
+customElements.define(
+  SettingsBraveAddP2pKeyDialogElement.is, SettingsBraveAddP2pKeyDialogElement)

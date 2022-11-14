@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.ts b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
-index 397fc0ebfb0291dddf3c97d9ea36e97200ee3947..8fd5a8963db531d87fa14df6d4dd9b18ed9d7557 100644
+index 52dffb565b6557a65d07ce05cb5487018e78b88b..182a20ebb5e24d6d35b1443746b88bde6cacafa9 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.ts
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
 @@ -184,6 +184,7 @@ export class CategoryDefaultSettingElement extends
@@ -13,7 +13,7 @@ index 397fc0ebfb0291dddf3c97d9ea36e97200ee3947..8fd5a8963db531d87fa14df6d4dd9b18
 @@ -218,6 +219,7 @@ export class CategoryDefaultSettingElement extends
        case ContentSettingsTypes.USB_DEVICES:
        case ContentSettingsTypes.VR:
-       case ContentSettingsTypes.WINDOW_PLACEMENT:
+       case ContentSettingsTypes.WINDOW_MANAGEMENT:
 +      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA:
          // "Ask" vs "Blocked".
          this.browserProxy.setDefaultValueForContentType(

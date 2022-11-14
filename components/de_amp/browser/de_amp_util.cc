@@ -5,6 +5,8 @@
 
 #include "brave/components/de_amp/browser/de_amp_util.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/components/de_amp/common/features.h"
@@ -95,7 +97,7 @@ base::expected<std::string, std::string> FindCanonicalAmpUrl(
     // Didn't find canonical link, potentially try again
     return base::unexpected("Couldn't find canonical URL in link tag");
   }
-  return canonical_url;
+  return base::ok(std::move(canonical_url));
 }
 
 }  // namespace de_amp

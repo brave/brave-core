@@ -27,7 +27,7 @@ namespace storage {
 class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
     : public BlobURLStoreImpl_ChromiumImpl {
  public:
-  BlobURLStoreImpl(const url::Origin& origin,
+  BlobURLStoreImpl(const blink::StorageKey& storage_key,
                    base::WeakPtr<BlobUrlRegistry> registry);
 
   void Register(mojo::PendingRemote<blink::mojom::Blob> blob,
