@@ -315,6 +315,28 @@ void VerticalTabStripRegionView::SetState(State state) {
   PreferredSizeChanged();
 }
 
+VerticalTabStripRegionView::ScopedStateResetter
+VerticalTabStripRegionView::ExpandTabStripForDragging() {
+  if (state_ == State::kExpanded)
+    return {};
+
+  auto resetter = std::make_unique<base::ScopedClosureRunner>(
+      base::BindOnce(&VerticalTabStripRegionView::SetState,
+                     weak_factory_.GetWeakPtr(), State::kCollapsed));
+
+  SetState(State::kExpanded);
+  // In this case, we dont' wait for the widget bounds to be changed so that
+  // tab drag controller can layout tabs properly.
+  SetSize(GetPreferredSize());
+
+  return resetter;
+}
+
+gfx::Vector2d VerticalTabStripRegionView::GetOffsetForDraggedTab() const {
+  return {0, scroll_view_header_->GetPreferredSize().height() +
+                 (tabs::kVerticalTabHeight / 2)};
+}
+
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
   return GetPreferredSizeForState(state_);
 }
@@ -403,6 +425,10 @@ void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
 
 void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
   if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_))
+    return;
+
+  // During tab dragging, this could be already expanded.
+  if (state_ == State::kExpanded)
     return;
 
   ScheduleFloatingModeTimer();
