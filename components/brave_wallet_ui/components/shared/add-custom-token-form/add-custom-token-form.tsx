@@ -152,7 +152,7 @@ export const AddCustomTokenForm = (props: Props) => {
       const isErc721 = customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
-        decimals: customAssetsNetwork.coin === BraveWallet.CoinType.SOL ? 0 : Number(tokenDecimals),
+        decimals: customAssetsNetwork.coin === BraveWallet.CoinType.SOL && isNft ? 0 : Number(tokenDecimals),
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
         isErc721: isErc721,
         isNft: isNft,
@@ -270,7 +270,7 @@ export const AddCustomTokenForm = (props: Props) => {
             onChange={handleTokenSymbolChanged}
           />
         </FormColumn>
-        {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
+        {!(customAssetsNetwork?.coin === BraveWallet.CoinType.SOL && isNft) &&
           <FormColumn>
             <InputLabel>{getLocale('braveWalletWatchListTokenDecimals')}</InputLabel>
             <Input
