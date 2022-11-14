@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/sys_byteorder.h"
+#include "brave/components/brave_wallet/browser/solana_data_decoder_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "build/build_config.h"
@@ -32,9 +33,6 @@ enum class ParamTypes {
   kString,
   kAuthorityType,
 };
-
-constexpr uint8_t kAuthorityTypeMax = 3;
-constexpr size_t kMaxStringSize32Bit = 4294967291u;
 
 // Tuple of param name, localized name, and type.
 using ParamNameTypeTuple = std::tuple<std::string, std::string, ParamTypes>;
@@ -599,190 +597,6 @@ GetTokenInstructionAccountParams() {
   return *params;
 }
 
-absl::optional<uint8_t> DecodeUint8(const std::vector<uint8_t>& input,
-                                    size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint8_t)) {
-    return absl::nullopt;
-  }
-
-  offset += sizeof(uint8_t);
-  return input[offset - sizeof(uint8_t)];
-}
-
-absl::optional<std::string> DecodeUint8String(const std::vector<uint8_t>& input,
-                                              size_t& offset) {
-  auto ret = DecodeUint8(input, offset);
-  if (!ret)
-    return absl::nullopt;
-  return base::NumberToString(*ret);
-}
-
-absl::optional<std::string> DecodeAuthorityTypeString(
-    const std::vector<uint8_t>& input,
-    size_t& offset) {
-  auto ret = DecodeUint8(input, offset);
-  if (ret && *ret <= kAuthorityTypeMax)
-    return base::NumberToString(*ret);
-  return absl::nullopt;
-}
-
-absl::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
-                                      size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
-    return absl::nullopt;
-  }
-
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint32_t));
-  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
-
-  offset += sizeof(uint32_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint32_le;
-#else
-  return base::ByteSwap(uint32_le);
-#endif
-}
-
-absl::optional<std::string> DecodeUint32String(
-    const std::vector<uint8_t>& input,
-    size_t& offset) {
-  auto ret = DecodeUint32(input, offset);
-  if (!ret)
-    return absl::nullopt;
-  return base::NumberToString(*ret);
-}
-
-absl::optional<uint64_t> DecodeUint64(const std::vector<uint8_t>& input,
-                                      size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint64_t)) {
-    return absl::nullopt;
-  }
-
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint64_t));
-  uint64_t uint64_le = *reinterpret_cast<const uint64_t*>(s.data());
-
-  offset += sizeof(uint64_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint64_le;
-#else
-  return base::ByteSwap(uint64_le);
-#endif
-}
-
-absl::optional<std::string> DecodeUint64String(
-    const std::vector<uint8_t>& input,
-    size_t& offset) {
-  auto ret = DecodeUint64(input, offset);
-  if (!ret)
-    return absl::nullopt;
-  return base::NumberToString(*ret);
-}
-
-absl::optional<std::string> DecodePublicKey(const std::vector<uint8_t>& input,
-                                            size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize)
-    return absl::nullopt;
-
-  offset += kSolanaPubkeySize;
-  return Base58Encode(std::vector<uint8_t>(
-      input.begin() + offset - kSolanaPubkeySize, input.begin() + offset));
-}
-
-absl::optional<std::string> DecodeOptionalPublicKey(
-    const std::vector<uint8_t>& input,
-    size_t& offset) {
-  if (offset == input.size()) {
-    return absl::nullopt;
-  }
-
-  // First byte is 0 or 1 to indicate if public key is passed.
-  // And the rest bytes are the actual public key.
-  if (input[offset] == 0) {
-    offset++;
-    return "";  // No public key is passed.
-  } else if (input[offset] == 1) {
-    offset++;
-    return DecodePublicKey(input, offset);
-  } else {
-    return absl::nullopt;
-  }
-}
-
-// bincode::serialize uses two u32 together for the string length and a byte
-// array for the actual strings. The first u32 represents the lower bytes of
-// the length, the second represents the upper bytes. The upper bytes will have
-// non-zero value only when the length exceeds the maximum of u32.
-// We currently cap the length here to be the max size of std::string
-// on 32 bit systems, it's safe to do so because currently we don't expect any
-// valid cases would have strings larger than it.
-absl::optional<std::string> DecodeString(const std::vector<uint8_t>& input,
-                                         size_t& offset) {
-  auto len_lower = DecodeUint32(input, offset);
-  if (!len_lower || *len_lower > kMaxStringSize32Bit)
-    return absl::nullopt;
-  auto len_upper = DecodeUint32(input, offset);
-  if (!len_upper || *len_upper != 0) {  // Non-zero means len exceeds u32 max.
-    return absl::nullopt;
-  }
-
-  if (offset + *len_lower > input.size())
-    return absl::nullopt;
-
-  offset += *len_lower;
-  return std::string(reinterpret_cast<const char*>(&input[offset - *len_lower]),
-                     *len_lower);
-}
-
-bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
-                     const std::vector<std::uint8_t> data,
-                     size_t& offset,
-                     std::vector<InsParamTuple>& ins_param_tuple) {
-  absl::optional<std::string> value;
-
-  switch (std::get<2>(name_type_tuple)) {
-    case ParamTypes::kUint8:
-      value = DecodeUint8String(data, offset);
-      break;
-    case ParamTypes::kUint32:
-      value = DecodeUint32String(data, offset);
-      break;
-    case ParamTypes::kUint64:
-      value = DecodeUint64String(data, offset);
-      break;
-    case ParamTypes::kPublicKey:
-      value = DecodePublicKey(data, offset);
-      break;
-    case ParamTypes::kOptionalPublicKey:
-      value = DecodeOptionalPublicKey(data, offset);
-      break;
-    case ParamTypes::kString:
-      value = DecodeString(data, offset);
-      break;
-    case ParamTypes::kAuthorityType:
-      value = DecodeAuthorityTypeString(data, offset);
-  }
-
-  if (!value)
-    return false;
-
-  // Early return to ignore optional public key in the param name-value list
-  // if it is not passed.
-  if (std::get<2>(name_type_tuple) == ParamTypes::kOptionalPublicKey &&
-      value->empty()) {
-    return true;
-  }
-
-  ins_param_tuple.emplace_back(std::get<0>(name_type_tuple),
-                               std::get<1>(name_type_tuple), *value);
-  return true;
-}
-
 absl::optional<mojom::SolanaSystemInstruction> DecodeSystemInstructionType(
     const std::vector<uint8_t>& data,
     size_t& offset) {
@@ -831,41 +645,48 @@ const std::vector<ParamNameTypeTuple>* DecodeInstructionType(
 
 }  // namespace
 
-// Expects a the bytes of a Borsh encoded Metadata struct (see
-// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Metadata.html)
-// and returns the URI string in of the nested Data struct (see
-// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
-// as a GURL.
-absl::optional<GURL> DecodeMetadataUri(const std::vector<uint8_t> data) {
-  size_t offset = 0;
-  offset = offset + /* Skip first byte for metadata.key */ 1 +
-           /* Skip next 32 bytes for `metadata.update_authority` */ 32 +
-           /* Skip next 32 bytes for `metadata.mint` */ 32;
+bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
+                     const std::vector<std::uint8_t> data,
+                     size_t& offset,
+                     std::vector<InsParamTuple>& ins_param_tuple) {
+  absl::optional<std::string> value;
 
-  // Skip next field, metdata.data.name, a string
-  // whose length is represented by a leading 32 bit integer
-  auto length = DecodeUint32(data, offset);
-  if (!length) {
-    return absl::nullopt;
+  switch (std::get<2>(name_type_tuple)) {
+    case ParamTypes::kUint8:
+      value = DecodeUint8String(data, offset);
+      break;
+    case ParamTypes::kUint32:
+      value = DecodeUint32String(data, offset);
+      break;
+    case ParamTypes::kUint64:
+      value = DecodeUint64String(data, offset);
+      break;
+    case ParamTypes::kPublicKey:
+      value = DecodePublicKey(data, offset);
+      break;
+    case ParamTypes::kOptionalPublicKey:
+      value = DecodeOptionalPublicKey(data, offset);
+      break;
+    case ParamTypes::kString:
+      value = DecodeString(data, offset);
+      break;
+    case ParamTypes::kAuthorityType:
+      value = DecodeAuthorityTypeString(data, offset);
   }
-  offset += static_cast<size_t>(*length);
 
-  // Skip next field, `metdata.data.symbol`, a string
-  // whose length is represented by a leading 32 bit integer
-  length = DecodeUint32(data, offset);
-  if (!length) {
-    return absl::nullopt;
-  }
-  offset += static_cast<size_t>(*length);
+  if (!value)
+    return false;
 
-  // Parse next field, metadata.data.uri, a string
-  length = DecodeUint32(data, offset);
-  if (!length) {
-    return absl::nullopt;
+  // Early return to ignore optional public key in the param name-value list
+  // if it is not passed.
+  if (std::get<2>(name_type_tuple) == ParamTypes::kOptionalPublicKey &&
+      value->empty()) {
+    return true;
   }
-  std::string uri =
-      std::string(reinterpret_cast<const char*>(&data[offset]), *length);
-  return GURL(uri);
+
+  ins_param_tuple.emplace_back(std::get<0>(name_type_tuple),
+                               std::get<1>(name_type_tuple), *value);
+  return true;
 }
 
 absl::optional<SolanaInstructionDecodedData> Decode(

@@ -31,7 +31,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
+#include "brave/components/brave_wallet/browser/solana_data_decoder_utils.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
@@ -2589,8 +2589,7 @@ void JsonRpcService::OnGetSolanaAccountInfoMetaplex(
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
   }
 
-  absl::optional<GURL> url =
-      solana_ins_data_decoder::DecodeMetadataUri(*metadata);
+  absl::optional<GURL> url = DecodeMetadataUri(*metadata);
   if (!url) {
     std::move(callback).Run(
         "", mojom::SolanaProviderError::kInternalError,

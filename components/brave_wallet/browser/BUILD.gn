@@ -101,6 +101,8 @@ static_library("browser") {
     "solana_account_meta.h",
     "solana_block_tracker.cc",
     "solana_block_tracker.h",
+    "solana_data_decoder_utils.cc",
+    "solana_data_decoder_utils.h",
     "solana_instruction.cc",
     "solana_instruction.h",
     "solana_instruction_builder.cc",
