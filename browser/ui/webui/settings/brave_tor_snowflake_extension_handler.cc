@@ -115,27 +115,31 @@ BraveTorSnowflakeExtensionHandler::GetExtensionRegistry() {
       web_ui()->GetWebContents()->GetBrowserContext());
 }
 
+bool BraveTorSnowflakeExtensionHandler::IsTorAllowedByPolicy() {
+  const bool is_allowed =
+      !g_browser_process->local_state()->IsManagedPreference(
+          tor::prefs::kTorDisabled);
+  return is_allowed;
+}
+
 void BraveTorSnowflakeExtensionHandler::IsSnowflakeExtensionAllowed(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
-  const bool is_allowed =
-      !g_browser_process->local_state()->IsManagedPreference(
-          tor::prefs::kTorDisabled);
-
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(is_allowed));
+  ResolveJavascriptCallback(args[0], base::Value(IsTorAllowedByPolicy()));
 }
 
 void BraveTorSnowflakeExtensionHandler::IsSnowflakeExtensionEnabled(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
+  const bool is_allowed = IsTorAllowedByPolicy();
   const bool is_enabled = GetExtensionRegistry()->enabled_extensions().Contains(
       kSnowflakeExtensionId);
 
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(is_enabled));
+  ResolveJavascriptCallback(args[0], base::Value(is_allowed && is_enabled));
 }
 
 void BraveTorSnowflakeExtensionHandler::EnableSnowflakeExtension(

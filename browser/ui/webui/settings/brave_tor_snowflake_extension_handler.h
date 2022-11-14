@@ -48,6 +48,7 @@ class BraveTorSnowflakeExtensionHandler
 
   extensions::ExtensionRegistry* GetExtensionRegistry();
 
+  bool IsTorAllowedByPolicy();
   void IsSnowflakeExtensionAllowed(const base::Value::List& args);
   void IsSnowflakeExtensionEnabled(const base::Value::List& args);
   void EnableSnowflakeExtension(const base::Value::List& args);
