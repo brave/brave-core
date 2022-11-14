@@ -3264,14 +3264,6 @@ extension Strings {
       value: "Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!\nBrave News is ad-supported with private, anonymized ads.",
       comment: "Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs."
     )
-    public static let introCardNew = NSLocalizedString("today.introCardNew", tableName: "BraveShared", bundle: .module,
-      value: "New",
-      comment: "\"New\" as in a new feature being introduced, displayed above a body of text explaining said feature"
-    )
-    public static let introCardNewTextBody = NSLocalizedString("today.introCardNewTextBody", tableName: "BraveShared", bundle: .module,
-      value: "Customize your feed using hundreds of leading content sources delivered through our private CDN, and add RSS feeds from your favorite publishers to make a feed that works just for you.",
-      comment: ""
-    )
     public static let refresh = NSLocalizedString("today.refresh", tableName: "BraveShared", bundle: .module,
       value: "Refresh",
       comment: ""

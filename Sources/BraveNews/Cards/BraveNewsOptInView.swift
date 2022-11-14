@@ -88,23 +88,6 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
           $0.font = .systemFont(ofSize: 14)
           $0.numberOfLines = 0
         }),
-      .view(
-        UIStackView().then {
-          $0.spacing = 4
-          $0.axis = .vertical
-          $0.alignment = .center
-          $0.addStackViewItems(
-            .view(MaskedNewLabel()),
-            .view(
-              UILabel().then {
-                $0.text = Strings.BraveNews.introCardNewTextBody
-                $0.textAlignment = .center
-                $0.textColor = .white
-                $0.font = .systemFont(ofSize: 13)
-                $0.numberOfLines = 0
-              })
-          )
-        }),
       .customSpace(24),
       .view(turnOnBraveNewsButton),
       .view(learnMoreButton)
@@ -149,49 +132,5 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
     didSet {
       assertionFailure("Unused for welcome card")
     }
-  }
-}
-
-/// Displays the word "New" with a gradient mask
-private class MaskedNewLabel: UIView {
-  private let gradientView = BraveGradientView.gradient02.then {
-    // New has a white background always behind it, so only light
-    $0.overrideUserInterfaceStyle = .light
-  }
-  private let label = UILabel().then {
-    $0.text = Strings.BraveNews.introCardNew.uppercased()
-    $0.textColor = .black
-    $0.font = .systemFont(ofSize: 12, weight: .bold)
-  }
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    backgroundColor = .white
-    layer.cornerRadius = 8
-    layer.cornerCurve = .continuous
-
-    gradientView.mask = label
-    clipsToBounds = true
-
-    addSubview(gradientView)
-    label.sizeToFit()
-    gradientView.snp.makeConstraints {
-      $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 3, left: 6, bottom: 3, right: 6))
-      $0.size.equalTo(label.bounds.size)
-    }
-    isAccessibilityElement = true
-    accessibilityTraits = [.staticText]
-  }
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    label.frame = gradientView.bounds
-  }
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
-  }
-  override var accessibilityLabel: String? {
-    get { label.accessibilityLabel }
-    set {}
   }
 }
