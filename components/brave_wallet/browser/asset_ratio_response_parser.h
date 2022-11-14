@@ -10,24 +10,24 @@
 #include <utility>
 #include <vector>
 
-#include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-absl::optional<std::string> ParseSardineAuthToken(const std::string& json);
+absl::optional<std::string> ParseSardineAuthToken(
+    const base::Value& json_value);
 
-bool ParseAssetPrice(const std::string& json,
+bool ParseAssetPrice(const base::Value& json_value,
                      const std::vector<std::string>& from_assets,
                      const std::vector<std::string>& to_assets,
                      std::vector<mojom::AssetPricePtr>* values);
-bool ParseAssetPriceHistory(const std::string& json,
+bool ParseAssetPriceHistory(const base::Value& json_value,
                             std::vector<mojom::AssetTimePricePtr>* values);
-bool ParseCoinMarkets(const std::string& json,
+bool ParseCoinMarkets(const base::Value& json_value,
                       std::vector<mojom::CoinMarketPtr>* values);
 
-std::string ParseEstimatedTime(const std::string& json);
-mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
+mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
                                          const std::string& chain_id,
                                          mojom::CoinType coin);
 

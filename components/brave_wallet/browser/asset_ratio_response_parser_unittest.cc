@@ -7,8 +7,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/i18n/time_formatting.h"
+#include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -16,23 +17,30 @@
 
 namespace brave_wallet {
 
+namespace {
+base::Value ToValue(const std::string& json) {
+  return base::JSONReader::Read(json).value_or(base::Value());
+}
+
+}  // namespace
+
 TEST(AssetRatioResponseParserUnitTest, ParseSardineAuthToken) {
   std::string json(R"({
    "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
    "expiresAt":"2022-07-25T19:59:57Z"
   })");
 
-  auto auth_token = ParseSardineAuthToken(json);
+  auto auth_token = ParseSardineAuthToken(ToValue(json));
   ASSERT_TRUE(auth_token);
   EXPECT_EQ(auth_token, "74618e17-a537-4f5d-ab4d-9916739560b1");
 
   // Invalid json
   json = (R"({)");
-  EXPECT_FALSE(ParseSardineAuthToken(json));
+  EXPECT_FALSE(ParseSardineAuthToken(ToValue(json)));
 
   // Valid json, missing required field
   json = (R"({})");
-  EXPECT_FALSE(ParseSardineAuthToken(json));
+  EXPECT_FALSE(ParseSardineAuthToken(ToValue(json)));
 }
 
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
@@ -61,7 +69,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
     })");
 
   std::vector<brave_wallet::mojom::AssetPricePtr> prices;
-  ASSERT_TRUE(ParseAssetPrice(json, {"bat", "link"}, {"btc", "usd"}, &prices));
+  ASSERT_TRUE(
+      ParseAssetPrice(ToValue(json), {"bat", "link"}, {"btc", "usd"}, &prices));
   ASSERT_EQ(prices.size(), 4UL);
   EXPECT_EQ(prices[0]->from_asset, "bat");
   EXPECT_EQ(prices[0]->to_asset, "btc");
@@ -84,18 +93,19 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
   EXPECT_EQ(prices[3]->asset_timeframe_change, "1.7646208048244043");
 
   // Unexpected json for inputs
-  EXPECT_FALSE(
-      ParseAssetPrice(json, {"A1", "A2", "A3"}, {"B1", "B2", "B3"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(json, {"A1"}, {"B1", "B2"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(json, {"A1", "A2"}, {"B1"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(ToValue(json), {"A1", "A2", "A3"},
+                               {"B1", "B2", "B3"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(ToValue(json), {"A1"}, {"B1", "B2"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(ToValue(json), {"A1", "A2"}, {"B1"}, &prices));
 
   // Invalid json input
-  EXPECT_FALSE(ParseAssetPrice("{\"result\": \"no payload property\"}", {"A"},
-                               {"B"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice("3615", {"A"}, {"B"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice("[3615]", {"A"}, {"B"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice("", {"A"}, {"B"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(R"({"payload":{})", {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(ToValue("{\"result\": \"no payload property\"}"),
+                               {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(ToValue("3615"), {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(ToValue("[3615]"), {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(ToValue(""), {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(
+      ParseAssetPrice(ToValue(R"({"payload":{})"), {"A"}, {"B"}, &prices));
 }
 
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
@@ -111,7 +121,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   )");
 
   std::vector<brave_wallet::mojom::AssetTimePricePtr> values;
-  ASSERT_TRUE(ParseAssetPriceHistory(json, &values));
+  ASSERT_TRUE(ParseAssetPriceHistory(ToValue(json), &values));
   ASSERT_EQ(values.size(), 2UL);
   EXPECT_EQ(values[0]->price, "0.8201346624954003");
   base::Time date = base::Time::FromJsTime(values[0]->date.InMilliseconds());
@@ -130,34 +140,13 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
 
   // Invalid input
   json = R"({"market_caps": []})";
-  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
+  EXPECT_FALSE(ParseAssetPriceHistory(ToValue(json), &values));
   json = "3";
-  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
+  EXPECT_FALSE(ParseAssetPriceHistory(ToValue(json), &values));
   json = "[3]";
-  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
+  EXPECT_FALSE(ParseAssetPriceHistory(ToValue(json), &values));
   json = "";
-  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
-}
-
-TEST(AssetRatioResponseParserUnitTest, ParseEstimatedTime) {
-  std::string json(R"(
-    {
-      "payload": {
-        "status": "1",
-        "message": "",
-        "result": "3615"
-      },
-      "lastUpdated": "2021-09-22T21:45:40.015Z"
-    }
-  )");
-
-  EXPECT_EQ(ParseEstimatedTime(json), "3615");
-
-  // Invalid json input
-  EXPECT_EQ(ParseEstimatedTime("{\"result\": \"3615\"}"), "");
-  EXPECT_EQ(ParseEstimatedTime("3615"), "");
-  EXPECT_EQ(ParseEstimatedTime("[3615]"), "");
-  EXPECT_EQ(ParseEstimatedTime(""), "");
+  EXPECT_FALSE(ParseAssetPriceHistory(ToValue(json), &values));
 }
 
 TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
@@ -200,7 +189,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
       false, false, "USDT", 6, true, "", "", "0x1", mojom::CoinType::ETH);
-  EXPECT_EQ(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH), expected_token);
+  EXPECT_EQ(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH),
+            expected_token);
 
   // ERC721
   json = (R"(
@@ -222,7 +212,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   expected_token = mojom::BlockchainToken::New(
       "0x0E3A2A1f2146d86A604adc220b4967A898D7Fe07", "Gods Unchained Cards", "",
       false, true, true, "CARD", 0, true, "", "", "0x1", mojom::CoinType::ETH);
-  EXPECT_EQ(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH), expected_token);
+  EXPECT_EQ(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH),
+            expected_token);
 
   const std::string valid_json = (R"(
     {
@@ -240,16 +231,16 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
       "lastUpdated": "2021-12-09T22:02:23.187Z"
     }
   )");
-  ASSERT_TRUE(ParseTokenInfo(valid_json, "0x1", mojom::CoinType::ETH));
+  ASSERT_TRUE(ParseTokenInfo(ToValue(valid_json), "0x1", mojom::CoinType::ETH));
 
   // Invalid contract address.
   json = valid_json;
   base::ReplaceFirstSubstringAfterOffset(
       &json, 0, "0xdac17f958d2ee523a2206206994597c13d831ec7", "0xdac17f9");
-  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+  EXPECT_FALSE(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH))
       << "Invalid contract address should fail";
   base::ReplaceFirstSubstringAfterOffset(&json, 0, "0xdac17f9", "");
-  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+  EXPECT_FALSE(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH))
       << "Empty contract address should fail";
 
   // Invalid decimals.
@@ -269,16 +260,16 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
       "lastUpdated": "2021-12-09T22:02:23.187Z"
     }
   )");
-  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+  EXPECT_FALSE(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH))
       << "Invalid decimals should fail";
   base::ReplaceFirstSubstringAfterOffset(&json, 0, "NOT A NUMBER", "");
-  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+  EXPECT_FALSE(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH))
       << "Empty decimals should fail";
 
   // Invalid token type.
   json = valid_json;
   base::ReplaceFirstSubstringAfterOffset(&json, 0, "ERC20", "ERC");
-  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+  EXPECT_FALSE(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH))
       << "Invalid token type should fail";
 
   // Missing required fields.
@@ -287,7 +278,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   for (const auto& field : required_fields) {
     json = valid_json;
     base::ReplaceFirstSubstringAfterOffset(&json, 0, field, "test");
-    EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+    EXPECT_FALSE(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH))
         << "Missing " << field << " should fail";
   }
 
@@ -296,16 +287,18 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   for (const auto& value : values) {
     json = valid_json;
     base::ReplaceFirstSubstringAfterOffset(&json, 0, value, "");
-    EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH));
+    EXPECT_FALSE(ParseTokenInfo(ToValue(json), "0x1", mojom::CoinType::ETH));
   }
 
   // Invalid JSON
-  EXPECT_FALSE(ParseTokenInfo("", "0x1", mojom::CoinType::ETH));
-  EXPECT_FALSE(ParseTokenInfo("json", "0x1", mojom::CoinType::ETH));
-  EXPECT_FALSE(ParseTokenInfo("[\"json\"]", "0x1", mojom::CoinType::ETH));
-  EXPECT_FALSE(ParseTokenInfo("{\"result\": \"no payload property\"}", "0x1",
-                              mojom::CoinType::ETH));
-  EXPECT_FALSE(ParseTokenInfo(R"({"payload":{})", "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(ParseTokenInfo(ToValue(""), "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(ParseTokenInfo(ToValue("json"), "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      ParseTokenInfo(ToValue("[\"json\"]"), "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(ParseTokenInfo(ToValue("{\"result\": \"no payload property\"}"),
+                              "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      ParseTokenInfo(ToValue(R"({"payload":{})"), "0x1", mojom::CoinType::ETH));
 }
 
 TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
@@ -330,7 +323,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
   )");
 
   std::vector<brave_wallet::mojom::CoinMarketPtr> values;
-  ASSERT_TRUE(ParseCoinMarkets(json, &values));
+  ASSERT_TRUE(ParseCoinMarkets(ToValue(json), &values));
   ASSERT_EQ(values.size(), 1UL);
   EXPECT_EQ(values[0]->id, "bitcoin");
   EXPECT_EQ(values[0]->symbol, "btc");
@@ -347,15 +340,15 @@ TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
 
   // Invalid input
   json = R"({"id": [])";
-  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  EXPECT_FALSE(ParseCoinMarkets(ToValue(json), &values));
   json = R"({"id": []})";
-  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  EXPECT_FALSE(ParseCoinMarkets(ToValue(json), &values));
   json = "3";
-  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  EXPECT_FALSE(ParseCoinMarkets(ToValue(json), &values));
   json = "[3]";
-  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  EXPECT_FALSE(ParseCoinMarkets(ToValue(json), &values));
   json = "";
-  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  EXPECT_FALSE(ParseCoinMarkets(ToValue(json), &values));
 }
 
 }  // namespace brave_wallet
