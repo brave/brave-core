@@ -219,7 +219,29 @@
   <message name="IDS_BRAVE_VPN_DNS_POLICY_ALERT" desc="A text shown to user when he enabled Brave VPN with disabled DoH by policies">
     Secure DNS is disabled by your organization's policies. Using Brave VPN without Secure DNS may reveal the names of the sites you visit to your Internet service provider or organization.
   </message>
+  <if expr="is_win">
+    <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_TITLE" desc="A title of text shown to user when he enabled Brave VPN without DoH and we override settings">
+      Brave VPN on Windows
+    </message>
+  </if>
+  <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_LEARN_MORE_TEXT" desc="A text shown to user when he enabled Brave VPN without DoH and we override settings to visit help center">
+    Learn more.
+  </message>
 
+  <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_BY_BRAVE_VPN" desc="A text shown to user on settings page for DNS setting when it is blocked by BraveVPN">
+    The setting is locked by BraveVPN while it is connected
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_TEXT" desc="A text shown to user when he enabled Brave VPN without DoH and we override settings">
+    Windows has a feature called Smart Multi-Homed Name Resolution, which can expose information about your location and the sites you visit. Now that you’ve enabled Brave VPN, we’ve changed the DNS settings in the browser to protect against this exposure. The settings will remain in effect and locked while VPN is connected. <ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_CHECKBOX_TEXT" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN and we override settings">
+    Do not warn me about this anymore.
+  </message>
+  <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_OK_TEXT" desc="A text shown to user on dialog's ok button when he enabled Brave VPN and we override settings">
+    Ok
+  </message>
   <message name="IDS_BRAVE_VPN_DNS_POLICY_CHECKBOX" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN with disabled DoH by policies">
     Do not warn me about this anymore.
   </message>

@@ -7,13 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace brave_vpn {
 namespace features {
 
 BASE_DECLARE_FEATURE(kBraveVPN);
 BASE_DECLARE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI);
-
+#if BUILDFLAG(IS_WIN)
+BASE_DECLARE_FEATURE(kBraveVPNDnsProtection);
+#endif
 }  // namespace features
 }  // namespace brave_vpn
 
