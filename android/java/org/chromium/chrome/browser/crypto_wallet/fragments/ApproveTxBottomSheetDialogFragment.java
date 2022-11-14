@@ -50,6 +50,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageA
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.SolanaTransactionsGasHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -236,54 +237,58 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
         jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
             networkName.setText(selectedNetwork.chainName);
-            keyringService.getKeyringInfo(Utils.getKeyringForCoinType(mCoinType), keyringInfo -> {
-                final AccountInfo[] accounts = keyringInfo.accountInfos;
-                // First fill in data that does not require remote queries
-                TokenUtils.getAllTokensFiltered(getBraveWalletService(), getBlockchainRegistry(),
-                        selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL,
-                        tokenList -> {
-                            SolanaTransactionsGasHelper solanaTransactionsGasHelper =
-                                    new SolanaTransactionsGasHelper(
-                                            (BraveWalletBaseActivity) getActivity(),
-                                            new TransactionInfo[] {mTxInfo});
-                            solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
-                                HashMap<String, Long> perTxFee =
-                                        solanaTransactionsGasHelper.getPerTxFee();
-                                if (perTxFee.get(mTxInfo.id) != null) {
-                                    mSolanaEstimatedTxFee = perTxFee.get(mTxInfo.id);
-                                }
-                                if (!canUpdateUi()) return;
-                                ParsedTransaction parsedTx = fillAssetDependentControls(view,
-                                        selectedNetwork, accounts, new HashMap<String, Double>(),
-                                        tokenList, new HashMap<String, Double>(),
-                                        new HashMap<String, HashMap<String, Double>>(),
-                                        mSolanaEstimatedTxFee);
+            keyringService.getKeyringInfo(
+                    AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
+                        final AccountInfo[] accounts = keyringInfo.accountInfos;
+                        // First fill in data that does not require remote queries
+                        TokenUtils.getAllTokensFiltered(getBraveWalletService(),
+                                getBlockchainRegistry(), selectedNetwork, selectedNetwork.coin,
+                                TokenUtils.TokenType.ALL, tokenList -> {
+                                    SolanaTransactionsGasHelper solanaTransactionsGasHelper =
+                                            new SolanaTransactionsGasHelper(
+                                                    (BraveWalletBaseActivity) getActivity(),
+                                                    new TransactionInfo[] {mTxInfo});
+                                    solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
+                                        HashMap<String, Long> perTxFee =
+                                                solanaTransactionsGasHelper.getPerTxFee();
+                                        if (perTxFee.get(mTxInfo.id) != null) {
+                                            mSolanaEstimatedTxFee = perTxFee.get(mTxInfo.id);
+                                        }
+                                        if (!canUpdateUi()) return;
+                                        ParsedTransaction parsedTx = fillAssetDependentControls(
+                                                view, selectedNetwork, accounts,
+                                                new HashMap<String, Double>(), tokenList,
+                                                new HashMap<String, Double>(),
+                                                new HashMap<String, HashMap<String, Double>>(),
+                                                mSolanaEstimatedTxFee);
 
-                                // Get tokens involved in this transaction
-                                List<BlockchainToken> tokens = new ArrayList<>();
-                                tokens.add(Utils.makeNetworkAsset(
-                                        selectedNetwork)); // Always add native asset
-                                if (parsedTx.getIsSwap()) {
-                                    tokens.add(parsedTx.getSellToken());
-                                    tokens.add(parsedTx.getBuyToken());
-                                } else if (parsedTx.getToken() != null)
-                                    tokens.add(parsedTx.getToken());
-                                BlockchainToken[] filterByTokens =
-                                        tokens.toArray(new BlockchainToken[0]);
+                                        // Get tokens involved in this transaction
+                                        List<BlockchainToken> tokens = new ArrayList<>();
+                                        tokens.add(Utils.makeNetworkAsset(
+                                                selectedNetwork)); // Always add native asset
+                                        if (parsedTx.getIsSwap()) {
+                                            tokens.add(parsedTx.getSellToken());
+                                            tokens.add(parsedTx.getBuyToken());
+                                        } else if (parsedTx.getToken() != null)
+                                            tokens.add(parsedTx.getToken());
+                                        BlockchainToken[] filterByTokens =
+                                                tokens.toArray(new BlockchainToken[0]);
 
-                                Utils.getTxExtraInfo((BraveWalletBaseActivity) getActivity(),
-                                        selectedNetwork, accounts, filterByTokens, false,
-                                        (assetPrices, fullTokenList, nativeAssetsBalances,
-                                                blockchainTokensBalances) -> {
-                                            if (!canUpdateUi()) return;
-                                            fillAssetDependentControls(view, selectedNetwork,
-                                                    accounts, assetPrices, fullTokenList,
-                                                    nativeAssetsBalances, blockchainTokensBalances,
-                                                    mSolanaEstimatedTxFee);
-                                        });
-                            });
-                        });
-            });
+                                        Utils.getTxExtraInfo(
+                                                (BraveWalletBaseActivity) getActivity(),
+                                                selectedNetwork, accounts, filterByTokens, false,
+                                                (assetPrices, fullTokenList, nativeAssetsBalances,
+                                                        blockchainTokensBalances) -> {
+                                                    if (!canUpdateUi()) return;
+                                                    fillAssetDependentControls(view,
+                                                            selectedNetwork, accounts, assetPrices,
+                                                            fullTokenList, nativeAssetsBalances,
+                                                            blockchainTokensBalances,
+                                                            mSolanaEstimatedTxFee);
+                                                });
+                                    });
+                                });
+                    });
         });
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
         Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, mTxInfo.fromAddress, true);
