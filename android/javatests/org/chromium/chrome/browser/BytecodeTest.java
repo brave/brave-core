@@ -967,6 +967,9 @@ public class BytecodeTest {
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/searchwidget/SearchActivityLocationBarLayout",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarLayout"));
+        Assert.assertTrue(
+                checkSuperName("org/chromium/chrome/browser/document/ChromeLauncherActivity",
+                        "org/chromium/chrome/browser/document/BraveLauncherActivity"));
     }
 
     private boolean classExists(String className) {
