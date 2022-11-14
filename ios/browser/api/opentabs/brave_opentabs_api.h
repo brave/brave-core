@@ -84,6 +84,11 @@ OBJC_EXPORT
 /// Fetch function that will return all synced sessions with tab information
 - (NSArray<IOSOpenDistantSession*>*)getSyncedSessions;
 
+/// Delete function that will be used for "Hide for now" action
+/// @param sessionTag - This is the session tag belongs to the open tabs
+/// session to be deleted
+- (void)deleteSyncedSession:(NSString*)sessionTag;
+
 @end
 
 NS_ASSUME_NONNULL_END
