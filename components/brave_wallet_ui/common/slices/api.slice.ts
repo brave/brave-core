@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { createEntityAdapter } from '@reduxjs/toolkit'
 import { createApi } from '@reduxjs/toolkit/query/react'
 
 // types
@@ -14,17 +13,17 @@ import {
 } from '../../constants/types'
 import { IsEip1559Changed } from '../constants/action_types'
 
+// entity adaptors
+import {
+  networkEntityAdapter,
+  networkEntityInitalState,
+  NetworkEntityState
+} from './entity-adaptors/network-entity-adaptor'
+
 // utils
 import { cacher } from '../../utils/query-cache-utils'
 import getAPIProxy from '../async/bridge'
 import WalletApiProxy from '../wallet_api_proxy'
-
-const networkEntityAdapter = createEntityAdapter<BraveWallet.NetworkInfo>({
-  selectId: ({ chainId }) => chainId
-})
-const networkEntityInitalState = networkEntityAdapter.getInitialState()
-
-type NetworkEntityState = ReturnType<typeof networkEntityAdapter['getInitialState']>
 
 export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIProxy()) {
   const walletApi = createApi({
