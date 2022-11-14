@@ -9,6 +9,9 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/policy/core/browser/browser_policy_connector.h"
+#include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/policy_constants.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_system.h"
@@ -31,6 +34,13 @@ bool IsSnowflakeToggled(content::WebContents* web_contents) {
   return EvalJs(
              web_contents,
              "window.testing.torSubpage.getElementById('torSnowflake').checked")
+      .value.GetBool();
+}
+
+bool IsSnowflakeToggleEnabled(content::WebContents* web_contents) {
+  return EvalJs(web_contents,
+                "!window.testing.torSubpage.getElementById('torSnowflake')."
+                "disabled")
       .value.GetBool();
 }
 
@@ -76,6 +86,23 @@ class TorSnowflakeExtensionBrowserTest : public InProcessBrowserTest {
     return extensions::ExtensionRegistry::Get(browser()->profile())
         ->GetInstalledExtension(kSnowflakeExtensionId);
   }
+
+  void SetTorDisabledPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kTorDisabled, policy::POLICY_LEVEL_MANDATORY,
+                 policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
+                 base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+  }
+
+ private:
+  void SetUpInProcessBrowserTestFixture() override {
+    EXPECT_CALL(provider_, IsInitializationComplete(testing::_))
+        .WillRepeatedly(testing::Return(true));
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
+  }
+
+  testing::NiceMock<policy::MockConfigurationPolicyProvider> provider_;
 };
 
 IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest, InstallFail) {
@@ -87,6 +114,7 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest, InstallFail) {
   ClickSnowflakeToggle(web_contents);
   console_observer.Wait();
   EXPECT_FALSE(IsSnowflakeToggled(web_contents));
+  EXPECT_TRUE(IsSnowflakeToggleEnabled(web_contents));
 }
 
 IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest,
@@ -95,6 +123,7 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest,
                                            GURL("brave://settings/privacy")));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_FALSE(IsSnowflakeToggled(web_contents));
+  EXPECT_TRUE(IsSnowflakeToggleEnabled(web_contents));
 
   SimulateSnowflakeInstall();
   EXPECT_TRUE(IsSnowflakeToggled(web_contents));
@@ -120,4 +149,14 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest,
   ClickSnowflakeToggle(web_contents);
   EXPECT_FALSE(IsSnowflakeToggled(web_contents));
   EXPECT_FALSE(IsSnowflakeInstalled());
+}
+
+IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest, CheckPolicy) {
+  SetTorDisabledPolicy(true);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL("brave://settings/privacy")));
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_FALSE(IsSnowflakeToggled(web_contents));
+  EXPECT_FALSE(IsSnowflakeToggleEnabled(web_contents));
 }

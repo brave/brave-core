@@ -10,6 +10,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/tor/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/extension_allowlist.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -118,12 +119,9 @@ void BraveTorSnowflakeExtensionHandler::IsSnowflakeExtensionAllowed(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
-  Profile* profile = Profile::FromBrowserContext(
-      web_ui()->GetWebContents()->GetBrowserContext());
-
   const bool is_allowed =
-      !profile->GetPrefs()->IsManagedPreference(tor::prefs::kTorDisabled) ||
-      profile->GetPrefs()->GetBoolean(tor::prefs::kTorDisabled);
+      !g_browser_process->local_state()->IsManagedPreference(
+          tor::prefs::kTorDisabled);
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(is_allowed));
