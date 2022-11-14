@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -63,7 +64,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   const char* GetNameForLogging() override;
 
  private:
-  void OnShouldBlockDomain(bool should_block_domain);
+  void OnShouldBlockDomain(std::pair<bool, std::string> should_block_domain);
   void ShowInterstitial();
   void Enable1PESAndResume();
 
