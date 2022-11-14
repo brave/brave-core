@@ -149,6 +149,7 @@ export type BuySendSwapTypes =
   | 'buy'
   | 'send'
   | 'swap'
+  | 'deposit'
 
 export type ChartTimelineType =
   | '5MIN'
@@ -859,3 +860,10 @@ export const P3ASendTransactionTypes = [
 ]
 
 export type SendOptionTypes = 'token' | 'nft'
+
+export interface BuySendSwapDepositOption {
+  id: BuySendSwapTypes
+  name: string
+  icon: string
+  route: WalletRoutes
+}

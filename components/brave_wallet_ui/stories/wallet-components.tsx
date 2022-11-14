@@ -14,6 +14,7 @@ import './locale'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared'
 import { ChartControlBar } from '../components/desktop/chart-control-bar/chart-control-bar'
+import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -114,4 +115,14 @@ export const _LoadingSkeleton = () => {
 
 _LoadingSkeleton.story = {
   name: 'Loading Skeleton'
+}
+
+export const _BuySendSwapDeposit = () => {
+  return (
+    <BuySendSwapDepositNav />
+  )
+}
+
+_BuySendSwapDeposit.story = {
+  name: 'Buy/Send/Swap/Deposit'
 }
