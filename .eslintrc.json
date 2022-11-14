@@ -100,6 +100,14 @@
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/no-invalid-void-type": 0,
     "prefer-const": 0,
-    "@typescript-eslint/return-await": 0
+    "@typescript-eslint/return-await": 0,
+    /* This first set of rules conflicts with prettier, so we disable them and
+    * just let prettier do it's thing. */
+    "space-before-function-paren": "off",
+    "@typescript-eslint/space-before-function-paren": "off",
+    "@typescript-eslint/member-delimiter-style": "off",
+    "operator-linebreak": "off",
+    "@typescript-eslint/brace-style": "off",
+    "curly": "off"
   }
 }
