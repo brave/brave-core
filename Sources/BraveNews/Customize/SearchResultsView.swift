@@ -38,7 +38,7 @@ struct SearchResultsView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
-          Text("Channels") // TODO: Localize
+          Text(Strings.BraveNews.channelsHeaderTitle)
         }
       }
       if !results.sources.isEmpty {
@@ -48,7 +48,7 @@ struct SearchResultsView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
-          Text("Sources") // TODO: Localize
+          Text(Strings.BraveNews.sourcesHeaderTitle)
         }
       }
       if !results.rssFeeds.isEmpty {
@@ -58,7 +58,7 @@ struct SearchResultsView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
-          Text("User Sources") // TODO: Localize
+          Text(Strings.BraveNews.userSourcesHeaderTitle)
         }
       }
       if let urlQuery {
@@ -74,7 +74,7 @@ struct SearchResultsView: View {
             }
           } label: {
             HStack {
-              (Text("Get feeds from ").font(.footnote.weight(.medium)) + Text(urlQuery.absoluteString).font(.footnote.weight(.semibold))) // TODO: Localize
+              (Text("\(Strings.BraveNews.getFeedsFromSiteButtonTitle) ").font(.footnote.weight(.medium)) + Text(urlQuery.absoluteString).font(.footnote.weight(.semibold)))
                 .multilineTextAlignment(.leading)
               Spacer()
               if rssSearchTask?.state == .running {
@@ -98,7 +98,7 @@ struct SearchResultsView: View {
             )
           }
         } header: {
-          Text("Available RSS Feeds")
+          Text(Strings.BraveNews.availableRSSFeedsHeaderTitle)
         }
       }
     }
@@ -106,7 +106,7 @@ struct SearchResultsView: View {
     .listBackgroundColor(Color(.braveGroupedBackground))
     .overlay(Group {
       if results.isEmpty, urlQuery == nil {
-        Text("No Results Found") // TODO: Localize
+        Text(Strings.BraveNews.noResultsFound)
           .foregroundColor(Color(.secondaryBraveLabel))
       }
     })

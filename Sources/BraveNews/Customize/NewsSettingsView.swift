@@ -38,7 +38,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       )
     }
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.title = "Brave News" // DNT?
+    navigationItem.title = Strings.BraveNews.braveNews
     navigationItem.hidesSearchBarWhenScrolling = false
     if Preferences.BraveNews.isEnabled.value {
       navigationItem.searchController = searchController
@@ -76,7 +76,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
     $0.obscuresBackgroundDuringPresentation = false
     $0.automaticallyShowsSearchResultsController = false
     $0.searchBar.delegate = searchDelegate
-    $0.searchBar.placeholder = "Search for news, site, topic or RSS feed" // TODO: Localize
+    $0.searchBar.placeholder = Strings.BraveNews.searchPlaceholder
   }
   
   @objc private func tappedDone() {
@@ -121,10 +121,10 @@ public struct NewsSettingsView: View {
   private var showBraveNewsToggle: some View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
       VStack(alignment: .leading, spacing: 4) {
-        Text("Show Brave News") // TODO: Localize
+        Text(Strings.BraveNews.isEnabledToggleLabel)
           .font(.headline)
           .foregroundColor(Color(.bravePrimary))
-        Text("Ad-supported, private and anonymised ads matched on your device.") // TODO: Localize
+        Text(Strings.BraveNews.isEnabledToggleSubtitle)
           .font(.footnote)
           .foregroundColor(Color(.secondaryBraveLabel))
       }
@@ -142,8 +142,8 @@ public struct NewsSettingsView: View {
     } label: {
       DestinationLabel(
         image: Image(braveSystemName: "brave.crown"),
-        title: "Popular Sources", // TODO: Localize
-        subtitle: "Currently trending sources" // TODO: Localize
+        title: Strings.BraveNews.popularSourcesButtonTitle,
+        subtitle: Strings.BraveNews.popularSourcesButtonSubtitle
       )
     }
     if followedSourcesCount > 0 {
@@ -153,8 +153,8 @@ public struct NewsSettingsView: View {
       } label: {
         DestinationLabel(
           image: Image(braveSystemName: "brave.star"),
-          title: "Suggested", // TODO: Localize
-          subtitle: "Our curated list of sources"
+          title: Strings.BraveNews.suggestedSourcesButtonTitle,
+          subtitle: Strings.BraveNews.suggestedSourcesButtonSubtitle
         )
       }
     }
@@ -164,8 +164,8 @@ public struct NewsSettingsView: View {
       } label: {
         DestinationLabel(
           image: Image(braveSystemName: "brave.newspaper"),
-          title: "Channels", // TODO: Localize
-          subtitle: "Follow topics relevant to you" // TODO: Localize
+          title: Strings.BraveNews.channelsButtonTitle,
+          subtitle: Strings.BraveNews.channelsButtonSubtitle
         )
       }
     }
@@ -177,7 +177,7 @@ public struct NewsSettingsView: View {
           image: Image(braveSystemName: "brave.heart"),
           title: {
             HStack {
-              Text("Following") // TODO: Localize
+              Text(Strings.BraveNews.followingButtonTitle)
               Text(NSNumber(value: totalFollowCount), formatter: NumberFormatter())
                 .font(.caption)
                 .padding(.vertical, 1)
@@ -186,7 +186,7 @@ public struct NewsSettingsView: View {
                 .foregroundColor(Color(.secondaryBraveLabel))
             }
           },
-          subtitle: "Manage your following list" // TODO: Localize
+          subtitle: Strings.BraveNews.followingButtonSubtitle
         )
       }
     }
@@ -208,7 +208,7 @@ public struct NewsSettingsView: View {
     }
     .animation(.default, value: searchDelegate.isEditing)
     .listBackgroundColor(Color(.braveGroupedBackground))
-    .navigationTitle("Brave News") // DNT?
+    .navigationTitle(Strings.BraveNews.braveNews)
     .navigationBarTitleDisplayMode(.inline)
     .onChange(of: searchDelegate.query) { query in
       searchResults = dataSource.search(query: query)
@@ -235,7 +235,7 @@ public struct NewsSettingsView: View {
             Button {
               isShowingImportOPML = true
             } label: {
-              Label("Import OPML…", systemImage: "square.and.arrow.down") // TODO: Localize
+              Label(Strings.BraveNews.importOPML, systemImage: "square.and.arrow.down")
             }
           } label: {
             Image(systemName: "ellipsis")

@@ -5,6 +5,7 @@
 
 import Foundation
 import SwiftUI
+import BraveShared
 
 struct SourceSuggestionsContainerView: View {
   @ObservedObject var dataSource: FeedDataSource
@@ -63,7 +64,7 @@ private struct SourceSuggestionsView: View {
     .environment(\.defaultMinListRowHeight, 44)
     .listBackgroundColor(Color(.braveGroupedBackground))
     .listStyle(.grouped)
-    .navigationTitle("Suggested") // TODO: Localize
+    .navigationTitle(Strings.BraveNews.suggestedTitle)
     .navigationBarTitleDisplayMode(.inline)
   }
 }
