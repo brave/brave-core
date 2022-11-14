@@ -94,7 +94,7 @@ void SkusUrlLoaderImpl::OnFetchComplete(
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
     api_request_helper::APIRequestResult api_request_result) {
   uint16_t response_code = api_request_result.response_code();
-  bool success = api_request_result.Is2XXResponseCode();
+  bool success = api_request_result.IsResponseCodeValid();
 
   std::vector<uint8_t> body_bytes;
   if (!api_request_result.body().empty()) {

@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use futures_retry::{ErrorHandler, RetryPolicy};
 use rand::{rngs::OsRng, Rng};
 use serde_json::{to_string_pretty, Value};
-use tracing::{debug, event, span, Level};
+use tracing::{debug, event, span, Level, instrument};
 
 pub use http;
 use http::{Request, Response};
@@ -132,7 +132,8 @@ pub fn clone_resp(resp: &Response<Vec<u8>>) -> Response<Vec<u8>> {
         .expect("by nature of this result, an invalid http request cannot be created. thus it should be safe to clone an existing request by recursively cloning it's component parts")
 }
 
-pub fn delay_from_response<T>(resp: &http::Response<T>) -> Option<Duration> {
+#[instrument]
+pub fn delay_from_response<T: std::fmt::Debug>(resp: &http::Response<T>) -> Option<Duration> {
     resp.headers().get(http::header::RETRY_AFTER).and_then(|value| {
         let parsed_retry_delay = value.to_str().ok().and_then(
             |value| value.trim().parse::<u64>().ok().map(Duration::from_secs));
