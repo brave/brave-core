@@ -81,7 +81,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
     })();
   }
   
-  function notify(target, type, detected) {
+  function notifyNode(target, type, detected, ignoreSource) {
     if (target) {
       var name = target.title;
       if (!name || name == "") {
@@ -89,16 +89,16 @@ window.__firefox__.includeOnce("Playlist", function($) {
       }
     
       if (!type || type == "") {
-        if (node.constructor.name == 'HTMLVideoElement') {
+        if (target.constructor.name == 'HTMLVideoElement') {
           type = 'video';
         }
 
-        if (node.constructor.name == 'HTMLAudioElement') {
+        if (target.constructor.name == 'HTMLAudioElement') {
           type = 'audio';
         }
         
-        if (node.constructor.name == 'HTMLSourceElement') {
-          if (node.closest('video')) {
+        if (target.constructor.name == 'HTMLSourceElement') {
+          if (target.closest('video')) {
             type = 'video'
           } else {
             type = 'audio'
@@ -106,7 +106,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         }
       }
       
-      if (target.src && target.src !== "") {
+      if (ignoreSource || (target.src && target.src !== "")) {
         tagNode(target);
         sendMessage(name, target, target, type, detected);
       }
@@ -121,6 +121,10 @@ window.__firefox__.includeOnce("Playlist", function($) {
         });
       }
     }
+  }
+  
+  function notify(target, type, detected) {
+    notifyNode(target, type, detected, false);
   }
   
   function setupLongPress() {
@@ -212,11 +216,11 @@ window.__firefox__.includeOnce("Playlist", function($) {
   
   function setupDetector() {
     function getAllVideoElements() {
-        return document.querySelectorAll('video');
+      return document.querySelectorAll('video');
     }
 
     function getAllAudioElements() {
-        return document.querySelectorAll('audio');
+      return document.querySelectorAll('audio');
     }
     
     function requestWhenIdleShim(fn) {
@@ -229,6 +233,14 @@ window.__firefox__.includeOnce("Playlist", function($) {
           },
         })
       }, 2000);  // Resolution of 1000ms is fine for us.
+    }
+
+    function onReady(fn) {
+      if (document.readyState === "complete" || document.readyState === "ready") {
+        fn();
+      } else {
+        document.addEventListener("DOMContentLoaded", fn);
+      }
     }
     
     function observePage() {
@@ -278,6 +290,57 @@ window.__firefox__.includeOnce("Playlist", function($) {
           }
           return document_createElement.call(this, tag);
       };*/
+      
+      // Needed for Japanese videos like tver.jp which literally never loads automatically
+      Object.defineProperty(window.__firefox__, 'playlistProcessDocumentLoad', {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value:
+        function() {
+          onReady(function() {
+            let videos = getAllVideoElements();
+            let audios = getAllAudioElements();
+            
+            if (videos.length == 0 && audios.length == 0) {
+              $(function() {
+                $.postNativeMessage('$<message_handler>', {
+                  "securityToken": SECURITY_TOKEN,
+                  "state": document.readyState
+                });
+              })();
+              return;
+            }
+            
+            videos.forEach(function(node) {
+              observeNode(node);
+              notifyNode(node, 'video', true, true);
+            });
+
+            audios.forEach(function(node) {
+              observeNode(node);
+              notifyNode(node, 'audio', true, true);
+            });
+          });
+          
+          // Timeinterval is needed for DailyMotion as their DOM is bad
+          let interval = setInterval(function() {
+            getAllVideoElements().forEach(function(node) {
+              observeNode(node);
+              notifyNode(node, 'video', true, true);
+            });
+
+            getAllAudioElements().forEach(function(node) {
+              observeNode(node);
+              notifyNode(node, 'audio', true, true);
+            });
+          }, 1000);
+
+          let timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 10000);
+        }
+      });
     }
 
     observePage();

@@ -434,6 +434,11 @@ class PlaylistWebLoader: UIView {
     static let userScript: WKUserScript? = nil
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+      if !verifyMessage(message: message) {
+        assertionFailure("Missing required security token.")
+        return
+      }
+      
       replyHandler(nil, nil)
       
       let cancelRequest = {
@@ -505,6 +510,13 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       return true
     }
     return false
+  }
+  
+  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+    webView.evaluateSafeJavaScript(functionName: "window.__firefox__.playlistProcessDocumentLoad()",
+                                   args: [],
+                                   contentWorld: PlaylistWebLoaderContentHelper.scriptSandbox,
+                                   asFunction: false)
   }
 
   func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
