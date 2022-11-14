@@ -7,6 +7,7 @@ import Foundation
 import BraveShared
 import BraveUI
 import UIKit
+import BraveCore
 
 /// The current background for a given New Tab Page.
 ///
@@ -51,6 +52,8 @@ class NewTabPageBackground: PreferencesObserver {
     Preferences.NewTabPage.backgroundImages.observe(from: self)
     Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
+    
+    recordSponsoredImagesEnabledP3A()
   }
 
   deinit {
@@ -68,6 +71,14 @@ class NewTabPageBackground: PreferencesObserver {
       block: { [weak self] _ in
         guard let self = self else { return }
         self.currentBackground = self.dataSource.newBackground()
+        self.recordSponsoredImagesEnabledP3A()
       })
+  }
+  
+  private func recordSponsoredImagesEnabledP3A() {
+    // Q26 Is the sponsored new tab page option enabled?
+    let isSIEnabled = Preferences.NewTabPage.backgroundImages.value &&
+      Preferences.NewTabPage.backgroundSponsoredImages.value
+    UmaHistogramBoolean("Brave.NTP.SponsoredImagesEnabled", isSIEnabled)
   }
 }
