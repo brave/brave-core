@@ -12,7 +12,7 @@ import { DefaultBraveShieldsBrowserProxyImpl } from './default_brave_shields_bro
 import {Router, RouteObserverMixin} from '../router.js';
 
 import {loadTimeData} from '../i18n_setup.js';
-import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import {getTemplate} from './default_brave_shields_page.html.js'
 

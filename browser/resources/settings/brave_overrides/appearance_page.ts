@@ -6,7 +6,7 @@
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js'
+import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 

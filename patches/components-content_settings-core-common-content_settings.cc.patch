@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index b2c74904489e77ac955036730a00fdf1ac2ecd51..2689ad89969f688a8a53b994db289ffdcc47f650 100644
+index 3818f914656c4eec4b72459def52c26f860115ad..629fdeb2a616ce15d84b0427e454afaba602a8c6 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -106,6 +106,7 @@ constexpr HistogramValue kHistogramValue[] = {
-     {ContentSettingsType::FEDERATED_IDENTITY_API, 85},
+@@ -107,6 +107,7 @@ constexpr HistogramValue kHistogramValue[] = {
      {ContentSettingsType::NOTIFICATION_INTERACTIONS, 86},
      {ContentSettingsType::REDUCED_ACCEPT_LANGUAGE, 87},
+     {ContentSettingsType::NOTIFICATION_PERMISSION_REVIEW, 88},
 +    BRAVE_HISTOGRAM_VALUE_LIST
  };
  

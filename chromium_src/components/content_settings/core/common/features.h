@@ -11,7 +11,7 @@
 namespace content_settings {
 
 COMPONENT_EXPORT(CONTENT_SETTINGS_FEATURES)
-extern const base::Feature kAllowIncognitoPermissionInheritance;
+BASE_DECLARE_FEATURE(kAllowIncognitoPermissionInheritance);
 
 }  // namespace content_settings
 

@@ -373,7 +373,6 @@ public class BraveMainPreferencesBase
                 bundle.putBoolean(RateUtils.FROM_SETTINGS, true);
 
                 RateDialogFragment mRateDialogFragment = new RateDialogFragment();
-                mRateDialogFragment.setCancelable(false);
                 mRateDialogFragment.setArguments(bundle);
                 mRateDialogFragment.show(getParentFragmentManager(), "RateDialogFragment");
                 return true;

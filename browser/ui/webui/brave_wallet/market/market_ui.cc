@@ -54,8 +54,8 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' https://assets.cgproxy.brave.com;"));
 
-  untrusted_source->AddResourcePath("load_time_data.js",
-                                    IDR_WEBUI_JS_LOAD_TIME_DATA_JS);
+  untrusted_source->AddResourcePath("load_time_data_deprecated.js",
+                                    IDR_WEBUI_JS_LOAD_TIME_DATA_DEPRECATED_JS);
   untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletTrezorBridgeUrl",
                               kUntrustedTrezorURL);

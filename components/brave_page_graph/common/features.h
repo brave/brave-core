@@ -11,7 +11,7 @@
 namespace brave_page_graph {
 namespace features {
 
-extern const base::Feature kPageGraph;
+BASE_DECLARE_FEATURE(kPageGraph);
 
 }  // namespace features
 }  // namespace brave_page_graph

@@ -119,6 +119,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
+      <if expr="is_win">
+        </if>
+      <if expr="is_win">
+        </if>
+      <if expr="is_win">
+        </if>
       <if expr="is_linux">
         </if>
       <if expr="is_win">
@@ -318,6 +324,8 @@ Permissions you've already given to websites and apps may apply to this account.
           </if>
         <if expr="chromeos_lacros">
           </if>
+        <if expr="not chromeos_lacros">
+          </if>
 
         </if>
 
@@ -327,7 +335,22 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="is_win">
         </if>
       <if expr="not is_android">
-        </if>
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+      </if>
+
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+      </if>
     </messages>
   </release>
 </grit>

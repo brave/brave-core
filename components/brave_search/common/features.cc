@@ -10,8 +10,9 @@
 namespace brave_search {
 namespace features {
 
-const base::Feature kBraveSearchDefaultAPIFeature{
-    "BraveSearchDefaultAPI", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveSearchDefaultAPIFeature,
+             "BraveSearchDefaultAPI",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<int> kBraveSearchDefaultAPIDailyLimit{
     &kBraveSearchDefaultAPIFeature, kBraveSearchDefaultAPIDailyLimitName, 3};

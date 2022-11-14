@@ -63,5 +63,8 @@
     <if expr="chromeos_lacros">
       </if>
 
+    <if expr="not chromeos_lacros">
+      </if>
+
   </if>
 </grit-part>

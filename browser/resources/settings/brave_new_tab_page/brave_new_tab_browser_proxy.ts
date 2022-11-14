@@ -8,10 +8,11 @@ export type NewTabOption = {
   name: string
   value: number // corresponds to NewTabPageShowsOptions enum
 }
+
 export interface BraveNewTabBrowserProxy {
-    getNewTabShowsOptionsList(): Promise<NewTabOption[]>
-    shouldShowNewTabDashboardSettings(): Promise<boolean>
-  }
+  getNewTabShowsOptionsList(): Promise<NewTabOption[]>
+  shouldShowNewTabDashboardSettings(): Promise<boolean>
+}
 
 export class BraveNewTabBrowserProxyImpl implements BraveNewTabBrowserProxy {
   getNewTabShowsOptionsList() {
@@ -28,4 +29,3 @@ export class BraveNewTabBrowserProxyImpl implements BraveNewTabBrowserProxy {
 }
 
 let instance: BraveNewTabBrowserProxyImpl|null = null
-

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/bindings/idl_member_installer.h b/third_party/blink/renderer/platform/bindings/idl_member_installer.h
-index 095f734a2af6f8348414746208315e45a4c9222e..4a9907328353620abd594698613159e093757319 100644
+index 896904004f9e75805dc662c273b9b1585fb8d8dd..20ccc960c44e0831f72833f38292f86c07e56bb2 100644
 --- a/third_party/blink/renderer/platform/bindings/idl_member_installer.h
 +++ b/third_party/blink/renderer/platform/bindings/idl_member_installer.h
 @@ -184,6 +184,7 @@ class PLATFORM_EXPORT IDLMemberInstaller final {

@@ -13,13 +13,13 @@
 namespace net {
 namespace features {
 
-NET_EXPORT extern const base::Feature kBraveEphemeralStorage;
-NET_EXPORT extern const base::Feature kBraveEphemeralStorageKeepAlive;
+NET_EXPORT BASE_DECLARE_FEATURE(kBraveEphemeralStorage);
+NET_EXPORT BASE_DECLARE_FEATURE(kBraveEphemeralStorageKeepAlive);
 NET_EXPORT extern const base::FeatureParam<int>
     kBraveEphemeralStorageKeepAliveTimeInSeconds;
-NET_EXPORT extern const base::Feature kBraveFirstPartyEphemeralStorage;
-NET_EXPORT extern const base::Feature kBravePartitionBlobStorage;
-NET_EXPORT extern const base::Feature kBravePartitionHSTS;
+NET_EXPORT BASE_DECLARE_FEATURE(kBraveFirstPartyEphemeralStorage);
+NET_EXPORT BASE_DECLARE_FEATURE(kBravePartitionBlobStorage);
+NET_EXPORT BASE_DECLARE_FEATURE(kBravePartitionHSTS);
 
 }  // namespace features
 }  // namespace net

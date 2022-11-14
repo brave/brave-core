@@ -20,7 +20,6 @@ group("storybook") {
     "//mojo/public/js:bindings",
     "//mojo/public/js:resources",
     "//ui/webui/resources/js:cr.m",
-    "//ui/webui/resources/js:modulize",
     "//ui/webui/resources/js:preprocess",
   ]
 }

@@ -6,8 +6,8 @@
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { WebUIListenerMixin } from 'chrome://resources/js/web_ui_listener_mixin.js'
-import { I18nMixin } from 'chrome://resources/js/i18n_mixin.js';
+import { WebUIListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
 import { RouteObserverMixin } from '../router.js'
 import { PrefsMixin } from '../prefs/prefs_mixin.js'
 import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'

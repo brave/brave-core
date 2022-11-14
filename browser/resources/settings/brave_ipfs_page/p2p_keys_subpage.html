@@ -51,7 +51,7 @@
     <div class="settings-row">
       <div class="flex cr-padded-text">
           $i18n{ipfsKeysListTitle}
-          <div class="secondary error-text" id="key-error" hidden="[[!importKeysError_]]">
+          <div class="secondary error-text" id="keyError" hidden="[[!importKeysError_]]">
           </div>
       </div>
       <cr-button on-click="onAddKeyTap_" >
@@ -59,7 +59,7 @@
       </cr-button>
     </div>
     <div class="flex" id="listContainer">
-      <iron-list items="[[keys_]]" class="flex" id="keysList"
+      <iron-list items="[[keys]]" class="flex" id="keysList"
           preserve-focus risk-selection>
         <template>
           <div>
@@ -80,7 +80,7 @@
                               hidden="[[isDefaultKey_(item.name)]]">
               </cr-icon-button>
             </div>
-            <cr-lazy-render id="key-menu">
+            <cr-lazy-render id="keyMenu">
               <template>
                 <cr-action-menu role-description="$i18n{menu}">
                   <button class="dropdown-item" on-click="onExportTap_">
@@ -100,10 +100,10 @@
   </div>
 </div>
 <template is="dom-if" if="[[showAddp2pKeyDialog_]]" restamp>
-  <add-p2p-key-dialog keys="[[keys_]]" on-close="onAddKeyDialogClosed_">
+  <add-p2p-key-dialog keys="[[keys]]" on-close="onAddKeyDialogClosed_">
   </add-p2p-key-dialog>
 </template>
 <template is="dom-if" if="[[showRotatep2pKeyDialog_]]" restamp>
-  <rotate-p2p-key-dialog keys="[[keys_]]" on-close="onRotateKeyDialogClosed_">
+  <rotate-p2p-key-dialog keys="[[keys]]" on-close="onRotateKeyDialogClosed_">
   </rotate-p2p-key-dialog>
 </template>

@@ -22,7 +22,7 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
     const std::string& trial_name) {
   return base::FieldTrialList::FactoryGetFieldTrial(
       trial_name, 100, "default",
-      base::FieldTrialList::GetEntropyProviderForOneTimeRandomization());
+      base::FieldTrialList::GetEntropyProviderForSessionRandomization());
 }
 
 }  // namespace

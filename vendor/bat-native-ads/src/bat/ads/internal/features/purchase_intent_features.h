@@ -16,7 +16,7 @@ class TimeDelta;
 
 namespace ads::targeting::features {
 
-extern const base::Feature kPurchaseIntent;
+BASE_DECLARE_FEATURE(kPurchaseIntent);
 
 bool IsPurchaseIntentEnabled();
 

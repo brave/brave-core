@@ -25,8 +25,7 @@ constexpr char kDefaultConversionIdPattern[] =
 
 }  // namespace
 
-const base::Feature kConversions{kFeatureName,
-                                 base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kConversions, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsConversionsEnabled() {
   return base::FeatureList::IsEnabled(kConversions);

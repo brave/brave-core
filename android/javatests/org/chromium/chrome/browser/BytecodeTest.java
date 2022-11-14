@@ -64,6 +64,7 @@ import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoActi
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
@@ -457,7 +458,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "createViewProvider", true, ViewProvider.class, Context.class,
-                MVCListAdapter.ModelList.class, LocationBarDataProvider.class));
+                MVCListAdapter.ModelList.class));
 
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
@@ -602,7 +603,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
-                boolean.class, ObservableSupplier.class));
+                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -676,7 +678,8 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
                 BooleanSupplier.class, JankTracker.class, Supplier.class,
                 OmniboxPedalDelegate.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                Callback.class, BackPressManager.class));
+                Callback.class, BackPressManager.class,
+                OmniboxSuggestionsDropdownScrollListener.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
@@ -776,7 +779,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mToolbar"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkBridgeSupplier"));
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkModelSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutManager"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",

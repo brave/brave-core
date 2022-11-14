@@ -22,7 +22,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSignedExchangeReportingForDistributors,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedHTTPExchange, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSubresourceWebBundles, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)
     {kWebNfc, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif

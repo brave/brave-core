@@ -1081,7 +1081,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private void showVpnCalloutDialog() {
         BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
                 new BraveVpnCalloutDialogFragment();
-        braveVpnCalloutDialogFragment.setCancelable(false);
         braveVpnCalloutDialogFragment.show(
                 getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
     }
@@ -1092,7 +1091,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         BraveAdFreeCalloutDialogFragment braveAdFreeCalloutDialogFragment =
                 new BraveAdFreeCalloutDialogFragment();
-        braveAdFreeCalloutDialogFragment.setCancelable(false);
         braveAdFreeCalloutDialogFragment.show(
                 getSupportFragmentManager(), "BraveAdFreeCalloutDialogFragment");
     }
@@ -1529,13 +1527,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private void showBraveRateDialog() {
         RateDialogFragment mRateDialogFragment = new RateDialogFragment();
-        mRateDialogFragment.setCancelable(false);
         mRateDialogFragment.show(getSupportFragmentManager(), "RateDialogFragment");
     }
 
     private void showCrossPromotionalDialog() {
-        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
-        mCrossPromotionalModalDialogFragment.setCancelable(false);
+        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment =
+                new CrossPromotionalModalDialogFragment();
         mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
@@ -1544,7 +1541,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
             DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
                     new DormantUsersEngagementDialogFragment();
-            dormantUsersEngagementDialogFragment.setCancelable(false);
             dormantUsersEngagementDialogFragment.setNotificationType(notificationType);
             dormantUsersEngagementDialogFragment.show(
                     getSupportFragmentManager(), "DormantUsersEngagementDialogFragment");

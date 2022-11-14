@@ -33,7 +33,11 @@
     </if>
 
   <if expr="not is_win and not is_macosx">
-    </if> <if expr="is_macosx">
+    <if expr="is_android">
+      </if>
+    <if expr="not is_android">
+      </if>
+  </if> <if expr="is_macosx">
     </if> <if expr="is_win">
     </if>  <if expr="is_android">
     </if>

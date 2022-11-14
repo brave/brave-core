@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser;
 
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -29,24 +28,15 @@ public class BraveDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(android.content.DialogInterface dialog, int keyCode,
-                    android.view.KeyEvent event) {
-                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-                    dismiss();
-                    return true;
-                } else
-                    return false;
-            }
-        });
+
+        getDialog().setCanceledOnTouchOutside(false);
+
         setDialogParams();
     }
 
     private void setDialogParams() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int mDeviceHeight = displayMetrics.heightPixels;
         int mDeviceWidth = displayMetrics.widthPixels;
 
         WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();

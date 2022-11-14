@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index cc4fadd2b58b1ad999a0bbaec7344ac3e20bc4bf..279482b13f0397b6c9b3d0bccacfcb409c8d9366 100644
+index 72c7ce2e95ae5480af9c94e839bd869ff74c416d..21869abedf74036e44f0fffe8cbd20242a1d03a1 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 @@ -316,6 +316,7 @@ class CORE_EXPORT HTMLCanvasElement final

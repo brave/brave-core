@@ -18,8 +18,7 @@ constexpr int kDefaultResourceVersion = 1;
 
 }  // namespace
 
-const base::Feature kAntiTargeting{kFeatureName,
-                                   base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kAntiTargeting, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAntiTargetingEnabled() {
   return base::FeatureList::IsEnabled(kAntiTargeting);

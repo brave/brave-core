@@ -12,7 +12,7 @@
 
 namespace ads::features {
 
-extern const base::Feature kConversions;
+BASE_DECLARE_FEATURE(kConversions);
 
 bool IsConversionsEnabled();
 

@@ -17,11 +17,12 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.download.DownloadUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
+import org.chromium.components.bookmarks.BookmarkItem;
 
 /**
  * A {@link LinearLayout} that displays a horizontal row of icons for page actions.
@@ -71,12 +72,12 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
     /**
      * Initializes the icons, setting enabled state, drawables, and content descriptions.
      * @param appMenuHandler The {@link AppMenu} that contains the icon row.
-     * @param bookmarkBridge The {@link BookmarkBridge} used to retrieve information about
+     * @param bookmarkBridge The {@link BookmarkModel} used to retrieve information about
      *                       bookmarks.
      * @param currentTab The current activity {@link Tab}.
      * @param appMenuDelegate The AppMenuDelegate to handle options item selection.
      */
-    public void initialize(AppMenuHandler appMenuHandler, BookmarkBridge bookmarkBridge,
+    public void initialize(AppMenuHandler appMenuHandler, BookmarkModel bookmarkBridge,
             Tab currentTab, AppMenuDelegate appMenuDelegate) {
         mAppMenuHandler = appMenuHandler;
         mAppMenuDelegate = appMenuDelegate;
@@ -109,7 +110,7 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
                         : getContext().getString(R.string.accessibility_btn_refresh));
     }
 
-    private void updateBookmarkMenuItem(BookmarkBridge bookmarkBridge, Tab currentTab) {
+    private void updateBookmarkMenuItem(BookmarkModel bookmarkBridge, Tab currentTab) {
         mBookmarkButton.setEnabled(bookmarkBridge.isEditBookmarksEnabled());
 
         if (bookmarkBridge.hasBookmarkIdForTab(currentTab)) {

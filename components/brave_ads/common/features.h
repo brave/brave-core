@@ -13,14 +13,14 @@
 
 namespace brave_ads::features {
 
-extern const base::Feature kNotificationAds;
+BASE_DECLARE_FEATURE(kNotificationAds);
 bool IsNotificationAdsEnabled();
 bool ShouldSupportMultipleDisplays();
 bool CanFallbackToCustomNotificationAds();
 bool AllowedToFallbackToCustomNotificationAds();
 int NotificationAdTimeout();
 
-extern const base::Feature kCustomNotificationAds;
+BASE_DECLARE_FEATURE(kCustomNotificationAds);
 bool IsCustomNotificationAdsEnabled();
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -33,10 +33,10 @@ double NotificationAdNormalizedDisplayCoordinateY();
 int NotificationAdInsetY();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
-extern const base::Feature kAllowedToFallbackToCustomNotificationAds;
+BASE_DECLARE_FEATURE(kAllowedToFallbackToCustomNotificationAds);
 bool IsAllowedToFallbackToCustomNotificationAdsEnabled();
 
-extern const base::Feature kSupportBraveSearchResultAdConfirmationEvents;
+BASE_DECLARE_FEATURE(kSupportBraveSearchResultAdConfirmationEvents);
 
 }  // namespace brave_ads::features
 
