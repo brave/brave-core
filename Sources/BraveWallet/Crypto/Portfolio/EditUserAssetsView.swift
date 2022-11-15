@@ -12,15 +12,29 @@ import BraveUI
 
 private struct EditTokenView: View {
   @ObservedObject var assetStore: AssetStore
-
+  
+  @Binding var tokenNeedsTokenId: BraveWallet.BlockchainToken?
+  
+  private var tokenName: String {
+    if (assetStore.token.isErc721 || assetStore.token.isNft), !assetStore.token.tokenId.isEmpty {
+      return assetStore.token.nftTokenTitle
+    } else {
+      return assetStore.token.name
+    }
+  }
+  
   var body: some View {
     Button(action: {
-      assetStore.isVisible.toggle()
+      if assetStore.token.isErc721, assetStore.token.tokenId.isEmpty {
+        tokenNeedsTokenId = assetStore.token
+      } else {
+        assetStore.isVisible.toggle()
+      }
     }) {
       HStack(spacing: 8) {
         AssetIconView(token: assetStore.token, network: assetStore.network)
         VStack(alignment: .leading) {
-          Text(assetStore.token.name)
+          Text(tokenName)
             .fontWeight(.semibold)
             .foregroundColor(Color(.bravePrimary))
           Text(assetStore.token.symbol.uppercased())
@@ -47,6 +61,7 @@ struct EditUserAssetsView: View {
   @State private var query = ""
   @State private var isAddingCustomAsset = false
   @State private var isPresentingAssetRemovalError = false
+  @State private var tokenNeedsTokenId: BraveWallet.BlockchainToken?
 
   private var tokenStores: [AssetStore] {
     let normalizedQuery = query.lowercased()
@@ -100,7 +115,7 @@ struct EditUserAssetsView: View {
             } else {
               ForEach(tokens, id: \.token.id) { store in
                 if store.isCustomToken {
-                  EditTokenView(assetStore: store)
+                  EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
                     .osAvailabilityModifiers { content in
                       if #available(iOS 15.0, *) {
                         content
@@ -123,7 +138,7 @@ struct EditUserAssetsView: View {
                       }
                     }
                 } else {
-                  EditTokenView(assetStore: store)
+                  EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
                 }
               }
             }
@@ -153,6 +168,23 @@ struct EditUserAssetsView: View {
           networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
           keyringStore: keyringStore,
           userAssetStore: userAssetsStore
+        )
+        .onDisappear {
+          networkStore.closeNetworkSelectionStore()
+        }
+      }
+      .sheet(
+        isPresented: Binding(
+          get: { tokenNeedsTokenId != nil },
+          set: { if !$0 { tokenNeedsTokenId = nil } }
+        )
+      ) {
+        AddCustomAssetView(
+          networkStore: networkStore,
+          networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
+          keyringStore: keyringStore,
+          userAssetStore: userAssetsStore,
+          tokenNeedsTokenId: tokenNeedsTokenId
         )
         .onDisappear {
           networkStore.closeNetworkSelectionStore()

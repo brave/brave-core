@@ -233,6 +233,14 @@ extension BraveWallet.BlockchainToken {
       .contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
     return (contractAddress.isEmpty || isSupportedContractAddress) && chainId == BraveWallet.MainnetChainId
   }
+  
+  var nftTokenTitle: String {
+    if isErc721, let tokenId = Int(tokenId.removingHexPrefix, radix: 16) {
+      return "\(name) #\(tokenId)"
+    } else {
+      return name
+    }
+  }
 }
 
 extension BraveWallet.OnRampProvider {

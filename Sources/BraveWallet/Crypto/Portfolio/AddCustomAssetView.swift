@@ -13,6 +13,7 @@ struct AddCustomAssetView: View {
   @ObservedObject var networkSelectionStore: NetworkSelectionStore
   var keyringStore: KeyringStore
   @ObservedObject var userAssetStore: UserAssetsStore
+  var tokenNeedsTokenId: BraveWallet.BlockchainToken?
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   enum TokenType: Int, Identifiable, CaseIterable {
@@ -62,14 +63,16 @@ struct AddCustomAssetView: View {
   var body: some View {
     NavigationView {
       Form {
-        Section {
-        } header: {
-          Picker("", selection: $selectedTokenType) {
-            ForEach(TokenType.allCases) { type in
-              Text(type.title)
+        if tokenNeedsTokenId == nil {
+          Section {
+          } header: {
+            Picker("", selection: $selectedTokenType) {
+              ForEach(TokenType.allCases) { type in
+                Text(type.title)
+              }
             }
+            .pickerStyle(.segmented)
           }
-          .pickerStyle(.segmented)
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
@@ -227,6 +230,7 @@ struct AddCustomAssetView: View {
       }
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .onChange(of: selectedTokenType, perform: { _ in
+        guard tokenNeedsTokenId == nil else { return }
         resignFirstResponder()
         clearInput()
       })
@@ -262,7 +266,15 @@ struct AddCustomAssetView: View {
       .background(
         Color.clear
           .sheet(
-            isPresented: $isPresentingNetworkSelection
+            isPresented: Binding(
+              get: { isPresentingNetworkSelection },
+              set: {
+                isPresentingNetworkSelection = $0
+                if !$0, networkSelectionStore.detailNetwork != nil {
+                  networkSelectionStore.detailNetwork = nil
+                }
+              }
+            )
           ) {
             NavigationView {
               NetworkSelectionView(
@@ -275,6 +287,17 @@ struct AddCustomAssetView: View {
             .navigationViewStyle(.stack)
           }
       )
+      .onAppear {
+        if let token = tokenNeedsTokenId {
+          Task { @MainActor in
+            selectedTokenType = .nft
+            networkSelectionStore.networkSelectionInForm = await userAssetStore.networkInfo(by: token.chainId, coin: token.coin)
+            nameInput = token.name
+            symbolInput = token.symbol
+            addressInput = token.contractAddress
+          }
+        }
+      }
     }
   }
 
@@ -318,21 +341,35 @@ struct AddCustomAssetView: View {
       if let tokenIdValue = Int16(tokenId) {
         tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
       }
-      token = BraveWallet.BlockchainToken(
-        contractAddress: addressInput,
-        name: nameInput,
-        logo: "",
-        isErc20: false,
-        isErc721: network.coin != .sol && !tokenIdToHex.isEmpty,
-        isNft: true,
-        symbol: symbolInput,
-        decimals: 0,
-        visible: true,
-        tokenId: tokenIdToHex,
-        coingeckoId: coingeckoId,
-        chainId: network.chainId,
-        coin: network.coin
-      )
+      if let knownERC721Token = tokenNeedsTokenId {
+        knownERC721Token.tokenId = tokenIdToHex
+        if let userSelectedNetworkId = networkSelectionStore.networkSelectionInForm?.chainId {
+          knownERC721Token.chainId = userSelectedNetworkId
+        }
+        if knownERC721Token.name != nameInput {
+          knownERC721Token.name = nameInput
+        }
+        if knownERC721Token.symbol != symbolInput {
+          knownERC721Token.symbol = symbolInput
+        }
+        token = knownERC721Token
+      } else {
+        token = BraveWallet.BlockchainToken(
+          contractAddress: addressInput,
+          name: nameInput,
+          logo: "",
+          isErc20: false,
+          isErc721: network.coin != .sol && !tokenIdToHex.isEmpty,
+          isNft: true,
+          symbol: symbolInput,
+          decimals: 0,
+          visible: true,
+          tokenId: tokenIdToHex,
+          coingeckoId: coingeckoId,
+          chainId: network.chainId,
+          coin: network.coin
+        )
+      }
     }
     userAssetStore.addUserAsset(token) { [self] success in
       if success {

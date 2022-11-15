@@ -295,13 +295,3 @@ struct PortfolioViewController_Previews: PreviewProvider {
   }
 }
 #endif
-
-private extension BraveWallet.BlockchainToken {
-  var nftTokenTitle: String {
-    if isErc721, let tokenId = Int(tokenId.removingHexPrefix, radix: 16) {
-      return "\(name) #\(tokenId)"
-    } else {
-      return name
-    }
-  }
-}
