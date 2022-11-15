@@ -363,25 +363,40 @@ where
                         // creds that do not have a blinded token that match
                         // prior to the batch proof check.
                         let mut bucket_blinded_creds: Vec<BlindedToken> = Vec::new();
+                        let mut bucket_creds: Vec<Token> = Vec::new();
 
                         for sbc in blinded_creds {
                             // keep in our blinded_creds array the ones we matched
                             for bc in &my_blinded_creds {
-                                if bc.to_bytes() == sbc.to_bytes() {
+                                // find the blinded cred that matches what the server says
+                                // it signed and push it onto our bucket of blinded creds
+                                // for batch verification
+                                if bc.encode_base64() == sbc.encode_base64() {
                                     bucket_blinded_creds.push(*bc);
+                                    for t in &item_creds.creds{
+                                        // find the original token from our list of creds
+                                        // that matches up with this blinded token so we can
+                                        // add to our bucket creds for verification
+                                        if t.blind().encode_base64() == bc.encode_base64(){
+                                            bucket_creds.push(Token::from_bytes(&t.to_bytes()).unwrap());
+                                        }
+                                    }
                                 }
                             }
                         }
 
+                        // perform the batch proof of the bucket of blinded/signed creds
+                        // note this verify and unblind does not verify the bucket_creds
+                        // are the unblinded form of the bucket_blinded_creds
                         let unblinded_creds = batch_proof
                             .verify_and_unblind::<Sha512, _>(
-                                &item_creds.creds,
-                                &bucket_blinded_creds,
-                                &signed_creds,
-                                &public_key,
+                                &bucket_creds, // just the creds server says it signed
+                                &bucket_blinded_creds, // the blinded creds
+                                &signed_creds, // the signed creds from server
+                                &public_key, // the server's public key
                             )
                             .or(Err(InternalError::InvalidProof))?;
-                        event!(Level::DEBUG, "past batch proof verify");
+
                         // append the time limited v2 item credential to the store
                         self.client
                             .append_time_limited_v2_item_unblinded_creds(

@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use futures_retry::{ErrorHandler, RetryPolicy};
 use rand::{rngs::OsRng, Rng};
 use serde_json::{to_string_pretty, Value};
-use tracing::{debug, event, span, Level};
+use tracing::{debug, event, span, Level, instrument};
 
 pub use http;
 use http::{Request, Response};
@@ -93,6 +93,12 @@ where
             }
             InternalError::RetryLater(Some(after)) => {
                 let after_ms = (after.as_millis() as u64) + 1;
+                event!(
+                    Level::DEBUG,
+                    after_ms =?after_ms,
+                    "inside RetryLater - waiting for after_ms",
+                );
+
                 // If the delay is more than is allowed by our maximum delay, return without retry
                 if after_ms > MAX_DELAY_MS {
                     return RetryPolicy::ForwardError(e);
@@ -126,9 +132,17 @@ pub fn clone_resp(resp: &Response<Vec<u8>>) -> Response<Vec<u8>> {
         .expect("by nature of this result, an invalid http request cannot be created. thus it should be safe to clone an existing request by recursively cloning it's component parts")
 }
 
-pub fn delay_from_response<T>(resp: &http::Response<T>) -> Option<Duration> {
+#[instrument]
+pub fn delay_from_response<T: std::fmt::Debug>(resp: &http::Response<T>) -> Option<Duration> {
     resp.headers().get(http::header::RETRY_AFTER).and_then(|value| {
-        value.to_str().ok().and_then(|value| value.parse::<u64>().ok().map(Duration::from_secs))
+        let parsed_retry_delay = value.to_str().ok().and_then(
+            |value| value.trim().parse::<u64>().ok().map(Duration::from_secs));
+        event!(
+            Level::DEBUG,
+            parsed_retry_delay =?parsed_retry_delay,
+            "parsed_retry_delay in seconds",
+        );
+        parsed_retry_delay
     })
 }
 
