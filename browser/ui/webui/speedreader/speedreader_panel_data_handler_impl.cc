@@ -21,6 +21,7 @@ SpeedreaderPanelDataHandlerImpl::SpeedreaderPanelDataHandlerImpl(
     return;
   speedreader_tab_helper_ =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+  UpdateSiteSettings();
 }
 
 SpeedreaderPanelDataHandlerImpl::~SpeedreaderPanelDataHandlerImpl() = default;
@@ -33,6 +34,7 @@ void SpeedreaderPanelDataHandlerImpl::GetTheme(GetThemeCallback callback) {
 void SpeedreaderPanelDataHandlerImpl::SetTheme(Theme theme) {
   DCHECK(speedreader_tab_helper_);
   speedreader_tab_helper_->SetTheme(theme);
+  UpdateSiteSettings();
 }
 
 void SpeedreaderPanelDataHandlerImpl::GetFontFamily(
@@ -44,6 +46,7 @@ void SpeedreaderPanelDataHandlerImpl::GetFontFamily(
 void SpeedreaderPanelDataHandlerImpl::SetFontFamily(FontFamily font) {
   DCHECK(speedreader_tab_helper_);
   speedreader_tab_helper_->SetFontFamily(font);
+  UpdateSiteSettings();
 }
 
 void SpeedreaderPanelDataHandlerImpl::GetFontSize(
@@ -55,6 +58,7 @@ void SpeedreaderPanelDataHandlerImpl::GetFontSize(
 void SpeedreaderPanelDataHandlerImpl::SetFontSize(FontSize size) {
   DCHECK(speedreader_tab_helper_);
   speedreader_tab_helper_->SetFontSize(size);
+  UpdateSiteSettings();
 }
 
 void SpeedreaderPanelDataHandlerImpl::GetContentStyle(
@@ -66,6 +70,7 @@ void SpeedreaderPanelDataHandlerImpl::GetContentStyle(
 void SpeedreaderPanelDataHandlerImpl::SetContentStyle(ContentStyle style) {
   DCHECK(speedreader_tab_helper_);
   speedreader_tab_helper_->SetContentStyle(style);
+  UpdateSiteSettings();
 }
 
 void SpeedreaderPanelDataHandlerImpl::GetCurrentSiteURL(
@@ -82,4 +87,21 @@ void SpeedreaderPanelDataHandlerImpl::IsEnabled(IsEnabledCallback callback) {
 void SpeedreaderPanelDataHandlerImpl::SetEnabled(bool on) {
   DCHECK(speedreader_tab_helper_);
   speedreader_tab_helper_->MaybeToggleEnabledForSite(on);
+  UpdateSiteSettings();
+}
+
+void SpeedreaderPanelDataHandlerImpl::UpdateSiteSettings() {
+  DCHECK(speedreader_tab_helper_);
+
+  site_settings_.is_enabled = speedreader_tab_helper_->IsEnabledForSite();
+  site_settings_.host = speedreader_tab_helper_->GetCurrentSiteURL();
+  site_settings_.theme = speedreader_tab_helper_->GetTheme();
+  site_settings_.contentStyle = speedreader_tab_helper_->GetContentStyle();
+  site_settings_.fontFamily = speedreader_tab_helper_->GetFontFamily();
+  site_settings_.fontSize = speedreader_tab_helper_->GetFontSize();
+}
+
+void SpeedreaderPanelDataHandlerImpl::GetSiteSettings(
+    GetSiteSettingsCallback callback) {
+  std::move(callback).Run(site_settings_.Clone());
 }

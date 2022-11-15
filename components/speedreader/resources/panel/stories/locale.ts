@@ -5,5 +5,10 @@
 import { provideStrings } from '../../../../../.storybook/locale'
 
 provideStrings({
-  braveShields: 'Brave Shields'
+  braveSpeedreader: 'Speedreader',
+  braveSpeedreaderAlwaysLoadLabel: 'Always load speedreader mode for',
+  braveSpeedreaderThemeLabel: 'Theme',
+  braveSpeedreaderFontStyleLabel: 'Font style',
+  braveSpeedreaderContentStyleLabel: 'Content style',
+  braveSpeedreaderTurnOffDesc: 'Toggle reader mode just for this website. To turn off Speedreader for your entire browser profile, visit $1 Settings $2'
 })

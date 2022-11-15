@@ -9,6 +9,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import './locale'
 import MainPanel from '../components/main-panel'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
+import { ContentStyle, FontFamily, FontSize, SiteSettings, Theme } from '../api/browser'
 
 export default {
   title: 'Speedreader/Panels',
@@ -31,9 +32,25 @@ export default {
 }
 
 export const _Main = () => {
+  const siteSettings: SiteSettings = {
+    isEnabled: true,
+    fontFamily: FontFamily.kSans,
+    contentStyle: ContentStyle.kDefault,
+    fontSize: FontSize.k100,
+    theme: Theme.kDark,
+    host: 'www.nytimes.com'
+  }
+
   return (
     <S.PanelFrame>
-      <MainPanel />
+      <MainPanel
+        siteSettings={siteSettings}
+        onThemeChange={() => {}}
+        onFontSizeChange={() => {}}
+        onContentStyleChange={() => {}}
+        onFontFamilyChange={() => {}}
+        onToggleChange={() => {}}
+      />
     </S.PanelFrame>
   )
 }

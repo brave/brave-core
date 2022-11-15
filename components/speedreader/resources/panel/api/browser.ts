@@ -11,7 +11,6 @@ const factory = SpeedreaderPanel.PanelFactory.getRemote()
 
 export const panelHandler = new SpeedreaderPanel.PanelHandlerRemote()
 export const panelDataHandler = new SpeedreaderPanel.PanelDataHandlerRemote()
-export const panelHandlerCallbackRouter = new SpeedreaderPanel.PanelHandlerCallbackRouter()
 
 factory.createInterfaces(
   panelHandler.$.bindNewPipeAndPassReceiver(),
