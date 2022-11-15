@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   alert-unsigned:
-    if: github.event.review.state == 'approved'
+    # if: github.event.review.state == 'approved'
     name: Alert Unsigned Commits
     runs-on: ubuntu-latest
     steps:
