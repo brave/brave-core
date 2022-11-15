@@ -1,18 +1,20 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import styled from 'styled-components'
+import LoadingComponent from '../../../loading'
 import { useBraveNews } from './Context'
 
 const Configure = React.lazy(() => import('./Configure'))
 
 const Dialog = styled.dialog`
+  font-family: ${p => p.theme.fontFamily.body};
   border-radius: 8px;
   border: none;
-  width: min(100vw, 1092px);
+  width: min(100vw, 1049px);
   height: min(100vh, 712px);
   z-index: 1000;
   background: white;
@@ -31,13 +33,17 @@ export default function BraveNewsModal () {
   // Note: There's no attribute for open modal, so we need
   // to call showModal instead.
   React.useEffect(() => {
-    dialogRef.current?.showModal?.()
-  }, [customizePage, dialogRef])
+    if (shouldRender && !dialogRef.current?.open) {
+      dialogRef.current?.showModal?.()
+    } else if (!shouldRender && dialogRef.current?.open) {
+      dialogRef.current?.close?.()
+    }
+  }, [shouldRender, dialogRef])
 
   // Only render the dialog if it should be shown, since
   // it is a complex view.
   return shouldRender ? <Dialog ref={dialogRef as any}>
-    <React.Suspense fallback={<span>Loading...</span>}>
+    <React.Suspense fallback={<LoadingComponent/>}>
       <Configure />
     </React.Suspense>
   </Dialog> : null

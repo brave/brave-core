@@ -54,6 +54,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7291143854620707672">Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">An operating system error occurred during installation. Please download Brave again.</translation>
 <translation id="2648689842065142443">If you share a device, friends and family can browse separately and set up Brave just the way they want</translation>
+<translation id="5926459996518749366">Brave blocked this archive file because it may hide malware</translation>
 <translation id="6384359666082467439">Welcome to Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Brave Tab</translation>
 <translation id="8372880274820509128">For added security, Brave will encrypt your data.</translation>
@@ -196,6 +197,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> has been added to Brave</translation>
 <translation id="608006075545470555">Add work profile to this browser</translation>
 <translation id="5849446944780602366">Customise and control Brave. Update is available.</translation>
+<translation id="7433698744896946664">Allow extension to show access requests in the Brave toolbar</translation>
 <translation id="492209281555538239">Brave will save this password in your Brave sync chain. You won’t have to remember it.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is dangerous, so Brave has blocked it.</translation>
 <translation id="7006260220514217183">Safe Browsing is off. Brave recommends turning it on.</translation>
@@ -287,6 +289,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="8678991866891573053">Brave is exploring new features that allow sites to deliver the same browsing experience using less of your data</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
 <translation id="5477319665405831211">Sync and personalise Brave across your devices</translation>
+<translation id="2280238321454602884">When on, Brave reclaims memory from tabs that you aren't actively using. This frees up your computer's resources for other tasks and keeps Brave speedy. Inactive tabs appear empty and automatically reload when you click them. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> or <ph name="BEGIN_LINK_2"/>send feedback<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">The installer couldn't create a temporary directory. Please check for free disk space and permission to install software.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -315,6 +318,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="6914496861676471566">The installer archive is corrupted or invalid. Please download Brave again.</translation>
 <translation id="6431861494713261006">Optional: Help improve Chrome OS features and performance by automatically sending diagnostic and usage data to Brave.</translation>
 <translation id="2097604701283463988">Brave is Out of Date</translation>
+<translation id="607365808648940765">As needed, Brave reclaims memory from tabs that you aren't actively using. You can change this at any time in settings.</translation>
 <translation id="8550334526674375523">This work profile is completely separate from your personal profile.</translation>
 <translation id="2452889775041290116">Your parent has turned off 'Permissions for sites, apps and extensions' for Brave. Adding this <ph name="EXTENSION_TYPE_PARAMETER"/> is not allowed.</translation>
 <translation id="8502436661255886343">To get future Brave updates, you'll need macOS 10.13 or later. This computer is using macOS 10.12.</translation>

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_clicked.h"
 
+#include "base/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -16,14 +17,15 @@ void AdEventClicked::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Clicked notification ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
-  LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to log notification ad clicked event");
-      return;
-    }
+  LogAdEvent(ad, ConfirmationType::kClicked,
+             base::BindOnce([](const bool success) {
+               if (!success) {
+                 BLOG(1, "Failed to log notification ad clicked event");
+                 return;
+               }
 
-    BLOG(1, "Successfully logged notification ad clicked event");
-  });
+               BLOG(1, "Successfully logged notification ad clicked event");
+             }));
 }
 
 }  // namespace ads::notification_ads

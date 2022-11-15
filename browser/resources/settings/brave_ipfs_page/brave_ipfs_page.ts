@@ -1,12 +1,12 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
+import {WebUIListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {Router, RouteObserverMixin} from '../router.js';
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
@@ -44,6 +44,7 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
     return {
       ipfsEnabled_: Boolean,
       showChangeIPFSGatewayDialog_: Boolean,
+      showChangeIPFSNFTGatewayDialog_: Boolean,
       isLocalNodeEnabled_: Boolean,
       isLocalNodeLaunched_: {
         type: Boolean,
@@ -161,6 +162,16 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
   /** @private **/
   onChangeIPFSGatewayDialogClosed_() {
     this.showChangeIPFSGatewayDialog_ = false
+  }
+
+  /** @private **/
+  onChangeIPFSNFTGatewayDialogTapped_() {
+    this.showChangeIPFSNFTGatewayDialog_ = true
+  }
+
+  /** @private **/
+  onChangeIPFSNFTGatewayDialogClosed_() {
+    this.showChangeIPFSNFTGatewayDialog_ = false
   }
 }
 

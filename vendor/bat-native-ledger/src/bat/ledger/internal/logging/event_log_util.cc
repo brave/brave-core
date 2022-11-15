@@ -8,26 +8,30 @@
 
 namespace ledger {
 namespace log {
-std::string GetEventLogKeyForLinkingResult(mojom::Result result) {
-  switch (result) {
-    case mojom::Result::DEVICE_LIMIT_REACHED:
+std::string GetEventLogKeyForLinkingResult(
+    mojom::ConnectExternalWalletError error) {
+  switch (error) {
+    case mojom::ConnectExternalWalletError::kDeviceLimitReached:
       return log::kDeviceLimitReached;
-    case mojom::Result::FLAGGED_WALLET:
+    case mojom::ConnectExternalWalletError::kFlaggedWallet:
       return log::kFlaggedWallet;
-    case mojom::Result::MISMATCHED_COUNTRIES:
+    case mojom::ConnectExternalWalletError::kMismatchedCountries:
       return log::kMismatchedCountries;
-    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case mojom::ConnectExternalWalletError::kMismatchedProviderAccounts:
       return log::kMismatchedProviderAccounts;
-    case mojom::Result::NOT_FOUND:
+    case mojom::ConnectExternalWalletError::kKYCRequired:
       return log::kKYCRequired;
-    case mojom::Result::REGION_NOT_SUPPORTED:
+    case mojom::ConnectExternalWalletError::kProviderUnavailable:
+      return log::kProviderUnavailable;
+    case mojom::ConnectExternalWalletError::kRegionNotSupported:
       return log::kRegionNotSupported;
-    case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
+    case mojom::ConnectExternalWalletError::
+        kRequestSignatureVerificationFailure:
       return log::kRequestSignatureVerificationFailure;
-    case mojom::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
+    case mojom::ConnectExternalWalletError::
+        kUpholdTransactionVerificationFailure:
       return log::kTransactionVerificationFailure;
     default:
-      NOTREACHED();
       return "";
   }
 }

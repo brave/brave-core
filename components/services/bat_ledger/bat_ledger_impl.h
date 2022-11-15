@@ -85,13 +85,9 @@ class BatLedgerImpl :
       const std::string& promotion_id,
       const std::string& payload,
       ClaimPromotionCallback callback) override;
-  void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      AttestPromotionCallback callback) override;
-  void RecoverWallet(
-      const std::string& pass_phrase,
-      RecoverWalletCallback callback) override;
+  void AttestPromotion(const std::string& promotion_id,
+                       const std::string& solution,
+                       AttestPromotionCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
   void SetPublisherMinVisits(int visits) override;
@@ -197,10 +193,10 @@ class BatLedgerImpl :
   void GetExternalWallet(const std::string& wallet_type,
                          GetExternalWalletCallback) override;
 
-  void ExternalWalletAuthorization(
-    const std::string& wallet_type,
-    const base::flat_map<std::string, std::string>& args,
-    ExternalWalletAuthorizationCallback callback) override;
+  void ConnectExternalWallet(
+      const std::string& wallet_type,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback) override;
 
   void DisconnectWallet(
     const std::string& wallet_type,
@@ -234,9 +230,6 @@ class BatLedgerImpl :
   void GetEventLogs(GetEventLogsCallback callback) override;
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
-
-  void GetRewardsWalletPassphrase(
-      GetRewardsWalletPassphraseCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -274,9 +267,6 @@ class BatLedgerImpl :
 
   static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
                            ledger::mojom::Result result);
-
-  static void OnRecoverWallet(CallbackHolder<RecoverWalletCallback>* holder,
-                              ledger::mojom::Result result);
 
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,
@@ -335,11 +325,6 @@ class BatLedgerImpl :
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);
-
-  static void OnExternalWalletAuthorization(
-      CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
-      ledger::mojom::Result result,
-      const base::flat_map<std::string, std::string>& args);
 
   static void OnDisconnectWallet(
       CallbackHolder<DisconnectWalletCallback>* holder,

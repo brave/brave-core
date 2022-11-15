@@ -33,7 +33,7 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
     enabled_features.emplace_back(user_activity::features::kFeature,
                                   parameters);
 
-    const std::vector<base::Feature> disabled_features;
+    const std::vector<base::test::FeatureRef> disabled_features;
 
     scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
                                                        disabled_features);

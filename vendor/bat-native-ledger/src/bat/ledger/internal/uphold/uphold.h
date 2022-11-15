@@ -10,13 +10,17 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"
+#include "bat/ledger/internal/endpoint/uphold/get_me/get_me.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
+#include "bat/ledger/internal/wallet_provider/connect_external_wallet.h"
+#include "bat/ledger/internal/wallet_provider/get_external_wallet.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -36,17 +40,16 @@ struct Transaction {
 
 class UpholdTransfer;
 class UpholdCard;
-class UpholdAuthorization;
-class UpholdWallet;
 
 using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 using CreateCardCallback =
     base::OnceCallback<void(mojom::Result, std::string&& id)>;
 using endpoint::uphold::GetCapabilitiesCallback;
+using endpoint::uphold::GetMeCallback;
 
 class Uphold {
  public:
-  explicit Uphold(LedgerImpl* ledger);
+  explicit Uphold(LedgerImpl*);
 
   ~Uphold();
 
@@ -57,29 +60,35 @@ class Uphold {
                          double amount,
                          ledger::LegacyResultCallback callback);
 
-  void FetchBalance(FetchBalanceCallback callback);
+  void FetchBalance(FetchBalanceCallback);
 
-  void TransferFunds(const double amount,
+  void TransferFunds(double amount,
                      const std::string& address,
-                     client::TransactionCallback callback);
+                     client::TransactionCallback);
 
-  void WalletAuthorization(
-      const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback);
+  void ConnectWallet(const base::flat_map<std::string, std::string>& args,
+                     ledger::ConnectExternalWalletCallback);
 
-  void GenerateWallet(ledger::ResultCallback callback);
+  void GetWallet(ledger::GetExternalWalletCallback);
 
-  void CreateCard(CreateCardCallback callback);
+  void CreateCard(const std::string& access_token, CreateCardCallback);
 
-  void DisconnectWallet(const absl::optional<std::string>& notification);
+  void GetUser(const std::string& access_token, GetMeCallback);
 
-  void GetUser(GetUserCallback callback);
-
-  void GetCapabilities(GetCapabilitiesCallback callback);
+  void GetCapabilities(const std::string& access_token,
+                       GetCapabilitiesCallback);
 
   mojom::ExternalWalletPtr GetWallet();
 
-  bool SetWallet(mojom::ExternalWalletPtr wallet);
+  mojom::ExternalWalletPtr GetWalletIf(const std::set<mojom::WalletStatus>&);
+
+  [[nodiscard]] bool SetWallet(mojom::ExternalWalletPtr);
+
+  [[nodiscard]] mojom::ExternalWalletPtr TransitionWallet(
+      mojom::ExternalWalletPtr,
+      mojom::WalletStatus to);
+
+  [[nodiscard]] bool DisconnectWallet(bool manual = false);
 
  private:
   void ContributionCompleted(mojom::Result result,
@@ -89,11 +98,9 @@ class Uphold {
                              const std::string& publisher_key,
                              ledger::LegacyResultCallback callback);
 
-  void OnFetchBalance(FetchBalanceCallback callback,
-                      const mojom::Result result,
-                      const double available);
+  void OnFetchBalance(FetchBalanceCallback, mojom::Result, double available);
 
-  void SaveTransferFee(const std::string& contribution_id, const double amount);
+  void SaveTransferFee(const std::string& contribution_id, double amount);
 
   void StartTransferFeeTimer(const std::string& fee_id, int attempts);
 
@@ -112,9 +119,8 @@ class Uphold {
 
   std::unique_ptr<UpholdTransfer> transfer_;
   std::unique_ptr<UpholdCard> card_;
-  std::unique_ptr<UpholdUser> user_;
-  std::unique_ptr<UpholdAuthorization> authorization_;
-  std::unique_ptr<UpholdWallet> wallet_;
+  std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
+  std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;

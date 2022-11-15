@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
@@ -88,13 +88,26 @@ export const auroraSupportedContractAddresses = [
 ].map(contractAddress => contractAddress.toLowerCase())
 
 export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
-  return {
-    ...token,
-    logo: token.logo?.startsWith('ipfs://')
-      ? httpifyIpfsUrl(token.logo)
-      : token.logo?.startsWith('data:image/')
-        ? token.logo
-        : `chrome://erc-token-images/${token.logo}`
+  const newLogo = token.logo?.startsWith('ipfs://')
+    ? httpifyIpfsUrl(token.logo)
+    : token.logo?.startsWith('data:image/')
+      ? token.logo
+      : `chrome://erc-token-images/${token.logo}`
+
+  if (token.logo === newLogo) {
+    // nothing to change
+    return token
+  }
+
+  try {
+    token.logo = newLogo
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      logo: newLogo
+    }
   }
 }
 

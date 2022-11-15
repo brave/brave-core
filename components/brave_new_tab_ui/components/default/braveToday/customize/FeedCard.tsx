@@ -1,17 +1,17 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { useState } from 'react'
 import * as React from 'react'
 import styled from 'styled-components'
 import { api } from '../../../../api/brave_news/news'
 import Flex from '../../../Flex'
-import { useGetUnpaddedImage } from '../cards/CardImage'
 import FollowButton from './FollowButton'
 import { getCardColor } from './colors'
 import { usePublisher, usePublisherFollowed } from './Context'
+import { useLazyUnpaddedImageUrl } from '../useUnpaddedImageUrl'
 
 interface CardProps {
   backgroundColor?: string
@@ -41,14 +41,21 @@ const Card = styled('div').attrs<CardProps>(props => ({
   }
 `
 
-const CoverImage = styled('div') <{ backgroundImage: string }>`
+interface CoverImageProps {
+  backgroundImage: string
+}
+
+const CoverImage = styled('div').attrs<CoverImageProps>(props => ({
+  style: {
+    backgroundImage: `url('${props.backgroundImage}')`
+  }
+}))<CoverImageProps>`
   position: absolute;
   top: 15%; bottom: 15%; left: 15%; right: 15%;
   border-radius: 8px;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('${p => p.backgroundImage}');
 `
 
 const Name = styled.span`
@@ -63,8 +70,13 @@ export default function FeedCard (props: {
   const { followed, setFollowed } = usePublisherFollowed(props.publisherId)
 
   const backgroundColor = publisher.backgroundColor || getCardColor(publisher.feedSource?.url || publisher.publisherId)
-  const coverUrl = useGetUnpaddedImage(publisher.coverUrl?.url, undefined, /* useCache= */true)
-  return <Flex direction="column" gap={8}>
+  const { url: coverUrl, setElementRef } = useLazyUnpaddedImageUrl(publisher.coverUrl?.url, {
+    rootElement: document.getElementById('brave-news-configure'),
+    rootMargin: '0px 0px 200px 0px',
+    useCache: true
+  })
+
+  return <Flex direction="column" gap={8} ref={setElementRef}>
     <Card backgroundColor={backgroundColor} data-feed-card-is-followed={followed}>
       {coverUrl && <CoverImage backgroundImage={coverUrl} />}
       <StyledFollowButton following={followed} onClick={() => setFollowed(!followed)} />

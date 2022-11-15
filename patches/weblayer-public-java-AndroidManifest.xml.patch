@@ -1,8 +1,8 @@
 diff --git a/weblayer/public/java/AndroidManifest.xml b/weblayer/public/java/AndroidManifest.xml
-index 3d9617d07ecfb4cbcd59a89edee9bd489784230f..5fd9bc03e0d97b24478e27d97c856969408b5f2c 100644
+index 42673261661131d458c36d2905f2ae42294a0379..7d3db4018d6f4aaf3b644492ebef551372c7b086 100644
 --- a/weblayer/public/java/AndroidManifest.xml
 +++ b/weblayer/public/java/AndroidManifest.xml
-@@ -28,7 +28,9 @@
+@@ -29,7 +29,9 @@ found in the LICENSE file.
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
      <uses-permission android:name="android.permission.INTERNET"/>
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>

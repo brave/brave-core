@@ -17,7 +17,7 @@ constexpr char kBraveSearchDefaultAPIDailyLimitName[] =
 constexpr char kBraveSearchDefaultAPITotalLimitName[] =
     "BraveSearchDefaultAPITotalLimit";
 
-extern const base::Feature kBraveSearchDefaultAPIFeature;
+BASE_DECLARE_FEATURE(kBraveSearchDefaultAPIFeature);
 extern const base::FeatureParam<int> kBraveSearchDefaultAPIDailyLimit;
 extern const base::FeatureParam<int> kBraveSearchDefaultAPITotalLimit;
 

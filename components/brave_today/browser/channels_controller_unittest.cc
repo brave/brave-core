@@ -12,6 +12,7 @@
 
 #include "base/containers/contains.h"
 #include "base/run_loop.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
@@ -43,7 +44,10 @@ constexpr char kPublishersResponse[] = R"([
         "feed_url": "https://tp1.example.com/feed",
         "site_url": "https://tp1.example.com",
         "category": "One",
-        "channels": ["One", "Two", "Five"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["One", "Two", "Five"]
+        }],
         "enabled": false
     },
     {
@@ -52,7 +56,10 @@ constexpr char kPublishersResponse[] = R"([
         "feed_url": "https://tp2.example.com/feed",
         "site_url": "https://tp2.example.com",
         "category": "Two",
-        "channels": ["Two", "Five"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["Two", "Five"]
+        }],
         "enabled": true
     },
     {
@@ -61,7 +68,13 @@ constexpr char kPublishersResponse[] = R"([
         "feed_url": "https://tp3.example.com/feed",
         "site_url": "https://tp3.example.com",
         "category": "Four",
-        "channels": ["Two", "Four"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["One", "Four"]
+        }, {
+          "locale": "ja_JA",
+          "channels": ["One", "Five"]
+        }],
         "enabled": true
     }
 ])";
@@ -86,11 +99,10 @@ class ChannelsControllerTest : public testing::Test {
            brave_today::GetRegionUrlPart() + "json";
   }
 
-  brave_news::Channels GetAllChannels(const std::string& locale) {
+  brave_news::Channels GetAllChannels() {
     base::RunLoop loop;
     brave_news::Channels channels;
     channels_controller_.GetAllChannels(
-        locale,
         base::BindLambdaForTesting([&loop, &channels](brave_news::Channels c) {
           channels = std::move(c);
           loop.Quit();
@@ -128,7 +140,7 @@ TEST_F(ChannelsControllerTest, CanGetAllChannels) {
   test_url_loader_factory_.AddResponse(GetPublishersURL(), kPublishersResponse,
                                        net::HTTP_OK);
 
-  auto channels = GetAllChannels("en_US");
+  auto channels = GetAllChannels();
   EXPECT_EQ(4u, channels.size());
   EXPECT_TRUE(base::Contains(channels, "One"));
   EXPECT_TRUE(base::Contains(channels, "Two"));
@@ -137,7 +149,7 @@ TEST_F(ChannelsControllerTest, CanGetAllChannels) {
 
   // By default, none of these channels should be subscribed.
   for (const auto& it : channels) {
-    EXPECT_FALSE(it.second->subscribed);
+    EXPECT_EQ(0u, it.second->subscribed_locales.size());
   }
 }
 
@@ -148,24 +160,24 @@ TEST_F(ChannelsControllerTest, GetAllChannelsLoadsSubscribedState) {
   test_url_loader_factory_.AddResponse(GetPublishersURL(), kPublishersResponse,
                                        net::HTTP_OK);
 
-  auto channels = GetAllChannels("en_US");
+  auto channels = GetAllChannels();
   EXPECT_EQ(4u, channels.size());
 
   auto one = channels.find("One");
   ASSERT_NE(channels.end(), one);
-  EXPECT_TRUE(one->second->subscribed);
+  EXPECT_TRUE(base::Contains(one->second->subscribed_locales, "en_US"));
 
   auto two = channels.find("Two");
   ASSERT_NE(channels.end(), two);
-  EXPECT_FALSE(two->second->subscribed);
+  EXPECT_EQ(0u, two->second->subscribed_locales.size());
 
   auto four = channels.find("Four");
   ASSERT_NE(channels.end(), four);
-  EXPECT_FALSE(four->second->subscribed);
+  EXPECT_EQ(0u, four->second->subscribed_locales.size());
 
   auto five = channels.find("Five");
   ASSERT_NE(channels.end(), five);
-  EXPECT_TRUE(five->second->subscribed);
+  EXPECT_TRUE(base::Contains(five->second->subscribed_locales, "en_US"));
 }
 
 TEST_F(ChannelsControllerTest,
@@ -176,17 +188,19 @@ TEST_F(ChannelsControllerTest,
   test_url_loader_factory_.AddResponse(GetPublishersURL(), kPublishersResponse,
                                        net::HTTP_OK);
 
-  auto channels = GetAllChannels("en_US");
+  auto channels = GetAllChannels();
   EXPECT_EQ(4u, channels.size());
   // In the en_US region, only the channel 'One' should be subscribed.
-  for (const auto& it : channels)
-    EXPECT_EQ(it.first == "One", it.second->subscribed);
+  for (const auto& it : channels) {
+    EXPECT_EQ(it.first == "One",
+              base::Contains(it.second->subscribed_locales, "en_US"));
+  }
 
-  channels = GetAllChannels("ja_JA");
-  EXPECT_EQ(4u, channels.size());
   // In the ja_JA region, only the channel 'Five' should be subscribed.
-  for (const auto& it : channels)
-    EXPECT_EQ(it.first == "Five", it.second->subscribed);
+  for (const auto& it : channels) {
+    EXPECT_EQ(it.first == "Five",
+              base::Contains(it.second->subscribed_locales, "ja_JA"));
+  }
 }
 
 TEST_F(ChannelsControllerTest, CanToggleChannelSubscribed) {

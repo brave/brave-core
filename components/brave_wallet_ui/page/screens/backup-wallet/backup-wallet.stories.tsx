@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -10,21 +10,14 @@ import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
 
 // components
 import { WalletPageStory } from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { BackupWallet } from './backup-wallet'
+import { BackupWalletRoutes } from './backup-wallet.routes'
 
 export const _BackupWallet = () => {
-  const complete = () => {
-    alert('Wallet Setup Complete!!!')
-  }
-
   return (
     <WalletPageStory
       pageStateOverride={{ mnemonic: mockedMnemonic }}
     >
-      <BackupWallet
-        onCancel={complete}
-        isOnboarding={false}
-      />
+      <BackupWalletRoutes />
     </WalletPageStory>
   )
 }

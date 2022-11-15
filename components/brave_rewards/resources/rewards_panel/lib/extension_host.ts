@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from 'gen/brave/components/brave_rewards/common/brave_rewards_panel.mojom.m.js'
 
@@ -19,7 +19,6 @@ import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
 import * as apiAdapter from './extension_api_adapter'
 import { RewardsPanelProxy } from './rewards_panel_proxy'
-import { RewardsPanelExtensionProxy } from './rewards_panel_extension_proxy'
 
 type LocalStorageKey = 'catcha-grant-id' | 'load-adaptive-captcha'
 
@@ -50,14 +49,8 @@ function openTab (url: string) {
   chrome.tabs.create({ url })
 }
 
-function isWebUI () {
-  return Boolean((window as any).loadTimeData)
-}
-
 function getString (key: string) {
-  return isWebUI()
-    ? String((window as any).loadTimeData.getString(key) || '')
-    : RewardsPanelExtensionProxy.getString(key)
+  return String((window as any).loadTimeData.getString(key) || '')
 }
 
 export function createHost (): Host {
@@ -65,9 +58,7 @@ export function createHost (): Host {
   const storage = createLocalStorageScope<LocalStorageKey>('rewards-panel')
   const grants = new Map<string, GrantInfo>()
 
-  const proxy = isWebUI()
-    ? RewardsPanelProxy.getInstance()
-    : RewardsPanelExtensionProxy.getInstance()
+  const proxy = RewardsPanelProxy.getInstance()
 
   function closePanel () {
     proxy.handler.closeUI()
@@ -261,13 +252,6 @@ export function createHost (): Host {
     }).catch(console.error)
   }
 
-  async function requestPublisherInfoForExtension () {
-    const tabInfo = await getCurrentTabInfo()
-    if (tabInfo) {
-      await apiAdapter.fetchPublisherInfo(tabInfo.id)
-    }
-  }
-
   function setLoadingTimer () {
     // Set a maximum time to display the loading indicator. Several calls to
     // the `braveRewards` extension API can block on network requests. If the
@@ -276,23 +260,42 @@ export function createHost (): Host {
     setTimeout(() => { stateManager.update({ loading: false }) }, 3000)
   }
 
+  function startRevealTimer () {
+    let called = false
+
+    // When the panel is displayed using a cached `window`, we need to "reveal"
+    // it by updating `openTime`. Ideally, we do not want to reveal it before
+    // we've updated the UI, but if the browser is taking a long time to return
+    // data we need to show the panel with a loading indicator.
+    let revealTimeout = setTimeout(() => {
+      called = true
+      setLoadingTimer()
+      stateManager.update({ openTime: Date.now(), loading: true })
+    }, 750)
+
+    return () => {
+      if (!called) {
+        clearTimeout(revealTimeout)
+      }
+    }
+  }
+
   function addListeners () {
     // If a Rewards panel request occurs when we are still open or cached,
     // reload data and re-render the app.
     proxy.callbackRouter.onRewardsPanelRequested.addListener(
       (panelArgs: mojom.RewardsPanelArgs) => {
-        stateManager.update({
-          openTime: Date.now(),
-          loading: true
-        })
-
-        setLoadingTimer()
+        let cancelRevealTimer = startRevealTimer()
 
         loadPanelData().then(() => {
+          cancelRevealTimer()
+
           stateManager.update({
+            openTime: Date.now(),
             requestedView: null,
             loading: false
           })
+
           handleRewardsPanelArgs(panelArgs)
         }).catch(console.error)
       })
@@ -377,12 +380,6 @@ export function createHost (): Host {
     setLoadingTimer()
 
     await loadPanelData()
-
-    if (!isWebUI()) {
-      // If we are running in the Rewards extension, then ensure that publisher
-      // info has been initialized in the Rewards database.
-      requestPublisherInfoForExtension().catch(console.error)
-    }
 
     loadPersistedState()
     handleRewardsPanelArgs((await proxy.handler.getRewardsPanelArgs()).args)

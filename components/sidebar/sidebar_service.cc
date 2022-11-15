@@ -220,25 +220,24 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
   }
 
   // Build new pref, if any have been marked for hiding
-  ListPrefUpdate builtin_items_update(prefs_, kSidebarHiddenBuiltInItems);
   if (built_in_items_to_hide.size()) {
+    ScopedListPrefUpdate builtin_items_update(prefs_,
+                                              kSidebarHiddenBuiltInItems);
     for (const auto& item : built_in_items_to_hide) {
       DCHECK(item.type == SidebarItem::Type::kTypeBuiltIn);
       const auto value = static_cast<int>(item.built_in_item_type);
       VLOG(2) << "Marked for hiding built-in item with ID: " << value;
-      base::Value item_type(value);
-      builtin_items_update->Append(std::move(item_type));
+      builtin_items_update->Append(value);
     }
   } else {
     // Always store something so that we know migration is done
     // when pref isn't default value.
-    builtin_items_update->ClearList();
+    prefs_->SetList(kSidebarHiddenBuiltInItems, base::Value::List());
   }
 
   // Fix items pref, if needed
   if (items_are_modified) {
-    ListPrefUpdate items_update(prefs_, kSidebarItems);
-    items_update->ClearList();
+    base::Value::List sidebar_items;
     for (const auto& item_value : new_items) {
       auto* item = item_value.GetIfDict();
       DCHECK(item);
@@ -246,8 +245,9 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
       if (should_ignore.value_or(false)) {
         continue;
       }
-      items_update->Append(base::Value(item->Clone()));
+      sidebar_items.Append(item->Clone());
     }
+    prefs_->SetList(kSidebarItems, std::move(sidebar_items));
   }
 }
 
@@ -333,8 +333,7 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
   // We also need to explicitly store which built-in items have been hidden
   // so that we know which new items the user has been exposed to and which
   // they've chosen to hide.
-  ListPrefUpdate update(prefs_, kSidebarItems);
-  update->ClearList();
+  base::Value::List items;
   DVLOG(2) << "Serializing items (count: " << items_.size() << ")";
 
   // Serialize each item
@@ -350,12 +349,12 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
       dict.Set(kSidebarItemTitleKey, base::UTF16ToUTF8(item.title));
       dict.Set(kSidebarItemOpenInPanelKey, item.open_in_panel);
     }
-    update->GetList().Append(std::move(dict));
+    items.Append(std::move(dict));
   }
+  prefs_->SetList(kSidebarItems, std::move(items));
 
   // Store which built-in items should be hidden
-  ListPrefUpdate hide_builtin_update(prefs_, kSidebarHiddenBuiltInItems);
-  hide_builtin_update->ClearList();
+  base::Value::List builtin_items;
   // TODO(petemill): If we make any hidden-by-default built-in items,
   // then this logic needs to change to only consider shown-by-default items,
   // and perhaps use a dict for each item to store whether built-in item is
@@ -363,8 +362,9 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
   auto hidden_items = GetHiddenDefaultSidebarItems();
   for (const auto& hidden_item : hidden_items) {
     base::Value item_type(static_cast<int>(hidden_item.built_in_item_type));
-    hide_builtin_update->Append(std::move(item_type));
+    builtin_items.Append(std::move(item_type));
   }
+  prefs_->SetList(kSidebarHiddenBuiltInItems, std::move(builtin_items));
 }
 
 void SidebarService::AddObserver(Observer* observer) {

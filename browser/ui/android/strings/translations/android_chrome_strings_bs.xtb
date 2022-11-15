@@ -441,6 +441,7 @@ Kada izbrišete historiju pregledanja, cijelu ili samo za određene web lokacije
 <translation id="3435465986463792564">Imate mnogo prozora? Možete upravljati njima odavde</translation>
 <translation id="3443221991560634068">Ponovo učitajte trenutnu stranicu</translation>
 <translation id="3444179773590444986">Dijeliti povratne informacije o tamnoj temi za web lokacije?</translation>
+<translation id="7384339501748168186">Radi zaštite vaše privatnosti, Brave neće automatski popunjavati vašu lozinku u ovom polju.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{Zakazano je 1 preuzimanje}one{Zakazano je # preuzimanje}few{Zakazana su # preuzimanja}other{Zakazano je # preuzimanja}}</translation>
 <translation id="3474624961160222204">Nastavi kao <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Možete odabrati svoj pretraživač</translation>
@@ -658,6 +659,7 @@ Vaš Brave račun može imati druge oblike historije pregledanja kao što su pre
 <translation id="4763480195061959176">videozapis</translation>
 <translation id="4766313118839197559">Lozinke se pohranjuju u Upravitelju lozinki na ovom uređaju.</translation>
 <translation id="4766678251456904326">Dodajte račun na uređaj</translation>
+<translation id="4787736314074622408">Želite li izbrisati fajl <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Pomaže vam s izvršavanjem zadataka na internetu, kao što je plaćanje</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Enkripcija šifrom ne uključuje načine plaćanja i adrese s Google Paya.
@@ -726,6 +728,7 @@ Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaci
 <translation id="4744980273298156620">Uskoro ćete vidjeti priče s web lokacije <ph name="SITE_NAME"/> kada otvorite novu karticu. Web lokacije koje pratite se pohranjuju na vaš Brave račun. Njima možete upravljati u postavkama Discovera.</translation>
 <translation id="5091249083535528968">Prošireni podaci o korištenju</translation>
 <translation id="509429900233858213">Došlo je do greške.</translation>
+<translation id="5099845111805573968">Kada jednom odaberete web lokaciju za računar, postavka se primjenjuje na web lokaciju svaki put kada je posjetite</translation>
 <translation id="225414324447409614">Ako web lokacija pokuša ukrasti vašu lozinku ili kada preuzimate štetan fajl, Brave može slati URL-ove, uključujući dijelove sadržaja stranice, u Sigurno pregledanje</translation>
 <translation id="510275257476243843">Još 1 sat</translation>
 <translation id="5115811374190515607">u: <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaci
 <translation id="5958275228015807058">Pronađite svoje fajlove i stranice u meniju Preuzimanja</translation>
 <translation id="5962718611393537961">Dodirnite da suzite</translation>
 <translation id="5964869237734432770">Zaustavi opise slika</translation>
+<translation id="9135546826883360971">Brave će zapamtiti vaš izbor</translation>
 <translation id="5979084224081478209">Provjeri lozinke</translation>
 <translation id="5995726099713306770">Ponovo preuzeti stranicu?</translation>
 <translation id="6456271171669383967">Zadrži Brave</translation>
@@ -920,6 +924,7 @@ Probni periodi Okruženja zaštićene privatnosti i dalje su u fazi aktivnog raz
 <translation id="6192907950379606605">Preuzmi opise slika</translation>
 <translation id="8367262879301982880">Lozinke se pohranjuju u Braveovom Upravitelju lozinki na ovom uređaju.</translation>
 <translation id="620197886010707372">Otvoriti aplikaciju za aplikaciju <ph name="APPNAME"/> pomoću Google Playa?</translation>
+<translation id="6202812185118613467">Ponovo se prijavite da započnete sinhronizaciju</translation>
 <translation id="6203593061661911168">Preuzimanje će se pokrenuti kada bude uspostavljena WiFi veza</translation>
 <translation id="6210748933810148297">Vi niste <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Pregledanje ove stranice</translation>
@@ -1051,6 +1056,7 @@ Naprimjer, neke web lokacije mogu reagirati na ovaj zahtjev prikazivanjem oglasa
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, kartica, odabrana</translation>
 <translation id="6828070228333235514">Zaustavi praćenje cijene</translation>
+<translation id="6830728435402077660">Nije sigurno</translation>
 <translation id="6833996806551876956">Probni period Zaštićenog okruženja za privatnost</translation>
 <translation id="6836206421467243968">Vratite grupu kartica <ph name="TITLE_OF_GROUP"/> kao novu pozadinsku grupu kartica.</translation>
 <translation id="6846298663435243399">Učitavanje…</translation>
@@ -1353,7 +1359,7 @@ Naprimjer, neke web lokacije mogu reagirati na ovaj zahtjev prikazivanjem oglasa
 <translation id="8460448946170646641">Pregledajte ključne kontrole privatnosti i sigurnosti</translation>
 <translation id="8461694314515752532">Šifrirajte sinhronizirane podatke svojim pristupnim izrazom</translation>
 <translation id="8466613982764129868">Provjerite je li uređaj <ph name="TARGET_DEVICE_NAME"/> povezan na internet</translation>
-<translation id="8473863474539038330">Adrese i još mnogo toga</translation>
+<translation id="5633907266617216186">Adrese i još mnogo toga</translation>
 <translation id="8481921391193215807">Kada je uključeno, web lokacije mogu koristiti tehnike kojima se štiti privatnost prikazane ovdje u svrhu pružanja sadržaja i usluga. Tehnike uključuju alternative praćenju kretanja između web lokacija. S vremenom se može dodati više probnih perioda.
 
 <ph name="BEGIN_LIST_ITEM1"/>Oglašivači i izdavači mogu koristiti FLoC.<ph name="END_LIST_ITEM1"/>

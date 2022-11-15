@@ -12,6 +12,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -44,7 +45,7 @@ class ToggleButton : public views::Button {
     // text.
     // https://github.com/brave/brave-browser/issues/24717
     SetProperty(views::kSkipAccessibilityPaintChecks, true);
-    SetPreferredSize(gfx::Size{GetIconWidth(), GetIconWidth()});
+    SetPreferredSize(gfx::Size{tabs::kVerticalTabMinWidth, GetIconWidth()});
   }
   ~ToggleButton() override = default;
 
@@ -70,8 +71,7 @@ class ToggleButton : public views::Button {
 
     const int icon_inset = ui::TouchUiController::Get()->touch_ui() ? 10 : 9;
     gfx::Rect icon_bounds(gfx::Size(icon_width, height()));
-    if (expanded)
-      icon_bounds.set_x(width() - icon_width);
+    icon_bounds.set_x((width() - icon_width) / 2);
     icon_bounds.Inset(gfx::Insets::VH(icon_inset, icon_inset * 1.5));
 
     if (expanded) {
@@ -134,7 +134,8 @@ class ScrollHeaderView : public views::View {
 
   void UpdateTabSearchButtonVisibility() {
     tab_search_button_->SetVisible(
-        region_view_->state() == VerticalTabStripRegionView::State::kExpanded &&
+        region_view_->state() !=
+            VerticalTabStripRegionView::State::kCollapsed &&
         !WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
             region_view_->browser()));
   }
@@ -228,19 +229,23 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
     Browser* browser,
     TabStripRegionView* region_view)
     : browser_(browser), region_view_(region_view) {
+  SetNotifyEnterExitOnChild(true);
+
   scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
   scroll_view_header_ =
       scroll_view_->SetHeader(std::make_unique<ScrollHeaderView>(
           base::BindRepeating(
               [](VerticalTabStripRegionView* container,
                  const ui::Event& event) {
-                const bool should_collapse =
-                    container->state_ ==
-                    VerticalTabStripRegionView::State::kExpanded;
-                container->collapsed_pref_.SetValue(should_collapse);
-                // Calling SetValue() doesn't trigger OnCollapsedPrefChanged()
-                // for this view. So we need to call it manually.
-                container->OnCollapsedPrefChanged();
+                // Note that Calling SetValue() doesn't trigger
+                // OnCollapsedPrefChanged() for this view.
+                if (container->state_ == State::kExpanded) {
+                  container->collapsed_pref_.SetValue(true);
+                  container->SetState(State::kCollapsed);
+                } else {
+                  container->collapsed_pref_.SetValue(false);
+                  container->SetState(State::kExpanded);
+                }
               },
               this),
           this));
@@ -261,17 +266,32 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   new_tab_button_->SetAccessibleName(
       l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
 
+  auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
+  show_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsEnabled, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::UpdateLayout,
+                          base::Unretained(this), false));
+  UpdateLayout();
+
   collapsed_pref_.Init(
-      brave_tabs::kVerticalTabsCollapsed,
-      browser_->profile()->GetOriginalProfile()->GetPrefs(),
+      brave_tabs::kVerticalTabsCollapsed, prefs,
       base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
                           base::Unretained(this)));
   OnCollapsedPrefChanged();
 
-  UpdateLayout();
+  floating_mode_pref_.Init(
+      brave_tabs::kVerticalTabsFloatingEnabled, prefs,
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnFloatingModePrefChanged,
+          base::Unretained(this)));
+  OnFloatingModePrefChanged();
 }
 
-VerticalTabStripRegionView::~VerticalTabStripRegionView() = default;
+VerticalTabStripRegionView::~VerticalTabStripRegionView() {
+  // We need to move tab strip region to its original parent to avoid crash
+  // during drag and drop session.
+  UpdateLayout(true);
+}
 
 bool VerticalTabStripRegionView::IsTabFullscreen() const {
   auto* exclusive_access_manager = browser_->exclusive_access_manager();
@@ -290,28 +310,20 @@ void VerticalTabStripRegionView::SetState(State state) {
   if (state_ == state)
     return;
 
+  mouse_enter_timer_.Stop();
   state_ = state;
-  InvalidateLayout();
+  PreferredSizeChanged();
 }
 
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
-  if (!tabs::features::ShouldShowVerticalTabs())
-    return {};
+  return GetPreferredSizeForState(state_);
+}
 
-  if (IsTabFullscreen())
-    return {};
+gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
+  if (state_ == State::kFloating)
+    return GetPreferredSizeForState(State::kCollapsed);
 
-  if (state_ == State::kExpanded) {
-    return {TabStyle::GetStandardWidth(),
-            View::CalculatePreferredSize().height()};
-  }
-
-  DCHECK_EQ(state_, State::kCollapsed)
-      << "If a new state was added, " << __FUNCTION__
-      << " should be revisited.";
-
-  return {TabStyle::GetPinnedWidth() - TabStyle::GetTabOverlap(),
-          View::CalculatePreferredSize().height()};
+  return GetPreferredSizeForState(state_);
 }
 
 void VerticalTabStripRegionView::Layout() {
@@ -345,8 +357,8 @@ void VerticalTabStripRegionView::Layout() {
   UpdateTabSearchButtonVisibility();
 }
 
-void VerticalTabStripRegionView::UpdateLayout() {
-  if (tabs::features::ShouldShowVerticalTabs()) {
+void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
+  if (tabs::features::ShouldShowVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
       original_parent_of_region_view_->RemoveChildView(region_view_);
@@ -362,6 +374,8 @@ void VerticalTabStripRegionView::UpdateLayout() {
     region_view_->layout_manager_->SetOrientation(
         views::LayoutOrientation::kHorizontal);
   }
+
+  PreferredSizeChanged();
   Layout();
 }
 
@@ -375,21 +389,87 @@ void VerticalTabStripRegionView::OnThemeChanged() {
   new_tab_button_->FrameColorsChanged();
 }
 
+void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
+  if (IsMouseHovered() && !mouse_events_for_test_) {
+    // On Windows, when mouse moves into the area which intersects with web
+    // view, OnMouseExited() is invoked even mouse is on this view.
+    return;
+  }
+
+  mouse_enter_timer_.Stop();
+  if (state_ == State::kFloating)
+    SetState(State::kCollapsed);
+}
+
+void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
+  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_))
+    return;
+
+  ScheduleFloatingModeTimer();
+}
+
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   bool overflowed =
+      tabs::features::ShouldShowVerticalTabs(browser_) &&
       scroll_view_->GetMaxHeight() < scroll_view_->contents()->height();
   region_view_->new_tab_button()->SetVisible(!overflowed);
   new_tab_button_->SetVisible(overflowed);
 }
 
 void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
-  const bool is_vertical_tabs = tabs::features::ShouldShowVerticalTabs();
+  const bool is_vertical_tabs =
+      tabs::features::ShouldShowVerticalTabs(browser_);
   if (auto* tab_search_button = region_view_->tab_search_button())
     tab_search_button->SetVisible(!is_vertical_tabs);
 }
 
 void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
   SetState(collapsed_pref_.GetValue() ? State::kCollapsed : State::kExpanded);
+}
+
+void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
+  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_)) {
+    if (state_ == State::kFloating)
+      SetState(State::kCollapsed);
+    return;
+  }
+
+  if (IsMouseHovered())
+    ScheduleFloatingModeTimer();
+}
+
+gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
+    State state) const {
+  if (!tabs::features::ShouldShowVerticalTabs(browser_))
+    return {};
+
+  if (IsTabFullscreen())
+    return {};
+
+  if (state == State::kExpanded || state == State::kFloating) {
+    return {TabStyle::GetStandardWidth(),
+            View::CalculatePreferredSize().height()};
+  }
+
+  DCHECK_EQ(state, State::kCollapsed)
+      << "If a new state was added, " << __FUNCTION__
+      << " should be revisited.";
+  return {tabs::kVerticalTabMinWidth, View::CalculatePreferredSize().height()};
+}
+
+void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
+  if (mouse_events_for_test_) {
+    SetState(State::kFloating);
+    return;
+  }
+
+  mouse_enter_timer_.Stop();
+  if (state_ == State::kCollapsed) {
+    mouse_enter_timer_.Start(
+        FROM_HERE, base::Milliseconds(400),
+        base::BindOnce(&VerticalTabStripRegionView::SetState,
+                       base::Unretained(this), State::kFloating));
+  }
 }
 
 BEGIN_METADATA(VerticalTabStripRegionView, views::View)

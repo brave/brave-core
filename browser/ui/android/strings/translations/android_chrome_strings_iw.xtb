@@ -441,6 +441,7 @@
 <translation id="3435465986463792564">פתוחים אצלך הרבה חלונות? יש לך אפשרות לנהל את כולם מכאן.</translation>
 <translation id="3443221991560634068">טעינה מחדש של הדף הנוכחי</translation>
 <translation id="3444179773590444986">רוצה לשתף משוב לגבי עיצוב כהה של אתרים?</translation>
+<translation id="7384339501748168186">‏כדי להגן על הפרטיות שלך, לא מתבצע ב-Brave מילוי אוטומטי של הסיסמה שלך בשדה הזה.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{תוזמנה הורדה אחת}two{תוזמנו # הורדות}many{תוזמנו # הורדות}other{תוזמנו # הורדות}}</translation>
 <translation id="3474624961160222204">המשך כ-<ph name="NAME"/></translation>
 <translation id="3478363558367712427">אפשר לבחור את מנוע החיפוש</translation>
@@ -658,6 +659,7 @@
 <translation id="4763480195061959176">סרטוני וידאו</translation>
 <translation id="4766313118839197559">סיסמאות נשמרות במנהל הסיסמאות במכשיר הזה</translation>
 <translation id="4766678251456904326">הוספת חשבון למכשיר</translation>
+<translation id="4787736314074622408">רוצה למחוק את <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">עוזרת להשלים משימות, כמו תשלום בקופה, באינטרנט</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">‏הצפנה באמצעות ביטוי סיסמה לא כוללת אמצעי תשלום וכתובות מ-Google Pay
@@ -726,6 +728,7 @@
 <translation id="4744980273298156620">‏בקרוב יוצגו סטוריז מהאתר <ph name="SITE_NAME"/> בפתיחת כרטיסייה חדשה. אתרים שנמצאים במעקב נשמרים בחשבון Brave שלך. יש לך אפשרות לנהל אותם בהגדרות של Discover.</translation>
 <translation id="5091249083535528968">נתונים נוספים על השימוש במכשיר</translation>
 <translation id="509429900233858213">אירעה שגיאה.</translation>
+<translation id="5099845111805573968">כשבוחרים אתר שמותאם למחשב בפעם הראשונה, ההגדרה חלה על האתר בכל פעם שמבקרים בו</translation>
 <translation id="225414324447409614">‏אם באתר כלשהו מתבצע ניסיון לגנוב את הסיסמה שלך, או אם המערכת מזהה הורדה של קובץ מזיק, Brave עשוי לשלוח כתובות URL לבדיקה באמצעות 'גלישה בטוחה'. הנתונים שנשלחים לבדיקה כוללים ביטים מתוכן של דפים</translation>
 <translation id="510275257476243843">נותרה שעה אחת</translation>
 <translation id="5115811374190515607">אל <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@
 <translation id="5958275228015807058">הקבצים והדפים שלך נמצאים ב'הורדות'</translation>
 <translation id="5962718611393537961">יש להקיש כדי לכווץ</translation>
 <translation id="5964869237734432770">הפסקה של תיאורי התמונות</translation>
+<translation id="9135546826883360971">‏הבחירה שלך תישמר ב-Brave</translation>
 <translation id="5979084224081478209">בדיקת הסיסמאות</translation>
 <translation id="5995726099713306770">להוריד שוב את הדף?</translation>
 <translation id="6456271171669383967">‏להמשיך להשתמש ב-Brave</translation>
@@ -920,6 +924,7 @@
 <translation id="6192907950379606605">ליצירת תיאורי תמונות</translation>
 <translation id="8367262879301982880">‏סיסמאות נשמרות במנהל הסיסמאות של Brave במכשיר הזה</translation>
 <translation id="620197886010707372">‏לפתוח את האפליקציה <ph name="APPNAME"/> באמצעות Google Play?</translation>
+<translation id="6202812185118613467">עליך להיכנס שוב כדי להתחיל את הסנכרון</translation>
 <translation id="6203593061661911168">‏ההורדה תתחיל בחיבור Wi-Fi.</translation>
 <translation id="6210748933810148297">אינך <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">מוצגת תצוגה מקדימה של הדף</translation>
@@ -1051,6 +1056,7 @@
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612">הכרטיסייה, <ph name="TAB_TITLE"/>, נבחרה</translation>
 <translation id="6828070228333235514">הפסקת המעקב אחר מחירים</translation>
+<translation id="6830728435402077660">לא מאובטח</translation>
 <translation id="6833996806551876956">תקופת ניסיון של ארגז חול של הגדרות פרטיות</translation>
 <translation id="6836206421467243968">שחזור של קבוצת הכרטיסיות <ph name="TITLE_OF_GROUP"/> כקבוצת כרטיסיות חדשה ברקע.</translation>
 <translation id="6846298663435243399">הטעינה מתבצעת...</translation>
@@ -1351,7 +1357,7 @@
 <translation id="8460448946170646641">בדיקה של אמצעי הבקרה החשובים ביותר על פרטיות ואבטחה</translation>
 <translation id="8461694314515752532">הצפנת נתונים מסונכרנים בעזרת ביטוי סיסמה אישי לסנכרון</translation>
 <translation id="8466613982764129868">יש לוודא ש-<ph name="TARGET_DEVICE_NAME"/> מחובר לאינטרנט</translation>
-<translation id="8473863474539038330">כתובות ועוד</translation>
+<translation id="5633907266617216186">כתובות ועוד</translation>
 <translation id="8481921391193215807">‏כאשר התכונה מופעלת, אתרים יוכלו לספק את התוכן ואת השירותים שלהם בשיטות המוצגות כאן, שמאפשרות לשמור על הפרטיות. השיטות האלו כוללות חלופות למעקב בין אתרים. ייתכן שיתווספו עוד תכונות ניסיוניות בהמשך.
 
 <ph name="BEGIN_LIST_ITEM1"/>מפרסמים ובעלי תוכן דיגיטלי יכולים להשתמש בשיטת FLoC.<ph name="END_LIST_ITEM1"/>

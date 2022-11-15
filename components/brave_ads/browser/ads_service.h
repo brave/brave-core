@@ -293,9 +293,6 @@ class AdsService : public KeyedService {
   virtual void ToggleFlaggedAd(base::Value::Dict value,
                                ToggleFlaggedAdCallback callback) = 0;
 
-  // Called to wipe all state.
-  virtual void WipeState(bool should_shutdown) = 0;
-
  protected:
   base::ObserverList<AdsServiceObserver> observers_;
 };

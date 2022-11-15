@@ -6,14 +6,19 @@
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/base64.h"
+#include "base/json/values_util.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
+#include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
 
@@ -150,27 +155,31 @@ std::vector<mojom::Region> ParseRegionList(
   return regions;
 }
 
-base::Value::Dict GetValueWithTicketInfos(const std::string& email,
-                                          const std::string& subject,
-                                          const std::string& body) {
+base::Value::Dict GetValueWithTicketInfos(
+    const std::string& email,
+    const std::string& subject,
+    const std::string& body,
+    const std::string& subscriber_credential) {
   base::Value::Dict dict;
 
   std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
+
+  // add subscriber credential to the email body.
+  std::string body_with_credential =
+      body + "\n\nsubscriber-credential: " + subscriber_credential +
+      "\npayment-validation-method: brave-premium";
+
   base::TrimWhitespaceASCII(email, base::TRIM_ALL, &email_trimmed);
   base::TrimWhitespaceASCII(subject, base::TRIM_ALL, &subject_trimmed);
-  base::TrimWhitespaceASCII(body, base::TRIM_ALL, &body_trimmed);
+  base::TrimWhitespaceASCII(body_with_credential, base::TRIM_ALL,
+                            &body_trimmed);
   base::Base64Encode(body_trimmed, &body_encoded);
 
   // required fields
-  dict.Set("email", email_trimmed);
-  dict.Set("subject", subject_trimmed);
-  dict.Set("support-ticket", body_encoded);
-  dict.Set("partner-client-id", "com.brave.browser");
-
-  // optional (but encouraged) fields
-  dict.Set("subscriber-credential", "");
-  dict.Set("payment-validation-method", "brave-premium");
-  dict.Set("payment-validation-data", "");
+  dict.Set(kSupportTicketEmailKey, email_trimmed);
+  dict.Set(kSupportTicketSubjectKey, subject_trimmed);
+  dict.Set(kSupportTicketSupportTicketKey, body_encoded);
+  dict.Set(kSupportTicketPartnerClientIdKey, "com.brave.browser");
 
   return dict;
 }
@@ -182,6 +191,84 @@ mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
   if (it != region_list.end())
     return it->Clone();
   return mojom::RegionPtr();
+}
+
+bool IsValidCredentialSummary(const base::Value& summary) {
+  DCHECK(summary.is_dict());
+  const bool active = summary.GetDict().FindBool("active").value_or(false);
+  const int remaining_credential_count =
+      summary.GetDict().FindInt("remaining_credential_count").value_or(0);
+  return active && remaining_credential_count > 0;
+}
+
+bool HasValidSubscriberCredential(PrefService* local_prefs) {
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  if (sub_cred_dict.empty())
+    return false;
+
+  const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
+  const base::Value* expiration_time_value =
+      sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
+
+  if (!cred || !expiration_time_value)
+    return false;
+
+  if (cred->empty())
+    return false;
+
+  auto expiration_time = base::ValueToTime(expiration_time_value);
+  if (!expiration_time || expiration_time < base::Time::Now())
+    return false;
+
+  return true;
+}
+
+bool HasSubscriberCredential(PrefService* local_prefs) {
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  return !sub_cred_dict.empty();
+}
+
+std::string GetSubscriberCredential(PrefService* local_prefs) {
+  if (!HasValidSubscriberCredential(local_prefs))
+    return "";
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
+  DCHECK(cred);
+  return *cred;
+}
+
+absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs) {
+  if (!HasValidSubscriberCredential(local_prefs))
+    return absl::nullopt;
+
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+
+  const base::Value* expiration_time_value =
+      sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
+
+  if (!expiration_time_value)
+    return absl::nullopt;
+
+  return base::ValueToTime(expiration_time_value);
+}
+
+void SetSubscriberCredential(PrefService* local_prefs,
+                             const std::string& subscriber_credential,
+                             const base::Time& expiration_time) {
+  base::Value::Dict cred_dict;
+  cred_dict.Set(kSubscriberCredentialKey, subscriber_credential);
+  cred_dict.Set(kSubscriberCredentialExpirationKey,
+                base::TimeToValue(expiration_time));
+  local_prefs->SetDict(prefs::kBraveVPNSubscriberCredential,
+                       std::move(cred_dict));
+}
+
+void ClearSubscriberCredential(PrefService* local_prefs) {
+  local_prefs->ClearPref(prefs::kBraveVPNSubscriberCredential);
 }
 
 }  // namespace brave_vpn

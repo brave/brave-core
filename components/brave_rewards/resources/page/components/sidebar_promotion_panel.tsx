@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -17,37 +17,41 @@ import * as style from './sidebar_promotion_panel.style'
 
 interface PromotionMessages {
   title: string
-  text: string
-  disclaimer: string
+  text1: string
+  text2?: string
+  disclaimer?: string
 }
 
 function getPromotionMessages (
   key: Exclude<PromotionKey, 'bitflyer-verification'>
 ): PromotionMessages {
   switch (key) {
+    case 'brave-creators':
+      return {
+        title: 'braveCreatorsPromoTitle',
+        text1: 'braveCreatorsPromoInfo1',
+        text2: 'braveCreatorsPromoInfo2'
+      }
     case 'gemini':
       return {
         title: 'geminiPromoTitle',
-        text: 'geminiPromoInfo',
-        disclaimer: ''
+        text1: 'geminiPromoInfo'
       }
     case 'tap-network':
       return {
         title: 'tapNetworkTitle',
-        text: 'tapNetworkInfo',
+        text1: 'tapNetworkInfo',
         disclaimer: 'tapNetworkDisclaimer'
       }
     case 'uphold-card':
       return {
         title: 'upholdPromoTitle',
-        text: 'upholdPromoInfo',
-        disclaimer: ''
+        text1: 'upholdPromoInfo'
       }
     case 'uphold-equities':
       return {
         title: 'upholdPromoEquitiesTitle',
-        text: 'upholdPromoEquitiesInfo',
-        disclaimer: ''
+        text1: 'upholdPromoEquitiesInfo'
       }
   }
 }
@@ -152,8 +156,14 @@ export function SidebarPromotionPanel (props: Props) {
                 </style.close>
               </style.header>
               <style.text>
-                {getString(messages.text)}
+                {getString(messages.text1)}
               </style.text>
+              {
+                messages.text2 &&
+                  <style.text>
+                    {getString(messages.text2)}
+                  </style.text>
+              }
               {
                 messages.disclaimer &&
                   <style.disclaimer>

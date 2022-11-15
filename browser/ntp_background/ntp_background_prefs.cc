@@ -132,15 +132,17 @@ absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
 }
 
 void NTPBackgroundPrefs::AddCustomImageToList(const std::string& file_name) {
-  ListPrefUpdate update(service_, NTPBackgroundPrefs::kCustomImageListPrefName);
-  update->GetList().Append(file_name);
+  ScopedListPrefUpdate update(service_,
+                              NTPBackgroundPrefs::kCustomImageListPrefName);
+  update->Append(file_name);
 }
 
 void NTPBackgroundPrefs::RemoveCustomImageFromList(
     const std::string& file_name) {
-  ListPrefUpdate update(service_, NTPBackgroundPrefs::kCustomImageListPrefName);
-  auto& list = update->GetList();
-  list.erase(base::ranges::remove(update->GetList(), file_name), list.end());
+  ScopedListPrefUpdate update(service_,
+                              NTPBackgroundPrefs::kCustomImageListPrefName);
+  update->erase(base::ranges::remove(update.Get(), file_name),
+                update.Get().end());
 }
 
 std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {

@@ -25,22 +25,21 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/window/dialog_delegate.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/brave_shell_integration.h"
-#include "brave/browser/brave_shell_integration_win.h"
-#else
+#else  // BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "chrome/browser/shell_integration.h"
 #endif
 
 namespace {
 
-void ShowBraveFirstRunDialogViews(Profile* profile) {
+void ShowBraveFirstRunDialogViews() {
   base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
   BraveFirstRunDialog::Show(run_loop.QuitClosure());
   run_loop.Run();
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 class PinShortcutCheckbox : public views::Checkbox {
  public:
   METADATA_HEADER(PinShortcutCheckbox);
@@ -72,14 +71,14 @@ END_METADATA
 
 namespace first_run {
 
-void ShowFirstRunDialog(Profile* profile) {
+void ShowFirstRunDialog() {
 #if BUILDFLAG(IS_MAC)
   if (base::FeatureList::IsEnabled(features::kViewsFirstRunDialog))
-    ShowBraveFirstRunDialogViews(profile);
+    ShowBraveFirstRunDialogViews();
   else
-    ShowFirstRunDialogCocoa(profile);
+    ShowFirstRunDialogCocoa();
 #else
-  ShowBraveFirstRunDialogViews(profile);
+  ShowBraveFirstRunDialogViews();
 #endif
 }
 
@@ -133,7 +132,7 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
   constexpr int kMaxWidth = 350;
   contents_label->SetMaximumWidth(kMaxWidth);
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   pin_shortcut_checkbox_ =
       AddChildView(std::make_unique<PinShortcutCheckbox>());
 #endif
@@ -143,7 +142,7 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
   constexpr int kTopPadding = 20;
   int kBottomPadding = 55;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   kBottomPadding -= pin_shortcut_checkbox_->GetPreferredSize().height();
 #endif
 
@@ -163,7 +162,7 @@ void BraveFirstRunDialog::Done() {
 bool BraveFirstRunDialog::Accept() {
   GetWidget()->Hide();
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
       ->StartSetAsDefault(base::BindOnce(
           [](bool pin_to_shortcut,
@@ -171,7 +170,7 @@ bool BraveFirstRunDialog::Accept() {
             if (pin_to_shortcut &&
                 state == shell_integration::DefaultWebClientState::IS_DEFAULT) {
               // Try to pin to taskbar when Brave is set as a default browser.
-              shell_integration::win::PinToTaskbar();
+              shell_integration::PinShortcut();
             }
           },
           pin_shortcut_checkbox_->GetChecked()));

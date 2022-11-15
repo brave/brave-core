@@ -441,6 +441,7 @@ Ko za vsa spletna mesta ali za določeno spletno mesto izbrišete zgodovino brsk
 <translation id="3435465986463792564">Imate odprtih veliko oken? Tukaj jih lahko upravljate.</translation>
 <translation id="3443221991560634068">Vnovično nalaganje trenutne strani</translation>
 <translation id="3444179773590444986">Želite poslati povratne informacije o temni temi za spletna mesta?</translation>
+<translation id="7384339501748168186">Brave zaradi varstva vaše zasebnosti ne bo samodejno izpolnil polja za vnos gesla.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{Načrtovan je 1 prenos.}one{Načrtovan je # prenos.}two{Načrtovana sta # prenosa.}few{Načrtovani so # prenosi.}other{Načrtovanih je # prenosov.}}</translation>
 <translation id="3474624961160222204">Nadaljuj kot <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Izberete lahko iskalnik</translation>
@@ -658,6 +659,7 @@ V Brave Računu so morda druge vrste zgodovine brskanja, kot so iskanja in dejav
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Gesla so shranjena v Upravitelju gesel v tej napravi.</translation>
 <translation id="4766678251456904326">Dodajte račun v napravo</translation>
+<translation id="4787736314074622408">Ali želite izbrisati »<ph name="ITEM_TITLE"/>«?</translation>
 <translation id="4791358705705538979">Pomaga vam dokončati opravila v spletu, denimo dokončanje nakupa.</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Šifriranje gesla ne vključuje plačilnih sredstev in naslovov iz Googla Pay.
@@ -726,6 +728,7 @@ V Brave Računu so morda druge vrste zgodovine brskanja, kot so iskanja in dejav
 <translation id="4744980273298156620">Kmalu bodo prikazane novice s spletnega mesta <ph name="SITE_NAME"/>, ko boste odprli nov zavihek. Spletna mesta, ki jih spremljate, se shranijo v računu Brave. Upravljate jih lahko v nastavitvah Odkrivanja.</translation>
 <translation id="5091249083535528968">Razširjeni podatki o uporabi</translation>
 <translation id="509429900233858213">Napaka.</translation>
+<translation id="5099845111805573968">Ko enkrat izberete namizno spletno mesto, se nastavitev uporabi za spletno mesto ob vsakem obisku.</translation>
 <translation id="225414324447409614">Če vam spletno mesto poskusi ukrasti geslo ali ko prenašate škodljivo datoteko, lahko Brave pošlje URL-je, vključno z delčki vsebine strani, Varnemu brskanju.</translation>
 <translation id="510275257476243843">Še 1 h</translation>
 <translation id="5115811374190515607">za <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ V Brave Računu so morda druge vrste zgodovine brskanja, kot so iskanja in dejav
 <translation id="5958275228015807058">Poiščite datoteke in strani v Prenosih</translation>
 <translation id="5962718611393537961">Dotik za strnitev</translation>
 <translation id="5964869237734432770">Ustavi prenos opisov slik</translation>
+<translation id="9135546826883360971">Brave si bo zapomnil vašo izbiro</translation>
 <translation id="5979084224081478209">Preveri gesla</translation>
 <translation id="5995726099713306770">Ali želite znova prenesti stran?</translation>
 <translation id="6456271171669383967">Ohrani Brave</translation>
@@ -920,6 +924,7 @@ Preizkusi peskovnika za zasebnost so še vedno v aktivnem razvoju in na voljo le
 <translation id="6192907950379606605">Prenesi opise slik</translation>
 <translation id="8367262879301982880">Gesla so shranjena v Brave Upravitelju gesel v tej napravi.</translation>
 <translation id="620197886010707372">Želite odpreti aplikacijo za aplikacijo <ph name="APPNAME"/> z Googlom Play?</translation>
+<translation id="6202812185118613467">Če želite začeti sinhronizacijo, se znova prijavite</translation>
 <translation id="6203593061661911168">Prenos se bo začel v omrežju Wi-Fi.</translation>
 <translation id="6210748933810148297">Niste <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Predogled te strani</translation>
@@ -1051,6 +1056,7 @@ Nekatera spletna mesta se lahko na primer na zahtevo odzovejo tako, da prikažej
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, zavihek, izbran</translation>
 <translation id="6828070228333235514">Ustavi spremljanje cene</translation>
+<translation id="6830728435402077660">Ni varno</translation>
 <translation id="6833996806551876956">Preizkus za Privacy Sandbox</translation>
 <translation id="6836206421467243968">Obnovitev skupine zavihkov <ph name="TITLE_OF_GROUP"/> kot nove skupine zavihkov v ozadju.</translation>
 <translation id="6846298663435243399">Nalaganje poteka …</translation>
@@ -1351,7 +1357,7 @@ Nekatera spletna mesta se lahko na primer na zahtevo odzovejo tako, da prikažej
 <translation id="8460448946170646641">Pregled ključnih kontrolnikov varnosti in zasebnosti</translation>
 <translation id="8461694314515752532">Šifriranje sinhroniziranih podatkov z vašim geslom za sinhronizacijo</translation>
 <translation id="8466613982764129868">Naprava <ph name="TARGET_DEVICE_NAME"/> mora biti povezana v internet</translation>
-<translation id="8473863474539038330">Naslovi in drugo</translation>
+<translation id="5633907266617216186">Naslovi in drugo</translation>
 <translation id="8481921391193215807">Če je funkcija vklopljena, lahko spletna mesta uporabljajo tukaj prikazane tehnike za ohranitev zasebnosti zaradi zagotavljanja svoje vsebine in storitev. Mednje sodijo nadomestne rešitve sledenju na več spletnih mestih. Sčasoma bo morda dodanih več preizkusov.
 
 <ph name="BEGIN_LIST_ITEM1"/>Oglaševalci in izdajatelji lahko uporabljajo tehniko FLoC.<ph name="END_LIST_ITEM1"/>

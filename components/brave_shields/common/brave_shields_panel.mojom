@@ -50,7 +50,8 @@ interface DataHandler {
 struct SiteBlockInfo {
   string host;
   int32 total_blocked_resources;
-  bool is_shields_enabled;
+  bool is_brave_shields_enabled;
+  bool is_brave_shields_managed;
   url.mojom.Url favicon_url;
   array<url.mojom.Url> ads_list;
   array<url.mojom.Url> http_redirects_list;

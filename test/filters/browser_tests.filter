@@ -9,7 +9,87 @@
 # display an additional confirmation infobar for P3A
 -All/PageSpecificSiteDataDialogBrowserTest.*/*
 
-# This test fails because of the following failed expectation in prerender_test_util.cc:
+# These tests fail because they expect an additional Manifest V2 deprecation
+# warning, which is disabled in Brave.
+-ErrorConsoleBrowserTest.BadAPIArgumentsRuntimeError
+-ErrorConsoleBrowserTest.BadAPIPermissionsRuntimeError
+-ErrorConsoleBrowserTest.BrowserActionRuntimeError
+-WindowOpenApiTest.OpenLockedFullscreenWindowNonChromeOS
+
+# These tests are failing because the brave triggers reading of prefstore prefs
+# values before a prefstore is initialised.
+-PrivacySandboxPromptHelperTestWithParamInstance/PrivacySandboxPromptHelperTestWithParam.PromptOpensOnSettings/*
+-PrivacySandboxPromptHelperTestWithParamInstance/PrivacySandboxPromptHelperTestWithParam.UnsuitableUrl/*
+
+# These tests fail because BraveMainDelegate is not available in the Chromium
+# tests. They fail with the message:
+#
+# Terminating render process for bad Mojo message: Received bad user message:
+# No binder found for interface brave_news.mojom.BraveNewsController for the
+# frame/document scope
+#
+# The binder is not instantiated because BraveContentBrowserClient is also not
+# available.
+-PrivacySandboxPromptHelperTestWithParamInstance/PrivacySandboxPromptHelperTestWithParam.NoPromptNonDefaultNtp/*
+-PermissionRequestChipGestureSensitiveBrowserTest.ShouldUpdateActiverPRMAndObservations
+
+# The tests listed below are disabled because sharedStorage is not enabled in
+# Brave
+-All/SharedStorageFencedFrameChromeBrowserTest.FencedFrameNavigateTop_BudgetWithdrawal/*
+-All/SharedStorageFencedFrameChromeBrowserTest.TwoFencedFrames_DifferentURNs_EachNavigateOnce_BudgetWithdrawalTwice/*
+-All/SharedStoragePrefBrowserTest.AddModule/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.Append/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.Clear/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.Delete/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.RunOperation/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.RunURLSelectionOperation/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.Set/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletAppend/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletClear/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletDelete/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletEntries/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletGet/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletKeys/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletLength/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletRemainingBudget/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.WorkletSet/PrivacySandboxEnabled_3PCookiesAllowed
+-SharedStorageChromeBrowserTest.AddModule_EmptyResultError
+-SharedStorageChromeBrowserTest.AddModule_LoadFailureError
+-SharedStorageChromeBrowserTest.AddModule_MultipleAddModuleError
+-SharedStorageChromeBrowserTest.AddModule_UnexpectedRedirectError
+-SharedStorageChromeBrowserTest.DocumentTiming
+-SharedStorageChromeBrowserTest.Run_FunctionError
+-SharedStorageChromeBrowserTest.Run_NotAPromiseError
+-SharedStorageChromeBrowserTest.Run_NotLoadedError
+-SharedStorageChromeBrowserTest.Run_NotRegisteredError
+-SharedStorageChromeBrowserTest.Run_ScriptError
+-SharedStorageChromeBrowserTest.Run_UnexpectedCustomDataError
+-SharedStorageChromeBrowserTest.SelectUrl_FunctionError
+-SharedStorageChromeBrowserTest.SelectUrl_NotAPromiseError
+-SharedStorageChromeBrowserTest.SelectUrl_NotLoadedError
+-SharedStorageChromeBrowserTest.SelectUrl_NotRegisteredError
+-SharedStorageChromeBrowserTest.SelectUrl_OutOfRangeError
+-SharedStorageChromeBrowserTest.SelectUrl_ReturnValueToIntError
+-SharedStorageChromeBrowserTest.SelectUrl_ScriptError
+-SharedStorageChromeBrowserTest.SelectUrl_UnexpectedCustomDataError
+-SharedStorageChromeBrowserTest.WorkletKeysEntries_AllIterated
+-SharedStorageChromeBrowserTest.WorkletKeysEntries_AllIteratedLessThanTenKeys
+-SharedStorageChromeBrowserTest.WorkletKeysEntries_AllIteratedNoKeys
+-SharedStorageChromeBrowserTest.WorkletKeysEntries_PartiallyIterated
+-SharedStorageChromeBrowserTest.WorkletKeysEntries_PartiallyIteratedLessThanTenKeys
+-SharedStorageChromeBrowserTest.WorkletNumPerPage_Three
+-SharedStorageChromeBrowserTest.WorkletNumPerPage_Two
+-SharedStorageChromeBrowserTest.WorkletTiming
+
+# This test fails because kPrerender2 feature is disabled. Javascipt in the
+# test expects `document.prerendering === false` whereas we have
+# `document.prerendering === unknown`
+-OmniboxPrerenderDefaultPrerender2BrowserTest.PrerenderFunctionsCheckWithDefaultFlag
+
+# This test fails because kPrerender2 feature is disabled.
+-NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
+
+# These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
 # kPrerender2 feature is disabled in Brave.
 -AccuracyTipBubbleViewPrerenderBrowserTest.*
@@ -126,7 +206,6 @@
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
 # https://github.com/brave/brave-browser/issues/11546 for additional
 # information.
-
 -DirectSocketsTcpApiTest.*
 -DirectSocketsUdpApiTest.*
 
@@ -147,6 +226,69 @@
 # These tests fail because of the following failed DCHECK in web_view_guest.cc:
 # render_frame_host->IsActive() || (content::SiteIsolationPolicy::IsSiteIsolationForGuestsEnabled() && render_frame_host->IsInLifecycleState( RenderFrameHost::LifecycleState::kPendingDeletion))
 -WebViewSSLErrorTests/WebViewSSLErrorTest.*/SiteIsolationForGuestsEnabled
+
+# These tests use BroadcastChannel to communicate between 3p frame, we partition
+# these channels, which breaks test communication.
+-FileSystemAccessBrowserTest.RevokePermissionAfter*
+
+# This test checks data sent do DownloadProtectionService (url, filename, etc.)
+# which we filter for privacy reasons.
+-FileSystemAccessBrowserTest.SafeBrowsing
+
+# These tests fail because of the Ephemeral Storage (they pass with 
+# kBraveEphemeralStorage feature disabled).
+-StorageAccessAPIForOriginBrowserTest.*
+-StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
+-StorageAccessAPIWithCHIPSBrowserTest.*
+
+# These tests fail because they expect the record of a cookie to go to the
+# "Standard" histogram mode, but instead it goes to the "Block3PC" mode.
+-DIPSTabHelperBrowserTest.Histograms_MultipleClicksThenStorage
+-DIPSTabHelperBrowserTest.Histograms_MultipleStoragesThenClick
+
+# These tests fail because of the shields. Didn't investigate in depth, but
+# the tests pass when run with --disable-brave-extension.
+-All/DeclarativeNetRequestAllowAllRequestsBrowserTest.TestPostNavigationMatched/*
+-All/DeclarativeNetRequestAllowAllRequestsBrowserTest.TestPostNavigationNotMatched/*
+
+# Tests crash due to a vector allocation failure. This seems to be happening
+# because the lambda to which the vector is passed is being called after the
+# test's scope has already been left.
+# Resetting TestUkmRecorder::SetOnAddEntryCallback("", base::DoNothing()) after
+# the run_loop.Run() fixes the crash.
+# Also, running the test with --disable-brave-extension fixes it as well, so
+# perhaps the additional recorded event that is causing the unexpected callback
+# is coming from Brave extension?
+-PrivacyBudgetBrowserTestWithTestRecorderParameterized/PrivacyBudgetBrowserTestWithTestRecorder.RecordingFeaturesCalledInWorker/*
+
+# This test times out because we Disable "Use a prediction service to load 
+# pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref).
+-SearchNavigationPrefetchNoCancelBrowserTest.PrefetchIsNotCancelled
+
+# These tests fail because we disable subresource web bundles.
+-All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.RequestCanceled/*
+-All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.RequestCanceledUuidInPackageUrl/*
+-All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestCanceled/*
+-PersistentBackground/SubresourceWebBundlesWebRequestApiTest.ChangeHeader/0
+-PersistentBackground/WebRequestPersistentListenersTest.TestListenersArePersistent/0
+-PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.ChangeHeader/0
+-ServiceWorker/SubresourceWebBundlesWebRequestApiTest.ChangeHeader/0
+-ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.ChangeHeader/0
+-SubresourceWebBundlesContentScriptApiTest.SubresourceWebBundleIframe
+-All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.RequestRedirected/*
+-All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestRedirected/*
+-PersistentBackground/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
+-PersistentBackground/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-PersistentBackground/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
+-PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
+-PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
+-ServiceWorker/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
+-ServiceWorker/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-ServiceWorker/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
+-ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
+-ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -216,21 +358,6 @@
 -All/SearchEnginePreconnectorForegroundBrowserTest.*
 -All/SearchPrefetchServiceEnabledBrowserTest.*
 -All/SearchPrefetchServiceNavigationPrefetchBrowserTest.*
--All/SharedStoragePrefBrowserTest.AddModule/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Append/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Clear/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Delete/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.RunOperation/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.RunURLSelectionOperation/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Set/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletAppend/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletClear/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletDelete/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletEntries/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletGet/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletKeys/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletLength/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletSet/PrivacySandboxEnabled_3PCookiesAllowed
 -All/StartupBrowserCreatorInfobarsWithoutStartupWindowTest.*
 -All/StartupBrowserCreatorPickerInfobarTest.*
 -All/StartupBrowserCreatorPickerTest.*
@@ -262,7 +389,6 @@
 -AvatarMenuBrowserTest.AddNewProfile
 -AvatarMenuBrowserTest.EditProfile_NotLoaded
 -AvatarToolbarButtonBrowserTest.*
--BackForwardCacheFileSystemAccessBrowserTest.*
 -BackForwardCachePageLoadMetricsObserverBrowserTest.*
 -BackForwardCachePrintBrowserTest.*
 -BackForwardCacheSiteDetailsBrowserTest.*
@@ -430,7 +556,6 @@
 -FencedFrameSiteDetailsBrowserTest.*
 -FieldTrialTest.*
 -FileIFrameAPITest.*
--FileSystemAccessBrowserTest.*
 -FindInPageControllerTest.*
 -FirstPartySets/*
 -FirstPartySetsPolicyBrowsertest.*
@@ -534,7 +659,6 @@
 -MetricsServiceBrowserTest.*
 -MetricsServiceUserDemographicsBrowserTest.*
 -Mode/BackgroundColorChangeWebAppBrowserTest.*
--MojoFileSystemAccessBrowserTest.CanResolveFilePath
 -MojoJSInterfaceBrokerBrowserTest.*
 -MultiOriginSessionRestoreTest.*
 -MultiPageBrowserTest.*
@@ -783,33 +907,6 @@
 -SharedClipboardBrowserTest.*
 -SharedClipboardUIFeatureDisabledBrowserTest.*
 -SharedHighlightingBrowserTest.*
--SharedStorageChromeBrowserTest.AddModule_EmptyResultError
--SharedStorageChromeBrowserTest.AddModule_LoadFailureError
--SharedStorageChromeBrowserTest.AddModule_MultipleAddModuleError
--SharedStorageChromeBrowserTest.AddModule_UnexpectedRedirectError
--SharedStorageChromeBrowserTest.DocumentTiming
--SharedStorageChromeBrowserTest.Run_FunctionError
--SharedStorageChromeBrowserTest.Run_NotAPromiseError
--SharedStorageChromeBrowserTest.Run_NotLoadedError
--SharedStorageChromeBrowserTest.Run_NotRegisteredError
--SharedStorageChromeBrowserTest.Run_ScriptError
--SharedStorageChromeBrowserTest.Run_UnexpectedCustomDataError
--SharedStorageChromeBrowserTest.SelectUrl_FunctionError
--SharedStorageChromeBrowserTest.SelectUrl_NotAPromiseError
--SharedStorageChromeBrowserTest.SelectUrl_NotLoadedError
--SharedStorageChromeBrowserTest.SelectUrl_NotRegisteredError
--SharedStorageChromeBrowserTest.SelectUrl_OutOfRangeError
--SharedStorageChromeBrowserTest.SelectUrl_ReturnValueToIntError
--SharedStorageChromeBrowserTest.SelectUrl_ScriptError
--SharedStorageChromeBrowserTest.SelectUrl_UnexpectedCustomDataError
--SharedStorageChromeBrowserTest.WorkletKeysEntries_AllIterated
--SharedStorageChromeBrowserTest.WorkletKeysEntries_AllIteratedLessThanTenKeys
--SharedStorageChromeBrowserTest.WorkletKeysEntries_AllIteratedNoKeys
--SharedStorageChromeBrowserTest.WorkletKeysEntries_PartiallyIterated
--SharedStorageChromeBrowserTest.WorkletKeysEntries_PartiallyIteratedLessThanTenKeys
--SharedStorageChromeBrowserTest.WorkletNumPerPage_Three
--SharedStorageChromeBrowserTest.WorkletNumPerPage_Two
--SharedStorageChromeBrowserTest.WorkletTiming
 -SignedExchangePolicyBrowserTest.BlockList
 -SignedExchangePolicyTest.*
 -SignedExchangeSecurityStateTest.SecurityLevelIsSecure
@@ -927,6 +1024,7 @@
 -WebAppLaunchHandlerDisabledBrowserTest.*
 -WebAppMoverBadPatternBrowsertest.*
 -WebAppOfflineDarkModeTest.*
+-WebAppTabStripBrowserTest.NavigationThrottle
 -WebAppTabStripBrowserTest.ReparentingPinsHomeTab
 -WebAppTabStripLinkCapturingBrowserTest.*
 -WebNavigationApiBackForwardCacheTest.*

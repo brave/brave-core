@@ -24,6 +24,7 @@
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/url_data_source.h"
@@ -69,10 +70,49 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
   delete this;
 }
 
-void BraveRewardsNativeWorker::CreateRewardsWallet(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->CreateRewardsWallet("", base::DoNothing());
+bool BraveRewardsNativeWorker::IsSupported(JNIEnv* env) {
+  return brave_rewards::IsSupported(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
+      brave_rewards::IsSupportedOptions::kNone);
+}
+
+bool BraveRewardsNativeWorker::IsSupportedSkipRegionCheck(JNIEnv* env) {
+  return brave_rewards::IsSupported(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
+      brave_rewards::IsSupportedOptions::kSkipRegionCheck);
+}
+
+std::string BraveRewardsNativeWorker::StringifyResult(
+    ledger::mojom::CreateRewardsWalletResult result) {
+  switch (result) {
+    case ledger::mojom::CreateRewardsWalletResult::kSuccess:
+      return "success";
+    case ledger::mojom::CreateRewardsWalletResult::kWalletGenerationDisabled:
+      return "wallet-generation-disabled";
+    case ledger::mojom::CreateRewardsWalletResult::kGeoCountryAlreadyDeclared:
+      return "country-already-declared";
+    case ledger::mojom::CreateRewardsWalletResult::kUnexpected:
+      return "unexpected-error";
   }
+}
+
+void BraveRewardsNativeWorker::CreateRewardsWallet(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& country_code) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->CreateRewardsWallet(
+        base::android::ConvertJavaStringToUTF8(env, country_code),
+        base::BindOnce(&BraveRewardsNativeWorker::OnCreateRewardsWallet,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnCreateRewardsWallet(
+    ledger::mojom::CreateRewardsWalletResult result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onCreateRewardsWallet(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, StringifyResult(result)));
 }
 
 void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {
@@ -544,16 +584,13 @@ void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->CompleteReset(
-        base::BindOnce(&BraveRewardsNativeWorker::OnResetTheWholeState,
-                       weak_factory_.GetWeakPtr()));
-  } else {
-    JNIEnv* env = base::android::AttachCurrentThread();
-
-    Java_BraveRewardsNativeWorker_OnResetTheWholeState(env,
-            weak_java_brave_rewards_native_worker_.get(env), false);
+  if (!brave_rewards_service_) {
+    OnResetTheWholeState(false);
+    return;
   }
+  brave_rewards_service_->CompleteReset(
+      base::BindOnce(&BraveRewardsNativeWorker::OnResetTheWholeState,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void BraveRewardsNativeWorker::OnResetTheWholeState(const bool success) {
@@ -720,6 +757,32 @@ void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
   }
 }
 
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetCountryCode(JNIEnv* env) {
+  std::string country_code;
+  if (brave_rewards_service_) {
+    country_code = brave_rewards_service_->GetCountryCode();
+  }
+
+  return base::android::ConvertUTF8ToJavaString(env, country_code);
+}
+
+void BraveRewardsNativeWorker::GetAvailableCountries(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetAvailableCountries(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetAvailableCountries,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnGetAvailableCountries(
+    std::vector<std::string> countries) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onGetAvailableCountries(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ToJavaArrayOfStrings(env, countries));
+}
+
 void BraveRewardsNativeWorker::GetPublisherBanner(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& publisher_key) {
@@ -763,8 +826,9 @@ void BraveRewardsNativeWorker::onPublisherBanner(
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
-    const ledger::mojom::Result result,
-    ledger::mojom::ExternalWalletPtr wallet) {
+    base::expected<ledger::mojom::ExternalWalletPtr,
+                   ledger::mojom::GetExternalWalletError> result) {
+  auto wallet = std::move(result).value_or(nullptr);
   std::string json_wallet;
   if (!wallet) {
     json_wallet = "";
@@ -784,9 +848,8 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     base::JSONWriter::Write(dict, &json_wallet);
   }
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnGetExternalWallet(env,
-      weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result),
+  Java_BraveRewardsNativeWorker_OnGetExternalWallet(
+      env, weak_java_brave_rewards_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, json_wallet));
 }
 
@@ -816,24 +879,6 @@ std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
     }
     base::JSONWriter::Write(dict, &json_args);
     return json_args;
-}
-
-void BraveRewardsNativeWorker::RecoverWallet(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& pass_phrase) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->RecoverWallet(
-        base::android::ConvertJavaStringToUTF8(env, pass_phrase));
-  }
-}
-
-void BraveRewardsNativeWorker::OnRecoverWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnRecoverWallet(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
 }
 
 void BraveRewardsNativeWorker::RefreshPublisher(

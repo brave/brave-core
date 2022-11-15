@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router'
@@ -33,7 +33,6 @@ import { WalletActions } from '../../../common/actions'
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // hooks
-import { useIsMounted } from '../../../common/hooks/useIsMounted'
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import { usePrevNetwork } from '../../../common/hooks'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
@@ -78,7 +77,6 @@ export const DepositFundsScreen = () => {
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
-  const isMounted = useIsMounted()
   const { prevNetwork } = usePrevNetwork()
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
   const scrollIntoView = useScrollIntoView()
@@ -186,8 +184,12 @@ export const DepositFundsScreen = () => {
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
   const goToPortfolio = React.useCallback(() => {
+    if (tokenId !== undefined) {
+      history.goBack()
+      return
+    }
     history.push(WalletRoutes.Portfolio)
-  }, [history])
+  }, [history, tokenId])
 
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
@@ -223,8 +225,8 @@ export const DepositFundsScreen = () => {
   }, [])
 
   const copyAddressToClipboard = React.useCallback(() => {
-    copyToClipboard(selectedAccount.address)
-  }, [copyToClipboard, selectedAccount.address])
+    copyToClipboard(selectedAccount?.address || '')
+  }, [copyToClipboard, selectedAccount?.address])
 
   const onCopyKeyPress = React.useCallback(({ key }: React.KeyboardEvent) => {
     // Invoke for space or enter, just like a regular input or button
@@ -250,13 +252,20 @@ export const DepositFundsScreen = () => {
 
   // effects
   React.useEffect(() => {
+    let subscribed = true
+
     // fetch selected Account QR Code
-    generateQRCode(selectedAccount.address).then(qr => {
-      if (isMounted) {
+    selectedAccount?.address && generateQRCode(selectedAccount.address).then(qr => {
+      if (subscribed) {
         setQRCode(qr)
       }
     })
-  }, [selectedAccount, isMounted])
+
+    // cleanup
+    return () => {
+      subscribed = false
+    }
+  }, [selectedAccount?.address])
 
   React.useEffect(() => {
     // unselect asset if  AllNetworksOption is not selected
@@ -271,7 +280,7 @@ export const DepositFundsScreen = () => {
       selectedAsset &&
       selectedAssetNetwork &&
       accountsForSelectedAssetNetwork.length && // asset is selected & account is available
-      selectedAccount.coin !== selectedAsset.coin // needs to change accounts to one with correct network
+      selectedAccount?.coin !== selectedAsset.coin // needs to change accounts to one with correct network
     ) {
       dispatch(WalletActions.selectAccount(accountsForSelectedAssetNetwork[0]))
     }
@@ -429,7 +438,7 @@ export const DepositFundsScreen = () => {
                     <AddressTextLabel>Address:</AddressTextLabel>
 
                     <Row gap={'12px'}>
-                      <AddressText>{selectedAccount.address}</AddressText>
+                      <AddressText>{selectedAccount?.address}</AddressText>
                       <CopyButton
                         iconColor='interactive05'
                         onKeyPress={onCopyKeyPress}

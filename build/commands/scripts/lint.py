@@ -89,7 +89,20 @@ def main(args):
         # Process cpplints arguments if any.
         command = args + files
         filters = [
-            '-runtime/references',  # Allowed by Google style guide.
+            # Allowed by Google style guide.
+            '-runtime/references',
+            # Most whitespace issues handled by clang-format.
+            '-whitespace/braces',
+            '-whitespace/comma',
+            '-whitespace/end_of_line',
+            '-whitespace/forcolon',
+            '-whitespace/indent',
+            '-whitespace/line_length',
+            '-whitespace/newline',
+            '-whitespace/operators',
+            '-whitespace/parens',
+            '-whitespace/semicolon',
+            '-whitespace/tab',
         ]
         if options.filter:
             filters.extend(options.filter)

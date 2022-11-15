@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
 
@@ -69,7 +69,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_MODAL_BACKUP_CLOSE: {
       state = { ...state }
       let ui = state.ui
-      ui.walletRecoveryStatus = null
       ui.modalBackup = false
       state = {
         ...state,
@@ -291,95 +290,32 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
-    case types.PROCESS_REWARDS_PAGE_URL: {
+    case types.CONNECT_EXTERNAL_WALLET: {
       const path = action.payload.path
       const query = action.payload.query
       const ui = state.ui
 
-      chrome.send('brave_rewards.processRewardsPageUrl', [path, query])
+      chrome.send('brave_rewards.connectExternalWallet', [path, query])
       ui.modalRedirect = 'show'
 
-      state = {
-        ...state,
-        ui
-      }
+      state = { ...state, ui }
       break
     }
-    case types.ON_PROCESS_REWARDS_PAGE_URL: {
-      const data = action.payload.data
-      const ui = state.ui
-
+    case types.ON_CONNECT_EXTERNAL_WALLET: {
       chrome.send('brave_rewards.getExternalWallet')
 
-      if (data.result === 9) { // type::Result::NOT_FOUND
-        ui.modalRedirect = 'kycRequiredModal'
-        break
-      }
+      const ui = state.ui
+      const { value, error } = action.payload.result
 
-      if (data.result === 24) { // type::Result::EXPIRED_TOKEN
-        ui.modalRedirect = 'error'
-        break
-      }
-
-      if (data.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
-        ui.modalRedirect = 'upholdBATNotAllowedModal'
-        break
-      }
-
-      if (data.result === 36) { // type::Result::DEVICE_LIMIT_REACHED
-        ui.modalRedirect = 'deviceLimitReachedModal'
-        break
-      }
-
-      if (data.result === 37) { // type::Result::MISMATCHED_PROVIDER_ACCOUNTS
-        ui.modalRedirect = 'mismatchedProviderAccountsModal'
-        break
-      }
-
-      if (data.result === 42) { // type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE
-        ui.modalRedirect = 'walletOwnershipVerificationFailureModal'
-        break
-      }
-
-      if (data.result === 44) { // type::Result::FLAGGED_WALLET
-        ui.modalRedirect = 'flaggedWalletModal'
-        break
-      }
-
-      if (data.result === 45) { // type::Result::REGION_NOT_SUPPORTED
-        ui.modalRedirect = 'regionNotSupportedModal'
-        break
-      }
-
-      if (data.result === 46) { // type::Result::MISMATCHED_COUNTRIES
-        ui.modalRedirect = 'mismatchedCountriesModal'
-        break
-      }
-
-      if (data.result !== 0) {
-        ui.modalRedirect = 'error'
-        break
-      }
-
-      if (data.walletType === 'uphold' || data.walletType === 'bitflyer' || data.walletType === 'gemini') {
+      if (value) {
         chrome.send('brave_rewards.fetchBalance')
-
-        if (data.action === 'authorization') {
-          const url = data.args.redirect_url
-          if (url && url.length > 0) {
-            window.open(url, '_self')
-          }
-          ui.modalRedirect = 'hide'
-          break
-        }
+        ui.modalRedirect = 'hide'
+      } else {
+        ui.modalRedirect = error
       }
 
-      ui.modalRedirect = 'error'
+      state = { ...state, ui }
 
-      state = {
-        ...state,
-        ui
-      }
       break
     }
     case types.HIDE_REDIRECT_MODAL: {
@@ -441,17 +377,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.GET_PAYMENT_ID: {
-      chrome.send('brave_rewards.getPaymentId')
-      break
-    }
-    case types.ON_PAYMENT_ID: {
-      state = {
-        ...state,
-        paymentId: action.payload.paymentId
-      }
-      break
-    }
     case types.GET_ONBOARDING_STATUS: {
       chrome.send('brave_rewards.getOnboardingStatus')
       break
@@ -477,6 +402,18 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getContributionAmount')
       chrome.send('brave_rewards.getAutoContributeProperties')
       chrome.send('brave_rewards.getAdsData')
+      break
+    }
+    case types.GET_IS_UNSUPPORTED_REGION: {
+      chrome.send('brave_rewards.getIsUnsupportedRegion')
+      break
+    }
+    case types.ON_IS_UNSUPPORTED_REGION: {
+      const { isUnsupportedRegion } = action.payload
+      state = {
+        ...state,
+        isUnsupportedRegion
+      }
       break
     }
   }

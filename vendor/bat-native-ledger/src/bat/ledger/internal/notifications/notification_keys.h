@@ -9,6 +9,9 @@
 namespace ledger {
 namespace notifications {
 
+const char kUpholdBATNotAllowed[] = "uphold_bat_not_allowed";
+const char kUpholdInsufficientCapabilities[] =
+    "uphold_insufficient_capabilities";
 const char kWalletDisconnected[] = "wallet_disconnected";
 
 }  // namespace notifications

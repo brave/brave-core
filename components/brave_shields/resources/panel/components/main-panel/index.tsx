@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
 import * as S from './style'
@@ -14,9 +18,9 @@ function MainPanel () {
   const { isExpanded, toggleIsExpanded } = useIsExpanded()
   const { siteBlockInfo, getSiteSettings } = React.useContext(DataContext)
 
-  const braveShieldsStatusText = splitStringForTag(siteBlockInfo?.isShieldsEnabled ? getLocale('braveShieldsUp') : getLocale('braveShieldsDown'))
+  const braveShieldsStatusText = splitStringForTag(siteBlockInfo?.isBraveShieldsEnabled ? getLocale('braveShieldsUp') : getLocale('braveShieldsDown'))
   const braveShieldsBrokenText = splitStringForTag(getLocale('braveShieldsBroken'))
-  const braveShieldsNote = splitStringForTag(siteBlockInfo?.isShieldsEnabled
+  const braveShieldsNote = splitStringForTag(siteBlockInfo?.isBraveShieldsEnabled
     ? getLocale('braveShieldsBlockedNote')
     : getLocale('braveShieldsNOTBlockedNote'))
 
@@ -46,7 +50,14 @@ function MainPanel () {
       {braveShieldsBrokenText.afterTag}
     </S.Footnote>
   )
-
+  let managedFootnoteElement = (
+    <S.Footnote>
+      <S.ControlBox>
+        <S.ManagedIcon />
+        <S.ManagedText>{getLocale('braveShieldsManaged')}</S.ManagedText>
+      </S.ControlBox>
+    </S.Footnote>
+  )
   let advancedControlButtonElement = (isExpanded != null) && (
     <S.AdvancedControlsButton
       type="button"
@@ -68,7 +79,7 @@ function MainPanel () {
     </S.BlockCount>
   )
 
-  if (!siteBlockInfo?.isShieldsEnabled) {
+  if (!siteBlockInfo?.isBraveShieldsEnabled) {
     totalCountElement = (<S.BlockCount>{'\u2014'}</S.BlockCount>)
 
     advancedControlButtonElement = (
@@ -118,7 +129,7 @@ function MainPanel () {
       </S.HeaderBox>
       <S.StatusBox>
         <S.ControlBox>
-          <S.ShieldsIcon isActive={siteBlockInfo?.isShieldsEnabled ?? false}>
+          <S.ShieldsIcon isActive={siteBlockInfo?.isBraveShieldsEnabled ?? false}>
             <svg width="24" height="28" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M23.654 11.667c-.002.122-.258 12.26-11.255 16.263-.008.002-.017 0-.024.003A1.16 1.16 0 0 1 12 28c-.13 0-.256-.026-.376-.067l-.023-.003C.604 23.927.347 11.789.346 11.667.339 11.02.333 9.965.333 9.32V5.817a2.338 2.338 0 0 1 2.333-2.335h1.167c4.9 0 7.106-2.9 7.197-3.023.222-.298.558-.443.902-.455.394-.032.794.117 1.04.46.088.118 2.294 3.018 7.194 3.018h1.167a2.338 2.338 0 0 1 2.333 2.335V9.32c0 .645-.006 1.701-.012 2.347Zm-2.321-5.85h-1.167c-4.263 0-6.895-1.827-8.166-3.009-1.272 1.182-3.904 3.01-8.167 3.01H2.666V9.32c0 .639.006 1.684.013 2.322.006.425.272 10.332 9.32 13.92 9.085-3.609 9.32-13.815 9.321-13.92.007-.638.013-1.683.013-2.322V5.817Zm-8.882 12.368a1.167 1.167 0 0 1-1.688.203l-4.177-3.503a1.169 1.169 0 0 1-.145-1.646 1.165 1.165 0 0 1 1.643-.144L11.31 15.8l4.42-6.004a1.166 1.166 0 1 1 1.879 1.385l-5.157 7.005Z" />
             </svg>
           </S.ShieldsIcon>
@@ -132,19 +143,27 @@ function MainPanel () {
           <S.StatusToggle>
             <Toggle
               brand="shields"
-              isOn={siteBlockInfo?.isShieldsEnabled}
+              isOn={siteBlockInfo?.isBraveShieldsEnabled}
               onChange={handleToggleChange}
               accessibleLabel={getLocale('braveShieldsEnable')}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </S.StatusToggle>
         </S.ControlBox>
+        {!siteBlockInfo?.isBraveShieldsManaged &&
         <S.StatusFootnoteBox>
           {reportSiteOrFootnoteElement}
         </S.StatusFootnoteBox>
+        }
+        {siteBlockInfo?.isBraveShieldsManaged &&
+        <S.StatusFootnoteBox>
+          {managedFootnoteElement}
+        </S.StatusFootnoteBox>
+        }
       </S.StatusBox>
       {advancedControlButtonElement}
       { isExpanded &&
-        siteBlockInfo?.isShieldsEnabled &&
+        siteBlockInfo?.isBraveShieldsEnabled &&
         <AdvancedControlsContentScroller
           isExpanded={isExpanded}
         >

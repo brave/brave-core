@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import { provideStrings } from '../../../.storybook/locale'
 
 provideStrings({
@@ -73,6 +77,8 @@ provideStrings({
   // Actions
   braveWalletClickToSwitch: 'Click to switch',
   braveWalletEnterYourPassword: 'Enter your password',
+  braveWalletEnterAPassswordToContinue: 'Enter a password to continue',
+  braveWalletEnterYourPasswordToStartBackup: 'Enter your Brave Wallet password to start backing up wallet.',
 
   // BuySendSwap
   braveWalletBuy: 'Buy',
@@ -92,6 +98,21 @@ provideStrings({
   braveWalletSwapFeesNotice: 'Quote includes a $1 Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
   braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
+
+  // Send Tab
+  braveWalletSendToken: 'Send token',
+  braveWalletSendNFT: 'Send NFT',
+  braveWalletSelectToken: 'Select token',
+  braveWalletSelectNFT: 'Select NFT',
+  braveWalletSendTabSelectTitle: 'Select a token to send',
+  braveWalletEnterRecipientAddress: 'Enter recipient address',
+  braveWalletNotEnoughFunds: 'Not enough funds',
+  braveWalletSendHalf: 'HALF',
+  braveWalletSendMax: 'MAX',
+  braveWalletReviewOrder: 'Review order',
+  braveWalletNoAvailableTokens: 'No available tokens',
+  braveWalletSearchTokens: 'Search token by name',
+  braveWalletSearchNFTs: 'Search NFT by name, id',
 
   // Create Account Tab
   braveWalletUnlockNeededToCreateAccount: 'Unlock needed to create an account',
@@ -200,7 +221,7 @@ provideStrings({
   // Onboarding Success
   braveWalletOnboardingSuccessTitle: 'Congratulations! Your Brave Wallet is ready to go!',
   braveWalletOnboardingSuccessDescription: 'To access your wallet, just click the wallet icon at the top right of any Brave browser window.',
-  braveWalletBuyCryptoButton: 'Buy Crypto',
+  braveWalletBuyCryptoButton: 'Buy crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
 
@@ -300,7 +321,7 @@ provideStrings({
   braveWalletAccountSettingsRemove: 'Remove account',
   braveWalletWatchlistAddCustomAsset: 'Add custom asset',
   braveWalletWatchListTokenName: 'Token name',
-  braveWalletWatchListTokenAddress: 'Token contract address',
+  braveWalletWatchListTokenAddress: 'Token address',
   braveWalletWatchListTokenSymbol: 'Token symbol',
   braveWalletWatchListTokenDecimals: 'Decimals of percision',
   braveWalletWatchListAdd: 'Add',
@@ -488,6 +509,7 @@ provideStrings({
   braveWalletAssetsPanelTitle: 'Account assets',
   braveWalletPanelDisconnected: 'Disconnected',
   braveWalletPanelBlocked: 'Blocked',
+  braveWalletTitle: 'Wallet',
 
   // Wallet Welcome Panel
   braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',
@@ -525,6 +547,10 @@ provideStrings({
   braveWalletConnectHardwarePanelConnect: 'Connect your $1',
   braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation on device.',
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
+
+  // Transaction History Panel (Empty)
+  braveWalletNoTransactionsYet: 'No transactions yet',
+  braveWalletNoTransactionsYetDescription: 'After your first transaction you will be able to view it here.',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',
@@ -761,5 +787,6 @@ provideStrings({
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
-  braveWalletAddAssetNftTabTitle: 'NFT'
+  braveWalletAddAssetNftTabTitle: 'NFT',
+  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.'
 })

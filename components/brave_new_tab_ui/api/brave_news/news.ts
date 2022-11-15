@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveNewsControllerRemote, Publisher, PublisherType, UserEnabled } from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
 import getBraveNewsController, { Channels, Publishers } from '.'
@@ -37,6 +37,9 @@ class BraveNewsApi {
 
   constructor () {
     this.controller = getBraveNewsController()
+  }
+
+  update () {
     this.updateChannels()
 
     this.controller.getLocale().then(({ locale }) => {
@@ -79,22 +82,39 @@ class BraveNewsApi {
   }
 
   setPublisherFollowed (publisherId: string, enabled: boolean) {
+    // For now, Direct Sources work differently to Combined Sources - in their
+    // not modified state they are considered enabled.
+    if (isDirectFeed(this.lastPublishers[publisherId]) && !enabled) {
+      this.setPublisherPref(publisherId, UserEnabled.DISABLED)
+      return
+    }
+
     this.setPublisherPref(publisherId, enabled ? UserEnabled.ENABLED : UserEnabled.NOT_MODIFIED)
   }
 
   async setChannelSubscribed (channelId: string, subscribed: boolean) {
     // While we're waiting for the new channels to come back, speculatively
     // update them, so the UI has instant feedback.
+    // This will be overwritten when the controller responds.
+    let subscribedLocales = this.lastChannels[channelId]?.subscribedLocales ?? []
+    if (subscribedLocales.includes(this.locale)) {
+      // Remove this locale from the list of subscribed locales.
+      subscribedLocales = subscribedLocales.filter(l => l !== this.locale)
+    } else {
+      // Add this locale to the list of subscribed locales.
+      subscribedLocales.push(this.locale)
+    }
+
     this.updateChannels({
       ...this.lastChannels,
       [channelId]: {
         ...this.lastChannels[channelId],
-        subscribed
+        subscribedLocales
       }
     })
 
     // Then, once we receive the actual update, apply it.
-    const { updated } = await this.controller.setChannelSubscribed(channelId, subscribed)
+    const { updated } = await this.controller.setChannelSubscribed(this.locale, channelId, subscribed)
     this.updateChannels({
       ...this.lastChannels,
       [channelId]: updated
@@ -154,4 +174,5 @@ class BraveNewsApi {
   }
 }
 
-export const api = new BraveNewsApi()
+export const api = new BraveNewsApi();
+(window as any).api = api

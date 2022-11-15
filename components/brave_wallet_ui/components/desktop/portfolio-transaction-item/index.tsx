@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -403,10 +408,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 <>
                   <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
                   <TransactionFeeTooltipBody>
-                    {
-                      new Amount(transactionDetails.gasFee)
-                        .divideByDecimals(transactionsNetwork.decimals)
-                        .formatAsAsset(6, transactionsNetwork.symbol)
+                    {transactionsNetwork && new Amount(transactionDetails.gasFee)
+                      .divideByDecimals(transactionsNetwork.decimals)
+                      .formatAsAsset(6, transactionsNetwork.symbol)
                     }
                   </TransactionFeeTooltipBody>
                   <TransactionFeeTooltipBody>

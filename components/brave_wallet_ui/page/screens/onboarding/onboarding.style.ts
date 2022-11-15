@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import { Column } from '../../../components/shared/style'
@@ -78,20 +78,20 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
   font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
   font-size: 14px;
+  letter-spacing: 0.01em;
   line-height: 20px;
-  font-weight: 300;
   color: ${(p) => p.theme.color.text02};
   text-align: ${(p) => p?.textAlign || 'left'};
 
   & > * > strong {
-    font-family: 'Poppins';
-    font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.01em;
+    color: ${(p) => p.theme.color.text01};
   }
 `
 

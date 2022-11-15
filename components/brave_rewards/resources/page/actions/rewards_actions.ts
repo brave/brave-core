@@ -1,9 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
 import { types } from './rewards_types'
+import * as mojom from '../../shared/lib/mojom'
 
 export const isInitialized = () => action(types.IS_INITIALIZED)
 
@@ -46,14 +47,6 @@ export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action
 
 export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
   promotionId
-})
-
-export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
-  key
-})
-
-export const onRecoverWalletData = (result: number) => action(types.ON_RECOVER_WALLET_DATA, {
-  result
 })
 
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
@@ -238,22 +231,21 @@ export const onBalance = (status: number, balance: Rewards.Balance) => action(ty
   balance
 })
 
-export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
-
 export const getExternalWalletProviders = () => action(types.GET_EXTERNAL_WALLET_PROVIDERS)
 
-export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
-  result,
-  wallet
+export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
+
+export const onGetExternalWallet = (result: mojom.GetExternalWalletResult) => action(types.ON_GET_EXTERNAL_WALLET, {
+  result
 })
 
-export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
+export const connectExternalWallet = (path: string, query: string) => action(types.CONNECT_EXTERNAL_WALLET, {
   path,
   query
 })
 
-export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => action(types.ON_PROCESS_REWARDS_PAGE_URL, {
-  data
+export const onConnectExternalWallet = (result: mojom.ConnectExternalWalletResult) => action(types.ON_CONNECT_EXTERNAL_WALLET, {
+  result
 })
 
 export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
@@ -296,13 +288,7 @@ export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RE
   success
 })
 
-export const getPaymentId = () => action(types.GET_PAYMENT_ID)
-
 export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
-
-export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
-  paymentId
-})
 
 export const getOnboardingStatus = () => action(types.GET_ONBOARDING_STATUS)
 
@@ -322,4 +308,10 @@ export const restartBrowser = () => action(types.RESTART_BROWSER)
 
 export const onPrefChanged = (key: string) => action(types.ON_PREF_CHANGED, {
   key
+})
+
+export const getIsUnsupportedRegion = () => action(types.GET_IS_UNSUPPORTED_REGION)
+
+export const onIsUnsupportedRegion = (isUnsupportedRegion: boolean) => action(types.ON_IS_UNSUPPORTED_REGION, {
+  isUnsupportedRegion
 })

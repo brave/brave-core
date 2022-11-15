@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import * as S from './style'
 import { withKnobs, boolean, text } from '@storybook/addon-knobs'
@@ -50,7 +54,8 @@ export default {
         siteBlockInfo: {
           host: text('Host name', 'brave.com'),
           totalBlockedResources: (LIST_ADS.length + LIST_JS.length),
-          isShieldsEnabled: boolean('Enable Shields', true),
+          isBraveShieldsEnabled: boolean('Enable Shields', true),
+          isBraveShieldsManaged: boolean('Shields Managed', false),
           adsList: LIST_ADS,
           jsList: LIST_JS,
           httpRedirectsList: [],

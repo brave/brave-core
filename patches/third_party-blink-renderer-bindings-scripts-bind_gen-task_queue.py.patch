@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
-index bc9e64160ad4f597c435aaaa9d009539bac106b9..6ff653f1dd18929292dacecdad47ee3fa97bb7d2 100644
+index fad978bd8a1eb4905796377b4f4504c360054a18..ca58c2fb5ac3a4b68d252e908eff6d828e528be5 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
 @@ -34,6 +34,7 @@ class TaskQueue(object):

@@ -11,7 +11,7 @@
 namespace preferences {
 namespace features {
 
-extern const base::Feature kBraveBackgroundVideoPlayback;
+BASE_DECLARE_FEATURE(kBraveBackgroundVideoPlayback);
 
 }  // namespace features
 }  // namespace preferences

@@ -35,10 +35,6 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
   void DidStartNavigation(
       const GURL& url,
       absl::optional<blink::WebNavigationType> navigation_type) override;
-  void DidCreateScriptContext(v8::Local<v8::Context> context,
-                              int32_t world_id) override;
-  void WillReleaseScriptContext(v8::Local<v8::Context>,
-                                int32_t world_id) override;
   void DidClearWindowObject() override;
 
   void DidFinishLoad() override;
@@ -49,9 +45,6 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
 
   bool IsPageValid();
   bool CanCreateProvider();
-
-  // Handle to "handler" JavaScript object functionality.
-  std::unique_ptr<JSEthereumProvider> js_ethereum_provider_;
 
   GURL url_;
   GetDynamicParamsCallback get_dynamic_params_callback_;

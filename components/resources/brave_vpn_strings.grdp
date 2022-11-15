@@ -4,6 +4,14 @@
     Brave Firewall + VPN
   </message>
 
+  <message name="IDS_BRAVE_VPN_CONNECTED_TOOLTIP" desc="Status tooltip label when VPN has connected to a region">
+    Brave Firewall + VPN: Connected
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DISCONNECTED_TOOLTIP" desc="Status tooltip label when VPN has disconnected">
+    Brave Firewall + VPN: Disconnected
+  </message>
+
   <message name="IDS_BRAVE_VPN_PANEL_NAME" desc="The name of VPN panel">
     Brave VPN Panel UI
   </message>
@@ -122,6 +130,10 @@
 
   <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL" desc="Label above email input on VPN support">
     Your email address
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL_NOT_VALID" desc="Error label for email input on VPN support when text is not a valid email address">
+    Please enter a valid email address
   </message>
 
   <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT" desc="Label above subject drop down on VPN support">

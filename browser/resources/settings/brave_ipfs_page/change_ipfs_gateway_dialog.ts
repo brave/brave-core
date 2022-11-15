@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 /**
  * @fileoverview
@@ -15,11 +15,12 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import '../settings_shared.css.js';
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.js';
 import {getTemplate} from './change_ipfs_gateway_dialog.html.js'
+import { prefToString } from '../prefs/pref_util.js';
 
 const ChangeIpfsGatewayDialogBase = I18nMixin(PrefsMixin(PolymerElement))
 
@@ -34,11 +35,17 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
 
   static get properties() {
     return {
+      pref: {
+          type: Object,
+          notify: true
+      },
+
       /** Preferences state. */
       prefs: {
         type: Object,
         notify: true,
       },
+
 
       isUrlValid_: Boolean,
       isSumitButtonEnabled_: Boolean,
@@ -58,7 +65,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
 
   override ready() {
     super.ready()
-    this.$.url.value = this.getPref('brave.ipfs.public_gateway_address').value;
+    this.$.url.value = prefToString(this.pref);
   }
 
   handleSubmit_() {
@@ -66,8 +73,8 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
         this.gatewayUrl_.toString()).then(success => {
       this.isUrlValid_ = success
       if (success) {
-        this.setPrefValue('brave.ipfs.public_gateway_address', this.gatewayUrl_);
-        this.fire('close');
+        this.setPrefValue(this.pref.key, this.gatewayUrl_);
+        this.dispatchEvent(new Event('close'));
       } else {
         this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddressOrigin')
       }

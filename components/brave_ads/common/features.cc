@@ -10,19 +10,21 @@
 
 namespace brave_ads::features {
 
-const base::Feature kNotificationAds{"AdNotifications",
-                                     base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kNotificationAds,
+             "AdNotifications",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
-const base::Feature kCustomNotificationAds{"CustomAdNotifications",
-                                           base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kCustomNotificationAds,
+             "CustomAdNotifications",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
-const base::Feature kAllowedToFallbackToCustomNotificationAds{
-    "AllowedToFallbackToCustomAdNotifications",
-    base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kAllowedToFallbackToCustomNotificationAds,
+             "AllowedToFallbackToCustomAdNotifications",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
-const base::Feature kSupportBraveSearchResultAdConfirmationEvents{
-    "SupportBraveSearchResultAdConfirmationEvents",
-    base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kSupportBraveSearchResultAdConfirmationEvents,
+             "SupportBraveSearchResultAdConfirmationEvents",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 namespace {
 
@@ -41,13 +43,13 @@ const bool kDefaultCanFallbackToCustomNotificationAds = false;
 // Ad notification timeout in seconds. Set to 0 to never time out
 const char kFieldTrialParameterNotificationAdTimeout[] =
     "ad_notification_timeout";
-#if !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 const int kDefaultNotificationAdTimeout = 120;
 #else
 const int kDefaultNotificationAdTimeout = 30;
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
-#if !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 // Ad notification fade animation duration in milliseconds
 const char kFieldTrialParameterNotificationAdFadeDuration[] =
@@ -115,7 +117,7 @@ const int kDefaultNotificationAdInsetY = 11;
 const int kDefaultNotificationAdInsetY = 18;
 #endif
 
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 }  // namespace
 
@@ -145,7 +147,7 @@ bool IsCustomNotificationAdsEnabled() {
   return base::FeatureList::IsEnabled(kCustomNotificationAds);
 }
 
-#if !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 int NotificationAdFadeDuration() {
   return GetFieldTrialParamByFeatureAsInt(
@@ -198,7 +200,7 @@ int NotificationAdInsetY() {
       kDefaultNotificationAdInsetY);
 }
 
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 bool IsAllowedToFallbackToCustomNotificationAdsEnabled() {
   return base::FeatureList::IsEnabled(

@@ -1,3 +1,7 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as BraveNews from '../../../api/brave_news'
 import { BraveNewsControllerRemote } from '../../../api/brave_news'
 
@@ -30,13 +34,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: 'direct:https://example.com/feed1',
     publisherName: 'My Custom Feed 1',
     categoryName: 'User feeds',
-    channels: ['User feeds'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['User feeds'], rank: 0 }],
     type: BraveNews.PublisherType.DIRECT_SOURCE,
     isEnabled: true,
     userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -45,13 +48,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: 'direct:https://example.com/feed2',
     publisherName: 'My Custom Feed 2',
     categoryName: 'User feeds',
-    channels: ['User feeds'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['User feeds'], rank: 0 }],
     type: BraveNews.PublisherType.DIRECT_SOURCE,
     isEnabled: true,
     userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -60,13 +62,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 1',
     categoryName: 'Tech',
-    channels: ['Tech'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Tech'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -75,13 +76,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 2',
     categoryName: 'Top News',
-    channels: ['Top News'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Top News'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -90,13 +90,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 3',
     categoryName: 'Tech 2',
-    channels: ['Tech 2'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Tech 2'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -105,13 +104,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 4',
     categoryName: 'Top News 1',
-    channels: ['Top News 1'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Top News 1'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -120,13 +118,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 5 has A very very very very very very very very very very very very very very very very very very very very long publisher name',
     categoryName: 'Tech 2',
-    channels: ['Tech 2'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Tech 2'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -135,13 +132,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 6',
     categoryName: 'Top News 2',
-    channels: ['Top News 2'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Top News 2'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -150,13 +146,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 7',
     categoryName: 'Top News 3',
-    channels: ['Top News 3'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Top News 3'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -165,13 +160,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 8',
     categoryName: 'Tech 3',
-    channels: ['Tech 3'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Tech 3'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -180,13 +174,12 @@ export const publishers: BraveNews.Publishers = {
     publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
     publisherName: 'Test Publisher 9',
     categoryName: 'Top News 4',
-    channels: ['Top News 4'],
     feedSource: { url: 'http://www.example.com/feed' },
     backgroundColor: undefined,
     coverUrl: undefined,
     faviconUrl: undefined,
     siteUrl: { url: 'https://www.example.com' },
-    locales: ['en_US'],
+    locales: [{ locale: 'en_US', channels: ['Top News 4'], rank: 0 }],
     type: BraveNews.PublisherType.COMBINED_SOURCE,
     isEnabled: false,
     userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -1995,7 +1988,11 @@ export const mockBraveNewsController: Partial<BraveNewsControllerRemote> = {
 
   async getChannels () {
     const channelNames = Object.values(publishers).reduce((prev, next) => {
-      for (const channel of next.channels) prev.add(channel)
+      for (const locale of next.locales) {
+        for (const channel of locale.channels) {
+          prev.add(channel)
+        }
+      }
       prev.add(next.categoryName)
       return prev
     }, new Set<string>())

@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at http://mozilla.org/MPL/2.0/. */
+ * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {BaseMixin} from '../../base_mixin.js';
 import {PrefsMixin} from '../../prefs/prefs_mixin.js';

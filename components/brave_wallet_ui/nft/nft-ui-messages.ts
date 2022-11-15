@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { loadTimeData } from '../../common/loadTimeData'
 import { BraveWallet, NFTMetadataReturnType } from '../constants/types'
@@ -17,8 +17,8 @@ export const enum NftUiCommand {
   UpdateLoading = 'update-loading',
   UpdateSelectedAsset = 'update-selected-asset',
   UpdateNFTMetadata = 'update-nft-metadata',
+  UpdateNFTMetadataError = 'update-nft-metadata-error',
   UpdateTokenNetwork = 'update-token-network',
-  UpdateNFTImageUrl = 'update-nft-image-url',
   ToggleNftModal = 'toggle-nft-modal'
 }
 
@@ -34,16 +34,28 @@ export type UpdateSelectedAssetMessage = CommandMessage & {
   payload: BraveWallet.BlockchainToken
 }
 
+export type DisplayMode =
+| 'icon'
+| 'grid'
+| 'details'
+
 export type UpdateNFtMetadataMessage = CommandMessage & {
-  payload: NFTMetadataReturnType
+  payload: {
+    displayMode: DisplayMode
+    icon?: string
+    nftMetadata?: NFTMetadataReturnType
+  }
+}
+
+export type UpdateNFtMetadataErrorMessage = CommandMessage & {
+  payload: {
+    displayMode: DisplayMode
+    error: string | undefined
+  }
 }
 
 export type UpdateTokenNetworkMessage = CommandMessage & {
   payload: BraveWallet.NetworkInfo
-}
-
-export type UpdateNftImageUrl = CommandMessage & {
-  payload: string
 }
 
 export type ToggleNftModal = CommandMessage & {

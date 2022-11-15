@@ -25,10 +25,11 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
 import org.chromium.chrome.browser.back_press.BackPressManager;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
@@ -40,6 +41,7 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.night_mode.NightModeStateProvider;
@@ -100,7 +102,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private ActionModeController mActionModeController;
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
-    private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
+    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LayoutManagerImpl mLayoutManager;
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
@@ -114,6 +116,8 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
     private TabObscuringHandler mTabObscuringHandler;
+    private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
+    private LayoutStateProvider mLayoutStateProvider;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -137,7 +141,7 @@ public class BraveToolbarManager extends ToolbarManager {
             List<ButtonDataProvider> buttonDataProviders, ActivityTabProvider tabProvider,
             ScrimCoordinator scrimCoordinator, ToolbarActionModeCallback toolbarActionModeCallback,
             FindToolbarManager findToolbarManager, ObservableSupplier<Profile> profileSupplier,
-            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
+            ObservableSupplier<BookmarkModel> bookmarkBridgeSupplier,
             @Nullable Supplier<Boolean> canAnimateNativeBrowserControls,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
@@ -197,6 +201,24 @@ public class BraveToolbarManager extends ToolbarManager {
             }
         };
         HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
+        mLayoutStateProviderSupplier.onAvailable(
+                mCallbackController.makeCancelable(this::setLayoutStateProvider));
+    }
+
+    private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
+        mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
+            @Override
+            public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
+                if (layoutType == LayoutType.TAB_SWITCHER) {
+                    BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                    if (braveActivity != null) {
+                        braveActivity.dismissCookieConsent();
+                    }
+                }
+            }
+        };
+        mLayoutStateProvider = layoutStateProvider;
+        mLayoutStateProvider.addObserver(mLayoutStateObserver);
     }
 
     @Override
@@ -287,8 +309,11 @@ public class BraveToolbarManager extends ToolbarManager {
     @Override
     public void destroy() {
         super.destroy();
-
         HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
+        if (mLayoutStateProvider != null) {
+            mLayoutStateProvider.removeObserver(mLayoutStateObserver);
+            mLayoutStateProvider = null;
+        }
     }
 
     protected void onOrientationChange(int newOrientation) {
@@ -303,7 +328,7 @@ public class BraveToolbarManager extends ToolbarManager {
 
     protected void updateBookmarkButtonStatus() {
         Tab currentTab = mLocationBarModel.getTab();
-        BookmarkBridge bridge = mBookmarkBridgeSupplier.get();
+        BookmarkModel bridge = mBookmarkModelSupplier.get();
         boolean isBookmarked =
                 currentTab != null && bridge != null && bridge.hasBookmarkIdForTab(currentTab);
         boolean editingAllowed =

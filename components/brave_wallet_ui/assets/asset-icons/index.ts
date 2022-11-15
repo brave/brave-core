@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import BATIconUrl from './bat-asset-icon.svg'
 import ALGOIconUrl from './algo-asset-icon.svg'
 import BNBIconUrl from './bnb-asset-icon.png'
@@ -8,6 +12,7 @@ import SOLIconUrl from './sol-asset-icon.svg'
 import FILECOINIconUrl from './filecoin-asset-icon.svg'
 import MATICIconUrl from './matic-asset-icon.svg'
 import AVAXIconUrl from './avax-asset-icon.svg'
+import USDCIconUrl from './usdc-asset-icon.svg'
 
 export {
   ALGOIconUrl,
@@ -19,5 +24,6 @@ export {
   FILECOINIconUrl,
   MATICIconUrl,
   SOLIconUrl,
-  ZRXIconUrl
+  ZRXIconUrl,
+  USDCIconUrl
 }

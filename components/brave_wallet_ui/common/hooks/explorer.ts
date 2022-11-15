@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -44,9 +44,12 @@ export function buildExplorerUrl (
   }
 }
 
-export default function useExplorer (network: BraveWallet.NetworkInfo) {
+export default function useExplorer (network?: BraveWallet.NetworkInfo) {
   return React.useCallback(
     (type: BlockExplorerUrlTypes, value?: string, id?: string) => () => {
+      if (!network) {
+        return
+      }
       const explorerBaseURL = network.blockExplorerUrls[0]
       if (!explorerBaseURL || !value) {
         alert(getLocale('braveWalletTransactionExplorerMissing'))

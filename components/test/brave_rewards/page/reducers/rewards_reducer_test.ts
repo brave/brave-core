@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createReducer } from '../../../../brave_rewards/resources/page/reducers'
 import { types } from '../../../../brave_rewards/resources/page/actions/rewards_types'
@@ -60,10 +60,8 @@ describe('rewards reducer', () => {
 
       it('import flow - existing state', () => {
         const initState: Rewards.State = defaultState()
-        initState.ui.walletRecoveryStatus = 1
 
         const expectedState: Rewards.State = defaultState()
-        expectedState.ui.walletRecoveryStatus = 1
 
         const assertion = reducers({
           rewardsData: initState

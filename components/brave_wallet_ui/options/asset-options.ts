@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,I
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveWallet } from '../constants/types'
 import {
@@ -45,6 +45,7 @@ export const makeNetworkAsset = (network: BraveWallet.NetworkInfo): BraveWallet.
     logo: getNetworkLogo(network),
     isErc20: false,
     isErc721: false,
+    isNft: false,
     decimals: network.decimals,
     visible: true,
     tokenId: '',
@@ -61,6 +62,7 @@ export const ETH = {
   logo: ETHIconUrl,
   isErc20: false,
   isErc721: false,
+  isNft: false,
   decimals: 18,
   visible: true,
   tokenId: '',
@@ -76,6 +78,7 @@ export const BAT = {
   logo: 'chrome://erc-token-images/bat.png',
   isErc20: true,
   isErc721: false,
+  isNft: false,
   decimals: 18,
   visible: false,
   tokenId: '',

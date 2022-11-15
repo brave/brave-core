@@ -85,10 +85,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8303432794159193481">Dev aplikácie Brave prehliadača</translation>
 <translation id="8292967014767479012">Brave Browser aplikácie</translation>
 <translation id="4743468424889072281">Development aplikácie Brave prehliadača</translation>
-<translation id="239760341987199724">Nastaviť Brave ako predvolený prehliadač</translation>
-<translation id="1391855377994926460">Prehľadávajte web rýchlejšie – až 6× rýchlejšie na hlavných spravodajských webových lokalitách.</translation>
-<translation id="9218430445555521422">Nastaviť ako predvolený</translation>
-<translation id="3479552764303398839">Teraz nie</translation>
 <translation id="732814027519296280">Chcete vyhľadávanie Brave ešte vylepšiť?</translation>
 <translation id="2677865600861971449">Prihláste sa k projektu Web Discovery a prispejte anonymne nejakýmí údajmi vyhľadávania a prezerania a zlepšite tak výsledky vyhľadávania Brave pre všetkých. S ochranou súkromia. A nulovou námahou. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Ďalšie informácie</translation>
@@ -204,9 +200,10 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6817415381278637662">Nastavte Brave ako predvolený prehliadač, aby ste získali ochranu osobných údajov Brave na každej webovej stránke, ktorú otvoríte.</translation>
 <translation id="8722651357687610395">Nastaviť Brave ako predvolené</translation>
 <translation id="2370739752330685659">Možno neskôr</translation>
+<translation id="7537601449003285327">Pripnúť na panel úloh</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importované z <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Kopírovať čisté prepojenie (iba hlavnú URL adresu)</translation>
+<translation id="7630214457764713113">Kopírovať čisté prepojenie</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="7179921470347911571">Spustiť ešte raz</translation>
 <translation id="4472575034687746823">Začíname</translation>
@@ -246,10 +243,17 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3719826155360621982">Domovská stránka</translation>
 <translation id="5448570825852364919">Prázdna stránka</translation>
 <translation id="5919424224662539292">Prispôsobte si obrázok na pozadí a miniaplikácie, ktoré sa zobrazujú na stránke na novej karte</translation>
+<translation id="7461924472993315131">Pripnúť</translation>
+<translation id="7506648566440714944">Prehliadač Brave je už pripnutý</translation>
+<translation id="3195845168740336657">Nastavenia ochrany</translation>
+<translation id="754769152790647708">Stav ochrany</translation>
+<translation id="3615717588724840230">Pomocou ochrán môžu stránky blokovať sledovače, reklamy a získavanie údajov</translation>
+<translation id="5690973901138662477">Ochrany zapnuté</translation>
+<translation id="4697275813919189958">Ochrany vypnuté</translation>
 <translation id="6303294677342628402">Ochrana</translation>
 <translation id="7133511168130368997">Blokovať trackery a reklamy, ktoré vás prenasledujú všade na webe.</translation>
 <translation id="2761825942249694703">Toto sú predvolené nastavenia Štítov. Vzťahujú sa na všetky webové stránky, kým niečo nezmeníte v paneli Štíty na konkrétnej stránke. Zmena týchto nastavení neovplyvní vaše existujúce nastavenia stránky.</translation>
-<translation id="1435116578479068303">Zablokuje sa väčšina reklám na webových stránkach, nie však reklamy Brave Private. Tieto sa ovládajú v nastaveniach<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">Zablokuje sa väčšina reklám na webových stránkach, nie však reklamy s ochranou súkromia Brave Ads. Tieto sa ovládajú v nastaveniach <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">Zablokuje sa väčšina reklám na webových stránkach.</translation>
 <translation id="4800195524776354947">Zobraziť počet blokovaných položiek na ikone Štíty</translation>
 <translation id="5510493033031835532">Webové stránky AMP s automatickým presmerovaním</translation>
@@ -259,7 +263,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2133317862976486547">Sledovania &amp; blokovanie reklám</translation>
 <translation id="4078738236287221428">Agresívne</translation>
 <translation id="7740996059027112821">Štandardne</translation>
-<translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="4824468494729001999">Blokovať skripty</translation>
 <translation id="6531019308847917584">Blokovanie používania odtlačkov prstov</translation>
 <translation id="5533533363827555308">Striktne, môže prerušiť činnosť stránok</translation>
@@ -269,14 +272,14 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="7390783310074170337">Štandardné zobrazenie</translation>
 <translation id="130615081792797568">Jednoduché zobrazenie</translation>
 <translation id="2360360976480535628">Rozšírené zobrazenie</translation>
-<translation id="6486983549008741930">Filtrovanie obsahu</translation>
+<translation id="101592339984642584">Filtrovanie obsahu</translation>
 <translation id="8694564340481124390">Zapnite vlastné filtre, ktoré blokujú regionálne a jazykovo špecifické nástroje na sledovanie a obťažujúce prvky.</translation>
-<translation id="6522618763902154348">Zapnite vlastné filtre, ktoré blokujú regionálne a jazykovo špecifické nástroje na sledovanie a 
+<translation id="4877657558909976793">Zapnite vlastné filtre, ktoré blokujú regionálne a jazykovo špecifické nástroje na sledovanie a
     <ph name="BEGIN_LINK"/>obťažujúce prvky<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Pridať vlastné zoznamy filtrov</translation>
 <translation id="1020877116991797978">Pridajte ďalšie zoznamy vytvorené a spravované vašou dôveryhodnou komunitou.</translation>
 <translation id="7617831480435794399">Prihláste sa len k odberu zoznamov od entít, ktorým dôverujete. Váš prehliadač bude pravidelne kontrolovať dostupnosť aktualizácií zoznamu z adresy URL, ktorú zadáte, pričom odhalí vašu IP adresu ich serveru.</translation>
-<translation id="2831397936251948638">Vytvoriť vlastné filtre</translation>
+<translation id="8580328754808744073">Vytvoriť vlastné filtre</translation>
 <translation id="4618274268052410139">Do poľa nižšie pridajte vlastné filtre, ktoré ste vytvorili, jeden na riadok. Nezabudnite použiť <ph name="BEGIN_LINK"/>syntax Adblock filter<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Pridať</translation>
 <translation id="571950783952070673">Zoznam adries URL</translation>
@@ -292,6 +295,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5438573563213942361">Vlastné zoznamy</translation>
 <translation id="4182731739150761577">Zobraziť celý zoznam</translation>
 <translation id="1340263054776016283">Zadajte adresu URL zoznamu filtrov</translation>
+<translation id="8578397014396032341">Filtre obsahu</translation>
 <translation id="6821903322090655051">Odmeny Brave sú vypnuté</translation>
 <translation id="413570371620795359">Otvorením panelu Odmeny zapnite panel a začnite</translation>
 <translation id="3849957491997306859">Automaticky zistené</translation>
@@ -402,6 +406,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5927916530277631319">Metóda riešenia nezastaviteľných domén</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Zistite viac<ph name="END_LINK"/> o podmienkach ochrany osobných údajov Ethereum.</translation>
 <translation id="5248318250177143470">Metóda riešenia služby Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Povoliť vyhľadávanie mimo reťazca ENS.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Zistite viac<ph name="END_LINK"/> o podmienkach ochrany osobných údajov pri vyhľadávaní mimo reťazca ENS.</translation>
 <translation id="6241402707160226266">Okno v súkromnom režime Tor</translation>
 <translation id="8762452230727230396">Tor skryje vašu IP adresu pred webovými stránkami, ktoré ste navštívili.</translation>
 <translation id="2959986444009520721">Použite mosty</translation>

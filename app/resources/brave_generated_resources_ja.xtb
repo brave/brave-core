@@ -85,10 +85,6 @@
 <translation id="8303432794159193481">Brave Dev</translation>
 <translation id="8292967014767479012">Brave</translation>
 <translation id="4743468424889072281">Brave Development</translation>
-<translation id="239760341987199724">Brave をデフォルト ブラウザに設定する</translation>
-<translation id="1391855377994926460">ウェブの閲覧をより高速に - 主要なニュースサイトよりも最大6倍速</translation>
-<translation id="9218430445555521422">デフォルトとして設定</translation>
-<translation id="3479552764303398839">後で</translation>
 <translation id="732814027519296280">Brave Search を改善したいですか？</translation>
 <translation id="2677865600861971449">Web Discovery Project にオプトインして、検索ブラウジングデータを匿名で提供し、すべての人の Brave Search 結果を改善します。プライバシーは保護され、あなたになにか作業が求められることはありません。<ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">詳しくはこちら</translation>
@@ -134,8 +130,8 @@
 <translation id="1613695740874407223">サイドバーアイテムのURL</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
 <translation id="5404213409401164238">サイドバーを表示</translation>
-<translation id="7561196759112975576">常に</translation>
-<translation id="7060352228894039151">マウスオーバーで</translation>
+<translation id="7561196759112975576">常に表示</translation>
+<translation id="7060352228894039151">マウスオーバーで表示</translation>
 <translation id="7961015016161918242">使用しない</translation>
 <translation id="8981254605840444865">設定を表示</translation>
 <translation id="59174027418879706">有効</translation>
@@ -204,9 +200,10 @@
 <translation id="6817415381278637662">Braveをデフォルトのブラウザに設定すると、訪問するすべてのウェブページでBraveプライバシー保護を利用できます。</translation>
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
 <translation id="2370739752330685659">あとで</translation>
+<translation id="7537601449003285327">タスクバーにピン留めする</translation>
 <translation id="961012016278832836">Microsoft Edgeレガシー</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/>からインポート</translation>
-<translation id="1506190932569739298">クリーンリンクをコピー（メインURLのみ）</translation>
+<translation id="7630214457764713113">クリーンリンクをコピー</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -246,6 +243,13 @@
 <translation id="3719826155360621982">ホームページ</translation>
 <translation id="5448570825852364919">空白のページ</translation>
 <translation id="5919424224662539292">新しいタブページに表示される背景画像とウィジェットをカスタマイズ</translation>
+<translation id="7461924472993315131">固定</translation>
+<translation id="7506648566440714944">Braveは既に固定されています</translation>
+<translation id="3195845168740336657">シールド設定</translation>
+<translation id="754769152790647708">シールドのステータス</translation>
+<translation id="3615717588724840230">シールドを使用して、サイトはトラッカー、広告、フィンガープリント採取をブロックできます</translation>
+<translation id="5690973901138662477">シールドオン</translation>
+<translation id="4697275813919189958">シールドオフ</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="7133511168130368997">しつこく追跡してくるトラッカーや不快な広告をブロックできます。</translation>
 <translation id="2761825942249694703">これはShieldsのデフォルト設定です。特定のサイト上のShieldsパネルで変更しない限り、すべてのウェブサイトにこの設定が適用されます。この設定を変更しても、既存のサイト設定には影響しません。</translation>
@@ -259,7 +263,6 @@
 <translation id="2133317862976486547">トラッカーと広告をブロック中</translation>
 <translation id="4078738236287221428">積極的</translation>
 <translation id="7740996059027112821">標準</translation>
-<translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="4824468494729001999">スクリプトをブロックする</translation>
 <translation id="6531019308847917584">フィンガープリンティングをブロック</translation>
 <translation id="5533533363827555308">厳格、サイトの表示が崩れる可能性</translation>
@@ -269,14 +272,14 @@
 <translation id="7390783310074170337">デフォルト表示</translation>
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
-<translation id="6486983549008741930">コンテンツフィルター</translation>
+<translation id="101592339984642584">コンテンツフィルター</translation>
 <translation id="8694564340481124390">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや不快な表示をブロックできます。</translation>
-<translation id="6522618763902154348">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや
- <ph name="BEGIN_LINK"/>不快な表示<ph name="END_LINK"/>をブロックできます。</translation>
+<translation id="4877657558909976793">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや
+    <ph name="BEGIN_LINK"/>不快な表示<ph name="END_LINK"/>をブロックできます。</translation>
 <translation id="3482656215021340727">カスタムフィルターのリストを追加</translation>
 <translation id="1020877116991797978">信頼できるコミュニティにより作成および管理されているリストを追加します。</translation>
 <translation id="7617831480435794399">信頼できる作成者のリストにのみ登録してください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
-<translation id="2831397936251948638">カスタムフィルターの作成</translation>
+<translation id="8580328754808744073">カスタムフィルターの作成</translation>
 <translation id="4618274268052410139">以下のフィールドで、作成したカスタムフィルターを1行に1つずつ追加します。必ず <ph name="BEGIN_LINK"/>Adblock フィルター構文<ph name="END_LINK"/>を使用してください。</translation>
 <translation id="7791543448312431591">追加</translation>
 <translation id="571950783952070673">リストの URL</translation>
@@ -292,6 +295,7 @@
 <translation id="5438573563213942361">カスタムリスト</translation>
 <translation id="4182731739150761577">全リストを表示</translation>
 <translation id="1340263054776016283">フィルターリストのURLを入力</translation>
+<translation id="8578397014396032341">コンテンツフィルター</translation>
 <translation id="6821903322090655051">Brave Rewardsは無効です</translation>
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="3849957491997306859">自動検出</translation>
@@ -403,6 +407,8 @@
 <translation id="5927916530277631319">「Unstoppable Domains」を解決する方法</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>でイーサリアムのプライバシーに関する考慮事項をご確認ください。</translation>
 <translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
+<translation id="6421218422395686663">ENSオフチェーン検索を許可します。</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>でENSオフチェーン検索に関する考慮事項をご確認ください。</translation>
 <translation id="6241402707160226266">Tor搭載のプライベートウィンドウ</translation>
 <translation id="8762452230727230396">Torは訪問サイトからあなたのIPアドレスを隠します。</translation>
 <translation id="2959986444009520721">ブリッジの使用</translation>

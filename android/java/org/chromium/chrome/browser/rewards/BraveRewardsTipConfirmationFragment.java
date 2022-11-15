@@ -99,6 +99,8 @@ public class BraveRewardsTipConfirmationFragment extends Fragment implements Bra
         mNextTipDateValue = view.findViewById(R.id.next_tip_date_value);
 
         if (monthlyContribution) {
+            TextView tipAmountText = view.findViewById(R.id.tip_amount_text);
+            tipAmountText.setText(R.string.tip_amount_text);
             tipTypeDescriptionTextView.setText(
                     getResources().getString(R.string.your_monthly_tip_has_been_sent));
         } else {

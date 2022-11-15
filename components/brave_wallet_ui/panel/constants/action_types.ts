@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveWallet, Origin, WalletAccountType } from '../../constants/types'
 
@@ -17,13 +17,6 @@ export type ShowConnectToSitePayload = {
 export type EthereumChainRequestPayload = {
   chainId: string
   approved: boolean
-}
-
-export type SignMessagePayload = {
-  id: number
-  address: string
-  message: string
-  originInfo: BraveWallet.OriginInfo
 }
 
 export type SignMessageProcessedPayload = {

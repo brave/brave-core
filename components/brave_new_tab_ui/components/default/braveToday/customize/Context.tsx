@@ -1,10 +1,11 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useCallback, useMemo, useState } from 'react'
+import { useNewTabPref } from '../../../../hooks/usePref'
 import { Channels, Publisher, Publishers, PublisherType } from '../../../../api/brave_news'
 import { api, isPublisherEnabled } from '../../../../api/brave_news/news'
 import Modal from './Modal'
@@ -12,6 +13,8 @@ import Modal from './Modal'
 // Leave possibility for more pages open.
 type NewsPage = null
   | 'news'
+  | 'suggestions'
+  | 'popular'
 
 interface BraveNewsContext {
   customizePage: NewsPage
@@ -24,6 +27,12 @@ interface BraveNewsContext {
   filteredPublisherIds: string[]
   // Publishers the user is directly subscribed to
   subscribedPublisherIds: string[]
+  // Publishers to suggest to the user.
+  suggestedPublisherIds: string[]
+  updateSuggestedPublisherIds: () => void
+  isOptInPrefEnabled: boolean | undefined
+  isShowOnNTPPrefEnabled: boolean | undefined
+  toggleBraveNewsOnNTP: (enabled: boolean) => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -33,13 +42,29 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   sortedPublishers: [],
   filteredPublisherIds: [],
   subscribedPublisherIds: [],
-  channels: {}
+  channels: {},
+  suggestedPublisherIds: [],
+  updateSuggestedPublisherIds: () => {},
+  isOptInPrefEnabled: undefined,
+  isShowOnNTPPrefEnabled: undefined,
+  toggleBraveNewsOnNTP: (enabled: boolean) => {}
 })
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
+  const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
+  // TODO(petemill): Pref should come from the API since it isn't NTP-related. We should
+  // not use useNewTabPref here so that we can move Brave News to a shared component.
+  // But for now we're tied to NTP.
+  const [isOptInPrefEnabled, setOptInPrefEnabled] = useNewTabPref('isBraveTodayOptedIn')
+  const [isShowOnNTPPrefEnabled, setShowOnNTPPrefEnabled] = useNewTabPref('showToday')
+
+  // Update initially and when opt-in / enabled changes
+  React.useEffect(() => {
+    api.update()
+  }, [isOptInPrefEnabled && isShowOnNTPPrefEnabled])
 
   React.useEffect(() => {
     const handler = () => setChannels(api.getChannels())
@@ -47,6 +72,12 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
     api.addChannelsListener(handler)
     return () => api.removeChannelsListener(handler)
+  }, [])
+
+  const updateSuggestedPublisherIds = useCallback(async () => {
+    setSuggestedPublisherIds([])
+    const { suggestedPublisherIds } = await api.controller.getSuggestedPublisherIds()
+    setSuggestedPublisherIds(suggestedPublisherIds)
   }, [])
 
   React.useEffect(() => {
@@ -64,7 +95,8 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
   const filteredPublisherIds = useMemo(() =>
     sortedPublishers
-      .filter(p => p.type === PublisherType.DIRECT_SOURCE || p.locales.includes(api.locale))
+      .filter(p => p.type === PublisherType.DIRECT_SOURCE ||
+        p.locales.some(l => l.locale === api.locale))
       .map(p => p.publisherId),
     [sortedPublishers])
 
@@ -72,15 +104,29 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     sortedPublishers.filter(isPublisherEnabled).map(p => p.publisherId),
     [sortedPublishers])
 
-  const context = useMemo(() => ({
+  const toggleBraveNewsOnNTP = (shouldEnable: boolean) => {
+    if (shouldEnable) {
+      setOptInPrefEnabled(true)
+      setShowOnNTPPrefEnabled(true)
+      return
+    }
+    setShowOnNTPPrefEnabled(false)
+  }
+
+  const context = useMemo<BraveNewsContext>(() => ({
     customizePage,
     setCustomizePage,
     channels,
     publishers,
+    suggestedPublisherIds,
     sortedPublishers,
     filteredPublisherIds,
-    subscribedPublisherIds
-  }), [customizePage, channels, publishers])
+    subscribedPublisherIds,
+    updateSuggestedPublisherIds,
+    isOptInPrefEnabled,
+    isShowOnNTPPrefEnabled,
+    toggleBraveNewsOnNTP
+  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, isOptInPrefEnabled, isShowOnNTPPrefEnabled, toggleBraveNewsOnNTP])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}
@@ -95,15 +141,20 @@ export const useBraveNews = () => {
 export const useChannels = (options: { subscribedOnly: boolean } = { subscribedOnly: false }) => {
   const { channels } = useBraveNews()
   return useMemo(() => Object.values(channels)
-    .filter(c => c.subscribed || !options.subscribedOnly), [channels, options.subscribedOnly])
+    .filter(c => c.subscribedLocales.length || !options.subscribedOnly), [channels, options.subscribedOnly])
 }
 
-export const useChannelSubscribed = (channelId: string) => {
+/**
+ * Determines whether the channel is subscribed in the current locale.
+ * @param channelName The channel
+ * @returns A getter & setter for whether the channel is subscribed
+ */
+export const useChannelSubscribed = (channelName: string) => {
   const { channels } = useBraveNews()
-  const subscribed = useMemo(() => channels[channelId]?.subscribed ?? false, [channels[channelId]])
+  const subscribed = useMemo(() => channels[channelName]?.subscribedLocales.includes(api.locale) ?? false, [channels[channelName]])
   const setSubscribed = React.useCallback((subscribed: boolean) => {
-    api.setChannelSubscribed(channelId, subscribed)
-  }, [channelId])
+    api.setChannelSubscribed(channelName, subscribed)
+  }, [channelName])
 
   return {
     subscribed,

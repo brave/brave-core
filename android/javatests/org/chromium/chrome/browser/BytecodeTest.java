@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.logo.LogoView;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
@@ -63,6 +64,7 @@ import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoActi
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
@@ -109,6 +111,7 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.permissions.PermissionDialogController;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.WindowAndroid;
@@ -291,6 +294,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/CachedFlag"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/BraveCachedFlag"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/BraveLogoCoordinator"));
     }
 
     @Test
@@ -437,6 +442,14 @@ public class BytecodeTest {
                 "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "extractUrlFromIntent", true, String.class, Intent.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoCoordinator",
+                "updateVisibility", true, void.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                "setWidgetEnabled", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
+                "wrapDialogDismissalCallback", true, Callback.class, Callback.class));
     }
 
     @Test
@@ -448,7 +461,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "createViewProvider", true, ViewProvider.class, Context.class,
-                MVCListAdapter.ModelList.class, LocationBarDataProvider.class));
+                MVCListAdapter.ModelList.class));
 
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
@@ -491,6 +504,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory",
+                        "get", true, TemplateUrlService.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -590,7 +606,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
-                boolean.class, ObservableSupplier.class));
+                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -664,7 +681,8 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
                 BooleanSupplier.class, JankTracker.class, Supplier.class,
                 OmniboxPedalDelegate.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                Callback.class, BackPressManager.class));
+                Callback.class, BackPressManager.class,
+                OmniboxSuggestionsDropdownScrollListener.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
@@ -683,6 +701,13 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
                 "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoCoordinator",
+                "org/chromium/chrome/browser/logo/BraveLogoCoordinator", Callback.class,
+                LogoView.class, boolean.class, Callback.class, Runnable.class, boolean.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
+                "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
+                Context.class, ModalDialogManager.class));
     }
 
     @Test
@@ -711,6 +736,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "mHasClearedOmniboxForFocus"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                        "mTileGroup"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mGoogleActivityControls"));
@@ -758,7 +786,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mToolbar"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkBridgeSupplier"));
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkModelSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutManager"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -866,6 +894,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mBrandedColorScheme"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "mAssistantVoiceSearchServiceSupplier"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/logo/LogoCoordinator", "mShouldShowLogo"));
     }
 
     @Test

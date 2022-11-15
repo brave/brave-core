@@ -1,13 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 13d6b1b6272efc603b19dad0fa2e69499568c002..27382f7df594e5299140653ab7f01f4dcca2960a 100644
+index b4008feaec1107fe40a2a87eec378e1faa0a7f9b..9ac8ccca471f8c88845dccffbce84ef55120c5c4 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -687,6 +687,8 @@ void MediaDevices::DevicesEnumerated(
+@@ -740,6 +740,7 @@ void MediaDevices::DevicesEnumerated(
      }
    }
  
 +  BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED
-+
    RecordEnumeratedDevices(resolver, media_devices);
+   RecordEnumerateDevicesLatency(request_metadata.start_time);
  
-   if (enumerate_devices_test_callback_)

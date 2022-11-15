@@ -205,6 +205,11 @@ constexpr char kBraveTorWindowsHttpsOnlyDescription[] =
     "Prevents Private Windows with Tor from making any insecure HTTP "
     "connections without warning the user first.";
 
+constexpr char kBraveRoundTimeStampsName[] = "Round time stamps";
+constexpr char kBraveRoundTimeStampsDescription[] =
+    "Prevents JavaScript from getting access to high-resolution clocks by "
+    "rounding all DOMHighResTimeStamps to the nearest millisecond.";
+
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
@@ -259,11 +264,6 @@ constexpr char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";
 constexpr char kBraveRewardsGeminiDescription[] =
     "Enables support for Gemini as an external wallet provider for Brave";
 #endif
-
-constexpr char kBraveRewardsWebUIPanelName[] = "Use WebUI Rewards Panel";
-constexpr char kBraveRewardsWebUIPanelDescription[] =
-    "When enabled, the Brave Rewards panel will be displayed using WebUI "
-    "instead of the built-in Rewards extension.";
 
 constexpr char kBraveRewardsVerboseLoggingName[] =
     "Enable Brave Rewards verbose logging";
@@ -680,11 +680,6 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
-    {"brave-rewards-webui-panel",                                           \
-     flag_descriptions::kBraveRewardsWebUIPanelName,                        \
-     flag_descriptions::kBraveRewardsWebUIPanelDescription,                 \
-     kOsDesktop,                                                            \
-     FEATURE_VALUE_TYPE(brave_rewards::features::kWebUIPanelFeature)},      \
     {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
@@ -727,6 +722,11 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
       flag_descriptions::kBraveTorWindowsHttpsOnlyDescription,              \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kBraveTorWindowsHttpsOnly)},                     \
+    {"brave-round-time-stamps",                                             \
+      flag_descriptions::kBraveRoundTimeStampsName,                         \
+      flag_descriptions::kBraveRoundTimeStampsDescription,                  \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kBraveRoundTimeStamps)},                         \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

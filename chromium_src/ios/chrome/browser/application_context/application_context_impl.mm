@@ -44,7 +44,7 @@
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
 #include "ios/chrome/browser/prefs/pref_names.h"
 #import "ios/chrome/browser/promos_manager/features.h"
-#import "ios/chrome/browser/promos_manager/promos_manager.h"
+#import "ios/chrome/browser/promos_manager/promos_manager_impl.h"
 #include "ios/chrome/browser/push_notification/push_notification_service.h"
 #include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_service.h"
@@ -79,12 +79,14 @@ void BindNetworkChangeManagerReceiver(
 ApplicationContextImpl::ApplicationContextImpl(
     base::SequencedTaskRunner* local_state_task_runner,
     const base::CommandLine& command_line,
-    const std::string& locale)
+    const std::string& locale,
+    const std::string& country)
     : local_state_task_runner_(local_state_task_runner) {
   DCHECK(!GetApplicationContext());
   SetApplicationContext(this);
 
   SetApplicationLocale(locale);
+  application_country_ = country;
 
   // update_client::UpdateQueryParams::SetDelegate(
   //     IOSChromeUpdateQueryParamsDelegate::GetInstance());
@@ -198,6 +200,12 @@ const std::string& ApplicationContextImpl::GetApplicationLocale() {
   DCHECK(thread_checker_.CalledOnValidThread());
   DCHECK(!application_locale_.empty());
   return application_locale_;
+}
+
+const std::string& ApplicationContextImpl::GetApplicationCountry() {
+  DCHECK(thread_checker_.CalledOnValidThread());
+  DCHECK(!application_country_.empty());
+  return application_country_;
 }
 
 ios::ChromeBrowserStateManager*
@@ -372,7 +380,7 @@ void ApplicationContextImpl::CreateGCMDriver() {
 PromosManager* ApplicationContextImpl::GetPromosManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
   if (IsFullscreenPromosManagerEnabled() && !promos_manager_) {
-    promos_manager_ = std::make_unique<PromosManager>(GetLocalState());
+    promos_manager_ = std::make_unique<PromosManagerImpl>(GetLocalState());
   }
   return promos_manager_.get();
 }

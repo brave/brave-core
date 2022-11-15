@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Notification } from '../../shared/components/notifications'
 import { GrantInfo } from '../../shared/lib/grant_info'
@@ -90,7 +90,7 @@ export function getExternalWalletProviders () {
     // The extension API currently does not support retrieving a list of
     // external wallet providers. Instead, use the `getExternalWallet` function
     // to retrieve the "currently selected" provider.
-    chrome.braveRewards.getExternalWallet((_, wallet) => {
+    chrome.braveRewards.getExternalWallet((wallet) => {
       const provider = wallet && externalWalletProviderFromString(wallet.type)
       resolve(provider ? [provider] : [])
     })
@@ -99,7 +99,7 @@ export function getExternalWalletProviders () {
 
 export function getExternalWallet () {
   return new Promise((resolve) => {
-    chrome.braveRewards.getExternalWallet((_, wallet) => { resolve(wallet) })
+    chrome.braveRewards.getExternalWallet((wallet) => { resolve(wallet) })
   }).then(externalWalletFromExtensionData)
 }
 
@@ -274,46 +274,6 @@ function defaultPublisherInfo (url: string) {
   }
 }
 
-function isGreaselionURL (url: string) {
-  const parsedURL = parseURL(url)
-  if (!parsedURL) {
-    return false
-  }
-
-  const hosts = [
-    'github.com',
-    'reddit.com',
-    'twitch.tv',
-    'twitter.com',
-    'vimeo.com',
-    'youtube.com'
-  ]
-
-  const { hostname } = parsedURL
-  return hosts.some((h) => hostname.endsWith(`.${h}`) || hostname === h)
-}
-
-export async function fetchPublisherInfo (tabId: number) {
-  const tab = await getTab(tabId)
-  if (!tab || !tab.url) {
-    return
-  }
-
-  const { url } = tab
-
-  // Publisher info for "Greaselion" domains is managed by extension content
-  // scripts that execute within the context of the tab. We do not need to
-  // explicitly request publisher data for these domains.
-  if (isGreaselionURL(url)) {
-    return
-  }
-
-  if (isPublisherURL(url)) {
-    const favicon = tab.favIconUrl || ''
-    chrome.braveRewards.getPublisherData(tabId, url, favicon, '')
-  }
-}
-
 function getPublisherPlatform (name: string) {
   switch (name) {
     case 'github':
@@ -387,10 +347,5 @@ export async function getPublisherInfo (tabId: number) {
 }
 
 export function onPublisherDataUpdated (callback: () => void) {
-  chrome.braveRewards.onPublisherData.addListener(() => {
-    // The background script may not have updated its Redux store at the point
-    // when this callback is executed. Unfortunatley, we don't currently have a
-    // way to know when the update has finished and must rely on a short delay.
-    setTimeout(() => { callback() }, 200)
-  })
+  chrome.braveRewards.onPublisherData.addListener(() => { callback() })
 }

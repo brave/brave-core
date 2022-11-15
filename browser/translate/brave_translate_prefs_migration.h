@@ -17,7 +17,7 @@ extern const char kMigratedToInternalTranslation[];
 
 void RegisterBraveProfilePrefsForMigration(PrefRegistrySimple* registry);
 
-void MigrateBraveProfilePrefs(PrefService* prefs);
+void ClearMigrationBraveProfilePrefs(PrefService* prefs);
 
 }  // namespace translate
 

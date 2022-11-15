@@ -13,8 +13,10 @@
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/observer_list.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
@@ -72,14 +74,15 @@ using GetPendingContributionsCallback = base::OnceCallback<void(
 using FetchBalanceCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             ledger::mojom::BalancePtr)>;
+using GetExternalWalletResult =
+    base::expected<ledger::mojom::ExternalWalletPtr,
+                   ledger::mojom::GetExternalWalletError>;
 using GetExternalWalletCallback =
-    base::OnceCallback<void(const ledger::mojom::Result result,
-                            ledger::mojom::ExternalWalletPtr wallet)>;
-using ProcessRewardsPageUrlCallback =
-    base::OnceCallback<void(const ledger::mojom::Result result,
-                            const std::string&,
-                            const std::string&,
-                            const base::flat_map<std::string, std::string>&)>;
+    base::OnceCallback<void(GetExternalWalletResult)>;
+using ConnectExternalWalletResult =
+    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
+using ConnectExternalWalletCallback =
+    base::OnceCallback<void(ConnectExternalWalletResult)>;
 using ClaimPromotionCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             const std::string&,
@@ -119,9 +122,6 @@ using GetEventLogsCallback =
 
 using GetRewardsWalletCallback =
     base::OnceCallback<void(ledger::mojom::RewardsWalletPtr wallet)>;
-
-using GetRewardsWalletPassphraseCallback =
-    base::OnceCallback<void(const std::string&)>;
 
 using OnTipCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
@@ -175,11 +175,9 @@ class RewardsService : public KeyedService {
   virtual void ClaimPromotion(
       const std::string& promotion_id,
       AttestPromotionCallback callback) = 0;
-  virtual void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      AttestPromotionCallback callback) = 0;
-  virtual void RecoverWallet(const std::string& passPhrase) = 0;
+  virtual void AttestPromotion(const std::string& promotion_id,
+                               const std::string& solution,
+                               AttestPromotionCallback callback) = 0;
   virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
@@ -319,10 +317,15 @@ class RewardsService : public KeyedService {
 
   virtual std::vector<std::string> GetExternalWalletProviders() const = 0;
 
-  virtual void ProcessRewardsPageUrl(
-      const std::string& path,
-      const std::string& query,
-      ProcessRewardsPageUrlCallback callback) = 0;
+  // Connects Rewards with a custodial wallet service (e.g. bitFlyer, Gemini,
+  // Uphold).
+  // |path| is the authorization URL's path
+  // |query| is the authorization URL's query
+  // The callback is called with a ConnectExternalWalletError on failure,
+  // and with an empty result on success.
+  virtual void ConnectExternalWallet(const std::string& path,
+                                     const std::string& query,
+                                     ConnectExternalWalletCallback) = 0;
 
   virtual void DisconnectWallet() = 0;
 
@@ -357,9 +360,6 @@ class RewardsService : public KeyedService {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual void GetRewardsWalletPassphrase(
-      GetRewardsWalletPassphraseCallback callback) = 0;
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 

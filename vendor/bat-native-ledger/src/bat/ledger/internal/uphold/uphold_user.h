@@ -6,46 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_USER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_USER_H_
 
-#include <memory>
 #include <string>
 
-#include "bat/ledger/ledger.h"
-
-namespace ledger {
-class LedgerImpl;
-
-namespace endpoint {
-class UpholdServer;
-}
-
-namespace uphold {
+namespace ledger::uphold {
 
 struct User {
-  std::string name;
-  std::string member_id;
-  bool bat_not_allowed;
-
-  User();
-  ~User();
+  std::string name = "";
+  std::string member_id = "";
+  bool bat_not_allowed = true;
 };
 
-using GetUserCallback = base::OnceCallback<void(mojom::Result, const User&)>;
+}  // namespace ledger::uphold
 
-class UpholdUser {
- public:
-  explicit UpholdUser(LedgerImpl* ledger);
-
-  ~UpholdUser();
-
-  void Get(GetUserCallback callback);
-
- private:
-  void OnGet(GetUserCallback callback, mojom::Result result, const User& user);
-
-  LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
-};
-
-}  // namespace uphold
-}  // namespace ledger
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_USER_H_

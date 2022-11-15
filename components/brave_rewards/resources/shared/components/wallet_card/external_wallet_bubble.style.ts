@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
 
@@ -64,7 +64,7 @@ export const status = styled.div`
   font-size: 14px;
   line-height: 20px;
 
-  &.verified {
+  &.connected {
     color: var(--brave-palette-teal600);
   }
 
@@ -74,32 +74,6 @@ export const status = styled.div`
     vertical-align: middle;
     margin-right: 6px;
     margin-bottom: 2px;
-  }
-`
-
-export const pendingNotice = styled.div`
-  font-size: 12px;
-  line-height: 18px;
-  padding: 14px 0 9px;
-  border-bottom: solid 1px var(--brave-palette-neutral200);
-  display: flex;
-
-  .icon {
-    flex: 0 0 auto;
-    height: 16px;
-    width: auto;
-    vertical-align: middle;
-    margin-right: 6px;
-    margin-bottom: 2px;
-  }
-
-  .text {
-    flex: 1 1 auto;
-    margin-left: 9px;
-  }
-
-  .brave-theme-dark & {
-    border-color: var(--brave-palette-grey700);
   }
 `
 

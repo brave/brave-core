@@ -55,4 +55,9 @@ void BraveTabMenuModel::Build() {
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+  AddCheckItemWithStringId(CommandShowVerticalTabs,
+                           IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
+  AddCheckItemWithStringId(CommandShowTitleBar, IDS_TAB_CXMENU_SHOW_TITLE_BAR);
+  AddCheckItemWithStringId(CommandUseFloatingVerticalTabStrip,
+                           IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS);
 }

@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/settings/settings_shared.css b/chrome/browser/resources/settings/settings_shared.css
+index ef08c11e55eeac82b562135a1b8ab889bb32f669..9c5bf0de00fe7742d50c1cc6394bfd473b1e3500 100644
+--- a/chrome/browser/resources/settings/settings_shared.css
++++ b/chrome/browser/resources/settings/settings_shared.css
+@@ -9,7 +9,8 @@
+  * #import=//resources/cr_elements/search_highlight_style.css.js
+  * #import=./settings_vars.css.js
+ <if expr='not chromeos_ash'>
+- * #include=cr-shared-style search-highlight-style
++ * #import=//resources/page_specific/settings/br_settings_shared.css.js
++ * #include=cr-shared-style search-highlight-style br-settings-shared
+ </if>
+ <if expr='chromeos_ash'>
+  * #import=//resources/cr_elements/chromeos/cros_color_overrides.css.js

@@ -118,7 +118,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 @property(nonatomic, copy) NSString* storagePath;
 @property(nonatomic) LedgerRewardsParameters* rewardsParameters;
 @property(nonatomic) LedgerBalance* balance;
-@property(nonatomic) LedgerExternalWallet* upholdWallet;
 @property(nonatomic) dispatch_queue_t fileWriteThread;
 @property(nonatomic) NSMutableDictionary<NSString*, NSString*>* state;
 @property(nonatomic) BraveCommonOperations* commonOps;
@@ -267,7 +266,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
       [self getRewardsParameters:nil];
       [self fetchBalance:nil];
-      [self fetchUpholdWallet:nil];
 
       [self readNotificationsFromDisk];
     } else {
@@ -552,39 +550,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       }));
 }
 
-- (void)recoverWalletUsingPassphrase:(NSString*)passphrase
-                          completion:(void (^)(NSError* _Nullable))completion {
-  const auto __weak weakSelf = self;
-  // Results that can come from RecoverWallet():
-  //   - LEDGER_OK: Good to go
-  //   - LEDGER_ERROR: Recovery failed
-  ledger->RecoverWallet(base::SysNSStringToUTF8(passphrase), ^(
-                            const ledger::mojom::Result result) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf) {
-      return;
-    }
-    NSError* error = nil;
-    if (result != ledger::mojom::Result::LEDGER_OK) {
-      std::map<ledger::mojom::Result, std::string> errorDescriptions{
-          {ledger::mojom::Result::LEDGER_ERROR, "The recovery failed"},
-      };
-      NSDictionary* userInfo = @{};
-      const auto description = errorDescriptions[result];
-      if (description.length() > 0) {
-        userInfo =
-            @{NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)};
-      }
-      error = [NSError errorWithDomain:BraveLedgerErrorDomain
-                                  code:static_cast<NSInteger>(result)
-                              userInfo:userInfo];
-    }
-    if (completion) {
-      completion(error);
-    }
-  });
-}
-
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL))completion {
   ledger->HasSufficientBalanceToReconcile(completion);
 }
@@ -595,26 +560,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   });
 }
 
-- (void)linkBraveWalletToPaymentId:(NSString*)paymentId
-                        completion:(void (^)(LedgerResult result,
-                                             NSString* drainID))completion {
-  ledger->LinkRewardsWallet(
-      base::SysNSStringToUTF8(paymentId),
-      base::BindOnce(^(ledger::mojom::Result result, std::string drain_id) {
-        // The internal draining API now returns a success
-        // code when there are no tokens to drain. Since
-        // brave-ios expects a valid drain ID when the
-        // result is LEDGER_OK, to maintain backward
-        // compatibility convert the result to an error code
-        // when the drain ID is empty.
-        if (drain_id.empty()) {
-          result = ledger::mojom::Result::LEDGER_ERROR;
-        }
-        completion(static_cast<LedgerResult>(result),
-                   base::SysUTF8ToNSString(drain_id));
-      }));
-}
-
 - (void)drainStatusForDrainId:(NSString*)drainId
                    completion:(void (^)(LedgerResult result,
                                         LedgerDrainStatus status))completion {
@@ -623,79 +568,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       ^(ledger::mojom::Result result, ledger::mojom::DrainStatus status) {
         completion(static_cast<LedgerResult>(result),
                    static_cast<LedgerDrainStatus>(status));
-      });
-}
-
-#pragma mark - User Wallets
-
-- (void)fetchUpholdWallet:
-    (nullable void (^)(LedgerExternalWallet* _Nullable wallet))completion {
-  const auto __weak weakSelf = self;
-  ledger->GetExternalWallet(
-      ledger::constant::kWalletUphold,
-      base::BindOnce(^(ledger::mojom::Result result,
-                       ledger::mojom::ExternalWalletPtr walletPtr) {
-        if (result == ledger::mojom::Result::LEDGER_OK &&
-            walletPtr.get() != nullptr) {
-          const auto bridgedWallet =
-              [[LedgerExternalWallet alloc] initWithExternalWallet:*walletPtr];
-          weakSelf.upholdWallet = bridgedWallet;
-          if (completion) {
-            completion(bridgedWallet);
-          }
-        } else {
-          if (completion) {
-            completion(nil);
-          }
-        }
-      }));
-}
-
-- (void)disconnectWalletOfType:(ExternalWalletType)walletType
-                    completion:
-                        (nullable void (^)(LedgerResult result))completion {
-  ledger->DisconnectWallet(
-      base::SysNSStringToUTF8(walletType), ^(ledger::mojom::Result result) {
-        if (completion) {
-          completion(static_cast<LedgerResult>(result));
-        }
-
-        for (BraveLedgerObserver* observer in self.observers) {
-          if (observer.externalWalletDisconnected) {
-            observer.externalWalletDisconnected(walletType);
-          }
-        }
-      });
-}
-
-- (void)authorizeExternalWalletOfType:(ExternalWalletType)walletType
-                           queryItems:
-                               (NSDictionary<NSString*, NSString*>*)queryItems
-                           completion:(void (^)(LedgerResult result,
-                                                NSURL* _Nullable redirectURL))
-                                          completion {
-  ledger->ExternalWalletAuthorization(
-      base::SysNSStringToUTF8(walletType), MapFromNSDictionary(queryItems),
-      ^(ledger::mojom::Result result,
-        base::flat_map<std::string, std::string> args) {
-        const auto it = args.find("redirect_url");
-        std::string redirect;
-        if (it != args.end()) {
-          redirect = it->second;
-        }
-        NSURL* url =
-            redirect.empty()
-                ? nil
-                : [NSURL URLWithString:base::SysUTF8ToNSString(redirect)];
-        completion(static_cast<LedgerResult>(result), url);
-
-        if (result == ledger::mojom::Result::LEDGER_OK) {
-          for (BraveLedgerObserver* observer in self.observers) {
-            if (observer.externalWalletAuthorized) {
-              observer.externalWalletAuthorized(walletType);
-            }
-          }
-        }
       });
 }
 
@@ -1698,7 +1570,7 @@ BATLedgerBridge(BOOL,
   } else if (onlyOnce) {
     const auto idx = [self.mNotifications
         indexOfObjectPassingTest:^BOOL(RewardsNotification* _Nonnull obj,
-                                       NSUInteger idx, BOOL* _Nonnull stop) {
+                                       NSUInteger index, BOOL* _Nonnull stop) {
           return obj.displayed && [obj.id isEqualToString:identifier];
         }];
     if (idx != NSNotFound) {
@@ -2014,10 +1886,10 @@ BATLedgerBridge(BOOL,
   rewardsDatabase.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
       .WithArgs(std::move(transaction))
       .Then(base::BindOnce(
-          ^(ledger::client::RunDBTransactionCallback callback,
+          ^(ledger::client::RunDBTransactionCallback completion,
             ledger::mojom::DBCommandResponsePtr response) {
             if (weakSelf)
-              std::move(callback).Run(std::move(response));
+              std::move(completion).Run(std::move(response));
           },
           std::move(callback)));
 }

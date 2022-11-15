@@ -1,3 +1,7 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
 // Types
@@ -31,7 +35,7 @@ import { TabRow, URLText } from '../shared-panel-styles'
 export interface Props {
   panelType: 'request' | 'read'
   accounts: WalletAccountType[]
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   encryptionKeyPayload: BraveWallet.GetEncryptionPublicKeyRequest
   eTldPlusOne: string
   decryptPayload: BraveWallet.DecryptRequest
@@ -71,7 +75,7 @@ function EncryptionKeyPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{selectedNetwork.chainName}</NetworkText>
+        <NetworkText>{selectedNetwork?.chainName ?? ''}</NetworkText>
       </TopRow>
       <AccountCircle orb={orb} />
       <AccountNameText>{reduceAccountDisplayName(foundAccountName ?? '', 14)}</AccountNameText>

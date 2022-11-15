@@ -85,10 +85,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8303432794159193481">Brave böngésző fejlesztői alkalmazások</translation>
 <translation id="8292967014767479012">Brave bőngésző alkalmazások</translation>
 <translation id="4743468424889072281">Brave böngésző fejlesztési alkalmazások</translation>
-<translation id="239760341987199724">A Brave beállítása alapértelmezett böngészőként</translation>
-<translation id="1391855377994926460">Böngésszen gyorsabban az interneten – a főbb híroldalakon akár 6x gyorsabban.</translation>
-<translation id="9218430445555521422">Beállítás alapértelmezettként</translation>
-<translation id="3479552764303398839">Ne most</translation>
 <translation id="732814027519296280">Szeretné, ha még jobb lenne a Brave Search?</translation>
 <translation id="2677865600861971449">Csatlakozzon a Web Discovery projekthez, hogy névtelen keresési és böngészési adatokat szolgáltasson, segítve azt, hogy mindenki jobb Brave Search találatokat kapjon. Biztonságos. Semmi ráfordítást nem igényel. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Tudj meg többet</translation>
@@ -204,9 +200,10 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6817415381278637662">A Brave alapértelmezett böngészőként való beállításával a Brave adatvédelmét élvezheti minden megnyitott webhelyen.</translation>
 <translation id="8722651357687610395">Tedd a Brave-et alapértelmezetté</translation>
 <translation id="2370739752330685659">Talán később</translation>
+<translation id="7537601449003285327">Rögzítés a tálcán</translation>
 <translation id="961012016278832836">Microsoft Edge régi verzió</translation>
 <translation id="6436994631426134065">Importálva a következőből: <ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Tiszta hivatkozás (csak fő URL) másolása</translation>
+<translation id="7630214457764713113">Tiszta hivatkozás másolása</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
 <translation id="7179921470347911571">Indítsd újra most</translation>
 <translation id="4472575034687746823">Kezdő lépések</translation>
@@ -246,10 +243,17 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3719826155360621982">Honlap</translation>
 <translation id="5448570825852364919">Üres lap</translation>
 <translation id="5919424224662539292">Állítsa be az új ablakban megjelenő háttérképet és widgeteket.</translation>
+<translation id="7461924472993315131">Rögzítés</translation>
+<translation id="7506648566440714944">A Brave már rögzítve van</translation>
+<translation id="3195845168740336657">Pajzsbeállítások</translation>
+<translation id="754769152790647708">Pajzsok állapota</translation>
+<translation id="3615717588724840230">A webhelyek a Pajzsok használatával képesek blokkolni a nyomkövetőket, a reklámokat és az ujjlenyomat-felismerést</translation>
+<translation id="5690973901138662477">Aktív pajzsok</translation>
+<translation id="4697275813919189958">Inaktív pajzsok</translation>
 <translation id="6303294677342628402">Pajzsok</translation>
 <translation id="7133511168130368997">Tiltsd le a nyomkövetőket és hirdetéseket, amelyek követnek téged a weben.</translation>
 <translation id="2761825942249694703">Ezek az alapértelmezett Shields beállítások. Minden webhelyre vonatkoznak, hacsak nem változtatsz meg valamit a Shields panelben egy adott oldalon. Ezek változtatása nincs hatással a meglévő oldalankénti beállításokra.</translation>
-<translation id="1435116578479068303">Ez blokkolni fogja a weboldalakon található legtöbb hirdetést, kivéve a Brave privát hirdetéseket, amelyeket a <ph name="BEGIN_LINK"/>Brave jutalmak<ph name="END_LINK"/> beállításai vezérelnek.</translation>
+<translation id="1435116578479068303">Ez blokkolni fogja a weboldalakon található legtöbb hirdetést, kivéve a Brave privát hirdetéseket, amelyeket a <ph name="BEGIN_LINK"/>Brave-jutalmak<ph name="END_LINK"/> beállításai vezérelnek.</translation>
 <translation id="8452536890042542134">Ez a webhelyeken megjelenő legtöbb hirdetést blokkolja.</translation>
 <translation id="4800195524776354947">Blokkolt elemek számának megjelenítése a Pajzs ikonon</translation>
 <translation id="5510493033031835532">AMP-oldalak automatikus átirányítása</translation>
@@ -259,7 +263,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="2133317862976486547">Követők és hirdetések blokkolása</translation>
 <translation id="4078738236287221428">Agresszív</translation>
 <translation id="7740996059027112821">Szokásos</translation>
-<translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
 <translation id="4824468494729001999">Parancsfájlok letiltása</translation>
 <translation id="6531019308847917584">Ujjlenyomat-leolvasás letiltása</translation>
 <translation id="5533533363827555308">Szigorú, a webhelyek összeomolhatnak</translation>
@@ -269,14 +272,14 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="7390783310074170337">Alapértelmezett nézet</translation>
 <translation id="130615081792797568">Egyszerű nézet</translation>
 <translation id="2360360976480535628">Speciális nézet</translation>
-<translation id="6486983549008741930">Tartalomszűrés</translation>
+<translation id="101592339984642584">Tartalomszűrés</translation>
 <translation id="8694564340481124390">Egyedi szűrők engedélyezése, melyek regionális és nyelvi alapon szűrnek konkrét nyomkövetőket és kellemetlenségeket.</translation>
-<translation id="6522618763902154348">Egyedi szűrők engedélyezése, melyek regionális és nyelvi alapon szűrnek konkrét nyomkövetőket és 
+<translation id="4877657558909976793">Egyedi szűrők engedélyezése, melyek regionális és nyelvi alapon szűrnek konkrét nyomkövetőket és
     <ph name="BEGIN_LINK"/>kellemetlenségeket<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Egyedi szűrőlisták hozzáadása</translation>
 <translation id="1020877116991797978">Adjon hozzá további listákat, melyeket olyan közösség készített és kezel, akikben megbízik.</translation>
 <translation id="7617831480435794399">Csak azoknak a listáira iratkozz fel, akikben megbízol. A böngésződ időközönként ellenőrzi a frissítéseket az URL-eken melyeket megadsz, ezzel felfedve az IP-címedet.</translation>
-<translation id="2831397936251948638">Egyedi szűrők létrehozása</translation>
+<translation id="8580328754808744073">Egyedi szűrők létrehozása</translation>
 <translation id="4618274268052410139">Adjon hozzá soronként egy Ön által készített egyedi szűrőt a lenti mezőbe. Mindenképp a következő <ph name="BEGIN_LINK"/>Adblock szűrő szintaxist alkalmazza:<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Hozzáadás</translation>
 <translation id="571950783952070673">Lista URL-je</translation>
@@ -292,6 +295,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="5438573563213942361">Egyedi listák</translation>
 <translation id="4182731739150761577">Teljes lista mutatása</translation>
 <translation id="1340263054776016283">Szűrőlista URL megadása</translation>
+<translation id="8578397014396032341">Tartalomszűrők</translation>
 <translation id="6821903322090655051">A Brave jutalmak le vannak tiltva</translation>
 <translation id="413570371620795359">Az engedélyezéshez és indításhoz nyissa meg a Jutalmak panelt</translation>
 <translation id="3849957491997306859">Automatikusan észlelve</translation>
@@ -402,6 +406,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="5927916530277631319">Módszer az Unstoppable Domains megoldására</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>További tudnivalók<ph name="END_LINK"/> az Ethereum adatvédelmi szempontjairól.</translation>
 <translation id="5248318250177143470">Módszer az Ethereum Name Service (ENS) megoldására</translation>
+<translation id="6421218422395686663">ENS láncon kívüli keresés engedélyezése</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>További tudnivalók<ph name="END_LINK"/> az ENS láncon kívüli keresés adatvédelmi szempontjairól.</translation>
 <translation id="6241402707160226266">Privát ablak Torral</translation>
 <translation id="8762452230727230396">Ezzel elrejtheti a felkeresett oldalak elől az IP címét.</translation>
 <translation id="2959986444009520721">Hidak használata</translation>

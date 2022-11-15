@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.ledger.mojom.WalletStatus;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -264,8 +265,8 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     }
 
     @Override
-    public void OnGetExternalWallet(int errorCode, String externalWallet) {
-        int walletStatus = BraveRewardsExternalWallet.NOT_CONNECTED;
+    public void OnGetExternalWallet(String externalWallet) {
+        int walletStatus = WalletStatus.NOT_CONNECTED;
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
                 BraveRewardsExternalWallet mExternalWallet =
@@ -284,7 +285,7 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     private void setPublisherNoteText(@PublisherStatus int pubStatus, int walletStatus) {
         String notePart1 = "";
         String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
-        if (walletStatus == BraveRewardsExternalWallet.NOT_CONNECTED) {
+        if (walletStatus == WalletStatus.NOT_CONNECTED) {
             if (pubStatus == BraveRewardsPublisher.CONNECTED
                     || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
                     || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED

@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
 import * as S from './style'
@@ -102,6 +106,7 @@ function AdvancedControlsContent () {
               value={siteSettings?.adBlockMode}
               ariaLabel={getLocale('braveShieldsTrackersAndAds')}
               onChange={handleAdBlockModeChange}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
               {adBlockModeOptions.map(entry => {
                 return (
@@ -129,6 +134,7 @@ function AdvancedControlsContent () {
               isOn={siteSettings?.isHttpsEverywhereEnabled}
               size='sm'
               accessibleLabel='Enable HTTPS'
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </label>
           <S.CountButton
@@ -148,6 +154,7 @@ function AdvancedControlsContent () {
               isOn={siteSettings?.isNoscriptEnabled}
               size='sm'
               accessibleLabel={getLocale('braveShieldsScriptsBlockedEnable')}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </label>
           <S.CountButton
@@ -165,6 +172,7 @@ function AdvancedControlsContent () {
               value={siteSettings?.fingerprintMode}
               ariaLabel={getLocale('braveShieldsFingerprintingBlocked')}
               onChange={handleFingerprintModeChange}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
             {fingerprintModeOptions.map(entry => {
                 return (
@@ -180,6 +188,7 @@ function AdvancedControlsContent () {
               value={siteSettings?.cookieBlockMode}
               ariaLabel={getLocale('braveShieldsCookiesBlockAll')}
               onChange={handleCookieBlockModeChange}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
               {cookieBlockModeOptions.map(entry => {
                 return (

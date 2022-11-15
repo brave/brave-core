@@ -74,27 +74,6 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
       }));
 }
 
-TEST_F(BitflyerPostOauthTest, ServerError401) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 401;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
-
-  oauth_->Request(
-      "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890",
-      base::BindOnce([](mojom::Result result, std::string&& token,
-                        std::string&& address, std::string&& linking_info) {
-        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
-        EXPECT_EQ(token, "");
-      }));
-}
-
 TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(

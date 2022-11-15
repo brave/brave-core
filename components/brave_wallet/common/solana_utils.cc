@@ -73,6 +73,10 @@ std::string Base58Encode(const std::vector<uint8_t>& bytes) {
   return EncodeBase58(bytes);
 }
 
+std::string Base58Encode(base::span<const uint8_t> bytes) {
+  return EncodeBase58(bytes);
+}
+
 bool IsBase58EncodedSolanaPubkey(const std::string& key) {
   std::vector<uint8_t> bytes;
   return Base58Decode(key, &bytes, kSolanaPubkeySize);

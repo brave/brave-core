@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.R;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
 
 import java.util.List;
@@ -26,46 +27,70 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     public static final String STANDARD_DSE_SHORTNAME = "standard_dse_shortname";
 
     private boolean mIsPrivate;
+    private Profile mProfile;
+    private boolean needUpdateActiveDSE;
 
-    static public void setDSEPrefs(TemplateUrl templateUrl, boolean isPrivate) {
+    public BraveSearchEngineAdapter(Context context, boolean isPrivate) {
+        super(context);
+        mIsPrivate = isPrivate;
+
+        // Only need last used profile because we are in settings
+        if (mProfile == null) {
+            if (!mIsPrivate) {
+                mProfile = Profile.getLastUsedRegularProfile().getOriginalProfile();
+            } else {
+                mProfile = Profile.getLastUsedRegularProfile().getPrimaryOTRProfile(
+                        /* createIfNeeded= */ true);
+            }
+        }
+    }
+
+    static public void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
         sharedPreferencesEditor.putString(
-                isPrivate ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
+                profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
                 templateUrl.getShortName());
         sharedPreferencesEditor.apply();
     }
 
-    static public void updateActiveDSE(boolean isPrivate) {
-        TemplateUrl templateUrl = getTemplateUrlByShortName(getDSEShortName(isPrivate));
+    static public void updateActiveDSE(Profile profile) {
+        String shortName = getDSEShortName(profile, false);
+        TemplateUrl templateUrl = getTemplateUrlByShortName(profile, shortName);
         if (templateUrl == null) {
             return;
         }
         String keyword = templateUrl.getKeyword();
-        TemplateUrlServiceFactory.get().setSearchEngine(keyword);
+        BraveTemplateUrlServiceFactory.getForProfile(profile).setSearchEngine(keyword);
     }
 
-    static public String getDSEShortName(boolean isPrivate) {
+    // when readJavaPrefOnly is true, only read short names from Java preference and
+    // avoid calling native methods
+    static public String getDSEShortName(Profile profile, boolean readJavaPrefOnly) {
         String defaultSearchEngineName = null;
-        TemplateUrl dseTemplateUrl =
-                TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
-        if (dseTemplateUrl != null) defaultSearchEngineName = dseTemplateUrl.getShortName();
 
-        // TODO(sergz): A check, do we need to fetch a default SE from native and avoid
-        // overwrite.
-        if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
-            // Set it for normal tab only
-            setDSEPrefs(dseTemplateUrl, false);
-            BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
+        if (!readJavaPrefOnly) {
+            TemplateUrl dseTemplateUrl = BraveTemplateUrlServiceFactory.getForProfile(profile)
+                                                 .getDefaultSearchEngineTemplateUrl();
+            if (dseTemplateUrl != null) defaultSearchEngineName = dseTemplateUrl.getShortName();
+
+            // TODO(sergz): A check, do we need to fetch a default SE from native and avoid
+            // overwrite.
+            if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
+                // Set it for normal tab only
+                setDSEPrefs(dseTemplateUrl, profile.getOriginalProfile());
+                BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
+            }
         }
 
         return ContextUtils.getAppSharedPreferences().getString(
-                isPrivate ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
+                profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
                 defaultSearchEngineName);
     }
 
-    static public TemplateUrl getTemplateUrlByShortName(String name) {
-        List<TemplateUrl> templateUrls = TemplateUrlServiceFactory.get().getTemplateUrls();
+    static public TemplateUrl getTemplateUrlByShortName(Profile profile, String name) {
+        List<TemplateUrl> templateUrls =
+                BraveTemplateUrlServiceFactory.getForProfile(profile).getTemplateUrls();
         for (int index = 0; index < templateUrls.size(); ++index) {
             TemplateUrl templateUrl = templateUrls.get(index);
             if (templateUrl.getShortName().equals(name)) {
@@ -76,33 +101,60 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         return null;
     }
 
-    public BraveSearchEngineAdapter(Context context, boolean isPrivate) {
-        super(context);
-        mIsPrivate = isPrivate;
+    @Override
+    public void start() {
+        try {
+            runTemplateUrlServiceWithProfile(() -> {
+                super.start();
+                if (!BraveTemplateUrlServiceFactory.getForProfile(mProfile).isLoaded()) {
+                    // updateActiveDSE needs to be delayed for private because service needs to be
+                    // loaded if no private tab is opened already
+                    needUpdateActiveDSE = true;
+                }
+            });
+        } catch (IllegalStateException e) {
+            // IllegalStateException indicates that search engine is not available anymore. We just
+            // log an error and allow user to choose another search engine instead.
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
+    public void stop() {
+        runTemplateUrlServiceWithProfile(() -> { super.stop(); });
+    }
+
+    // OnClickListener:
+
+    @Override
     public void onClick(View view) {
-        super.onClick(view);
+        runTemplateUrlServiceWithProfile(() -> { super.onClick(view); });
 
         if (view.getTag() == null) {
             return;
         }
 
         TemplateUrl templateUrl = (TemplateUrl) getItem((int) view.getTag());
-        setDSEPrefs(templateUrl, mIsPrivate);
+        setDSEPrefs(templateUrl, mProfile);
+    }
+
+    // TemplateUrlService.LoadListener
+
+    @Override
+    public void onTemplateUrlServiceLoaded() {
+        // It is necessary to ensure user's selection is updated on first entering private setting
+        // but it causes updateActiveDSE() to be called twice (once here and
+        // once from SearchEngineTabModelSelectorObserver)
+        if (needUpdateActiveDSE) {
+            needUpdateActiveDSE = false;
+            updateActiveDSE(mProfile);
+        }
+        runTemplateUrlServiceWithProfile(() -> { super.onTemplateUrlServiceLoaded(); });
     }
 
     @Override
-    public void start() {
-        updateActiveDSE(mIsPrivate);
-        try {
-            super.start();
-        } catch (IllegalStateException e) {
-            // IllegalStateException indicates that search engine is not available anymore. We just
-            // log an error and allow user to choose another search engine instead.
-            Log.e(TAG, e.getMessage());
-        }
+    public void onTemplateURLServiceChanged() {
+        runTemplateUrlServiceWithProfile(() -> { super.onTemplateURLServiceChanged(); });
     }
 
     @Override
@@ -113,5 +165,14 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             url.setVisibility(View.GONE);
         }
         return view;
+    }
+
+    // Wrapper for setting profile when running BraveTemplateUrlServiceFactory.get()
+    // No need to synchronize because BraveTemplateUrlServiceFactory shall always be on main UI
+    // thread
+    private void runTemplateUrlServiceWithProfile(Runnable r) {
+        BraveTemplateUrlServiceFactory.setCurrentProfile(mProfile);
+        r.run();
+        BraveTemplateUrlServiceFactory.setCurrentProfile(null);
     }
 }

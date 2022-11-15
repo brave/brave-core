@@ -28,6 +28,8 @@ extern const char kBraveWalletUserAssets[];
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 // Added 06/2022 to add native assets of preloading networks to user assets.
 extern const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[];
+// Added 10/2022 to set is_nft = true for existing ERC721 tokens.
+extern const char kBraveWalletUserAssetsAddIsNFTMigrated[];
 // Added 10/2022 to replace ETH selected network with mainnet if selected
 // network is one of the Ethereum testnets deprecated on 10/5/2022.
 extern const char kBraveWalletDeprecateEthereumTestNetworksMigrated[];
@@ -41,8 +43,10 @@ extern const char kBraveWalletP3AFirstUnlockTime[];
 extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
 
-extern const char kBraveWalletWasOnboardingShown[];
+extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
+
+extern const char kBraveWalletLastTransactionSentTimeDict[];
 
 // DEPRECATED
 extern const char kBraveWalletSelectedAccount[];

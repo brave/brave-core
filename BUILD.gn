@@ -71,18 +71,18 @@ if (is_win) {
   # another tool, Zucchini, as a drop-in replacement.
   if (build_delta_installer) {
     copy("copy_zucchini_binary_as_courgette") {
-      zucchini_toolchain = ""
-      if (target_cpu == "x86") {
-        # 32 bit Zucchini runs into memory allocation errors when virtual memory
-        # utilization is high. Using the 64 bit version fixes this.
-        zucchini_toolchain = "(//build/toolchain/win:win_clang_x64)"
-      }
-      zucchini_dep = "//components/zucchini:zucchini" + zucchini_toolchain
+      # 32 bit Zucchini runs into memory allocation errors when virtual memory
+      # utilization is high. Using the 64 bit version fixes this. The obvious
+      # way of doing this would be to depend on zucchini($host_toolchain). But
+      # on Windows, host_toolchain on an x64 system is actually win_clang_x86 -
+      # see BUILDCONFIG.gn. The following line works around this and is
+      # resilient to upstream changes:
+      zucchini_toolchain = string_replace(host_toolchain, target_cpu, host_cpu)
+      zucchini = "//components/zucchini:zucchini(" + zucchini_toolchain + ")"
 
       visibility = [ ":mini_installer_dependencies" ]
-      deps = [ zucchini_dep ]
-      sources =
-          [ get_label_info(zucchini_dep, "root_out_dir") + "/zucchini.exe" ]
+      deps = [ zucchini ]
+      sources = [ get_label_info(zucchini, "root_out_dir") + "/zucchini.exe" ]
       outputs = [ "$root_out_dir/$last_chrome_installer/courgette.exe" ]
     }
   }
@@ -141,10 +141,7 @@ if (is_android) {
 
 if (is_mac) {
   group("framework_bundle_data") {
-    deps = [
-      "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
-      "components/brave_rewards/resources/extension:framework_bundle_data",
-    ]
+    deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
   }
 }
 
@@ -154,7 +151,6 @@ group("unpacked_resources") {
     if (enable_extensions) {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
-        "//brave/components/brave_rewards/resources/extension:locales",
       ]
     }
   }
@@ -222,7 +218,10 @@ group("create_dist") {
   }
 
   if (is_win) {
-    deps += [ "build/win:create_signed_installer" ]
+    deps += [
+      "//brave/build/win:create_signed_installer",
+      "//brave/components/policy:pack_policy_templates",
+    ]
 
     if (build_omaha) {
       deps += [ "//brave/vendor/omaha" ]
@@ -259,28 +258,17 @@ if (!is_mac && !is_android && !is_ios) {
     group("brave_extensions_locale_dist_resources") {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
-        "//brave/components/brave_rewards/resources/extension:locales",
       ]
 
       public_deps = []
       foreach(locale, platform_pak_locales) {
         # public_deps is used intentionaly because ":create_dist_zip" needs the all dependency
         # of all locale files.
-        public_deps += [
-          ":brave_rewards_locales_${locale}",
-          ":brave_shields_locales_${locale}",
-        ]
+        public_deps += [ ":brave_shields_locales_${locale}" ]
       }
     }
 
     foreach(locale, platform_pak_locales) {
-      copy("brave_rewards_locales_${locale}") {
-        deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
-
-        locale = string_replace(locale, "-", "_")
-        sources = [ "$root_out_dir/resources/brave_rewards/_locales/$locale/messages.json" ]
-        outputs = [ "$brave_dist_dir/resources/brave_rewards/_locales/$locale/{{source_file_part}}" ]
-      }
       copy("brave_shields_locales_${locale}") {
         deps = [ "//brave/components/brave_extension/extension/brave_extension:locales_$locale" ]
 
@@ -389,7 +377,7 @@ template("create_dist_template") {
 }
 
 create_dist_template("create_native_symbols_dist") {
-  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.zip"
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
   dir_inputs = [ "$brave_product_name.pdb.syms" ]
   deps = [ "app/$current_os:symbol_dist_resources" ]
 }
@@ -440,7 +428,6 @@ action("create_dist_zips") {
       if (enable_extensions) {
         foreach(locale, platform_pak_locales) {
           inputs += get_target_outputs(":brave_shields_locales_${locale}")
-          inputs += get_target_outputs(":brave_rewards_locales_${locale}")
         }
       }
     }

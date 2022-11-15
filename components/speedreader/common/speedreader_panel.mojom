@@ -27,6 +27,21 @@ interface PanelDataHandler {
 
   GetContentStyle() => (ContentStyle style);
   SetContentStyle(ContentStyle style);
+
+  GetCurrentSiteURL() => (string site_url);
+
+  IsEnabled() => (bool on);
+  SetEnabled(bool on);
+  GetSiteSettings() => (SiteSettings site_settings);
+};
+
+struct SiteSettings {
+  Theme theme;
+  FontSize fontSize;
+  FontFamily fontFamily;
+  ContentStyle contentStyle;
+  string host;
+  bool is_enabled;
 };
 
 // Enum is used in prefs. Be careful when changing or extending.

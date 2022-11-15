@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/build/rust/config.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
 import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
@@ -28,14 +27,6 @@ config("internal_config") {
   visibility = [ ":*" ]
   ldflags =
       [ "-Wl,-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
-  if (!use_lld) {
-    ldflags += [ "-Wl,-no_compact_unwind" ]
-  }
-  ldflags += [
-    # prevent export of all rust symbols
-    "-Wl,-unexported_symbols_list," +
-        rebase_path(unexport_list_path, root_build_dir),
-  ]
 }
 
 group("brave_ios") {
@@ -102,12 +93,14 @@ ios_framework_bundle("brave_core_ios_framework") {
 
   info_plist = "Info.plist"
 
-  configs += [ ":internal_config" ]
-  configs += [ "//build/config/compiler:enable_arc" ]
+  configs += [
+    ":internal_config",
+    "//brave/build/rust:strip_rust_symbols",
+    "//build/config/compiler:enable_arc",
+  ]
 
   deps = [
     ":brave_core_umbrella_header",
-    "//brave/build/rust:generate_unexport_list",
     "//brave/ios/app",
   ]
 

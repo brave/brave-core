@@ -86,6 +86,19 @@
   <message name="IDS_BRAVE_WALLET_SEND" desc="Send tab button">Send</message>
   <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button">Swap</message>
   <message name="IDS_BRAVE_WALLET_RESET" desc="Reset button text">Reset</message>
+  <message name="IDS_BRAVE_WALLET_SEND_TOKEN" desc="Send tab Send Token button">Send token</message>
+  <message name="IDS_BRAVE_WALLET_SEND_NFT" desc="Send tab Send NFT button">Send NFT</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_TOKEN" desc="Send tab Select token button">Select token</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_NFT" desc="Send tab Select NFT button">Select NFT</message>
+  <message name="IDS_BRAVE_WALLET_SEND_TAB_SELECT_TITLE" desc="Send tab Select token title">Select a token to send</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_RECIPIENT_ADDRESS" desc="Send tab Enter recipient address">Enter recipient address</message>
+  <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_FUNDS" desc="Send tab Not enough funds error">Not enough funds</message>
+  <message name="IDS_BRAVE_WALLET_SEND_HALF" desc="Send tab Send Half button">HALF</message>
+  <message name="IDS_BRAVE_WALLET_SEND_MAX" desc="Send tab Send Max button">MAX</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_ORDER" desc="Send tab Review order button">Review order</message>
+  <message name="IDS_BRAVE_WALLET_NO_AVAILIBLE_TOKENS" desc="Send tab placeholder for empty token list.">No available tokens</message>
+  <message name="IDS_BRAVE_WALLET_SEARCH_TOKENS" desc="Send tab search for tokens.">Search token by name</message>
+  <message name="IDS_BRAVE_WALLET_SEARCH_NFTS" desc="Send tab search for nfts.">Search NFT by name, id</message>
   <message name="IDS_BRAVE_WALLET_BUY_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when buy action is not supported">Buy support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
   <message name="IDS_BRAVE_WALLET_SWAP_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when swap action is not supported">Swap support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
@@ -210,7 +223,7 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_REMOVE" desc="Account settings modal remove account button">Remove account</message>
   <message name="IDS_BRAVE_WALLET_WATCHLIST_ADD_CUSTOM_ASSET" desc="Visible assets modal add custom asset button">Add custom asset</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_NAME" desc="Visible assets modal token name label">Token name</message>
-  <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ADDRESS" desc="Visible assets modal contract address label">Token contract address</message>
+  <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ADDRESS" desc="Visible assets modal contract address label">Token address</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_SYMBOL" desc="Visible assets modal token symbol label">Token symbol</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS" desc="Visible assets modal decimals label">Decimals of precision</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADD" desc="Visible assets modal add button">Add</message>
@@ -319,6 +332,7 @@
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE" desc="Site Permissions panel revoke account for connected site">Revoke</message>
   <message name="IDS_BRAVE_WALLET_PANEL_DISCONNECTED" desc="Brave Wallet panel disconnected status">Disconnected</message>
   <message name="IDS_BRAVE_WALLET_PANEL_BLOCKED" desc="Brave Wallet panel blocked status">Blocked</message>
+  <message name="IDS_BRAVE_WALLET_TITLE" desc="Brave Wallet Title">Wallet</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT" desc="Site Permissions panel add a new account">New account</message>
   <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
   <message name="IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS" desc="Brave Wallet panel view account assets button">View account assets</message>
@@ -660,7 +674,7 @@
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">Please acknowledge the following:</message>
   <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
   <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of use acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of use<ph name="LINK_AFTER">$2</ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy Crypto button text">Buy Crypto</message>
+  <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy crypto button text">Buy crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
   <message name="IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS" desc="Loading text while checking for installed crypto wallet extensions">Checking for wallet extensions...</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_LEGACY" desc="Import from legacy crypto wallet extension button text">Import from legacy Brave crypto wallets</message>
@@ -715,4 +729,9 @@
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_WARNING" desc="ENS offchain lookup warning line">Address resolution requires offchain network requests. Proceed?</message>
   <message name="IDS_BRAVE_WALLET_ADD_ASSET_TOKEN_TAB_TITLE" desc="Title for token tab in add asset tabs">Token</message>
   <message name="IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE" desc="Title for NFT tab in add asset tabs">NFT</message>
+  <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET" desc="Text for when zero transactions are currently availble for viewing">No transactions yet</message>
+  <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION" desc="Explaination of why the transaction list is empty, and what to expect after the first transaction is available">After your first transaction you will be able to view it here.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_FETCHING_ERROR" desc="Error message displayed when nft metadata is not successfully fetched">Something went wrong when fetching NFT details. Please try again later.</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_A_PASSSWORD_TO_CONTINUE" desc="Prompt to enter a password before continuing">Enter a password to continue</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP" desc="Password prompt description for backing up wallet">Enter your Brave Wallet password to start backing up wallet.</message>
 </grit-part>

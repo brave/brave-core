@@ -6,7 +6,9 @@
 package org.chromium.chrome.browser.brave_wallet;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import androidx.test.filters.SmallTest;
@@ -26,6 +28,7 @@ import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.url.mojom.Url;
 
@@ -611,5 +614,20 @@ public class BraveWalletUtilsTest {
                     + "but only after all places where it's created are fixed.\n";
             fail(message + "\n" + getStackTrace(exc));
         }
+    }
+
+    @Test
+    @SmallTest
+    public void validateHasUnicode() {
+        assertTrue(Validations.hasUnicode("Sign into \u202e EVIL"));
+        assertFalse(Validations.hasUnicode("Sign into LIVE"));
+    }
+
+    @Test
+    @SmallTest
+    public void validateUnicodeEscape() {
+        assertEquals(Validations.unicodeEscape("Sign into \u202e EVIL"), "Sign into \\u202e EVIL");
+        assertEquals(Validations.unicodeEscape("Sign into \u00ff EVIL"), "Sign into \\u00ff EVIL");
+        assertEquals(Validations.unicodeEscape("Sign into \u012e EVIL"), "Sign into \\u012e EVIL");
     }
 }

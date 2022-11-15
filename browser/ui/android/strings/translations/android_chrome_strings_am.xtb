@@ -441,6 +441,7 @@
 <translation id="3435465986463792564">ብዙ መስኮቶች አሉዎት? ከዚህ ሆነው እነሱን ማስተዳደር ይችላሉ።</translation>
 <translation id="3443221991560634068">የአሁኑን ገጽ ዳግም ጫን</translation>
 <translation id="3444179773590444986">ለጣቢያዎች ጠቆር ያለ ገጽታ ላይ ግብረመልስ ይጋራ?</translation>
+<translation id="7384339501748168186">የእርስዎን ግላዊነት ለመጠበቅ፣ Brave በዚህ መስክ ላይ የእርስዎን የይለፍ ቃል በራስ-ሰር አይሞላም።</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 ውርድ መርሐግብት ተይዞለታል}one{# ውርዶች መርሐግብር ተይዞላቸዋል}other{# ውርዶች መርሐግብር ተይዞላቸዋል}}</translation>
 <translation id="3474624961160222204">እንደ <ph name="NAME"/> ይቀጥሉ</translation>
 <translation id="3478363558367712427">የፍለጋ ፕሮግራምዎን መምረጥ ይችላሉ</translation>
@@ -658,6 +659,7 @@
 <translation id="4763480195061959176">ቪዲዮ</translation>
 <translation id="4766313118839197559">የይለፍ ቃላት የሚቀመጡት በዚህ መሣሪያ ላይ ባለው የይለፍ ቃል አስተዳዳሪ ላይ ነው</translation>
 <translation id="4766678251456904326">መለያ ወደ መሣሪያው ያክሉ</translation>
+<translation id="4787736314074622408"><ph name="ITEM_TITLE"/>ን መሰረዝ ይፈልጋሉ?</translation>
 <translation id="4791358705705538979">እንደ ተመዝግቦ መውጫ ያለ በመላው ድር ላይ ተግባራትን እንዲያጠናቅቁ ያግዘዎታል</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">የይለፍ ሐረግ ምስጠራ ከGoogle Pay የመክፈያ ዘዴዎችን እና አድራሻዎችን አያካትትም።
@@ -726,6 +728,7 @@
 <translation id="4744980273298156620">በቅርቡ አዲስ ትር ሲከፍቱ ከ<ph name="SITE_NAME"/> የመጡ ታሪኮችን ይመለከታሉ። እርስዎ የሚከተሏቸው ጣቢያዎች በBrave መለያዎ ውስጥ ይቀመጣሉ። በምርምር ቅንብሮች ውስጥ ሊያቀናብሯቸው ይችላሉ።</translation>
 <translation id="5091249083535528968">የተራዘመ የአጠቃቀም ውሂብ</translation>
 <translation id="509429900233858213">ስህተት አጋጥሟል።</translation>
+<translation id="5099845111805573968">አንድ ጊዜ የዴስክቶፕ ጣቢያን ሲመርጡ ጣቢያውን በጎበኙ ቁጥር ቅንብሩ በጣቢያው ላይ ተግባራዊ ይሆናል</translation>
 <translation id="225414324447409614">አንድ ጣቢያ የእርስዎን የይለፍ ቃል ለመስረቅ ከሞከረ ወይም ጎጂ ፋይል ካወረደ Brave የገጽ ይዘትን ክፍሎችም ጨምሮ ዩአርኤሎችን ወደ የጥንቃቄ አሰሳ ሊልክ ይችላል</translation>
 <translation id="510275257476243843">1 ሰዓት ይቀራል</translation>
 <translation id="5115811374190515607">ወደ <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@
 <translation id="5958275228015807058">የእርስዎን ፋይሎች እና ገጾች በውርዶች ውስጥ ያግኙ</translation>
 <translation id="5962718611393537961">ለመሰብሰብ መታ ያድርጉ</translation>
 <translation id="5964869237734432770">የምስል መግለጫዎችን አቁም</translation>
+<translation id="9135546826883360971">Brave የእርስዎን ምርጫ ያስታውሳል</translation>
 <translation id="5979084224081478209">የይለፍ ቃላትዎን ይፈትሹ</translation>
 <translation id="5995726099713306770">ገጽ እንደገና ይውረድ?</translation>
 <translation id="6456271171669383967">Braveን አቆየው</translation>
@@ -920,6 +924,7 @@
 <translation id="6192907950379606605">የምስል መግለጫዎችን ያግኙ</translation>
 <translation id="8367262879301982880">የይለፍ ቃላት የሚቀመጡት በዚህ መሣሪያ ላይ ባለው የBrave የይለፍ ቃል አስተዳዳሪ ላይ ነው</translation>
 <translation id="620197886010707372">የ<ph name="APPNAME"/> መተግበሪያ በGoogle Play ይከፈት?</translation>
+<translation id="6202812185118613467">ስምረትን ለማስጀመር መልሰው በመለያ ይግቡ</translation>
 <translation id="6203593061661911168">ውርድ በWi-Fi ላይ ሲሆን ይጀመራል።</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> አይደለም?</translation>
 <translation id="6211386937064921208">ይህን ገጽ በቅድመ-ዕይታ በማሳየት ላይ</translation>
@@ -1051,6 +1056,7 @@
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>፣ ትር ተመርጧል</translation>
 <translation id="6828070228333235514">ዋጋ ተከታተልን ያቁሙ</translation>
+<translation id="6830728435402077660">ደህንነቱ አልተጠበቀም</translation>
 <translation id="6833996806551876956">የግላዊነት Sandbox ሙከራ</translation>
 <translation id="6836206421467243968">የትር ቡድን <ph name="TITLE_OF_GROUP"/>ን እንደ አዲስ የዳራ ትር ቡድን ወደነበረበት መልስ።</translation>
 <translation id="6846298663435243399">በመጫን ላይ…</translation>
@@ -1351,7 +1357,7 @@
 <translation id="8460448946170646641">ቁልፍ የግላዊነት እና የደህንነት ቁጥጥሮችን ይገምግሙ</translation>
 <translation id="8461694314515752532">የሰመረ ውሂብ በራስዎ የስምረት ይለፍ ሐረግ ያመሣጥሩ</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/> ከበይነ መረብ ጋር መገናኘቱን ያረጋግጡ</translation>
-<translation id="8473863474539038330">አድራሻዎች እና ተጨማሪ</translation>
+<translation id="5633907266617216186">አድራሻዎች እና ተጨማሪ</translation>
 <translation id="8481921391193215807">ሲበራ ጣቢያዎች ይዘታቸውን እና አገልግሎቶቻቸውን ለማቅረብ እዚህ የሚታዩትን የግላዊነት መጠበቂያ ቴክኒኮችን ሊጠቀሙ ይችላሉ። እነዚህ ጣቢያ-ተሻጋሪ ተለዋጭ አማራጮችን ያካትታሉ። በጊዜ ሂደት ተጨማሪ ሙከራዎች ሊታከሉ ይችላሉ።
 
 <ph name="BEGIN_LIST_ITEM1"/>ማስታወቂያ ሰሪዎች እና አታሚዎች FLoCን መጠቀም ይችላሉ።<ph name="END_LIST_ITEM1"/>

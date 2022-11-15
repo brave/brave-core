@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -36,6 +36,7 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 
 export interface RewardsProps {
   rewardsEnabled: boolean
+  isUnsupportedRegion: boolean
   declaredCountry: string
   enabledAds: boolean
   needsBrowserUpgradeToServeAds: boolean
@@ -106,6 +107,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   return (
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
+      isUnsupportedRegion={props.isUnsupportedRegion}
       declaredCountry={props.declaredCountry}
       adsEnabled={props.enabledAds}
       adsSupported={Boolean(props.adsSupported)}

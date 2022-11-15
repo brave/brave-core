@@ -1,14 +1,16 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '../../../Flex'
-import { useGetUnpaddedImage } from '../cards/CardImage'
+import { useLazyFavicon } from '../useUnpaddedImageUrl'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
+import { getTranslatedChannelName } from './ChannelCard'
+import { channels as ChannelIcons } from './Icons'
 
 interface Props {
   publisherId: string
@@ -16,6 +18,7 @@ interface Props {
 
 const ToggleButton = styled.button`
   all: unset;
+  flex: 0 0 auto;
   cursor: pointer;
   color: var(--brave-color-text02);
   &:hover {
@@ -39,8 +42,9 @@ const Container = styled(Flex)`
 `
 
 const FavIconContainer = styled.div`
-  width: 24px;
+  flex: 0 0 24px;
   height: 24px;
+  flex-shrink: 0;
   border-radius: 100px;
 
   img {
@@ -50,45 +54,56 @@ const FavIconContainer = styled.div`
 `
 
 const Text = styled.span`
+  flex: 1 1 0;
+  word-break: break-word;
   font-size: 14px;
   font-weight: 500;
 `
 
-const ChannelNameText = styled.span`
-  font-size: 14px;
+const ChannelNameText = styled(Text)`
   font-weight: 600;
 `
 
-function FavIcon (props: { src?: string }) {
-  const url = useGetUnpaddedImage(props.src, undefined, /* useCache= */true)
+function FavIcon (props: { publisherId: string }) {
+  const { url, setElementRef } = useLazyFavicon(props.publisherId, {
+    rootElement: document.getElementById('brave-news-configure'),
+    rootMargin: '200px 0px 200px 0px'
+  })
   const [error, setError] = React.useState(false)
-  return <FavIconContainer>
-    {url && !error && <img src={url} onError={() => setError(true)} />}
-  </FavIconContainer>
+  return (
+    <FavIconContainer ref={setElementRef}>
+      {url && !error && <img src={url} onError={() => setError(true)} />}
+    </FavIconContainer>
+  )
 }
 
 export function FeedListEntry (props: Props) {
   const publisher = usePublisher(props.publisherId)
   const { setFollowed } = usePublisherFollowed(props.publisherId)
 
-  return <Container direction="row" justify="space-between" align='center'>
-    <Flex align='center' gap={8}>
-      <FavIcon src={publisher.faviconUrl?.url} />
+  return (
+    <Container direction="row" justify="space-between" align='center' gap={8}>
+      <FavIcon publisherId={props.publisherId} />
       <Text>{publisher.publisherName}</Text>
-    </Flex>
-    <ToggleButton onClick={() => setFollowed(false)}>
-      {getLocale('braveNewsFollowButtonFollowing')}
-    </ToggleButton>
-  </Container>
+      <ToggleButton onClick={() => setFollowed(false)}>
+        {getLocale('braveNewsFollowButtonFollowing')}
+      </ToggleButton>
+    </Container>
+  )
 }
 
-export function ChannelListEntry (props: { channelId: string }) {
-  const { setSubscribed } = useChannelSubscribed(props.channelId)
+export function ChannelListEntry (props: { channelName: string }) {
+  const { setSubscribed } = useChannelSubscribed(props.channelName)
 
-  return <Container direction="row" justify='space-between' align='center'>
-    <ChannelNameText>{props.channelId}</ChannelNameText>
-    <ToggleButton onClick={() => setSubscribed(false)}>
-      {getLocale('braveNewsFollowButtonFollowing')}
-    </ToggleButton>
-  </Container>
+  return (
+    <Container direction="row" justify='space-between' align='center' gap={8}>
+      <FavIconContainer>
+        {ChannelIcons[props.channelName] ?? ChannelIcons.default}
+      </FavIconContainer>
+      <ChannelNameText>{getTranslatedChannelName(props.channelName)}</ChannelNameText>
+      <ToggleButton onClick={() => setSubscribed(false)}>
+        {getLocale('braveNewsFollowButtonFollowing')}
+      </ToggleButton>
+    </Container>
+  )
 }

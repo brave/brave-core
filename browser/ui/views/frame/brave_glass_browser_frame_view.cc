@@ -5,9 +5,12 @@
 
 #include "brave/browser/ui/views/frame/brave_glass_browser_frame_view.h"
 
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
@@ -35,4 +38,22 @@ void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
     canvas->ClipRect(bounds_to_frame_graphic);
   }
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);
+}
+
+int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
+  if (auto* browser = browser_view()->browser();
+      tabs::features::ShouldShowVerticalTabs(browser) &&
+      !tabs::features::ShouldShowWindowTitleForVerticalTabs(browser)) {
+    return 0;
+  }
+
+  return GlassBrowserFrameView::GetTopInset(restored);
+}
+int BraveGlassBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
+  if (auto res = brave::NonClientHitTest(browser_view(), point);
+      res != HTNOWHERE) {
+    return res;
+  }
+
+  return GlassBrowserFrameView::NonClientHitTest(point);
 }

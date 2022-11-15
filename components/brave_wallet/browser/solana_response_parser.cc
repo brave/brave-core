@@ -188,7 +188,7 @@ bool ParseGetAccountInfo(const std::string& json,
     return false;
 
   const base::Value* value = result->Find("value");
-  if (!value || (!value->is_none() && !value->is_dict()))
+  if (!value)
     return false;
 
   if (value->is_none()) {
@@ -196,11 +196,20 @@ bool ParseGetAccountInfo(const std::string& json,
     return true;
   }
 
+  if (value->is_dict()) {
+    return ParseGetAccountInfo(value->GetDict(), account_info_out);
+  }
+
+  return false;
+}
+
+bool ParseGetAccountInfo(const base::Value::Dict& value_dict,
+                         absl::optional<SolanaAccountInfo>* account_info_out) {
   SolanaAccountInfo account_info;
-  const auto& value_dict = value->GetDict();
   if (!GetUint64FromDictValue(value_dict, "lamports", false,
-                              &account_info.lamports))
+                              &account_info.lamports)) {
     return false;
+  }
 
   auto* owner = value_dict.FindString("owner");
   if (!owner)
@@ -224,8 +233,9 @@ bool ParseGetAccountInfo(const std::string& json,
   account_info.executable = *executable;
 
   if (!GetUint64FromDictValue(value_dict, "rentEpoch", false,
-                              &account_info.rent_epoch))
+                              &account_info.rent_epoch)) {
     return false;
+  }
   *account_info_out = account_info;
 
   return true;
@@ -252,6 +262,22 @@ bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height) {
     return false;
 
   return base::StringToUint64(block_height_string, block_height);
+}
+
+base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+ConverterForGetAccountInfo() {
+  return base::BindOnce(&ConvertMultiUint64ToString,
+                        std::vector<std::string>({"/result/value/lamports",
+                                                  "/result/value/rentEpoch"}));
+}
+
+base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+ConverterForGetProrgamAccounts() {
+  return base::BindOnce(
+      &ConvertMultiUint64ToString,
+      std::vector<std::string>(
+          // Expecting 0 or 1 accounts here, so converting only at index 0.
+          {"/result/0/account/lamports", "/result/0/account/rentEpoch"}));
 }
 
 }  // namespace solana

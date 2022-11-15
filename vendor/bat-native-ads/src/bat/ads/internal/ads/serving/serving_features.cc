@@ -8,7 +8,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/metrics/field_trial_params_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/constants.h"
 
 namespace ads::features {
 
@@ -69,7 +69,7 @@ constexpr int kDefaultServingVersion = 1;
 
 }  // namespace
 
-const base::Feature kServing{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kServing, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsServingEnabled() {
   return base::FeatureList::IsEnabled(kServing);

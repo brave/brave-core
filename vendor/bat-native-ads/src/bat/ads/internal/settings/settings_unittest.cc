@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -25,7 +25,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -48,7 +48,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -68,7 +68,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   kParameters["default_ad_notifications_per_hour"] = "-1";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -88,7 +88,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   kParameters["default_ad_notifications_per_hour"] = "11";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

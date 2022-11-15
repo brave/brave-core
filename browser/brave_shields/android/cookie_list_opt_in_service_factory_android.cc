@@ -16,6 +16,9 @@ JNI_CookieListOptInServiceFactory_GetInterfaceToCookieListOptInService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+  if (profile == nullptr)
+    return static_cast<jint>(-1);
+
   auto pending = brave_shields::CookieListOptInServiceFactory::GetInstance()
                      ->GetForContext(profile);
 

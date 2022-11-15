@@ -1,6 +1,11 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled, { css } from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import globalIconUrl from '../../../../../web-components/icons/globe.svg'
+import managedIconUrl from '../../../../../web-components/icons/managed.svg'
 
 interface CaratIconProps {
   isExpanded: boolean
@@ -251,4 +256,38 @@ export const GlobeIcon = styled.i`
   background-size: cover;
   background-position: top;
   margin-right: 5px;
+`
+
+export const ManagedIcon = styled.i`
+  display: block;
+  width: 17px;
+  height: 17px;
+  background-image: url(${managedIconUrl});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+  margin-right: 5px;
+`
+
+export const ManagedText = styled.div`
+  /* Confirm */
+  width: 228px;
+  height: 20px;
+
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+
+  /* identical to box height, or 154% */
+  text-align: center;
+
+  /* Light Theme/Brand/interactive06 */
+  color: #737ADE;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  flex-grow: 0;
 `

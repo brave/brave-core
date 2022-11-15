@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, TargetDeviceType) {
   TargetDeviceTypeUnset = 0,
   TargetDeviceTypePC,
-  TargetDeviceTypeMobile
+  TargetDeviceTypeMobile,
+  TargetDeviceTypeTablet,
 };
 
 @protocol SendTabToSelfModelStateObserver;

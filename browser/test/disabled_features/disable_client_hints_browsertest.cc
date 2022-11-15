@@ -90,13 +90,13 @@ class ClientHintsBrowserTest
 
   void SetUp() override {
     // Test that even with CH features enabled, there is no header.
-    std::vector<base::Feature> enabled_features;
-    std::vector<base::Feature> disabled_features;
+    std::vector<base::test::FeatureRef> enabled_features;
+    std::vector<base::test::FeatureRef> disabled_features;
     for (const auto& feature : kTestFeatures) {
       if (IsClientHintHeaderEnabled()) {
-        enabled_features.push_back(feature);
+        enabled_features.push_back(feature.get());
       } else {
-        disabled_features.push_back(feature);
+        disabled_features.push_back(feature.get());
       }
     }
 

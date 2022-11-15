@@ -23,7 +23,6 @@ import org.chromium.base.StrictModeContext;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionListViewBinder.SuggestionListViewHolder;
@@ -58,13 +57,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BraveAutocompleteCoordinator {
-    public ViewProvider<SuggestionListViewHolder> createViewProvider(Context context,
-            MVCListAdapter.ModelList modelList, LocationBarDataProvider locationBarDataProvider) {
+    public ViewProvider<SuggestionListViewHolder> createViewProvider(
+            Context context, MVCListAdapter.ModelList modelList) {
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>) BraveReflectionUtil.InvokeMethod(
                         AutocompleteCoordinator.class, this, "createViewProvider", Context.class,
-                        context, MVCListAdapter.ModelList.class, modelList,
-                        LocationBarDataProvider.class, locationBarDataProvider);
+                        context, MVCListAdapter.ModelList.class, modelList);
 
         return new ViewProvider<SuggestionListViewHolder>() {
             private List<Callback<SuggestionListViewHolder>> mCallbacks = new ArrayList<>();

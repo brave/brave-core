@@ -52,6 +52,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
         https_server_.GetURL("redir.a.com", "/cross-site/a.com/simple.html");
 
     cross_site_url_ = https_server_.GetURL("b.com", "/navigate-to-site.html");
+    cross_site_post_url_ = https_server_.GetURL("b.com", "/post-to-site.html");
     same_site_url_ =
         https_server_.GetURL("sub.a.com", "/navigate-to-site.html");
 
@@ -137,6 +138,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   const GURL& simple_landing_url() { return simple_landing_url_; }
 
   const GURL& cross_site_url() { return cross_site_url_; }
+  const GURL& cross_site_post_url() { return cross_site_post_url_; }
   const GURL& redirect_to_cross_site_url() {
     return redirect_to_cross_site_url_;
   }
@@ -199,6 +201,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
  private:
   GURL cross_site_url_;
+  GURL cross_site_post_url_;
   GURL redirect_to_cross_site_landing_url_;
   GURL redirect_to_cross_site_url_;
   GURL redirect_to_same_site_landing_url_;
@@ -253,6 +256,13 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
         url(landing_url(inputs[i], simple_landing_url()), cross_site_url()),
         landing_url(outputs[i], simple_landing_url()));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       QueryStringCrossSitePost) {
+  NavigateToURLAndWaitForRedirects(
+      url(landing_url("fbclid=1", simple_landing_url()), cross_site_post_url()),
+      landing_url("fbclid=1", simple_landing_url()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,

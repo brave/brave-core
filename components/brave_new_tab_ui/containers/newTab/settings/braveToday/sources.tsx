@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { CaratRightIcon, PlusIcon } from 'brave-ui/components/icons'
@@ -104,18 +104,12 @@ export default function Sources (props: SourcesProps) {
     for (const publisher of Object.values(props.publishers)) {
       // If the publisher has a locale (which can only happen in the V2 API) and
       // it doesn't include the current locale, skip over it.
-      if (publisher.locales.length !== 0 && !publisher.locales.includes(locale)) {
+      if (publisher.locales.length !== 0 && !publisher.locales.some(l => l.locale === locale)) {
         continue
       }
 
       // Do not include user feeds, as they are separated
       if (publisher.type === PublisherType.DIRECT_SOURCE) continue
-
-      // If the publisher has a locale (which can only happen in the V2 API) and
-      // it doesn't include the current locale, skip over it.
-      if (publisher.locales.length !== 0 && !publisher.locales.includes(locale)) {
-        continue
-      }
 
       const forAll = result.get(categoryNameAll)!
       forAll.push(publisher)

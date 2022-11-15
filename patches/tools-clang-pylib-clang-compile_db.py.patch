@@ -1,13 +1,9 @@
 diff --git a/tools/clang/pylib/clang/compile_db.py b/tools/clang/pylib/clang/compile_db.py
-index ff6ff9d3d4ae9cb25330ca88f2747fdac66eb939..e51eb824bc9e06f0a9a4d11cd374faf9e712f77c 100755
+index ff6ff9d3d4ae9cb25330ca88f2747fdac66eb939..607bd896ca625520b93282d6f284ee65bf06822b 100755
 --- a/tools/clang/pylib/clang/compile_db.py
 +++ b/tools/clang/pylib/clang/compile_db.py
-@@ -12,7 +12,7 @@ import sys
- 
- _RSP_RE = re.compile(r' (@(.+?\.rsp)) ')
- _GOMA_CMD_LINE_RE = re.compile(
--    r'^(?P<gomacc>.*gomacc(\.exe)?"?\s+)?(?P<clang>\S*clang\S*)\s+(?P<args>.*)$'
-+    r'^(?P<gomacc>.*(gomacc|redirect_cc)(\.exe)?"?\s+)?(?P<clang>\S*clang\S*)\s+(?P<args>.*)$'
- )
- _debugging = False
- 
+@@ -212,3 +212,4 @@ def Read(path):
+   """
+   with open(os.path.join(path, 'compile_commands.json'), 'rb') as db:
+     return json.load(db)
++import os, sys; sys.path.append(os.path.join(os.path.dirname(__file__), *[os.pardir] * 4, 'brave', 'script')); from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/clang/pylib/clang/compile_db.py", globals(), locals())

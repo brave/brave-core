@@ -491,7 +491,7 @@ void PageGraph::WillSendRequest(
     return;
   }
 
-  if (options.initiator_info.name.IsEmpty()) {
+  if (options.initiator_info.name.empty()) {
     LOG(INFO) << "Empty request initiator for request id: "
               << request.InspectorId();
     ScriptId script_id = options.initiator_info.parent_script_id;
@@ -1012,7 +1012,7 @@ String PageGraph::ToGraphML() const {
   int size;
   xmlDocDumpMemoryEnc(graphml_doc, &xml_string, &size, "UTF-8");
   auto graphml_string = String::FromUTF8(xml_string, size);
-  DCHECK(!graphml_string.IsEmpty());
+  DCHECK(!graphml_string.empty());
 
   xmlFree(xml_string);
   xmlFree(graphml_doc);

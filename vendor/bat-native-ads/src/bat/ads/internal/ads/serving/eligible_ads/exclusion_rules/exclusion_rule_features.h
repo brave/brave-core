@@ -14,7 +14,7 @@ class TimeDelta;
 
 namespace ads::exclusion_rules::features {
 
-extern const base::Feature kFeature;
+BASE_DECLARE_FEATURE(kFeature);
 
 bool IsEnabled();
 

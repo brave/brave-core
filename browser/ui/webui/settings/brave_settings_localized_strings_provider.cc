@@ -7,6 +7,7 @@
 #include <string>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -275,7 +276,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveNewTabNewTabCustomizeWidgets",
      IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS},
   // Pin shortcut page
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
     {"canPinShortcut", IDS_SETTINGS_CAN_PIN_SHORTCUT},
     {"pinShortcut", IDS_SETTINGS_PIN_SHORTCUT},
     {"shortcutPinned", IDS_SETTINGS_SHORTCUT_PINNED},
@@ -364,6 +365,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ensOffchainLookupTitle", IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE},
     {"resolveIPFSURLDesc", IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC},
     {"ipfsPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC},
+    {"ipfsNftPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC},
     {"ipfsChangeGatewayButtonLabel",
      IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL},
     {"changeIpfsGatewayDialogTitle",

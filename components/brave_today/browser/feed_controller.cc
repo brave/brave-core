@@ -142,6 +142,7 @@ void FeedController::EnsureFeedIsUpdating() {
               VLOG(1) << "All feed item fetches done with item count: "
                       << total_size;
               if (total_size == 0) {
+                controller->ResetFeed();
                 controller->NotifyUpdateDone();
                 return;
               }
@@ -160,36 +161,24 @@ void FeedController::EnsureFeedIsUpdating() {
               auto onHistory = base::BindOnce(
                   [](FeedController* controller, FeedItems all_feed_items,
                      Publishers publishers, history::QueryResults results) {
-                    controller->publishers_controller_->GetLocale(
-                        base::BindOnce(
-                            [](FeedController* controller,
-                               FeedItems all_feed_items, Publishers publishers,
-                               history::QueryResults results,
-                               const std::string& locale) {
-                              std::unordered_set<std::string> history_hosts;
-                              for (const auto& item : results) {
-                                auto host = item.url().host();
-                                history_hosts.insert(host);
-                              }
-                              VLOG(1)
-                                  << "history hosts # " << history_hosts.size();
-                              // Parse directly to in-memory property
-                              controller->ResetFeed();
-                              std::vector<mojom::FeedItemPtr> feed_items;
-                              if (BuildFeed(all_feed_items, history_hosts,
-                                            &publishers,
-                                            &controller->current_feed_,
-                                            controller->prefs_, locale)) {
-                              } else {
-                                VLOG(1) << "ParseFeed reported failure.";
-                              }
-                              // Let any callbacks know that the data is ready
-                              // or errored.
-                              controller->NotifyUpdateDone();
-                            },
-                            base::Unretained(controller),
-                            std::move(all_feed_items), std::move(publishers),
-                            std::move(results)));
+                    std::unordered_set<std::string> history_hosts;
+                    for (const auto& item : results) {
+                      auto host = item.url().host();
+                      history_hosts.insert(host);
+                    }
+                    VLOG(1) << "history hosts # " << history_hosts.size();
+                    // Parse directly to in-memory property
+                    controller->ResetFeed();
+                    std::vector<mojom::FeedItemPtr> feed_items;
+                    if (BuildFeed(all_feed_items, history_hosts, &publishers,
+                                  &controller->current_feed_,
+                                  controller->prefs_)) {
+                    } else {
+                      VLOG(1) << "ParseFeed reported failure.";
+                    }
+                    // Let any callbacks know that the data is ready
+                    // or errored.
+                    controller->NotifyUpdateDone();
                   },
                   base::Unretained(controller), std::move(all_feed_items),
                   std::move(publishers));

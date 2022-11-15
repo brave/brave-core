@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,10 @@ public interface BraveToolbarLayout {
 
     public void updateModernLocationBarColorImpl(int color);
 
-    public int getBoundsAfterAccountingForRightButtonsImpl(ViewGroup toolbarButtonsContainer);
-
     public void populateUrlAnimatorSetImpl(boolean showExpandedState,
             int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
             List<Animator> animators);
 
     public boolean isLocationBarValid(LocationBarCoordinator locationBar);
+    public void drawAnimationOverlay(ViewGroup toolbarButtonsContainer, Canvas canvas);
 }

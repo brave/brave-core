@@ -16,7 +16,7 @@ class TimeDelta;
 
 namespace ads::user_activity::features {
 
-extern const base::Feature kFeature;
+BASE_DECLARE_FEATURE(kFeature);
 
 bool IsEnabled();
 

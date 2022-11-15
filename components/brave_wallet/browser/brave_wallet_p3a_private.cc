@@ -10,4 +10,14 @@ namespace brave_wallet {
 void BraveWalletP3APrivate::ReportEthereumProvider(
     mojom::EthereumProviderType provider_type) {}
 
+void BraveWalletP3APrivate::ReportOnboardingAction(
+    mojom::OnboardingAction onboarding_action) {}
+
+void BraveWalletP3APrivate::ReportTransactionSent(mojom::CoinType coin,
+                                                  bool new_send) {}
+
+void BraveWalletP3APrivate::RecordActiveWalletCount(int count,
+                                                    mojom::CoinType coin_type) {
+}
+
 }  // namespace brave_wallet

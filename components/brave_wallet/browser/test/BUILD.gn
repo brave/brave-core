@@ -49,6 +49,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/permission_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/rlp_decode_unittest.cc",
     "//brave/components/brave_wallet/browser/rlp_encode_unittest.cc",
+    "//brave/components/brave_wallet/browser/sns_resolver_task_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_account_meta_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_block_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_instruction_builder_unittest.cc",

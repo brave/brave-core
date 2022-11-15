@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
@@ -173,13 +174,13 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
 #endif
 
-  const bool show_vertical_tabs =
-      browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs();
+  const bool supports_vertical_tabs =
+      tabs::features::SupportsVerticalTabs(browser_.get());
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
 
-  if (!show_vertical_tabs && !can_have_sidebar)
+  if (!supports_vertical_tabs && !can_have_sidebar)
     return;
 
   // Wrap chromium side panel with our sidebar container
@@ -189,16 +190,15 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
   unified_side_panel_ = sidebar_container_view_->side_panel();
-  if (show_vertical_tabs) {
-    vertical_tabs_container_ = contents_container_->AddChildView(
-        std::make_unique<VerticalTabStripRegionView>(browser_.get(),
-                                                     tab_strip_region_view_));
+  if (supports_vertical_tabs) {
+    vertical_tab_strip_host_view_ =
+        contents_container_->AddChildView(std::make_unique<views::View>());
   }
 
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view_, contents_web_view_, sidebar_container_view_,
-          vertical_tabs_container_));
+          vertical_tab_strip_host_view_));
   sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
 
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
@@ -211,7 +211,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         prefs::kSidePanelHorizontalAlignment,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                             base::Unretained(this)));
-    UpdateSideBarHorizontalAlignment();
   }
 }
 
@@ -266,6 +265,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
+  UpdateSideBarHorizontalAlignment();
   return sidebar_container_view_;
 }
 
@@ -307,7 +307,7 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(browser()))
     return false;
 
   return BrowserView::GetTabStripVisible();
@@ -315,7 +315,7 @@ bool BraveBrowserView::GetTabStripVisible() const {
 
 #if BUILDFLAG(IS_WIN)
 bool BraveBrowserView::GetSupportsTitle() const {
-  if (browser()->is_type_normal() && tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::SupportsVerticalTabs(browser()))
     return true;
 
   return BrowserView::GetSupportsTitle();
@@ -428,6 +428,16 @@ void BraveBrowserView::CloseWalletBubble() {
     GetWalletButton()->CloseWalletBubble();
 }
 
+void BraveBrowserView::AddedToWidget() {
+  BrowserView::AddedToWidget();
+
+  if (vertical_tab_strip_host_view_) {
+    vertical_tab_strip_widget_delegate_view_ =
+        VerticalTabStripWidgetDelegateView::Create(
+            this, vertical_tab_strip_host_view_);
+  }
+}
+
 void BraveBrowserView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -493,7 +503,7 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   if (BrowserView::ShouldShowWindowTitle())
     return true;
 
-  if (tabs::features::ShouldShowVerticalTabs() && browser_->is_type_normal())
+  if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()))
     return true;
 
   return false;

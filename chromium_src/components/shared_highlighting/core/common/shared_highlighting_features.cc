@@ -10,6 +10,7 @@
 namespace shared_highlighting {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kIOSSharedHighlightingV2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedHighlightingAmp, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

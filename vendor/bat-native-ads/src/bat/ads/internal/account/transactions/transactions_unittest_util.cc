@@ -50,11 +50,13 @@ int GetTransactionCount() {
 
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
-      [&count](const bool success,
-               const TransactionList& transactions) mutable {
-        CHECK(success);
-        count = transactions.size();
-      });
+      base::BindOnce(
+          [](int* count, const bool success,
+             const TransactionList& transactions) mutable {
+            CHECK(success);
+            *count = transactions.size();
+          },
+          &count));
 
   return count;
 }

@@ -1,16 +1,16 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
 import { BraveWallet, WalletAccountType } from '../constants/types'
 
 // utils
 import { createTokenBalanceRegistryKey } from './account-utils'
-import { getTokensCoinType } from './network-utils'
+import Amount from './amount'
 
-export const getBalance = (networks: BraveWallet.NetworkInfo[], account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
+export const getBalance = (account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
   if (!account || !token) {
     return ''
   }
@@ -19,7 +19,6 @@ export const getBalance = (networks: BraveWallet.NetworkInfo[], account?: Wallet
     return ''
   }
 
-  const tokensCoinType = getTokensCoinType(networks, token)
   // Return native asset balance
   if (
     token.contractAddress === '' &&
@@ -27,11 +26,17 @@ export const getBalance = (networks: BraveWallet.NetworkInfo[], account?: Wallet
 
     // Since all coinTypes share the same chainId for localHost networks,
     // we want to make sure we return the right balance for that token.
-    account.coin === tokensCoinType
+    account.coin === token.coin
   ) {
     return (account.nativeBalanceRegistry || {})[token.chainId || ''] || ''
   }
 
   const registryKey = createTokenBalanceRegistryKey(token)
   return (account.tokenBalanceRegistry || {})[registryKey] || ''
+}
+
+export const formatTokenBalanceWithSymbol = (balance: string, decimals: number, symbol: string, decimalPlace?: number) => {
+  return `${new Amount(balance)
+    .divideByDecimals(decimals)
+    .format(decimalPlace ?? 6, true)} ${symbol}`
 }

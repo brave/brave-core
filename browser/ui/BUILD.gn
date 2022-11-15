@@ -1,4 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -138,7 +139,10 @@ source_set("ui") {
       "webui/settings/brave_adblock_handler.h",
       "webui/settings/brave_appearance_handler.cc",
       "webui/settings/brave_appearance_handler.h",
+      "webui/settings/brave_import_data_handler.cc",
       "webui/settings/brave_import_data_handler.h",
+      "webui/settings/brave_importer_observer.cc",
+      "webui/settings/brave_importer_observer.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_search_engines_handler.cc",
@@ -151,6 +155,8 @@ source_set("ui") {
       "webui/settings/brave_wallet_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
+      "webui/settings/import_feature.cc",
+      "webui/settings/import_feature.h",
       "webui/speedreader/speedreader_panel_data_handler_impl.cc",
       "webui/speedreader/speedreader_panel_data_handler_impl.h",
       "webui/speedreader/speedreader_panel_handler_impl.cc",
@@ -159,7 +165,7 @@ source_set("ui") {
       "webui/speedreader/speedreader_panel_ui.h",
     ]
 
-    if (is_win) {
+    if (enable_pin_shortcut) {
       sources += [
         "webui/settings/pin_shortcut_handler.cc",
         "webui/settings/pin_shortcut_handler.h",
@@ -167,9 +173,10 @@ source_set("ui") {
     }
 
     if (is_mac) {
-      sources += [ "webui/settings/brave_import_data_handler_mac.mm" ]
-    } else {
-      sources += [ "webui/settings/brave_import_data_handler.cc" ]
+      sources += [
+        "webui/settings/brave_full_disk_access_confirm_dialog_delegate.h",
+        "webui/settings/brave_full_disk_access_confirm_dialog_delegate_mac.mm",
+      ]
     }
 
     if (enable_sparkle) {
@@ -217,12 +224,18 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/frame/brave_browser_view_layout.cc",
       "views/frame/brave_browser_view_layout.h",
+      "views/frame/brave_non_client_hit_test_helper.cc",
+      "views/frame/brave_non_client_hit_test_helper.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
+      "views/omnibox/brave_omnibox_popup_contents_view.cc",
+      "views/omnibox/brave_omnibox_popup_contents_view.h",
       "views/omnibox/brave_omnibox_result_view.cc",
       "views/omnibox/brave_omnibox_result_view.h",
+      "views/omnibox/brave_rounded_omnibox_results_frame.cc",
+      "views/omnibox/brave_rounded_omnibox_results_frame.h",
       "views/omnibox/brave_search_conversion_promotion_view.cc",
       "views/omnibox/brave_search_conversion_promotion_view.h",
       "views/rounded_separator.cc",
@@ -290,6 +303,8 @@ source_set("ui") {
 
     if (is_mac) {
       sources += [
+        "views/frame/brave_browser_frame_mac.h",
+        "views/frame/brave_browser_frame_mac.mm",
         "views/frame/brave_browser_non_client_frame_view_mac.h",
         "views/frame/brave_browser_non_client_frame_view_mac.mm",
       ]
@@ -327,6 +342,7 @@ source_set("ui") {
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/browser/resources/federated_internals:resources",
+    "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/webui/brave_federated:mojo_bindings",
@@ -522,32 +538,22 @@ source_set("ui") {
     sources += [
       "brave_actions/brave_action_icon_with_badge_image_source.cc",
       "brave_actions/brave_action_icon_with_badge_image_source.h",
-      "brave_actions/brave_action_view_controller.cc",
-      "brave_actions/brave_action_view_controller.h",
-      "brave_actions/brave_action_view_controller_factory.cc",
-      "brave_actions/brave_action_view_controller_factory.h",
-      "brave_actions/brave_rewards_action_view_controller.cc",
-      "brave_actions/brave_rewards_action_view_controller.h",
       "toolbar/brave_location_bar_model_delegate.cc",
       "toolbar/brave_location_bar_model_delegate.h",
-      "toolbar/brave_toolbar_actions_model.cc",
-      "toolbar/brave_toolbar_actions_model.h",
-      "views/brave_actions/brave_action_view.cc",
-      "views/brave_actions/brave_action_view.h",
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
-      "views/brave_actions/brave_news_action_view.cc",
-      "views/brave_actions/brave_news_action_view.h",
-      "views/brave_actions/brave_rewards_action_stub_view.cc",
-      "views/brave_actions/brave_rewards_action_stub_view.h",
       "views/brave_actions/brave_rewards_action_view.cc",
       "views/brave_actions/brave_rewards_action_view.h",
       "views/brave_actions/brave_shields_action_view.cc",
       "views/brave_actions/brave_shields_action_view.h",
       "views/frame/vertical_tab_strip_region_view.cc",
       "views/frame/vertical_tab_strip_region_view.h",
+      "views/frame/vertical_tab_strip_widget_delegate_view.cc",
+      "views/frame/vertical_tab_strip_widget_delegate_view.h",
       "views/location_bar/brave_location_bar_view.cc",
       "views/location_bar/brave_location_bar_view.h",
+      "views/location_bar/brave_news_location_view.cc",
+      "views/location_bar/brave_news_location_view.h",
       "views/location_bar/brave_star_view.cc",
       "views/location_bar/brave_star_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",

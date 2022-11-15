@@ -1,10 +1,10 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { WebUIListenerMixin, WebUIListenerMixinInterface } from 'chrome://resources/js/web_ui_listener_mixin.js'
+import { WebUIListenerMixin, WebUIListenerMixinInterface } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {SettingsCheckboxElement} from '../controls/settings_checkbox.js';
 import { loadTimeData } from '../i18n_setup.js';
 import { PrefsMixin, PrefsMixinInterface } from '../prefs/prefs_mixin.js'

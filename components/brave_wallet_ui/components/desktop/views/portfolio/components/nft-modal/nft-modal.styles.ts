@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
 export const modalSize = '640px'
@@ -30,7 +30,7 @@ export const Modal = styled.div<{ width?: string, height?: string }>`
   max-width: ${p => p.width ? p.width : '580px'};
   min-height: ${p => p.height ? p.height : '580px'};
   max-height: ${p => p.height ? p.height : '580px'};
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: transparent;
   border-radius: 8px;
   @media screen and (max-width: 600px) {
     min-width: 480px;

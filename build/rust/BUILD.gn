@@ -4,6 +4,26 @@ if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
 }
 
+if (is_apple) {
+  unexport_list_path = "$root_build_dir/brave_rust/rust_lib.unexports"
+}
+
+config("strip_rust_symbols") {
+  if (is_apple) {
+    ldflags = [
+      # prevent export of all rust symbols
+      "-Wl,-unexported_symbols_list," +
+          rebase_path(unexport_list_path, root_build_dir),
+    ]
+
+    # Too many personalities workaround. Will be fixed in llvm see
+    # https://reviews.llvm.org/D135728
+    if (!is_component_build && !use_lld) {
+      ldflags = [ "-Wl,-no_compact_unwind" ]
+    }
+  }
+}
+
 cargo_build("rust_lib") {
   visibility = [ ":*" ]
   inputs = [

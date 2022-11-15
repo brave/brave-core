@@ -86,10 +86,6 @@ vindue med Tor</translation>
 <translation id="8303432794159193481">Brave Browser udvikler-apps</translation>
 <translation id="8292967014767479012">Brave Browser-apps</translation>
 <translation id="4743468424889072281">Brave Browser udviklings-apps</translation>
-<translation id="239760341987199724">Angiv Brave som din standardbrowser</translation>
-<translation id="1391855377994926460">Surf på nettet hurtigere – op til 6x hurtigere på større nyhedswebsider.</translation>
-<translation id="9218430445555521422">Indstil som standard</translation>
-<translation id="3479552764303398839">Ikke nu</translation>
 <translation id="732814027519296280">Vil du være med til at gøre Brave Search endnu bedre?</translation>
 <translation id="2677865600861971449">Deltag i Web Discovery-projektet for anonymt at bidrage med søge- &amp; browsingdata og forbedre Brave Search-resultater for alle. Privatlivsbeskyttende. Og ingen anstrengelser. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="6165508094623778733">Flere oplysninger</translation>
@@ -205,9 +201,10 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6817415381278637662">Vælg Brave som din standardbrowser for at få Braves privatlivsbeskyttelse på alle websider, du åbner.</translation>
 <translation id="8722651357687610395">Indstil Brave som standard</translation>
 <translation id="2370739752330685659">Måske senere</translation>
+<translation id="7537601449003285327">Fastgør til proceslinje</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importeret fra<ph name="BROWSER_NAME"/>.</translation>
-<translation id="1506190932569739298">Kopiér rent link (kun hoved-url)</translation>
+<translation id="7630214457764713113">Kopiér rent link</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
@@ -247,10 +244,17 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3719826155360621982">Forside</translation>
 <translation id="5448570825852364919">Blank side</translation>
 <translation id="5919424224662539292">Tilpas baggrundsbilledet og widgets, der vises på den nye faneside</translation>
+<translation id="7461924472993315131">Fastgør</translation>
+<translation id="7506648566440714944">Brave er allerede fastgjort</translation>
+<translation id="3195845168740336657">Indstillinger for beskyttelse</translation>
+<translation id="754769152790647708">Beskyttelsesstatus</translation>
+<translation id="3615717588724840230">Sider kan blokere trackere, adviseringer og beskyttelse, der benytter fingeraftryk</translation>
+<translation id="5690973901138662477">Beskyttelse aktiveret</translation>
+<translation id="4697275813919189958">Beskyttelse deaktiveret</translation>
 <translation id="6303294677342628402">Afskærmning</translation>
 <translation id="7133511168130368997">Bloker trackere og annoncer, som følger dig over hele nettet.</translation>
 <translation id="2761825942249694703">Dette er standardindstillingerne for Shields. De gælder for alle websider, medmindre du ændrer noget i Shields-kontrolpanelet på en bestemt side. En ændring af dette vil ikke påvirke dine eksisterende individuelle sideindstillinger.</translation>
-<translation id="1435116578479068303">Dette vil blokere de fleste annoncer på hjemmeside, men ikke Brave Private Ads, da disse tilpasses i <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-indstillingerne .</translation>
+<translation id="1435116578479068303">Dette vil blokere de fleste annoncer på hjemmeside, men ikke Brave Private Ads, da disse kontrolleres i <ph name="BEGIN_LINK"/>Brave-belønninger <ph name="END_LINK"/>-indstillingerne.</translation>
 <translation id="8452536890042542134">Dette vil blokere de fleste annoncer på hjemmesider.</translation>
 <translation id="4800195524776354947">Vis antallet af blokerede emner på Skjold-ikonet</translation>
 <translation id="5510493033031835532">Omdirigér automatisk AMP-sider</translation>
@@ -260,7 +264,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2133317862976486547">Trackere &amp; reklameblokering</translation>
 <translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="6531019308847917584">Blokér fingeraftryk</translation>
 <translation id="5533533363827555308">Streng, kan ødelægge sider</translation>
@@ -270,14 +273,14 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7390783310074170337">Standardvisning</translation>
 <translation id="130615081792797568">Simpel visning</translation>
 <translation id="2360360976480535628">Avanceret visning</translation>
-<translation id="6486983549008741930">Indholdssortering</translation>
+<translation id="101592339984642584">Indholdssortering</translation>
 <translation id="8694564340481124390">Aktivér brugerdefinerede filtre for at blokere regionale og sprogspecifikke sporingsenheder og irritationer.</translation>
-<translation id="6522618763902154348">Aktivér tilpassede filtrer, der blokerer regional- og sprogspecifikke sporingsenheder og
-<ph name="BEGIN_LINK"/> irritationer<ph name="END_LINK"/>.</translation>
+<translation id="4877657558909976793">Aktivér tilpassede filtre, der blokerer område- og sprogspecifikke trackere og
+<ph name="BEGIN_LINK"/>irritationer<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Tilføj tilpassede filterlister</translation>
 <translation id="1020877116991797978">Tilføj flere lister, der er oprettet og vedligeholdt af dit trofaste fællesskab.</translation>
 <translation id="7617831480435794399">Du skal kun abonnere på lister fra enheder, du stoler på. Din browser søger regelmæssigt efter listeopdateringer fra den URL, du indtaster, hvilket gør din IP-adresse synlig for deres server.</translation>
-<translation id="2831397936251948638">Opret tilpassede filtre</translation>
+<translation id="8580328754808744073">Opret tilpassede filtre</translation>
 <translation id="4618274268052410139">Tilføj tilpassede filtre, du har oprettet, én pr. linje, i feltet nedenfor. Benyt venligst <ph name="BEGIN_LINK"/> Adblock filter syntaks <ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Tilføj</translation>
 <translation id="571950783952070673">Liste-URL</translation>
@@ -293,6 +296,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5438573563213942361">Tilpassede lister</translation>
 <translation id="4182731739150761577">Vis hele listen</translation>
 <translation id="1340263054776016283">Indtast filterliste-URL</translation>
+<translation id="8578397014396032341">Indholdssortering</translation>
 <translation id="6821903322090655051">Brave Rewards er deaktiveret</translation>
 <translation id="413570371620795359">Åbn Belønninger-panelet for at aktivere og komme i gang</translation>
 <translation id="3849957491997306859">Autoslettet</translation>
@@ -403,6 +407,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5927916530277631319">Metode til at løsning af Unstoppable-domæner</translation>
 <translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af HTTPS- og Ethereum-anonymitet.</translation>
 <translation id="5248318250177143470">Metode til løsning af Ethereum Name Service (ENS)</translation>
+<translation id="6421218422395686663">Tillad ENS offchain-opslag.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/>om ENS offchain lookup privatlivshensyn.</translation>
 <translation id="6241402707160226266">Privat vindue med Tor</translation>
 <translation id="8762452230727230396">Tor skjuler din IP-adresse fra de sider du besøger.</translation>
 <translation id="2959986444009520721">Brug broer</translation>

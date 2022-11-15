@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/permissions/permission_prompt_bubble_view.cc b/chrome/browser/ui/views/permissions/permission_prompt_bubble_view.cc
-index 48fa48bb62bb0a5314c31254cba19ceb5b7dfa48..82ee218372c89405fee8567bb1000054ac9f36e6 100644
+index 2ec1fb696e4f95c26a7a1c6f009d191c96a38d67..34e25db9ed3cdaf5394f7c7cbada769bdb5068d2 100644
 --- a/chrome/browser/ui/views/permissions/permission_prompt_bubble_view.cc
 +++ b/chrome/browser/ui/views/permissions/permission_prompt_bubble_view.cc
-@@ -294,6 +294,7 @@ PermissionPromptBubbleView::PermissionPromptBubbleView(
+@@ -311,6 +311,7 @@ PermissionPromptBubbleView::PermissionPromptBubbleView(
    for (permissions::PermissionRequest* request :
         GetVisibleRequests(*delegate.get()))
      AddRequestLine(request);

@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "build/build_config.h"
+
 class PrefRegistrySimple;
 class PrefService;
 namespace user_prefs {
@@ -22,6 +24,11 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterAndroidProfilePrefs(PrefRegistrySimple* registry);
+
+#if !BUILDFLAG(IS_ANDROID)
+bool IsNetworkAvailable();
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_UTILS_H_

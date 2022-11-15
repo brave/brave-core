@@ -181,9 +181,6 @@ class LedgerImpl : public Ledger {
 
   mojom::AutoContributePropertiesPtr GetAutoContributeProperties() override;
 
-  void RecoverWallet(const std::string& pass_phrase,
-                     LegacyResultCallback callback) override;
-
   void SetPublisherExclude(const std::string& publisher_id,
                            mojom::PublisherExclude exclude,
                            ResultCallback callback) override;
@@ -260,12 +257,12 @@ class LedgerImpl : public Ledger {
   void FetchBalance(FetchBalanceCallback callback) override;
 
   void GetExternalWallet(const std::string& wallet_type,
-                         ExternalWalletCallback callback) override;
+                         GetExternalWalletCallback) override;
 
-  void ExternalWalletAuthorization(
+  void ConnectExternalWallet(
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
-      ExternalWalletAuthorizationCallback callback) override;
+      ConnectExternalWalletCallback) override;
 
   void DisconnectWallet(const std::string& wallet_type,
                         LegacyResultCallback callback) override;
@@ -300,11 +297,6 @@ class LedgerImpl : public Ledger {
   void GetEventLogs(GetEventLogsCallback callback) override;
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
-
-  std::string GetRewardsWalletPassphrase() override;
-
-  void LinkRewardsWallet(const std::string& destination_payment_id,
-                         PostSuggestionsClaimCallback callback) override;
 
   void GetDrainStatus(const std::string& drain_id,
                       GetDrainCallback callback) override;

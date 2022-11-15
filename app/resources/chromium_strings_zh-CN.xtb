@@ -52,6 +52,7 @@
 <translation id="7291143854620707672">在使用此工作资料（例如创建书签、历史记录、密码和其他设置）时生成的任何 Brave 数据都可由工作资料管理员移除。<ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">安装过程中出现操作系统错误。请重新下载 Brave。</translation>
 <translation id="2648689842065142443">如果您是与亲朋好友共用一部设备，他们将能够使用单独的帐号进行浏览，并可随心所欲地设置 Brave</translation>
+<translation id="5926459996518749366">Brave 屏蔽了此归档文件，因为它可能藏有恶意软件</translation>
 <translation id="6384359666082467439">欢迎使用 Brave，<ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Brave 标签页</translation>
 <translation id="8372880274820509128">为了提高安全性，Brave 将对您的数据进行加密。</translation>
@@ -194,6 +195,7 @@
 <translation id="7861579472672677409">“<ph name="EXTENSION_NAME"/>”已添加到 Brave</translation>
 <translation id="608006075545470555">向此浏览器添加工作资料</translation>
 <translation id="5849446944780602366">有可用的更新。欢迎自定义和控制 Brave。</translation>
+<translation id="7433698744896946664">允许扩展程序在 Brave 工具栏中显示访问请求</translation>
 <translation id="492209281555538239">Brave 会将此密码保存在您的 Brave 帐号中，因此您不必记住它。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> 存在危险，因此 Brave 已将其拦截。</translation>
 <translation id="7006260220514217183">“安全浏览”功能已关闭。Brave 建议开启此功能。</translation>
@@ -285,6 +287,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8678991866891573053">Brave 团队正在探索新功能，以便网站只需使用您的较少数据就能提供同样的浏览体验</translation>
 <translation id="3343095737966473035">Brave 不是您的默认浏览器</translation>
 <translation id="5477319665405831211">在您的所有设备上同步并个性化设置 Brave</translation>
+<translation id="2280238321454602884">开启此设置后，Brave 会从您目前未主动使用的标签页回收内存。这样可释放计算机的资源以用于执行其他任务，并使 Brave 保持快速运行。闲置的标签页会显示为空白，在您点击后才会自动重新加载。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/>或<ph name="BEGIN_LINK_2"/>发送反馈<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">这会从这台设备上删除您的浏览数据。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="7747138024166251722">安装程序无法创建临时目录。请检查您是否有足够的磁盘空间和权限来安装该软件。</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -313,6 +316,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="6914496861676471566">安装程序归档损坏或无效。请重新下载 Brave。</translation>
 <translation id="6431861494713261006">可选：自动向 Brave 发送诊断数据和使用情况数据，协助改进 Brave 操作系统的功能和性能。</translation>
 <translation id="2097604701283463988">Brave版本太旧</translation>
+<translation id="607365808648940765">Brave 会酌情从您目前未主动使用的标签页回收内存。您随时可在“设置”中更改此设置。</translation>
 <translation id="8550334526674375523">此工作资料与您的个人资料是完全分开的。</translation>
 <translation id="2452889775041290116">您的家长已为 Brave 停用“网站、应用和扩展程序的权限”。因此，您无法添加该<ph name="EXTENSION_TYPE_PARAMETER"/>。</translation>
 <translation id="8502436661255886343">若要接收后续 Brave 更新，您需使用 macOS 10.13 或更高版本。该计算机目前使用的是 macOS 10.12。</translation>

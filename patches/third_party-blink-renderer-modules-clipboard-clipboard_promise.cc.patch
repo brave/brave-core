@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-index 4a579e19875022ed17ee7d4f0d285730a4451b76..180ece671ad45296d295b5e5046bfcdac49d4c28 100644
+index 09262ed96758e2ee9e0294e1f477106d400e7f88..d683a9f2c7b528ef2777e3b7a3218245da8e6a5d 100644
 --- a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
 +++ b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-@@ -546,6 +546,7 @@ void ClipboardPromise::RequestPermission(
+@@ -548,6 +548,7 @@ void ClipboardPromise::RequestPermission(
    // `will_be_sanitized` is false only when we are trying to read/write
    // web custom formats.
    if (!will_be_sanitized &&

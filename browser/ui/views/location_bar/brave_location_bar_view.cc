@@ -8,12 +8,15 @@
 #include <memory>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -30,6 +33,7 @@
 #include "content/public/browser/navigation_entry.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -86,19 +90,28 @@ void BraveLocationBarView::Init() {
     if (const auto color_id = GetFocusRingColor(profile()))
       focus_ring->SetColorId(color_id.value());
   }
+
+  if (base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
+      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
+      !browser_->profile()->IsOffTheRecord()) {
+    brave_news_location_view_ =
+        AddChildView(std::make_unique<BraveNewsLocationView>(
+            browser_->profile(), browser_->tab_strip_model()));
+  }
 #if BUILDFLAG(ENABLE_TOR)
-  onion_location_view_ = new OnionLocationView(browser_->profile());
-  AddChildView(onion_location_view_);
+  onion_location_view_ =
+      AddChildView(std::make_unique<OnionLocationView>(browser_->profile()));
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
-  ipfs_location_view_ = new IPFSLocationView(browser_->profile());
-  AddChildView(ipfs_location_view_);
+  ipfs_location_view_ =
+      AddChildView(std::make_unique<IPFSLocationView>(browser_->profile()));
 #endif
 
   // brave action buttons
-  brave_actions_ = new BraveActionsContainer(browser_, profile());
+  brave_actions_ = AddChildView(
+      std::make_unique<BraveActionsContainer>(browser_, profile()));
   brave_actions_->Init();
-  AddChildView(brave_actions_);
   // Call Update again to cause a Layout
   Update(nullptr);
 
@@ -184,6 +197,8 @@ void BraveLocationBarView::OnChanged() {
 
 std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   std::vector<views::View*> views;
+  if (brave_news_location_view_)
+    views.push_back(brave_news_location_view_);
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     views.push_back(onion_location_view_);
@@ -203,14 +218,19 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize();
   if (brave_actions_ && brave_actions_->GetVisible()) {
     const int brave_actions_min = brave_actions_->GetMinimumSize().width();
-    const int extra_width = brave_actions_min +
-                              GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
+    const int extra_width =
+        brave_actions_min + GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
+    min_size.Enlarge(extra_width, 0);
+  }
+  if (brave_news_location_view_ && brave_news_location_view_->GetVisible()) {
+    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
+                            brave_news_location_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_ && onion_location_view_->GetVisible()) {
     const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
-        onion_location_view_->GetMinimumSize().width();
+                            onion_location_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
 #endif
@@ -251,8 +271,8 @@ int BraveLocationBarView::GetBorderRadius() const {
 
 SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {
   const SkScalar radius = GetBorderRadius();
-  return SkPath().addRoundRect(gfx::RectToSkRect(GetLocalBounds()),
-                               radius, radius);
+  return SkPath().addRoundRect(gfx::RectToSkRect(GetLocalBounds()), radius,
+                               radius);
 }
 
 ContentSettingImageView*

@@ -248,8 +248,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
   // Check if we are redirected to uphold
   WaitForNavigation(ledger::uphold::GetUrl() + "/authorize/");
 
-  response_->SetVerifiedWallet(true);
-
   // Fake successful authentication
   ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
         browser(),
@@ -283,69 +281,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
   EXPECT_NE(score.find("100%"), std::string::npos);
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
-                       ZeroBalanceWalletClaimNotCalled_Uphold) {
-  response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
-
-  response_->ClearRequests();
-
-  base::RunLoop run_loop;
-  auto test_callback = [&](const ledger::mojom::Result result,
-                           ledger::mojom::ExternalWalletPtr wallet) {
-    auto requests = response_->GetRequests();
-    EXPECT_EQ(result, ledger::mojom::Result::LEDGER_OK);
-    EXPECT_FALSE(requests.empty());
-
-    // Should not attempt to call /v2/wallet/UUID/claim endpoint
-    // since by default the wallet should contain 0 `user_funds`
-    auto wallet_claim_call =
-        base::ranges::find_if(requests, [](const Request& req) {
-          return req.url.find("/v2/wallet") != std::string::npos &&
-                 req.url.find("/claim") != std::string::npos;
-        });
-
-    EXPECT_TRUE(wallet_claim_call == requests.end());
-    run_loop.Quit();
-  };
-
-  rewards_service_->GetExternalWallet(
-      base::BindLambdaForTesting(test_callback));
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
-                       ZeroBalanceWalletClaimNotCalled_Gemini) {
-  response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpGeminiWallet(rewards_service_, 50.0);
-
-  response_->ClearRequests();
-
-  base::RunLoop run_loop;
-  auto test_callback = [&](const ledger::mojom::Result result,
-                           ledger::mojom::ExternalWalletPtr wallet) {
-    auto requests = response_->GetRequests();
-    EXPECT_EQ(result, ledger::mojom::Result::LEDGER_OK);
-
-    // Should not attempt to call /v2/wallet/UUID/claim endpoint
-    // since by default the wallet should contain 0 `user_funds`
-    auto wallet_claim_call =
-        base::ranges::find_if(requests, [](const Request& req) {
-          return req.url.find("/v2/wallet") != std::string::npos &&
-                 req.url.find("/claim") != std::string::npos;
-        });
-
-    EXPECT_TRUE(wallet_claim_call == requests.end());
-    run_loop.Quit();
-  };
-
-  rewards_service_->GetExternalWallet(
-      base::BindLambdaForTesting(test_callback));
-  run_loop.Run();
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
@@ -356,8 +291,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
   rewards_browsertest_util::WaitForElementToAppear(contents(), "#modal");
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settings-modal-tabs-2']");
+      contents(), "[data-test-id='settings-modal-tabs-1']");
 
   rewards_browsertest_util::WaitForElementToContain(
       contents(),
@@ -378,8 +312,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
       "#modal");
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settings-modal-tabs-2']");
+      contents(), "[data-test-id='settings-modal-tabs-1']");
 
   rewards_browsertest_util::WaitForElementToContain(
       contents(), "[data-test-id='reset-text']",

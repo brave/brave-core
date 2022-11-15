@@ -1,0 +1,17 @@
+if (is_win) {
+  action("pack_policy_templates") {
+    chrome_pack_policy_templates = "//components/policy:pack_policy_templates"
+    deps = [ chrome_pack_policy_templates ]
+    script = "pack_policy_templates.py"
+    chrome_policy_templates_zip =
+        get_label_info(chrome_pack_policy_templates, "root_out_dir") +
+        "/policy_templates.zip"
+    inputs = [ chrome_policy_templates_zip ]
+    output_zip_file = "$root_out_dir/brave_policy_templates.zip"
+    outputs = [ output_zip_file ]
+    args = [
+      rebase_path(chrome_policy_templates_zip, root_build_dir),
+      rebase_path(output_zip_file, root_build_dir),
+    ]
+  }
+}

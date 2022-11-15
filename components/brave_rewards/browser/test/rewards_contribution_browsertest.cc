@@ -204,10 +204,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    AutoContributionMultiplePublishersUphold) {
-  response_->SetVerifiedWallet(true);
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       AutoContributionMultiplePublishersUphold) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
@@ -425,10 +423,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       popup_contents.get(), "#root", "Insufficient funds");
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    TipWithVerifiedWallet) {
-  response_->SetVerifiedWallet(true);
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
 
@@ -445,7 +440,6 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     DISABLED_MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
-  response_->SetVerifiedWallet(true);
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
 
@@ -463,8 +457,9 @@ IN_PROC_BROWSER_TEST_F(
 
   base::RunLoop run_loop_first;
   rewards_service_->GetExternalWallet(
-      base::BindLambdaForTesting([&](const ledger::mojom::Result,
-                                     ledger::mojom::ExternalWalletPtr wallet) {
+      base::BindLambdaForTesting([&](ledger::GetExternalWalletResult result) {
+        const auto wallet = std::move(result).value_or(nullptr);
+        ASSERT_TRUE(wallet);
         ASSERT_EQ(wallet->fees.size(), 2UL);
         for (auto const& value : wallet->fees) {
           ASSERT_EQ(value.second, tip_fee);
@@ -487,10 +482,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   contribution_->VerifyTip(amount, false, false, true);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    TipConnectedPublisherAnonAndConnected) {
-  response_->SetVerifiedWallet(true);
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       TipConnectedPublisherAnonAndConnected) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
   context_helper_->LoadRewardsPage();
@@ -505,7 +498,6 @@ IN_PROC_BROWSER_TEST_F(
 // Reenable when https://github.com/brave/brave-browser/issues/19982 is fixed.
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        DISABLED_TipConnectedPublisherVerified) {
-  response_->SetVerifiedWallet(true);
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
@@ -645,7 +637,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        DISABLED_SplitProcessorAutoContribution) {
-  response_->SetVerifiedWallet(true);
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
@@ -772,7 +763,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        DISABLED_SplitProcessOneTimeTip) {
-  response_->SetVerifiedWallet(true);
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
   context_helper_->LoadRewardsPage();

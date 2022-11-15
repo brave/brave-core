@@ -8,6 +8,7 @@ mojom("mojom") {
 
 static_library("common") {
   sources = [
+    "constants.h",
     "features.cc",
     "features.h",
     "pref_names.cc",

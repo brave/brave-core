@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { Route, useHistory, useParams, Switch, Redirect } from 'react-router-dom'
@@ -23,6 +23,9 @@ import { TOP_NAV_OPTIONS } from '../../../../options/top-nav-options'
 
 // style
 import { StyledWrapper } from './style'
+
+// hooks
+import { useBalanceUpdater } from '../../../../common/hooks/use-balance-updater'
 
 // components
 import { TopTabNav, WalletBanner, EditVisibleAssetsModal } from '../../'
@@ -59,6 +62,9 @@ const CryptoView = (props: Props) => {
     isMetaMaskInstalled,
     sessionRoute
   } = props
+
+  // hooks
+  useBalanceUpdater()
 
   // accounts tab state
   const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)

@@ -6,14 +6,10 @@
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
 
 #include "base/bind.h"
-#include "build/build_config.h"
+#include "brave/browser/brave_shell_integration.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_ui.h"
-
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/brave_shell_integration_win.h"
-#endif
 
 PinShortcutHandler::PinShortcutHandler() = default;
 
@@ -32,26 +28,21 @@ void PinShortcutHandler::RegisterMessages() {
 void PinShortcutHandler::HandlePinShortcut(const base::Value::List& args) {
   AllowJavascript();
 
-#if BUILDFLAG(IS_WIN)
-  shell_integration::win::PinToTaskbar(
+  shell_integration::PinShortcut(
       Profile::FromWebUI(web_ui()),
       base::BindOnce(&PinShortcutHandler::OnPinShortcut,
                      weak_factory_.GetWeakPtr()));
-#endif
 }
 
 void PinShortcutHandler::HandleCheckShortcutPinState(
     const base::Value::List& args) {
   AllowJavascript();
 
-#if BUILDFLAG(IS_WIN)
-  shell_integration::win::IsShortcutPinned(
+  shell_integration::IsShortcutPinned(
       base::BindOnce(&PinShortcutHandler::OnCheckShortcutPinState,
                      weak_factory_.GetWeakPtr()));
-#endif
 }
 
-#if BUILDFLAG(IS_WIN)
 void PinShortcutHandler::OnPinShortcut(bool pinned) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -63,7 +54,6 @@ void PinShortcutHandler::OnCheckShortcutPinState(bool pinned) {
 
   NotifyShortcutPinStateChangeToPage(pinned);
 }
-#endif  // BUILDFLAG(IS_WIN)
 
 void PinShortcutHandler::NotifyShortcutPinStateChangeToPage(bool pinned) {
   if (IsJavascriptAllowed()) {

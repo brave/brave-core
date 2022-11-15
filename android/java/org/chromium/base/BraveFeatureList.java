@@ -6,7 +6,6 @@
 package org.chromium.base;
 
 public abstract class BraveFeatureList {
-    public static final String BRAVE_REWARDS = "BraveRewards";
     public static final String NATIVE_BRAVE_WALLET = "NativeBraveWallet";
     public static final String BRAVE_NEWS = "BraveNews";
     public static final String USE_DEV_UPDATER_URL = "UseDevUpdaterUrl";
@@ -17,4 +16,6 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK = "BraveBackgroundVideoPlayback";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL =
             "brave-background-video-playback";
+    public static final String BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI =
+            "BraveVPNLinkSubscriptionAndroidUI";
 }

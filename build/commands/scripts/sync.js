@@ -1,7 +1,7 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 const fs = require('fs')
 const program = require('commander')
@@ -99,6 +99,10 @@ function buildDefaultGClientConfig() {
   }
   if (config.targetOS) {
     out += toGClientConfigItem('target_os', [config.targetOS], false)
+  }
+  if (config.targetOS === 'linux') {
+    // Run hooks for Arm64. This in particular creates the arm64 sysroot.
+    out += toGClientConfigItem('target_cpu', ['arm64'], false)
   }
 
   fs.writeFileSync(config.defaultGClientFile, out)

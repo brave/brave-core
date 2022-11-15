@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
 import { BraveWallet } from '../../../constants/types'
@@ -32,7 +36,7 @@ export interface Props {
   onCancel: () => void
   onAddToken: () => void
   originInfo: BraveWallet.OriginInfo
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
 }
 
@@ -55,7 +59,7 @@ function AddSuggestedTokenPanel (props: Props) {
     <StyledWrapper>
       <TopWrapper>
         <TopRow>
-          <NetworkText>{selectedNetwork.chainName}</NetworkText>
+          <NetworkText>{selectedNetwork?.chainName ?? ''}</NetworkText>
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
         <URLText>

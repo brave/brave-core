@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -146,7 +146,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       // Don't close the settings dialog for a click outside if we're in the
       // Brave News modal - the user expects closing that one to bring them back
       // to this one.
-      !this.context.page
+      !this.context.customizePage
     ) {
       this.props.onClose()
     }

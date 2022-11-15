@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveWallet } from '../constants/types'
 
@@ -63,20 +63,13 @@ export const getTokensNetwork = (networks: BraveWallet.NetworkInfo[], token: Bra
   return network[0] ?? emptyNetwork
 }
 
-export const getTokensCoinType = (networks: BraveWallet.NetworkInfo[], token: BraveWallet.BlockchainToken) => {
-  if (!networks) {
-    return ''
-  }
-  return getTokensNetwork(networks, token).coin || ''
-}
-
 export const getCoinFromTxDataUnion = (txDataUnion: BraveWallet.TxDataUnion): BraveWallet.CoinType => {
   if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
   return BraveWallet.CoinType.ETH
 }
 
-export const getNetworkFromTXDataUnion = (txDataUnion: BraveWallet.TxDataUnion, networks: BraveWallet.NetworkInfo[], selectedNetwork: BraveWallet.NetworkInfo) => {
+export const getNetworkFromTXDataUnion = (txDataUnion: BraveWallet.TxDataUnion, networks: BraveWallet.NetworkInfo[], selectedNetwork?: BraveWallet.NetworkInfo) => {
   const coin = getCoinFromTxDataUnion(txDataUnion)
   return networks.find((network) => network.coin === coin) ?? selectedNetwork
 }

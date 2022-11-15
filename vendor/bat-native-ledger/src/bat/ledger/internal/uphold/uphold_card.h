@@ -9,11 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "bat/ledger/internal/endpoint/uphold/get_cards/get_cards.h"
-#include "bat/ledger/internal/endpoint/uphold/patch_card/patch_card.h"
-#include "bat/ledger/internal/endpoint/uphold/post_cards/post_cards.h"
 #include "bat/ledger/internal/uphold/uphold.h"
-#include "bat/ledger/ledger.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -32,29 +29,24 @@ class UpholdCard {
 
   ~UpholdCard();
 
-  void CreateBATCardIfNecessary(CreateCardCallback) const;
+  void CreateBATCardIfNecessary(const std::string& access_token,
+                                CreateCardCallback) const;
 
  private:
-  void GetBATCardId(endpoint::uphold::GetCardsCallback) const;
-
   void OnGetBATCardId(CreateCardCallback,
+                      const std::string& access_token,
                       mojom::Result,
                       std::string&& id) const;
 
-  void CreateBATCard(endpoint::uphold::PostCardsCallback) const;
-
   void OnCreateBATCard(CreateCardCallback,
+                       const std::string& access_token,
                        mojom::Result,
                        std::string&& id) const;
-
-  void UpdateBATCardSettings(const std::string& id,
-                             endpoint::uphold::PatchCardCallback) const;
 
   void OnUpdateBATCardSettings(CreateCardCallback,
                                std::string&& id,
                                mojom::Result) const;
 
-  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 

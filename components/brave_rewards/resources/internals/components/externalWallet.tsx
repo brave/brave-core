@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -8,33 +8,23 @@ import * as React from 'react'
 import { getLocale } from '../../../../common/locale'
 import { lookupExternalWalletProviderName } from '../../shared/lib/external_wallet'
 
+import * as mojom from '../../shared/lib/mojom'
+
 interface Props {
   info: RewardsInternals.ExternalWallet
 }
 
-const getWalletStatus = (status: RewardsInternals.WalletStatus) => {
+const getWalletStatus = (status: mojom.WalletStatus) => {
   switch (status) {
-    case 0: {
+    case mojom.WalletStatus.kNotConnected:
       return getLocale('walletStatusNotConnected')
-    }
-    case 1: {
-      return getLocale('walletStatusConnected')
-    }
-    case 2: {
+    case mojom.WalletStatus.kConnected:
       return getLocale('walletStatusVerified')
-    }
-    case 3: {
-      return getLocale('walletStatusDisconnectedNotVerified')
-    }
-    case 4: {
+    case mojom.WalletStatus.kLoggedOut:
       return getLocale('walletStatusDisconnectedVerified')
-    }
-    case 5: {
-      return getLocale('walletStatusPending')
-    }
   }
 
-  return 'No wallet'
+  return getLocale('walletStatusNoWallet')
 }
 export const ExternalWallet = (props: Props) => {
   if (!props.info) {

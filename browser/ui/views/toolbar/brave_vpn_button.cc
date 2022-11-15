@@ -22,6 +22,8 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/gfx/geometry/rect_f.h"
@@ -187,6 +189,15 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   SetImageLabelSpacing(kBraveAvatarImageLabelSpacing);
 }
 
+std::u16string BraveVPNButton::GetTooltipText(const gfx::Point& p) const {
+  if (!IsPurchased())
+    return l10n_util::GetStringUTF16(IDS_BRAVE_VPN);
+
+  return l10n_util::GetStringUTF16(IsConnected()
+                                       ? IDS_BRAVE_VPN_CONNECTED_TOOLTIP
+                                       : IDS_BRAVE_VPN_DISCONNECTED_TOOLTIP);
+}
+
 void BraveVPNButton::UpdateButtonState() {
   constexpr SkColor kColorConnected = SkColorSetRGB(0x51, 0xCF, 0x66);
   constexpr SkColor kColorDisconnected = SkColorSetRGB(0xAE, 0xB1, 0xC2);
@@ -196,10 +207,13 @@ void BraveVPNButton::UpdateButtonState() {
                                                         : kColorDisconnected));
 }
 
-bool BraveVPNButton::IsConnected() {
-  return service_->is_connected();
+bool BraveVPNButton::IsConnected() const {
+  return service_->IsConnected();
 }
 
+bool BraveVPNButton::IsPurchased() const {
+  return service_->is_purchased_user();
+}
 void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
   chrome::ExecuteCommand(browser_, IDC_SHOW_BRAVE_VPN_PANEL);
 }

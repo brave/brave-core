@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // That script is executed from
 // components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.cc
@@ -43,7 +43,6 @@ const queriedClasses = new Set<string>()
 // Each of these get setup once the mutation observer starts running.
 let notYetQueriedClasses: string[] = []
 let notYetQueriedIds: string[] = []
-let cosmeticObserver: MutationObserver | undefined
 
 window.content_cosmetic = window.content_cosmetic || {}
 const CC = window.content_cosmetic
@@ -159,34 +158,39 @@ const fetchNewClassIdRules = () => {
   notYetQueriedIds = []
 }
 
-const UseMutationObserver = () => {
-  clearInterval(selectorsPollingIntervalId)
-  selectorsPollingIntervalId = undefined
-
-  if (!cosmeticObserver) {
-    cosmeticObserver = new MutationObserver(handleMutations)
+const useMutationObserver = () => {
+  if (selectorsPollingIntervalId) {
+    clearInterval(selectorsPollingIntervalId)
+    selectorsPollingIntervalId = undefined
   }
 
+  const observer = new MutationObserver(onMutations as MutationCallback)
   const observerConfig = {
     subtree: true,
     childList: true,
     attributeFilter: ['id', 'class']
   }
-  cosmeticObserver.observe(document.documentElement, observerConfig)
+  observer.observe(document.documentElement, observerConfig)
 }
 
-const UseSelectorsPolling = () => {
-  cosmeticObserver?.disconnect()
-  selectorsPollingIntervalId = window.setInterval(querySelectors,
-                                                 selectorsPollingIntervalMs)
-  window.setTimeout(UseMutationObserver, returnToMutationObserverIntervalMs)
+const usePolling = (observer?: MutationObserver) => {
+  if (observer) {
+    const mutations = observer.takeRecords()
+    observer.disconnect()
+    if (mutations) {
+      queueAttrsFromMutations(mutations)
+    }
+  }
+
+  const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
+  const queryAttrsFromDocumentBound = queryAttrsFromDocument.bind(undefined,
+                                                                  futureTimeMs)
+
+  selectorsPollingIntervalId = window.setInterval(queryAttrsFromDocumentBound,
+                                                  selectorsPollingIntervalMs)
 }
 
-const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
-  // Callback to c++ renderer process
-  // @ts-expect-error
-  const eventId: number | undefined = cf_worker.onHandleMutationsBegin?.()
-
+const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
   let mutationScore = 0
   for (const aMutation of mutations) {
     if (aMutation.type === 'attributes') {
@@ -238,6 +242,14 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
       }
     }
   }
+  return mutationScore
+}
+
+const onMutations = (mutations: MutationRecord[], observer: MutationObserver) => {
+  // Callback to c++ renderer process
+  // @ts-expect-error
+  const eventId: number | undefined = cf_worker.onHandleMutationsBegin?.()
+  const mutationScore = queueAttrsFromMutations(mutations)
 
   // Check the conditions to switch to the alternative strategy
   // to get selectors.
@@ -252,7 +264,7 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
 
     currentMutationScore += mutationScore
     if (currentMutationScore > CC.switchToSelectorsPollingThreshold) {
-      UseSelectorsPolling()
+      usePolling(observer)
     }
   }
 
@@ -587,7 +599,7 @@ const pumpCosmeticFilterQueuesOnIdle = idleize(
   pumpIntervalMaxMs
 )
 
-const querySelectors = () => {
+const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
   // Callback to c++ renderer process
   // @ts-expect-error
   const eventId: number | undefined = cf_worker.onQuerySelectorsBegin?.()
@@ -614,16 +626,21 @@ const querySelectors = () => {
     // @ts-expect-error
     cf_worker.onQuerySelectorsEnd(eventId)
   }
+
+  if (switchToMutationObserverAtTime !== undefined &&
+        window.Date.now() >= switchToMutationObserverAtTime) {
+    useMutationObserver()
+  }
 }
 
 const startObserving = () => {
   // First queue up any classes and ids that exist before the mutation observer
   // starts running.
-  querySelectors()
+  queryAttrsFromDocument()
 
   // Second, set up a mutation observer to handle any new ids or classes
   // that are added to the document.
-  UseMutationObserver()
+  useMutationObserver()
 }
 
 const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
@@ -640,7 +657,7 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   }
   // Third / final possibility, this is this the first time this has been
   // called, in which case set up a timer and quit
-  CC._startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
+  CC._startCheckingId = window.requestIdleCallback(_ => {
     CC._hasDelayOcurred = true
     if (!genericHide) {
       if (CC.firstSelectorsPollingDelayMs === undefined) {

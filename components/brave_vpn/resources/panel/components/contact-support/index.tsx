@@ -1,13 +1,19 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
+import isValidEmailAddress from '$web-common/isValidEmailAddress'
+import { getLocale } from '$web-common/locale'
 import Button from '$web-components/button'
 import Select from '$web-components/select'
 import TextInput, { Textarea } from '$web-components/input'
 import Toggle from '$web-components/toggle'
-import { getLocale } from '../../../../../common/locale'
-import * as S from './style'
-import { ErrorLabel } from '../general'
 import getPanelBrowserAPI, * as BraveVPN from '../../api/panel_browser_api'
-import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
+import { ErrorLabel } from '../general'
+import * as S from './style'
 
 interface Props {
   onCloseContactSupport: () => void
@@ -56,7 +62,6 @@ function ContactSupport (props: Props) {
 
   function getOnChangeField<T extends BaseType = BaseType> (key: keyof ContactSupportInputFields) {
     return function (e: T) {
-      console.log(setFormData)
       const value = (typeof e === 'string' || typeof e === 'number') ? e : e.currentTarget.value
       if (formData[key] === value) {
         return
@@ -80,12 +85,24 @@ function ContactSupport (props: Props) {
     }
   }
 
+  const emailAddressIsValid = React.useMemo(
+    () => isValidEmailAddress(formData.contactEmail),
+    [formData.contactEmail]
+  )
+
   const isValid = React.useMemo(() => {
-    return !supportData ||
-      !!formData.problemBody ||
-      !!formData.contactEmail ||
+    return (
+      !!formData.problemBody &&
+      !!formData.contactEmail &&
+      emailAddressIsValid &&
       !!formData.problemSubject
-  }, [formData, supportData])
+    )
+  }, [formData, emailAddressIsValid])
+
+  // Reset error states when data changes
+  React.useEffect(() => {
+    setShowErrors(false)
+  }, [formData])
 
   const handleSubmit = async () => {
     // Clear error about last submission
@@ -98,7 +115,7 @@ function ContactSupport (props: Props) {
     }
     // Handle is valid, submit data
     setIsSubmitting(true)
-    const fullIssueBody = formData.problemBody + '\n' +
+    const fullIssueBody = `Message: \n${formData.problemBody}\n\n` +
       (formData.shareOsVersion ? `OS: ${supportData?.osVersion}\n` : '') +
       (formData.shareAppVersion ? `App version: ${supportData?.appVersion}\n` : '') +
       (formData.shareHostname ? `Hostname: ${supportData?.hostname}\n` : '')
@@ -121,6 +138,12 @@ function ContactSupport (props: Props) {
     getPanelBrowserAPI().panelHandler.openVpnUI('privacy')
   }
 
+  // Setup any individual field error message. Inputs handle 'required'
+  // internally automatically.
+  const emailAddressErrorMessage = (showErrors && formData.contactEmail && !emailAddressIsValid)
+    ? getLocale('braveVpnSupportEmailNotValid')
+    : undefined
+
   return (
     <S.Box>
       <S.PanelContent>
@@ -141,12 +164,13 @@ function ContactSupport (props: Props) {
             isRequired={true}
             isErrorAlwaysShown={showErrors}
             value={formData.contactEmail ?? ''}
+            errorMessage={emailAddressErrorMessage}
             onChange={getOnChangeField('contactEmail')}
           />
           <label>
             {getLocale('braveVpnSupportSubject')}
             <Select
-              ariaLabel={getLocale('braveVpnSupportSubjectNotSet')}
+              ariaLabel={getLocale('braveVpnSupportSubject')}
               value={formData.problemSubject ?? ''}
               onChange={getOnChangeField('problemSubject')}
             >
@@ -157,11 +181,17 @@ function ContactSupport (props: Props) {
               <option value="websiteProblems">{getLocale('braveVpnSupportSubjectWebsiteDoesntWork')}</option>
               <option value="other">{getLocale('braveVpnSupportSubjectOther')}</option>
             </Select>
+            {showErrors && formData.problemSubject?.length === 0 &&
+            <ErrorLabel>
+              {getLocale('braveVpnSupportSubjectNotSet')}
+            </ErrorLabel>
+            }
           </label>
           <Textarea
             value={formData.problemBody}
             label={getLocale('braveVpnSupportBody')}
             isRequired={true}
+            isErrorAlwaysShown={showErrors}
             onChange={getOnChangeField('problemBody')}
           />
           <S.OptionalValues>
@@ -233,8 +263,6 @@ function ContactSupport (props: Props) {
             {getLocale('braveVpnSupportSubmit')}
           </Button>
         </S.Form>
-
-        {/* TODO(petemill): show an error if remoteSubmissionError has value */}
       </S.PanelContent>
     </S.Box>
   )

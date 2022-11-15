@@ -11,7 +11,7 @@
 namespace ethereum_remote_client {
 namespace features {
 
-extern const base::Feature kCryptoWalletsForNewInstallsFeature;
+BASE_DECLARE_FEATURE(kCryptoWalletsForNewInstallsFeature);
 
 }  // namespace features
 }  // namespace ethereum_remote_client

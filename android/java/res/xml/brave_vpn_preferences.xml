@@ -29,6 +29,11 @@
         android:key="subscription_manage"
         android:title="@string/manage_subscription"/>
 
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="link_subscription"
+        android:title="@string/link_subscription_title"
+        android:summary="@string/link_subscription_text"/>
+
     <PreferenceCategory
         android:key="brave_vpn_server_section"
         android:title="@string/server"/>

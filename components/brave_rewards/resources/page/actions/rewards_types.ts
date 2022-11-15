@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export const enum types {
   IS_INITIALIZED = '@@rewards/IS_INITIALIZED',
@@ -15,8 +15,6 @@ export const enum types {
   DELETE_PROMOTION = '@@rewards/DELETE_PROMOTION',
   ON_PROMOTION_CLAIM_STARTED = '@@rewards/ON_PROMOTION_CLAIM_STARTED',
   ON_PROMOTION_FINISH = '@@rewards/ON_PROMOTION_FINISH',
-  RECOVER_WALLET = '@@rewards/RECOVER_WALLET',
-  ON_RECOVER_WALLET_DATA = '@@rewards/ON_RECOVER_WALLET_DATA',
   ON_MODAL_BACKUP_CLOSE = '@@rewards/ON_MODAL_BACKUP_CLOSE',
   ON_MODAL_BACKUP_OPEN = '@@rewards/ON_MODAL_BACKUP_OPEN',
   ON_CLEAR_ALERT = '@@rewards/ON_CLEAR_ALERT',
@@ -68,11 +66,11 @@ export const enum types {
   GET_EXCLUDED_SITES = '@@rewards/GET_EXCLUDED_SITES',
   GET_BALANCE = '@@rewards/GET_BALANCE',
   ON_BALANCE = '@@rewards/ON_BALANCE',
-  GET_EXTERNAL_WALLET = '@@rewards/GET_EXTERNAL_WALLET',
   GET_EXTERNAL_WALLET_PROVIDERS = '@@rewards/GET_EXTERNAL_WALLET_PROVIDERS',
-  ON_EXTERNAL_WALLET = '@@rewards/ON_EXTERNAL_WALLET',
-  PROCESS_REWARDS_PAGE_URL = '@@rewards/PROCESS_REWARDS_PAGE_URL',
-  ON_PROCESS_REWARDS_PAGE_URL = '@@rewards/ON_PROCESS_REWARDS_PAGE_URL',
+  GET_EXTERNAL_WALLET = '@@rewards/GET_EXTERNAL_WALLET',
+  ON_GET_EXTERNAL_WALLET = '@@rewards/ON_GET_EXTERNAL_WALLET',
+  CONNECT_EXTERNAL_WALLET = '@@rewards/CONNECT_EXTERNAL_WALLET',
+  ON_CONNECT_EXTERNAL_WALLET = '@@rewards/ON_CONNECT_EXTERNAL_WALLET',
   HIDE_REDIRECT_MODAL = '@@rewards/HIDE_REDIRECT_MODAL',
   DISCONNECT_WALLET = '@@rewards/DISCONNECT_WALLET',
   GET_MONTHLY_REPORT = '@@rewards/GET_MONTHLY_REPORT',
@@ -86,8 +84,6 @@ export const enum types {
   ON_INITIALIZED = '@@rewards/ON_INITIALIZED',
   COMPLETE_RESET = '@@rewards/COMPLETE_RESET',
   ON_COMPLETE_RESET = '@@rewards/ON_COMPLETE_RESET',
-  GET_PAYMENT_ID = '@@rewards/GET_PAYMENT_ID',
-  ON_PAYMENT_ID = '@@rewards/ON_PAYMENT_ID',
   GET_ONBOARDING_STATUS = '@@rewards/GET_ONBOARDING_STATUS',
   ON_ONBOARDING_STATUS = '@@rewards/ON_ONBOARDING_STATUS',
   ENABLE_REWARDS = '@@rewards/ENABLE_REWARDS',
@@ -97,5 +93,7 @@ export const enum types {
   ON_EXTERNAL_WALLET_PROVIDER_LIST = '@@rewards/ON_EXTERNAL_WALLET_PROVIDER_LIST',
   SET_EXTERNAL_WALLET_TYPE = '@@rewards/SET_EXTERNAL_WALLET_TYPE',
   RESTART_BROWSER = '@@rewards/RESTART_BROWSER',
-  ON_PREF_CHANGED = '@@rewards/ON_PREF_CHANGED'
+  ON_PREF_CHANGED = '@@rewards/ON_PREF_CHANGED',
+  GET_IS_UNSUPPORTED_REGION = '@@rewards/GET_IS_UNSUPPORTED_REGION',
+  ON_IS_UNSUPPORTED_REGION = '@@rewards/ON_IS_UNSUPPORTED_REGION'
 }

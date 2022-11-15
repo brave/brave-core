@@ -63,6 +63,7 @@ Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq o
 <translation id="7291143854620707672">Bu profilin istifadəsi zamanı yaranan hər hansı bir Brave datası (əlfəcinlər, tarixçələr, parolların yaradılması və digər ayarlar kimi) iş profili administratoru tərəfindən silinə bilər. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Quraşdırma zamanı əməliyyat sistemi xətası baş verdi. Brave'u yenidən endirin.</translation>
 <translation id="2648689842065142443">Cihaz paylaşsanız, dostlarınız və ailəniz ayrıca baxış keçirə bilər və Brave'u istədikləri kimi ayarlaya bilər.</translation>
+<translation id="5926459996518749366">Brave bu arxiv faylını bloklayıb, çünki faylda zərərli proqram ola bilər</translation>
 <translation id="6384359666082467439"><ph name="ACCOUNT_FIRST_NAME"/>, Brave'a xoş gəlmisiniz</translation>
 <translation id="6791166902140255175">Brave Paneli</translation>
 <translation id="8372880274820509128">Əlavə təhlükəsizlik üçün, Brave datanızı şifrələyəcək.</translation>
@@ -208,6 +209,7 @@ Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq o
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> Brave'a əlavə edildi</translation>
 <translation id="608006075545470555">Bu brauzerə İş Profili əlavə edin</translation>
 <translation id="5849446944780602366">Brave'u fərdiləşdirin və idarə edin. Güncəlləmə əlçatandır.</translation>
+<translation id="7433698744896946664">Brave alətlər panelində artırmanın giriş sorğularını göstərməsinə icazə verin</translation>
 <translation id="492209281555538239">Brave bu parolu Brave Hesabında yadda saxlayacaq. Onu yadda saxlamalı olmayacaqsınız.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> təklükəli olduğu üçün Brave onu blok etdi.</translation>
 <translation id="7006260220514217183">Təhlükəsiz Baxış deaktivdir. Brave onu aktiv etməyi tövsiyə edir.</translation>
@@ -298,6 +300,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="8678991866891573053">Brave saytlara datanızdan daha az istifadə etməklə eyni baxış təcrübəsi təqdim etməyə imkan verən yeni funksiyaları araşdırır</translation>
 <translation id="3343095737966473035">Brave defolt brauzeriniz deyil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarda sinxronizasiya edin və fərdiləşdirin</translation>
+<translation id="2280238321454602884">Aktiv olduqda, Brave aktiv istifadə etmədiyiniz tablardan yaddaşı geri alır. Bu, kompüterinizin resurslarını digər tapşırıqlar üçün boşaldır və Brave'u sürətləndirir. Qeyri-aktiv tablar boş görünür və kliklədiyiniz zaman avtomatik olaraq yenidən yüklənir. <ph name="BEGIN_LINK"/>Ətraflı məlumat əldə edin<ph name="END_LINK"/> və ya <ph name="BEGIN_LINK_2"/>rəy göndərin<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Brauzinq datanız bu cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün Bravea <ph name="USER_EMAIL"/> kimi daxil olun.</translation>
 <translation id="7747138024166251722">Quraşdırıcı müvəqqəti direktoriya yarada bilmədi. Proqramı quraşdırmaq üçün boş disk yeri və icazə tapın.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -327,6 +330,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="6914496861676471566">Quraşdırıcı arxivi zədələnib və ya yanlışdır. Lütfən, Brave'u yenidən endirin.</translation>
 <translation id="6431861494713261006">İstəyə görə: Diaqnostika və istifadəçi datasını avtomatik Brave'a göndərməklə ChromeOS funksiyalarını təkmilləşdirməyə yardım edin.</translation>
 <translation id="2097604701283463988">Brave'um vaxtı keçib</translation>
+<translation id="607365808648940765">Lazım olduqda, Brave aktiv istifadə etmədiyiniz tablardan yaddaşı geri alır. Bunu istənilən zaman ayarlarda dəyişə bilərsiniz.</translation>
 <translation id="8550334526674375523">Bu iş profili şəxsi profilinizdən tamamilə ayrıdır.</translation>
 <translation id="2452889775041290116">Valideyniniz Brave üçün "Saytlar, tətbiqlər və artırmalar üçün icazələri" deaktiv edib. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> artırmasının əlavə edilməsinə icazə verilmir.</translation>
 <translation id="8502436661255886343">Brave güncəlləmələrini əldə etmək üçün macOS 10.13 və ya daha yeni versiya tələb olunur. Bu kompüter macOS 10.12 istifadə edir.</translation>

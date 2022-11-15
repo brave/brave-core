@@ -1,13 +1,16 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { BrowserRouter } from 'react-router-dom'
+
+// assets
+import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
@@ -35,6 +38,18 @@ function App () {
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
   }, [])
+
+  React.useEffect(() => {
+    /** Sets FAVICON for Wallet Pages */
+    let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement
+    if (!link) {
+      link = document.createElement('link')
+      link.rel = 'icon'
+      document.getElementsByTagName('head')[0].appendChild(link)
+    }
+    link.href = faveiconUrl
+  }, [])
+
   return (
     <Provider store={store}>
       <BrowserRouter>

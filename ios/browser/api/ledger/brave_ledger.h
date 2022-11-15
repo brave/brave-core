@@ -107,14 +107,6 @@ OBJC_EXPORT
 /// The users current wallet balance and related info
 @property(nonatomic, readonly, nullable) LedgerBalance* balance;
 
-/// The wallet's passphrase. nil if the wallet has not been created yet
-@property(nonatomic, readonly, nullable) NSString* walletPassphrase;
-
-/// Recover the users wallet using their passphrase
-- (void)recoverWalletUsingPassphrase:(NSString*)passphrase
-                          completion:
-                              (nullable void (^)(NSError* _Nullable))completion;
-
 /// Retrieves the users most up to date balance to determin whether or not the
 /// wallet has a sufficient balance to complete a reconcile
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL sufficient))completion;
@@ -123,37 +115,12 @@ OBJC_EXPORT
 - (void)pendingContributionsTotal:(void (^)(double amount))completion
     NS_SWIFT_NAME(pendingContributionsTotal(completion:));
 
-/// Links a desktop brave wallet given some payment ID
-- (void)linkBraveWalletToPaymentId:(NSString*)paymentId
-                        completion:(void (^)(LedgerResult result,
-                                             NSString* drainID))completion
-    NS_SWIFT_NAME(linkBraveWallet(paymentId:completion:));
-
 /// Obtain a drain status given some drain ID previously obtained from
 /// `linkBraveWalletToPaymentId:completion:`
 - (void)drainStatusForDrainId:(NSString *)drainId
                    completion:(void (^)(LedgerResult result,
                                         LedgerDrainStatus status))completion
     NS_SWIFT_NAME(drainStatus(for:completion:));
-
-#pragma mark - User Wallets
-
-/// The last updated external wallet if a user has hooked one up
-@property(nonatomic, readonly, nullable) LedgerExternalWallet* upholdWallet;
-
-- (void)fetchUpholdWallet:
-    (nullable void (^)(LedgerExternalWallet* _Nullable wallet))completion;
-
-- (void)disconnectWalletOfType:(ExternalWalletType)walletType
-                    completion:
-                        (nullable void (^)(LedgerResult result))completion;
-
-- (void)authorizeExternalWalletOfType:(ExternalWalletType)walletType
-                           queryItems:
-                               (NSDictionary<NSString*, NSString*>*)queryItems
-                           completion:(void (^)(LedgerResult result,
-                                                NSURL* _Nullable redirectURL))
-                                          completion;
 
 #pragma mark - Publishers
 

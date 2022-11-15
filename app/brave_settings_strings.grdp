@@ -141,16 +141,29 @@
   </message>
 
   <!-- Settings / Pin shortcut-->
-  <if expr="is_win">
-    <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT">
-      Pin to taskbar
-    </message>
-    <message name="IDS_SETTINGS_PIN_SHORTCUT">
-      Pin
-    </message>
-    <message name="IDS_SETTINGS_SHORTCUT_PINNED">
-      Brave is already pinned
-    </message>
+  <if expr="enable_pin_shortcut">
+    <if expr="is_win">
+      <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT" desc="The label for pin to taskbar settings">
+        Pin to taskbar
+      </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for pin to taskbar button">
+        Pin
+      </message>
+      <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for pinned state description">
+        Brave is already pinned
+      </message>
+    </if>
+    <if expr="is_macosx">
+      <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT" desc="The label for keep in dock settings">
+        Keep in Dock
+      </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for dock button">
+        Dock
+      </message>
+      <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for docked state description">
+        Brave is already in Dock
+      </message>
+    </if>
   </if>
 
   <!-- Settings / Shields -->
@@ -179,7 +192,7 @@
     These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The description for Brave shields Defaults sub-section in settings.">
-    This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
+    This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Brave shields Defaults sub-section in settings when Brave Rewards are disabled.">
     This will block most ads on websites.
@@ -973,6 +986,9 @@
   <message name="IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC" desc="The description of changing IPFS public gateway">
     IPFS public gateway address
   </message>
+  <message name="IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC" desc="The description of changing NFT IPFS public gateway">
+    IPFS public gateway address for NFT
+  </message>
   <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
     Change
   </message>
@@ -986,7 +1002,8 @@
     Redirect IPFS resources to the configured IPFS gateway
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC" desc="The description for redirecting IPFS resources to the configured gateway">
-    Automatically uses the configured gateway for IPFS resolutions when an IPFS gateway resource is encountered.
+    Requests to IPFS resources, hosted on third-party IPFS gateways will be loaded via selected local or remote gateway.
+    Note: If local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL" desc="The text label for redirecting IPFS resources for DNSLink">
     Automatically redirect to IPFS pages via DNSLink when possible

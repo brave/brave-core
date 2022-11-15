@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,7 @@ import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-d
 
 // utils
 import { getLocale } from '$web-common/locale'
+import { getWalletLocationTitle } from '../utils/string-utils'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -43,13 +44,14 @@ import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '.
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
-import { BackupWallet } from './screens/backup-wallet/backup-wallet'
+import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
+import { SendScreen } from './screens/send/send-page/send-screen'
 
 const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
 
@@ -112,11 +114,6 @@ export const Container = () => {
     }
   }, [inputValue, sessionRoute])
 
-  const onHideBackup = React.useCallback(() => {
-    dispatch(WalletPageActions.showRecoveryPhrase({ show: false }))
-    history.goBack()
-  }, [])
-
   const handlePasswordChanged = React.useCallback((value: string) => {
     setInputValue(value)
     if (hasIncorrectPassword) {
@@ -167,11 +164,45 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Nfts) ||
-      walletLocation.includes(WalletRoutes.Swap)
+      walletLocation.includes(WalletRoutes.Swap) ||
+      walletLocation.includes(WalletRoutes.Send)
     ) {
       setSessionRoute(walletLocation)
     }
   }, [walletLocation, isWalletCreated])
+
+  React.useEffect(() => {
+    const toobarElement = document.getElementById('toolbar')
+    const rootElement = document.getElementById('root')
+    if (toobarElement && rootElement) {
+      if (
+        walletLocation === WalletRoutes.Swap ||
+        walletLocation === WalletRoutes.Send ||
+        walletLocation.includes(WalletRoutes.DepositFundsPage) ||
+        walletLocation.includes(WalletRoutes.FundWalletPage)
+      ) {
+        toobarElement.hidden = true
+        rootElement.style.setProperty('min-height', '100vh')
+        return
+      }
+      toobarElement.hidden = false
+      rootElement.style.setProperty('min-height', 'calc(100vh - 56px)')
+    }
+  }, [walletLocation])
+
+  React.useEffect(() => {
+    document.title = getWalletLocationTitle(walletLocation)
+  }, [walletLocation])
+
+  React.useEffect(() => {
+    // clean recovery phrase if not backing up or onboarding on route change
+    if (
+      !walletLocation.includes(WalletRoutes.Backup) &&
+      !walletLocation.includes(WalletRoutes.Onboarding)
+    ) {
+      dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+    }
+  }, [walletLocation])
 
   // render
   if (!hasInitialized) {
@@ -208,10 +239,6 @@ export const Container = () => {
                 </SimplePageWrapper>
               </Route>
 
-              <Route path={WalletRoutes.Swap} exact={true}>
-                <Swap />
-              </Route>
-
               {isWalletLocked &&
                 <Route path={WalletRoutes.Unlock} exact={true}>
                   <SimplePageWrapper>
@@ -228,12 +255,21 @@ export const Container = () => {
               }
 
               {!isWalletLocked &&
-                <Route path={WalletRoutes.Backup} exact={true}>
+                <Route path={WalletRoutes.Swap} exact={true}>
+                  <Swap />
+                </Route>
+              }
+
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.Send} exact={true}>
+                  <SendScreen />
+                </Route>
+              }
+
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.Backup}>
                   <SimplePageWrapper>
-                    <BackupWallet
-                      isOnboarding={false}
-                      onCancel={onHideBackup}
-                    />
+                    <BackupWalletRoutes />
                   </SimplePageWrapper>
                 </Route>
               }

@@ -52,8 +52,43 @@ void BraveTab::ActiveStateChanged() {
 
 absl::optional<SkColor> BraveTab::GetGroupColor() const {
   // Hide tab border with group color as it doesn't go well with vertical tabs.
-  if (tabs::features::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs(controller()->GetBrowser()))
     return {};
 
   return Tab::GetGroupColor();
+}
+
+void BraveTab::UpdateIconVisibility() {
+  Tab::UpdateIconVisibility();
+  if (IsAtMinWidthForVerticalTabStrip()) {
+    const bool is_active = IsActive();
+    center_icon_ = true;
+    showing_icon_ = !is_active && !showing_alert_indicator_;
+    showing_close_button_ = is_active;
+  }
+}
+
+void BraveTab::Layout() {
+  Tab::Layout();
+  if (IsAtMinWidthForVerticalTabStrip()) {
+    if (showing_close_button_) {
+      close_button_->SetX(bounds().CenterPoint().x() -
+                          (close_button_->width() / 2));
+      close_button_->SetButtonPadding({});
+    }
+  }
+}
+
+bool BraveTab::ShouldRenderAsNormalTab() const {
+  if (IsAtMinWidthForVerticalTabStrip()) {
+    // Returns false to hide title
+    return false;
+  }
+
+  return Tab::ShouldRenderAsNormalTab();
+}
+
+bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
+  return tabs::features::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+         width() == tabs::kVerticalTabMinWidth;
 }

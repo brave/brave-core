@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import styled from 'styled-components'
@@ -14,7 +14,7 @@ import usePromise from '../../../../hooks/usePromise'
 
 const Title = styled.span`
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 36px;
 `
 
@@ -36,7 +36,7 @@ export default function SourcesList () {
       <Subtitle>{sourcesCount}</Subtitle>
     </Flex>
     <Flex direction="column">
-      {channels.map(c => <ChannelListEntry key={c.channelName} channelId={c.channelName} />)}
+      {channels.map(c => <ChannelListEntry key={c.channelName} channelName={c.channelName} />)}
       {subscribedPublisherIds.map((p) => (
         <FeedListEntry key={p} publisherId={p} />
       ))}

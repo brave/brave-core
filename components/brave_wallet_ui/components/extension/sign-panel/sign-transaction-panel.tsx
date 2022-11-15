@@ -1,22 +1,25 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { create } from 'ethereum-blockies'
 
 // Actions
 import { PanelActions } from '../../../panel/actions'
 
 // Types
-import { BraveWallet, PanelState, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/address-utils'
 import { findAccountName } from '../../../utils/account-utils'
+import { useUnsafePanelSelector, useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
+import { PanelSelectors } from '../../../panel/selectors'
 
 // Components
 import NavButton from '../buttons/nav-button/index'
@@ -73,10 +76,10 @@ const onClickLearnMore = () => {
 export const SignTransactionPanel = ({ signMode }: Props) => {
   // redux
   const dispatch = useDispatch()
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-  const signTransactionRequests = useSelector(({ panel }: { panel: PanelState }) => panel.signTransactionRequests)
-  const signAllTransactionsRequests = useSelector(({ panel }: { panel: PanelState }) => panel.signAllTransactionsRequests)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const defaultNetworks = useUnsafeWalletSelector(WalletSelectors.defaultNetworks)
+  const signTransactionRequests = useUnsafePanelSelector(PanelSelectors.signTransactionRequests)
+  const signAllTransactionsRequests = useUnsafePanelSelector(PanelSelectors.signAllTransactionsRequests)
   const signTransactionData = signMode === 'signTx' ? signTransactionRequests : signAllTransactionsRequests
 
   // state
@@ -109,6 +112,10 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         : [(selectedQueueData as BraveWallet.SignTransactionRequest)?.txData?.solanaTxData]
     ).filter((data): data is BraveWallet.SolanaTxData => !!data)
   }, [selectedQueueData])
+
+  const network = React.useMemo(() => {
+    return defaultNetworks.find((n) => n.coin === signTransactionData[0].coin)
+  }, [defaultNetworks, signTransactionData])
 
   // methods
   const onCancel = React.useCallback(() => {
@@ -182,7 +189,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     <StyledWrapper>
 
       <TopRow>
-        <NetworkText>{selectedNetwork.chainName}</NetworkText>
+        <NetworkText>{network?.chainName ?? ''}</NetworkText>
         {signTransactionQueueInfo.queueLength > 1 &&
           <QueueStepRow>
             <QueueStepText>{signTransactionQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signTransactionQueueInfo.queueLength}</QueueStepText>

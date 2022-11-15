@@ -12,14 +12,18 @@ namespace brave_vpn {
 
 namespace features {
 
-const base::Feature kBraveVPN {
-  "BraveVPN",
+BASE_FEATURE(kBraveVPN,
+             "BraveVPN",
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-      base::FEATURE_ENABLED_BY_DEFAULT
+             base::FEATURE_ENABLED_BY_DEFAULT
 #else
-      base::FEATURE_DISABLED_BY_DEFAULT
+             base::FEATURE_DISABLED_BY_DEFAULT
 #endif
-};
+);
+
+BASE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI,
+             "BraveVPNLinkSubscriptionAndroidUI",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 

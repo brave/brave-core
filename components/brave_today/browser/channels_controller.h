@@ -30,13 +30,16 @@ class ChannelsController {
   ChannelsController(const ChannelsController&) = delete;
   ChannelsController& operator=(const ChannelsController&) = delete;
 
-  static Channels GetChannelsFromPublishers(const std::string& locale,
-                                            const Publishers& publishers,
+  static Channels GetChannelsFromPublishers(const Publishers& publishers,
                                             PrefService* prefs);
 
-  // Get all the Locales the user has subcribed to channels in.
+  // Get all the Locales the user has subscribed to channels in.
   std::vector<std::string> GetChannelLocales() const;
-  void GetAllChannels(const std::string& locale, ChannelsCallback callback);
+
+  // Gets all the locales the user has subscribed to a channel in.
+  std::vector<std::string> GetChannelLocales(
+      const std::string& channel_id) const;
+  void GetAllChannels(ChannelsCallback callback);
   mojom::ChannelPtr SetChannelSubscribed(const std::string& locale,
                                          const std::string& channel_id,
                                          bool subscribed);
@@ -44,6 +47,11 @@ class ChannelsController {
                             const std::string& channel_id);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeedV2);
+  static void SetChannelSubscribedPref(PrefService* prefs,
+                                       const std::string& locale,
+                                       const std::string& channel_id,
+                                       bool subscribed);
   raw_ptr<PrefService> prefs_;
   raw_ptr<PublishersController> publishers_controller_;
 };

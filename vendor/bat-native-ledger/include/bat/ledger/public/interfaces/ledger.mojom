@@ -147,23 +147,6 @@ struct MediaEventInfo {
   string status;
 };
 
-struct ExternalWallet {
-  string type;
-  string token;
-  string address;
-  WalletStatus status;
-  string add_url;
-  string withdraw_url;
-  string one_time_string;
-  string code_verifier;
-  string user_name;
-  string member_id;
-  string account_url;
-  string login_url;
-  string activity_url;
-  map<string, double> fees;
-};
-
 struct BalanceReportInfo {
   string id;
   double grants;
@@ -231,7 +214,6 @@ enum Result {
   PENDING_NOT_ENOUGH_FUNDS = 22,
   RECURRING_TABLE_EMPTY = 23,
   EXPIRED_TOKEN = 24,
-  UPHOLD_BAT_NOT_ALLOWED = 25,
   ALREADY_EXISTS = 26,
   SAFETYNET_ATTESTATION_FAILED = 27,
   DATABASE_INIT_FAILED = 28,
@@ -241,16 +223,7 @@ enum Result {
   CONTINUE = 32,
   IN_PROGRESS= 33,
   REWARDS_OFF = 34,
-  AC_OFF = 35,
-
-  DEVICE_LIMIT_REACHED = 36,
-  MISMATCHED_PROVIDER_ACCOUNTS = 37,
-  UPHOLD_TRANSACTION_VERIFICATION_FAILURE = 41,
-  REQUEST_SIGNATURE_VERIFICATION_FAILURE = 42,
-  UPHOLD_INSUFFICIENT_CAPABILITIES = 43,
-  FLAGGED_WALLET = 44,
-  REGION_NOT_SUPPORTED = 45,
-  MISMATCHED_COUNTRIES = 46
+  AC_OFF = 35
 };
 
 enum PublisherStatus {
@@ -322,15 +295,6 @@ enum PublisherExclude {
   DEFAULT = 0,   // this tell us that user did not manually changed exclude state
   EXCLUDED = 1,  // user manually changed it to exclude
   INCLUDED = 2   // user manually changed it to include and is overriding server
-};
-
-enum WalletStatus {
-  NOT_CONNECTED = 0,
-  CONNECTED = 1,
-  VERIFIED = 2,
-  DISCONNECTED_NOT_VERIFIED = 3,
-  DISCONNECTED_VERIFIED = 4,
-  PENDING = 5
 };
 
 struct ContributionQueue {

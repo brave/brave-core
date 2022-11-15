@@ -55,33 +55,6 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
   return true;
 }
 
-void BraveWalletRenderFrameObserver::DidCreateScriptContext(
-    v8::Local<v8::Context> context,
-    int32_t world_id) {
-  if (!CanCreateProvider())
-    return;
-
-  auto dynamic_params = get_dynamic_params_callback_.Run();
-  if (!dynamic_params.brave_use_native_ethereum_wallet) {
-    js_ethereum_provider_.reset();
-    return;
-  }
-
-  bool is_main_world = world_id == content::ISOLATED_WORLD_ID_GLOBAL;
-  if (render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
-          render_frame()->GetWebFrame()->MainWorldScriptContext(),
-          "ethereum")) {
-    if (!js_ethereum_provider_) {
-      js_ethereum_provider_ = std::make_unique<JSEthereumProvider>(
-          render_frame(), dynamic_params.brave_use_native_ethereum_wallet);
-    }
-    js_ethereum_provider_->AddJavaScriptObjectToFrame(
-        context, dynamic_params.allow_overwrite_window_ethereum_provider,
-        is_main_world);
-    js_ethereum_provider_->ConnectEvent();
-  }
-}
-
 void BraveWalletRenderFrameObserver::DidFinishLoad() {
 #if !BUILDFLAG(IS_ANDROID)
   // Only record P3A for desktop and valid HTTP/HTTPS pages
@@ -95,18 +68,13 @@ void BraveWalletRenderFrameObserver::DidFinishLoad() {
 #endif
 }
 
-void BraveWalletRenderFrameObserver::WillReleaseScriptContext(
-    v8::Local<v8::Context>,
-    int32_t world_id) {
-  js_ethereum_provider_.reset();
-}
-
 void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   if (!CanCreateProvider())
     return;
 
   auto dynamic_params = get_dynamic_params_callback_.Run();
-  if (!dynamic_params.brave_use_native_solana_wallet) {
+  if (!dynamic_params.brave_use_native_solana_wallet &&
+      !dynamic_params.brave_use_native_ethereum_wallet) {
     return;
   }
 
@@ -119,11 +87,19 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   if (context.IsEmpty())
     return;
 
+  if (dynamic_params.brave_use_native_ethereum_wallet &&
+      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "ethereum")) {
+    JSEthereumProvider::Install(
+        dynamic_params.allow_overwrite_window_ethereum_provider,
+        render_frame());
+  }
+
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaFeature) &&
       base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaProviderFeature) &&
-      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana")) {
+      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana") &&
+      dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }

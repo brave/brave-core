@@ -14,10 +14,12 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
+#include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 
@@ -138,6 +140,8 @@ class BraveReferralsService : public ProfileManagerObserver {
   const std::string api_key_;
   const std::string platform_;
   std::string promo_code_;
+  base::ScopedObservation<ProfileManager, ProfileManagerObserver>
+      profile_manager_observer_{this};
 
   base::WeakPtrFactory<BraveReferralsService> weak_factory_;
 };

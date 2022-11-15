@@ -303,8 +303,13 @@ void RewardsBrowserTestResponse::Get(
     return;
   }
 
+  if (url.find("/v0/me/capabilities") != std::string::npos) {
+    *response = rewards_browsertest_util::GetUpholdCapabilities();
+    return;
+  }
+
   if (url.find("/v0/me") != std::string::npos) {
-    *response = rewards_browsertest_util::GetUpholdUser(verified_wallet_);
+    *response = rewards_browsertest_util::GetUpholdUser();
     return;
   }
 
@@ -348,10 +353,6 @@ void RewardsBrowserTestResponse::SetPromotionEmptyKey(bool empty) {
 
 void RewardsBrowserTestResponse::SetAlternativePublisherList(bool alternative) {
   alternative_publisher_list_ = alternative;
-}
-
-void RewardsBrowserTestResponse::SetVerifiedWallet(const bool verified) {
-  verified_wallet_ = verified;
 }
 
 void RewardsBrowserTestResponse::SetExternalBalance(

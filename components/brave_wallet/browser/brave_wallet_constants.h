@@ -38,6 +38,13 @@ constexpr char kSardineClientTokensURL[] =
     "https://api.sardine.ai/v1/auth/client-tokens";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletEnterYourPasswordToStartBackup",
+     IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP},
+    {"braveWalletEnterAPassswordToContinue",
+     IDS_BRAVE_WALLET_ENTER_A_PASSSWORD_TO_CONTINUE},
+    {"braveWalletNoTransactionsYetDescription",
+     IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION},
+    {"braveWalletNoTransactionsYet", IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET},
     {"braveWalletInvalidMnemonicError", IDS_WALLET_INVALID_MNEMONIC_ERROR},
     {"braveWalletRecoveryPhraseLengthError",
      IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR},
@@ -131,6 +138,20 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSend", IDS_BRAVE_WALLET_SEND},
     {"braveWalletSwap", IDS_BRAVE_WALLET_SWAP},
     {"braveWalletReset", IDS_BRAVE_WALLET_RESET},
+    {"braveWalletSendToken", IDS_BRAVE_WALLET_SEND_TOKEN},
+    {"braveWalletSendNFT", IDS_BRAVE_WALLET_SEND_NFT},
+    {"braveWalletSelectToken", IDS_BRAVE_WALLET_SELECT_TOKEN},
+    {"braveWalletSelectNFT", IDS_BRAVE_WALLET_SELECT_NFT},
+    {"braveWalletSendTabSelectTitle", IDS_BRAVE_WALLET_SEND_TAB_SELECT_TITLE},
+    {"braveWalletEnterRecipientAddress",
+     IDS_BRAVE_WALLET_ENTER_RECIPIENT_ADDRESS},
+    {"braveWalletNotEnoughFunds", IDS_BRAVE_WALLET_NOT_ENOUGH_FUNDS},
+    {"braveWalletSendHalf", IDS_BRAVE_WALLET_SEND_HALF},
+    {"braveWalletSendMax", IDS_BRAVE_WALLET_SEND_MAX},
+    {"braveWalletReviewOrder", IDS_BRAVE_WALLET_REVIEW_ORDER},
+    {"braveWalletNoAvailableTokens", IDS_BRAVE_WALLET_NO_AVAILIBLE_TOKENS},
+    {"braveWalletSearchTokens", IDS_BRAVE_WALLET_SEARCH_TOKENS},
+    {"braveWalletSearchNFTs", IDS_BRAVE_WALLET_SEARCH_NFTS},
     {"braveWalletBuyNotSupportedTooltip",
      IDS_BRAVE_WALLET_BUY_NOT_SUPPORTED_TOOLTIP},
     {"braveWalletSwapNotSupportedTooltip",
@@ -485,6 +506,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAssetsPanelTitle", IDS_BRAVE_WALLET_ASSETS_PANEL_TITLE},
     {"braveWalletPanelDisconnected", IDS_BRAVE_WALLET_PANEL_DISCONNECTED},
     {"braveWalletPanelBlocked", IDS_BRAVE_WALLET_PANEL_BLOCKED},
+    {"braveWalletTitle", IDS_BRAVE_WALLET_TITLE},
     {"braveWalletWelcomePanelDescription",
      IDS_BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION},
     {"braveWalletLearnMore", IDS_BRAVE_WALLET_LEARN_MORE},
@@ -944,7 +966,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddAssetTokenTabTitle",
      IDS_BRAVE_WALLET_ADD_ASSET_TOKEN_TAB_TITLE},
     {"braveWalletAddAssetNftTabTitle",
-     IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE}};
+     IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE},
+    {"braveWalletNftFetchingError", IDS_BRAVE_WALLET_NFT_FETCHING_ERROR}};
 
 // 0x swap constants
 constexpr char kGoerliSwapBaseAPIURL[] = "https://goerli.api.0x.org/";

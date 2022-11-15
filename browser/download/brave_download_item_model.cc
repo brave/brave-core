@@ -50,6 +50,10 @@ std::u16string BraveDownloadItemModel::GetTooltipText() {
 // Returns origin url text and sets |is_secure|.
 std::u16string BraveDownloadItemModel::GetOriginURLText(bool* is_secure) {
   *is_secure = false;
+  if (!model_->GetDownloadItem()) {
+    return std::u16string();
+  }
+
   const GURL gurl = model_->GetDownloadItem()->GetURL();
   if (gurl.is_empty()) {
     return std::u16string();

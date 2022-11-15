@@ -1,0 +1,26 @@
+diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
+index c75644fa2ff3afcd6f21a606b1ff8b9acf3049c6..235cccd1b8d0e90c81fa6f6fb6dd3b3b2b587312 100644
+--- a/ios/chrome/browser/prefs/browser_prefs.mm
++++ b/ios/chrome/browser/prefs/browser_prefs.mm
+@@ -198,6 +198,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   // times a user should see autofill branding animation after installation.
+   registry->RegisterIntegerPref(
+       prefs::kAutofillBrandingIconAnimationRemainingCountPrefName, 2);
++  BRAVE_REGISTER_LOCAL_STATE_PREFS
+ }
+ 
+ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -328,6 +329,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+       base::to_underlying(
+           prerender_prefs::NetworkPredictionSetting::kEnabledWifiOnly),
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
++  BRAVE_REGISTER_BROWSER_STATE_PREFS
+ }
+ 
+ // This method should be periodically pruned of year+ old migrations.
+@@ -375,4 +377,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+ 
+   // Added 09/2022
+   prefs->ClearPref(kDataSaverEnabled);
++  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
+ }

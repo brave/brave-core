@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActiv
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -87,11 +88,11 @@ public class BraveWalletPanel implements DialogInterface {
     private WalletModel mWalletModel;
     private AccountInfo mSelectedAccount;
     private NetworkInfo mSelectedNetwork;
-    private Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
+    private final Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
         if (accountInfo == null) return;
         mSelectedAccount = accountInfo;
         mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
-                Utils.getKeyringForCoinType(mSelectedAccount.coin), keyringInfo -> {
+                AssetUtils.getKeyringForCoinType(mSelectedAccount.coin), keyringInfo -> {
                     if (keyringInfo != null) {
                         mAccountInfos = keyringInfo.accountInfos;
                     }

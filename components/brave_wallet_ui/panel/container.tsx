@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import {
@@ -59,7 +59,7 @@ import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
-import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork } from '../common/hooks'
+import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork, useBalanceUpdater } from '../common/hooks'
 import { getUniqueAssets } from '../utils/asset-utils'
 import { isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
@@ -96,7 +96,6 @@ function Container () {
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const selectedPendingTransaction = useUnsafeWalletSelector(WalletSelectors.selectedPendingTransaction)
-  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
   const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
 
@@ -131,6 +130,8 @@ function Container () {
 
   const [selectedBuyAsset, setSelectedBuyAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
+  // hooks
+  useBalanceUpdater()
   const swap = useSwap()
   const {
     filteredAssetList,
@@ -437,7 +438,7 @@ function Container () {
     )
   }
 
-  if ((selectedPendingTransaction || signMessageData.length) &&
+  if (selectedAccount && (selectedPendingTransaction || signMessageData.length) &&
     selectedPanel === 'connectHardwareWallet') {
     return (
       <PanelWrapper isLonger={false}>
@@ -549,7 +550,7 @@ function Container () {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
+            selectedNetwork={selectedNetwork}
             defaultNetworks={defaultNetworks}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
@@ -792,18 +793,11 @@ function Container () {
             title={panelTitle}
             useSearch={false}
           >
-            <ScrollContainer>
-              <TransactionsPanel
-                accounts={accounts}
-                defaultCurrencies={defaultCurrencies}
-                onSelectTransaction={viewTransactionDetail}
-                selectedNetwork={selectedNetwork}
-                selectedAccount={selectedAccount}
-                visibleTokens={userVisibleTokensInfo}
-                transactionSpotPrices={transactionSpotPrices}
-                transactions={transactions}
-              />
-            </ScrollContainer>
+            <TransactionsPanel
+              onSelectTransaction={viewTransactionDetail}
+              selectedNetwork={selectedNetwork}
+              selectedAccountAddress={selectedAccount?.address}
+            />
           </Panel>
         </StyledExtensionWrapper>
       </PanelWrapper>
@@ -823,7 +817,6 @@ function Container () {
               <AssetsPanel
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
-                networkList={networkList}
                 onAddAsset={onAddAsset}
               />
             </ScrollContainer>

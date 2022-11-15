@@ -38,12 +38,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # Add the licensing info that would normally be in a README.chromium file.
     # This is for when we pull in external repos directly.
     special_cases.update({
-        os.path.join('brave', 'vendor', 'bat-native-rapidjson'): {
-            "Name": "RapidJSON",
-            "URL": "https://github.com/brave-intl/bat-native-rapidjson",
-            "License": "MIT",
-            "License File": "/brave/vendor/bat-native-rapidjson/license.txt",
-        },
         os.path.join('brave', 'vendor', 'bat-native-tweetnacl'): {
             "Name": "TweetNaCl",
             "URL": "https://github.com/brave-intl/bat-native-tweetnacl",
@@ -108,6 +102,12 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://libzip.org",
             "License": "BSD",
             "License File": "/brave/vendor/omaha/third_party/libzip/LICENSE",
+        },
+        os.path.join('brave', 'third_party', 'rapidjson'): {
+            "Name": "RapidJSON",
+            "URL": "https://github.com/Tencent/rapidjson",
+            "License": "MIT",
+            "License File": "/brave/third_party/rapidjson/src/license.txt",
         },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
             "Name": "zlib",

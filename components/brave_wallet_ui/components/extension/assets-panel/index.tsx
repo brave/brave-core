@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -25,8 +25,7 @@ import { PortfolioAssetItem } from '../../desktop'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 export interface Props {
   userAssetList: BraveWallet.BlockchainToken[]
-  networkList: BraveWallet.NetworkInfo[]
-  selectedAccount: WalletAccountType
+  selectedAccount?: WalletAccountType
   onAddAsset: () => void
 }
 
@@ -34,7 +33,6 @@ const AssetsPanel = (props: Props) => {
   const {
     userAssetList,
     selectedAccount,
-    networkList,
     onAddAsset
   } = props
 
@@ -58,7 +56,7 @@ const AssetsPanel = (props: Props) => {
         <PortfolioAssetItem
           action={onClickAsset(asset.symbol)}
           key={getAssetIdKey(asset)}
-          assetBalance={getBalance(networkList, selectedAccount, asset)}
+          assetBalance={getBalance(selectedAccount, asset)}
           token={asset}
           isPanel={true}
         />

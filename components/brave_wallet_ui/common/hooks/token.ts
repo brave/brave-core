@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import {
@@ -13,7 +13,7 @@ export default function useTokenInfo (
   getBlockchainTokenInfo: (address: string) => Promise<GetBlockchainTokenInfoReturnInfo>,
   visibleTokens: BraveWallet.BlockchainToken[],
   fullTokenList: BraveWallet.BlockchainToken[],
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
 ) {
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] = React.useState<BraveWallet.BlockchainToken | undefined>()
@@ -37,7 +37,7 @@ export default function useTokenInfo (
       return
     }
 
-    if (!checkedLists && selectedNetwork.chainId === BraveWallet.MAINNET_CHAIN_ID) {
+    if (!checkedLists && selectedNetwork?.chainId === BraveWallet.MAINNET_CHAIN_ID) {
       getBlockchainTokenInfo(contractAddress).then((value: GetBlockchainTokenInfoReturnInfo) => {
         if (value.token) {
           setFoundTokenInfoByContractAddress(value.token)
@@ -47,7 +47,7 @@ export default function useTokenInfo (
       }).catch(e => console.log(e))
     }
     setFoundTokenInfoByContractAddress(undefined)
-  }, [tokenContractAddress, visibleTokens, fullTokenList, selectedNetwork.chainId])
+  }, [tokenContractAddress, visibleTokens, fullTokenList, selectedNetwork?.chainId])
   return {
     onFindTokenInfoByContractAddress: setTokenContractAddress,
     foundTokenInfoByContractAddress

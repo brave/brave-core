@@ -1,0 +1,20 @@
+diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
+index e2daa7902cb753818d397ae81a08203f6fe9925d..387e52558161b269d372750a4d184b3ea683c4c5 100644
+--- a/components/content_settings/core/browser/content_settings_policy_provider.cc
++++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
+@@ -34,6 +34,7 @@ struct PrefsForManagedContentSettingsMapEntry {
+ 
+ constexpr PrefsForManagedContentSettingsMapEntry
+     kPrefsForManagedContentSettingsMap[] = {
++        BRAVE_MANAGED_CONTENT_SETTINGS
+         {prefs::kManagedCookiesAllowedForUrls, ContentSettingsType::COOKIES,
+          CONTENT_SETTING_ALLOW},
+         {prefs::kManagedCookiesBlockedForUrls, ContentSettingsType::COOKIES,
+@@ -110,6 +111,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
+ };
+ 
+ constexpr const char* kManagedPrefs[] = {
++    BRAVE_MANAGED_PREFS
+     prefs::kManagedAutoSelectCertificateForUrls,
+     prefs::kManagedClipboardAllowedForUrls,
+     prefs::kManagedClipboardBlockedForUrls,

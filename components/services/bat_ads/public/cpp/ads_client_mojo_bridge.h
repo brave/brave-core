@@ -27,8 +27,13 @@ namespace bat_ads {
 class AdsClientMojoBridge : public mojom::BatAdsClient {
  public:
   explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
+
   AdsClientMojoBridge(const AdsClientMojoBridge&) = delete;
   AdsClientMojoBridge& operator=(const AdsClientMojoBridge&) = delete;
+
+  AdsClientMojoBridge(AdsClientMojoBridge&& other) noexcept = delete;
+  AdsClientMojoBridge& operator=(AdsClientMojoBridge&& other) noexcept = delete;
+
   ~AdsClientMojoBridge() override;
 
  private:
@@ -61,7 +66,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
-                          const base::Time time) override;
+                          base::Time time) override;
   bool GetAdEventHistory(const std::string& ad_type,
                          const std::string& confirmation_type,
                          std::vector<base::Time>* out_value) override;
@@ -70,8 +75,8 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
                          GetAdEventHistoryCallback callback) override;
   void ResetAdEventHistoryForId(const std::string& id) override;
 
-  void GetBrowsingHistory(const int max_count,
-                          const int days_ago,
+  void GetBrowsingHistory(int max_count,
+                          int days_ago,
                           GetBrowsingHistoryCallback callback) override;
 
   void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
@@ -82,7 +87,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
             SaveCallback callback) override;
   void Load(const std::string& name, LoadCallback callback) override;
   void LoadFileResource(const std::string& id,
-                        const int version,
+                        int version,
                         LoadFileResourceCallback callback) override;
   bool LoadDataResource(const std::string& name,
                         std::string* out_value) override;
@@ -94,7 +99,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
   void ShowScheduledCaptchaNotification(
       const std::string& payment_id,
       const std::string& captcha_id,
-      const bool should_show_tooltip_notification) override;
+      bool should_show_tooltip_notification) override;
   void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
@@ -106,59 +111,41 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
   void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
                                training_instance) override;
 
-  void GetBooleanPref(
-      const std::string& path,
-      GetBooleanPrefCallback callback) override;
-  void SetBooleanPref(
-      const std::string& path,
-      const bool value) override;
-  void GetIntegerPref(
-      const std::string& path,
-      GetIntegerPrefCallback callback) override;
-  void SetIntegerPref(
-      const std::string& path,
-      const int value) override;
-  void GetDoublePref(
-      const std::string& path,
-      GetDoublePrefCallback callback) override;
-  void SetDoublePref(
-      const std::string& path,
-      const double value) override;
-  void GetStringPref(
-      const std::string& path,
-      GetStringPrefCallback callback) override;
-  void SetStringPref(
-      const std::string& path,
-      const std::string& value) override;
-  void GetInt64Pref(
-      const std::string& path,
-      GetInt64PrefCallback callback) override;
-  void SetInt64Pref(
-      const std::string& path,
-      const int64_t value) override;
-  void GetUint64Pref(
-      const std::string& path,
-      GetUint64PrefCallback callback) override;
-  void SetUint64Pref(
-      const std::string& path,
-      const uint64_t value) override;
+  void GetBooleanPref(const std::string& path,
+                      GetBooleanPrefCallback callback) override;
+  void SetBooleanPref(const std::string& path, bool value) override;
+  void GetIntegerPref(const std::string& path,
+                      GetIntegerPrefCallback callback) override;
+  void SetIntegerPref(const std::string& path, int value) override;
+  void GetDoublePref(const std::string& path,
+                     GetDoublePrefCallback callback) override;
+  void SetDoublePref(const std::string& path, double value) override;
+  void GetStringPref(const std::string& path,
+                     GetStringPrefCallback callback) override;
+  void SetStringPref(const std::string& path,
+                     const std::string& value) override;
+  void GetInt64Pref(const std::string& path,
+                    GetInt64PrefCallback callback) override;
+  void SetInt64Pref(const std::string& path, int64_t value) override;
+  void GetUint64Pref(const std::string& path,
+                     GetUint64PrefCallback callback) override;
+  void SetUint64Pref(const std::string& path, uint64_t value) override;
   void GetTimePref(const std::string& path,
                    GetTimePrefCallback callback) override;
-  void SetTimePref(const std::string& path, const base::Time value) override;
+  void SetTimePref(const std::string& path, base::Time value) override;
   void GetDictPref(const std::string& path,
                    GetDictPrefCallback callback) override;
   void SetDictPref(const std::string& path, base::Value::Dict value) override;
   void GetListPref(const std::string& path,
                    GetListPrefCallback callback) override;
   void SetListPref(const std::string& path, base::Value::List value) override;
-  void ClearPref(
-      const std::string& path) override;
+  void ClearPref(const std::string& path) override;
   void HasPrefPath(const std::string& path,
                    HasPrefPathCallback callback) override;
 
   void Log(const std::string& file,
-           const int32_t line,
-           const int32_t verbose_level,
+           int32_t line,
+           int32_t verbose_level,
            const std::string& message) override;
 
   raw_ptr<ads::AdsClient> ads_client_ = nullptr;  // NOT OWNED

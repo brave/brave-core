@@ -180,9 +180,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    public void loadDisconnectEntityList() {
+    public void loadDisconnectEntityList(Context context) {
+        if (context == null) return;
         try {
-            JSONObject obj = new JSONObject(loadDisconnectEntityJSONFromAsset());
+            String jsonString = loadDisconnectEntityJSONFromAsset(context);
+            if (jsonString == null) return;
+            JSONObject obj = new JSONObject(jsonString);
             JSONObject entities = obj.getJSONObject("entities");
             Iterator<String> keysItr = entities.keys();
             while (keysItr.hasNext()) {
@@ -192,8 +195,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 JSONArray jsonResources = ((JSONObject) value).getJSONArray("resources");
 
                 for (int i = 0; i < jsonResources.length(); i++) {
-                    // Pair<String, String> resourceCompanyName = new Pair<String,
-                    // String>(jsonResources.getString(i), key);
                     mResourceToCompanyNameList.add(new Pair(jsonResources.getString(i), key));
                 }
             }
@@ -204,9 +205,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    private String loadDisconnectEntityJSONFromAsset() {
+    private String loadDisconnectEntityJSONFromAsset(Context context) {
+        if (context == null) return null;
         String json = null;
-        try (InputStream inputStream = mContext.getAssets().open("disconnect_entitylist.json")) {
+        try (InputStream inputStream = context.getAssets().open("disconnect_entitylist.json")) {
             int size = inputStream.available();
             byte[] buffer = new byte[size];
             inputStream.read(buffer);

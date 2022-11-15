@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -11,9 +11,10 @@ import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GeminiIcon } from '../icons/gemini_icon'
 import { BitflyerIcon } from '../icons/bitflyer_icon'
 import { UpholdIcon } from '../icons/uphold_icon'
-import { PendingIcon } from './icons/pending_icon'
 
 import * as style from './external_wallet_bubble.style'
+
+import * as mojom from '../../../shared/lib/mojom'
 
 interface Props {
   externalWallet: ExternalWallet
@@ -40,15 +41,18 @@ export function ExternalWalletBubble (props: Props) {
 
   function getWalletStatus () {
     switch (externalWallet.status) {
-      case 'disconnected': return getString('walletDisconnected')
-      case 'pending': return getString('walletPending')
-      case 'verified': return getString('walletVerified')
+      case mojom.WalletStatus.kLoggedOut:
+        return getString('walletDisconnected')
+      case mojom.WalletStatus.kConnected:
+        return getString('walletVerified')
     }
+
+    return ''
   }
 
   function renderAccountLink () {
     switch (externalWallet.status) {
-      case 'disconnected':
+      case mojom.WalletStatus.kLoggedOut:
         return (
           <button onClick={actionHandler('reconnect')}>
             {
@@ -58,15 +62,15 @@ export function ExternalWalletBubble (props: Props) {
             }
           </button>
         )
-      case 'pending':
-        return null
-      case 'verified':
+      case mojom.WalletStatus.kConnected:
         return (
           <button onClick={actionHandler('view-account')}>
             {formatMessage(getString('walletAccountLink'), [providerName])}
           </button>
         )
     }
+
+    return null
   }
 
   return (
@@ -79,28 +83,15 @@ export function ExternalWalletBubble (props: Props) {
           <style.username>
             {externalWallet.username}
           </style.username>
-          <style.status className={externalWallet.status}>
-            {externalWallet.status === 'pending' && <PendingIcon />}
+          <style.status className={externalWallet.status === mojom.WalletStatus.kConnected ? 'connected' : ''}>
             {getWalletStatus()}
           </style.status>
         </style.header>
-        {
-          externalWallet.status === 'pending' &&
-          <style.pendingNotice>
-            <PendingIcon />
-            <span>
-              {formatMessage(getString('walletPendingText'), [providerName])}
-            </span>
-          </style.pendingNotice>
-        }
         <style.links>
-          {
-            externalWallet.status !== 'pending' &&
-            <style.link>
-              <style.linkMarker />
-              {renderAccountLink()}
-            </style.link>
-          }
+          <style.link>
+            <style.linkMarker />
+            {renderAccountLink()}
+          </style.link>
           <style.link>
             <style.linkMarker />
             <button onClick={actionHandler('disconnect')}>

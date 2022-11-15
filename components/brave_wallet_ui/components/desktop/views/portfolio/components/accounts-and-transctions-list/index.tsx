@@ -1,18 +1,23 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // Types
 import {
   BraveWallet,
-  WalletAccountType,
-  AddAccountNavTypes,
-  WalletState
+  AddAccountNavTypes
 } from '../../../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
-import { getTokensCoinType, getTokensNetwork } from '../../../../../../utils/network-utils'
+import { getTokensNetwork } from '../../../../../../utils/network-utils'
+import { findAccountByAddress } from '../../../../../../utils/account-utils'
+import { WalletSelectors } from '../../../../../../common/selectors'
+import { getBalance } from '../../../../../../utils/balance-utils'
 
 // Components
 import {
@@ -23,7 +28,7 @@ import {
 } from '../../../../'
 
 // Hooks
-import { useBalance } from '../../../../../../common/hooks'
+import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -35,6 +40,11 @@ import {
   AssetBalanceDisplay,
   DividerRow
 } from '../../style'
+import {
+  HorizontalSpace,
+  Row,
+  ToggleVisibilityButton
+} from '../../../../../shared/style'
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
@@ -42,28 +52,30 @@ export interface Props {
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
   selectedAssetTransactions: BraveWallet.TransactionInfo[]
-  hideBalances: boolean
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
 }
 
-const AccountsAndTransactionsList = (props: Props) => {
-  const {
-    selectedAsset,
-    fullAssetFiatBalance,
-    formattedFullAssetBalance,
-    selectedAssetTransactions,
-    hideBalances,
-    networkList,
-    onClickAddAccount
-  } = props
-
+export const AccountsAndTransactionsList = ({
+  selectedAsset,
+  fullAssetFiatBalance,
+  formattedFullAssetBalance,
+  selectedAssetTransactions,
+  networkList,
+  onClickAddAccount
+}: Props) => {
   // redux
-  const {
-    transactionSpotPrices,
-    accounts,
-    defaultCurrencies,
-    selectedNetwork
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  // unsafe selectors
+  const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+
+  // state
+  const [hideBalances, setHideBalances] = React.useState<boolean>(false)
+
+  const isNonFungibleToken = React.useMemo(() => {
+    return selectedAsset?.isErc721 || selectedAsset?.isNft
+  }, [selectedAsset])
 
   const selectedAssetsNetwork = React.useMemo(() => {
     if (!selectedAsset) {
@@ -76,39 +88,44 @@ const AccountsAndTransactionsList = (props: Props) => {
     if (!selectedAsset) {
       return []
     }
-    const coinType = getTokensCoinType(networkList, selectedAsset)
-    return accounts.filter((account) => account.coin === coinType)
-  }, [networkList, accounts, selectedAsset])
-
-  const getBalance = useBalance(networkList)
-
-  const findAccount = React.useCallback((address: string): WalletAccountType | undefined => {
-    return filteredAccountsByCoinType.find((account) => address === account.address)
-  }, [filteredAccountsByCoinType])
+    return accounts.filter((account) => account.coin === selectedAsset.coin)
+  }, [accounts, selectedAsset])
 
   const accountsList = React.useMemo(() => {
-    if (selectedAsset?.isErc721) {
+    if (isNonFungibleToken && selectedAssetsNetwork) {
       return filteredAccountsByCoinType.filter((account) => Number(account.nativeBalanceRegistry[selectedAssetsNetwork.chainId] ?? 0) !== 0)
     }
     return filteredAccountsByCoinType
   }, [selectedAsset, filteredAccountsByCoinType])
+
+  const nonRejectedTransactions = React.useMemo(() => {
+    return selectedAssetTransactions
+      .filter(t => t.txStatus !== BraveWallet.TransactionStatus.Rejected)
+  }, [selectedAssetTransactions])
 
   return (
     <>
       {selectedAsset &&
         <>
           <DividerRow>
-            <DividerText>{selectedAsset?.isErc721 ? getLocale('braveWalletOwner') : getLocale('braveWalletAccounts')}</DividerText>
-            {!selectedAsset?.isErc721 &&
-              <WithHideBalancePlaceholder
-                size='small'
-                hideBalances={hideBalances}
-              >
-                <AssetBalanceDisplay>
-                  {fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)} {formattedFullAssetBalance}
-                </AssetBalanceDisplay>
-              </WithHideBalancePlaceholder>
-            }
+            <DividerText>{isNonFungibleToken ? getLocale('braveWalletOwner') : getLocale('braveWalletAccounts')}</DividerText>
+            <Row justifyContent='flex-end'>
+              {!isNonFungibleToken &&
+                <WithHideBalancePlaceholder
+                  size='small'
+                  hideBalances={hideBalances}
+                >
+                  <AssetBalanceDisplay>
+                    {fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)} {formattedFullAssetBalance}
+                  </AssetBalanceDisplay>
+                </WithHideBalancePlaceholder>
+              }
+              <HorizontalSpace space='16px' />
+              <ToggleVisibilityButton
+                isVisible={!hideBalances}
+                onClick={() => setHideBalances(prev => !prev)}
+              />
+            </Row>
           </DividerRow>
           <SubDivider />
           {accountsList.map((account) =>
@@ -134,14 +151,17 @@ const AccountsAndTransactionsList = (props: Props) => {
           </ButtonRow>
           <DividerText>{getLocale('braveWalletTransactions')}</DividerText>
           <SubDivider />
-          {selectedAssetTransactions.length !== 0 ? (
+          {nonRejectedTransactions.length !== 0 ? (
             <>
-              {selectedAssetTransactions.map((transaction: BraveWallet.TransactionInfo) =>
+              {nonRejectedTransactions.map((transaction) =>
                 <PortfolioTransactionItem
                   key={transaction.id}
                   accounts={filteredAccountsByCoinType}
                   transaction={transaction}
-                  account={findAccount(transaction.fromAddress)}
+                  account={findAccountByAddress(
+                    filteredAccountsByCoinType,
+                    transaction.fromAddress
+                  )}
                   displayAccountName={true}
                 />
               )}

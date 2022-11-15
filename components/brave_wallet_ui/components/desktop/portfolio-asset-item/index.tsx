@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -14,6 +14,7 @@ import { getLocale } from '../../../../common/locale'
 import { getTokensNetwork } from '../../../utils/network-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
+import { isDataURL } from '../../../utils/string-utils'
 
 // Components
 import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
@@ -62,7 +63,7 @@ export const PortfolioAssetItem = ({
 
   // memos & computed
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+    return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
   }, [token.isErc721])
 
   const formattedAssetBalance = token.isErc721
@@ -162,7 +163,7 @@ export const PortfolioAssetItem = ({
               hideBalances={hideBalances ?? false}
             >
 
-              {!token.isErc721 &&
+              {!(token.isErc721 || token.isNft) &&
                 <>
                   {formattedFiatBalance ? (
                     <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>

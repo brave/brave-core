@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SideNavButton from './side-nav-button'
 import SideNav from './side-nav'
@@ -9,7 +9,6 @@ import TopTabNavButton from './top-tab-nav-button'
 import TopTabNav from './top-tab-nav'
 import WalletPageLayout from './wallet-page-layout'
 import WalletSubViewLayout from './wallet-sub-view-layout'
-import ChartControlBar from './chart-control-bar'
 import LineChart from './line-chart'
 import PortfolioAssetItem from './portfolio-asset-item'
 import PortfolioAccountItem from './portfolio-account-item'
@@ -41,7 +40,6 @@ export {
   TopTabNav,
   WalletPageLayout,
   WalletSubViewLayout,
-  ChartControlBar,
   LineChart,
   PortfolioAssetItem,
   PortfolioAccountItem,

@@ -73,11 +73,6 @@ public class NTPUtil {
     public static HashMap<String, SoftReference<Bitmap>> imageCache =
         new HashMap<String, SoftReference<Bitmap>>();
 
-    public static void turnOnAds() {
-        BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
-        BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-    }
-
     public static int checkForNonDisruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
         Context context = ContextUtils.getApplicationContext();
         if(sponsoredTab.shouldShowBanner()) {
@@ -179,9 +174,10 @@ public class NTPUtil {
                 turnOnAdsButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        NTPUtil.turnOnAds();
                         nonDisruptiveBannerLayout.setVisibility(View.GONE);
-
+                        if (BraveActivity.getBraveActivity() != null) {
+                            BraveActivity.getBraveActivity().openRewardsPanel();
+                        }
                         sponsoredTab.updateBannerPref();
                     }
                 });

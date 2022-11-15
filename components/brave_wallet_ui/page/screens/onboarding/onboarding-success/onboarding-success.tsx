@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
@@ -55,12 +55,12 @@ export const OnboardingSuccess = () => {
 
   const onClickBuyCrypto = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
-    history.push(WalletRoutes.FundWalletPage)
+    history.push(WalletRoutes.FundWalletPageStart)
   }, [])
 
   const onClickDepositCrypto = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
-    history.push(WalletRoutes.DepositFundsPage)
+    history.push(WalletRoutes.DepositFundsPageStart)
   }, [])
 
   // render

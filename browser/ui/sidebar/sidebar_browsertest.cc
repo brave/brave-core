@@ -10,6 +10,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
@@ -62,7 +63,13 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   views::View* GetVerticalTabsContainer() const {
     auto* view = BrowserView::GetBrowserViewForBrowser(browser());
-    return static_cast<BraveBrowserView*>(view)->vertical_tabs_container_;
+    return static_cast<BraveBrowserView*>(view)->vertical_tab_strip_host_view_;
+  }
+
+  views::Widget* GetEventDetectWidget() {
+    auto* sidebar_container_view =
+        static_cast<SidebarContainerView*>(controller()->sidebar());
+    return sidebar_container_view->GetEventDetectWidget()->widget_.get();
   }
 
   void SimulateSidebarItemClickAt(int index) const {
@@ -82,10 +89,22 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     sidebar_items_contents_view->OnItemPressed(item, event);
   }
 
+  SidebarControlView* GetSidebarControlView() const {
+    return GetSidebarContainerView()->sidebar_control_view_;
+  }
+
+  SidebarContainerView* GetSidebarContainerView() const {
+    return static_cast<SidebarContainerView*>(controller()->sidebar());
+  }
+
+  BraveSidePanel* GetSidePanel() const {
+    return GetSidebarContainerView()->side_panel_;
+  }
+
   bool IsSidebarUIOnLeft() const {
-    auto* sidebar_container_view =
-        static_cast<SidebarContainerView*>(controller()->sidebar());
-    return sidebar_container_view->sidebar_on_left_;
+    return GetSidebarContainerView()->sidebar_on_left_ &&
+           !GetSidePanel()->IsRightAligned() &&
+           GetSidebarControlView()->sidebar_on_left_;
   }
 };
 
@@ -219,6 +238,46 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click wallet item and then first wallet tab(index 0) is activated.
   SimulateSidebarItemClickAt(1);
   EXPECT_EQ(0, tab_model()->active_index());
+}
+
+// Test sidebar's initial horizontal option is set properly.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Check default horizontal option is left-sided.
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  EXPECT_TRUE(IsSidebarUIOnLeft());
+
+  // Set right-sided for next testing.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, InitialHorizontalOptionTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Check horizontal option is right-sided.
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  EXPECT_FALSE(IsSidebarUIOnLeft());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
+  auto* widget = GetEventDetectWidget();
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* contents_container = browser_view->contents_container();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Check widget is located on left side when sidebar on left.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  service->SetSidebarShowOption(
+      SidebarService::ShowSidebarOption::kShowOnMouseOver);
+  EXPECT_EQ(contents_container->GetBoundsInScreen().x(),
+            widget->GetWindowBoundsInScreen().x());
+
+  // Check widget is located on right side when sidebar on right.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
+            widget->GetWindowBoundsInScreen().right());
 }
 
 class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {

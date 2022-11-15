@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 let locale: Record<string, string> = {
   about: 'about',
@@ -176,7 +176,6 @@ let locale: Record<string, string> = {
   removeAdFromSaved: 'Remove From Saved',
   reservedAmountText: 'You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. We’ll keep trying to contribute until they verify, or until 90 days have passed.',
   reservedMoreLink: 'Learn more.',
-  restore: 'Restore',
   clearExcludeList: 'Clear exclude list',
   removeFromExcluded: 'Remove from excluded',
   reviewSitesMsg: 'Your pinned sites have been moved to',
@@ -209,13 +208,7 @@ let locale: Record<string, string> = {
   rewardsPanelText1: 'Add, withdraw and manage funds at Uphold',
   rewardsPanelText3: 'Brave Rewards is built on the Basic Attention Token. Learn more about BAT',
   rewardsPanelText4: 'here',
-  rewardsRestoreText1: 'Restore your Wallet',
-  rewardsRestoreText2: 'Use your recovery key to restore your wallet.',
-  rewardsRestoreText3: 'Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.',
-  rewardsRestoreText4: 'Enter your recovery key or',
   rewardsSummary: 'Rewards Summary',
-  rewardsViewQRCodeText1: 'View QR Code',
-  rewardsViewQRCodeText2: 'for iOS Rewards users transferring BAT.',
   rewardsWhy: 'Why Brave Rewards…',
   rewardsWidgetBraveRewards: 'Brave Rewards',
   saveAd: 'Save',
@@ -326,12 +319,6 @@ let locale: Record<string, string> = {
   showTopSites: 'Show Top Sites',
   showRewards: 'Show Rewards',
   tosAndPp: 'By turning on {{title}}, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
-  braveTodayDisableSourceCommand: 'Disable content from $1',
-  braveTodayIntroTitle: `Today's top stories in a completely private feed, just for you.`,
-  braveTodayIntroDescription: `Brave News is ad-supported with completely private and anonymized ads matched on your device. Your personal information always stays private, per our $1privacy policy$2.`,
-  braveTodayOptInActionLabel: 'Show Brave News',
-  braveTodayOptOutActionLabel: 'No thanks',
-  braveTodayScrollHint: 'Scroll for Brave News',
   editCardsTitle: 'Edit Cards'
 }
 

@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import {
   AmountPresetTypes,
@@ -14,6 +18,7 @@ import { Tooltip } from '../../shared'
 
 // Utils
 import Amount from '../../../utils/amount'
+import { getBalance } from '../../../utils/balance-utils'
 
 // Styled Components
 import {
@@ -21,7 +26,6 @@ import {
 } from './style'
 import useSend from '../../../common/hooks/send'
 import { useSelector } from 'react-redux'
-import useBalance from '../../../common/hooks/balance'
 import { usePreset } from '../../../common/hooks'
 
 export interface Props {
@@ -34,7 +38,6 @@ function Send (props: Props) {
   // redux
   const {
     selectedAccount,
-    networkList,
     selectedNetwork
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
@@ -53,10 +56,9 @@ function Send (props: Props) {
     setToAddressOrUrl,
     submitSend
   } = useSend()
-  const getSelectedAccountBalance = useBalance(networkList)
 
   // state
-  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
+  const sendAssetBalance = getBalance(selectedAccount, selectedSendAsset)
   const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
   // methods

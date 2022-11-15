@@ -33,9 +33,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const ledger::mojom::Result result,
       const std::vector<ledger::mojom::PromotionPtr>& list) {}
 
-  virtual void OnRecoverWallet(RewardsService* rewards_service,
-                               const ledger::mojom::Result result) {}
-
   virtual void OnPromotionFinished(RewardsService* rewards_service,
                                    const ledger::mojom::Result result,
                                    ledger::mojom::PromotionPtr promotion) {}

@@ -52,6 +52,13 @@
         android:title="@string/brave_search_engines"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BraveSearchEnginesPreferences"
+        android:key="home_screen_widget"
+        android:order="7"
+        android:icon="@drawable/ic_home_screen_widget"
+        android:title="@string/home_screen_widget"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveStatsPreferences"
         android:key="brave_stats"
         android:order="9"

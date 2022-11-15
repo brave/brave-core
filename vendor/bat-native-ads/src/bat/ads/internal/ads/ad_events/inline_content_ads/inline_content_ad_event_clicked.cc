@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_clicked.h"
 
+#include "base/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
@@ -17,14 +18,15 @@ void AdEventClicked::FireEvent(const InlineContentAdInfo& ad) {
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to log inline content ad clicked event");
-      return;
-    }
+  LogAdEvent(ad, ConfirmationType::kClicked,
+             base::BindOnce([](const bool success) {
+               if (!success) {
+                 BLOG(1, "Failed to log inline content ad clicked event");
+                 return;
+               }
 
-    BLOG(6, "Successfully logged inline content ad clicked event");
-  });
+               BLOG(6, "Successfully logged inline content ad clicked event");
+             }));
 }
 
 }  // namespace ads::inline_content_ads

@@ -68,6 +68,10 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     private final int TIP_SENT_REQUEST_CODE = 2;
     private final int FADE_OUT_DURATION = 500;
 
+    private static final int DEFAULT_VALUE_OPTION_1 = 1;
+    private static final int DEFAULT_VALUE_OPTION_2 = 5;
+    private static final int DEFAULT_VALUE_OPTION_3 = 10;
+
     private static final String CUSTOM_TIP_CONFIRMATION_FRAGMENT_TAG =
             "custom_tip_confirmation_fragment";
     private static final String CUSTOM_TIP_FRAGMENT_TAG = "custom_tip_fragment";
@@ -175,6 +179,13 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
 
     private void initRadioButtons(View view) {
         mTipChoices = mBraveRewardsNativeWorker.GetTipChoices();
+        // when native not giving tip choices initialize with default values
+        if (mTipChoices.length < 3) {
+            mTipChoices = new double[3];
+            mTipChoices[0] = DEFAULT_VALUE_OPTION_1;
+            mTipChoices[1] = DEFAULT_VALUE_OPTION_2;
+            mTipChoices[2] = DEFAULT_VALUE_OPTION_3;
+        }
         double rate = mBraveRewardsNativeWorker.GetWalletRate();
 
         int recurrentAmount = (int) mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(

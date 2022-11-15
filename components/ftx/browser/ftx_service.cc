@@ -208,7 +208,8 @@ bool FTXService::AuthenticateFromAuthToken(const std::string& auth_token) {
   std::string body;
   // This is the only API POST that needs to be in form type.
   BuildFormEncoding("grant_type", "code", &body);
-  BuildFormEncoding("redirect_uri", oauth_callback, &body);
+  // "://" is not escaped by base::EscapeUrlEncodedData().
+  body += "&redirect_uri=" + base::EscapeQueryParamValue(oauth_callback, true);
   BuildFormEncoding("code", auth_token, &body);
   access_token_.clear();
   // Handle response from API network call

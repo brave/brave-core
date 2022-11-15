@@ -11,8 +11,10 @@
 #include <string>
 #include <vector>
 
+#include "base/types/expected.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {
@@ -24,6 +26,16 @@ class BraveRewardsIsSupportedFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsIsSupportedFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsIsUnsupportedRegionFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.isUnsupportedRegion", UNKNOWN)
+
+ protected:
+  ~BraveRewardsIsUnsupportedRegionFunction() override;
 
   ResponseAction Run() override;
 };
@@ -444,8 +456,9 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetExternalWallet(const ledger::mojom::Result result,
-                           ledger::mojom::ExternalWalletPtr wallet);
+  void OnGetExternalWallet(
+      base::expected<ledger::mojom::ExternalWalletPtr,
+                     ledger::mojom::GetExternalWalletError> result);
 };
 
 class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {

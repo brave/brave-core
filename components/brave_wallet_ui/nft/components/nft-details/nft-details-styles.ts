@@ -1,17 +1,16 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import { WalletButton } from '../../../components/shared/style'
 import WebsiteIcon from '../../../assets/svg-icons/website-icon.svg'
 import TwitterIcon from '../../../assets/svg-icons/twitter-icon.svg'
 import FacebookIcon from '../../../assets/svg-icons/facebook-icon.svg'
-import MagnifyIcon from '../../../assets/svg-icons/magnify-icon.svg'
 import { OpenNewIcon } from 'brave-ui/components/icons'
 
-export const nftImageDimension = '440px'
+export const nftMediaSize = '440px'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -19,33 +18,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  min-height: ${nftImageDimension};
-  margin: 16px 0 50px 0;
-`
-
-export const NftImageWrapper = styled.div<{ isLoading: boolean }>`
-  position: relative;
-  display: flex;
-  width: ${p => p.isLoading ? 0 : nftImageDimension};
-  height: ${p => p.isLoading ? 0 : nftImageDimension};
-  visibility: ${p => p.isLoading ? 'hidden' : 'visible'};
-  margin-right: ${p => p.isLoading ? 0 : '28px'};;
-  border-radius: 12px;
-`
-
-export const NTFImage = styled.img`
-  display: block;
-  width: ${nftImageDimension};
-  height: ${nftImageDimension};
-  border: transparent;
-  border-radius: 4px;
-`
-
-export const NFTImageSkeletonWrapper = styled.div`
-  min-width: ${nftImageDimension};
-  height: ${nftImageDimension};
-  margin-right: 28px;
-  border-radius: 12px;
+  min-height: ${nftMediaSize};
 `
 
 export const DetailColumn = styled.div`
@@ -53,7 +26,7 @@ export const DetailColumn = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 100%;
+  width: calc(100% - ${nftMediaSize});
 `
 
 export const TokenName = styled.span`
@@ -186,8 +159,8 @@ export const ProjectDetailButton = styled(WalletButton)`
   outline: none;
   border: none;
   background: none;
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
 `
 
 export const ProjectWebsiteIcon = styled.div`
@@ -225,8 +198,8 @@ export const ExplorerButton = styled(WalletButton)`
   outline: none;
   border: none;
   background: none;
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
 `
 
 export const ExplorerIcon = styled(OpenNewIcon)`
@@ -235,19 +208,15 @@ export const ExplorerIcon = styled(OpenNewIcon)`
   color: ${(p) => p.theme.color.interactive05};
 `
 
-export const MagnifyButton = styled(WalletButton)`
-  position: absolute;
+export const ErrorMessage = styled.p`
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
-  right: 17px;
-  bottom: 17px;
-  width: 36px;
-  height: 36px;
-  background-image: url(${MagnifyIcon});
-  background-size: contain;
-  background-color: transparent;
-  cursor: pointer;
-  border-radius: 50%;
-  border-width: 0;
+  font-family: Poppins;
+  letter-spacing: 0.01em;
+  font-size: 11px;
+  line-height: 16px;
+  color: ${(p) => p.theme.color.text02};
+  word-break: break-word;
+  margin-top: 50px;
 `

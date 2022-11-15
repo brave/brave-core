@@ -1,8 +1,16 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import {
   BraveWallet,
   WalletState
 } from '../../../../constants/types'
+
+// options
+import { AllNetworksOption } from '../../../../options/network-filter-options'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -12,7 +20,7 @@ import {
   PopupModal
 } from '../..'
 import { NavButton } from '../../../extension'
-import { SearchBar } from '../../../shared'
+import NetworkFilterWithSearch from '../../network-filter-with-search'
 import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
 import { AddAsset } from '../../add-asset/add-asset'
 
@@ -28,7 +36,7 @@ import {
 } from './style'
 
 // hooks
-import { useAssetManagement } from '../../../../common/hooks'
+import { useAssetManagement, useTokenRegistry } from '../../../../common/hooks'
 import { useSelector } from 'react-redux'
 
 export interface Props {
@@ -38,23 +46,24 @@ export interface Props {
 const EditVisibleAssetsModal = ({ onClose }: Props) => {
   // redux
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
   const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   // custom hooks
   const {
     onUpdateVisibleAssets
   } = useAssetManagement()
+  const { tokenRegistry, fullTokenListAllChains, isLoading } = useTokenRegistry()
 
   // Token List States
   const [searchValue, setSearchValue] = React.useState<string>('')
-  const [filteredTokenList, setFilteredTokenList] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [updatedTokensList, setUpdatedTokensList] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [removedTokensList, setRemovedTokensList] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
+  const [selectedNetworkFilter, setSelectedNetworkFilter] = React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
+  const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
 
   // Modal UI States
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   // If a user removes all of their assets from the userVisibleTokenInfo list,
   // there is a check in the async/lib.ts folder that will still return the networks
@@ -76,12 +85,14 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     setUpdatedTokensList(userVisibleTokensInfo)
   }, [userVisibleTokensInfo])
 
+  // Memos
   const nativeAsset = React.useMemo(() => {
-    return {
+    return selectedNetwork && {
       contractAddress: '',
       decimals: selectedNetwork.decimals,
       isErc20: false,
       isErc721: false,
+      isNft: false,
       logo: selectedNetwork.iconUrls[0] ?? '',
       name: selectedNetwork.symbolName,
       symbol: selectedNetwork.symbol,
@@ -93,53 +104,67 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     }
   }, [selectedNetwork])
 
-  const tokenList = React.useMemo(() => {
+  // Token list based on selectedNetworkFilter
+  const selectedNetworkList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
+      return fullTokenListAllChains
+    }
+    return Object.keys(tokenRegistry).length === 0 ? [] : tokenRegistry[selectedNetworkFilter.chainId]
+  }, [tokenRegistry, selectedNetworkFilter.chainId, fullTokenListAllChains, Object.keys(tokenRegistry).length])
+
+  // Users visible tokens based on selectedNetworkFilter
+  const userVisibleTokensBySelectedNetwork: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
+      return userVisibleTokensInfo
+    }
+    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
+  }, [userVisibleTokensInfo, selectedNetworkFilter.chainId, tokenRegistry])
+
+  // Constructed list based on Users Visible Tokens and Full Token List
+  const tokenList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     const userVisibleContracts = isUserVisibleTokensInfoEmpty
       ? []
-      : userVisibleTokensInfo.map((token) => token.contractAddress.toLowerCase())
+      : userVisibleTokensBySelectedNetwork.map((token) => token.contractAddress.toLowerCase())
 
-    const fullAssetsListPlusNativeToken = userVisibleContracts.includes('')
-      ? fullTokenList
-      : [nativeAsset, ...fullTokenList]
+    const fullAssetsListPlusNativeToken = userVisibleContracts.includes('') || !nativeAsset
+      ? selectedNetworkList
+      : [nativeAsset, ...selectedNetworkList]
 
     const filteredTokenRegistry = fullAssetsListPlusNativeToken
-      .filter((token) => !userVisibleContracts.includes(token.contractAddress.toLowerCase()))
+      .filter((token) => !userVisibleContracts.includes(token?.contractAddress?.toLowerCase()))
 
     return isUserVisibleTokensInfoEmpty
       ? filteredTokenRegistry
-      : [...userVisibleTokensInfo, ...filteredTokenRegistry]
-  }, [isUserVisibleTokensInfoEmpty, fullTokenList, userVisibleTokensInfo, nativeAsset])
+      : [...userVisibleTokensBySelectedNetwork, ...filteredTokenRegistry]
+  }, [isUserVisibleTokensInfoEmpty, selectedNetworkList, userVisibleTokensInfo, nativeAsset])
 
-  React.useEffect(() => {
-    // Added this timeout to throttle setting the list
-    // to allow the modal to appear instantly
-    const timeoutId = setTimeout(function () {
-      setFilteredTokenList(tokenList)
-      setIsLoading(false)
-    }, 500)
+  // Filtered token list based on user removed tokens
+  const filteredOutRemovedTokens = React.useMemo(() => {
+    return tokenList.filter((token) =>
+      !removedTokensList.some((t) =>
+        t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+        t.tokenId === token.tokenId))
+  }, [tokenList, removedTokensList])
 
-    return () => clearTimeout(timeoutId)
-  }, [tokenList])
-
-  const filterWatchlist = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const search = event.target.value
-    if (search === '') {
-      setTimeout(function () {
-        setFilteredTokenList(tokenList)
-      }, 100)
-    } else {
-      const filteredList = tokenList.filter((item) => {
-        return (
-          item.name.toLowerCase() === search.toLowerCase() ||
-          item.name.toLowerCase().startsWith(search.toLowerCase()) ||
-          item.symbol.toLocaleLowerCase() === search.toLowerCase() ||
-          item.symbol.toLowerCase().startsWith(search.toLowerCase()) ||
-          item.contractAddress.toLocaleLowerCase() === search.toLowerCase()
-        )
-      })
-      setFilteredTokenList(filteredList)
+  // Filtered token list based on search value
+  const filteredTokenList = React.useMemo(() => {
+    if (searchValue === '') {
+      return filteredOutRemovedTokens
     }
-    setSearchValue(search)
+    return filteredOutRemovedTokens.filter((item) => {
+      return (
+        item.name.toLowerCase() === searchValue.toLowerCase() ||
+        item.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+        item.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
+        item.symbol.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+        item.contractAddress.toLocaleLowerCase() === searchValue.toLowerCase()
+      )
+    })
+  }, [filteredOutRemovedTokens, searchValue])
+
+  // Methods
+  const filterWatchlist = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value)
   }, [tokenList])
 
   const findUpdatedTokenInfo = React.useCallback((token: BraveWallet.BlockchainToken) => {
@@ -167,9 +192,14 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       return false
     }
 
-    return !fullTokenList
+    // Any token with a tokenId should be considered a custom token.
+    if (token.tokenId !== '') {
+      return true
+    }
+
+    return !fullTokenListAllChains
       .some(each => each.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
-  }, [fullTokenList])
+  }, [fullTokenListAllChains])
 
   const addOrRemoveTokenFromList = React.useCallback((selected: boolean, token: BraveWallet.BlockchainToken) => {
     if (selected) {
@@ -193,9 +223,14 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
         if (token.isErc721) setTokenContractAddress(token.contractAddress)
         setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
       }
-    } else {
-      setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
+      return
     }
+    if (token.isErc721 || token.isNft) {
+      setShowAddCustomToken(true)
+      setTokenContractAddress(token.contractAddress)
+      return
+    }
+    setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
   }, [isUserToken, updatedTokensList, addOrRemoveTokenFromList])
 
   const toggleShowAddCustomToken = () => setShowAddCustomToken(prev => !prev)
@@ -209,14 +244,22 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     const filterFn = (t: BraveWallet.BlockchainToken) => !(t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() && t.tokenId === token.tokenId)
     const newUserList = updatedTokensList.filter(filterFn)
     setUpdatedTokensList(newUserList)
-    const newFilteredTokenList = filteredTokenList.filter(filterFn)
-    setFilteredTokenList(newFilteredTokenList)
-  }, [updatedTokensList, filteredTokenList])
+    setRemovedTokensList([token, ...removedTokensList])
+  }, [updatedTokensList, filteredTokenList, removedTokensList])
 
   const onClickDone = React.useCallback(() => {
     onUpdateVisibleAssets(updatedTokensList)
     onClose()
   }, [updatedTokensList, onUpdateVisibleAssets, onClose])
+
+  const onToggleShowNetworkDropdown = React.useCallback(() => {
+    setShowNetworkDropDown((prev) => !prev)
+  }, [])
+
+  const onSelectAssetsNetwork = React.useCallback((network: BraveWallet.NetworkInfo) => {
+    setSelectedNetworkFilter(network)
+    setShowNetworkDropDown(false)
+  }, [])
 
   return (
     <PopupModal
@@ -235,15 +278,19 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
           <>
             {showAddCustomToken
               ? <AddAsset
-                  contractAddress={tokenContractAddress}
-                  onHideForm={toggleShowAddCustomToken}
-                />
+                contractAddress={tokenContractAddress}
+                onHideForm={toggleShowAddCustomToken}
+              />
               : <>
-                <SearchBar
-                  value={searchValue}
-                  placeholder={getLocale('braveWalletWatchListSearchPlaceholder')}
-                  action={filterWatchlist}
-                  autoFocus={true}
+                <NetworkFilterWithSearch
+                  searchValue={searchValue}
+                  searchPlaceholder={getLocale('braveWalletWatchListSearchPlaceholder')}
+                  searchAction={filterWatchlist}
+                  searchAutoFocus={true}
+                  selectedNetwork={selectedNetworkFilter}
+                  onClick={onToggleShowNetworkDropdown}
+                  showNetworkDropDown={showNetworkDropDown}
+                  onSelectNetwork={onSelectAssetsNetwork}
                 />
                 {!searchValue.toLowerCase().startsWith('0x') &&
                   <TopRow>
@@ -254,12 +301,12 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
                 }
                 {filteredTokenList.length === 0
                   ? <NoAssetRow>
-                      {searchValue.toLowerCase().startsWith('0x') ? (
-                        <NoAssetButton
-                          onClick={onClickSuggestAdd}>{getLocale('braveWalletWatchListSuggestion').replace('$1', searchValue)}</NoAssetButton>
-                      ) : (
-                        <NoAssetText>{getLocale('braveWalletWatchListNoAsset')} {searchValue}</NoAssetText>
-                      )}
+                    {searchValue.toLowerCase().startsWith('0x') ? (
+                      <NoAssetButton
+                        onClick={onClickSuggestAdd}>{getLocale('braveWalletWatchListSuggestion').replace('$1', searchValue)}</NoAssetButton>
+                    ) : (
+                      <NoAssetText>{getLocale('braveWalletWatchListNoAsset')} {searchValue}</NoAssetText>
+                    )}
                   </NoAssetRow>
                   : <VirtualizedVisibleAssetsList
                     tokenList={filteredTokenList}

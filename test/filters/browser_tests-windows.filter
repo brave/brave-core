@@ -5,6 +5,40 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# This test passes locally but always fails on CI
+-TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
+
+# This test passes locally but fails on CI likely because BraveMainDelegate is
+# available in the Chromium tests. It fails with the message:
+#
+# Terminating render process for bad Mojo message: Received bad user message:
+# No binder found for interface brave_news.mojom.BraveNewsController for the
+# frame/document scope
+#
+# The binder is not instantiated because BraveContentBrowserClient is also not
+# available. The difference between CI and local execution has not been
+# investigated.
+-WebAppTabStripBrowserTest.OnlyNavigateHomeTabIfDifferentUrl
+
+# These tests fail because our default search provider is not Google, which
+# makes the page classification return the result the tests don't expect. Also,
+# kZeroSuggestPrefetchingOnWeb feature is currently disabled by default which
+# causes prefetch not to start.
+-ZeroSuggestPrefetchTabHelperBrowserTestOnNTP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
+
+# This test fails because we modify the Profile Picker UI to skip the initial
+# screen and the tests ends up creating 2 profiles instead of the intended one.
+-ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
+
+# This test fails on CI but passes locally
+-LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
+
+# These tests fail on x86 CI but pass locally
+-MetricIntegrationTest.FirstInputDelay
+-MetricIntegrationTest.LargestContentfulPaint_SubframeInput
+
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFExtensionAccessibilityTreeDumpTest.*

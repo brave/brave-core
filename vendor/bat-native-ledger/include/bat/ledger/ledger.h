@@ -14,9 +14,11 @@
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/types/expected.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/mojom_structs.h"
+#include "bat/ledger/public/interfaces/ledger_types.mojom.h"
 
 namespace ledger {
 
@@ -24,6 +26,7 @@ extern mojom::Environment _environment;
 extern int gemini_retries;
 extern bool is_debug;
 extern bool is_testing;
+extern int state_migration_target_version_for_testing;
 extern int reconcile_interval;  // minutes
 extern int retry_interval;      // seconds
 
@@ -42,12 +45,17 @@ using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback =
     base::OnceCallback<void(mojom::Result, mojom::BalancePtr)>;
 
-using ExternalWalletCallback =
-    base::OnceCallback<void(mojom::Result, mojom::ExternalWalletPtr)>;
+using GetExternalWalletResult =
+    base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
 
-using ExternalWalletAuthorizationCallback =
-    std::function<void(mojom::Result,
-                       base::flat_map<std::string, std::string>)>;
+using GetExternalWalletCallback =
+    base::OnceCallback<void(GetExternalWalletResult)>;
+
+using ConnectExternalWalletResult =
+    base::expected<void, mojom::ConnectExternalWalletError>;
+
+using ConnectExternalWalletCallback =
+    base::OnceCallback<void(ConnectExternalWalletResult)>;
 
 using FetchPromotionCallback =
     base::OnceCallback<void(mojom::Result, std::vector<mojom::PromotionPtr>)>;
@@ -246,9 +254,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual mojom::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
 
-  virtual void RecoverWallet(const std::string& pass_phrase,
-                             LegacyResultCallback callback) = 0;
-
   virtual void SetPublisherExclude(const std::string& publisher_id,
                                    mojom::PublisherExclude exclude,
                                    ResultCallback callback) = 0;
@@ -328,12 +333,12 @@ class LEDGER_EXPORT Ledger {
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
   virtual void GetExternalWallet(const std::string& wallet_type,
-                                 ExternalWalletCallback callback) = 0;
+                                 GetExternalWalletCallback) = 0;
 
-  virtual void ExternalWalletAuthorization(
+  virtual void ConnectExternalWallet(
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
-      ExternalWalletAuthorizationCallback callback) = 0;
+      ConnectExternalWalletCallback) = 0;
 
   virtual void DisconnectWallet(const std::string& wallet_type,
                                 LegacyResultCallback callback) = 0;
@@ -370,11 +375,6 @@ class LEDGER_EXPORT Ledger {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual std::string GetRewardsWalletPassphrase() = 0;
-
-  virtual void LinkRewardsWallet(const std::string& destination_payment_id,
-                                 PostSuggestionsClaimCallback callback) = 0;
 
   virtual void GetDrainStatus(const std::string& drain_id,
                               GetDrainCallback callback) = 0;

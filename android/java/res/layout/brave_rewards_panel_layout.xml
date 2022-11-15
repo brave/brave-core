@@ -27,6 +27,10 @@
                         layout="@layout/brave_rewards_onboarding_modal"/>
 
                     <include
+                        android:id="@+id/rewards_response_modal_id"
+                        layout="@layout/rewards_response_modal" />
+
+                    <include
                         android:id="@+id/brave_rewards_onboarding_layout_id"
                         layout="@layout/brave_rewards_onboarding_layout"/>
 

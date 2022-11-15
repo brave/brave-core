@@ -14,8 +14,7 @@ namespace features {
 // https://tracker.example.com/?url=http://final.example.com/
 // and automatically redirect to the final URL without sending any
 // network requests to the tracker.
-const base::Feature kBraveDebounce{"BraveDebounce",
-                                   base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveDebounce, "BraveDebounce", base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace debounce

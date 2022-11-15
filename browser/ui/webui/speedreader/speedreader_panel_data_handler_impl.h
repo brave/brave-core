@@ -57,9 +57,20 @@ class SpeedreaderPanelDataHandlerImpl
   void GetContentStyle(GetContentStyleCallback callback) override;
   void SetContentStyle(ContentStyle style) override;
 
+  void GetCurrentSiteURL(GetCurrentSiteURLCallback callback) override;
+
+  void IsEnabled(IsEnabledCallback callback) override;
+  void SetEnabled(bool on) override;
+
+  void GetSiteSettings(GetSiteSettingsCallback callback) override;
+
  private:
+  void UpdateSiteSettings();
+
   mojo::Receiver<speedreader::mojom::PanelDataHandler> receiver_;
+
   raw_ptr<speedreader::SpeedreaderTabHelper> speedreader_tab_helper_ = nullptr;
+  speedreader::mojom::SiteSettings site_settings_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_PANEL_DATA_HANDLER_IMPL_H_

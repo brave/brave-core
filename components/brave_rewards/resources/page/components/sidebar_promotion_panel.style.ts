@@ -1,12 +1,13 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
 
 import { PromotionKey } from '../lib/promotions'
 import * as mixins from '../../shared/lib/css_mixins'
 
+import braveCreatorsBackground from '../assets/brave_creators_bg.svg'
 import geminiBackground from '../assets/gemini_bg.svg'
 import tapBackgroud from '../assets/tap_bg.svg'
 import upholdCardBackground from '../assets/uphold_card_bg.png'
@@ -15,6 +16,7 @@ import upholdEquitiesBackground from '../assets/uphold_equities_bg.svg'
 function getBackgroundImage (key: PromotionKey) {
   switch (key) {
     case 'bitflyer-verification': return ''
+    case 'brave-creators': return braveCreatorsBackground
     case 'gemini': return geminiBackground
     case 'tap-network': return tapBackgroud
     case 'uphold-card': return upholdCardBackground
@@ -39,6 +41,10 @@ export const promotion = styled.div`
   background-position: top left;
   background-size: contain;
   background-repeat: no-repeat;
+
+  &.promotion-brave-creators {
+    background-image: url(/${getBackgroundImage('brave-creators')});
+  }
 
   &.promotion-gemini {
     background-image: url(/${getBackgroundImage('gemini')});

@@ -19,7 +19,9 @@ MockPermissionLifetimePrompt::~MockPermissionLifetimePrompt() {
     factory_->HideView(this);
 }
 
-void MockPermissionLifetimePrompt::UpdateAnchor() {}
+bool MockPermissionLifetimePrompt::UpdateAnchor() {
+  return false;
+}
 
 PermissionPrompt::TabSwitchingBehavior
 MockPermissionLifetimePrompt::GetTabSwitchingBehavior() {

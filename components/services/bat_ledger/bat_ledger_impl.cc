@@ -171,27 +171,6 @@ void BatLedgerImpl::AttestPromotion(
   ledger_->AttestPromotion(promotion_id, solution, std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnRecoverWallet(
-    CallbackHolder<RecoverWalletCallback>* holder,
-    ledger::mojom::Result result) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void BatLedgerImpl::RecoverWallet(
-    const std::string& pass_phrase,
-    RecoverWalletCallback callback) {
-  // deleted in OnRecoverWallet
-  auto* holder = new CallbackHolder<RecoverWalletCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->RecoverWallet(pass_phrase, std::bind(
-      BatLedgerImpl::OnRecoverWallet,
-      holder,
-      _1));
-}
-
 void BatLedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
   ledger_->SetPublisherMinVisitTime(duration_in_seconds);
 }
@@ -693,30 +672,11 @@ void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
   ledger_->GetExternalWallet(wallet_type, std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnExternalWalletAuthorization(
-    CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
-    ledger::mojom::Result result,
-    const base::flat_map<std::string, std::string>& args) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, args);
-  delete holder;
-}
-
-void BatLedgerImpl::ExternalWalletAuthorization(
+void BatLedgerImpl::ConnectExternalWallet(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
-    ExternalWalletAuthorizationCallback callback) {
-  auto* holder = new CallbackHolder<ExternalWalletAuthorizationCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->ExternalWalletAuthorization(
-      wallet_type,
-      args,
-      std::bind(BatLedgerImpl::OnExternalWalletAuthorization,
-                holder,
-                _1,
-                _2));
+    ConnectExternalWalletCallback callback) {
+  ledger_->ConnectExternalWallet(wallet_type, args, std::move(callback));
 }
 
 // static
@@ -979,11 +939,6 @@ void BatLedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 
   ledger_->GetRewardsWallet(
       std::bind(BatLedgerImpl::OnGetRewardsWallet, holder, _1));
-}
-
-void BatLedgerImpl::GetRewardsWalletPassphrase(
-    GetRewardsWalletPassphraseCallback callback) {
-  std::move(callback).Run(ledger_->GetRewardsWalletPassphrase());
 }
 
 }  // namespace bat_ledger

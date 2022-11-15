@@ -189,11 +189,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "searchPromotionSearchBoxPlaceholderLabel", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER},  // NOLINT
 
         { "braveTodayTitle", IDS_BRAVE_TODAY_TITLE },
-        { "braveTodayIntroTitle", IDS_BRAVE_TODAY_INTRO_TITLE },
-        { "braveTodayIntroDescription", IDS_BRAVE_TODAY_INTRO_DESCRIPTION },
-        { "braveTodayOptInActionLabel", IDS_BRAVE_TODAY_OPT_IN_ACTION_LABEL },
         { "braveTodayShowToolbarButton", IDS_BRAVE_TODAY_SHOW_TOOLBAR_BUTTON },
-        { "braveTodayOptOutActionLabel", IDS_BRAVE_TODAY_OPT_OUT_ACTION_LABEL },
         { "braveTodayStatusFetching", IDS_BRAVE_TODAY_STATUS_FETCHING},
         { "braveTodayActionRefresh", IDS_BRAVE_TODAY_ACTION_REFRESH},
         { "braveTodayScrollHint", IDS_BRAVE_TODAY_SCROLL_HINT},
@@ -206,13 +202,16 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "promoted", IDS_BRAVE_TODAY_PROMOTED },
         { "ad", IDS_BRAVE_TODAY_DISPLAY_AD_LABEL },
 
+        { "braveNewsIntroTitle", IDS_BRAVE_NEWS_INTRO_TITLE },
+        { "braveNewsIntroDescription", IDS_BRAVE_NEWS_INTRO_DESCRIPTION },
+        { "braveNewsIntroDescriptionTwo", IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO },  // NOLINT
+        { "braveNewsOptInActionLabel", IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL },
+        { "braveNewsOptOutActionLabel", IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL },
         { "braveNewsBackToDashboard", IDS_BRAVE_NEWS_BACK_TO_DASHBOARD },
-        { "braveNewsDisabledPlaceholderHeader", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_HEADER },   // NOLINT
-        { "braveNewsDisabledPlaceholderSubtitle", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_SUBTITLE },  // NOLINT
-        { "braveNewsDisabledPlaceholderEnableButton", IDS_BRAVE_NEWS_DISABLED_PLACEHOLDER_ENABLE_BUTTON },  // NOLINT
+        { "braveNewsBackButton", IDS_BRAVE_NEWS_BACK_BUTTON },
         { "braveNewsSearchPlaceholderLabel", IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},  // NOLINT
         { "braveNewsChannelsHeader", IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER},  // NOLINT
-        { "braveNewsLoadMoreCategoriesButton", IDS_BRAVE_NEWS_LOAD_MORE_CATEGORIES_BUTTON },  // NOLINT
+        { "braveNewsViewAllButton", IDS_BRAVE_NEWS_VIEW_ALL_BUTTON},
         { "braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
         { "braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
         { "braveNewsFollowButtonFollowing", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},  // NOLINT
@@ -223,6 +222,38 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsSearchResultsLocalResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_LOCAL_RESULTS},  // NOLINT
         { "braveNewsSearchResultsDirectResults", IDS_BRAVE_NEWS_SEARCH_RESULTS_DIRECT_RESULTS},  // NOLINT
         { "braveNewsSearchQueryTooShort", IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT},  // NOLINT
+        { "braveNewsSuggestionsTitle", IDS_BRAVE_NEWS_SUGGESTIONS_TITLE},
+        { "braveNewsSuggestionsSubtitle", IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE},
+        { "braveNewsErrorHeading", IDS_BRAVE_NEWS_ERROR_HEADING},
+        { "braveNewsErrorMessage", IDS_BRAVE_NEWS_ERROR_MESSAGE},
+        { "braveNewsErrorActionLabel", IDS_BRAVE_NEWS_ERROR_ACTION_LABEL},
+        { "braveNewsNoContentHeading", IDS_BRAVE_NEWS_NO_CONTENT_HEADING},
+        { "braveNewsNoContentMessage", IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE},
+        { "braveNewsNoContentActionLabel", IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL},  // NOLINT
+        // Brave News Channels
+        { "braveNewsChannel-Brave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},
+        { "braveNewsChannel-Business", IDS_BRAVE_NEWS_CHANNEL_BUSINESS},
+        { "braveNewsChannel-Cars", IDS_BRAVE_NEWS_CHANNEL_CARS},
+        { "braveNewsChannel-Crypto", IDS_BRAVE_NEWS_CHANNEL_CRYPTO},
+        { "braveNewsChannel-Culture", IDS_BRAVE_NEWS_CHANNEL_CULTURE},
+        { "braveNewsChannel-Entertainment", IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT}, // NOLINT
+        { "braveNewsChannel-Fashion", IDS_BRAVE_NEWS_CHANNEL_FASHION},
+        { "braveNewsChannel-Food", IDS_BRAVE_NEWS_CHANNEL_FOOD},
+        { "braveNewsChannel-Fun", IDS_BRAVE_NEWS_CHANNEL_FUN},
+        { "braveNewsChannel-Gaming", IDS_BRAVE_NEWS_CHANNEL_GAMING},
+        { "braveNewsChannel-Health", IDS_BRAVE_NEWS_CHANNEL_HEALTH},
+        { "braveNewsChannel-Home", IDS_BRAVE_NEWS_CHANNEL_HOME},
+        { "braveNewsChannel-Politics", IDS_BRAVE_NEWS_CHANNEL_POLITICS},
+        { "braveNewsChannel-Science", IDS_BRAVE_NEWS_CHANNEL_SCIENCE},
+        { "braveNewsChannel-Sports", IDS_BRAVE_NEWS_CHANNEL_SPORTS},
+        { "braveNewsChannel-Travel", IDS_BRAVE_NEWS_CHANNEL_TRAVEL},
+        { "braveNewsChannel-Technology", IDS_BRAVE_NEWS_CHANNEL_TECHNOLOGY},
+        { "braveNewsChannel-Top News", IDS_BRAVE_NEWS_CHANNEL_TOP_NEWS},
+        { "braveNewsChannel-Top Sources", IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES},
+        { "braveNewsChannel-Weather", IDS_BRAVE_NEWS_CHANNEL_WEATHER},
+        { "braveNewsChannel-World News", IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS},
+        { "braveNewsPopularTitle", IDS_BRAVE_NEWS_POPULAR_TITLE},
+
 
         { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },
@@ -305,6 +336,11 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsWidgetBraveRewards", IDS_BRAVE_UI_BRAVE_REWARDS },
         { "rewardsBrowserCannotReceiveAds",  IDS_REWARDS_BROWSER_CANNOT_RECEIVE_ADS },  // NOLINT
         { "rewardsBrowserNeedsUpdateToSeeAds",  IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS },  // NOLINT
+        { "rewardsUnsupportedRegionNoticeHeader", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER},  // NOLINT
+        { "rewardsUnsupportedRegionNoticeSubheader", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER},  // NOLINT
+        { "rewardsUnsupportedRegionNoticeLearnMore", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE},  // NOLINT
+        { "rewardsUnsupportedRegionNoticeText1", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1},  // NOLINT
+        { "rewardsUnsupportedRegionNoticeText2", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2},  // NOLINT
 
         // Brave Talk  Widget
         { "braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE },
@@ -547,8 +583,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "monthlyTipsTitle",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE },
         { "monthlyTipsDesc",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC },
         { "monthlyTipsEmpty", IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY },
-        { "walletRecoveryFail",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL },                 // NOLINT
-        { "walletRecoveryOutdated",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_OUTDATED },                 // NOLINT
         { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },
         { "redirectModalClose", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE },
         { "redirectModalDeviceLimitReachedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_DEVICE_LIMIT_REACHED_TEXT},     // NOLINT
@@ -564,6 +598,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "redirectModalMismatchedCountriesTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_COUNTRIES_TITLE},     // NOLINT
         { "redirectModalMismatchedProviderAccountsText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT},     // NOLINT
         { "redirectModalMismatchedProviderAccountsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE},     // NOLINT
+        { "redirectModalProviderUnavailableText1", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_1},     // NOLINT
+        { "redirectModalProviderUnavailableText2", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_2},     // NOLINT
+        { "redirectModalProviderUnavailableTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TITLE},      // NOLINT
         { "redirectModalRegionNotSupportedText1", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1},     // NOLINT
         { "redirectModalRegionNotSupportedText2", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2},     // NOLINT
         { "redirectModalRegionNotSupportedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE},     // NOLINT
@@ -711,7 +748,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "reservedMoreLink", IDS_BRAVE_UI_RESERVED_MORE_LINK },
         { "reservedAllLink", IDS_BRAVE_UI_RESERVED_ALL_LINK },
         { "reset", IDS_BRAVE_UI_RESET },
-        { "restore", IDS_BRAVE_UI_RESTORE },
         { "clearExcludeList", IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST },
         { "reviewSitesMsg", IDS_BRAVE_UI_REVIEW_SITE_MSG },
         { "rewardsAdGrantAmount", IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT },
@@ -728,11 +764,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsPaymentCompleted", IDS_REWARDS_PAYMENT_COMPLETED },
         { "rewardsPaymentPending", IDS_REWARDS_PAYMENT_PENDING },
         { "rewardsPaymentProcessing", IDS_REWARDS_PAYMENT_PROCESSING },
-        { "rewardsViewQRCodeText1", IDS_BRAVE_UI_REWARDS_VIEW_QR_CODE_TEXT1 },
-        { "rewardsViewQRCodeText2", IDS_BRAVE_UI_REWARDS_VIEW_QR_CODE_TEXT2 },
-        { "rewardsRestoreText3", IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3 },
-        { "rewardsRestoreText4", IDS_BRAVE_UI_REWARDS_RESTORE_TEXT4 },
-        { "rewardsRestoreWarning", IDS_BRAVE_UI_REWARDS_RESTORE_WARNING },
         { "rewardsResetConfirmation", IDS_BRAVE_UI_REWARDS_RESET_CONFIRMATION },
         { "rewardsResetTextFunds", IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS },
         { "rewardsResetTextNoFunds", IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS },
@@ -749,10 +780,14 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "tokenGrantReceived", IDS_BRAVE_UI_TOKEN_GRANT_RECEIVED },
         { "token", IDS_BRAVE_UI_TOKEN },
         { "tokens", IDS_BRAVE_UI_TOKENS },
-        { "qrCodeLoading", IDS_BRAVE_UI_QR_CODE_LOADING },
         { "total", IDS_BRAVE_UI_TOTAL },
         { "transactions", IDS_BRAVE_UI_TRANSACTIONS },
         { "type", IDS_BRAVE_UI_TYPE },
+        { "unsupportedRegionNoticeHeader", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER},  // NOLINT
+        { "unsupportedRegionNoticeSubheader", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER},  // NOLINT
+        { "unsupportedRegionNoticeLearnMore", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE},  // NOLINT
+        { "unsupportedRegionNoticeText1", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1},  // NOLINT
+        { "unsupportedRegionNoticeText2", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2},  // NOLINT
         { "verifiedPublisher", IDS_BRAVE_UI_VERIFIED_PUBLISHER },
         { "viewDetails" , IDS_BRAVE_UI_VIEW_DETAILS },
         { "viewMonthly", IDS_BRAVE_UI_VIEW_MONTHLY },
@@ -772,6 +807,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
 
         { "bitflyerVerificationPromoTitle", IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE },  // NOLINT
         { "bitflyerVerificationPromoInfo", IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO },    // NOLINT
+
+        { "braveCreatorsPromoTitle", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE },
+        { "braveCreatorsPromoInfo1", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1 },
+        { "braveCreatorsPromoInfo2", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2 },
 
         { "geminiPromoTitle", IDS_BRAVE_UI_GEMINI_PROMO_TITLE },
         { "geminiPromoInfo", IDS_BRAVE_UI_GEMINI_PROMO_INFO },
@@ -808,9 +847,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT },  // NOLINT
         { "walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS },
         { "walletOneTimeTips", IDS_REWARDS_WALLET_ONE_TIME_TIPS },
-        { "walletPending", IDS_REWARDS_WALLET_PENDING },
         { "walletPendingContributions", IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS },  // NOLINT
-        { "walletPendingText", IDS_REWARDS_WALLET_PENDING_TEXT },
         { "walletRewardsFromAds", IDS_REWARDS_WALLET_REWARDS_FROM_ADS },
         { "walletRewardsSummary", IDS_REWARDS_WALLET_REWARDS_SUMMARY },
         { "walletUnverified", IDS_REWARDS_WALLET_UNVERIFIED },
@@ -1049,12 +1086,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletNotCreated", IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED },
         { "walletPaymentId", IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID },
         { "walletStatus", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS },
-        { "walletStatusConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED },    // NOLINT
         { "walletStatusNotConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED },    // NOLINT
+        { "walletStatusNoWallet", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NO_WALLET },    // NOLINT
         { "walletStatusVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED },    // NOLINT
-        { "walletStatusDisconnectedNotVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED },    // NOLINT
         { "walletStatusDisconnectedVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED },    // NOLINT
-        { "walletStatusPending", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING },    // NOLINT
       }
     }, {
 #if BUILDFLAG(ENABLE_TOR)

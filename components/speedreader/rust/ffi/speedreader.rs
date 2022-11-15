@@ -28,39 +28,6 @@ impl OutputSink for ExternOutputSink {
     }
 }
 
-/// Indicate type of rewriter that would be used based on existing
-/// configuration. `RewrtierUnknown` indicates that no configuration was found
-/// for the provided parameters.
-/// Also used to ask for a specific type of rewriter if desired; passing
-/// `RewriterUnknown` tells SpeedReader to look the type up by configuration
-/// and use heuristics-based one if not found otherwise.
-#[repr(C)]
-pub enum CRewriterType {
-    RewriterHeuristics,
-    RewriterReadability,
-    RewriterUnknown,
-}
-
-impl CRewriterType {
-    fn to_rewriter_type(&self) -> RewriterType {
-        match &self {
-            CRewriterType::RewriterHeuristics => RewriterType::Heuristics,
-            CRewriterType::RewriterReadability => RewriterType::Readability,
-            CRewriterType::RewriterUnknown => RewriterType::Unknown,
-        }
-    }
-}
-
-impl From<RewriterType> for CRewriterType {
-    fn from(r_type: RewriterType) -> Self {
-        match r_type {
-            RewriterType::Heuristics => CRewriterType::RewriterHeuristics,
-            RewriterType::Readability => CRewriterType::RewriterReadability,
-            RewriterType::Unknown => CRewriterType::RewriterUnknown,
-        }
-    }
-}
-
 /// Opaque structure to have the minimum amount of type safety across the FFI.
 /// Only replaces c_void
 #[repr(C)]
@@ -82,9 +49,6 @@ pub extern "C" fn speedreader_free(speedreader: *mut SpeedReader) {
 
 /// Returns SpeedReader rewriter instance for the given URL.
 ///
-/// If the provided `rewriter_type` is `RewriterUnknown`, it will default
-/// to the heuristics-based rewriter.
-///
 /// Returns NULL if no URL provided or initialization fails.
 ///
 /// Results of rewriting are sent to `output_sink` callback function.
@@ -97,7 +61,6 @@ pub extern "C" fn rewriter_new(
     url_len: size_t,
     output_sink: unsafe extern "C" fn(*const c_char, size_t, *mut c_void),
     output_sink_user_data: *mut c_void,
-    rewriter_type: CRewriterType,
 ) -> *mut CRewriter {
     let url = unwrap_or_ret_null! { to_str!(url, url_len) };
     let speedreader = to_ref!(speedreader);
@@ -108,7 +71,6 @@ pub extern "C" fn rewriter_new(
         .get_rewriter(
             url,
             output_sink,
-            rewriter_type.to_rewriter_type(),
         )
     };
     box_to_opaque!(rewriter, CRewriter)

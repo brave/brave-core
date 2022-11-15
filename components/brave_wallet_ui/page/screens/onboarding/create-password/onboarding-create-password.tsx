@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { WalletRoutes, WalletState } from '../../../../constants/types'
+import { OnboardingAction, WalletRoutes, WalletState } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -56,9 +57,13 @@ export const OnboardingCreatePassword = () => {
     setIsValid(isValid)
   }, [])
 
+  // custom hooks
+  const { braveWalletP3A } = useApiProxy()
+
   // effects
   React.useEffect(() => {
     if (isWalletCreated) {
+      braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET)
       history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
     }
   }, [isWalletCreated])

@@ -11,15 +11,12 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.IntDef;
 import androidx.annotation.VisibleForTesting;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -37,18 +34,6 @@ public class BraveRewardsBannerInfo {
     public static final String LINKS = "links";
     public static final String STATUS = "status";
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({NOT_CONNECTED, CONNECTED, VERIFIED, DISCONNECTED_NOT_VERIFIED, DISCONNECTED_VERIFIED,
-            PENDING})
-    public @interface WalletStatus {}
-
-    public static final int NOT_CONNECTED = 0;
-    public static final int CONNECTED = 1;
-    public static final int VERIFIED = 2;
-    public static final int DISCONNECTED_NOT_VERIFIED = 3;
-    public static final int DISCONNECTED_VERIFIED = 4;
-    public static final int PENDING = 5;
-
     private String mPublisherKey;
     private String mTitle;
     private String mName;
@@ -58,7 +43,6 @@ public class BraveRewardsBannerInfo {
     private String mLogo;
     private String mProvider;
     private HashMap<String, String> mLinks;
-    @WalletStatus
     private int mStatus;
 
     public String getPublisherKey() {

@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
@@ -33,8 +33,17 @@ function isPublisherContentAllowed (publisher: Publisher, channels: Channels): b
   if (!newTabData.featureFlagBraveNewsV2Enabled) return publisher.isEnabled
 
   // Otherwise, we're using the channels API - the publisher is allowed if it's
-  // in one of the channels we're subscribed to.
-  return publisher.channels.some(c => channels[c]?.subscribed)
+  // in any of the channels we're subscribed to, in any of the locales the
+  // channel is available in.
+  for (const localeInfo of publisher.locales) {
+    for (const channel of localeInfo.channels) {
+      if (channels[channel].subscribedLocales.includes(localeInfo.locale)) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 /**
@@ -47,7 +56,14 @@ function isPublisherContentAllowed (publisher: Publisher, channels: Channels): b
  * @param publisher The publisher to get channels for.
  */
 export function getPublisherChannels (publisher: Publisher) {
-  return newTabData.featureFlagBraveNewsV2Enabled ? publisher.channels : [publisher.categoryName]
+  const allChannels = new Set<string>()
+  for (const localeInfo of publisher.locales) {
+    for (const channel of localeInfo.channels) {
+      allChannels.add(channel)
+    }
+  }
+
+  return newTabData.featureFlagBraveNewsV2Enabled ? Array.from(allChannels) : [publisher.categoryName]
 }
 
 export const DynamicListContext = React.createContext<

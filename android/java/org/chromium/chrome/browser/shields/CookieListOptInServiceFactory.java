@@ -35,9 +35,15 @@ public class CookieListOptInServiceFactory {
     public CookieListOptInPageAndroidHandler getCookieListOptInPageAndroidHandler(
             ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // Always use regular profile
+        if (profile == null) {
+            return null;
+        }
         int nativeHandle =
                 CookieListOptInServiceFactoryJni.get().getInterfaceToCookieListOptInService(
                         profile);
+        if (nativeHandle == -1) {
+            return null;
+        }
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         CookieListOptInPageAndroidHandler cookieListOptInPageAndroidHandler =
                 CookieListOptInPageAndroidHandler.MANAGER.attachProxy(handle, 0);

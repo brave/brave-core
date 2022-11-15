@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index ec150499fd92de4e095c28f086fee232edfcaab4..aa82902923a03b0f4a95b9340abee90ceec69793 100644
+index c1138824f6ada149e87b6c7b1fc5546f9aa8fc18..84401abd4a6f77c6f469e58ddb996fff18d28371 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -63,7 +63,7 @@ index ec150499fd92de4e095c28f086fee232edfcaab4..aa82902923a03b0f4a95b9340abee90c
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -173,6 +186,7 @@ by a child template that "extends" this file.
+@@ -172,6 +185,7 @@ by a child template that "extends" this file.
      <!-- Set android:largeHeap to "true" to allow more than the default
           Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
        <application android:name="{% block application_name %}org.chromium.chrome.browser.base.SplitChromeApplication{% endblock %}"
@@ -71,7 +71,7 @@ index ec150499fd92de4e095c28f086fee232edfcaab4..aa82902923a03b0f4a95b9340abee90c
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -329,6 +343,7 @@ by a child template that "extends" this file.
+@@ -333,6 +347,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -79,7 +79,23 @@ index ec150499fd92de4e095c28f086fee232edfcaab4..aa82902923a03b0f4a95b9340abee90c
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1190,6 +1205,7 @@ by a child template that "extends" this file.
+@@ -905,6 +920,7 @@ by a child template that "extends" this file.
+         <receiver
+             android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
+             android:label="@string/quick_action_search_widget_title"
++            android:enabled="false"
+             android:exported="true">
+             <intent-filter>
+                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+@@ -917,6 +933,7 @@ by a child template that "extends" this file.
+         <receiver
+         android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino"
+         android:label="@string/dino_widget_title"
++        android:enabled="false"
+             android:exported="true">
+             <intent-filter>
+                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+@@ -1202,6 +1219,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -87,7 +103,7 @@ index ec150499fd92de4e095c28f086fee232edfcaab4..aa82902923a03b0f4a95b9340abee90c
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1268,6 +1284,7 @@ by a child template that "extends" this file.
+@@ -1280,6 +1298,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />

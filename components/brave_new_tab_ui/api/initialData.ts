@@ -1,7 +1,7 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
@@ -28,6 +28,7 @@ export type InitialData = {
 
 export type PreInitialRewardsData = {
   rewardsEnabled: boolean
+  isUnsupportedRegion: boolean
   declaredCountry: string
   enabledAds: boolean
   adsSupported: boolean
@@ -135,6 +136,7 @@ export async function getInitialData (): Promise<InitialData> {
 export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
   const [
     rewardsEnabled,
+    isUnsupportedRegion,
     declaredCountry,
     enabledAds,
     adsSupported,
@@ -142,6 +144,8 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
   ] = await Promise.all([
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.getRewardsEnabled(resolve)),
+    new Promise<boolean>(
+      (resolve) => chrome.braveRewards.isUnsupportedRegion(resolve)),
     new Promise<string>(
       (resolve) => chrome.braveRewards.getDeclaredCountry(resolve)),
     new Promise<boolean>(
@@ -149,12 +153,13 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.getAdsSupported(resolve)),
     newTabAdsDataAPI.getNewTabAdsData()
-    ])
+  ])
 
   const needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
 
   return {
     rewardsEnabled,
+    isUnsupportedRegion,
     declaredCountry,
     enabledAds,
     adsSupported,
@@ -184,7 +189,7 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
         resolve(parameters)
       })),
       new Promise(resolve => {
-        chrome.braveRewards.getExternalWallet((_, wallet) => resolve(wallet))
+        chrome.braveRewards.getExternalWallet((wallet) => resolve(wallet))
       }),
       new Promise(resolve => {
         chrome.braveRewards.fetchPromotions(resolve)

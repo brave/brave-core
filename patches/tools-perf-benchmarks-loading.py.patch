@@ -1,5 +1,5 @@
 diff --git a/tools/perf/benchmarks/loading.py b/tools/perf/benchmarks/loading.py
-index 21f705aad5da85863e5bb61aec58b869abb50bd0..a9491e59d1ab7fa982e4f9225c13459d092d996b 100644
+index d32a9fc47721ea06f55b0d21a98ca4aebf0d919b..bf5c7526d60d6034bb701e0acbd99852aeaef450 100644
 --- a/tools/perf/benchmarks/loading.py
 +++ b/tools/perf/benchmarks/loading.py
 @@ -103,3 +103,4 @@ class LoadingMBI(_LoadingBase):

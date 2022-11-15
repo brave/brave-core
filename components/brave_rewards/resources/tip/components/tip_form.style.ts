@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
 
@@ -48,10 +48,6 @@ export const monthlyIndicator = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: var(--brave-palette-neutral600);
-`
-
-export const monthlyIndicatorStar = styled.span`
-  color: var(--brave-color-brandBatInteracting);
 `
 
 export const main = styled.div`

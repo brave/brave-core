@@ -1,9 +1,9 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, WalletAccountType } from '../constants/types'
+import { AccountInfo, BraveWallet, WalletAccountType } from '../constants/types'
 
 export const sortAccountsByName = (accounts: WalletAccountType[]) => {
   return [...accounts].sort(function (a: WalletAccountType, b: WalletAccountType) {
@@ -26,10 +26,21 @@ export const groupAccountsById = (accounts: WalletAccountType[], key: string) =>
   }, {})
 }
 
+export const findAccountByAddress = (accounts: WalletAccountType[], address: string): WalletAccountType | undefined => {
+  return accounts.find((account) => address === account.address)
+}
+
 export const findAccountName = (accounts: WalletAccountType[], address: string) => {
   return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
 }
 
 export const createTokenBalanceRegistryKey = (token: BraveWallet.BlockchainToken) => {
   return token.isErc721 ? `${token.contractAddress.toLowerCase()}#${token.tokenId}` : token.contractAddress.toLowerCase()
+}
+
+export const getAccountType = (info: AccountInfo) => {
+  if (info.hardware) {
+    return info.hardware.vendor
+  }
+  return info.isImported ? 'Secondary' : 'Primary'
 }

@@ -90,7 +90,7 @@ gfx::Size BraveVPNStatusLabel::CalculatePreferredSize() const {
 }
 
 void BraveVPNStatusLabel::UpdateState() {
-  const auto state = service_->connection_state();
+  const auto state = service_->GetConnectionState();
 
   SetText(brave_l10n::GetLocalizedResourceUTF16String(
       GetStringIdForConnectionState(state)));

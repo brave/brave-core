@@ -10,6 +10,8 @@
 #include "base/command_line.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
@@ -173,6 +175,11 @@ void BraveBrowserMainParts::PreProfileInit() {
 
   if (!translate::ShouldUpdateLanguagesList())
     translate::TranslateLanguageList::DisableUpdate();
+
+  const auto& flags = brave_rewards::RewardsFlags::ForCurrentProcess();
+  if (flags.country_id) {
+    brave_rewards::SetCountryCodeForOFACTesting(*flags.country_id);
+  }
 }
 
 void BraveBrowserMainParts::PostProfileInit(Profile* profile,

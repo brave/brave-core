@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { Redirect, useParams, useLocation } from 'react-router'
@@ -23,6 +23,7 @@ import {
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { getBalance } from '../../../../utils/balance-utils'
 
 // Styled Components
 import {
@@ -51,7 +52,6 @@ import { AccountListItemOptionButton } from '../../account-list-item/account-lis
 import { AccountButtonOptions } from '../../../../options/account-list-button-options'
 
 // Hooks
-import { useBalance } from '../../../../common/hooks/balance'
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 
 // Actions
@@ -77,7 +77,6 @@ export const Account = ({
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
-  const getBalance = useBalance(networkList)
   const scrollIntoView = useScrollIntoView()
 
   // memos
@@ -124,13 +123,13 @@ export const Account = ({
 
   const nonFungibleTokens = React.useMemo(
     () =>
-      accountsTokensList.filter(({ isErc721 }) => isErc721)
+      accountsTokensList.filter(({ isErc721, isNft }) => isErc721 || isNft)
         .filter((token) => getBalance(selectedAccount, token) !== '0'),
-    [accountsTokensList, selectedAccount, getBalance]
+    [accountsTokensList, selectedAccount]
   )
 
-  const funigbleTokens = React.useMemo(
-    () => accountsTokensList.filter(({ isErc721 }) => !isErc721),
+  const fungibleTokens = React.useMemo(
+    () => accountsTokensList.filter(({ isErc721, isNft }) => !(isErc721 || isNft)),
     [accountsTokensList]
   )
 
@@ -217,7 +216,7 @@ export const Account = ({
       <SubDivider />
       <Spacer />
 
-      {funigbleTokens.map((item) =>
+      {fungibleTokens.map((item) =>
         <PortfolioAssetItem
           key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
           assetBalance={getBalance(selectedAccount, item)}

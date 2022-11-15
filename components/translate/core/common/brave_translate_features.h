@@ -12,7 +12,7 @@
 namespace translate {
 
 namespace features {
-extern const base::Feature kUseBraveTranslateGo;
+BASE_DECLARE_FEATURE(kUseBraveTranslateGo);
 
 extern const base::FeatureParam<bool> kUpdateLanguageListParam;
 extern const base::FeatureParam<bool> kReplaceSecurityOriginParam;

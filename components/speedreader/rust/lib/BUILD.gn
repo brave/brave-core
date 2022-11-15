@@ -3,13 +3,7 @@ import("//brave/build/cargo.gni")
 rust_crate("lib") {
   inputs = [
     # Underlying library code
-    "build.rs",
     "Cargo.toml",
-    "src/classifier/feature_extractor.rs",
-    "src/classifier/mod.rs",
-    "src/classifier/model.c",
-    "src/classifier/model.rs",
-    "src/classifier/model.rs",
     "src/lib.rs",
     "src/readability/Cargo.toml",
     "src/readability/src/dom.rs",
@@ -18,7 +12,6 @@ rust_crate("lib") {
     "src/readability/src/lib.rs",
     "src/readability/src/scorer.rs",
     "src/readability/src/statistics.rs",
-    "src/speedreader_heuristics.rs",
     "src/speedreader_readability.rs",
     "src/speedreader.rs",
   ]

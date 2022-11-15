@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import AdRowsDetails from './adRowsDetails'
 import Alert from './alert'
@@ -14,13 +14,12 @@ import List from './list'
 import ListToken from './listToken'
 import MainToggle from './mainToggle'
 import ModalActivity from './modalActivity'
-import ModalBackupRestore from './modalBackupRestore'
+import ModalBackupReset from './modalBackupReset'
 import ModalContribute from './modalContribute'
 import ModalDonation from './modalDonation'
 import ModalPending from './modalPending'
 import ModalRedirect from './modalRedirect'
 import ModalShowAdsHistory from './modalShowAdsHistory'
-import ModalQRCode from './modalQRCode'
 import NextContribution from './nextContribution'
 import Profile from './profile'
 import RestoreSites from './restoreSites'
@@ -51,13 +50,12 @@ export {
   ListToken,
   MainToggle,
   ModalActivity,
-  ModalBackupRestore,
+  ModalBackupReset,
   ModalContribute,
   ModalDonation,
   ModalPending,
   ModalRedirect,
   ModalShowAdsHistory,
-  ModalQRCode,
   NextContribution,
   Profile,
   RestoreSites,

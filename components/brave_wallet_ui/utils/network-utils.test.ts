@@ -1,10 +1,13 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import {
   getNetworkInfo,
   emptyNetwork,
   reduceNetworkDisplayName,
   getNetworksByCoinType,
   getTokensNetwork,
-  getTokensCoinType,
   getCoinFromTxDataUnion,
   getFilecoinKeyringIdFromNetwork
 } from './network-utils'
@@ -61,18 +64,6 @@ describe('getTokensNetwork', () => {
   })
   it('Binance Coin with chainId 0x5, should return ETH Goerli Testnetwork info', () => {
     expect(getTokensNetwork(mockNetworks, bnbToken)).toEqual(mockNetworks[1])
-  })
-})
-
-describe('getTokensCoinType', () => {
-  it('Ethereum with chainId 0x1, should return CoinType ETH', () => {
-    expect(getTokensCoinType(mockNetworks, ethToken)).toEqual(BraveWallet.CoinType.ETH)
-  })
-  it('Binance Coin with chainId 0x3, should return ETH CoinType ETH', () => {
-    expect(getTokensCoinType(mockNetworks, bnbToken)).toEqual(BraveWallet.CoinType.ETH)
-  })
-  it('Binance Coin with chainId 0x3333333458, should default to CoinType ETH', () => {
-    expect(getTokensCoinType(mockNetworks, { ...bnbToken, chainId: '0x3333333458' })).toEqual(BraveWallet.CoinType.ETH)
   })
 })
 

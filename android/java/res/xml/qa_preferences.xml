@@ -14,6 +14,12 @@
         android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_vpn_link_subscription_on_staging"
+        android:title="Link VPN subscription on Staging"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="dormant_users_engagement"
         android:title="Enable dormant users engagement"
         android:summaryOn="@string/text_on"
@@ -63,9 +69,5 @@
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="qa_export_rewards_db"
         android:title="Export Rewards Database" />
-
-    <Preference
-        android:key="qa_restore_wallet"
-        android:title="Restore Wallet"/>
 
 </PreferenceScreen>

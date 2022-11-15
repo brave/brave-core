@@ -27,14 +27,21 @@ enum PostConnectError {
   kFailedToCreateRequest,
   kFlaggedWallet,                       // HTTP 400
   kMismatchedCountries,                 // HTTP 400
+  kProviderUnavailable,                 // HTTP 400
   kRegionNotSupported,                  // HTTP 400
   kUnknownMessage,                      // HTTP 400, HTTP 403
-  kKycRequired,                         // HTTP 403, HTTP 404
+  kKYCRequired,                         // HTTP 403, HTTP 404
   kMismatchedProviderAccounts,          // HTTP 403
   kRequestSignatureVerificationFailure, // HTTP 403
   kTransactionVerificationFailure,      // HTTP 403
   kDeviceLimitReached,                  // HTTP 409
   kUnexpectedError,                     // HTTP 500
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
+enum PostOAuthUpholdError {
+  kFailedToCreateRequest,
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
 };

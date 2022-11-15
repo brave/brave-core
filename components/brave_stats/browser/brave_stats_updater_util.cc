@@ -27,20 +27,28 @@ std::string GetDateAsYMD(const base::Time& time) {
 
 std::string GetPlatformIdentifier() {
 #if BUILDFLAG(IS_WIN)
+#if defined(ARCH_CPU_ARM64)
+  return "winarm64-bc";
+#else
   if (base::SysInfo::OperatingSystemArchitecture() == "x86")
     return "winia32-bc";
   else
     return "winx64-bc";
+#endif
 #elif BUILDFLAG(IS_MAC)
-#if defined(ARCH_CPU_X86_64)
-  return "osx-bc";
-#elif defined(ARCH_CPU_ARM64)
+#if defined(ARCH_CPU_ARM64)
   return "osxarm64-bc";
+#elif defined(ARCH_CPU_X86_64)
+  return "osx-bc";
 #endif
 #elif BUILDFLAG(IS_ANDROID)
   return "android-bc";
 #elif BUILDFLAG(IS_LINUX)
+#if defined(ARCH_CPU_ARM64)
+  return "linuxarm64-bc";
+#else
   return "linux-bc";
+#endif
 #elif BUILDFLAG(IS_IOS)
   return "ios";
 #else

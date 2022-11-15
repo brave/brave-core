@@ -300,7 +300,7 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="2709516037105925701">Autofyll</translation>
 <translation id="271033894570825754">Ny</translation>
 <translation id="2711073837061989559">Prøveprosjekter</translation>
-<translation id="2718352093833049315">Bare når Wi-Fi er på</translation>
+<translation id="2718352093833049315">Bare når Wifi er på</translation>
 <translation id="2718846868787000099">For å kunne vise innhold på språkene du foretrekker, kan nettstedene du besøker, se preferansene dine</translation>
 <translation id="2722945394406572875">Privacy Sandbox-forespørselen er lukket</translation>
 <translation id="2723001399770238859">lyd</translation>
@@ -405,7 +405,7 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="3237433641417325993">Rull ned for å se foreslåtte artikler</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="7402642357351265733">Hvis du også deler Brave-bruksrapporter, inneholder disse rapportene nettadressene du besøker</translation>
-<translation id="3250563604907490871">Bildebeskrivelser gjenopptas når du kobler til Wi-Fi</translation>
+<translation id="3250563604907490871">Bildebeskrivelser gjenopptas når du kobler til wifi</translation>
 <translation id="3254409185687681395">Legg til bokmerke for denne siden</translation>
 <translation id="3259831549858767975">Gjør alt på siden mindre</translation>
 <translation id="3264124641674805320">Slik laster du ned innhold til senere</translation>
@@ -441,6 +441,7 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="3435465986463792564">Har du mange vinduer? Du kan administrere dem her</translation>
 <translation id="3443221991560634068">Last inn den aktive siden på nytt</translation>
 <translation id="3444179773590444986">Vil du dele tilbakemeldinger om mørkt tema for nettsteder?</translation>
+<translation id="7384339501748168186">For å beskytte personvernet ditt autofyller ikke Brave passordet ditt i dette feltet.</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 nedlasting er planlagt}other{# nedlastinger er planlagt}}</translation>
 <translation id="3474624961160222204">Fortsett som <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Du kan velge søkemotor</translation>
@@ -606,7 +607,7 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="4484496141267039529">Ingen tilkobling. Prøv på nytt senere.</translation>
 <translation id="53119194224775367">Alle appdataene for Brave slettes permanent. Dette omfatter alle filer, innstillinger, kontoer, databaser osv.</translation>
 <translation id="3966104135245031874">Kryptér synkroniserte passord med Brave-kontoen din</translation>
-<translation id="4504667196171871375">Via Wi-Fi og mobildata</translation>
+<translation id="4504667196171871375">Via Wifi og mobildata</translation>
 <translation id="4508528996305412043">Feedkortmenyen er åpnet</translation>
 <translation id="4508642716788467538">Velg språk</translation>
 <translation id="4513387527876475750">{DAYS,plural, =1{for # dag siden}other{for # dager siden}}</translation>
@@ -658,6 +659,7 @@ Brave-kontoen din kan ha andre former for nettleserlogger, for eksempel søk og 
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Passord lagres i Passordlagring på denne enheten</translation>
 <translation id="4766678251456904326">Legg til en konto på enheten</translation>
+<translation id="4787736314074622408">Vil du slette <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4791358705705538979">Hjelper deg med å fullføre oppgaver, som for eksempel betaling, overalt på nettet</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">Kryptering av passordfraser inkluderer ikke betalingsmåter og adresser fra Google Pay.
@@ -726,6 +728,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="4744980273298156620">Snart ser du artikler fra <ph name="SITE_NAME"/> når du åpner nye faner. Nettstedene du følger, lagres i Brave-kontoen din. Du kan administrere dem i innstillingene for Discover.</translation>
 <translation id="5091249083535528968">Utvidede bruksdata</translation>
 <translation id="509429900233858213">Det oppsto en feil.</translation>
+<translation id="5099845111805573968">Når du velger nettsted for datamaskiner én gang, brukes innstillingen for nettstedet hver gang du besøker det</translation>
 <translation id="225414324447409614">Hvis nettsteder prøver å stjele passordet ditt, eller når du laster ned skadelige filer, kan Brave sende nettadresser, inkludert deler av sideinnholdet, til Safe Browsing</translation>
 <translation id="510275257476243843">1 time igjen</translation>
 <translation id="5115811374190515607">til <ph name="PRODUCT_NAME"/></translation>
@@ -881,6 +884,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="5958275228015807058">Du finner filene og sidene dine under Nedlastinger</translation>
 <translation id="5962718611393537961">Trykk for å skjule</translation>
 <translation id="5964869237734432770">Stopp bildebeskrivelser</translation>
+<translation id="9135546826883360971">Brave husker valget ditt</translation>
 <translation id="5979084224081478209">Kontrollér passordene</translation>
 <translation id="5995726099713306770">Vil du laste ned siden på nytt?</translation>
 <translation id="6456271171669383967">Behold Brave</translation>
@@ -920,7 +924,8 @@ Utprøving av Privacy Sandbox er fremdeles under aktiv utvikling og er tilgjenge
 <translation id="6192907950379606605">Få bildebeskrivelser</translation>
 <translation id="8367262879301982880">Passord lagres i Brave Passordlagring på denne enheten</translation>
 <translation id="620197886010707372">Vil du åpne appen for <ph name="APPNAME"/> med Google Play?</translation>
-<translation id="6203593061661911168">Nedlastingen starter når du er tilkoblet Wi-Fi</translation>
+<translation id="6202812185118613467">Logg på igjen for å starte synkroniseringen</translation>
+<translation id="6203593061661911168">Nedlastingen starter når du er tilkoblet wifi</translation>
 <translation id="6210748933810148297">Ikke <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Forhåndsviser denne siden</translation>
 <translation id="6221633008163990886">Lås opp for å eksportere passordene dine</translation>
@@ -993,7 +998,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="6556542240154580383">{TAB_COUNT,plural, =1{<ph name="TAB_TITLE"/> og <ph name="TAB_COUNT_ONE"/> annen fane blir lukket}other{<ph name="TAB_TITLE"/> og <ph name="TAB_COUNT_MANY"/> andre faner blir lukket}}</translation>
 <translation id="6560414384669816528">Søk med Sogou</translation>
 <translation id="656065428026159829">Se mer</translation>
-<translation id="6565959834589222080">Wi-Fi brukes når det er tilgjengelig</translation>
+<translation id="6565959834589222080">Wifi brukes når det er tilgjengelig</translation>
 <translation id="4480935821314799946">Nå ser du artikler fra <ph name="SITE_NAME"/> når du åpner nye faner. Nettstedene du følger, lagres i Brave-kontoen din. Du kan administrere dem i innstillingene for Discover.</translation>
 <translation id="6573096386450695060">Tillat alltid</translation>
 <translation id="5157964048453367290">Faner du har åpnet i Brave på de andre enhetene dine, vises her.</translation>
@@ -1051,6 +1056,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, fane, valgt</translation>
 <translation id="6828070228333235514">Slutt å spore prisen</translation>
+<translation id="6830728435402077660">Ikke sikker</translation>
 <translation id="6833996806551876956">Prøveperiode på Prosessisolering for personvern</translation>
 <translation id="6836206421467243968">Gjenopprett fanegruppen <ph name="TITLE_OF_GROUP"/> som en ny bakgrunnsfanegruppe.</translation>
 <translation id="6846298663435243399">Laster inn …</translation>
@@ -1351,7 +1357,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="8460448946170646641">Gjennomgå viktige personvern- og sikkerhetskontroller</translation>
 <translation id="8461694314515752532">Kryptér synkroniserte data med din egen passordfrase for synkronisering</translation>
 <translation id="8466613982764129868">Kontrollér at <ph name="TARGET_DEVICE_NAME"/> er koblet til internett</translation>
-<translation id="8473863474539038330">Adresser med mer</translation>
+<translation id="5633907266617216186">Adresser med mer</translation>
 <translation id="8481921391193215807">Når dette er på, kan nettsteder bruke de personvernbevarende teknikkene som vises her, for å levere innhold og tjenester. Disse omfatter alternativer til sporing på tvers av nettsteder. Flere prøvefunksjoner kan bli lagt til over tid.
 
 <ph name="BEGIN_LIST_ITEM1"/>Annonsører og utgivere kan bruke FLoC.<ph name="END_LIST_ITEM1"/>

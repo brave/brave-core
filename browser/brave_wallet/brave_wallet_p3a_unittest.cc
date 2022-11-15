@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -19,7 +20,8 @@ namespace brave_wallet {
 
 class BraveWalletP3AUnitTest : public testing::Test {
  public:
-  BraveWalletP3AUnitTest() {
+  BraveWalletP3AUnitTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
@@ -31,6 +33,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
     wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             profile_.get());
+    wallet_p3a_ = wallet_service_->GetBraveWalletP3A();
   }
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
@@ -39,70 +42,71 @@ class BraveWalletP3AUnitTest : public testing::Test {
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   KeyringService* keyring_service_;
   BraveWalletService* wallet_service_;
+  BraveWalletP3A* wallet_p3a_;
 };
 
 TEST_F(BraveWalletP3AUnitTest, DefaultEthereumWalletSetting) {
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
+      kDefaultWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 1);
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
-      static_cast<int>(mojom::DefaultWallet::None), 0);
+      kDefaultWalletHistogramName, static_cast<int>(mojom::DefaultWallet::None),
+      0);
   wallet_service_->SetDefaultEthereumWallet(mojom::DefaultWallet::None);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
-      static_cast<int>(mojom::DefaultWallet::None), 1);
+      kDefaultWalletHistogramName, static_cast<int>(mojom::DefaultWallet::None),
+      1);
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
+      kDefaultWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::CryptoWallets), 0);
   wallet_service_->SetDefaultEthereumWallet(
       mojom::DefaultWallet::CryptoWallets);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
+      kDefaultWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::CryptoWallets), 1);
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
+      kDefaultWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::BraveWallet), 0);
   wallet_service_->SetDefaultEthereumWallet(mojom::DefaultWallet::BraveWallet);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
+      kDefaultWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::BraveWallet), 1);
   wallet_service_->SetDefaultEthereumWallet(
       mojom::DefaultWallet::BraveWalletPreferExtension);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultWalletSetting",
+      kDefaultWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 2);
 }
 
 TEST_F(BraveWalletP3AUnitTest, DefaultSolanaWalletSetting) {
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultSolanaWalletSetting",
+      kDefaultSolanaWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 1);
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultSolanaWalletSetting",
+      kDefaultSolanaWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::None), 0);
   wallet_service_->SetDefaultSolanaWallet(mojom::DefaultWallet::None);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultSolanaWalletSetting",
+      kDefaultSolanaWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::None), 1);
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultSolanaWalletSetting",
+      kDefaultSolanaWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::CryptoWallets), 0);
   wallet_service_->SetDefaultSolanaWallet(mojom::DefaultWallet::BraveWallet);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultSolanaWalletSetting",
+      kDefaultSolanaWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::BraveWallet), 1);
   wallet_service_->SetDefaultSolanaWallet(
       mojom::DefaultWallet::BraveWalletPreferExtension);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
-      "Brave.Wallet.DefaultSolanaWalletSetting",
+      kDefaultSolanaWalletHistogramName,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 2);
 }
 
@@ -117,10 +121,80 @@ TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {
 
   feature_list.InitWithFeaturesAndParameters(enabled_features, {});
 
-  histogram_tester_->ExpectBucketCount("Brave.Wallet.KeyringCreated", 0, 1);
+  histogram_tester_->ExpectBucketCount(kKeyringCreatedHistogramName, 0, 1);
   keyring_service_->CreateWallet("testing123", base::DoNothing());
   WaitForResponse();
-  histogram_tester_->ExpectBucketCount("Brave.Wallet.KeyringCreated", 1, 1);
+  histogram_tester_->ExpectBucketCount(kKeyringCreatedHistogramName, 1, 1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, ReportOnboardingAction) {
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
+
+  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::Shown);
+  histogram_tester_->ExpectUniqueSample(kOnboardingConversionHistogramName, 0,
+                                        1);
+
+  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::CreatedWallet);
+  histogram_tester_->ExpectBucketCount(kOnboardingConversionHistogramName, 1,
+                                       1);
+
+  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::RestoredWallet);
+  histogram_tester_->ExpectBucketCount(kOnboardingConversionHistogramName, 2,
+                                       1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, TransactionSent) {
+  histogram_tester_->ExpectTotalCount(kEthTransactionSentHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kSolTransactionSentHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kFilTransactionSentHistogramName, 0);
+
+  BraveWalletP3A* wallet_p3a = wallet_service_->GetBraveWalletP3A();
+
+  wallet_p3a->ReportTransactionSent(mojom::CoinType::ETH, true);
+  histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 1);
+
+  wallet_p3a->ReportTransactionSent(mojom::CoinType::SOL, true);
+  histogram_tester_->ExpectUniqueSample(kSolTransactionSentHistogramName, 1, 1);
+
+  wallet_p3a->ReportTransactionSent(mojom::CoinType::FIL, true);
+  histogram_tester_->ExpectUniqueSample(kFilTransactionSentHistogramName, 1, 1);
+
+  task_environment_.FastForwardBy(base::Days(4));
+  histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 5);
+  histogram_tester_->ExpectUniqueSample(kSolTransactionSentHistogramName, 1, 5);
+  histogram_tester_->ExpectUniqueSample(kFilTransactionSentHistogramName, 1, 5);
+
+  task_environment_.FastForwardBy(base::Days(3));
+  histogram_tester_->ExpectBucketCount(kEthTransactionSentHistogramName, 0, 1);
+  histogram_tester_->ExpectBucketCount(kSolTransactionSentHistogramName, 0, 1);
+  histogram_tester_->ExpectBucketCount(kFilTransactionSentHistogramName, 0, 1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::ETH);
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::FIL);
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::SOL);
+
+  // Should not record zero to histogram if user never had an active account
+  histogram_tester_->ExpectTotalCount(kEthActiveAccountHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kFilActiveAccountHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kSolActiveAccountHistogramName, 0);
+
+  wallet_p3a_->RecordActiveWalletCount(3, mojom::CoinType::ETH);
+  wallet_p3a_->RecordActiveWalletCount(9, mojom::CoinType::FIL);
+  wallet_p3a_->RecordActiveWalletCount(7, mojom::CoinType::SOL);
+
+  histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 3, 1);
+  histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 5, 1);
+  histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 4, 1);
+
+  wallet_p3a_->RecordActiveWalletCount(0, mojom::CoinType::ETH);
+  wallet_p3a_->RecordActiveWalletCount(1, mojom::CoinType::FIL);
+  wallet_p3a_->RecordActiveWalletCount(2, mojom::CoinType::SOL);
+
+  histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 0, 1);
+  histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 1, 1);
+  histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 2, 1);
 }
 
 }  // namespace brave_wallet

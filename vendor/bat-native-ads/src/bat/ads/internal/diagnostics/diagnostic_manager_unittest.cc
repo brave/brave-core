@@ -12,8 +12,8 @@
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/sys_info.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
@@ -42,14 +42,13 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   SetLastUnIdleTimeDiagnosticEntry();
 
   // Act
-  DiagnosticManager::GetInstance()->GetDiagnostics([](absl::optional<
-                                                       base::Value::List>
-                                                          list) {
-    // Assert
-    ASSERT_TRUE(list);
+  DiagnosticManager::GetInstance()->GetDiagnostics(
+      base::BindOnce([](absl::optional<base::Value::List> list) {
+        // Assert
+        ASSERT_TRUE(list);
 
-    const base::Value expected_list = base::test::ParseJson(
-        R"~([
+        const base::Value expected_list = base::test::ParseJson(
+            R"~([
           {
             "name": "Device Id",
             "value": "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"
@@ -75,10 +74,10 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
             "value": "Monday, July 8, 1996 at 9:25:00 AM"
           }
         ])~");
-    ASSERT_TRUE(expected_list.is_list());
+        ASSERT_TRUE(expected_list.is_list());
 
-    EXPECT_EQ(expected_list, list);
-  });
+        EXPECT_EQ(expected_list, list);
+      }));
 }
 
 }  // namespace ads

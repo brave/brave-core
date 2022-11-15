@@ -12,7 +12,7 @@ extension-pkg-allow-list=
 extension-pkg-whitelist=
 
 # Specify a score threshold to be exceeded before program exits with error.
-fail-under=1.0
+fail-under=10.0
 
 # Files or directories to be skipped. They should be base names, not paths.
 ignore=CVS
@@ -24,10 +24,6 @@ ignore-patterns=
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
 #init-hook=
-
-# Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
-# number of processors available to use.
-jobs=0
 
 # Control the amount of potential inferred values when inferring a single
 # object. This can help the performance when dealing with large functions or

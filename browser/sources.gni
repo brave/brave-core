@@ -128,6 +128,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_federated",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_rewards/common",
   "//brave/components/brave_rewards/common/buildflags",
   "//brave/components/brave_search/browser",
   "//brave/components/brave_search/common",
@@ -219,6 +220,8 @@ if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_browser_main_parts_mac.h",
     "//brave/browser/brave_browser_main_parts_mac.mm",
+    "//brave/browser/brave_shell_integration_mac.h",
+    "//brave/browser/brave_shell_integration_mac.mm",
   ]
 }
 
@@ -372,27 +375,7 @@ if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_contents = [ "Frameworks" ]
-  brave_chrome_framework_ldflags = []
-
-  # this needs to match the guards on //chrome:verify_chrome_framework_order
-  if (!is_component_build && chrome_pgo_phase != 1) {
-    brave_chrome_framework_public_deps += [
-      # TODO(bridiver) - this doesn't have to be a public dep
-      "//brave/build/rust:generate_unexport_list",
-    ]
-    brave_chrome_framework_ldflags += [
-      # prevent export of all rust symbols
-      "-Wl,-unexported_symbols_list," +
-          rebase_path(unexport_list_path, root_build_dir),
-    ]
-  }
-  if (!is_component_build && !use_lld) {
-    brave_chrome_framework_ldflags += [
-      # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
-      # Supposedly this bug was fixed, but it's still happening for us
-      "-Wl,-no_compact_unwind",
-    ]
-  }
+  brave_chrome_framework_configs = [ "//brave/build/rust:strip_rust_symbols" ]
 }
 
 brave_chrome_browser_sources += brave_browser_autocomplete_sources

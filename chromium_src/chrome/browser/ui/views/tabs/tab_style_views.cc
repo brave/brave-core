@@ -47,7 +47,7 @@ SkPath BraveGM2TabStyle::GetPath(PathType path_type,
                                  float scale,
                                  bool force_active,
                                  RenderUnits render_units) const {
-  if (!tabs::features::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs(tab_->controller()->GetBrowser()))
     return GM2TabStyle::GetPath(path_type, scale, force_active, render_units);
 
   const int stroke_thickness = GetStrokeThickness(force_active);
@@ -115,7 +115,8 @@ const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
 
 BraveGM2TabStyle::SeparatorBounds BraveGM2TabStyle::GetSeparatorBounds(
     float scale) const {
-  if (tabs::features::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_->controller()->GetBrowser())) {
     return {};
   }
 

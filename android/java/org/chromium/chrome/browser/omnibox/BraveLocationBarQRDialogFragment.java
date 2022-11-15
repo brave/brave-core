@@ -37,7 +37,7 @@ import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
-import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.ui.base.PageTransition;
 
 import java.io.IOException;
 
@@ -218,7 +218,7 @@ public class BraveLocationBarQRDialogFragment
             final String barcodeValue = barcode.displayValue;
             getActivity().runOnUiThread(() -> {
                 if (URLUtil.isValidUrl(barcodeValue)) {
-                    TabUtils.openUrlInSameTab(barcodeValue);
+                    mLocationBarMediator.loadUrl(barcodeValue, PageTransition.GENERATED, 0);
                     mLocationBarMediator.clearOmniboxFocus();
                 } else {
                     mLocationBarMediator.performSearchQuery(barcodeValue, null);

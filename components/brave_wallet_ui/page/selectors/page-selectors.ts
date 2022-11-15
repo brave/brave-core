@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { WalletPageState } from '../../constants/types'
 
@@ -18,6 +18,7 @@ export const isFetchingPriceHistory = ({ page }: State) => page.isFetchingPriceH
 export const isImportWalletsCheckComplete = ({ page }: State) => page.isImportWalletsCheckComplete
 export const isMetaMaskInitialized = ({ page }: State) => page.isMetaMaskInitialized
 export const mnemonic = ({ page }: State) => page.mnemonic
+export const hasMnemonic = ({ page }: State) => !!page.mnemonic
 export const selectedTimeline = ({ page }: State) => page.selectedTimeline
 export const setupStillInProgress = ({ page }: State) => page.setupStillInProgress
 export const showAddModal = ({ page }: State) => page.showAddModal
@@ -28,6 +29,8 @@ export const walletTermsAcknowledged = ({ page }: State) => page.walletTermsAckn
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const importWalletError = ({ page }: State) => page.importWalletError
 export const nftMetadata = ({ page }: State) => page.nftMetadata
+export const nftMetadataError = ({ page }: State) => page.nftMetadataError
+
 export const portfolioPriceHistory = ({ page }: State) => page.portfolioPriceHistory
 export const selectedAsset = ({ page }: State) => page.selectedAsset
 export const selectedAssetCryptoPrice = ({ page }: State) => page.selectedAssetCryptoPrice

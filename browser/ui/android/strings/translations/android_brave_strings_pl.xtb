@@ -2,7 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="pl">
 <translation id="7307834434086582547">Włącz/wyłącz tarcze Brave</translation>
+<translation id="6945863270524203017">Uzyskaj cotygodniowe aktualizacje dotyczące prywatności na temat blokowania skryptów śledzących i reklam.</translation>
+<translation id="4324735664183300693">Włącz powiadomienia</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
+<translation id="5153702175393349577">Termin kolejnego napiwku</translation>
+<translation id="8979401359137062629">Uwaga:</translation>
+<translation id="7277134233385925078">Ustaw wysokość miesięcznych napiwków</translation>
+<translation id="3765933240178364575">Kwota jednorazowego napiwku</translation>
+<translation id="1101015459918930887">Przetworzenie napiwku może potrwać kilka minut</translation>
+<translation id="4088764345615745058">Niestandardowa wysokość napiwku</translation>
+<translation id="8759753423332885148">Dowiedz się więcej.</translation>
+<translation id="3271043362279673449">Dziękujemy za wsparcie</translation>
+<translation id="3312470408978098625">Twój jednorazowy napiwek został wysłany.</translation>
+<translation id="9088057605518918276">Ustawiono miesięczny napiwek.</translation>
+<translation id="2978223787436054634">Wyślij tweet o swoim wsparciu</translation>
+<translation id="1166682575529520472">Miesięcznie</translation>
+<translation id="5906820630265272615">Fundusze BAT</translation>
+<translation id="3586352807094428968">Brave pobiera 5% kwoty napiwku jako opłatę manipulacyjną.</translation>
+<translation id="7723816962634734185">Kwota niestandardowa</translation>
+<translation id="1986030365413628297">np. 12,75 BAT</translation>
+<translation id="5087864757604726239">wróć</translation>
+<translation id="6661699662755460155">wymień</translation>
+<translation id="864162897141534043">Masz zamiar dać napiwek</translation>
+<translation id="7286679368056222644">Twoje miesięczne wsparcie będzie wynosiło</translation>
+<translation id="8195146845495346281">Minimalna kwota napiwku to 0,25 BAT</translation>
+<translation id="4647657427328119430">Za mało tokenów.</translation>
+<translation id="2359808026110333948">Dalej</translation>
+<translation id="4227681408214010862">Bardzo podoba mi się, to że #Brave pozwala mi wesprzeć twórców! Twórca <ph name="NAME"/> właśnie otrzymał mój napiwek w postaci tokenu #BAT. Jeśli zweryfikuje się na stronie https://creators.brave.com przed <ph name="DATE"/>, to BAT-y będą jego!</translation>
+<translation id="6231182869178328516">Daję napiwek użytkownikowi <ph name="NAME"/>, używając przeglądarki Brave. Sprawdź ją pod adresem https://brave.com/tips.</translation>
+<translation id="7172012963002631836">Podczas przesyłania Twojego napiwku wystąpił problem.</translation>
+<translation id="8994556588732085585">Aby spróbować jeszcze raz, zamknij baner napiwków i otwórz go ponownie.</translation>
 <translation id="2278950434998763147">Otwiera niektóre witryny przy użyciu bezpiecznego połączenia HTTPS zamiast zwykłego HTTP.</translation>
 <translation id="5510493033031835532">Automatyczne przekierowywanie stron AMP</translation>
 <translation id="5197219128592971597">Zawsze odwiedzaj pierwotne (bez standardu AMP) adresy URL, a nie wersje stron korzystających ze standardu Accelerated Mobile Pages Google</translation>
@@ -24,6 +53,8 @@
 <translation id="9148058034647219655">Wyjście</translation>
 <translation id="4022987104439075738">Brama IPFS</translation>
 <translation id="2688519859165248360">Umożliwia przejście do zasobów IPFS poprzez bramkę IPFS</translation>
+<translation id="8047754398610073499">Blokuj powiadomienia o wyrażeniu zgody na pliki cookie</translation>
+<translation id="2621893359845808115">Blokuj okna pop-up na stronie internetowej, które wymagają potwierdzenia/odrzucenia plików cookie</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="3872060236937011862">Cena <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
@@ -124,17 +155,11 @@
 <translation id="8826007068782654809">Dziękujemy</translation>
 <translation id="6665366815203065060">Wysłałeś własnie napiwek do:</translation>
 <translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
-<translation id="1166682575529520472">Miesięcznie</translation>
 <translation id="1628742278973105368">Twój pierwszy miesięczny napiwek zostanie wysłany do:</translation>
-<translation id="298349922412901215">UWAGA: ten twórca jeszcze nie zarejestrował się, aby otrzymywać wsparcie od użytkowników Brave. Będziemy próbowali przekazać wsparcie do czasu, aż zostanie zweryfikowany lub upłynie 90 dni.</translation>
+<translation id="1642952941091001113">Ten twórca jeszcze się nie zarejestrował, aby otrzymywać darowizny od użytkowników Brave. Będziemy próbowali przekazać darowiznę do czasu, aż zostanie zweryfikowany lub upłynie 90 dni.</translation>
 <translation id="635752162765375187">UWAGA: Obecna konfiguracja tego twórcy nie pozwala na otrzymywanie napiwków z Twojego portfela usług powierniczych Nagród. Wszelkie napiwki, które przekażesz, pozostaną w portfelu jako oczekujące i będą automatycznie ponawiane przez 90 dni.</translation>
 <translation id="1910721550319506122">Witaj!</translation>
-<translation id="3165726837666415756">Możesz wesprzeć tę witrynę, przekazując napiwek. To forma podziękowania za tworzenie świetnych treści. Zweryfikowani twórcy treści otrzymują pieniądze za napiwki w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
-<translation id="1704859330137112950">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
-<translation id="245015745140252435">Wartość napiwka</translation>
-<translation id="7873874596836611687">Saldo nagród:</translation>
-<translation id="2573313946367623146">przekaż mój napiwek</translation>
-<translation id="3250511771491660127">Zmień na comiesięczne</translation>
+<translation id="5830114181292529917">Możesz wesprzeć tę stronę, dając napiwek. To forma podziękowania za tworzenie świetnych treści.</translation>
 <translation id="7658239707568436148">Anuluj</translation>
 <translation id="1201402288615127009">Dalej</translation>
 <translation id="8481779960444041069">Aby zwiększyć prywatność, używaj Brave jako domyślnej przeglądarki</translation>
@@ -181,9 +206,6 @@
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch</translation>
 <translation id="3101693828171454453">Niewystarczająca liczba <ph name="TOKEN"/></translation>
-<translation id="6940273954212603510">proszę</translation>
-<translation id="1036277985068412734">dodaj środki</translation>
-<translation id="3492491948683276944">ustaw comiesięczny napiwek</translation>
 <translation id="8038539967102225446">Oto reklamy Brave!</translation>
 <translation id="222883304157347087">(to urządzenie)</translation>
 <translation id="4157741509680155021">URZĄDZENIA W ŁAŃCUCHU SYNCHRONIZACJI</translation>
@@ -403,10 +425,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="223536150967420869">Kup</translation>
 <translation id="2956070106555335453">Podsumowanie</translation>
 <translation id="7465614181960492526">Zarabiaj tokeny i obdarowuj innych</translation>
-<translation id="244362569344671266">Zarabiaj tokeny, oglądając reklamy z poszanowaniem prywatności i automatycznie wspieraj ulubione strony oraz twórców treści.</translation>
+<translation id="2731539192954672606">Zarabiaj tokeny, oglądając reklamy z poszanowaniem prywatności i automatycznie wspieraj ulubione strony oraz twórców treści.</translation>
 <translation id="631124996535890460">Kontynuując, zgadzają się Państwo na <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Polityka prywatności</translation>
-<translation id="6318696841371191107">Weź udział w szybkim oprowadzeniu.</translation>
+<translation id="185034574799484512">Zróbmy krótki kurs</translation>
 <translation id="7930505144430343145">Witamy w nagrodach Brave!</translation>
 <translation id="3477340970981564961">Brave Private Ads nagradza Cię za pomocą żetonów wspierających twórców treści innych niż tradycyjne reklamy, nie ujawniając zarazem Twoich danych osobowych.</translation>
 <translation id="6973095375773523904">Kiedy wyświetlane są reklamy?</translation>
@@ -455,9 +477,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2222442600106681391">2 BAT</translation>
 <translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
-<translation id="8762169086048682708">10 BAT</translation>
-<translation id="4548973860489847866">0,00 BAT</translation>
-<translation id="4193129043743994339">0,00 USD</translation>
 <translation id="8792121506918889955">Zasady obsługi IP WebRTC IP</translation>
 <translation id="8798099450830957504">Domyślna</translation>
 <translation id="1822560017823072927">Domyślne interfejsy publiczne i prywatne</translation>
@@ -470,7 +489,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="4472575034687746823">Podstawowe</translation>
 <translation id="2759836790106646094">Zrób teraz kopię zapasową swojego portfela!</translation>
 <translation id="1078873179929044999">W kolejnym kroku zostanie wyświetlone 12-wyrazowe wyrażenie odzyskiwania, które możesz wykorzystać do odzyskania głównych kont kryptowalutowych. Zapisz je w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione albo zechcesz zmienić portfele.</translation>
-<translation id="2359808026110333948">Kontynuuj</translation>
 <translation id="5488357322146334497">Wiadomość</translation>
 <translation id="1904000155026201268">Rozumiem, że jeśli stracę moje słowa odzyskiwania, nie będę w stanie uzyskać dostępu do mojego portfela kryptowalut.</translation>
 <translation id="3933122286596948824">Twoje wyrażenie odzyskiwania</translation>
@@ -859,10 +877,64 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2832270987629018596">Nieprawidłowy adres SOL</translation>
 <translation id="8181161042860463420">Powiązane konto tokena jeszcze nie istnieje. Mała kwota SOL zostanie wydana na jego stworzenie i sfinansowanie. <ph name="CLICK_START"/>Dowiedz się więcej<ph name="CLICK_END"/></translation>
 <translation id="1304515257839771197">Otworzyć aplikację <ph name="APP_NAME"/>?</translation>
-<translation id="7653028065515320848"><ph name="CLICK_START"/>Dowiedz się więcej na temat używania aplikacji Tęczowy Most<ph name="CLICK_END"/></translation>
-<translation id="8219806187375413057"><ph name="CLICK_START"/>Dowiedz się, jak zmniejszyć ryzyko korzystania z aplikacji Tęczowy Most<ph name="CLICK_END"/></translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Dowiedz się więcej na temat używania aplikacji Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Dowiedz się, jak zmniejszyć ryzyko korzystania z aplikacji Rainbow Bridge<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> jest niezależnym serwisem, który pozwala na łączenie aktywów między sieciami i umożliwia korzystanie z kryptowalut w innych sieciach i ekosystemach DApp. Łączenie aktywów z innymi sieciami wiąże się z pewnym ryzykiem.</translation>
 <translation id="8423380132356660250">Otwórz aplikację <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Aktualizuję profil VPN...</translation>
 <translation id="7457027586454688423">Wprowadź swoje hasło do Portfela Brave</translation>
+<translation id="6588595775439619209">Blokuj powiadomienia o plikach cookie</translation>
+<translation id="264682546981571963">Masz dość powiadomień o wyrażeniu zgody na pliki cookie?</translation>
+<translation id="4986297793092101884">Brave już blokuje pliki cookie innych firm. Możemy również blokować powiadomienia o wyrażeniu zgody na pliki cookie.</translation>
+<translation id="4784306439879850873">Uwaga: Należy pamiętać, że Brave nie może zweryfikować, co się stanie, gdy złożysz podpis. Podpis może autoryzować niemal dowolną operację na Twoim koncie lub w Twoim imieniu, taką jak np. przekazanie całkowitej kontroli nad Twoim kontem i kryptoaktywami stronie, z której pochodzi żądanie. Składaj podpisy tylko wtedy, gdy masz pewność i ufasz stronie przesyłającej żądanie.</translation>
+<translation id="3474375934783434676">Podpisy składasz na własne ryzyko</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/> z <ph name="SIZE"/></translation>
+<translation id="6450792191436242818">Program systemowy</translation>
+<translation id="6252742184395380448">Program konfiguracji</translation>
+<translation id="5358970666412490132">Program stakowania</translation>
+<translation id="346636227344244984">Program głosowania</translation>
+<translation id="3538368258493053874">Moduł ładowania BPF</translation>
+<translation id="2334098351242742927">Program Ed25519</translation>
+<translation id="6421371987002247943">Program tokenu</translation>
+<translation id="8780753288764281797">Program Secp256k1</translation>
+<translation id="8504640708321980506">Dane</translation>
+<translation id="4771176409524282426">Utwórz konto</translation>
+<translation id="1755120947324658439">Przypisz</translation>
+<translation id="7588707273764747927">Przelew</translation>
+<translation id="5328067049293286962">Utwórz konto z seedu</translation>
+<translation id="1512366326138054636">Konto zaliczkowe nonce</translation>
+<translation id="7042202638449257311">Konto wypłat nonce</translation>
+<translation id="6586085653712983224">Uruchom konto nonce</translation>
+<translation id="8790312855368673743">Zatwierdź konto nonce</translation>
+<translation id="5312748886432335174">Przydziel</translation>
+<translation id="7678705217826797696">Przydziel z seedem</translation>
+<translation id="7436137523759921028">Przypisz z seedem</translation>
+<translation id="3360695936886670509">Przenieś z seedem</translation>
+<translation id="7323636209143541483">Uaktualnij konto nonce</translation>
+<translation id="616021855350068202">Uruchom tworzenie tokenów</translation>
+<translation id="4377316227435786423">Uruchom konto</translation>
+<translation id="7474306790151660826">Uruchom multipodpis</translation>
+<translation id="363258595406850968">Skonfiguruj uprawnienie</translation>
+<translation id="2091563464450586155">Twórz tokeny do</translation>
+<translation id="1252941298291625577">Spalaj</translation>
+<translation id="5211196599627796093">Zamknij konto</translation>
+<translation id="6988707241715050556">Blokowanie konta</translation>
+<translation id="857250415816680832">Odblokowanie konta</translation>
+<translation id="5453172892735755262">Przeniesienie sprawdzone</translation>
+<translation id="471669767157904431">Zatwierdzenie sprawdzone</translation>
+<translation id="3530340583186873359">Twórz tokeny do sprawdzonych</translation>
+<translation id="5068456869800056740">Spalanie sprawdzone</translation>
+<translation id="3004830385467519189">Uruchom konto 2</translation>
+<translation id="8026488633670875516">Synchronizacja natywna</translation>
+<translation id="2024649614526778327">Uruchom konto 3</translation>
+<translation id="8382368767453083629">Uruchom multipodpis 2</translation>
+<translation id="77243237706803459">Uruchom tworzenie tokenów 2</translation>
+<translation id="583281660410589416">Nieznany</translation>
+<translation id="2862978891748913252">Wybierz kraj</translation>
+<translation id="3832588024105436400">Wybierz kraj, żebyśmy mogli pokazać Ci opcje i reklamy właściwe dla Twojego regionu. <ph name="PRIVACY_POLICY"/></translation>
+<translation id="5666264859501108700">Region Twoich Nagród Brave ustawiono na: <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="3180990265682133881">Niestety wystąpił błąd podczas ustawianiu kraju. Spróbuj ponownie.</translation>
+<translation id="7352651011704765696">Coś poszło nie tak</translation>
+<translation id="7144878232160441200">Ponów próbę</translation>
+<translation id="6040143037577758943">Zamknij</translation>
 </translationbundle>

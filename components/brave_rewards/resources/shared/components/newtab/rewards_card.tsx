@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -19,10 +19,13 @@ import { NewTabLink } from '../new_tab_link'
 import { GrantOverlay } from './grant_overlay'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView, shouldRenderPendingRewards } from '../payment_status_view'
+import { UnsupportedRegionCard } from './unsupported_region_card'
 
 import * as urls from '../../lib/rewards_urls'
 
 import * as style from './rewards_card.style'
+
+import * as mojom from '../../../shared/lib/mojom'
 
 const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
   day: 'numeric',
@@ -63,6 +66,7 @@ export function RewardsCardHeader () {
 
 interface Props {
   rewardsEnabled: boolean
+  isUnsupportedRegion: boolean
   declaredCountry: string
   adsEnabled: boolean
   adsSupported: boolean
@@ -97,7 +101,7 @@ export function RewardsCard (props: Props) {
     }
 
     const { externalWallet } = props
-    if (externalWallet && externalWallet.status === 'disconnected') {
+    if (externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut) {
       const onClick = () => {
         if (externalWallet.links.reconnect) {
           window.open(externalWallet.links.reconnect, '_blank')
@@ -183,6 +187,17 @@ export function RewardsCard (props: Props) {
     )
   }
 
+  function renderRewardsUnsupportedRegion () {
+    return (
+      <style.root>
+        <RewardsCardHeader />
+        <style.unsupportedRegionCard>
+          <UnsupportedRegionCard />
+        </style.unsupportedRegionCard>
+      </style.root>
+    )
+  }
+
   function renderRewardsOptIn () {
     return (
       <style.root>
@@ -233,6 +248,10 @@ export function RewardsCard (props: Props) {
         </style.primaryAction>
       </>
     )
+  }
+
+  if (props.isUnsupportedRegion) {
+    return renderRewardsUnsupportedRegion()
   }
 
   if (!props.rewardsEnabled) {

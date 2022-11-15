@@ -441,6 +441,7 @@
 <translation id="3435465986463792564">ウィンドウの数が多くてお困りの場合も、ここで管理できます</translation>
 <translation id="3443221991560634068">現在のページを再読み込みする</translation>
 <translation id="3444179773590444986">サイトのダークモードに関するフィードバックを共有しますか？</translation>
+<translation id="7384339501748168186">プライバシー保護のため、Brave ではこの欄のパスワードの自動入力は行われません。</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 件のダウンロードがスケジュール設定されました}other{# 件のダウンロードがスケジュール設定されました}}</translation>
 <translation id="3474624961160222204"><ph name="NAME"/> として続行</translation>
 <translation id="3478363558367712427">検索エンジンを選択できます</translation>
@@ -658,6 +659,7 @@
 <translation id="4763480195061959176">動画</translation>
 <translation id="4766313118839197559">パスワードは、このデバイスのパスワード マネージャーに保存されます</translation>
 <translation id="4766678251456904326">デバイスへのアカウントの追加</translation>
+<translation id="4787736314074622408"><ph name="ITEM_TITLE"/>を削除しますか？</translation>
 <translation id="4791358705705538979">ウェブでの操作（購入手続きなど）を完了できるようにサポートします</translation>
 <translation id="4794291718671962615">（<ph name="MEGABYTES"/>）<ph name="URL"/></translation>
 <translation id="4802417911091824046">パスフレーズ暗号化の対象に Google Pay のお支払い方法と住所は含まれません。
@@ -726,6 +728,7 @@
 <translation id="4744980273298156620">まもなく、新しいタブを開くと、<ph name="SITE_NAME"/> のストーリーが表示されるようになります。フォローしたサイトは Brave アカウントに保存され、Discover の設定で管理できます。</translation>
 <translation id="5091249083535528968">詳細な使用状況データ</translation>
 <translation id="509429900233858213">エラーが発生しました。</translation>
+<translation id="5099845111805573968">PC 版サイトを選択すると、サイトに今後アクセスした場合も同じ設定が適用されます</translation>
 <translation id="225414324447409614">サイトがパスワードを不正に取得しようとしている場合や、ユーザーが安全でないファイルをダウンロードしようとした場合は、URL とページ コンテンツの一部をセーフ ブラウジングに送信することがあります</translation>
 <translation id="510275257476243843">残り 1 時間</translation>
 <translation id="5115811374190515607"><ph name="PRODUCT_NAME"/> に移動</translation>
@@ -881,6 +884,7 @@
 <translation id="5958275228015807058">[ダウンロード] で自分のファイルやページを探すことができます</translation>
 <translation id="5962718611393537961">タップして折りたたむ</translation>
 <translation id="5964869237734432770">画像の説明文の取得を停止する</translation>
+<translation id="9135546826883360971">この設定は Brave に保存されます</translation>
 <translation id="5979084224081478209">パスワードを確認</translation>
 <translation id="5995726099713306770">ページを再ダウンロードしますか？</translation>
 <translation id="6456271171669383967">Brave のままにする</translation>
@@ -920,6 +924,7 @@
 <translation id="6192907950379606605">画像の説明文を取得する</translation>
 <translation id="8367262879301982880">パスワードは、このデバイスの Brave パスワード マネージャーに保存されます</translation>
 <translation id="620197886010707372"><ph name="APPNAME"/> 用のアプリを Google Play で開きますか？</translation>
+<translation id="6202812185118613467">同期を開始するには、もう一度ログインしてください</translation>
 <translation id="6203593061661911168">Wi-Fi 接続時にダウンロードを開始します</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> ではありませんか？</translation>
 <translation id="6211386937064921208">このページのプレビューを表示しています</translation>
@@ -1051,6 +1056,7 @@
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>、タブ、選択中</translation>
 <translation id="6828070228333235514">価格のトラッキングを停止する</translation>
+<translation id="6830728435402077660">保護されていません</translation>
 <translation id="6833996806551876956">プライバシー サンドボックス（試用版）</translation>
 <translation id="6836206421467243968">「<ph name="TITLE_OF_GROUP"/>」タブグループを新しいバックグラウンドのタブグループとして復元します。</translation>
 <translation id="6846298663435243399">読み込んでいます…</translation>
@@ -1335,7 +1341,7 @@
 <translation id="8410695015584479363">料金をチェック</translation>
 <translation id="8413126021676339697">全履歴を表示</translation>
 <translation id="8414396119627470038"><ph name="SITE_ETLD_PLUS_ONE"/> に <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> の情報を使用してログイン</translation>
-<translation id="2100587595569959771">Brave での広告のカスタマイズの詳細</translation>
+<translation id="2100587595569959771">Brave での広告のパーソナライズの詳細</translation>
 <translation id="8419244640277402268">含める</translation>
 <translation id="5735840612282428689">ページを送信しました。<ph name="DEVICE_TYPE"/> で Brave を開くと表示できます</translation>
 <translation id="8427875596167638501">[プレビュー] タブが半分開いています</translation>
@@ -1351,7 +1357,7 @@
 <translation id="8460448946170646641">プライバシーとセキュリティに関する重要な設定を確認する</translation>
 <translation id="8461694314515752532">同期データを同期パスフレーズで暗号化する</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/> がインターネットに接続していることを確認してください</translation>
-<translation id="8473863474539038330">住所やその他の情報</translation>
+<translation id="5633907266617216186">住所やその他の情報</translation>
 <translation id="8481921391193215807">オンにすると、サイトでコンテンツやサービスを提供する際に、ここで示されているプライバシー保護技術が使用される場合があります。これには、クロスサイト トラッキングの代わりとなる技術も含まれます。今後、試用版の技術がさらに追加される可能性があります。
 
 <ph name="BEGIN_LIST_ITEM1"/>広告主やパブリッシャーは FLoC を使用できます。<ph name="END_LIST_ITEM1"/>

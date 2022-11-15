@@ -12,6 +12,14 @@
 
 #include "base/values.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+class PrefService;
+
+namespace base {
+class Time;
+class Value;
+}  // namespace base
 
 namespace brave_vpn {
 
@@ -26,12 +34,23 @@ std::unique_ptr<Hostname> PickBestHostname(
 std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames);
 std::vector<mojom::Region> ParseRegionList(
     const base::Value::List& region_list);
-base::Value::Dict GetValueWithTicketInfos(const std::string& email,
-                                          const std::string& subject,
-                                          const std::string& body);
+base::Value::Dict GetValueWithTicketInfos(
+    const std::string& email,
+    const std::string& subject,
+    const std::string& body,
+    const std::string& subscriber_credential);
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::Region> region_list);
+bool IsValidCredentialSummary(const base::Value& summary);
+bool HasValidSubscriberCredential(PrefService* local_prefs);
+bool HasSubscriberCredential(PrefService* local_prefs);
+std::string GetSubscriberCredential(PrefService* local_prefs);
+absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs);
+void SetSubscriberCredential(PrefService* local_prefs,
+                             const std::string& subscriber_credential,
+                             const base::Time& expiration_time);
+void ClearSubscriberCredential(PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

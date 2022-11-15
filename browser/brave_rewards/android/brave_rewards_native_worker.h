@@ -16,10 +16,13 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "bat/ledger/mojom_structs.h"
+#include "bat/ledger/public/interfaces/ledger_types.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
 
 namespace brave_rewards {
 class RewardsService;
@@ -40,7 +43,14 @@ class BraveRewardsNativeWorker
 
   void Destroy(JNIEnv* env);
 
-  void CreateRewardsWallet(JNIEnv* env);
+  bool IsSupported(JNIEnv* env);
+  bool IsSupportedSkipRegionCheck(JNIEnv* env);
+
+  std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result);
+
+  void CreateRewardsWallet(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& country_code);
 
   void GetRewardsParameters(JNIEnv* env);
 
@@ -139,18 +149,21 @@ class BraveRewardsNativeWorker
 
   void GetExternalWallet(JNIEnv* env);
 
+  base::android::ScopedJavaLocalRef<jstring> GetCountryCode(JNIEnv* env);
+
+  void GetAvailableCountries(JNIEnv* env);
+
   void GetPublisherBanner(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher_key);
 
   void DisconnectWallet(JNIEnv* env);
 
-  void RecoverWallet(JNIEnv* env,
-                     const base::android::JavaParamRef<jstring>& pass_phrase);
-
   void RefreshPublisher(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher_key);
+
+  void OnCreateRewardsWallet(ledger::mojom::CreateRewardsWalletResult result);
 
   void OnResetTheWholeState(const bool success);
 
@@ -214,8 +227,11 @@ class BraveRewardsNativeWorker
   void OnClaimPromotion(const ledger::mojom::Result result,
                         ledger::mojom::PromotionPtr promotion);
 
-  void OnGetExternalWallet(const ledger::mojom::Result result,
-                           ledger::mojom::ExternalWalletPtr wallet);
+  void OnGetExternalWallet(
+      base::expected<ledger::mojom::ExternalWalletPtr,
+                     ledger::mojom::GetExternalWalletError> result);
+
+  void OnGetAvailableCountries(std::vector<std::string> countries);
 
   void onPublisherBanner(ledger::mojom::PublisherBannerPtr wallet);
 
@@ -224,9 +240,6 @@ class BraveRewardsNativeWorker
   void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
                           const ledger::mojom::Result result,
                           const std::string& wallet_type) override;
-
-  void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
-                       const ledger::mojom::Result result) override;
 
   void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
                           const std::string& publisher_key);

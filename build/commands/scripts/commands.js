@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 const program = require('commander');
 const path = require('path')
@@ -285,6 +285,7 @@ program
   .option('--all', 'run presubmit on all files')
   .option('--files <file list>',
     'semicolon-separated list files to run presubmit on')
+  .option('--verbose [arg]', 'pass --verbose 2 for more debugging info', JSON.parse)
   .action(util.presubmit)
 
 program

@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,10 +39,10 @@ import { debounce } from '../../../common/debounce'
 import { WalletActions } from '../actions'
 import getAPIProxy from '../async/bridge'
 import { hexStrToNumberArray } from '../../utils/hex-utils'
+import { getBalance } from '../../utils/balance-utils'
 
 // Hooks
 import useAssetManagement from './assets-management'
-import useBalance from './balance'
 import usePreset from './select-preset'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
@@ -111,14 +111,18 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const {
     selectedAccount,
     selectedNetwork,
-    networkList,
     fullTokenList,
     userVisibleTokensInfo
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const dispatch = useDispatch()
 
-  const swapProvider = React.useMemo(() =>
-    getSwapProvider(selectedNetwork), [selectedNetwork])
+  const swapProvider = React.useMemo(() => {
+    if (!selectedNetwork) {
+      return SwapProvider.ZeroEx
+    }
+
+    return getSwapProvider(selectedNetwork)
+  }, [selectedNetwork])
 
   // common state
   const [customSlippageTolerance, setCustomSlippageTolerance] = React.useState<string>('')
@@ -151,7 +155,6 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
   // custom hooks
   const isMounted = useIsMounted()
-  const getBalance = useBalance(networkList)
   const { makeTokenVisible } = useAssetManagement()
   const {
     getIsSwapSupported,
@@ -161,7 +164,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   } = useLib()
 
   // memos
-  const nativeAsset = React.useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
+  const nativeAsset = React.useMemo(() => selectedNetwork && makeNetworkAsset(selectedNetwork), [selectedNetwork])
   const fromAssetBalance = getBalance(selectedAccount, fromAsset)
   const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
   const toAssetBalance = getBalance(selectedAccount, toAsset)
@@ -186,6 +189,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   }, [swapQuote, swapProvider])
 
   const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+    if (!selectedNetwork || !nativeAsset) {
+      return []
+    }
+
     return [
       nativeAsset,
       ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'USDC'),
@@ -226,6 +233,11 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return
     }
 
+    // No validations to perform if selectedNetwork is not loaded
+    if (!selectedNetwork) {
+      return
+    }
+
     const fromAmountWeiWrapped = new Amount(fromAmount)
       .multiplyByDecimals(fromAsset.decimals)
 
@@ -237,7 +249,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return 'insufficientFundsForGas'
     }
 
-    if (fromAsset.symbol === selectedNetwork.symbol && fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)) {
+    if (fromAsset.chainId === selectedNetwork.chainId && fromAsset.coin === selectedNetwork.coin && fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)) {
       return 'insufficientFundsForGas'
     }
 
@@ -412,10 +424,12 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         // order to ensure a swap with minimum slippage.
         const { estimation: gasEstimates } = await ethTxManagerProxy.getGasEstimation1559()
 
-        const isEIP1559 = hasEIP1559Support(selectedAccount, selectedNetwork) && gasEstimates
+        const isEIP1559 = selectedNetwork && gasEstimates && selectedAccount
+          ? hasEIP1559Support(selectedAccount, selectedNetwork)
+          : false
         let maxPriorityFeePerGas
         let maxFeePerGas
-        if (isEIP1559 && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
+        if (isEIP1559 && gasEstimates && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
           // Bump fast priority fee and max fee by 1 GWei if same as average fees.
           const maxPriorityFeePerGasBN = new BigNumber(gasEstimates.fastMaxPriorityFeePerGas).plus(10 ** 9)
           const maxFeePerGasBN = new BigNumber(gasEstimates.fastMaxFeePerGas).plus(10 ** 9)
@@ -424,8 +438,8 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
           maxFeePerGas = `0x${maxFeePerGasBN.toString(16)}`
         } else if (isEIP1559) {
           // Always suggest fast gas fees as default
-          maxPriorityFeePerGas = gasEstimates.fastMaxPriorityFeePerGas
-          maxFeePerGas = gasEstimates.fastMaxFeePerGas
+          maxPriorityFeePerGas = gasEstimates?.fastMaxPriorityFeePerGas
+          maxFeePerGas = gasEstimates?.fastMaxFeePerGas
         }
 
         const params: SendTransactionParams = {
@@ -664,6 +678,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return
     }
 
+    if (!selectedNetwork || !selectedAccount) {
+      return
+    }
+
     /**
      * STEP 5: Fetch the swap quote asynchronously.
      */
@@ -789,7 +807,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         return
       }
 
-      if (swapValidationError === 'insufficientAllowance' && allowance) {
+      if (swapValidationError === 'insufficientAllowance' && allowance && selectedAccount) {
         // IMPORTANT SECURITY NOTICE
         //
         // The token allowance suggested by Swap is always unlimited,
@@ -905,6 +923,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   React.useEffect(() => {
     let isSubscribed = true // track if the component is mounted
 
+    if (!selectedNetwork) {
+      return
+    }
+
     getIsSwapSupported(selectedNetwork).then(
       (supported) => {
         if (isSubscribed) {
@@ -926,22 +948,29 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   React.useEffect(() => {
     let isSubscribed = true // track if the component is mounted
 
+    // cleanup function, unsubscribe to promise on unmount
+    const effectCleanup = () => { isSubscribed = false }
+
     if (swapProvider !== SwapProvider.ZeroEx) {
-      return
+      return effectCleanup
     }
 
     if (!fromAsset) {
-      return
+      return effectCleanup
     }
 
     if (!fromAsset.isErc20) {
       setAllowance(undefined)
-      return
+      return effectCleanup
     }
 
     if (!swapQuote) {
       setAllowance(undefined)
-      return
+      return effectCleanup
+    }
+
+    if (!selectedAccount) {
+      return effectCleanup
     }
 
     const { allowanceTarget } = swapQuote
@@ -954,10 +983,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       })
       .catch(e => console.log(e))
 
-    // cleanup function, unsubscribe to promise on unmount
-    return () => {
-      isSubscribed = false
-    }
+    return effectCleanup
   }, [fromAsset, swapQuote, selectedAccount, swapProvider])
 
   /**

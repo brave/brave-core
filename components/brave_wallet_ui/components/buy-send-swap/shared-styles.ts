@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import { WalletButton } from '../shared/style'
 
@@ -29,7 +33,7 @@ export const SelectScrollSearchContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
   max-height: 100%;
@@ -40,7 +44,7 @@ export const SelectScrollContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   position: absolute;
   top: 50px;

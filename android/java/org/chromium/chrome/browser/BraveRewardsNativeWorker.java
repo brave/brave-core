@@ -167,9 +167,23 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void CreateRewardsWallet() {
+    public boolean IsSupported() {
         synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().createRewardsWallet(mNativeBraveRewardsNativeWorker);
+            return BraveRewardsNativeWorkerJni.get().isSupported(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    public boolean IsSupportedSkipRegionCheck() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().isSupportedSkipRegionCheck(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    public void CreateRewardsWallet(String countryCode) {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().createRewardsWallet(
+                    mNativeBraveRewardsNativeWorker, countryCode);
         }
     }
 
@@ -306,9 +320,15 @@ public class BraveRewardsNativeWorker {
     }
 
     public void GetAllNotifications() {
-        synchronized(lock) {
-            BraveRewardsNativeWorkerJni.get().getAllNotifications(mNativeBraveRewardsNativeWorker);
-        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (lock) {
+                    BraveRewardsNativeWorkerJni.get().getAllNotifications(
+                            mNativeBraveRewardsNativeWorker);
+                }
+            }
+        });
     }
 
     public void DeleteNotification(String notification_id) {
@@ -421,6 +441,20 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public String getCountryCode() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getCountryCode(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    public void getAvailableCountries() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().getAvailableCountries(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public void GetPublisherBanner(String publisher_key) {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().GetPublisherBanner(
@@ -434,13 +468,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void RecoverWallet(String passPhrase) {
-        synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().recoverWallet(
-                    mNativeBraveRewardsNativeWorker, passPhrase);
-        }
-    }
-
     public void getAdsAccountStatement() {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().getAdsAccountStatement(
@@ -449,9 +476,9 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnRecoverWallet(int errorCode) {
+    public void onCreateRewardsWallet(String result) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnRecoverWallet(errorCode);
+            observer.onCreateRewardsWallet(result);
         }
     }
 
@@ -608,9 +635,16 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetExternalWallet(int error_code, String external_wallet) {
+    public void OnGetExternalWallet(String external_wallet) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetExternalWallet(error_code, external_wallet);
+            observer.OnGetExternalWallet(external_wallet);
+        }
+    }
+
+    @CalledByNative
+    public void onGetAvailableCountries(String[] countries) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onGetAvailableCountries(countries);
         }
     }
 
@@ -677,6 +711,8 @@ public class BraveRewardsNativeWorker {
     interface Natives {
         void init(BraveRewardsNativeWorker caller);
         void destroy(long nativeBraveRewardsNativeWorker);
+        boolean isSupported(long nativeBraveRewardsNativeWorker);
+        boolean isSupportedSkipRegionCheck(long nativeBraveRewardsNativeWorker);
         String getWalletBalance(long nativeBraveRewardsNativeWorker);
         String getExternalWalletType(long nativeBraveRewardsNativeWorker);
         void GetPublisherBanner(long nativeBraveRewardsNativeWorker, String publisher_key);
@@ -717,10 +753,11 @@ public class BraveRewardsNativeWorker {
         int getAdsPerHour(long nativeBraveRewardsNativeWorker);
         void setAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
         void getExternalWallet(long nativeBraveRewardsNativeWorker);
+        String getCountryCode(long nativeBraveRewardsNativeWorker);
+        void getAvailableCountries(long nativeBraveRewardsNativeWorker);
         void disconnectWallet(long nativeBraveRewardsNativeWorker);
-        void recoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
-        void createRewardsWallet(long nativeBraveRewardsNativeWorker);
+        void createRewardsWallet(long nativeBraveRewardsNativeWorker, String countryCode);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);

@@ -1,3 +1,7 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import { TextEncoder, TextDecoder } from 'util'
 // @ts-expect-error
 global.TextDecoder = TextDecoder
@@ -6,6 +10,11 @@ global.TextEncoder = TextEncoder
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { renderHook, act } from '@testing-library/react-hooks'
+import {
+  configureStore,
+  createListenerMiddleware,
+  PayloadAction
+} from '@reduxjs/toolkit'
 
 import * as WalletActions from '../actions/wallet_actions'
 import { BraveWallet } from '../../constants/types'
@@ -16,8 +25,7 @@ import useSend from './send'
 import { LibContext } from '../context/lib.context'
 
 import * as MockedLib from '../async/__mocks__/lib'
-import { combineReducers, createStore } from 'redux'
-import { createWalletReducer } from '../reducers/wallet_reducer'
+import { createWalletReducer } from '../slices/wallet.slice'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { createSendCryptoReducer } from '../reducers/send_crypto_reducer'
 import { mockBasicAttentionToken, mockBinanceCoinErc20Token, mockEthToken, mockMoonCatNFT, mockNewAssetOptions } from '../../stories/mock-data/mock-asset-options'
@@ -37,6 +45,8 @@ const makeStoreWithActionSpies = (actionSpies: Array<{
   actionType: string
   spy: typeof jest.fn
 }>) => {
+  const listener = createListenerMiddleware()
+
   const walletReducer = createWalletReducer({
     ...mockWalletState,
     accounts: [mockAccountWithAddress],
@@ -46,26 +56,31 @@ const makeStoreWithActionSpies = (actionSpies: Array<{
 
   // register spies to redux actions
   actionSpies.forEach(({ actionType, spy }) => {
-    walletReducer.on(
-      actionType,
-      (state, action) => {
-        spy(action as any)
-        return state
+    listener.startListening({
+      type: actionType,
+      effect: (action: PayloadAction) => {
+        spy(action.payload as any)
       }
-    )
+    })
   })
 
-  const store = createStore(
-    combineReducers({
+  const store = configureStore({
+    reducer: {
       wallet: walletReducer,
       sendCrypto: createSendCryptoReducer({
         selectedSendAsset: mockSendAssetOptions[0],
         sendAmount: '',
         toAddress: '',
-        toAddressOrUrl: ''
+        toAddressOrUrl: '',
+        showEnsOffchainLookupOptions: false,
+        addressError: '',
+        addressWarning: '',
+        ensOffchainLookupOptions: undefined
       })
-    })
-  )
+    },
+    middleware: [listener.middleware]
+  })
+
   return store
 }
 
@@ -88,15 +103,15 @@ describe('useSend hook', () => {
 
     const store = makeStoreWithActionSpies([
       {
-        actionType: WalletActions.sendTransaction.getType(),
+        actionType: WalletActions.sendTransaction.type,
         spy: sendTransactionSpy
       },
       {
-        actionType: WalletActions.sendERC20Transfer.getType(),
+        actionType: WalletActions.sendERC20Transfer.type,
         spy: sendERC20TransferSpy
       },
       {
-        actionType: WalletActions.sendERC721TransferFrom.getType(),
+        actionType: WalletActions.sendERC721TransferFrom.type,
         spy: sendERC721TransferFromSpy
       }
     ])
@@ -144,15 +159,15 @@ describe('useSend hook', () => {
 
     const store = makeStoreWithActionSpies([
       {
-        actionType: WalletActions.sendTransaction.getType(),
+        actionType: WalletActions.sendTransaction.type,
         spy: sendTransactionSpy
       },
       {
-        actionType: WalletActions.sendERC20Transfer.getType(),
+        actionType: WalletActions.sendERC20Transfer.type,
         spy: sendERC20TransferSpy
       },
       {
-        actionType: WalletActions.sendERC721TransferFrom.getType(),
+        actionType: WalletActions.sendERC721TransferFrom.type,
         spy: sendERC721TransferFromSpy
       }
     ])
@@ -201,15 +216,15 @@ describe('useSend hook', () => {
 
     const store = makeStoreWithActionSpies([
       {
-        actionType: WalletActions.sendTransaction.getType(),
+        actionType: WalletActions.sendTransaction.type,
         spy: sendTransactionSpy
       },
       {
-        actionType: WalletActions.sendERC20Transfer.getType(),
+        actionType: WalletActions.sendERC20Transfer.type,
         spy: sendERC20TransferSpy
       },
       {
-        actionType: WalletActions.sendERC721TransferFrom.getType(),
+        actionType: WalletActions.sendERC721TransferFrom.type,
         spy: sendERC721TransferFromSpy
       }
     ])
@@ -263,15 +278,15 @@ describe('useSend hook', () => {
 
         const store = makeStoreWithActionSpies([
           {
-            actionType: WalletActions.sendTransaction.getType(),
+            actionType: WalletActions.sendTransaction.type,
             spy: sendTransactionSpy
           },
           {
-            actionType: WalletActions.sendERC20Transfer.getType(),
+            actionType: WalletActions.sendERC20Transfer.type,
             spy: sendERC20TransferSpy
           },
           {
-            actionType: WalletActions.sendERC721TransferFrom.getType(),
+            actionType: WalletActions.sendERC721TransferFrom.type,
             spy: sendERC721TransferFromSpy
           }
         ])
@@ -306,15 +321,15 @@ describe('useSend hook', () => {
 
         const store = makeStoreWithActionSpies([
           {
-            actionType: WalletActions.sendTransaction.getType(),
+            actionType: WalletActions.sendTransaction.type,
             spy: sendTransactionSpy
           },
           {
-            actionType: WalletActions.sendERC20Transfer.getType(),
+            actionType: WalletActions.sendERC20Transfer.type,
             spy: sendERC20TransferSpy
           },
           {
-            actionType: WalletActions.sendERC721TransferFrom.getType(),
+            actionType: WalletActions.sendERC721TransferFrom.type,
             spy: sendERC721TransferFromSpy
           }
         ])

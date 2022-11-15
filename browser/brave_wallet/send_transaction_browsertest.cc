@@ -39,6 +39,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -124,10 +125,21 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
   void SetUpOnMainThread() override {
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
     brave::RegisterPathProvider();
@@ -233,12 +245,20 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     json_rpc_service_->AddEthereumChainRequestCompleted(chain_id, true);
   }
 
-  void CallEthereumEnable() {
+  void CallEthereumEnable(bool is_repeat_call = false) {
+    base::RunLoop run_loop;
+    auto* tab_helper =
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
+    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
+
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
-    base::RunLoop().RunUntilIdle();
-    ASSERT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    if (!is_repeat_call) {
+      run_loop.Run();
+    }
+
+    // The bubble should be showing at this point. If it's a repeat call then
+    // the bubble should already be shown from the initial call.
+    ASSERT_TRUE(tab_helper->IsShowingBubble());
   }
 
   void UserGrantPermission(bool granted) {
@@ -487,6 +507,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   TestTxServiceObserver observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
@@ -731,6 +752,17 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsUnlocked) {
                   .ExtractBool());
 }
 
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsConnected) {
+  RestoreWallet();
+  GURL url =
+      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsConnected()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+}
+
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
                        EthSendTransactionEIP1559Tx) {
   SetNetworkForTesting("0x1");  // mainnet
@@ -767,7 +799,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SecondEnableCallFails) {
   CallEthereumEnable();
 
   // 2nd call should fail
-  CallEthereumEnable();
+  CallEthereumEnable(/*is_repeat_call*/ true);
   ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractBool(),
@@ -793,7 +825,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   CallEthereumEnable();
 
   // 2nd call should fail
-  CallEthereumEnable();
+  CallEthereumEnable(/*is_repeat_call*/ true);
   ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractBool(),
@@ -802,32 +834,6 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   // But now user should still be able to resolve the first call
   UserGrantPermission(true);
   ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractBool(),
-            true);
-}
-
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
-                       EnsurePropertiesCantBeDeleted) {
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_TRUE(WaitForLoadStop(web_contents()));
-  ASSERT_EQ(EvalJs(web_contents(), "ensurePropertiesCantBeDeleted()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractBool(),
-            true);
-}
-
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
-                       EnsurePropertiesCantBeDeletedNoOverwrite) {
-  brave_wallet_service_->SetDefaultEthereumWallet(
-      mojom::DefaultWallet::BraveWallet);
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_TRUE(WaitForLoadStop(web_contents()));
-  ASSERT_EQ(EvalJs(web_contents(), "ensurePropertiesCantBeDeleted()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractBool(),
             true);

@@ -18,6 +18,7 @@
 #include "base/callback.h"
 #include "base/containers/flat_set.h"
 #include "base/guid.h"
+#include "base/i18n/icu_string_conversions.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -47,6 +48,14 @@
 namespace brave_news {
 
 namespace {
+std::string GetResponseCharset(network::SimpleURLLoader* loader) {
+  auto* response_info = loader->ResponseInfo();
+  if (!response_info) {
+    return "utf-8";
+  }
+
+  return response_info->charset.empty() ? "utf-8" : response_info->charset;
+}
 
 mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item) {
   // We don't include description since there does not exist a
@@ -77,23 +86,33 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item) {
 
 using ParseFeedCallback = base::OnceCallback<void(absl::optional<FeedData>)>;
 void ParseFeedDataOffMainThread(const GURL& feed_url,
-                                const std::string& body_content,
+                                const std::string& charset,
+                                std::string body_content,
                                 ParseFeedCallback callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
-          [](const GURL& feed_url,
-             const std::string& body_content) -> absl::optional<FeedData> {
+          [](const GURL& feed_url, const std::string& charset,
+             std::string body_content) -> absl::optional<FeedData> {
+            std::string result;
+            // Ensure the body is encoded as UTF-8.
+            if (!base::ConvertToUtf8AndNormalize(body_content, charset,
+                                                 &result)) {
+              LOG(ERROR) << "Failed to convert body content of " << feed_url
+                         << " to utf-8";
+              return absl::nullopt;
+            }
+
             brave_news::FeedData data;
-            if (!parse_feed_string(::rust::String(body_content), data)) {
+            if (!parse_feed_string(::rust::String(result), data)) {
               VLOG(1) << feed_url.spec() << " not a valid feed.";
               VLOG(2) << "Response body was:";
-              VLOG(2) << body_content;
+              VLOG(2) << result;
               return absl::nullopt;
             }
             return data;
           },
-          feed_url, body_content),
+          feed_url, charset, std::move(body_content)),
       std::move(callback));
 }
 
@@ -188,6 +207,7 @@ void DirectFeedController::FindFeeds(
             auto* loader = iter->get();
             auto response_code = -1;
             std::string mime_type;
+            std::string charset = GetResponseCharset(loader);
             GURL final_url(loader->GetFinalURL());
             base::flat_map<std::string, std::string> headers;
             if (loader->ResponseInfo()) {
@@ -211,7 +231,7 @@ void DirectFeedController::FindFeeds(
 
             // Response is valid, but still might not be a feed
             ParseFeedDataOffMainThread(
-                feed_url, body_content,
+                feed_url, charset, body_content,
                 base::BindOnce(
                     [](const GURL& feed_url, const GURL& final_url,
                        const std::string& mime_type,
@@ -422,6 +442,7 @@ void DirectFeedController::OnResponse(
   // Parse response data
   auto* loader = iter->get();
   auto response_code = -1;
+  std::string charset = GetResponseCharset(loader);
   base::flat_map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
     auto headers_list = loader->ResponseInfo()->headers;
@@ -443,7 +464,7 @@ void DirectFeedController::OnResponse(
   }
 
   // Response is valid, but still might not be a feed
-  ParseFeedDataOffMainThread(feed_url, std::move(body_content),
+  ParseFeedDataOffMainThread(feed_url, charset, std::move(body_content),
                              base::BindOnce(
                                  [](DownloadFeedCallback callback,
                                     std::unique_ptr<DirectFeedResponse> result,

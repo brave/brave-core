@@ -9,7 +9,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/segments/segment_value_util.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads::resource {
 

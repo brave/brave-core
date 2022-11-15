@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
 
@@ -45,7 +45,7 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
       // Regions approved for Brave Search will skip search welcome card
       // Regions not approved show the card- but without Brave Search
       const braveSearchApprovedRegion: boolean =
-          ['AT', 'ES', 'MX', 'US', 'CA', 'DE', 'FR', 'GB'].includes(loadTimeData.getString('countryString'))
+          ['AR', 'BR', 'AT', 'ES', 'MX', 'US', 'CA', 'DE', 'FR', 'GB'].includes(loadTimeData.getString('countryString'))
       state = {
         ...state,
         searchProviders: payload,

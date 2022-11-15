@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/cr_elements.gni b/ui/webui/resources/cr_elements/cr_elements.gni
-index 40fe817c3f5c75c6d1f5b0ba10f52dcd54ba00e4..734bf93a06d75d01f5f0390d36ccc14357a80578 100644
+index 8e2a53ad7dd6e4ac821536f473f13d0fdf3c9678..b8b03ef5b83d77c6da899a2491e412d4232f20aa 100644
 --- a/ui/webui/resources/cr_elements/cr_elements.gni
 +++ b/ui/webui/resources/cr_elements/cr_elements.gni
-@@ -65,6 +65,7 @@ if (include_polymer) {
+@@ -66,6 +66,7 @@ if (include_polymer) {
      web_component_files_polymer_ts +=
          [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
    }

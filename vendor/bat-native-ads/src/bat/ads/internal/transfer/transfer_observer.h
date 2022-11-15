@@ -23,8 +23,8 @@ class TransferObserver : public base::CheckedObserver {
   // Invoked when an ad is transferred
   virtual void OnDidTransferAd(const AdInfo& ad) {}
 
-  // Invoked when an ad transfer is cancelled
-  virtual void OnCancelledTransfer(const AdInfo& ad, const int32_t tab_id) {}
+  // Invoked when an ad transfer is canceled
+  virtual void OnCanceledTransfer(const AdInfo& ad, const int32_t tab_id) {}
 
   // Invoked when an ad fails to transfer
   virtual void OnFailedToTransferAd(const AdInfo& ad) {}

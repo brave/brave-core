@@ -17,6 +17,7 @@
 -ExternalProtocolHandlerSandboxBrowserTest.*
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
+-MetricIntegrationTest.FirstInputDelay
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginAllow
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginDeny
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedSameOriginAllow
@@ -24,6 +25,7 @@
 -NewTabUIProcessPerTabTest.*
 -OzonePlatformTest.*
 -PolicyTestPrefetchProxyBrowserTest.*
+-PolicyTestSetTimeoutWithout1MsClamp.DisablePolicy
 -PPAPINaClPNaClNonSfiTest.*
 -PrefetchProxyBrowserTest.*
 -PrefetchProxyWithDecoyRequestsBrowserTest.*

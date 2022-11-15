@@ -54,10 +54,13 @@ const mojom::Publisher* PublishersController::GetPublisherForSite(
   if (publishers_.empty())
     return nullptr;
 
-  const auto& site_origin = url::Origin::Create(site_url);
+  const auto& site_host = site_url.host();
   for (const auto& kv : publishers_) {
-    const auto& publisher_origin = url::Origin::Create(kv.second->site_url);
-    if (site_origin.IsSameOriginWith(publisher_origin)) {
+    const auto& publisher_host = kv.second->site_url.host();
+    // When https://github.com/brave/brave-browser/issues/26092 is fixed, this
+    // hack can be removed.
+    const auto& publisher_host_www = "www." + publisher_host;
+    if (publisher_host == site_host || publisher_host_www == site_host) {
       return kv.second.get();
     }
   }
@@ -171,7 +174,10 @@ void PublishersController::EnsurePublishersIsUpdating() {
                     << publisher_id
                     << ". This could be because we've removed the publisher. "
                        "Attempting to migrate to a direct feed.";
-            missing_publishers_.push_back(publisher_id);
+            // We only care about missing publishers if the user was subscribed
+            // to them.
+            if (is_user_enabled.value_or(false))
+              missing_publishers_.push_back(publisher_id);
           }
         }
         // Add direct feeds
@@ -235,7 +241,7 @@ void PublishersController::UpdateDefaultLocale() {
   // wants the format to be "language_COUNTRY".
   const std::string brave_news_locale =
       base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
-                    brave_l10n::GetDefaultISOLanguageCodeString()});
+                    brave_l10n::GetDefaultISOCountryCodeString()});
 
   // Fallback to en_US, if we can't match anything else.
   // TODO(fallaciousreasoning): Implement more complicated fallback

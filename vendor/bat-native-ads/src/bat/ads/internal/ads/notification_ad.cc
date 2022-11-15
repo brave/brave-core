@@ -31,7 +31,7 @@
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {
 

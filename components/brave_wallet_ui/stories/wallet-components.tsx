@@ -1,7 +1,11 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
-import { SideNav, TopTabNav, ChartControlBar } from '../components/desktop'
+import { SideNav, TopTabNav } from '../components/desktop'
 import { NavTypes, TopTabNavTypes, BraveWallet } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
@@ -9,6 +13,8 @@ import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import './locale'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared'
+import { ChartControlBar } from '../components/desktop/chart-control-bar/chart-control-bar'
+import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -67,7 +73,7 @@ export const _LineChartControls = () => {
   return (
     <DesktopComponentWrapper>
       <ChartControlBar
-        onSubmit={setSelectedTimeline}
+        onSelectTimeframe={setSelectedTimeline}
         selectedTimeline={selectedTimeline}
         timelineOptions={ChartTimelineOptions}
       />
@@ -109,4 +115,14 @@ export const _LoadingSkeleton = () => {
 
 _LoadingSkeleton.story = {
   name: 'Loading Skeleton'
+}
+
+export const _BuySendSwapDeposit = () => {
+  return (
+    <BuySendSwapDepositNav />
+  )
+}
+
+_BuySendSwapDeposit.story = {
+  name: 'Buy/Send/Swap/Deposit'
 }

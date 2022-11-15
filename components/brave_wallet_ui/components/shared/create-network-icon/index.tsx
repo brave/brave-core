@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
@@ -19,7 +19,7 @@ import { IconWrapper, Placeholder, NetworkIcon } from './style'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
 interface Props {
-  network: BraveWallet.NetworkInfo
+  network?: BraveWallet.NetworkInfo
   marginRight?: number
   size?: 'big' | 'small'
 }
@@ -39,20 +39,24 @@ export const CreateNetworkIcon = ({
   }, [networkImageURL])
 
   const isDataURL = React.useMemo(() => {
-    return network.iconUrls[0]?.startsWith('chrome://erc-token-images/')
-  }, [network.iconUrls[0]])
+    return network?.iconUrls[0]?.startsWith('chrome://erc-token-images/')
+  }, [network?.iconUrls[0]])
 
   const isStorybook = React.useMemo(() => {
-    return network.iconUrls[0]?.startsWith('static/media/components/brave_wallet_ui/')
-  }, [network.iconUrls[0]])
+    return network?.iconUrls[0]?.startsWith('static/media/components/brave_wallet_ui/')
+  }, [network?.iconUrls[0]])
 
   const nativeAsset = React.useMemo(() => {
-    return makeNetworkAsset(network)
+    return network && makeNetworkAsset(network)
   }, [network])
 
   const isValidIcon = React.useMemo(() => {
+    if (!network) {
+      return false
+    }
+
     if (isRemoteURL || isDataURL) {
-      const url = new URL(network.iconUrls[0])
+      const url = new URL(network?.iconUrls[0])
       return isValidIconExtension(url.pathname)
     }
 
@@ -67,7 +71,7 @@ export const CreateNetworkIcon = ({
   }, [nativeAsset, networkImageURL, isValidIcon])
 
   const orb = React.useMemo(() => {
-    if (needsPlaceholder) {
+    if (needsPlaceholder && network) {
       return create({ seed: network.chainName, size: 8, scale: 16 }).toDataURL()
     }
   }, [network, needsPlaceholder])
@@ -94,16 +98,16 @@ export const CreateNetworkIcon = ({
   return (
     <IconWrapper
       marginRight={marginRight ?? 0}
-      isTestnet={SupportedTestNetworks.includes(network.chainId)}
+      isTestnet={network ? SupportedTestNetworks.includes(network.chainId) : false}
     >
       <NetworkIcon
         size={size}
         icon={
           isStorybook
-            ? network.iconUrls[0]
-            : nativeAsset.logo
+            ? network?.iconUrls[0]
+            : nativeAsset?.logo
               ? nativeAsset.logo
-              : isRemoteURL ? remoteImage : network.iconUrls[0]
+              : isRemoteURL ? remoteImage : network?.iconUrls[0]
         }
       />
     </IconWrapper>

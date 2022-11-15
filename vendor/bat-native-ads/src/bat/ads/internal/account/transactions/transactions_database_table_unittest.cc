@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/containers/container_util.h"
@@ -25,15 +27,16 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   SaveTransactions(transactions);
 
   // Assert
-  const TransactionList expected_transactions = transactions;
+  TransactionList expected_transactions = transactions;
 
   const Transactions database_table;
-  database_table.GetAll(
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
+  database_table.GetAll(base::BindOnce(
+      [](const TransactionList& expected_transactions, const bool success,
+         const TransactionList& transactions) {
         ASSERT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
-      });
+      },
+      std::move(expected_transactions)));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
@@ -54,15 +57,16 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   SaveTransactions(transactions);
 
   // Assert
-  const TransactionList expected_transactions = transactions;
+  TransactionList expected_transactions = transactions;
 
   const Transactions database_table;
-  database_table.GetAll(
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
+  database_table.GetAll(base::BindOnce(
+      [](const TransactionList& expected_transactions, const bool success,
+         const TransactionList& transactions) {
         ASSERT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
-      });
+      },
+      std::move(expected_transactions)));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
@@ -79,15 +83,16 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   SaveTransactions(transactions);
 
   // Assert
-  const TransactionList expected_transactions = transactions;
+  TransactionList expected_transactions = transactions;
 
   const Transactions database_table;
-  database_table.GetAll(
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
+  database_table.GetAll(base::BindOnce(
+      [](const TransactionList& expected_transactions, const bool success,
+         const TransactionList& transactions) {
         ASSERT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
-      });
+      },
+      std::move(expected_transactions)));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
@@ -107,16 +112,18 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   SaveTransactions(transactions);
 
   // Act
-  const TransactionList expected_transactions = {info_2};
+  TransactionList expected_transactions = {info_2};
 
   const Transactions database_table;
   database_table.GetForDateRange(
       Now(), DistantFuture(),
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
-      });
+      base::BindOnce(
+          [](const TransactionList& expected_transactions, const bool success,
+             const TransactionList& transactions) {
+            ASSERT_TRUE(success);
+            EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
+          },
+          std::move(expected_transactions)));
 
   // Assert
 }
@@ -147,14 +154,15 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
 
   // Assert
   info_2.reconciled_at = Now();
-  const TransactionList expected_transactions = {info_1, info_2};
+  TransactionList expected_transactions = {info_1, info_2};
 
-  database_table.GetAll(
-      [&expected_transactions](const bool success,
-                               const TransactionList& transactions) {
+  database_table.GetAll(base::BindOnce(
+      [](const TransactionList& expected_transactions, const bool success,
+         const TransactionList& transactions) {
         ASSERT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
-      });
+      },
+      std::move(expected_transactions)));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
@@ -178,11 +186,11 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
-  database_table.GetAll(
+  database_table.GetAll(base::BindOnce(
       [](const bool success, const TransactionList& transactions) {
         ASSERT_TRUE(success);
         EXPECT_TRUE(transactions.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {

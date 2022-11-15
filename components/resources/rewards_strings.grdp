@@ -45,14 +45,8 @@
   <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
     One-Time Tips
   </message>
-  <message name="IDS_REWARDS_WALLET_PENDING" desc="">
-    Pending
-  </message>
   <message name="IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS" desc="">
     Pending contributions
-  </message>
-  <message name="IDS_REWARDS_WALLET_PENDING_TEXT" desc="">
-    There is a temporary problem verifying with <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Your Brave Rewards will remain in a pending state and retry automatically, but you can also try again later.
   </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
     Rewards from Ads
@@ -266,6 +260,18 @@
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TEXT" desc="">
     This can happen to keep your account secure. Click below to reconnect now.
   </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">
+    Error: BAT unavailable
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">
+    BAT is not yet supported in your region on Uphold.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">
+    Error: Limited Uphold account functionality
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">
+    According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
+  </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
     Reconnect
   </message>
@@ -361,7 +367,7 @@
     Unfortunately, there was an error while trying to set your country. Please try again.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DISABLED" desc="">
-    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_BEGIN">$2</ph>
+    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_HEADER" desc="">
     Select your country
@@ -502,6 +508,23 @@
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE" desc="">
     <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.
+  </message>
+
+  <!-- Rewards unsupported region notice -->
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER" desc="">
+    Sorry, Brave Rewards is not available
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER" desc="">
+    Unfortunately, it looks like you’re in a region where Brave Rewards is not available.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE" desc="">
+    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1" desc="">
+    Don’t worry.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2" desc="">
+    You can still browse privately!
   </message>
 
 </grit-part>

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -51,6 +51,10 @@ const WalletMorePopup = (props: Props) => {
   }, [])
 
   const onClickConnectedSites = React.useCallback(() => {
+    if (!selectedNetwork) {
+      return
+    }
+
     const route = selectedNetwork.coin === BraveWallet.CoinType.ETH ? 'ethereum' : 'solana'
     chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
       if (chrome.runtime.lastError) {
@@ -82,7 +86,7 @@ const WalletMorePopup = (props: Props) => {
         </PopupButton>
       }
 
-      {selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+      {selectedNetwork && selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
         <PopupButton onClick={onClickConnectedSites}>
           <ConnectedSitesIcon />
           <PopupButtonText>{getLocale('braveWalletWalletPopupConnectedSites')}</PopupButtonText>

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
@@ -45,9 +45,14 @@ export const BuySendSwap = ({
   const { prevNetwork } = usePrevNetwork()
 
   // Switched this to useLayoutEffect to fix bad setState call error
-  // that was accouring when you would switch to a network that doesn't
+  // that was occurring when you would switch to a network that doesn't
   // support swap and buy.
   React.useLayoutEffect(() => {
+    if (!selectedNetwork) {
+      onSelectTab('send')
+      return
+    }
+
     if (selectedTab === 'buy' && !BuySupportedChains.includes(selectedNetwork.chainId)) {
       onSelectTab('send')
     }
@@ -55,15 +60,18 @@ export const BuySendSwap = ({
       onSelectTab('send')
     }
   }, [
-    selectedNetwork.chainId,
+    selectedNetwork,
     selectedTab,
     isSwapSupported,
     onSelectTab
   ])
 
   const isBuyDisabled = React.useMemo(() => {
+    if (!selectedNetwork) {
+      return true
+    }
     return !BuySupportedChains.includes(selectedNetwork.chainId)
-  }, [BuySupportedChains, selectedNetwork.chainId])
+  }, [BuySupportedChains, selectedNetwork])
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
     onSelectTab(tab)

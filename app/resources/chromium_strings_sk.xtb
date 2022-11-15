@@ -54,6 +54,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="7291143854620707672">Všetky údaje prehliadača Brave vygenerované počas používania tohto profilu (napríklad vytvorenie záložiek, histórie, hesiel a ďalších nastavení) môžu byť odstránené správcom pracovného profilu. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">V priebehu inštalácie sa vyskytla chyba operačného systému. Stiahnite prehliadač Brave znova.</translation>
 <translation id="2648689842065142443">Ak zdieľate zariadenie s rodinou a priateľmi, môžu v prehliadači Brave prehliadať samostatne a tiež si ho nastaviť podľa vlastných požiadaviek</translation>
+<translation id="5926459996518749366">Brave tento súbor archívu zablokoval, pretože môže skrývať malvér</translation>
 <translation id="6384359666082467439">Vitajte v prehliadači Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Karta Brave</translation>
 <translation id="8372880274820509128">V záujme vyššej miery zabezpečenia budú dáta v prehliadači Brave šifrované.</translation>
@@ -196,6 +197,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="7861579472672677409">Rozšírenie <ph name="EXTENSION_NAME"/> bolo pridané do prehliadača Brave</translation>
 <translation id="608006075545470555">Pridanie pracovného profilu do tohto prehliadača</translation>
 <translation id="5849446944780602366">Prispôsobte si prehliadač Brave a ovládajte ho. K dispozícii je aktualizácia.</translation>
+<translation id="7433698744896946664">Povoliť rozšíreniu zobrazovať požiadavky na prístup na paneli s nástrojmi prehliadača Brave</translation>
 <translation id="492209281555538239">Brave toto heslo uloží do vášho účtu Brave. Nebudete si ho musieť pamätať.</translation>
 <translation id="4168372721886011198">Súbor <ph name="FILE_NAME"/> je nebezpečný, a preto ho prehliadač Brave zablokoval.</translation>
 <translation id="7006260220514217183">Bezpečné prehliadanie je vypnuté. Brave ho odporúča zapnúť.</translation>
@@ -288,6 +290,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="8678991866891573053">Brave skúma nové funkcie, ktoré umožňujú webom zobraziť rovnaké prostredie prehliadania s využitím menšieho počtu dát</translation>
 <translation id="3343095737966473035">Brave nie je váš predvolený prehliadač</translation>
 <translation id="5477319665405831211">Synchronizujte a prispôsobte si Brave v rôznych zariadeniach</translation>
+<translation id="2280238321454602884">Keď je táto funkcia zapnutá, Brave bude uvoľňovať pamäť z kariet, ktoré aktívne nepoužívate. Týmto sa uvoľnia zdroje počítača pre ďalšie úlohy a Brave bude fungovať rýchlejšie. Neaktívne karty sa budú zobrazovať prázdne a po kliknutí sa automaticky znova načítajú. Môžete si prečítať <ph name="BEGIN_LINK"/>ďalšie informácie<ph name="END_LINK"/> alebo <ph name="BEGIN_LINK_2"/>odoslať spätnú väzbu<ph name="END_LINK_2"/>.</translation>
 <translation id="4784414698887946907">Táto akcia odstráni zo zariadenia údaje prehliadania. Ak budete chcieť svoje údaje neskôr opäť načítať, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Inštalátor nemohol vytvoriť dočasný priečinok. Skontrolujte úroveň zaplnenia disku a povolenie na inštaláciu softvéru.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -316,6 +319,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="6914496861676471566">Archív inštalácie je poškodený alebo neplatný. Stiahnite prehliadač Brave znova.</translation>
 <translation id="6431861494713261006">Nepovinné: Pomôžte zlepšovať funkcie a výkonnosť systému Brave OS automatickým odosielaním diagnostík a údajov o využití Googlu</translation>
 <translation id="2097604701283463988">Prehliadač Brave je zastaraný</translation>
+<translation id="607365808648940765">Brave bude podľa potreby uvoľňovať pamäť z kariet, ktoré aktívne nepoužívate. Túto možnosť môžete kedykoľvek zmeniť v nastaveniach.</translation>
 <translation id="8550334526674375523">Tento pracovný profil je úplne oddelený od vášho osobného.</translation>
 <translation id="2452889775041290116">Tvoj rodič vypol „Povolenia pre weby, aplikácie a rozšírenia“ v prehliadači Brave. Pridanie tohto rozšírenia (<ph name="EXTENSION_TYPE_PARAMETER"/>) nie je povolené.</translation>
 <translation id="8502436661255886343">Ak chcete dostávať budúce aktualizácie prehliadača Brave, musíte používať systém macOS 10.13 alebo novší. V tomto počítači používate macOS 10.12.</translation>

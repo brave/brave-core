@@ -23,8 +23,7 @@ const int kDefaultTextEmbeddingsHistorySize = 10;
 
 }  // namespace
 
-const base::Feature kTextEmbedding{kFeatureName,
-                                   base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kTextEmbedding, kFeatureName, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsTextEmbeddingEnabled() {
   return base::FeatureList::IsEnabled(kTextEmbedding);

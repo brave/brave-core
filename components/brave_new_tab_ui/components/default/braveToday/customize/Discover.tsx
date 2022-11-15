@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Button from '$web-components/button'
 import TextInput from '$web-components/input'
@@ -15,6 +15,8 @@ import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
 import FeedCard, { DirectFeedCard } from './FeedCard'
 import useSearch from './useSearch'
+import { SuggestionsCarousel } from './Suggestions'
+import { PopularCarousel } from './Popular'
 
 const Header = styled.span`
   font-size: 24px;
@@ -28,16 +30,6 @@ const SearchInput = styled(TextInput)`
   --interactive8: #AEB1C2;
   --focus-border: #737ADE;
 `
-
-const LoadMoreButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  grid-column: 2;
-`
-
-// The default number of category cards to show.
-const DEFAULT_NUM_CATEGORIES = 3
 
 export default function Discover () {
   const [query, setQuery] = useState('')
@@ -53,34 +45,22 @@ export default function Discover () {
 }
 
 function Home () {
-  const [showingAllCategories, setShowingAllCategories] = React.useState(false)
   const channels = useChannels()
-  const { filteredPublisherIds } = useBraveNews()
+  const { updateSuggestedPublisherIds } = useBraveNews()
 
-  const visibleChannelIds = React.useMemo(() => channels
-    // If we're showing all channels, there's no end to the slice.
-    // Otherwise, just show the default number.
-    .slice(0, showingAllCategories
-      ? undefined
-      : DEFAULT_NUM_CATEGORIES)
-    .map(c => c.channelName),
-    [channels, showingAllCategories])
+  const channelNames = React.useMemo(() => channels.map(c => c.channelName),
+    [channels])
+
+  // When we mount this component, update the suggested publisher ids.
+  React.useEffect(() => { updateSuggestedPublisherIds() }, [])
 
   return (
     <>
+      <PopularCarousel />
+      <SuggestionsCarousel />
       <DiscoverSection name={getLocale('braveNewsChannelsHeader')}>
-      {visibleChannelIds.map(channelId =>
-        <ChannelCard key={channelId} channelName={channelId} />
-      )}
-      {!showingAllCategories && <LoadMoreButtonContainer>
-        <Button onClick={() => setShowingAllCategories(true)}>
-            {getLocale('braveNewsLoadMoreCategoriesButton')}
-        </Button>
-      </LoadMoreButtonContainer>}
-      </DiscoverSection>
-      <DiscoverSection name={getLocale('braveNewsAllSourcesHeader')}>
-      {filteredPublisherIds.map(publisherId =>
-        <FeedCard key={publisherId} publisherId={publisherId} />
+      {channelNames.map(channelName =>
+        <ChannelCard key={channelName} channelName={channelName} />
       )}
       </DiscoverSection>
     </>
