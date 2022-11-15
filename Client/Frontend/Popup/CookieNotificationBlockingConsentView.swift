@@ -7,6 +7,7 @@ import SwiftUI
 import Strings
 import DesignSystem
 import BraveShared
+import Growth
 
 struct CookieNotificationBlockingConsentView: View {
   public static let contentHeight = 480.0
@@ -32,6 +33,8 @@ struct CookieNotificationBlockingConsentView: View {
         assertionFailure("This filter list should exist or this UI is completely useless")
       }
       
+      recordCookieListPromptP3A(answer: .tappedYes)
+      
       Task { @MainActor in
         try await Task.sleep(seconds: 3.5)
         self.dismiss()
@@ -44,6 +47,7 @@ struct CookieNotificationBlockingConsentView: View {
   
   private var noButton: some View {
     Button(Strings.noThanks) {
+      recordCookieListPromptP3A(answer: .tappedNoThanks)
       self.dismiss()
     }
     .font(Font.body.weight(.semibold))
@@ -92,6 +96,9 @@ struct CookieNotificationBlockingConsentView: View {
       alignment: .bottomLeading
     )
     .background(Color(UIColor.braveBackground))
+    .onAppear {
+      recordCookieListPromptP3A(answer: .seen)
+    }
   }
   
   private func dismiss() {
@@ -103,6 +110,18 @@ struct CookieNotificationBlockingConsentView: View {
     } else {
       onDismiss?()
     }
+  }
+  
+  private enum P3AAnswer: Int, CaseIterable {
+    case notSeen = 0
+    case seen = 1
+    case tappedNoThanks = 2
+    case tappedYes = 3
+  }
+  
+  private func recordCookieListPromptP3A(answer: P3AAnswer) {
+    // Q68 If you have viewed the cookie consent block prompt, how did you react?
+    UmaHistogramEnumeration("Brave.Shields.CookieListPrompt", sample: answer)
   }
 }
 
