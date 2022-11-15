@@ -190,6 +190,33 @@ const usePolling = (observer?: MutationObserver) => {
                                                   selectorsPollingIntervalMs)
 }
 
+const processAddedNode = (node: Node): number => {
+  let mutationScore = 0
+  const element = asElement(node)
+  if (!element) {
+    return 0
+  }
+  mutationScore++
+  const id = element.id
+  if (id && !queriedIds.has(id)) {
+    notYetQueriedIds.push(id)
+    queriedIds.add(id)
+  }
+  const classList = element.classList
+  if (classList) {
+    mutationScore += classList.length
+    for (const className of classList.values()) {
+      if (className && !queriedClasses.has(className)) {
+        notYetQueriedClasses.push(className)
+        queriedClasses.add(className)
+      }
+    }
+  }
+  for (const child of element.childNodes)
+    mutationScore += processAddedNode(child)
+  return mutationScore
+}
+
 const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
   let mutationScore = 0
   for (const aMutation of mutations) {
@@ -217,29 +244,9 @@ const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
           }
           break
       }
-    } else if (aMutation.addedNodes.length > 0) {
-      for (const node of aMutation.addedNodes) {
-        const element = asElement(node)
-        if (!element) {
-          continue
-        }
-        mutationScore++
-        const id = element.id
-        if (id && !queriedIds.has(id)) {
-          notYetQueriedIds.push(id)
-          queriedIds.add(id)
-        }
-        const classList = element.classList
-        if (classList) {
-          mutationScore += classList.length
-          for (const className of classList.values()) {
-            if (className && !queriedClasses.has(className)) {
-              notYetQueriedClasses.push(className)
-              queriedClasses.add(className)
-            }
-          }
-        }
-      }
+    } else {
+      for (const node of aMutation.addedNodes)
+        mutationScore += processAddedNode(node)
     }
   }
   return mutationScore
