@@ -19,6 +19,7 @@ class PortfolioStoreTests: XCTestCase {
     let network: BraveWallet.NetworkInfo = .mockMainnet
     let mockUserAssets: [BraveWallet.BlockchainToken] = [
       .previewToken.then { $0.visible = true },
+      .mockUSDCToken.then { $0.visible = false }, // Verify non-visible assets not displayed #6386
       .mockERC721NFTToken
     ]
     let mockDecimalBalance: Double = 0.0896
@@ -149,6 +150,7 @@ class PortfolioStoreTests: XCTestCase {
     let chainId = network.chainId
     let mockUserAssets: [BraveWallet.BlockchainToken] = [
       BraveWallet.NetworkInfo.mockSolana.nativeToken.then { $0.visible = true },
+      .mockSpdToken.then { $0.visible = false }, // Verify non-visible assets not displayed #6386
       .mockSolanaNFTToken
     ]
     let mockLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL

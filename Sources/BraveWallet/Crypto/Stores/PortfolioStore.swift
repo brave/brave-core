@@ -118,13 +118,13 @@ public class PortfolioStore: ObservableObject {
       self.isLoadingBalances = true
       let coin = await walletService.selectedCoin()
       let network = await rpcService.network(coin)
-      let allUserAssets = await walletService.userAssets(network.chainId, coin: coin)
-      let nftAssets = allUserAssets.filter { $0.isErc721 || $0.isNft }
-      let userAssets = allUserAssets.filter { !$0.isErc721 && !$0.isNft }
+      let allVisibleUserAssets = await walletService.userAssets(network.chainId, coin: coin).filter(\.visible)
+      let visibleNFTAssets = allVisibleUserAssets.filter { $0.isErc721 || $0.isNft }
+      let visibleUserAssets = allVisibleUserAssets.filter { !$0.isErc721 && !$0.isNft }
       // if the task was cancelled, don't update the UI
       guard !Task.isCancelled else { return }
       // update userVisibleAssets on display immediately with empty values. Issue #5567
-      userVisibleAssets = userAssets.map { token in
+      userVisibleAssets = visibleUserAssets.map { token in
         AssetViewModel(
           token: token,
           decimalBalance: 0.0,
@@ -132,7 +132,7 @@ public class PortfolioStore: ObservableObject {
           history: []
         )
       }
-      userVisibleNFTs = nftAssets.map { asset in
+      userVisibleNFTs = visibleNFTAssets.map { asset in
         NFTAssetViewModel(
           token: asset,
           balance: 0
@@ -141,20 +141,20 @@ public class PortfolioStore: ObservableObject {
       
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
-      let balances = await fetchBalances(for: allUserAssets, accounts: keyring.accountInfos)
+      let balances = await fetchBalances(for: allVisibleUserAssets, accounts: keyring.accountInfos)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
       let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
-      let nonZeroBalanceTokensPriceIds = userAssets.filter({ nonZeroBalanceTokens.contains($0.assetBalanceId.lowercased())}).map { $0.assetRatioId }
+      let nonZeroBalanceTokensPriceIds = visibleUserAssets.filter({ nonZeroBalanceTokens.contains($0.assetBalanceId.lowercased())}).map { $0.assetRatioId }
       let priceHistories = await fetchPriceHistory(for: nonZeroBalanceTokensPriceIds)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
-      let visibleAssetRatioIds = userAssets.filter(\.visible).map { $0.assetRatioId.lowercased() }
+      let visibleAssetRatioIds = visibleUserAssets.filter(\.visible).map { $0.assetRatioId.lowercased() }
       let prices = await fetchPrices(for: visibleAssetRatioIds)
       
       // if the task was cancelled, don't update the UI
       guard !Task.isCancelled else { return }
       
       // build our userVisibleAssets
-      userVisibleAssets = userAssets.map { token in
+      userVisibleAssets = visibleUserAssets.map { token in
         let balanceId = token.assetBalanceId.lowercased()
         let priceId = token.assetRatioId.lowercased()
         return AssetViewModel(
@@ -164,7 +164,7 @@ public class PortfolioStore: ObservableObject {
           history: priceHistories[priceId] ?? []
         )
       }
-      userVisibleNFTs = nftAssets.map { token in
+      userVisibleNFTs = visibleNFTAssets.map { token in
         NFTAssetViewModel(
           token: token,
           balance: Int(balances[token.assetBalanceId.lowercased()] ?? 0),
