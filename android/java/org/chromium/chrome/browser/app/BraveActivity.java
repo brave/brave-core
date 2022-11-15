@@ -170,6 +170,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnCalloutDialogFragment;
+import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
@@ -966,6 +967,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
+                && BraveVpnPrefUtils.isSubscriptionPurchase()
+                && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
+            showLinkVpnSubscriptionDialog();
+        }
         if (PackageUtils.isFirstInstall(this)
                 && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
                         || getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME))) {
@@ -1083,6 +1089,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 new BraveVpnCalloutDialogFragment();
         braveVpnCalloutDialogFragment.show(
                 getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
+    }
+
+    private void showLinkVpnSubscriptionDialog() {
+        LinkVpnSubscriptionDialogFragment linkVpnSubscriptionDialogFragment =
+                new LinkVpnSubscriptionDialogFragment();
+        linkVpnSubscriptionDialogFragment.setCancelable(false);
+        linkVpnSubscriptionDialogFragment.show(
+                getSupportFragmentManager(), "LinkVpnSubscriptionDialogFragment");
     }
 
     private void showAdFreeCalloutDialog() {
@@ -1571,6 +1585,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (intent != null) {
+            String openUrl = intent.getStringExtra(BraveActivity.OPEN_URL);
+            if (!TextUtils.isEmpty(openUrl)) {
+                openNewOrSelectExistingTab(openUrl);
+            }
+        }
         checkForNotificationData();
     }
 

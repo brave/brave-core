@@ -387,6 +387,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnAlwaysOnErrorDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnConfirmDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/LinkVpnSubscriptionDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnPrefModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnProfileCredentials.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnServerRegion.java",

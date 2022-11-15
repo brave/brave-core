@@ -12,6 +12,7 @@ namespace brave_vpn {
 namespace features {
 
 BASE_DECLARE_FEATURE(kBraveVPN);
+BASE_DECLARE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI);
 
 }  // namespace features
 }  // namespace brave_vpn

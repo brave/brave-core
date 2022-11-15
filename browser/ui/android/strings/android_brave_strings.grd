@@ -3246,6 +3246,21 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
       Token address
     </message>
+    <message name="IDS_LINK_SUBSCRIPTION_TITLE" desc="Brave vpn link subscription settings title text">
+      Link purchase to your Brave account
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_TEXT" desc="Brave vpn link subscription settings text">
+      Link your Play Store purchase to your Brave account to use Brave VPN on other devices.
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_DIALOG_ACTION_TEXT" desc="Brave vpn link subscription dialog action text">
+      Link your VPN subscription
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TITLE" desc="Brave vpn link subscription dialog title">
+      Extend your Brave Firewall + VPN protection
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TEXT" desc="Brave vpn link subscription dialog text">
+      Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your Google Play subscription to your Brave account.
+    </message>
   </messages>
   </release>
 </grit>
