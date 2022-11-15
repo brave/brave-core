@@ -5971,8 +5971,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
   // No ipfs record account. Fail resolution.
   ipfs_record_address_handler_->Disable();
   EXPECT_CALL(callback,
-              Run(GURL(), mojom::SolanaProviderError::kInvalidParams,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+              Run(GURL(), mojom::SolanaProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);

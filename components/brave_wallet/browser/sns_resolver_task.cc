@@ -698,7 +698,7 @@ void SnsResolverTask::OnFetchUrlRecordRegistryState(
 
   absl::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(MakeInternalError());
+    SetError(ParseErrorResult(api_request_result.body()));
     return;
   }
 
@@ -715,7 +715,8 @@ void SnsResolverTask::OnFetchUrlRecordRegistryState(
     return;
   }
 
-  // Trim possible zeros.
+  // https://bonfida.github.io/solana-name-service-guide/registry.html
+  // Parse NameRegistry data as a string trimming possible zeros at the end.
   std::string url_string(
       std::string(url_record_name_registry_state->data.begin(),
                   url_record_name_registry_state->data.end())
@@ -723,7 +724,7 @@ void SnsResolverTask::OnFetchUrlRecordRegistryState(
 
   GURL url(url_string);
   if (!url.is_valid()) {
-    SetError(MakeInvalidParamsError());
+    SetError(MakeInternalError());
     return;
   }
 
@@ -757,13 +758,13 @@ void SnsResolverTask::OnFetchIpfsRecordRegistryState(
 
   absl::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(MakeInternalError());
+    SetError(ParseErrorResult(api_request_result.body()));
     return;
   }
 
   if (!account_info) {
     // No ipfs record account, resolve as error.
-    SetError(MakeInvalidParamsError());
+    SetError(MakeInternalError());
     return;
   }
 
@@ -774,7 +775,8 @@ void SnsResolverTask::OnFetchIpfsRecordRegistryState(
     return;
   }
 
-  // Trim possible zeros.
+  // https://bonfida.github.io/solana-name-service-guide/registry.html
+  // Parse NameRegistry data as a string trimming possible zeros at the end.
   std::string url_string(
       std::string(ipfs_record_name_registry_state->data.begin(),
                   ipfs_record_name_registry_state->data.end())
@@ -782,7 +784,7 @@ void SnsResolverTask::OnFetchIpfsRecordRegistryState(
 
   GURL url(url_string);
   if (!url.is_valid()) {
-    SetError(MakeInvalidParamsError());
+    SetError(MakeInternalError());
     return;
   }
 

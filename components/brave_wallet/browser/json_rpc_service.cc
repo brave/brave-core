@@ -1488,8 +1488,8 @@ void JsonRpcService::OnSnsResolveHostTaskDone(
     if (task_result->resolved_url.is_valid()) {
       url = task_result->resolved_url;
     } else {
-      error = mojom::SolanaProviderError::kInvalidParams;
-      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+      error = mojom::SolanaProviderError::kInternalError;
+      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     }
   }
 
