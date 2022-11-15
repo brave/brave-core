@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
+#include <memory>
+
 #include "base/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"

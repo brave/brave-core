@@ -63,7 +63,6 @@ void TabDragController::Init(TabDragContext* source_context,
   source_view_offset = mouse_offset.y();
   start_point_in_screen_ = gfx::Point(mouse_offset.x(), source_view_offset);
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
-  LOG(ERROR) << start_point_in_screen_.ToString();
 
   last_point_in_screen_ = start_point_in_screen_;
   last_move_screen_loc_ = start_point_in_screen_.y();
