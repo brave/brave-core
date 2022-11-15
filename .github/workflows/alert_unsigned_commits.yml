@@ -2,6 +2,7 @@ name: Alert Unsigned Commits
 # pull_request_review:
 #   types: [submitted]
 on:
+  pull_request_review_comment:
   push:
     branches:
       - "aka/alert-on-unsigned-commits"
