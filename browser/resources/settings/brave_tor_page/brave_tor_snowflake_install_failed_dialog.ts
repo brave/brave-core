@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
@@ -10,7 +10,7 @@ import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
 import '../settings_shared.css.js'
 
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { I18nMixin } from 'chrome://resources/js/i18n_mixin.js'
+import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { getTemplate } from './brave_tor_snowflake_install_failed_dialog.html.js'
 
 const DialogBase = I18nMixin(PolymerElement)
