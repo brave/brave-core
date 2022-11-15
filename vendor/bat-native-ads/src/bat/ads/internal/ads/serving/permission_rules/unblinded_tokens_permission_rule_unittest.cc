@@ -16,7 +16,7 @@ class BatAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  privacy::SetUnblindedTokens(10);
+  privacy::BuildAndSetUnblindedTokens(/*count*/ 10);
 
   // Act
   UnblindedTokensPermissionRule permission_rule;
@@ -40,7 +40,7 @@ TEST_F(BatAdsUnblindedTokensPermissionRuleTest,
 
 TEST_F(BatAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
-  privacy::SetUnblindedTokens(9);
+  privacy::BuildAndSetUnblindedTokens(/*count*/ 9);
 
   // Act
   UnblindedTokensPermissionRule permission_rule;

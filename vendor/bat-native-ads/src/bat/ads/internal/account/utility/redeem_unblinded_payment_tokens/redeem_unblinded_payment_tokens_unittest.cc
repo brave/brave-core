@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_constants.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
@@ -14,7 +15,6 @@
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "net/http/http_status_code.h"
@@ -69,12 +69,72 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
-  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+      privacy::BuildAndSetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_));
+              OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens));
+
+  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+              OnFailedToRedeemUnblindedPaymentTokens())
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+              OnDidScheduleNextUnblindedPaymentTokensRedemption(_));
+
+  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+              OnWillRetryRedeemingUnblindedPaymentTokens(_))
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+              OnDidRetryRedeemingUnblindedPaymentTokens())
+      .Times(0);
+
+  const WalletInfo wallet = GetWallet();
+  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
+
+  FastForwardClockToNextPendingTask();
+
+  // Assert
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
+}
+
+TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
+       RedeemUnblindedPaymentTokensInBatches) {
+  // Arrange
+  const URLResponseMap url_responses = {
+      {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       {{net::HTTP_OK, R"(
+            {
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
+              "paymentCredentials": [
+                {
+                  "credential": {
+                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
+                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
+                  },
+                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
+                }
+              ]
+            }
+          )"}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              Now());
+
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
+      privacy::BuildAndSetUnblindedPaymentTokens(
+          /*count*/ kUnblindedPaymentTokenBatchSize + 1);
+
+  // Act
+  const privacy::UnblindedPaymentTokenList expected_unblinded_payment_tokens =
+      privacy::BuildAndSetUnblindedPaymentTokens(
+          /*count*/ kUnblindedPaymentTokenBatchSize);
+
+  EXPECT_CALL(
+      *redeem_unblinded_payment_tokens_delegate_mock_,
+      OnDidRedeemUnblindedPaymentTokens(expected_unblinded_payment_tokens));
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
@@ -138,9 +198,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               Now());
 
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
-  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+  privacy::BuildAndSetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -195,12 +253,11 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
-  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+      privacy::BuildAndSetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_));
+              OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens));
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
@@ -250,8 +307,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
-  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+      privacy::BuildAndSetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   const InSequence seq;
@@ -268,7 +324,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_))
+              OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -279,7 +335,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(invalid_wallet);
 
   // Assert
-  EXPECT_EQ(1, privacy::GetUnblindedPaymentTokens()->Count());
+  EXPECT_EQ(1, privacy::UnblindedPaymentTokenCount());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
@@ -358,8 +414,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
-  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+      privacy::BuildAndSetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   const InSequence seq;
@@ -374,7 +429,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
               OnDidRetryRedeemingUnblindedPaymentTokens());
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_));
+              OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens));
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_));

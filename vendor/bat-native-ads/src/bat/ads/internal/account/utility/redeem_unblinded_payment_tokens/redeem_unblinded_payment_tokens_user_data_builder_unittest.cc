@@ -27,7 +27,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   SysInfo().is_uncertain_future = false;
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(2);
+      privacy::BuildUnblindedPaymentTokens(/*count*/ 2);
 
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);

@@ -10,56 +10,38 @@
 
 namespace ads::privacy {
 
-namespace {
-
-bool HasUnblindedPaymentTokens() {
-  return UnblindedPaymentTokenCount() > 0;
-}
-
-}  // namespace
-
-absl::optional<UnblindedPaymentTokenInfo> MaybeGetUnblindedPaymentToken() {
-  if (!HasUnblindedPaymentTokens()) {
-    return absl::nullopt;
-  }
-
+UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->GetToken();
+      ->BuildUnblindedPaymentTokens()
+      ->GetTokens(count);
 }
 
 const UnblindedPaymentTokenList& GetAllUnblindedPaymentTokens() {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
+      ->BuildUnblindedPaymentTokens()
       ->GetAllTokens();
+}
+
+void SetUnblindedPaymentTokens(
+    const UnblindedPaymentTokenList& unblinded_tokens) {
+  return ConfirmationStateManager::GetInstance()
+      ->BuildUnblindedPaymentTokens()
+      ->SetTokens(unblinded_tokens);
 }
 
 void AddUnblindedPaymentTokens(
     const UnblindedPaymentTokenList& unblinded_tokens) {
   ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
+      ->BuildUnblindedPaymentTokens()
       ->AddTokens(unblinded_tokens);
 
   ConfirmationStateManager::GetInstance()->Save();
 }
 
-bool RemoveUnblindedPaymentToken(
-    const UnblindedPaymentTokenInfo& unblinded_token) {
-  if (!ConfirmationStateManager::GetInstance()
-           ->GetUnblindedPaymentTokens()
-           ->RemoveToken(unblinded_token)) {
-    return false;
-  }
-
-  ConfirmationStateManager::GetInstance()->Save();
-
-  return true;
-}
-
 void RemoveUnblindedPaymentTokens(
     const UnblindedPaymentTokenList& unblinded_tokens) {
   ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
+      ->BuildUnblindedPaymentTokens()
       ->RemoveTokens(unblinded_tokens);
 
   ConfirmationStateManager::GetInstance()->Save();
@@ -67,7 +49,7 @@ void RemoveUnblindedPaymentTokens(
 
 void RemoveAllUnblindedPaymentTokens() {
   ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
+      ->BuildUnblindedPaymentTokens()
       ->RemoveAllTokens();
 
   ConfirmationStateManager::GetInstance()->Save();
@@ -76,19 +58,19 @@ void RemoveAllUnblindedPaymentTokens() {
 bool UnblindedPaymentTokenExists(
     const UnblindedPaymentTokenInfo& unblinded_token) {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
+      ->BuildUnblindedPaymentTokens()
       ->TokenExists(unblinded_token);
 }
 
 bool UnblindedPaymentTokensIsEmpty() {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
+      ->BuildUnblindedPaymentTokens()
       ->IsEmpty();
 }
 
 int UnblindedPaymentTokenCount() {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
+      ->BuildUnblindedPaymentTokens()
       ->Count();
 }
 

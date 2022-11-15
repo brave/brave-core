@@ -7,7 +7,6 @@
 
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -18,10 +17,9 @@ class BatAdsUnblindedTokenUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedTokenUtilTest, GetUnblindedToken) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
+  const UnblindedTokenList unblinded_tokens =
+      BuildAndSetUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_tokens.size());
-
-  GetUnblindedTokens()->SetTokens(unblinded_tokens);
 
   // Act
   const absl::optional<UnblindedTokenInfo> unblinded_token =
@@ -45,44 +43,43 @@ TEST_F(BatAdsUnblindedTokenUtilTest, DoNotGetUnblindedToken) {
 
 TEST_F(BatAdsUnblindedTokenUtilTest, AddUnblindedTokens) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
+  const UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_tokens.size());
 
   const UnblindedTokenInfo& token_1 = unblinded_tokens.at(0);
   const UnblindedTokenInfo& token_2 = unblinded_tokens.at(1);
 
-  GetUnblindedTokens()->SetTokens({token_1});
+  SetUnblindedTokens({token_1});
 
   // Act
   AddUnblindedTokens({token_2});
 
   // Assert
   const UnblindedTokenList expected_tokens = {token_1, token_2};
-  EXPECT_EQ(expected_tokens, GetUnblindedTokens()->GetAllTokens());
+  EXPECT_EQ(expected_tokens, GetAllUnblindedTokens());
 }
 
 TEST_F(BatAdsUnblindedTokenUtilTest, RemoveUnblindedToken) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 3);
+  const UnblindedTokenList unblinded_tokens =
+      BuildAndSetUnblindedTokens(/*count*/ 3);
   ASSERT_EQ(3U, unblinded_tokens.size());
 
   const UnblindedTokenInfo& token_1 = unblinded_tokens.at(0);
   const UnblindedTokenInfo& token_2 = unblinded_tokens.at(1);
   const UnblindedTokenInfo& token_3 = unblinded_tokens.at(2);
 
-  GetUnblindedTokens()->SetTokens(unblinded_tokens);
-
   // Act
   RemoveUnblindedToken(token_2);
 
   // Assert
   const UnblindedTokenList expected_tokens = {token_1, token_3};
-  EXPECT_EQ(expected_tokens, GetUnblindedTokens()->GetAllTokens());
+  EXPECT_EQ(expected_tokens, GetAllUnblindedTokens());
 }
 
 TEST_F(BatAdsUnblindedTokenUtilTest, UnblindedTokenCount) {
   // Arrange
-  SetUnblindedTokens(/*count*/ 3);
+  BuildAndSetUnblindedTokens(/*count*/ 3);
 
   // Act
 
@@ -92,7 +89,7 @@ TEST_F(BatAdsUnblindedTokenUtilTest, UnblindedTokenCount) {
 
 TEST_F(BatAdsUnblindedTokenUtilTest, IsValid) {
   // Arrange
-  const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
+  const UnblindedTokenInfo unblinded_token = BuildUnblindedToken();
 
   // Act
 

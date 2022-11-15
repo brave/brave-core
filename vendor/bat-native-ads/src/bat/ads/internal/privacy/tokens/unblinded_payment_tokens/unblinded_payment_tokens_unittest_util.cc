@@ -6,25 +6,20 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 
 #include "base/check.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 
 namespace ads::privacy {
 
-UnblindedPaymentTokens* GetUnblindedPaymentTokens() {
-  return ConfirmationStateManager::GetInstance()->GetUnblindedPaymentTokens();
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken() {
+  const UnblindedPaymentTokenList unblinded_payment_tokens =
+      BuildUnblindedPaymentTokens(/*count*/ 1);
+  CHECK(!unblinded_payment_tokens.empty());
+  return unblinded_payment_tokens.front();
 }
 
-UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {
-  UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(count);
-  GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
-  return unblinded_payment_tokens;
-}
-
-UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken(
     const std::string& unblinded_payment_token_base64) {
   UnblindedPaymentTokenInfo unblinded_payment_token;
 
@@ -46,13 +41,13 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
   return unblinded_payment_token;
 }
 
-UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken(
     const ConfirmationType& confirmation_type,
     const AdType& ad_type) {
   const std::string unblinded_payment_token_base64 =
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)";
   UnblindedPaymentTokenInfo unblinded_payment_token =
-      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
+      BuildUnblindedPaymentToken(unblinded_payment_token_base64);
 
   unblinded_payment_token.confirmation_type = confirmation_type;
   unblinded_payment_token.ad_type = ad_type;
@@ -60,22 +55,7 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
   return unblinded_payment_token;
 }
 
-UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
-    const std::vector<std::string>& unblinded_payment_tokens_base64) {
-  UnblindedPaymentTokenList unblinded_payment_tokens;
-
-  for (const auto& unblinded_payment_token_base64 :
-       unblinded_payment_tokens_base64) {
-    const UnblindedPaymentTokenInfo unblinded_payment_token =
-        CreateUnblindedPaymentToken(unblinded_payment_token_base64);
-
-    unblinded_payment_tokens.push_back(unblinded_payment_token);
-  }
-
-  return unblinded_payment_tokens;
-}
-
-UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
+UnblindedPaymentTokenList BuildUnblindedPaymentTokens(const int count) {
   const std::vector<std::string> unblinded_payment_tokens_base64 = {
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",
       R"(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)",
@@ -96,7 +76,7 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
     const std::string& unblinded_payment_token_base64 =
         unblinded_payment_tokens_base64.at(i % modulo);
     const UnblindedPaymentTokenInfo unblinded_payment_token =
-        CreateUnblindedPaymentToken(unblinded_payment_token_base64);
+        BuildUnblindedPaymentToken(unblinded_payment_token_base64);
 
     unblinded_payment_tokens.push_back(unblinded_payment_token);
   }
@@ -104,11 +84,26 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   return unblinded_payment_tokens;
 }
 
-UnblindedPaymentTokenInfo GetUnblindedPaymentToken() {
-  const UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(/*count*/ 1);
-  CHECK(!unblinded_payment_tokens.empty());
-  return unblinded_payment_tokens.front();
+UnblindedPaymentTokenList BuildUnblindedPaymentTokens(
+    const std::vector<std::string>& unblinded_payment_tokens_base64) {
+  UnblindedPaymentTokenList unblinded_payment_tokens;
+
+  for (const auto& unblinded_payment_token_base64 :
+       unblinded_payment_tokens_base64) {
+    const UnblindedPaymentTokenInfo unblinded_payment_token =
+        BuildUnblindedPaymentToken(unblinded_payment_token_base64);
+
+    unblinded_payment_tokens.push_back(unblinded_payment_token);
+  }
+
+  return unblinded_payment_tokens;
+}
+
+UnblindedPaymentTokenList BuildAndSetUnblindedPaymentTokens(const int count) {
+  UnblindedPaymentTokenList unblinded_payment_tokens =
+      BuildUnblindedPaymentTokens(count);
+  SetUnblindedPaymentTokens(unblinded_payment_tokens);
+  return unblinded_payment_tokens;
 }
 
 }  // namespace ads::privacy

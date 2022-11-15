@@ -25,6 +25,7 @@ class UnblindedPaymentTokens final {
   ~UnblindedPaymentTokens();
 
   const UnblindedPaymentTokenInfo& GetToken() const;
+  UnblindedPaymentTokenList GetTokens(size_t max_count) const;
   const UnblindedPaymentTokenList& GetAllTokens() const;
 
   void SetTokens(const UnblindedPaymentTokenList& unblinded_payment_tokens);
@@ -35,7 +36,8 @@ class UnblindedPaymentTokens final {
   void RemoveTokens(const UnblindedPaymentTokenList& unblinded_payment_tokens);
   void RemoveAllTokens();
 
-  bool TokenExists(const UnblindedPaymentTokenInfo& unblinded_payment_token);
+  bool TokenExists(
+      const UnblindedPaymentTokenInfo& unblinded_payment_token) const;
 
   int Count() const;
 

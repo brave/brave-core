@@ -38,7 +38,7 @@ class BatAdsUnblindedTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedTokenValueUtilTest, ToValue) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(2);
+  const UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(/*count*/ 2);
 
   // Act
   const base::Value::List value = UnblindedTokensToValue(unblinded_tokens);
@@ -72,7 +72,8 @@ TEST_F(BatAdsUnblindedTokenValueUtilTest, FromValue) {
   const UnblindedTokenList unblinded_tokens = UnblindedTokensFromValue(*list);
 
   // Assert
-  const UnblindedTokenList expected_unblinded_tokens = GetUnblindedTokens(2);
+  const UnblindedTokenList expected_unblinded_tokens =
+      BuildUnblindedTokens(/*count*/ 2);
   EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
 }
 

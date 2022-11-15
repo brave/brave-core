@@ -21,6 +21,17 @@ const UnblindedPaymentTokenInfo& UnblindedPaymentTokens::GetToken() const {
   return unblinded_payment_tokens_.front();
 }
 
+UnblindedPaymentTokenList UnblindedPaymentTokens::GetTokens(
+    const size_t max_count) const {
+  UnblindedPaymentTokenList unblinded_payment_tokens =
+      unblinded_payment_tokens_;
+  if (unblinded_payment_tokens.size() > max_count) {
+    unblinded_payment_tokens.resize(max_count);
+  }
+
+  return unblinded_payment_tokens;
+}
+
 const UnblindedPaymentTokenList& UnblindedPaymentTokens::GetAllTokens() const {
   return unblinded_payment_tokens_;
 }
@@ -73,7 +84,7 @@ void UnblindedPaymentTokens::RemoveAllTokens() {
 }
 
 bool UnblindedPaymentTokens::TokenExists(
-    const UnblindedPaymentTokenInfo& unblinded_payment_token) {
+    const UnblindedPaymentTokenInfo& unblinded_payment_token) const {
   return base::Contains(unblinded_payment_tokens_, unblinded_payment_token);
 }
 

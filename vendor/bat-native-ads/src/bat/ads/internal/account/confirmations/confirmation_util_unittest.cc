@@ -49,7 +49,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  privacy::SetUnblindedTokens(/*count*/ 1);
+  privacy::BuildAndSetUnblindedTokens(/*count*/ 1);
 
   ON_CALL(*token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(1)));
@@ -79,7 +79,7 @@ TEST_F(BatAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
 
 TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
   // Arrange
-  privacy::SetUnblindedTokens(/*count*/ 1);
+  privacy::BuildAndSetUnblindedTokens(/*count*/ 1);
 
   ON_CALL(*token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(1)));

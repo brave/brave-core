@@ -22,7 +22,7 @@ TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
-  privacy::SetUnblindedTokens(1);
+  privacy::BuildAndSetUnblindedTokens(/*count*/ 1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 

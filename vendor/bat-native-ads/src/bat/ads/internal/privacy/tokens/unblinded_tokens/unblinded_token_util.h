@@ -12,18 +12,13 @@
 namespace ads::privacy {
 
 absl::optional<UnblindedTokenInfo> MaybeGetUnblindedToken();
-
 const UnblindedTokenList& GetAllUnblindedTokens();
+
+void SetUnblindedTokens(const UnblindedTokenList& unblinded_tokens);
 
 void AddUnblindedTokens(const UnblindedTokenList& unblinded_tokens);
 
 bool RemoveUnblindedToken(const UnblindedTokenInfo& unblinded_token);
-void RemoveUnblindedTokens(const UnblindedTokenList& unblinded_tokens);
-void RemoveAllUnblindedTokens();
-
-bool UnblindedTokenExists(const UnblindedTokenInfo& unblinded_token);
-
-bool UnblindedTokensIsEmpty();
 
 int UnblindedTokenCount();
 

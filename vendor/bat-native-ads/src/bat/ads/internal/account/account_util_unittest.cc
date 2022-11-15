@@ -12,7 +12,6 @@
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -53,15 +52,15 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 
-  privacy::SetUnblindedTokens(1);
+  privacy::BuildAndSetUnblindedTokens(/*count*/ 1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
       *confirmation);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
-  privacy::GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
+      privacy::BuildUnblindedPaymentTokens(/*count*/ 1);
+  privacy::AddUnblindedPaymentTokens(unblinded_payment_tokens);
 
   // Act
   ResetRewards(base::BindOnce([](const bool success) {
@@ -82,6 +81,18 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   }));
 
   // Assert
+  const database::table::Transactions database_table;
+  database_table.GetAll(
+      [](const bool success, const TransactionList& transactions) {
+        ASSERT_TRUE(success);
+        EXPECT_TRUE(transactions.empty());
+      });
+
+  const ConfirmationList& failed_confirmations =
+      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
+  EXPECT_TRUE(failed_confirmations.empty());
+
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
 TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {

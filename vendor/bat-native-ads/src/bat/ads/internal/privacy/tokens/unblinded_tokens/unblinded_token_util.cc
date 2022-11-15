@@ -34,6 +34,12 @@ const UnblindedTokenList& GetAllUnblindedTokens() {
       ->GetAllTokens();
 }
 
+void SetUnblindedTokens(const UnblindedTokenList& unblinded_tokens) {
+  return ConfirmationStateManager::GetInstance()
+      ->GetUnblindedTokens()
+      ->SetTokens(unblinded_tokens);
+}
+
 void AddUnblindedTokens(const UnblindedTokenList& unblinded_tokens) {
   ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->AddTokens(
       unblinded_tokens);
@@ -51,33 +57,6 @@ bool RemoveUnblindedToken(const UnblindedTokenInfo& unblinded_token) {
   ConfirmationStateManager::GetInstance()->Save();
 
   return true;
-}
-
-void RemoveUnblindedTokens(const UnblindedTokenList& unblinded_tokens) {
-  ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->RemoveTokens(
-      unblinded_tokens);
-
-  ConfirmationStateManager::GetInstance()->Save();
-}
-
-void RemoveAllUnblindedTokens() {
-  ConfirmationStateManager::GetInstance()
-      ->GetUnblindedTokens()
-      ->RemoveAllTokens();
-
-  ConfirmationStateManager::GetInstance()->Save();
-}
-
-bool UnblindedTokenExists(const UnblindedTokenInfo& unblinded_token) {
-  return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedTokens()
-      ->TokenExists(unblinded_token);
-}
-
-bool UnblindedTokensIsEmpty() {
-  return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedTokens()
-      ->IsEmpty();
 }
 
 int UnblindedTokenCount() {

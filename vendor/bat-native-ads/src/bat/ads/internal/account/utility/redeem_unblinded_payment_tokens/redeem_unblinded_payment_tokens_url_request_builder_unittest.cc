@@ -17,8 +17,7 @@
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/flags/flag_manager.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "bat/ads/sys_info.h"
 #include "url/gurl.h"
 
@@ -118,7 +117,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
       EnvironmentType::kStaging);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(7);
+      privacy::BuildUnblindedPaymentTokens(/*count*/ 7);
 
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
@@ -165,7 +164,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
       EnvironmentType::kStaging);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(7);
+      privacy::BuildUnblindedPaymentTokens(/*count*/ 7);
 
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);

@@ -13,12 +13,13 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
 namespace ads::privacy {
 
-UnblindedTokens* GetUnblindedTokens() {
-  return ConfirmationStateManager::GetInstance()->GetUnblindedTokens();
+UnblindedTokenInfo BuildUnblindedToken() {
+  const UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(/*count*/ 1);
+  CHECK(!unblinded_tokens.empty());
+  return unblinded_tokens.front();
 }
 
 UnblindedTokenList SetUnblindedTokens(const int count) {
@@ -93,10 +94,24 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
   return unblinded_tokens;
 }
 
-UnblindedTokenInfo GetUnblindedToken() {
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 1);
-  CHECK(!unblinded_tokens.empty());
-  return unblinded_tokens.front();
+UnblindedTokenList BuildUnblindedTokens(
+    const std::vector<std::string>& unblinded_tokens_base64) {
+  UnblindedTokenList unblinded_tokens;
+
+  for (const auto& unblinded_token_base64 : unblinded_tokens_base64) {
+    const UnblindedTokenInfo unblinded_token =
+        BuildUnblindedToken(unblinded_token_base64);
+
+    unblinded_tokens.push_back(unblinded_token);
+  }
+
+  return unblinded_tokens;
+}
+
+UnblindedTokenList BuildAndSetUnblindedTokens(const int count) {
+  UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(count);
+  SetUnblindedTokens(unblinded_tokens);
+  return unblinded_tokens;
 }
 
 }  // namespace ads::privacy

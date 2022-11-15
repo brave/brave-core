@@ -15,20 +15,18 @@ namespace ads::privacy {
 
 class UnblindedPaymentTokens;
 
-UnblindedPaymentTokens* GetUnblindedPaymentTokens();
-
-UnblindedPaymentTokenList SetUnblindedPaymentTokens(int count);
-
-UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken();
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken(
     const std::string& unblinded_payment_token_base64);
-UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken(
     const ConfirmationType& confirmation_type,
     const AdType& ad_type);
-UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
+
+UnblindedPaymentTokenList BuildUnblindedPaymentTokens(int count);
+UnblindedPaymentTokenList BuildUnblindedPaymentTokens(
     const std::vector<std::string>& unblinded_payment_tokens_base64);
 
-UnblindedPaymentTokenList GetUnblindedPaymentTokens(int count);
-UnblindedPaymentTokenInfo GetUnblindedPaymentToken();
+UnblindedPaymentTokenList BuildAndSetUnblindedPaymentTokens(int count);
 
 }  // namespace ads::privacy
 

@@ -28,7 +28,7 @@ TEST(BatAdsTotalsUserDataUtilTest, GetBucketsForNoUnblindedPaymentTokens) {
 TEST(BatAdsTotalsUserDataUtilTest, GetBuckets) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(2);
+      privacy::BuildUnblindedPaymentTokens(/*count*/ 2);
 
   // Act
   const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);

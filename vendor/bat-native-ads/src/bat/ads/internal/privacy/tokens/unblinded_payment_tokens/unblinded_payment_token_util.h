@@ -6,20 +6,19 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_UTIL_H_
 
-#include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace ads::privacy {
 
-absl::optional<UnblindedPaymentTokenInfo> MaybeGetUnblindedPaymentToken();
-
+UnblindedPaymentTokenList GetUnblindedPaymentTokens(int count);
 const UnblindedPaymentTokenList& GetAllUnblindedPaymentTokens();
+
+void SetUnblindedPaymentTokens(
+    const UnblindedPaymentTokenList& unblinded_tokens);
 
 void AddUnblindedPaymentTokens(
     const UnblindedPaymentTokenList& unblinded_tokens);
 
-bool RemoveUnblindedPaymentToken(
-    const UnblindedPaymentTokenInfo& unblinded_token);
 void RemoveUnblindedPaymentTokens(
     const UnblindedPaymentTokenList& unblinded_tokens);
 void RemoveAllUnblindedPaymentTokens();

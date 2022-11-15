@@ -46,7 +46,7 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
     ON_CALL(*token_generator_mock_, Generate(_))
         .WillByDefault(Return(privacy::GetTokens(1)));
 
-    privacy::SetUnblindedTokens(1);
+    privacy::BuildUnblindedTokens(/*count*/ 1);
   }
 
   void TearDown() override {

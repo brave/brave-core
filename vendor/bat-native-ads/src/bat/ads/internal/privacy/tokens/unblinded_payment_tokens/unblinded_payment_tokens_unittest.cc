@@ -17,9 +17,8 @@ class BatAdsUnblindedPaymentTokensTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, GetToken) {
   // Arrange
-  // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -28,19 +27,31 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetToken) {
   // Act
 
   // Assert
-  const UnblindedPaymentTokenInfo& expected_token = tokens.at(0);
+  const UnblindedPaymentTokenInfo& expected_token = tokens.front();
   EXPECT_EQ(expected_token, unblinded_payment_tokens.GetToken());
+}
+
+TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokens) {
+  // Arrange
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 10));
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(BuildUnblindedPaymentTokens(/*count*/ 5),
+            unblinded_payment_tokens.GetTokens(/*max_count*/ 5));
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, GetAllTokens) {
   // Arrange
   UnblindedPaymentTokens unblinded_payment_tokens;
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 2));
 
   // Act
 
   // Assert
-  EXPECT_EQ(GetUnblindedPaymentTokens(/*count*/ 2),
+  EXPECT_EQ(BuildUnblindedPaymentTokens(/*count*/ 2),
             unblinded_payment_tokens.GetAllTokens());
 }
 
@@ -49,10 +60,10 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokens) {
   UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 2));
 
   // Assert
-  EXPECT_EQ(GetUnblindedPaymentTokens(/*count*/ 2),
+  EXPECT_EQ(BuildUnblindedPaymentTokens(/*count*/ 2),
             unblinded_payment_tokens.GetAllTokens());
 }
 
@@ -70,7 +81,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetEmptyTokens) {
 TEST_F(BatAdsUnblindedPaymentTokensTest, AddTokens) {
   // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -97,7 +108,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, AddEmptyTokens) {
 TEST_F(BatAdsUnblindedPaymentTokensTest, DoNotAddDuplicateTokens) {
   // Arrange
   const UnblindedPaymentTokenInfo unblinded_payment_token =
-      GetUnblindedPaymentToken();
+      BuildUnblindedPaymentToken();
 
   UnblindedPaymentTokens unblinded_payment_tokens;
   unblinded_payment_tokens.AddTokens({unblinded_payment_token});
@@ -112,7 +123,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, DoNotAddDuplicateTokens) {
 TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveToken) {
   // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -132,7 +143,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveToken) {
 TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveTokens) {
   // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 3);
+      BuildUnblindedPaymentTokens(/*count*/ 3);
   ASSERT_EQ(3U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -153,7 +164,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveTokens) {
 TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveAllTokens) {
   // Arrange
   UnblindedPaymentTokens unblinded_payment_tokens;
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 2));
 
   // Act
   unblinded_payment_tokens.RemoveAllTokens();
@@ -165,7 +176,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveAllTokens) {
 TEST_F(BatAdsUnblindedPaymentTokensTest, TokenDoesExist) {
   // Arrange
   const UnblindedPaymentTokenInfo unblinded_payment_token =
-      GetUnblindedPaymentToken();
+      BuildUnblindedPaymentToken();
 
   UnblindedPaymentTokens unblinded_payment_tokens;
   unblinded_payment_tokens.SetTokens({unblinded_payment_token});
@@ -178,19 +189,19 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, TokenDoesExist) {
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, TokenDoesNotExist) {
   // Arrange
-  UnblindedPaymentTokens unblinded_payment_tokens;
+  const UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
 
   // Assert
   EXPECT_FALSE(
-      unblinded_payment_tokens.TokenExists(GetUnblindedPaymentToken()));
+      unblinded_payment_tokens.TokenExists(BuildUnblindedPaymentToken()));
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, Count) {
   // Arrange
   UnblindedPaymentTokens unblinded_payment_tokens;
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 3));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 3));
 
   // Act
 
@@ -211,7 +222,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, IsEmpty) {
 TEST_F(BatAdsUnblindedPaymentTokensTest, IsNotEmpty) {
   // Arrange
   const UnblindedPaymentTokenInfo unblinded_payment_token =
-      GetUnblindedPaymentToken();
+      BuildUnblindedPaymentToken();
 
   UnblindedPaymentTokens unblinded_payment_tokens;
   unblinded_payment_tokens.SetTokens({unblinded_payment_token});

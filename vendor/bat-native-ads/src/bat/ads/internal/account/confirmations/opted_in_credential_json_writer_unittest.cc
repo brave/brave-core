@@ -25,7 +25,7 @@ class BatAdsOptedInCredentialJsonWriterTest : public UnitTestBase {};
 TEST_F(BatAdsOptedInCredentialJsonWriterTest, WriteJson) {
   // Arrange
   const privacy::UnblindedTokenList unblinded_tokens =
-      privacy::GetUnblindedTokens(1);
+      privacy::BuildUnblindedTokens(/*count*/ 1);
   ASSERT_TRUE(!unblinded_tokens.empty());
   const privacy::UnblindedTokenInfo& unblinded_token = unblinded_tokens.front();
 

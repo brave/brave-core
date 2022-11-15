@@ -62,7 +62,7 @@ class ConfirmationStateManager final {
     return unblinded_tokens_.get();
   }
 
-  privacy::UnblindedPaymentTokens* GetUnblindedPaymentTokens() const {
+  privacy::UnblindedPaymentTokens* BuildUnblindedPaymentTokens() const {
     DCHECK(is_initialized_);
     return unblinded_payment_tokens_.get();
   }

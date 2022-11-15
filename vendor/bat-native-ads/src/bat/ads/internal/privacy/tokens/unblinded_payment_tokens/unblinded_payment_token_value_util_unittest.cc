@@ -43,7 +43,7 @@ class BatAdsUnblindedPaymentTokenValueUtilTest : public UnitTestBase {};
 TEST_F(BatAdsUnblindedPaymentTokenValueUtilTest, ToValue) {
   // Arrange
   const UnblindedPaymentTokenList unblinded_tokens =
-      GetUnblindedPaymentTokens(2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
 
   // Act
   const base::Value::List value =
@@ -81,7 +81,7 @@ TEST_F(BatAdsUnblindedPaymentTokenValueUtilTest, FromValue) {
 
   // Assert
   const UnblindedPaymentTokenList expected_unblinded_tokens =
-      GetUnblindedPaymentTokens(2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
   EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
 }
 
