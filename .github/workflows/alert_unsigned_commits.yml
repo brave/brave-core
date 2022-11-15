@@ -2,6 +2,8 @@ name: Alert Unsigned Commits
 # pull_request_review:
 #   types: [submitted]
 on:
+  pull_request:
+    types: [closed, reopened]
   pull_request_review_comment:
   push:
     branches:
@@ -12,6 +14,7 @@ permissions:
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PR_NUMBER: ${{ github.event.number }}
 
 jobs:
   alert-unsigned:
@@ -21,5 +24,6 @@ jobs:
     steps:
       - name: Assign author to PR
         run: |
-          env | grep -i GIT
+          echo "$PR_NUMBER"
+          env | grep -i GIT | sort
           gh api -H "Accept: application/vnd.github+json" /repos/brave/brave-core/commits/${GITHUB_SHA}
