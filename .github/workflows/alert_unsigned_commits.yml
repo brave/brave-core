@@ -21,4 +21,4 @@ jobs:
       - name: Assign author to PR
         run: |
           env | grep -i GIT
-          gh api -H "Accept: application/vnd.github+json" /repos/brave/brave-core/commits/HEAD
+          gh api -H "Accept: application/vnd.github+json" /repos/brave/brave-core/commits/${GITHUB_SHA}
