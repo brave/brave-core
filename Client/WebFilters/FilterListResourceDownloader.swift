@@ -154,6 +154,7 @@ public class FilterListResourceDownloader: ObservableObject {
     self.fetchTasks = [:]
     self.adBlockServiceTasks = [:]
     self.adBlockService = nil
+    self.recordP3ACookieListEnabled()
   }
   
   public func loadCachedData() async {
@@ -237,6 +238,7 @@ public class FilterListResourceDownloader: ObservableObject {
     } else {
       return false
     }
+    self.recordP3ACookieListEnabled()
   }
   
   /// Tells us if the filter list is enabled for the given `componentID`
@@ -476,6 +478,18 @@ public class FilterListResourceDownloader: ObservableObject {
       version: downloadedFolderURL.lastPathComponent,
       relativeOrder: index
     )
+  }
+  
+  // MARK: - P3A
+  
+  private func recordP3ACookieListEnabled() {
+    // Q69 Do you have cookie consent notice blocking enabled?
+    Task { @MainActor in
+      UmaHistogramBoolean(
+        "Brave.Shields.CookieListEnabled",
+        isEnabled(for: FilterList.cookieConsentNoticesComponentID)
+      )
+    }
   }
 }
 
