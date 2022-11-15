@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, WalletRoutes } from '../constants/types'
+import { BraveWallet, WalletRoutes, TokenStandards } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
 export const stripERC20TokenImageURL = (url?: string) =>
@@ -120,4 +120,14 @@ export const endsWithAny = (extensions: string[], url: string) => {
   return extensions.some(function (suffix) {
     return url.endsWith(suffix)
   })
+}
+
+export const getNFTTokenStandard = (token: BraveWallet.BlockchainToken) => {
+  if (token.isNft && token.coin === BraveWallet.CoinType.SOL) {
+    return TokenStandards.SPL
+  }
+  if (token.isErc721 && token.coin === BraveWallet.CoinType.ETH) {
+    return TokenStandards.ERC721
+  }
+  return ''
 }

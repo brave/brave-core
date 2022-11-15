@@ -25,6 +25,7 @@ export const Text = styled.span<{
   line-height: var(--line-height);
   letter-spacing: 0.02em;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
+  word-wrap: wrap;
 `
 
 export const StyledDiv = styled.div`

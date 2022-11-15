@@ -25,13 +25,15 @@ import {
   CreateNetworkIcon
 } from '../../../../../components/shared'
 import { NftIcon } from '../../../../../components/shared/nft-icon/nft-icon'
+import { NFTInfoTooltip } from '../nft-info-tooltip/nft-info-tooltip'
 
 // Styled Components
 import {
   AssetIcon,
   NetworkIconWrapper,
   Button,
-  IconsWrapper
+  IconsWrapper,
+  ButtonWrapper
 } from './token-list-item.style'
 import { Row, Column, Text } from '../../shared.styles'
 
@@ -91,36 +93,41 @@ export const TokenListItem = (props: Props) => {
   }, [token.name, token.isErc20, token.isNft])
 
   return (
-    <Button onClick={onClick} morePadding={token !== undefined}>
-      <Row>
-        <IconsWrapper>
-          <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-          {tokensNetwork && token?.contractAddress !== '' && (
-            <NetworkIconWrapper>
-              <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
-            </NetworkIconWrapper>
-          )}
-        </IconsWrapper>
-        <Column horizontalAlign='flex-start'>
-          <Text textColor='text01' textSize='14px' isBold={true}>
-            {tokenDisplayName}
-          </Text>
-          <Text textColor='text03' textSize='12px' isBold={false}>
-            {networkDescription}
-          </Text>
-        </Column>
-      </Row>
-      {!token.isErc721 && !token.isNft &&
-        <Column horizontalAlign='flex-end'>
-          <Text textColor='text01' textSize='14px' isBold={true}>
-            {formatTokenBalanceWithSymbol(balance, token.decimals, token.symbol)}
-          </Text>
-          <Text textColor='text03' textSize='12px' isBold={false}>
-            {formattedFiatBalance}
-          </Text>
-        </Column>
+    <ButtonWrapper>
+      <Button onClick={onClick}>
+        <Row>
+          <IconsWrapper>
+            <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+            {tokensNetwork && token?.contractAddress !== '' && (
+              <NetworkIconWrapper>
+                <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+              </NetworkIconWrapper>
+            )}
+          </IconsWrapper>
+          <Column horizontalAlign='flex-start'>
+            <Text textColor='text01' textSize='14px' isBold={true}>
+              {tokenDisplayName}
+            </Text>
+            <Text textColor='text03' textSize='12px' isBold={false}>
+              {networkDescription}
+            </Text>
+          </Column>
+        </Row>
+        {!token.isErc721 && !token.isNft &&
+          <Column horizontalAlign='flex-end'>
+            <Text textColor='text01' textSize='14px' isBold={true}>
+              {formatTokenBalanceWithSymbol(balance, token.decimals, token.symbol)}
+            </Text>
+            <Text textColor='text03' textSize='12px' isBold={false}>
+              {formattedFiatBalance}
+            </Text>
+          </Column>
+        }
+      </Button>
+      {(token.isErc721 || token.isNft) &&
+        <NFTInfoTooltip network={tokensNetwork} token={token} />
       }
-    </Button>
+    </ButtonWrapper>
   )
 }
 
