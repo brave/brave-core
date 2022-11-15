@@ -13,6 +13,7 @@ class AccountActivityStore: ObservableObject {
   let observeAccountUpdates: Bool
   private(set) var account: BraveWallet.AccountInfo
   @Published private(set) var assets: [AssetViewModel] = []
+  @Published private(set) var NFTAssets: [NFTAssetViewModel] = []
   @Published var transactionSummaries: [TransactionSummary] = []
   @Published private(set) var allTokens: [BraveWallet.BlockchainToken] = []
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
@@ -69,15 +70,17 @@ class AccountActivityStore: ObservableObject {
       let network = await rpcService.network(coin)
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
-      let userVisibleTokens: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: network.coin)
-      self.assets = await fetchAssets(network: network, userVisibleTokens: userVisibleTokens)
+      let allUserAssets: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: network.coin)
+      let userVisibleTokens = allUserAssets.filter(\.visible)
+      self.assets = await fetchAssets(userVisibleTokens: userVisibleTokens)
+      self.NFTAssets = await fetchNFTAssets(userVisibleTokens: userVisibleTokens)
       let assetRatios = self.assets.reduce(into: [String: Double](), {
         $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
       })
       self.transactionSummaries = await fetchTransactionSummarys(
         network: network,
         accountInfos: keyring.accountInfos,
-        userVisibleTokens: userVisibleTokens,
+        userVisibleTokens: allUserAssets,
         allTokens: allTokens,
         assetRatios: assetRatios
       )
@@ -85,15 +88,15 @@ class AccountActivityStore: ObservableObject {
   }
 
   @MainActor private func fetchAssets(
-    network: BraveWallet.NetworkInfo,
     userVisibleTokens: [BraveWallet.BlockchainToken]
   ) async -> [AssetViewModel] {
-    var updatedAssets = userVisibleTokens.map {
+    let visibleUserAssets = userVisibleTokens.filter { !$0.isErc721 && !$0.isNft }
+    var updatedAssets = visibleUserAssets.map {
       AssetViewModel(token: $0, decimalBalance: 0, price: "", history: [])
     }
     // fetch price for each asset
     let priceResult = await assetRatioService.priceWithIndividualRetry(
-      userVisibleTokens.map { $0.assetRatioId.lowercased() },
+      visibleUserAssets.map { $0.assetRatioId.lowercased() },
       toAssets: [currencyFormatter.currencyCode],
       timeframe: .oneDay
     )
@@ -107,7 +110,7 @@ class AccountActivityStore: ObservableObject {
     // fetch balance for each asset
     typealias TokenBalance = (token: BraveWallet.BlockchainToken, balance: Double?)
     let tokenBalances = await withTaskGroup(of: [TokenBalance].self) { @MainActor group -> [TokenBalance] in
-      for token in userVisibleTokens {
+      for token in visibleUserAssets {
         group.addTask { @MainActor in
           let balance = await self.rpcService.balance(for: token, in: self.account)
           return [TokenBalance(token, balance)]
@@ -124,6 +127,38 @@ class AccountActivityStore: ObservableObject {
       }
     }
     return updatedAssets
+  }
+  
+  @MainActor private func fetchNFTAssets(
+    userVisibleTokens: [BraveWallet.BlockchainToken]
+  ) async -> [NFTAssetViewModel] {
+    let visibleNFTAssets = userVisibleTokens.filter { $0.isErc721 || $0.isNft }
+    var updatedNFTAssets = visibleNFTAssets.map { asset in
+      NFTAssetViewModel(
+        token: asset,
+        balance: 0
+      )
+    }
+    // fetch balance for each asset
+    typealias TokenBalance = (token: BraveWallet.BlockchainToken, balance: Double?)
+    let tokenBalances = await withTaskGroup(of: [TokenBalance].self) { @MainActor group -> [TokenBalance] in
+      for token in visibleNFTAssets {
+        group.addTask { @MainActor in
+          let balance = await self.rpcService.balance(for: token, in: self.account)
+          return [TokenBalance(token, balance)]
+        }
+      }
+      return await group.reduce([TokenBalance](), { $0 + $1 })
+    }
+    // update assets with balance
+    for tokenBalance in tokenBalances {
+      if let value = tokenBalance.balance, let index = updatedNFTAssets.firstIndex(where: {
+        $0.token.assetBalanceId.caseInsensitiveCompare(tokenBalance.token.assetBalanceId) == .orderedSame
+      }) {
+        updatedNFTAssets[index].balance = Int(value)
+      }
+    }
+    return updatedNFTAssets
   }
   
   @MainActor private func fetchTransactionSummarys(

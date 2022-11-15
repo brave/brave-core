@@ -77,6 +77,27 @@ struct AccountActivityView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
+      if !activityStore.NFTAssets.isEmpty {
+        Section(content: {
+          Group {
+            ForEach(activityStore.NFTAssets) { nftAsset in
+              PortfolioNFTAssetView(
+                image: NFTIconView(
+                  token: nftAsset.token,
+                  network: networkStore.selectedChain,
+                  url: nftAsset.imageUrl
+                ),
+                title: nftAsset.token.nftTokenTitle,
+                symbol: nftAsset.token.symbol,
+                quantity: "\(nftAsset.balance)"
+              )
+            }
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }, header: {
+          WalletListHeaderView(title: Text(Strings.Wallet.nftsTitle))
+        })
+      }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
