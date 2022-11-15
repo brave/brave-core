@@ -313,59 +313,41 @@ export function AutoContributePanel () {
       return null
     }
 
-    const getContributeRows = () => {
-      return activityList.map((item) => {
-        const verified = item.status > 0
-        let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
-        if (item.favIcon && verified) {
-          faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
-        }
+    const getProfile = (
+      publisher: Rewards.Publisher | Rewards.ExcludedPublisher
+    ) => {
+      const verified = publisher.status > 0
+      const favIcon = publisher.favIcon && verified
+        ? publisher.favIcon
+        : publisher.url
 
-        return {
-          profile: {
-            name: item.name,
-            verified,
-            provider: (item.provider ? item.provider : undefined),
-            src: faviconUrl
-          },
-          url: item.url,
-          attention: item.percentage,
-          onRemove: () => { this.actions.excludePublisher(item.id) }
-        }
-      })
-    }
-
-    const getExcludedRows = () => {
-      if (!data.excludedList) {
-        return []
+      return {
+        name: publisher.name,
+        verified,
+        provider: (publisher.provider ? publisher.provider : undefined),
+        src: `chrome://favicon/size/64@1x/${favIcon}`
       }
-
-      return data.excludedList.map((item) => {
-        const verified = item.status > 0
-        let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
-        if (item.favIcon && verified) {
-          faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
-        }
-
-        return {
-          profile: {
-            name: item.name,
-            verified,
-            provider: (item.provider ? item.provider : undefined),
-            src: faviconUrl
-          },
-          url: item.url,
-          attention: 0,
-          onRemove: () => { this.actions.restorePublisher(item.id) }
-        }
-      })
     }
+
+    const contributeRows = activityList.map((item) => ({
+      profile: getProfile(item),
+      url: item.url,
+      attention: item.percentage,
+      onRemove: () => { actions.excludePublisher(item.id) }
+    }))
+
+    const excludedRows = data.excludedList.map((item) => ({
+      profile: getProfile(item),
+      url: item.url,
+      attention: 0,
+      onRemove: () => { actions.restorePublisher(item.id) }
+    }))
 
     return (
       <ModalContribute
-        rows={getContributeRows()}
+        rows={contributeRows}
         onRestore={onRestore}
-        excludedRows={getExcludedRows()}
+        excludedRows={excludedRows}
         activeTabId={modalTab}
         onTabChange={onTabChange}
         onClose={toggleModal}
