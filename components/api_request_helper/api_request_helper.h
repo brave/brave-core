@@ -40,6 +40,7 @@ class APIRequestResult {
   ~APIRequestResult();
 
   bool Is2XXResponseCode() const;
+  bool IsResponseCodeValid() const;
 
   int response_code() const { return response_code_; }
   int error_code() const { return error_code_; }
