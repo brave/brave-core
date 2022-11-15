@@ -376,25 +376,46 @@ template("create_dist_template") {
   }
 }
 
-create_dist_template("create_native_symbols_dist") {
-  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
-  dir_inputs = [ "$brave_product_name.pdb.syms" ]
-  deps = [ "app/$current_os:symbol_dist_resources" ]
+if (should_generate_breakpad_symbols) {
+  create_dist_template("create_breakpad_symbols_dist") {
+    if (is_android) {
+      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
+    } else {
+      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+    }
+
+    deps = [ "//brave/app/$current_os:symbol_dist_resources" ]
+
+    dir_inputs = [ "$brave_product_name.breakpad.syms" ]
+  }
+
+  if (is_win) {
+    create_dist_template("create_native_symbols_dist") {
+      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
+      dir_inputs = [ "$brave_product_name.pdb.syms" ]
+
+      deps = [ "//brave/app/win:generate_breakpad_symbols" ]
+    }
+  } else if (is_mac) {
+    copy("create_native_symbols_dist") {
+      sources = [ "$root_out_dir/$chrome_product_full_name.dSYM.tar.bz2" ]
+      outputs = [ "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.tar.bz2" ]
+
+      deps = [ "//chrome:chrome_dsym_archive" ]
+    }
+  } else {
+    group("create_native_symbols_dist") {
+    }
+  }
 }
 
-create_dist_template("create_symbols_dist") {
-  if (is_android) {
-    output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
-  } else {
-    output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+group("create_symbols_dist") {
+  if (should_generate_breakpad_symbols) {
+    deps = [
+      ":create_breakpad_symbols_dist",
+      ":create_native_symbols_dist",
+    ]
   }
-
-  deps = [ "app/$current_os:symbol_dist_resources" ]
-  if (brave_debug_symbol_level == 2 && is_win) {
-    deps += [ ":create_native_symbols_dist" ]
-  }
-
-  dir_inputs = [ "$brave_product_name.breakpad.syms" ]
 }
 
 action("create_dist_zips") {
