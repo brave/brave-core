@@ -70,6 +70,10 @@ bool APIRequestResult::Is2XXResponseCode() const {
   return response_code_ >= 200 && response_code_ <= 299;
 }
 
+bool APIRequestResult::IsResponseCodeValid() const {
+  return response_code_ >= 100 && response_code_ <= 599;
+}
+
 APIRequestHelper::APIRequestHelper(
     net::NetworkTrafficAnnotationTag annotation_tag,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
