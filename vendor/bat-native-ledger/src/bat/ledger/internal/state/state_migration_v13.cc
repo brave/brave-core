@@ -11,7 +11,6 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ledger::state {
 

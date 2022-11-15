@@ -857,15 +857,22 @@ void BraveRewardsNativeWorker::DisconnectWallet(JNIEnv* env) {
   // TODO(zenparsing): Remove disconnect ability from Android UI.
 }
 
-void BraveRewardsNativeWorker::OnDisconnectWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::string& wallet_type) {
+void BraveRewardsNativeWorker::ExternalWalletConnected() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnDisconnectWallet(env,
-        weak_java_brave_rewards_native_worker_.get(env),
-        static_cast<int>(result),
-        base::android::ConvertUTF8ToJavaString(env, wallet_type));
+  Java_BraveRewardsNativeWorker_ExternalWalletConnected(
+      env, weak_java_brave_rewards_native_worker_.get(env));
+}
+
+void BraveRewardsNativeWorker::ExternalWalletLoggedOut() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_ExternalWalletLoggedOut(
+      env, weak_java_brave_rewards_native_worker_.get(env));
+}
+
+void BraveRewardsNativeWorker::ExternalWalletReconnected() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_ExternalWalletReconnected(
+      env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
 std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
