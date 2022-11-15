@@ -237,11 +237,11 @@ class BraveRewardsNativeWorker
 
   void OnOneTimeTip(ledger::mojom::Result result);
 
-  void ExternalWalletConnected() override;
+  void OnExternalWalletConnected() override;
 
-  void ExternalWalletLoggedOut() override;
+  void OnExternalWalletLoggedOut() override;
 
-  void ExternalWalletReconnected() override;
+  void OnExternalWalletReconnected() override;
 
   void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
                           const std::string& publisher_key);

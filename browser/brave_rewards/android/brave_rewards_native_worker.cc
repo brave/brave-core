@@ -857,21 +857,21 @@ void BraveRewardsNativeWorker::DisconnectWallet(JNIEnv* env) {
   // TODO(zenparsing): Remove disconnect ability from Android UI.
 }
 
-void BraveRewardsNativeWorker::ExternalWalletConnected() {
+void BraveRewardsNativeWorker::OnExternalWalletConnected() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_ExternalWalletConnected(
+  Java_BraveRewardsNativeWorker_OnExternalWalletConnected(
       env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
-void BraveRewardsNativeWorker::ExternalWalletLoggedOut() {
+void BraveRewardsNativeWorker::OnExternalWalletLoggedOut() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_ExternalWalletLoggedOut(
+  Java_BraveRewardsNativeWorker_OnExternalWalletLoggedOut(
       env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
-void BraveRewardsNativeWorker::ExternalWalletReconnected() {
+void BraveRewardsNativeWorker::OnExternalWalletReconnected() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_ExternalWalletReconnected(
+  Java_BraveRewardsNativeWorker_OnExternalWalletReconnected(
       env, weak_java_brave_rewards_native_worker_.get(env));
 }
 

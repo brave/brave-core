@@ -658,21 +658,21 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void ExternalWalletConnected() {
+    public void OnExternalWalletConnected() {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnExternalWalletConnected();
         }
     }
 
     @CalledByNative
-    public void ExternalWalletLoggedOut() {
+    public void OnExternalWalletLoggedOut() {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnExternalWalletLoggedOut();
         }
     }
 
     @CalledByNative
-    public void ExternalWalletReconnected() {
+    public void OnExternalWalletReconnected() {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnExternalWalletReconnected();
         }
