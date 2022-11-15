@@ -18,7 +18,7 @@
   if (ExecutionContext* context = ExecutionContext::From(script_state)) {     \
     if (WebContentSettingsClient* settings =                                  \
             brave::GetContentSettingsClientFor(context)) {                    \
-      if (brave::AudioFarblingCallback audio_farbling_callback =              \
+      if (brave::OptionalAudioFarblingCallback audio_farbling_callback =      \
               brave::BraveSessionCache::From(*context)                        \
                   .GetAudioFarblingCallback(settings)) {                      \
         DOMFloat32Array* destination_array = array.Get();                     \
@@ -37,7 +37,7 @@
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
     if (WebContentSettingsClient* settings =                              \
             brave::GetContentSettingsClientFor(context)) {                \
-      if (brave::AudioFarblingCallback audio_farbling_callback =          \
+      if (brave::OptionalAudioFarblingCallback audio_farbling_callback =  \
               brave::BraveSessionCache::From(*context)                    \
                   .GetAudioFarblingCallback(settings)) {                  \
         for (unsigned i = 0; i < count; i++) {                            \

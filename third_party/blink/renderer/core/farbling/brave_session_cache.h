@@ -43,7 +43,7 @@ enum FarbleKey : uint64_t {
 
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
 typedef absl::optional<base::RepeatingCallback<float(float, size_t)>>
-    AudioFarblingCallback;
+    OptionalAudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);
@@ -76,7 +76,7 @@ class CORE_EXPORT BraveSessionCache final
   static BraveSessionCache& From(ExecutionContext&);
   static void Init();
 
-  AudioFarblingCallback GetAudioFarblingCallback(
+  OptionalAudioFarblingCallback GetAudioFarblingCallback(
       blink::WebContentSettingsClient* settings);
   void PerturbPixels(blink::WebContentSettingsClient* settings,
                      const unsigned char* data,
