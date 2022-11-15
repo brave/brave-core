@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.45](https://github.com/brave/brave-ios/releases/tag/v1.45)
+
+ - Added dialog for blocking cookie consent banners. ([#1358](https://github.com/brave/brave-ios/issues/1358))
+ - Added lock screen widgets for favorites & shortcuts for iOS 16 devices. ([#5920](https://github.com/brave/brave-ios/issues/5920))
+ - Added Ramp.Network and Sardine buy support in Brave Wallet. ([#5465](https://github.com/brave/brave-ios/issues/5465))
+ - Added currency selector for "Buy" tokens in Brave Wallet. ([#6032](https://github.com/brave/brave-ios/issues/6032))
+ - [Security] Added additional password protection for Brave Wallet backup seed. ([#5882](https://github.com/brave/brave-ios/issues/5882))
+ - [Security] Added additional password protection when revealing Brave Wallet private keys. ([#5881](https://github.com/brave/brave-ios/issues/5881))
+ - [Security] Added additional password protection for Brave Wallet account removal. ([#5967](https://github.com/brave/brave-ios/issues/5967))
+ - [Security] Fixed reader mode crash on visiting certain pages as reported on Hackerone by dogeshark. ([#6137](https://github.com/brave/brave-ios/issues/6137))
+ - Updated logic for user rating prompt. ([#5722](https://github.com/brave/brave-ios/issues/5722))
+ - Fixed bottom toolbar from not showing when on-screen keyboard is dismissed when focus is set on URL bar. ([#6259](https://github.com/brave/brave-ios/issues/6259))
+
 ## [1.42](https://github.com/brave/brave-ios/releases/tag/v1.42)
 
 - Added Solana support for account creation, sending SOL and sending SPL tokens with Brave Wallet. ([#5716](https://github.com/brave/brave-ios/issues/5716))
