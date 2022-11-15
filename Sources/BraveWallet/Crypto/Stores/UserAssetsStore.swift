@@ -83,14 +83,34 @@ public class UserAssetsStore: ObservableObject {
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
       blockchainRegistry.allTokens(network.chainId, coin: network.coin) { [self] registryTokens in
         allTokens = registryTokens + [network.nativeToken]
-        assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
-          AssetStore(
+        var uniqueAssets: [BraveWallet.BlockchainToken] = []
+        // we need to swap out the ERC721 assets that are from token registry but was added back as custom tokens with token id.
+        for registeryToken in allTokens {
+          if let matchedUserAsset = userAssets.first(where: { $0.id == registeryToken.id }) {
+            uniqueAssets.append(matchedUserAsset)
+          } else {
+            uniqueAssets.append(registeryToken)
+          }
+        }
+        
+        assetStores = uniqueAssets.union(userAssets, f: { $0.id }).map { token in
+          var isCustomToken: Bool {
+            if token.contractAddress.isEmpty {
+              return false
+            }
+            // Any token with a tokenId should be considered a custom token.
+            if !token.tokenId.isEmpty {
+              return true
+            }
+            return !allTokens.contains(where: {
+              $0.contractAddress(in: network).caseInsensitiveCompare(token.contractAddress) == .orderedSame
+            })
+          }
+          return AssetStore(
             walletService: walletService,
             network: network,
             token: token,
-            isCustomToken: !allTokens.contains(where: {
-              $0.contractAddress(in: network).caseInsensitiveCompare(token.contractAddress) == .orderedSame
-            }),
+            isCustomToken: isCustomToken,
             isVisible: visibleAssetIds.contains(token.id)
           )
         }
@@ -162,6 +182,11 @@ public class UserAssetsStore: ObservableObject {
           }
         })
     }
+  }
+  
+  @MainActor func networkInfo(by chainId: String, coin: BraveWallet.CoinType) async -> BraveWallet.NetworkInfo? {
+    let allNetworks = await rpcService.allNetworks(coin)
+    return allNetworks.first { $0.chainId.caseInsensitiveCompare(chainId) == .orderedSame }
   }
 }
 
