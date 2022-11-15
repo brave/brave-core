@@ -295,7 +295,13 @@ enum TransactionParser {
             fromValue: "1", // Can only send 1 erc721 at a time
             fromAmount: "1",
             owner: owner,
-            tokenId: tokenId
+            tokenId: tokenId,
+            gasFee: gasFee(
+              from: transaction,
+              network: network,
+              assetRatios: assetRatios,
+              currencyFormatter: currencyFormatter
+            )
           )
         )
       )
@@ -349,7 +355,12 @@ enum TransactionParser {
       }
       let fromValue = "\(amount)"
       let fromValueFormatted = formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(fromToken.decimals))?.trimmingTrailingZeros ?? ""
-      let fromFiat = currencyFormatter.string(from: NSNumber(value: assetRatios[fromToken.assetRatioId.lowercased(), default: 0] * (Double(fromValueFormatted) ?? 0))) ?? "$0.00"
+      let fromFiat: String
+      if fromToken.isNft {
+        fromFiat = "" // don't show fiat for NFTs
+      } else {
+        fromFiat = currencyFormatter.string(from: NSNumber(value: assetRatios[fromToken.assetRatioId.lowercased(), default: 0] * (Double(fromValueFormatted) ?? 0))) ?? "$0.00"
+      }
       /* Example:
        Send 0.1234 SMB
        
@@ -720,6 +731,8 @@ struct Eth721TransferDetails: Equatable {
   let owner: String
   /// The token id
   let tokenId: String
+  /// Gas fee for the transaction
+  let gasFee: GasFee?
 }
 
 struct SolanaDappTxDetails: Equatable {
