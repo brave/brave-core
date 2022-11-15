@@ -123,14 +123,14 @@ TEST_F(BatAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
 
 TEST_F(BatAdsConfirmationUtilTest, ResetConfirmations) {
   // Arrange
+  privacy::SetUnblindedTokens(/*count*/ 2);
+
+  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
+
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
       *confirmation);
-
-  privacy::SetUnblindedPaymentTokens(1);
-
-  privacy::SetUnblindedTokens(1);
 
   // Act
   ResetConfirmations();
