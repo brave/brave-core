@@ -9,7 +9,7 @@
  - [Security] Added additional password protection for Brave Wallet backup seed. ([#5882](https://github.com/brave/brave-ios/issues/5882))
  - [Security] Added additional password protection when revealing Brave Wallet private keys. ([#5881](https://github.com/brave/brave-ios/issues/5881))
  - [Security] Added additional password protection for Brave Wallet account removal. ([#5967](https://github.com/brave/brave-ios/issues/5967))
- - [Security] Fixed reader mode crash on visiting certain pages with attachments as reported on Hackerone by dogeshark. ([#6137](https://github.com/brave/brave-ios/issues/6137))
+ - [Security] Fixed reader mode crash on visiting certain pages as reported on Hackerone by dogeshark. ([#6137](https://github.com/brave/brave-ios/issues/6137))
  - Updated logic for user rating prompt. ([#5722](https://github.com/brave/brave-ios/issues/5722))
  - Fixed bottom toolbar from not showing when on-screen keyboard is dismissed when focus is set on URL bar. ([#6259](https://github.com/brave/brave-ios/issues/6259))
 
