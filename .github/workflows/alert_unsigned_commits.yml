@@ -9,6 +9,9 @@ on:
 permissions:
   pull-requests: write
 
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   alert-unsigned:
     # if: github.event.review.state == 'approved'
