@@ -6,6 +6,9 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 #include "base/check.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
@@ -80,6 +83,29 @@ std::string Base58Encode(base::span<const uint8_t> bytes) {
 bool IsBase58EncodedSolanaPubkey(const std::string& key) {
   std::vector<uint8_t> bytes;
   return Base58Decode(key, &bytes, kSolanaPubkeySize);
+}
+
+bool Uint8ArrayDecode(const std::string& str,
+                      std::vector<uint8_t>* ret,
+                      size_t len) {
+  if (!base::StartsWith(str, "[") || !base::EndsWith(str, "]"))
+    return false;
+  DCHECK(ret);
+  ret->clear();
+  for (const auto& item : base::SplitStringPiece(
+           str, "[,]", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY)) {
+    uint32_t item_int;
+    if (!base::StringToUint(item, &item_int) || item_int > UINT8_MAX) {
+      ret->clear();
+      return false;
+    }
+    ret->push_back(static_cast<uint8_t>(item_int));
+  }
+  if (ret->empty() || ret->size() != len) {
+    ret->clear();
+    return false;
+  }
+  return true;
 }
 
 }  // namespace brave_wallet

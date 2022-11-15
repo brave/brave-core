@@ -3760,6 +3760,18 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     ASSERT_TRUE(RemoveImportedAccount(&service, *imported_account,
                                       kPasswordBrave, mojom::CoinType::SOL));
 
+    // import using uint8array
+    imported_account = ImportAccount(
+        &service, "Imported Account 3",
+        " [4,109,17,28,245,96,126,232,185,242,61,170,96,51,225,202,152,85,104,"
+        "63,4,171,245,175,118,67,238,247,208,163,247,211,201,215,12,121,255,"
+        "182,188,11,4,82,78,239,173,146,246,74,66,126,34,173,46,211,145,49,211,"
+        "176,28,89,250,190,34,254]\t\n",
+        mojom::CoinType::SOL);
+    ASSERT_TRUE(imported_account.has_value());
+    ASSERT_TRUE(RemoveImportedAccount(&service, *imported_account,
+                                      kPasswordBrave, mojom::CoinType::SOL));
+
     base::RunLoop run_loop;
     service.GetKeyringInfo(
         brave_wallet::mojom::kSolanaKeyringId,
