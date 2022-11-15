@@ -24,20 +24,33 @@ struct SendTokenView: View {
   var onDismiss: () -> Void
 
   private var isSendDisabled: Bool {
-    guard let sendAmount = BDouble(sendTokenStore.sendAmount.normalizedDecimals),
-      let balance = sendTokenStore.selectedSendTokenBalance,
-      let token = sendTokenStore.selectedSendToken,
-      !sendTokenStore.isMakingTx
-    else {
+    guard let balance = sendTokenStore.selectedSendTokenBalance,
+          let token = sendTokenStore.selectedSendToken,
+          !sendTokenStore.isMakingTx,
+          !sendTokenStore.sendAddress.isEmpty,
+          sendTokenStore.addressError == nil,
+          sendTokenStore.sendError == nil else {
       return true
     }
-
+    if token.isErc721 || token.isNft {
+      return balance < 1
+    }
+    guard let sendAmount = BDouble(sendTokenStore.sendAmount.normalizedDecimals) else {
+      return true
+    }
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
     if weiFormatter.weiString(from: sendTokenStore.sendAmount.normalizedDecimals, radix: .decimal, decimals: Int(token.decimals)) == nil {
       return true
     }
-
-    return sendAmount == 0 || sendAmount > balance || sendTokenStore.sendAmount.isEmpty || sendTokenStore.sendAddress.isEmpty || (sendTokenStore.addressError != nil && sendTokenStore.addressError != .missingChecksum)
+    return sendAmount == 0 || sendAmount > balance || sendTokenStore.sendAmount.isEmpty
+  }
+  
+  private var sendButtonTitle: String {
+    if let error = sendTokenStore.sendError {
+      return error.localizedDescription
+    } else {
+      return Strings.Wallet.sendCryptoSendButtonTitle
+    }
   }
 
   var body: some View {
@@ -81,29 +94,31 @@ struct SendTokenView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        Section(
-          header:
-            WalletListHeaderView(
-              title: Text(
-                String.localizedStringWithFormat(
-                  Strings.Wallet.sendCryptoAmountTitle,
-                  sendTokenStore.selectedSendToken?.symbol ?? "")
-              )
-            ),
-          footer: ShortcutAmountGrid(action: { amount in
-            sendTokenStore.suggestedAmountTapped(amount)
-          })
-          .listRowInsets(.zero)
-          .padding(.bottom, 8)
-        ) {
-          TextField(
-            String.localizedStringWithFormat(
-              Strings.Wallet.amountInCurrency,
-              sendTokenStore.selectedSendToken?.symbol ?? ""),
-            text: $sendTokenStore.sendAmount
-          )
-          .keyboardType(.decimalPad)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        if sendTokenStore.selectedSendToken?.isErc721 == false && sendTokenStore.selectedSendToken?.isNft == false {
+          Section(
+            header:
+              WalletListHeaderView(
+                title: Text(
+                  String.localizedStringWithFormat(
+                    Strings.Wallet.sendCryptoAmountTitle,
+                    sendTokenStore.selectedSendToken?.symbol ?? "")
+                )
+              ),
+            footer: ShortcutAmountGrid(action: { amount in
+              sendTokenStore.suggestedAmountTapped(amount)
+            })
+            .listRowInsets(.zero)
+            .padding(.bottom, 8)
+          ) {
+            TextField(
+              String.localizedStringWithFormat(
+                Strings.Wallet.amountInCurrency,
+                sendTokenStore.selectedSendToken?.symbol ?? ""),
+              text: $sendTokenStore.sendAmount
+            )
+            .keyboardType(.decimalPad)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoToTitle)),
@@ -155,7 +170,7 @@ struct SendTokenView: View {
         Section(
           header:
             WalletLoadingButton(
-              isLoading: sendTokenStore.isMakingTx,
+              isLoading: sendTokenStore.isLoading || sendTokenStore.isMakingTx,
               action: {
                 sendTokenStore.sendToken(
                   amount: sendTokenStore.sendAmount
@@ -168,7 +183,7 @@ struct SendTokenView: View {
                 }
               },
               label: {
-                Text(Strings.Wallet.sendCryptoSendButtonTitle)
+                Text(sendButtonTitle)
               }
             )
             .buttonStyle(BraveFilledButtonStyle(size: .normal))
@@ -207,7 +222,7 @@ struct SendTokenView: View {
       }
     }
     .onAppear {
-      sendTokenStore.fetchAssets()
+      sendTokenStore.update()
     }
     .navigationViewStyle(.stack)
   }

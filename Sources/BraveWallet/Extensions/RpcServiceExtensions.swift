@@ -189,6 +189,19 @@ extension BraveWalletJsonRpcService {
     }
   }
   
+  @MainActor func balance(
+    for token: BraveWallet.BlockchainToken,
+    in accountAddress: String,
+    with coin: BraveWallet.CoinType,
+    decimalFormatStyle: WeiFormatter.DecimalFormatStyle
+  ) async -> BDouble? {
+    await withCheckedContinuation { continuation in
+      balance(for: token, in: accountAddress, with: coin, decimalFormatStyle: decimalFormatStyle) { value in
+        continuation.resume(returning: value)
+      }
+    }
+  }
+  
   private func ethBalance(
     for token: BraveWallet.BlockchainToken,
     in accountAddress: String,

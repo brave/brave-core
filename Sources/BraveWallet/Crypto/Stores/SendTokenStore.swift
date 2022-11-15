@@ -15,8 +15,7 @@ public class SendTokenStore: ObservableObject {
   /// The current selected token to send. Default with nil value.
   @Published var selectedSendToken: BraveWallet.BlockchainToken? {
     didSet {
-      fetchAssetBalance()
-      validateSendAddress()
+      update() // need to update `selectedSendTokenBalance`
     }
   }
   /// The current selected token balance. Default with nil value.
@@ -26,9 +25,10 @@ public class SendTokenStore: ObservableObject {
   /// The destination account address
   @Published var sendAddress = "" {
     didSet {
-      timer?.invalidate()
-      timer = Timer.scheduledTimer(
-        withTimeInterval: 0.25, repeats: false,
+      sendAddressUpdatedTimer?.invalidate()
+      sendAddressUpdatedTimer = Timer.scheduledTimer(
+        withTimeInterval: 0.25, // try not to validate for every character entered
+        repeats: false,
         block: { [weak self] _ in
           self?.validateSendAddress()
         })
@@ -37,7 +37,21 @@ public class SendTokenStore: ObservableObject {
   /// An error for input send address. Nil for no error.
   @Published var addressError: AddressError?
   /// The amount the user inputs to send
-  @Published var sendAmount = ""
+  @Published var sendAmount = "" {
+    didSet {
+      sendAmountUpdatedTimer?.invalidate()
+      sendAmountUpdatedTimer = Timer.scheduledTimer(
+        withTimeInterval: 0.25, // try not to validate for every character entered
+        repeats: false,
+        block: { [weak self] _ in
+          self?.validateBalance()
+        })
+    }
+  }
+  /// An error for input, ex insufficient balance
+  @Published var sendError: SendError?
+  /// If we are loading `userAssets`, `allTokens`, and `selectedSendTokenBalance`
+  @Published var isLoading: Bool = false
 
   enum AddressError: LocalizedError {
     case sameAsFromAddress
@@ -64,6 +78,16 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
+  
+  enum SendError: LocalizedError {
+    case insufficientBalance
+    
+    var errorDescription: String? {
+      switch self {
+      case .insufficientBalance: return Strings.Wallet.insufficientBalance
+      }
+    }
+  }
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -73,8 +97,8 @@ public class SendTokenStore: ObservableObject {
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private var allTokens: [BraveWallet.BlockchainToken] = []
-  private var currentAccountAddress: String?
-  private var timer: Timer?
+  private var sendAddressUpdatedTimer: Timer?
+  private var sendAmountUpdatedTimer: Timer?
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -97,38 +121,6 @@ public class SendTokenStore: ObservableObject {
 
     self.keyringService.add(self)
     self.rpcService.add(self)
-
-    self.walletService.selectedCoin { coin in
-      self.keyringService.selectedAccount(coin) { address in
-        self.currentAccountAddress = address
-      }
-    }
-  }
-
-  func fetchAssets() {
-    walletService.selectedCoin { [weak self] coin in
-      guard let self = self else { return }
-      self.rpcService.network(coin) { network in
-        self.walletService.userAssets(network.chainId, coin: network.coin) { tokens in
-          self.userAssets = tokens
-          
-          if let selectedToken = self.selectedSendToken {
-            if tokens.isEmpty {
-              self.selectedSendToken = nil
-            } else if let token = tokens.first(where: { $0.id == selectedToken.id }) {
-              self.selectedSendToken = token
-            }
-          } else {
-            self.selectedSendToken = tokens.first
-          }
-        }
-        
-        // store tokens in `allTokens` for address validation
-        self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
-          self.allTokens = tokens + [network.nativeToken]
-        }
-      }
-    }
   }
   
   func suggestedAmountTapped(_ amount: ShortcutAmountGrid.Amount) {
@@ -141,44 +133,41 @@ public class SendTokenStore: ObservableObject {
     sendAmount = ((selectedSendTokenBalance ?? 0) * amount.rawValue).decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded)
   }
 
-  private func fetchAssetBalance() {
-    guard let token = selectedSendToken else {
-      selectedSendTokenBalance = nil
-      return
-    }
-
-    walletService.selectedCoin { [weak self] coin in
-      guard let self = self else { return }
-      self.rpcService.network(coin) { network in
-        self.walletService.userAssets(network.chainId, coin: network.coin) { tokens in
-          guard let index = tokens.firstIndex(where: { $0.id == token.id }) else {
-            self.selectedSendTokenBalance = nil
-            return
-          }
-          self.fetchBalance(for: tokens[index])
-        }
+  /// Cancellable for the last running `update()` Task.
+  private var updateTask: Task<(), Never>?
+  /// Updates the `userAssets`, `allTokens`, and `selectedSendTokenBalance`
+  func update() {
+    self.updateTask?.cancel()
+    self.updateTask = Task { @MainActor in
+      self.isLoading = true
+      defer { self.isLoading = false }
+      let coin = await self.walletService.selectedCoin()
+      let network = await self.rpcService.network(coin)
+      // fetch user assets
+      let userAssets = await self.walletService.userAssets(network.chainId, coin: network.coin)
+      let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+      guard !Task.isCancelled else { return }
+      if selectedSendToken == nil {
+        self.selectedSendToken = userAssets.first
       }
-    }
-  }
-
-  private func fetchBalance(for token: BraveWallet.BlockchainToken) {
-    walletService.selectedCoin { [weak self] coin in
-      guard let self = self else { return }
-      self.keyringService.selectedAccount(coin) { accountAddress in
-        guard let accountAddress = accountAddress else {
-          self.selectedSendTokenBalance = nil
-          return
-        }
-        
-        self.rpcService.balance(
-          for: token,
-          in: accountAddress,
-          with: coin,
-          decimalFormatStyle: .decimals(precision: Int(token.decimals))
-        ) { balance in
-          self.selectedSendTokenBalance = balance
-        }
+      self.userAssets = userAssets
+      self.allTokens = allTokens
+      self.validateSendAddress() // `sendAddress` may match a token contract address
+      // fetch balance for `selectedSendToken`
+      guard let selectedAccount = await self.keyringService.selectedAccount(coin),
+            let selectedSendToken = self.selectedSendToken else {
+        self.selectedSendTokenBalance = nil // no selected account, or send token is nil
+        return
       }
+      let balance = await self.rpcService.balance(
+        for: selectedSendToken,
+        in: selectedAccount,
+        with: coin,
+        decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
+      )
+      guard !Task.isCancelled else { return }
+      self.selectedSendTokenBalance = balance
+      self.validateBalance()
     }
   }
 
@@ -195,25 +184,29 @@ public class SendTokenStore: ObservableObject {
     }
   }
 
+  /// Validate the `sendAddress`
   private func validateSendAddress() {
-    guard !sendAddress.isEmpty, let token = selectedSendToken else {
-      addressError = nil
-      return
-    }
-    let normalizedSendAddress = sendAddress.lowercased()
-    if token.coin == .eth {
-      if !sendAddress.isETHAddress {
-        // 1. check if send address is a valid eth address
-        addressError = .notEthAddress
-      } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
-        // 2. check if send address is the same as the from address
-        addressError = .sameAsFromAddress
-      } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
-                  || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil) {
-        // 3. check if send address is a contract address
-        addressError = .contractAddress
-      } else {
-        keyringService.checksumEthAddress(sendAddress) { [self] checksumAddress in
+    Task { @MainActor in
+      let coin = await self.walletService.selectedCoin()
+      guard let sendFromAddress = await self.keyringService.selectedAccount(coin),
+            !sendAddress.isEmpty,
+            let token = selectedSendToken else {
+        return
+      }
+      let normalizedSendToAddress = sendAddress.lowercased()
+      if token.coin == .eth {
+        if !sendAddress.isETHAddress {
+          // 1. check if send address is a valid eth address
+          addressError = .notEthAddress
+        } else if sendFromAddress.lowercased() == normalizedSendToAddress {
+          // 2. check if send address is the same as the from address
+          addressError = .sameAsFromAddress
+        } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendToAddress }) != nil)
+                    || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendToAddress }) != nil) {
+          // 3. check if send address is a contract address
+          addressError = .contractAddress
+        } else {
+          let checksumAddress = await keyringService.checksumEthAddress(sendAddress)
           if sendAddress == checksumAddress {
             // 4. check if send address is the same as the checksum address from the `KeyringService`
             addressError = nil
@@ -226,12 +219,11 @@ public class SendTokenStore: ObservableObject {
             addressError = .invalidChecksum
           }
         }
-      }
-    } else if token.coin == .sol {
-      walletService.isBase58EncodedSolanaPubkey(sendAddress) { [self] valid in
-        if !valid {
+      } else if token.coin == .sol {
+        let isValid = await walletService.isBase58EncodedSolanaPubkey(sendAddress)
+        if !isValid {
           addressError = .notSolAddress
-        } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
+        } else if sendFromAddress.lowercased() == normalizedSendToAddress {
           addressError = .sameAsFromAddress
         } else {
           addressError = nil
@@ -239,34 +231,58 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
+  
+  /// Validate `selectedSendTokenBalance` against the `sendAmount`
+  private func validateBalance() {
+    guard let selectedSendToken = self.selectedSendToken,
+          let balance = selectedSendTokenBalance,
+          case let sendAmount = (selectedSendToken.isErc721 || selectedSendToken.isNft) ? "1" : self.sendAmount,
+          let sendAmount = BDouble(sendAmount) else {
+      sendError = nil
+      return
+    }
+    sendError = balance < sendAmount ? .insufficientBalance : nil
+  }
 
   func sendToken(
     amount: String,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
+    guard let token = self.selectedSendToken else {
+      completion(false, "An Internal Error")
+      return
+    }
+    let amount = (token.isErc721 || token.isNft) ? "1" : amount
     walletService.selectedCoin { [weak self] coin in
       guard let self = self else { return }
-      switch coin {
-      case .eth:
-        self.sendTokenOnEth(amount: amount, completion: completion)
-      case .sol:
-        self.sendTokenOnSol(amount: amount, completion: completion)
-      default:
-        break
+      self.keyringService.selectedAccount(coin) { selectedAccount in
+        guard let selectedAccount = selectedAccount else {
+          completion(false, "An Internal Error")
+          return
+        }
+        switch coin {
+        case .eth:
+          self.sendTokenOnEth(amount: amount, token: token, fromAddress: selectedAccount, completion: completion)
+        case .sol:
+          self.sendTokenOnSol(amount: amount, token: token, fromAddress: selectedAccount, completion: completion)
+        default:
+          break
+        }
       }
     }
   }
 
   func sendTokenOnEth(
     amount: String,
+    token: BraveWallet.BlockchainToken,
+    fromAddress: String,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    guard
-      let token = selectedSendToken,
-      let weiHexString = weiFormatter.weiString(from: amount.normalizedDecimals, radix: .hex, decimals: Int(token.decimals)),
-      let fromAddress = currentAccountAddress
-    else { return }
+    guard let weiHexString = weiFormatter.weiString(from: amount.normalizedDecimals, radix: .hex, decimals: Int(token.decimals)) else {
+      completion(false, "An Internal Error")
+      return
+    }
 
     isMakingTx = true
     rpcService.network(.eth) { [weak self] network in
@@ -279,6 +295,19 @@ public class SendTokenStore: ObservableObject {
             completion(success, errorMessage)
           }
         } else {
+          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+            self.isMakingTx = false
+            completion(success, errorMessage)
+          }
+        }
+      } else if token.isErc721 {
+        self.ethTxManagerProxy.makeErc721Transfer(fromData: fromAddress, to: self.sendAddress, tokenId: token.tokenId, contractAddress: token.contractAddress) { success, data in
+          guard success else {
+            completion(false, nil)
+            return
+          }
+          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
           let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
           self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
             self.isMakingTx = false
@@ -311,16 +340,15 @@ public class SendTokenStore: ObservableObject {
   
   private func sendTokenOnSol(
     amount: String,
+    token: BraveWallet.BlockchainToken,
+    fromAddress: String,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
-    guard let token = selectedSendToken,
-          let fromAddress = currentAccountAddress,
-          let amount = WeiFormatter.decimalToAmount(amount.normalizedDecimals, tokenDecimals: Int(token.decimals))
-    else {
+    guard let amount = WeiFormatter.decimalToAmount(amount.normalizedDecimals, tokenDecimals: Int(token.decimals)) else {
       completion(false, "An Internal Error")
       return
     }
-    
+
     rpcService.network(.sol) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
@@ -357,13 +385,6 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
-
-  #if DEBUG
-  func setUpTest() {
-    currentAccountAddress = "test-current-account-address"
-    sendAddress = "test-send-address"
-  }
-  #endif
 }
 
 extension SendTokenStore: BraveWalletKeyringServiceObserver {
@@ -392,19 +413,19 @@ extension SendTokenStore: BraveWalletKeyringServiceObserver {
   }
 
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
-    fetchAssetBalance()
-    keyringService.selectedAccount(coinType) { [weak self] address in
-      self?.currentAccountAddress = address
-      self?.validateSendAddress()
-    }
+    selectedSendTokenBalance = nil
+    addressError = nil
+    update() // `selectedSendTokenBalance` needs updated for new account
+    validateSendAddress() // `sendAddress` may equal selected account address
   }
 }
 
 extension SendTokenStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    // nil `selectedSendToken` to force refresh `selectedSendToken` in `fetchAssets()`
     selectedSendToken = nil
-    fetchAssets()
+    selectedSendTokenBalance = nil
+    update() // `selectedSendToken` & `selectedSendTokenBalance` need updated for new chain
+    validateSendAddress() // `sendAddress` may no longer be valid if coin type changed
   }
 
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
