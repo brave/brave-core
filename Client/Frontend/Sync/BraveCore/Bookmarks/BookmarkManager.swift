@@ -19,6 +19,9 @@ class BookmarkManager {
   init(bookmarksAPI: BraveBookmarksAPI?) {
     self.bookmarksAPI = bookmarksAPI
     BookmarkManager.rootNodeId = bookmarksAPI?.rootNode?.guid
+    waitForBookmarkModelLoaded {
+      self.recordTotalBookmarkCountP3A()
+    }
   }
 
   // MARK: Internal
@@ -300,6 +303,20 @@ class BookmarkManager {
 
   private func removeFavIconObserver(_ bookmarkItem: Bookmarkv2) {
     bookmarkItem.bookmarkFavIconObserver = nil
+  }
+  
+  // MARK: - P3A
+  
+  private func recordTotalBookmarkCountP3A() {
+    // Q5 How many bookmarks do you have?
+    guard let folders = bookmarksAPI?.mobileNode?.nestedChildFolders else { return }
+    let count = folders.reduce(0, { $0 + $1.bookmarkNode.children.filter({ !$0.isFolder }).count })
+    UmaHistogramRecordValueToBucket(
+      "Brave.Core.BookmarksCountOnProfileLoad.2",
+      buckets: [.r(0...5), .r(6...20), .r(21...100), .r(101...500),
+                .r(501...1000), .r(1001...5000), .r(5001...10000), .r(10001...)],
+      value: Int(count)
+    )
   }
 }
 
