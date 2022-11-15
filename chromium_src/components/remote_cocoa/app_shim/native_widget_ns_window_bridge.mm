@@ -30,6 +30,19 @@ void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
 void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
   // Call undocumented method of NSThemeFrame in order to reset window controls'
   // position.
+  //
+  // As for undocumented APIs, they're found by dumping Appkit classes with
+  // `class-dump` script.
+  // https://chromium.googlesource.com/external/github.com/nygard/class-dump/
+  //
+  //  There are a few sources to find dumpled headers:
+  // [1] Qt:
+  // https://github.com/qt/qt/blob/0a2f2382541424726168804be2c90b91381608c6/src/gui/kernel/qnsthemeframe_mac_p.h#L121
+  // [2] macos_headers:
+  // https://github.com/w0lfschild/macOS_headers/blob/a5c2da62810189aa7ea71e6a3e1c98d98bb6620e/macOS/Frameworks/AppKit/1348.17/NSThemeFrame.h#L393
+  //
+  // If this behavior is broken, we should run `class-dump` by ourselves and
+  // find out what can be used instead of this.
   NSView* frameView = window_.get().contentView.superview;
   DCHECK([frameView isKindOfClass:[NSThemeFrame class]]);
   [frameView performSelector:@selector(_resetTitleBarButtons)];
