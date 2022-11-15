@@ -38,6 +38,8 @@ public class BraveVpnPrefUtils {
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
     public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
+    public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING =
+            "brave_vpn_link_subscription_on_staging";
     public static final String PREF_BRAVE_VPN_START = "brave_vpn_start";
 
     public static final String PREF_BRAVE_VPN_API_AUTH_TOKEN = "brave_vpn_api_auth_token";
@@ -49,6 +51,7 @@ public class BraveVpnPrefUtils {
     public static final String PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY = "brave_vpn_client_private_key";
     public static final String PREF_SESSION_START_TIME = "brave_vpn_session_start_time";
     public static final String PREF_SESSION_END_TIME = "brave_vpn_session_end_time";
+    private static final String PREF_LINK_SUBSCRIPTION_DIALOG = "link_subscription_dialog";
 
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
@@ -60,6 +63,26 @@ public class BraveVpnPrefUtils {
     public static void setBraveVpnFeatureEnabled(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_FEATURE, newValue);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean isLinkSubscriptionOnStaging() {
+        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, false);
+    }
+
+    public static void setLinkSubscriptionOnStaging(boolean newValue) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, newValue);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean isLinkSubscriptionDialogShown() {
+        return mSharedPreferences.getBoolean(PREF_LINK_SUBSCRIPTION_DIALOG, false);
+    }
+
+    public static void setLinkSubscriptionDialogShown(boolean newValue) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_LINK_SUBSCRIPTION_DIALOG, newValue);
         sharedPreferencesEditor.apply();
     }
 
