@@ -30,7 +30,7 @@ import { mockPanelState } from '../mock-data/mock-panel-state'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
 import { configureStore } from '@reduxjs/toolkit'
-import { walletApi } from '../../common/slices/api.slice'
+import { createWalletApi } from '../../common/slices/api.slice'
 import { createPageReducer } from '../../page/reducers/page_reducer'
 import { mockPageState } from '../mock-data/mock-page-state'
 
@@ -46,6 +46,8 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
   panelStateOverride,
   walletStateOverride
 }) => {
+  // api
+  const api = createWalletApi(getMockedAPIProxy)
   // redux
   const store = React.useMemo(() => {
     return configureStore({
@@ -59,11 +61,11 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
           ...(panelStateOverride || {})
         }),
         page: createPageReducer(mockPageState),
-        [walletApi.reducerPath]: walletApi.reducer,
+        [api.reducerPath]: api.reducer,
         sendCrypto: createSendCryptoReducer(mockSendCryptoState)
       },
       devTools: true,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(walletApi.middleware)
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
     })
   }, [walletStateOverride, panelStateOverride])
 
