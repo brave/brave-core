@@ -132,6 +132,7 @@ const AccountsAndTransactionsList = (props: Props) => {
               assetBalance={getBalance(account, selectedAsset)}
               selectedNetwork={selectedAssetsNetwork}
               hideBalances={hideBalances}
+              isNft={isNonFungibleToken}
             />
           )}
           <ButtonRow>
