@@ -13,6 +13,7 @@ import {
   OpenLinkAction
 } from '../../shared/components/notifications'
 
+import { getUserType } from '../../shared/lib/user_type'
 import { ExternalWalletAction } from '../../shared/components/wallet_card'
 import { getInitialState } from './initial_state'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -218,6 +219,9 @@ export function createHost (): Host {
 
   function updateNotifications () {
     apiAdapter.getNotifications().then((notifications) => {
+      const { userVersion, externalWallet } = stateManager.getState()
+      const userType = getUserType(userVersion, externalWallet)
+
       // We do not want to display any "grant available" notifications if there
       // is no corresponding grant information available. (This can occur if the
       // grant is deleted on the server.) For any "grant available" notification
@@ -226,6 +230,13 @@ export function createHost (): Host {
       // loaded prior to this operation.
       notifications = notifications.filter((notification) => {
         if (notification.type === 'grant-available') {
+          // If the user is in the limited "unconnected" state they should not
+          // receive any grant notifications. If we recieve one, clear the
+          // notification from the store and do not display it.
+          if (userType === 'unconnected') {
+            chrome.rewardsNotifications.deleteNotification(notification.id)
+            return false
+          }
           const { id } = (notification as GrantAvailableNotification).grantInfo
           return grants.has(id)
         }

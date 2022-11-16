@@ -240,7 +240,7 @@ export function Settings () {
           }
         </style.main>
         <style.sidebar>
-          <GrantList />
+          {userType !== 'unconnected' && <GrantList />}
           <PageWallet layout={layoutKind} />
           <SidebarPromotionPanel onTakeRewardsTour={onTakeTour} />
         </style.sidebar>
