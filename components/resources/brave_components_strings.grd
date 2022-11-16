@@ -403,6 +403,8 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS" desc="">Tor Status</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Tor connected successfully</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED" desc="">Disconnected</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW" desc="">Still connecting...</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW_DESC" desc="">There's some slowness in the Tor network</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED" desc="">Tor connection failed</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">Tor is connecting... [[percentage]]%</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING" desc="">Having problems connecting? Try <ph name="BEGIN_LINK">$1</ph>turning off<ph name="END_LINK">$2</ph> Private Window with Tor and back on again in settings.</message>
