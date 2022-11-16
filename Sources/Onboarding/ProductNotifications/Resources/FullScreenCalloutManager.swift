@@ -8,36 +8,43 @@ import Shared
 import BraveShared
 import Growth
 
-struct FullScreenCalloutManager {
+public struct FullScreenCalloutManager {
 
-  enum FullScreenCalloutType {
-    case vpn, rewards, defaultBrowser, blockCookieConsentNotices
+  public enum FullScreenCalloutType {
+    case p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices
 
     /// The number of days passed to show certain type of callout
     var period: Int {
       switch self {
-      case .blockCookieConsentNotices: return 0
+      case .p3a: return 0
       case .vpn: return 4
       case .rewards: return 8
       case .defaultBrowser: return 10
+      case .blockCookieConsentNotices: return 0
       }
     }
 
     /// The preference value stored for complete state
-    var preferenceValue: Preferences.Option<Bool> {
+    public var preferenceValue: Preferences.Option<Bool> {
       switch self {
-      case .blockCookieConsentNotices: return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
-      case .vpn: return Preferences.FullScreenCallout.vpnCalloutCompleted
-      case .rewards: return Preferences.FullScreenCallout.rewardsCalloutCompleted
-      case .defaultBrowser: return Preferences.DefaultBrowserIntro.completed
+      case .p3a:
+        return Preferences.Onboarding.p3aOnboardingShown
+      case .vpn:
+        return Preferences.FullScreenCallout.vpnCalloutCompleted
+      case .rewards:
+        return Preferences.FullScreenCallout.rewardsCalloutCompleted
+      case .defaultBrowser:
+        return Preferences.DefaultBrowserIntro.completed
+      case .blockCookieConsentNotices:
+        return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
       }
     }
   }
 
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
-  static func shouldShowDefaultBrowserCallout(calloutType: FullScreenCalloutType) -> Bool {
-    guard Preferences.General.isNewRetentionUser.value == true,
+  public static func shouldShowDefaultBrowserCallout(calloutType: FullScreenCalloutType) -> Bool {
+    guard Preferences.Onboarding.isNewRetentionUser.value == true,
       let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value,
       !calloutType.preferenceValue.value
     else {

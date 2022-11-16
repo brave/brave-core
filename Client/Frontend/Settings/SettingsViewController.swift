@@ -46,6 +46,7 @@ class SettingsViewController: TableViewController {
   private let passwordAPI: BravePasswordAPI
   private let syncAPI: BraveSyncAPI
   private let syncProfileServices: BraveSyncProfileServiceIOS
+  private let p3aUtilities: BraveP3AUtils
   private let keyringStore: KeyringStore?
   private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
@@ -74,6 +75,7 @@ class SettingsViewController: TableViewController {
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
     self.syncProfileServices = braveCore.syncProfileService
+    self.p3aUtilities = braveCore.p3aUtils
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
 
@@ -205,7 +207,9 @@ class SettingsViewController: TableViewController {
               profile: self.profile,
               tabManager: self.tabManager,
               feedDataSource: self.feedDataSource,
-              historyAPI: self.historyAPI)
+              historyAPI: self.historyAPI,
+              p3aUtilities: self.p3aUtilities
+            )
             self.navigationController?.pushViewController(controller, animated: true)
           }, image: UIImage(named: "settings-shields", in: .module, compatibleWith: nil)!, accessory: .disclosureIndicator)
       ],
@@ -660,6 +664,14 @@ class SettingsViewController: TableViewController {
             self.displayBraveSearchDebugMenu()
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
+          text: "View Brave Histogram (p3a) Logs",
+          selection: { [unowned self] in
+            let histogramsController = self.p3aUtilities.histogramsController().then {
+              $0.title = "Histograms (p3a)"
+            }
+            self.navigationController?.pushViewController(histogramsController, animated: true)
+          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+        Row(
           text: "VPN Logs",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)
@@ -667,7 +679,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Retention Preferences Debug Menu",
           selection: { [unowned self] in
-            self.navigationController?.pushViewController(RetentionPreferencesDebugMenuViewController(), animated: true)
+            self.navigationController?.pushViewController(RetentionPreferencesDebugMenuViewController(p3aUtilities: p3aUtilities), animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
           text: "Load all QA Links",

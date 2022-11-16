@@ -11,6 +11,7 @@ import SwiftKeychainWrapper
 import SwiftUI
 import BraveVPN
 import Onboarding
+import SafariServices
 
 // MARK: - Callouts
 
@@ -27,6 +28,51 @@ extension BrowserViewController {
       controller.modalPresentationStyle = .overFullScreen
       // No animation to ensure we don't leak the users tabs
       present(controller, animated: false)
+    }
+  }
+  
+  func presentP3AScreenCallout() {
+    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
+
+    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .p3a) {
+      return
+    }
+    
+    let onboardingP3ACalloutController = Welcome3PAViewController().then {
+      $0.isModalInPresentation = true
+      $0.modalPresentationStyle = .overFullScreen
+    }
+
+    let state = WelcomeViewCalloutState.p3a(
+      info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
+        title: Strings.Callout.p3aCalloutTitle,
+        toggleTitle: Strings.Callout.p3aCalloutToggleTitle,
+        details: Strings.Callout.p3aCalloutDescription,
+        linkDescription: Strings.Callout.p3aCalloutLinkTitle,
+        primaryButtonTitle: Strings.done,
+        toggleAction: { [weak self] isOn in
+          self?.braveCore.p3aUtils.isP3AEnabled = isOn
+        },
+        linkAction: { url in
+          let p3aLearnMoreController = SFSafariViewController(url: BraveUX.braveP3ALearnMoreURL, configuration: .init())
+          p3aLearnMoreController.modalPresentationStyle = .currentContext
+          
+          onboardingP3ACalloutController.present(p3aLearnMoreController, animated: true)
+        },
+        primaryButtonAction: { [weak self] in
+          Preferences.Onboarding.p3aOnboardingShown.value = true
+
+          self?.isOnboardingOrFullScreenCalloutPresented = true
+          self?.dismiss(animated: false)
+        }
+      )
+    )
+
+    onboardingP3ACalloutController.setLayoutState(state: state)
+    
+    if !isOnboardingOrFullScreenCalloutPresented {
+      braveCore.p3aUtils.isNoticeAcknowledged = true
+      present(onboardingP3ACalloutController, animated: false)
     }
   }
 
@@ -79,7 +125,7 @@ extension BrowserViewController {
           details: Strings.Callout.defaultBrowserCalloutDescription,
           primaryButtonTitle: Strings.Callout.defaultBrowserCalloutPrimaryButtonTitle,
           secondaryButtonTitle: Strings.Callout.defaultBrowserCalloutSecondaryButtonTitle,
-          primaryAction: { [weak self] in
+          primaryButtonAction: { [weak self] in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
               return
             }
@@ -90,13 +136,13 @@ extension BrowserViewController {
             UIApplication.shared.open(settingsUrl)
             self?.dismiss(animated: false)
           },
-          secondaryAction: { [weak self] in
+          secondaryButtonAction: { [weak self] in
             self?.isOnboardingOrFullScreenCalloutPresented = true
 
             self?.dismiss(animated: false)
           }
         )
-      )
+      ), p3aUtilities: braveCore.p3aUtils
     )
 
     if !isOnboardingOrFullScreenCalloutPresented {

@@ -21,16 +21,25 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
   let tabManager: TabManager
   let feedDataSource: FeedDataSource
   let historyAPI: BraveHistoryAPI
+  let p3aUtilities: BraveP3AUtils
+
   private let cookieConsentNoticesRowUUID = UUID()
   private var filterListsSubscription: AnyCancellable?
   private var currentCookieConsentNoticeBlockingState: Bool
 
-  init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, historyAPI: BraveHistoryAPI) {
+  init(
+    profile: Profile,
+    tabManager: TabManager,
+    feedDataSource: FeedDataSource,
+    historyAPI: BraveHistoryAPI,
+    p3aUtilities: BraveP3AUtils
+  ) {
     self.profile = profile
     self.tabManager = tabManager
     self.feedDataSource = feedDataSource
     self.historyAPI = historyAPI
-    
+    self.p3aUtilities = p3aUtilities
+
     self.currentCookieConsentNoticeBlockingState = FilterListResourceDownloader.shared.isEnabled(
       for: FilterList.cookieConsentNoticesComponentID
     )
@@ -264,6 +273,16 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
   }()
 
   private lazy var otherSettingsSection: Section = {
+    let p3aRow = Row.boolRow(
+      title: Strings.P3A.settingTitle,
+      detailText: Strings.P3A.settingSubtitle,
+      toggleValue: p3aUtilities.isP3AEnabled,
+      valueChange: { [unowned self] isOn in
+        p3aUtilities.isP3AEnabled = isOn
+      },
+      cellReuseId: "p3a"
+    )
+    
     var section = Section(
       header: .title(Strings.otherPrivacySettingsSection),
       rows: [
@@ -289,6 +308,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         )
       )
     }
+    section.rows.append(p3aRow)
     
     return section
   }()

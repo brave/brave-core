@@ -266,6 +266,30 @@ extension Strings {
         tableName: "BraveShared", bundle: .module,
         value: "Tab Received",
         comment: "Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. ")
+    public static let p3aCalloutTitle =
+      NSLocalizedString(
+        "callout.p3aCalloutTitle",
+        tableName: "BraveShared", bundle: .module,
+        value: "Help make Brave better.",
+        comment: "Title for p3a (Privacy Preserving Analytics) Full Screen Callout")
+    public static let p3aCalloutDescription =
+      NSLocalizedString(
+        "callout.p3aCalloutDescription",
+        tableName: "BraveShared", bundle: .module,
+        value: "This helps us learn what Brave features are used most often. Change this at any time in Brave Settings under ‘Brave Shields and Privacy’.",
+        comment: "Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout")
+    public static let p3aCalloutToggleTitle =
+      NSLocalizedString(
+        "callout.p3aCalloutToggleTitle",
+        tableName: "BraveShared", bundle: .module,
+        value: "Share anonymous, private product insights. ",
+        comment: "Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout")
+    public static let p3aCalloutLinkTitle =
+      NSLocalizedString(
+        "callout.p3aCalloutLinkTitle",
+        tableName: "BraveShared", bundle: .module,
+        value: "Learn more about our Privacy Preserving Product Analytics (P3A).",
+        comment: "Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics)")
   }
 }
 
@@ -980,7 +1004,7 @@ extension Strings {
   public static let HTTPSEverywhere = NSLocalizedString("HTTPSEverywhere", tableName: "BraveShared", bundle: .module, value: "Upgrade Connections to HTTPS", comment: "")
   public static let HTTPSEverywhereDescription = NSLocalizedString("HTTPSEverywhereDescription", tableName: "BraveShared", bundle: .module, value: "Opens sites using secure HTTPS instead of HTTP when possible.", comment: "")
   public static let blockPhishingAndMalware = NSLocalizedString("BlockPhishingAndMalware", tableName: "BraveShared", bundle: .module, value: "Block Phishing and Malware", comment: "")
-  public static let googleSafeBrowsing = NSLocalizedString("GoogleSafeBrowsing", tableName: "BraveShared", bundle: .module, value: "Block dangerous sites", comment: "")
+  public static let googleSafeBrowsing = NSLocalizedString("GoogleSafeBrowsing", tableName: "BraveShared", bundle: .module, value: "Block Dangerous Sites", comment: "")
   public static let googleSafeBrowsingUsingWebKitDescription = NSLocalizedString("GoogleSafeBrowsingUsingWebKitDescription", tableName: "BraveShared", bundle: .module, value: "Sends obfuscated URLs of some pages you visit to the Google Safe Browsing service, when your security is at risk.", comment: "")
   public static let contentFiltering = NSLocalizedString("ContentFiltering", tableName: "BraveShared", bundle: .module, value: "Content Filtering", comment: "A title to the content filtering page under global shield settings and the title on the Content filtering page")
   public static let blockMobileAnnoyances = NSLocalizedString("blockMobileAnnoyances", tableName: "BraveShared", bundle: .module, value: "Block 'Switch to App' Notices", comment: "A title for setting which blocks 'switch to app' popups")
@@ -4090,6 +4114,21 @@ extension Strings {
       value: "Open Privacy Hub",
       comment: "The title of the button action which open the privacy hub"
     )
+  }
+}
+
+// P3A
+extension Strings {
+  public struct P3A {
+    public static let settingTitle = NSLocalizedString(
+      "p3a.settingTitle", tableName: "BraveShared", bundle: .module,
+      value: "Product Analytics",
+      comment: "The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave.")
+    
+    public static let settingSubtitle = NSLocalizedString(
+      "p3a.settingSubtitle", tableName: "BraveShared", bundle: .module,
+      value: "Share anonymous, private product insights. This helps us learn what Brave features are used most often.",
+      comment: "A subtitle shown on the setting that toggles analytics on Brave.")
   }
 }
 

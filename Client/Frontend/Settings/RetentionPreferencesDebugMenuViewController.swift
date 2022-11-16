@@ -10,10 +10,13 @@ import BraveShared
 import UIKit
 import BraveUI
 import Onboarding
+import BraveCore
 
 class RetentionPreferencesDebugMenuViewController: TableViewController {
+  private let p3aUtilities: BraveP3AUtils
 
-  init() {
+  init(p3aUtilities: BraveP3AUtils) {
+    self.p3aUtilities = p3aUtilities
     super.init(style: .insetGrouped)
   }
 
@@ -52,7 +55,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
         .init(
           text: "Start Onboarding",
           selection: { [unowned self] in
-            let onboardingController = WelcomeViewController()
+            let onboardingController = WelcomeViewController(state: .loading, p3aUtilities: self.p3aUtilities)
             onboardingController.modalPresentationStyle = .fullScreen
 
             present(onboardingController, animated: false)
@@ -104,11 +107,11 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
         .boolRow(
           title: "Retention User",
           detailText: "Flag showing if the user installed the application after new onboarding is added.",
-          toggleValue: Preferences.General.isNewRetentionUser.value ?? false,
+          toggleValue: Preferences.Onboarding.isNewRetentionUser.value ?? false,
           valueChange: {
             if $0 {
               let status = $0
-              Preferences.General.isNewRetentionUser.value = status
+              Preferences.Onboarding.isNewRetentionUser.value = status
             }
           },
           cellReuseId: "RetentionUserCell"),

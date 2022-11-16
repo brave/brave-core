@@ -24,8 +24,7 @@ public struct BraveUX {
   public static let ntpTutorialPageURL = URL(string: "https://brave.com/ja/ntp-tutorial")
   public static let privacyReportsURL = URL(string: "https://brave.com/privacy-features/")!
   public static let braveWalletNetworkLearnMoreURL = URL(string: "https://support.brave.com")!
-
-  public static let textFieldCornerRadius: CGFloat = 8.0
+  public static let braveP3ALearnMoreURL = URL(string: "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-")!
 
   public static let faviconBorderColor = UIColor(white: 0, alpha: 0.2)
   public static let faviconBorderWidth = 1.0 / UIScreen.main.scale

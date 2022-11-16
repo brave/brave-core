@@ -352,6 +352,7 @@ let package = Package(
         "BraveCore",
         "Fuzi",
         "Storage",
+        "Growth",
         .product(name: "Lottie", package: "lottie-ios")
       ],
       resources: [
@@ -359,7 +360,7 @@ let package = Package(
         .copy("LottieAssets/onboarding-rewards.json"),
         .copy("LottieAssets/onboarding-shields.json"),
         .copy("Welcome/Resources/disconnect-entitylist.json"),
-        .copy("ProductNotifications/blocking-summary.json")
+        .copy("ProductNotifications/Resources/blocking-summary.json")
       ],
       plugins: ["LoggerPlugin"]
     ),

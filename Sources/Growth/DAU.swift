@@ -363,7 +363,7 @@ public class DAU {
 
 extension Date {
   /// Returns date of current week's monday in YYYY-MM-DD formatted String
-  var mondayOfCurrentWeekFormatted: String? {
+  public var mondayOfCurrentWeekFormatted: String? {
     // We look for a previous monday because Sunday is considered a beggining of a new week using default gregorian calendar.
     // For example if today is Sunday, the next Monday using Calendar would be the day after Sunday which is wrong.
     // That's why backward search may sound counter intuitive.

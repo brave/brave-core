@@ -8,6 +8,9 @@ import UIKit
 import SnapKit
 import BraveShared
 import Shared
+import BraveCore
+import BraveUI
+import SafariServices
 
 private enum WelcomeViewID: Int {
   case background = 1
@@ -22,13 +25,15 @@ private enum WelcomeViewID: Int {
 
 public class WelcomeViewController: UIViewController {
   private var state: WelcomeViewCalloutState?
+  private let p3aUtilities: BraveP3AUtils
 
-  public convenience init() {
-    self.init(state: .loading)
+  public convenience init(p3aUtilities: BraveP3AUtils) {
+    self.init(state: .loading, p3aUtilities: p3aUtilities)
   }
 
-  public init(state: WelcomeViewCalloutState?) {
+  public init(state: WelcomeViewCalloutState?, p3aUtilities: BraveP3AUtils) {
     self.state = state
+    self.p3aUtilities = p3aUtilities
     super.init(nibName: nil, bundle: nil)
     
     self.transitioningDelegate = self
@@ -196,7 +201,7 @@ public class WelcomeViewController: UIViewController {
     }
   }
 
-  private func setLayoutState(state: WelcomeViewCalloutState) {
+  public func setLayoutState(state: WelcomeViewCalloutState) {
     self.state = state
 
     switch state {
@@ -261,7 +266,7 @@ public class WelcomeViewController: UIViewController {
         $0.height.equalTo(180.0)
       }
       calloutView.setState(state: state)
-    case .settings:
+    case .p3a, .settings:
       let topTransform = { () -> CGAffineTransform in
         var transformation = CGAffineTransform.identity
         transformation = transformation.scaledBy(x: 1.5, y: 1.5)
@@ -284,7 +289,6 @@ public class WelcomeViewController: UIViewController {
         $0.height.equalTo(180.0)
       }
       calloutView.setState(state: state)
-      
     case .defaultBrowserCallout:
       let topTransform = { () -> CGAffineTransform in
         var transformation = CGAffineTransform.identity
@@ -313,25 +317,25 @@ public class WelcomeViewController: UIViewController {
   }
 
   private func animateToWelcomeState() {
-    let nextController = WelcomeViewController(state: nil).then {
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities).then {
         $0.setLayoutState(state: WelcomeViewCalloutState.welcome(title: Strings.Onboarding.welcomeScreenTitle))
       }
     present(nextController, animated: true)
   }
 
   private func animateToDefaultBrowserState() {
-    let nextController = WelcomeViewController(state: nil)
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities)
     let state = WelcomeViewCalloutState.defaultBrowser(
       info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
         title: Strings.Callout.defaultBrowserCalloutTitle,
         details: Strings.Callout.defaultBrowserCalloutDescription,
         primaryButtonTitle: Strings.Callout.defaultBrowserCalloutPrimaryButtonTitle,
         secondaryButtonTitle: Strings.DefaultBrowserCallout.introSkipButtonText,
-        primaryAction: {
+        primaryButtonAction: {
           nextController.animateToDefaultSettingsState()
         },
-        secondaryAction: {
-          self.close()
+        secondaryButtonAction: {
+          nextController.animateToP3aState()
         }
       )
     )
@@ -340,7 +344,7 @@ public class WelcomeViewController: UIViewController {
   }
   
   private func animateToDefaultSettingsState() {
-    let nextController = WelcomeViewController(state: nil).then {
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities).then {
         $0.setLayoutState(
           state: WelcomeViewCalloutState.settings(
             title: Strings.Onboarding.navigateSettingsOnboardingScreenTitle,
@@ -351,13 +355,47 @@ public class WelcomeViewController: UIViewController {
       Preferences.Onboarding.basicOnboardingDefaultBrowserSelected.value = true
     }
   }
+  
+  private func animateToP3aState() {
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities)
+    let state = WelcomeViewCalloutState.p3a(
+      info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
+        title: Strings.Callout.p3aCalloutTitle,
+        toggleTitle: Strings.Callout.p3aCalloutToggleTitle,
+        details: Strings.Callout.p3aCalloutDescription,
+        linkDescription: Strings.Callout.p3aCalloutLinkTitle,
+        primaryButtonTitle: Strings.done,
+        toggleAction: { [weak self] isOn in
+          self?.p3aUtilities.isP3AEnabled = isOn
+        },
+        linkAction: { url in
+          let p3aLearnMoreController = SFSafariViewController(url: BraveUX.braveP3ALearnMoreURL, configuration: .init())
+          p3aLearnMoreController.modalPresentationStyle = .currentContext
+          
+          nextController.present(p3aLearnMoreController, animated: true)
+        },
+        
+        primaryButtonAction: { [weak self] in
+          self?.close()
+        }
+      )
+    )
+   
+    nextController.setLayoutState(state: state)
+    
+    present(nextController, animated: true) { [unowned self] in
+      self.p3aUtilities.isNoticeAcknowledged = true
+      Preferences.Onboarding.p3aOnboardingShown.value = true
+    }
+  }
 
   private func onSetDefaultBrowser() {
     guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
       return
     }
     UIApplication.shared.open(settingsUrl)
-    self.close()
+    
+    animateToP3aState()
   }
 
   private func close() {

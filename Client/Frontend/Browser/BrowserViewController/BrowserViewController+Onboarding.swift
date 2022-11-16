@@ -32,8 +32,8 @@ extension BrowserViewController {
     // 1. User is brand new
     // 2. User hasn't completed onboarding
     if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue,
-       Preferences.General.isNewRetentionUser.value == true {
-      let onboardingController = WelcomeViewController()
+       Preferences.Onboarding.isNewRetentionUser.value == true {
+      let onboardingController = WelcomeViewController(p3aUtilities: braveCore.p3aUtils)
       onboardingController.modalPresentationStyle = .fullScreen
       parentController.present(onboardingController, animated: false)
       isOnboardingOrFullScreenCalloutPresented = true
@@ -58,7 +58,7 @@ extension BrowserViewController {
        Preferences.DebugFlag.skipNTPCallouts != true {
       
       if !Preferences.FullScreenCallout.omniboxCalloutCompleted.value,
-          Preferences.General.isNewRetentionUser.value == true {
+          Preferences.Onboarding.isNewRetentionUser.value == true {
         presentOmniBoxOnboarding()
         addNTPTutorialPage()
       }

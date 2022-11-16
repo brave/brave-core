@@ -45,8 +45,6 @@ extension Preferences {
   final public class General {
     /// Whether this is the first time user has ever launched Brave after intalling. *Should never be set to `true` manually!*
     public static let isFirstLaunch = Option<Bool>(key: "general.first-launch", default: true)
-    /// Whether this is a new user who installed the application after onboarding retention updates
-    public static let isNewRetentionUser = Option<Bool?>(key: "general.new-retention", default: nil)
     /// Whether or not to save logins in Brave
     static let saveLogins = Option<Bool>(key: "general.save-logins", default: true)
     /// Whether or not to block popups from websites automaticaly
@@ -93,43 +91,6 @@ extension Preferences {
     static var defaultPageZoomLevel = Option<Double>(key: "general.default-page-zoom-level", default: 1.0)
     
     static let isUsingBottomBar = Option<Bool>(key: "general.bottom-bar", default: false)
-  }
-
-  final public class FullScreenCallout {
-    /// Whether the block cookie consent notices callout is shown.
-    static let blockCookieConsentNoticesCalloutCompleted =
-      Option<Bool>(key: "fullScreenCallout.full-screen-cookie-consent-notices-callout-completed", default: false)
-    
-    /// Whether the vpn callout is shown.
-    static let vpnCalloutCompleted =
-      Option<Bool>(key: "fullScreenCallout.full-screen-vpn-callout-completed", default: false)
-
-    /// Whether the rewards callout is shown.
-    static let rewardsCalloutCompleted =
-      Option<Bool>(key: "fullScreenCallout.full-screen-rewards-callout-completed", default: false)
-
-    /// Whether the whats new callout should be shown.
-    static let whatsNewCalloutOptIn =
-      Option<Bool>(key: "fullScreenCallout.full-screen-whats-new-callout-completed", default: false)
-
-    /// Whether the ntp callout is shown.
-    static let ntpCalloutCompleted =
-      Option<Bool>(key: "fullScreenCallout.full-screen-ntp-callout-completed", default: false)
-    
-    /// Whether the omnibox callout is shown.
-    static let omniboxCalloutCompleted =
-      Option<Bool>(key: "fullScreenCallout.full-screen-omnibox-callout-completed", default: false)
-  }
-
-  final public class DefaultBrowserIntro {
-    /// Whether the default browser onboarding completed. This can happen by opening app settings or after the user
-    /// dismissed the intro screen enough amount of times.
-    static let completed =
-      Option<Bool>(key: "defaultBrowserIntro.intro-completed", default: false)
-
-    /// Whether system notification showed or not
-    static let defaultBrowserNotificationScheduled =
-      Option<Bool>(key: "general.default-browser-notification-scheduled", default: false)
   }
 
   final public class Search {
