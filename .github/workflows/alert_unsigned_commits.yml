@@ -24,6 +24,7 @@ jobs:
         run: |
           env | grep -i GIT | sort  # TODO remove before merge
           set -x # TODO remove before merge
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
 
           BRAVE_CORE_PATH=/repos/brave/brave-core
           post_once() {
@@ -31,13 +32,13 @@ jobs:
               grep -q "$(head -1 <<<"$1")" <<<"$comments" || gh pr comment "$GITHUB_HEAD_REF" -b "$1"
           }
 
-          commit=$(gh api -H "Accept: application/vnd.github+json" "${BRAVE_CORE_PATH}/commits/${GITHUB_SHA}")
+          commit=$(gh api -H "Accept: application/vnd.github+json" "${BRAVE_CORE_PATH}/commits/${HEAD_SHA}")
           verification=$(jq -r .commit.verification <<<"$commit")
           verified=$(jq -r .verified <<<"$verification")
           author_login=$(jq -r .author.login <<<"$commit")
           if [[ "$verified" != "true" ]]; then
               msg=":warning: Found unsigned commit
-          commit: ${GITHUB_SHA}
+          commit: ${HEAD_SHA}
           reason: $(jq -r .reason <<<"$verification")
           Please follow the handbook to configure [commit signing](https://github.com/brave/handbook/blob/master/development/commit-and-tag-signing.md)
           cc: @${author_login}
