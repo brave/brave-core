@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { StyledButton } from '../../shared.styles'
+import { StyledButton, StyledDiv } from '../../shared.styles'
 
 import {
   AssetIconProps,
@@ -31,24 +31,32 @@ export const NetworkIconWrapper = styled.div`
   padding: 2px;
 `
 
-export const Button = styled(StyledButton) <{ morePadding?: boolean }>`
-  --button-background-hover: ${(p) => p.theme.palette.white};
-  --button-shadow-hover: 0px 0px 16px rgba(99, 105, 110, 0.18);
+export const ButtonWrapper = styled(StyledDiv)`
+  --background-hover: ${(p) => p.theme.palette.white};
+  --shadow-hover: 0px 0px 16px rgba(99, 105, 110, 0.18);
   @media (prefers-color-scheme: dark) {
-    --button-background-hover: transparent;
-    --button-shadow-hover: 0px 0px 16px rgba(0, 0, 0, 0.36);
+    --background-hover: transparent;
+    --shadow-hover: 0px 0px 16px rgba(0, 0, 0, 0.36);
   }
+  flex-direction: row;
   background-color: transparent;
   border-radius: 8px;
   justify-content: space-between;
-  padding: 8px;
   white-space: nowrap;
   width: 100%;
   margin-bottom: 8px;
   &:hover {
-    background-color: var(--button-background-hover);
-    box-shadow: var(--button-shadow-hover);
+    background-color: var(--background-hover);
+    box-shadow: var(--shadow-hover);
   }
+`
+
+export const Button = styled(StyledButton)`
+  background-color: transparent;
+  justify-content: space-between;
+  padding: 8px;
+  white-space: nowrap;
+  width: 100%;
 `
 
 export const IconsWrapper = styled.div`

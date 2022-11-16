@@ -644,6 +644,7 @@ provideStrings({
   braveWalletNFTDetailBlockchain: 'Blockchain',
   braveWalletNFTDetailTokenStandard: 'Token standard',
   braveWalletNFTDetailTokenID: 'Token ID',
+  braveWalletNFTDetailContractAddress: 'Contract address',
 
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
