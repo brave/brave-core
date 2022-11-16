@@ -10,6 +10,7 @@ import DataContext from '../../state/context'
 import { useShouldPlayAnimations } from '../../state/hooks'
 import { DefaultBrowserBrowserProxyImpl } from '../../api/default_browser_proxy'
 import { ViewType } from '../../state/component_types'
+import { BravePrivacyBrowserProxyImpl } from '../../api/privacy_data_browser'
 import Button from '$web-components/button'
 import { getLocale } from '$web-common/locale'
 import braveLogoUrl from '../../assets/brave_logo_3d@2x.png'
@@ -20,12 +21,14 @@ function Welcome () {
   const shouldPlayAnimations = useShouldPlayAnimations()
 
   const handleSetAsDefaultBrowser = () => {
+    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.Default, isFinished: false, isSkipped: false })
     DefaultBrowserBrowserProxyImpl.getInstance().setAsDefaultBrowser()
     setViewType(ViewType.SelectBrowser)
     scenes?.s1.play()
   }
 
   const handleSkip = () => {
+    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.Default, isFinished: false, isSkipped: true })
     setViewType(ViewType.SelectBrowser)
     scenes?.s1.play()
   }

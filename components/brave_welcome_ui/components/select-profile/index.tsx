@@ -12,6 +12,7 @@ import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
 import { ImportDataBrowserProxyImpl } from '../../api/import_data_browser'
+import { BravePrivacyBrowserProxyImpl } from '../../api/privacy_data_browser'
 import { getLocale } from '$web-common/locale'
 
 interface ProfileItemProps {
@@ -77,6 +78,8 @@ function SelectProfile () {
       ImportDataBrowserProxyImpl.getInstance().importData(entry)
       incrementCount()
     })
+
+    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.SelectProfile, isFinished: false, isSkipped: false })
   }
 
   return (

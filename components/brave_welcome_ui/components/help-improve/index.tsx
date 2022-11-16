@@ -8,6 +8,7 @@ import * as React from 'react'
 import * as S from './style'
 import Button from '$web-components/button'
 import { BravePrivacyBrowserProxyImpl } from '../../api/privacy_data_browser'
+import { ViewType } from '../../state/component_types'
 import { getLocale } from '$web-common/locale'
 
 interface InputCheckboxProps {
@@ -45,9 +46,10 @@ function HelpImprove () {
     setMetricsReportingEnabled(!isMetricsReportingEnabled)
   }
 
-  const handleNext = () => {
+  const handleFinish = () => {
     BravePrivacyBrowserProxyImpl.getInstance().setP3AEnabled(isP3AEnabled)
     BravePrivacyBrowserProxyImpl.getInstance().setMetricsReportingEnabled(isMetricsReportingEnabled)
+    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.HelpImprove, isFinished: true, isSkipped: false })
     window.open('chrome://newtab', '_self')
   }
 
@@ -79,10 +81,10 @@ function HelpImprove () {
         <div className="box-center">
           <Button
             isPrimary={true}
-            onClick={handleNext}
+            onClick={handleFinish}
             scale="jumbo"
           >
-            {getLocale('braveWelcomeNextButtonLabel')}
+            {getLocale('braveWelcomeFinishButtonLabel')}
           </Button>
           <S.FootNote>
             Change these choices at any time in Brave at brave://settings/privacy.

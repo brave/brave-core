@@ -17,6 +17,7 @@ provideStrings({
   braveWelcomeSkipButtonLabel: 'Skip',
   braveWelcomeBackButtonLabel: 'Back',
   braveWelcomeNextButtonLabel: 'Next',
+  braveWelcomeFinishButtonLabel: 'Finish',
   braveWelcomeSetDefaultButtonLabel: 'Set Brave as default browser',
   braveWelcomeSelectAllButtonLabel: 'Select All',
   braveWelcomeHelpImproveBraveTitle: 'Help improve Brave',

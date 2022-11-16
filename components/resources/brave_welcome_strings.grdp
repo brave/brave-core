@@ -44,6 +44,10 @@
   Next
 </message>
 
+<message name="IDS_BRAVE_WELCOME_FINISH_BUTTON_LABEL" desc="">
+  Finish
+</message>
+
 <message name="IDS_BRAVE_WELCOME_SET_DEFAULT_BUTTON_LABEL" desc="">
   Set Brave as default browser
 </message>
