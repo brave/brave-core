@@ -46,17 +46,17 @@ declare_args() {
 }
 
 declare_args() {
-  if (is_official_build) {
-    # Generate all symbols (breakpad + native) for Release builds
-    brave_debug_symbol_level = 2
-  } else {
-    brave_debug_symbol_level = 0
-  }
+  # Generate symbols for Release builds.
+  # MacOS requires dSYMs and non-component build, otherwise upstream dump syms
+  # target is a no-op.
+  should_generate_symbols =
+      is_official_build && (!is_mac || (enable_dsyms && !is_component_build))
 }
 
-should_generate_breakpad_symbols =
-    brave_debug_symbol_level != 0 &&
-    (!is_apple || (enable_dsyms && !is_component_build))
+if (should_generate_symbols && is_mac) {
+  assert(enable_dsyms && !is_component_build,
+         "Incompatible args to generate symbols on MacOS")
+}
 
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 

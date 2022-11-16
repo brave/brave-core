@@ -1,14 +1,7 @@
 import("//brave/build/config.gni")
 import("//chrome/version.gni")
 
-group("dist_resources") {
-}
-
-group("symbol_dist_resources") {
-  public_deps = [ ":generate_breakpad_symbols" ]
-}
-
-if (should_generate_breakpad_symbols) {
+if (should_generate_symbols) {
   action("generate_breakpad_symbols") {
     script = "//brave/tools/mac/generate_breakpad_symbols.py"
 
@@ -28,4 +21,11 @@ if (should_generate_breakpad_symbols) {
 } else {
   group("generate_breakpad_symbols") {
   }
+}
+
+group("dist_resources") {
+}
+
+group("symbol_dist_resources") {
+  public_deps = [ ":generate_breakpad_symbols" ]
 }

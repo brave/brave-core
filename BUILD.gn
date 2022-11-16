@@ -376,7 +376,7 @@ template("create_dist_template") {
   }
 }
 
-if (should_generate_breakpad_symbols) {
+if (should_generate_symbols) {
   create_dist_template("create_breakpad_symbols_dist") {
     if (is_android) {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
@@ -410,8 +410,8 @@ if (should_generate_breakpad_symbols) {
 }
 
 group("create_symbols_dist") {
-  if (should_generate_breakpad_symbols) {
-    deps = [
+  if (should_generate_symbols) {
+    public_deps = [
       ":create_breakpad_symbols_dist",
       ":create_native_symbols_dist",
     ]
