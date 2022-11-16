@@ -97,6 +97,12 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         self?.recordGlobalAdBlockShieldsP3A()
       }
       .store(in: &cancellables)
+    
+    Preferences.Shields.fingerprintingProtection.$value
+      .sink { [weak self] _ in
+        self?.recordGlobalFingerprintingShieldsP3A()
+      }
+      .store(in: &cancellables)
   }
   
   // MARK: - P3A
@@ -110,6 +116,17 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     }
     let answer: Answer = Preferences.Shields.blockAdsAndTracking.value ? .standard : .disabled
     UmaHistogramEnumeration("Brave.Shields.AdBlockSetting", sample: answer)
+  }
+  
+  private func recordGlobalFingerprintingShieldsP3A() {
+    // Q47 What is the global fingerprinting shields setting?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case standard = 1
+      case aggressive = 2
+    }
+    let answer: Answer = Preferences.Shields.fingerprintingProtection.value ? .standard : .disabled
+    UmaHistogramEnumeration("Brave.Shields.FingerprintBlockSetting", sample: answer)
   }
 
   // MARK: - Sections
