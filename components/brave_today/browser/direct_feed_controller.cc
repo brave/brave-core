@@ -18,7 +18,6 @@
 #include "base/callback.h"
 #include "base/containers/flat_set.h"
 #include "base/guid.h"
-#include "base/i18n/icu_string_conversions.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -193,12 +192,14 @@ void DirectFeedController::FindFeeds(
             std::string mime_type;
             GURL final_url(loader->GetFinalURL());
             base::flat_map<std::string, std::string> headers;
+            std::string charset = "utf8";
             if (loader->ResponseInfo()) {
               auto headers_list = loader->ResponseInfo()->headers;
               mime_type = loader->ResponseInfo()->mime_type;
               if (headers_list) {
                 response_code = headers_list->response_code();
               }
+              charset = loader->ResponseInfo()->charset;
             }
             direct_feed_controller->url_loaders_.erase(iter);
 
@@ -217,7 +218,7 @@ void DirectFeedController::FindFeeds(
                 feed_url, body_content,
                 base::BindOnce(
                     [](const GURL& feed_url, const GURL& final_url,
-                       const std::string& mime_type,
+                       const std::string& charset, const std::string& mime_type,
                        const std::string& body_content,
                        DirectFeedController* direct_feed_controller,
                        mojom::BraveNewsController::FindFeedsCallback callback,
@@ -238,7 +239,7 @@ void DirectFeedController::FindFeeds(
                         VLOG(1) << "Had html type";
                         // Get feed links from doc
                         auto feed_urls = GetFeedURLsFromHTMLDocument(
-                            body_content, final_url);
+                            charset, body_content, final_url);
                         auto all_done_handler = base::BindOnce(
                             [](mojom::BraveNewsController::FindFeedsCallback
                                    callback,
@@ -281,7 +282,7 @@ void DirectFeedController::FindFeeds(
                       VLOG(2) << body_content;
                       std::move(callback).Run(std::move(results));
                     },
-                    feed_url, final_url, mime_type, body_content,
+                    feed_url, final_url, charset, mime_type, body_content,
                     base::Unretained(direct_feed_controller),
                     std::move(callback)));
           },
