@@ -3,7 +3,7 @@ on:
   pull_request_review:
     types: [submitted]
   pull_request:
-    types: [reopened]
+    types: [reopened, synchronize]
   # push:
   #   branches:
   #     - "aka/alert-on-unsigned-commits"
@@ -26,13 +26,13 @@ jobs:
           set -x # TODO remove before merge
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
 
-          BRAVE_CORE_PATH=/repos/brave/brave-core
+          BRAVE_CORE_PATH=brave/brave-core
           post_once() {
-              comments=$(gh pr view "$GITHUB_HEAD_REF" --json comments --jq ".comments[].body")
-              grep -q "$(head -1 <<<"$1")" <<<"$comments" || gh pr comment "$GITHUB_HEAD_REF" -b "$1"
+              comments=$(gh -R "$BRAVE_CORE_PATH" pr view "$GITHUB_HEAD_REF" --json comments --jq ".comments[].body")
+              grep -q "$(head -1 <<<"$1")" <<<"$comments" || gh -R "$BRAVE_CORE_PATH" pr comment "$GITHUB_HEAD_REF" -b "$1"
           }
 
-          commit=$(gh api -H "Accept: application/vnd.github+json" "${BRAVE_CORE_PATH}/commits/${HEAD_SHA}")
+          commit=$(gh api -H "Accept: application/vnd.github+json" "/repos/${BRAVE_CORE_PATH}/commits/${HEAD_SHA}")
           verification=$(jq -r .commit.verification <<<"$commit")
           verified=$(jq -r .verified <<<"$verification")
           author_login=$(jq -r .author.login <<<"$commit")
