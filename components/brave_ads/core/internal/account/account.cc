@@ -135,8 +135,14 @@ void Account::Deposit(const std::string& creative_instance_id,
   DCHECK_NE(AdType::kUndefined, ad_type);
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
+  if (!ShouldRewardUser() && ad_type != AdType::kInlineContentAd) {
+    // We should not process deposits for users who have not joined Brave
+    // Rewards and have not opted-in to Brave News.
+    return;
+  }
+
   std::unique_ptr<DepositInterface> deposit =
-      DepositsFactory::Build(ad_type, confirmation_type);
+      DepositsFactory::Build(confirmation_type);
   if (!deposit) {
     return;
   }
