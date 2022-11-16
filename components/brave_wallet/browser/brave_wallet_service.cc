@@ -155,6 +155,8 @@ const char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageDaysInWeek";
 const char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly.2";
 const char kBraveWalletNewUserReturningHistogramName[] =
     "Brave.Wallet.NewUserReturning";
+const char kBraveWalletLastUsageTimeHistogramName[] =
+    "Brave.Wallet.LastUsageTime";
 
 BraveWalletService::BraveWalletService(
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
@@ -951,6 +953,9 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
   p3a_utils::RecordFeatureNewUserReturning(
       prefs_, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
       kBraveWalletP3AUsedSecondDay, kBraveWalletNewUserReturningHistogramName);
+  p3a_utils::RecordFeatureLastUsageTimeMetric(
+      prefs_, kBraveWalletP3ALastUnlockTime,
+      kBraveWalletLastUsageTimeHistogramName);
 }
 
 void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,

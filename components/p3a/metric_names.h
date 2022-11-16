@@ -90,6 +90,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.DefaultSolanaWalletSetting",
     "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
+    "Brave.Wallet.LastUsageTime",
     "Brave.Wallet.NewUserReturning",
     "Brave.Wallet.OnboardingConversion.2",
     "Brave.Wallet.SolTransactionSent",
