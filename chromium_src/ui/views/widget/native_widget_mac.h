@@ -14,6 +14,7 @@
     return overridden_window_title_visibility_.has_value(); \
   }                                                         \
   bool GetOverriddenWindowTitleVisibility() const;          \
+  void ResetWindowControlsPosition();                       \
                                                             \
  private:                                                   \
   absl::optional<bool> overridden_window_title_visibility_; \

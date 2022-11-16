@@ -21,6 +21,7 @@ class BraveBrowserFrameMac : public BrowserFrameMac {
 
  private:
   raw_ptr<Browser> browser_;
+  raw_ptr<BrowserView> browser_view_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_MAC_H_

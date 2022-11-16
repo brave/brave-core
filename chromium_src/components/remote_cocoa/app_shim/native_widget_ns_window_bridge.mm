@@ -8,13 +8,15 @@
 namespace remote_cocoa {
 
 void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
-  NSUInteger style_mask = [window_ styleMask];
+  NSUInteger styleMask = [window_ styleMask];
   if (visible)
-    style_mask |= NSWindowStyleMaskTitled;
+    styleMask |= NSWindowStyleMaskTitled;
   else
-    style_mask &= ~NSWindowStyleMaskTitled;
+    styleMask &= ~NSWindowStyleMaskTitled;
 
-  [window_ setStyleMask:style_mask];
+  [window_ setStyleMask:styleMask];
+
+  ResetWindowControlsPosition();
 
   // Sometimes title is not visible until window is resized. In order to avoid
   // this, reset title to force it to be visible.
@@ -23,6 +25,31 @@ void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
     window_.get().title = @"";
     window_.get().title = title;
   }
+}
+
+void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
+  // Call undocumented method of NSThemeFrame in order to reset window controls'
+  // position.
+  //
+  // As for undocumented APIs, they're found by dumping Appkit classes with
+  // `class-dump` script.
+  // https://chromium.googlesource.com/external/github.com/nygard/class-dump/
+  //
+  //  There are a few sources to find dumpled headers:
+  // [1] Qt:
+  // https://github.com/qt/qt/blob/0a2f2382541424726168804be2c90b91381608c6/src/gui/kernel/qnsthemeframe_mac_p.h#L121
+  // [2] macos_headers:
+  // https://github.com/w0lfschild/macOS_headers/blob/a5c2da62810189aa7ea71e6a3e1c98d98bb6620e/macOS/Frameworks/AppKit/1348.17/NSThemeFrame.h#L393
+  //
+  // If this behavior is broken, we should run `class-dump` by ourselves and
+  // find out what can be used instead of this.
+  NSView* frameView = window_.get().contentView.superview;
+  DCHECK([frameView isKindOfClass:[NSThemeFrame class]]);
+  SEL selector = @selector(_resetTitleBarButtons);
+  if ([frameView respondsToSelector:selector])
+    [frameView performSelector:selector];
+  else
+    LOG(ERROR) << "Failed to find selector for resetting window controls";
 }
 
 }  // namespace remote_cocoa

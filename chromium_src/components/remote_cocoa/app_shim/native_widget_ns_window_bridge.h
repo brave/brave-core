@@ -9,6 +9,7 @@
 // Override a method from our NativeWidgetNSWindow mojo extension
 #define OnSizeChanged                              \
   SetWindowTitleVisibility(bool visible) override; \
+  void ResetWindowControlsPosition() override;     \
   void OnSizeChanged
 
 #include "src/components/remote_cocoa/app_shim/native_widget_ns_window_bridge.h"
