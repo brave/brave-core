@@ -37,6 +37,10 @@ std::string Base58Encode(base::span<const uint8_t> bytes);
 
 bool IsBase58EncodedSolanaPubkey(const std::string& key);
 
+bool Uint8ArrayDecode(const std::string& str,
+                      std::vector<uint8_t>* ret,
+                      size_t len);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_
