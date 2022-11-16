@@ -56,10 +56,14 @@ export default {
 }
 
 export function TourModal () {
+  const [adsPerHour, setAdsPerHour] = React.useState(3)
+
   return (
     <StoryWrapper>
       <RewardsTourModal
         {...getRewardsTourProps()}
+        adsPerHour={adsPerHour}
+        onAdsPerHourChanged={setAdsPerHour}
         onClose={actionLogger('onClose')}
       />
     </StoryWrapper>

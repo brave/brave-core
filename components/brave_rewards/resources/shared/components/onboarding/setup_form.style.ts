@@ -46,51 +46,35 @@ export const adsPerHour = styled.div`
   color: var(--brave-palette-neutral700);
 `
 
-export const optionBar = styled.div`
-  position: relative;
+export const slider = styled.div`
   margin: 23px auto 31px;
   width: 238px;
-  background: #E4DBFF;
-  border-radius: 100px;
-  height: 8px;
-  display: flex;
-  align-items: center;
-  overflow: visible;
 
-  button {
-    ${mixins.buttonReset}
-    flex: 2 0 auto;
-    padding: 2px;
-    text-align: center;
+  --slider-bar-height: 8px;
+  --slider-handle-height: 24px;
+  --slider-handle-width: 24px;
+
+  .slider {
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-
-    &:first-of-type {
-      flex: 1 0 auto;
-      justify-content: flex-start;
-    }
-
-    &:last-of-type {
-      flex: 1 0 auto;
-      justify-content: flex-end;
-    }
   }
-`
 
-export const optionMarker = styled.div`
-  height: 4px;
-  width: 4px;
-  border-radius: 50%;
-  background: #F8F9FA;
-`
+  .slider-bar {
+    background: #E4DBFF;
+    border-radius: 100px;
+    padding: 0 2px;
+  }
 
-export const optionHandle = styled.div`
-  position: absolute;
-  height: 24px;
-  width: 24px;
-  top: -8px;
-  left: calc(var(--optionbar-handle-position, 0px) - 12px);
-  border-radius: 50%;
-  background: #845EF7;
+  .slider-marker {
+    background: #F8F9FA;
+    border-radius: 50%;
+    height: 4px;
+    width: 4px;
+  }
+
+  .slider-handle {
+    ${mixins.buttonReset}
+    border-radius: 50%;
+    background: #845EF7;
+    cursor: pointer;
+  }
 `
