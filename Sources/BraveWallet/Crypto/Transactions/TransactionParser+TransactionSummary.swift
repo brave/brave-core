@@ -18,7 +18,7 @@ struct TransactionSummary: Equatable, Identifiable {
   /// Account name for the to address of the transaction
   let namedToAddress: String
   /// The title for the transaction summary.
-  /// Ex. "Sent 1.0000 ETH ($1.00"',  "Swapped 2.0000 ETH ($2.00)" / "Approved 1.0000 DAI" /  "Sent ETH"
+  /// Ex. "Sent 1.0000 ETH ($1.00)"',  "Swapped 2.0000 ETH ($2.00)" / "Approved 1.0000 DAI" /  "Sent ETH" / "Sent 1 INVSBLE"
   let title: String
   /// The gas fee and fiat for the transaction
   let gasFee: GasFee?
@@ -125,7 +125,7 @@ extension TransactionParser {
     case let .erc721Transfer(details):
       let title: String
       if let token = details.fromToken {
-        title = String.localizedStringWithFormat(Strings.Wallet.transactionUnknownSendTitle, token.symbol)
+        title = "\(Strings.Wallet.send) 1 \(token.symbol)"
       } else {
         title = Strings.Wallet.send
       }

@@ -71,16 +71,24 @@ struct AssetDetailView: View {
                 }
                 let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
                 let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
-                VStack(alignment: .trailing) {
-                  Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
-                    .redacted(reason: showFiatPlaceholder ? .placeholder : [])
-                    .shimmer(assetDetailStore.isLoadingPrice)
-                  Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
+                if assetDetailStore.token.isNft || assetDetailStore.token.isErc721 {
+                  Text(showBalancePlaceholder ? "0 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
                     .redacted(reason: showBalancePlaceholder ? .placeholder : [])
                     .shimmer(assetDetailStore.isLoadingAccountBalances)
+                    .font(.footnote)
+                    .foregroundColor(Color(.secondaryBraveLabel))
+                } else {
+                  VStack(alignment: .trailing) {
+                    Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
+                      .redacted(reason: showFiatPlaceholder ? .placeholder : [])
+                      .shimmer(assetDetailStore.isLoadingPrice)
+                    Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
+                      .redacted(reason: showBalancePlaceholder ? .placeholder : [])
+                      .shimmer(assetDetailStore.isLoadingAccountBalances)
+                  }
+                  .font(.footnote)
+                  .foregroundColor(Color(.secondaryBraveLabel))
                 }
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
               }
             }
           }
@@ -118,16 +126,18 @@ struct AssetDetailView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      Section {
-        EmptyView()
-      } header: {
-        Text(Strings.Wallet.coinGeckoDisclaimer)
-          .multilineTextAlignment(.center)
-          .font(.footnote)
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .frame(maxWidth: .infinity)
-          .listRowBackground(Color(.braveGroupedBackground))
-          .resetListHeaderStyle(insets: nil)
+      if !assetDetailStore.token.isNft && !assetDetailStore.token.isErc721 {
+        Section {
+          EmptyView()
+        } header: {
+          Text(Strings.Wallet.coinGeckoDisclaimer)
+            .multilineTextAlignment(.center)
+            .font(.footnote)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color(.braveGroupedBackground))
+            .resetListHeaderStyle(insets: nil)
+        }
       }
     }
     .listStyle(InsetGroupedListStyle())

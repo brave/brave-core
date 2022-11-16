@@ -105,29 +105,32 @@ class AssetDetailStore: ObservableObject {
       var updatedAccounts = keyring.accountInfos.map {
         AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
       }
-      // fetch prices for the asset
-      let (_, prices) = await assetRatioService.price([token.assetRatioId], toAssets: [currencyFormatter.currencyCode, "btc"], timeframe: timeframe)
-      self.isLoadingPrice = false
-      self.isInitialState = false
-      if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
-        let value = Double(assetPrice.price) {
-        self.assetPriceValue = value
-        self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
-        if let deltaValue = Double(assetPrice.assetTimeframeChange) {
-          self.priceIsDown = deltaValue < 0
-          self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
+      
+      if !token.isErc721 && !token.isNft {
+        // fetch prices for the asset
+        let (_, prices) = await assetRatioService.price([token.assetRatioId], toAssets: [currencyFormatter.currencyCode, "btc"], timeframe: timeframe)
+        self.isLoadingPrice = false
+        self.isInitialState = false
+        if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
+           let value = Double(assetPrice.price) {
+          self.assetPriceValue = value
+          self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
+          if let deltaValue = Double(assetPrice.assetTimeframeChange) {
+            self.priceIsDown = deltaValue < 0
+            self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
+          }
+          for index in 0..<updatedAccounts.count {
+            updatedAccounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)) ?? ""
+          }
         }
-        for index in 0..<updatedAccounts.count {
-          updatedAccounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)) ?? ""
+        if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
+          self.btcRatio = "\(assetPrice.price) BTC"
         }
+        // fetch price history for the asset
+        let (_, priceHistory) = await assetRatioService.priceHistory(token.assetRatioId, vsAsset: currencyFormatter.currencyCode, timeframe: timeframe)
+        self.isLoadingChart = false
+        self.priceHistory = priceHistory
       }
-      if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
-        self.btcRatio = "\(assetPrice.price) BTC"
-      }
-      // fetch price history for the asset
-      let (_, priceHistory) = await assetRatioService.priceHistory(token.assetRatioId, vsAsset: currencyFormatter.currencyCode, timeframe: timeframe)
-      self.isLoadingChart = false
-      self.priceHistory = priceHistory
       
       self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring)
       let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
@@ -154,8 +157,12 @@ class AssetDetailStore: ObservableObject {
     for tokenBalance in tokenBalances {
       if let index = accounts.firstIndex(where: { $0.account.address == tokenBalance.account.address }) {
         accountAssetViewModels[index].decimalBalance = tokenBalance.balance ?? 0.0
-        accountAssetViewModels[index].balance = String(format: "%.4f", tokenBalance.balance ?? 0.0)
-        accountAssetViewModels[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: accountAssetViewModels[index].decimalBalance * assetPriceValue)) ?? ""
+        if token.isErc721 || token.isNft {
+          accountAssetViewModels[index].balance = (tokenBalance.balance ?? 0) > 0 ? "1" : "0"
+        } else {
+          accountAssetViewModels[index].balance = String(format: "%.4f", tokenBalance.balance ?? 0.0)
+          accountAssetViewModels[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: accountAssetViewModels[index].decimalBalance * assetPriceValue)) ?? ""
+        }
       }
     }
     self.isLoadingAccountBalances = false
@@ -192,8 +199,11 @@ class AssetDetailStore: ObservableObject {
             return false
           }
           return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
-        case .ethSend, .ethSwap, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
+        case .ethSend, .ethSwap, .other:
           return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
+        case .erc721TransferFrom, .erc721SafeTransferFrom:
+          guard let tokenContractAddress = tx.txDataUnion.ethTxData1559?.baseData.to else { return false }
+          return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
         case .solanaSystemTransfer:
           return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
         case .solanaSplTokenTransfer, .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
@@ -201,7 +211,7 @@ class AssetDetailStore: ObservableObject {
             return false
           }
           return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
-        case .erc1155SafeTransferFrom, .solanaDappSignTransaction, .solanaDappSignAndSendTransaction:
+        case .erc1155SafeTransferFrom, .solanaDappSignTransaction, .solanaDappSignAndSendTransaction, .solanaSwap:
           return false
         @unknown default:
           return false
