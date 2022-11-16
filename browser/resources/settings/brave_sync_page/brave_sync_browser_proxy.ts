@@ -7,12 +7,15 @@ import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
 export type BraveDeviceInfo = {
   name: string
+  guid: string
   id: string
   os: string
   type: string
   chromeVersion: string
   lastUpdatedTimestamp: number
   sendTabToSelfReceivingEnabled: boolean
+  supportsSelfDelete: boolean
+  isCurrentDevice: boolean
   hasSharingInfo: boolean
 }
 
