@@ -55,14 +55,6 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
 }  // namespace
 
-bool IsPublisherEnabled(const mojom::Publisher* publisher) {
-  if (!publisher)
-    return false;
-  return (publisher->is_enabled &&
-          publisher->user_enabled_status != mojom::UserEnabled::DISABLED) ||
-         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
-}
-
 // static
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kShouldShowToolbarButton, true);
